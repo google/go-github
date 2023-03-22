@@ -154,6 +154,9 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 		t.Errorf("Unable to unmarshal JSON for %v: %v", v, err)
 	}
 
+	want = strings.Replace(want, "\t", "", -1)
+	want = strings.Replace(want, "\n", "", -1)
+
 	if !bytes.Equal(j, []byte(want)) {
 		t.Errorf("json.Marshal(%+v) returned %s, want %s", v, j, want)
 	}
@@ -2644,7 +2647,10 @@ func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
 }
 
 func TestErrorResponse_Marshal(t *testing.T) {
-	testJSONMarshal(t, &ErrorResponse{}, `{"message":"","errors":null}`)
+	testJSONMarshal(t, &ErrorResponse{}, `{
+		"message":"",
+		"errors":null
+	}`)
 
 	u := &ErrorResponse{
 		Message: "msg",
@@ -2663,7 +2669,22 @@ func TestErrorResponse_Marshal(t *testing.T) {
 		DocumentationURL: "doc",
 	}
 
-	want := `{"message":"msg","errors":[{"resource":"res","field":"f","code":"c","message":"msg"}],"block":{"reason":"reason","created_at":` + referenceTimeStr + `},"documentation_url":"doc"}`
+	want := `{
+		"message":"msg",
+		"errors":[
+			{
+				"resource":"res",
+				"field":"f",
+				"code":"c",
+				"message":"msg"
+			}
+		],
+		"block":{
+			"reason":"reason",
+			"created_at":` + referenceTimeStr + `
+		},
+		"documentation_url":"doc"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -2676,13 +2697,23 @@ func TestErrorBlock_Marshal(t *testing.T) {
 		CreatedAt: &Timestamp{referenceTime},
 	}
 
-	want := `{"reason":"reason","created_at":` + referenceTimeStr + `}`
+	want := `{
+		"reason":"reason",
+		"created_at":` + referenceTimeStr + `
+	}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestRateLimitError_Marshal(t *testing.T) {
-	// testJSONMarshal(t, &RateLimitError{}, "{}")
+	testJSONMarshal(t, &RateLimitError{}, `{
+		"rate":{
+			"limit":0,
+			"remaining":0,
+			"reset":"0001-01-01T00:00:00Z"
+		},
+		"message":""
+	}`)
 
 	u := &RateLimitError{
 		Rate: Rate{
@@ -2693,7 +2724,14 @@ func TestRateLimitError_Marshal(t *testing.T) {
 		Message: "msg",
 	}
 
-	want := `{"rate":{"limit":1,"remaining":1,"reset":` + referenceTimeStr + `},"message":"msg"}`
+	want := `{
+		"rate":{
+			"limit":1,
+			"remaining":1,
+			"reset":` + referenceTimeStr + `
+		},
+		"message":"msg"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -2711,7 +2749,12 @@ func TestAbuseRateLimitError_Marshal(t *testing.T) {
 }
 
 func TestError_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Error{}, `{"resource":"","field":"","code":"","message":""}`)
+	testJSONMarshal(t, &Error{}, `{
+		"resource":"",
+		"field":"",
+		"code":"",
+		"message":""
+	}`)
 
 	u := &Error{
 		Resource: "res",
@@ -2720,13 +2763,22 @@ func TestError_Marshal(t *testing.T) {
 		Message:  "msg",
 	}
 
-	want := `{"resource":"res","field":"field","code":"code","message":"msg"}`
+	want := `{
+		"resource":"res",
+		"field":"field",
+		"code":"code",
+		"message":"msg"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestRate_Marshal(t *testing.T) {
-	// testJSONMarshal(t, &Rate{}, `{"limit":0,"remaining":0,"reset":""}`)
+	testJSONMarshal(t, &Rate{}, `{
+		"limit":0,
+		"remaining":0,
+		"reset":"0001-01-01T00:00:00Z"
+	}`)
 
 	u := &Rate{
 		Limit:     1,
@@ -2734,13 +2786,26 @@ func TestRate_Marshal(t *testing.T) {
 		Reset:     Timestamp{referenceTime},
 	}
 
-	want := `{"limit":1,"remaining":1,"reset":` + referenceTimeStr + `}`
+	want := `{
+		"limit":1,
+		"remaining":1,
+		"reset":` + referenceTimeStr + `
+	}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestRateLimits_Marshal(t *testing.T) {
-	testJSONMarshal(t, &RateLimits{}, `{"core":null,"search":null,"graphql":null,"integration_manifest":null,"source_import":null,"code_scanning_upload":null,"actions_runner_registration":null,"scim":null}`)
+	testJSONMarshal(t, &RateLimits{}, `{
+		"core":null,
+		"search":null,
+		"graphql":null,
+		"integration_manifest":null,
+		"source_import":null,
+		"code_scanning_upload":null,
+		"actions_runner_registration":null,
+		"scim":null
+	}`)
 
 	u := &RateLimits{
 		Core: &Rate{
@@ -2785,7 +2850,48 @@ func TestRateLimits_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"core":{"limit":1,"remaining":1,"reset":` + referenceTimeStr + `},"search":{"limit":1,"remaining":1,"reset":` + referenceTimeStr + `},"graphql":{"limit":1,"remaining":1,"reset":` + referenceTimeStr + `},"integration_manifest":{"limit":1,"remaining":1,"reset":` + referenceTimeStr + `},"source_import":{"limit":1,"remaining":1,"reset":` + referenceTimeStr + `},"code_scanning_upload":{"limit":1,"remaining":1,"reset":` + referenceTimeStr + `},"actions_runner_registration":{"limit":1,"remaining":1,"reset":` + referenceTimeStr + `},"scim":{"limit":1,"remaining":1,"reset":` + referenceTimeStr + `}}`
+	want := `{
+		"core":{
+			"limit":1,
+			"remaining":1,
+			"reset":` + referenceTimeStr + `
+		},
+		"search":{
+			"limit":1,
+			"remaining":1,
+			"reset":` + referenceTimeStr + `
+		},
+		"graphql":{
+			"limit":1,
+			"remaining":1,
+			"reset":` + referenceTimeStr + `
+		},
+		"integration_manifest":{
+			"limit":1,
+			"remaining":1,
+			"reset":` + referenceTimeStr + `
+		},
+		"source_import":{
+			"limit":1,
+			"remaining":1,
+			"reset":` + referenceTimeStr + `
+		},
+		"code_scanning_upload":{
+			"limit":1,
+			"remaining":1,
+			"reset":` + referenceTimeStr + `
+		},
+		"actions_runner_registration":{
+			"limit":1,
+			"remaining":1,
+			"reset":` + referenceTimeStr + `
+		},
+		"scim":{
+			"limit":1,
+			"remaining":1,
+			"reset":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }

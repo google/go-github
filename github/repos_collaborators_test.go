@@ -401,7 +401,29 @@ func TestRepositoryPermissionLevel_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"permission":"permission","user":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"}}`
+	want := `{
+		"permission":"permission",
+		"user":{
+			"login":"l",
+			"id":1,
+			"avatar_url":"a",
+			"gravatar_id":"g",
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"l",
+			"email":"e",
+			"hireable":true,
+			"bio":"b",
+			"twitter_username":"t",
+			"public_repos":1,
+			"followers":1,
+			"following":1,
+			"created_at":` + referenceTimeStr + `,
+			"suspended_at":` + referenceTimeStr + `,
+			"url":"u"
+		}
+	}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -463,7 +485,58 @@ func TestCollaboratorInvitation_Marshal(t *testing.T) {
 		HTMLURL:     String("hurl"),
 	}
 
-	want := `{"id":1,"repository":{"id":1,"name":"n","url":"url"},"invitee":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"inviter":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"permissions":"per","created_at":` + referenceTimeStr + `,"url":"url","html_url":"hurl"}`
+	want := `{
+		"id":1,
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"url"
+		},
+		"invitee":{
+			"login":"l",
+			"id":1,
+			"avatar_url":"a",
+			"gravatar_id":"g",
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"l",
+			"email":"e",
+			"hireable":true,
+			"bio":"b",
+			"twitter_username":"t",
+			"public_repos":1,
+			"followers":1,
+			"following":1,
+			"created_at":` + referenceTimeStr + `,
+			"suspended_at":` + referenceTimeStr + `,
+			"url":"u"
+		},
+		"inviter":{
+			"login":"l",
+			"id":1,
+			"avatar_url":"a",
+			"gravatar_id":"g",
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"l",
+			"email":"e",
+			"hireable":true,
+			"bio":"b",
+			"twitter_username":"t",
+			"public_repos":1,
+			"followers":1,
+			"following":1,
+			"created_at":` + referenceTimeStr + `,
+			"suspended_at":` + referenceTimeStr + `,
+			"url":"u"
+		},
+		"permissions":"per",
+		"created_at":` + referenceTimeStr + `,
+		"url":"url",
+		"html_url":"hurl"
+	}`
 
 	testJSONMarshal(t, r, want)
 }

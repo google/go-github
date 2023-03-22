@@ -782,7 +782,20 @@ func TestRepositoryContent_Marshal(t *testing.T) {
 		DownloadURL: String("durl"),
 	}
 
-	want := `{"type":"type","target":"target","encoding":"encoding","size":1,"name":"name","path":"path","content":"content","sha":"sha","url":"url","git_url":"gurl","html_url":"hurl","download_url":"durl"}`
+	want := `{
+		"type":"type",
+		"target":"target",
+		"encoding":"encoding",
+		"size":1,
+		"name":"name",
+		"path":"path",
+		"content":"content",
+		"sha":"sha",
+		"url":"url",
+		"git_url":"gurl",
+		"html_url":"hurl",
+		"download_url":"durl"
+	}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -853,7 +866,68 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"content":{"type":"type","target":"target","encoding":"encoding","size":1,"name":"name","path":"path","content":"content","sha":"sha","url":"url","git_url":"gurl","html_url":"hurl","download_url":"durl"},"commit":{"sha":"s","author":{"date":` + referenceTimeStr + `,"name":"n","email":"e","username":"u"},"committer":{"date":` + referenceTimeStr + `,"name":"n","email":"e","username":"u"},"message":"m","tree":{"sha":"s","tree":[{"sha":"s","path":"p","mode":"m","type":"t","size":1,"content":"c","url":"u"}],"truncated":false},"stats":{"additions":1,"deletions":1,"total":1},"html_url":"h","url":"u","verification":{"verified":false,"reason":"r","signature":"s","payload":"p"},"node_id":"n","comment_count":1}}`
+	want := `{
+		"content":{
+			"type":"type",
+			"target":"target",
+			"encoding":"encoding",
+			"size":1,
+			"name":"name",
+			"path":"path",
+			"content":"content",
+			"sha":"sha",
+			"url":"url",
+			"git_url":"gurl",
+			"html_url":"hurl",
+			"download_url":"durl"
+		},
+		"commit":{
+			"sha":"s",
+			"author":{
+				"date":` + referenceTimeStr + `,
+				"name":"n",
+				"email":"e",
+				"username":"u"
+			},
+			"committer":{
+				"date":` + referenceTimeStr + `,
+				"name":"n",
+				"email":"e",
+				"username":"u"
+			},
+			"message":"m",
+			"tree":{
+				"sha":"s",
+				"tree":[
+					{
+						"sha":"s",
+						"path":"p",
+						"mode":"m",
+						"type":"t",
+						"size":1,
+						"content":"c",
+						"url":"u"
+					}
+				],
+				"truncated":false
+			},
+			"stats":{
+				"additions":1,
+				"deletions":1,
+				"total":1
+			},
+			"html_url":"h",
+			"url":"u",
+			"verification":{
+				"verified":false,
+				"reason":"r",
+				"signature":"s",
+				"payload":"p"
+			},
+			"node_id":"n",
+			"comment_count":1
+		}
+	}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -881,7 +955,24 @@ func TestRepositoryContentFileOptions_Marshal(t *testing.T) {
 	}
 
 	contentValue := `"AQ=="`
-	want := `{"message":"type","content":` + contentValue + `,"sha":"type","branch":"type","author":{"date":` + referenceTimeStr + `,"name":"name","email":"email","username":"login"},"committer":{"date":` + referenceTimeStr + `,"name":"name","email":"email","username":"login"}}`
+	want := `{
+		"message":"type",
+		"content":` + contentValue + `,
+		"sha":"type",
+		"branch":"type",
+		"author":{
+			"date":` + referenceTimeStr + `,
+			"name":"name",
+			"email":"email",
+			"username":"login"
+		},
+		"committer":{
+			"date":` + referenceTimeStr + `,
+			"name":"name",
+			"email":"email",
+			"username":"login"
+		}
+	}`
 
 	testJSONMarshal(t, r, want)
 }

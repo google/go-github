@@ -499,7 +499,12 @@ func TestPullRequestLinks_Marshal(t *testing.T) {
 		PatchURL: String("purl"),
 	}
 
-	want := `{"url":"url","html_url":"hurl","diff_url":"durl","patch_url":"purl"}`
+	want := `{
+		"url":"url",
+		"html_url":"hurl",
+		"diff_url":"durl",
+		"patch_url":"purl"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -517,7 +522,19 @@ func TestIssueRequest_Marshal(t *testing.T) {
 		Assignees: &[]string{"a"},
 	}
 
-	want := `{"title":"url","body":"url","labels":["l"],"assignee":"url","state":"url","milestone":1,"assignees":["a"]}`
+	want := `{
+		"title":"url",
+		"body":"url",
+		"labels":[
+			"l"
+		],
+		"assignee":"url",
+		"state":"url",
+		"milestone":1,
+		"assignees":[
+			"a"
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -557,7 +574,63 @@ func TestIssue_Marshal(t *testing.T) {
 		ActiveLockReason:  String("alr"),
 	}
 
-	want := `{"id":1,"number":1,"state":"s","locked":false,"title":"title","body":"body","author_association":"aa","user":{"id":1},"labels":[{"id":1}],"assignee":{"id":1},"comments":1,"closed_at":` + referenceTimeStr + `,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"closed_by":{"id":1},"url":"url","html_url":"hurl","comments_url":"curl","events_url":"eurl","labels_url":"lurl","repository_url":"rurl","milestone":{"id":1},"pull_request":{"url":"url"},"repository":{"id":1},"reactions":{"total_count":1},"assignees":[{"id":1}],"node_id":"nid","text_matches":[{"object_url":"ourl"}],"active_lock_reason":"alr"}`
+	want := `{
+		"id":1,
+		"number":1,
+		"state":"s",
+		"locked":false,
+		"title":"title",
+		"body":"body",
+		"author_association":"aa",
+		"user":{
+			"id":1
+		},
+		"labels":[
+			{
+				"id":1
+			}
+		],
+		"assignee":{
+			"id":1
+		},
+		"comments":1,
+		"closed_at":` + referenceTimeStr + `,
+		"created_at":` + referenceTimeStr + `,
+		"updated_at":` + referenceTimeStr + `,
+		"closed_by":{
+			"id":1
+		},
+		"url":"url",
+		"html_url":"hurl",
+		"comments_url":"curl",
+		"events_url":"eurl",
+		"labels_url":"lurl",
+		"repository_url":"rurl",
+		"milestone":{
+			"id":1
+		},
+		"pull_request":{
+			"url":"url"
+		},
+		"repository":{
+			"id":1
+		},
+		"reactions":{
+			"total_count":1
+		},
+		"assignees":[
+			{
+				"id":1
+			}
+		],
+		"node_id":"nid",
+		"text_matches":[
+			{
+				"object_url":"ourl"
+			}
+		],
+		"active_lock_reason":"alr"
+	}`
 
 	testJSONMarshal(t, u, want)
 }

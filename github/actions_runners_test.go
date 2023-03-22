@@ -596,7 +596,14 @@ func TestRunnerApplicationDownload_Marshal(t *testing.T) {
 		SHA256Checksum:    String("s"),
 	}
 
-	want := `{"os":"o","architecture":"a","download_url":"d","filename":"f","temp_download_token":"t","sha256_checksum":"s"}`
+	want := `{
+		"os":"o",
+		"architecture":"a",
+		"download_url":"d",
+		"filename":"f",
+		"temp_download_token":"t",
+		"sha256_checksum":"s"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -693,7 +700,25 @@ func TestRunners_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"total_count":1,"runners":[{"id":1,"name":"n","os":"o","status":"s","busy":false,"labels":[{"id":1,"name":"n","type":"t"}]}]}`
+	want := `{
+		"total_count":1,
+		"runners":[
+			{
+				"id":1,
+				"name":"n",
+				"os":"o",
+				"status":"s",
+				"busy":false,
+				"labels":[
+					{
+						"id":1,
+						"name":"n",
+						"type":"t"
+					}
+				]
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }

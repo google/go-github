@@ -92,7 +92,19 @@ func TestCodeownersErrors_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"errors":[{"line":1,"column":1,"kind":"Invalid pattern","source":"***/*.rb @monalisa","suggestion":"Did you mean **/*.rb?","message":"Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^","path":".github/CODEOWNERS"}]}`
+	want := `{
+		"errors":[
+			{
+				"line":1,
+				"column":1,
+				"kind":"Invalid pattern",
+				"source":"***/*.rb @monalisa",
+				"suggestion":"Did you mean **/*.rb?",
+				"message":"Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^",
+				"path":".github/CODEOWNERS"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }

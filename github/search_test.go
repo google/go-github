@@ -570,7 +570,12 @@ func TestMatch_Marshal(t *testing.T) {
 		Indices: []int{1},
 	}
 
-	want := `{"text":"txt","indices":[1]}`
+	want := `{
+		"text":"txt",
+		"indices":[
+			1
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -591,7 +596,20 @@ func TestTextMatch_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"object_url":"ourl","object_type":"otype","property":"prop","fragment":"fragment","matches":[{"text":"txt","indices":[1]}]}`
+	want := `{
+		"object_url":"ourl",
+		"object_type":"otype",
+		"property":"prop",
+		"fragment":"fragment",
+		"matches":[
+			{
+				"text":"txt",
+				"indices":[
+					1
+				]
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -611,7 +629,17 @@ func TestTopicResult_Marshal(t *testing.T) {
 		Score:            Float64(99.9),
 	}
 
-	want := `{"name":"name","display_name":"displayName","short_description":"shortDescription","description":"description","created_by":"createdBy","updated_at":"2021-10-26","featured":false,"curated":true,"score":99.9}`
+	want := `{
+		"name":"name",
+		"display_name":"displayName",
+		"short_description":"shortDescription",
+		"description":"description",
+		"created_by":"createdBy",
+		"updated_at":"2021-10-26",
+		"featured":false,
+		"curated":true,
+		"score":99.9
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -625,7 +653,15 @@ func TestRepositoriesSearchResult_Marshal(t *testing.T) {
 		Repositories:      []*Repository{{ID: Int64(1)}},
 	}
 
-	want := `{"total_count":0,"incomplete_results":true,"items":[{"id":1}]}`
+	want := `{
+		"total_count":0,
+		"incomplete_results":true,
+		"items":[
+			{
+				"id":1
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -641,7 +677,15 @@ func TestCommitsSearchResult_Marshal(t *testing.T) {
 		}},
 	}
 
-	want := `{"total_count":0,"incomplete_results":true,"items":[{"sha":"s"}]}`
+	want := `{
+		"total_count":0,
+		"incomplete_results":true,
+		"items":[
+			{
+				"sha":"s"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, c, want)
 }
@@ -668,7 +712,24 @@ func TestTopicsSearchResult_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"total_count":2,"incomplete_results":false,"items":[{"name":"t1","display_name":"tt","short_description":"t desc","description":"desc","created_by":"mi","created_at":` + referenceTimeStr + `,"updated_at":"2006-01-02T15:04:05Z","featured":true,"curated":true,"score":123}]}`
+	want := `{
+		"total_count":2,
+		"incomplete_results":false,
+		"items":[
+			{
+				"name":"t1",
+				"display_name":"tt",
+				"short_description":"t desc",
+				"description":"desc",
+				"created_by":"mi",
+				"created_at":` + referenceTimeStr + `,
+				"updated_at":"2006-01-02T15:04:05Z",
+				"featured":true,
+				"curated":true,
+				"score":123
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -686,7 +747,15 @@ func TestLabelResult_Marshal(t *testing.T) {
 		Score:       Float64(123),
 	}
 
-	want := `{"id":11,"url":"url","name":"label","color":"green","default":true,"description":"desc","score":123}`
+	want := `{
+		"id":11,
+		"url":"url",
+		"name":"label",
+		"color":"green",
+		"default":true,
+		"description":"desc",
+		"score":123
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -750,7 +819,69 @@ func TestIssuesSearchResult_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"total_count":48,"incomplete_results":false,"items":[{"id":1,"number":1,"state":"s","locked":false,"title":"title","body":"body","author_association":"aa","user":{"id":1},"labels":[{"id":1}],"assignee":{"id":1},"comments":1,"closed_at":` + referenceTimeStr + `,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"closed_by":{"id":1},"url":"url","html_url":"hurl","comments_url":"curl","events_url":"eurl","labels_url":"lurl","repository_url":"rurl","milestone":{"id":1},"pull_request":{"url":"url"},"repository":{"id":1},"reactions":{"total_count":1},"assignees":[{"id":1}],"node_id":"nid","text_matches":[{"object_url":"ourl"}],"active_lock_reason":"alr"}]}`
+	want := `{
+		"total_count":48,
+		"incomplete_results":false,
+		"items":[
+			{
+				"id":1,
+				"number":1,
+				"state":"s",
+				"locked":false,
+				"title":"title",
+				"body":"body",
+				"author_association":"aa",
+				"user":{
+					"id":1
+				},
+				"labels":[
+					{
+						"id":1
+					}
+				],
+				"assignee":{
+					"id":1
+				},
+				"comments":1,
+				"closed_at":` + referenceTimeStr + `,
+				"created_at":` + referenceTimeStr + `,
+				"updated_at":` + referenceTimeStr + `,
+				"closed_by":{
+					"id":1
+				},
+				"url":"url",
+				"html_url":"hurl",
+				"comments_url":"curl",
+				"events_url":"eurl",
+				"labels_url":"lurl",
+				"repository_url":"rurl",
+				"milestone":{
+					"id":1
+				},
+				"pull_request":{
+					"url":"url"
+				},
+				"repository":{
+					"id":1
+				},
+				"reactions":{
+					"total_count":1
+				},
+				"assignees":[
+					{
+						"id":1
+					}
+				],
+				"node_id":"nid",
+				"text_matches":[
+					{
+						"object_url":"ourl"
+					}
+				],
+				"active_lock_reason":"alr"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -774,7 +905,21 @@ func TestLabelsSearchResult_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"total_count":5,"incomplete_results":false,"items":[{"id":1,"url":"https://www.test-url.com","name":"test name","color":"green","default":true,"description":"testDescription","score":1}]}`
+	want := `{
+		"total_count":5,
+		"incomplete_results":false,
+		"items":[
+			{
+				"id":1,
+				"url":"https://www.test-url.com",
+				"name":"test name",
+				"color":"green",
+				"default":true,
+				"description":"testDescription",
+				"score":1
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -795,7 +940,25 @@ func TestCommitResult_Marshal(t *testing.T) {
 		Parents:     []*Commit{},
 	}
 
-	want := `{"sha":"test","commit":{"sha":"test"},"author":{"id":1},"committer":{"id":1},"html_url":"hurl","url":"url","comments_url":"curl","repository":{"id":1},"score":123}`
+	want := `{
+		"sha":"test",
+		"commit":{
+			"sha":"test"
+		},
+		"author":{
+			"id":1
+		},
+		"committer":{
+			"id":1
+		},
+		"html_url":"hurl",
+		"url":"url",
+		"comments_url":"curl",
+		"repository":{
+			"id":1
+		},
+		"score":123
+	}`
 
 	testJSONMarshal(t, c, want)
 }
@@ -817,7 +980,21 @@ func TestUsersSearchResult_Marshal(t *testing.T) {
 		}},
 	}
 
-	want := `{"total_count":2,"incomplete_results":false,"items":[{"login":"loginTest","id":1,"node_id":"NodeTest","avatar_url":"AvatarURLTest","html_url":"Hurl","gravatar_id":"gravatarIDTest","name":"nameTest"}]}`
+	want := `{
+		"total_count":2,
+		"incomplete_results":false,
+		"items":[
+			{
+				"login":"loginTest",
+				"id":1,
+				"node_id":"NodeTest",
+				"avatar_url":"AvatarURLTest",
+				"html_url":"Hurl",
+				"gravatar_id":"gravatarIDTest",
+				"name":"nameTest"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -831,7 +1008,15 @@ func TestCodeSearchResult_Marshal(t *testing.T) {
 		CodeResults:       []*CodeResult{{Name: String("n")}},
 	}
 
-	want := `{"total_count":4,"incomplete_results":false,"items":[{"name":"n"}]}`
+	want := `{
+		"total_count":4,
+		"incomplete_results":false,
+		"items":[
+			{
+				"name":"n"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }

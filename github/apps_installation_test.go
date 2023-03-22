@@ -188,7 +188,16 @@ func TestListRepositories_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"total_count":1,"repositories":[{"id":1,"name":"n","url":"u"}]}`
+	want := `{
+		"total_count":1,
+		"repositories":[
+			{
+				"id":1,
+				"name":"n",
+				"url":"u"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }

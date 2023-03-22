@@ -868,7 +868,30 @@ func TestAlert_Marshal(t *testing.T) {
 		HTMLURL:  String("hurl"),
 	}
 
-	want := `{"rule_id":"rid","rule_severity":"rs","rule_description":"rd","tool":{"name":"n","guid":"g","version":"v"},"created_at":` + referenceTimeStr + `,"state":"fixed","closed_by":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"closed_at":` + referenceTimeStr + `,"url":"url","html_url":"hurl"}`
+	want := `{
+		"rule_id":"rid",
+		"rule_severity":"rs",
+		"rule_description":"rd",
+		"tool":{
+			"name":"n",
+			"guid":"g",
+			"version":"v"
+		},
+		"created_at":` + referenceTimeStr + `,
+		"state":"fixed",
+		"closed_by":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"closed_at":` + referenceTimeStr + `,
+		"url":"url",
+		"html_url":"hurl"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -884,7 +907,13 @@ func TestLocation_Marshal(t *testing.T) {
 		EndColumn:   Int(4),
 	}
 
-	want := `{"path":"path","start_line":1,"end_line":2,"start_column":3,"end_column":4}`
+	want := `{
+		"path":"path",
+		"start_line":1,
+		"end_line":2,
+		"start_column":3,
+		"end_column":4
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -903,7 +932,19 @@ func TestRule_Marshal(t *testing.T) {
 		Help:                  String("Help Text"),
 	}
 
-	want := `{"id":"1","severity":"3","description":"description","name":"first","security_severity_level":"2","full_description":"summary","tags":["tag1","tag2"],"help":"Help Text"}`
+	want := `{
+		"id":"1",
+		"severity":"3",
+		"description":"description",
+		"name":"first",
+		"security_severity_level":"2",
+		"full_description":"summary",
+		"tags":[
+			"tag1",
+			"tag2"
+		],
+		"help":"Help Text"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -917,7 +958,11 @@ func TestTool_Marshal(t *testing.T) {
 		Version: String("ver"),
 	}
 
-	want := `{"name":"name","guid":"guid","version":"ver"}`
+	want := `{
+		"name":"name",
+		"guid":"guid",
+		"version":"ver"
+	}`
 
 	testJSONMarshal(t, u, want)
 }

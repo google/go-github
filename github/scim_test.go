@@ -344,7 +344,14 @@ func TestSCIMService_DeleteSCIMUserFromOrg(t *testing.T) {
 }
 
 func TestSCIMUserAttributes_Marshal(t *testing.T) {
-	testJSONMarshal(t, &SCIMUserAttributes{}, `{"userName":"","name":{"givenName":"","familyName":""},"emails":null}`)
+	testJSONMarshal(t, &SCIMUserAttributes{}, `{
+		"userName":"",
+		"name":{
+			"givenName":"",
+			"familyName":""
+		},
+		"emails":null
+	}`)
 
 	u := &SCIMUserAttributes{
 		UserName: "userName1",
@@ -367,7 +374,30 @@ func TestSCIMUserAttributes_Marshal(t *testing.T) {
 		Active:     Bool(true),
 	}
 
-	want := `{"userName":"userName1","name":{"givenName":"Name1","familyName":"Fname","formatted":"formatted name"},"displayName":"Name","emails":[{"value":"value","primary":false,"type":"type"}],"schemas":["schema1"],"externalId":"id","groups":["group1"],"active":true}`
+	want := `{
+		"userName":"userName1",
+		"name":{
+			"givenName":"Name1",
+			"familyName":"Fname",
+			"formatted":"formatted name"
+		},
+		"displayName":"Name",
+		"emails":[
+			{
+				"value":"value",
+				"primary":false,
+				"type":"type"
+			}
+		],
+		"schemas":[
+			"schema1"
+		],
+		"externalId":"id",
+		"groups":[
+			"group1"
+		],
+		"active":true
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -380,13 +410,20 @@ func TestUpdateAttributeForSCIMUserOperations_Marshal(t *testing.T) {
 		Path: String("path"),
 	}
 
-	want := `{"op":"TestOp","path":"path"}`
+	want := `{
+		"op":"TestOp",
+		"path":"path"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &UpdateAttributeForSCIMUserOptions{}, `{"operations":{"op":""}}`)
+	testJSONMarshal(t, &UpdateAttributeForSCIMUserOptions{}, `{
+		"operations":{
+			"op":""
+		}
+	}`)
 
 	u := &UpdateAttributeForSCIMUserOptions{
 		Schemas: []string{"test", "schema"},
@@ -396,7 +433,16 @@ func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"schemas":["test","schema"],"operations":{"op":"TestOp","path":"path"}}`
+	want := `{
+		"schemas":[
+			"test",
+			"schema"
+		],
+		"operations":{
+			"op":"TestOp",
+			"path":"path"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -429,7 +475,10 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 }
 
 func TestSCIMUserName_Marshal(t *testing.T) {
-	testJSONMarshal(t, &SCIMUserName{}, `{"givenName":"","familyName":""}`)
+	testJSONMarshal(t, &SCIMUserName{}, `{
+		"givenName":"",
+		"familyName":""
+	}`)
 
 	u := &SCIMUserName{
 		GivenName:  "Name1",
@@ -437,7 +486,11 @@ func TestSCIMUserName_Marshal(t *testing.T) {
 		Formatted:  String("formatted name"),
 	}
 
-	want := `{"givenName":"Name1","familyName":"Fname","formatted":"formatted name"}`
+	want := `{
+		"givenName":"Name1",
+		"familyName":"Fname",
+		"formatted":"formatted name"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -450,7 +503,10 @@ func TestSCIMMeta_Marshal(t *testing.T) {
 		Location:     String("test"),
 	}
 
-	want := `{"resourceType":"test","location":"test"}`
+	want := `{
+		"resourceType":"test",
+		"location":"test"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -487,7 +543,41 @@ func TestSCIMProvisionedIdentities_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"schemas":["test","schema"],"totalResults":1,"itemsPerPage":2,"startIndex":1,"Resources":[{"userName":"SCIM","name":{"givenName":"scim","familyName":"test","formatted":"SCIM"},"displayName":"Test SCIM","emails":[{"value":"test","primary":true,"type":"test"}],"schemas":["schema1"],"externalId":"id","groups":["group1"],"active":true}]}`
+	want := `{
+		"schemas":[
+			"test",
+			"schema"
+		],
+		"totalResults":1,
+		"itemsPerPage":2,
+		"startIndex":1,
+		"Resources":[
+			{
+				"userName":"SCIM",
+				"name":{
+					"givenName":"scim",
+					"familyName":"test",
+					"formatted":"SCIM"
+				},
+				"displayName":"Test SCIM",
+				"emails":[
+					{
+						"value":"test",
+						"primary":true,
+						"type":"test"
+					}
+				],
+				"schemas":[
+					"schema1"
+				],
+				"externalId":"id",
+				"groups":[
+					"group1"
+				],
+				"active":true
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }

@@ -134,7 +134,14 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 }
 
 func TestMetric_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Metric{}, `{"name":null,"key":null,"spdx_id":null,"url":null,"html_url":null,"node_id":null}`)
+	testJSONMarshal(t, &Metric{}, `{
+		"name":null,
+		"key":null,
+		"spdx_id":null,
+		"url":null,
+		"html_url":null,
+		"node_id":null
+	}`)
 
 	r := &Metric{
 		Name:    String("name"),
@@ -145,13 +152,28 @@ func TestMetric_Marshal(t *testing.T) {
 		NodeID:  String("node_id"),
 	}
 
-	want := `{"name":"name","key":"key","spdx_id":"spdx_id","url":"url","html_url":"hurl","node_id":"node_id"}`
+	want := `{
+		"name":"name",
+		"key":"key",
+		"spdx_id":"spdx_id",
+		"url":"url",
+		"html_url":"hurl",
+		"node_id":"node_id"
+	}`
 
 	testJSONMarshal(t, r, want)
 }
 
 func TestCommunityHealthFiles_Marshal(t *testing.T) {
-	testJSONMarshal(t, &CommunityHealthFiles{}, `{"code_of_conduct":null,"code_of_conduct_file":null,"contributing":null,"issue_template":null,"pull_request_template":null,"license":null,"readme":null}`)
+	testJSONMarshal(t, &CommunityHealthFiles{}, `{
+		"code_of_conduct":null,
+		"code_of_conduct_file":null,
+		"contributing":null,
+		"issue_template":null,
+		"pull_request_template":null,
+		"license":null,
+		"readme":null
+	}`)
 
 	r := &CommunityHealthFiles{
 		CodeOfConduct: &Metric{
@@ -200,13 +222,77 @@ func TestCommunityHealthFiles_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"code_of_conduct":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null},"code_of_conduct_file":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null},"contributing":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null},"issue_template":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null},"pull_request_template":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null},"license":{"name":"name","key":"key","spdx_id":"spdx_id","url":"url","html_url":"hurl","node_id":"node_id"},"readme":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null}}`
+	want := `{
+		"code_of_conduct":{
+			"name":"name",
+			"key":"key",
+			"spdx_id":null,
+			"url":"url",
+			"html_url":"hurl",
+			"node_id":null
+		},
+		"code_of_conduct_file":{
+			"name":"name",
+			"key":"key",
+			"spdx_id":null,
+			"url":"url",
+			"html_url":"hurl",
+			"node_id":null
+		},
+		"contributing":{
+			"name":"name",
+			"key":"key",
+			"spdx_id":null,
+			"url":"url",
+			"html_url":"hurl",
+			"node_id":null
+		},
+		"issue_template":{
+			"name":"name",
+			"key":"key",
+			"spdx_id":null,
+			"url":"url",
+			"html_url":"hurl",
+			"node_id":null
+		},
+		"pull_request_template":{
+			"name":"name",
+			"key":"key",
+			"spdx_id":null,
+			"url":"url",
+			"html_url":"hurl",
+			"node_id":null
+		},
+		"license":{
+			"name":"name",
+			"key":"key",
+			"spdx_id":"spdx_id",
+			"url":"url",
+			"html_url":"hurl",
+			"node_id":"node_id"
+		},
+		"readme":{
+			"name":"name",
+			"key":"key",
+			"spdx_id":null,
+			"url":"url",
+			"html_url":"hurl",
+			"node_id":null
+		}
+	}`
 
 	testJSONMarshal(t, r, want)
 }
 
 func TestCommunityHealthMetrics_Marshal(t *testing.T) {
-	testJSONMarshal(t, &CommunityHealthMetrics{}, `{"health_percentage":null,"description":null,"documentation":null,"files":null,"updated_at":null,"content_reports_enabled":null}`)
+	testJSONMarshal(t, &CommunityHealthMetrics{}, `{
+		"health_percentage":null,
+		"description":null,
+		"documentation":null,
+		"files":null,
+		"updated_at":null,
+		"content_reports_enabled":null
+	}`)
 
 	r := &CommunityHealthMetrics{
 		HealthPercentage: Int(1),
@@ -262,7 +348,71 @@ func TestCommunityHealthMetrics_Marshal(t *testing.T) {
 		ContentReportsEnabled: Bool(true),
 	}
 
-	want := `{"health_percentage":1,"description":"desc","documentation":"docs","files":{"code_of_conduct":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null},"code_of_conduct_file":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null},"contributing":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null},"issue_template":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null},"pull_request_template":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null},"license":{"name":"name","key":"key","spdx_id":"spdx_id","url":"url","html_url":"hurl","node_id":"node_id"},"readme":{"name":"name","key":"key","spdx_id":null,"url":"url","html_url":"hurl","node_id":null}},"updated_at":` + referenceTimeStr + `,"content_reports_enabled":true}`
+	want := `{
+		"health_percentage":1,
+		"description":"desc",
+		"documentation":"docs",
+		"files":{
+			"code_of_conduct":{
+				"name":"name",
+				"key":"key",
+				"spdx_id":null,
+				"url":"url",
+				"html_url":"hurl",
+				"node_id":null
+			},
+			"code_of_conduct_file":{
+				"name":"name",
+				"key":"key",
+				"spdx_id":null,
+				"url":"url",
+				"html_url":"hurl",
+				"node_id":null
+			},
+			"contributing":{
+				"name":"name",
+				"key":"key",
+				"spdx_id":null,
+				"url":"url",
+				"html_url":"hurl",
+				"node_id":null
+			},
+			"issue_template":{
+				"name":"name",
+				"key":"key",
+				"spdx_id":null,
+				"url":"url",
+				"html_url":"hurl",
+				"node_id":null
+			},
+			"pull_request_template":{
+				"name":"name",
+				"key":"key",
+				"spdx_id":null,
+				"url":"url",
+				"html_url":"hurl",
+				"node_id":null
+			},
+			"license":{
+				"name":"name",
+				"key":"key",
+				"spdx_id":"spdx_id",
+				"url":"url",
+				"html_url":"hurl",
+				"node_id":"node_id"
+			},
+			"readme":{
+				"name":"name",
+				"key":"key",
+				"spdx_id":null,
+				"url":"url",
+				"html_url":"hurl",
+				"node_id":null
+			}
+		},
+		"updated_at":` + referenceTimeStr + `,
+		"content_reports_enabled":true
+	}`
 
 	testJSONMarshal(t, r, want)
 }

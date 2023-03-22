@@ -732,7 +732,92 @@ func Test_CheckRunMarshal(t *testing.T) {
 			},
 		},
 	}
-	w := fmt.Sprintf(`{"id":1,"node_id":"n","head_sha":"h","external_id":"1","url":"u","html_url":"u","details_url":"u","status":"s","conclusion":"c","started_at":"%s","completed_at":"%s","output":{"title":"t","summary":"s","text":"t","annotations_count":1,"annotations_url":"a","annotations":[{"path":"p","start_line":1,"end_line":1,"annotation_level":"a","message":"m","title":"t","raw_details":"r"}],"images":[{"alt":"a","image_url":"i","caption":"c"}]},"name":"n","check_suite":{"id":1},"app":{"id":1,"node_id":"n","owner":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"name":"n","description":"d","external_url":"u","html_url":"h","created_at":"%s","updated_at":"%s"},"pull_requests":[{"id":1,"number":1,"url":"u","head":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"s"}},"base":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"u"}}}]}`, ts, ts, ts, ts)
+	w := `{
+		"id":1,
+		"node_id":"n",
+		"head_sha":"h",
+		"external_id":"1",
+		"url":"u",
+		"html_url":"u",
+		"details_url":"u",
+		"status":"s",
+		"conclusion":"c",
+		"started_at":"` + ts + `",
+		"completed_at":"` + ts + `",
+		"output":{
+			"title":"t",
+			"summary":"s",
+			"text":"t",
+			"annotations_count":1,
+			"annotations_url":"a",
+			"annotations":[
+				{
+					"path":"p",
+					"start_line":1,
+					"end_line":1,
+					"annotation_level":"a",
+					"message":"m",
+					"title":"t",
+					"raw_details":"r"
+				}
+			],
+			"images":[
+				{
+					"alt":"a",
+					"image_url":"i",
+					"caption":"c"
+				}
+			]
+		},
+		"name":"n",
+		"check_suite":{
+			"id":1
+		},
+		"app":{
+			"id":1,
+			"node_id":"n",
+			"owner":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"name":"n",
+			"description":"d",
+			"external_url":"u",
+			"html_url":"h",
+			"created_at":"` + ts + `",
+			"updated_at":"` + ts + `"
+		},
+		"pull_requests":[
+			{
+				"id":1,
+				"number":1,
+				"url":"u",
+				"head":{
+					"ref":"r",
+					"sha":"s",
+					"repo":{
+						"id":1,
+						"name":"n",
+						"url":"s"
+					}
+				},
+				"base":{
+					"ref":"r",
+					"sha":"s",
+					"repo":{
+						"id":1,
+						"name":"n",
+						"url":"u"
+					}
+				}
+			}
+		]
+	}`
 
 	testJSONMarshal(t, &c, w)
 }
@@ -805,7 +890,67 @@ func Test_CheckSuiteMarshal(t *testing.T) {
 		},
 	}
 
-	w := fmt.Sprintf(`{"id":1,"node_id":"n","head_branch":"h","head_sha":"h","url":"u","before":"b","after":"a","status":"s","conclusion":"c","app":{"id":1,"node_id":"n","owner":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"name":"n","description":"d","external_url":"u","html_url":"h","created_at":"%s","updated_at":"%s"},"repository":{"id":1},"pull_requests":[{"id":1,"number":1,"url":"u","head":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"s"}},"base":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"u"}}}],"head_commit":{"sha":"s"}}`, ts, ts)
+	w := `{
+		"id":1,
+		"node_id":"n",
+		"head_branch":"h",
+		"head_sha":"h",
+		"url":"u",
+		"before":"b",
+		"after":"a",
+		"status":"s",
+		"conclusion":"c",
+		"app":{
+			"id":1,
+			"node_id":"n",
+			"owner":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"name":"n",
+			"description":"d",
+			"external_url":"u",
+			"html_url":"h",
+			"created_at":"` + ts + `",
+			"updated_at":"` + ts + `"
+		},
+		"repository":{
+			"id":1
+		},
+		"pull_requests":[
+			{
+				"id":1,
+				"number":1,
+				"url":"u",
+				"head":{
+					"ref":"r",
+					"sha":"s",
+					"repo":{
+						"id":1,
+						"name":"n",
+						"url":"s"
+					}
+				},
+				"base":{
+					"ref":"r",
+					"sha":"s",
+					"repo":{
+						"id":1,
+						"name":"n",
+						"url":"u"
+					}
+				}
+			}
+		],
+		"head_commit":{
+			"sha":"s"
+		}
+	}`
 
 	testJSONMarshal(t, &c, w)
 }
@@ -825,7 +970,17 @@ func TestCheckRunAnnotation_Marshal(t *testing.T) {
 		RawDetails:      String("rd"),
 	}
 
-	want := `{"path":"p","start_line":1,"end_line":1,"start_column":1,"end_column":1,"annotation_level":"al","message":"m","title":"t","raw_details":"rd"}`
+	want := `{
+		"path":"p",
+		"start_line":1,
+		"end_line":1,
+		"start_column":1,
+		"end_column":1,
+		"annotation_level":"al",
+		"message":"m",
+		"title":"t",
+		"raw_details":"rd"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -839,13 +994,21 @@ func TestCheckRunImage_Marshal(t *testing.T) {
 		Caption:  String("c"),
 	}
 
-	want := `{"alt":"a","image_url":"i","caption":"c"}`
+	want := `{
+		"alt":"a",
+		"image_url":"i",
+		"caption":"c"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestCheckRunAction_Marshal(t *testing.T) {
-	testJSONMarshal(t, &CheckRunAction{}, `{"label":"","description":"","identifier":""}`)
+	testJSONMarshal(t, &CheckRunAction{}, `{
+		"label":"",
+		"description":"",
+		"identifier":""
+	}`)
 
 	u := &CheckRunAction{
 		Label:       "l",
@@ -853,7 +1016,11 @@ func TestCheckRunAction_Marshal(t *testing.T) {
 		Identifier:  "i",
 	}
 
-	want := `{"label":"l","description":"d","identifier":"i"}`
+	want := `{
+		"label":"l",
+		"description":"d",
+		"identifier":"i"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -866,7 +1033,10 @@ func TestAutoTriggerCheck_Marshal(t *testing.T) {
 		Setting: Bool(false),
 	}
 
-	want := `{"app_id":1,"setting":false}`
+	want := `{
+		"app_id":1,
+		"setting":false
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -879,7 +1049,10 @@ func TestCreateCheckSuiteOptions_Marshal(t *testing.T) {
 		HeadBranch: String("hb"),
 	}
 
-	want := `{"head_sha":"hsha","head_branch":"hb"}`
+	want := `{
+		"head_sha":"hsha",
+		"head_branch":"hb"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -915,7 +1088,33 @@ func TestCheckRunOutput_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"title":"ti","summary":"s","text":"t","annotations_count":1,"annotations_url":"au","annotations":[{"path":"p","start_line":1,"end_line":1,"start_column":1,"end_column":1,"annotation_level":"al","message":"m","title":"t","raw_details":"rd"}],"images":[{"alt":"a","image_url":"i","caption":"c"}]}`
+	want := `{
+		"title":"ti",
+		"summary":"s",
+		"text":"t",
+		"annotations_count":1,
+		"annotations_url":"au",
+		"annotations":[
+			{
+				"path":"p",
+				"start_line":1,
+				"end_line":1,
+				"start_column":1,
+				"end_column":1,
+				"annotation_level":"al",
+				"message":"m",
+				"title":"t",
+				"raw_details":"rd"
+			}
+		],
+		"images":[
+			{
+				"alt":"a",
+				"image_url":"i",
+				"caption":"c"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -968,7 +1167,50 @@ func TestCreateCheckRunOptions_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"name":"n","head_sha":"hsha","details_url":"durl","external_id":"eid","status":"s","conclusion":"c","started_at":` + referenceTimeStr + `,"completed_at":` + referenceTimeStr + `,"output":{"title":"ti","summary":"s","text":"t","annotations_count":1,"annotations_url":"au","annotations":[{"path":"p","start_line":1,"end_line":1,"start_column":1,"end_column":1,"annotation_level":"al","message":"m","title":"t","raw_details":"rd"}],"images":[{"alt":"a","image_url":"i","caption":"c"}]},"actions":[{"label":"l","description":"d","identifier":"i"}]}`
+	want := `{
+		"name":"n",
+		"head_sha":"hsha",
+		"details_url":"durl",
+		"external_id":"eid",
+		"status":"s",
+		"conclusion":"c",
+		"started_at":` + referenceTimeStr + `,
+		"completed_at":` + referenceTimeStr + `,
+		"output":{
+			"title":"ti",
+			"summary":"s",
+			"text":"t",
+			"annotations_count":1,
+			"annotations_url":"au",
+			"annotations":[
+				{
+					"path":"p",
+					"start_line":1,
+					"end_line":1,
+					"start_column":1,
+					"end_column":1,
+					"annotation_level":"al",
+					"message":"m",
+					"title":"t",
+					"raw_details":"rd"
+				}
+			],
+			"images":[
+				{
+					"alt":"a",
+					"image_url":"i",
+					"caption":"c"
+				}
+			]
+		},
+		"actions":[
+			{
+				"label":"l",
+				"description":"d",
+				"identifier":"i"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1019,7 +1261,48 @@ func TestUpdateCheckRunOptions_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"name":"n","details_url":"durl","external_id":"eid","status":"s","conclusion":"c","completed_at":` + referenceTimeStr + `,"output":{"title":"ti","summary":"s","text":"t","annotations_count":1,"annotations_url":"au","annotations":[{"path":"p","start_line":1,"end_line":1,"start_column":1,"end_column":1,"annotation_level":"al","message":"m","title":"t","raw_details":"rd"}],"images":[{"alt":"a","image_url":"i","caption":"c"}]},"actions":[{"label":"l","description":"d","identifier":"i"}]}`
+	want := `{
+		"name":"n",
+		"details_url":"durl",
+		"external_id":"eid",
+		"status":"s",
+		"conclusion":"c",
+		"completed_at":` + referenceTimeStr + `,
+		"output":{
+			"title":"ti",
+			"summary":"s",
+			"text":"t",
+			"annotations_count":1,
+			"annotations_url":"au",
+			"annotations":[
+				{
+					"path":"p",
+					"start_line":1,
+					"end_line":1,
+					"start_column":1,
+					"end_column":1,
+					"annotation_level":"al",
+					"message":"m",
+					"title":"t",
+					"raw_details":"rd"
+				}
+			],
+			"images":[
+				{
+					"alt":"a",
+					"image_url":"i",
+					"caption":"c"
+				}
+			]
+		},
+		"actions":[
+			{
+				"label":"l",
+				"description":"d",
+				"identifier":"i"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1119,7 +1402,97 @@ func TestListCheckRunsResults_Marshal(t *testing.T) {
 		},
 	}
 
-	w := `{"total_count":1,"check_runs":[{"id":1,"node_id":"n","head_sha":"h","external_id":"1","url":"u","html_url":"u","details_url":"u","status":"s","conclusion":"c","started_at":` + referenceTimeStr + `,"completed_at":` + referenceTimeStr + `,"output":{"title":"t","summary":"s","text":"t","annotations_count":1,"annotations_url":"a","annotations":[{"path":"p","start_line":1,"end_line":1,"annotation_level":"a","message":"m","title":"t","raw_details":"r"}],"images":[{"alt":"a","image_url":"i","caption":"c"}]},"name":"n","check_suite":{"id":1},"app":{"id":1,"node_id":"n","owner":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"name":"n","description":"d","external_url":"u","html_url":"h","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `},"pull_requests":[{"id":1,"number":1,"url":"u","head":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"s"}},"base":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"u"}}}]}]}`
+	w := `{
+		"total_count":1,
+		"check_runs":[
+			{
+				"id":1,
+				"node_id":"n",
+				"head_sha":"h",
+				"external_id":"1",
+				"url":"u",
+				"html_url":"u",
+				"details_url":"u",
+				"status":"s",
+				"conclusion":"c",
+				"started_at":` + referenceTimeStr + `,
+				"completed_at":` + referenceTimeStr + `,
+				"output":{
+					"title":"t",
+					"summary":"s",
+					"text":"t",
+					"annotations_count":1,
+					"annotations_url":"a",
+					"annotations":[
+						{
+							"path":"p",
+							"start_line":1,
+							"end_line":1,
+							"annotation_level":"a",
+							"message":"m",
+							"title":"t",
+							"raw_details":"r"
+						}
+					],
+					"images":[
+						{
+							"alt":"a",
+							"image_url":"i",
+							"caption":"c"
+						}
+					]
+				},
+				"name":"n",
+				"check_suite":{
+					"id":1
+				},
+				"app":{
+					"id":1,
+					"node_id":"n",
+					"owner":{
+						"login":"l",
+						"id":1,
+						"node_id":"n",
+						"avatar_url":"a",
+						"url":"u",
+						"events_url":"e",
+						"repos_url":"r"
+					},
+					"name":"n",
+					"description":"d",
+					"external_url":"u",
+					"html_url":"h",
+					"created_at":` + referenceTimeStr + `,
+					"updated_at":` + referenceTimeStr + `
+				},
+				"pull_requests":[
+					{
+						"id":1,
+						"number":1,
+						"url":"u",
+						"head":{
+							"ref":"r",
+							"sha":"s",
+							"repo":{
+								"id":1,
+								"name":"n",
+								"url":"s"
+							}
+						},
+						"base":{
+							"ref":"r",
+							"sha":"s",
+							"repo":{
+								"id":1,
+								"name":"n",
+								"url":"u"
+							}
+						}
+					}
+				]
+			}
+		]
+	}`
 
 	testJSONMarshal(t, &l, w)
 }
@@ -1194,7 +1567,72 @@ func TestListCheckSuiteResults_Marshal(t *testing.T) {
 		},
 	}
 
-	w := `{"total_count":1,"check_suites":[{"id":1,"node_id":"n","head_branch":"h","head_sha":"h","url":"u","before":"b","after":"a","status":"s","conclusion":"c","app":{"id":1,"node_id":"n","owner":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"name":"n","description":"d","external_url":"u","html_url":"h","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `},"repository":{"id":1},"pull_requests":[{"id":1,"number":1,"url":"u","head":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"s"}},"base":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"u"}}}],"head_commit":{"sha":"s"}}]}`
+	w := `{
+		"total_count":1,
+		"check_suites":[
+			{
+				"id":1,
+				"node_id":"n",
+				"head_branch":"h",
+				"head_sha":"h",
+				"url":"u",
+				"before":"b",
+				"after":"a",
+				"status":"s",
+				"conclusion":"c",
+				"app":{
+					"id":1,
+					"node_id":"n",
+					"owner":{
+						"login":"l",
+						"id":1,
+						"node_id":"n",
+						"avatar_url":"a",
+						"url":"u",
+						"events_url":"e",
+						"repos_url":"r"
+					},
+					"name":"n",
+					"description":"d",
+					"external_url":"u",
+					"html_url":"h",
+					"created_at":` + referenceTimeStr + `,
+					"updated_at":` + referenceTimeStr + `
+				},
+				"repository":{
+					"id":1
+				},
+				"pull_requests":[
+					{
+						"id":1,
+						"number":1,
+						"url":"u",
+						"head":{
+							"ref":"r",
+							"sha":"s",
+							"repo":{
+								"id":1,
+								"name":"n",
+								"url":"s"
+							}
+						},
+						"base":{
+							"ref":"r",
+							"sha":"s",
+							"repo":{
+								"id":1,
+								"name":"n",
+								"url":"u"
+							}
+						}
+					}
+				],
+				"head_commit":{
+					"sha":"s"
+				}
+			}
+		]
+	}`
 
 	testJSONMarshal(t, &l, w)
 }
@@ -1211,7 +1649,14 @@ func TestCheckSuitePreferenceOptions_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"auto_trigger_checks":[{"app_id":1,"setting":false}]}`
+	want := `{
+		"auto_trigger_checks":[
+			{
+				"app_id":1,
+				"setting":false
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1228,7 +1673,14 @@ func TestPreferenceList_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"auto_trigger_checks":[{"app_id":1,"setting":false}]}`
+	want := `{
+		"auto_trigger_checks":[
+			{
+				"app_id":1,
+				"setting":false
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1252,7 +1704,21 @@ func TestCheckSuitePreferenceResults_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"preferences":{"auto_trigger_checks":[{"app_id":1,"setting":false}]},"repository":{"id":1,"name":"n","url":"u"}}`
+	want := `{
+		"preferences":{
+			"auto_trigger_checks":[
+				{
+					"app_id":1,
+					"setting":false
+				}
+			]
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"u"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }

@@ -660,7 +660,106 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"id":1,"name":"n","node_id":"nid","head_branch":"hb","head_sha":"hs","run_number":1,"run_attempt":1,"event":"e","status":"s","conclusion":"c","workflow_id":1,"url":"u","html_url":"h","pull_requests":[{"id":1,"number":1,"url":"u","head":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"s"}},"base":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"u"}}}],"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"run_started_at":` + referenceTimeStr + `,"jobs_url":"j","logs_url":"l","check_suite_url":"c","artifacts_url":"a","cancel_url":"c","rerun_url":"r","previous_attempt_url":"p","head_commit":{"message":"m","author":{"name":"n","email":"e","username":"l"},"url":"u","distinct":false,"sha":"s","id":"i","tree_id":"tid","timestamp":` + referenceTimeStr + `,"committer":{"name":"n","email":"e","username":"l"}},"workflow_url":"w","repository":{"id":1,"name":"n","url":"u"},"head_repository":{"id":1,"name":"n","url":"u"},"actor":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"}}`
+	want := `{
+		"id":1,
+		"name":"n",
+		"node_id":"nid",
+		"head_branch":"hb",
+		"head_sha":"hs",
+		"run_number":1,
+		"run_attempt":1,
+		"event":"e",
+		"status":"s",
+		"conclusion":"c",
+		"workflow_id":1,
+		"url":"u",
+		"html_url":"h",
+		"pull_requests":[
+			{
+				"id":1,
+				"number":1,
+				"url":"u",
+				"head":{
+					"ref":"r",
+					"sha":"s",
+					"repo":{
+						"id":1,
+						"name":"n",
+						"url":"s"
+					}
+				},
+				"base":{
+					"ref":"r",
+					"sha":"s",
+					"repo":{
+						"id":1,
+						"name":"n",
+						"url":"u"
+					}
+				}
+			}
+		],
+		"created_at":` + referenceTimeStr + `,
+		"updated_at":` + referenceTimeStr + `,
+		"run_started_at":` + referenceTimeStr + `,
+		"jobs_url":"j",
+		"logs_url":"l",
+		"check_suite_url":"c",
+		"artifacts_url":"a",
+		"cancel_url":"c",
+		"rerun_url":"r",
+		"previous_attempt_url":"p",
+		"head_commit":{
+			"message":"m",
+			"author":{
+				"name":"n",
+				"email":"e",
+				"username":"l"
+			},
+			"url":"u",
+			"distinct":false,
+			"sha":"s",
+			"id":"i",
+			"tree_id":"tid",
+			"timestamp":` + referenceTimeStr + `,
+			"committer":{
+				"name":"n",
+				"email":"e",
+				"username":"l"
+			}
+		},
+		"workflow_url":"w",
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"u"
+		},
+		"head_repository":{
+			"id":1,
+			"name":"n",
+			"url":"u"
+		},
+		"actor":{
+			"login":"l",
+			"id":1,
+			"avatar_url":"a",
+			"gravatar_id":"g",
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"l",
+			"email":"e",
+			"hireable":true,
+			"bio":"b",
+			"twitter_username":"t",
+			"public_repos":1,
+			"followers":1,
+			"following":1,
+			"created_at":` + referenceTimeStr + `,
+			"suspended_at":` + referenceTimeStr + `,
+			"url":"u"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -774,7 +873,111 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"total_count":1,"workflow_runs":[{"id":1,"name":"n","node_id":"nid","head_branch":"hb","head_sha":"hs","run_number":1,"run_attempt":1,"event":"e","status":"s","conclusion":"c","workflow_id":1,"url":"u","html_url":"h","pull_requests":[{"id":1,"number":1,"url":"u","head":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"s"}},"base":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"u"}}}],"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"run_started_at":` + referenceTimeStr + `,"jobs_url":"j","logs_url":"l","check_suite_url":"c","artifacts_url":"a","cancel_url":"c","rerun_url":"r","previous_attempt_url":"p","head_commit":{"message":"m","author":{"name":"n","email":"e","username":"l"},"url":"u","distinct":false,"sha":"s","id":"i","tree_id":"tid","timestamp":` + referenceTimeStr + `,"committer":{"name":"n","email":"e","username":"l"}},"workflow_url":"w","repository":{"id":1,"name":"n","url":"u"},"head_repository":{"id":1,"name":"n","url":"u"},"actor":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"}}]}`
+	want := `{
+		"total_count":1,
+		"workflow_runs":[
+			{
+				"id":1,
+				"name":"n",
+				"node_id":"nid",
+				"head_branch":"hb",
+				"head_sha":"hs",
+				"run_number":1,
+				"run_attempt":1,
+				"event":"e",
+				"status":"s",
+				"conclusion":"c",
+				"workflow_id":1,
+				"url":"u",
+				"html_url":"h",
+				"pull_requests":[
+					{
+						"id":1,
+						"number":1,
+						"url":"u",
+						"head":{
+							"ref":"r",
+							"sha":"s",
+							"repo":{
+								"id":1,
+								"name":"n",
+								"url":"s"
+							}
+						},
+						"base":{
+							"ref":"r",
+							"sha":"s",
+							"repo":{
+								"id":1,
+								"name":"n",
+								"url":"u"
+							}
+						}
+					}
+				],
+				"created_at":` + referenceTimeStr + `,
+				"updated_at":` + referenceTimeStr + `,
+				"run_started_at":` + referenceTimeStr + `,
+				"jobs_url":"j",
+				"logs_url":"l",
+				"check_suite_url":"c",
+				"artifacts_url":"a",
+				"cancel_url":"c",
+				"rerun_url":"r",
+				"previous_attempt_url":"p",
+				"head_commit":{
+					"message":"m",
+					"author":{
+						"name":"n",
+						"email":"e",
+						"username":"l"
+					},
+					"url":"u",
+					"distinct":false,
+					"sha":"s",
+					"id":"i",
+					"tree_id":"tid",
+					"timestamp":` + referenceTimeStr + `,
+					"committer":{
+						"name":"n",
+						"email":"e",
+						"username":"l"
+					}
+				},
+				"workflow_url":"w",
+				"repository":{
+					"id":1,
+					"name":"n",
+					"url":"u"
+				},
+				"head_repository":{
+					"id":1,
+					"name":"n",
+					"url":"u"
+				},
+				"actor":{
+					"login":"l",
+					"id":1,
+					"avatar_url":"a",
+					"gravatar_id":"g",
+					"name":"n",
+					"company":"c",
+					"blog":"b",
+					"location":"l",
+					"email":"e",
+					"hireable":true,
+					"bio":"b",
+					"twitter_username":"t",
+					"public_repos":1,
+					"followers":1,
+					"following":1,
+					"created_at":` + referenceTimeStr + `,
+					"suspended_at":` + referenceTimeStr + `,
+					"url":"u"
+				}
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -810,7 +1013,20 @@ func TestWorkflowRunBillMap_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"MACOS":{"total_ms":1,"jobs":1},"UBUNTU":{"total_ms":1,"jobs":1},"WINDOWS":{"total_ms":1,"jobs":1}}`
+	want := `{
+		"MACOS":{
+			"total_ms":1,
+			"jobs":1
+		},
+		"UBUNTU":{
+			"total_ms":1,
+			"jobs":1
+		},
+		"WINDOWS":{
+			"total_ms":1,
+			"jobs":1
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -836,7 +1052,23 @@ func TestWorkflowRunUsage_Marshal(t *testing.T) {
 		RunDurationMS: Int64(1),
 	}
 
-	want := `{"billable":{"MACOS":{"total_ms":1,"jobs":1},"UBUNTU":{"total_ms":1,"jobs":1},"WINDOWS":{"total_ms":1,"jobs":1}},"run_duration_ms":1}`
+	want := `{
+		"billable":{
+			"MACOS":{
+				"total_ms":1,
+				"jobs":1
+			},
+			"UBUNTU":{
+				"total_ms":1,
+				"jobs":1
+			},
+			"WINDOWS":{
+				"total_ms":1,
+				"jobs":1
+			}
+		},
+		"run_duration_ms":1
+	}`
 
 	testJSONMarshal(t, u, want)
 }

@@ -193,7 +193,39 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		API:                              []string{"a"},
 		Web:                              []string{"w"},
 	}
-	want := `{"hooks":["h"],"git":["g"],"verifiable_password_authentication":true,"pages":["p"],"importer":["i"],"actions":["a"],"dependabot":["d"],"ssh_key_fingerprints":{"a":"f"},"ssh_keys":["k"],"web":["w"],"api":["a"]}`
+	want := `{
+		"hooks":[
+			"h"
+		],
+		"git":[
+			"g"
+		],
+		"verifiable_password_authentication":true,
+		"pages":[
+			"p"
+		],
+		"importer":[
+			"i"
+		],
+		"actions":[
+			"a"
+		],
+		"dependabot":[
+			"d"
+		],
+		"ssh_key_fingerprints":{
+			"a":"f"
+		},
+		"ssh_keys":[
+			"k"
+		],
+		"web":[
+			"w"
+		],
+		"api":[
+			"a"
+		]
+	}`
 
 	testJSONMarshal(t, a, want)
 }
@@ -356,7 +388,11 @@ func TestMarkdownRequest_Marshal(t *testing.T) {
 		Context: String("ctx"),
 	}
 
-	want := `{"text":"txt","mode":"mode","context":"ctx"}`
+	want := `{
+		"text":"txt",
+		"mode":"mode",
+		"context":"ctx"
+	}`
 
 	testJSONMarshal(t, a, want)
 }
@@ -371,7 +407,12 @@ func TestCodeOfConduct_Marshal(t *testing.T) {
 		Body: String("body"),
 	}
 
-	want := `{"name":"name","key":"key","url":"url","body":"body"}`
+	want := `{
+		"name":"name",
+		"key":"key",
+		"url":"url",
+		"body":"body"
+	}`
 
 	testJSONMarshal(t, a, want)
 }
@@ -385,7 +426,20 @@ func TestServiceHook_Marshal(t *testing.T) {
 		SupportedEvents: []string{"se"},
 		Schema:          [][]string{{"g"}},
 	}
-	want := `{"name":"name","events":["e"],"supported_events":["se"],"schema":[["g"]]}`
+	want := `{
+		"name":"name",
+		"events":[
+			"e"
+		],
+		"supported_events":[
+			"se"
+		],
+		"schema":[
+			[
+				"g"
+			]
+		]
+	}`
 
 	testJSONMarshal(t, a, want)
 }

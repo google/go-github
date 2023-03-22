@@ -274,7 +274,14 @@ func TestHookRequest_Marshal(t *testing.T) {
 		RawPayload: (*json.RawMessage)(&jsonMsg),
 	}
 
-	want := `{"headers":{"key":"value"},"payload":{"key":"value"}}`
+	want := `{
+		"headers":{
+			"key":"value"
+		},
+		"payload":{
+			"key":"value"
+		}
+	}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -292,7 +299,14 @@ func TestHookResponse_Marshal(t *testing.T) {
 		RawPayload: (*json.RawMessage)(&jsonMsg),
 	}
 
-	want := `{"headers":{"key":"value"},"payload":{"key":"value"}}`
+	want := `{
+		"headers":{
+			"key":"value"
+		},
+		"payload":{
+			"key":"value"
+		}
+	}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -327,7 +341,35 @@ func TestHookDelivery_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"id":1,"guid":"guid","delivered_at":` + referenceTimeStr + `,"redelivery":true,"duration":1,"status":"guid","status_code":1,"event":"guid","action":"guid","installation_id":1,"repository_id":1,"request":{"headers":{"key":"value"},"payload":{"key":"value"}},"response":{"headers":{"key":"value"},"payload":{"key":"value"}}}`
+	want := `{
+		"id":1,
+		"guid":"guid",
+		"delivered_at":` + referenceTimeStr + `,
+		"redelivery":true,
+		"duration":1,
+		"status":"guid",
+		"status_code":1,
+		"event":"guid",
+		"action":"guid",
+		"installation_id":1,
+		"repository_id":1,
+		"request":{
+			"headers":{
+				"key":"value"
+			},
+			"payload":{
+				"key":"value"
+			}
+		},
+		"response":{
+			"headers":{
+				"key":"value"
+			},
+			"payload":{
+				"key":"value"
+			}
+		}
+	}`
 
 	testJSONMarshal(t, r, want)
 }

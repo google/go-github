@@ -96,7 +96,10 @@ func TestGitignore_Marshal(t *testing.T) {
 		Source: String("source"),
 	}
 
-	want := `{"name":"name","source":"source"}`
+	want := `{
+		"name":"name",
+		"source":"source"
+	}`
 
 	testJSONMarshal(t, u, want)
 }

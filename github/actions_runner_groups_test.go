@@ -547,18 +547,20 @@ func TestRunnerGroup_Marshal(t *testing.T) {
 		SelectedWorkflows:        []string{"1"},
 	}
 
-	want := fmt.Sprint(
-		`{"id":1,`,
-		`"name":"n",`,
-		`"visibility":"v",`,
-		`"default":true,`,
-		`"selected_repositories_url":"s",`,
-		`"runners_url":"r",`,
-		`"inherited":true,`,
-		`"allows_public_repositories":true,`,
-		`"restricted_to_workflows":false,`,
-		`"selected_workflows":["1"]}`,
-	)
+	want := `{
+		"id":1,
+		"name":"n",
+		"visibility":"v",
+		"default":true,
+		"selected_repositories_url":"s",
+		"runners_url":"r",
+		"inherited":true,
+		"allows_public_repositories":true,
+		"restricted_to_workflows":false,
+		"selected_workflows":[
+			"1"
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -584,20 +586,25 @@ func TestRunnerGroups_Marshal(t *testing.T) {
 		},
 	}
 
-	want := fmt.Sprint(
-		`{"total_count":1,`,
-		`"runner_groups":[`,
-		`{"id":1,`,
-		`"name":"n",`,
-		`"visibility":"v",`,
-		`"default":true,`,
-		`"selected_repositories_url":"s",`,
-		`"runners_url":"r",`,
-		`"inherited":true,`,
-		`"allows_public_repositories":true,`,
-		`"restricted_to_workflows":false,`,
-		`"selected_workflows":["1"]}]}`,
-	)
+	want := `{
+		"total_count":1,
+		"runner_groups":[
+			{
+				"id":1,
+				"name":"n",
+				"visibility":"v",
+				"default":true,
+				"selected_repositories_url":"s",
+				"runners_url":"r",
+				"inherited":true,
+				"allows_public_repositories":true,
+				"restricted_to_workflows":false,
+				"selected_workflows":[
+					"1"
+				]
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -615,15 +622,22 @@ func TestCreateRunnerGroupRequest_Marshal(t *testing.T) {
 		SelectedWorkflows:        []string{"a", "b"},
 	}
 
-	want := fmt.Sprint(
-		`{"name":"n",`,
-		`"visibility":"v",`,
-		`"selected_repository_ids":[1],`,
-		`"runners":[1],`,
-		`"allows_public_repositories":true,`,
-		`"restricted_to_workflows":true,`,
-		`"selected_workflows":["a","b"]}`,
-	)
+	want := `{
+		"name":"n",
+		"visibility":"v",
+		"selected_repository_ids":[
+			1
+		],
+		"runners":[
+			1
+		],
+		"allows_public_repositories":true,
+		"restricted_to_workflows":true,
+		"selected_workflows":[
+			"a",
+			"b"
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }

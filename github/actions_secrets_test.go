@@ -825,7 +825,11 @@ func TestPublicKey_Marshal(t *testing.T) {
 }
 
 func TestSecret_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Secret{}, `{"name":"","created_at":"0001-01-01T00:00:00Z","updated_at":"0001-01-01T00:00:00Z"}`)
+	testJSONMarshal(t, &Secret{}, `{
+		"name":"",
+		"created_at":"0001-01-01T00:00:00Z",
+		"updated_at":"0001-01-01T00:00:00Z"
+	}`)
 
 	u := &Secret{
 		Name:                    "n",
@@ -835,7 +839,13 @@ func TestSecret_Marshal(t *testing.T) {
 		SelectedRepositoriesURL: "s",
 	}
 
-	want := `{"name":"n","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"visibility":"v","selected_repositories_url":"s"}`
+	want := `{
+		"name":"n",
+		"created_at":` + referenceTimeStr + `,
+		"updated_at":` + referenceTimeStr + `,
+		"visibility":"v",
+		"selected_repositories_url":"s"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -855,7 +865,18 @@ func TestSecrets_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"total_count":1,"secrets":[{"name":"n","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"visibility":"v","selected_repositories_url":"s"}]}`
+	want := `{
+		"total_count":1,
+		"secrets":[
+			{
+				"name":"n",
+				"created_at":` + referenceTimeStr + `,
+				"updated_at":` + referenceTimeStr + `,
+				"visibility":"v",
+				"selected_repositories_url":"s"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -871,7 +892,14 @@ func TestEncryptedSecret_Marshal(t *testing.T) {
 		SelectedRepositoryIDs: []int64{1},
 	}
 
-	want := `{"key_id":"kid","encrypted_value":"e","visibility":"v","selected_repository_ids":[1]}`
+	want := `{
+		"key_id":"kid",
+		"encrypted_value":"e",
+		"visibility":"v",
+		"selected_repository_ids":[
+			1
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -890,7 +918,16 @@ func TestSelectedReposList_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"total_count":1,"repositories":[{"id":1,"name":"n","url":"u"}]}`
+	want := `{
+		"total_count":1,
+		"repositories":[
+			{
+				"id":1,
+				"name":"n",
+				"url":"u"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }

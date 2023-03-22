@@ -298,7 +298,14 @@ func TestStarredRepository_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"starred_at":` + referenceTimeStr + `,"repo":{"id":1,"name":"n","url":"u"}}`
+	want := `{
+		"starred_at":` + referenceTimeStr + `,
+		"repo":{
+			"id":1,
+			"name":"n",
+			"url":"u"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -330,7 +337,29 @@ func TestStargazer_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"starred_at":` + referenceTimeStr + `,"user":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"}}`
+	want := `{
+		"starred_at":` + referenceTimeStr + `,
+		"user":{
+			"login":"l",
+			"id":1,
+			"avatar_url":"a",
+			"gravatar_id":"g",
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"l",
+			"email":"e",
+			"hireable":true,
+			"bio":"b",
+			"twitter_username":"t",
+			"public_repos":1,
+			"followers":1,
+			"following":1,
+			"created_at":` + referenceTimeStr + `,
+			"suspended_at":` + referenceTimeStr + `,
+			"url":"u"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }

@@ -101,7 +101,10 @@ func TestCreateUserProjectOptions_Marshal(t *testing.T) {
 		Body: String("SomeProjectBody"),
 	}
 
-	want := `{"name":"SomeProject","body":"SomeProjectBody"}`
+	want := `{
+		"name":"SomeProject",
+		"body":"SomeProjectBody"
+	}`
 
 	testJSONMarshal(t, c, want)
 }

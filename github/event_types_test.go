@@ -21,7 +21,11 @@ func TestEditChange_Marshal_TitleChange(t *testing.T) {
 		Base: nil,
 	}
 
-	want := `{"title":{"from":"TitleFrom"}}`
+	want := `{
+		"title":{
+			"from":"TitleFrom"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -37,7 +41,11 @@ func TestEditChange_Marshal_BodyChange(t *testing.T) {
 		Base: nil,
 	}
 
-	want := `{"body":{"from":"BodyFrom"}}`
+	want := `{
+		"body":{
+			"from":"BodyFrom"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -60,7 +68,16 @@ func TestEditChange_Marshal_BaseChange(t *testing.T) {
 		Base:  &Base,
 	}
 
-	want := `{"base":{"ref":{"from":"BaseRefFrom"},"sha":{"from":"BaseSHAFrom"}}}`
+	want := `{
+		"base":{
+			"ref":{
+				"from":"BaseRefFrom"
+			},
+			"sha":{
+				"from":"BaseSHAFrom"
+			}
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -76,7 +93,13 @@ func TestEditChange_Marshal_Repo(t *testing.T) {
 		},
 	}
 
-	want := `{"repository":{"name":{"from":"old-repo-name"}}}`
+	want := `{
+		"repository":{
+			"name":{
+				"from":"old-repo-name"
+			}
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -89,7 +112,11 @@ func TestProjectChange_Marshal_NameChange(t *testing.T) {
 		Body: nil,
 	}
 
-	want := `{"name":{"from":"NameFrom"}}`
+	want := `{
+		"name":{
+			"from":"NameFrom"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -102,7 +129,11 @@ func TestProjectChange_Marshal_BodyChange(t *testing.T) {
 		Body: &ProjectBody{From: String("BodyFrom")},
 	}
 
-	want := `{"body":{"from":"BodyFrom"}}`
+	want := `{
+		"body":{
+			"from":"BodyFrom"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -114,7 +145,11 @@ func TestProjectCardChange_Marshal_NoteChange(t *testing.T) {
 		Note: &ProjectCardNote{From: String("NoteFrom")},
 	}
 
-	want := `{"note":{"from":"NoteFrom"}}`
+	want := `{
+		"note":{
+			"from":"NoteFrom"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -126,7 +161,11 @@ func TestProjectColumnChange_Marshal_NameChange(t *testing.T) {
 		Name: &ProjectColumnName{From: String("NameFrom")},
 	}
 
-	want := `{"name":{"from":"NameFrom"}}`
+	want := `{
+		"name":{
+			"from":"NameFrom"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -305,7 +344,180 @@ func TestTeamAddEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"team":{"id":1,"node_id":"n","name":"n","description":"d","url":"u","slug":"s","permission":"p","privacy":"p","members_count":1,"repos_count":1,"organization":{"login":"l","id":1,"node_id":"n","avatar_url":"a","html_url":"h","name":"n","company":"c","blog":"b","location":"l","email":"e"},"members_url":"m","repositories_url":"r","parent":{"id":1,"node_id":"n","name":"n","description":"d","url":"u","slug":"s","permission":"p","privacy":"p","members_count":1,"repos_count":1},"ldap_dn":"l"},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"team":{
+			"id":1,
+			"node_id":"n",
+			"name":"n",
+			"description":"d",
+			"url":"u",
+			"slug":"s",
+			"permission":"p",
+			"privacy":"p",
+			"members_count":1,
+			"repos_count":1,
+			"organization":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"html_url":"h",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e"
+			},
+			"members_url":"m",
+			"repositories_url":"r",
+			"parent":{
+				"id":1,
+				"node_id":"n",
+				"name":"n",
+				"description":"d",
+				"url":"u",
+				"slug":"s",
+				"permission":"p",
+				"privacy":"p",
+				"members_count":1,
+				"repos_count":1
+			},
+			"ldap_dn":"l"
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -354,7 +566,46 @@ func TestStarEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","starred_at":` + referenceTimeStr + `,"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}}`
+	want := `{
+		"action":"a",
+		"starred_at":` + referenceTimeStr + `,
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -554,7 +805,201 @@ func TestTeamEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","team":{"id":1,"node_id":"n","name":"n","description":"d","url":"u","slug":"s","permission":"p","privacy":"p","members_count":1,"repos_count":1,"organization":{"login":"l","id":1,"node_id":"n","avatar_url":"a","html_url":"h","name":"n","company":"c","blog":"b","location":"l","email":"e"},"members_url":"m","repositories_url":"r","parent":{"id":1,"node_id":"n","name":"n","description":"d","url":"u","slug":"s","permission":"p","privacy":"p","members_count":1,"repos_count":1},"ldap_dn":"l"},"changes":{"description":{"from":"from"},"name":{"from":"from"},"privacy":{"from":"from"},"repository":{"permissions":{"from":{"admin":true,"pull":true,"push":true}}}},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"team":{
+			"id":1,
+			"node_id":"n",
+			"name":"n",
+			"description":"d",
+			"url":"u",
+			"slug":"s",
+			"permission":"p",
+			"privacy":"p",
+			"members_count":1,
+			"repos_count":1,
+			"organization":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"html_url":"h",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e"
+			},
+			"members_url":"m",
+			"repositories_url":"r",
+			"parent":{
+				"id":1,
+				"node_id":"n",
+				"name":"n",
+				"description":"d",
+				"url":"u",
+				"slug":"s",
+				"permission":"p",
+				"privacy":"p",
+				"members_count":1,
+				"repos_count":1
+			},
+			"ldap_dn":"l"
+		},
+		"changes":{
+			"description":{
+				"from":"from"
+			},
+			"name":{
+				"from":"from"
+			},
+			"privacy":{
+				"from":"from"
+			},
+			"repository":{
+				"permissions":{
+					"from":{
+						"admin":true,
+						"pull":true,
+						"push":true
+					}
+				}
+			}
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -683,7 +1128,130 @@ func TestInstallationRepositoriesEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","repositories_added":[{"id":1,"name":"n","url":"s"}],"repositories_removed":[{"id":1,"name":"n","url":"s"}],"repository_selection":"rs","sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"repositories_added":[
+			{
+				"id":1,
+				"name":"n",
+				"url":"s"
+			}
+		],
+		"repositories_removed":[
+			{
+				"id":1,
+				"name":"n",
+				"url":"s"
+			}
+		],
+		"repository_selection":"rs",
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -724,7 +1292,14 @@ func TestEditBase_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"ref":{"from":"EditRefFrom"},"sha":{"from":"EditSHAFrom"}}`
+	want := `{
+		"ref":{
+			"from":"EditRefFrom"
+		},
+		"sha":{
+			"from":"EditSHAFrom"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -850,7 +1425,15 @@ func TestTeamRepository_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"permissions":{"from":{"admin":true,"pull":true,"push":true}}}`
+	want := `{
+		"permissions":{
+			"from":{
+				"admin":true,
+				"pull":true,
+				"push":true
+			}
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -866,7 +1449,13 @@ func TestTeamPermissions_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"from":{"admin":true,"pull":true,"push":true}}`
+	want := `{
+		"from":{
+			"admin":true,
+			"pull":true,
+			"push":true
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -880,7 +1469,11 @@ func TestTeamPermissionsFrom_Marshal(t *testing.T) {
 		Push:  Bool(true),
 	}
 
-	want := `{"admin":true,"pull":true,"push":true}`
+	want := `{
+		"admin":true,
+		"pull":true,
+		"push":true
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -908,7 +1501,25 @@ func TestRepositoryVulnerabilityAlert_Marshal(t *testing.T) {
 		DismissedAt:   &Timestamp{referenceTime},
 	}
 
-	want := `{"id":1,"affected_range":"ar","affected_package_name":"apn","external_reference":"er","external_identifier":"ei","fixed_in":"fi","dismisser":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"dismiss_reason":"dr","dismissed_at":` + referenceTimeStr + `}`
+	want := `{
+		"id":1,
+		"affected_range":"ar",
+		"affected_package_name":"apn",
+		"external_reference":"er",
+		"external_identifier":"ei",
+		"fixed_in":"fi",
+		"dismisser":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"dismiss_reason":"dr",
+		"dismissed_at":` + referenceTimeStr + `
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -925,7 +1536,14 @@ func TestPage_Marshal(t *testing.T) {
 		HTMLURL:  String("h"),
 	}
 
-	want := `{"page_name":"p","title":"t","summary":"s","action":"a","sha":"s","html_url":"h"}`
+	want := `{
+		"page_name":"p",
+		"title":"t",
+		"summary":"s",
+		"action":"a",
+		"sha":"s",
+		"html_url":"h"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -954,7 +1572,26 @@ func TestTeamChange_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"description":{"from":"DescriptionFrom"},"name":{"from":"NameFrom"},"privacy":{"from":"PrivacyFrom"},"repository":{"permissions":{"from":{"admin":false,"pull":false,"push":false}}}}`
+	want := `{
+		"description":{
+			"from":"DescriptionFrom"
+		},
+		"name":{
+			"from":"NameFrom"
+		},
+		"privacy":{
+			"from":"PrivacyFrom"
+		},
+		"repository":{
+			"permissions":{
+				"from":{
+					"admin":false,
+					"pull":false,
+					"push":false
+				}
+			}
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1113,7 +1750,164 @@ func TestIssueCommentEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","issue":{"id":1},"comment":{"id":1},"changes":{"title":{"from":"TitleFrom"},"body":{"from":"BodyFrom"},"base":{"ref":{"from":"BaseRefFrom"},"sha":{"from":"BaseSHAFrom"}}},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true}}`
+	want := `{
+		"action":"a",
+		"issue":{
+			"id":1
+		},
+		"comment":{
+			"id":1
+		},
+		"changes":{
+			"title":{
+				"from":"TitleFrom"
+			},
+			"body":{
+				"from":"BodyFrom"
+			},
+			"base":{
+				"ref":{
+					"from":"BaseRefFrom"
+				},
+				"sha":{
+					"from":"BaseSHAFrom"
+				}
+			}
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1259,7 +2053,151 @@ func TestIssuesEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","issue":{"id":1},"assignee":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"label":{"id":1},"changes":{"title":{"from":"TitleFrom"},"body":{"from":"BodyFrom"},"base":{"ref":{"from":"BaseRefFrom"},"sha":{"from":"BaseSHAFrom"}}},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"issue":{
+			"id":1
+		},
+		"assignee":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"label":{
+			"id":1
+		},
+		"changes":{
+			"title":{
+				"from":"TitleFrom"
+			},
+			"body":{
+				"from":"BodyFrom"
+			},
+			"base":{
+				"ref":{
+					"from":"BaseRefFrom"
+				},
+				"sha":{
+					"from":"BaseSHAFrom"
+				}
+			}
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1408,7 +2346,152 @@ func TestLabelEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","label":{"id":1},"changes":{"title":{"from":"TitleFrom"},"body":{"from":"BodyFrom"},"base":{"ref":{"from":"BaseRefFrom"},"sha":{"from":"BaseSHAFrom"}}},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"label":{
+			"id":1
+		},
+		"changes":{
+			"title":{
+				"from":"TitleFrom"
+			},
+			"body":{
+				"from":"BodyFrom"
+			},
+			"base":{
+				"ref":{
+					"from":"BaseRefFrom"
+				},
+				"sha":{
+					"from":"BaseSHAFrom"
+				}
+			}
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1566,7 +2649,161 @@ func TestMilestoneEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","milestone":{"id":1},"changes":{"title":{"from":"TitleFrom"},"body":{"from":"BodyFrom"},"base":{"ref":{"from":"BaseRefFrom"},"sha":{"from":"BaseSHAFrom"}}},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"milestone":{
+			"id":1
+		},
+		"changes":{
+			"title":{
+				"from":"TitleFrom"
+			},
+			"body":{
+				"from":"BodyFrom"
+			},
+			"base":{
+				"ref":{
+					"from":"BaseRefFrom"
+				},
+				"sha":{
+					"from":"BaseSHAFrom"
+				}
+			}
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1684,7 +2921,119 @@ func TestPublicEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1827,7 +3176,148 @@ func TestPullRequestReviewEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","review":{"id":1},"pull_request":{"id":1},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true}}`
+	want := `{
+		"action":"a",
+		"review":{
+			"id":1
+		},
+		"pull_request":{
+			"id":1
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1988,7 +3478,168 @@ func TestPushEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"push_id":1,"head":"h","ref":"ref","size":1,"commits":[{"id":"id"}],"before":"b","distinct_size":1,"after":"a","created":true,"deleted":true,"forced":true,"base_ref":"a","compare":"a","repository":{"id":1},"head_commit":{"id":"id"},"pusher":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true}}`
+	want := `{
+		"push_id":1,
+		"head":"h",
+		"ref":"ref",
+		"size":1,
+		"commits":[
+			{
+				"id":"id"
+			}
+		],
+		"before":"b",
+		"distinct_size":1,
+		"after":"a",
+		"created":true,
+		"deleted":true,
+		"forced":true,
+		"base_ref":"a",
+		"compare":"a",
+		"repository":{
+			"id":1
+		},
+		"head_commit":{
+			"id":"id"
+		},
+		"pusher":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -2118,7 +3769,135 @@ func TestStatusEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"sha":"sha","state":"s","description":"d","target_url":"turl","branches":[{"name":"n","commit":{"node_id":"nid"},"protected":false}],"id":1,"name":"n","context":"c","commit":{"node_id":"nid"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"sha":"sha",
+		"state":"s",
+		"description":"d",
+		"target_url":"turl",
+		"branches":[
+			{
+				"name":"n",
+				"commit":{
+					"node_id":"nid"
+				},
+				"protected":false
+			}
+		],
+		"id":1,
+		"name":"n",
+		"context":"c",
+		"commit":{
+			"node_id":"nid"
+		},
+		"created_at":` + referenceTimeStr + `,
+		"updated_at":` + referenceTimeStr + `,
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -2279,7 +4058,166 @@ func TestMarketplacePurchaseEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","effective_date":` + referenceTimeStr + `,"marketplace_purchase":{"billing_cycle":"bc","next_billing_date":` + referenceTimeStr + `,"unit_count":1,"plan":{"url":"u","accounts_url":"au","id":1,"number":1,"name":"n","description":"d","monthly_price_in_cents":1,"yearly_price_in_cents":1,"price_model":"pm","unit_name":"un","bullets":["b"],"state":"s","has_free_trial":false},"on_free_trial":false,"free_trial_ends_on":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `},"previous_marketplace_purchase":{"billing_cycle":"bc","next_billing_date":` + referenceTimeStr + `,"unit_count":1,"plan":{"url":"u","accounts_url":"au","id":1,"number":1,"name":"n","description":"d","monthly_price_in_cents":1,"yearly_price_in_cents":1,"price_model":"pm","unit_name":"un","bullets":["b"],"state":"s","has_free_trial":false},"on_free_trial":false,"free_trial_ends_on":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"effective_date":` + referenceTimeStr + `,
+		"marketplace_purchase":{
+			"billing_cycle":"bc",
+			"next_billing_date":` + referenceTimeStr + `,
+			"unit_count":1,
+			"plan":{
+				"url":"u",
+				"accounts_url":"au",
+				"id":1,
+				"number":1,
+				"name":"n",
+				"description":"d",
+				"monthly_price_in_cents":1,
+				"yearly_price_in_cents":1,
+				"price_model":"pm",
+				"unit_name":"un",
+				"bullets":[
+					"b"
+				],
+				"state":"s",
+				"has_free_trial":false
+			},
+			"on_free_trial":false,
+			"free_trial_ends_on":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `
+		},
+		"previous_marketplace_purchase":{
+			"billing_cycle":"bc",
+			"next_billing_date":` + referenceTimeStr + `,
+			"unit_count":1,
+			"plan":{
+				"url":"u",
+				"accounts_url":"au",
+				"id":1,
+				"number":1,
+				"name":"n",
+				"description":"d",
+				"monthly_price_in_cents":1,
+				"yearly_price_in_cents":1,
+				"price_model":"pm",
+				"unit_name":"un",
+				"bullets":[
+					"b"
+				],
+				"state":"s",
+				"has_free_trial":false
+			},
+			"on_free_trial":false,
+			"free_trial_ends_on":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -2453,7 +4391,177 @@ func TestOrganizationEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","invitation":{"id":1},"membership":{"url":"url","state":"s","role":"r","organization_url":"ou","organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"user":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"invitation":{
+			"id":1
+		},
+		"membership":{
+			"url":"url",
+			"state":"s",
+			"role":"r",
+			"organization_url":"ou",
+			"organization":{
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"loc",
+				"email":"e",
+				"twitter_username":"tu",
+				"description":"d",
+				"billing_email":"be",
+				"is_verified":true,
+				"has_organization_projects":true,
+				"has_repository_projects":true,
+				"default_repository_permission":"drp",
+				"members_can_create_repositories":true,
+				"members_can_create_public_repositories":false,
+				"members_can_create_private_repositories":true,
+				"members_can_create_internal_repositories":true,
+				"members_allowed_repository_creation_type":"marct",
+				"members_can_create_pages":true,
+				"members_can_create_public_pages":false,
+				"members_can_create_private_pages":true
+			},
+			"user":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			}
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -2573,7 +4681,123 @@ func TestPageBuildEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"build":{"url":"url"},"id":1,"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"build":{
+			"url":"url"
+		},
+		"id":1,
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -2725,7 +4949,153 @@ func TestCommitCommentEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"comment":{"html_url":"hurl","url":"url","id":1,"node_id":"nid","commit_id":"cid","user":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"reactions":{"total_count":1,"+1":1,"-1":1,"laugh":1,"confused":1,"heart":1,"hooray":1,"rocket":1,"eyes":1,"url":"url"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"body":"b","path":"path","position":1},"action":"a","repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"comment":{
+			"html_url":"hurl",
+			"url":"url",
+			"id":1,
+			"node_id":"nid",
+			"commit_id":"cid",
+			"user":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"reactions":{
+				"total_count":1,
+				"+1":1,
+				"-1":1,
+				"laugh":1,
+				"confused":1,
+				"heart":1,
+				"hooray":1,
+				"rocket":1,
+				"eyes":1,
+				"url":"url"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"body":"b",
+			"path":"path",
+			"position":1
+		},
+		"action":"a",
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -2872,7 +5242,145 @@ func TestDeploymentEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"deployment":{"url":"url","id":1,"sha":"sha","ref":"ref","task":"t","payload":{"key":"value"},"environment":"e","description":"d","creator":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"statuses_url":"surl","repository_url":"rurl","node_id":"nid"},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"deployment":{
+			"url":"url",
+			"id":1,
+			"sha":"sha",
+			"ref":"ref",
+			"task":"t",
+			"payload":{
+				"key":"value"
+			},
+			"environment":"e",
+			"description":"d",
+			"creator":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"statuses_url":"surl",
+			"repository_url":"rurl",
+			"node_id":"nid"
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -3043,7 +5551,169 @@ func TestDeploymentStatusEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"deployment":{"url":"url","id":1,"sha":"sha","ref":"ref","task":"t","payload":{"key":"value"},"environment":"e","description":"d","creator":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"statuses_url":"surl","repository_url":"rurl","node_id":"nid"},"deployment_status":{"id":1,"state":"s","creator":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"description":"s","environment":"s","node_id":"s","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"target_url":"s","deployment_url":"s","repository_url":"s","environment_url":"s","log_url":"s","url":"s"},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"deployment":{
+			"url":"url",
+			"id":1,
+			"sha":"sha",
+			"ref":"ref",
+			"task":"t",
+			"payload":{
+				"key":"value"
+			},
+			"environment":"e",
+			"description":"d",
+			"creator":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"statuses_url":"surl",
+			"repository_url":"rurl",
+			"node_id":"nid"
+		},
+		"deployment_status":{
+			"id":1,
+			"state":"s",
+			"creator":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"description":"s",
+			"environment":"s",
+			"node_id":"s",
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"target_url":"s",
+			"deployment_url":"s",
+			"repository_url":"s",
+			"environment_url":"s",
+			"log_url":"s",
+			"url":"s"
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -3253,7 +5923,211 @@ func TestDiscussionCommentEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"discussion":{"repository_url":"rurl","category":{"id":1,"node_id":"nid","repository_id":1,"emoji":"emoji","name":"name","description":"description","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"slug":"slug","is_answerable":false},"html_url":"hurl","id":1,"node_id":"nurl","number":1,"title":"title","user":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"state":"st","locked":false,"comments":1,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"author_association":"aa","body":"bo"},"comment":{"author_association":"aa","body":"bo","child_comment_count":1,"created_at":` + referenceTimeStr + `,"discussion_id":1,"html_url":"hurl","id":1,"node_id":"nid","parent_id":1,"reactions":{"total_count":1,"+1":1,"-1":1,"laugh":1,"confused":1,"heart":1,"hooray":1,"rocket":1,"eyes":1,"url":"url"},"repository_url":"rurl","updated_at":` + referenceTimeStr + `,"user":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"discussion":{
+			"repository_url":"rurl",
+			"category":{
+				"id":1,
+				"node_id":"nid",
+				"repository_id":1,
+				"emoji":"emoji",
+				"name":"name",
+				"description":"description",
+				"created_at":` + referenceTimeStr + `,
+				"updated_at":` + referenceTimeStr + `,
+				"slug":"slug",
+				"is_answerable":false
+			},
+			"html_url":"hurl",
+			"id":1,
+			"node_id":"nurl",
+			"number":1,
+			"title":"title",
+			"user":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"state":"st",
+			"locked":false,
+			"comments":1,
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"author_association":"aa",
+			"body":"bo"
+		},
+		"comment":{
+			"author_association":"aa",
+			"body":"bo",
+			"child_comment_count":1,
+			"created_at":` + referenceTimeStr + `,
+			"discussion_id":1,
+			"html_url":"hurl",
+			"id":1,
+			"node_id":"nid",
+			"parent_id":1,
+			"reactions":{
+				"total_count":1,
+				"+1":1,
+				"-1":1,
+				"laugh":1,
+				"confused":1,
+				"heart":1,
+				"hooray":1,
+				"rocket":1,
+				"eyes":1,
+				"url":"url"
+			},
+			"repository_url":"rurl",
+			"updated_at":` + referenceTimeStr + `,
+			"user":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			}
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -3429,7 +6303,177 @@ func TestDiscussionEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"discussion":{"repository_url":"rurl","category":{"id":1,"node_id":"nid","repository_id":1,"emoji":"emoji","name":"name","description":"description","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"slug":"slug","is_answerable":false},"html_url":"hurl","id":1,"node_id":"nurl","number":1,"title":"title","user":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"state":"st","locked":false,"comments":1,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"author_association":"aa","body":"bo"},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"discussion":{
+			"repository_url":"rurl",
+			"category":{
+				"id":1,
+				"node_id":"nid",
+				"repository_id":1,
+				"emoji":"emoji",
+				"name":"name",
+				"description":"description",
+				"created_at":` + referenceTimeStr + `,
+				"updated_at":` + referenceTimeStr + `,
+				"slug":"slug",
+				"is_answerable":false
+			},
+			"html_url":"hurl",
+			"id":1,
+			"node_id":"nurl",
+			"number":1,
+			"title":"title",
+			"user":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"state":"st",
+			"locked":false,
+			"comments":1,
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"author_association":"aa",
+			"body":"bo"
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -3496,7 +6540,68 @@ func TestPackageEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","package":{"id":1,"name":"n","package_type":"pt","html_url":"hurl","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"owner":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"package_version":{"id":1},"registry":{"name":"n"}},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}}`
+	want := `{
+		"action":"a",
+		"package":{
+			"id":1,
+			"name":"n",
+			"package_type":"pt",
+			"html_url":"hurl",
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"owner":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"package_version":{
+				"id":1
+			},
+			"registry":{
+				"name":"n"
+			}
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -3619,7 +6724,127 @@ func TestPingEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"zen":"z","hook_id":1,"hook":{"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"url":"url","id":1,"type":"t","name":"n","test_url":"tu","ping_url":"pu","last_response":{"key":"value"},"config":{"key":"value"},"events":["a"],"active":true},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"zen":"z",
+		"hook_id":1,
+		"hook":{
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"url":"url",
+			"id":1,
+			"type":"t",
+			"name":"n",
+			"test_url":"tu",
+			"ping_url":"pu",
+			"last_response":{
+				"key":"value"
+			},
+			"config":{
+				"key":"value"
+			},
+			"events":[
+				"a"
+			],
+			"active":true
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -3768,7 +6993,146 @@ func TestRepositoryDispatchEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","branch":"b","client_payload":{"key":"value"},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"branch":"b",
+		"client_payload":{
+			"key":"value"
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -3816,7 +7180,45 @@ func TestRepositoryImportEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"status":"success","repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}}`
+	want := `{
+		"status":"success",
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -3957,7 +7359,142 @@ func TestRepositoryEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -4092,7 +7629,142 @@ func TestReleaseEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","release":{"name":"n","discussion_category_name":"dcn","id":2,"created_at":` + referenceTimeStr + `,"published_at":` + referenceTimeStr + `,"url":"url","html_url":"htmlurl","assets_url":"assetsurl","assets":[{"id":1}],"upload_url":"uploadurl","zipball_url":"zipballurl","tarball_url":"tarballurl","author":{"name":"octocat"},"node_id":"nid"},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"release":{
+			"name":"n",
+			"discussion_category_name":"dcn",
+			"id":2,
+			"created_at":` + referenceTimeStr + `,
+			"published_at":` + referenceTimeStr + `,
+			"url":"url",
+			"html_url":"htmlurl",
+			"assets_url":"assetsurl",
+			"assets":[
+				{
+					"id":1
+				}
+			],
+			"upload_url":"uploadurl",
+			"zipball_url":"zipballurl",
+			"tarball_url":"tarballurl",
+			"author":{
+				"name":"octocat"
+			},
+			"node_id":"nid"
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -4216,7 +7888,125 @@ func TestContentReferenceEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","content_reference":{"id":1,"node_id":"nid","reference":"ref"},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"content_reference":{
+			"id":1,
+			"node_id":"nid",
+			"reference":"ref"
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -4344,7 +8134,129 @@ func TestMemberEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","member":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"member":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -4529,7 +8441,186 @@ func TestMembershipEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","scope":"s","member":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"team":{"id":1,"node_id":"n","name":"n","description":"d","url":"u","slug":"s","permission":"p","privacy":"p","members_count":1,"repos_count":1,"organization":{"login":"l","id":1,"node_id":"n","avatar_url":"a","html_url":"h","name":"n","company":"c","blog":"b","location":"l","email":"e"},"members_url":"m","repositories_url":"r","parent":{"id":1,"node_id":"n","name":"n","description":"d","url":"u","slug":"s","permission":"p","privacy":"p","members_count":1,"repos_count":1},"ldap_dn":"l"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"scope":"s",
+		"member":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"team":{
+			"id":1,
+			"node_id":"n",
+			"name":"n",
+			"description":"d",
+			"url":"u",
+			"slug":"s",
+			"permission":"p",
+			"privacy":"p",
+			"members_count":1,
+			"repos_count":1,
+			"organization":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"html_url":"h",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e"
+			},
+			"members_url":"m",
+			"repositories_url":"r",
+			"parent":{
+				"id":1,
+				"node_id":"n",
+				"name":"n",
+				"description":"d",
+				"url":"u",
+				"slug":"s",
+				"permission":"p",
+				"privacy":"p",
+				"members_count":1,
+				"repos_count":1
+			},
+			"ldap_dn":"l"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -4677,7 +8768,151 @@ func TestMergeGroupEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","merge_group":{"head_sha":"hs","head_ref":"hr","base_sha":"bs","base_ref":"br","head_commit":{"node_id":"nid"}},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}}`
+	want := `{
+		"action":"a",
+		"merge_group":{
+			"head_sha":"hs",
+			"head_ref":"hr",
+			"base_sha":"bs",
+			"base_ref":"br",
+			"head_commit":{
+				"node_id":"nid"
+			}
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -4822,7 +9057,146 @@ func TestOrgBlockEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","blocked_user":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"blocked_user":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -4950,7 +9324,129 @@ func TestGollumEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"pages":[{"page_name":"pn","title":"t","summary":"s","action":"a","sha":"sha","html_url":"hu"}],"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"pages":[
+			{
+				"page_name":"pn",
+				"title":"t",
+				"summary":"s",
+				"action":"a",
+				"sha":"sha",
+				"html_url":"hu"
+			}
+		],
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -5090,7 +9586,137 @@ func TestWorkflowRunEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","workflow":{"id":1,"node_id":"nid","name":"n","path":"p","state":"s","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"url":"u","html_url":"h","badge_url":"b"},"workflow_run":{"id":1,"name":"n","node_id":"nid","head_branch":"hb","head_sha":"hs","run_number":1,"run_attempt":1,"event":"e","status":"s","conclusion":"c","workflow_id":1,"url":"u","html_url":"h","pull_requests":[{"id":1,"number":1,"url":"u","head":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"s"}},"base":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"u"}}}],"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"run_started_at":` + referenceTimeStr + `,"jobs_url":"j","logs_url":"l","check_suite_url":"c","artifacts_url":"a","cancel_url":"c","rerun_url":"r","previous_attempt_url":"p","head_commit":{"message":"m","author":{"name":"n","email":"e","username":"l"},"url":"u","distinct":false,"sha":"s","id":"i","tree_id":"tid","timestamp":` + referenceTimeStr + `,"committer":{"name":"n","email":"e","username":"l"}},"workflow_url":"w","repository":{"id":1,"name":"n","url":"u"},"head_repository":{"id":1,"name":"n","url":"u"}},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}}`
+	want := `{
+		"action":"a",
+		"workflow":{
+			"id":1,
+			"node_id":"nid",
+			"name":"n",
+			"path":"p",
+			"state":"s",
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"url":"u",
+			"html_url":"h",
+			"badge_url":"b"
+		},
+		"workflow_run":{
+			"id":1,
+			"name":"n",
+			"node_id":"nid",
+			"head_branch":"hb",
+			"head_sha":"hs",
+			"run_number":1,
+			"run_attempt":1,
+			"event":"e",
+			"status":"s",
+			"conclusion":"c",
+			"workflow_id":1,
+			"url":"u",
+			"html_url":"h",
+			"pull_requests":[
+				{
+					"id":1,
+					"number":1,
+					"url":"u",
+					"head":{
+						"ref":"r",
+						"sha":"s",
+						"repo":{
+							"id":1,
+							"name":"n",
+							"url":"s"
+						}
+					},
+					"base":{
+						"ref":"r",
+						"sha":"s",
+						"repo":{
+							"id":1,
+							"name":"n",
+							"url":"u"
+						}
+					}
+				}
+			],
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"run_started_at":` + referenceTimeStr + `,
+			"jobs_url":"j",
+			"logs_url":"l",
+			"check_suite_url":"c",
+			"artifacts_url":"a",
+			"cancel_url":"c",
+			"rerun_url":"r",
+			"previous_attempt_url":"p",
+			"head_commit":{
+				"message":"m",
+				"author":{
+					"name":"n",
+					"email":"e",
+					"username":"l"
+				},
+				"url":"u",
+				"distinct":false,
+				"sha":"s",
+				"id":"i",
+				"tree_id":"tid",
+				"timestamp":` + referenceTimeStr + `,
+				"committer":{
+					"name":"n",
+					"email":"e",
+					"username":"l"
+				}
+			},
+			"workflow_url":"w",
+			"repository":{
+				"id":1,
+				"name":"n",
+				"url":"u"
+			},
+			"head_repository":{
+				"id":1,
+				"name":"n",
+				"url":"u"
+			}
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -5144,7 +9770,49 @@ func TestWorkflowDispatchEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"inputs":{"key":"value"},"ref":"r","workflow":"w","repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}}`
+	want := `{
+		"inputs":{
+			"key":"value"
+		},
+		"ref":"r",
+		"workflow":"w",
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -5263,7 +9931,120 @@ func TestWatchEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -5306,7 +10087,39 @@ func TestUserEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"user":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"action":"a","enterprise":{"id":1,"slug":"s","name":"n","node_id":"nid","avatar_url":"au","description":"d","website_url":"wu","html_url":"hu","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}}`
+	want := `{
+		"user":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"action":"a",
+		"enterprise":{
+			"id":1,
+			"slug":"s",
+			"name":"n",
+			"node_id":"nid",
+			"avatar_url":"au",
+			"description":"d",
+			"website_url":"wu",
+			"html_url":"hu",
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -5536,7 +10349,231 @@ func TestCheckRunEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"check_run":{"id":1,"node_id":"n","head_sha":"h","external_id":"1","url":"u","html_url":"u","details_url":"u","status":"s","conclusion":"c","started_at":` + referenceTimeStr + `,"completed_at":` + referenceTimeStr + `,"output":{"title":"t","summary":"s","text":"t","annotations_count":1,"annotations_url":"a","annotations":[{"path":"p","start_line":1,"end_line":1,"annotation_level":"a","message":"m","title":"t","raw_details":"r"}],"images":[{"alt":"a","image_url":"i","caption":"c"}]},"name":"n","check_suite":{"id":1},"app":{"id":1,"node_id":"n","owner":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"name":"n","description":"d","external_url":"u","html_url":"h","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `},"pull_requests":[{"id":1,"number":1,"url":"u","head":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"s"}},"base":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"u"}}}]},"action":"a","repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `},"requested_action":{"identifier":"i"}}`
+	want := `{
+		"check_run":{
+			"id":1,
+			"node_id":"n",
+			"head_sha":"h",
+			"external_id":"1",
+			"url":"u",
+			"html_url":"u",
+			"details_url":"u",
+			"status":"s",
+			"conclusion":"c",
+			"started_at":` + referenceTimeStr + `,
+			"completed_at":` + referenceTimeStr + `,
+			"output":{
+				"title":"t",
+				"summary":"s",
+				"text":"t",
+				"annotations_count":1,
+				"annotations_url":"a",
+				"annotations":[
+					{
+						"path":"p",
+						"start_line":1,
+						"end_line":1,
+						"annotation_level":"a",
+						"message":"m",
+						"title":"t",
+						"raw_details":"r"
+					}
+				],
+				"images":[
+					{
+						"alt":"a",
+						"image_url":"i",
+						"caption":"c"
+					}
+				]
+			},
+			"name":"n",
+			"check_suite":{
+				"id":1
+			},
+			"app":{
+				"id":1,
+				"node_id":"n",
+				"owner":{
+					"login":"l",
+					"id":1,
+					"node_id":"n",
+					"avatar_url":"a",
+					"url":"u",
+					"events_url":"e",
+					"repos_url":"r"
+				},
+				"name":"n",
+				"description":"d",
+				"external_url":"u",
+				"html_url":"h",
+				"created_at":` + referenceTimeStr + `,
+				"updated_at":` + referenceTimeStr + `
+			},
+			"pull_requests":[
+				{
+					"id":1,
+					"number":1,
+					"url":"u",
+					"head":{
+						"ref":"r",
+						"sha":"s",
+						"repo":{
+							"id":1,
+							"name":"n",
+							"url":"s"
+						}
+					},
+					"base":{
+						"ref":"r",
+						"sha":"s",
+						"repo":{
+							"id":1,
+							"name":"n",
+							"url":"u"
+						}
+					}
+				}
+			]
+		},
+		"action":"a",
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		},
+		"requested_action":{
+			"identifier":"i"
+		}
+	}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -5738,7 +10775,203 @@ func TestCheckSuiteEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"check_suite":{"id":1,"node_id":"n","head_branch":"h","head_sha":"h","url":"u","before":"b","after":"a","status":"s","conclusion":"c","app":{"id":1,"node_id":"n","owner":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"name":"n","description":"d","external_url":"u","html_url":"h","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `},"repository":{"id":1},"pull_requests":[{"id":1,"number":1,"url":"u","head":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"s"}},"base":{"ref":"r","sha":"s","repo":{"id":1,"name":"n","url":"u"}}}],"head_commit":{"sha":"s"}},"action":"a","repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"check_suite":{
+			"id":1,
+			"node_id":"n",
+			"head_branch":"h",
+			"head_sha":"h",
+			"url":"u",
+			"before":"b",
+			"after":"a",
+			"status":"s",
+			"conclusion":"c",
+			"app":{
+				"id":1,
+				"node_id":"n",
+				"owner":{
+					"login":"l",
+					"id":1,
+					"node_id":"n",
+					"avatar_url":"a",
+					"url":"u",
+					"events_url":"e",
+					"repos_url":"r"
+				},
+				"name":"n",
+				"description":"d",
+				"external_url":"u",
+				"html_url":"h",
+				"created_at":` + referenceTimeStr + `,
+				"updated_at":` + referenceTimeStr + `
+			},
+			"repository":{
+				"id":1
+			},
+			"pull_requests":[
+				{
+					"id":1,
+					"number":1,
+					"url":"u",
+					"head":{
+						"ref":"r",
+						"sha":"s",
+						"repo":{
+							"id":1,
+							"name":"n",
+							"url":"s"
+						}
+					},
+					"base":{
+						"ref":"r",
+						"sha":"s",
+						"repo":{
+							"id":1,
+							"name":"n",
+							"url":"u"
+						}
+					}
+				}
+			],
+			"head_commit":{
+				"sha":"s"
+			}
+		},
+		"action":"a",
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -5795,7 +11028,54 @@ func TestDeployKeyEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","key":{"id":1,"key":"k","url":"k","title":"k","read_only":false,"verified":false,"created_at":` + referenceTimeStr + `},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}}`
+	want := `{
+		"action":"a",
+		"key":{
+			"id":1,
+			"key":"k",
+			"url":"k",
+			"title":"k",
+			"read_only":false,
+			"verified":false,
+			"created_at":` + referenceTimeStr + `
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -5825,7 +11105,30 @@ func TestMetaEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","hook_id":1,"hook":{"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"url":"u","id":1,"type":"t","name":"n","test_url":"tu","ping_url":"pu","last_response":{"a":"b"},"config":{"a":"b"},"events":["a"],"active":true}}`
+	want := `{
+		"action":"a",
+		"hook_id":1,
+		"hook":{
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"url":"u",
+			"id":1,
+			"type":"t",
+			"name":"n",
+			"test_url":"tu",
+			"ping_url":"pu",
+			"last_response":{
+				"a":"b"
+			},
+			"config":{
+				"a":"b"
+			},
+			"events":[
+				"a"
+			],
+			"active":true
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -5960,7 +11263,124 @@ func TestCreateEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"ref":"r","ref_type":"rt","master_branch":"mb","description":"d","pusher_type":"pt","repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"ref":"r",
+		"ref_type":"rt",
+		"master_branch":"mb",
+		"description":"d",
+		"pusher_type":"pt",
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -6081,7 +11501,122 @@ func TestDeleteEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"ref":"r","ref_type":"rt","pusher_type":"pt","repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"ref":"r",
+		"ref_type":"rt",
+		"pusher_type":"pt",
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -6204,7 +11739,124 @@ func TestForkEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"forkee":{"id":1,"name":"n","url":"s"},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"forkee":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -6225,7 +11877,18 @@ func TestGitHubAppAuthorizationEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}}`
+	want := `{
+		"action":"a",
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -6346,7 +12009,122 @@ func TestInstallationEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","repositories":[{"id":1,"name":"n","url":"u"}],"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"repositories":[
+			{
+				"id":1,
+				"name":"n",
+				"url":"u"
+			}
+		],
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -6379,7 +12157,36 @@ func TestHeadCommit_Marshal(t *testing.T) {
 		Modified: []string{"m"},
 	}
 
-	want := `{"message":"m","author":{"date":` + referenceTimeStr + `,"name":"n","email":"e","username":"u"},"url":"u","distinct":true,"sha":"s","id":"id","tree_id":"tid","timestamp":` + referenceTimeStr + `,"committer":{"date":` + referenceTimeStr + `,"name":"n","email":"e","username":"u"},"added":["a"],"removed":["r"],"modified":["m"]}`
+	want := `{
+		"message":"m",
+		"author":{
+			"date":` + referenceTimeStr + `,
+			"name":"n",
+			"email":"e",
+			"username":"u"
+		},
+		"url":"u",
+		"distinct":true,
+		"sha":"s",
+		"id":"id",
+		"tree_id":"tid",
+		"timestamp":` + referenceTimeStr + `,
+		"committer":{
+			"date":` + referenceTimeStr + `,
+			"name":"n",
+			"email":"e",
+			"username":"u"
+		},
+		"added":[
+			"a"
+		],
+		"removed":[
+			"r"
+		],
+		"modified":[
+			"m"
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -6442,7 +12249,60 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 		SVNURL:          String("s"),
 	}
 
-	want := `{"id":1,"node_id":"nid","name":"n","full_name":"fn","owner":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"url":"u"},"private":true,"description":"d","fork":true,"created_at":` + referenceTimeStr + `,"pushed_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"homepage":"h","pulls_url":"p","size":1,"stargazers_count":1,"watchers_count":1,"language":"l","has_issues":true,"has_downloads":true,"has_wiki":true,"has_pages":true,"forks_count":1,"archived":true,"disabled":true,"open_issues_count":1,"default_branch":"d","master_branch":"m","organization":"o","url":"u","archive_url":"a","html_url":"h","statuses_url":"s","git_url":"g","ssh_url":"s","clone_url":"c","svn_url":"s"}`
+	want := `{
+		"id":1,
+		"node_id":"nid",
+		"name":"n",
+		"full_name":"fn",
+		"owner":{
+			"login":"l",
+			"id":1,
+			"avatar_url":"a",
+			"gravatar_id":"g",
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"l",
+			"email":"e",
+			"hireable":true,
+			"public_repos":1,
+			"followers":1,
+			"following":1,
+			"created_at":` + referenceTimeStr + `,
+			"url":"u"
+		},
+		"private":true,
+		"description":"d",
+		"fork":true,
+		"created_at":` + referenceTimeStr + `,
+		"pushed_at":` + referenceTimeStr + `,
+		"updated_at":` + referenceTimeStr + `,
+		"homepage":"h",
+		"pulls_url":"p",
+		"size":1,
+		"stargazers_count":1,
+		"watchers_count":1,
+		"language":"l",
+		"has_issues":true,
+		"has_downloads":true,
+		"has_wiki":true,
+		"has_pages":true,
+		"forks_count":1,
+		"archived":true,
+		"disabled":true,
+		"open_issues_count":1,
+		"default_branch":"d",
+		"master_branch":"m",
+		"organization":"o",
+		"url":"u",
+		"archive_url":"a",
+		"html_url":"h",
+		"statuses_url":"s",
+		"git_url":"g",
+		"ssh_url":"s",
+		"clone_url":"c",
+		"svn_url":"s"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -6601,7 +12461,153 @@ func TestProjectEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","changes":{"name":{"from":"NameFrom"},"body":{"from":"BodyFrom"}},"project":{"id":1},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"changes":{
+			"name":{
+				"from":"NameFrom"
+			},
+			"body":{
+				"from":"BodyFrom"
+			}
+		},
+		"project":{
+			"id":1
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -6747,7 +12753,151 @@ func TestProjectCardEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","changes":{"note":{"from":"NoteFrom"}},"after_id":1,"project_card":{"id":1},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"changes":{
+			"note":{
+				"from":"NoteFrom"
+			}
+		},
+		"after_id":1,
+		"project_card":{
+			"id":1
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -6893,7 +13043,151 @@ func TestProjectColumnEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","changes":{"name":{"from":"NameFrom"}},"after_id":1,"project_column":{"id":1},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"changes":{
+			"name":{
+				"from":"NameFrom"
+			}
+		},
+		"after_id":1,
+		"project_column":{
+			"id":1
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -7074,7 +13368,188 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","assignee":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"number":1,"pull_request":{"id":1},"changes":{"title":{"from":"TitleFrom"},"body":{"from":"BodyFrom"},"base":{"ref":{"from":"BaseRefFrom"},"sha":{"from":"BaseSHAFrom"}}},"requested_reviewer":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"requested_team":{"id":1},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `},"label":{"id":1},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"before":"before","after":"after"}`
+	want := `{
+		"action":"a",
+		"assignee":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"number":1,
+		"pull_request":{
+			"id":1
+		},
+		"changes":{
+			"title":{
+				"from":"TitleFrom"
+			},
+			"body":{
+				"from":"BodyFrom"
+			},
+			"base":{
+				"ref":{
+					"from":"BaseRefFrom"
+				},
+				"sha":{
+					"from":"BaseSHAFrom"
+				}
+			}
+		},
+		"requested_reviewer":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"requested_team":{
+			"id":1
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		},
+		"label":{
+			"id":1
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"before":"before",
+		"after":"after"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -7211,7 +13686,142 @@ func TestPullRequestReviewCommentEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","pull_request":{"id":1},"comment":{"id":1},"changes":{"title":{"from":"TitleFrom"},"body":{"from":"BodyFrom"},"base":{"ref":{"from":"BaseRefFrom"},"sha":{"from":"BaseSHAFrom"}}},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"pull_request":{
+			"id":1
+		},
+		"comment":{
+			"id":1
+		},
+		"changes":{
+			"title":{
+				"from":"TitleFrom"
+			},
+			"body":{
+				"from":"BodyFrom"
+			},
+			"base":{
+				"ref":{
+					"from":"BaseRefFrom"
+				},
+				"sha":{
+					"from":"BaseSHAFrom"
+				}
+			}
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -7334,7 +13944,133 @@ func TestPullRequestReviewThreadEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","thread":{"comments":[{"id":1},{"id":2}]},"pull_request":{"id":1},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"thread":{
+			"comments":[
+				{
+					"id":1
+				},
+				{
+					"id":2
+				}
+			]
+		},
+		"pull_request":{
+			"id":1
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -7515,7 +14251,188 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","assignee":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"number":1,"pull_request":{"id":1},"changes":{"title":{"from":"TitleFrom"},"body":{"from":"BodyFrom"},"base":{"ref":{"from":"BaseRefFrom"},"sha":{"from":"BaseSHAFrom"}}},"requested_reviewer":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"requested_team":{"id":1},"repository":{"id":1,"name":"n","url":"s"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `},"label":{"id":1},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"before":"before","after":"after"}`
+	want := `{
+		"action":"a",
+		"assignee":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"number":1,
+		"pull_request":{
+			"id":1
+		},
+		"changes":{
+			"title":{
+				"from":"TitleFrom"
+			},
+			"body":{
+				"from":"BodyFrom"
+			},
+			"base":{
+				"ref":{
+					"from":"BaseRefFrom"
+				},
+				"sha":{
+					"from":"BaseSHAFrom"
+				}
+			}
+		},
+		"requested_reviewer":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"requested_team":{
+			"id":1
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		},
+		"label":{
+			"id":1
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"before":"before",
+		"after":"after"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -7551,7 +14468,33 @@ func TestRepositoryVulnerabilityAlertEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","alert":{"id":1,"affected_range":"ar","affected_package_name":"apn","external_reference":"er","external_identifier":"ei","fixed_in":"fi","dismisser":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"dismiss_reason":"dr","dismissed_at":` + referenceTimeStr + `},"repository":{"id":1,"name":"n","url":"s"}}`
+	want := `{
+		"action":"a",
+		"alert":{
+			"id":1,
+			"affected_range":"ar",
+			"affected_package_name":"apn",
+			"external_reference":"er",
+			"external_identifier":"ei",
+			"fixed_in":"fi",
+			"dismisser":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"dismiss_reason":"dr",
+			"dismissed_at":` + referenceTimeStr + `
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -7719,7 +14662,169 @@ func TestSecretScanningAlertEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"a","alert":{"number":1,"resolution":"r","resolved_at":` + referenceTimeStr + `,"resolved_by":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"secret_type":"t"},"sender":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"repository":{"id":1,"name":"n","url":"s"},"organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"enterprise":{"id":1,"slug":"s","name":"n","node_id":"nid","avatar_url":"au","description":"d","website_url":"wu","html_url":"hu","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `},"installation":{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}}`
+	want := `{
+		"action":"a",
+		"alert":{
+			"number":1,
+			"resolution":"r",
+			"resolved_at":` + referenceTimeStr + `,
+			"resolved_by":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"secret_type":"t"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"enterprise":{
+			"id":1,
+			"slug":"s",
+			"name":"n",
+			"node_id":"nid",
+			"avatar_url":"au",
+			"description":"d",
+			"website_url":"wu",
+			"html_url":"hu",
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -7766,7 +14871,41 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 	// convert `>` into `\u003e`` and `<` into `\u003c``
 	part, _ := json.Marshal(">= 2.0.0, < 2.0.2")
 
-	want := `{"action":"published","security_advisory":{"ghsa_id":"GHSA-rf4j-j272-some","summary":"Siuuuuuuuuu","description":"desc","severity":"moderate","identifiers":[{"value":"GHSA-rf4j-j272-some","type":"GHSA"}],"references":[{"url":"https://some-url"}],"published_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"vulnerabilities":[{"package":{"ecosystem":"ucl","name":"penaldo"},"severity":"moderate","vulnerable_version_range":` + string(part) + `,"first_patched_version":{"identifier":"2.0.2"}}]}}`
+	want := `{
+		"action":"published",
+		"security_advisory":{
+			"ghsa_id":"GHSA-rf4j-j272-some",
+			"summary":"Siuuuuuuuuu",
+			"description":"desc",
+			"severity":"moderate",
+			"identifiers":[
+				{
+					"value":"GHSA-rf4j-j272-some",
+					"type":"GHSA"
+				}
+			],
+			"references":[
+				{
+					"url":"https://some-url"
+				}
+			],
+			"published_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"vulnerabilities":[
+				{
+					"package":{
+						"ecosystem":"ucl",
+						"name":"penaldo"
+					},
+					"severity":"moderate",
+					"vulnerable_version_range":` + string(part) + `,
+					"first_patched_version":{
+						"identifier":"2.0.2"
+					}
+				}
+			]
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -7939,7 +15078,162 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"action":"reopened","alert":{"number":10,"rule":{"id":"Style/FrozenStringLiteralComment","severity":"note","description":"desc","full_description":"full desc","tags":["style"],"help":"help"},"tool":{"name":"Rubocop"},"created_at":"2006-01-02T15:04:05Z","updated_at":"2006-01-02T15:04:05Z","state":"open","url":"a","html_url":"a","instances":[{"ref":"refs/heads/main","analysis_key":".github/workflows/workflow.yml:upload","environment":"{}","state":"open"}]},"ref":"refs/heads/main","commit_oid":"d6e4c75c141dbacecc279b721b8bsomeSHA","repository":{"id":1234234535,"node_id":"MDEwOlJlcG9zaXRvcnkxODY4NT==","owner":{"login":"Codertocat","id":21031067,"node_id":"MDQ6VXNlcjIxMDMxMDY3","avatar_url":"a","html_url":"a","gravatar_id":"","type":"User","site_admin":false,"url":"a","events_url":"a","following_url":"a","followers_url":"a","gists_url":"a","organizations_url":"a","received_events_url":"a","repos_url":"a","starred_url":"a","subscriptions_url":"a"},"name":"Hello-World","full_name":"Codertocat/Hello-World","default_branch":"main","created_at":"2006-01-02T15:04:05Z","pushed_at":"2006-01-02T15:04:05Z","updated_at":"2006-01-02T15:04:05Z","html_url":"a","clone_url":"a","git_url":"a","ssh_url":"a","svn_url":"a","fork":false,"forks_count":0,"open_issues_count":2,"open_issues":2,"stargazers_count":0,"watchers_count":0,"watchers":0,"size":0,"archived":false,"disabled":false,"private":false,"has_issues":true,"has_wiki":true,"has_pages":true,"has_projects":true,"has_downloads":true,"url":"a","archive_url":"a","assignees_url":"a","blobs_url":"a","branches_url":"a","collaborators_url":"a","comments_url":"a","commits_url":"a","compare_url":"a","contents_url":"a","contributors_url":"a","deployments_url":"a","downloads_url":"a","events_url":"a","forks_url":"a","git_commits_url":"a","git_refs_url":"a","git_tags_url":"a","hooks_url":"a","issue_comment_url":"a","issue_events_url":"a","issues_url":"a","keys_url":"a","labels_url":"a","languages_url":"a","merges_url":"a","milestones_url":"a","notifications_url":"a","pulls_url":"a","releases_url":"a","stargazers_url":"a","statuses_url":"a","subscribers_url":"a","subscription_url":"a","tags_url":"a","trees_url":"a","teams_url":"a"},"organization":{"login":"Octocoders","id":6,"node_id":"MDEyOk9yZ2FuaXphdGlvbjY=","avatar_url":"a","description":"","url":"a","events_url":"a","hooks_url":"a","issues_url":"a","members_url":"a","public_members_url":"a","repos_url":"a"},"sender":{"login":"github","id":9919,"node_id":"MDEyOk9yZ2FuaXphdGlvbjk5MTk=","avatar_url":"a","html_url":"a","gravatar_id":"","type":"Organization","site_admin":false,"url":"a","events_url":"a","following_url":"a","followers_url":"a","gists_url":"a","organizations_url":"a","received_events_url":"a","repos_url":"a","starred_url":"a","subscriptions_url":"a"}}`
+	want := `{
+		"action":"reopened",
+		"alert":{
+			"number":10,
+			"rule":{
+				"id":"Style/FrozenStringLiteralComment",
+				"severity":"note",
+				"description":"desc",
+				"full_description":"full desc",
+				"tags":[
+					"style"
+				],
+				"help":"help"
+			},
+			"tool":{
+				"name":"Rubocop"
+			},
+			"created_at":"2006-01-02T15:04:05Z",
+			"updated_at":"2006-01-02T15:04:05Z",
+			"state":"open",
+			"url":"a",
+			"html_url":"a",
+			"instances":[
+				{
+					"ref":"refs/heads/main",
+					"analysis_key":".github/workflows/workflow.yml:upload",
+					"environment":"{}",
+					"state":"open"
+				}
+			]
+		},
+		"ref":"refs/heads/main",
+		"commit_oid":"d6e4c75c141dbacecc279b721b8bsomeSHA",
+		"repository":{
+			"id":1234234535,
+			"node_id":"MDEwOlJlcG9zaXRvcnkxODY4NT==",
+			"owner":{
+				"login":"Codertocat",
+				"id":21031067,
+				"node_id":"MDQ6VXNlcjIxMDMxMDY3",
+				"avatar_url":"a",
+				"html_url":"a",
+				"gravatar_id":"",
+				"type":"User",
+				"site_admin":false,
+				"url":"a",
+				"events_url":"a",
+				"following_url":"a",
+				"followers_url":"a",
+				"gists_url":"a",
+				"organizations_url":"a",
+				"received_events_url":"a",
+				"repos_url":"a",
+				"starred_url":"a",
+				"subscriptions_url":"a"
+			},
+			"name":"Hello-World",
+			"full_name":"Codertocat/Hello-World",
+			"default_branch":"main",
+			"created_at":"2006-01-02T15:04:05Z",
+			"pushed_at":"2006-01-02T15:04:05Z",
+			"updated_at":"2006-01-02T15:04:05Z",
+			"html_url":"a",
+			"clone_url":"a",
+			"git_url":"a",
+			"ssh_url":"a",
+			"svn_url":"a",
+			"fork":false,
+			"forks_count":0,
+			"open_issues_count":2,
+			"open_issues":2,
+			"stargazers_count":0,
+			"watchers_count":0,
+			"watchers":0,
+			"size":0,
+			"archived":false,
+			"disabled":false,
+			"private":false,
+			"has_issues":true,
+			"has_wiki":true,
+			"has_pages":true,
+			"has_projects":true,
+			"has_downloads":true,
+			"url":"a",
+			"archive_url":"a",
+			"assignees_url":"a",
+			"blobs_url":"a",
+			"branches_url":"a",
+			"collaborators_url":"a",
+			"comments_url":"a",
+			"commits_url":"a",
+			"compare_url":"a",
+			"contents_url":"a",
+			"contributors_url":"a",
+			"deployments_url":"a",
+			"downloads_url":"a",
+			"events_url":"a",
+			"forks_url":"a",
+			"git_commits_url":"a",
+			"git_refs_url":"a",
+			"git_tags_url":"a",
+			"hooks_url":"a",
+			"issue_comment_url":"a",
+			"issue_events_url":"a",
+			"issues_url":"a",
+			"keys_url":"a",
+			"labels_url":"a",
+			"languages_url":"a",
+			"merges_url":"a",
+			"milestones_url":"a",
+			"notifications_url":"a",
+			"pulls_url":"a",
+			"releases_url":"a",
+			"stargazers_url":"a",
+			"statuses_url":"a",
+			"subscribers_url":"a",
+			"subscription_url":"a",
+			"tags_url":"a",
+			"trees_url":"a",
+			"teams_url":"a"
+		},
+		"organization":{
+			"login":"Octocoders",
+			"id":6,
+			"node_id":"MDEyOk9yZ2FuaXphdGlvbjY=",
+			"avatar_url":"a",
+			"description":"",
+			"url":"a",
+			"events_url":"a",
+			"hooks_url":"a",
+			"issues_url":"a",
+			"members_url":"a",
+			"public_members_url":"a",
+			"repos_url":"a"
+		},
+		"sender":{
+			"login":"github",
+			"id":9919,
+			"node_id":"MDEyOk9yZ2FuaXphdGlvbjk5MTk=",
+			"avatar_url":"a",
+			"html_url":"a",
+			"gravatar_id":"",
+			"type":"Organization",
+			"site_admin":false,
+			"url":"a",
+			"events_url":"a",
+			"following_url":"a",
+			"followers_url":"a",
+			"gists_url":"a",
+			"organizations_url":"a",
+			"received_events_url":"a",
+			"repos_url":"a",
+			"starred_url":"a",
+			"subscriptions_url":"a"
+		}
+	}`
 
 	testJSONMarshal(t, u, want)
 }

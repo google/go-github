@@ -360,7 +360,21 @@ func TestTree_Marshal(t *testing.T) {
 		Truncated: Bool(false),
 	}
 
-	want := `{"sha":"sha","tree":[{"sha":"sha","path":"path","mode":"mode","type":"type","size":1,"content":"content","url":"url"}],"truncated":false}`
+	want := `{
+		"sha":"sha",
+		"tree":[
+			{
+				"sha":"sha",
+				"path":"path",
+				"mode":"mode",
+				"type":"type",
+				"size":1,
+				"content":"content",
+				"url":"url"
+			}
+		],
+		"truncated":false
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -378,7 +392,15 @@ func TestTreeEntry_Marshal(t *testing.T) {
 		URL:     String("url"),
 	}
 
-	want := `{"sha":"sha","path":"path","mode":"mode","type":"type","size":1,"content":"content","url":"url"}`
+	want := `{
+		"sha":"sha",
+		"path":"path",
+		"mode":"mode",
+		"type":"type",
+		"size":1,
+		"content":"content",
+		"url":"url"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -396,7 +418,15 @@ func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
 		URL:     String("url"),
 	}
 
-	want := `{"sha":"sha","path":"path","mode":"mode","type":"type","size":1,"content":"content","url":"url"}`
+	want := `{
+		"sha":"sha",
+		"path":"path",
+		"mode":"mode",
+		"type":"type",
+		"size":1,
+		"content":"content",
+		"url":"url"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -409,7 +439,10 @@ func TestCreateTree_Marshal(t *testing.T) {
 		Entries:  []interface{}{"e"},
 	}
 
-	want := `{"base_tree":"bt","tree":["e"]}`
+	want := `{
+		"base_tree":"bt",
+		"tree":["e"]
+	}`
 
 	testJSONMarshal(t, u, want)
 }

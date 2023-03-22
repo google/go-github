@@ -386,7 +386,14 @@ func TestOrganizationInstallations_Marshal(t *testing.T) {
 		TotalCount:    Int(1),
 		Installations: []*Installation{{ID: Int64(1)}},
 	}
-	want := `{"total_count":1,"installations":[{"id":1}]}`
+	want := `{
+		"total_count":1,
+		"installations":[
+			{
+				"id":1
+			}
+		]
+	}`
 
 	testJSONMarshal(t, o, want)
 }
@@ -402,7 +409,14 @@ func TestPlan_Marshal(t *testing.T) {
 		FilledSeats:   Int(1),
 		Seats:         Int(1),
 	}
-	want := `{"name":"name","space":1,"collaborators":1,"private_repos":1,"filled_seats":1,"seats":1}`
+	want := `{
+		"name":"name",
+		"space":1,
+		"collaborators":1,
+		"private_repos":1,
+		"filled_seats":1,
+		"seats":1
+	}`
 
 	testJSONMarshal(t, o, want)
 }

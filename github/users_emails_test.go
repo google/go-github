@@ -131,7 +131,12 @@ func TestUserEmail_Marshal(t *testing.T) {
 		Visibility: String("yes"),
 	}
 
-	want := `{"email":"qwe@qwe.qwe","primary":false,"verified":true,"visibility":"yes"}`
+	want := `{
+		"email":"qwe@qwe.qwe",
+		"primary":false,
+		"verified":true,
+		"visibility":"yes"
+	}`
 
 	testJSONMarshal(t, u, want)
 }

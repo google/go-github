@@ -150,7 +150,10 @@ func TestCreateOrgRequest_Marshal(t *testing.T) {
 		Admin: String("a"),
 	}
 
-	want := `{"login":"l","admin":"a"}`
+	want := `{
+		"login":"l",
+		"admin":"a"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -175,7 +178,10 @@ func TestRenameOrgResponse_Marshal(t *testing.T) {
 		URL:     String("u"),
 	}
 
-	want := `{"message":"m","url":"u"}`
+	want := `{
+		"message":"m",
+		"url":"u"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
