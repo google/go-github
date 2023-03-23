@@ -144,10 +144,46 @@ func testBody(t *testing.T, r *http.Request, want string) {
 	}
 }
 
-// Test whether the marshaling of v produces JSON that corresponds
-// to the want string.
+// Test whether structure v has the specified tag in all fields.
+func testStructTags(t *testing.T, v interface{}, tag string) {
+	t.Helper()
+
+	vt := reflect.Indirect(reflect.ValueOf(v)).Type()
+	for i := 0; i < vt.NumField(); i++ {
+		field := vt.Field(i)
+		if alias, ok := field.Tag.Lookup(tag); ok {
+			if alias == "" {
+				t.Errorf("The field %+v has a blank tag", field)
+			}
+		} else {
+			t.Errorf("The field %+v has no tag specified", field)
+		}
+	}
+}
+
+// Test whether the marshaling of v produces JSON that corresponds to the
+// want string.
+//
+// Since this is a strictly exact comparison, it is important that we follow
+// some rules when constructing the expected value:
+//
+// - No extra spaces. JSON strings can be formatted using only line breaks
+// and tabs (make sure they are tabs and not spaces).
+//
+// - The JSON fields must be in the same order as they were defined in the
+// structure, or in lexicographical order if it's a map.
+//
+// - If it's necessary to mount strings that have characters such as ">", "<"
+// or "&", consider using "json.Marshal" only for the necessary part and then
+// use it to mount the expected JSON.
+//
+// - All fields must have the JSON tag.
 func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	t.Helper()
+
+	if reflect.ValueOf(v).Kind() == reflect.Struct {
+		testStructTags(t, v, "json")
+	}
 
 	j, err := json.Marshal(v)
 	if err != nil {
@@ -167,17 +203,7 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 func testAddURLOptions(t *testing.T, url string, v interface{}, want string) {
 	t.Helper()
 
-	vt := reflect.Indirect(reflect.ValueOf(v)).Type()
-	for i := 0; i < vt.NumField(); i++ {
-		field := vt.Field(i)
-		if alias, ok := field.Tag.Lookup("url"); ok {
-			if alias == "" {
-				t.Errorf("The field %+v has a blank url tag", field)
-			}
-		} else {
-			t.Errorf("The field %+v has no url tag specified", field)
-		}
-	}
+	testStructTags(t, v, "url")
 
 	got, err := addOptions(url, v)
 	if err != nil {

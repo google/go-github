@@ -7,7 +7,7 @@ package github
 
 import (
 	"context"
-	"encoding/json"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
@@ -955,11 +955,11 @@ func TestRepositoryContentFileOptions_Marshal(t *testing.T) {
 		},
 	}
 
-	contentValue, _ := json.Marshal([]byte{1})
+	contentValue := base64.StdEncoding.EncodeToString([]byte{1})
 
 	want := `{
 		"message":"type",
-		"content":` + string(contentValue) + `,
+		"content":"` + contentValue + `",
 		"sha":"type",
 		"branch":"type",
 		"author":{
