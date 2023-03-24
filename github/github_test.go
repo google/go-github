@@ -181,7 +181,9 @@ func testStructTags(t *testing.T, v interface{}, tag string) {
 func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	t.Helper()
 
-	if reflect.ValueOf(v).Kind() == reflect.Struct {
+	interfaceName := fmt.Sprintf("%s", reflect.ValueOf(&v).Elem().Interface())
+
+	if !strings.HasPrefix(interfaceName, "&map") {
 		testStructTags(t, v, "json")
 	}
 
