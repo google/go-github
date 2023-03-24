@@ -1497,7 +1497,7 @@ func TestListCheckRunsResults_Marshal(t *testing.T) {
 		]
 	}`
 
-	testJSONMarshal(t, &l, w)
+	testJSONMarshal(t, l, w)
 }
 
 func TestListCheckSuiteResults_Marshal(t *testing.T) {
@@ -1637,7 +1637,7 @@ func TestListCheckSuiteResults_Marshal(t *testing.T) {
 		]
 	}`
 
-	testJSONMarshal(t, &l, w)
+	testJSONMarshal(t, l, w)
 }
 
 func TestCheckSuitePreferenceOptions_Marshal(t *testing.T) {
