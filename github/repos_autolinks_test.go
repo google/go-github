@@ -193,8 +193,8 @@ func TestAutolink_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"id":1,"
-		key_prefix":"kp",
+		"id":1,
+		"key_prefix":"kp",
 		"url_template":"URLT",
 		"is_alphanumeric":true
 	}`

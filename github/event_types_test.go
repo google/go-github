@@ -12315,7 +12315,10 @@ func TestPushEventRepoOwner_Marshal(t *testing.T) {
 		Email: String("e"),
 	}
 
-	want := `{"name":"n","email":"e"}`
+	want := `{
+		"name":"n",
+		"email":"e"
+	}`
 
 	testJSONMarshal(t, u, want)
 }

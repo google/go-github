@@ -655,7 +655,15 @@ func TestDraftReviewComment_Marshal(t *testing.T) {
 		Line:      Int(1),
 	}
 
-	want := `{"path":"path","position":1,"body":"body","start_side":"ss","side":"side","start_line":1,"line":1}`
+	want := `{
+		"path":"path",
+		"position":1,
+		"body":"body",
+		"start_side":"ss",
+		"side":"side",
+		"start_line":1,
+		"line":1
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -681,7 +689,23 @@ func TestPullRequestReviewRequest_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{"node_id":"nodeid","commit_id":"cid","body":"body","event":"event","comments":[{"path":"path","position":1,"body":"body","start_side":"ss","side":"side","start_line":1,"line":1}]}`
+	want := `{
+		"node_id":"nodeid",
+		"commit_id":"cid",
+		"body":"body",
+		"event":"event",
+		"comments":[
+			{
+				"path":"path",
+				"position":1,
+				"body":"body",
+				"start_side":"ss",
+				"side":"side",
+				"start_line":1,
+				"line":1
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -721,7 +745,37 @@ func TestPullRequestReview_Marshal(t *testing.T) {
 		AuthorAssociation: String("aa"),
 	}
 
-	want := `{"id":1,"node_id":"nid","user":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"body":"body","submitted_at":` + referenceTimeStr + `,"commit_id":"cid","html_url":"hurl","pull_request_url":"prurl","state":"state","author_association":"aa"}`
+	want := `{
+		"id":1,
+		"node_id":"nid",
+		"user":{
+			"login":"l",
+			"id":1,
+			"avatar_url":"a",
+			"gravatar_id":"g",
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"l",
+			"email":"e",
+			"hireable":true,
+			"bio":"b",
+			"twitter_username":"t",
+			"public_repos":1,
+			"followers":1,
+			"following":1,
+			"created_at":` + referenceTimeStr + `,
+			"suspended_at":` + referenceTimeStr + `,
+			"url":"u"
+		},
+		"body":"body",
+		"submitted_at":` + referenceTimeStr + `,
+		"commit_id":"cid",
+		"html_url":"hurl",
+		"pull_request_url":"prurl",
+		"state":"state",
+		"author_association":"aa"
+	}`
 
 	testJSONMarshal(t, u, want)
 }

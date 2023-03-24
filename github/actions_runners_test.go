@@ -710,7 +710,10 @@ func TestRunner_Marshal(t *testing.T) {
 }
 
 func TestRunners_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Runners{}, `{"total_count":0,"runners":null}`)
+	testJSONMarshal(t, &Runners{}, `{
+		"total_count":0,
+		"runners":null
+	}`)
 
 	u := &Runners{
 		TotalCount: 1,
