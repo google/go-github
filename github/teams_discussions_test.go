@@ -585,7 +585,6 @@ func TestTeamDiscussion_Marshal(t *testing.T) {
 		},
 	}
 
-	bodyHTML, _ := json.Marshal(`<p>test</p>`)
 	want := `{
 		"author":{
 			"login":"author",
@@ -597,7 +596,7 @@ func TestTeamDiscussion_Marshal(t *testing.T) {
 			"url":"https://api.github.com/users/author"
 		},
 		"body":"test",
-		"body_html":` + string(bodyHTML) + `,
+		"body_html":"<p>test</p>",
 		"body_version":"version",
 		"comments_count":1,
 		"comments_url":"https://api.github.com/teams/2/discussions/3/comments",

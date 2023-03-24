@@ -173,10 +173,6 @@ func testStructTags(t *testing.T, v interface{}, tag string) {
 // - The JSON fields must be in the same order as they were defined in the
 // structure, or in lexicographical order if it's a map.
 //
-// - If it's necessary to mount strings that have characters such as ">", "<"
-// or "&", consider using "json.Marshal" only for the necessary part and then
-// use it to mount the expected JSON.
-//
 // - All fields must have the JSON tag.
 func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	t.Helper()
@@ -194,6 +190,8 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 
 	want = strings.Replace(want, "\t", "", -1)
 	want = strings.Replace(want, "\n", "", -1)
+	want = strings.Replace(want, "<", "\\u003c", -1)
+	want = strings.Replace(want, ">", "\\u003e", -1)
 
 	if !bytes.Equal(j, []byte(want)) {
 		t.Errorf("json.Marshal(%+v) returned %s, want %s", v, j, want)

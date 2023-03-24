@@ -14871,8 +14871,6 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	part, _ := json.Marshal(">= 2.0.0, < 2.0.2")
-
 	want := `{
 		"action":"published",
 		"security_advisory":{
@@ -14900,7 +14898,7 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 						"name":"penaldo"
 					},
 					"severity":"moderate",
-					"vulnerable_version_range":` + string(part) + `,
+					"vulnerable_version_range":">= 2.0.0, < 2.0.2",
 					"first_patched_version":{
 						"identifier":"2.0.2"
 					}
