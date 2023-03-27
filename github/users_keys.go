@@ -19,6 +19,8 @@ type Key struct {
 	ReadOnly  *bool      `json:"read_only,omitempty"`
 	Verified  *bool      `json:"verified,omitempty"`
 	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	AddedBy   *string    `json:"added_by,omitempty"`
+	LastUsed  *Timestamp `json:"last_used,omitempty"`
 }
 
 func (k Key) String() string {
