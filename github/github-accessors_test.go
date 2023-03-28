@@ -6541,6 +6541,16 @@ func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningPushProtectionEnabl
 	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
 }
 
+func TestEnvironment_GetCanAdminsBypass(tt *testing.T) {
+	var zeroValue bool
+	e := &Environment{CanAdminsBypass: &zeroValue}
+	e.GetCanAdminsBypass()
+	e = &Environment{}
+	e.GetCanAdminsBypass()
+	e = nil
+	e.GetCanAdminsBypass()
+}
+
 func TestEnvironment_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	e := &Environment{CreatedAt: &zeroValue}
