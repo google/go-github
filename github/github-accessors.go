@@ -8646,6 +8646,14 @@ func (j *Jobs) GetTotalCount() int {
 	return *j.TotalCount
 }
 
+// GetAddedBy returns the AddedBy field if it's non-nil, zero value otherwise.
+func (k *Key) GetAddedBy() string {
+	if k == nil || k.AddedBy == nil {
+		return ""
+	}
+	return *k.AddedBy
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (k *Key) GetCreatedAt() Timestamp {
 	if k == nil || k.CreatedAt == nil {
@@ -8668,6 +8676,14 @@ func (k *Key) GetKey() string {
 		return ""
 	}
 	return *k.Key
+}
+
+// GetLastUsed returns the LastUsed field if it's non-nil, zero value otherwise.
+func (k *Key) GetLastUsed() Timestamp {
+	if k == nil || k.LastUsed == nil {
+		return Timestamp{}
+	}
+	return *k.LastUsed
 }
 
 // GetReadOnly returns the ReadOnly field if it's non-nil, zero value otherwise.

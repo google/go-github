@@ -10130,6 +10130,16 @@ func TestJobs_GetTotalCount(tt *testing.T) {
 	j.GetTotalCount()
 }
 
+func TestKey_GetAddedBy(tt *testing.T) {
+	var zeroValue string
+	k := &Key{AddedBy: &zeroValue}
+	k.GetAddedBy()
+	k = &Key{}
+	k.GetAddedBy()
+	k = nil
+	k.GetAddedBy()
+}
+
 func TestKey_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	k := &Key{CreatedAt: &zeroValue}
@@ -10158,6 +10168,16 @@ func TestKey_GetKey(tt *testing.T) {
 	k.GetKey()
 	k = nil
 	k.GetKey()
+}
+
+func TestKey_GetLastUsed(tt *testing.T) {
+	var zeroValue Timestamp
+	k := &Key{LastUsed: &zeroValue}
+	k.GetLastUsed()
+	k = &Key{}
+	k.GetLastUsed()
+	k = nil
+	k.GetLastUsed()
 }
 
 func TestKey_GetReadOnly(tt *testing.T) {
