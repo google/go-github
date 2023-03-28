@@ -17,6 +17,7 @@ type Pages struct {
 	CNAME            *string                `json:"cname,omitempty"`
 	Custom404        *bool                  `json:"custom_404,omitempty"`
 	HTMLURL          *string                `json:"html_url,omitempty"`
+	BuildType        *string                `json:"build_type,omitempty"`
 	Source           *PagesSource           `json:"source,omitempty"`
 	Public           *bool                  `json:"public,omitempty"`
 	HTTPSCertificate *PagesHTTPSCertificate `json:"https_certificate,omitempty"`
@@ -58,7 +59,8 @@ type PagesHTTPSCertificate struct {
 // createPagesRequest is a subset of Pages and is used internally
 // by EnablePages to pass only the known fields for the endpoint.
 type createPagesRequest struct {
-	Source *PagesSource `json:"source,omitempty"`
+	BuildType *string      `json:"build_type,omitempty"`
+	Source    *PagesSource `json:"source,omitempty"`
 }
 
 // EnablePages enables GitHub Pages for the named repo.
@@ -68,7 +70,8 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
 	pagesReq := &createPagesRequest{
-		Source: pages.Source,
+		BuildType: pages.BuildType,
+		Source:    pages.Source,
 	}
 
 	req, err := s.client.NewRequest("POST", u, pagesReq)
@@ -92,6 +95,10 @@ type PagesUpdate struct {
 	// CNAME represents a custom domain for the repository.
 	// Leaving CNAME empty will remove the custom domain.
 	CNAME *string `json:"cname"`
+	// BuildType is optional and can either be "legacy" or "workflow".
+	// "workflow" - You are using a github workflow to build your pages.
+	// "legacy"   - You are deploying from a branch.
+	BuildType *string `json:"build_type,omitempty"`
 	// Source must include the branch name, and may optionally specify the subdirectory "/docs".
 	// Possible values for Source.Branch are usually "gh-pages", "main", and "master",
 	// or any other existing branch name.

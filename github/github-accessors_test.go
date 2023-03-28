@@ -13806,6 +13806,16 @@ func TestPageBuildEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 }
 
+func TestPages_GetBuildType(tt *testing.T) {
+	var zeroValue string
+	p := &Pages{BuildType: &zeroValue}
+	p.GetBuildType()
+	p = &Pages{}
+	p.GetBuildType()
+	p = nil
+	p.GetBuildType()
+}
+
 func TestPages_GetCNAME(tt *testing.T) {
 	var zeroValue string
 	p := &Pages{CNAME: &zeroValue}
@@ -14032,6 +14042,16 @@ func TestPageStats_GetTotalPages(tt *testing.T) {
 	p.GetTotalPages()
 	p = nil
 	p.GetTotalPages()
+}
+
+func TestPagesUpdate_GetBuildType(tt *testing.T) {
+	var zeroValue string
+	p := &PagesUpdate{BuildType: &zeroValue}
+	p.GetBuildType()
+	p = &PagesUpdate{}
+	p.GetBuildType()
+	p = nil
+	p.GetBuildType()
 }
 
 func TestPagesUpdate_GetCNAME(tt *testing.T) {
