@@ -120,9 +120,14 @@ func (s *BillingService) GetStorageBillingOrg(ctx context.Context, org string) (
 
 // GetAdvancedSecurityActiveCommittersOrg returns the GitHub Advanced Security active committers for an organization per repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/billing#get-github-advanced-security-active-committers-for-an-organization
-func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Context, org string) (*ActiveCommitters, *Response, error) {
+// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/billing?apiVersion=2022-11-28#get-github-advanced-security-active-committers-for-an-organization
+func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Context, org string, opts *ListOptions) (*ActiveCommitters, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/advanced-security", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

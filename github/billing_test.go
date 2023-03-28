@@ -452,7 +452,8 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	hook, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "o")
+	opts := &ListOptions{Page: 2, PerPage: 50}
+	hook, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Billing.GetAdvancedSecurityActiveCommittersOrg	 returned error: %v", err)
 	}
@@ -478,12 +479,12 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 
 	const methodName = "GetAdvancedSecurityActiveCommittersOrg"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "\n")
+		_, _, err = client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "\n", nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "o")
+		got, resp, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -496,6 +497,6 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg_invalidOrg(t *tes
 	defer teardown()
 
 	ctx := context.Background()
-	_, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "%")
+	_, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "%", nil)
 	testURLParseError(t, err)
 }
