@@ -145,7 +145,7 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id": 1,"name": "staging", "deployment_branch_policy": {"protected_branches": true,	"custom_branch_policies": false}}`)
+		fmt.Fprint(w, `{"id": 1,"name": "staging", "deployment_branch_policy": {"protected_branches": true,	"custom_branch_policies": false}, "can_admins_bypass": false}`)
 	})
 
 	ctx := context.Background()
@@ -154,7 +154,7 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 		t.Errorf("Repositories.GetEnvironment returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &Environment{ID: Int64(1), Name: String("staging"), DeploymentBranchPolicy: &BranchPolicy{ProtectedBranches: Bool(true), CustomBranchPolicies: Bool(false)}}
+	want := &Environment{ID: Int64(1), Name: String("staging"), DeploymentBranchPolicy: &BranchPolicy{ProtectedBranches: Bool(true), CustomBranchPolicies: Bool(false)}, CanAdminsBypass: Bool(false)}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetEnvironment returned %+v, want %+v", release, want)
 	}

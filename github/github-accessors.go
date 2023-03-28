@@ -5590,6 +5590,14 @@ func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningPushProtectionEnab
 	return *e.SecretScanningPushProtectionEnabledForNewRepositories
 }
 
+// GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
+func (e *Environment) GetCanAdminsBypass() bool {
+	if e == nil || e.CanAdminsBypass == nil {
+		return false
+	}
+	return *e.CanAdminsBypass
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (e *Environment) GetCreatedAt() Timestamp {
 	if e == nil || e.CreatedAt == nil {
