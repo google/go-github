@@ -144,7 +144,7 @@ func TestUserEmail_Marshal(t *testing.T) {
 func TestUsersService_SetEmailVisibility(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
-
+	
 	input := &UserEmail{Visibility: String("private")}
 
 	mux.HandleFunc("/user/email/visibility", func(w http.ResponseWriter, r *http.Request) {
@@ -165,7 +165,7 @@ func TestUsersService_SetEmailVisibility(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	emails, _, err := client.Users.SetEmailVisibility(ctx, input)
+	emails, _, err := client.Users.SetEmailVisibility(ctx, "private")
 	if err != nil {
 		t.Errorf("Users.SetEmailVisibility returned error: %v", err)
 	}
@@ -177,7 +177,7 @@ func TestUsersService_SetEmailVisibility(t *testing.T) {
 
 	const methodName = "SetEmailVisibility"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.SetEmailVisibility(ctx, input)
+		got, resp, err := client.Users.SetEmailVisibility(ctx, "private")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
