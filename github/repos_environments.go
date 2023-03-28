@@ -28,7 +28,7 @@ type Environment struct {
 	HTMLURL         *string           `json:"html_url,omitempty"`
 	CreatedAt       *Timestamp        `json:"created_at,omitempty"`
 	UpdatedAt       *Timestamp        `json:"updated_at,omitempty"`
-	CanAdminBypass  *bool             `json:"can_admin_bypass"`
+	CanAdminsBypass *bool             `json:"can_admins_bypass"`
 	ProtectionRules []*ProtectionRule `json:"protection_rules,omitempty"`
 }
 
