@@ -144,7 +144,7 @@ func TestUserEmail_Marshal(t *testing.T) {
 func TestUsersService_SetEmailVisibility(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
-	
+
 	input := &UserEmail{Visibility: String("private")}
 
 	mux.HandleFunc("/user/email/visibility", func(w http.ResponseWriter, r *http.Request) {
