@@ -148,10 +148,14 @@ func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, n
 
 // MarshalJSON implements the json.Marshaler interface.
 // As the only way to clear a WaitTimer is to set it to 0, a missing WaitTimer object should default to 0, not null.
+// As the default value for CanAdminBypass is true, a nil value here marshals to true.
 func (c *CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
 	type Alias CreateUpdateEnvironment
 	if c.WaitTimer == nil {
 		c.WaitTimer = Int(0)
+	}
+	if c.CanAdminsBypass == nil {
+		c.CanAdminsBypass = Bool(true)
 	}
 	return json.Marshal(&struct {
 		*Alias
@@ -163,13 +167,11 @@ func (c *CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
 // CreateUpdateEnvironment represents the fields required for the create/update operation
 // following the Create/Update release example.
 // See https://github.com/google/go-github/issues/992 for more information.
-// Removed omitempty here for for reviewers and deployment_branch_policy as the API expects null values to clear them.
-// WaitTimer is set to 0 by the marshaller when empty.
-// The API does not accept a null value for can_admins_bypass, so an empty value here is omitted.
+// Removed omitempty here as the API expects null values for reviewers and deployment_branch_policy to clear them.
 type CreateUpdateEnvironment struct {
 	WaitTimer              *int            `json:"wait_timer"`
 	Reviewers              []*EnvReviewers `json:"reviewers"`
-	CanAdminsBypass        *bool           `json:"can_admins_bypass,omitempty"`
+	CanAdminsBypass        *bool           `json:"can_admins_bypass"`
 	DeploymentBranchPolicy *BranchPolicy   `json:"deployment_branch_policy"`
 }
 

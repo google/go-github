@@ -93,7 +93,7 @@ func TestCreateUpdateEnvironment_MarshalJSON(t *testing.T) {
 		t.Errorf("MarshalJSON: %v", err)
 	}
 
-	want := `{"wait_timer":0,"reviewers":null,"deployment_branch_policy":null}`
+	want := `{"wait_timer":0,"reviewers":null,"can_admins_bypass":true,"deployment_branch_policy":null}`
 	if string(got) != want {
 		t.Errorf("MarshalJSON = %s, want %v", got, want)
 	}
@@ -187,7 +187,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		want := &CreateUpdateEnvironment{WaitTimer: Int(30)}
+		want := &CreateUpdateEnvironment{WaitTimer: Int(30), CanAdminsBypass: Bool(true)}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
