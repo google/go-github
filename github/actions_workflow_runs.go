@@ -204,6 +204,26 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 	return run, resp, nil
 }
 
+// GetWorkflowRunAttemptLogs gets a redirect URL to download a plain text file of logs for a workflow run for attempt number.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#download-workflow-run-attempt-logs
+func (s *ActionsService) GetWorkflowRunAttemptLogs(ctx context.Context, owner, repo string, runID int64, attemptNumber int, followRedirects bool) (*url.URL, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/attempts/%v/logs", owner, repo, runID, attemptNumber)
+
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusFound {
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+	}
+
+	parsedURL, err := url.Parse(resp.Header.Get("Location"))
+	return parsedURL, newResponse(resp), err
+}
+
 // RerunWorkflowByID re-runs a workflow by ID.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#re-run-a-workflow

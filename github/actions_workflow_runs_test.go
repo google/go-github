@@ -188,6 +188,89 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 	})
 }
 
+func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+	})
+
+	ctx := context.Background()
+	url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, true)
+	if err != nil {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusFound {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+	}
+	want := "http://github.com/a"
+	if url.String() != want {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url.String(), want)
+	}
+
+	const methodName = "GetWorkflowRunAttemptLogs"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowRunAttemptLogs(ctx, "\n", "\n", 399444496, 2, true)
+		return err
+	})
+}
+
+func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
+	})
+
+	ctx := context.Background()
+	_, resp, _ := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, false)
+	if resp.StatusCode != http.StatusMovedPermanently {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+	}
+}
+
+func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followRedirects(t *testing.T) {
+	client, mux, serverURL, teardown := setup()
+	defer teardown()
+
+	// Mock a redirect link, which leads to an archive link
+	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
+		http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
+	})
+
+	mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+	})
+
+	ctx := context.Background()
+	url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, true)
+	if err != nil {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned error: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusFound {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+	}
+
+	want := "http://github.com/a"
+	if url.String() != want {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url.String(), want)
+	}
+
+	const methodName = "GetWorkflowRunAttemptLogs"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowRunAttemptLogs(ctx, "\n", "\n", 399444496, 2, true)
+		return err
+	})
+}
+
 func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
