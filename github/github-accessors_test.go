@@ -4725,6 +4725,16 @@ func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	c.GetVisibility()
 }
 
+func TestCreateUpdateEnvironment_GetCanAdminsBypass(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateUpdateEnvironment{CanAdminsBypass: &zeroValue}
+	c.GetCanAdminsBypass()
+	c = &CreateUpdateEnvironment{}
+	c.GetCanAdminsBypass()
+	c = nil
+	c.GetCanAdminsBypass()
+}
+
 func TestCreateUpdateEnvironment_GetDeploymentBranchPolicy(tt *testing.T) {
 	c := &CreateUpdateEnvironment{}
 	c.GetDeploymentBranchPolicy()
@@ -6569,6 +6579,16 @@ func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningPushProtectionEnabl
 	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
 	e = nil
 	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
+}
+
+func TestEnvironment_GetCanAdminsBypass(tt *testing.T) {
+	var zeroValue bool
+	e := &Environment{CanAdminsBypass: &zeroValue}
+	e.GetCanAdminsBypass()
+	e = &Environment{}
+	e.GetCanAdminsBypass()
+	e = nil
+	e.GetCanAdminsBypass()
 }
 
 func TestEnvironment_GetCreatedAt(tt *testing.T) {
@@ -10160,6 +10180,16 @@ func TestJobs_GetTotalCount(tt *testing.T) {
 	j.GetTotalCount()
 }
 
+func TestKey_GetAddedBy(tt *testing.T) {
+	var zeroValue string
+	k := &Key{AddedBy: &zeroValue}
+	k.GetAddedBy()
+	k = &Key{}
+	k.GetAddedBy()
+	k = nil
+	k.GetAddedBy()
+}
+
 func TestKey_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	k := &Key{CreatedAt: &zeroValue}
@@ -10188,6 +10218,16 @@ func TestKey_GetKey(tt *testing.T) {
 	k.GetKey()
 	k = nil
 	k.GetKey()
+}
+
+func TestKey_GetLastUsed(tt *testing.T) {
+	var zeroValue Timestamp
+	k := &Key{LastUsed: &zeroValue}
+	k.GetLastUsed()
+	k = &Key{}
+	k.GetLastUsed()
+	k = nil
+	k.GetLastUsed()
 }
 
 func TestKey_GetReadOnly(tt *testing.T) {
@@ -13913,6 +13953,16 @@ func TestPageBuildEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 }
 
+func TestPages_GetBuildType(tt *testing.T) {
+	var zeroValue string
+	p := &Pages{BuildType: &zeroValue}
+	p.GetBuildType()
+	p = &Pages{}
+	p.GetBuildType()
+	p = nil
+	p.GetBuildType()
+}
+
 func TestPages_GetCNAME(tt *testing.T) {
 	var zeroValue string
 	p := &Pages{CNAME: &zeroValue}
@@ -14139,6 +14189,16 @@ func TestPageStats_GetTotalPages(tt *testing.T) {
 	p.GetTotalPages()
 	p = nil
 	p.GetTotalPages()
+}
+
+func TestPagesUpdate_GetBuildType(tt *testing.T) {
+	var zeroValue string
+	p := &PagesUpdate{BuildType: &zeroValue}
+	p.GetBuildType()
+	p = &PagesUpdate{}
+	p.GetBuildType()
+	p = nil
+	p.GetBuildType()
 }
 
 func TestPagesUpdate_GetCNAME(tt *testing.T) {

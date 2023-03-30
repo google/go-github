@@ -4022,6 +4022,14 @@ func (c *CreateRunnerGroupRequest) GetVisibility() string {
 	return *c.Visibility
 }
 
+// GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
+func (c *CreateUpdateEnvironment) GetCanAdminsBypass() bool {
+	if c == nil || c.CanAdminsBypass == nil {
+		return false
+	}
+	return *c.CanAdminsBypass
+}
+
 // GetDeploymentBranchPolicy returns the DeploymentBranchPolicy field.
 func (c *CreateUpdateEnvironment) GetDeploymentBranchPolicy() *BranchPolicy {
 	if c == nil {
@@ -5612,6 +5620,14 @@ func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningPushProtectionEnab
 		return false
 	}
 	return *e.SecretScanningPushProtectionEnabledForNewRepositories
+}
+
+// GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
+func (e *Environment) GetCanAdminsBypass() bool {
+	if e == nil || e.CanAdminsBypass == nil {
+		return false
+	}
+	return *e.CanAdminsBypass
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
@@ -8670,6 +8686,14 @@ func (j *Jobs) GetTotalCount() int {
 	return *j.TotalCount
 }
 
+// GetAddedBy returns the AddedBy field if it's non-nil, zero value otherwise.
+func (k *Key) GetAddedBy() string {
+	if k == nil || k.AddedBy == nil {
+		return ""
+	}
+	return *k.AddedBy
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (k *Key) GetCreatedAt() Timestamp {
 	if k == nil || k.CreatedAt == nil {
@@ -8692,6 +8716,14 @@ func (k *Key) GetKey() string {
 		return ""
 	}
 	return *k.Key
+}
+
+// GetLastUsed returns the LastUsed field if it's non-nil, zero value otherwise.
+func (k *Key) GetLastUsed() Timestamp {
+	if k == nil || k.LastUsed == nil {
+		return Timestamp{}
+	}
+	return *k.LastUsed
 }
 
 // GetReadOnly returns the ReadOnly field if it's non-nil, zero value otherwise.
@@ -11862,6 +11894,14 @@ func (p *PageBuildEvent) GetSender() *User {
 	return p.Sender
 }
 
+// GetBuildType returns the BuildType field if it's non-nil, zero value otherwise.
+func (p *Pages) GetBuildType() string {
+	if p == nil || p.BuildType == nil {
+		return ""
+	}
+	return *p.BuildType
+}
+
 // GetCNAME returns the CNAME field if it's non-nil, zero value otherwise.
 func (p *Pages) GetCNAME() string {
 	if p == nil || p.CNAME == nil {
@@ -12052,6 +12092,14 @@ func (p *PageStats) GetTotalPages() int {
 		return 0
 	}
 	return *p.TotalPages
+}
+
+// GetBuildType returns the BuildType field if it's non-nil, zero value otherwise.
+func (p *PagesUpdate) GetBuildType() string {
+	if p == nil || p.BuildType == nil {
+		return ""
+	}
+	return *p.BuildType
 }
 
 // GetCNAME returns the CNAME field if it's non-nil, zero value otherwise.
