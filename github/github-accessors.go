@@ -4022,6 +4022,14 @@ func (c *CreateRunnerGroupRequest) GetVisibility() string {
 	return *c.Visibility
 }
 
+// GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
+func (c *CreateUpdateEnvironment) GetCanAdminsBypass() bool {
+	if c == nil || c.CanAdminsBypass == nil {
+		return false
+	}
+	return *c.CanAdminsBypass
+}
+
 // GetDeploymentBranchPolicy returns the DeploymentBranchPolicy field.
 func (c *CreateUpdateEnvironment) GetDeploymentBranchPolicy() *BranchPolicy {
 	if c == nil {
