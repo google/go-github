@@ -4725,6 +4725,16 @@ func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	c.GetVisibility()
 }
 
+func TestCreateUpdateEnvironment_GetCanAdminsBypass(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateUpdateEnvironment{CanAdminsBypass: &zeroValue}
+	c.GetCanAdminsBypass()
+	c = &CreateUpdateEnvironment{}
+	c.GetCanAdminsBypass()
+	c = nil
+	c.GetCanAdminsBypass()
+}
+
 func TestCreateUpdateEnvironment_GetDeploymentBranchPolicy(tt *testing.T) {
 	c := &CreateUpdateEnvironment{}
 	c.GetDeploymentBranchPolicy()
