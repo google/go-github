@@ -11782,6 +11782,14 @@ func (p *PageBuildEvent) GetSender() *User {
 	return p.Sender
 }
 
+// GetBuildType returns the BuildType field if it's non-nil, zero value otherwise.
+func (p *Pages) GetBuildType() string {
+	if p == nil || p.BuildType == nil {
+		return ""
+	}
+	return *p.BuildType
+}
+
 // GetCNAME returns the CNAME field if it's non-nil, zero value otherwise.
 func (p *Pages) GetCNAME() string {
 	if p == nil || p.CNAME == nil {
@@ -11972,6 +11980,14 @@ func (p *PageStats) GetTotalPages() int {
 		return 0
 	}
 	return *p.TotalPages
+}
+
+// GetBuildType returns the BuildType field if it's non-nil, zero value otherwise.
+func (p *PagesUpdate) GetBuildType() string {
+	if p == nil || p.BuildType == nil {
+		return ""
+	}
+	return *p.BuildType
 }
 
 // GetCNAME returns the CNAME field if it's non-nil, zero value otherwise.
