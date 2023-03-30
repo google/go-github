@@ -4742,6 +4742,36 @@ func TestCreateUpdateEnvironment_GetWaitTimer(tt *testing.T) {
 	c.GetWaitTimer()
 }
 
+func TestCreateUpdateRequiredWorkflowOptions_GetRepositoryID(tt *testing.T) {
+	var zeroValue int64
+	c := &CreateUpdateRequiredWorkflowOptions{RepositoryID: &zeroValue}
+	c.GetRepositoryID()
+	c = &CreateUpdateRequiredWorkflowOptions{}
+	c.GetRepositoryID()
+	c = nil
+	c.GetRepositoryID()
+}
+
+func TestCreateUpdateRequiredWorkflowOptions_GetScope(tt *testing.T) {
+	var zeroValue string
+	c := &CreateUpdateRequiredWorkflowOptions{Scope: &zeroValue}
+	c.GetScope()
+	c = &CreateUpdateRequiredWorkflowOptions{}
+	c.GetScope()
+	c = nil
+	c.GetScope()
+}
+
+func TestCreateUpdateRequiredWorkflowOptions_GetWorkflowFilepath(tt *testing.T) {
+	var zeroValue string
+	c := &CreateUpdateRequiredWorkflowOptions{WorkflowFilepath: &zeroValue}
+	c.GetWorkflowFilepath()
+	c = &CreateUpdateRequiredWorkflowOptions{}
+	c.GetWorkflowFilepath()
+	c = nil
+	c.GetWorkflowFilepath()
+}
+
 func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	var zeroValue string
 	c := &CreateUserProjectOptions{Body: &zeroValue}
@@ -12953,6 +12983,113 @@ func TestOrgBlockEvent_GetSender(tt *testing.T) {
 	o.GetSender()
 }
 
+func TestOrgRequiredWorkflow_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	o := &OrgRequiredWorkflow{CreatedAt: &zeroValue}
+	o.GetCreatedAt()
+	o = &OrgRequiredWorkflow{}
+	o.GetCreatedAt()
+	o = nil
+	o.GetCreatedAt()
+}
+
+func TestOrgRequiredWorkflow_GetID(tt *testing.T) {
+	var zeroValue int64
+	o := &OrgRequiredWorkflow{ID: &zeroValue}
+	o.GetID()
+	o = &OrgRequiredWorkflow{}
+	o.GetID()
+	o = nil
+	o.GetID()
+}
+
+func TestOrgRequiredWorkflow_GetName(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{Name: &zeroValue}
+	o.GetName()
+	o = &OrgRequiredWorkflow{}
+	o.GetName()
+	o = nil
+	o.GetName()
+}
+
+func TestOrgRequiredWorkflow_GetPath(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{Path: &zeroValue}
+	o.GetPath()
+	o = &OrgRequiredWorkflow{}
+	o.GetPath()
+	o = nil
+	o.GetPath()
+}
+
+func TestOrgRequiredWorkflow_GetRef(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{Ref: &zeroValue}
+	o.GetRef()
+	o = &OrgRequiredWorkflow{}
+	o.GetRef()
+	o = nil
+	o.GetRef()
+}
+
+func TestOrgRequiredWorkflow_GetRepository(tt *testing.T) {
+	o := &OrgRequiredWorkflow{}
+	o.GetRepository()
+	o = nil
+	o.GetRepository()
+}
+
+func TestOrgRequiredWorkflow_GetScope(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{Scope: &zeroValue}
+	o.GetScope()
+	o = &OrgRequiredWorkflow{}
+	o.GetScope()
+	o = nil
+	o.GetScope()
+}
+
+func TestOrgRequiredWorkflow_GetSelectedRepositoriesUrl(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{SelectedRepositoriesUrl: &zeroValue}
+	o.GetSelectedRepositoriesUrl()
+	o = &OrgRequiredWorkflow{}
+	o.GetSelectedRepositoriesUrl()
+	o = nil
+	o.GetSelectedRepositoriesUrl()
+}
+
+func TestOrgRequiredWorkflow_GetState(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{State: &zeroValue}
+	o.GetState()
+	o = &OrgRequiredWorkflow{}
+	o.GetState()
+	o = nil
+	o.GetState()
+}
+
+func TestOrgRequiredWorkflow_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	o := &OrgRequiredWorkflow{UpdatedAt: &zeroValue}
+	o.GetUpdatedAt()
+	o = &OrgRequiredWorkflow{}
+	o.GetUpdatedAt()
+	o = nil
+	o.GetUpdatedAt()
+}
+
+func TestOrgRequiredWorkflows_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	o := &OrgRequiredWorkflows{TotalCount: &zeroValue}
+	o.GetTotalCount()
+	o = &OrgRequiredWorkflows{}
+	o.GetTotalCount()
+	o = nil
+	o.GetTotalCount()
+}
+
 func TestOrgStats_GetDisabledOrgs(tt *testing.T) {
 	var zeroValue int
 	o := &OrgStats{DisabledOrgs: &zeroValue}
@@ -17944,6 +18081,123 @@ func TestRepoName_GetFrom(tt *testing.T) {
 	r.GetFrom()
 }
 
+func TestRepoRequiredWorkflow_GetBadgeURL(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{BadgeURL: &zeroValue}
+	r.GetBadgeURL()
+	r = &RepoRequiredWorkflow{}
+	r.GetBadgeURL()
+	r = nil
+	r.GetBadgeURL()
+}
+
+func TestRepoRequiredWorkflow_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	r := &RepoRequiredWorkflow{CreatedAt: &zeroValue}
+	r.GetCreatedAt()
+	r = &RepoRequiredWorkflow{}
+	r.GetCreatedAt()
+	r = nil
+	r.GetCreatedAt()
+}
+
+func TestRepoRequiredWorkflow_GetHtmlURL(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{HtmlURL: &zeroValue}
+	r.GetHtmlURL()
+	r = &RepoRequiredWorkflow{}
+	r.GetHtmlURL()
+	r = nil
+	r.GetHtmlURL()
+}
+
+func TestRepoRequiredWorkflow_GetID(tt *testing.T) {
+	var zeroValue int64
+	r := &RepoRequiredWorkflow{ID: &zeroValue}
+	r.GetID()
+	r = &RepoRequiredWorkflow{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRepoRequiredWorkflow_GetName(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{Name: &zeroValue}
+	r.GetName()
+	r = &RepoRequiredWorkflow{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRepoRequiredWorkflow_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{NodeID: &zeroValue}
+	r.GetNodeID()
+	r = &RepoRequiredWorkflow{}
+	r.GetNodeID()
+	r = nil
+	r.GetNodeID()
+}
+
+func TestRepoRequiredWorkflow_GetPath(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{Path: &zeroValue}
+	r.GetPath()
+	r = &RepoRequiredWorkflow{}
+	r.GetPath()
+	r = nil
+	r.GetPath()
+}
+
+func TestRepoRequiredWorkflow_GetSourceRepository(tt *testing.T) {
+	r := &RepoRequiredWorkflow{}
+	r.GetSourceRepository()
+	r = nil
+	r.GetSourceRepository()
+}
+
+func TestRepoRequiredWorkflow_GetState(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{State: &zeroValue}
+	r.GetState()
+	r = &RepoRequiredWorkflow{}
+	r.GetState()
+	r = nil
+	r.GetState()
+}
+
+func TestRepoRequiredWorkflow_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	r := &RepoRequiredWorkflow{UpdatedAt: &zeroValue}
+	r.GetUpdatedAt()
+	r = &RepoRequiredWorkflow{}
+	r.GetUpdatedAt()
+	r = nil
+	r.GetUpdatedAt()
+}
+
+func TestRepoRequiredWorkflow_GetURL(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{URL: &zeroValue}
+	r.GetURL()
+	r = &RepoRequiredWorkflow{}
+	r.GetURL()
+	r = nil
+	r.GetURL()
+}
+
+func TestRepoRequiredWorkflows_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	r := &RepoRequiredWorkflows{TotalCount: &zeroValue}
+	r.GetTotalCount()
+	r = &RepoRequiredWorkflows{}
+	r.GetTotalCount()
+	r = nil
+	r.GetTotalCount()
+}
+
 func TestRepositoriesSearchResult_GetIncompleteResults(tt *testing.T) {
 	var zeroValue bool
 	r := &RepositoriesSearchResult{IncompleteResults: &zeroValue}
@@ -20336,6 +20590,16 @@ func TestRequiredStatusChecksRequest_GetStrict(tt *testing.T) {
 	r.GetStrict()
 	r = nil
 	r.GetStrict()
+}
+
+func TestRequiredWorkflowSelectedRepositories_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	r := &RequiredWorkflowSelectedRepositories{TotalCount: &zeroValue}
+	r.GetTotalCount()
+	r = &RequiredWorkflowSelectedRepositories{}
+	r.GetTotalCount()
+	r = nil
+	r.GetTotalCount()
 }
 
 func TestReviewersRequest_GetNodeID(tt *testing.T) {

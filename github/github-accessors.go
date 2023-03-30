@@ -4038,6 +4038,30 @@ func (c *CreateUpdateEnvironment) GetWaitTimer() int {
 	return *c.WaitTimer
 }
 
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (c *CreateUpdateRequiredWorkflowOptions) GetRepositoryID() int64 {
+	if c == nil || c.RepositoryID == nil {
+		return 0
+	}
+	return *c.RepositoryID
+}
+
+// GetScope returns the Scope field if it's non-nil, zero value otherwise.
+func (c *CreateUpdateRequiredWorkflowOptions) GetScope() string {
+	if c == nil || c.Scope == nil {
+		return ""
+	}
+	return *c.Scope
+}
+
+// GetWorkflowFilepath returns the WorkflowFilepath field if it's non-nil, zero value otherwise.
+func (c *CreateUpdateRequiredWorkflowOptions) GetWorkflowFilepath() string {
+	if c == nil || c.WorkflowFilepath == nil {
+		return ""
+	}
+	return *c.WorkflowFilepath
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (c *CreateUserProjectOptions) GetBody() string {
 	if c == nil || c.Body == nil {
@@ -11046,6 +11070,94 @@ func (o *OrgBlockEvent) GetSender() *User {
 	return o.Sender
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (o *OrgRequiredWorkflow) GetCreatedAt() Timestamp {
+	if o == nil || o.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *o.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (o *OrgRequiredWorkflow) GetID() int64 {
+	if o == nil || o.ID == nil {
+		return 0
+	}
+	return *o.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (o *OrgRequiredWorkflow) GetName() string {
+	if o == nil || o.Name == nil {
+		return ""
+	}
+	return *o.Name
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (o *OrgRequiredWorkflow) GetPath() string {
+	if o == nil || o.Path == nil {
+		return ""
+	}
+	return *o.Path
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (o *OrgRequiredWorkflow) GetRef() string {
+	if o == nil || o.Ref == nil {
+		return ""
+	}
+	return *o.Ref
+}
+
+// GetRepository returns the Repository field.
+func (o *OrgRequiredWorkflow) GetRepository() *Repository {
+	if o == nil {
+		return nil
+	}
+	return o.Repository
+}
+
+// GetScope returns the Scope field if it's non-nil, zero value otherwise.
+func (o *OrgRequiredWorkflow) GetScope() string {
+	if o == nil || o.Scope == nil {
+		return ""
+	}
+	return *o.Scope
+}
+
+// GetSelectedRepositoriesUrl returns the SelectedRepositoriesUrl field if it's non-nil, zero value otherwise.
+func (o *OrgRequiredWorkflow) GetSelectedRepositoriesUrl() string {
+	if o == nil || o.SelectedRepositoriesUrl == nil {
+		return ""
+	}
+	return *o.SelectedRepositoriesUrl
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (o *OrgRequiredWorkflow) GetState() string {
+	if o == nil || o.State == nil {
+		return ""
+	}
+	return *o.State
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (o *OrgRequiredWorkflow) GetUpdatedAt() Timestamp {
+	if o == nil || o.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *o.UpdatedAt
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (o *OrgRequiredWorkflows) GetTotalCount() int {
+	if o == nil || o.TotalCount == nil {
+		return 0
+	}
+	return *o.TotalCount
+}
+
 // GetDisabledOrgs returns the DisabledOrgs field if it's non-nil, zero value otherwise.
 func (o *OrgStats) GetDisabledOrgs() int {
 	if o == nil || o.DisabledOrgs == nil {
@@ -15454,6 +15566,102 @@ func (r *RepoName) GetFrom() string {
 	return *r.From
 }
 
+// GetBadgeURL returns the BadgeURL field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflow) GetBadgeURL() string {
+	if r == nil || r.BadgeURL == nil {
+		return ""
+	}
+	return *r.BadgeURL
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflow) GetCreatedAt() Timestamp {
+	if r == nil || r.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *r.CreatedAt
+}
+
+// GetHtmlURL returns the HtmlURL field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflow) GetHtmlURL() string {
+	if r == nil || r.HtmlURL == nil {
+		return ""
+	}
+	return *r.HtmlURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflow) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflow) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflow) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflow) GetPath() string {
+	if r == nil || r.Path == nil {
+		return ""
+	}
+	return *r.Path
+}
+
+// GetSourceRepository returns the SourceRepository field.
+func (r *RepoRequiredWorkflow) GetSourceRepository() *Repository {
+	if r == nil {
+		return nil
+	}
+	return r.SourceRepository
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflow) GetState() string {
+	if r == nil || r.State == nil {
+		return ""
+	}
+	return *r.State
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflow) GetUpdatedAt() Timestamp {
+	if r == nil || r.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *r.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflow) GetURL() string {
+	if r == nil || r.URL == nil {
+		return ""
+	}
+	return *r.URL
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflows) GetTotalCount() int {
+	if r == nil || r.TotalCount == nil {
+		return 0
+	}
+	return *r.TotalCount
+}
+
 // GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.
 func (r *RepositoriesSearchResult) GetIncompleteResults() bool {
 	if r == nil || r.IncompleteResults == nil {
@@ -17468,6 +17676,14 @@ func (r *RequiredStatusChecksRequest) GetStrict() bool {
 		return false
 	}
 	return *r.Strict
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (r *RequiredWorkflowSelectedRepositories) GetTotalCount() int {
+	if r == nil || r.TotalCount == nil {
+		return 0
+	}
+	return *r.TotalCount
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
