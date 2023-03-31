@@ -262,6 +262,19 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 	return o, resp, nil
 }
 
+// Delete an organization by name.
+//
+// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#delete-an-organization
+func (s *OrganizationsService) Delete(ctx context.Context, org string) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v", org)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
 // ListInstallations lists installations for an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-app-installations-for-an-organization
