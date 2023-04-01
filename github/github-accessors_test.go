@@ -13090,14 +13090,14 @@ func TestOrgRequiredWorkflow_GetScope(tt *testing.T) {
 	o.GetScope()
 }
 
-func TestOrgRequiredWorkflow_GetSelectedRepositoriesUrl(tt *testing.T) {
+func TestOrgRequiredWorkflow_GetSelectedRepositoriesURL(tt *testing.T) {
 	var zeroValue string
-	o := &OrgRequiredWorkflow{SelectedRepositoriesUrl: &zeroValue}
-	o.GetSelectedRepositoriesUrl()
+	o := &OrgRequiredWorkflow{SelectedRepositoriesURL: &zeroValue}
+	o.GetSelectedRepositoriesURL()
 	o = &OrgRequiredWorkflow{}
-	o.GetSelectedRepositoriesUrl()
+	o.GetSelectedRepositoriesURL()
 	o = nil
-	o.GetSelectedRepositoriesUrl()
+	o.GetSelectedRepositoriesURL()
 }
 
 func TestOrgRequiredWorkflow_GetState(tt *testing.T) {
@@ -18161,14 +18161,14 @@ func TestRepoRequiredWorkflow_GetCreatedAt(tt *testing.T) {
 	r.GetCreatedAt()
 }
 
-func TestRepoRequiredWorkflow_GetHtmlURL(tt *testing.T) {
+func TestRepoRequiredWorkflow_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
-	r := &RepoRequiredWorkflow{HtmlURL: &zeroValue}
-	r.GetHtmlURL()
+	r := &RepoRequiredWorkflow{HTMLURL: &zeroValue}
+	r.GetHTMLURL()
 	r = &RepoRequiredWorkflow{}
-	r.GetHtmlURL()
+	r.GetHTMLURL()
 	r = nil
-	r.GetHtmlURL()
+	r.GetHTMLURL()
 }
 
 func TestRepoRequiredWorkflow_GetID(tt *testing.T) {
@@ -20652,11 +20652,11 @@ func TestRequiredStatusChecksRequest_GetStrict(tt *testing.T) {
 	r.GetStrict()
 }
 
-func TestRequiredWorkflowSelectedRepositories_GetTotalCount(tt *testing.T) {
+func TestRequiredWorkflowSelectedRepos_GetTotalCount(tt *testing.T) {
 	var zeroValue int
-	r := &RequiredWorkflowSelectedRepositories{TotalCount: &zeroValue}
+	r := &RequiredWorkflowSelectedRepos{TotalCount: &zeroValue}
 	r.GetTotalCount()
-	r = &RequiredWorkflowSelectedRepositories{}
+	r = &RequiredWorkflowSelectedRepos{}
 	r.GetTotalCount()
 	r = nil
 	r.GetTotalCount()

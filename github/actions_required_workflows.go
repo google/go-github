@@ -1,4 +1,4 @@
-// Copyright 2020 The go-github AUTHORS. All rights reserved.
+// Copyright 2023 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// OrgRequiredWorkflow represents a required workflow object
+// OrgRequiredWorkflow represents a required workflow object at the org level.
 type OrgRequiredWorkflow struct {
 	ID                      *int64      `json:"id,omitempty"`
 	Name                    *string     `json:"name,omitempty"`
@@ -18,17 +18,19 @@ type OrgRequiredWorkflow struct {
 	Scope                   *string     `json:"scope,omitempty"`
 	Ref                     *string     `json:"ref,omitempty"`
 	State                   *string     `json:"state,omitempty"`
-	SelectedRepositoriesUrl *string     `json:"selected_repositories_url,omitempty"`
+	SelectedRepositoriesURL *string     `json:"selected_repositories_url,omitempty"`
 	CreatedAt               *Timestamp  `json:"created_at,omitempty"`
 	UpdatedAt               *Timestamp  `json:"updated_at,omitempty"`
 	Repository              *Repository `json:"repository,omitempty"`
 }
 
+// OrgRequiredWorkflows represents the required workflows for the org.
 type OrgRequiredWorkflows struct {
 	TotalCount        *int                   `json:"total_count,omitempty"`
 	RequiredWorkflows []*OrgRequiredWorkflow `json:"required_workflows,omitempty"`
 }
 
+// CreateUpdateRequiredWorkflowOptions represents the input object used to create or update required workflows.
 type CreateUpdateRequiredWorkflowOptions struct {
 	WorkflowFilepath      *string         `json:"workflow_file_path,omitempty"`
 	RepositoryID          *int64          `json:"repository_id,omitempty"`
@@ -36,11 +38,13 @@ type CreateUpdateRequiredWorkflowOptions struct {
 	SelectedRepositoryIDs SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
 }
 
-type RequiredWorkflowSelectedRepositories struct {
+// RequiredWorkflowSelectedRepos represents the repo's that a required workflow is applied to.
+type RequiredWorkflowSelectedRepos struct {
 	TotalCount   *int          `json:"total_count,omitempty"`
 	Repositories []*Repository `json:"repositories,omitempty"`
 }
 
+// RepoRequiredWorkflow represents a required workflow object at the repo level.
 type RepoRequiredWorkflow struct {
 	ID               *int64      `json:"id,omitempty"`
 	NodeID           *string     `json:"node_id,omitempty"`
@@ -48,13 +52,14 @@ type RepoRequiredWorkflow struct {
 	Path             *string     `json:"path,omitempty"`
 	State            *string     `json:"state,omitempty"`
 	URL              *string     `json:"url,omitempty"`
-	HtmlURL          *string     `json:"html_url,omitempty"`
+	HTMLURL          *string     `json:"html_url,omitempty"`
 	BadgeURL         *string     `json:"badge_url,omitempty"`
 	CreatedAt        *Timestamp  `json:"created_at,omitempty"`
 	UpdatedAt        *Timestamp  `json:"updated_at,omitempty"`
 	SourceRepository *Repository `json:"source_repository,omitempty"`
 }
 
+// RepoRequiredWorkflows represents the required workflows for a repo.
 type RepoRequiredWorkflows struct {
 	TotalCount        *int                    `json:"total_count,omitempty"`
 	RequiredWorkflows []*RepoRequiredWorkflow `json:"required_workflows,omitempty"`
@@ -84,7 +89,7 @@ func (s *ActionsService) ListOrgRequiredWorkflows(ctx context.Context, org strin
 	return requiredWorkflows, resp, nil
 }
 
-// CreateRequiredWorkflow creates the required workflow in an org
+// CreateRequiredWorkflow creates the required workflow in an org.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#create-a-required-workflow
 func (s *ActionsService) CreateRequiredWorkflow(ctx context.Context, org string, createRequiredWorkflowOptions *CreateUpdateRequiredWorkflowOptions) (*Response, error) {
@@ -116,7 +121,7 @@ func (s *ActionsService) GetRequiredWorkflowByID(ctx context.Context, owner stri
 	return requiredWorkflow, resp, nil
 }
 
-// UpdateRequiredWorkflow updates a required workflow in an org
+// UpdateRequiredWorkflow updates a required workflow in an org.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#update-a-required-workflow
 func (s *ActionsService) UpdateRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID int64, updateRequiredWorkflowOptions *CreateUpdateRequiredWorkflowOptions) (*Response, error) {
@@ -128,7 +133,7 @@ func (s *ActionsService) UpdateRequiredWorkflow(ctx context.Context, org string,
 	return s.client.Do(ctx, req, nil)
 }
 
-// DeleteRequiredWorkflow deletes a required workflow in an org
+// DeleteRequiredWorkflow deletes a required workflow in an org.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#update-a-required-workflow
 func (s *ActionsService) DeleteRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID int64) (*Response, error) {
@@ -140,10 +145,10 @@ func (s *ActionsService) DeleteRequiredWorkflow(ctx context.Context, org string,
 	return s.client.Do(ctx, req, nil)
 }
 
-// ListRequiredWorkflowSelectedRepositories lists the Repositories selected for a workflow.
+// ListRequiredWorkflowSelectedRepos lists the Repositories selected for a workflow.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#list-selected-repositories-for-a-required-workflow
-func (s *ActionsService) ListRequiredWorkflowSelectedRepositories(ctx context.Context, org string, requiredWorkflowID int64, opts *ListOptions) (*RequiredWorkflowSelectedRepositories, *Response, error) {
+func (s *ActionsService) ListRequiredWorkflowSelectedRepos(ctx context.Context, org string, requiredWorkflowID int64, opts *ListOptions) (*RequiredWorkflowSelectedRepos, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v/repositories", org, requiredWorkflowID)
 	u, err := addOptions(url, opts)
 	if err != nil {
@@ -154,19 +159,19 @@ func (s *ActionsService) ListRequiredWorkflowSelectedRepositories(ctx context.Co
 		return nil, nil, err
 	}
 
-	requiredWorkflowRepositories := new(RequiredWorkflowSelectedRepositories)
-	resp, err := s.client.Do(ctx, req, &requiredWorkflowRepositories)
+	requiredWorkflowRepos := new(RequiredWorkflowSelectedRepos)
+	resp, err := s.client.Do(ctx, req, &requiredWorkflowRepos)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return requiredWorkflowRepositories, resp, nil
+	return requiredWorkflowRepos, resp, nil
 }
 
-// SetRequiredWorkflowSelectedRepositories sets the Repositories selected for a workflow.
+// SetRequiredWorkflowSelectedRepos sets the Repositories selected for a workflow.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#sets-repositories-for-a-required-workflow
-func (s *ActionsService) SetRequiredWorkflowSelectedRepositories(ctx context.Context, org string, requiredWorkflowID int64, ids SelectedRepoIDs) (*Response, error) {
+func (s *ActionsService) SetRequiredWorkflowSelectedRepos(ctx context.Context, org string, requiredWorkflowID int64, ids SelectedRepoIDs) (*Response, error) {
 	type repoIDs struct {
 		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
 	}

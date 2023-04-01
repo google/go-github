@@ -11158,12 +11158,12 @@ func (o *OrgRequiredWorkflow) GetScope() string {
 	return *o.Scope
 }
 
-// GetSelectedRepositoriesUrl returns the SelectedRepositoriesUrl field if it's non-nil, zero value otherwise.
-func (o *OrgRequiredWorkflow) GetSelectedRepositoriesUrl() string {
-	if o == nil || o.SelectedRepositoriesUrl == nil {
+// GetSelectedRepositoriesURL returns the SelectedRepositoriesURL field if it's non-nil, zero value otherwise.
+func (o *OrgRequiredWorkflow) GetSelectedRepositoriesURL() string {
+	if o == nil || o.SelectedRepositoriesURL == nil {
 		return ""
 	}
-	return *o.SelectedRepositoriesUrl
+	return *o.SelectedRepositoriesURL
 }
 
 // GetState returns the State field if it's non-nil, zero value otherwise.
@@ -15630,12 +15630,12 @@ func (r *RepoRequiredWorkflow) GetCreatedAt() Timestamp {
 	return *r.CreatedAt
 }
 
-// GetHtmlURL returns the HtmlURL field if it's non-nil, zero value otherwise.
-func (r *RepoRequiredWorkflow) GetHtmlURL() string {
-	if r == nil || r.HtmlURL == nil {
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (r *RepoRequiredWorkflow) GetHTMLURL() string {
+	if r == nil || r.HTMLURL == nil {
 		return ""
 	}
-	return *r.HtmlURL
+	return *r.HTMLURL
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -17727,7 +17727,7 @@ func (r *RequiredStatusChecksRequest) GetStrict() bool {
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
-func (r *RequiredWorkflowSelectedRepositories) GetTotalCount() int {
+func (r *RequiredWorkflowSelectedRepos) GetTotalCount() int {
 	if r == nil || r.TotalCount == nil {
 		return 0
 	}
