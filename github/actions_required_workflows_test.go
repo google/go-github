@@ -89,10 +89,10 @@ func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
 		w.WriteHeader(http.StatusCreated)
 	})
 	input := &CreateUpdateRequiredWorkflowOptions{
-		WorkflowFilepath:      String(".github/workflows/ci.yaml"),
+		WorkflowFilePath:      String(".github/workflows/ci.yaml"),
 		RepositoryID:          Int64(53),
 		Scope:                 String("selected"),
-		SelectedRepositoryIDs: SelectedRepoIDs{32, 91},
+		SelectedRepositoryIDs: &SelectedRepoIDs{32, 91},
 	}
 	ctx := context.Background()
 	_, err := client.Actions.CreateRequiredWorkflow(ctx, "o", input)
@@ -172,10 +172,10 @@ func TestActionsService_UpdateRequiredWorkflow(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 	})
 	input := &CreateUpdateRequiredWorkflowOptions{
-		WorkflowFilepath:      String(".github/workflows/ci.yaml"),
+		WorkflowFilePath:      String(".github/workflows/ci.yaml"),
 		RepositoryID:          Int64(53),
 		Scope:                 String("selected"),
-		SelectedRepositoryIDs: SelectedRepoIDs{32, 91},
+		SelectedRepositoryIDs: &SelectedRepoIDs{32, 91},
 	}
 	ctx := context.Background()
 	_, err := client.Actions.UpdateRequiredWorkflow(ctx, "o", 12345, input)
@@ -400,5 +400,4 @@ func TestActionsService_ListRepoRequiredWorkflows(t *testing.T) {
 		}
 		return resp, err
 	})
-
 }

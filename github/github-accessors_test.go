@@ -4772,14 +4772,21 @@ func TestCreateUpdateRequiredWorkflowOptions_GetScope(tt *testing.T) {
 	c.GetScope()
 }
 
-func TestCreateUpdateRequiredWorkflowOptions_GetWorkflowFilepath(tt *testing.T) {
-	var zeroValue string
-	c := &CreateUpdateRequiredWorkflowOptions{WorkflowFilepath: &zeroValue}
-	c.GetWorkflowFilepath()
-	c = &CreateUpdateRequiredWorkflowOptions{}
-	c.GetWorkflowFilepath()
+func TestCreateUpdateRequiredWorkflowOptions_GetSelectedRepositoryIDs(tt *testing.T) {
+	c := &CreateUpdateRequiredWorkflowOptions{}
+	c.GetSelectedRepositoryIDs()
 	c = nil
-	c.GetWorkflowFilepath()
+	c.GetSelectedRepositoryIDs()
+}
+
+func TestCreateUpdateRequiredWorkflowOptions_GetWorkflowFilePath(tt *testing.T) {
+	var zeroValue string
+	c := &CreateUpdateRequiredWorkflowOptions{WorkflowFilePath: &zeroValue}
+	c.GetWorkflowFilePath()
+	c = &CreateUpdateRequiredWorkflowOptions{}
+	c.GetWorkflowFilePath()
+	c = nil
+	c.GetWorkflowFilePath()
 }
 
 func TestCreateUserProjectOptions_GetBody(tt *testing.T) {

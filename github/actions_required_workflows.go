@@ -32,9 +32,9 @@ type OrgRequiredWorkflows struct {
 
 // CreateUpdateRequiredWorkflowOptions represents the input object used to create or update required workflows.
 type CreateUpdateRequiredWorkflowOptions struct {
-	WorkflowFilePath      *string         `json:"workflow_file_path,omitempty"`
-	RepositoryID          *int64          `json:"repository_id,omitempty"`
-	Scope                 *string         `json:"scope,omitempty"`
+	WorkflowFilePath      *string          `json:"workflow_file_path,omitempty"`
+	RepositoryID          *int64           `json:"repository_id,omitempty"`
+	Scope                 *string          `json:"scope,omitempty"`
 	SelectedRepositoryIDs *SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
 }
 

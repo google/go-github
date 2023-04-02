@@ -4062,12 +4062,20 @@ func (c *CreateUpdateRequiredWorkflowOptions) GetScope() string {
 	return *c.Scope
 }
 
-// GetWorkflowFilepath returns the WorkflowFilepath field if it's non-nil, zero value otherwise.
-func (c *CreateUpdateRequiredWorkflowOptions) GetWorkflowFilepath() string {
-	if c == nil || c.WorkflowFilepath == nil {
+// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs field.
+func (c *CreateUpdateRequiredWorkflowOptions) GetSelectedRepositoryIDs() *SelectedRepoIDs {
+	if c == nil {
+		return nil
+	}
+	return c.SelectedRepositoryIDs
+}
+
+// GetWorkflowFilePath returns the WorkflowFilePath field if it's non-nil, zero value otherwise.
+func (c *CreateUpdateRequiredWorkflowOptions) GetWorkflowFilePath() string {
+	if c == nil || c.WorkflowFilePath == nil {
 		return ""
 	}
-	return *c.WorkflowFilepath
+	return *c.WorkflowFilePath
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
