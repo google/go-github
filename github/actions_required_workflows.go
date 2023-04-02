@@ -32,13 +32,13 @@ type OrgRequiredWorkflows struct {
 
 // CreateUpdateRequiredWorkflowOptions represents the input object used to create or update required workflows.
 type CreateUpdateRequiredWorkflowOptions struct {
-	WorkflowFilepath      *string         `json:"workflow_file_path,omitempty"`
+	WorkflowFilePath      *string         `json:"workflow_file_path,omitempty"`
 	RepositoryID          *int64          `json:"repository_id,omitempty"`
 	Scope                 *string         `json:"scope,omitempty"`
-	SelectedRepositoryIDs SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
+	SelectedRepositoryIDs *SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
 }
 
-// RequiredWorkflowSelectedRepos represents the repo's that a required workflow is applied to.
+// RequiredWorkflowSelectedRepos represents the repos that a required workflow is applied to.
 type RequiredWorkflowSelectedRepos struct {
 	TotalCount   *int          `json:"total_count,omitempty"`
 	Repositories []*Repository `json:"repositories,omitempty"`
@@ -199,7 +199,7 @@ func (s *ActionsService) AddRepoToRequiredWorkflow(ctx context.Context, org stri
 // RemoveRepoFromRequiredWorkflow removes the Repository from a required workflow.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#add-a-repository-to-a-required-workflow
-func (s *ActionsService) RemoveRepoFromRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID int64, repoID int64) (*Response, error) {
+func (s *ActionsService) RemoveRepoFromRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID, repoID int64) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v/repositories/%v", org, requiredWorkflowID, repoID)
 	req, err := s.client.NewRequest("DELETE", url, nil)
 	if err != nil {
