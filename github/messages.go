@@ -148,13 +148,13 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 	return buf, hashFunc, nil
 }
 
-// ValidatePayload validates an incoming GitHub Webhook event request body
+// ValidatePayloadFromBody validates an incoming GitHub Webhook event request body
 // and returns the (JSON) payload.
 // The Content-Type header of the payload can be "application/json" or "application/x-www-form-urlencoded".
 // If the Content-Type is neither then an error is returned.
 // secretToken is the GitHub Webhook secret token.
-// If your webhook does not contain a secret token, you can pass nil or an empty slice.
-// This is intended for local development purposes only and all webhooks should ideally set up a secret token.
+// If your webhook does not contain a secret token, you can pass an empty secretToken.
+// Webhooks without a secret token are not secure and should be avoided.
 //
 // Example usage:
 //
@@ -201,9 +201,8 @@ func ValidatePayloadFromBody(contentType string, readable io.Reader, signature s
 		return nil, fmt.Errorf("webhook request has unsupported Content-Type %q", contentType)
 	}
 
-	// Only validate the signature if a secret token exists. This is intended for
-	// local development only and all webhooks should ideally set up a secret token.
-	if len(secretToken) > 0 {
+	// Validate the signature if present or if one is expected (secretToken is non-empty).
+	if len(secretToken) > 0 || len(signature) > 0 {
 		if err := ValidateSignature(signature, body, secretToken); err != nil {
 			return nil, err
 		}
