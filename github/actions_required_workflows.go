@@ -187,7 +187,7 @@ func (s *ActionsService) SetRequiredWorkflowSelectedRepos(ctx context.Context, o
 // AddRepoToRequiredWorkflow adds the Repository to a required workflow.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#add-a-repository-to-a-required-workflow
-func (s *ActionsService) AddRepoToRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID int64, repoID int64) (*Response, error) {
+func (s *ActionsService) AddRepoToRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID, repoID int64) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v/repositories/%v", org, requiredWorkflowID, repoID)
 	req, err := s.client.NewRequest("PUT", url, nil)
 	if err != nil {
