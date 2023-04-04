@@ -55,12 +55,14 @@ type WorkflowRuns struct {
 
 // ListWorkflowRunsOptions specifies optional parameters to ListWorkflowRuns.
 type ListWorkflowRunsOptions struct {
-	Actor   string `url:"actor,omitempty"`
-	Branch  string `url:"branch,omitempty"`
-	Event   string `url:"event,omitempty"`
-	Status  string `url:"status,omitempty"`
-	Created string `url:"created,omitempty"`
-	HeadSHA string `url:"head_sha,omitempty"`
+	Actor               string `url:"actor,omitempty"`
+	Branch              string `url:"branch,omitempty"`
+	Event               string `url:"event,omitempty"`
+	Status              string `url:"status,omitempty"`
+	Created             string `url:"created,omitempty"`
+	HeadSHA             string `url:"head_sha,omitempty"`
+	ExcludePullRequests bool   `url:"exclude_pull_requests,omitempty"`
+	CheckSuiteID        int64  `url:"check_suite_id,omitempty"`
 	ListOptions
 }
 
