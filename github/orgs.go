@@ -36,8 +36,8 @@ type Organization struct {
 	Following                   *int       `json:"following,omitempty"`
 	CreatedAt                   *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt                   *Timestamp `json:"updated_at,omitempty"`
-	TotalPrivateRepos           *int       `json:"total_private_repos,omitempty"`
-	OwnedPrivateRepos           *int       `json:"owned_private_repos,omitempty"`
+	TotalPrivateRepos           *int64     `json:"total_private_repos,omitempty"`
+	OwnedPrivateRepos           *int64     `json:"owned_private_repos,omitempty"`
 	PrivateGists                *int       `json:"private_gists,omitempty"`
 	DiskUsage                   *int       `json:"disk_usage,omitempty"`
 	Collaborators               *int       `json:"collaborators,omitempty"`
@@ -121,7 +121,7 @@ type Plan struct {
 	Name          *string `json:"name,omitempty"`
 	Space         *int    `json:"space,omitempty"`
 	Collaborators *int    `json:"collaborators,omitempty"`
-	PrivateRepos  *int    `json:"private_repos,omitempty"`
+	PrivateRepos  *int64  `json:"private_repos,omitempty"`
 	FilledSeats   *int    `json:"filled_seats,omitempty"`
 	Seats         *int    `json:"seats,omitempty"`
 }
