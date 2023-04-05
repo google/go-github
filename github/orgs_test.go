@@ -452,7 +452,7 @@ func TestPlan_Marshal(t *testing.T) {
 		Name:          String("name"),
 		Space:         Int(1),
 		Collaborators: Int(1),
-		PrivateRepos:  Int(1),
+		PrivateRepos:  Int64(1),
 		FilledSeats:   Int(1),
 		Seats:         Int(1),
 	}

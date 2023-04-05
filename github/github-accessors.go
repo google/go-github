@@ -10879,7 +10879,7 @@ func (o *Organization) GetNodeID() string {
 }
 
 // GetOwnedPrivateRepos returns the OwnedPrivateRepos field if it's non-nil, zero value otherwise.
-func (o *Organization) GetOwnedPrivateRepos() int {
+func (o *Organization) GetOwnedPrivateRepos() int64 {
 	if o == nil || o.OwnedPrivateRepos == nil {
 		return 0
 	}
@@ -10951,7 +10951,7 @@ func (o *Organization) GetSecretScanningPushProtectionEnabledForNewRepos() bool 
 }
 
 // GetTotalPrivateRepos returns the TotalPrivateRepos field if it's non-nil, zero value otherwise.
-func (o *Organization) GetTotalPrivateRepos() int {
+func (o *Organization) GetTotalPrivateRepos() int64 {
 	if o == nil || o.TotalPrivateRepos == nil {
 		return 0
 	}
@@ -12223,7 +12223,7 @@ func (p *Plan) GetName() string {
 }
 
 // GetPrivateRepos returns the PrivateRepos field if it's non-nil, zero value otherwise.
-func (p *Plan) GetPrivateRepos() int {
+func (p *Plan) GetPrivateRepos() int64 {
 	if p == nil || p.PrivateRepos == nil {
 		return 0
 	}
@@ -20655,7 +20655,7 @@ func (u *User) GetOrganizationsURL() string {
 }
 
 // GetOwnedPrivateRepos returns the OwnedPrivateRepos field if it's non-nil, zero value otherwise.
-func (u *User) GetOwnedPrivateRepos() int {
+func (u *User) GetOwnedPrivateRepos() int64 {
 	if u == nil || u.OwnedPrivateRepos == nil {
 		return 0
 	}
@@ -20759,7 +20759,7 @@ func (u *User) GetSuspendedAt() Timestamp {
 }
 
 // GetTotalPrivateRepos returns the TotalPrivateRepos field if it's non-nil, zero value otherwise.
-func (u *User) GetTotalPrivateRepos() int {
+func (u *User) GetTotalPrivateRepos() int64 {
 	if u == nil || u.TotalPrivateRepos == nil {
 		return 0
 	}

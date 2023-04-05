@@ -12771,7 +12771,7 @@ func TestOrganization_GetNodeID(tt *testing.T) {
 }
 
 func TestOrganization_GetOwnedPrivateRepos(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	o := &Organization{OwnedPrivateRepos: &zeroValue}
 	o.GetOwnedPrivateRepos()
 	o = &Organization{}
@@ -12858,7 +12858,7 @@ func TestOrganization_GetSecretScanningPushProtectionEnabledForNewRepos(tt *test
 }
 
 func TestOrganization_GetTotalPrivateRepos(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	o := &Organization{TotalPrivateRepos: &zeroValue}
 	o.GetTotalPrivateRepos()
 	o = &Organization{}
@@ -14331,7 +14331,7 @@ func TestPlan_GetName(tt *testing.T) {
 }
 
 func TestPlan_GetPrivateRepos(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	p := &Plan{PrivateRepos: &zeroValue}
 	p.GetPrivateRepos()
 	p = &Plan{}
@@ -24112,7 +24112,7 @@ func TestUser_GetOrganizationsURL(tt *testing.T) {
 }
 
 func TestUser_GetOwnedPrivateRepos(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	u := &User{OwnedPrivateRepos: &zeroValue}
 	u.GetOwnedPrivateRepos()
 	u = &User{}
@@ -24239,7 +24239,7 @@ func TestUser_GetSuspendedAt(tt *testing.T) {
 }
 
 func TestUser_GetTotalPrivateRepos(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	u := &User{TotalPrivateRepos: &zeroValue}
 	u.GetTotalPrivateRepos()
 	u = &User{}
