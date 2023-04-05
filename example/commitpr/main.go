@@ -30,7 +30,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/go-github/v50/github"
+	"github.com/google/go-github/v51/github"
 )
 
 var (
