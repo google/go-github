@@ -1,11 +1,11 @@
-module github.com/google/go-github/v50/example
+module github.com/google/go-github/v51/example
 
 go 1.17
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.4
 	github.com/gofri/go-github-ratelimit v1.0.1
-	github.com/google/go-github/v50 v50.0.0
+	github.com/google/go-github/v51 v51.0.0
 	golang.org/x/crypto v0.1.0
 	golang.org/x/oauth2 v0.0.0-20180821212333-d2e6202438be
 	google.golang.org/appengine v1.6.7
@@ -22,4 +22,4 @@ require (
 )
 
 // Use version at HEAD, not the latest published.
-replace github.com/google/go-github/v50 => ../
+replace github.com/google/go-github/v51 => ../
