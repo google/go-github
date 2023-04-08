@@ -12328,10 +12328,10 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 		"clone_url": "c",
 		"svn_url": "s",
 		"topics": [
-      		"octocat",
-      		"api"
-    	]
-	}`
+            "octocat",
+            "api"
+        ]
+    }`
 
 	testJSONMarshal(t, u, want)
 }
