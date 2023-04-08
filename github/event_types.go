@@ -1062,6 +1062,7 @@ type PushEventRepository struct {
 	SSHURL          *string    `json:"ssh_url,omitempty"`
 	CloneURL        *string    `json:"clone_url,omitempty"`
 	SVNURL          *string    `json:"svn_url,omitempty"`
+	Topics          []string   `json:"topics,omitempty"`
 }
 
 // PushEventRepoOwner is a basic representation of user/org in a PushEvent payload.
