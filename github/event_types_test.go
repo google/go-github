@@ -12327,10 +12327,7 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 		"ssh_url": "s",
 		"clone_url": "c",
 		"svn_url": "s",
-		"topics": [
-            "octocat",
-            "api"
-        ]
+		"topics": ["octocat","api"]
     }`
 
 	testJSONMarshal(t, u, want)
