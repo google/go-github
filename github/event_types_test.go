@@ -12271,6 +12271,7 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 		SSHURL:          String("s"),
 		CloneURL:        String("c"),
 		SVNURL:          String("s"),
+		Topics:          []string{"octocat", "api"},
 	}
 
 	want := `{
@@ -12325,8 +12326,9 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 		"git_url": "g",
 		"ssh_url": "s",
 		"clone_url": "c",
-		"svn_url": "s"
-	}`
+		"svn_url": "s",
+		"topics": ["octocat","api"]
+    }`
 
 	testJSONMarshal(t, u, want)
 }
