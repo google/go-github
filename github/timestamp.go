@@ -22,7 +22,7 @@ func (t Timestamp) String() string {
 	return t.Time.String()
 }
 
-// GetTime returns std time.Time
+// GetTime returns std time.Time.
 func (t *Timestamp) GetTime() *time.Time {
 	if t == nil {
 		return nil
