@@ -15237,6 +15237,13 @@ func TestProtection_GetRequiredPullRequestReviews(tt *testing.T) {
 	p.GetRequiredPullRequestReviews()
 }
 
+func TestProtection_GetRequiredSignatures(tt *testing.T) {
+	p := &Protection{}
+	p.GetRequiredSignatures()
+	p = nil
+	p.GetRequiredSignatures()
+}
+
 func TestProtection_GetRequiredStatusChecks(tt *testing.T) {
 	p := &Protection{}
 	p.GetRequiredStatusChecks()
@@ -15256,6 +15263,16 @@ func TestProtection_GetRestrictions(tt *testing.T) {
 	p.GetRestrictions()
 	p = nil
 	p.GetRestrictions()
+}
+
+func TestProtection_GetUrl(tt *testing.T) {
+	var zeroValue string
+	p := &Protection{Url: &zeroValue}
+	p.GetUrl()
+	p = &Protection{}
+	p.GetUrl()
+	p = nil
+	p.GetUrl()
 }
 
 func TestProtectionChanges_GetAdminEnforced(tt *testing.T) {
@@ -20637,6 +20654,26 @@ func TestRequiredStatusCheck_GetAppID(tt *testing.T) {
 	r.GetAppID()
 	r = nil
 	r.GetAppID()
+}
+
+func TestRequiredStatusChecks_GetContextsUrl(tt *testing.T) {
+	var zeroValue string
+	r := &RequiredStatusChecks{ContextsUrl: &zeroValue}
+	r.GetContextsUrl()
+	r = &RequiredStatusChecks{}
+	r.GetContextsUrl()
+	r = nil
+	r.GetContextsUrl()
+}
+
+func TestRequiredStatusChecks_GetUrl(tt *testing.T) {
+	var zeroValue string
+	r := &RequiredStatusChecks{Url: &zeroValue}
+	r.GetUrl()
+	r = &RequiredStatusChecks{}
+	r.GetUrl()
+	r = nil
+	r.GetUrl()
 }
 
 func TestRequiredStatusChecksEnforcementLevelChanges_GetFrom(tt *testing.T) {
