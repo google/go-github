@@ -847,6 +847,8 @@ type Protection struct {
 	BlockCreations                 *BlockCreations                 `json:"block_creations,omitempty"`
 	LockBranch                     *LockBranch                     `json:"lock_branch,omitempty"`
 	AllowForkSyncing               *AllowForkSyncing               `json:"allow_fork_syncing,omitempty"`
+	RequiredSignatures             *SignaturesProtectedBranch      `json:"required_signatures,omitempty"`
+	URL                            *string                         `json:"url,omitempty"`
 }
 
 // BlockCreations represents whether users can push changes that create branches. If this is true, this
@@ -1023,7 +1025,9 @@ type RequiredStatusChecks struct {
 	Contexts []string `json:"contexts,omitempty"`
 	// The list of status checks to require in order to merge into this
 	// branch.
-	Checks []*RequiredStatusCheck `json:"checks"`
+	Checks      []*RequiredStatusCheck `json:"checks"`
+	ContextsURL *string                `json:"contexts_url,omitempty"`
+	URL         *string                `json:"url,omitempty"`
 }
 
 // RequiredStatusChecksRequest represents a request to edit a protected branch's status checks.
