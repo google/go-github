@@ -47,7 +47,7 @@ type PagesBuild struct {
 	UpdatedAt *Timestamp  `json:"updated_at,omitempty"`
 }
 
-// PagesDomain represents a domain associated with a Github Pages site.
+// PagesDomain represents a domain associated with a GitHub Pages site.
 type PagesDomain struct {
 	Host                          *string `json:"host,omitempty"`
 	URI                           *string `json:"uri,omitempty"`
@@ -58,7 +58,7 @@ type PagesDomain struct {
 	IsFastlyIP                    *bool   `json:"is_fastly_ip,omitempty"`
 	IsOldIPAddress                *bool   `json:"is_old_ip_address,omitempty"`
 	IsARecord                     *bool   `json:"is_a_record,omitempty"`
-	HasCNAMERecordPresent         *bool   `json:"has_cname_record,omitempty"`
+	HasCNAMERecord                *bool   `json:"has_cname_record,omitempty"`
 	HasMXRecordsPresent           *bool   `json:"has_mx_records_present,omitempty"`
 	IsValidDomain                 *bool   `json:"is_valid_domain,omitempty"`
 	IsApexDomain                  *bool   `json:"is_apex_domain,omitempty"`
@@ -79,7 +79,7 @@ type PagesDomain struct {
 	CAAError                      *string `json:"caa_error,omitempty"`
 }
 
-// PagesHealthCheckResponse represents the response given for the health check of a Github Pages site.
+// PagesHealthCheckResponse represents the response given for the health check of a GitHub Pages site.
 type PagesHealthCheckResponse struct {
 	Domain    *PagesDomain `json:"domain,omitempty"`
 	AltDomain *PagesDomain `json:"alt_domain,omitempty"`

@@ -621,7 +621,7 @@ func TestPagesHealthCheckResponse_Marshal(t *testing.T) {
 			IsFastlyIP:                    Bool(false),
 			IsOldIPAddress:                Bool(false),
 			IsARecord:                     Bool(true),
-			HasCNAMERecordPresent:         Bool(false),
+			HasCNAMERecord:                Bool(false),
 			HasMXRecordsPresent:           Bool(false),
 			IsValidDomain:                 Bool(true),
 			IsApexDomain:                  Bool(true),

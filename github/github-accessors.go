@@ -12070,12 +12070,12 @@ func (p *PagesDomain) GetEnforcesHTTPS() bool {
 	return *p.EnforcesHTTPS
 }
 
-// GetHasCNAMERecordPresent returns the HasCNAMERecordPresent field if it's non-nil, zero value otherwise.
-func (p *PagesDomain) GetHasCNAMERecordPresent() bool {
-	if p == nil || p.HasCNAMERecordPresent == nil {
+// GetHasCNAMERecord returns the HasCNAMERecord field if it's non-nil, zero value otherwise.
+func (p *PagesDomain) GetHasCNAMERecord() bool {
+	if p == nil || p.HasCNAMERecord == nil {
 		return false
 	}
-	return *p.HasCNAMERecordPresent
+	return *p.HasCNAMERecord
 }
 
 // GetHasMXRecordsPresent returns the HasMXRecordsPresent field if it's non-nil, zero value otherwise.

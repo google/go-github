@@ -14158,14 +14158,14 @@ func TestPagesDomain_GetEnforcesHTTPS(tt *testing.T) {
 	p.GetEnforcesHTTPS()
 }
 
-func TestPagesDomain_GetHasCNAMERecordPresent(tt *testing.T) {
+func TestPagesDomain_GetHasCNAMERecord(tt *testing.T) {
 	var zeroValue bool
-	p := &PagesDomain{HasCNAMERecordPresent: &zeroValue}
-	p.GetHasCNAMERecordPresent()
+	p := &PagesDomain{HasCNAMERecord: &zeroValue}
+	p.GetHasCNAMERecord()
 	p = &PagesDomain{}
-	p.GetHasCNAMERecordPresent()
+	p.GetHasCNAMERecord()
 	p = nil
-	p.GetHasCNAMERecordPresent()
+	p.GetHasCNAMERecord()
 }
 
 func TestPagesDomain_GetHasMXRecordsPresent(tt *testing.T) {
