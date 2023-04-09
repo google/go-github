@@ -13047,7 +13047,7 @@ func (p *Protection) GetRequiredPullRequestReviews() *PullRequestReviewsEnforcem
 }
 
 // GetRequiredSignatures returns the RequiredSignatures field.
-func (p *Protection) GetRequiredSignatures() *RequiredSignatures {
+func (p *Protection) GetRequiredSignatures() *SignaturesProtectedBranch {
 	if p == nil {
 		return nil
 	}
@@ -13078,12 +13078,12 @@ func (p *Protection) GetRestrictions() *BranchRestrictions {
 	return p.Restrictions
 }
 
-// GetUrl returns the Url field if it's non-nil, zero value otherwise.
-func (p *Protection) GetUrl() string {
-	if p == nil || p.Url == nil {
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *Protection) GetURL() string {
+	if p == nil || p.URL == nil {
 		return ""
 	}
-	return *p.Url
+	return *p.URL
 }
 
 // GetAdminEnforced returns the AdminEnforced field.
@@ -17734,20 +17734,20 @@ func (r *RequiredStatusCheck) GetAppID() int64 {
 	return *r.AppID
 }
 
-// GetContextsUrl returns the ContextsUrl field if it's non-nil, zero value otherwise.
-func (r *RequiredStatusChecks) GetContextsUrl() string {
-	if r == nil || r.ContextsUrl == nil {
+// GetContextsURL returns the ContextsURL field if it's non-nil, zero value otherwise.
+func (r *RequiredStatusChecks) GetContextsURL() string {
+	if r == nil || r.ContextsURL == nil {
 		return ""
 	}
-	return *r.ContextsUrl
+	return *r.ContextsURL
 }
 
-// GetUrl returns the Url field if it's non-nil, zero value otherwise.
-func (r *RequiredStatusChecks) GetUrl() string {
-	if r == nil || r.Url == nil {
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (r *RequiredStatusChecks) GetURL() string {
+	if r == nil || r.URL == nil {
 		return ""
 	}
-	return *r.Url
+	return *r.URL
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.

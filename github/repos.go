@@ -834,11 +834,6 @@ type Branch struct {
 	Protected *bool             `json:"protected,omitempty"`
 }
 
-type RequiredSignatures struct {
-	Url     string `json:"url"`
-	Enabled bool   `json:"enabled"`
-}
-
 // Protection represents a repository branch's protection.
 type Protection struct {
 	RequiredStatusChecks           *RequiredStatusChecks           `json:"required_status_checks"`
@@ -852,8 +847,8 @@ type Protection struct {
 	BlockCreations                 *BlockCreations                 `json:"block_creations,omitempty"`
 	LockBranch                     *LockBranch                     `json:"lock_branch,omitempty"`
 	AllowForkSyncing               *AllowForkSyncing               `json:"allow_fork_syncing,omitempty"`
-	RequiredSignatures             *RequiredSignatures             `json:"required_signatures,omitempty"`
-	Url                            *string                         `json:"url,omitempty"`
+	RequiredSignatures             *SignaturesProtectedBranch      `json:"required_signatures,omitempty"`
+	URL                            *string                         `json:"url,omitempty"`
 }
 
 // BlockCreations represents whether users can push changes that create branches. If this is true, this
@@ -1022,8 +1017,8 @@ type ProtectionRequest struct {
 
 // RequiredStatusChecks represents the protection status of a individual branch.
 type RequiredStatusChecks struct {
-	Url         *string `json:"url,omitempty"`
-	ContextsUrl *string `json:"contexts_url,omitempty"`
+	URL         *string `json:"url,omitempty"`
+	ContextsURL *string `json:"contexts_url,omitempty"`
 	// Require branches to be up to date before merging. (Required.)
 	Strict bool `json:"strict"`
 	// The list of status checks to require in order to merge into this
