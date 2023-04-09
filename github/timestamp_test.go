@@ -169,6 +169,17 @@ func TestWrappedTimestamp_Unmarshal(t *testing.T) {
 	}
 }
 
+func TestTimestamp_GetTime(t *testing.T) {
+	var t1 *Timestamp
+	if t1.GetTime() != nil {
+		t.Errorf("nil timestamp should return nil, got: %v", t1.GetTime())
+	}
+	t1 = &Timestamp{referenceTime}
+	if !t1.GetTime().Equal(referenceTime) {
+		t.Errorf("want reference time, got: %s", t1.GetTime().String())
+	}
+}
+
 func TestWrappedTimestamp_MarshalReflexivity(t *testing.T) {
 	testCases := []struct {
 		desc string
