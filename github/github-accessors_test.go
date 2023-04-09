@@ -14128,6 +14128,286 @@ func TestPagesBuild_GetURL(tt *testing.T) {
 	p.GetURL()
 }
 
+func TestPagesDomain_GetCAAError(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{CAAError: &zeroValue}
+	p.GetCAAError()
+	p = &PagesDomain{}
+	p.GetCAAError()
+	p = nil
+	p.GetCAAError()
+}
+
+func TestPagesDomain_GetDNSResolves(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{DNSResolves: &zeroValue}
+	p.GetDNSResolves()
+	p = &PagesDomain{}
+	p.GetDNSResolves()
+	p = nil
+	p.GetDNSResolves()
+}
+
+func TestPagesDomain_GetEnforcesHTTPS(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{EnforcesHTTPS: &zeroValue}
+	p.GetEnforcesHTTPS()
+	p = &PagesDomain{}
+	p.GetEnforcesHTTPS()
+	p = nil
+	p.GetEnforcesHTTPS()
+}
+
+func TestPagesDomain_GetHasCNAMERecordPresent(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{HasCNAMERecordPresent: &zeroValue}
+	p.GetHasCNAMERecordPresent()
+	p = &PagesDomain{}
+	p.GetHasCNAMERecordPresent()
+	p = nil
+	p.GetHasCNAMERecordPresent()
+}
+
+func TestPagesDomain_GetHasMXRecordsPresent(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{HasMXRecordsPresent: &zeroValue}
+	p.GetHasMXRecordsPresent()
+	p = &PagesDomain{}
+	p.GetHasMXRecordsPresent()
+	p = nil
+	p.GetHasMXRecordsPresent()
+}
+
+func TestPagesDomain_GetHost(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{Host: &zeroValue}
+	p.GetHost()
+	p = &PagesDomain{}
+	p.GetHost()
+	p = nil
+	p.GetHost()
+}
+
+func TestPagesDomain_GetHTTPSError(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{HTTPSError: &zeroValue}
+	p.GetHTTPSError()
+	p = &PagesDomain{}
+	p.GetHTTPSError()
+	p = nil
+	p.GetHTTPSError()
+}
+
+func TestPagesDomain_GetIsApexDomain(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsApexDomain: &zeroValue}
+	p.GetIsApexDomain()
+	p = &PagesDomain{}
+	p.GetIsApexDomain()
+	p = nil
+	p.GetIsApexDomain()
+}
+
+func TestPagesDomain_GetIsARecord(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsARecord: &zeroValue}
+	p.GetIsARecord()
+	p = &PagesDomain{}
+	p.GetIsARecord()
+	p = nil
+	p.GetIsARecord()
+}
+
+func TestPagesDomain_GetIsCloudflareIP(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsCloudflareIP: &zeroValue}
+	p.GetIsCloudflareIP()
+	p = &PagesDomain{}
+	p.GetIsCloudflareIP()
+	p = nil
+	p.GetIsCloudflareIP()
+}
+
+func TestPagesDomain_GetIsCNAMEToFastly(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsCNAMEToFastly: &zeroValue}
+	p.GetIsCNAMEToFastly()
+	p = &PagesDomain{}
+	p.GetIsCNAMEToFastly()
+	p = nil
+	p.GetIsCNAMEToFastly()
+}
+
+func TestPagesDomain_GetIsCNAMEToGithubUserDomain(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsCNAMEToGithubUserDomain: &zeroValue}
+	p.GetIsCNAMEToGithubUserDomain()
+	p = &PagesDomain{}
+	p.GetIsCNAMEToGithubUserDomain()
+	p = nil
+	p.GetIsCNAMEToGithubUserDomain()
+}
+
+func TestPagesDomain_GetIsCNAMEToPagesDotGithubDotCom(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsCNAMEToPagesDotGithubDotCom: &zeroValue}
+	p.GetIsCNAMEToPagesDotGithubDotCom()
+	p = &PagesDomain{}
+	p.GetIsCNAMEToPagesDotGithubDotCom()
+	p = nil
+	p.GetIsCNAMEToPagesDotGithubDotCom()
+}
+
+func TestPagesDomain_GetIsFastlyIP(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsFastlyIP: &zeroValue}
+	p.GetIsFastlyIP()
+	p = &PagesDomain{}
+	p.GetIsFastlyIP()
+	p = nil
+	p.GetIsFastlyIP()
+}
+
+func TestPagesDomain_GetIsHTTPSEligible(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsHTTPSEligible: &zeroValue}
+	p.GetIsHTTPSEligible()
+	p = &PagesDomain{}
+	p.GetIsHTTPSEligible()
+	p = nil
+	p.GetIsHTTPSEligible()
+}
+
+func TestPagesDomain_GetIsNonGithubPagesIPPresent(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsNonGithubPagesIPPresent: &zeroValue}
+	p.GetIsNonGithubPagesIPPresent()
+	p = &PagesDomain{}
+	p.GetIsNonGithubPagesIPPresent()
+	p = nil
+	p.GetIsNonGithubPagesIPPresent()
+}
+
+func TestPagesDomain_GetIsOldIPAddress(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsOldIPAddress: &zeroValue}
+	p.GetIsOldIPAddress()
+	p = &PagesDomain{}
+	p.GetIsOldIPAddress()
+	p = nil
+	p.GetIsOldIPAddress()
+}
+
+func TestPagesDomain_GetIsPagesDomain(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsPagesDomain: &zeroValue}
+	p.GetIsPagesDomain()
+	p = &PagesDomain{}
+	p.GetIsPagesDomain()
+	p = nil
+	p.GetIsPagesDomain()
+}
+
+func TestPagesDomain_GetIsPointedToGithubPagesIP(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsPointedToGithubPagesIP: &zeroValue}
+	p.GetIsPointedToGithubPagesIP()
+	p = &PagesDomain{}
+	p.GetIsPointedToGithubPagesIP()
+	p = nil
+	p.GetIsPointedToGithubPagesIP()
+}
+
+func TestPagesDomain_GetIsProxied(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsProxied: &zeroValue}
+	p.GetIsProxied()
+	p = &PagesDomain{}
+	p.GetIsProxied()
+	p = nil
+	p.GetIsProxied()
+}
+
+func TestPagesDomain_GetIsServedByPages(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsServedByPages: &zeroValue}
+	p.GetIsServedByPages()
+	p = &PagesDomain{}
+	p.GetIsServedByPages()
+	p = nil
+	p.GetIsServedByPages()
+}
+
+func TestPagesDomain_GetIsValid(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsValid: &zeroValue}
+	p.GetIsValid()
+	p = &PagesDomain{}
+	p.GetIsValid()
+	p = nil
+	p.GetIsValid()
+}
+
+func TestPagesDomain_GetIsValidDomain(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsValidDomain: &zeroValue}
+	p.GetIsValidDomain()
+	p = &PagesDomain{}
+	p.GetIsValidDomain()
+	p = nil
+	p.GetIsValidDomain()
+}
+
+func TestPagesDomain_GetNameservers(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{Nameservers: &zeroValue}
+	p.GetNameservers()
+	p = &PagesDomain{}
+	p.GetNameservers()
+	p = nil
+	p.GetNameservers()
+}
+
+func TestPagesDomain_GetReason(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{Reason: &zeroValue}
+	p.GetReason()
+	p = &PagesDomain{}
+	p.GetReason()
+	p = nil
+	p.GetReason()
+}
+
+func TestPagesDomain_GetRespondsToHTTPS(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{RespondsToHTTPS: &zeroValue}
+	p.GetRespondsToHTTPS()
+	p = &PagesDomain{}
+	p.GetRespondsToHTTPS()
+	p = nil
+	p.GetRespondsToHTTPS()
+}
+
+func TestPagesDomain_GetShouldBeARecord(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{ShouldBeARecord: &zeroValue}
+	p.GetShouldBeARecord()
+	p = &PagesDomain{}
+	p.GetShouldBeARecord()
+	p = nil
+	p.GetShouldBeARecord()
+}
+
+func TestPagesDomain_GetURI(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{URI: &zeroValue}
+	p.GetURI()
+	p = &PagesDomain{}
+	p.GetURI()
+	p = nil
+	p.GetURI()
+}
+
 func TestPagesError_GetMessage(tt *testing.T) {
 	var zeroValue string
 	p := &PagesError{Message: &zeroValue}
@@ -14136,6 +14416,20 @@ func TestPagesError_GetMessage(tt *testing.T) {
 	p.GetMessage()
 	p = nil
 	p.GetMessage()
+}
+
+func TestPagesHealthCheckResponse_GetAltDomain(tt *testing.T) {
+	p := &PagesHealthCheckResponse{}
+	p.GetAltDomain()
+	p = nil
+	p.GetAltDomain()
+}
+
+func TestPagesHealthCheckResponse_GetDomain(tt *testing.T) {
+	p := &PagesHealthCheckResponse{}
+	p.GetDomain()
+	p = nil
+	p.GetDomain()
 }
 
 func TestPagesHTTPSCertificate_GetDescription(tt *testing.T) {
