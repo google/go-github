@@ -1017,8 +1017,6 @@ type ProtectionRequest struct {
 
 // RequiredStatusChecks represents the protection status of a individual branch.
 type RequiredStatusChecks struct {
-	URL         *string `json:"url,omitempty"`
-	ContextsURL *string `json:"contexts_url,omitempty"`
 	// Require branches to be up to date before merging. (Required.)
 	Strict bool `json:"strict"`
 	// The list of status checks to require in order to merge into this
@@ -1027,7 +1025,9 @@ type RequiredStatusChecks struct {
 	Contexts []string `json:"contexts,omitempty"`
 	// The list of status checks to require in order to merge into this
 	// branch.
-	Checks []*RequiredStatusCheck `json:"checks"`
+	Checks      []*RequiredStatusCheck `json:"checks"`
+	ContextsURL *string                `json:"contexts_url,omitempty"`
+	URL         *string                `json:"url,omitempty"`
 }
 
 // RequiredStatusChecksRequest represents a request to edit a protected branch's status checks.
