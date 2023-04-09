@@ -449,6 +449,54 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_GetPageHealthCheck(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pages/health", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"domain":{"host":"example.com","uri":"http://example.com/","nameservers":"default","dns_resolves":true},"alt_domain":{"host":"www.example.com","uri":"http://www.example.com/","nameservers":"default","dns_resolves":true}}`)
+	})
+
+	ctx := context.Background()
+	healthCheckResponse, _, err := client.Repositories.GetPageHealthCheck(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("Repositories.GetPageHealthCheck returned error: %v", err)
+	}
+
+	want := &PagesHealthCheckResponse{
+		Domain: &PagesDomain{
+			Host:        String("example.com"),
+			URI:         String("http://example.com/"),
+			Nameservers: String("default"),
+			DNSResolves: Bool(true),
+		},
+		AltDomain: &PagesDomain{
+			Host:        String("www.example.com"),
+			URI:         String("http://www.example.com/"),
+			Nameservers: String("default"),
+			DNSResolves: Bool(true),
+		},
+	}
+	if !cmp.Equal(healthCheckResponse, want) {
+		t.Errorf("Repositories.GetPageHealthCheck returned %+v, want %+v", healthCheckResponse, want)
+	}
+
+	const methodName = "GetPageHealthCheck"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetPageHealthCheck(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetPageHealthCheck(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestPagesSource_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PagesSource{}, "{}")
 
@@ -555,6 +603,90 @@ func TestPagesBuild_Marshal(t *testing.T) {
 		"created_at": ` + referenceTimeStr + `,
 		"updated_at": ` + referenceTimeStr + `
 	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPagesHealthCheckResponse_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PagesHealthCheckResponse{}, "{}")
+
+	u := &PagesHealthCheckResponse{
+		Domain: &PagesDomain{
+			Host:                          String("example.com"),
+			URI:                           String("http://example.com/"),
+			Nameservers:                   String("default"),
+			DNSResolves:                   Bool(true),
+			IsProxied:                     Bool(false),
+			IsCloudflareIP:                Bool(false),
+			IsFastlyIP:                    Bool(false),
+			IsOldIPAddress:                Bool(false),
+			IsARecord:                     Bool(true),
+			HasCNAMERecordPresent:         Bool(false),
+			HasMXRecordsPresent:           Bool(false),
+			IsValidDomain:                 Bool(true),
+			IsApexDomain:                  Bool(true),
+			ShouldBeARecord:               Bool(true),
+			IsCNAMEToGithubUserDomain:     Bool(false),
+			IsCNAMEToPagesDotGithubDotCom: Bool(false),
+			IsCNAMEToFastly:               Bool(false),
+			IsPointedToGithubPagesIP:      Bool(true),
+			IsNonGithubPagesIPPresent:     Bool(false),
+			IsPagesDomain:                 Bool(false),
+			IsServedByPages:               Bool(true),
+			IsValid:                       Bool(true),
+			Reason:                        String("some reason"),
+			RespondsToHTTPS:               Bool(true),
+			EnforcesHTTPS:                 Bool(true),
+			HTTPSError:                    String("some error"),
+			IsHTTPSEligible:               Bool(true),
+			CAAError:                      String("some error"),
+		},
+		AltDomain: &PagesDomain{
+			Host:        String("www.example.com"),
+			URI:         String("http://www.example.com/"),
+			Nameservers: String("default"),
+			DNSResolves: Bool(true),
+		},
+	}
+
+	want := `{
+		"domain": {
+		  "host": "example.com",
+		  "uri": "http://example.com/",
+		  "nameservers": "default",
+		  "dns_resolves": true,
+		  "is_proxied": false,
+		  "is_cloudflare_ip": false,
+		  "is_fastly_ip": false,
+		  "is_old_ip_address": false,
+		  "is_a_record": true,
+		  "has_cname_record": false,
+		  "has_mx_records_present": false,
+		  "is_valid_domain": true,
+		  "is_apex_domain": true,
+		  "should_be_a_record": true,
+		  "is_cname_to_github_user_domain": false,
+		  "is_cname_to_pages_dot_github_dot_com": false,
+		  "is_cname_to_fastly": false,
+		  "is_pointed_to_github_pages_ip": true,
+		  "is_non_github_pages_ip_present": false,
+		  "is_pages_domain": false,
+		  "is_served_by_pages": true,
+		  "is_valid": true,
+		  "reason": "some reason",
+		  "responds_to_https": true,
+		  "enforces_https": true,
+		  "https_error": "some error",
+		  "is_https_eligible": true,
+		  "caa_error": "some error"
+		},
+		"alt_domain": {
+		  "host": "www.example.com",
+		  "uri": "http://www.example.com/",
+		  "nameservers": "default",
+		  "dns_resolves": true
+		}
+	  }`
 
 	testJSONMarshal(t, u, want)
 }
