@@ -369,7 +369,7 @@ type EditOwner struct {
 // OwnerInfo represents the account info of the owner of the repo (could be User or Organization but both are User structs).
 type OwnerInfo struct {
 	User *User `json:"user,omitempty"`
-	Org   *User `json:"organization,omitempty"`
+	Org  *User `json:"organization,omitempty"`
 }
 
 // RepoName represents a change of repository name.

@@ -13191,18 +13191,18 @@ func TestOrgStats_GetTotalTeams(tt *testing.T) {
 	o.GetTotalTeams()
 }
 
-func TestOwnerInfo_GetActor(tt *testing.T) {
-	o := &OwnerInfo{}
-	o.GetActor()
-	o = nil
-	o.GetActor()
-}
-
 func TestOwnerInfo_GetOrg(tt *testing.T) {
 	o := &OwnerInfo{}
 	o.GetOrg()
 	o = nil
 	o.GetOrg()
+}
+
+func TestOwnerInfo_GetUser(tt *testing.T) {
+	o := &OwnerInfo{}
+	o.GetUser()
+	o = nil
+	o.GetUser()
 }
 
 func TestPackage_GetCreatedAt(tt *testing.T) {

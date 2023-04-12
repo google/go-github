@@ -11246,20 +11246,20 @@ func (o *OrgStats) GetTotalTeams() int {
 	return *o.TotalTeams
 }
 
-// GetActor returns the Actor field.
-func (o *OwnerInfo) GetActor() *User {
-	if o == nil {
-		return nil
-	}
-	return o.Actor
-}
-
 // GetOrg returns the Org field.
 func (o *OwnerInfo) GetOrg() *User {
 	if o == nil {
 		return nil
 	}
 	return o.Org
+}
+
+// GetUser returns the User field.
+func (o *OwnerInfo) GetUser() *User {
+	if o == nil {
+		return nil
+	}
+	return o.User
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.

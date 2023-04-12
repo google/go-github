@@ -110,7 +110,7 @@ func TestEditChange_Marshal_TransferFromUser(t *testing.T) {
 	u := &EditChange{
 		Owner: &EditOwner{
 			OwnerInfo: &OwnerInfo{
-				Actor: &User{
+				User: &User{
 					Login:     String("l"),
 					ID:        Int64(1),
 					NodeID:    String("n"),
