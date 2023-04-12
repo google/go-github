@@ -104,6 +104,82 @@ func TestEditChange_Marshal_Repo(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestEditChange_Marshal_TransferFromUser(t *testing.T) {
+	testJSONMarshal(t, &EditChange{}, "{}")
+
+	u := &EditChange{
+		Owner: &EditOwner{
+			OwnerInfo: &OwnerInfo{
+				Actor: &User{
+					Login:     String("l"),
+					ID:        Int64(1),
+					NodeID:    String("n"),
+					URL:       String("u"),
+					ReposURL:  String("r"),
+					EventsURL: String("e"),
+					AvatarURL: String("a"),
+				},
+			},
+		},
+	}
+
+	want := `{
+		"owner": {
+			"from": {
+				"user": {
+					"login": "l",
+          			"id": 1,
+         		 	"node_id": "n",
+          			"avatar_url": "a",
+          			"url": "u",
+          			"repos_url": "r",
+          			"events_url": "e"
+				}
+			}
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestEditChange_Marshal_TransferFromOrg(t *testing.T) {
+	testJSONMarshal(t, &EditChange{}, "{}")
+
+	u := &EditChange{
+		Owner: &EditOwner{
+			OwnerInfo: &OwnerInfo{
+				Org: &User{
+					Login:     String("l"),
+					ID:        Int64(1),
+					NodeID:    String("n"),
+					URL:       String("u"),
+					ReposURL:  String("r"),
+					EventsURL: String("e"),
+					AvatarURL: String("a"),
+				},
+			},
+		},
+	}
+
+	want := `{
+		"owner": {
+			"from": {
+				"organization": {
+					"login": "l",
+          			"id": 1,
+         		 	"node_id": "n",
+          			"avatar_url": "a",
+          			"url": "u",
+          			"repos_url": "r",
+          			"events_url": "e"
+				}
+			}
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestProjectChange_Marshal_NameChange(t *testing.T) {
 	testJSONMarshal(t, &ProjectChange{}, "{}")
 

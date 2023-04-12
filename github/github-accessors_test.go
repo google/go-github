@@ -6397,6 +6397,13 @@ func TestEditChange_GetBody(tt *testing.T) {
 	e.GetBody()
 }
 
+func TestEditChange_GetOwner(tt *testing.T) {
+	e := &EditChange{}
+	e.GetOwner()
+	e = nil
+	e.GetOwner()
+}
+
 func TestEditChange_GetRepo(tt *testing.T) {
 	e := &EditChange{}
 	e.GetRepo()
@@ -6409,6 +6416,13 @@ func TestEditChange_GetTitle(tt *testing.T) {
 	e.GetTitle()
 	e = nil
 	e.GetTitle()
+}
+
+func TestEditOwner_GetOwnerInfo(tt *testing.T) {
+	e := &EditOwner{}
+	e.GetOwnerInfo()
+	e = nil
+	e.GetOwnerInfo()
 }
 
 func TestEditRef_GetFrom(tt *testing.T) {
@@ -13175,6 +13189,20 @@ func TestOrgStats_GetTotalTeams(tt *testing.T) {
 	o.GetTotalTeams()
 	o = nil
 	o.GetTotalTeams()
+}
+
+func TestOwnerInfo_GetActor(tt *testing.T) {
+	o := &OwnerInfo{}
+	o.GetActor()
+	o = nil
+	o.GetActor()
+}
+
+func TestOwnerInfo_GetOrg(tt *testing.T) {
+	o := &OwnerInfo{}
+	o.GetOrg()
+	o = nil
+	o.GetOrg()
 }
 
 func TestPackage_GetCreatedAt(tt *testing.T) {
