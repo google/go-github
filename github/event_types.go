@@ -332,6 +332,7 @@ type EditChange struct {
 	Body  *EditBody  `json:"body,omitempty"`
 	Base  *EditBase  `json:"base,omitempty"`
 	Repo  *EditRepo  `json:"repository,omitempty"`
+	Owner *EditOwner `json:"owner,omitempty"`
 }
 
 // EditTitle represents a pull-request title change.
@@ -358,6 +359,17 @@ type EditRef struct {
 // EditRepo represents a change of repository name.
 type EditRepo struct {
 	Name *RepoName `json:"name,omitempty"`
+}
+
+// EditOwner represents a change of repository ownership.
+type EditOwner struct {
+	OwnerInfo *OwnerInfo `json:"from,omitempty"`
+}
+
+// OwnerInfo represents the account info of the owner of the repo (could be User or Organization but both are User structs).
+type OwnerInfo struct {
+	User *User `json:"user,omitempty"`
+	Org  *User `json:"organization,omitempty"`
 }
 
 // RepoName represents a change of repository name.

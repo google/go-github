@@ -5470,6 +5470,14 @@ func (e *EditChange) GetBody() *EditBody {
 	return e.Body
 }
 
+// GetOwner returns the Owner field.
+func (e *EditChange) GetOwner() *EditOwner {
+	if e == nil {
+		return nil
+	}
+	return e.Owner
+}
+
 // GetRepo returns the Repo field.
 func (e *EditChange) GetRepo() *EditRepo {
 	if e == nil {
@@ -5484,6 +5492,14 @@ func (e *EditChange) GetTitle() *EditTitle {
 		return nil
 	}
 	return e.Title
+}
+
+// GetOwnerInfo returns the OwnerInfo field.
+func (e *EditOwner) GetOwnerInfo() *OwnerInfo {
+	if e == nil {
+		return nil
+	}
+	return e.OwnerInfo
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
@@ -11228,6 +11244,22 @@ func (o *OrgStats) GetTotalTeams() int {
 		return 0
 	}
 	return *o.TotalTeams
+}
+
+// GetOrg returns the Org field.
+func (o *OwnerInfo) GetOrg() *User {
+	if o == nil {
+		return nil
+	}
+	return o.Org
+}
+
+// GetUser returns the User field.
+func (o *OwnerInfo) GetUser() *User {
+	if o == nil {
+		return nil
+	}
+	return o.User
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
