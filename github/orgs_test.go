@@ -315,6 +315,31 @@ func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestOrganizationsService_Delete(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := context.Background()
+	_, err := client.Organizations.Delete(ctx, "o")
+	if err != nil {
+		t.Errorf("Organizations.Delete returned error: %v", err)
+	}
+
+	const methodName = "Delete"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.Delete(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.Delete(ctx, "o")
+	})
+}
+
 func TestOrganizationsService_ListInstallations(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -427,7 +452,7 @@ func TestPlan_Marshal(t *testing.T) {
 		Name:          String("name"),
 		Space:         Int(1),
 		Collaborators: Int(1),
-		PrivateRepos:  Int(1),
+		PrivateRepos:  Int64(1),
 		FilledSeats:   Int(1),
 		Seats:         Int(1),
 	}

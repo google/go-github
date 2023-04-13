@@ -28,6 +28,7 @@ type Environment struct {
 	HTMLURL         *string           `json:"html_url,omitempty"`
 	CreatedAt       *Timestamp        `json:"created_at,omitempty"`
 	UpdatedAt       *Timestamp        `json:"updated_at,omitempty"`
+	CanAdminsBypass *bool             `json:"can_admins_bypass,omitempty"`
 	ProtectionRules []*ProtectionRule `json:"protection_rules,omitempty"`
 }
 
@@ -147,10 +148,14 @@ func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, n
 
 // MarshalJSON implements the json.Marshaler interface.
 // As the only way to clear a WaitTimer is to set it to 0, a missing WaitTimer object should default to 0, not null.
+// As the default value for CanAdminsBypass is true, a nil value here marshals to true.
 func (c *CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
 	type Alias CreateUpdateEnvironment
 	if c.WaitTimer == nil {
 		c.WaitTimer = Int(0)
+	}
+	if c.CanAdminsBypass == nil {
+		c.CanAdminsBypass = Bool(true)
 	}
 	return json.Marshal(&struct {
 		*Alias
@@ -166,6 +171,7 @@ func (c *CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
 type CreateUpdateEnvironment struct {
 	WaitTimer              *int            `json:"wait_timer"`
 	Reviewers              []*EnvReviewers `json:"reviewers"`
+	CanAdminsBypass        *bool           `json:"can_admins_bypass"`
 	DeploymentBranchPolicy *BranchPolicy   `json:"deployment_branch_policy"`
 }
 

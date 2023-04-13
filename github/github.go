@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	Version = "v50.0.0"
+	Version = "v51.0.0"
 
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
@@ -171,8 +171,9 @@ type Client struct {
 	// User agent used when communicating with the GitHub API.
 	UserAgent string
 
-	rateMu     sync.Mutex
-	rateLimits [categories]Rate // Rate limits for the client as determined by the most recent API calls.
+	rateMu                  sync.Mutex
+	rateLimits              [categories]Rate // Rate limits for the client as determined by the most recent API calls.
+	secondaryRateLimitReset time.Time        // Secondary rate limit reset for the client as determined by the most recent API calls.
 
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
@@ -345,6 +346,11 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
 	return c
+}
+
+// NewClientWithEnvProxy enhances NewClient with the HttpProxy env.
+func NewClientWithEnvProxy() *Client {
+	return NewClient(&http.Client{Transport: &http.Transport{Proxy: http.ProxyFromEnvironment}})
 }
 
 // NewTokenClient returns a new GitHub API client authenticated with the provided token.
@@ -570,7 +576,8 @@ type Response struct {
 	// propagate to Response.
 	Rate Rate
 
-	// token's expiration date
+	// token's expiration date. Timestamp is 0001-01-01 when token doesn't expire.
+	// So it is valid for TokenExpiration.Equal(Timestamp{}) or TokenExpiration.Time.After(time.Now())
 	TokenExpiration Timestamp
 }
 
@@ -671,14 +678,19 @@ func parseRate(r *http.Response) Rate {
 }
 
 // parseTokenExpiration parses the TokenExpiration related headers.
+// Returns 0001-01-01 if the header is not defined or could not be parsed.
 func parseTokenExpiration(r *http.Response) Timestamp {
-	var exp Timestamp
 	if v := r.Header.Get(headerTokenExpiration); v != "" {
-		if t, err := time.Parse("2006-01-02 03:04:05 MST", v); err == nil {
-			exp = Timestamp{t.Local()}
+		if t, err := time.Parse("2006-01-02 15:04:05 MST", v); err == nil {
+			return Timestamp{t.Local()}
+		}
+		// Some tokens include the timezone offset instead of the timezone.
+		// https://github.com/google/go-github/issues/2649
+		if t, err := time.Parse("2006-01-02 15:04:05 -0700", v); err == nil {
+			return Timestamp{t.Local()}
 		}
 	}
-	return exp
+	return Timestamp{} // 0001-01-01 00:00:00
 }
 
 type requestContext uint8
@@ -702,7 +714,7 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 
 	req = withContext(ctx, req)
 
-	rateLimitCategory := category(req.URL.Path)
+	rateLimitCategory := category(req.Method, req.URL.Path)
 
 	if bypass := ctx.Value(bypassRateLimitCheck); bypass == nil {
 		// If we've hit rate limit, don't make further requests before Reset time.
@@ -710,6 +722,12 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 			return &Response{
 				Response: err.Response,
 				Rate:     err.Rate,
+			}, err
+		}
+		// If we've hit a secondary rate limit, don't make further requests before Retry After.
+		if err := c.checkSecondaryRateLimitBeforeDo(ctx, req); err != nil {
+			return &Response{
+				Response: err.Response,
 			}, err
 		}
 	}
@@ -762,6 +780,14 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 
 			aerr.Raw = b
 			err = aerr
+		}
+
+		// Update the secondary rate limit if we hit it.
+		rerr, ok := err.(*AbuseRateLimitError)
+		if ok && rerr.RetryAfter != nil {
+			c.rateMu.Lock()
+			c.secondaryRateLimitReset = time.Now().Add(*rerr.RetryAfter)
+			c.rateMu.Unlock()
 		}
 	}
 	return response, err
@@ -821,6 +847,35 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory rat
 			Rate:     rate,
 			Response: resp,
 			Message:  fmt.Sprintf("API rate limit of %v still exceeded until %v, not making remote request.", rate.Limit, rate.Reset.Time),
+		}
+	}
+
+	return nil
+}
+
+// checkSecondaryRateLimitBeforeDo does not make any network calls, but uses existing knowledge from
+// current client state in order to quickly check if *AbuseRateLimitError can be immediately returned
+// from Client.Do, and if so, returns it so that Client.Do can skip making a network API call unnecessarily.
+// Otherwise it returns nil, and Client.Do should proceed normally.
+func (c *Client) checkSecondaryRateLimitBeforeDo(ctx context.Context, req *http.Request) *AbuseRateLimitError {
+	c.rateMu.Lock()
+	secondary := c.secondaryRateLimitReset
+	c.rateMu.Unlock()
+	if !secondary.IsZero() && time.Now().Before(secondary) {
+		// Create a fake response.
+		resp := &http.Response{
+			Status:     http.StatusText(http.StatusForbidden),
+			StatusCode: http.StatusForbidden,
+			Request:    req,
+			Header:     make(http.Header),
+			Body:       io.NopCloser(strings.NewReader("")),
+		}
+
+		retryAfter := time.Until(secondary)
+		return &AbuseRateLimitError{
+			Response:   resp,
+			Message:    fmt.Sprintf("API secondary rate limit exceeded until %v, not making remote request.", secondary),
+			RetryAfter: &retryAfter,
 		}
 	}
 
@@ -1197,13 +1252,36 @@ const (
 	categories // An array of this length will be able to contain all rate limit categories.
 )
 
-// category returns the rate limit category of the endpoint, determined by Request.URL.Path.
-func category(path string) rateLimitCategory {
+// category returns the rate limit category of the endpoint, determined by HTTP method and Request.URL.Path.
+func category(method, path string) rateLimitCategory {
 	switch {
+	// https://docs.github.com/en/rest/rate-limit#about-rate-limits
 	default:
+		// NOTE: coreCategory is returned for actionsRunnerRegistrationCategory too,
+		// because no API found for this category.
 		return coreCategory
 	case strings.HasPrefix(path, "/search/"):
 		return searchCategory
+	case path == "/graphql":
+		return graphqlCategory
+	case strings.HasPrefix(path, "/app-manifests/") &&
+		strings.HasSuffix(path, "/conversions") &&
+		method == http.MethodPost:
+		return integrationManifestCategory
+
+	// https://docs.github.com/en/rest/migrations/source-imports#start-an-import
+	case strings.HasPrefix(path, "/repos/") &&
+		strings.HasSuffix(path, "/import") &&
+		method == http.MethodPut:
+		return sourceImportCategory
+
+	// https://docs.github.com/en/rest/code-scanning#upload-an-analysis-as-sarif-data
+	case strings.HasSuffix(path, "/code-scanning/sarifs"):
+		return codeScanningUploadCategory
+
+	// https://docs.github.com/en/enterprise-cloud@latest/rest/scim
+	case strings.HasPrefix(path, "/scim/"):
+		return scimCategory
 	}
 }
 

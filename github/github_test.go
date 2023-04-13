@@ -169,6 +169,33 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	}
 }
 
+// Test whether the v fields have the url tag and the parsing of v
+// produces query parameters that corresponds to the want string.
+func testAddURLOptions(t *testing.T, url string, v interface{}, want string) {
+	t.Helper()
+
+	vt := reflect.Indirect(reflect.ValueOf(v)).Type()
+	for i := 0; i < vt.NumField(); i++ {
+		field := vt.Field(i)
+		if alias, ok := field.Tag.Lookup("url"); ok {
+			if alias == "" {
+				t.Errorf("The field %+v has a blank url tag", field)
+			}
+		} else {
+			t.Errorf("The field %+v has no url tag specified", field)
+		}
+	}
+
+	got, err := addOptions(url, v)
+	if err != nil {
+		t.Errorf("Unable to add %#v as query parameters", v)
+	}
+
+	if got != want {
+		t.Errorf("addOptions(%q, %#v) returned %v, want %v", url, v, got, want)
+	}
+}
+
 // Test how bad options are handled. Method f under test should
 // return an error.
 func testBadOptions(t *testing.T, methodName string, f func() error) {
@@ -185,6 +212,11 @@ func testBadOptions(t *testing.T, methodName string, f func() error) {
 // Method f should be a regular call that would normally succeed, but
 // should return an error when NewRequest or s.client.Do fails.
 func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client, f func() (*Response, error)) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, coreCategory, f)
+}
+
+// testNewRequestAndDoFailureCategory works Like testNewRequestAndDoFailure, but allows setting the category
+func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client *Client, category rateLimitCategory, f func() (*Response, error)) {
 	t.Helper()
 	if methodName == "" {
 		t.Error("testNewRequestAndDoFailure: must supply method methodName")
@@ -200,7 +232,7 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	}
 
 	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	client.rateLimits[category].Reset.Time = time.Now().Add(10 * time.Minute)
 	resp, err = f()
 	if bypass := resp.Request.Context().Value(bypassRateLimitCheck); bypass != nil {
 		return
@@ -256,6 +288,13 @@ func TestNewClient(t *testing.T) {
 	c2 := NewClient(nil)
 	if c.client == c2.client {
 		t.Error("NewClient returned same http.Clients, but they should differ")
+	}
+}
+
+func TestNewClientWithEnvProxy(t *testing.T) {
+	client := NewClientWithEnvProxy()
+	if got, want := client.BaseURL.String(), defaultBaseURL; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
 	}
 }
 
@@ -1136,6 +1175,67 @@ func TestDo_rateLimit(t *testing.T) {
 	}
 }
 
+func TestDo_rateLimitCategory(t *testing.T) {
+	tests := []struct {
+		method   string
+		url      string
+		category rateLimitCategory
+	}{
+		{
+			method:   http.MethodGet,
+			url:      "/",
+			category: coreCategory,
+		},
+		{
+			method:   http.MethodGet,
+			url:      "/search/issues?q=rate",
+			category: searchCategory,
+		},
+		{
+			method:   http.MethodGet,
+			url:      "/graphql",
+			category: graphqlCategory,
+		},
+		{
+			method:   http.MethodPost,
+			url:      "/app-manifests/code/conversions",
+			category: integrationManifestCategory,
+		},
+		{
+			method:   http.MethodGet,
+			url:      "/app-manifests/code/conversions",
+			category: coreCategory, // only POST requests are in the integration manifest category
+		},
+		{
+			method:   http.MethodPut,
+			url:      "/repos/google/go-github/import",
+			category: sourceImportCategory,
+		},
+		{
+			method:   http.MethodGet,
+			url:      "/repos/google/go-github/import",
+			category: coreCategory, // only PUT requests are in the source import category
+		},
+		{
+			method:   http.MethodPost,
+			url:      "/repos/google/go-github/code-scanning/sarifs",
+			category: codeScanningUploadCategory,
+		},
+		{
+			method:   http.MethodGet,
+			url:      "/scim/v2/organizations/ORG/Users",
+			category: scimCategory,
+		},
+		// missing a check for actionsRunnerRegistrationCategory: API not found
+	}
+
+	for _, tt := range tests {
+		if got, want := category(tt.method, tt.url), tt.category; got != want {
+			t.Errorf("expecting category %v, found %v", got, want)
+		}
+	}
+}
+
 // ensure rate limit is still parsed, even for error responses
 func TestDo_rateLimit_errorResponse(t *testing.T) {
 	client, mux, _, teardown := setup()
@@ -1406,6 +1506,25 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 	}
 	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; got != want {
 		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
+	}
+
+	// expect prevention of a following request
+	if _, err = client.Do(ctx, req, nil); err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	abuseRateLimitErr, ok = err.(*AbuseRateLimitError)
+	if !ok {
+		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+	}
+	if abuseRateLimitErr.RetryAfter == nil {
+		t.Fatalf("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+	}
+	// the saved duration might be a bit smaller than Retry-After because the duration is calculated from the expected end-of-cooldown time
+	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; want-got > 1*time.Second {
+		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
+	}
+	if got, wantSuffix := abuseRateLimitErr.Message, "not making remote request."; !strings.HasSuffix(got, wantSuffix) {
+		t.Errorf("Expected request to be prevented because of secondary rate limit, got: %v.", got)
 	}
 }
 
@@ -2065,30 +2184,48 @@ func TestRateLimits(t *testing.T) {
 	if !cmp.Equal(rate, want) {
 		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
 	}
+	tests := []struct {
+		category rateLimitCategory
+		rate     *Rate
+	}{
+		{
+			category: coreCategory,
+			rate:     want.Core,
+		},
+		{
+			category: searchCategory,
+			rate:     want.Search,
+		},
+		{
+			category: graphqlCategory,
+			rate:     want.GraphQL,
+		},
+		{
+			category: integrationManifestCategory,
+			rate:     want.IntegrationManifest,
+		},
+		{
+			category: sourceImportCategory,
+			rate:     want.SourceImport,
+		},
+		{
+			category: codeScanningUploadCategory,
+			rate:     want.CodeScanningUpload,
+		},
+		{
+			category: actionsRunnerRegistrationCategory,
+			rate:     want.ActionsRunnerRegistration,
+		},
+		{
+			category: scimCategory,
+			rate:     want.SCIM,
+		},
+	}
 
-	if got, want := client.rateLimits[coreCategory], *want.Core; got != want {
-		t.Errorf("client.rateLimits[coreCategory] is %+v, want %+v", got, want)
-	}
-	if got, want := client.rateLimits[searchCategory], *want.Search; got != want {
-		t.Errorf("client.rateLimits[searchCategory] is %+v, want %+v", got, want)
-	}
-	if got, want := client.rateLimits[graphqlCategory], *want.GraphQL; got != want {
-		t.Errorf("client.rateLimits[graphqlCategory] is %+v, want %+v", got, want)
-	}
-	if got, want := client.rateLimits[integrationManifestCategory], *want.IntegrationManifest; got != want {
-		t.Errorf("client.rateLimits[integrationManifestCategory] is %+v, want %+v", got, want)
-	}
-	if got, want := client.rateLimits[sourceImportCategory], *want.SourceImport; got != want {
-		t.Errorf("client.rateLimits[sourceImportCategory] is %+v, want %+v", got, want)
-	}
-	if got, want := client.rateLimits[codeScanningUploadCategory], *want.CodeScanningUpload; got != want {
-		t.Errorf("client.rateLimits[codeScanningUploadCategory] is %+v, want %+v", got, want)
-	}
-	if got, want := client.rateLimits[actionsRunnerRegistrationCategory], *want.ActionsRunnerRegistration; got != want {
-		t.Errorf("client.rateLimits[actionsRunnerRegistrationCategory] is %+v, want %+v", got, want)
-	}
-	if got, want := client.rateLimits[scimCategory], *want.SCIM; got != want {
-		t.Errorf("client.rateLimits[scimCategory] is %+v, want %+v", got, want)
+	for _, tt := range tests {
+		if got, want := client.rateLimits[tt.category], *tt.rate; got != want {
+			t.Errorf("client.rateLimits[%v] is %+v, want %+v", tt.category, got, want)
+		}
 	}
 }
 
@@ -2117,7 +2254,13 @@ func TestRateLimits_overQuota(t *testing.T) {
 	mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, `{"resources":{
 			"core": {"limit":2,"remaining":1,"reset":1372700873},
-			"search": {"limit":3,"remaining":2,"reset":1372700874}
+			"search": {"limit":3,"remaining":2,"reset":1372700874},
+			"graphql": {"limit":4,"remaining":3,"reset":1372700875},
+			"integration_manifest": {"limit":5,"remaining":4,"reset":1372700876},
+			"source_import": {"limit":6,"remaining":5,"reset":1372700877},
+			"code_scanning_upload": {"limit":7,"remaining":6,"reset":1372700878},
+			"actions_runner_registration": {"limit":8,"remaining":7,"reset":1372700879},
+			"scim": {"limit":9,"remaining":8,"reset":1372700880}
 		}}`)
 	})
 
@@ -2138,16 +2281,82 @@ func TestRateLimits_overQuota(t *testing.T) {
 			Remaining: 2,
 			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 54, 0, time.UTC).Local()},
 		},
+		GraphQL: &Rate{
+			Limit:     4,
+			Remaining: 3,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 55, 0, time.UTC).Local()},
+		},
+		IntegrationManifest: &Rate{
+			Limit:     5,
+			Remaining: 4,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 56, 0, time.UTC).Local()},
+		},
+		SourceImport: &Rate{
+			Limit:     6,
+			Remaining: 5,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 57, 0, time.UTC).Local()},
+		},
+		CodeScanningUpload: &Rate{
+			Limit:     7,
+			Remaining: 6,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 58, 0, time.UTC).Local()},
+		},
+		ActionsRunnerRegistration: &Rate{
+			Limit:     8,
+			Remaining: 7,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 59, 0, time.UTC).Local()},
+		},
+		SCIM: &Rate{
+			Limit:     9,
+			Remaining: 8,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 00, 0, time.UTC).Local()},
+		},
 	}
 	if !cmp.Equal(rate, want) {
 		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
 	}
 
-	if got, want := client.rateLimits[coreCategory], *want.Core; got != want {
-		t.Errorf("client.rateLimits[coreCategory] is %+v, want %+v", got, want)
+	tests := []struct {
+		category rateLimitCategory
+		rate     *Rate
+	}{
+		{
+			category: coreCategory,
+			rate:     want.Core,
+		},
+		{
+			category: searchCategory,
+			rate:     want.Search,
+		},
+		{
+			category: graphqlCategory,
+			rate:     want.GraphQL,
+		},
+		{
+			category: integrationManifestCategory,
+			rate:     want.IntegrationManifest,
+		},
+		{
+			category: sourceImportCategory,
+			rate:     want.SourceImport,
+		},
+		{
+			category: codeScanningUploadCategory,
+			rate:     want.CodeScanningUpload,
+		},
+		{
+			category: actionsRunnerRegistrationCategory,
+			rate:     want.ActionsRunnerRegistration,
+		},
+		{
+			category: scimCategory,
+			rate:     want.SCIM,
+		},
 	}
-	if got, want := client.rateLimits[searchCategory], *want.Search; got != want {
-		t.Errorf("client.rateLimits[searchCategory] is %+v, want %+v", got, want)
+	for _, tt := range tests {
+		if got, want := client.rateLimits[tt.category], *tt.rate; got != want {
+			t.Errorf("client.rateLimits[%v] is %+v, want %+v", tt.category, got, want)
+		}
 	}
 }
 
@@ -2685,6 +2894,16 @@ func TestParseTokenExpiration(t *testing.T) {
 			header: "2021-09-03 02:34:04 UTC",
 			want:   Timestamp{time.Date(2021, time.September, 3, 2, 34, 4, 0, time.UTC)},
 		},
+		{
+			header: "2021-09-03 14:34:04 UTC",
+			want:   Timestamp{time.Date(2021, time.September, 3, 14, 34, 4, 0, time.UTC)},
+		},
+		// Some tokens include the timezone offset instead of the timezone.
+		// https://github.com/google/go-github/issues/2649
+		{
+			header: "2023-04-26 20:23:26 +0200",
+			want:   Timestamp{time.Date(2023, time.April, 26, 18, 23, 26, 0, time.UTC)},
+		},
 	}
 
 	for _, tt := range tests {
@@ -2696,7 +2915,7 @@ func TestParseTokenExpiration(t *testing.T) {
 		res.Header.Set(headerTokenExpiration, tt.header)
 		exp := parseTokenExpiration(res)
 		if !exp.Equal(tt.want) {
-			t.Errorf("parseTokenExpiration returned %#v, want %#v", exp, tt.want)
+			t.Errorf("parseTokenExpiration of %q\nreturned %#v\n    want %#v", tt.header, exp, tt.want)
 		}
 	}
 }

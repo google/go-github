@@ -23,6 +23,13 @@ type ListCollaboratorsOptions struct {
 	// Default value is "all".
 	Affiliation string `url:"affiliation,omitempty"`
 
+	// Permission specifies how collaborators should be filtered by the permissions they have on the repository.
+	// Possible values are:
+	// "pull", "triage", "push", "maintain", "admin"
+	//
+	// If not specified, all collaborators will be returned.
+	Permission string `url:"permission,omitempty"`
+
 	ListOptions
 }
 

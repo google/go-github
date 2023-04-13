@@ -795,8 +795,10 @@ func TestKey_String(t *testing.T) {
 		ReadOnly:  Bool(false),
 		Verified:  Bool(false),
 		CreatedAt: &Timestamp{},
+		AddedBy:   String(""),
+		LastUsed:  &Timestamp{},
 	}
-	want := `github.Key{ID:0, Key:"", URL:"", Title:"", ReadOnly:false, Verified:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.Key{ID:0, Key:"", URL:"", Title:"", ReadOnly:false, Verified:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, AddedBy:"", LastUsed:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("Key.String = %v, want %v", got, want)
 	}
@@ -996,8 +998,8 @@ func TestOrganization_String(t *testing.T) {
 		Following:                            Int(0),
 		CreatedAt:                            &Timestamp{},
 		UpdatedAt:                            &Timestamp{},
-		TotalPrivateRepos:                    Int(0),
-		OwnedPrivateRepos:                    Int(0),
+		TotalPrivateRepos:                    Int64(0),
+		OwnedPrivateRepos:                    Int64(0),
 		PrivateGists:                         Int(0),
 		DiskUsage:                            Int(0),
 		Collaborators:                        Int(0),
@@ -1183,7 +1185,7 @@ func TestPlan_String(t *testing.T) {
 		Name:          String(""),
 		Space:         Int(0),
 		Collaborators: Int(0),
-		PrivateRepos:  Int(0),
+		PrivateRepos:  Int64(0),
 		FilledSeats:   Int(0),
 		Seats:         Int(0),
 	}
@@ -1560,6 +1562,7 @@ func TestRepository_String(t *testing.T) {
 		AllowMergeCommit:          Bool(false),
 		AllowAutoMerge:            Bool(false),
 		AllowForking:              Bool(false),
+		WebCommitSignoffRequired:  Bool(false),
 		DeleteBranchOnMerge:       Bool(false),
 		UseSquashPRTitleAsDefault: Bool(false),
 		SquashMergeCommitTitle:    String(""),
@@ -1622,7 +1625,7 @@ func TestRepository_String(t *testing.T) {
 		Visibility:                String(""),
 		RoleName:                  String(""),
 	}
-	want := `github.Repository{ID:0, NodeID:"", Owner:github.User{}, Name:"", FullName:"", Description:"", Homepage:"", CodeOfConduct:github.CodeOfConduct{}, DefaultBranch:"", MasterBranch:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PushedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HTMLURL:"", CloneURL:"", GitURL:"", MirrorURL:"", SSHURL:"", SVNURL:"", Language:"", Fork:false, ForksCount:0, NetworkCount:0, OpenIssuesCount:0, OpenIssues:0, StargazersCount:0, SubscribersCount:0, WatchersCount:0, Watchers:0, Size:0, AutoInit:false, Parent:github.Repository{}, Source:github.Repository{}, TemplateRepository:github.Repository{}, Organization:github.Organization{}, AllowRebaseMerge:false, AllowUpdateBranch:false, AllowSquashMerge:false, AllowMergeCommit:false, AllowAutoMerge:false, AllowForking:false, DeleteBranchOnMerge:false, UseSquashPRTitleAsDefault:false, SquashMergeCommitTitle:"", SquashMergeCommitMessage:"", MergeCommitTitle:"", MergeCommitMessage:"", Topics:[""], Archived:false, Disabled:false, License:github.License{}, Private:false, HasIssues:false, HasWiki:false, HasPages:false, HasProjects:false, HasDownloads:false, HasDiscussions:false, IsTemplate:false, LicenseTemplate:"", GitignoreTemplate:"", SecurityAndAnalysis:github.SecurityAndAnalysis{}, TeamID:0, URL:"", ArchiveURL:"", AssigneesURL:"", BlobsURL:"", BranchesURL:"", CollaboratorsURL:"", CommentsURL:"", CommitsURL:"", CompareURL:"", ContentsURL:"", ContributorsURL:"", DeploymentsURL:"", DownloadsURL:"", EventsURL:"", ForksURL:"", GitCommitsURL:"", GitRefsURL:"", GitTagsURL:"", HooksURL:"", IssueCommentURL:"", IssueEventsURL:"", IssuesURL:"", KeysURL:"", LabelsURL:"", LanguagesURL:"", MergesURL:"", MilestonesURL:"", NotificationsURL:"", PullsURL:"", ReleasesURL:"", StargazersURL:"", StatusesURL:"", SubscribersURL:"", SubscriptionURL:"", TagsURL:"", TreesURL:"", TeamsURL:"", Visibility:"", RoleName:""}`
+	want := `github.Repository{ID:0, NodeID:"", Owner:github.User{}, Name:"", FullName:"", Description:"", Homepage:"", CodeOfConduct:github.CodeOfConduct{}, DefaultBranch:"", MasterBranch:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PushedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HTMLURL:"", CloneURL:"", GitURL:"", MirrorURL:"", SSHURL:"", SVNURL:"", Language:"", Fork:false, ForksCount:0, NetworkCount:0, OpenIssuesCount:0, OpenIssues:0, StargazersCount:0, SubscribersCount:0, WatchersCount:0, Watchers:0, Size:0, AutoInit:false, Parent:github.Repository{}, Source:github.Repository{}, TemplateRepository:github.Repository{}, Organization:github.Organization{}, AllowRebaseMerge:false, AllowUpdateBranch:false, AllowSquashMerge:false, AllowMergeCommit:false, AllowAutoMerge:false, AllowForking:false, WebCommitSignoffRequired:false, DeleteBranchOnMerge:false, UseSquashPRTitleAsDefault:false, SquashMergeCommitTitle:"", SquashMergeCommitMessage:"", MergeCommitTitle:"", MergeCommitMessage:"", Topics:[""], Archived:false, Disabled:false, License:github.License{}, Private:false, HasIssues:false, HasWiki:false, HasPages:false, HasProjects:false, HasDownloads:false, HasDiscussions:false, IsTemplate:false, LicenseTemplate:"", GitignoreTemplate:"", SecurityAndAnalysis:github.SecurityAndAnalysis{}, TeamID:0, URL:"", ArchiveURL:"", AssigneesURL:"", BlobsURL:"", BranchesURL:"", CollaboratorsURL:"", CommentsURL:"", CommitsURL:"", CompareURL:"", ContentsURL:"", ContributorsURL:"", DeploymentsURL:"", DownloadsURL:"", EventsURL:"", ForksURL:"", GitCommitsURL:"", GitRefsURL:"", GitTagsURL:"", HooksURL:"", IssueCommentURL:"", IssueEventsURL:"", IssuesURL:"", KeysURL:"", LabelsURL:"", LanguagesURL:"", MergesURL:"", MilestonesURL:"", NotificationsURL:"", PullsURL:"", ReleasesURL:"", StargazersURL:"", StatusesURL:"", SubscribersURL:"", SubscriptionURL:"", TagsURL:"", TreesURL:"", TeamsURL:"", Visibility:"", RoleName:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Repository.String = %v, want %v", got, want)
 	}
@@ -1948,8 +1951,8 @@ func TestUser_String(t *testing.T) {
 		SuspendedAt:             &Timestamp{},
 		Type:                    String(""),
 		SiteAdmin:               Bool(false),
-		TotalPrivateRepos:       Int(0),
-		OwnedPrivateRepos:       Int(0),
+		TotalPrivateRepos:       Int64(0),
+		OwnedPrivateRepos:       Int64(0),
 		PrivateGists:            Int(0),
 		DiskUsage:               Int(0),
 		Collaborators:           Int(0),

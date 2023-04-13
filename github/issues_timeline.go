@@ -143,6 +143,8 @@ type Timeline struct {
 
 	// The person requested to review the pull request.
 	Reviewer *User `json:"requested_reviewer,omitempty"`
+	// RequestedTeam contains the team requested to review the pull request.
+	RequestedTeam *Team `json:"requested_team,omitempty"`
 	// The person who requested a review.
 	Requester *User `json:"review_requester,omitempty"`
 

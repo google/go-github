@@ -190,6 +190,39 @@ type DeploymentStatusEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// DiscussionCommentEvent represents a webhook event for a comment on discussion.
+// The Webhook event name is "discussion_comment".
+//
+// GitHub API docs: https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#discussion_comment
+type DiscussionCommentEvent struct {
+	// Action is the action that was performed on the comment.
+	// Possible values are: "created", "edited", "deleted". ** check what all can be added
+	Action       *string            `json:"action,omitempty"`
+	Discussion   *Discussion        `json:"discussion,omitempty"`
+	Comment      *CommentDiscussion `json:"comment,omitempty"`
+	Repo         *Repository        `json:"repository,omitempty"`
+	Org          *Organization      `json:"organization,omitempty"`
+	Sender       *User              `json:"sender,omitempty"`
+	Installation *Installation      `json:"installation,omitempty"`
+}
+
+// CommentDiscussion represents a comment in a GitHub DiscussionCommentEvent.
+type CommentDiscussion struct {
+	AuthorAssociation *string    `json:"author_association,omitempty"`
+	Body              *string    `json:"body,omitempty"`
+	ChildCommentCount *int       `json:"child_comment_count,omitempty"`
+	CreatedAt         *Timestamp `json:"created_at,omitempty"`
+	DiscussionID      *int64     `json:"discussion_id,omitempty"`
+	HTMLURL           *string    `json:"html_url,omitempty"`
+	ID                *int64     `json:"id,omitempty"`
+	NodeID            *string    `json:"node_id,omitempty"`
+	ParentID          *int64     `json:"parent_id,omitempty"`
+	Reactions         *Reactions `json:"reactions,omitempty"`
+	RepositoryURL     *string    `json:"repository_url,omitempty"`
+	UpdatedAt         *Timestamp `json:"updated_at,omitempty"`
+	User              *User      `json:"user,omitempty"`
+}
+
 // DiscussionEvent represents a webhook event for a discussion.
 // The Webhook event name is "discussion".
 //
@@ -300,6 +333,7 @@ type EditChange struct {
 	Body  *EditBody  `json:"body,omitempty"`
 	Base  *EditBase  `json:"base,omitempty"`
 	Repo  *EditRepo  `json:"repository,omitempty"`
+	Owner *EditOwner `json:"owner,omitempty"`
 }
 
 // EditTitle represents a pull-request title change.
@@ -326,6 +360,17 @@ type EditRef struct {
 // EditRepo represents a change of repository name.
 type EditRepo struct {
 	Name *RepoName `json:"name,omitempty"`
+}
+
+// EditOwner represents a change of repository ownership.
+type EditOwner struct {
+	OwnerInfo *OwnerInfo `json:"from,omitempty"`
+}
+
+// OwnerInfo represents the account info of the owner of the repo (could be User or Organization but both are User structs).
+type OwnerInfo struct {
+	User *User `json:"user,omitempty"`
+	Org  *User `json:"organization,omitempty"`
 }
 
 // RepoName represents a change of repository name.
@@ -1030,6 +1075,7 @@ type PushEventRepository struct {
 	SSHURL          *string    `json:"ssh_url,omitempty"`
 	CloneURL        *string    `json:"clone_url,omitempty"`
 	SVNURL          *string    `json:"svn_url,omitempty"`
+	Topics          []string   `json:"topics,omitempty"`
 }
 
 // PushEventRepoOwner is a basic representation of user/org in a PushEvent payload.

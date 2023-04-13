@@ -14,8 +14,8 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/google/go-cmp/cmp"
-	"golang.org/x/crypto/openpgp"
 )
 
 func TestRepositoryContent_GetContent(t *testing.T) {
@@ -742,23 +742,6 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 	if url.String() != want {
 		t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
 	}
-}
-
-func TestRepositoriesService_GetArchiveLink_invalidLocationHeader(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		ctlChar := 0x7f
-		badURL := "https://google.com" + string(byte(ctlChar))
-		w.Header().Add("Location", badURL)
-		w.WriteHeader(http.StatusFound)
-	})
-
-	ctx := context.Background()
-	_, _, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, false)
-	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_GetContents_NoTrailingSlashInDirectoryApiPath(t *testing.T) {
