@@ -98,11 +98,13 @@ func (s *ActionsService) CreateRequiredWorkflow(ctx context.Context, org string,
 	if err != nil {
 		return nil, nil, err
 	}
+
 	orgRequiredWorkflow := new(OrgRequiredWorkflow)
 	resp, err := s.client.Do(ctx, req, orgRequiredWorkflow)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return orgRequiredWorkflow, resp, nil
 }
 
@@ -135,11 +137,13 @@ func (s *ActionsService) UpdateRequiredWorkflow(ctx context.Context, org string,
 	if err != nil {
 		return nil, nil, err
 	}
+
 	orgRequiredWorkflow := new(OrgRequiredWorkflow)
 	resp, err := s.client.Do(ctx, req, orgRequiredWorkflow)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return orgRequiredWorkflow, resp, nil
 }
 
