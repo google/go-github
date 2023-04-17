@@ -92,13 +92,20 @@ func (s *ActionsService) ListOrgRequiredWorkflows(ctx context.Context, org strin
 // CreateRequiredWorkflow creates the required workflow in an org.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#create-a-required-workflow
-func (s *ActionsService) CreateRequiredWorkflow(ctx context.Context, org string, createRequiredWorkflowOptions *CreateUpdateRequiredWorkflowOptions) (*Response, error) {
+func (s *ActionsService) CreateRequiredWorkflow(ctx context.Context, org string, createRequiredWorkflowOptions *CreateUpdateRequiredWorkflowOptions) (*OrgRequiredWorkflow, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows", org)
 	req, err := s.client.NewRequest("PUT", url, createRequiredWorkflowOptions)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+
+	orgRequiredWorkflow := new(OrgRequiredWorkflow)
+	resp, err := s.client.Do(ctx, req, orgRequiredWorkflow)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return orgRequiredWorkflow, resp, nil
 }
 
 // GetRequiredWorkflowByID get the RequiredWorkflows for an org by its ID.
@@ -124,13 +131,20 @@ func (s *ActionsService) GetRequiredWorkflowByID(ctx context.Context, owner stri
 // UpdateRequiredWorkflow updates a required workflow in an org.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#update-a-required-workflow
-func (s *ActionsService) UpdateRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID int64, updateRequiredWorkflowOptions *CreateUpdateRequiredWorkflowOptions) (*Response, error) {
+func (s *ActionsService) UpdateRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID int64, updateRequiredWorkflowOptions *CreateUpdateRequiredWorkflowOptions) (*OrgRequiredWorkflow, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v", org, requiredWorkflowID)
 	req, err := s.client.NewRequest("PATCH", url, updateRequiredWorkflowOptions)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+
+	orgRequiredWorkflow := new(OrgRequiredWorkflow)
+	resp, err := s.client.Do(ctx, req, orgRequiredWorkflow)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return orgRequiredWorkflow, resp, nil
 }
 
 // DeleteRequiredWorkflow deletes a required workflow in an org.
