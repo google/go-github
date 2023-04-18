@@ -8634,6 +8634,13 @@ func TestInstallationEvent_GetInstallation(tt *testing.T) {
 	i.GetInstallation()
 }
 
+func TestInstallationEvent_GetRequester(tt *testing.T) {
+	i := &InstallationEvent{}
+	i.GetRequester()
+	i = nil
+	i.GetRequester()
+}
+
 func TestInstallationEvent_GetSender(tt *testing.T) {
 	i := &InstallationEvent{}
 	i.GetSender()
