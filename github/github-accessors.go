@@ -7358,6 +7358,14 @@ func (i *InstallationEvent) GetInstallation() *Installation {
 	return i.Installation
 }
 
+// GetRequester returns the Requester field.
+func (i *InstallationEvent) GetRequester() *User {
+	if i == nil {
+		return nil
+	}
+	return i.Requester
+}
+
 // GetSender returns the Sender field.
 func (i *InstallationEvent) GetSender() *User {
 	if i == nil {

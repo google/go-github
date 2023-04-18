@@ -469,7 +469,7 @@ type InstallationEvent struct {
 	Repositories []*Repository `json:"repositories,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
-	// TODO key "requester" is not covered
+	Requester    *User         `json:"requester,omitempty"`
 }
 
 // InstallationRepositoriesEvent is triggered when a repository is added or
