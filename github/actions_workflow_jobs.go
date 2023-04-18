@@ -28,6 +28,7 @@ type WorkflowJob struct {
 	RunID       *int64      `json:"run_id,omitempty"`
 	RunURL      *string     `json:"run_url,omitempty"`
 	NodeID      *string     `json:"node_id,omitempty"`
+	HeadBranch  *string     `json:"head_branch,omitempty"`
 	HeadSHA     *string     `json:"head_sha,omitempty"`
 	URL         *string     `json:"url,omitempty"`
 	HTMLURL     *string     `json:"html_url,omitempty"`

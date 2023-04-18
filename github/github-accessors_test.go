@@ -25481,6 +25481,16 @@ func TestWorkflowJob_GetCreatedAt(tt *testing.T) {
 	w.GetCreatedAt()
 }
 
+func TestWorkflowJob_GetHeadBranch(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJob{HeadBranch: &zeroValue}
+	w.GetHeadBranch()
+	w = &WorkflowJob{}
+	w.GetHeadBranch()
+	w = nil
+	w.GetHeadBranch()
+}
+
 func TestWorkflowJob_GetHeadSHA(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowJob{HeadSHA: &zeroValue}

@@ -21798,6 +21798,14 @@ func (w *WorkflowJob) GetCreatedAt() Timestamp {
 	return *w.CreatedAt
 }
 
+// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetHeadBranch() string {
+	if w == nil || w.HeadBranch == nil {
+		return ""
+	}
+	return *w.HeadBranch
+}
+
 // GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
 func (w *WorkflowJob) GetHeadSHA() string {
 	if w == nil || w.HeadSHA == nil {
