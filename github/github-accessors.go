@@ -678,6 +678,14 @@ func (a *App) GetID() int64 {
 	return *a.ID
 }
 
+// GetInstallationsCount returns the InstallationsCount field if it's non-nil, zero value otherwise.
+func (a *App) GetInstallationsCount() int {
+	if a == nil || a.InstallationsCount == nil {
+		return 0
+	}
+	return *a.InstallationsCount
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (a *App) GetName() string {
 	if a == nil || a.Name == nil {
