@@ -785,6 +785,16 @@ func TestApp_GetID(tt *testing.T) {
 	a.GetID()
 }
 
+func TestApp_GetInstallationsCount(tt *testing.T) {
+	var zeroValue int
+	a := &App{InstallationsCount: &zeroValue}
+	a.GetInstallationsCount()
+	a = &App{}
+	a.GetInstallationsCount()
+	a = nil
+	a.GetInstallationsCount()
+}
+
 func TestApp_GetName(tt *testing.T) {
 	var zeroValue string
 	a := &App{Name: &zeroValue}
