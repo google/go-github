@@ -18,18 +18,19 @@ type AppsService service
 
 // App represents a GitHub App.
 type App struct {
-	ID          *int64                   `json:"id,omitempty"`
-	Slug        *string                  `json:"slug,omitempty"`
-	NodeID      *string                  `json:"node_id,omitempty"`
-	Owner       *User                    `json:"owner,omitempty"`
-	Name        *string                  `json:"name,omitempty"`
-	Description *string                  `json:"description,omitempty"`
-	ExternalURL *string                  `json:"external_url,omitempty"`
-	HTMLURL     *string                  `json:"html_url,omitempty"`
-	CreatedAt   *Timestamp               `json:"created_at,omitempty"`
-	UpdatedAt   *Timestamp               `json:"updated_at,omitempty"`
-	Permissions *InstallationPermissions `json:"permissions,omitempty"`
-	Events      []string                 `json:"events,omitempty"`
+	ID                 *int64                   `json:"id,omitempty"`
+	Slug               *string                  `json:"slug,omitempty"`
+	NodeID             *string                  `json:"node_id,omitempty"`
+	Owner              *User                    `json:"owner,omitempty"`
+	Name               *string                  `json:"name,omitempty"`
+	Description        *string                  `json:"description,omitempty"`
+	ExternalURL        *string                  `json:"external_url,omitempty"`
+	HTMLURL            *string                  `json:"html_url,omitempty"`
+	CreatedAt          *Timestamp               `json:"created_at,omitempty"`
+	UpdatedAt          *Timestamp               `json:"updated_at,omitempty"`
+	Permissions        *InstallationPermissions `json:"permissions,omitempty"`
+	Events             []string                 `json:"events,omitempty"`
+	InstallationsCount *int                     `json:"installations_count,omitempty"`
 }
 
 // InstallationToken represents an installation token.
