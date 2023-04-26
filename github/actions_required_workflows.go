@@ -94,7 +94,7 @@ func (s *ActionsService) ListOrgRequiredWorkflows(ctx context.Context, org strin
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#create-a-required-workflow
 func (s *ActionsService) CreateRequiredWorkflow(ctx context.Context, org string, createRequiredWorkflowOptions *CreateUpdateRequiredWorkflowOptions) (*OrgRequiredWorkflow, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows", org)
-	req, err := s.client.NewRequest("PUT", url, createRequiredWorkflowOptions)
+	req, err := s.client.NewRequest("POST", url, createRequiredWorkflowOptions)
 	if err != nil {
 		return nil, nil, err
 	}
