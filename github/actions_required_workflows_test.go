@@ -83,7 +83,7 @@ func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/orgs/o/actions/required_workflows", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
+		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
 		testBody(t, r, `{"workflow_file_path":".github/workflows/ci.yaml","repository_id":53,"scope":"selected","selected_repository_ids":[32,91]}`+"\n")
 		fmt.Fprint(w, `{
