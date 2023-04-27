@@ -4614,6 +4614,78 @@ func (d *DeploymentEvent) GetSender() *User {
 	return d.Sender
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (d *DeploymentProtectionRuleEvent) GetAction() string {
+	if d == nil || d.Action == nil {
+		return ""
+	}
+	return *d.Action
+}
+
+// GetDeployment returns the Deployment field.
+func (d *DeploymentProtectionRuleEvent) GetDeployment() *Deployment {
+	if d == nil {
+		return nil
+	}
+	return d.Deployment
+}
+
+// GetDeploymentCallbackURL returns the DeploymentCallbackURL field if it's non-nil, zero value otherwise.
+func (d *DeploymentProtectionRuleEvent) GetDeploymentCallbackURL() string {
+	if d == nil || d.DeploymentCallbackURL == nil {
+		return ""
+	}
+	return *d.DeploymentCallbackURL
+}
+
+// GetEnvironment returns the Environment field if it's non-nil, zero value otherwise.
+func (d *DeploymentProtectionRuleEvent) GetEnvironment() string {
+	if d == nil || d.Environment == nil {
+		return ""
+	}
+	return *d.Environment
+}
+
+// GetInstallation returns the Installation field.
+func (d *DeploymentProtectionRuleEvent) GetInstallation() *Installation {
+	if d == nil {
+		return nil
+	}
+	return d.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (d *DeploymentProtectionRuleEvent) GetOrganization() *Organization {
+	if d == nil {
+		return nil
+	}
+	return d.Organization
+}
+
+// GetPullRequest returns the PullRequest field.
+func (d *DeploymentProtectionRuleEvent) GetPullRequest() *PullRequest {
+	if d == nil {
+		return nil
+	}
+	return d.PullRequest
+}
+
+// GetRepo returns the Repo field.
+func (d *DeploymentProtectionRuleEvent) GetRepo() *Repository {
+	if d == nil {
+		return nil
+	}
+	return d.Repo
+}
+
+// GetSender returns the Sender field.
+func (d *DeploymentProtectionRuleEvent) GetSender() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Sender
+}
+
 // GetAutoMerge returns the AutoMerge field if it's non-nil, zero value otherwise.
 func (d *DeploymentRequest) GetAutoMerge() bool {
 	if d == nil || d.AutoMerge == nil {
