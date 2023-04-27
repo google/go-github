@@ -5546,7 +5546,31 @@ func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
 			MembersCanCreatePublicPages:          Bool(false),
 			MembersCanCreatePrivatePages:         Bool(true),
 		},
-		PullRequest: &PullRequest{ID: Int64(1)},
+		PullRequests: []*PullRequest{
+			{
+				URL:    String("u"),
+				ID:     Int64(1),
+				Number: Int(1),
+				Head: &PullRequestBranch{
+					Ref: String("r"),
+					SHA: String("s"),
+					Repo: &Repository{
+						ID:   Int64(1),
+						URL:  String("s"),
+						Name: String("n"),
+					},
+				},
+				Base: &PullRequestBranch{
+					Ref: String("r"),
+					SHA: String("s"),
+					Repo: &Repository{
+						ID:   Int64(1),
+						URL:  String("u"),
+						Name: String("n"),
+					},
+				},
+			},
+		},
 		Sender: &User{
 			Login:     String("l"),
 			ID:        Int64(1),
@@ -5708,9 +5732,31 @@ func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
 			"members_can_create_public_pages": false,
 			"members_can_create_private_pages": true
 		},
-		"pull_request": {
-			"id": 1
-		},
+		"pull_requests": [
+			{
+				"id": 1,
+				"number": 1,
+				"url": "u",
+				"head": {
+					"ref": "r",
+					"sha": "s",
+					"repo": {
+						"id": 1,
+						"name": "n",
+						"url": "s"
+					}
+				},
+				"base": {
+					"ref": "r",
+					"sha": "s",
+					"repo": {
+						"id": 1,
+						"name": "n",
+						"url": "u"
+					}
+				}
+			}
+		],
 		"sender": {
 			"login": "l",
 			"id": 1,

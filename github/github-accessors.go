@@ -4646,6 +4646,14 @@ func (d *DeploymentProtectionRuleEvent) GetEnvironment() string {
 	return *d.Environment
 }
 
+// GetEvent returns the Event field if it's non-nil, zero value otherwise.
+func (d *DeploymentProtectionRuleEvent) GetEvent() string {
+	if d == nil || d.Event == nil {
+		return ""
+	}
+	return *d.Event
+}
+
 // GetInstallation returns the Installation field.
 func (d *DeploymentProtectionRuleEvent) GetInstallation() *Installation {
 	if d == nil {
@@ -4660,14 +4668,6 @@ func (d *DeploymentProtectionRuleEvent) GetOrganization() *Organization {
 		return nil
 	}
 	return d.Organization
-}
-
-// GetPullRequest returns the PullRequest field.
-func (d *DeploymentProtectionRuleEvent) GetPullRequest() *PullRequest {
-	if d == nil {
-		return nil
-	}
-	return d.PullRequest
 }
 
 // GetRepo returns the Repo field.

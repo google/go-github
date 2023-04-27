@@ -5436,6 +5436,16 @@ func TestDeploymentProtectionRuleEvent_GetEnvironment(tt *testing.T) {
 	d.GetEnvironment()
 }
 
+func TestDeploymentProtectionRuleEvent_GetEvent(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentProtectionRuleEvent{Event: &zeroValue}
+	d.GetEvent()
+	d = &DeploymentProtectionRuleEvent{}
+	d.GetEvent()
+	d = nil
+	d.GetEvent()
+}
+
 func TestDeploymentProtectionRuleEvent_GetInstallation(tt *testing.T) {
 	d := &DeploymentProtectionRuleEvent{}
 	d.GetInstallation()
@@ -5448,13 +5458,6 @@ func TestDeploymentProtectionRuleEvent_GetOrganization(tt *testing.T) {
 	d.GetOrganization()
 	d = nil
 	d.GetOrganization()
-}
-
-func TestDeploymentProtectionRuleEvent_GetPullRequest(tt *testing.T) {
-	d := &DeploymentProtectionRuleEvent{}
-	d.GetPullRequest()
-	d = nil
-	d.GetPullRequest()
 }
 
 func TestDeploymentProtectionRuleEvent_GetRepo(tt *testing.T) {
