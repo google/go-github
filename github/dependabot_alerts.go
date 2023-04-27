@@ -62,6 +62,7 @@ type DependabotAlert struct {
 	DismissedReason       *string                     `json:"dismissed_reason,omitempty"`
 	DismissedComment      *string                     `json:"dismissed_comment,omitempty"`
 	FixedAt               *Timestamp                  `json:"fixed_at,omitempty"`
+	Repository            *Repository                 `json:"repository,omitempty"`
 }
 
 // ListAlertsOptions specifies the optional parameters to the DependabotService.ListRepoAlerts

@@ -4246,6 +4246,14 @@ func (d *DependabotAlert) GetNumber() int {
 	return *d.Number
 }
 
+// GetRepository returns the Repository field.
+func (d *DependabotAlert) GetRepository() *Repository {
+	if d == nil {
+		return nil
+	}
+	return d.Repository
+}
+
 // GetSecurityAdvisory returns the SecurityAdvisory field.
 func (d *DependabotAlert) GetSecurityAdvisory() *DependabotSecurityAdvisory {
 	if d == nil {
