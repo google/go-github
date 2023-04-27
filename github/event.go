@@ -49,7 +49,7 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &DeployKeyEvent{}
 	case "DeploymentEvent":
 		payload = &DeploymentEvent{}
-	case "DeploymentProtectionRule":
+	case "DeploymentProtectionRuleEvent":
 		payload = &DeploymentProtectionRuleEvent{}
 	case "DeploymentStatusEvent":
 		payload = &DeploymentStatusEvent{}

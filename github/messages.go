@@ -55,7 +55,7 @@ var (
 		"deploy_key":                     "DeployKeyEvent",
 		"deployment":                     "DeploymentEvent",
 		"deployment_status":              "DeploymentStatusEvent",
-		"deployment_protection_rule":     "DeploymentProtectionRule",
+		"deployment_protection_rule":     "DeploymentProtectionRuleEvent",
 		"discussion":                     "DiscussionEvent",
 		"discussion_comment":             "DiscussionCommentEvent",
 		"fork":                           "ForkEvent",
