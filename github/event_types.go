@@ -180,15 +180,16 @@ type DeploymentEvent struct {
 type DeploymentProtectionRuleEvent struct {
 	Action      *string `json:"action,omitempty"`
 	Environment *string `json:"environment,omitempty"`
-Event *string `json:"event,omitempty"`
+	Event       *string `json:"event,omitempty"`
+
 	// The URL Github provides for a third-party to use in order to pass/fail a deployment gate
-	DeploymentCallbackURL *string       `json:"deployment_callback_url,omitempty"`
-	Deployment            *Deployment   `json:"deployment,omitempty"`
-	Repo                  *Repository   `json:"repository,omitempty"`
-	Organization          *Organization `json:"organization,omitempty"`
-	PullRequests           []*PullRequest  `json:"pull_requests,omitempty"`
-	Sender                *User         `json:"sender,omitempty"`
-	Installation          *Installation `json:"installation,omitempty"`
+	DeploymentCallbackURL *string        `json:"deployment_callback_url,omitempty"`
+	Deployment            *Deployment    `json:"deployment,omitempty"`
+	Repo                  *Repository    `json:"repository,omitempty"`
+	Organization          *Organization  `json:"organization,omitempty"`
+	PullRequests          []*PullRequest `json:"pull_requests,omitempty"`
+	Sender                *User          `json:"sender,omitempty"`
+	Installation          *Installation  `json:"installation,omitempty"`
 }
 
 // DeploymentStatusEvent represents a deployment status.
