@@ -4984,6 +4984,13 @@ func TestDependabotAlert_GetNumber(tt *testing.T) {
 	d.GetNumber()
 }
 
+func TestDependabotAlert_GetRepository(tt *testing.T) {
+	d := &DependabotAlert{}
+	d.GetRepository()
+	d = nil
+	d.GetRepository()
+}
+
 func TestDependabotAlert_GetSecurityAdvisory(tt *testing.T) {
 	d := &DependabotAlert{}
 	d.GetSecurityAdvisory()
