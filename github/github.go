@@ -40,6 +40,7 @@ const (
 	headerRateRemaining = "X-RateLimit-Remaining"
 	headerRateReset     = "X-RateLimit-Reset"
 	headerOTP           = "X-GitHub-OTP"
+	headerRetryAfter    = "Retry-After"
 
 	headerTokenExpiration = "GitHub-Authentication-Token-Expiration"
 
@@ -677,6 +678,30 @@ func parseRate(r *http.Response) Rate {
 	return rate
 }
 
+// parseSecondaryRate parses the secondary rate related headers,
+// and returns the time to retry after.
+func parseSecondaryRate(r *http.Response) *time.Duration {
+	// According to GitHub support, the "Retry-After" header value will be
+	// an integer which represents the number of seconds that one should
+	// wait before resuming making requests.
+	if v := r.Header.Get(headerRetryAfter); v != "" {
+		retryAfterSeconds, _ := strconv.ParseInt(v, 10, 64) // Error handling is noop.
+		retryAfter := time.Duration(retryAfterSeconds) * time.Second
+		return &retryAfter
+	}
+
+	// According to GitHub support, endpoints might return x-ratelimit-reset instead,
+	// as an integer which represents the number of seconds since epoch UTC,
+	// represting the time to resume making requests.
+	if v := r.Header.Get(headerRateReset); v != "" {
+		secondsSinceEpoch, _ := strconv.ParseInt(v, 10, 64) // Error handling is noop.
+		retryAfter := time.Until(time.Unix(secondsSinceEpoch, 0))
+		return &retryAfter
+	}
+
+	return nil
+}
+
 // parseTokenExpiration parses the TokenExpiration related headers.
 // Returns 0001-01-01 if the header is not defined or could not be parsed.
 func parseTokenExpiration(r *http.Response) Timestamp {
@@ -1156,13 +1181,8 @@ func CheckResponse(r *http.Response) error {
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
 		}
-		if v := r.Header["Retry-After"]; len(v) > 0 {
-			// According to GitHub support, the "Retry-After" header value will be
-			// an integer which represents the number of seconds that one should
-			// wait before resuming making requests.
-			retryAfterSeconds, _ := strconv.ParseInt(v[0], 10, 64) // Error handling is noop.
-			retryAfter := time.Duration(retryAfterSeconds) * time.Second
-			abuseRateLimitError.RetryAfter = &retryAfter
+		if retryAfter := parseSecondaryRate(r); retryAfter != nil {
+			abuseRateLimitError.RetryAfter = retryAfter
 		}
 		return abuseRateLimitError
 	default:
