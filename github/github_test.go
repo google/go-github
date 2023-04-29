@@ -1529,7 +1529,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 	}
 }
 
-// Ensure *AbuseRateLimitError.RetryAfter is parsed correctly for the xRateLimitReset header.
+// Ensure *AbuseRateLimitError.RetryAfter is parsed correctly for the x-ratelimit-reset header.
 func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
