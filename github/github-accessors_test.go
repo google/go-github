@@ -17477,6 +17477,16 @@ func TestPushEvent_GetBefore(tt *testing.T) {
 	p.GetBefore()
 }
 
+func TestPushEvent_GetCommits(tt *testing.T) {
+	zeroValue := []*HeadCommit{}
+	p := &PushEvent{Commits: zeroValue}
+	p.GetCommits()
+	p = &PushEvent{}
+	p.GetCommits()
+	p = nil
+	p.GetCommits()
+}
+
 func TestPushEvent_GetCompare(tt *testing.T) {
 	var zeroValue string
 	p := &PushEvent{Compare: &zeroValue}

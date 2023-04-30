@@ -51,6 +51,11 @@ var (
 	skipStructs = map[string]bool{
 		"Client": true,
 	}
+
+	// whitelistSliceGetters lists "struct.field" to add getter method
+	whitelistSliceGetters = map[string]bool{
+		"PushEvent.Commits": true,
+	}
 )
 
 func logf(fmt string, args ...interface{}) {
@@ -137,6 +142,13 @@ func (t *templateData) processAST(f *ast.File) error {
 					case *ast.MapType:
 						t.addMapType(x, ts.Name.String(), fieldName.String(), false)
 						continue
+					case *ast.ArrayType:
+						if key := fmt.Sprintf("%v.%v", ts.Name, fieldName); whitelistSliceGetters[key] {
+							logf("Method %v is whitelist; adding getter method.", key)
+							t.addArrayType(x, ts.Name.String(), fieldName.String(), false)
+							continue
+						}
+						continue
 					}
 
 					logf("Skipping field type %T, fieldName=%v", field.Type, fieldName)
@@ -145,7 +157,7 @@ func (t *templateData) processAST(f *ast.File) error {
 
 				switch x := se.X.(type) {
 				case *ast.ArrayType:
-					t.addArrayType(x, ts.Name.String(), fieldName.String())
+					t.addArrayType(x, ts.Name.String(), fieldName.String(), true)
 				case *ast.Ident:
 					t.addIdent(x, ts.Name.String(), fieldName.String())
 				case *ast.MapType:
@@ -218,17 +230,26 @@ func newGetter(receiverType, fieldName, fieldType, zeroValue string, namedStruct
 	}
 }
 
-func (t *templateData) addArrayType(x *ast.ArrayType, receiverType, fieldName string) {
+func (t *templateData) addArrayType(x *ast.ArrayType, receiverType, fieldName string, isAPointer bool) {
 	var eltType string
+	var ng *getter
 	switch elt := x.Elt.(type) {
 	case *ast.Ident:
 		eltType = elt.String()
+		ng = newGetter(receiverType, fieldName, "[]"+eltType, "nil", false)
+	case *ast.StarExpr:
+		ident, ok := elt.X.(*ast.Ident)
+		if !ok {
+			return
+		}
+		ng = newGetter(receiverType, fieldName, "[]*"+ident.String(), "nil", false)
 	default:
 		logf("addArrayType: type %q, field %q: unknown elt type: %T %+v; skipping.", receiverType, fieldName, elt, elt)
 		return
 	}
 
-	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, "[]"+eltType, "nil", false))
+	ng.ArrayType = !isAPointer
+	t.Getters = append(t.Getters, ng)
 }
 
 func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
@@ -322,6 +343,7 @@ type getter struct {
 	ZeroValue    string
 	NamedStruct  bool // Getter for named struct.
 	MapType      bool
+	ArrayType    bool
 }
 
 type byName []*getter
@@ -356,8 +378,8 @@ func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() *{{.FieldType}} {
   }
   return {{.ReceiverVar}}.{{.FieldName}}
 }
-{{else if .MapType}}
-// Get{{.FieldName}} returns the {{.FieldName}} map if it's non-nil, an empty map otherwise.
+{{else if or .MapType .ArrayType }}
+// Get{{.FieldName}} returns the {{.FieldName}} {{if .MapType}}map{{else if .ArrayType }}slice{{end}} if it's non-nil, {{if .MapType}}an empty map{{else if .ArrayType }}nil{{end}} otherwise.
 func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() {{.FieldType}} {
   if {{.ReceiverVar}} == nil || {{.ReceiverVar}}.{{.FieldName}} == nil {
     return {{.ZeroValue}}
@@ -402,7 +424,7 @@ func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
   {{.ReceiverVar}} = nil
   {{.ReceiverVar}}.Get{{.FieldName}}()
 }
-{{else if .MapType}}
+{{else if or .MapType .ArrayType}}
 func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
   zeroValue := {{.FieldType}}{}
   {{.ReceiverVar}} := &{{.ReceiverType}}{ {{.FieldName}}: zeroValue }
