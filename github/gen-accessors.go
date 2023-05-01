@@ -148,7 +148,6 @@ func (t *templateData) processAST(f *ast.File) error {
 							t.addArrayType(x, ts.Name.String(), fieldName.String(), false)
 							continue
 						}
-						continue
 					}
 
 					logf("Skipping field type %T, fieldName=%v", field.Type, fieldName)
