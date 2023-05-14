@@ -293,6 +293,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "deployment",
 		},
 		{
+			payload:     &DeploymentProtectionRuleEvent{},
+			messageType: "deployment_protection_rule",
+		},
+		{
 			payload:     &DeploymentStatusEvent{},
 			messageType: "deployment_status",
 		},

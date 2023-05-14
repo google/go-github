@@ -5399,6 +5399,81 @@ func TestDeploymentEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 }
 
+func TestDeploymentProtectionRuleEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentProtectionRuleEvent{Action: &zeroValue}
+	d.GetAction()
+	d = &DeploymentProtectionRuleEvent{}
+	d.GetAction()
+	d = nil
+	d.GetAction()
+}
+
+func TestDeploymentProtectionRuleEvent_GetDeployment(tt *testing.T) {
+	d := &DeploymentProtectionRuleEvent{}
+	d.GetDeployment()
+	d = nil
+	d.GetDeployment()
+}
+
+func TestDeploymentProtectionRuleEvent_GetDeploymentCallbackURL(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentProtectionRuleEvent{DeploymentCallbackURL: &zeroValue}
+	d.GetDeploymentCallbackURL()
+	d = &DeploymentProtectionRuleEvent{}
+	d.GetDeploymentCallbackURL()
+	d = nil
+	d.GetDeploymentCallbackURL()
+}
+
+func TestDeploymentProtectionRuleEvent_GetEnvironment(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentProtectionRuleEvent{Environment: &zeroValue}
+	d.GetEnvironment()
+	d = &DeploymentProtectionRuleEvent{}
+	d.GetEnvironment()
+	d = nil
+	d.GetEnvironment()
+}
+
+func TestDeploymentProtectionRuleEvent_GetEvent(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentProtectionRuleEvent{Event: &zeroValue}
+	d.GetEvent()
+	d = &DeploymentProtectionRuleEvent{}
+	d.GetEvent()
+	d = nil
+	d.GetEvent()
+}
+
+func TestDeploymentProtectionRuleEvent_GetInstallation(tt *testing.T) {
+	d := &DeploymentProtectionRuleEvent{}
+	d.GetInstallation()
+	d = nil
+	d.GetInstallation()
+}
+
+func TestDeploymentProtectionRuleEvent_GetOrganization(tt *testing.T) {
+	d := &DeploymentProtectionRuleEvent{}
+	d.GetOrganization()
+	d = nil
+	d.GetOrganization()
+}
+
+func TestDeploymentProtectionRuleEvent_GetRepo(tt *testing.T) {
+	d := &DeploymentProtectionRuleEvent{}
+	d.GetRepo()
+	d = nil
+	d.GetRepo()
+}
+
+func TestDeploymentProtectionRuleEvent_GetSender(tt *testing.T) {
+	d := &DeploymentProtectionRuleEvent{}
+	d.GetSender()
+	d = nil
+	d.GetSender()
+}
+
 func TestDeploymentRequest_GetAutoMerge(tt *testing.T) {
 	var zeroValue bool
 	d := &DeploymentRequest{AutoMerge: &zeroValue}
