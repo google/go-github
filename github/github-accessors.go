@@ -15126,6 +15126,14 @@ func (p *PushEvent) GetBefore() string {
 	return *p.Before
 }
 
+// GetCommits returns the Commits slice if it's non-nil, nil otherwise.
+func (p *PushEvent) GetCommits() []*HeadCommit {
+	if p == nil || p.Commits == nil {
+		return nil
+	}
+	return p.Commits
+}
+
 // GetCompare returns the Compare field if it's non-nil, zero value otherwise.
 func (p *PushEvent) GetCompare() string {
 	if p == nil || p.Compare == nil {
