@@ -3506,3 +3506,29 @@ func TestRequiredStatusCheck_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRepositoryTag_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryTag{}, "{}")
+
+	u := &RepositoryTag{
+		Name: String("v0.1"),
+		Commit: &Commit{
+			SHA: String("sha"),
+			URL: String("url"),
+		},
+		ZipballURL: String("zball"),
+		TarballURL: String("tball"),
+	}
+
+	want := `{
+		"name": "v0.1",
+		"commit": {
+			"sha": "sha",
+			"url": "url"
+		},
+		"zipball_url": "zball",
+		"tarball_url": "tball"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
