@@ -262,6 +262,16 @@ func TestActionsVariable_GetVisibility(tt *testing.T) {
 	a.GetVisibility()
 }
 
+func TestActorLocation_GetCountryCode(tt *testing.T) {
+	var zeroValue string
+	a := &ActorLocation{CountryCode: &zeroValue}
+	a.GetCountryCode()
+	a = &ActorLocation{}
+	a.GetCountryCode()
+	a = nil
+	a.GetCountryCode()
+}
+
 func TestAdminEnforcedChanges_GetFrom(tt *testing.T) {
 	var zeroValue bool
 	a := &AdminEnforcedChanges{From: &zeroValue}
@@ -1223,6 +1233,23 @@ func TestAuditEntry_GetActor(tt *testing.T) {
 	a.GetActor()
 }
 
+func TestAuditEntry_GetActorIP(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ActorIP: &zeroValue}
+	a.GetActorIP()
+	a = &AuditEntry{}
+	a.GetActorIP()
+	a = nil
+	a.GetActorIP()
+}
+
+func TestAuditEntry_GetActorLocation(tt *testing.T) {
+	a := &AuditEntry{}
+	a.GetActorLocation()
+	a = nil
+	a.GetActorLocation()
+}
+
 func TestAuditEntry_GetBlockedUser(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{BlockedUser: &zeroValue}
@@ -1377,6 +1404,16 @@ func TestAuditEntry_GetFingerprint(tt *testing.T) {
 	a.GetFingerprint()
 }
 
+func TestAuditEntry_GetHashedToken(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{HashedToken: &zeroValue}
+	a.GetHashedToken()
+	a = &AuditEntry{}
+	a.GetHashedToken()
+	a = nil
+	a.GetHashedToken()
+}
+
 func TestAuditEntry_GetHeadBranch(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{HeadBranch: &zeroValue}
@@ -1427,6 +1464,16 @@ func TestAuditEntry_GetJobName(tt *testing.T) {
 	a.GetJobName()
 }
 
+func TestAuditEntry_GetJobWorkflowRef(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{JobWorkflowRef: &zeroValue}
+	a.GetJobWorkflowRef()
+	a = &AuditEntry{}
+	a.GetJobWorkflowRef()
+	a = nil
+	a.GetJobWorkflowRef()
+}
+
 func TestAuditEntry_GetLimitedAvailability(tt *testing.T) {
 	var zeroValue bool
 	a := &AuditEntry{LimitedAvailability: &zeroValue}
@@ -1455,6 +1502,16 @@ func TestAuditEntry_GetName(tt *testing.T) {
 	a.GetName()
 	a = nil
 	a.GetName()
+}
+
+func TestAuditEntry_GetOAuthApplicationID(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{OAuthApplicationID: &zeroValue}
+	a.GetOAuthApplicationID()
+	a = &AuditEntry{}
+	a.GetOAuthApplicationID()
+	a = nil
+	a.GetOAuthApplicationID()
 }
 
 func TestAuditEntry_GetOldPermission(tt *testing.T) {
@@ -1487,6 +1544,16 @@ func TestAuditEntry_GetOpenSSHPublicKey(tt *testing.T) {
 	a.GetOpenSSHPublicKey()
 }
 
+func TestAuditEntry_GetOperationType(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{OperationType: &zeroValue}
+	a.GetOperationType()
+	a = &AuditEntry{}
+	a.GetOperationType()
+	a = nil
+	a.GetOperationType()
+}
+
 func TestAuditEntry_GetOrg(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{Org: &zeroValue}
@@ -1495,6 +1562,16 @@ func TestAuditEntry_GetOrg(tt *testing.T) {
 	a.GetOrg()
 	a = nil
 	a.GetOrg()
+}
+
+func TestAuditEntry_GetOrgID(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{OrgID: &zeroValue}
+	a.GetOrgID()
+	a = &AuditEntry{}
+	a.GetOrgID()
+	a = nil
+	a.GetOrgID()
 }
 
 func TestAuditEntry_GetPermission(tt *testing.T) {
@@ -1515,6 +1592,46 @@ func TestAuditEntry_GetPreviousVisibility(tt *testing.T) {
 	a.GetPreviousVisibility()
 	a = nil
 	a.GetPreviousVisibility()
+}
+
+func TestAuditEntry_GetProgrammaticAccessType(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ProgrammaticAccessType: &zeroValue}
+	a.GetProgrammaticAccessType()
+	a = &AuditEntry{}
+	a.GetProgrammaticAccessType()
+	a = nil
+	a.GetProgrammaticAccessType()
+}
+
+func TestAuditEntry_GetPullRequestID(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{PullRequestID: &zeroValue}
+	a.GetPullRequestID()
+	a = &AuditEntry{}
+	a.GetPullRequestID()
+	a = nil
+	a.GetPullRequestID()
+}
+
+func TestAuditEntry_GetPullRequestTitle(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{PullRequestTitle: &zeroValue}
+	a.GetPullRequestTitle()
+	a = &AuditEntry{}
+	a.GetPullRequestTitle()
+	a = nil
+	a.GetPullRequestTitle()
+}
+
+func TestAuditEntry_GetPullRequestURL(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{PullRequestURL: &zeroValue}
+	a.GetPullRequestURL()
+	a = &AuditEntry{}
+	a.GetPullRequestURL()
+	a = nil
+	a.GetPullRequestURL()
 }
 
 func TestAuditEntry_GetReadOnly(tt *testing.T) {
@@ -1607,6 +1724,16 @@ func TestAuditEntry_GetRunnerName(tt *testing.T) {
 	a.GetRunnerName()
 }
 
+func TestAuditEntry_GetRunNumber(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{RunNumber: &zeroValue}
+	a.GetRunNumber()
+	a = &AuditEntry{}
+	a.GetRunNumber()
+	a = nil
+	a.GetRunNumber()
+}
+
 func TestAuditEntry_GetSourceVersion(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{SourceVersion: &zeroValue}
@@ -1667,6 +1794,36 @@ func TestAuditEntry_GetTimestamp(tt *testing.T) {
 	a.GetTimestamp()
 }
 
+func TestAuditEntry_GetTokenID(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{TokenID: &zeroValue}
+	a.GetTokenID()
+	a = &AuditEntry{}
+	a.GetTokenID()
+	a = nil
+	a.GetTokenID()
+}
+
+func TestAuditEntry_GetTokenScopes(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{TokenScopes: &zeroValue}
+	a.GetTokenScopes()
+	a = &AuditEntry{}
+	a.GetTokenScopes()
+	a = nil
+	a.GetTokenScopes()
+}
+
+func TestAuditEntry_GetTopic(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Topic: &zeroValue}
+	a.GetTopic()
+	a = &AuditEntry{}
+	a.GetTopic()
+	a = nil
+	a.GetTopic()
+}
+
 func TestAuditEntry_GetTransportProtocol(tt *testing.T) {
 	var zeroValue int
 	a := &AuditEntry{TransportProtocol: &zeroValue}
@@ -1705,6 +1862,16 @@ func TestAuditEntry_GetUser(tt *testing.T) {
 	a.GetUser()
 	a = nil
 	a.GetUser()
+}
+
+func TestAuditEntry_GetUserAgent(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{UserAgent: &zeroValue}
+	a.GetUserAgent()
+	a = &AuditEntry{}
+	a.GetUserAgent()
+	a = nil
+	a.GetUserAgent()
 }
 
 func TestAuditEntry_GetVisibility(tt *testing.T) {
@@ -14779,6 +14946,26 @@ func TestPlan_GetSpace(tt *testing.T) {
 	p.GetSpace()
 	p = nil
 	p.GetSpace()
+}
+
+func TestPolicyOverrideReason_GetCode(tt *testing.T) {
+	var zeroValue string
+	p := &PolicyOverrideReason{Code: &zeroValue}
+	p.GetCode()
+	p = &PolicyOverrideReason{}
+	p.GetCode()
+	p = nil
+	p.GetCode()
+}
+
+func TestPolicyOverrideReason_GetMessage(tt *testing.T) {
+	var zeroValue string
+	p := &PolicyOverrideReason{Message: &zeroValue}
+	p.GetMessage()
+	p = &PolicyOverrideReason{}
+	p.GetMessage()
+	p = nil
+	p.GetMessage()
 }
 
 func TestPreReceiveHook_GetConfigURL(tt *testing.T) {
