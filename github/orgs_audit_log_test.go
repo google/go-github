@@ -125,7 +125,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 			PullRequestID:          Int64(1),
 			PullRequestTitle:       String("a pr title"),
 			PullRequestURL:         String("https://github.com/testorg/testrepo/pull/1"),
-			Reasons: []PolicyOverrideReason{{
+			Reasons: []*PolicyOverrideReason{{
 				Code:    String("a code"),
 				Message: String("a message"),
 			}},
@@ -267,7 +267,7 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		PullRequestID:          Int64(1),
 		PullRequestTitle:       String("prt"),
 		PullRequestURL:         String("pru"),
-		Reasons: []PolicyOverrideReason{{
+		Reasons: []*PolicyOverrideReason{{
 			Code:    String("c"),
 			Message: String("m"),
 		}},
