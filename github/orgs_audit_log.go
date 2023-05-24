@@ -29,10 +29,12 @@ type HookConfig struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
+// ActorLocation contains information about reported location for an actor.
 type ActorLocation struct {
 	CountryCode *string `json:"country_code,omitempty"`
 }
 
+// PolicyOverrideReason contains user-supplied information about why a policy was overridden.
 type PolicyOverrideReason struct {
 	Code    *string `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
