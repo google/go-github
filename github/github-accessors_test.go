@@ -24329,6 +24329,16 @@ func TestTrafficViews_GetUniques(tt *testing.T) {
 	t.GetUniques()
 }
 
+func TestTransferRequest_GetNewName(tt *testing.T) {
+	var zeroValue string
+	t := &TransferRequest{NewName: &zeroValue}
+	t.GetNewName()
+	t = &TransferRequest{}
+	t.GetNewName()
+	t = nil
+	t.GetNewName()
+}
+
 func TestTree_GetSHA(tt *testing.T) {
 	var zeroValue string
 	t := &Tree{SHA: &zeroValue}
