@@ -3220,7 +3220,7 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := TransferRequest{NewOwner: "a", TeamID: []int64{123}}
+	input := TransferRequest{NewOwner: "a", NewName: "b", TeamID: []int64{123}}
 
 	mux.HandleFunc("/repos/o/r/transfer", func(w http.ResponseWriter, r *http.Request) {
 		var v TransferRequest
@@ -3390,11 +3390,13 @@ func TestTransferRequest_Marshal(t *testing.T) {
 
 	u := &TransferRequest{
 		NewOwner: "testOwner",
+		NewName:  "testName",
 		TeamID:   []int64{1, 2},
 	}
 
 	want := `{
 		"new_owner": "testOwner",
+		"new_name": "testName",
 		"team_ids": [1,2]
 	}`
 
