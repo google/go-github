@@ -1969,6 +1969,7 @@ func (s *RepositoriesService) RemoveUserRestrictions(ctx context.Context, owner,
 // TransferRequest represents a request to transfer a repository.
 type TransferRequest struct {
 	NewOwner string  `json:"new_owner"`
+	NewName  *string `json:"new_name,omitempty"`
 	TeamID   []int64 `json:"team_ids,omitempty"`
 }
 

@@ -20862,6 +20862,14 @@ func (t *TrafficViews) GetUniques() int {
 	return *t.Uniques
 }
 
+// GetNewName returns the NewName field if it's non-nil, zero value otherwise.
+func (t *TransferRequest) GetNewName() string {
+	if t == nil || t.NewName == nil {
+		return ""
+	}
+	return *t.NewName
+}
+
 // GetSHA returns the SHA field if it's non-nil, zero value otherwise.
 func (t *Tree) GetSHA() string {
 	if t == nil || t.SHA == nil {
