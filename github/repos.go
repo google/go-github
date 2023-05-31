@@ -2037,9 +2037,9 @@ func isBranchNotProtected(err error) bool {
 
 // BypassActor represents the bypass actors from a repository ruleset.
 type BypassActor struct {
-	ActorID *int `json:"actor_id,omitempty"`
+	ActorID int `json:"actor_id,omitempty"`
 	// Possible values for ActorType are: Team, Integration
-	ActorType *string `json:"actor_type,omitempty"`
+	ActorType string `json:"actor_type,omitempty"`
 }
 
 // RulesetLink represents a single link object from GitHub ruleset request _links.
@@ -2050,6 +2050,17 @@ type RulesetLink struct {
 // RulesetLinks represents the "_links" object in a Ruleset.
 type RulesetLinks struct {
 	Self *RulesetLink `json:"self,omitempty"`
+}
+
+type RulesetConditionRefName struct {
+	Include   []string `json:"include"`
+	Exclude   []string `json:"exclude"`
+	Protected *bool    `json:"protected,omitempty"`
+}
+
+type RulesetCondition struct {
+	RefName        *RulesetConditionRefName `json:"ref_name,omitempty"`
+	RepositoryName *RulesetConditionRefName `json:"repository_name,omitempty"`
 }
 
 // Ruleset represents a GitHub ruleset request.
@@ -2064,8 +2075,9 @@ type Ruleset struct {
 	// Possible values for Enforcement are: disabled, active, evaluate
 	Enforcement string `json:"enforcement"`
 	// Possible values for BypassMode are: none, repository, organization
-	BypassMode   *string        `json:"bypass_mode,omitempty"`
-	BypassActors *[]BypassActor `json:"bypass_actors,omitempty"`
-	NodeID       *string        `json:"node_id,omitempty"`
-	Links        *RulesetLinks  `json:"_links,omitempty"`
+	BypassMode   *string             `json:"bypass_mode,omitempty"`
+	BypassActors *[]BypassActor      `json:"bypass_actors,omitempty"`
+	NodeID       *string             `json:"node_id,omitempty"`
+	Links        *RulesetLinks       `json:"_links,omitempty"`
+	Conditions   *[]RulesetCondition `json:"conditions,omitempty"`
 }

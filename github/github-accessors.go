@@ -2222,22 +2222,6 @@ func (b *BranchProtectionRuleEvent) GetSender() *User {
 	return b.Sender
 }
 
-// GetActorID returns the ActorID field if it's non-nil, zero value otherwise.
-func (b *BypassActor) GetActorID() int {
-	if b == nil || b.ActorID == nil {
-		return 0
-	}
-	return *b.ActorID
-}
-
-// GetActorType returns the ActorType field if it's non-nil, zero value otherwise.
-func (b *BypassActor) GetActorType() string {
-	if b == nil || b.ActorType == nil {
-		return ""
-	}
-	return *b.ActorType
-}
-
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
@@ -18398,6 +18382,14 @@ func (r *Ruleset) GetBypassMode() string {
 	return *r.BypassMode
 }
 
+// GetConditions returns the Conditions field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetConditions() []RulesetCondition {
+	if r == nil || r.Conditions == nil {
+		return nil
+	}
+	return *r.Conditions
+}
+
 // GetLinks returns the Links field.
 func (r *Ruleset) GetLinks() *RulesetLinks {
 	if r == nil {
@@ -18428,6 +18420,30 @@ func (r *Ruleset) GetTarget() string {
 		return ""
 	}
 	return *r.Target
+}
+
+// GetRefName returns the RefName field.
+func (r *RulesetCondition) GetRefName() *RulesetConditionRefName {
+	if r == nil {
+		return nil
+	}
+	return r.RefName
+}
+
+// GetRepositoryName returns the RepositoryName field.
+func (r *RulesetCondition) GetRepositoryName() *RulesetConditionRefName {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryName
+}
+
+// GetProtected returns the Protected field if it's non-nil, zero value otherwise.
+func (r *RulesetConditionRefName) GetProtected() bool {
+	if r == nil || r.Protected == nil {
+		return false
+	}
+	return *r.Protected
 }
 
 // GetHRef returns the HRef field if it's non-nil, zero value otherwise.

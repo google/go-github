@@ -2664,26 +2664,6 @@ func TestBranchProtectionRuleEvent_GetSender(tt *testing.T) {
 	b.GetSender()
 }
 
-func TestBypassActor_GetActorID(tt *testing.T) {
-	var zeroValue int
-	b := &BypassActor{ActorID: &zeroValue}
-	b.GetActorID()
-	b = &BypassActor{}
-	b.GetActorID()
-	b = nil
-	b.GetActorID()
-}
-
-func TestBypassActor_GetActorType(tt *testing.T) {
-	var zeroValue string
-	b := &BypassActor{ActorType: &zeroValue}
-	b.GetActorType()
-	b = &BypassActor{}
-	b.GetActorType()
-	b = nil
-	b.GetActorType()
-}
-
 func TestCheckRun_GetApp(tt *testing.T) {
 	c := &CheckRun{}
 	c.GetApp()
@@ -21444,6 +21424,16 @@ func TestRuleset_GetBypassMode(tt *testing.T) {
 	r.GetBypassMode()
 }
 
+func TestRuleset_GetConditions(tt *testing.T) {
+	var zeroValue []RulesetCondition
+	r := &Ruleset{Conditions: &zeroValue}
+	r.GetConditions()
+	r = &Ruleset{}
+	r.GetConditions()
+	r = nil
+	r.GetConditions()
+}
+
 func TestRuleset_GetLinks(tt *testing.T) {
 	r := &Ruleset{}
 	r.GetLinks()
@@ -21479,6 +21469,30 @@ func TestRuleset_GetTarget(tt *testing.T) {
 	r.GetTarget()
 	r = nil
 	r.GetTarget()
+}
+
+func TestRulesetCondition_GetRefName(tt *testing.T) {
+	r := &RulesetCondition{}
+	r.GetRefName()
+	r = nil
+	r.GetRefName()
+}
+
+func TestRulesetCondition_GetRepositoryName(tt *testing.T) {
+	r := &RulesetCondition{}
+	r.GetRepositoryName()
+	r = nil
+	r.GetRepositoryName()
+}
+
+func TestRulesetConditionRefName_GetProtected(tt *testing.T) {
+	var zeroValue bool
+	r := &RulesetConditionRefName{Protected: &zeroValue}
+	r.GetProtected()
+	r = &RulesetConditionRefName{}
+	r.GetProtected()
+	r = nil
+	r.GetProtected()
 }
 
 func TestRulesetLink_GetHRef(tt *testing.T) {
