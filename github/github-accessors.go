@@ -18495,7 +18495,7 @@ func (r *Ruleset) GetTarget() string {
 }
 
 // GetRefName returns the RefName field.
-func (r *RulesetCondition) GetRefName() *RulesetConditionParameters {
+func (r *RulesetCondition) GetRefName() *RulesetRefConditionParameters {
 	if r == nil {
 		return nil
 	}
@@ -18503,19 +18503,11 @@ func (r *RulesetCondition) GetRefName() *RulesetConditionParameters {
 }
 
 // GetRepositoryName returns the RepositoryName field.
-func (r *RulesetCondition) GetRepositoryName() *RulesetConditionParameters {
+func (r *RulesetCondition) GetRepositoryName() *RulesetRepositoryConditionParameters {
 	if r == nil {
 		return nil
 	}
 	return r.RepositoryName
-}
-
-// GetProtected returns the Protected field if it's non-nil, zero value otherwise.
-func (r *RulesetConditionParameters) GetProtected() bool {
-	if r == nil || r.Protected == nil {
-		return false
-	}
-	return *r.Protected
 }
 
 // GetHRef returns the HRef field if it's non-nil, zero value otherwise.
@@ -18532,6 +18524,14 @@ func (r *RulesetLinks) GetSelf() *RulesetLink {
 		return nil
 	}
 	return r.Self
+}
+
+// GetProtected returns the Protected field if it's non-nil, zero value otherwise.
+func (r *RulesetRepositoryConditionParameters) GetProtected() bool {
+	if r == nil || r.Protected == nil {
+		return false
+	}
+	return *r.Protected
 }
 
 // GetBusy returns the Busy field if it's non-nil, zero value otherwise.

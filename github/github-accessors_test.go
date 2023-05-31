@@ -21572,16 +21572,6 @@ func TestRulesetCondition_GetRepositoryName(tt *testing.T) {
 	r.GetRepositoryName()
 }
 
-func TestRulesetConditionParameters_GetProtected(tt *testing.T) {
-	var zeroValue bool
-	r := &RulesetConditionParameters{Protected: &zeroValue}
-	r.GetProtected()
-	r = &RulesetConditionParameters{}
-	r.GetProtected()
-	r = nil
-	r.GetProtected()
-}
-
 func TestRulesetLink_GetHRef(tt *testing.T) {
 	var zeroValue string
 	r := &RulesetLink{HRef: &zeroValue}
@@ -21597,6 +21587,16 @@ func TestRulesetLinks_GetSelf(tt *testing.T) {
 	r.GetSelf()
 	r = nil
 	r.GetSelf()
+}
+
+func TestRulesetRepositoryConditionParameters_GetProtected(tt *testing.T) {
+	var zeroValue bool
+	r := &RulesetRepositoryConditionParameters{Protected: &zeroValue}
+	r.GetProtected()
+	r = &RulesetRepositoryConditionParameters{}
+	r.GetProtected()
+	r = nil
+	r.GetProtected()
 }
 
 func TestRunner_GetBusy(tt *testing.T) {

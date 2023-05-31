@@ -27,17 +27,26 @@ type RulesetLinks struct {
 	Self *RulesetLink `json:"self,omitempty"`
 }
 
-type RulesetConditionParameters struct {
+// RulesetRefConditionParameters represents the conditions object for ref_names.
+type RulesetRefConditionParameters struct {
+	Include []string `json:"include"`
+	Exclude []string `json:"exclude"`
+}
+
+// RulesetRepositoryConditionParameters represents the conditions object for repository_names.
+type RulesetRepositoryConditionParameters struct {
 	Include   []string `json:"include"`
 	Exclude   []string `json:"exclude"`
 	Protected *bool    `json:"protected,omitempty"`
 }
 
+// RulesetCondition represents the conditions object in a ruleset.
 type RulesetCondition struct {
-	RefName        *RulesetConditionParameters `json:"ref_name,omitempty"`
-	RepositoryName *RulesetConditionParameters `json:"repository_name,omitempty"`
+	RefName        *RulesetRefConditionParameters        `json:"ref_name,omitempty"`
+	RepositoryName *RulesetRepositoryConditionParameters `json:"repository_name,omitempty"`
 }
 
+// RulePatternParameters represents the rule pattern parameter.
 type RulePatternParameters struct {
 	Name   *string `json:"name,omitempty"`
 	Negate *bool   `json:"negate,omitempty"`
