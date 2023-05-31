@@ -17499,6 +17499,56 @@ func TestPullRequestReviewThreadEvent_GetThread(tt *testing.T) {
 	p.GetThread()
 }
 
+func TestPullRequestRuleParameters_GetDismissStaleReviewsOnPush(tt *testing.T) {
+	var zeroValue bool
+	p := &PullRequestRuleParameters{DismissStaleReviewsOnPush: &zeroValue}
+	p.GetDismissStaleReviewsOnPush()
+	p = &PullRequestRuleParameters{}
+	p.GetDismissStaleReviewsOnPush()
+	p = nil
+	p.GetDismissStaleReviewsOnPush()
+}
+
+func TestPullRequestRuleParameters_GetRequireCodeOwnerReview(tt *testing.T) {
+	var zeroValue bool
+	p := &PullRequestRuleParameters{RequireCodeOwnerReview: &zeroValue}
+	p.GetRequireCodeOwnerReview()
+	p = &PullRequestRuleParameters{}
+	p.GetRequireCodeOwnerReview()
+	p = nil
+	p.GetRequireCodeOwnerReview()
+}
+
+func TestPullRequestRuleParameters_GetRequiredApprovingReviewCount(tt *testing.T) {
+	var zeroValue int
+	p := &PullRequestRuleParameters{RequiredApprovingReviewCount: &zeroValue}
+	p.GetRequiredApprovingReviewCount()
+	p = &PullRequestRuleParameters{}
+	p.GetRequiredApprovingReviewCount()
+	p = nil
+	p.GetRequiredApprovingReviewCount()
+}
+
+func TestPullRequestRuleParameters_GetRequiredReviewThreadResolution(tt *testing.T) {
+	var zeroValue bool
+	p := &PullRequestRuleParameters{RequiredReviewThreadResolution: &zeroValue}
+	p.GetRequiredReviewThreadResolution()
+	p = &PullRequestRuleParameters{}
+	p.GetRequiredReviewThreadResolution()
+	p = nil
+	p.GetRequiredReviewThreadResolution()
+}
+
+func TestPullRequestRuleParameters_GetRequireLastPushApproval(tt *testing.T) {
+	var zeroValue bool
+	p := &PullRequestRuleParameters{RequireLastPushApproval: &zeroValue}
+	p.GetRequireLastPushApproval()
+	p = &PullRequestRuleParameters{}
+	p.GetRequireLastPushApproval()
+	p = nil
+	p.GetRequireLastPushApproval()
+}
+
 func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	p := &PullRequestTargetEvent{Action: &zeroValue}
@@ -21314,6 +21364,16 @@ func TestRequiredStatusChecksRequest_GetStrict(tt *testing.T) {
 	r.GetStrict()
 }
 
+func TestRequiredStatusChecksRuleParameters_GetIntegrationID(tt *testing.T) {
+	var zeroValue int64
+	r := &RequiredStatusChecksRuleParameters{IntegrationID: &zeroValue}
+	r.GetIntegrationID()
+	r = &RequiredStatusChecksRuleParameters{}
+	r.GetIntegrationID()
+	r = nil
+	r.GetIntegrationID()
+}
+
 func TestRequiredWorkflowSelectedRepos_GetTotalCount(tt *testing.T) {
 	var zeroValue int
 	r := &RequiredWorkflowSelectedRepos{TotalCount: &zeroValue}
@@ -21404,6 +21464,26 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 }
 
+func TestRulePatternParameters_GetName(tt *testing.T) {
+	var zeroValue string
+	r := &RulePatternParameters{Name: &zeroValue}
+	r.GetName()
+	r = &RulePatternParameters{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRulePatternParameters_GetNegate(tt *testing.T) {
+	var zeroValue bool
+	r := &RulePatternParameters{Negate: &zeroValue}
+	r.GetNegate()
+	r = &RulePatternParameters{}
+	r.GetNegate()
+	r = nil
+	r.GetNegate()
+}
+
 func TestRuleset_GetBypassActors(tt *testing.T) {
 	var zeroValue []BypassActor
 	r := &Ruleset{BypassActors: &zeroValue}
@@ -21425,10 +21505,7 @@ func TestRuleset_GetBypassMode(tt *testing.T) {
 }
 
 func TestRuleset_GetConditions(tt *testing.T) {
-	var zeroValue []RulesetCondition
-	r := &Ruleset{Conditions: &zeroValue}
-	r.GetConditions()
-	r = &Ruleset{}
+	r := &Ruleset{}
 	r.GetConditions()
 	r = nil
 	r.GetConditions()
@@ -21449,6 +21526,16 @@ func TestRuleset_GetNodeID(tt *testing.T) {
 	r.GetNodeID()
 	r = nil
 	r.GetNodeID()
+}
+
+func TestRuleset_GetRules(tt *testing.T) {
+	var zeroValue []RulesetRule
+	r := &Ruleset{Rules: &zeroValue}
+	r.GetRules()
+	r = &Ruleset{}
+	r.GetRules()
+	r = nil
+	r.GetRules()
 }
 
 func TestRuleset_GetSourceType(tt *testing.T) {
@@ -21485,11 +21572,11 @@ func TestRulesetCondition_GetRepositoryName(tt *testing.T) {
 	r.GetRepositoryName()
 }
 
-func TestRulesetConditionRefName_GetProtected(tt *testing.T) {
+func TestRulesetConditionParameters_GetProtected(tt *testing.T) {
 	var zeroValue bool
-	r := &RulesetConditionRefName{Protected: &zeroValue}
+	r := &RulesetConditionParameters{Protected: &zeroValue}
 	r.GetProtected()
-	r = &RulesetConditionRefName{}
+	r = &RulesetConditionParameters{}
 	r.GetProtected()
 	r = nil
 	r.GetProtected()

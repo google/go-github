@@ -15062,6 +15062,46 @@ func (p *PullRequestReviewThreadEvent) GetThread() *PullRequestThread {
 	return p.Thread
 }
 
+// GetDismissStaleReviewsOnPush returns the DismissStaleReviewsOnPush field if it's non-nil, zero value otherwise.
+func (p *PullRequestRuleParameters) GetDismissStaleReviewsOnPush() bool {
+	if p == nil || p.DismissStaleReviewsOnPush == nil {
+		return false
+	}
+	return *p.DismissStaleReviewsOnPush
+}
+
+// GetRequireCodeOwnerReview returns the RequireCodeOwnerReview field if it's non-nil, zero value otherwise.
+func (p *PullRequestRuleParameters) GetRequireCodeOwnerReview() bool {
+	if p == nil || p.RequireCodeOwnerReview == nil {
+		return false
+	}
+	return *p.RequireCodeOwnerReview
+}
+
+// GetRequiredApprovingReviewCount returns the RequiredApprovingReviewCount field if it's non-nil, zero value otherwise.
+func (p *PullRequestRuleParameters) GetRequiredApprovingReviewCount() int {
+	if p == nil || p.RequiredApprovingReviewCount == nil {
+		return 0
+	}
+	return *p.RequiredApprovingReviewCount
+}
+
+// GetRequiredReviewThreadResolution returns the RequiredReviewThreadResolution field if it's non-nil, zero value otherwise.
+func (p *PullRequestRuleParameters) GetRequiredReviewThreadResolution() bool {
+	if p == nil || p.RequiredReviewThreadResolution == nil {
+		return false
+	}
+	return *p.RequiredReviewThreadResolution
+}
+
+// GetRequireLastPushApproval returns the RequireLastPushApproval field if it's non-nil, zero value otherwise.
+func (p *PullRequestRuleParameters) GetRequireLastPushApproval() bool {
+	if p == nil || p.RequireLastPushApproval == nil {
+		return false
+	}
+	return *p.RequireLastPushApproval
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *PullRequestTargetEvent) GetAction() string {
 	if p == nil || p.Action == nil {
@@ -18294,6 +18334,14 @@ func (r *RequiredStatusChecksRequest) GetStrict() bool {
 	return *r.Strict
 }
 
+// GetIntegrationID returns the IntegrationID field if it's non-nil, zero value otherwise.
+func (r *RequiredStatusChecksRuleParameters) GetIntegrationID() int64 {
+	if r == nil || r.IntegrationID == nil {
+		return 0
+	}
+	return *r.IntegrationID
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (r *RequiredWorkflowSelectedRepos) GetTotalCount() int {
 	if r == nil || r.TotalCount == nil {
@@ -18366,6 +18414,22 @@ func (r *Rule) GetSeverity() string {
 	return *r.Severity
 }
 
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *RulePatternParameters) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
+}
+
+// GetNegate returns the Negate field if it's non-nil, zero value otherwise.
+func (r *RulePatternParameters) GetNegate() bool {
+	if r == nil || r.Negate == nil {
+		return false
+	}
+	return *r.Negate
+}
+
 // GetBypassActors returns the BypassActors field if it's non-nil, zero value otherwise.
 func (r *Ruleset) GetBypassActors() []BypassActor {
 	if r == nil || r.BypassActors == nil {
@@ -18382,12 +18446,12 @@ func (r *Ruleset) GetBypassMode() string {
 	return *r.BypassMode
 }
 
-// GetConditions returns the Conditions field if it's non-nil, zero value otherwise.
-func (r *Ruleset) GetConditions() []RulesetCondition {
-	if r == nil || r.Conditions == nil {
+// GetConditions returns the Conditions field.
+func (r *Ruleset) GetConditions() *RulesetCondition {
+	if r == nil {
 		return nil
 	}
-	return *r.Conditions
+	return r.Conditions
 }
 
 // GetLinks returns the Links field.
@@ -18404,6 +18468,14 @@ func (r *Ruleset) GetNodeID() string {
 		return ""
 	}
 	return *r.NodeID
+}
+
+// GetRules returns the Rules field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetRules() []RulesetRule {
+	if r == nil || r.Rules == nil {
+		return nil
+	}
+	return *r.Rules
 }
 
 // GetSourceType returns the SourceType field if it's non-nil, zero value otherwise.
@@ -18423,7 +18495,7 @@ func (r *Ruleset) GetTarget() string {
 }
 
 // GetRefName returns the RefName field.
-func (r *RulesetCondition) GetRefName() *RulesetConditionRefName {
+func (r *RulesetCondition) GetRefName() *RulesetConditionParameters {
 	if r == nil {
 		return nil
 	}
@@ -18431,7 +18503,7 @@ func (r *RulesetCondition) GetRefName() *RulesetConditionRefName {
 }
 
 // GetRepositoryName returns the RepositoryName field.
-func (r *RulesetCondition) GetRepositoryName() *RulesetConditionRefName {
+func (r *RulesetCondition) GetRepositoryName() *RulesetConditionParameters {
 	if r == nil {
 		return nil
 	}
@@ -18439,7 +18511,7 @@ func (r *RulesetCondition) GetRepositoryName() *RulesetConditionRefName {
 }
 
 // GetProtected returns the Protected field if it's non-nil, zero value otherwise.
-func (r *RulesetConditionRefName) GetProtected() bool {
+func (r *RulesetConditionParameters) GetProtected() bool {
 	if r == nil || r.Protected == nil {
 		return false
 	}
