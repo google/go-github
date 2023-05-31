@@ -2034,3 +2034,38 @@ func isBranchNotProtected(err error) bool {
 	errorResponse, ok := err.(*ErrorResponse)
 	return ok && errorResponse.Message == githubBranchNotProtected
 }
+
+// BypassActor represents the bypass actors from a repository ruleset.
+type BypassActor struct {
+	ActorID *int `json:"actor_id,omitempty"`
+	// Possible values for ActorType are: Team, Integration
+	ActorType *string `json:"actor_type,omitempty"`
+}
+
+// RulesetLink represents a single link object from GitHub ruleset request _links.
+type RulesetLink struct {
+	HRef *string `json:"href,omitempty"`
+}
+
+// RulesetLinks represents the "_links" object in a Ruleset.
+type RulesetLinks struct {
+	Self *RulesetLink `json:"self,omitempty"`
+}
+
+// Ruleset represents a GitHub ruleset request.
+type Ruleset struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	// Possible values for Target are branch, tag
+	Target *string `json:"target,omitempty"`
+	// Possible values for SourceType are: Repository, Organization
+	SourceType *string `json:"source_type,omitempty"`
+	Source     string  `json:"source"`
+	// Possible values for Enforcement are: disabled, active, evaluate
+	Enforcement string `json:"enforcement"`
+	// Possible values for BypassMode are: none, repository, organization
+	BypassMode   *string        `json:"bypass_mode,omitempty"`
+	BypassActors *[]BypassActor `json:"bypass_actors,omitempty"`
+	NodeID       *string        `json:"node_id,omitempty"`
+	Links        *RulesetLinks  `json:"_links,omitempty"`
+}

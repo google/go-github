@@ -2222,6 +2222,22 @@ func (b *BranchProtectionRuleEvent) GetSender() *User {
 	return b.Sender
 }
 
+// GetActorID returns the ActorID field if it's non-nil, zero value otherwise.
+func (b *BypassActor) GetActorID() int {
+	if b == nil || b.ActorID == nil {
+		return 0
+	}
+	return *b.ActorID
+}
+
+// GetActorType returns the ActorType field if it's non-nil, zero value otherwise.
+func (b *BypassActor) GetActorType() string {
+	if b == nil || b.ActorType == nil {
+		return ""
+	}
+	return *b.ActorType
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
@@ -18364,6 +18380,70 @@ func (r *Rule) GetSeverity() string {
 		return ""
 	}
 	return *r.Severity
+}
+
+// GetBypassActors returns the BypassActors field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetBypassActors() []BypassActor {
+	if r == nil || r.BypassActors == nil {
+		return nil
+	}
+	return *r.BypassActors
+}
+
+// GetBypassMode returns the BypassMode field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetBypassMode() string {
+	if r == nil || r.BypassMode == nil {
+		return ""
+	}
+	return *r.BypassMode
+}
+
+// GetLinks returns the Links field.
+func (r *Ruleset) GetLinks() *RulesetLinks {
+	if r == nil {
+		return nil
+	}
+	return r.Links
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
+// GetSourceType returns the SourceType field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetSourceType() string {
+	if r == nil || r.SourceType == nil {
+		return ""
+	}
+	return *r.SourceType
+}
+
+// GetTarget returns the Target field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetTarget() string {
+	if r == nil || r.Target == nil {
+		return ""
+	}
+	return *r.Target
+}
+
+// GetHRef returns the HRef field if it's non-nil, zero value otherwise.
+func (r *RulesetLink) GetHRef() string {
+	if r == nil || r.HRef == nil {
+		return ""
+	}
+	return *r.HRef
+}
+
+// GetSelf returns the Self field.
+func (r *RulesetLinks) GetSelf() *RulesetLink {
+	if r == nil {
+		return nil
+	}
+	return r.Self
 }
 
 // GetBusy returns the Busy field if it's non-nil, zero value otherwise.

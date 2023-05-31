@@ -2664,6 +2664,26 @@ func TestBranchProtectionRuleEvent_GetSender(tt *testing.T) {
 	b.GetSender()
 }
 
+func TestBypassActor_GetActorID(tt *testing.T) {
+	var zeroValue int
+	b := &BypassActor{ActorID: &zeroValue}
+	b.GetActorID()
+	b = &BypassActor{}
+	b.GetActorID()
+	b = nil
+	b.GetActorID()
+}
+
+func TestBypassActor_GetActorType(tt *testing.T) {
+	var zeroValue string
+	b := &BypassActor{ActorType: &zeroValue}
+	b.GetActorType()
+	b = &BypassActor{}
+	b.GetActorType()
+	b = nil
+	b.GetActorType()
+}
+
 func TestCheckRun_GetApp(tt *testing.T) {
 	c := &CheckRun{}
 	c.GetApp()
@@ -21402,6 +21422,80 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 	r = nil
 	r.GetSeverity()
+}
+
+func TestRuleset_GetBypassActors(tt *testing.T) {
+	var zeroValue []BypassActor
+	r := &Ruleset{BypassActors: &zeroValue}
+	r.GetBypassActors()
+	r = &Ruleset{}
+	r.GetBypassActors()
+	r = nil
+	r.GetBypassActors()
+}
+
+func TestRuleset_GetBypassMode(tt *testing.T) {
+	var zeroValue string
+	r := &Ruleset{BypassMode: &zeroValue}
+	r.GetBypassMode()
+	r = &Ruleset{}
+	r.GetBypassMode()
+	r = nil
+	r.GetBypassMode()
+}
+
+func TestRuleset_GetLinks(tt *testing.T) {
+	r := &Ruleset{}
+	r.GetLinks()
+	r = nil
+	r.GetLinks()
+}
+
+func TestRuleset_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	r := &Ruleset{NodeID: &zeroValue}
+	r.GetNodeID()
+	r = &Ruleset{}
+	r.GetNodeID()
+	r = nil
+	r.GetNodeID()
+}
+
+func TestRuleset_GetSourceType(tt *testing.T) {
+	var zeroValue string
+	r := &Ruleset{SourceType: &zeroValue}
+	r.GetSourceType()
+	r = &Ruleset{}
+	r.GetSourceType()
+	r = nil
+	r.GetSourceType()
+}
+
+func TestRuleset_GetTarget(tt *testing.T) {
+	var zeroValue string
+	r := &Ruleset{Target: &zeroValue}
+	r.GetTarget()
+	r = &Ruleset{}
+	r.GetTarget()
+	r = nil
+	r.GetTarget()
+}
+
+func TestRulesetLink_GetHRef(tt *testing.T) {
+	var zeroValue string
+	r := &RulesetLink{HRef: &zeroValue}
+	r.GetHRef()
+	r = &RulesetLink{}
+	r.GetHRef()
+	r = nil
+	r.GetHRef()
+}
+
+func TestRulesetLinks_GetSelf(tt *testing.T) {
+	r := &RulesetLinks{}
+	r.GetSelf()
+	r = nil
+	r.GetSelf()
 }
 
 func TestRunner_GetBusy(tt *testing.T) {
