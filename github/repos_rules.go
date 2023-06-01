@@ -146,12 +146,14 @@ func (rsr *RulesetRule) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// NewCreationRule creates a rule as part of a GitHub ruleset to only allow users with bypass permission to create matching refs.
 func NewCreationRule() (rule RulesetRule) {
 	return RulesetRule{
 		Type: "creation",
 	}
 }
 
+// NewUpdateRule creates a rule as part of a GitHub ruleset to only allow users with bypass permission to update matching refs.
 func NewUpdateRule(params *UpdateAllowsFetchAndMergeRuleParameters) (rule RulesetRule) {
 	return RulesetRule{
 		Type:       "update",
@@ -159,18 +161,21 @@ func NewUpdateRule(params *UpdateAllowsFetchAndMergeRuleParameters) (rule Rulese
 	}
 }
 
+// NewDeletionRule creates a rule as part of a GitHub ruleset to only allow users with bypass permissions to delete matching refs.
 func NewDeletionRule() (rule RulesetRule) {
 	return RulesetRule{
 		Type: "deletion",
 	}
 }
 
+// NewRequiredLinearHistoryRule creates a rule as part of a GitHub ruleset to prevent merge commits from being pushed to matching branches.
 func NewRequiredLinearHistoryRule() (rule RulesetRule) {
 	return RulesetRule{
 		Type: "required_linear_history",
 	}
 }
 
+// NewRequiredDeploymentsRule creates a rule as part of a GitHub ruleset to require environments to be successfully deployed before they can be merged into the matching branches.
 func NewRequiredDeploymentsRule(params *RequiredDeploymentEnvironmentsRuleParameters) (rule RulesetRule) {
 	return RulesetRule{
 		Type:       "required_deployments",
@@ -178,12 +183,14 @@ func NewRequiredDeploymentsRule(params *RequiredDeploymentEnvironmentsRuleParame
 	}
 }
 
+// NewRequiredSignaturesRule creates a rule as part of a GitHub ruleset to require commits pushed to matching branches to have verified signatures.
 func NewRequiredSignaturesRule() (rule RulesetRule) {
 	return RulesetRule{
 		Type: "required_signatures",
 	}
 }
 
+// NewPullRequestRule creates a rule as part of a GitHub ruleset to require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 func NewPullRequestRule(params *PullRequestRuleParameters) (
 	rule RulesetRule) {
 	return RulesetRule{
@@ -192,6 +199,7 @@ func NewPullRequestRule(params *PullRequestRuleParameters) (
 	}
 }
 
+// NewRequiredStatusChecksRule creates a rule as part of a GitHub ruleset to require which status checks must pass before branches can be merged into a branch rule.
 func NewRequiredStatusChecksRule(params *RequiredStatusChecksRuleParameters) (rule RulesetRule) {
 	return RulesetRule{
 		Type:       "required_status_checks",
@@ -199,12 +207,14 @@ func NewRequiredStatusChecksRule(params *RequiredStatusChecksRuleParameters) (ru
 	}
 }
 
+// NewNonFastForwardRule creates a rule as part of a GitHub ruleset to prevent users with push access from force pushing to matching branches.
 func NewNonFastForwardRule() (rule RulesetRule) {
 	return RulesetRule{
 		Type: "non_fast_forward",
 	}
 }
 
+// NewCommitMessagePatternRule creates a rule as part of a GitHub ruleset to restrict commit message patterns being pushed to matching branches.
 func NewCommitMessagePatternRule(pattern *RulePatternParameters) (rule RulesetRule) {
 	return RulesetRule{
 		Type:       "commit_message_pattern",
@@ -212,6 +222,7 @@ func NewCommitMessagePatternRule(pattern *RulePatternParameters) (rule RulesetRu
 	}
 }
 
+// NewCommitAuthorEmailPatternRule creates a rule as part of a GitHub ruleset to restrict commits with author email patterns being merged into matching branches.
 func NewCommitAuthorEmailPatternRule(pattern *RulePatternParameters) (rule RulesetRule) {
 	return RulesetRule{
 		Type:       "commit_author_email_pattern",
@@ -219,6 +230,7 @@ func NewCommitAuthorEmailPatternRule(pattern *RulePatternParameters) (rule Rules
 	}
 }
 
+// NewCommitterEmailPatternRule creates a rule as part of a GitHub ruleset to restrict commits with committer email patterns being merged into matching branches.
 func NewCommitterEmailPatternRule(pattern *RulePatternParameters) (rule RulesetRule) {
 	return RulesetRule{
 		Type:       "committer_email_pattern",
