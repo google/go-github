@@ -17499,56 +17499,6 @@ func TestPullRequestReviewThreadEvent_GetThread(tt *testing.T) {
 	p.GetThread()
 }
 
-func TestPullRequestRuleParameters_GetDismissStaleReviewsOnPush(tt *testing.T) {
-	var zeroValue bool
-	p := &PullRequestRuleParameters{DismissStaleReviewsOnPush: &zeroValue}
-	p.GetDismissStaleReviewsOnPush()
-	p = &PullRequestRuleParameters{}
-	p.GetDismissStaleReviewsOnPush()
-	p = nil
-	p.GetDismissStaleReviewsOnPush()
-}
-
-func TestPullRequestRuleParameters_GetRequireCodeOwnerReview(tt *testing.T) {
-	var zeroValue bool
-	p := &PullRequestRuleParameters{RequireCodeOwnerReview: &zeroValue}
-	p.GetRequireCodeOwnerReview()
-	p = &PullRequestRuleParameters{}
-	p.GetRequireCodeOwnerReview()
-	p = nil
-	p.GetRequireCodeOwnerReview()
-}
-
-func TestPullRequestRuleParameters_GetRequiredApprovingReviewCount(tt *testing.T) {
-	var zeroValue int
-	p := &PullRequestRuleParameters{RequiredApprovingReviewCount: &zeroValue}
-	p.GetRequiredApprovingReviewCount()
-	p = &PullRequestRuleParameters{}
-	p.GetRequiredApprovingReviewCount()
-	p = nil
-	p.GetRequiredApprovingReviewCount()
-}
-
-func TestPullRequestRuleParameters_GetRequiredReviewThreadResolution(tt *testing.T) {
-	var zeroValue bool
-	p := &PullRequestRuleParameters{RequiredReviewThreadResolution: &zeroValue}
-	p.GetRequiredReviewThreadResolution()
-	p = &PullRequestRuleParameters{}
-	p.GetRequiredReviewThreadResolution()
-	p = nil
-	p.GetRequiredReviewThreadResolution()
-}
-
-func TestPullRequestRuleParameters_GetRequireLastPushApproval(tt *testing.T) {
-	var zeroValue bool
-	p := &PullRequestRuleParameters{RequireLastPushApproval: &zeroValue}
-	p.GetRequireLastPushApproval()
-	p = &PullRequestRuleParameters{}
-	p.GetRequireLastPushApproval()
-	p = nil
-	p.GetRequireLastPushApproval()
-}
-
 func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	p := &PullRequestTargetEvent{Action: &zeroValue}
@@ -21364,16 +21314,6 @@ func TestRequiredStatusChecksRequest_GetStrict(tt *testing.T) {
 	r.GetStrict()
 }
 
-func TestRequiredStatusChecksRuleParameters_GetIntegrationID(tt *testing.T) {
-	var zeroValue int64
-	r := &RequiredStatusChecksRuleParameters{IntegrationID: &zeroValue}
-	r.GetIntegrationID()
-	r = &RequiredStatusChecksRuleParameters{}
-	r.GetIntegrationID()
-	r = nil
-	r.GetIntegrationID()
-}
-
 func TestRequiredWorkflowSelectedRepos_GetTotalCount(tt *testing.T) {
 	var zeroValue int
 	r := &RequiredWorkflowSelectedRepos{TotalCount: &zeroValue}
@@ -21482,6 +21422,16 @@ func TestRulePatternParameters_GetNegate(tt *testing.T) {
 	r.GetNegate()
 	r = nil
 	r.GetNegate()
+}
+
+func TestRuleRequiredStatusChecks_GetIntegrationID(tt *testing.T) {
+	var zeroValue int64
+	r := &RuleRequiredStatusChecks{IntegrationID: &zeroValue}
+	r.GetIntegrationID()
+	r = &RuleRequiredStatusChecks{}
+	r.GetIntegrationID()
+	r = nil
+	r.GetIntegrationID()
 }
 
 func TestRuleset_GetBypassActors(tt *testing.T) {

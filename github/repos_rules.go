@@ -48,8 +48,9 @@ type RulesetCondition struct {
 
 // RulePatternParameters represents the rule pattern parameter.
 type RulePatternParameters struct {
-	Name   *string `json:"name,omitempty"`
-	Negate *bool   `json:"negate,omitempty"`
+	Name *string `json:"name,omitempty"`
+	// If Negate is true, the rule will fail if the pattern matches.
+	Negate *bool `json:"negate,omitempty"`
 	// Possible values for Operator are: starts_with, ends_with, contains, regex
 	Operator string `json:"operator"`
 	Pattern  string `json:"pattern"`
@@ -62,23 +63,28 @@ type UpdateAllowsFetchAndMergeRuleParameters struct {
 
 // RequiredDeploymentEnvironmentsRuleParameters represents the required_deployments rule parameters.
 type RequiredDeploymentEnvironmentsRuleParameters struct {
-	RequiredDeploymentEnvironments bool `json:"required_deployment_environments"`
+	RequiredDeploymentEnvironments []string `json:"required_deployment_environments"`
 }
 
 // PullRequestRuleParameters represents the pull_request rule parameters.
 type PullRequestRuleParameters struct {
-	DismissStaleReviewsOnPush      *bool `json:"dismiss_stale_reviews_on_push"`
-	RequireCodeOwnerReview         *bool `json:"require_code_owner_review"`
-	RequireLastPushApproval        *bool `json:"require_last_push_approval"`
-	RequiredApprovingReviewCount   *int  `json:"required_approving_review_count"`
-	RequiredReviewThreadResolution *bool `json:"required_review_thread_resolution"`
+	DismissStaleReviewsOnPush      bool `json:"dismiss_stale_reviews_on_push"`
+	RequireCodeOwnerReview         bool `json:"require_code_owner_review"`
+	RequireLastPushApproval        bool `json:"require_last_push_approval"`
+	RequiredApprovingReviewCount   int  `json:"required_approving_review_count"`
+	RequiredReviewThreadResolution bool `json:"required_review_thread_resolution"`
+}
+
+// RuleRequiredStatusChecks represents the RequiredStatusChecks for the RequiredStatusChecksRuleParameters object.
+type RuleRequiredStatusChecks struct {
+	Context       string `json:"context"`
+	IntegrationID *int64 `json:"integration_id,omitempty"`
 }
 
 // RequiredStatusChecksRuleParameters represents the required_status_checks rule parameters.
 type RequiredStatusChecksRuleParameters struct {
-	Context                          string `json:"context"`
-	IntegrationID                    *int64 `json:"integration_id,omitempty"`
-	StrictRequiredStatusChecksPolicy bool   `json:"strict_required_status_checks_policy"`
+	RequiredStatusChecks             []RuleRequiredStatusChecks `json:"required_status_checks"`
+	StrictRequiredStatusChecksPolicy bool                       `json:"strict_required_status_checks_policy"`
 }
 
 // RulesetRule represents a GitHub Rule within a Ruleset.
@@ -107,7 +113,7 @@ func (rsr *RulesetRule) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		rsr.Parameters = rulesetRule.Parameters
-	case "required_deployment_environments":
+	case "required_deployments":
 		rulesetRule.Parameters = &RequiredDeploymentEnvironmentsRuleParameters{}
 		if err := json.Unmarshal(data, &rulesetRule); err != nil {
 			return err

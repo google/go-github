@@ -15062,46 +15062,6 @@ func (p *PullRequestReviewThreadEvent) GetThread() *PullRequestThread {
 	return p.Thread
 }
 
-// GetDismissStaleReviewsOnPush returns the DismissStaleReviewsOnPush field if it's non-nil, zero value otherwise.
-func (p *PullRequestRuleParameters) GetDismissStaleReviewsOnPush() bool {
-	if p == nil || p.DismissStaleReviewsOnPush == nil {
-		return false
-	}
-	return *p.DismissStaleReviewsOnPush
-}
-
-// GetRequireCodeOwnerReview returns the RequireCodeOwnerReview field if it's non-nil, zero value otherwise.
-func (p *PullRequestRuleParameters) GetRequireCodeOwnerReview() bool {
-	if p == nil || p.RequireCodeOwnerReview == nil {
-		return false
-	}
-	return *p.RequireCodeOwnerReview
-}
-
-// GetRequiredApprovingReviewCount returns the RequiredApprovingReviewCount field if it's non-nil, zero value otherwise.
-func (p *PullRequestRuleParameters) GetRequiredApprovingReviewCount() int {
-	if p == nil || p.RequiredApprovingReviewCount == nil {
-		return 0
-	}
-	return *p.RequiredApprovingReviewCount
-}
-
-// GetRequiredReviewThreadResolution returns the RequiredReviewThreadResolution field if it's non-nil, zero value otherwise.
-func (p *PullRequestRuleParameters) GetRequiredReviewThreadResolution() bool {
-	if p == nil || p.RequiredReviewThreadResolution == nil {
-		return false
-	}
-	return *p.RequiredReviewThreadResolution
-}
-
-// GetRequireLastPushApproval returns the RequireLastPushApproval field if it's non-nil, zero value otherwise.
-func (p *PullRequestRuleParameters) GetRequireLastPushApproval() bool {
-	if p == nil || p.RequireLastPushApproval == nil {
-		return false
-	}
-	return *p.RequireLastPushApproval
-}
-
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *PullRequestTargetEvent) GetAction() string {
 	if p == nil || p.Action == nil {
@@ -18334,14 +18294,6 @@ func (r *RequiredStatusChecksRequest) GetStrict() bool {
 	return *r.Strict
 }
 
-// GetIntegrationID returns the IntegrationID field if it's non-nil, zero value otherwise.
-func (r *RequiredStatusChecksRuleParameters) GetIntegrationID() int64 {
-	if r == nil || r.IntegrationID == nil {
-		return 0
-	}
-	return *r.IntegrationID
-}
-
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (r *RequiredWorkflowSelectedRepos) GetTotalCount() int {
 	if r == nil || r.TotalCount == nil {
@@ -18428,6 +18380,14 @@ func (r *RulePatternParameters) GetNegate() bool {
 		return false
 	}
 	return *r.Negate
+}
+
+// GetIntegrationID returns the IntegrationID field if it's non-nil, zero value otherwise.
+func (r *RuleRequiredStatusChecks) GetIntegrationID() int64 {
+	if r == nil || r.IntegrationID == nil {
+		return 0
+	}
+	return *r.IntegrationID
 }
 
 // GetBypassActors returns the BypassActors field if it's non-nil, zero value otherwise.
