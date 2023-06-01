@@ -18407,7 +18407,7 @@ func (r *Ruleset) GetBypassMode() string {
 }
 
 // GetConditions returns the Conditions field.
-func (r *Ruleset) GetConditions() *RulesetCondition {
+func (r *Ruleset) GetConditions() *RulesetConditions {
 	if r == nil {
 		return nil
 	}
@@ -18431,7 +18431,7 @@ func (r *Ruleset) GetNodeID() string {
 }
 
 // GetRules returns the Rules field if it's non-nil, zero value otherwise.
-func (r *Ruleset) GetRules() []RulesetRule {
+func (r *Ruleset) GetRules() []RepositoryRule {
 	if r == nil || r.Rules == nil {
 		return nil
 	}
@@ -18455,7 +18455,7 @@ func (r *Ruleset) GetTarget() string {
 }
 
 // GetRefName returns the RefName field.
-func (r *RulesetCondition) GetRefName() *RulesetRefConditionParameters {
+func (r *RulesetConditions) GetRefName() *RulesetRefConditionParameters {
 	if r == nil {
 		return nil
 	}
@@ -18463,7 +18463,7 @@ func (r *RulesetCondition) GetRefName() *RulesetRefConditionParameters {
 }
 
 // GetRepositoryName returns the RepositoryName field.
-func (r *RulesetCondition) GetRepositoryName() *RulesetRepositoryConditionParameters {
+func (r *RulesetConditions) GetRepositoryName() *RulesetRepositoryConditionParameters {
 	if r == nil {
 		return nil
 	}

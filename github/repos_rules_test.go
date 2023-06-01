@@ -10,14 +10,14 @@ import (
 	"testing"
 )
 
-func TestRulesetRule_UnmarshalJSON(t *testing.T) {
+func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
-		in      *RulesetRule
+		in      *RepositoryRule
 		want    string
 		wantErr bool
 	}{
 		{
-			in: &RulesetRule{
+			in: &RepositoryRule{
 				Type: "update",
 				Parameters: &UpdateAllowsFetchAndMergeRuleParameters{
 					UpdateAllowsFetchAndMerge: true,
@@ -27,7 +27,7 @@ func TestRulesetRule_UnmarshalJSON(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			in: &RulesetRule{
+			in: &RepositoryRule{
 				Type: "required_deployments",
 				Parameters: &RequiredDeploymentEnvironmentsRuleParameters{
 					RequiredDeploymentEnvironments: []string{"test"},
@@ -37,7 +37,7 @@ func TestRulesetRule_UnmarshalJSON(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			in: &RulesetRule{
+			in: &RepositoryRule{
 				Type: "commit_message_pattern",
 				Parameters: &RulePatternParameters{
 					Name:     String("avoid test commits"),
@@ -50,7 +50,7 @@ func TestRulesetRule_UnmarshalJSON(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			in: &RulesetRule{
+			in: &RepositoryRule{
 				Type: "commit_author_email_pattern",
 				Parameters: &RulePatternParameters{
 					Operator: "contains",
@@ -61,7 +61,7 @@ func TestRulesetRule_UnmarshalJSON(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			in: &RulesetRule{
+			in: &RepositoryRule{
 				Type: "committer_email_pattern",
 				Parameters: &RulePatternParameters{
 					Name:     String("avoid commit emails"),
@@ -74,7 +74,7 @@ func TestRulesetRule_UnmarshalJSON(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			in: &RulesetRule{
+			in: &RepositoryRule{
 				Type: "branch_name_pattern",
 				Parameters: &RulePatternParameters{
 					Name:     String("avoid branch names"),
@@ -87,7 +87,7 @@ func TestRulesetRule_UnmarshalJSON(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			in: &RulesetRule{
+			in: &RepositoryRule{
 				Type: "tag_name_pattern",
 				Parameters: &RulePatternParameters{
 					Name:     String("avoid tag names"),
@@ -100,7 +100,7 @@ func TestRulesetRule_UnmarshalJSON(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			in: &RulesetRule{
+			in: &RepositoryRule{
 				Type: "pull_request",
 				Parameters: &PullRequestRuleParameters{
 					RequireCodeOwnerReview:         true,
@@ -114,7 +114,7 @@ func TestRulesetRule_UnmarshalJSON(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			in: &RulesetRule{
+			in: &RepositoryRule{
 				Type: "required_status_checks",
 				Parameters: &RequiredStatusChecksRuleParameters{
 					RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -130,7 +130,7 @@ func TestRulesetRule_UnmarshalJSON(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			in: &RulesetRule{
+			in: &RepositoryRule{
 				Type: "unknown",
 			},
 			want:    `{`,
@@ -141,10 +141,10 @@ func TestRulesetRule_UnmarshalJSON(t *testing.T) {
 	for _, tc := range tests {
 		err := json.Unmarshal([]byte(tc.want), tc.in)
 		if err == nil && tc.wantErr {
-			t.Errorf("RulesetRule.UnmarshalJSON returned nil instead of an error")
+			t.Errorf("RepositoryRule.UnmarshalJSON returned nil instead of an error")
 		}
 		if err != nil && !tc.wantErr {
-			t.Errorf("RulesetRule.UnmarshalJSON returned an unexpected error: %+v", err)
+			t.Errorf("RepositoryRule.UnmarshalJSON returned an unexpected error: %+v", err)
 		}
 	}
 }

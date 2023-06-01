@@ -41,7 +41,7 @@ type RulesetRepositoryConditionParameters struct {
 }
 
 // RulesetCondition represents the conditions object in a ruleset.
-type RulesetCondition struct {
+type RulesetConditions struct {
 	RefName        *RulesetRefConditionParameters        `json:"ref_name,omitempty"`
 	RepositoryName *RulesetRepositoryConditionParameters `json:"repository_name,omitempty"`
 }
@@ -87,166 +87,166 @@ type RequiredStatusChecksRuleParameters struct {
 	StrictRequiredStatusChecksPolicy bool                       `json:"strict_required_status_checks_policy"`
 }
 
-// RulesetRule represents a GitHub Rule within a Ruleset.
-type RulesetRule struct {
+// RepositoryRule represents a GitHub Rule within a Ruleset.
+type RepositoryRule struct {
 	Type       string      `json:"type"`
 	Parameters interface{} `json:"parameters,omitempty"`
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-// This helps us handle the fact that RulesetRule parameter field can be of numerous types.
-func (rsr *RulesetRule) UnmarshalJSON(data []byte) error {
-	type rule RulesetRule
-	var rulesetRule rule
-	if err := json.Unmarshal(data, &rulesetRule); err != nil {
+// This helps us handle the fact that RepositoryRule parameter field can be of numerous types.
+func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
+	type rule RepositoryRule
+	var RepositoryRule rule
+	if err := json.Unmarshal(data, &RepositoryRule); err != nil {
 		return err
 	}
 
-	rsr.Type = rulesetRule.Type
+	r.Type = RepositoryRule.Type
 
-	switch rulesetRule.Type {
+	switch RepositoryRule.Type {
 	case "creation", "deletion", "required_linear_history", "required_signatures", "non_fast_forward":
-		rsr.Parameters = nil
+		r.Parameters = nil
 	case "update":
-		rulesetRule.Parameters = &UpdateAllowsFetchAndMergeRuleParameters{}
-		if err := json.Unmarshal(data, &rulesetRule); err != nil {
+		RepositoryRule.Parameters = &UpdateAllowsFetchAndMergeRuleParameters{}
+		if err := json.Unmarshal(data, &RepositoryRule); err != nil {
 			return err
 		}
-		rsr.Parameters = rulesetRule.Parameters
+		r.Parameters = RepositoryRule.Parameters
 	case "required_deployments":
-		rulesetRule.Parameters = &RequiredDeploymentEnvironmentsRuleParameters{}
-		if err := json.Unmarshal(data, &rulesetRule); err != nil {
+		RepositoryRule.Parameters = &RequiredDeploymentEnvironmentsRuleParameters{}
+		if err := json.Unmarshal(data, &RepositoryRule); err != nil {
 			return err
 		}
-		rsr.Parameters = rulesetRule.Parameters
+		r.Parameters = RepositoryRule.Parameters
 	case "commit_message_pattern", "commit_author_email_pattern", "committer_email_pattern", "branch_name_pattern", "tag_name_pattern":
-		rulesetRule.Parameters = &RulePatternParameters{}
-		if err := json.Unmarshal(data, &rulesetRule); err != nil {
+		RepositoryRule.Parameters = &RulePatternParameters{}
+		if err := json.Unmarshal(data, &RepositoryRule); err != nil {
 			return err
 		}
-		rsr.Parameters = rulesetRule.Parameters
+		r.Parameters = RepositoryRule.Parameters
 	case "pull_request":
-		rulesetRule.Parameters = &PullRequestRuleParameters{}
-		if err := json.Unmarshal(data, &rulesetRule); err != nil {
+		RepositoryRule.Parameters = &PullRequestRuleParameters{}
+		if err := json.Unmarshal(data, &RepositoryRule); err != nil {
 			return err
 		}
-		rsr.Parameters = rulesetRule.Parameters
+		r.Parameters = RepositoryRule.Parameters
 	case "required_status_checks":
-		rulesetRule.Parameters = &RequiredStatusChecksRuleParameters{}
-		if err := json.Unmarshal(data, &rulesetRule); err != nil {
+		RepositoryRule.Parameters = &RequiredStatusChecksRuleParameters{}
+		if err := json.Unmarshal(data, &RepositoryRule); err != nil {
 			return err
 		}
-		rsr.Parameters = rulesetRule.Parameters
+		r.Parameters = RepositoryRule.Parameters
 	default:
-		rsr.Type = ""
-		rsr.Parameters = nil
-		return fmt.Errorf("rulesetRule.Type %T is not yet implemented, unable to unmarshal", rulesetRule.Type)
+		r.Type = ""
+		r.Parameters = nil
+		return fmt.Errorf("RepositoryRule.Type %T is not yet implemented, unable to unmarshal", RepositoryRule.Type)
 	}
 
 	return nil
 }
 
 // NewCreationRule creates a rule as part of a GitHub ruleset to only allow users with bypass permission to create matching refs.
-func NewCreationRule() (rule RulesetRule) {
-	return RulesetRule{
+func NewCreationRule() (rule RepositoryRule) {
+	return RepositoryRule{
 		Type: "creation",
 	}
 }
 
 // NewUpdateRule creates a rule as part of a GitHub ruleset to only allow users with bypass permission to update matching refs.
-func NewUpdateRule(params *UpdateAllowsFetchAndMergeRuleParameters) (rule RulesetRule) {
-	return RulesetRule{
+func NewUpdateRule(params *UpdateAllowsFetchAndMergeRuleParameters) (rule RepositoryRule) {
+	return RepositoryRule{
 		Type:       "update",
 		Parameters: params,
 	}
 }
 
 // NewDeletionRule creates a rule as part of a GitHub ruleset to only allow users with bypass permissions to delete matching refs.
-func NewDeletionRule() (rule RulesetRule) {
-	return RulesetRule{
+func NewDeletionRule() (rule RepositoryRule) {
+	return RepositoryRule{
 		Type: "deletion",
 	}
 }
 
 // NewRequiredLinearHistoryRule creates a rule as part of a GitHub ruleset to prevent merge commits from being pushed to matching branches.
-func NewRequiredLinearHistoryRule() (rule RulesetRule) {
-	return RulesetRule{
+func NewRequiredLinearHistoryRule() (rule RepositoryRule) {
+	return RepositoryRule{
 		Type: "required_linear_history",
 	}
 }
 
 // NewRequiredDeploymentsRule creates a rule as part of a GitHub ruleset to require environments to be successfully deployed before they can be merged into the matching branches.
-func NewRequiredDeploymentsRule(params *RequiredDeploymentEnvironmentsRuleParameters) (rule RulesetRule) {
-	return RulesetRule{
+func NewRequiredDeploymentsRule(params *RequiredDeploymentEnvironmentsRuleParameters) (rule RepositoryRule) {
+	return RepositoryRule{
 		Type:       "required_deployments",
 		Parameters: params,
 	}
 }
 
 // NewRequiredSignaturesRule creates a rule as part of a GitHub ruleset to require commits pushed to matching branches to have verified signatures.
-func NewRequiredSignaturesRule() (rule RulesetRule) {
-	return RulesetRule{
+func NewRequiredSignaturesRule() (rule RepositoryRule) {
+	return RepositoryRule{
 		Type: "required_signatures",
 	}
 }
 
 // NewPullRequestRule creates a rule as part of a GitHub ruleset to require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 func NewPullRequestRule(params *PullRequestRuleParameters) (
-	rule RulesetRule) {
-	return RulesetRule{
+	rule RepositoryRule) {
+	return RepositoryRule{
 		Type:       "pull_request",
 		Parameters: params,
 	}
 }
 
 // NewRequiredStatusChecksRule creates a rule as part of a GitHub ruleset to require which status checks must pass before branches can be merged into a branch rule.
-func NewRequiredStatusChecksRule(params *RequiredStatusChecksRuleParameters) (rule RulesetRule) {
-	return RulesetRule{
+func NewRequiredStatusChecksRule(params *RequiredStatusChecksRuleParameters) (rule RepositoryRule) {
+	return RepositoryRule{
 		Type:       "required_status_checks",
 		Parameters: params,
 	}
 }
 
 // NewNonFastForwardRule creates a rule as part of a GitHub ruleset to prevent users with push access from force pushing to matching branches.
-func NewNonFastForwardRule() (rule RulesetRule) {
-	return RulesetRule{
+func NewNonFastForwardRule() (rule RepositoryRule) {
+	return RepositoryRule{
 		Type: "non_fast_forward",
 	}
 }
 
 // NewCommitMessagePatternRule creates a rule as part of a GitHub ruleset to restrict commit message patterns being pushed to matching branches.
-func NewCommitMessagePatternRule(pattern *RulePatternParameters) (rule RulesetRule) {
-	return RulesetRule{
+func NewCommitMessagePatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
+	return RepositoryRule{
 		Type:       "commit_message_pattern",
 		Parameters: pattern,
 	}
 }
 
 // NewCommitAuthorEmailPatternRule creates a rule as part of a GitHub ruleset to restrict commits with author email patterns being merged into matching branches.
-func NewCommitAuthorEmailPatternRule(pattern *RulePatternParameters) (rule RulesetRule) {
-	return RulesetRule{
+func NewCommitAuthorEmailPatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
+	return RepositoryRule{
 		Type:       "commit_author_email_pattern",
 		Parameters: pattern,
 	}
 }
 
 // NewCommitterEmailPatternRule creates a rule as part of a GitHub ruleset to restrict commits with committer email patterns being merged into matching branches.
-func NewCommitterEmailPatternRule(pattern *RulePatternParameters) (rule RulesetRule) {
-	return RulesetRule{
+func NewCommitterEmailPatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
+	return RepositoryRule{
 		Type:       "committer_email_pattern",
 		Parameters: pattern,
 	}
 }
 
-func NewBranchNamePatternRule(pattern *RulePatternParameters) (rule RulesetRule) {
-	return RulesetRule{
+func NewBranchNamePatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
+	return RepositoryRule{
 		Type:       "branch_name_pattern",
 		Parameters: pattern,
 	}
 }
 
-func NewTagNamePatternRule(pattern *RulePatternParameters) (rule RulesetRule) {
-	return RulesetRule{
+func NewTagNamePatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
+	return RepositoryRule{
 		Type:       "tag_name_pattern",
 		Parameters: pattern,
 	}
@@ -264,10 +264,10 @@ type Ruleset struct {
 	// Possible values for Enforcement are: disabled, active, evaluate
 	Enforcement string `json:"enforcement"`
 	// Possible values for BypassMode are: none, repository, organization
-	BypassMode   *string           `json:"bypass_mode,omitempty"`
-	BypassActors *[]BypassActor    `json:"bypass_actors,omitempty"`
-	NodeID       *string           `json:"node_id,omitempty"`
-	Links        *RulesetLinks     `json:"_links,omitempty"`
-	Conditions   *RulesetCondition `json:"conditions,omitempty"`
-	Rules        *[]RulesetRule    `json:"rules,omitempty"`
+	BypassMode   *string            `json:"bypass_mode,omitempty"`
+	BypassActors *[]BypassActor     `json:"bypass_actors,omitempty"`
+	NodeID       *string            `json:"node_id,omitempty"`
+	Links        *RulesetLinks      `json:"_links,omitempty"`
+	Conditions   *RulesetConditions `json:"conditions,omitempty"`
+	Rules        *[]RepositoryRule  `json:"rules,omitempty"`
 }

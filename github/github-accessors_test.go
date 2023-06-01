@@ -21479,7 +21479,7 @@ func TestRuleset_GetNodeID(tt *testing.T) {
 }
 
 func TestRuleset_GetRules(tt *testing.T) {
-	var zeroValue []RulesetRule
+	var zeroValue []RepositoryRule
 	r := &Ruleset{Rules: &zeroValue}
 	r.GetRules()
 	r = &Ruleset{}
@@ -21508,15 +21508,15 @@ func TestRuleset_GetTarget(tt *testing.T) {
 	r.GetTarget()
 }
 
-func TestRulesetCondition_GetRefName(tt *testing.T) {
-	r := &RulesetCondition{}
+func TestRulesetConditions_GetRefName(tt *testing.T) {
+	r := &RulesetConditions{}
 	r.GetRefName()
 	r = nil
 	r.GetRefName()
 }
 
-func TestRulesetCondition_GetRepositoryName(tt *testing.T) {
-	r := &RulesetCondition{}
+func TestRulesetConditions_GetRepositoryName(tt *testing.T) {
+	r := &RulesetConditions{}
 	r.GetRepositoryName()
 	r = nil
 	r.GetRepositoryName()

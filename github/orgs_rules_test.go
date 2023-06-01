@@ -222,7 +222,7 @@ func TestOrganizationsService_CreateOrganizationRepositoryRuleset(t *testing.T) 
 				ActorType: "Team",
 			},
 		},
-		Conditions: &RulesetCondition{
+		Conditions: &RulesetConditions{
 			RefName: &RulesetRefConditionParameters{
 				Include: []string{"refs/heads/main", "refs/heads/master"},
 				Exclude: []string{"refs/heads/dev*"},
@@ -233,7 +233,7 @@ func TestOrganizationsService_CreateOrganizationRepositoryRuleset(t *testing.T) 
 				Protected: Bool(true),
 			},
 		},
-		Rules: &[]RulesetRule{
+		Rules: &[]RepositoryRule{
 			NewCreationRule(),
 			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
 				UpdateAllowsFetchAndMerge: true,
@@ -308,7 +308,7 @@ func TestOrganizationsService_CreateOrganizationRepositoryRuleset(t *testing.T) 
 				ActorType: "Team",
 			},
 		},
-		Conditions: &RulesetCondition{
+		Conditions: &RulesetConditions{
 			RefName: &RulesetRefConditionParameters{
 				Include: []string{"refs/heads/main", "refs/heads/master"},
 				Exclude: []string{"refs/heads/dev*"},
@@ -319,7 +319,7 @@ func TestOrganizationsService_CreateOrganizationRepositoryRuleset(t *testing.T) 
 				Protected: Bool(true),
 			},
 		},
-		Rules: &[]RulesetRule{
+		Rules: &[]RepositoryRule{
 			NewCreationRule(),
 			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
 				UpdateAllowsFetchAndMerge: true,
@@ -459,7 +459,7 @@ func TestOrganizationsService_GetOrganizationRepositoryRuleset(t *testing.T) {
 		Links: &RulesetLinks{
 			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
 		},
-		Conditions: &RulesetCondition{
+		Conditions: &RulesetConditions{
 			RefName: &RulesetRefConditionParameters{
 				Include: []string{"refs/heads/main", "refs/heads/master"},
 				Exclude: []string{"refs/heads/dev*"},
@@ -470,7 +470,7 @@ func TestOrganizationsService_GetOrganizationRepositoryRuleset(t *testing.T) {
 				Protected: Bool(true),
 			},
 		},
-		Rules: &[]RulesetRule{
+		Rules: &[]RepositoryRule{
 			NewCreationRule(),
 		},
 	}
@@ -544,7 +544,7 @@ func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) 
 		Target:      String("branch"),
 		Enforcement: "active",
 		BypassMode:  String("none"),
-		Conditions: &RulesetCondition{
+		Conditions: &RulesetConditions{
 			RefName: &RulesetRefConditionParameters{
 				Include: []string{"refs/heads/main", "refs/heads/master"},
 				Exclude: []string{"refs/heads/dev*"},
@@ -555,7 +555,7 @@ func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) 
 				Protected: Bool(true),
 			},
 		},
-		Rules: &[]RulesetRule{
+		Rules: &[]RepositoryRule{
 			NewCreationRule(),
 		},
 	})
@@ -576,7 +576,7 @@ func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) 
 		Links: &RulesetLinks{
 			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
 		},
-		Conditions: &RulesetCondition{
+		Conditions: &RulesetConditions{
 			RefName: &RulesetRefConditionParameters{
 				Include: []string{"refs/heads/main", "refs/heads/master"},
 				Exclude: []string{"refs/heads/dev*"},
@@ -587,7 +587,7 @@ func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) 
 				Protected: Bool(true),
 			},
 		},
-		Rules: &[]RulesetRule{
+		Rules: &[]RepositoryRule{
 			NewCreationRule(),
 		},
 	}
