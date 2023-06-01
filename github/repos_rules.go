@@ -252,7 +252,7 @@ func NewTagNamePatternRule(pattern *RulePatternParameters) (rule RulesetRule) {
 	}
 }
 
-// Ruleset represents a GitHub rules request.
+// Ruleset represents a GitHub ruleset object.
 type Ruleset struct {
 	ID   int64  `json:"id"`
 	Name string `json:"name"`
