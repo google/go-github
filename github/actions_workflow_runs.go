@@ -22,6 +22,7 @@ type WorkflowRun struct {
 	RunNumber          *int           `json:"run_number,omitempty"`
 	RunAttempt         *int           `json:"run_attempt,omitempty"`
 	Event              *string        `json:"event,omitempty"`
+	DisplayTitle       *string        `json:"display_title,omitempty"`
 	Status             *string        `json:"status,omitempty"`
 	Conclusion         *string        `json:"conclusion,omitempty"`
 	WorkflowID         *int64         `json:"workflow_id,omitempty"`
