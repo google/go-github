@@ -147,5 +147,4 @@ func TestRulesetRule_UnmarshalJSON(t *testing.T) {
 			t.Errorf("RulesetRule.UnmarshalJSON returned an unexpected error: %+v", err)
 		}
 	}
-
 }
