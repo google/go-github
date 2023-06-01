@@ -53,8 +53,8 @@ func (s *OrganizationsService) CreateOrganizationRepositoryRuleset(ctx context.C
 // GetOrganizationRepositoryRuleset gets a repository ruleset from the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#get-an-organization-repository-ruleset
-func (s *OrganizationsService) GetOrganizationRepositoryRuleset(ctx context.Context, org string, ruleset_id int64) (*Ruleset, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, ruleset_id)
+func (s *OrganizationsService) GetOrganizationRepositoryRuleset(ctx context.Context, org string, rulesetID int64) (*Ruleset, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, rulesetID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -73,8 +73,8 @@ func (s *OrganizationsService) GetOrganizationRepositoryRuleset(ctx context.Cont
 // UpdateOrganizationRepositoryRuleset updates a repository ruleset from the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#update-a-repository-ruleset
-func (s *OrganizationsService) UpdateOrganizationRepositoryRuleset(ctx context.Context, org string, ruleset_id int64, rs *Ruleset) (*Ruleset, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, ruleset_id)
+func (s *OrganizationsService) UpdateOrganizationRepositoryRuleset(ctx context.Context, org string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, rulesetID)
 
 	req, err := s.client.NewRequest("POST", u, rs)
 	if err != nil {
@@ -93,8 +93,8 @@ func (s *OrganizationsService) UpdateOrganizationRepositoryRuleset(ctx context.C
 // DeleteOrganizationRepositoryRuleset deletes a repository ruleset from the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#delete-a-repository-ruleset
-func (s *OrganizationsService) DeleteOrganizationRepositoryRuleset(ctx context.Context, org string, ruleset_id int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, ruleset_id)
+func (s *OrganizationsService) DeleteOrganizationRepositoryRuleset(ctx context.Context, org string, rulesetID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, rulesetID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
