@@ -89,3 +89,22 @@ func (s *OrganizationsService) UpdateOrganizationRepositoryRuleset(ctx context.C
 
 	return rulesets, resp, nil
 }
+
+// DeleteOrganizationRepositoryRuleset deletes a repository ruleset from the specified organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/orgs/rules#delete-a-repository-ruleset
+func (s *OrganizationsService) DeleteOrganizationRepositoryRuleset(ctx context.Context, org string, ruleset_id int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, ruleset_id)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}

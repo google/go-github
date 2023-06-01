@@ -605,3 +605,24 @@ func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) 
 		return resp, err
 	})
 }
+
+func TestOrganizationsService_DeleteOrganizationRepositoryRuleset(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := context.Background()
+	_, err := client.Organizations.DeleteOrganizationRepositoryRuleset(ctx, "o", 26110)
+	if err != nil {
+		t.Errorf("Organizations.DeleteOrganizationRepositoryRuleset returned error: %v", err)
+	}
+
+	const methodName = "DeleteOrganizationRepositoryRuleset"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.DeleteOrganizationRepositoryRuleset(ctx, "0", 26110)
+	})
+}
