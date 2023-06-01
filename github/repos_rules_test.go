@@ -6,8 +6,13 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
+	"net/http"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
@@ -147,4 +152,53 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 			t.Errorf("RepositoryRule.UnmarshalJSON returned an unexpected error: %+v", err)
 		}
 	}
+}
+
+func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/repo/rules/branches/branch", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+			  "type": "creation"
+			},
+			{
+			  "type": "update",
+			  "parameters": {
+			    "update_allows_fetch_and_merge": true
+			  }
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch")
+	if err != nil {
+		t.Errorf("Repositories.GetRulesForBranch returned error: %v", err)
+	}
+
+	creationRule := NewCreationRule()
+	updateRule := NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
+		UpdateAllowsFetchAndMerge: true,
+	})
+
+	want := []*RepositoryRule{
+		&creationRule,
+		&updateRule,
+	}
+	if !cmp.Equal(rules, want) {
+		t.Errorf("Repositories.GetRulesForBranch returned %+v, want %+v", rules, want)
+	}
+
+	const methodName = "GetRulesForBranch"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }

@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 )
@@ -270,4 +271,24 @@ type Ruleset struct {
 	Links        *RulesetLinks      `json:"_links,omitempty"`
 	Conditions   *RulesetConditions `json:"conditions,omitempty"`
 	Rules        *[]RepositoryRule  `json:"rules,omitempty"`
+}
+
+// GetRulesForBranch gets all the repository rules that apply to the specified branch.
+//
+// GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-rules-for-a-branch
+func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo, branch string) ([]*RepositoryRule, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/rules/branches/%v", owner, repo, branch)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var rules []*RepositoryRule
+	resp, err := s.client.Do(ctx, req, &rules)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return rules, resp, nil
 }
