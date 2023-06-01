@@ -69,3 +69,23 @@ func (s *OrganizationsService) GetOrganizationRepositoryRuleset(ctx context.Cont
 
 	return rulesets, resp, nil
 }
+
+// UpdateOrganizationRepositoryRuleset updates a repository ruleset from the specified organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/orgs/rules#update-a-repository-ruleset
+func (s *OrganizationsService) UpdateOrganizationRepositoryRuleset(ctx context.Context, org string, ruleset_id int64, rs *Ruleset) (*Ruleset, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, ruleset_id)
+
+	req, err := s.client.NewRequest("POST", u, rs)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var rulesets *Ruleset
+	resp, err := s.client.Do(ctx, req, &rulesets)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return rulesets, resp, nil
+}

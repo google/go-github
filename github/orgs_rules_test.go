@@ -488,3 +488,120 @@ func TestOrganizationsService_GetOrganizationRepositoryRuleset(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{
+			"id": 26110,
+			"name": "test ruleset",
+			"target": "branch",
+			"source_type": "Organization",
+			"source": "o",
+			"enforcement": "active",
+			"bypass_mode": "none",
+			"node_id": "nid",
+			"_links": {
+			  "self": {
+				"href": "https://api.github.com/orgs/o/rulesets/26110"
+			  }
+			},
+			"conditions": {
+				"ref_name": {
+				  "include": [
+					"refs/heads/main",
+					"refs/heads/master"
+				  ],
+				  "exclude": [
+					"refs/heads/dev*"
+				  ]
+				},
+				"repository_name": {
+				  "include": [
+					"important_repository",
+					"another_important_repository"
+				  ],
+				  "exclude": [
+					"unimportant_repository"
+				  ],
+				  "protected": true
+				}
+			  },
+			  "rules": [
+				{
+				  "type": "creation"
+				}
+			  ]
+		}`)
+	})
+
+	ctx := context.Background()
+	rulesets, _, err := client.Organizations.UpdateOrganizationRepositoryRuleset(ctx, "o", 26110, &Ruleset{
+		Name:        "test ruleset",
+		Target:      String("branch"),
+		Enforcement: "active",
+		BypassMode:  String("none"),
+		Conditions: &RulesetCondition{
+			RefName: &RulesetRefConditionParameters{
+				Include: []string{"refs/heads/main", "refs/heads/master"},
+				Exclude: []string{"refs/heads/dev*"},
+			},
+			RepositoryName: &RulesetRepositoryConditionParameters{
+				Include:   []string{"important_repository", "another_important_repository"},
+				Exclude:   []string{"unimportant_repository"},
+				Protected: Bool(true),
+			},
+		},
+		Rules: &[]RulesetRule{
+			NewCreationRule(),
+		},
+	})
+
+	if err != nil {
+		t.Errorf("Organizations.UpdateOrganizationRepositoryRuleset returned error: %v", err)
+	}
+
+	want := &Ruleset{
+		ID:          26110,
+		Name:        "test ruleset",
+		Target:      String("branch"),
+		SourceType:  String("Organization"),
+		Source:      "o",
+		Enforcement: "active",
+		BypassMode:  String("none"),
+		NodeID:      String("nid"),
+		Links: &RulesetLinks{
+			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
+		},
+		Conditions: &RulesetCondition{
+			RefName: &RulesetRefConditionParameters{
+				Include: []string{"refs/heads/main", "refs/heads/master"},
+				Exclude: []string{"refs/heads/dev*"},
+			},
+			RepositoryName: &RulesetRepositoryConditionParameters{
+				Include:   []string{"important_repository", "another_important_repository"},
+				Exclude:   []string{"unimportant_repository"},
+				Protected: Bool(true),
+			},
+		},
+		Rules: &[]RulesetRule{
+			NewCreationRule(),
+		},
+	}
+	if !cmp.Equal(rulesets, want) {
+		t.Errorf("Organizations.UpdateOrganizationRepositoryRuleset returned %+v, want %+v", rulesets, want)
+	}
+
+	const methodName = "UpdateOrganizationRepositoryRuleset"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.UpdateOrganizationRepositoryRuleset(ctx, "o", 26110, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
