@@ -94,7 +94,7 @@ type RulesetRule struct {
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-// This helps us handle the fact that RulesetRule can by either a RuleParameterPattern or RuleParameterPattern type parameters field.
+// This helps us handle the fact that RulesetRule parameter field can be of numerous types.
 func (rsr *RulesetRule) UnmarshalJSON(data []byte) error {
 	type rule RulesetRule
 	var rulesetRule rule
@@ -140,7 +140,7 @@ func (rsr *RulesetRule) UnmarshalJSON(data []byte) error {
 	default:
 		rsr.Type = ""
 		rsr.Parameters = nil
-		return fmt.Errorf("rulesetRule.Type is %T, not a string of 'User' or 'Team', unable to unmarshal", rulesetRule.Type)
+		return fmt.Errorf("rulesetRule.Type %T is not yet implemented, unable to unmarshal", rulesetRule.Type)
 	}
 
 	return nil
