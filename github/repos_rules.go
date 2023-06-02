@@ -353,3 +353,23 @@ func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string
 
 	return ruleset, resp, nil
 }
+
+// UpdateRuleset updates a repository ruleset for the specified repository.
+//
+// GitHub API docs: https://docs.github.com/en/rest/repos/rules#update-a-repository-ruleset
+func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
+
+	req, err := s.client.NewRequest("PUT", u, rs)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var ruleset *Ruleset
+	resp, err := s.client.Do(ctx, req, &ruleset)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return ruleset, resp, nil
+}

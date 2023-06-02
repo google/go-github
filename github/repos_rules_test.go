@@ -352,3 +352,49 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepositoriesService_UpdateRuleset(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `{
+			"id": 42,
+			"name": "ruleset",
+			"source_type": "Repository",
+			"source": "o/repo",
+			"enforcement": "enabled"
+		}`)
+	})
+
+	ctx := context.Background()
+	ruleSet, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, &Ruleset{
+		Name:        "ruleset",
+		Enforcement: "enabled",
+	})
+	if err != nil {
+		t.Errorf("Repositories.UpdateRuleset returned error: %v", err)
+	}
+
+	want := &Ruleset{
+		ID:          42,
+		Name:        "ruleset",
+		SourceType:  String("Repository"),
+		Source:      "o/repo",
+		Enforcement: "enabled",
+	}
+	if !cmp.Equal(ruleSet, want) {
+		t.Errorf("Repositories.UpdateRuleset returned %+v, want %+v", ruleSet, want)
+	}
+
+	const methodName = "UpdateRuleset"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
