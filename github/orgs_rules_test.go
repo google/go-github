@@ -494,7 +494,7 @@ func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) 
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
+		testMethod(t, r, "PUT")
 		fmt.Fprint(w, `{
 			"id": 26110,
 			"name": "test ruleset",
