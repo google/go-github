@@ -296,8 +296,8 @@ func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo
 // GetAllRepositoryRulesets gets all the repository rules that apply to the specified repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-all-repository-rulesets
-func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo string) ([]*Ruleset, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/rulesets", owner, repo)
+func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo string, includesParent bool) ([]*Ruleset, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/rulesets?includes_parents=%v", owner, repo, includesParent)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

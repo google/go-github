@@ -228,7 +228,7 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo")
+	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", false)
 	if err != nil {
 		t.Errorf("Repositories.GetAllRulesets returned error: %v", err)
 	}
@@ -256,7 +256,7 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 	const methodName = "GetAllRulesets"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetAllRulesets(ctx, "o", "repo")
+		got, resp, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", false)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
