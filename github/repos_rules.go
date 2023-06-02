@@ -11,7 +11,7 @@ import (
 	"fmt"
 )
 
-// BypassActor represents the bypass actors from a repository ruleset.
+// BypassActor represents the bypass actors from a ruleset.
 type BypassActor struct {
 	ActorID int64 `json:"actor_id,omitempty"`
 	// Possible values for ActorType are: Team, Integration
@@ -47,7 +47,7 @@ type RulesetConditions struct {
 	RepositoryName *RulesetRepositoryConditionParameters `json:"repository_name,omitempty"`
 }
 
-// RulePatternParameters represents the rule pattern parameter.
+// RulePatternParameters represents the rule pattern parameters.
 type RulePatternParameters struct {
 	Name *string `json:"name,omitempty"`
 	// If Negate is true, the rule will fail if the pattern matches.
@@ -88,7 +88,7 @@ type RequiredStatusChecksRuleParameters struct {
 	StrictRequiredStatusChecksPolicy bool                       `json:"strict_required_status_checks_policy"`
 }
 
-// RepositoryRule represents a GitHub Rule within a Ruleset.
+// RepositoryRule represents a GitHub Rule.
 type RepositoryRule struct {
 	Type       string      `json:"type"`
 	Parameters interface{} `json:"parameters,omitempty"`
@@ -147,14 +147,14 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// NewCreationRule creates a rule as part of a GitHub ruleset to only allow users with bypass permission to create matching refs.
+// NewCreationRule creates a rule to only allow users with bypass permission to create matching refs.
 func NewCreationRule() (rule RepositoryRule) {
 	return RepositoryRule{
 		Type: "creation",
 	}
 }
 
-// NewUpdateRule creates a rule as part of a GitHub ruleset to only allow users with bypass permission to update matching refs.
+// NewUpdateRule creates a rule to only allow users with bypass permission to update matching refs.
 func NewUpdateRule(params *UpdateAllowsFetchAndMergeRuleParameters) (rule RepositoryRule) {
 	return RepositoryRule{
 		Type:       "update",
@@ -162,21 +162,21 @@ func NewUpdateRule(params *UpdateAllowsFetchAndMergeRuleParameters) (rule Reposi
 	}
 }
 
-// NewDeletionRule creates a rule as part of a GitHub ruleset to only allow users with bypass permissions to delete matching refs.
+// NewDeletionRule creates a rule to only allow users with bypass permissions to delete matching refs.
 func NewDeletionRule() (rule RepositoryRule) {
 	return RepositoryRule{
 		Type: "deletion",
 	}
 }
 
-// NewRequiredLinearHistoryRule creates a rule as part of a GitHub ruleset to prevent merge commits from being pushed to matching branches.
+// NewRequiredLinearHistoryRule creates a rule to prevent merge commits from being pushed to matching branches.
 func NewRequiredLinearHistoryRule() (rule RepositoryRule) {
 	return RepositoryRule{
 		Type: "required_linear_history",
 	}
 }
 
-// NewRequiredDeploymentsRule creates a rule as part of a GitHub ruleset to require environments to be successfully deployed before they can be merged into the matching branches.
+// NewRequiredDeploymentsRule creates a rule to require environments to be successfully deployed before they can be merged into the matching branches.
 func NewRequiredDeploymentsRule(params *RequiredDeploymentEnvironmentsRuleParameters) (rule RepositoryRule) {
 	return RepositoryRule{
 		Type:       "required_deployments",
@@ -184,14 +184,14 @@ func NewRequiredDeploymentsRule(params *RequiredDeploymentEnvironmentsRuleParame
 	}
 }
 
-// NewRequiredSignaturesRule creates a rule as part of a GitHub ruleset to require commits pushed to matching branches to have verified signatures.
+// NewRequiredSignaturesRule creates a rule a to require commits pushed to matching branches to have verified signatures.
 func NewRequiredSignaturesRule() (rule RepositoryRule) {
 	return RepositoryRule{
 		Type: "required_signatures",
 	}
 }
 
-// NewPullRequestRule creates a rule as part of a GitHub ruleset to require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
+// NewPullRequestRule creates a rule to require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 func NewPullRequestRule(params *PullRequestRuleParameters) (
 	rule RepositoryRule) {
 	return RepositoryRule{
@@ -200,7 +200,7 @@ func NewPullRequestRule(params *PullRequestRuleParameters) (
 	}
 }
 
-// NewRequiredStatusChecksRule creates a rule as part of a GitHub ruleset to require which status checks must pass before branches can be merged into a branch rule.
+// NewRequiredStatusChecksRule creates a rule to require which status checks must pass before branches can be merged into a branch rule.
 func NewRequiredStatusChecksRule(params *RequiredStatusChecksRuleParameters) (rule RepositoryRule) {
 	return RepositoryRule{
 		Type:       "required_status_checks",
@@ -208,14 +208,14 @@ func NewRequiredStatusChecksRule(params *RequiredStatusChecksRuleParameters) (ru
 	}
 }
 
-// NewNonFastForwardRule creates a rule as part of a GitHub ruleset to prevent users with push access from force pushing to matching branches.
+// NewNonFastForwardRule creates a rule as part to prevent users with push access from force pushing to matching branches.
 func NewNonFastForwardRule() (rule RepositoryRule) {
 	return RepositoryRule{
 		Type: "non_fast_forward",
 	}
 }
 
-// NewCommitMessagePatternRule creates a rule as part of a GitHub ruleset to restrict commit message patterns being pushed to matching branches.
+// NewCommitMessagePatternRule creates a rule to restrict commit message patterns being pushed to matching branches.
 func NewCommitMessagePatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
 	return RepositoryRule{
 		Type:       "commit_message_pattern",
@@ -223,7 +223,7 @@ func NewCommitMessagePatternRule(pattern *RulePatternParameters) (rule Repositor
 	}
 }
 
-// NewCommitAuthorEmailPatternRule creates a rule as part of a GitHub ruleset to restrict commits with author email patterns being merged into matching branches.
+// NewCommitAuthorEmailPatternRule creates a rule to restrict commits with author email patterns being merged into matching branches.
 func NewCommitAuthorEmailPatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
 	return RepositoryRule{
 		Type:       "commit_author_email_pattern",
@@ -231,7 +231,7 @@ func NewCommitAuthorEmailPatternRule(pattern *RulePatternParameters) (rule Repos
 	}
 }
 
-// NewCommitterEmailPatternRule creates a rule as part of a GitHub ruleset to restrict commits with committer email patterns being merged into matching branches.
+// NewCommitterEmailPatternRule creates a rule to restrict commits with committer email patterns being merged into matching branches.
 func NewCommitterEmailPatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
 	return RepositoryRule{
 		Type:       "committer_email_pattern",
@@ -239,6 +239,7 @@ func NewCommitterEmailPatternRule(pattern *RulePatternParameters) (rule Reposito
 	}
 }
 
+// NewBranchNamePatternRule creates a rule to restrict branch patterns from being merged into matching branches.
 func NewBranchNamePatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
 	return RepositoryRule{
 		Type:       "branch_name_pattern",
@@ -246,6 +247,7 @@ func NewBranchNamePatternRule(pattern *RulePatternParameters) (rule RepositoryRu
 	}
 }
 
+// NewTagNamePatternRule creates a rule to restrict tag patterns contained in non-target branches from being merged into matching branches.
 func NewTagNamePatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
 	return RepositoryRule{
 		Type:       "tag_name_pattern",
@@ -273,7 +275,7 @@ type Ruleset struct {
 	Rules        *[]RepositoryRule  `json:"rules,omitempty"`
 }
 
-// GetRulesForBranch gets all the repository rules that apply to the specified branch.
+// GetRulesForBranch gets all the rules that apply to the specified branch.
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-rules-for-a-branch
 func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo, branch string) ([]*RepositoryRule, *Response, error) {
@@ -293,11 +295,12 @@ func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo
 	return rules, resp, nil
 }
 
-// GetAllRepositoryRulesets gets all the repository rules that apply to the specified repository.
+// GetAllRulesets gets all the rules that apply to the specified repository.
+// If includesParents is true, rulesets configured at the organisation level that apply to the repository will be returned.
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-all-repository-rulesets
-func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo string, includesParent bool) ([]*Ruleset, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/rulesets?includes_parents=%v", owner, repo, includesParent)
+func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo string, includesParents bool) ([]*Ruleset, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/rulesets?includes_parents=%v", owner, repo, includesParents)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -334,11 +337,11 @@ func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo str
 }
 
 // GetRuleset gets a ruleset for the specified repository.
-// If includesParent is true, rulesets configured at organisation level that apply to the repository can be retrieved.
+// If includesParents is true, rulesets configured at the organisation level that apply to the repository will be returned.
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-a-repository-ruleset
-func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string, rulesetID int64, includesParent bool) (*Ruleset, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/rulesets/%v?includes_parents=%v", owner, repo, rulesetID, includesParent)
+func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string, rulesetID int64, includesParents bool) (*Ruleset, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/rulesets/%v?includes_parents=%v", owner, repo, rulesetID, includesParents)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

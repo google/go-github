@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// GetAllOrganizationRulesets gets all the repository rulesets for the specified organization.
+// GetAllOrganizationRulesets gets all the rulesets for the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#get-all-organization-repository-rulesets
 func (s *OrganizationsService) GetAllOrganizationRulesets(ctx context.Context, org string) ([]*Ruleset, *Response, error) {
@@ -30,7 +30,7 @@ func (s *OrganizationsService) GetAllOrganizationRulesets(ctx context.Context, o
 	return rulesets, resp, nil
 }
 
-// CreateOrganizationRuleset creates a repository ruleset for the specified organization.
+// CreateOrganizationRuleset creates a ruleset for the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#create-an-organization-repository-ruleset
 func (s *OrganizationsService) CreateOrganizationRuleset(ctx context.Context, org string, rs *Ruleset) (*Ruleset, *Response, error) {
@@ -50,7 +50,7 @@ func (s *OrganizationsService) CreateOrganizationRuleset(ctx context.Context, or
 	return ruleset, resp, nil
 }
 
-// GetOrganizationRuleset gets a repository ruleset from the specified organization.
+// GetOrganizationRuleset gets a ruleset from the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#get-an-organization-repository-ruleset
 func (s *OrganizationsService) GetOrganizationRuleset(ctx context.Context, org string, rulesetID int64) (*Ruleset, *Response, error) {
@@ -70,7 +70,7 @@ func (s *OrganizationsService) GetOrganizationRuleset(ctx context.Context, org s
 	return rulesets, resp, nil
 }
 
-// UpdateOrganizationRuleset updates a repository ruleset from the specified organization.
+// UpdateOrganizationRuleset updates a ruleset from the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#update-an-organization-repository-ruleset
 func (s *OrganizationsService) UpdateOrganizationRuleset(ctx context.Context, org string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
@@ -90,7 +90,7 @@ func (s *OrganizationsService) UpdateOrganizationRuleset(ctx context.Context, or
 	return rulesets, resp, nil
 }
 
-// DeleteOrganizationRuleset deletes a repository ruleset from the specified organization.
+// DeleteOrganizationRuleset deletes a ruleset from the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#delete-an-organization-repository-ruleset
 func (s *OrganizationsService) DeleteOrganizationRuleset(ctx context.Context, org string, rulesetID int64) (*Response, error) {
