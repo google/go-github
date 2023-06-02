@@ -373,3 +373,17 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 
 	return ruleset, resp, nil
 }
+
+// DeleteRuleset deletes a repository ruleset for the specified repository.
+//
+// GitHub API docs: https://docs.github.com/en/rest/repos/rules#delete-a-repository-ruleset
+func (s *RepositoriesService) DeleteRuleset(ctx context.Context, owner, repo string, rulesetID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

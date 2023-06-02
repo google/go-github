@@ -101,10 +101,5 @@ func (s *OrganizationsService) DeleteOrganizationRepositoryRuleset(ctx context.C
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
-	if err != nil {
-		return resp, err
-	}
-
-	return resp, nil
+	return s.client.Do(ctx, req, nil)
 }

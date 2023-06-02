@@ -398,3 +398,24 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepositoriesService_DeleteRuleset(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := context.Background()
+	_, err := client.Repositories.DeleteRuleset(ctx, "o", "repo", 42)
+	if err != nil {
+		t.Errorf("Repositories.DeleteRuleset returned error: %v", err)
+	}
+
+	const methodName = "DeleteRuleset"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.DeleteRuleset(ctx, "o", "repo", 42)
+	})
+}
