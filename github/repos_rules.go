@@ -304,11 +304,31 @@ func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo st
 		return nil, nil, err
 	}
 
-	var ruleSet []*Ruleset
-	resp, err := s.client.Do(ctx, req, &ruleSet)
+	var ruleset []*Ruleset
+	resp, err := s.client.Do(ctx, req, &ruleset)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return ruleSet, resp, nil
+	return ruleset, resp, nil
+}
+
+// CreateRuleset creates a repository ruleset for the specified repository.
+//
+// GitHub API docs: https://docs.github.com/en/rest/repos/rules#create-a-repository-ruleset
+func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo string, rs *Ruleset) (*Ruleset, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/rulesets", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, rs)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var ruleset *Ruleset
+	resp, err := s.client.Do(ctx, req, &ruleset)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return ruleset, resp, nil
 }

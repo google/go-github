@@ -214,14 +214,14 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 			  "id": 42,
 			  "name": "ruleset",
 			  "source_type": "Repository",
-			  "source": "monalisa/my-repo",
+			  "source": "o/repo",
 			  "enforcement": "enabled"
 			},
 			{
 			  "id": 314,
 			  "name": "Another ruleset",
 			  "source_type": "Repository",
-			  "source": "monalisa/my-repo",
+			  "source": "o/repo",
 			  "enforcement": "enabled"
 			}
 		]`)
@@ -238,14 +238,14 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 			ID:          42,
 			Name:        "ruleset",
 			SourceType:  String("Repository"),
-			Source:      "monalisa/my-repo",
+			Source:      "o/repo",
 			Enforcement: "enabled",
 		},
 		{
 			ID:          314,
 			Name:        "Another ruleset",
 			SourceType:  String("Repository"),
-			Source:      "monalisa/my-repo",
+			Source:      "o/repo",
 			Enforcement: "enabled",
 		},
 	}
@@ -257,6 +257,52 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Repositories.GetAllRulesets(ctx, "o", "repo")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_CreateRuleset(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/repo/rulesets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{
+			"id": 42,
+			"name": "ruleset",
+			"source_type": "Repository",
+			"source": "o/repo",
+			"enforcement": "enabled"
+		}`)
+	})
+
+	ctx := context.Background()
+	ruleSet, _, err := client.Repositories.CreateRuleset(ctx, "o", "repo", &Ruleset{
+		Name:        "ruleset",
+		Enforcement: "enabled",
+	})
+	if err != nil {
+		t.Errorf("Repositories.CreateRuleset returned error: %v", err)
+	}
+
+	want := &Ruleset{
+		ID:          42,
+		Name:        "ruleset",
+		SourceType:  String("Repository"),
+		Source:      "o/repo",
+		Enforcement: "enabled",
+	}
+	if !cmp.Equal(ruleSet, want) {
+		t.Errorf("Repositories.CreateRuleset returned %+v, want %+v", ruleSet, want)
+	}
+
+	const methodName = "CreateRuleset"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CreateRuleset(ctx, "o", "repo", &Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
