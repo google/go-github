@@ -22438,6 +22438,14 @@ func (w *WorkflowRun) GetCreatedAt() Timestamp {
 	return *w.CreatedAt
 }
 
+// GetDisplayTitle returns the DisplayTitle field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetDisplayTitle() string {
+	if w == nil || w.DisplayTitle == nil {
+		return ""
+	}
+	return *w.DisplayTitle
+}
+
 // GetEvent returns the Event field if it's non-nil, zero value otherwise.
 func (w *WorkflowRun) GetEvent() string {
 	if w == nil || w.Event == nil {

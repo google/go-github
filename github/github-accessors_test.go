@@ -26224,6 +26224,16 @@ func TestWorkflowRun_GetCreatedAt(tt *testing.T) {
 	w.GetCreatedAt()
 }
 
+func TestWorkflowRun_GetDisplayTitle(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowRun{DisplayTitle: &zeroValue}
+	w.GetDisplayTitle()
+	w = &WorkflowRun{}
+	w.GetDisplayTitle()
+	w = nil
+	w.GetDisplayTitle()
+}
+
 func TestWorkflowRun_GetEvent(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowRun{Event: &zeroValue}
