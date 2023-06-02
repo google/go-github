@@ -192,8 +192,7 @@ func NewRequiredSignaturesRule() (rule RepositoryRule) {
 }
 
 // NewPullRequestRule creates a rule to require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
-func NewPullRequestRule(params *PullRequestRuleParameters) (
-	rule RepositoryRule) {
+func NewPullRequestRule(params *PullRequestRuleParameters) (rule RepositoryRule) {
 	return RepositoryRule{
 		Type:       "pull_request",
 		Parameters: params,
@@ -296,8 +295,7 @@ func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo
 }
 
 // GetAllRulesets gets all the rules that apply to the specified repository.
-// If includesParents is true, rulesets configured at the organisation level that apply to the repository will be returned.
-//
+// If includesParents is true, rulesets configured at the organization level that apply to the repository will be returned.
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-all-repository-rulesets
 func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo string, includesParents bool) ([]*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets?includes_parents=%v", owner, repo, includesParents)
@@ -337,7 +335,7 @@ func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo str
 }
 
 // GetRuleset gets a ruleset for the specified repository.
-// If includesParents is true, rulesets configured at the organisation level that apply to the repository will be returned.
+// If includesParents is true, rulesets configured at the organization level that apply to the repository will be returned.
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-a-repository-ruleset
 func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string, rulesetID int64, includesParents bool) (*Ruleset, *Response, error) {
