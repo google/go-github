@@ -202,3 +202,64 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepositoriesService_GetAllRulesets(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/repo/rulesets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+			  "id": 42,
+			  "name": "ruleset",
+			  "source_type": "Repository",
+			  "source": "monalisa/my-repo",
+			  "enforcement": "enabled"
+			},
+			{
+			  "id": 314,
+			  "name": "Another ruleset",
+			  "source_type": "Repository",
+			  "source": "monalisa/my-repo",
+			  "enforcement": "enabled"
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo")
+	if err != nil {
+		t.Errorf("Repositories.GetAllRulesets returned error: %v", err)
+	}
+
+	want := []*Ruleset{
+		{
+			ID:          42,
+			Name:        "ruleset",
+			SourceType:  String("Repository"),
+			Source:      "monalisa/my-repo",
+			Enforcement: "enabled",
+		},
+		{
+			ID:          314,
+			Name:        "Another ruleset",
+			SourceType:  String("Repository"),
+			Source:      "monalisa/my-repo",
+			Enforcement: "enabled",
+		},
+	}
+	if !cmp.Equal(ruleSet, want) {
+		t.Errorf("Repositories.GetAllRulesets returned %+v, want %+v", ruleSet, want)
+	}
+
+	const methodName = "GetAllRulesets"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetAllRulesets(ctx, "o", "repo")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
