@@ -332,3 +332,24 @@ func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo str
 
 	return ruleset, resp, nil
 }
+
+// GetRuleset gets a repository ruleset for the specified repository.
+// If includesParent is true, rulesets configured at organisation level that apply to the repository can be retrieved.
+//
+// GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-a-repository-ruleset
+func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string, rulesetID int64, includesParent bool) (*Ruleset, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/rulesets/%v?includes_parents=%v", owner, repo, rulesetID, includesParent)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var ruleset *Ruleset
+	resp, err := s.client.Do(ctx, req, &ruleset)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return ruleset, resp, nil
+}
