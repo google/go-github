@@ -10,10 +10,10 @@ import (
 	"fmt"
 )
 
-// GetAllOrganizationRepositoryRulesets gets all the repository rulesets for the specified organization.
+// GetAllOrganizationRulesets gets all the repository rulesets for the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#get-all-organization-repository-rulesets
-func (s *OrganizationsService) GetAllOrganizationRepositoryRulesets(ctx context.Context, org string) ([]*Ruleset, *Response, error) {
+func (s *OrganizationsService) GetAllOrganizationRulesets(ctx context.Context, org string) ([]*Ruleset, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -30,10 +30,10 @@ func (s *OrganizationsService) GetAllOrganizationRepositoryRulesets(ctx context.
 	return rulesets, resp, nil
 }
 
-// CreateOrganizationRepositoryRuleset creates a repository ruleset for the specified organization.
+// CreateOrganizationRuleset creates a repository ruleset for the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#create-an-organization-repository-ruleset
-func (s *OrganizationsService) CreateOrganizationRepositoryRuleset(ctx context.Context, org string, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *OrganizationsService) CreateOrganizationRuleset(ctx context.Context, org string, rs *Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets", org)
 
 	req, err := s.client.NewRequest("POST", u, rs)
@@ -50,10 +50,10 @@ func (s *OrganizationsService) CreateOrganizationRepositoryRuleset(ctx context.C
 	return ruleset, resp, nil
 }
 
-// GetOrganizationRepositoryRuleset gets a repository ruleset from the specified organization.
+// GetOrganizationRuleset gets a repository ruleset from the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#get-an-organization-repository-ruleset
-func (s *OrganizationsService) GetOrganizationRepositoryRuleset(ctx context.Context, org string, rulesetID int64) (*Ruleset, *Response, error) {
+func (s *OrganizationsService) GetOrganizationRuleset(ctx context.Context, org string, rulesetID int64) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, rulesetID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -70,10 +70,10 @@ func (s *OrganizationsService) GetOrganizationRepositoryRuleset(ctx context.Cont
 	return rulesets, resp, nil
 }
 
-// UpdateOrganizationRepositoryRuleset updates a repository ruleset from the specified organization.
+// UpdateOrganizationRuleset updates a repository ruleset from the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#update-an-organization-repository-ruleset
-func (s *OrganizationsService) UpdateOrganizationRepositoryRuleset(ctx context.Context, org string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *OrganizationsService) UpdateOrganizationRuleset(ctx context.Context, org string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, rulesetID)
 
 	req, err := s.client.NewRequest("PUT", u, rs)
@@ -90,10 +90,10 @@ func (s *OrganizationsService) UpdateOrganizationRepositoryRuleset(ctx context.C
 	return rulesets, resp, nil
 }
 
-// DeleteOrganizationRepositoryRuleset deletes a repository ruleset from the specified organization.
+// DeleteOrganizationRuleset deletes a repository ruleset from the specified organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/rules#delete-an-organization-repository-ruleset
-func (s *OrganizationsService) DeleteOrganizationRepositoryRuleset(ctx context.Context, org string, rulesetID int64) (*Response, error) {
+func (s *OrganizationsService) DeleteOrganizationRuleset(ctx context.Context, org string, rulesetID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, rulesetID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)

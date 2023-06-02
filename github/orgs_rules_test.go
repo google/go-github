@@ -14,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestOrganizationsService_GetAllOrganizationRepositoryRulesets(t *testing.T) {
+func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -38,9 +38,9 @@ func TestOrganizationsService_GetAllOrganizationRepositoryRulesets(t *testing.T)
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.GetAllOrganizationRepositoryRulesets(ctx, "o")
+	rulesets, _, err := client.Organizations.GetAllOrganizationRulesets(ctx, "o")
 	if err != nil {
-		t.Errorf("Organizations.GetAllOrganizationRepositoryRulesets returned error: %v", err)
+		t.Errorf("Organizations.GetAllOrganizationRulesets returned error: %v", err)
 	}
 
 	want := []*Ruleset{{
@@ -57,13 +57,13 @@ func TestOrganizationsService_GetAllOrganizationRepositoryRulesets(t *testing.T)
 		},
 	}}
 	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.GetAllOrganizationRepositoryRulesets returned %+v, want %+v", rulesets, want)
+		t.Errorf("Organizations.GetAllOrganizationRulesets returned %+v, want %+v", rulesets, want)
 	}
 
-	const methodName = "GetAllOrganizationRepositoryRulesets"
+	const methodName = "GetAllOrganizationRulesets"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetAllOrganizationRepositoryRulesets(ctx, "o")
+		got, resp, err := client.Organizations.GetAllOrganizationRulesets(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -71,7 +71,7 @@ func TestOrganizationsService_GetAllOrganizationRepositoryRulesets(t *testing.T)
 	})
 }
 
-func TestOrganizationsService_CreateOrganizationRepositoryRuleset(t *testing.T) {
+func TestOrganizationsService_CreateOrganizationRuleset(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -209,7 +209,7 @@ func TestOrganizationsService_CreateOrganizationRepositoryRuleset(t *testing.T) 
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Organizations.CreateOrganizationRepositoryRuleset(ctx, "o", &Ruleset{
+	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
 		ID:          21,
 		Name:        "ruleset",
 		Target:      String("branch"),
@@ -292,7 +292,7 @@ func TestOrganizationsService_CreateOrganizationRepositoryRuleset(t *testing.T) 
 		},
 	})
 	if err != nil {
-		t.Errorf("Organizations.CreateOrganizationRepositoryRuleset returned error: %v", err)
+		t.Errorf("Organizations.CreateOrganizationRuleset returned error: %v", err)
 	}
 
 	want := &Ruleset{
@@ -378,13 +378,13 @@ func TestOrganizationsService_CreateOrganizationRepositoryRuleset(t *testing.T) 
 		},
 	}
 	if !cmp.Equal(ruleset, want) {
-		t.Errorf("Organizations.CreateOrganizationRepositoryRuleset returned %+v, want %+v", ruleset, want)
+		t.Errorf("Organizations.CreateOrganizationRuleset returned %+v, want %+v", ruleset, want)
 	}
 
-	const methodName = "CreateOrganizationRepositoryRuleset"
+	const methodName = "CreateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateOrganizationRepositoryRuleset(ctx, "o", nil)
+		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -392,7 +392,7 @@ func TestOrganizationsService_CreateOrganizationRepositoryRuleset(t *testing.T) 
 	})
 }
 
-func TestOrganizationsService_GetOrganizationRepositoryRuleset(t *testing.T) {
+func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -442,7 +442,7 @@ func TestOrganizationsService_GetOrganizationRepositoryRuleset(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.GetOrganizationRepositoryRuleset(ctx, "o", 26110)
+	rulesets, _, err := client.Organizations.GetOrganizationRuleset(ctx, "o", 26110)
 	if err != nil {
 		t.Errorf("Organizations.GetOrganizationRepositoryRuleset returned error: %v", err)
 	}
@@ -475,13 +475,13 @@ func TestOrganizationsService_GetOrganizationRepositoryRuleset(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.GetOrganizationRepositoryRuleset returned %+v, want %+v", rulesets, want)
+		t.Errorf("Organizations.GetOrganizationRuleset returned %+v, want %+v", rulesets, want)
 	}
 
-	const methodName = "GetOrganizationRepositoryRuleset"
+	const methodName = "GetOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetOrganizationRepositoryRuleset(ctx, "o", 26110)
+		got, resp, err := client.Organizations.GetOrganizationRuleset(ctx, "o", 26110)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -489,7 +489,7 @@ func TestOrganizationsService_GetOrganizationRepositoryRuleset(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) {
+func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -539,7 +539,7 @@ func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) 
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.UpdateOrganizationRepositoryRuleset(ctx, "o", 26110, &Ruleset{
+	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, &Ruleset{
 		Name:        "test ruleset",
 		Target:      String("branch"),
 		Enforcement: "active",
@@ -561,7 +561,7 @@ func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) 
 	})
 
 	if err != nil {
-		t.Errorf("Organizations.UpdateOrganizationRepositoryRuleset returned error: %v", err)
+		t.Errorf("Organizations.UpdateOrganizationRuleset returned error: %v", err)
 	}
 
 	want := &Ruleset{
@@ -592,13 +592,13 @@ func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) 
 		},
 	}
 	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.UpdateOrganizationRepositoryRuleset returned %+v, want %+v", rulesets, want)
+		t.Errorf("Organizations.UpdateOrganizationRuleset returned %+v, want %+v", rulesets, want)
 	}
 
-	const methodName = "UpdateOrganizationRepositoryRuleset"
+	const methodName = "UpdateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateOrganizationRepositoryRuleset(ctx, "o", 26110, nil)
+		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -606,7 +606,7 @@ func TestOrganizationsService_UpdateOrganizationRepositoryRuleset(t *testing.T) 
 	})
 }
 
-func TestOrganizationsService_DeleteOrganizationRepositoryRuleset(t *testing.T) {
+func TestOrganizationsService_DeleteOrganizationRuleset(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -615,14 +615,14 @@ func TestOrganizationsService_DeleteOrganizationRepositoryRuleset(t *testing.T) 
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.DeleteOrganizationRepositoryRuleset(ctx, "o", 26110)
+	_, err := client.Organizations.DeleteOrganizationRuleset(ctx, "o", 26110)
 	if err != nil {
-		t.Errorf("Organizations.DeleteOrganizationRepositoryRuleset returned error: %v", err)
+		t.Errorf("Organizations.DeleteOrganizationRuleset returned error: %v", err)
 	}
 
-	const methodName = "DeleteOrganizationRepositoryRuleset"
+	const methodName = "DeleteOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Organizations.DeleteOrganizationRepositoryRuleset(ctx, "0", 26110)
+		return client.Organizations.DeleteOrganizationRuleset(ctx, "0", 26110)
 	})
 }
