@@ -61,13 +61,13 @@ func (s *OrganizationsService) GetOrganizationRuleset(ctx context.Context, org s
 		return nil, nil, err
 	}
 
-	var rulesets *Ruleset
-	resp, err := s.client.Do(ctx, req, &rulesets)
+	var ruleset *Ruleset
+	resp, err := s.client.Do(ctx, req, &ruleset)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return rulesets, resp, nil
+	return ruleset, resp, nil
 }
 
 // UpdateOrganizationRuleset updates a ruleset from the specified organization.
@@ -81,13 +81,13 @@ func (s *OrganizationsService) UpdateOrganizationRuleset(ctx context.Context, or
 		return nil, nil, err
 	}
 
-	var rulesets *Ruleset
-	resp, err := s.client.Do(ctx, req, &rulesets)
+	var ruleset *Ruleset
+	resp, err := s.client.Do(ctx, req, &ruleset)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return rulesets, resp, nil
+	return ruleset, resp, nil
 }
 
 // DeleteOrganizationRuleset deletes a ruleset from the specified organization.
