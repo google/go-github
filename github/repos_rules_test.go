@@ -78,8 +78,8 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 	})
 
 	want := []*RepositoryRule{
-		&creationRule,
-		&updateRule,
+		creationRule,
+		updateRule,
 	}
 	if !cmp.Equal(rules, want) {
 		t.Errorf("Repositories.GetRulesForBranch returned %+v, want %+v", rules, want)

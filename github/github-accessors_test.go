@@ -21434,16 +21434,6 @@ func TestRuleRequiredStatusChecks_GetIntegrationID(tt *testing.T) {
 	r.GetIntegrationID()
 }
 
-func TestRuleset_GetBypassActors(tt *testing.T) {
-	var zeroValue []BypassActor
-	r := &Ruleset{BypassActors: &zeroValue}
-	r.GetBypassActors()
-	r = &Ruleset{}
-	r.GetBypassActors()
-	r = nil
-	r.GetBypassActors()
-}
-
 func TestRuleset_GetBypassMode(tt *testing.T) {
 	var zeroValue string
 	r := &Ruleset{BypassMode: &zeroValue}
@@ -21476,16 +21466,6 @@ func TestRuleset_GetNodeID(tt *testing.T) {
 	r.GetNodeID()
 	r = nil
 	r.GetNodeID()
-}
-
-func TestRuleset_GetRules(tt *testing.T) {
-	var zeroValue []RepositoryRule
-	r := &Ruleset{Rules: &zeroValue}
-	r.GetRules()
-	r = &Ruleset{}
-	r.GetRules()
-	r = nil
-	r.GetRules()
 }
 
 func TestRuleset_GetSourceType(tt *testing.T) {

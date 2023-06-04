@@ -18390,14 +18390,6 @@ func (r *RuleRequiredStatusChecks) GetIntegrationID() int64 {
 	return *r.IntegrationID
 }
 
-// GetBypassActors returns the BypassActors field if it's non-nil, zero value otherwise.
-func (r *Ruleset) GetBypassActors() []BypassActor {
-	if r == nil || r.BypassActors == nil {
-		return nil
-	}
-	return *r.BypassActors
-}
-
 // GetBypassMode returns the BypassMode field if it's non-nil, zero value otherwise.
 func (r *Ruleset) GetBypassMode() string {
 	if r == nil || r.BypassMode == nil {
@@ -18428,14 +18420,6 @@ func (r *Ruleset) GetNodeID() string {
 		return ""
 	}
 	return *r.NodeID
-}
-
-// GetRules returns the Rules field if it's non-nil, zero value otherwise.
-func (r *Ruleset) GetRules() []RepositoryRule {
-	if r == nil || r.Rules == nil {
-		return nil
-	}
-	return *r.Rules
 }
 
 // GetSourceType returns the SourceType field if it's non-nil, zero value otherwise.

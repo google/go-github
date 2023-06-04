@@ -148,107 +148,107 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 }
 
 // NewCreationRule creates a rule to only allow users with bypass permission to create matching refs.
-func NewCreationRule() (rule RepositoryRule) {
-	return RepositoryRule{
+func NewCreationRule() (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type: "creation",
 	}
 }
 
 // NewUpdateRule creates a rule to only allow users with bypass permission to update matching refs.
-func NewUpdateRule(params *UpdateAllowsFetchAndMergeRuleParameters) (rule RepositoryRule) {
-	return RepositoryRule{
+func NewUpdateRule(params *UpdateAllowsFetchAndMergeRuleParameters) (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type:       "update",
 		Parameters: params,
 	}
 }
 
 // NewDeletionRule creates a rule to only allow users with bypass permissions to delete matching refs.
-func NewDeletionRule() (rule RepositoryRule) {
-	return RepositoryRule{
+func NewDeletionRule() (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type: "deletion",
 	}
 }
 
 // NewRequiredLinearHistoryRule creates a rule to prevent merge commits from being pushed to matching branches.
-func NewRequiredLinearHistoryRule() (rule RepositoryRule) {
-	return RepositoryRule{
+func NewRequiredLinearHistoryRule() (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type: "required_linear_history",
 	}
 }
 
 // NewRequiredDeploymentsRule creates a rule to require environments to be successfully deployed before they can be merged into the matching branches.
-func NewRequiredDeploymentsRule(params *RequiredDeploymentEnvironmentsRuleParameters) (rule RepositoryRule) {
-	return RepositoryRule{
+func NewRequiredDeploymentsRule(params *RequiredDeploymentEnvironmentsRuleParameters) (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type:       "required_deployments",
 		Parameters: params,
 	}
 }
 
 // NewRequiredSignaturesRule creates a rule a to require commits pushed to matching branches to have verified signatures.
-func NewRequiredSignaturesRule() (rule RepositoryRule) {
-	return RepositoryRule{
+func NewRequiredSignaturesRule() (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type: "required_signatures",
 	}
 }
 
 // NewPullRequestRule creates a rule to require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
-func NewPullRequestRule(params *PullRequestRuleParameters) (rule RepositoryRule) {
-	return RepositoryRule{
+func NewPullRequestRule(params *PullRequestRuleParameters) (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type:       "pull_request",
 		Parameters: params,
 	}
 }
 
 // NewRequiredStatusChecksRule creates a rule to require which status checks must pass before branches can be merged into a branch rule.
-func NewRequiredStatusChecksRule(params *RequiredStatusChecksRuleParameters) (rule RepositoryRule) {
-	return RepositoryRule{
+func NewRequiredStatusChecksRule(params *RequiredStatusChecksRuleParameters) (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type:       "required_status_checks",
 		Parameters: params,
 	}
 }
 
 // NewNonFastForwardRule creates a rule as part to prevent users with push access from force pushing to matching branches.
-func NewNonFastForwardRule() (rule RepositoryRule) {
-	return RepositoryRule{
+func NewNonFastForwardRule() (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type: "non_fast_forward",
 	}
 }
 
 // NewCommitMessagePatternRule creates a rule to restrict commit message patterns being pushed to matching branches.
-func NewCommitMessagePatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
-	return RepositoryRule{
+func NewCommitMessagePatternRule(pattern *RulePatternParameters) (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type:       "commit_message_pattern",
 		Parameters: pattern,
 	}
 }
 
 // NewCommitAuthorEmailPatternRule creates a rule to restrict commits with author email patterns being merged into matching branches.
-func NewCommitAuthorEmailPatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
-	return RepositoryRule{
+func NewCommitAuthorEmailPatternRule(pattern *RulePatternParameters) (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type:       "commit_author_email_pattern",
 		Parameters: pattern,
 	}
 }
 
 // NewCommitterEmailPatternRule creates a rule to restrict commits with committer email patterns being merged into matching branches.
-func NewCommitterEmailPatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
-	return RepositoryRule{
+func NewCommitterEmailPatternRule(pattern *RulePatternParameters) (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type:       "committer_email_pattern",
 		Parameters: pattern,
 	}
 }
 
 // NewBranchNamePatternRule creates a rule to restrict branch patterns from being merged into matching branches.
-func NewBranchNamePatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
-	return RepositoryRule{
+func NewBranchNamePatternRule(pattern *RulePatternParameters) (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type:       "branch_name_pattern",
 		Parameters: pattern,
 	}
 }
 
 // NewTagNamePatternRule creates a rule to restrict tag patterns contained in non-target branches from being merged into matching branches.
-func NewTagNamePatternRule(pattern *RulePatternParameters) (rule RepositoryRule) {
-	return RepositoryRule{
+func NewTagNamePatternRule(pattern *RulePatternParameters) (rule *RepositoryRule) {
+	return &RepositoryRule{
 		Type:       "tag_name_pattern",
 		Parameters: pattern,
 	}
@@ -267,11 +267,11 @@ type Ruleset struct {
 	Enforcement string `json:"enforcement"`
 	// Possible values for BypassMode are: none, repository, organization
 	BypassMode   *string            `json:"bypass_mode,omitempty"`
-	BypassActors *[]BypassActor     `json:"bypass_actors,omitempty"`
+	BypassActors []*BypassActor     `json:"bypass_actors,omitempty"`
 	NodeID       *string            `json:"node_id,omitempty"`
 	Links        *RulesetLinks      `json:"_links,omitempty"`
 	Conditions   *RulesetConditions `json:"conditions,omitempty"`
-	Rules        *[]RepositoryRule  `json:"rules,omitempty"`
+	Rules        []*RepositoryRule  `json:"rules,omitempty"`
 }
 
 // GetRulesForBranch gets all the rules that apply to the specified branch.
@@ -296,6 +296,7 @@ func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo
 
 // GetAllRulesets gets all the rules that apply to the specified repository.
 // If includesParents is true, rulesets configured at the organization level that apply to the repository will be returned.
+//
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-all-repository-rulesets
 func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo string, includesParents bool) ([]*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets?includes_parents=%v", owner, repo, includesParents)

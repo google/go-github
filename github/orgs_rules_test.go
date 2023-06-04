@@ -216,7 +216,7 @@ func TestOrganizationsService_CreateOrganizationRuleset(t *testing.T) {
 		SourceType:  String("Organization"),
 		Source:      "o",
 		Enforcement: "active",
-		BypassActors: &[]BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   234,
 				ActorType: "Team",
@@ -233,7 +233,7 @@ func TestOrganizationsService_CreateOrganizationRuleset(t *testing.T) {
 				Protected: Bool(true),
 			},
 		},
-		Rules: &[]RepositoryRule{
+		Rules: []*RepositoryRule{
 			NewCreationRule(),
 			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
 				UpdateAllowsFetchAndMerge: true,
@@ -302,7 +302,7 @@ func TestOrganizationsService_CreateOrganizationRuleset(t *testing.T) {
 		SourceType:  String("Organization"),
 		Source:      "o",
 		Enforcement: "active",
-		BypassActors: &[]BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   234,
 				ActorType: "Team",
@@ -319,7 +319,7 @@ func TestOrganizationsService_CreateOrganizationRuleset(t *testing.T) {
 				Protected: Bool(true),
 			},
 		},
-		Rules: &[]RepositoryRule{
+		Rules: []*RepositoryRule{
 			NewCreationRule(),
 			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
 				UpdateAllowsFetchAndMerge: true,
@@ -470,7 +470,7 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 				Protected: Bool(true),
 			},
 		},
-		Rules: &[]RepositoryRule{
+		Rules: []*RepositoryRule{
 			NewCreationRule(),
 		},
 	}
@@ -555,7 +555,7 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 				Protected: Bool(true),
 			},
 		},
-		Rules: &[]RepositoryRule{
+		Rules: []*RepositoryRule{
 			NewCreationRule(),
 		},
 	})
@@ -587,7 +587,7 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 				Protected: Bool(true),
 			},
 		},
-		Rules: &[]RepositoryRule{
+		Rules: []*RepositoryRule{
 			NewCreationRule(),
 		},
 	}
