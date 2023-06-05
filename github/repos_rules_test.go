@@ -15,34 +15,266 @@ import (
 )
 
 func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
-	tests := []struct {
-		in      *RepositoryRule
-		want    string
+	tests := map[string]struct {
+		data    string
+		want    RepositoryRule
 		wantErr bool
 	}{
-		{
-			in: &RepositoryRule{
-				Type: "",
+		"Invalid JSON": {
+			data: `{`,
+			want: RepositoryRule{
+				Type:       "",
+				Parameters: nil,
 			},
-			want:    `{`,
 			wantErr: true,
 		},
-		{
-			in: &RepositoryRule{
-				Type: "unknown",
+		"Valid creation": {
+			data: `{"type":"creation"}`,
+			want: RepositoryRule{
+				Type:       "creation",
+				Parameters: nil,
 			},
-			want:    `{}`,
+		},
+		"Valid deletion": {
+			data: `{"type":"deletion"}`,
+			want: RepositoryRule{
+				Type:       "deletion",
+				Parameters: nil,
+			},
+		},
+		"Valid required_linear_history": {
+			data: `{"type":"required_linear_history"}`,
+			want: RepositoryRule{
+				Type:       "required_linear_history",
+				Parameters: nil,
+			},
+		},
+		"Valid required_signatures": {
+			data: `{"type":"required_signatures"}`,
+			want: RepositoryRule{
+				Type:       "required_signatures",
+				Parameters: nil,
+			},
+		},
+		"Valid non_fast_forward": {
+			data: `{"type":"non_fast_forward"}`,
+			want: RepositoryRule{
+				Type:       "non_fast_forward",
+				Parameters: nil,
+			},
+		},
+		"Valid update params": {
+			data: `{"type":"update","parameters":{"update_allows_fetch_and_merge":true}}`,
+			want: RepositoryRule{
+				Type: "update",
+				Parameters: &UpdateAllowsFetchAndMergeRuleParameters{
+					UpdateAllowsFetchAndMerge: true,
+				},
+			},
+		},
+		"Invalid update params": {
+			data: `{"type":"update","parameters":{"update_allows_fetch_and_merge":"true"}}`,
+			want: RepositoryRule{
+				Type:       "update",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
+		"Valid required_deployments params": {
+			data: `{"type":"required_deployments","parameters":{"required_deployment_environments":["test"]}}`,
+			want: RepositoryRule{
+				Type: "required_deployments",
+				Parameters: &RequiredDeploymentEnvironmentsRuleParameters{
+					RequiredDeploymentEnvironments: []string{"test"},
+				},
+			},
+		},
+		"Invalid required_deployments params": {
+			data: `{"type":"required_deployments","parameters":{"required_deployment_environments":true}}`,
+			want: RepositoryRule{
+				Type:       "required_deployments",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
+		"Valid commit_message_pattern params": {
+			data: `{"type":"commit_message_pattern","parameters":{"operator":"starts_with","pattern":"github"}}`,
+			want: RepositoryRule{
+				Type: "commit_message_pattern",
+				Parameters: &RulePatternParameters{
+					Operator: "starts_with",
+					Pattern:  "github",
+				},
+			},
+		},
+		"Invalid commit_message_pattern params": {
+			data: `{"type":"commit_message_pattern","parameters":{"operator":"starts_with","pattern":1}}`,
+			want: RepositoryRule{
+				Type:       "commit_message_pattern",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
+		"Valid commit_author_email_pattern params": {
+			data: `{"type":"commit_author_email_pattern","parameters":{"operator":"starts_with","pattern":"github"}}`,
+			want: RepositoryRule{
+				Type: "commit_author_email_pattern",
+				Parameters: &RulePatternParameters{
+					Operator: "starts_with",
+					Pattern:  "github",
+				},
+			},
+		},
+		"Invalid commit_author_email_pattern params": {
+			data: `{"type":"commit_author_email_pattern","parameters":{"operator":"starts_with","pattern":1}}`,
+			want: RepositoryRule{
+				Type:       "commit_author_email_pattern",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
+		"Valid committer_email_pattern params": {
+			data: `{"type":"committer_email_pattern","parameters":{"operator":"starts_with","pattern":"github"}}`,
+			want: RepositoryRule{
+				Type: "committer_email_pattern",
+				Parameters: &RulePatternParameters{
+					Operator: "starts_with",
+					Pattern:  "github",
+				},
+			},
+		},
+		"Invalid committer_email_pattern params": {
+			data: `{"type":"committer_email_pattern","parameters":{"operator":"starts_with","pattern":1}}`,
+			want: RepositoryRule{
+				Type:       "committer_email_pattern",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
+		"Valid branch_name_pattern params": {
+			data: `{"type":"branch_name_pattern","parameters":{"operator":"starts_with","pattern":"github"}}`,
+			want: RepositoryRule{
+				Type: "branch_name_pattern",
+				Parameters: &RulePatternParameters{
+					Operator: "starts_with",
+					Pattern:  "github",
+				},
+			},
+		},
+		"Invalid branch_name_pattern params": {
+			data: `{"type":"branch_name_pattern","parameters":{"operator":"starts_with","pattern":1}}`,
+			want: RepositoryRule{
+				Type:       "branch_name_pattern",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
+		"Valid tag_name_pattern params": {
+			data: `{"type":"tag_name_pattern","parameters":{"operator":"starts_with","pattern":"github"}}`,
+			want: RepositoryRule{
+				Type: "tag_name_pattern",
+				Parameters: &RulePatternParameters{
+					Operator: "starts_with",
+					Pattern:  "github",
+				},
+			},
+		},
+		"Invalid tag_name_pattern params": {
+			data: `{"type":"tag_name_pattern","parameters":{"operator":"starts_with","pattern":1}}`,
+			want: RepositoryRule{
+				Type:       "tag_name_pattern",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
+		"Valid pull_request params": {
+			data: `{"type":"pull_request",
+			"parameters": {
+				"dismiss_stale_reviews_on_push":true,
+				"require_code_owner_review":true,
+				"require_last_push_approval": true,
+				"required_approving_review_count": 1,
+				"required_review_thread_resolution": true
+			}}`,
+			want: RepositoryRule{
+				Type: "pull_request",
+				Parameters: &PullRequestRuleParameters{
+					RequireCodeOwnerReview:         true,
+					RequireLastPushApproval:        true,
+					RequiredApprovingReviewCount:   1,
+					RequiredReviewThreadResolution: true,
+					DismissStaleReviewsOnPush:      true,
+				},
+			},
+		},
+		"Invalid pull_request params": {
+			data: `{"type":"pull_request","parameters": {"dismiss_stale_reviews_on_push":"true"}}`,
+			want: RepositoryRule{
+				Type:       "pull_request",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
+		"Valid required_status_checks params": {
+			data: `{"type":"required_status_checks",
+			"parameters": {
+				"required_status_checks": [
+				  {
+					"context": "test",
+					"integration_id": 1
+				  }
+				],
+				"strict_required_status_checks_policy": true
+			  }}`,
+			want: RepositoryRule{
+				Type: "required_status_checks",
+				Parameters: &RequiredStatusChecksRuleParameters{
+					RequiredStatusChecks: []RuleRequiredStatusChecks{
+						{
+							Context:       "test",
+							IntegrationID: Int64(1),
+						},
+					},
+					StrictRequiredStatusChecksPolicy: true,
+				},
+			},
+		},
+		"Invalid required_status_checks params": {
+			data: `{"type":"required_status_checks",
+			"parameters": {
+				"required_status_checks": [
+				  {
+					"context": 1
+				  }
+				]
+			  }}`,
+			want: RepositoryRule{
+				Type:       "required_status_checks",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
+		"Invalid type": {
+			data: `{"type":"unknown"}`,
+			want: RepositoryRule{
+				Type:       "",
+				Parameters: nil,
+			},
 			wantErr: true,
 		},
 	}
 
 	for _, tc := range tests {
-		err := tc.in.UnmarshalJSON([]byte(tc.want))
+		rule := RepositoryRule{}
+		err := rule.UnmarshalJSON([]byte(tc.data))
 		if err == nil && tc.wantErr {
 			t.Errorf("RepositoryRule.UnmarshalJSON returned nil instead of an error")
 		}
 		if err != nil && !tc.wantErr {
 			t.Errorf("RepositoryRule.UnmarshalJSON returned an unexpected error: %+v", err)
+		}
+		if !cmp.Equal(tc.want, rule) {
+			t.Errorf("RepositoryRule.UnmarshalJSON expected rule %+v, got %+v", tc.want, rule)
 		}
 	}
 }
