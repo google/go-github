@@ -13,9 +13,9 @@ import (
 
 // BypassActor represents the bypass actors from a ruleset.
 type BypassActor struct {
-	ActorID int64 `json:"actor_id,omitempty"`
+	ActorID *int64 `json:"actor_id,omitempty"`
 	// Possible values for ActorType are: Team, Integration
-	ActorType string `json:"actor_type,omitempty"`
+	ActorType *string `json:"actor_type,omitempty"`
 }
 
 // RulesetLink represents a single link object from GitHub ruleset request _links.

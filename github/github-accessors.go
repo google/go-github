@@ -2222,6 +2222,22 @@ func (b *BranchProtectionRuleEvent) GetSender() *User {
 	return b.Sender
 }
 
+// GetActorID returns the ActorID field if it's non-nil, zero value otherwise.
+func (b *BypassActor) GetActorID() int64 {
+	if b == nil || b.ActorID == nil {
+		return 0
+	}
+	return *b.ActorID
+}
+
+// GetActorType returns the ActorType field if it's non-nil, zero value otherwise.
+func (b *BypassActor) GetActorType() string {
+	if b == nil || b.ActorType == nil {
+		return ""
+	}
+	return *b.ActorType
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {

@@ -218,8 +218,8 @@ func TestOrganizationsService_CreateOrganizationRuleset(t *testing.T) {
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
-				ActorID:   234,
-				ActorType: "Team",
+				ActorID:   Int64(234),
+				ActorType: String("Team"),
 			},
 		},
 		Conditions: &RulesetConditions{
@@ -304,8 +304,8 @@ func TestOrganizationsService_CreateOrganizationRuleset(t *testing.T) {
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
-				ActorID:   234,
-				ActorType: "Team",
+				ActorID:   Int64(234),
+				ActorType: String("Team"),
 			},
 		},
 		Conditions: &RulesetConditions{

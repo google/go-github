@@ -2664,6 +2664,26 @@ func TestBranchProtectionRuleEvent_GetSender(tt *testing.T) {
 	b.GetSender()
 }
 
+func TestBypassActor_GetActorID(tt *testing.T) {
+	var zeroValue int64
+	b := &BypassActor{ActorID: &zeroValue}
+	b.GetActorID()
+	b = &BypassActor{}
+	b.GetActorID()
+	b = nil
+	b.GetActorID()
+}
+
+func TestBypassActor_GetActorType(tt *testing.T) {
+	var zeroValue string
+	b := &BypassActor{ActorType: &zeroValue}
+	b.GetActorType()
+	b = &BypassActor{}
+	b.GetActorType()
+	b = nil
+	b.GetActorType()
+}
+
 func TestCheckRun_GetApp(tt *testing.T) {
 	c := &CheckRun{}
 	c.GetApp()
