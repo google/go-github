@@ -7363,6 +7363,16 @@ func TestForkEvent_GetSender(tt *testing.T) {
 	f.GetSender()
 }
 
+func TestGenerateJITConfigRequest_GetWorkFolder(tt *testing.T) {
+	var zeroValue string
+	g := &GenerateJITConfigRequest{WorkFolder: &zeroValue}
+	g.GetWorkFolder()
+	g = &GenerateJITConfigRequest{}
+	g.GetWorkFolder()
+	g = nil
+	g.GetWorkFolder()
+}
+
 func TestGenerateNotesOptions_GetPreviousTagName(tt *testing.T) {
 	var zeroValue string
 	g := &GenerateNotesOptions{PreviousTagName: &zeroValue}
@@ -10455,6 +10465,16 @@ func TestIssueStats_GetTotalIssues(tt *testing.T) {
 	i.GetTotalIssues()
 	i = nil
 	i.GetTotalIssues()
+}
+
+func TestJITRunnerConfig_GetEncodedJITConfig(tt *testing.T) {
+	var zeroValue string
+	j := &JITRunnerConfig{EncodedJITConfig: &zeroValue}
+	j.GetEncodedJITConfig()
+	j = &JITRunnerConfig{}
+	j.GetEncodedJITConfig()
+	j = nil
+	j.GetEncodedJITConfig()
 }
 
 func TestJobs_GetTotalCount(tt *testing.T) {

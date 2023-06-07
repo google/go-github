@@ -6310,6 +6310,14 @@ func (f *ForkEvent) GetSender() *User {
 	return f.Sender
 }
 
+// GetWorkFolder returns the WorkFolder field if it's non-nil, zero value otherwise.
+func (g *GenerateJITConfigRequest) GetWorkFolder() string {
+	if g == nil || g.WorkFolder == nil {
+		return ""
+	}
+	return *g.WorkFolder
+}
+
 // GetPreviousTagName returns the PreviousTagName field if it's non-nil, zero value otherwise.
 func (g *GenerateNotesOptions) GetPreviousTagName() string {
 	if g == nil || g.PreviousTagName == nil {
@@ -8932,6 +8940,14 @@ func (i *IssueStats) GetTotalIssues() int {
 		return 0
 	}
 	return *i.TotalIssues
+}
+
+// GetEncodedJITConfig returns the EncodedJITConfig field if it's non-nil, zero value otherwise.
+func (j *JITRunnerConfig) GetEncodedJITConfig() string {
+	if j == nil || j.EncodedJITConfig == nil {
+		return ""
+	}
+	return *j.EncodedJITConfig
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
