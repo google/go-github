@@ -48,7 +48,7 @@ func (s *ActionsService) ListRunnerApplicationDownloads(ctx context.Context, own
 // GenerateJITConfigRequest specifies body parameters to GenerateJITConfig.
 type GenerateJITConfigRequest struct {
 	Name          string   `json:"name"`
-	RunnerGroupID int      `json:"runner_group_id"`
+	RunnerGroupID int64      `json:"runner_group_id"`
 	Labels        []string `json:"labels"`
 	WorkFolder    *string   `json:"work_folder,omitempty"`
 }
