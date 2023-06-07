@@ -198,7 +198,7 @@ func (s *DependabotService) ListSelectedReposForOrgSecret(ctx context.Context, o
 }
 
 // DependabotSecretsSelectedRepoIDs are the repository IDs that have access to the dependabot secrets.
-type DependabotSecretsSelectedRepoIDs []string
+type DependabotSecretsSelectedRepoIDs []int64
 
 // SetSelectedReposForOrgSecret sets the repositories that have access to a Dependabot secret.
 //
