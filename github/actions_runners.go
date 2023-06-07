@@ -50,7 +50,7 @@ type GenerateJITConfigRequest struct {
 	Name          string   `json:"name"`
 	RunnerGroupID int      `json:"runner_group_id"`
 	Labels        []string `json:"labels"`
-	WorkFolder    string   `json:"work_folder,omitempty"`
+	WorkFolder    *string   `json:"work_folder,omitempty"`
 }
 
 // JITRunnerConfig represents encoded JIT configuration that can be used to bootstrap a self-hosted runner.
