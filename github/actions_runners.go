@@ -47,10 +47,13 @@ func (s *ActionsService) ListRunnerApplicationDownloads(ctx context.Context, own
 
 // GenerateJITConfigRequest specifies body parameters to GenerateJITConfig.
 type GenerateJITConfigRequest struct {
-	Name          string   `json:"name"`
-	RunnerGroupID int64      `json:"runner_group_id"`
-	Labels        []string `json:"labels"`
-	WorkFolder    *string   `json:"work_folder,omitempty"`
+	Name          string  `json:"name"`
+	RunnerGroupID int64   `json:"runner_group_id"`
+	WorkFolder    *string `json:"work_folder,omitempty"`
+
+	// Labels represents the names of the custom labels to add to the runner.
+	// Minimum items: 1. Maximum items: 100.
+	Labels []string `json:"labels"`
 }
 
 // JITRunnerConfig represents encoded JIT configuration that can be used to bootstrap a self-hosted runner.
@@ -96,16 +99,15 @@ func (s *ActionsService) GenerateJITConfig(ctx context.Context, owner, repo stri
 	return jitConfig, resp, nil
 }
 
-// CreateRegistrationToken creates a token that can be used to add a self-hosted runner.
-//
-// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-a-repository
-
 // RegistrationToken represents a token that can be used to add a self-hosted runner to a repository.
 type RegistrationToken struct {
 	Token     *string    `json:"token,omitempty"`
 	ExpiresAt *Timestamp `json:"expires_at,omitempty"`
 }
 
+// CreateRegistrationToken creates a token that can be used to add a self-hosted runner.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-a-repository
 func (s *ActionsService) CreateRegistrationToken(ctx context.Context, owner, repo string) (*RegistrationToken, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/registration-token", owner, repo)
 
