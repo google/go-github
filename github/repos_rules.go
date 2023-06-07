@@ -90,8 +90,8 @@ type RequiredStatusChecksRuleParameters struct {
 
 // RepositoryRule represents a GitHub Rule.
 type RepositoryRule struct {
-	Type       string      `json:"type"`
-	Parameters interface{} `json:"parameters,omitempty"`
+	Type       string           `json:"type"`
+	Parameters *json.RawMessage `json:"parameters,omitempty"`
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
@@ -109,35 +109,55 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	case "creation", "deletion", "required_linear_history", "required_signatures", "non_fast_forward":
 		r.Parameters = nil
 	case "update":
-		RepositoryRule.Parameters = &UpdateAllowsFetchAndMergeRuleParameters{}
-		if err := json.Unmarshal(data, &RepositoryRule); err != nil {
+		params := UpdateAllowsFetchAndMergeRuleParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
 			return err
 		}
-		r.Parameters = RepositoryRule.Parameters
+
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
 	case "required_deployments":
-		RepositoryRule.Parameters = &RequiredDeploymentEnvironmentsRuleParameters{}
-		if err := json.Unmarshal(data, &RepositoryRule); err != nil {
+		params := RequiredDeploymentEnvironmentsRuleParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
 			return err
 		}
-		r.Parameters = RepositoryRule.Parameters
+
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
 	case "commit_message_pattern", "commit_author_email_pattern", "committer_email_pattern", "branch_name_pattern", "tag_name_pattern":
-		RepositoryRule.Parameters = &RulePatternParameters{}
-		if err := json.Unmarshal(data, &RepositoryRule); err != nil {
+		params := RulePatternParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
 			return err
 		}
-		r.Parameters = RepositoryRule.Parameters
+
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
 	case "pull_request":
-		RepositoryRule.Parameters = &PullRequestRuleParameters{}
-		if err := json.Unmarshal(data, &RepositoryRule); err != nil {
+		params := PullRequestRuleParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
 			return err
 		}
-		r.Parameters = RepositoryRule.Parameters
+
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
 	case "required_status_checks":
-		RepositoryRule.Parameters = &RequiredStatusChecksRuleParameters{}
-		if err := json.Unmarshal(data, &RepositoryRule); err != nil {
+		params := RequiredStatusChecksRuleParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
 			return err
 		}
-		r.Parameters = RepositoryRule.Parameters
+
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
 	default:
 		r.Type = ""
 		r.Parameters = nil
@@ -156,9 +176,13 @@ func NewCreationRule() (rule *RepositoryRule) {
 
 // NewUpdateRule creates a rule to only allow users with bypass permission to update matching refs.
 func NewUpdateRule(params *UpdateAllowsFetchAndMergeRuleParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
 	return &RepositoryRule{
 		Type:       "update",
-		Parameters: params,
+		Parameters: &rawParams,
 	}
 }
 
@@ -178,9 +202,13 @@ func NewRequiredLinearHistoryRule() (rule *RepositoryRule) {
 
 // NewRequiredDeploymentsRule creates a rule to require environments to be successfully deployed before they can be merged into the matching branches.
 func NewRequiredDeploymentsRule(params *RequiredDeploymentEnvironmentsRuleParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
 	return &RepositoryRule{
 		Type:       "required_deployments",
-		Parameters: params,
+		Parameters: &rawParams,
 	}
 }
 
@@ -193,17 +221,25 @@ func NewRequiredSignaturesRule() (rule *RepositoryRule) {
 
 // NewPullRequestRule creates a rule to require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 func NewPullRequestRule(params *PullRequestRuleParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
 	return &RepositoryRule{
 		Type:       "pull_request",
-		Parameters: params,
+		Parameters: &rawParams,
 	}
 }
 
 // NewRequiredStatusChecksRule creates a rule to require which status checks must pass before branches can be merged into a branch rule.
 func NewRequiredStatusChecksRule(params *RequiredStatusChecksRuleParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
 	return &RepositoryRule{
 		Type:       "required_status_checks",
-		Parameters: params,
+		Parameters: &rawParams,
 	}
 }
 
@@ -215,42 +251,62 @@ func NewNonFastForwardRule() (rule *RepositoryRule) {
 }
 
 // NewCommitMessagePatternRule creates a rule to restrict commit message patterns being pushed to matching branches.
-func NewCommitMessagePatternRule(pattern *RulePatternParameters) (rule *RepositoryRule) {
+func NewCommitMessagePatternRule(params *RulePatternParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
 	return &RepositoryRule{
 		Type:       "commit_message_pattern",
-		Parameters: pattern,
+		Parameters: &rawParams,
 	}
 }
 
 // NewCommitAuthorEmailPatternRule creates a rule to restrict commits with author email patterns being merged into matching branches.
-func NewCommitAuthorEmailPatternRule(pattern *RulePatternParameters) (rule *RepositoryRule) {
+func NewCommitAuthorEmailPatternRule(params *RulePatternParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
 	return &RepositoryRule{
 		Type:       "commit_author_email_pattern",
-		Parameters: pattern,
+		Parameters: &rawParams,
 	}
 }
 
 // NewCommitterEmailPatternRule creates a rule to restrict commits with committer email patterns being merged into matching branches.
-func NewCommitterEmailPatternRule(pattern *RulePatternParameters) (rule *RepositoryRule) {
+func NewCommitterEmailPatternRule(params *RulePatternParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
 	return &RepositoryRule{
 		Type:       "committer_email_pattern",
-		Parameters: pattern,
+		Parameters: &rawParams,
 	}
 }
 
 // NewBranchNamePatternRule creates a rule to restrict branch patterns from being merged into matching branches.
-func NewBranchNamePatternRule(pattern *RulePatternParameters) (rule *RepositoryRule) {
+func NewBranchNamePatternRule(params *RulePatternParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
 	return &RepositoryRule{
 		Type:       "branch_name_pattern",
-		Parameters: pattern,
+		Parameters: &rawParams,
 	}
 }
 
 // NewTagNamePatternRule creates a rule to restrict tag patterns contained in non-target branches from being merged into matching branches.
-func NewTagNamePatternRule(pattern *RulePatternParameters) (rule *RepositoryRule) {
+func NewTagNamePatternRule(params *RulePatternParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
 	return &RepositoryRule{
 		Type:       "tag_name_pattern",
-		Parameters: pattern,
+		Parameters: &rawParams,
 	}
 }
 

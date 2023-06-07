@@ -20885,6 +20885,16 @@ func TestRepositoryRelease_GetZipballURL(tt *testing.T) {
 	r.GetZipballURL()
 }
 
+func TestRepositoryRule_GetParameters(tt *testing.T) {
+	var zeroValue json.RawMessage
+	r := &RepositoryRule{Parameters: &zeroValue}
+	r.GetParameters()
+	r = &RepositoryRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
 func TestRepositoryTag_GetCommit(tt *testing.T) {
 	r := &RepositoryTag{}
 	r.GetCommit()

@@ -17934,6 +17934,14 @@ func (r *RepositoryRelease) GetZipballURL() string {
 	return *r.ZipballURL
 }
 
+// GetParameters returns the Parameters field if it's non-nil, zero value otherwise.
+func (r *RepositoryRule) GetParameters() json.RawMessage {
+	if r == nil || r.Parameters == nil {
+		return json.RawMessage{}
+	}
+	return *r.Parameters
+}
+
 // GetCommit returns the Commit field.
 func (r *RepositoryTag) GetCommit() *Commit {
 	if r == nil {
