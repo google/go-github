@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -49,6 +50,94 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Actions.ListRunnerApplicationDownloads(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_GenerateOrganizationJITConfig(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+
+	mux.HandleFunc("/orgs/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
+		v := new(GenerateJITConfigRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"encoded_jit_config":"foo"}`)
+	})
+
+	ctx := context.Background()
+	jitConfig, _, err := client.Actions.GenerateOrganizationJITConfig(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Actions.GenerateOrganizationJITConfig returned error: %v", err)
+	}
+
+	want := &JITRunnerConfig{EncodedJITConfig: String("foo")}
+	if !cmp.Equal(jitConfig, want) {
+		t.Errorf("Actions.GenerateOrganizationJITConfig returned %+v, want %+v", jitConfig, want)
+	}
+
+	const methodName = "GenerateOrganizationJITConfig"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GenerateOrganizationJITConfig(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GenerateOrganizationJITConfig(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_GenerateJITConfig(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+
+	mux.HandleFunc("/repos/o/r/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
+		v := new(GenerateJITConfigRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"encoded_jit_config":"foo"}`)
+	})
+
+	ctx := context.Background()
+	jitConfig, _, err := client.Actions.GenerateJITConfig(ctx, "o", "r", input)
+	if err != nil {
+		t.Errorf("Actions.GenerateJITConfig returned error: %v", err)
+	}
+
+	want := &JITRunnerConfig{EncodedJITConfig: String("foo")}
+	if !cmp.Equal(jitConfig, want) {
+		t.Errorf("Actions.GenerateJITConfig returned %+v, want %+v", jitConfig, want)
+	}
+
+	const methodName = "GenerateJITConfig"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GenerateJITConfig(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GenerateJITConfig(ctx, "o", "r", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
