@@ -7363,6 +7363,16 @@ func TestForkEvent_GetSender(tt *testing.T) {
 	f.GetSender()
 }
 
+func TestGenerateJITConfigRequest_GetWorkFolder(tt *testing.T) {
+	var zeroValue string
+	g := &GenerateJITConfigRequest{WorkFolder: &zeroValue}
+	g.GetWorkFolder()
+	g = &GenerateJITConfigRequest{}
+	g.GetWorkFolder()
+	g = nil
+	g.GetWorkFolder()
+}
+
 func TestGenerateNotesOptions_GetPreviousTagName(tt *testing.T) {
 	var zeroValue string
 	g := &GenerateNotesOptions{PreviousTagName: &zeroValue}
@@ -7381,16 +7391,6 @@ func TestGenerateNotesOptions_GetTargetCommitish(tt *testing.T) {
 	g.GetTargetCommitish()
 	g = nil
 	g.GetTargetCommitish()
-}
-
-func TestGenerateRepoJITConfigRequest_GetWorkFolder(tt *testing.T) {
-	var zeroValue string
-	g := &GenerateRepoJITConfigRequest{WorkFolder: &zeroValue}
-	g.GetWorkFolder()
-	g = &GenerateRepoJITConfigRequest{}
-	g.GetWorkFolder()
-	g = nil
-	g.GetWorkFolder()
 }
 
 func TestGetAuditLogOptions_GetInclude(tt *testing.T) {

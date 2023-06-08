@@ -6310,6 +6310,14 @@ func (f *ForkEvent) GetSender() *User {
 	return f.Sender
 }
 
+// GetWorkFolder returns the WorkFolder field if it's non-nil, zero value otherwise.
+func (g *GenerateJITConfigRequest) GetWorkFolder() string {
+	if g == nil || g.WorkFolder == nil {
+		return ""
+	}
+	return *g.WorkFolder
+}
+
 // GetPreviousTagName returns the PreviousTagName field if it's non-nil, zero value otherwise.
 func (g *GenerateNotesOptions) GetPreviousTagName() string {
 	if g == nil || g.PreviousTagName == nil {
@@ -6324,14 +6332,6 @@ func (g *GenerateNotesOptions) GetTargetCommitish() string {
 		return ""
 	}
 	return *g.TargetCommitish
-}
-
-// GetWorkFolder returns the WorkFolder field if it's non-nil, zero value otherwise.
-func (g *GenerateRepoJITConfigRequest) GetWorkFolder() string {
-	if g == nil || g.WorkFolder == nil {
-		return ""
-	}
-	return *g.WorkFolder
 }
 
 // GetInclude returns the Include field if it's non-nil, zero value otherwise.

@@ -61,10 +61,10 @@ func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &GenerateRepoJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
 
 	mux.HandleFunc("/orgs/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
-		v := new(GenerateRepoJITConfigRequest)
+		v := new(GenerateJITConfigRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
@@ -105,10 +105,10 @@ func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &GenerateRepoJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
 
 	mux.HandleFunc("/repos/o/r/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
-		v := new(GenerateRepoJITConfigRequest)
+		v := new(GenerateJITConfigRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
