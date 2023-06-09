@@ -75,7 +75,7 @@ type CodespacesMachine struct {
 
 // CodespacesRuntimeConstraints represents the runtime constraints of a codespace.
 type CodespacesRuntimeConstraints struct {
-	AllowedPortPrivacySettings []*string `json:"allowed_port_privacy_settings,omitempty"`
+	AllowedPortPrivacySettings []string `json:"allowed_port_privacy_settings,omitempty"`
 }
 
 // ListCodespaces represents the response from the list codespaces endpoints.
@@ -86,7 +86,7 @@ type ListCodespaces struct {
 
 // ListInRepo lists codespaces for a user in a repository.
 //
-// Lists the codespaces associated to a specified repository and the authenticated user.
+// Lists the codespaces associated with a specified repository and the authenticated user.
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have read access to the codespaces repository permission to use this endpoint.
 //
@@ -115,7 +115,7 @@ func (s *CodespacesService) ListInRepo(ctx context.Context, owner, repo string, 
 // ListOptions represents the options for listing codespaces for a user.
 type ListCodespacesOptions struct {
 	ListOptions
-	RepositoryID int `url:"repository_id,omitempty"`
+	RepositoryID int64 `url:"repository_id,omitempty"`
 }
 
 // List lists codespaces for an authenticated user.
@@ -146,6 +146,7 @@ func (s *CodespacesService) List(ctx context.Context, opts *ListCodespacesOption
 	return codespaces, resp, nil
 }
 
+// CreateCodespaceOptions represents options for the creation of a codespace in a repository.
 type CreateCodespaceOptions struct {
 	Ref                        *string `json:"ref,omitempty"`
 	Location                   *string `json:"location,omitempty"`
