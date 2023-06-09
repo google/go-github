@@ -4366,20 +4366,20 @@ func (c *CreateCodespaceOptions) GetDisplayName() string {
 	return *c.DisplayName
 }
 
+// GetGeo returns the Geo field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceOptions) GetGeo() string {
+	if c == nil || c.Geo == nil {
+		return ""
+	}
+	return *c.Geo
+}
+
 // GetIdleTimeoutMinutes returns the IdleTimeoutMinutes field if it's non-nil, zero value otherwise.
 func (c *CreateCodespaceOptions) GetIdleTimeoutMinutes() int {
 	if c == nil || c.IdleTimeoutMinutes == nil {
 		return 0
 	}
 	return *c.IdleTimeoutMinutes
-}
-
-// GetLocation returns the Location field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetLocation() string {
-	if c == nil || c.Location == nil {
-		return ""
-	}
-	return *c.Location
 }
 
 // GetMachine returns the Machine field if it's non-nil, zero value otherwise.

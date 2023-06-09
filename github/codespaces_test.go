@@ -149,12 +149,12 @@ func TestCodespacesService_CreateInRepo(t *testing.T) {
 	mux.HandleFunc("/repos/owner/repo/codespaces", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"ref":"main","location":"WestUs2","machine":"standardLinux","idle_timeout_minutes":60}`+"\n")
+		testBody(t, r, `{"ref":"main","geo":"WestUs2","machine":"standardLinux","idle_timeout_minutes":60}`+"\n")
 		fmt.Fprint(w, `{"id":1, "repository": {"id": 1296269}}`)
 	})
 	input := &CreateCodespaceOptions{
 		Ref:                String("main"),
-		Location:           String("WestUs2"),
+		Geo:                String("WestUs2"),
 		Machine:            String("standardLinux"),
 		IdleTimeoutMinutes: Int(60),
 	}

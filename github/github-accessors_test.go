@@ -5146,6 +5146,16 @@ func TestCreateCodespaceOptions_GetDisplayName(tt *testing.T) {
 	c.GetDisplayName()
 }
 
+func TestCreateCodespaceOptions_GetGeo(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{Geo: &zeroValue}
+	c.GetGeo()
+	c = &CreateCodespaceOptions{}
+	c.GetGeo()
+	c = nil
+	c.GetGeo()
+}
+
 func TestCreateCodespaceOptions_GetIdleTimeoutMinutes(tt *testing.T) {
 	var zeroValue int
 	c := &CreateCodespaceOptions{IdleTimeoutMinutes: &zeroValue}
@@ -5154,16 +5164,6 @@ func TestCreateCodespaceOptions_GetIdleTimeoutMinutes(tt *testing.T) {
 	c.GetIdleTimeoutMinutes()
 	c = nil
 	c.GetIdleTimeoutMinutes()
-}
-
-func TestCreateCodespaceOptions_GetLocation(tt *testing.T) {
-	var zeroValue string
-	c := &CreateCodespaceOptions{Location: &zeroValue}
-	c.GetLocation()
-	c = &CreateCodespaceOptions{}
-	c.GetLocation()
-	c = nil
-	c.GetLocation()
 }
 
 func TestCreateCodespaceOptions_GetMachine(tt *testing.T) {
