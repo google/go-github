@@ -92,7 +92,7 @@ func getSecretValue(secretName string) (string, error) {
 
 // addUserSecret will add a secret to a GitHub user for use in GitHub Codespaces.
 //
-// Finally, the secretName and secretValue will determine the name of the secret added and it's corresponding value.
+// The secretName and secretValue will determine the name of the secret added and it's corresponding value.
 //
 // The actual transmission of the secret value to GitHub using the api requires that the secret value is encrypted
 // using the public key of the target user. This encryption is done using x/crypto/nacl/box.
@@ -108,12 +108,14 @@ func getSecretValue(secretName string) (string, error) {
 //
 // Fifth, the encrypted secret is encoded as a base64 string to be used in a github.EncodedSecret type.
 //
-// Sixt, The other two properties of the github.EncodedSecret type are determined. The name of the secret to be added
+// Sixth, The other two properties of the github.EncodedSecret type are determined. The name of the secret to be added
 // (string not base64), and the KeyID of the public key used to encrypt the secret.
 // This can be retrieved via the public key's GetKeyID method.
 //
-// Finally, the github.EncodedSecret is passed into the GitHub client.Codespaces.CreateOrUpdateUserSecret method to
+// Seventh, the github.EncodedSecret is passed into the GitHub client.Codespaces.CreateOrUpdateUserSecret method to
 // populate the secret in the GitHub user.
+//
+// Finally, if a repo and owner are passed in, it adds the repo to the user secret.
 func addUserSecret(ctx context.Context, client *github.Client, secretName, secretValue, owner, repo string) error {
 	publicKey, _, err := client.Codespaces.GetUserPublicKey(ctx)
 	if err != nil {
