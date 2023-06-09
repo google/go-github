@@ -53,8 +53,8 @@ func TestCodespacesService_ListInRepo(t *testing.T) {
 				Name:            String("standardLinux"),
 				DisplayName:     String("4 cores, 8 GB RAM, 64 GB storage"),
 				OperatingSystem: String("linux"),
-				StorageInBytes:  Int(68719476736),
-				MemoryInBytes:   Int(8589934592),
+				StorageInBytes:  Int64(68719476736),
+				MemoryInBytes:   Int64(8589934592),
 				CPUs:            Int(4),
 			},
 			Prebuild:         Bool(false),
@@ -77,9 +77,9 @@ func TestCodespacesService_ListInRepo(t *testing.T) {
 			MachinesURL:        String("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/machines"),
 			StartURL:           String("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/start"),
 			StopURL:            String("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/stop"),
-			RecentFolders: []*string{
-				String("testfolder1"),
-				String("testfolder2"),
+			RecentFolders: []string{
+				"testfolder1",
+				"testfolder2",
 			},
 		},
 		{
