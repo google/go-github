@@ -148,8 +148,12 @@ func (s *CodespacesService) List(ctx context.Context, opts *ListCodespacesOption
 
 // CreateCodespaceOptions represents options for the creation of a codespace in a repository.
 type CreateCodespaceOptions struct {
-	Ref                        *string `json:"ref,omitempty"`
-	Location                   *string `json:"location,omitempty"`
+	Ref *string `json:"ref,omitempty"`
+	// Geo represents the geographic area for this codespace.
+	// If not specified, the value is assigned by IP.
+	// This property replaces location, which is being deprecated.
+	// Geo can be one of: `EuropeWest`, `SoutheastAsia`, `UsEast`, `UsWest`.
+	Geo                        *string `json:"geo,omitempty"`
 	ClientIP                   *string `json:"client_ip,omitempty"`
 	Machine                    *string `json:"machine,omitempty"`
 	DevcontainerPath           *string `json:"devcontainer_path,omitempty"`
