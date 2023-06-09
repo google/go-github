@@ -1,4 +1,4 @@
-// Copyright 2016 The go-github AUTHORS. All rights reserved.
+// Copyright 2023 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -15,7 +15,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestCodespacesService_ListForUserInRepo(t *testing.T) {
+func TestCodespacesService_ListInRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -30,9 +30,9 @@ func TestCodespacesService_ListForUserInRepo(t *testing.T) {
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
 	ctx := context.Background()
-	codespaces, _, err := client.Codespaces.ListForUserInRepo(ctx, "owner", "repo", opt)
+	codespaces, _, err := client.Codespaces.ListInRepo(ctx, "owner", "repo", opt)
 	if err != nil {
-		t.Errorf("Codespaces.ListForUserInRepo returned error: %v", err)
+		t.Errorf("Codespaces.ListInRepo returned error: %v", err)
 	}
 
 	want := &ListCodespaces{TotalCount: Int(2), Codespaces: []*Codespace{
@@ -87,12 +87,12 @@ func TestCodespacesService_ListForUserInRepo(t *testing.T) {
 		},
 	}}
 	if !cmp.Equal(codespaces, want) {
-		t.Errorf("Codespaces.ListForUserInRepo returned %+v, want %+v", codespaces, want)
+		t.Errorf("Codespaces.ListInRepo returned %+v, want %+v", codespaces, want)
 	}
 
-	const methodName = "ListForUserInRepo"
+	const methodName = "ListInRepo"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.ListForUserInRepo(ctx, "", "", nil)
+		got, resp, err := client.Codespaces.ListInRepo(ctx, "", "", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -100,7 +100,7 @@ func TestCodespacesService_ListForUserInRepo(t *testing.T) {
 	})
 }
 
-func TestCodespacesService_ListForUser(t *testing.T) {
+func TestCodespacesService_List(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -114,11 +114,11 @@ func TestCodespacesService_ListForUser(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":1,"codespaces":[{"id":1, "repository": {"id": 1296269}}]}`)
 	})
 
-	opt := &ListForUserOptions{ListOptions: ListOptions{Page: 1, PerPage: 2}, RepositoryID: 1296269}
+	opt := &ListCodespacesOptions{ListOptions: ListOptions{Page: 1, PerPage: 2}, RepositoryID: 1296269}
 	ctx := context.Background()
-	codespaces, _, err := client.Codespaces.ListForUser(ctx, opt)
+	codespaces, _, err := client.Codespaces.List(ctx, opt)
 	if err != nil {
-		t.Errorf("Codespaces.ListForUser returned error: %v", err)
+		t.Errorf("Codespaces.List returned error: %v", err)
 	}
 
 	want := &ListCodespaces{TotalCount: Int(1), Codespaces: []*Codespace{
@@ -130,12 +130,12 @@ func TestCodespacesService_ListForUser(t *testing.T) {
 		},
 	}}
 	if !cmp.Equal(codespaces, want) {
-		t.Errorf("Codespaces.ListForUserInRepo returned %+v, want %+v", codespaces, want)
+		t.Errorf("Codespaces.ListInRepo returned %+v, want %+v", codespaces, want)
 	}
 
-	const methodName = "ListForUser"
+	const methodName = "List"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.ListForUser(ctx, nil)
+		got, resp, err := client.Codespaces.List(ctx, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
