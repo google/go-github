@@ -1,0 +1,251 @@
+// Copyright 2020 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package github
+
+import (
+	"context"
+	"fmt"
+)
+
+// CodespacesService handles communication with the Codespaces related
+// methods of the GitHub API.
+//
+// GitHub API docs: https://docs.github.com/en/rest/codespaces/
+type CodespacesService service
+
+// Codespace represents a codespace.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/codespaces
+type Codespace struct {
+	ID                             *int64                        `json:"id,omitempty"`
+	Name                           *string                       `json:"name,omitempty"`
+	DisplayName                    *string                       `json:"display_name,omitempty"`
+	EnvironmentID                  *string                       `json:"environment_id,omitempty"`
+	Owner                          *User                         `json:"owner,omitempty"`
+	BillableOwner                  *User                         `json:"billable_owner,omitempty"`
+	Repository                     *Repository                   `json:"repository,omitempty"`
+	Machine                        *CodespacesMachine            `json:"machine,omitempty"`
+	DevcontainerPath               *string                       `json:"devcontainer_path,omitempty"`
+	Prebuild                       *bool                         `json:"prebuild,omitempty"`
+	CreatedAt                      *Timestamp                    `json:"created_at,omitempty"`
+	UpdatedAt                      *Timestamp                    `json:"updated_at,omitempty"`
+	LastUsedAt                     *Timestamp                    `json:"last_used_at,omitempty"`
+	State                          *string                       `json:"state,omitempty"`
+	URL                            *string                       `json:"url,omitempty"`
+	GitStatus                      *CodespacesGitStatus          `json:"git_status,omitempty"`
+	Location                       *string                       `json:"location,omitempty"`
+	IdleTimeoutMinutes             *int                          `json:"idle_timeout_minutes,omitempty"`
+	WebURL                         *string                       `json:"web_url,omitempty"`
+	MachinesURL                    *string                       `json:"machines_url,omitempty"`
+	StartURL                       *string                       `json:"start_url,omitempty"`
+	StopURL                        *string                       `json:"stop_url,omitempty"`
+	PullsURL                       *string                       `json:"pulls_url,omitempty"`
+	RecentFolders                  []*string                     `json:"recent_folders,omitempty"`
+	RuntimeConstraints             *CodespacesRuntimeConstraints `json:"runtime_constraints,omitempty"`
+	PendingOperation               *bool                         `json:"pending_operation,omitempty"`
+	PendingOperationDisabledReason *string                       `json:"pending_operation_disabled_reason,omitempty"`
+	IdleTimeoutNotice              *string                       `json:"idle_timeout_notice,omitempty"`
+	RetentionPeriodMinutes         *int                          `json:"retention_period_minutes,omitempty"`
+	RetentionExpiresAt             *Timestamp                    `json:"retention_expires_at,omitempty"`
+	LastKnownStopNotice            *string                       `json:"last_known_stop_notice,omitempty"`
+}
+
+// CodespacesGitStatus represents the git status of a codespace.
+type CodespacesGitStatus struct {
+	Ahead                 *int    `json:"ahead,omitempty"`
+	Behind                *int    `json:"behind,omitempty"`
+	HasUnpushedChanges    *bool   `json:"has_unpushed_changes,omitempty"`
+	HasUncommittedChanges *bool   `json:"has_uncommitted_changes,omitempty"`
+	Ref                   *string `json:"ref,omitempty"`
+}
+
+// CodespacesMachine represents the machine type of a codespace.
+type CodespacesMachine struct {
+	Name                 *string `json:"name,omitempty"`
+	DisplayName          *string `json:"display_name,omitempty"`
+	OperatingSystem      *string `json:"operating_system,omitempty"`
+	StorageInBytes       *int    `json:"storage_in_bytes,omitempty"`
+	MemoryInBytes        *int    `json:"memory_in_bytes,omitempty"`
+	CPUs                 *int    `json:"cpus,omitempty"`
+	PrebuildAvailability *string `json:"prebuild_availability,omitempty"`
+}
+
+// CodespacesRuntimeConstraints represents the runtime constraints of a codespace.
+type CodespacesRuntimeConstraints struct {
+	AllowedPortPrivacySettings []*string `json:"allowed_port_privacy_settings,omitempty"`
+}
+
+// ListCodespaces represents the response from the list codespaces endpoints.
+type ListCodespaces struct {
+	TotalCount *int         `json:"total_count,omitempty"`
+	Codespaces []*Codespace `json:"codespaces"`
+}
+
+// ListForUserInRepo lists codespaces for a user in a repository.
+//
+// Lists the codespaces associated to a specified repository and the authenticated user.
+// You must authenticate using an access token with the codespace scope to use this endpoint.
+// GitHub Apps must have read access to the codespaces repository permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#list-codespaces-in-a-repository-for-the-authenticated-user
+func (s *CodespacesService) ListForUserInRepo(ctx context.Context, owner, repo string, opts *ListOptions) (*ListCodespaces, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/codespaces", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespaces *ListCodespaces
+	resp, err := s.client.Do(ctx, req, &codespaces)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespaces, resp, nil
+}
+
+// ListForUserOptions represents the options for listing codespaces for a user.
+type ListForUserOptions struct {
+	ListOptions
+	RepositoryID int `url:"repository_id,omitempty"`
+}
+
+// ListForUser lists codespaces for an authenticated user.
+//
+// Lists the authenticated user's codespaces.
+// You must authenticate using an access token with the codespace scope to use this endpoint.
+// GitHub Apps must have read access to the codespaces repository permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#list-codespaces-for-the-authenticated-user
+func (s *CodespacesService) ListForUser(ctx context.Context, opts *ListForUserOptions) (*ListCodespaces, *Response, error) {
+	u := fmt.Sprint("user/codespaces")
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespaces *ListCodespaces
+	resp, err := s.client.Do(ctx, req, &codespaces)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespaces, resp, nil
+}
+
+type CreateCodespaceOptions struct {
+	Ref                        *string `json:"ref,omitempty"`
+	Location                   *string `json:"location,omitempty"`
+	Geo                        *string `json:"geo,omitempty"`
+	ClientIP                   *string `json:"client_ip,omitempty"`
+	Machine                    *string `json:"machine,omitempty"`
+	DevcontainerPath           *string `json:"devcontainer_path,omitempty"`
+	MultiRepoPermissionsOptOut *bool   `json:"multi_repo_permissions_opt_out,omitempty"`
+	WorkingDirectory           *string `json:"working_directory,omitempty"`
+	IdleTimeoutMinutes         *int    `json:"idle_timeout_minutes,omitempty"`
+	DisplayName                *string `json:"display_name,omitempty"`
+	RetentionPeriodMinutes     *int    `json:"retention_period_minutes,omitempty"`
+}
+
+// CreateInRepo creates a codespace in a repository.
+//
+// Creates a codespace owned by the authenticated user in the specified repository.
+// You must authenticate using an access token with the codespace scope to use this endpoint.
+// GitHub Apps must have write access to the codespaces repository permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#create-a-codespace-in-a-repository
+func (s *CodespacesService) CreateInRepo(ctx context.Context, owner, repo string, request *CreateCodespaceOptions) (*Codespace, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/codespaces", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, request)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespace *Codespace
+	resp, err := s.client.Do(ctx, req, &codespace)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespace, resp, nil
+}
+
+// Start starts a codespace.
+//
+// Starts a user's codespace.
+// You must authenticate using an access token with the codespace scope to use this endpoint.
+// GitHub Apps must have write access to the codespaces_lifecycle_admin repository permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#start-a-codespace-for-the-authenticated-user
+func (s *CodespacesService) Start(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
+	u := fmt.Sprintf("user/codespaces/%v/start", codespaceName)
+
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespace *Codespace
+	resp, err := s.client.Do(ctx, req, &codespace)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespace, resp, nil
+}
+
+// Stop stops a codespace.
+//
+// Stops a user's codespace.
+// You must authenticate using an access token with the codespace scope to use this endpoint.
+// GitHub Apps must have write access to the codespaces_lifecycle_admin repository permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#stop-a-codespace-for-the-authenticated-user
+func (s *CodespacesService) Stop(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
+	u := fmt.Sprintf("user/codespaces/%v/stop", codespaceName)
+
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespace *Codespace
+	resp, err := s.client.Do(ctx, req, &codespace)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespace, resp, nil
+}
+
+// Delete deletes a codespace.
+//
+// Deletes a user's codespace.
+// You must authenticate using an access token with the codespace scope to use this endpoint.
+// GitHub Apps must have write access to the codespaces repository permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#delete-a-codespace-for-the-authenticated-user
+func (s *CodespacesService) Delete(ctx context.Context, codespaceName string) (*Response, error) {
+	u := fmt.Sprintf("user/codespaces/%v", codespaceName)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
