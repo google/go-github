@@ -3419,6 +3419,408 @@ func TestCodeSearchResult_GetTotal(tt *testing.T) {
 	c.GetTotal()
 }
 
+func TestCodespace_GetBillableOwner(tt *testing.T) {
+	c := &Codespace{}
+	c.GetBillableOwner()
+	c = nil
+	c.GetBillableOwner()
+}
+
+func TestCodespace_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &Codespace{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &Codespace{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCodespace_GetDevcontainerPath(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{DevcontainerPath: &zeroValue}
+	c.GetDevcontainerPath()
+	c = &Codespace{}
+	c.GetDevcontainerPath()
+	c = nil
+	c.GetDevcontainerPath()
+}
+
+func TestCodespace_GetDisplayName(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{DisplayName: &zeroValue}
+	c.GetDisplayName()
+	c = &Codespace{}
+	c.GetDisplayName()
+	c = nil
+	c.GetDisplayName()
+}
+
+func TestCodespace_GetEnvironmentID(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{EnvironmentID: &zeroValue}
+	c.GetEnvironmentID()
+	c = &Codespace{}
+	c.GetEnvironmentID()
+	c = nil
+	c.GetEnvironmentID()
+}
+
+func TestCodespace_GetGitStatus(tt *testing.T) {
+	c := &Codespace{}
+	c.GetGitStatus()
+	c = nil
+	c.GetGitStatus()
+}
+
+func TestCodespace_GetID(tt *testing.T) {
+	var zeroValue int64
+	c := &Codespace{ID: &zeroValue}
+	c.GetID()
+	c = &Codespace{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCodespace_GetIdleTimeoutMinutes(tt *testing.T) {
+	var zeroValue int
+	c := &Codespace{IdleTimeoutMinutes: &zeroValue}
+	c.GetIdleTimeoutMinutes()
+	c = &Codespace{}
+	c.GetIdleTimeoutMinutes()
+	c = nil
+	c.GetIdleTimeoutMinutes()
+}
+
+func TestCodespace_GetIdleTimeoutNotice(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{IdleTimeoutNotice: &zeroValue}
+	c.GetIdleTimeoutNotice()
+	c = &Codespace{}
+	c.GetIdleTimeoutNotice()
+	c = nil
+	c.GetIdleTimeoutNotice()
+}
+
+func TestCodespace_GetLastKnownStopNotice(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{LastKnownStopNotice: &zeroValue}
+	c.GetLastKnownStopNotice()
+	c = &Codespace{}
+	c.GetLastKnownStopNotice()
+	c = nil
+	c.GetLastKnownStopNotice()
+}
+
+func TestCodespace_GetLastUsedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &Codespace{LastUsedAt: &zeroValue}
+	c.GetLastUsedAt()
+	c = &Codespace{}
+	c.GetLastUsedAt()
+	c = nil
+	c.GetLastUsedAt()
+}
+
+func TestCodespace_GetLocation(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{Location: &zeroValue}
+	c.GetLocation()
+	c = &Codespace{}
+	c.GetLocation()
+	c = nil
+	c.GetLocation()
+}
+
+func TestCodespace_GetMachine(tt *testing.T) {
+	c := &Codespace{}
+	c.GetMachine()
+	c = nil
+	c.GetMachine()
+}
+
+func TestCodespace_GetMachinesURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{MachinesURL: &zeroValue}
+	c.GetMachinesURL()
+	c = &Codespace{}
+	c.GetMachinesURL()
+	c = nil
+	c.GetMachinesURL()
+}
+
+func TestCodespace_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{Name: &zeroValue}
+	c.GetName()
+	c = &Codespace{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCodespace_GetOwner(tt *testing.T) {
+	c := &Codespace{}
+	c.GetOwner()
+	c = nil
+	c.GetOwner()
+}
+
+func TestCodespace_GetPendingOperation(tt *testing.T) {
+	var zeroValue bool
+	c := &Codespace{PendingOperation: &zeroValue}
+	c.GetPendingOperation()
+	c = &Codespace{}
+	c.GetPendingOperation()
+	c = nil
+	c.GetPendingOperation()
+}
+
+func TestCodespace_GetPendingOperationDisabledReason(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{PendingOperationDisabledReason: &zeroValue}
+	c.GetPendingOperationDisabledReason()
+	c = &Codespace{}
+	c.GetPendingOperationDisabledReason()
+	c = nil
+	c.GetPendingOperationDisabledReason()
+}
+
+func TestCodespace_GetPrebuild(tt *testing.T) {
+	var zeroValue bool
+	c := &Codespace{Prebuild: &zeroValue}
+	c.GetPrebuild()
+	c = &Codespace{}
+	c.GetPrebuild()
+	c = nil
+	c.GetPrebuild()
+}
+
+func TestCodespace_GetPullsURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{PullsURL: &zeroValue}
+	c.GetPullsURL()
+	c = &Codespace{}
+	c.GetPullsURL()
+	c = nil
+	c.GetPullsURL()
+}
+
+func TestCodespace_GetRepository(tt *testing.T) {
+	c := &Codespace{}
+	c.GetRepository()
+	c = nil
+	c.GetRepository()
+}
+
+func TestCodespace_GetRetentionExpiresAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &Codespace{RetentionExpiresAt: &zeroValue}
+	c.GetRetentionExpiresAt()
+	c = &Codespace{}
+	c.GetRetentionExpiresAt()
+	c = nil
+	c.GetRetentionExpiresAt()
+}
+
+func TestCodespace_GetRetentionPeriodMinutes(tt *testing.T) {
+	var zeroValue int
+	c := &Codespace{RetentionPeriodMinutes: &zeroValue}
+	c.GetRetentionPeriodMinutes()
+	c = &Codespace{}
+	c.GetRetentionPeriodMinutes()
+	c = nil
+	c.GetRetentionPeriodMinutes()
+}
+
+func TestCodespace_GetRuntimeConstraints(tt *testing.T) {
+	c := &Codespace{}
+	c.GetRuntimeConstraints()
+	c = nil
+	c.GetRuntimeConstraints()
+}
+
+func TestCodespace_GetStartURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{StartURL: &zeroValue}
+	c.GetStartURL()
+	c = &Codespace{}
+	c.GetStartURL()
+	c = nil
+	c.GetStartURL()
+}
+
+func TestCodespace_GetState(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{State: &zeroValue}
+	c.GetState()
+	c = &Codespace{}
+	c.GetState()
+	c = nil
+	c.GetState()
+}
+
+func TestCodespace_GetStopURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{StopURL: &zeroValue}
+	c.GetStopURL()
+	c = &Codespace{}
+	c.GetStopURL()
+	c = nil
+	c.GetStopURL()
+}
+
+func TestCodespace_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &Codespace{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &Codespace{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCodespace_GetURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{URL: &zeroValue}
+	c.GetURL()
+	c = &Codespace{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
+}
+
+func TestCodespace_GetWebURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{WebURL: &zeroValue}
+	c.GetWebURL()
+	c = &Codespace{}
+	c.GetWebURL()
+	c = nil
+	c.GetWebURL()
+}
+
+func TestCodespacesGitStatus_GetAhead(tt *testing.T) {
+	var zeroValue int
+	c := &CodespacesGitStatus{Ahead: &zeroValue}
+	c.GetAhead()
+	c = &CodespacesGitStatus{}
+	c.GetAhead()
+	c = nil
+	c.GetAhead()
+}
+
+func TestCodespacesGitStatus_GetBehind(tt *testing.T) {
+	var zeroValue int
+	c := &CodespacesGitStatus{Behind: &zeroValue}
+	c.GetBehind()
+	c = &CodespacesGitStatus{}
+	c.GetBehind()
+	c = nil
+	c.GetBehind()
+}
+
+func TestCodespacesGitStatus_GetHasUncommittedChanges(tt *testing.T) {
+	var zeroValue bool
+	c := &CodespacesGitStatus{HasUncommittedChanges: &zeroValue}
+	c.GetHasUncommittedChanges()
+	c = &CodespacesGitStatus{}
+	c.GetHasUncommittedChanges()
+	c = nil
+	c.GetHasUncommittedChanges()
+}
+
+func TestCodespacesGitStatus_GetHasUnpushedChanges(tt *testing.T) {
+	var zeroValue bool
+	c := &CodespacesGitStatus{HasUnpushedChanges: &zeroValue}
+	c.GetHasUnpushedChanges()
+	c = &CodespacesGitStatus{}
+	c.GetHasUnpushedChanges()
+	c = nil
+	c.GetHasUnpushedChanges()
+}
+
+func TestCodespacesGitStatus_GetRef(tt *testing.T) {
+	var zeroValue string
+	c := &CodespacesGitStatus{Ref: &zeroValue}
+	c.GetRef()
+	c = &CodespacesGitStatus{}
+	c.GetRef()
+	c = nil
+	c.GetRef()
+}
+
+func TestCodespacesMachine_GetCPUs(tt *testing.T) {
+	var zeroValue int
+	c := &CodespacesMachine{CPUs: &zeroValue}
+	c.GetCPUs()
+	c = &CodespacesMachine{}
+	c.GetCPUs()
+	c = nil
+	c.GetCPUs()
+}
+
+func TestCodespacesMachine_GetDisplayName(tt *testing.T) {
+	var zeroValue string
+	c := &CodespacesMachine{DisplayName: &zeroValue}
+	c.GetDisplayName()
+	c = &CodespacesMachine{}
+	c.GetDisplayName()
+	c = nil
+	c.GetDisplayName()
+}
+
+func TestCodespacesMachine_GetMemoryInBytes(tt *testing.T) {
+	var zeroValue int64
+	c := &CodespacesMachine{MemoryInBytes: &zeroValue}
+	c.GetMemoryInBytes()
+	c = &CodespacesMachine{}
+	c.GetMemoryInBytes()
+	c = nil
+	c.GetMemoryInBytes()
+}
+
+func TestCodespacesMachine_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CodespacesMachine{Name: &zeroValue}
+	c.GetName()
+	c = &CodespacesMachine{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCodespacesMachine_GetOperatingSystem(tt *testing.T) {
+	var zeroValue string
+	c := &CodespacesMachine{OperatingSystem: &zeroValue}
+	c.GetOperatingSystem()
+	c = &CodespacesMachine{}
+	c.GetOperatingSystem()
+	c = nil
+	c.GetOperatingSystem()
+}
+
+func TestCodespacesMachine_GetPrebuildAvailability(tt *testing.T) {
+	var zeroValue string
+	c := &CodespacesMachine{PrebuildAvailability: &zeroValue}
+	c.GetPrebuildAvailability()
+	c = &CodespacesMachine{}
+	c.GetPrebuildAvailability()
+	c = nil
+	c.GetPrebuildAvailability()
+}
+
+func TestCodespacesMachine_GetStorageInBytes(tt *testing.T) {
+	var zeroValue int64
+	c := &CodespacesMachine{StorageInBytes: &zeroValue}
+	c.GetStorageInBytes()
+	c = &CodespacesMachine{}
+	c.GetStorageInBytes()
+	c = nil
+	c.GetStorageInBytes()
+}
+
 func TestCollaboratorInvitation_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	c := &CollaboratorInvitation{CreatedAt: &zeroValue}
@@ -4712,6 +5114,106 @@ func TestCreateCheckSuiteOptions_GetHeadBranch(tt *testing.T) {
 	c.GetHeadBranch()
 	c = nil
 	c.GetHeadBranch()
+}
+
+func TestCreateCodespaceOptions_GetClientIP(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{ClientIP: &zeroValue}
+	c.GetClientIP()
+	c = &CreateCodespaceOptions{}
+	c.GetClientIP()
+	c = nil
+	c.GetClientIP()
+}
+
+func TestCreateCodespaceOptions_GetDevcontainerPath(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{DevcontainerPath: &zeroValue}
+	c.GetDevcontainerPath()
+	c = &CreateCodespaceOptions{}
+	c.GetDevcontainerPath()
+	c = nil
+	c.GetDevcontainerPath()
+}
+
+func TestCreateCodespaceOptions_GetDisplayName(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{DisplayName: &zeroValue}
+	c.GetDisplayName()
+	c = &CreateCodespaceOptions{}
+	c.GetDisplayName()
+	c = nil
+	c.GetDisplayName()
+}
+
+func TestCreateCodespaceOptions_GetIdleTimeoutMinutes(tt *testing.T) {
+	var zeroValue int
+	c := &CreateCodespaceOptions{IdleTimeoutMinutes: &zeroValue}
+	c.GetIdleTimeoutMinutes()
+	c = &CreateCodespaceOptions{}
+	c.GetIdleTimeoutMinutes()
+	c = nil
+	c.GetIdleTimeoutMinutes()
+}
+
+func TestCreateCodespaceOptions_GetLocation(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{Location: &zeroValue}
+	c.GetLocation()
+	c = &CreateCodespaceOptions{}
+	c.GetLocation()
+	c = nil
+	c.GetLocation()
+}
+
+func TestCreateCodespaceOptions_GetMachine(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{Machine: &zeroValue}
+	c.GetMachine()
+	c = &CreateCodespaceOptions{}
+	c.GetMachine()
+	c = nil
+	c.GetMachine()
+}
+
+func TestCreateCodespaceOptions_GetMultiRepoPermissionsOptOut(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateCodespaceOptions{MultiRepoPermissionsOptOut: &zeroValue}
+	c.GetMultiRepoPermissionsOptOut()
+	c = &CreateCodespaceOptions{}
+	c.GetMultiRepoPermissionsOptOut()
+	c = nil
+	c.GetMultiRepoPermissionsOptOut()
+}
+
+func TestCreateCodespaceOptions_GetRef(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{Ref: &zeroValue}
+	c.GetRef()
+	c = &CreateCodespaceOptions{}
+	c.GetRef()
+	c = nil
+	c.GetRef()
+}
+
+func TestCreateCodespaceOptions_GetRetentionPeriodMinutes(tt *testing.T) {
+	var zeroValue int
+	c := &CreateCodespaceOptions{RetentionPeriodMinutes: &zeroValue}
+	c.GetRetentionPeriodMinutes()
+	c = &CreateCodespaceOptions{}
+	c.GetRetentionPeriodMinutes()
+	c = nil
+	c.GetRetentionPeriodMinutes()
+}
+
+func TestCreateCodespaceOptions_GetWorkingDirectory(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{WorkingDirectory: &zeroValue}
+	c.GetWorkingDirectory()
+	c = &CreateCodespaceOptions{}
+	c.GetWorkingDirectory()
+	c = nil
+	c.GetWorkingDirectory()
 }
 
 func TestCreateEvent_GetDescription(tt *testing.T) {
@@ -11084,6 +11586,16 @@ func TestListCheckSuiteResults_GetTotal(tt *testing.T) {
 	l.GetTotal()
 	l = nil
 	l.GetTotal()
+}
+
+func TestListCodespaces_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	l := &ListCodespaces{TotalCount: &zeroValue}
+	l.GetTotalCount()
+	l = &ListCodespaces{}
+	l.GetTotalCount()
+	l = nil
+	l.GetTotalCount()
 }
 
 func TestListCollaboratorOptions_GetAffiliation(tt *testing.T) {
