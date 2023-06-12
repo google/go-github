@@ -193,7 +193,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 // value and the other will be nil.
 //
 // Due to an auth vulnerability issue in the GitHub v3 API, ".." is not allowed
-// to appear anywhere in the "path" or this endpoint will return an error.
+// to appear anywhere in the "path" or this method will return an error.
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/contents#get-repository-content
 func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path string, opts *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
