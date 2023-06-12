@@ -192,8 +192,15 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 // as possible, both result types will be returned but only one will contain a
 // value and the other will be nil.
 //
+// Due to an auth vulnerability issue in the GitHub v3 API, ".." is not allowed
+// to appear anywhere in the "path" or this method will return an error.
+//
 // GitHub API docs: https://docs.github.com/en/rest/repos/contents#get-repository-content
 func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path string, opts *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
+	if strings.Contains(path, "..") {
+		return nil, nil, nil, errors.New("path must not contain '..' due to auth vulnerability issue")
+	}
+
 	escapedPath := (&url.URL{Path: strings.TrimSuffix(path, "/")}).String()
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, escapedPath)
 	u, err = addOptions(u, opts)

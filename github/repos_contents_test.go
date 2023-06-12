@@ -465,6 +465,20 @@ func TestRepositoriesService_GetContents_DirectoryWithSpaces(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetContents_PathWithParent(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/contents/some/../directory/file.go", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{}`)
+	})
+	ctx := context.Background()
+	_, _, _, err := client.Repositories.GetContents(ctx, "o", "r", "some/../directory/file.go", &RepositoryContentGetOptions{})
+	if err == nil {
+		t.Fatal("Repositories.GetContents expected error but got none")
+	}
+}
+
 func TestRepositoriesService_GetContents_DirectoryWithPlusChars(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
