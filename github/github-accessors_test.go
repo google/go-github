@@ -2664,6 +2664,26 @@ func TestBranchProtectionRuleEvent_GetSender(tt *testing.T) {
 	b.GetSender()
 }
 
+func TestBypassActor_GetActorID(tt *testing.T) {
+	var zeroValue int64
+	b := &BypassActor{ActorID: &zeroValue}
+	b.GetActorID()
+	b = &BypassActor{}
+	b.GetActorID()
+	b = nil
+	b.GetActorID()
+}
+
+func TestBypassActor_GetActorType(tt *testing.T) {
+	var zeroValue string
+	b := &BypassActor{ActorType: &zeroValue}
+	b.GetActorType()
+	b = &BypassActor{}
+	b.GetActorType()
+	b = nil
+	b.GetActorType()
+}
+
 func TestCheckRun_GetApp(tt *testing.T) {
 	c := &CheckRun{}
 	c.GetApp()
@@ -20865,6 +20885,16 @@ func TestRepositoryRelease_GetZipballURL(tt *testing.T) {
 	r.GetZipballURL()
 }
 
+func TestRepositoryRule_GetParameters(tt *testing.T) {
+	var zeroValue json.RawMessage
+	r := &RepositoryRule{Parameters: &zeroValue}
+	r.GetParameters()
+	r = &RepositoryRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
 func TestRepositoryTag_GetCommit(tt *testing.T) {
 	r := &RepositoryTag{}
 	r.GetCommit()
@@ -21402,6 +21432,131 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 	r = nil
 	r.GetSeverity()
+}
+
+func TestRulePatternParameters_GetName(tt *testing.T) {
+	var zeroValue string
+	r := &RulePatternParameters{Name: &zeroValue}
+	r.GetName()
+	r = &RulePatternParameters{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRulePatternParameters_GetNegate(tt *testing.T) {
+	var zeroValue bool
+	r := &RulePatternParameters{Negate: &zeroValue}
+	r.GetNegate()
+	r = &RulePatternParameters{}
+	r.GetNegate()
+	r = nil
+	r.GetNegate()
+}
+
+func TestRuleRequiredStatusChecks_GetIntegrationID(tt *testing.T) {
+	var zeroValue int64
+	r := &RuleRequiredStatusChecks{IntegrationID: &zeroValue}
+	r.GetIntegrationID()
+	r = &RuleRequiredStatusChecks{}
+	r.GetIntegrationID()
+	r = nil
+	r.GetIntegrationID()
+}
+
+func TestRuleset_GetBypassMode(tt *testing.T) {
+	var zeroValue string
+	r := &Ruleset{BypassMode: &zeroValue}
+	r.GetBypassMode()
+	r = &Ruleset{}
+	r.GetBypassMode()
+	r = nil
+	r.GetBypassMode()
+}
+
+func TestRuleset_GetConditions(tt *testing.T) {
+	r := &Ruleset{}
+	r.GetConditions()
+	r = nil
+	r.GetConditions()
+}
+
+func TestRuleset_GetLinks(tt *testing.T) {
+	r := &Ruleset{}
+	r.GetLinks()
+	r = nil
+	r.GetLinks()
+}
+
+func TestRuleset_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	r := &Ruleset{NodeID: &zeroValue}
+	r.GetNodeID()
+	r = &Ruleset{}
+	r.GetNodeID()
+	r = nil
+	r.GetNodeID()
+}
+
+func TestRuleset_GetSourceType(tt *testing.T) {
+	var zeroValue string
+	r := &Ruleset{SourceType: &zeroValue}
+	r.GetSourceType()
+	r = &Ruleset{}
+	r.GetSourceType()
+	r = nil
+	r.GetSourceType()
+}
+
+func TestRuleset_GetTarget(tt *testing.T) {
+	var zeroValue string
+	r := &Ruleset{Target: &zeroValue}
+	r.GetTarget()
+	r = &Ruleset{}
+	r.GetTarget()
+	r = nil
+	r.GetTarget()
+}
+
+func TestRulesetConditions_GetRefName(tt *testing.T) {
+	r := &RulesetConditions{}
+	r.GetRefName()
+	r = nil
+	r.GetRefName()
+}
+
+func TestRulesetConditions_GetRepositoryName(tt *testing.T) {
+	r := &RulesetConditions{}
+	r.GetRepositoryName()
+	r = nil
+	r.GetRepositoryName()
+}
+
+func TestRulesetLink_GetHRef(tt *testing.T) {
+	var zeroValue string
+	r := &RulesetLink{HRef: &zeroValue}
+	r.GetHRef()
+	r = &RulesetLink{}
+	r.GetHRef()
+	r = nil
+	r.GetHRef()
+}
+
+func TestRulesetLinks_GetSelf(tt *testing.T) {
+	r := &RulesetLinks{}
+	r.GetSelf()
+	r = nil
+	r.GetSelf()
+}
+
+func TestRulesetRepositoryConditionParameters_GetProtected(tt *testing.T) {
+	var zeroValue bool
+	r := &RulesetRepositoryConditionParameters{Protected: &zeroValue}
+	r.GetProtected()
+	r = &RulesetRepositoryConditionParameters{}
+	r.GetProtected()
+	r = nil
+	r.GetProtected()
 }
 
 func TestRunner_GetBusy(tt *testing.T) {
