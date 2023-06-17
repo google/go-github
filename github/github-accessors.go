@@ -2222,6 +2222,22 @@ func (b *BranchProtectionRuleEvent) GetSender() *User {
 	return b.Sender
 }
 
+// GetActorID returns the ActorID field if it's non-nil, zero value otherwise.
+func (b *BypassActor) GetActorID() int64 {
+	if b == nil || b.ActorID == nil {
+		return 0
+	}
+	return *b.ActorID
+}
+
+// GetActorType returns the ActorType field if it's non-nil, zero value otherwise.
+func (b *BypassActor) GetActorType() string {
+	if b == nil || b.ActorType == nil {
+		return ""
+	}
+	return *b.ActorType
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
@@ -17918,6 +17934,14 @@ func (r *RepositoryRelease) GetZipballURL() string {
 	return *r.ZipballURL
 }
 
+// GetParameters returns the Parameters field if it's non-nil, zero value otherwise.
+func (r *RepositoryRule) GetParameters() json.RawMessage {
+	if r == nil || r.Parameters == nil {
+		return json.RawMessage{}
+	}
+	return *r.Parameters
+}
+
 // GetCommit returns the Commit field.
 func (r *RepositoryTag) GetCommit() *Commit {
 	if r == nil {
@@ -18364,6 +18388,118 @@ func (r *Rule) GetSeverity() string {
 		return ""
 	}
 	return *r.Severity
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *RulePatternParameters) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
+}
+
+// GetNegate returns the Negate field if it's non-nil, zero value otherwise.
+func (r *RulePatternParameters) GetNegate() bool {
+	if r == nil || r.Negate == nil {
+		return false
+	}
+	return *r.Negate
+}
+
+// GetIntegrationID returns the IntegrationID field if it's non-nil, zero value otherwise.
+func (r *RuleRequiredStatusChecks) GetIntegrationID() int64 {
+	if r == nil || r.IntegrationID == nil {
+		return 0
+	}
+	return *r.IntegrationID
+}
+
+// GetBypassMode returns the BypassMode field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetBypassMode() string {
+	if r == nil || r.BypassMode == nil {
+		return ""
+	}
+	return *r.BypassMode
+}
+
+// GetConditions returns the Conditions field.
+func (r *Ruleset) GetConditions() *RulesetConditions {
+	if r == nil {
+		return nil
+	}
+	return r.Conditions
+}
+
+// GetLinks returns the Links field.
+func (r *Ruleset) GetLinks() *RulesetLinks {
+	if r == nil {
+		return nil
+	}
+	return r.Links
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
+// GetSourceType returns the SourceType field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetSourceType() string {
+	if r == nil || r.SourceType == nil {
+		return ""
+	}
+	return *r.SourceType
+}
+
+// GetTarget returns the Target field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetTarget() string {
+	if r == nil || r.Target == nil {
+		return ""
+	}
+	return *r.Target
+}
+
+// GetRefName returns the RefName field.
+func (r *RulesetConditions) GetRefName() *RulesetRefConditionParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RefName
+}
+
+// GetRepositoryName returns the RepositoryName field.
+func (r *RulesetConditions) GetRepositoryName() *RulesetRepositoryConditionParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryName
+}
+
+// GetHRef returns the HRef field if it's non-nil, zero value otherwise.
+func (r *RulesetLink) GetHRef() string {
+	if r == nil || r.HRef == nil {
+		return ""
+	}
+	return *r.HRef
+}
+
+// GetSelf returns the Self field.
+func (r *RulesetLinks) GetSelf() *RulesetLink {
+	if r == nil {
+		return nil
+	}
+	return r.Self
+}
+
+// GetProtected returns the Protected field if it's non-nil, zero value otherwise.
+func (r *RulesetRepositoryConditionParameters) GetProtected() bool {
+	if r == nil || r.Protected == nil {
+		return false
+	}
+	return *r.Protected
 }
 
 // GetBusy returns the Busy field if it's non-nil, zero value otherwise.
