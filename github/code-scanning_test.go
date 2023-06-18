@@ -1230,3 +1230,52 @@ func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/default-setup", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		_, err := fmt.Fprint(w, `{
+		"run_id": 5301214200,
+		"run_url": "https://api.github.com/repos/o/r/actions/runs/5301214200"
+		}`)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	ctx := context.Background()
+	options := &UpdateDefaultSetupConfigurationOptions{
+		State:      "configured",
+		Languages:  []string{"go"},
+		QuerySuite: String("default"),
+	}
+	got, _, err := client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "o", "r", options)
+	if err != nil {
+		t.Errorf("CodeScanning.UpdateDefaultSetupConfiguration returned error: %v", err)
+	}
+
+	want := &UpdateDefaultSetupConfigurationResponse{
+		RunID:  Int64(5301214200),
+		RunURL: String("https://api.github.com/repos/o/r/actions/runs/5301214200"),
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("CodeScanning.UpdateDefaultSetupConfiguration returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "UpdateDefaultSetupConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "\n", "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "o", "r", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
