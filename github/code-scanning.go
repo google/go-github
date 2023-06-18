@@ -389,7 +389,7 @@ type DefaultSetupConfiguration struct {
 
 // GetDefaultSetupConfiguration gets a code scanning default setup configuration.
 //
-// Gets a code scanning default setup configuration. You must use an access token with the repo scope to use this
+// You must use an access token with the repo scope to use this
 // endpoint with private repos or the public_repo scope for public repos. GitHub Apps must have the repo write
 // permission to use this endpoint.
 //
@@ -427,7 +427,7 @@ type UpdateDefaultSetupConfigurationResponse struct {
 
 // UpdateDefaultSetupConfiguration updates a code scanning default setup configuration.
 //
-// Updates a code scanning default setup configuration. You must use an access token with the repo scope to use this
+// You must use an access token with the repo scope to use this
 // endpoint with private repos or the public_repo scope for public repos. GitHub Apps must have the repo write
 // permission to use this endpoint.
 //
