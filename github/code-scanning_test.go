@@ -1177,3 +1177,56 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/default-setup", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		_, err := fmt.Fprint(w, `{
+		"state": "configured",
+		"languages": [
+			"javascript",
+			"javascript-typescript",
+			"typescript"
+		],
+		"query_suite": "default",
+		"updated_at": "2006-01-02T15:04:05Z"
+		}`)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	ctx := context.Background()
+	cfg, _, err := client.CodeScanning.GetDefaultSetupConfiguration(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("CodeScanning.GetDefaultSetupConfiguration returned error: %v", err)
+	}
+
+	date := &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}
+	want := &DefaultSetupConfiguration{
+		State:      String("configured"),
+		Languages:  []string{"javascript", "javascript-typescript", "typescript"},
+		QuerySuite: String("default"),
+		UpdatedAt:  date,
+	}
+	if !cmp.Equal(cfg, want) {
+		t.Errorf("CodeScanning.GetDefaultSetupConfiguration returned %+v, want %+v", cfg, want)
+	}
+
+	const methodName = "GetDefaultSetupConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.GetDefaultSetupConfiguration(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.GetDefaultSetupConfiguration(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}

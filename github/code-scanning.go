@@ -378,3 +378,35 @@ func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo strin
 
 	return analysis, resp, nil
 }
+
+// DefaultSetupConfiguration represents a code scanning default setup configuration.
+type DefaultSetupConfiguration struct {
+	State      *string    `json:"state,omitempty"`
+	Languages  []string   `json:"languages,omitempty"`
+	QuerySuite *string    `json:"query_suite,omitempty"`
+	UpdatedAt  *Timestamp `json:"updated_at,omitempty"`
+}
+
+// GetDefaultSetupConfiguration gets a code scanning default setup configuration.
+//
+// Gets a code scanning default setup configuration. You must use an access token with the repo scope to use this
+// endpoint with private repos or the public_repo scope for public repos. GitHub Apps must have the repo write
+// permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#get-a-code-scanning-default-setup-configuration
+func (s *CodeScanningService) GetDefaultSetupConfiguration(ctx context.Context, owner, repo string) (*DefaultSetupConfiguration, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/code-scanning/default-setup", owner, repo)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	cfg := new(DefaultSetupConfiguration)
+	resp, err := s.client.Do(ctx, req, cfg)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return cfg, resp, nil
+}
