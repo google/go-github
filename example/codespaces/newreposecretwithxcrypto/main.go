@@ -1,4 +1,4 @@
-// Copyright 2021 The go-github AUTHORS. All rights reserved.
+// Copyright 2023 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -97,7 +97,7 @@ func getSecretValue(secretName string) (string, error) {
 	return secretValue, nil
 }
 
-// addRepoSecret will add a secret to a GitHub repo for use in GitHub Actions.
+// addRepoSecret will add a secret to a GitHub repo for use in GitHub Codespaces.
 //
 // The secretName and secretValue will determine the name of the secret added and it's corresponding value.
 //
@@ -119,10 +119,10 @@ func getSecretValue(secretName string) (string, error) {
 // (string not base64), and the KeyID of the public key used to encrypt the secret.
 // This can be retrieved via the public key's GetKeyID method.
 //
-// Finally, the github.EncodedSecret is passed into the GitHub client.Actions.CreateOrUpdateRepoSecret method to
+// Finally, the github.EncodedSecret is passed into the GitHub client.Codespaces.CreateOrUpdateRepoSecret method to
 // populate the secret in the GitHub repo.
 func addRepoSecret(ctx context.Context, client *github.Client, owner string, repo, secretName string, secretValue string) error {
-	publicKey, _, err := client.Actions.GetRepoPublicKey(ctx, owner, repo)
+	publicKey, _, err := client.Codespaces.GetRepoPublicKey(ctx, owner, repo)
 	if err != nil {
 		return err
 	}
@@ -132,8 +132,8 @@ func addRepoSecret(ctx context.Context, client *github.Client, owner string, rep
 		return err
 	}
 
-	if _, err := client.Actions.CreateOrUpdateRepoSecret(ctx, owner, repo, encryptedSecret); err != nil {
-		return fmt.Errorf("Actions.CreateOrUpdateRepoSecret returned error: %v", err)
+	if _, err := client.Codespaces.CreateOrUpdateRepoSecret(ctx, owner, repo, encryptedSecret); err != nil {
+		return fmt.Errorf("Codespaces.CreateOrUpdateRepoSecret returned error: %v", err)
 	}
 
 	return nil
