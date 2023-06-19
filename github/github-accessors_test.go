@@ -5036,6 +5036,36 @@ func TestCustomRepoRoles_GetName(tt *testing.T) {
 	c.GetName()
 }
 
+func TestDefaultSetupConfiguration_GetQuerySuite(tt *testing.T) {
+	var zeroValue string
+	d := &DefaultSetupConfiguration{QuerySuite: &zeroValue}
+	d.GetQuerySuite()
+	d = &DefaultSetupConfiguration{}
+	d.GetQuerySuite()
+	d = nil
+	d.GetQuerySuite()
+}
+
+func TestDefaultSetupConfiguration_GetState(tt *testing.T) {
+	var zeroValue string
+	d := &DefaultSetupConfiguration{State: &zeroValue}
+	d.GetState()
+	d = &DefaultSetupConfiguration{}
+	d.GetState()
+	d = nil
+	d.GetState()
+}
+
+func TestDefaultSetupConfiguration_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DefaultSetupConfiguration{UpdatedAt: &zeroValue}
+	d.GetUpdatedAt()
+	d = &DefaultSetupConfiguration{}
+	d.GetUpdatedAt()
+	d = nil
+	d.GetUpdatedAt()
+}
+
 func TestDeleteEvent_GetInstallation(tt *testing.T) {
 	d := &DeleteEvent{}
 	d.GetInstallation()
@@ -24649,6 +24679,36 @@ func TestUpdateCheckRunOptions_GetStatus(tt *testing.T) {
 	u.GetStatus()
 	u = nil
 	u.GetStatus()
+}
+
+func TestUpdateDefaultSetupConfigurationOptions_GetQuerySuite(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationOptions{QuerySuite: &zeroValue}
+	u.GetQuerySuite()
+	u = &UpdateDefaultSetupConfigurationOptions{}
+	u.GetQuerySuite()
+	u = nil
+	u.GetQuerySuite()
+}
+
+func TestUpdateDefaultSetupConfigurationResponse_GetRunID(tt *testing.T) {
+	var zeroValue int64
+	u := &UpdateDefaultSetupConfigurationResponse{RunID: &zeroValue}
+	u.GetRunID()
+	u = &UpdateDefaultSetupConfigurationResponse{}
+	u.GetRunID()
+	u = nil
+	u.GetRunID()
+}
+
+func TestUpdateDefaultSetupConfigurationResponse_GetRunURL(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationResponse{RunURL: &zeroValue}
+	u.GetRunURL()
+	u = &UpdateDefaultSetupConfigurationResponse{}
+	u.GetRunURL()
+	u = nil
+	u.GetRunURL()
 }
 
 func TestUpdateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
