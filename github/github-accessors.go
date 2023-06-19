@@ -4278,6 +4278,30 @@ func (c *CustomRepoRoles) GetName() string {
 	return *c.Name
 }
 
+// GetQuerySuite returns the QuerySuite field if it's non-nil, zero value otherwise.
+func (d *DefaultSetupConfiguration) GetQuerySuite() string {
+	if d == nil || d.QuerySuite == nil {
+		return ""
+	}
+	return *d.QuerySuite
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (d *DefaultSetupConfiguration) GetState() string {
+	if d == nil || d.State == nil {
+		return ""
+	}
+	return *d.State
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (d *DefaultSetupConfiguration) GetUpdatedAt() Timestamp {
+	if d == nil || d.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.UpdatedAt
+}
+
 // GetInstallation returns the Installation field.
 func (d *DeleteEvent) GetInstallation() *Installation {
 	if d == nil {
@@ -21132,6 +21156,30 @@ func (u *UpdateCheckRunOptions) GetStatus() string {
 		return ""
 	}
 	return *u.Status
+}
+
+// GetQuerySuite returns the QuerySuite field if it's non-nil, zero value otherwise.
+func (u *UpdateDefaultSetupConfigurationOptions) GetQuerySuite() string {
+	if u == nil || u.QuerySuite == nil {
+		return ""
+	}
+	return *u.QuerySuite
+}
+
+// GetRunID returns the RunID field if it's non-nil, zero value otherwise.
+func (u *UpdateDefaultSetupConfigurationResponse) GetRunID() int64 {
+	if u == nil || u.RunID == nil {
+		return 0
+	}
+	return *u.RunID
+}
+
+// GetRunURL returns the RunURL field if it's non-nil, zero value otherwise.
+func (u *UpdateDefaultSetupConfigurationResponse) GetRunURL() string {
+	if u == nil || u.RunURL == nil {
+		return ""
+	}
+	return *u.RunURL
 }
 
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
