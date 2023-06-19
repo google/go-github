@@ -45,6 +45,60 @@ func (s *ActionsService) ListRunnerApplicationDownloads(ctx context.Context, own
 	return rads, resp, nil
 }
 
+// GenerateJITConfigRequest specifies body parameters to GenerateRepoJITConfig.
+type GenerateJITConfigRequest struct {
+	Name          string  `json:"name"`
+	RunnerGroupID int64   `json:"runner_group_id"`
+	WorkFolder    *string `json:"work_folder,omitempty"`
+
+	// Labels represents the names of the custom labels to add to the runner.
+	// Minimum items: 1. Maximum items: 100.
+	Labels []string `json:"labels"`
+}
+
+// JITRunnerConfig represents encoded JIT configuration that can be used to bootstrap a self-hosted runner.
+type JITRunnerConfig struct {
+	EncodedJITConfig *string `json:"encoded_jit_config,omitempty"`
+}
+
+// GenerateOrgJITConfig generate a just-in-time configuration for an organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-organization
+func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, owner string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners/generate-jitconfig", owner)
+	req, err := s.client.NewRequest("POST", u, request)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	jitConfig := new(JITRunnerConfig)
+	resp, err := s.client.Do(ctx, req, jitConfig)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return jitConfig, resp, nil
+}
+
+// GenerateRepoJITConfig generates a just-in-time configuration for a repository.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-a-repository
+func (s *ActionsService) GenerateRepoJITConfig(ctx context.Context, owner, repo string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runners/generate-jitconfig", owner, repo)
+	req, err := s.client.NewRequest("POST", u, request)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	jitConfig := new(JITRunnerConfig)
+	resp, err := s.client.Do(ctx, req, jitConfig)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return jitConfig, resp, nil
+}
+
 // RegistrationToken represents a token that can be used to add a self-hosted runner to a repository.
 type RegistrationToken struct {
 	Token     *string    `json:"token,omitempty"`
