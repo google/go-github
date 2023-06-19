@@ -30,8 +30,8 @@ type RulesetLinks struct {
 
 // RulesetRefConditionParameters represents the conditions object for ref_names.
 type RulesetRefConditionParameters struct {
-	Include []string `json:"include,omitempty"`
-	Exclude []string `json:"exclude,omitempty"`
+	Include []string `json:"include"`
+	Exclude []string `json:"exclude"`
 }
 
 // RulesetRepositoryConditionParameters represents the conditions object for repository_names.
