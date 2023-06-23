@@ -9398,6 +9398,14 @@ func (i *IssueStats) GetTotalIssues() int {
 	return *i.TotalIssues
 }
 
+// GetRunner returns the Runner field.
+func (j *JITRunnerConfig) GetRunner() *Runner {
+	if j == nil || j.Runner == nil {
+		return nil
+	}
+	return j.Runner
+}
+
 // GetEncodedJITConfig returns the EncodedJITConfig field if it's non-nil, zero value otherwise.
 func (j *JITRunnerConfig) GetEncodedJITConfig() string {
 	if j == nil || j.EncodedJITConfig == nil {
