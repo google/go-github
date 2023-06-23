@@ -58,6 +58,7 @@ type GenerateJITConfigRequest struct {
 
 // JITRunnerConfig represents encoded JIT configuration that can be used to bootstrap a self-hosted runner.
 type JITRunnerConfig struct {
+	Runner           *Runner `json:"runner,omitempty"`
 	EncodedJITConfig *string `json:"encoded_jit_config,omitempty"`
 }
 

@@ -11029,6 +11029,13 @@ func TestJITRunnerConfig_GetEncodedJITConfig(tt *testing.T) {
 	j.GetEncodedJITConfig()
 }
 
+func TestJITRunnerConfig_GetRunner(tt *testing.T) {
+	j := &JITRunnerConfig{}
+	j.GetRunner()
+	j = nil
+	j.GetRunner()
+}
+
 func TestJobs_GetTotalCount(tt *testing.T) {
 	var zeroValue int
 	j := &Jobs{TotalCount: &zeroValue}

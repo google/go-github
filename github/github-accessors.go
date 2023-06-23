@@ -9406,6 +9406,14 @@ func (j *JITRunnerConfig) GetEncodedJITConfig() string {
 	return *j.EncodedJITConfig
 }
 
+// GetRunner returns the Runner field.
+func (j *JITRunnerConfig) GetRunner() *Runner {
+	if j == nil {
+		return nil
+	}
+	return j.Runner
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (j *Jobs) GetTotalCount() int {
 	if j == nil || j.TotalCount == nil {
