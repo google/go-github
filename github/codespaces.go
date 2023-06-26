@@ -126,7 +126,7 @@ type ListCodespacesOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#list-codespaces-for-the-authenticated-user
 func (s *CodespacesService) List(ctx context.Context, opts *ListCodespacesOptions) (*ListCodespaces, *Response, error) {
-	u := fmt.Sprint("user/codespaces")
+	u := "user/codespaces"
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
