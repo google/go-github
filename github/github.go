@@ -1052,7 +1052,7 @@ func (ae *AcceptedError) Is(target error) bool {
 	if !ok {
 		return false
 	}
-	return bytes.Compare(ae.Raw, v.Raw) == 0
+	return bytes.Equal(ae.Raw, v.Raw)
 }
 
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
