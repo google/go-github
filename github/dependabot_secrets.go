@@ -144,8 +144,25 @@ func (s *DependabotService) CreateOrUpdateRepoSecret(ctx context.Context, owner,
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#create-or-update-an-organization-secret
 func (s *DependabotService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *DependabotEncryptedSecret) (*Response, error) {
+	repoIDs := make([]string, len(eSecret.SelectedRepositoryIDs))
+	for i, secret := range eSecret.SelectedRepositoryIDs {
+		repoIDs[i] = fmt.Sprintf("%v", secret)
+	}
+	params := struct {
+		*DependabotEncryptedSecret
+		SelectedRepositoryIDs []string `json:"selected_repository_ids,omitempty"`
+	}{
+		DependabotEncryptedSecret: eSecret,
+		SelectedRepositoryIDs:     repoIDs,
+	}
+
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v", org, eSecret.Name)
-	return s.putSecret(ctx, url, eSecret)
+	req, err := s.client.NewRequest("PUT", url, params)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
 }
 
 func (s *DependabotService) deleteSecret(ctx context.Context, url string) (*Response, error) {
