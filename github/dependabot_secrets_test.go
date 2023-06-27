@@ -352,7 +352,7 @@ func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv=","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
+		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv=","visibility":"selected","selected_repository_ids":["1296269","1269280"]}`+"\n")
 		w.WriteHeader(http.StatusCreated)
 	})
 
