@@ -35,7 +35,12 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 			"resolved_at": null,
 			"resolved_by": null,
 			"secret_type": "mailchimp_api_key",
-			"secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"
+			"secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2",
+			"repository": {
+				"id": 1,
+				"name": "n",
+				"url": "url"
+			}
 		}]`)
 	})
 
@@ -61,6 +66,11 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 			ResolvedBy:   nil,
 			SecretType:   String("mailchimp_api_key"),
 			Secret:       String("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+			Repository: &Repository{
+				ID:   Int64(1),
+				URL:  String("url"),
+				Name: String("n"),
+			},
 		},
 	}
 

@@ -19510,6 +19510,14 @@ func (s *SecretScanningAlert) GetNumber() int {
 	return *s.Number
 }
 
+// GetRepository returns the Repository field.
+func (s *SecretScanningAlert) GetRepository() *Repository {
+	if s == nil {
+		return nil
+	}
+	return s.Repository
+}
+
 // GetResolution returns the Resolution field if it's non-nil, zero value otherwise.
 func (s *SecretScanningAlert) GetResolution() string {
 	if s == nil || s.Resolution == nil {

@@ -22792,6 +22792,13 @@ func TestSecretScanningAlert_GetNumber(tt *testing.T) {
 	s.GetNumber()
 }
 
+func TestSecretScanningAlert_GetRepository(tt *testing.T) {
+	s := &SecretScanningAlert{}
+	s.GetRepository()
+	s = nil
+	s.GetRepository()
+}
+
 func TestSecretScanningAlert_GetResolution(tt *testing.T) {
 	var zeroValue string
 	s := &SecretScanningAlert{Resolution: &zeroValue}
