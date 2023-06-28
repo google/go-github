@@ -69,7 +69,7 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeListPullsOrBranchesForCommitPreview)
 		testFormValues(t, r, values{
-			"page":      "2",
+			"page": "2",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
