@@ -34,17 +34,24 @@ type RulesetRefConditionParameters struct {
 	Exclude []string `json:"exclude"`
 }
 
-// RulesetRepositoryConditionParameters represents the conditions object for repository_names.
-type RulesetRepositoryConditionParameters struct {
+// RulesetRepositoryNamesConditionParameters represents the conditions object for repository_names.
+type RulesetRepositoryNamesConditionParameters struct {
 	Include   []string `json:"include,omitempty"`
 	Exclude   []string `json:"exclude,omitempty"`
 	Protected *bool    `json:"protected,omitempty"`
 }
 
+// RulesetRepositoryIdsConditionParameters represents the conditions object for repository_ids.
+type RulesetRepositoryIdsConditionParameters struct {
+	RepositoryIds []int64 `json:"repository_ids,omitempty"`
+}
+
 // RulesetCondition represents the conditions object in a ruleset.
+// Set either RepositoryName or RepositoryId, not both
 type RulesetConditions struct {
-	RefName        *RulesetRefConditionParameters        `json:"ref_name,omitempty"`
-	RepositoryName *RulesetRepositoryConditionParameters `json:"repository_name,omitempty"`
+	RefName        *RulesetRefConditionParameters             `json:"ref_name,omitempty"`
+	RepositoryName *RulesetRepositoryNamesConditionParameters `json:"repository_name,omitempty"`
+	RepositoryId   *RulesetRepositoryIdsConditionParameters   `json:"repository_id,omitempty"`
 }
 
 // RulePatternParameters represents the rule pattern parameters.

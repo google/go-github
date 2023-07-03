@@ -22094,6 +22094,13 @@ func TestRulesetConditions_GetRefName(tt *testing.T) {
 	r.GetRefName()
 }
 
+func TestRulesetConditions_GetRepositoryId(tt *testing.T) {
+	r := &RulesetConditions{}
+	r.GetRepositoryId()
+	r = nil
+	r.GetRepositoryId()
+}
+
 func TestRulesetConditions_GetRepositoryName(tt *testing.T) {
 	r := &RulesetConditions{}
 	r.GetRepositoryName()
@@ -22118,11 +22125,11 @@ func TestRulesetLinks_GetSelf(tt *testing.T) {
 	r.GetSelf()
 }
 
-func TestRulesetRepositoryConditionParameters_GetProtected(tt *testing.T) {
+func TestRulesetRepositoryNamesConditionParameters_GetProtected(tt *testing.T) {
 	var zeroValue bool
-	r := &RulesetRepositoryConditionParameters{Protected: &zeroValue}
+	r := &RulesetRepositoryNamesConditionParameters{Protected: &zeroValue}
 	r.GetProtected()
-	r = &RulesetRepositoryConditionParameters{}
+	r = &RulesetRepositoryNamesConditionParameters{}
 	r.GetProtected()
 	r = nil
 	r.GetProtected()
