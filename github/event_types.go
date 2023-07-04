@@ -790,6 +790,7 @@ type PersonalAccessTokenRequestEvent struct {
 	Installation               *Installation               `json:"installation,omitempty"`
 }
 
+// PersonalAccessTokenRequest contains the details of a PersonalAccessTokenRequestEvent.
 type PersonalAccessTokenRequest struct {
 	// Unique identifier of the request for access via fine-grained personal
 	// access token. Used as the pat_request_id parameter in the list and review
@@ -833,6 +834,8 @@ type PersonalAccessTokenRequest struct {
 	TokenLastUsedAt *Timestamp `json:"token_last_used_at,omitempty"`
 }
 
+// PersonalAccessTokenPermissions represents the original or newly requested
+// scope of permissions for a fine-grained personal access token within a PersonalAccessTokenRequest.
 type PersonalAccessTokenPermissions struct {
 	Org   *Organization   `json:"organization,omitempty"`
 	Repo  *Repository     `json:"repository,omitempty"`
