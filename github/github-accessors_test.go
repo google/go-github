@@ -22094,11 +22094,11 @@ func TestRulesetConditions_GetRefName(tt *testing.T) {
 	r.GetRefName()
 }
 
-func TestRulesetConditions_GetRepositoryId(tt *testing.T) {
+func TestRulesetConditions_GetRepositoryID(tt *testing.T) {
 	r := &RulesetConditions{}
-	r.GetRepositoryId()
+	r.GetRepositoryID()
 	r = nil
-	r.GetRepositoryId()
+	r.GetRepositoryID()
 }
 
 func TestRulesetConditions_GetRepositoryName(tt *testing.T) {

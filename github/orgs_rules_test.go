@@ -71,7 +71,7 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_CreateOrganizationRulesetRepoNames(t *testing.T) {
+func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -392,7 +392,7 @@ func TestOrganizationsService_CreateOrganizationRulesetRepoNames(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_CreateOrganizationRulesetRepoIds(t *testing.T) {
+func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -541,8 +541,8 @@ func TestOrganizationsService_CreateOrganizationRulesetRepoIds(t *testing.T) {
 				Include: []string{"refs/heads/main", "refs/heads/master"},
 				Exclude: []string{"refs/heads/dev*"},
 			},
-			RepositoryId: &RulesetRepositoryIdsConditionParameters{
-				RepositoryIds: []int64{123, 456},
+			RepositoryID: &RulesetRepositoryIDsConditionParameters{
+				RepositoryIDs: []int64{123, 456},
 			},
 		},
 		Rules: []*RepositoryRule{
@@ -625,8 +625,8 @@ func TestOrganizationsService_CreateOrganizationRulesetRepoIds(t *testing.T) {
 				Include: []string{"refs/heads/main", "refs/heads/master"},
 				Exclude: []string{"refs/heads/dev*"},
 			},
-			RepositoryId: &RulesetRepositoryIdsConditionParameters{
-				RepositoryIds: []int64{123, 456},
+			RepositoryID: &RulesetRepositoryIDsConditionParameters{
+				RepositoryIDs: []int64{123, 456},
 			},
 		},
 		Rules: []*RepositoryRule{
