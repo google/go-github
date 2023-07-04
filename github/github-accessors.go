@@ -13134,6 +13134,150 @@ func (p *PagesUpdate) GetSource() *PagesSource {
 	return p.Source
 }
 
+// GetOrg returns the Org field.
+func (p *PersonalAccessTokenPermissions) GetOrg() *Organization {
+	if p == nil {
+		return nil
+	}
+	return p.Org
+}
+
+// GetRepo returns the Repo field.
+func (p *PersonalAccessTokenPermissions) GetRepo() *Repository {
+	if p == nil {
+		return nil
+	}
+	return p.Repo
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessTokenRequest) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessTokenRequest) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetOwner returns the Owner field.
+func (p *PersonalAccessTokenRequest) GetOwner() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Owner
+}
+
+// GetPermissionsAdded returns the PermissionsAdded field.
+func (p *PersonalAccessTokenRequest) GetPermissionsAdded() *PersonalAccessTokenPermissions {
+	if p == nil {
+		return nil
+	}
+	return p.PermissionsAdded
+}
+
+// GetPermissionsResult returns the PermissionsResult field.
+func (p *PersonalAccessTokenRequest) GetPermissionsResult() *PersonalAccessTokenPermissions {
+	if p == nil {
+		return nil
+	}
+	return p.PermissionsResult
+}
+
+// GetPermissionsUpgraded returns the PermissionsUpgraded field.
+func (p *PersonalAccessTokenRequest) GetPermissionsUpgraded() *PersonalAccessTokenPermissions {
+	if p == nil {
+		return nil
+	}
+	return p.PermissionsUpgraded
+}
+
+// GetRepositoryCount returns the RepositoryCount field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessTokenRequest) GetRepositoryCount() int64 {
+	if p == nil || p.RepositoryCount == nil {
+		return 0
+	}
+	return *p.RepositoryCount
+}
+
+// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessTokenRequest) GetRepositorySelection() string {
+	if p == nil || p.RepositorySelection == nil {
+		return ""
+	}
+	return *p.RepositorySelection
+}
+
+// GetTokenExpired returns the TokenExpired field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessTokenRequest) GetTokenExpired() bool {
+	if p == nil || p.TokenExpired == nil {
+		return false
+	}
+	return *p.TokenExpired
+}
+
+// GetTokenExpiresAt returns the TokenExpiresAt field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessTokenRequest) GetTokenExpiresAt() Timestamp {
+	if p == nil || p.TokenExpiresAt == nil {
+		return Timestamp{}
+	}
+	return *p.TokenExpiresAt
+}
+
+// GetTokenLastUsedAt returns the TokenLastUsedAt field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessTokenRequest) GetTokenLastUsedAt() Timestamp {
+	if p == nil || p.TokenLastUsedAt == nil {
+		return Timestamp{}
+	}
+	return *p.TokenLastUsedAt
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessTokenRequestEvent) GetAction() string {
+	if p == nil || p.Action == nil {
+		return ""
+	}
+	return *p.Action
+}
+
+// GetInstallation returns the Installation field.
+func (p *PersonalAccessTokenRequestEvent) GetInstallation() *Installation {
+	if p == nil {
+		return nil
+	}
+	return p.Installation
+}
+
+// GetOrg returns the Org field.
+func (p *PersonalAccessTokenRequestEvent) GetOrg() *Organization {
+	if p == nil {
+		return nil
+	}
+	return p.Org
+}
+
+// GetPersonalAccessTokenRequest returns the PersonalAccessTokenRequest field.
+func (p *PersonalAccessTokenRequestEvent) GetPersonalAccessTokenRequest() *PersonalAccessTokenRequest {
+	if p == nil {
+		return nil
+	}
+	return p.PersonalAccessTokenRequest
+}
+
+// GetSender returns the Sender field.
+func (p *PersonalAccessTokenRequestEvent) GetSender() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Sender
+}
+
 // GetHook returns the Hook field.
 func (p *PingEvent) GetHook() *Hook {
 	if p == nil {

@@ -7089,6 +7089,82 @@ func TestPackageEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestPersonalAccessTokenRequestEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PersonalAccessTokenRequestEvent{}, "{}")
+
+	event := &PersonalAccessTokenRequestEvent{
+		Action: String("a"),
+		PersonalAccessTokenRequest: &PersonalAccessTokenRequest{
+			ID:    Int64(1),
+			Owner: &User{Login: String("l")},
+			PermissionsAdded: &PersonalAccessTokenPermissions{
+				Org: &Organization{Name: String("n")},
+				Repo: &Repository{
+					Name: String("n"),
+				},
+			},
+			CreatedAt:           &Timestamp{referenceTime},
+			TokenExpired:        Bool(false),
+			TokenExpiresAt:      &Timestamp{referenceTime},
+			TokenLastUsedAt:     &Timestamp{referenceTime},
+			RepositoryCount:     Int64(1),
+			RepositorySelection: String("rs"),
+			Repositories: []*Repository{
+				{
+					Name: String("n"),
+				},
+			},
+		},
+		Org: &Organization{Name: String("n")},
+		Sender: &User{
+			Login: String("l"),
+		},
+		Installation: &Installation{
+			ID: Int64(1),
+		},
+	}
+
+	want := `{
+		"action": "a",
+		"personal_access_token_request": {
+			"id": 1,
+			"owner": {
+				"login": "l"
+			},
+			"permissions_added": {
+				"organization": {
+					"name": "n"
+				},
+				"repository": {
+					"name": "n"
+				}
+			},
+			"created_at": ` + referenceTimeStr + `,
+			"token_expired": false,
+			"token_expires_at": ` + referenceTimeStr + `,
+			"token_last_used_at": ` + referenceTimeStr + `,
+			"repository_count": 1,
+			"repository_selection": "rs",
+			"repositories": [
+				{
+					"name": "n"
+				}
+			]
+		},
+		"organization": {
+			"name": "n"
+		},
+		"sender": {
+			"login": "l"
+		},
+		"installation": {
+			"id": 1
+		}
+	}`
+
+	testJSONMarshal(t, event, want)
+}
+
 func TestPingEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PingEvent{}, "{}")
 

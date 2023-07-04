@@ -774,6 +774,71 @@ type PageBuildEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// PersonalAccessTokenRequestEvent occurs when there is activity relating to a
+// request for a fine-grained personal access token to access resources that
+// belong to a resource owner that requires approval for token access.
+// The webhook event name is "personal_access_token_request".
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#personal_access_token_request
+type PersonalAccessTokenRequestEvent struct {
+	// Action is the action that was performed. Possible values are:
+	// "approved", "cancelled", "created" or "denied"
+	Action                     *string                     `json:"action,omitempty"`
+	PersonalAccessTokenRequest *PersonalAccessTokenRequest `json:"personal_access_token_request,omitempty"`
+	Org                        *Organization               `json:"organization,omitempty"`
+	Sender                     *User                       `json:"sender,omitempty"`
+	Installation               *Installation               `json:"installation,omitempty"`
+}
+
+type PersonalAccessTokenRequest struct {
+	// Unique identifier of the request for access via fine-grained personal
+	// access token. Used as the pat_request_id parameter in the list and review
+	// API calls.
+	ID    *int64 `json:"id,omitempty"`
+	Owner *User  `json:"owner,omitempty"`
+
+	// New requested permissions, categorized by type of permission.
+	PermissionsAdded *PersonalAccessTokenPermissions `json:"permissions_added,omitempty"`
+
+	// Requested permissions that elevate access for a previously approved
+	// request for access, categorized by type of permission.
+	PermissionsUpgraded *PersonalAccessTokenPermissions `json:"permissions_upgraded,omitempty"`
+
+	// Permissions requested, categorized by type of permission.
+	// This field incorporates permissions_added and permissions_upgraded.
+	PermissionsResult *PersonalAccessTokenPermissions `json:"permissions_result,omitempty"`
+
+	// Type of repository selection requested. Possible values are:
+	// "none", "all" or "subset"
+	RepositorySelection *string `json:"repository_selection,omitempty"`
+
+	// The number of repositories the token is requesting access to.
+	// This field is only populated when repository_selection is subset.
+	RepositoryCount *int64 `json:"repository_count,omitempty"`
+
+	// An array of repository objects the token is requesting access to.
+	// This field is only populated when repository_selection is subset.
+	Repositories []*Repository `json:"repositories,omitempty"`
+
+	// Date and time when the request for access was created.
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+
+	// Whether the associated fine-grained personal access token has expired.
+	TokenExpired *bool `json:"token_expired,omitempty"`
+
+	// Date and time when the associated fine-grained personal access token expires.
+	TokenExpiresAt *Timestamp `json:"token_expires_at,omitempty"`
+
+	// Date and time when the associated fine-grained personal access token was last used for authentication.
+	TokenLastUsedAt *Timestamp `json:"token_last_used_at,omitempty"`
+}
+
+type PersonalAccessTokenPermissions struct {
+	Org   *Organization   `json:"organization,omitempty"`
+	Repo  *Repository     `json:"repository,omitempty"`
+	Other json.RawMessage `json:"other,omitempty"`
+}
+
 // PingEvent is triggered when a Webhook is added to GitHub.
 //
 // GitHub API docs: https://developer.github.com/webhooks/#ping-event

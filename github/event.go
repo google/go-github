@@ -93,6 +93,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &PackageEvent{}
 	case "PageBuildEvent":
 		payload = &PageBuildEvent{}
+	case "PersonalAccessTokenRequestEvent":
+		payload = &PersonalAccessTokenRequestEvent{}
 	case "PingEvent":
 		payload = &PingEvent{}
 	case "ProjectEvent":

@@ -15422,6 +15422,156 @@ func TestPagesUpdate_GetSource(tt *testing.T) {
 	p.GetSource()
 }
 
+func TestPersonalAccessTokenPermissions_GetOrg(tt *testing.T) {
+	p := &PersonalAccessTokenPermissions{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
+func TestPersonalAccessTokenPermissions_GetRepo(tt *testing.T) {
+	p := &PersonalAccessTokenPermissions{}
+	p.GetRepo()
+	p = nil
+	p.GetRepo()
+}
+
+func TestPersonalAccessTokenRequest_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessTokenRequest{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &PersonalAccessTokenRequest{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestPersonalAccessTokenRequest_GetID(tt *testing.T) {
+	var zeroValue int64
+	p := &PersonalAccessTokenRequest{ID: &zeroValue}
+	p.GetID()
+	p = &PersonalAccessTokenRequest{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPersonalAccessTokenRequest_GetOwner(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetOwner()
+	p = nil
+	p.GetOwner()
+}
+
+func TestPersonalAccessTokenRequest_GetPermissionsAdded(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetPermissionsAdded()
+	p = nil
+	p.GetPermissionsAdded()
+}
+
+func TestPersonalAccessTokenRequest_GetPermissionsResult(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetPermissionsResult()
+	p = nil
+	p.GetPermissionsResult()
+}
+
+func TestPersonalAccessTokenRequest_GetPermissionsUpgraded(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetPermissionsUpgraded()
+	p = nil
+	p.GetPermissionsUpgraded()
+}
+
+func TestPersonalAccessTokenRequest_GetRepositoryCount(tt *testing.T) {
+	var zeroValue int64
+	p := &PersonalAccessTokenRequest{RepositoryCount: &zeroValue}
+	p.GetRepositoryCount()
+	p = &PersonalAccessTokenRequest{}
+	p.GetRepositoryCount()
+	p = nil
+	p.GetRepositoryCount()
+}
+
+func TestPersonalAccessTokenRequest_GetRepositorySelection(tt *testing.T) {
+	var zeroValue string
+	p := &PersonalAccessTokenRequest{RepositorySelection: &zeroValue}
+	p.GetRepositorySelection()
+	p = &PersonalAccessTokenRequest{}
+	p.GetRepositorySelection()
+	p = nil
+	p.GetRepositorySelection()
+}
+
+func TestPersonalAccessTokenRequest_GetTokenExpired(tt *testing.T) {
+	var zeroValue bool
+	p := &PersonalAccessTokenRequest{TokenExpired: &zeroValue}
+	p.GetTokenExpired()
+	p = &PersonalAccessTokenRequest{}
+	p.GetTokenExpired()
+	p = nil
+	p.GetTokenExpired()
+}
+
+func TestPersonalAccessTokenRequest_GetTokenExpiresAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessTokenRequest{TokenExpiresAt: &zeroValue}
+	p.GetTokenExpiresAt()
+	p = &PersonalAccessTokenRequest{}
+	p.GetTokenExpiresAt()
+	p = nil
+	p.GetTokenExpiresAt()
+}
+
+func TestPersonalAccessTokenRequest_GetTokenLastUsedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessTokenRequest{TokenLastUsedAt: &zeroValue}
+	p.GetTokenLastUsedAt()
+	p = &PersonalAccessTokenRequest{}
+	p.GetTokenLastUsedAt()
+	p = nil
+	p.GetTokenLastUsedAt()
+}
+
+func TestPersonalAccessTokenRequestEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	p := &PersonalAccessTokenRequestEvent{Action: &zeroValue}
+	p.GetAction()
+	p = &PersonalAccessTokenRequestEvent{}
+	p.GetAction()
+	p = nil
+	p.GetAction()
+}
+
+func TestPersonalAccessTokenRequestEvent_GetInstallation(tt *testing.T) {
+	p := &PersonalAccessTokenRequestEvent{}
+	p.GetInstallation()
+	p = nil
+	p.GetInstallation()
+}
+
+func TestPersonalAccessTokenRequestEvent_GetOrg(tt *testing.T) {
+	p := &PersonalAccessTokenRequestEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
+func TestPersonalAccessTokenRequestEvent_GetPersonalAccessTokenRequest(tt *testing.T) {
+	p := &PersonalAccessTokenRequestEvent{}
+	p.GetPersonalAccessTokenRequest()
+	p = nil
+	p.GetPersonalAccessTokenRequest()
+}
+
+func TestPersonalAccessTokenRequestEvent_GetSender(tt *testing.T) {
+	p := &PersonalAccessTokenRequestEvent{}
+	p.GetSender()
+	p = nil
+	p.GetSender()
+}
+
 func TestPingEvent_GetHook(tt *testing.T) {
 	p := &PingEvent{}
 	p.GetHook()
