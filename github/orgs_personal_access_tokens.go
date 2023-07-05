@@ -1,3 +1,8 @@
+// Copyright 2023 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package github
 
 import (
@@ -6,7 +11,7 @@ import (
 	"net/http"
 )
 
-// Approves or denies a pending request to access organization resources via a fine-grained personal access token.
+// ReviewPersonalAccessTokenRequest approves or denies a pending request to access organization resources via a fine-grained personal access token.
 // Only GitHub Apps can call this API, using the `organization_personal_access_token_requests: write` permission.
 // `action` can be one of `approve` or `deny`.
 //
