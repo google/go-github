@@ -15,25 +15,20 @@ import (
 )
 
 func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
-	type body struct {
-		Action string `json:"action"`
-		Reason string `json:"reason,omitempty"`
-	}
-
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &body{
+	input := ReviewPersonalAccessTokenRequestOptions{
 		Action: "a",
-		Reason: "r",
+		Reason: String("r"),
 	}
 
 	mux.HandleFunc("/orgs/o/personal-access-token-requests/r", func(w http.ResponseWriter, r *http.Request) {
-		v := new(body)
+		v := new(ReviewPersonalAccessTokenRequestOptions)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, http.MethodPost)
-		if !cmp.Equal(v, input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -41,7 +36,7 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	res, err := client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "o", "r", input.Action, input.Reason)
+	res, err := client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Organizations.ReviewPersonalAccessTokenRequest returned error: %v", err)
 	}
@@ -52,11 +47,27 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 
 	const methodName = "ReviewPersonalAccessTokenRequest"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "\n", "", "", "")
+		_, err = client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "\n", "", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "o", "r", input.Action, input.Reason)
+		return client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "o", "r", input)
 	})
+}
+
+func TestReviewPersonalAccessTokenRequestOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ReviewPersonalAccessTokenRequestOptions{}, "{}")
+
+	u := &ReviewPersonalAccessTokenRequestOptions{
+		Action: "a",
+		Reason: String("r"),
+	}
+
+	want := `{
+		"action": "a",
+		"reason": "r"
+	}`
+
+	testJSONMarshal(t, u, want)
 }
