@@ -15423,14 +15423,30 @@ func TestPagesUpdate_GetSource(tt *testing.T) {
 }
 
 func TestPersonalAccessTokenPermissions_GetOrg(tt *testing.T) {
-	p := &PersonalAccessTokenPermissions{}
+	zeroValue := map[string]string{}
+	p := &PersonalAccessTokenPermissions{Org: zeroValue}
+	p.GetOrg()
+	p = &PersonalAccessTokenPermissions{}
 	p.GetOrg()
 	p = nil
 	p.GetOrg()
 }
 
+func TestPersonalAccessTokenPermissions_GetOther(tt *testing.T) {
+	zeroValue := map[string]string{}
+	p := &PersonalAccessTokenPermissions{Other: zeroValue}
+	p.GetOther()
+	p = &PersonalAccessTokenPermissions{}
+	p.GetOther()
+	p = nil
+	p.GetOther()
+}
+
 func TestPersonalAccessTokenPermissions_GetRepo(tt *testing.T) {
-	p := &PersonalAccessTokenPermissions{}
+	zeroValue := map[string]string{}
+	p := &PersonalAccessTokenPermissions{Repo: zeroValue}
+	p.GetRepo()
+	p = &PersonalAccessTokenPermissions{}
 	p.GetRepo()
 	p = nil
 	p.GetRepo()

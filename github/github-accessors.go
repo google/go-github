@@ -13134,18 +13134,26 @@ func (p *PagesUpdate) GetSource() *PagesSource {
 	return p.Source
 }
 
-// GetOrg returns the Org field.
-func (p *PersonalAccessTokenPermissions) GetOrg() *Organization {
-	if p == nil {
-		return nil
+// GetOrg returns the Org map if it's non-nil, an empty map otherwise.
+func (p *PersonalAccessTokenPermissions) GetOrg() map[string]string {
+	if p == nil || p.Org == nil {
+		return map[string]string{}
 	}
 	return p.Org
 }
 
-// GetRepo returns the Repo field.
-func (p *PersonalAccessTokenPermissions) GetRepo() *Repository {
-	if p == nil {
-		return nil
+// GetOther returns the Other map if it's non-nil, an empty map otherwise.
+func (p *PersonalAccessTokenPermissions) GetOther() map[string]string {
+	if p == nil || p.Other == nil {
+		return map[string]string{}
+	}
+	return p.Other
+}
+
+// GetRepo returns the Repo map if it's non-nil, an empty map otherwise.
+func (p *PersonalAccessTokenPermissions) GetRepo() map[string]string {
+	if p == nil || p.Repo == nil {
+		return map[string]string{}
 	}
 	return p.Repo
 }

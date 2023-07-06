@@ -837,9 +837,9 @@ type PersonalAccessTokenRequest struct {
 // PersonalAccessTokenPermissions represents the original or newly requested
 // scope of permissions for a fine-grained personal access token within a PersonalAccessTokenRequest.
 type PersonalAccessTokenPermissions struct {
-	Org   *Organization   `json:"organization,omitempty"`
-	Repo  *Repository     `json:"repository,omitempty"`
-	Other json.RawMessage `json:"other,omitempty"`
+	Org   map[string]string `json:"organization,omitempty"`
+	Repo  map[string]string `json:"repository,omitempty"`
+	Other map[string]string `json:"other,omitempty"`
 }
 
 // PingEvent is triggered when a Webhook is added to GitHub.

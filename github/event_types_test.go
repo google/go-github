@@ -7098,10 +7098,8 @@ func TestPersonalAccessTokenRequestEvent_Marshal(t *testing.T) {
 			ID:    Int64(1),
 			Owner: &User{Login: String("l")},
 			PermissionsAdded: &PersonalAccessTokenPermissions{
-				Org: &Organization{Name: String("n")},
-				Repo: &Repository{
-					Name: String("n"),
-				},
+				Org:  map[string]string{"organization_events": "read"},
+				Repo: map[string]string{"security_events": "write"},
 			},
 			CreatedAt:           &Timestamp{referenceTime},
 			TokenExpired:        Bool(false),
@@ -7133,10 +7131,10 @@ func TestPersonalAccessTokenRequestEvent_Marshal(t *testing.T) {
 			},
 			"permissions_added": {
 				"organization": {
-					"name": "n"
+					"organization_events": "read"
 				},
 				"repository": {
-					"name": "n"
+					"security_events": "write"
 				}
 			},
 			"created_at": ` + referenceTimeStr + `,
