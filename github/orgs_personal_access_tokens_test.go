@@ -23,7 +23,7 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 		Reason: String("r"),
 	}
 
-	mux.HandleFunc("/orgs/o/personal-access-token-requests/r", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/personal-access-token-requests/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ReviewPersonalAccessTokenRequestOptions)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -36,7 +36,7 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	res, err := client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "o", "r", input)
+	res, err := client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "o", 1, input)
 	if err != nil {
 		t.Errorf("Organizations.ReviewPersonalAccessTokenRequest returned error: %v", err)
 	}
@@ -47,12 +47,12 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 
 	const methodName = "ReviewPersonalAccessTokenRequest"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "\n", "", input)
+		_, err = client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "\n", 0, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "o", "r", input)
+		return client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "o", 1, input)
 	})
 }
 
