@@ -2684,6 +2684,20 @@ func TestBypassActor_GetActorType(tt *testing.T) {
 	b.GetActorType()
 }
 
+func TestChanges_GetLogin(tt *testing.T) {
+	c := &Changes{}
+	c.GetLogin()
+	c = nil
+	c.GetLogin()
+}
+
+func TestChanges_GetSlug(tt *testing.T) {
+	c := &Changes{}
+	c.GetSlug()
+	c = nil
+	c.GetSlug()
+}
+
 func TestCheckRun_GetApp(tt *testing.T) {
 	c := &CheckRun{}
 	c.GetApp()
@@ -9873,6 +9887,75 @@ func TestInstallationRepositoriesEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 }
 
+func TestInstallationTargetEvent_GetAccount(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetAccount()
+	i = nil
+	i.GetAccount()
+}
+
+func TestInstallationTargetEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationTargetEvent{Action: &zeroValue}
+	i.GetAction()
+	i = &InstallationTargetEvent{}
+	i.GetAction()
+	i = nil
+	i.GetAction()
+}
+
+func TestInstallationTargetEvent_GetChanges(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetChanges()
+	i = nil
+	i.GetChanges()
+}
+
+func TestInstallationTargetEvent_GetEnterprise(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetEnterprise()
+	i = nil
+	i.GetEnterprise()
+}
+
+func TestInstallationTargetEvent_GetInstallation(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetInstallation()
+	i = nil
+	i.GetInstallation()
+}
+
+func TestInstallationTargetEvent_GetOrganization(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetOrganization()
+	i = nil
+	i.GetOrganization()
+}
+
+func TestInstallationTargetEvent_GetRepository(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetRepository()
+	i = nil
+	i.GetRepository()
+}
+
+func TestInstallationTargetEvent_GetSender(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetSender()
+	i = nil
+	i.GetSender()
+}
+
+func TestInstallationTargetEvent_GetTargetType(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationTargetEvent{TargetType: &zeroValue}
+	i.GetTargetType()
+	i = &InstallationTargetEvent{}
+	i.GetTargetType()
+	i = nil
+	i.GetTargetType()
+}
+
 func TestInstallationToken_GetExpiresAt(tt *testing.T) {
 	var zeroValue Timestamp
 	i := &InstallationToken{ExpiresAt: &zeroValue}
@@ -11793,6 +11876,16 @@ func TestLockBranch_GetEnabled(tt *testing.T) {
 	l.GetEnabled()
 	l = nil
 	l.GetEnabled()
+}
+
+func TestLogin_GetFrom(tt *testing.T) {
+	var zeroValue string
+	l := &Login{From: &zeroValue}
+	l.GetFrom()
+	l = &Login{}
+	l.GetFrom()
+	l = nil
+	l.GetFrom()
 }
 
 func TestMarketplacePendingChange_GetEffectiveDate(tt *testing.T) {
@@ -23261,6 +23354,16 @@ func TestSignatureVerification_GetVerified(tt *testing.T) {
 	s.GetVerified()
 	s = nil
 	s.GetVerified()
+}
+
+func TestSlug_GetFrom(tt *testing.T) {
+	var zeroValue string
+	s := &Slug{From: &zeroValue}
+	s.GetFrom()
+	s = &Slug{}
+	s.GetFrom()
+	s = nil
+	s.GetFrom()
 }
 
 func TestSource_GetActor(tt *testing.T) {

@@ -63,6 +63,7 @@ var (
 		"gollum":                         "GollumEvent",
 		"installation":                   "InstallationEvent",
 		"installation_repositories":      "InstallationRepositoriesEvent",
+		"installation_target":            "InstallationTargetEvent",
 		"issue_comment":                  "IssueCommentEvent",
 		"issues":                         "IssuesEvent",
 		"label":                          "LabelEvent",

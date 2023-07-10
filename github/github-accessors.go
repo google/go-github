@@ -2238,6 +2238,22 @@ func (b *BypassActor) GetActorType() string {
 	return *b.ActorType
 }
 
+// GetLogin returns the Login field.
+func (c *Changes) GetLogin() *Login {
+	if c == nil {
+		return nil
+	}
+	return c.Login
+}
+
+// GetSlug returns the Slug field.
+func (c *Changes) GetSlug() *Slug {
+	if c == nil {
+		return nil
+	}
+	return c.Slug
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
@@ -8390,6 +8406,78 @@ func (i *InstallationRepositoriesEvent) GetSender() *User {
 	return i.Sender
 }
 
+// GetAccount returns the Account field.
+func (i *InstallationTargetEvent) GetAccount() *User {
+	if i == nil {
+		return nil
+	}
+	return i.Account
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (i *InstallationTargetEvent) GetAction() string {
+	if i == nil || i.Action == nil {
+		return ""
+	}
+	return *i.Action
+}
+
+// GetChanges returns the Changes field.
+func (i *InstallationTargetEvent) GetChanges() *Changes {
+	if i == nil {
+		return nil
+	}
+	return i.Changes
+}
+
+// GetEnterprise returns the Enterprise field.
+func (i *InstallationTargetEvent) GetEnterprise() *Enterprise {
+	if i == nil {
+		return nil
+	}
+	return i.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (i *InstallationTargetEvent) GetInstallation() *Installation {
+	if i == nil {
+		return nil
+	}
+	return i.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (i *InstallationTargetEvent) GetOrganization() *Organization {
+	if i == nil {
+		return nil
+	}
+	return i.Organization
+}
+
+// GetRepository returns the Repository field.
+func (i *InstallationTargetEvent) GetRepository() *Repository {
+	if i == nil {
+		return nil
+	}
+	return i.Repository
+}
+
+// GetSender returns the Sender field.
+func (i *InstallationTargetEvent) GetSender() *User {
+	if i == nil {
+		return nil
+	}
+	return i.Sender
+}
+
+// GetTargetType returns the TargetType field if it's non-nil, zero value otherwise.
+func (i *InstallationTargetEvent) GetTargetType() string {
+	if i == nil || i.TargetType == nil {
+		return ""
+	}
+	return *i.TargetType
+}
+
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
 func (i *InstallationToken) GetExpiresAt() Timestamp {
 	if i == nil || i.ExpiresAt == nil {
@@ -10036,6 +10124,14 @@ func (l *LockBranch) GetEnabled() bool {
 		return false
 	}
 	return *l.Enabled
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (l *Login) GetFrom() string {
+	if l == nil || l.From == nil {
+		return ""
+	}
+	return *l.From
 }
 
 // GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
@@ -19916,6 +20012,14 @@ func (s *SignatureVerification) GetVerified() bool {
 		return false
 	}
 	return *s.Verified
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (s *Slug) GetFrom() string {
+	if s == nil || s.From == nil {
+		return ""
+	}
+	return *s.From
 }
 
 // GetActor returns the Actor field.
