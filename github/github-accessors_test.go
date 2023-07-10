@@ -21933,6 +21933,16 @@ func TestReviewersRequest_GetNodeID(tt *testing.T) {
 	r.GetNodeID()
 }
 
+func TestReviewPersonalAccessTokenRequestOptions_GetReason(tt *testing.T) {
+	var zeroValue string
+	r := &ReviewPersonalAccessTokenRequestOptions{Reason: &zeroValue}
+	r.GetReason()
+	r = &ReviewPersonalAccessTokenRequestOptions{}
+	r.GetReason()
+	r = nil
+	r.GetReason()
+}
+
 func TestRule_GetDescription(tt *testing.T) {
 	var zeroValue string
 	r := &Rule{Description: &zeroValue}
