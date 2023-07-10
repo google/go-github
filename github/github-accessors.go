@@ -2238,22 +2238,6 @@ func (b *BypassActor) GetActorType() string {
 	return *b.ActorType
 }
 
-// GetLogin returns the Login field.
-func (c *Changes) GetLogin() *Login {
-	if c == nil {
-		return nil
-	}
-	return c.Login
-}
-
-// GetSlug returns the Slug field.
-func (c *Changes) GetSlug() *Slug {
-	if c == nil {
-		return nil
-	}
-	return c.Slug
-}
-
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
@@ -8046,6 +8030,22 @@ func (i *Installation) GetUpdatedAt() Timestamp {
 	return *i.UpdatedAt
 }
 
+// GetLogin returns the Login field.
+func (i *InstallationChanges) GetLogin() *InstallationLoginChange {
+	if i == nil {
+		return nil
+	}
+	return i.Login
+}
+
+// GetSlug returns the Slug field.
+func (i *InstallationChanges) GetSlug() *InstallationSlugChange {
+	if i == nil {
+		return nil
+	}
+	return i.Slug
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (i *InstallationEvent) GetAction() string {
 	if i == nil || i.Action == nil {
@@ -8076,6 +8076,14 @@ func (i *InstallationEvent) GetSender() *User {
 		return nil
 	}
 	return i.Sender
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (i *InstallationLoginChange) GetFrom() string {
+	if i == nil || i.From == nil {
+		return ""
+	}
+	return *i.From
 }
 
 // GetActions returns the Actions field if it's non-nil, zero value otherwise.
@@ -8406,6 +8414,14 @@ func (i *InstallationRepositoriesEvent) GetSender() *User {
 	return i.Sender
 }
 
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (i *InstallationSlugChange) GetFrom() string {
+	if i == nil || i.From == nil {
+		return ""
+	}
+	return *i.From
+}
+
 // GetAccount returns the Account field.
 func (i *InstallationTargetEvent) GetAccount() *User {
 	if i == nil {
@@ -8423,7 +8439,7 @@ func (i *InstallationTargetEvent) GetAction() string {
 }
 
 // GetChanges returns the Changes field.
-func (i *InstallationTargetEvent) GetChanges() *Changes {
+func (i *InstallationTargetEvent) GetChanges() *InstallationChanges {
 	if i == nil {
 		return nil
 	}
@@ -10124,14 +10140,6 @@ func (l *LockBranch) GetEnabled() bool {
 		return false
 	}
 	return *l.Enabled
-}
-
-// GetFrom returns the From field if it's non-nil, zero value otherwise.
-func (l *Login) GetFrom() string {
-	if l == nil || l.From == nil {
-		return ""
-	}
-	return *l.From
 }
 
 // GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
@@ -20012,14 +20020,6 @@ func (s *SignatureVerification) GetVerified() bool {
 		return false
 	}
 	return *s.Verified
-}
-
-// GetFrom returns the From field if it's non-nil, zero value otherwise.
-func (s *Slug) GetFrom() string {
-	if s == nil || s.From == nil {
-		return ""
-	}
-	return *s.From
 }
 
 // GetActor returns the Actor field.

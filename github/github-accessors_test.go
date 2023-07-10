@@ -2684,20 +2684,6 @@ func TestBypassActor_GetActorType(tt *testing.T) {
 	b.GetActorType()
 }
 
-func TestChanges_GetLogin(tt *testing.T) {
-	c := &Changes{}
-	c.GetLogin()
-	c = nil
-	c.GetLogin()
-}
-
-func TestChanges_GetSlug(tt *testing.T) {
-	c := &Changes{}
-	c.GetSlug()
-	c = nil
-	c.GetSlug()
-}
-
 func TestCheckRun_GetApp(tt *testing.T) {
 	c := &CheckRun{}
 	c.GetApp()
@@ -9452,6 +9438,20 @@ func TestInstallation_GetUpdatedAt(tt *testing.T) {
 	i.GetUpdatedAt()
 }
 
+func TestInstallationChanges_GetLogin(tt *testing.T) {
+	i := &InstallationChanges{}
+	i.GetLogin()
+	i = nil
+	i.GetLogin()
+}
+
+func TestInstallationChanges_GetSlug(tt *testing.T) {
+	i := &InstallationChanges{}
+	i.GetSlug()
+	i = nil
+	i.GetSlug()
+}
+
 func TestInstallationEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationEvent{Action: &zeroValue}
@@ -9481,6 +9481,16 @@ func TestInstallationEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 	i = nil
 	i.GetSender()
+}
+
+func TestInstallationLoginChange_GetFrom(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationLoginChange{From: &zeroValue}
+	i.GetFrom()
+	i = &InstallationLoginChange{}
+	i.GetFrom()
+	i = nil
+	i.GetFrom()
 }
 
 func TestInstallationPermissions_GetActions(tt *testing.T) {
@@ -9885,6 +9895,16 @@ func TestInstallationRepositoriesEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 	i = nil
 	i.GetSender()
+}
+
+func TestInstallationSlugChange_GetFrom(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationSlugChange{From: &zeroValue}
+	i.GetFrom()
+	i = &InstallationSlugChange{}
+	i.GetFrom()
+	i = nil
+	i.GetFrom()
 }
 
 func TestInstallationTargetEvent_GetAccount(tt *testing.T) {
@@ -11876,16 +11896,6 @@ func TestLockBranch_GetEnabled(tt *testing.T) {
 	l.GetEnabled()
 	l = nil
 	l.GetEnabled()
-}
-
-func TestLogin_GetFrom(tt *testing.T) {
-	var zeroValue string
-	l := &Login{From: &zeroValue}
-	l.GetFrom()
-	l = &Login{}
-	l.GetFrom()
-	l = nil
-	l.GetFrom()
 }
 
 func TestMarketplacePendingChange_GetEffectiveDate(tt *testing.T) {
@@ -23354,16 +23364,6 @@ func TestSignatureVerification_GetVerified(tt *testing.T) {
 	s.GetVerified()
 	s = nil
 	s.GetVerified()
-}
-
-func TestSlug_GetFrom(tt *testing.T) {
-	var zeroValue string
-	s := &Slug{From: &zeroValue}
-	s.GetFrom()
-	s = &Slug{}
-	s.GetFrom()
-	s = nil
-	s.GetFrom()
 }
 
 func TestSource_GetActor(tt *testing.T) {

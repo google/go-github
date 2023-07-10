@@ -1346,11 +1346,11 @@ func TestInstallationTargetEvent_Marshal(t *testing.T) {
 			AvatarURL: String("l"),
 		},
 		Action: String("a"),
-		Changes: &Changes{
-			Login: &Login{
+		Changes: &InstallationChanges{
+			Login: &InstallationLoginChange{
 				From: String("p"),
 			},
-			Slug: &Slug{
+			Slug: &InstallationSlugChange{
 				From: String("j"),
 			},
 		},
