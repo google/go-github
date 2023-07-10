@@ -18806,6 +18806,14 @@ func (r *ReviewersRequest) GetNodeID() string {
 	return *r.NodeID
 }
 
+// GetReason returns the Reason field if it's non-nil, zero value otherwise.
+func (r *ReviewPersonalAccessTokenRequestOptions) GetReason() string {
+	if r == nil || r.Reason == nil {
+		return ""
+	}
+	return *r.Reason
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (r *Rule) GetDescription() string {
 	if r == nil || r.Description == nil {
