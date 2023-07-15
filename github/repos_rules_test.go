@@ -324,14 +324,14 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 
 	want := []*Ruleset{
 		{
-			ID:          42,
+			ID:          Int64(42),
 			Name:        "ruleset",
 			SourceType:  String("Repository"),
 			Source:      "o/repo",
 			Enforcement: "enabled",
 		},
 		{
-			ID:          314,
+			ID:          Int64(314),
 			Name:        "Another ruleset",
 			SourceType:  String("Repository"),
 			Source:      "o/repo",
@@ -378,7 +378,7 @@ func TestRepositoriesService_CreateRuleset(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          42,
+		ID:          Int64(42),
 		Name:        "ruleset",
 		SourceType:  String("Repository"),
 		Source:      "o/repo",
@@ -421,7 +421,7 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          42,
+		ID:          Int64(42),
 		Name:        "ruleset",
 		SourceType:  String("Organization"),
 		Source:      "o",
@@ -467,7 +467,7 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          42,
+		ID:          Int64(42),
 		Name:        "ruleset",
 		SourceType:  String("Repository"),
 		Source:      "o/repo",

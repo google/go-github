@@ -14,8 +14,10 @@ import (
 // BypassActor represents the bypass actors from a ruleset.
 type BypassActor struct {
 	ActorID *int64 `json:"actor_id,omitempty"`
-	// Possible values for ActorType are: Team, Integration
+	// Possible values for ActorType are: RepositoryRole, Team, Integration, OrganizationAdmin
 	ActorType *string `json:"actor_type,omitempty"`
+	// Possible values for BypassMode are: always, pull_request
+	BypassMode *string `json:"bypass_mode,omitempty"`
 }
 
 // RulesetLink represents a single link object from GitHub ruleset request _links.
@@ -312,7 +314,7 @@ func NewTagNamePatternRule(params *RulePatternParameters) (rule *RepositoryRule)
 
 // Ruleset represents a GitHub ruleset object.
 type Ruleset struct {
-	ID   int64  `json:"id"`
+	ID   *int64 `json:"id,omitempty"`
 	Name string `json:"name"`
 	// Possible values for Target are branch, tag
 	Target *string `json:"target,omitempty"`
@@ -320,9 +322,7 @@ type Ruleset struct {
 	SourceType *string `json:"source_type,omitempty"`
 	Source     string  `json:"source"`
 	// Possible values for Enforcement are: disabled, active, evaluate
-	Enforcement string `json:"enforcement"`
-	// Possible values for BypassMode are: none, repository, organization
-	BypassMode   *string            `json:"bypass_mode,omitempty"`
+	Enforcement  string             `json:"enforcement"`
 	BypassActors []*BypassActor     `json:"bypass_actors,omitempty"`
 	NodeID       *string            `json:"node_id,omitempty"`
 	Links        *RulesetLinks      `json:"_links,omitempty"`

@@ -2684,6 +2684,16 @@ func TestBypassActor_GetActorType(tt *testing.T) {
 	b.GetActorType()
 }
 
+func TestBypassActor_GetBypassMode(tt *testing.T) {
+	var zeroValue string
+	b := &BypassActor{BypassMode: &zeroValue}
+	b.GetBypassMode()
+	b = &BypassActor{}
+	b.GetBypassMode()
+	b = nil
+	b.GetBypassMode()
+}
+
 func TestCheckRun_GetApp(tt *testing.T) {
 	c := &CheckRun{}
 	c.GetApp()
@@ -22043,21 +22053,21 @@ func TestRuleRequiredStatusChecks_GetIntegrationID(tt *testing.T) {
 	r.GetIntegrationID()
 }
 
-func TestRuleset_GetBypassMode(tt *testing.T) {
-	var zeroValue string
-	r := &Ruleset{BypassMode: &zeroValue}
-	r.GetBypassMode()
-	r = &Ruleset{}
-	r.GetBypassMode()
-	r = nil
-	r.GetBypassMode()
-}
-
 func TestRuleset_GetConditions(tt *testing.T) {
 	r := &Ruleset{}
 	r.GetConditions()
 	r = nil
 	r.GetConditions()
+}
+
+func TestRuleset_GetID(tt *testing.T) {
+	var zeroValue int64
+	r := &Ruleset{ID: &zeroValue}
+	r.GetID()
+	r = &Ruleset{}
+	r.GetID()
+	r = nil
+	r.GetID()
 }
 
 func TestRuleset_GetLinks(tt *testing.T) {
