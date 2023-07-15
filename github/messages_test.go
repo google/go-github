@@ -381,6 +381,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "page_build",
 		},
 		{
+			payload:     &PersonalAccessTokenRequestEvent{},
+			messageType: "personal_access_token_request",
+		},
+		{
 			payload:     &PingEvent{},
 			messageType: "ping",
 		},

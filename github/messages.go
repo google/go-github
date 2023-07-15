@@ -76,6 +76,7 @@ var (
 		"org_block":                      "OrgBlockEvent",
 		"package":                        "PackageEvent",
 		"page_build":                     "PageBuildEvent",
+		"personal_access_token_request":  "PersonalAccessTokenRequestEvent",
 		"ping":                           "PingEvent",
 		"project":                        "ProjectEvent",
 		"project_card":                   "ProjectCardEvent",
