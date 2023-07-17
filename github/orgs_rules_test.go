@@ -523,7 +523,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 
 	ctx := context.Background()
 	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
-		ID:          21,
+		ID:          Int64(21),
 		Name:        "ruleset",
 		Target:      String("branch"),
 		SourceType:  String("Organization"),
@@ -607,7 +607,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          21,
+		ID:          Int64(21),
 		Name:        "ruleset",
 		Target:      String("branch"),
 		SourceType:  String("Organization"),
