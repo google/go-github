@@ -2238,6 +2238,14 @@ func (b *BypassActor) GetActorType() string {
 	return *b.ActorType
 }
 
+// GetBypassMode returns the BypassMode field if it's non-nil, zero value otherwise.
+func (b *BypassActor) GetBypassMode() string {
+	if b == nil || b.BypassMode == nil {
+		return ""
+	}
+	return *b.BypassMode
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
@@ -19046,20 +19054,20 @@ func (r *RuleRequiredStatusChecks) GetIntegrationID() int64 {
 	return *r.IntegrationID
 }
 
-// GetBypassMode returns the BypassMode field if it's non-nil, zero value otherwise.
-func (r *Ruleset) GetBypassMode() string {
-	if r == nil || r.BypassMode == nil {
-		return ""
-	}
-	return *r.BypassMode
-}
-
 // GetConditions returns the Conditions field.
 func (r *Ruleset) GetConditions() *RulesetConditions {
 	if r == nil {
 		return nil
 	}
 	return r.Conditions
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
 }
 
 // GetLinks returns the Links field.
