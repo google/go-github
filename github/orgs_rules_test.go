@@ -44,13 +44,12 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 	}
 
 	want := []*Ruleset{{
-		ID:          26110,
+		ID:          Int64(26110),
 		Name:        "test ruleset",
 		Target:      String("branch"),
 		SourceType:  String("Organization"),
 		Source:      "o",
 		Enforcement: "active",
-		BypassMode:  String("none"),
 		NodeID:      String("nid"),
 		Links: &RulesetLinks{
 			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
@@ -210,7 +209,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 
 	ctx := context.Background()
 	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
-		ID:          21,
+		ID:          Int64(21),
 		Name:        "ruleset",
 		Target:      String("branch"),
 		SourceType:  String("Organization"),
@@ -296,7 +295,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 	}
 
 	want := &Ruleset{
-		ID:          21,
+		ID:          Int64(21),
 		Name:        "ruleset",
 		Target:      String("branch"),
 		SourceType:  String("Organization"),
@@ -524,7 +523,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 
 	ctx := context.Background()
 	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
-		ID:          21,
+		ID:          Int64(21),
 		Name:        "ruleset",
 		Target:      String("branch"),
 		SourceType:  String("Organization"),
@@ -608,7 +607,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          21,
+		ID:          Int64(21),
 		Name:        "ruleset",
 		Target:      String("branch"),
 		SourceType:  String("Organization"),
@@ -758,13 +757,12 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          26110,
+		ID:          Int64(26110),
 		Name:        "test ruleset",
 		Target:      String("branch"),
 		SourceType:  String("Organization"),
 		Source:      "o",
 		Enforcement: "active",
-		BypassMode:  String("none"),
 		NodeID:      String("nid"),
 		Links: &RulesetLinks{
 			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
@@ -853,7 +851,6 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 		Name:        "test ruleset",
 		Target:      String("branch"),
 		Enforcement: "active",
-		BypassMode:  String("none"),
 		Conditions: &RulesetConditions{
 			RefName: &RulesetRefConditionParameters{
 				Include: []string{"refs/heads/main", "refs/heads/master"},
@@ -875,13 +872,12 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          26110,
+		ID:          Int64(26110),
 		Name:        "test ruleset",
 		Target:      String("branch"),
 		SourceType:  String("Organization"),
 		Source:      "o",
 		Enforcement: "active",
-		BypassMode:  String("none"),
 		NodeID:      String("nid"),
 		Links: &RulesetLinks{
 			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
