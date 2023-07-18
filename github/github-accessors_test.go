@@ -17669,6 +17669,16 @@ func TestPullRequestComment_GetStartSide(tt *testing.T) {
 	p.GetStartSide()
 }
 
+func TestPullRequestComment_GetSubjectType(tt *testing.T) {
+	var zeroValue string
+	p := &PullRequestComment{SubjectType: &zeroValue}
+	p.GetSubjectType()
+	p = &PullRequestComment{}
+	p.GetSubjectType()
+	p = nil
+	p.GetSubjectType()
+}
+
 func TestPullRequestComment_GetUpdatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	p := &PullRequestComment{UpdatedAt: &zeroValue}

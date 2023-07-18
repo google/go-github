@@ -41,6 +41,8 @@ type PullRequestComment struct {
 	URL               *string `json:"url,omitempty"`
 	HTMLURL           *string `json:"html_url,omitempty"`
 	PullRequestURL    *string `json:"pull_request_url,omitempty"`
+	// Can be one of: LINE, FILE from https://docs.github.com/en/rest/pulls/comments?apiVersion=2022-11-28#create-a-review-comment-for-a-pull-request
+	SubjectType *string `json:"subject_type,omitempty"`
 }
 
 func (p PullRequestComment) String() string {

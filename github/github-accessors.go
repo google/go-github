@@ -15150,6 +15150,14 @@ func (p *PullRequestComment) GetStartSide() string {
 	return *p.StartSide
 }
 
+// GetSubjectType returns the SubjectType field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetSubjectType() string {
+	if p == nil || p.SubjectType == nil {
+		return ""
+	}
+	return *p.SubjectType
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (p *PullRequestComment) GetUpdatedAt() Timestamp {
 	if p == nil || p.UpdatedAt == nil {
