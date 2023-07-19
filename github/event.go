@@ -67,6 +67,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &InstallationEvent{}
 	case "InstallationRepositoriesEvent":
 		payload = &InstallationRepositoriesEvent{}
+	case "InstallationTargetEvent":
+		payload = &InstallationTargetEvent{}
 	case "IssueCommentEvent":
 		payload = &IssueCommentEvent{}
 	case "IssuesEvent":

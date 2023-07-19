@@ -505,6 +505,38 @@ type InstallationRepositoriesEvent struct {
 	Installation        *Installation `json:"installation,omitempty"`
 }
 
+// InstallationLoginChange represents a change in login on an installation.
+type InstallationLoginChange struct {
+	From *string `json:"from,omitempty"`
+}
+
+// InstallationSlugChange represents a change in slug on an installation.
+type InstallationSlugChange struct {
+	From *string `json:"from,omitempty"`
+}
+
+// InstallationChanges represents a change in slug or login on an installation.
+type InstallationChanges struct {
+	Login *InstallationLoginChange `json:"login,omitempty"`
+	Slug  *InstallationSlugChange  `json:"slug,omitempty"`
+}
+
+// InstallationTargetEvent is triggered when there is activity on an installation from a user or organization account.
+// The Webhook event name is "installation_target".
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#installation_target
+type InstallationTargetEvent struct {
+	Account      *User                `json:"account,omitempty"`
+	Action       *string              `json:"action,omitempty"`
+	Changes      *InstallationChanges `json:"changes,omitempty"`
+	Enterprise   *Enterprise          `json:"enterprise,omitempty"`
+	Installation *Installation        `json:"installation,omitempty"`
+	Organization *Organization        `json:"organization,omitempty"`
+	Repository   *Repository          `json:"repository,omitempty"`
+	Sender       *User                `json:"sender,omitempty"`
+	TargetType   *string              `json:"target_type,omitempty"`
+}
+
 // IssueCommentEvent is triggered when an issue comment is created on an issue
 // or pull request.
 // The Webhook event name is "issue_comment".

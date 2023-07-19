@@ -8038,6 +8038,22 @@ func (i *Installation) GetUpdatedAt() Timestamp {
 	return *i.UpdatedAt
 }
 
+// GetLogin returns the Login field.
+func (i *InstallationChanges) GetLogin() *InstallationLoginChange {
+	if i == nil {
+		return nil
+	}
+	return i.Login
+}
+
+// GetSlug returns the Slug field.
+func (i *InstallationChanges) GetSlug() *InstallationSlugChange {
+	if i == nil {
+		return nil
+	}
+	return i.Slug
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (i *InstallationEvent) GetAction() string {
 	if i == nil || i.Action == nil {
@@ -8068,6 +8084,14 @@ func (i *InstallationEvent) GetSender() *User {
 		return nil
 	}
 	return i.Sender
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (i *InstallationLoginChange) GetFrom() string {
+	if i == nil || i.From == nil {
+		return ""
+	}
+	return *i.From
 }
 
 // GetActions returns the Actions field if it's non-nil, zero value otherwise.
@@ -8396,6 +8420,86 @@ func (i *InstallationRepositoriesEvent) GetSender() *User {
 		return nil
 	}
 	return i.Sender
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (i *InstallationSlugChange) GetFrom() string {
+	if i == nil || i.From == nil {
+		return ""
+	}
+	return *i.From
+}
+
+// GetAccount returns the Account field.
+func (i *InstallationTargetEvent) GetAccount() *User {
+	if i == nil {
+		return nil
+	}
+	return i.Account
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (i *InstallationTargetEvent) GetAction() string {
+	if i == nil || i.Action == nil {
+		return ""
+	}
+	return *i.Action
+}
+
+// GetChanges returns the Changes field.
+func (i *InstallationTargetEvent) GetChanges() *InstallationChanges {
+	if i == nil {
+		return nil
+	}
+	return i.Changes
+}
+
+// GetEnterprise returns the Enterprise field.
+func (i *InstallationTargetEvent) GetEnterprise() *Enterprise {
+	if i == nil {
+		return nil
+	}
+	return i.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (i *InstallationTargetEvent) GetInstallation() *Installation {
+	if i == nil {
+		return nil
+	}
+	return i.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (i *InstallationTargetEvent) GetOrganization() *Organization {
+	if i == nil {
+		return nil
+	}
+	return i.Organization
+}
+
+// GetRepository returns the Repository field.
+func (i *InstallationTargetEvent) GetRepository() *Repository {
+	if i == nil {
+		return nil
+	}
+	return i.Repository
+}
+
+// GetSender returns the Sender field.
+func (i *InstallationTargetEvent) GetSender() *User {
+	if i == nil {
+		return nil
+	}
+	return i.Sender
+}
+
+// GetTargetType returns the TargetType field if it's non-nil, zero value otherwise.
+func (i *InstallationTargetEvent) GetTargetType() string {
+	if i == nil || i.TargetType == nil {
+		return ""
+	}
+	return *i.TargetType
 }
 
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.

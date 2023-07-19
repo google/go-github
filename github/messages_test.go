@@ -329,6 +329,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "installation_repositories",
 		},
 		{
+			payload:     &InstallationTargetEvent{},
+			messageType: "installation_target",
+		},
+		{
 			payload:     &IssueCommentEvent{},
 			messageType: "issue_comment",
 		},
