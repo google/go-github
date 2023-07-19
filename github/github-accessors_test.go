@@ -9448,6 +9448,20 @@ func TestInstallation_GetUpdatedAt(tt *testing.T) {
 	i.GetUpdatedAt()
 }
 
+func TestInstallationChanges_GetLogin(tt *testing.T) {
+	i := &InstallationChanges{}
+	i.GetLogin()
+	i = nil
+	i.GetLogin()
+}
+
+func TestInstallationChanges_GetSlug(tt *testing.T) {
+	i := &InstallationChanges{}
+	i.GetSlug()
+	i = nil
+	i.GetSlug()
+}
+
 func TestInstallationEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationEvent{Action: &zeroValue}
@@ -9477,6 +9491,16 @@ func TestInstallationEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 	i = nil
 	i.GetSender()
+}
+
+func TestInstallationLoginChange_GetFrom(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationLoginChange{From: &zeroValue}
+	i.GetFrom()
+	i = &InstallationLoginChange{}
+	i.GetFrom()
+	i = nil
+	i.GetFrom()
 }
 
 func TestInstallationPermissions_GetActions(tt *testing.T) {
@@ -9881,6 +9905,85 @@ func TestInstallationRepositoriesEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 	i = nil
 	i.GetSender()
+}
+
+func TestInstallationSlugChange_GetFrom(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationSlugChange{From: &zeroValue}
+	i.GetFrom()
+	i = &InstallationSlugChange{}
+	i.GetFrom()
+	i = nil
+	i.GetFrom()
+}
+
+func TestInstallationTargetEvent_GetAccount(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetAccount()
+	i = nil
+	i.GetAccount()
+}
+
+func TestInstallationTargetEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationTargetEvent{Action: &zeroValue}
+	i.GetAction()
+	i = &InstallationTargetEvent{}
+	i.GetAction()
+	i = nil
+	i.GetAction()
+}
+
+func TestInstallationTargetEvent_GetChanges(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetChanges()
+	i = nil
+	i.GetChanges()
+}
+
+func TestInstallationTargetEvent_GetEnterprise(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetEnterprise()
+	i = nil
+	i.GetEnterprise()
+}
+
+func TestInstallationTargetEvent_GetInstallation(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetInstallation()
+	i = nil
+	i.GetInstallation()
+}
+
+func TestInstallationTargetEvent_GetOrganization(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetOrganization()
+	i = nil
+	i.GetOrganization()
+}
+
+func TestInstallationTargetEvent_GetRepository(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetRepository()
+	i = nil
+	i.GetRepository()
+}
+
+func TestInstallationTargetEvent_GetSender(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetSender()
+	i = nil
+	i.GetSender()
+}
+
+func TestInstallationTargetEvent_GetTargetType(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationTargetEvent{TargetType: &zeroValue}
+	i.GetTargetType()
+	i = &InstallationTargetEvent{}
+	i.GetTargetType()
+	i = nil
+	i.GetTargetType()
 }
 
 func TestInstallationToken_GetExpiresAt(tt *testing.T) {
