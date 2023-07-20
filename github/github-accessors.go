@@ -4670,6 +4670,94 @@ func (c *CreateUserProjectOptions) GetBody() string {
 	return *c.Body
 }
 
+// GetAuthorizedCredentialExpiresAt returns the AuthorizedCredentialExpiresAt field if it's non-nil, zero value otherwise.
+func (c *CredentialAuthorization) GetAuthorizedCredentialExpiresAt() Timestamp {
+	if c == nil || c.AuthorizedCredentialExpiresAt == nil {
+		return Timestamp{}
+	}
+	return *c.AuthorizedCredentialExpiresAt
+}
+
+// GetAuthorizedCredentialID returns the AuthorizedCredentialID field if it's non-nil, zero value otherwise.
+func (c *CredentialAuthorization) GetAuthorizedCredentialID() int64 {
+	if c == nil || c.AuthorizedCredentialID == nil {
+		return 0
+	}
+	return *c.AuthorizedCredentialID
+}
+
+// GetAuthorizedCredentialNote returns the AuthorizedCredentialNote field if it's non-nil, zero value otherwise.
+func (c *CredentialAuthorization) GetAuthorizedCredentialNote() string {
+	if c == nil || c.AuthorizedCredentialNote == nil {
+		return ""
+	}
+	return *c.AuthorizedCredentialNote
+}
+
+// GetAuthorizedCredentialTitle returns the AuthorizedCredentialTitle field if it's non-nil, zero value otherwise.
+func (c *CredentialAuthorization) GetAuthorizedCredentialTitle() string {
+	if c == nil || c.AuthorizedCredentialTitle == nil {
+		return ""
+	}
+	return *c.AuthorizedCredentialTitle
+}
+
+// GetCredentialAccessedAt returns the CredentialAccessedAt field if it's non-nil, zero value otherwise.
+func (c *CredentialAuthorization) GetCredentialAccessedAt() Timestamp {
+	if c == nil || c.CredentialAccessedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CredentialAccessedAt
+}
+
+// GetCredentialAuthorizedAt returns the CredentialAuthorizedAt field if it's non-nil, zero value otherwise.
+func (c *CredentialAuthorization) GetCredentialAuthorizedAt() Timestamp {
+	if c == nil || c.CredentialAuthorizedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CredentialAuthorizedAt
+}
+
+// GetCredentialID returns the CredentialID field if it's non-nil, zero value otherwise.
+func (c *CredentialAuthorization) GetCredentialID() int64 {
+	if c == nil || c.CredentialID == nil {
+		return 0
+	}
+	return *c.CredentialID
+}
+
+// GetCredentialType returns the CredentialType field if it's non-nil, zero value otherwise.
+func (c *CredentialAuthorization) GetCredentialType() string {
+	if c == nil || c.CredentialType == nil {
+		return ""
+	}
+	return *c.CredentialType
+}
+
+// GetFingerprint returns the Fingerprint field if it's non-nil, zero value otherwise.
+func (c *CredentialAuthorization) GetFingerprint() string {
+	if c == nil || c.Fingerprint == nil {
+		return ""
+	}
+	return *c.Fingerprint
+}
+
+// GetLogin returns the Login field if it's non-nil, zero value otherwise.
+func (c *CredentialAuthorization) GetLogin() string {
+	if c == nil || c.Login == nil {
+		return ""
+	}
+	return *c.Login
+}
+
+// GetTokenLastEight returns the TokenLastEight field if it's non-nil, zero value otherwise.
+func (c *CredentialAuthorization) GetTokenLastEight() string {
+	if c == nil || c.TokenLastEight == nil {
+		return ""
+	}
+	return *c.TokenLastEight
+}
+
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
 func (c *CustomRepoRoles) GetBaseRole() string {
 	if c == nil || c.BaseRole == nil {
