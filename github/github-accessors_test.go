@@ -23152,6 +23152,16 @@ func TestSecretScanningAlert_GetSecretType(tt *testing.T) {
 	s.GetSecretType()
 }
 
+func TestSecretScanningAlert_GetSecretTypeDisplayName(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{SecretTypeDisplayName: &zeroValue}
+	s.GetSecretTypeDisplayName()
+	s = &SecretScanningAlert{}
+	s.GetSecretTypeDisplayName()
+	s = nil
+	s.GetSecretTypeDisplayName()
+}
+
 func TestSecretScanningAlert_GetState(tt *testing.T) {
 	var zeroValue string
 	s := &SecretScanningAlert{State: &zeroValue}

@@ -19846,6 +19846,14 @@ func (s *SecretScanningAlert) GetSecretType() string {
 	return *s.SecretType
 }
 
+// GetSecretTypeDisplayName returns the SecretTypeDisplayName field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetSecretTypeDisplayName() string {
+	if s == nil || s.SecretTypeDisplayName == nil {
+		return ""
+	}
+	return *s.SecretTypeDisplayName
+}
+
 // GetState returns the State field if it's non-nil, zero value otherwise.
 func (s *SecretScanningAlert) GetState() string {
 	if s == nil || s.State == nil {
