@@ -21,6 +21,8 @@ import (
 	"strings"
 )
 
+var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulnerability issue")
+
 // RepositoryContent represents a file or directory in a github repository.
 type RepositoryContent struct {
 	Type *string `json:"type,omitempty"`
@@ -198,7 +200,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 // GitHub API docs: https://docs.github.com/en/rest/repos/contents#get-repository-content
 func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path string, opts *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
 	if strings.Contains(path, "..") {
-		return nil, nil, nil, errors.New("path must not contain '..' due to auth vulnerability issue")
+		return nil, nil, nil, ErrPathForbidden
 	}
 
 	escapedPath := (&url.URL{Path: strings.TrimSuffix(path, "/")}).String()
