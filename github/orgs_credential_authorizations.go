@@ -14,45 +14,45 @@ import (
 // CredentialAuthorization represents a credential authorized through SAML SSO.
 type CredentialAuthorization struct {
 	// User login that owns the underlying credential.
-	Login *string `json:"login"`
+	Login *string `json:"login,omitempty"`
 
 	// Unique identifier for the credential.
-	CredentialID *int64 `json:"credential_id"`
+	CredentialID *int64 `json:"credential_id,omitempty"`
 
 	// Human-readable description of the credential type.
-	CredentialType *string `json:"credential_type"`
+	CredentialType *string `json:"credential_type,omitempty"`
 
 	// Last eight characters of the credential.
 	// Only included in responses with credential_type of personal access token.
-	TokenLastEight *string `json:"token_last_eight"`
+	TokenLastEight *string `json:"token_last_eight,omitempty"`
 
 	// Date when the credential was authorized for use.
-	CredentialAuthorizedAt *Timestamp `json:"credential_authorized_at"`
+	CredentialAuthorizedAt *Timestamp `json:"credential_authorized_at,omitempty"`
 
 	// Date when the credential was last accessed.
 	// May be null if it was never accessed.
-	CredentialAccessedAt *Timestamp `json:"credential_accessed_at"`
+	CredentialAccessedAt *Timestamp `json:"credential_accessed_at,omitempty"`
 
 	// List of oauth scopes the token has been granted.
-	Scopes []string `json:"scopes"`
+	Scopes []string `json:"scopes,omitempty"`
 
 	// Unique string to distinguish the credential.
 	// Only included in responses with credential_type of SSH Key.
-	Fingerprint *string `json:"fingerprint"`
+	Fingerprint *string `json:"fingerprint,omitempty"`
 
-	AuthorizedCredentialID *int64 `json:"authorized_credential_id"`
+	AuthorizedCredentialID *int64 `json:"authorized_credential_id,omitempty"`
 
 	// The title given to the ssh key.
 	// This will only be present when the credential is an ssh key.
-	AuthorizedCredentialTitle *string `json:"authorized_credential_title"`
+	AuthorizedCredentialTitle *string `json:"authorized_credential_title,omitempty"`
 
 	// The note given to the token.
 	// This will only be present when the credential is a token.
-	AuthorizedCredentialNote *string `json:"authorized_credential_note"`
+	AuthorizedCredentialNote *string `json:"authorized_credential_note,omitempty"`
 
 	// The expiry for the token.
 	// This will only be present when the credential is a token.
-	AuthorizedCredentialExpiresAt *Timestamp `json:"authorized_credential_expires_at"`
+	AuthorizedCredentialExpiresAt *Timestamp `json:"authorized_credential_expires_at,omitempty"`
 }
 
 // ListCredentialAuthorizations lists credentials authorized through SAML SSO
