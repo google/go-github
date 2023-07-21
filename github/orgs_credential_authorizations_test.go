@@ -21,6 +21,7 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/credential-authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprint(w, `[
 			{
 				"login": "l",
@@ -33,8 +34,9 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 		]`)
 	})
 
+	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := context.Background()
-	creds, _, err := client.Organizations.ListCredentialAuthorizations(ctx, "o", nil)
+	creds, _, err := client.Organizations.ListCredentialAuthorizations(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Organizations.ListCredentialAuthorizations returned error: %v", err)
 	}
@@ -56,12 +58,12 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 
 	const methodName = "ListCredentialAuthorizations"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.ListCredentialAuthorizations(ctx, "\n", nil)
+		_, _, err = client.Organizations.ListCredentialAuthorizations(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, resp, err := client.Organizations.ListCredentialAuthorizations(ctx, "o", nil)
+		_, resp, err := client.Organizations.ListCredentialAuthorizations(ctx, "o", opts)
 		return resp, err
 	})
 }
