@@ -115,10 +115,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				"type": "creation"
 			  },
 			  {
-				"type": "update",
-				"parameters": {
-				  "update_allows_fetch_and_merge": true
-				}
+				"type": "update"
 			  },
 			  {
 				"type": "deletion"
@@ -234,9 +231,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 		},
 		Rules: []*RepositoryRule{
 			NewCreationRule(),
-			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
-			}),
+			NewUpdateRule(),
 			NewDeletionRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
@@ -320,9 +315,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 		},
 		Rules: []*RepositoryRule{
 			NewCreationRule(),
-			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
-			}),
+			NewUpdateRule(),
 			NewDeletionRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
@@ -429,10 +422,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				"type": "creation"
 			  },
 			  {
-				"type": "update",
-				"parameters": {
-				  "update_allows_fetch_and_merge": true
-				}
+				"type": "update"
 			  },
 			  {
 				"type": "deletion"
@@ -546,9 +536,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 		},
 		Rules: []*RepositoryRule{
 			NewCreationRule(),
-			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
-			}),
+			NewUpdateRule(),
 			NewDeletionRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
@@ -630,9 +618,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 		},
 		Rules: []*RepositoryRule{
 			NewCreationRule(),
-			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
-			}),
+			NewUpdateRule(),
 			NewDeletionRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{

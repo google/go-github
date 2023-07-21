@@ -60,17 +60,12 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 				Parameters: nil,
 			},
 		},
-		"Valid update params": {
-			data: `{"type":"update","parameters":{"update_allows_fetch_and_merge":true}}`,
-			want: NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{UpdateAllowsFetchAndMerge: true}),
-		},
-		"Invalid update params": {
-			data: `{"type":"update","parameters":{"update_allows_fetch_and_merge":"true"}}`,
+		"Valid update": {
+			data: `{"type":"update"}`,
 			want: &RepositoryRule{
 				Type:       "update",
 				Parameters: nil,
 			},
-			wantErr: true,
 		},
 		"Valid required_deployments params": {
 			data: `{"type":"required_deployments","parameters":{"required_deployment_environments":["test"]}}`,
@@ -254,10 +249,7 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 			  "type": "creation"
 			},
 			{
-			  "type": "update",
-			  "parameters": {
-			    "update_allows_fetch_and_merge": true
-			  }
+			  "type": "update"
 			}
 		]`)
 	})
@@ -269,9 +261,7 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 	}
 
 	creationRule := NewCreationRule()
-	updateRule := NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
-		UpdateAllowsFetchAndMerge: true,
-	})
+	updateRule := NewUpdateRule()
 
 	want := []*RepositoryRule{
 		creationRule,

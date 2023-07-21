@@ -66,11 +66,6 @@ type RulePatternParameters struct {
 	Pattern  string `json:"pattern"`
 }
 
-// UpdateAllowsFetchAndMergeRuleParameters represents the update rule parameters.
-type UpdateAllowsFetchAndMergeRuleParameters struct {
-	UpdateAllowsFetchAndMerge bool `json:"update_allows_fetch_and_merge"`
-}
-
 // RequiredDeploymentEnvironmentsRuleParameters represents the required_deployments rule parameters.
 type RequiredDeploymentEnvironmentsRuleParameters struct {
 	RequiredDeploymentEnvironments []string `json:"required_deployment_environments"`
@@ -115,18 +110,8 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	r.Type = RepositoryRule.Type
 
 	switch RepositoryRule.Type {
-	case "creation", "deletion", "required_linear_history", "required_signatures", "non_fast_forward":
+	case "creation", "update", "deletion", "required_linear_history", "required_signatures", "non_fast_forward":
 		r.Parameters = nil
-	case "update":
-		params := UpdateAllowsFetchAndMergeRuleParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
-			return err
-		}
-
-		bytes, _ := json.Marshal(params)
-		rawParams := json.RawMessage(bytes)
-
-		r.Parameters = &rawParams
 	case "required_deployments":
 		params := RequiredDeploymentEnvironmentsRuleParameters{}
 		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
@@ -184,14 +169,9 @@ func NewCreationRule() (rule *RepositoryRule) {
 }
 
 // NewUpdateRule creates a rule to only allow users with bypass permission to update matching refs.
-func NewUpdateRule(params *UpdateAllowsFetchAndMergeRuleParameters) (rule *RepositoryRule) {
-	bytes, _ := json.Marshal(params)
-
-	rawParams := json.RawMessage(bytes)
-
+func NewUpdateRule() (rule *RepositoryRule) {
 	return &RepositoryRule{
-		Type:       "update",
-		Parameters: &rawParams,
+		Type: "update",
 	}
 }
 
