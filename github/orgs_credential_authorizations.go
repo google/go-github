@@ -1,3 +1,8 @@
+// Copyright 2023 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package github
 
 import (
@@ -6,7 +11,7 @@ import (
 	"net/http"
 )
 
-// CredentialAuthorization represents a credential authorized through SAML SSO
+// CredentialAuthorization represents a credential authorized through SAML SSO.
 type CredentialAuthorization struct {
 	// User login that owns the underlying credential.
 	Login *string `json:"login"`
