@@ -5508,6 +5508,116 @@ func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	c.GetBody()
 }
 
+func TestCredentialAuthorization_GetAuthorizedCredentialExpiresAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CredentialAuthorization{AuthorizedCredentialExpiresAt: &zeroValue}
+	c.GetAuthorizedCredentialExpiresAt()
+	c = &CredentialAuthorization{}
+	c.GetAuthorizedCredentialExpiresAt()
+	c = nil
+	c.GetAuthorizedCredentialExpiresAt()
+}
+
+func TestCredentialAuthorization_GetAuthorizedCredentialID(tt *testing.T) {
+	var zeroValue int64
+	c := &CredentialAuthorization{AuthorizedCredentialID: &zeroValue}
+	c.GetAuthorizedCredentialID()
+	c = &CredentialAuthorization{}
+	c.GetAuthorizedCredentialID()
+	c = nil
+	c.GetAuthorizedCredentialID()
+}
+
+func TestCredentialAuthorization_GetAuthorizedCredentialNote(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{AuthorizedCredentialNote: &zeroValue}
+	c.GetAuthorizedCredentialNote()
+	c = &CredentialAuthorization{}
+	c.GetAuthorizedCredentialNote()
+	c = nil
+	c.GetAuthorizedCredentialNote()
+}
+
+func TestCredentialAuthorization_GetAuthorizedCredentialTitle(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{AuthorizedCredentialTitle: &zeroValue}
+	c.GetAuthorizedCredentialTitle()
+	c = &CredentialAuthorization{}
+	c.GetAuthorizedCredentialTitle()
+	c = nil
+	c.GetAuthorizedCredentialTitle()
+}
+
+func TestCredentialAuthorization_GetCredentialAccessedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CredentialAuthorization{CredentialAccessedAt: &zeroValue}
+	c.GetCredentialAccessedAt()
+	c = &CredentialAuthorization{}
+	c.GetCredentialAccessedAt()
+	c = nil
+	c.GetCredentialAccessedAt()
+}
+
+func TestCredentialAuthorization_GetCredentialAuthorizedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CredentialAuthorization{CredentialAuthorizedAt: &zeroValue}
+	c.GetCredentialAuthorizedAt()
+	c = &CredentialAuthorization{}
+	c.GetCredentialAuthorizedAt()
+	c = nil
+	c.GetCredentialAuthorizedAt()
+}
+
+func TestCredentialAuthorization_GetCredentialID(tt *testing.T) {
+	var zeroValue int64
+	c := &CredentialAuthorization{CredentialID: &zeroValue}
+	c.GetCredentialID()
+	c = &CredentialAuthorization{}
+	c.GetCredentialID()
+	c = nil
+	c.GetCredentialID()
+}
+
+func TestCredentialAuthorization_GetCredentialType(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{CredentialType: &zeroValue}
+	c.GetCredentialType()
+	c = &CredentialAuthorization{}
+	c.GetCredentialType()
+	c = nil
+	c.GetCredentialType()
+}
+
+func TestCredentialAuthorization_GetFingerprint(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{Fingerprint: &zeroValue}
+	c.GetFingerprint()
+	c = &CredentialAuthorization{}
+	c.GetFingerprint()
+	c = nil
+	c.GetFingerprint()
+}
+
+func TestCredentialAuthorization_GetLogin(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{Login: &zeroValue}
+	c.GetLogin()
+	c = &CredentialAuthorization{}
+	c.GetLogin()
+	c = nil
+	c.GetLogin()
+}
+
+func TestCredentialAuthorization_GetTokenLastEight(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{TokenLastEight: &zeroValue}
+	c.GetTokenLastEight()
+	c = &CredentialAuthorization{}
+	c.GetTokenLastEight()
+	c = nil
+	c.GetTokenLastEight()
+}
+
 func TestCustomRepoRoles_GetBaseRole(tt *testing.T) {
 	var zeroValue string
 	c := &CustomRepoRoles{BaseRole: &zeroValue}
