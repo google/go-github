@@ -664,6 +664,44 @@ func TestRepositoriesService_EnableAutomatedSecurityFixes(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetAutomatedSecurityFixes(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
+		fmt.Fprint(w, `{"enabled": true, "paused": false}`)
+	})
+
+	ctx := context.Background()
+	fixes, _, err := client.Repositories.GetAutomatedSecurityFixes(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("Repositories.GetAutomatedSecurityFixes returned errpr: #{err}")
+	}
+
+	want := &AutomatedSecurityFixes{
+		Enabled: Bool(true),
+		Paused:  Bool(false),
+	}
+	if !cmp.Equal(fixes, want) {
+		t.Errorf("Repositories.GetAutomatedSecurityFixes returned #{fixes}, want #{want}")
+	}
+
+	const methodName = "GetAutomatedSecurityFixes"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetAutomatedSecurityFixes(ctx, "\n", "\n")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetAutomatedSecurityFixes(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestRepositoriesService_DisableAutomatedSecurityFixes(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

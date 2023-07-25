@@ -1846,6 +1846,22 @@ func (a *AutolinkOptions) GetURLTemplate() string {
 	return *a.URLTemplate
 }
 
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (a *AutomatedSecurityFixes) GetEnabled() bool {
+	if a == nil || a.Enabled == nil {
+		return false
+	}
+	return *a.Enabled
+}
+
+// GetPaused returns the Paused field if it's non-nil, zero value otherwise.
+func (a *AutomatedSecurityFixes) GetPaused() bool {
+	if a == nil || a.Paused == nil {
+		return false
+	}
+	return *a.Paused
+}
+
 // GetAppID returns the AppID field if it's non-nil, zero value otherwise.
 func (a *AutoTriggerCheck) GetAppID() int64 {
 	if a == nil || a.AppID == nil {
