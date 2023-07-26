@@ -210,7 +210,7 @@ type SecurityAndAnalysis struct {
 	AdvancedSecurity             *AdvancedSecurity             `json:"advanced_security,omitempty"`
 	SecretScanning               *SecretScanning               `json:"secret_scanning,omitempty"`
 	SecretScanningPushProtection *SecretScanningPushProtection `json:"secret_scanning_push_protection,omitempty"`
-	DependabotSecurityUpdates    *DependabotSecurityUpdates    `json:"dependabot_security_updates"`
+	DependabotSecurityUpdates    *DependabotSecurityUpdates    `json:"dependabot_security_updates,omitempty"`
 }
 
 func (s SecurityAndAnalysis) String() string {
