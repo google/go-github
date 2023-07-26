@@ -4966,6 +4966,14 @@ func (d *DependabotSecurityAdvisory) GetWithdrawnAt() Timestamp {
 	return *d.WithdrawnAt
 }
 
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (d *DependabotSecurityUpdates) GetStatus() string {
+	if d == nil || d.Status == nil {
+		return ""
+	}
+	return *d.Status
+}
+
 // GetManifestPath returns the ManifestPath field if it's non-nil, zero value otherwise.
 func (d *Dependency) GetManifestPath() string {
 	if d == nil || d.ManifestPath == nil {
@@ -20124,6 +20132,14 @@ func (s *SecurityAndAnalysis) GetAdvancedSecurity() *AdvancedSecurity {
 		return nil
 	}
 	return s.AdvancedSecurity
+}
+
+// GetDependabotSecurityUpdates returns the DependabotSecurityUpdates field.
+func (s *SecurityAndAnalysis) GetDependabotSecurityUpdates() *DependabotSecurityUpdates {
+	if s == nil {
+		return nil
+	}
+	return s.DependabotSecurityUpdates
 }
 
 // GetSecretScanning returns the SecretScanning field.

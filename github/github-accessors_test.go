@@ -5851,6 +5851,16 @@ func TestDependabotSecurityAdvisory_GetWithdrawnAt(tt *testing.T) {
 	d.GetWithdrawnAt()
 }
 
+func TestDependabotSecurityUpdates_GetStatus(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotSecurityUpdates{Status: &zeroValue}
+	d.GetStatus()
+	d = &DependabotSecurityUpdates{}
+	d.GetStatus()
+	d = nil
+	d.GetStatus()
+}
+
 func TestDependency_GetManifestPath(tt *testing.T) {
 	var zeroValue string
 	d := &Dependency{ManifestPath: &zeroValue}
@@ -23473,6 +23483,13 @@ func TestSecurityAndAnalysis_GetAdvancedSecurity(tt *testing.T) {
 	s.GetAdvancedSecurity()
 	s = nil
 	s.GetAdvancedSecurity()
+}
+
+func TestSecurityAndAnalysis_GetDependabotSecurityUpdates(tt *testing.T) {
+	s := &SecurityAndAnalysis{}
+	s.GetDependabotSecurityUpdates()
+	s = nil
+	s.GetDependabotSecurityUpdates()
 }
 
 func TestSecurityAndAnalysis_GetSecretScanning(tt *testing.T) {

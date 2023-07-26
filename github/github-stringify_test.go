@@ -342,6 +342,16 @@ func TestContributorStats_String(t *testing.T) {
 	}
 }
 
+func TestDependabotSecurityUpdates_String(t *testing.T) {
+	v := DependabotSecurityUpdates{
+		Status: String(""),
+	}
+	want := `github.DependabotSecurityUpdates{Status:""}`
+	if got := v.String(); got != want {
+		t.Errorf("DependabotSecurityUpdates.String = %v, want %v", got, want)
+	}
+}
+
 func TestDiscussionComment_String(t *testing.T) {
 	v := DiscussionComment{
 		Author:        &User{},
@@ -1776,13 +1786,24 @@ func TestSecretScanning_String(t *testing.T) {
 	}
 }
 
+func TestSecretScanningPushProtection_String(t *testing.T) {
+	v := SecretScanningPushProtection{
+		Status: String(""),
+	}
+	want := `github.SecretScanningPushProtection{Status:""}`
+	if got := v.String(); got != want {
+		t.Errorf("SecretScanningPushProtection.String = %v, want %v", got, want)
+	}
+}
+
 func TestSecurityAndAnalysis_String(t *testing.T) {
 	v := SecurityAndAnalysis{
 		AdvancedSecurity:             &AdvancedSecurity{},
 		SecretScanning:               &SecretScanning{},
 		SecretScanningPushProtection: &SecretScanningPushProtection{},
+		DependabotSecurityUpdates:    &DependabotSecurityUpdates{},
 	}
-	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}, SecretScanningPushProtection:github.SecretScanningPushProtection{}}`
+	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}, SecretScanningPushProtection:github.SecretScanningPushProtection{}, DependabotSecurityUpdates:github.DependabotSecurityUpdates{}}`
 	if got := v.String(); got != want {
 		t.Errorf("SecurityAndAnalysis.String = %v, want %v", got, want)
 	}

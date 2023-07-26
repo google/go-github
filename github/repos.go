@@ -210,6 +210,7 @@ type SecurityAndAnalysis struct {
 	AdvancedSecurity             *AdvancedSecurity             `json:"advanced_security,omitempty"`
 	SecretScanning               *SecretScanning               `json:"secret_scanning,omitempty"`
 	SecretScanningPushProtection *SecretScanningPushProtection `json:"secret_scanning_push_protection,omitempty"`
+	DependabotSecurityUpdates    *DependabotSecurityUpdates    `json:"dependabot_security_updates"`
 }
 
 func (s SecurityAndAnalysis) String() string {
@@ -243,6 +244,21 @@ func (s SecretScanning) String() string {
 // GitHub API docs: https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning#about-secret-scanning-for-partner-patterns
 type SecretScanningPushProtection struct {
 	Status *string `json:"status,omitempty"`
+}
+
+func (s SecretScanningPushProtection) String() string {
+	return Stringify(s)
+}
+
+// DependabotSecurityUpdates specifies the state of Dependabot security updates on a repository.
+//
+// GitHub API docs: https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/about-dependabot-security-updates
+type DependabotSecurityUpdates struct {
+	Status *string `json:"status,omitempty"`
+}
+
+func (d DependabotSecurityUpdates) String() string {
+	return Stringify(d)
 }
 
 // List the repositories for a user. Passing the empty string will list
