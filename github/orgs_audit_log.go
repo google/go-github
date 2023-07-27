@@ -78,6 +78,7 @@ type AuditEntry struct {
 	Message                *string                 `json:"message,omitempty"`
 	Name                   *string                 `json:"name,omitempty"`
 	OAuthApplicationID     *int64                  `json:"oauth_application_id,omitempty"`
+	OldName                *string                 `json:"old_name,omitempty"` // The previous name of the repository, for a name change
 	OldUser                *string                 `json:"old_user,omitempty"`
 	OldPermission          *string                 `json:"old_permission,omitempty"` // The permission level for membership changes, for example `admin` or `read`.
 	OpenSSHPublicKey       *string                 `json:"openssh_public_key,omitempty"`
