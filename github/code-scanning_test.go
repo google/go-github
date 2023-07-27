@@ -95,7 +95,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "ref": "heads/master"})
+		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "severity": "warning", "tool_name": "CodeQL"})
 		fmt.Fprint(w, `[{
 				"repository": {
 					"id": 1,
@@ -187,7 +187,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 				}]`)
 	})
 
-	opts := &AlertListOptions{State: "open", Ref: "heads/master"}
+	opts := &AlertListOptions{State: "open", Ref: "heads/master", Severity: "warning", ToolName: "CodeQL"}
 	ctx := context.Background()
 	alerts, _, err := client.CodeScanning.ListAlertsForOrg(ctx, "o", opts)
 	if err != nil {
@@ -299,7 +299,7 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "per_page": "1", "before": "deadbeefb", "after": "deadbeefa"})
+		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "severity": "warning", "tool_name": "CodeQL", "per_page": "1", "before": "deadbeefb", "after": "deadbeefa"})
 		fmt.Fprint(w, `[{
 				"repository": {
 					"id": 1,
@@ -349,7 +349,7 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 				}]`)
 	})
 
-	opts := &AlertListOptions{State: "open", Ref: "heads/master", ListCursorOptions: ListCursorOptions{PerPage: 1, Before: "deadbeefb", After: "deadbeefa"}}
+	opts := &AlertListOptions{State: "open", Ref: "heads/master", Severity: "warning", ToolName: "CodeQL", ListCursorOptions: ListCursorOptions{PerPage: 1, Before: "deadbeefb", After: "deadbeefa"}}
 	ctx := context.Background()
 	alerts, _, err := client.CodeScanning.ListAlertsForOrg(ctx, "o", opts)
 	if err != nil {
@@ -425,7 +425,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "ref": "heads/master"})
+		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "severity": "warning", "tool_name": "CodeQL"})
 		fmt.Fprint(w, `[{
 				"rule_id":"js/trivial-conditional",
 				"rule_severity":"warning",
@@ -512,7 +512,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 				}]`)
 	})
 
-	opts := &AlertListOptions{State: "open", Ref: "heads/master"}
+	opts := &AlertListOptions{State: "open", Ref: "heads/master", Severity: "warning", ToolName: "CodeQL"}
 	ctx := context.Background()
 	alerts, _, err := client.CodeScanning.ListAlertsForRepo(ctx, "o", "r", opts)
 	if err != nil {
