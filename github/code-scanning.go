@@ -122,6 +122,12 @@ type AlertListOptions struct {
 	// Return code scanning alerts for a specific branch reference. The ref must be formatted as heads/<branch name>.
 	Ref string `url:"ref,omitempty"`
 
+	// If specified, only code scanning alerts with this severity will be returned. Possible values are: critical, high, medium, low, warning, note, error.
+	Severity string `url:"severity,omitempty"`
+
+	// The name of a code scanning tool. Only results by this tool will be listed.
+	ToolName string `url:"tool_name,omitempty"`
+
 	ListCursorOptions
 
 	// Add ListOptions so offset pagination with integer type "page" query parameter is accepted
