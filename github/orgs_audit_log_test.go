@@ -256,7 +256,6 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		LimitedAvailability:    Bool(false),
 		Message:                String("m"),
 		Name:                   String("n"),
-		OldName:                String("on"),
 		OldPermission:          String("op"),
 		OldUser:                String("ou"),
 		OpenSSHPublicKey:       String("osshpk"),
@@ -300,6 +299,9 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		Visibility:            String("v"),
 		WorkflowID:            Int64(1),
 		WorkflowRunID:         Int64(1),
+		AuditEntryData: AuditEntryData{
+			OldName: String("on"),
+		},
 	}
 
 	want := `{
@@ -346,7 +348,6 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		"limited_availability": false,
 		"message": "m",
 		"name": "n",
-                "old_name": "on",
 		"old_permission": "op",
 		"old_user": "ou",
 		"openssh_public_key": "osshpk",
@@ -393,7 +394,10 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		"user_agent": "ua",
 		"visibility": "v",
 		"workflow_id": 1,
-		"workflow_run_id": 1
+		"workflow_run_id": 1,
+		"data": {
+			"old_name": "on"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
