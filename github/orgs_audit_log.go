@@ -125,7 +125,7 @@ type AuditEntry struct {
 	AuditEntryData `json:"data,omitempty"`
 }
 
-// Some audit entries have additional information stuffed into a `data` field.
+// AuditEntryData represents additional information stuffed into a `data` field.
 type AuditEntryData struct {
 	OldName *string `json:"old_name,omitempty"` // The previous name of the repository, for a name change
 }
