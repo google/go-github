@@ -122,7 +122,7 @@ type AuditEntry struct {
 	WorkflowID             *int64                  `json:"workflow_id,omitempty"`
 	WorkflowRunID          *int64                  `json:"workflow_run_id,omitempty"`
 
-	AuditEntryData `json:"data,omitempty"`
+	Data  *AuditEntryData `json:"data,omitempty"`
 }
 
 // AuditEntryData represents additional information stuffed into a `data` field.
