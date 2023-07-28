@@ -1334,6 +1334,13 @@ func TestAuditEntry_GetCreatedAt(tt *testing.T) {
 	a.GetCreatedAt()
 }
 
+func TestAuditEntry_GetData(tt *testing.T) {
+	a := &AuditEntry{}
+	a.GetData()
+	a = nil
+	a.GetData()
+}
+
 func TestAuditEntry_GetDeployKeyFingerprint(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{DeployKeyFingerprint: &zeroValue}
