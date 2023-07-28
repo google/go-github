@@ -1598,6 +1598,14 @@ func (a *AuditEntry) GetWorkflowRunID() int64 {
 	return *a.WorkflowRunID
 }
 
+// GetOldLogin returns the OldLogin field if it's non-nil, zero value otherwise.
+func (a *AuditEntryData) GetOldLogin() string {
+	if a == nil || a.OldLogin == nil {
+		return ""
+	}
+	return *a.OldLogin
+}
+
 // GetOldName returns the OldName field if it's non-nil, zero value otherwise.
 func (a *AuditEntryData) GetOldName() string {
 	if a == nil || a.OldName == nil {
