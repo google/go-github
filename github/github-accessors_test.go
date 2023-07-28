@@ -1911,6 +1911,16 @@ func TestAuditEntry_GetWorkflowRunID(tt *testing.T) {
 	a.GetWorkflowRunID()
 }
 
+func TestAuditEntryData_GetOldLogin(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntryData{OldLogin: &zeroValue}
+	a.GetOldLogin()
+	a = &AuditEntryData{}
+	a.GetOldLogin()
+	a = nil
+	a.GetOldLogin()
+}
+
 func TestAuditEntryData_GetOldName(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntryData{OldName: &zeroValue}
