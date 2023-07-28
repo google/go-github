@@ -127,7 +127,8 @@ type AuditEntry struct {
 
 // AuditEntryData represents additional information stuffed into a `data` field.
 type AuditEntryData struct {
-	OldName *string `json:"old_name,omitempty"` // The previous name of the repository, for a name change
+	OldName  *string `json:"old_name,omitempty"`  // The previous name of the repository, for a name change
+	OldLogin *string `json:"old_login,omitempty"` // The previous name of the organization, for a name change
 }
 
 // GetAuditLog gets the audit-log entries for an organization.
