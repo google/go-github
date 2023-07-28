@@ -78,7 +78,6 @@ type AuditEntry struct {
 	Message                *string                 `json:"message,omitempty"`
 	Name                   *string                 `json:"name,omitempty"`
 	OAuthApplicationID     *int64                  `json:"oauth_application_id,omitempty"`
-	OldName                *string                 `json:"old_name,omitempty"` // The previous name of the repository, for a name change
 	OldUser                *string                 `json:"old_user,omitempty"`
 	OldPermission          *string                 `json:"old_permission,omitempty"` // The permission level for membership changes, for example `admin` or `read`.
 	OpenSSHPublicKey       *string                 `json:"openssh_public_key,omitempty"`
@@ -122,6 +121,13 @@ type AuditEntry struct {
 	Visibility             *string                 `json:"visibility,omitempty"` // The repository visibility, for example `public` or `private`.
 	WorkflowID             *int64                  `json:"workflow_id,omitempty"`
 	WorkflowRunID          *int64                  `json:"workflow_run_id,omitempty"`
+
+	AuditEntryData `json:"data,omitempty"`
+}
+
+// Some audit entries have additional information stuffed into a `data` field.
+type AuditEntryData struct {
+	OldName *string `json:"old_name,omitempty"` // The previous name of the repository, for a name change
 }
 
 // GetAuditLog gets the audit-log entries for an organization.

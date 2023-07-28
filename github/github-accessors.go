@@ -1278,14 +1278,6 @@ func (a *AuditEntry) GetOAuthApplicationID() int64 {
 	return *a.OAuthApplicationID
 }
 
-// GetOldName returns the OldName field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetOldName() string {
-	if a == nil || a.OldName == nil {
-		return ""
-	}
-	return *a.OldName
-}
-
 // GetOldPermission returns the OldPermission field if it's non-nil, zero value otherwise.
 func (a *AuditEntry) GetOldPermission() string {
 	if a == nil || a.OldPermission == nil {
@@ -1596,6 +1588,14 @@ func (a *AuditEntry) GetWorkflowRunID() int64 {
 		return 0
 	}
 	return *a.WorkflowRunID
+}
+
+// GetOldName returns the OldName field if it's non-nil, zero value otherwise.
+func (a *AuditEntryData) GetOldName() string {
+	if a == nil || a.OldName == nil {
+		return ""
+	}
+	return *a.OldName
 }
 
 // GetApp returns the App field.

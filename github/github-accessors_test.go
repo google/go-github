@@ -1514,16 +1514,6 @@ func TestAuditEntry_GetOAuthApplicationID(tt *testing.T) {
 	a.GetOAuthApplicationID()
 }
 
-func TestAuditEntry_GetOldName(tt *testing.T) {
-	var zeroValue string
-	a := &AuditEntry{OldName: &zeroValue}
-	a.GetOldName()
-	a = &AuditEntry{}
-	a.GetOldName()
-	a = nil
-	a.GetOldName()
-}
-
 func TestAuditEntry_GetOldPermission(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{OldPermission: &zeroValue}
@@ -1912,6 +1902,16 @@ func TestAuditEntry_GetWorkflowRunID(tt *testing.T) {
 	a.GetWorkflowRunID()
 	a = nil
 	a.GetWorkflowRunID()
+}
+
+func TestAuditEntryData_GetOldName(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntryData{OldName: &zeroValue}
+	a.GetOldName()
+	a = &AuditEntryData{}
+	a.GetOldName()
+	a = nil
+	a.GetOldName()
 }
 
 func TestAuthorization_GetApp(tt *testing.T) {
