@@ -299,7 +299,7 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		Visibility:            String("v"),
 		WorkflowID:            Int64(1),
 		WorkflowRunID:         Int64(1),
-		AuditEntryData: AuditEntryData{
+		Data: &AuditEntryData{
 			OldName: String("on"),
 		},
 	}
