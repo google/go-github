@@ -300,7 +300,8 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		WorkflowID:            Int64(1),
 		WorkflowRunID:         Int64(1),
 		Data: &AuditEntryData{
-			OldName: String("on"),
+			OldName:  String("on"),
+			OldLogin: String("ol"),
 		},
 	}
 
@@ -396,7 +397,8 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		"workflow_id": 1,
 		"workflow_run_id": 1,
 		"data": {
-			"old_name": "on"
+			"old_name": "on",
+			"old_login": "ol"
 		}
 	}`
 
