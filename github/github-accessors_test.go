@@ -1334,6 +1334,13 @@ func TestAuditEntry_GetCreatedAt(tt *testing.T) {
 	a.GetCreatedAt()
 }
 
+func TestAuditEntry_GetData(tt *testing.T) {
+	a := &AuditEntry{}
+	a.GetData()
+	a = nil
+	a.GetData()
+}
+
 func TestAuditEntry_GetDeployKeyFingerprint(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{DeployKeyFingerprint: &zeroValue}
@@ -1902,6 +1909,26 @@ func TestAuditEntry_GetWorkflowRunID(tt *testing.T) {
 	a.GetWorkflowRunID()
 	a = nil
 	a.GetWorkflowRunID()
+}
+
+func TestAuditEntryData_GetOldLogin(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntryData{OldLogin: &zeroValue}
+	a.GetOldLogin()
+	a = &AuditEntryData{}
+	a.GetOldLogin()
+	a = nil
+	a.GetOldLogin()
+}
+
+func TestAuditEntryData_GetOldName(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntryData{OldName: &zeroValue}
+	a.GetOldName()
+	a = &AuditEntryData{}
+	a.GetOldName()
+	a = nil
+	a.GetOldName()
 }
 
 func TestAuthorization_GetApp(tt *testing.T) {

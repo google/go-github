@@ -1134,6 +1134,14 @@ func (a *AuditEntry) GetCreatedAt() Timestamp {
 	return *a.CreatedAt
 }
 
+// GetData returns the Data field.
+func (a *AuditEntry) GetData() *AuditEntryData {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
 // GetDeployKeyFingerprint returns the DeployKeyFingerprint field if it's non-nil, zero value otherwise.
 func (a *AuditEntry) GetDeployKeyFingerprint() string {
 	if a == nil || a.DeployKeyFingerprint == nil {
@@ -1588,6 +1596,22 @@ func (a *AuditEntry) GetWorkflowRunID() int64 {
 		return 0
 	}
 	return *a.WorkflowRunID
+}
+
+// GetOldLogin returns the OldLogin field if it's non-nil, zero value otherwise.
+func (a *AuditEntryData) GetOldLogin() string {
+	if a == nil || a.OldLogin == nil {
+		return ""
+	}
+	return *a.OldLogin
+}
+
+// GetOldName returns the OldName field if it's non-nil, zero value otherwise.
+func (a *AuditEntryData) GetOldName() string {
+	if a == nil || a.OldName == nil {
+		return ""
+	}
+	return *a.OldName
 }
 
 // GetApp returns the App field.

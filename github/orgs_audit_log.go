@@ -121,6 +121,14 @@ type AuditEntry struct {
 	Visibility             *string                 `json:"visibility,omitempty"` // The repository visibility, for example `public` or `private`.
 	WorkflowID             *int64                  `json:"workflow_id,omitempty"`
 	WorkflowRunID          *int64                  `json:"workflow_run_id,omitempty"`
+
+	Data *AuditEntryData `json:"data,omitempty"`
+}
+
+// AuditEntryData represents additional information stuffed into a `data` field.
+type AuditEntryData struct {
+	OldName  *string `json:"old_name,omitempty"`  // The previous name of the repository, for a name change
+	OldLogin *string `json:"old_login,omitempty"` // The previous name of the organization, for a name change
 }
 
 // GetAuditLog gets the audit-log entries for an organization.

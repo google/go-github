@@ -299,6 +299,10 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		Visibility:            String("v"),
 		WorkflowID:            Int64(1),
 		WorkflowRunID:         Int64(1),
+		Data: &AuditEntryData{
+			OldName:  String("on"),
+			OldLogin: String("ol"),
+		},
 	}
 
 	want := `{
@@ -391,7 +395,11 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		"user_agent": "ua",
 		"visibility": "v",
 		"workflow_id": 1,
-		"workflow_run_id": 1
+		"workflow_run_id": 1,
+		"data": {
+			"old_name": "on",
+			"old_login": "ol"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
