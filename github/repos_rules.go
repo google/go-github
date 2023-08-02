@@ -118,8 +118,11 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	case "creation", "deletion", "required_linear_history", "required_signatures", "non_fast_forward":
 		r.Parameters = nil
 	case "update":
-		params := UpdateAllowsFetchAndMergeRuleParameters{}
 		if RepositoryRule.Parameters != nil {
+			r.Parameters = nil
+			return nil
+		} else {
+			params := UpdateAllowsFetchAndMergeRuleParameters{}
 			if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
 				return err
 			}
@@ -128,8 +131,6 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 			rawParams := json.RawMessage(bytes)
 
 			r.Parameters = &rawParams
-		} else {
-			r.Parameters = nil
 		}
 	case "required_deployments":
 		params := RequiredDeploymentEnvironmentsRuleParameters{}
