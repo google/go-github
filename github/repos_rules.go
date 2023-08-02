@@ -118,7 +118,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	case "creation", "deletion", "required_linear_history", "required_signatures", "non_fast_forward":
 		r.Parameters = nil
 	case "update":
-		if RepositoryRule.Parameters != nil {
+		if RepositoryRule.Parameters == nil {
 			r.Parameters = nil
 			return nil
 		} else {
@@ -190,13 +190,18 @@ func NewCreationRule() (rule *RepositoryRule) {
 
 // NewUpdateRule creates a rule to only allow users with bypass permission to update matching refs.
 func NewUpdateRule(params *UpdateAllowsFetchAndMergeRuleParameters) (rule *RepositoryRule) {
-	bytes, _ := json.Marshal(params)
+	if params != nil {
+		bytes, _ := json.Marshal(params)
 
-	rawParams := json.RawMessage(bytes)
+		rawParams := json.RawMessage(bytes)
 
+		return &RepositoryRule{
+			Type:       "update",
+			Parameters: &rawParams,
+		}
+	}
 	return &RepositoryRule{
-		Type:       "update",
-		Parameters: &rawParams,
+		Type: "update",
 	}
 }
 
