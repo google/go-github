@@ -292,6 +292,45 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_GetRulesForBranchEmptyUpdateRule(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/repo/rules/branches/branch", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+			  "type": "update"
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch")
+	if err != nil {
+		t.Errorf("Repositories.GetRulesForBranch returned error: %v", err)
+	}
+
+	updateRule := NewUpdateRule(nil)
+
+	want := []*RepositoryRule{
+		updateRule,
+	}
+	if !cmp.Equal(rules, want) {
+		t.Errorf("Repositories.GetRulesForBranch returned %+v, want %+v", Stringify(rules), Stringify(want))
+	}
+
+	const methodName = "GetRulesForBranch"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
