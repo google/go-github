@@ -121,17 +121,17 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		if RepositoryRule.Parameters == nil {
 			r.Parameters = nil
 			return nil
-		} else {
-			params := UpdateAllowsFetchAndMergeRuleParameters{}
-			if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
-				return err
-			}
-
-			bytes, _ := json.Marshal(params)
-			rawParams := json.RawMessage(bytes)
-
-			r.Parameters = &rawParams
 		}
+		params := UpdateAllowsFetchAndMergeRuleParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
+
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
+
 	case "required_deployments":
 		params := RequiredDeploymentEnvironmentsRuleParameters{}
 		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
