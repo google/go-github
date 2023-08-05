@@ -395,7 +395,8 @@ supported by this (and past) versions of this repo (go-github).
 Versions prior to 48.2.0 are not listed.
 
 | go-github Version | GitHub v3 API Version |
-| ----------------- | --------------------- |
+|-------------------| --------------------- |
+| 53.3.0            | 2022-11-28            |
 | 53.2.0            | 2022-11-28            |
 | 53.1.0            | 2022-11-28            |
 | 53.0.0            | 2022-11-28            |
