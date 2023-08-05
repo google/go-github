@@ -6797,6 +6797,36 @@ func TestDeploymentStatusRequest_GetState(tt *testing.T) {
 	d.GetState()
 }
 
+func TestDetector_GetName(tt *testing.T) {
+	var zeroValue string
+	d := &Detector{Name: &zeroValue}
+	d.GetName()
+	d = &Detector{}
+	d.GetName()
+	d = nil
+	d.GetName()
+}
+
+func TestDetector_GetURL(tt *testing.T) {
+	var zeroValue string
+	d := &Detector{URL: &zeroValue}
+	d.GetURL()
+	d = &Detector{}
+	d.GetURL()
+	d = nil
+	d.GetURL()
+}
+
+func TestDetector_GetVersion(tt *testing.T) {
+	var zeroValue string
+	d := &Detector{Version: &zeroValue}
+	d.GetVersion()
+	d = &Detector{}
+	d.GetVersion()
+	d = nil
+	d.GetVersion()
+}
+
 func TestDiscussion_GetActiveLockReason(tt *testing.T) {
 	var zeroValue string
 	d := &Discussion{ActiveLockReason: &zeroValue}
@@ -8311,6 +8341,16 @@ func TestFeeds_GetUserURL(tt *testing.T) {
 	f.GetUserURL()
 	f = nil
 	f.GetUserURL()
+}
+
+func TestFile_GetSourceLocation(tt *testing.T) {
+	var zeroValue string
+	f := &File{SourceLocation: &zeroValue}
+	f.GetSourceLocation()
+	f = &File{}
+	f.GetSourceLocation()
+	f = nil
+	f.GetSourceLocation()
 }
 
 func TestFirstPatchedVersion_GetIdentifier(tt *testing.T) {
@@ -11782,6 +11822,36 @@ func TestJITRunnerConfig_GetRunner(tt *testing.T) {
 	j.GetRunner()
 }
 
+func TestJob_GetCorrelator(tt *testing.T) {
+	var zeroValue string
+	j := &Job{Correlator: &zeroValue}
+	j.GetCorrelator()
+	j = &Job{}
+	j.GetCorrelator()
+	j = nil
+	j.GetCorrelator()
+}
+
+func TestJob_GetHtmlUrl(tt *testing.T) {
+	var zeroValue string
+	j := &Job{HtmlUrl: &zeroValue}
+	j.GetHtmlUrl()
+	j = &Job{}
+	j.GetHtmlUrl()
+	j = nil
+	j.GetHtmlUrl()
+}
+
+func TestJob_GetID(tt *testing.T) {
+	var zeroValue string
+	j := &Job{ID: &zeroValue}
+	j.GetID()
+	j = &Job{}
+	j.GetID()
+	j = nil
+	j.GetID()
+}
+
 func TestJobs_GetTotalCount(tt *testing.T) {
 	var zeroValue int
 	j := &Jobs{TotalCount: &zeroValue}
@@ -12669,6 +12739,23 @@ func TestLockBranch_GetEnabled(tt *testing.T) {
 	l.GetEnabled()
 	l = nil
 	l.GetEnabled()
+}
+
+func TestManifest_GetFile(tt *testing.T) {
+	m := &Manifest{}
+	m.GetFile()
+	m = nil
+	m.GetFile()
+}
+
+func TestManifest_GetName(tt *testing.T) {
+	var zeroValue string
+	m := &Manifest{Name: &zeroValue}
+	m.GetName()
+	m = &Manifest{}
+	m.GetName()
+	m = nil
+	m.GetName()
 }
 
 func TestMarketplacePendingChange_GetEffectiveDate(tt *testing.T) {
@@ -23689,6 +23776,16 @@ func TestRequiredWorkflowSelectedRepos_GetTotalCount(tt *testing.T) {
 	r.GetTotalCount()
 }
 
+func TestResolved_GetPackageUrl(tt *testing.T) {
+	var zeroValue string
+	r := &Resolved{PackageUrl: &zeroValue}
+	r.GetPackageUrl()
+	r = &Resolved{}
+	r.GetPackageUrl()
+	r = nil
+	r.GetPackageUrl()
+}
+
 func TestReviewersRequest_GetNodeID(tt *testing.T) {
 	var zeroValue string
 	r := &ReviewersRequest{NodeID: &zeroValue}
@@ -25405,6 +25502,70 @@ func TestSignatureVerification_GetVerified(tt *testing.T) {
 	s.GetVerified()
 	s = nil
 	s.GetVerified()
+}
+
+func TestSnapshot_GetDetector(tt *testing.T) {
+	s := &Snapshot{}
+	s.GetDetector()
+	s = nil
+	s.GetDetector()
+}
+
+func TestSnapshot_GetJob(tt *testing.T) {
+	s := &Snapshot{}
+	s.GetJob()
+	s = nil
+	s.GetJob()
+}
+
+func TestSnapshot_GetRef(tt *testing.T) {
+	var zeroValue string
+	s := &Snapshot{Ref: &zeroValue}
+	s.GetRef()
+	s = &Snapshot{}
+	s.GetRef()
+	s = nil
+	s.GetRef()
+}
+
+func TestSnapshot_GetScanned(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &Snapshot{Scanned: &zeroValue}
+	s.GetScanned()
+	s = &Snapshot{}
+	s.GetScanned()
+	s = nil
+	s.GetScanned()
+}
+
+func TestSnapshot_GetSha(tt *testing.T) {
+	var zeroValue string
+	s := &Snapshot{Sha: &zeroValue}
+	s.GetSha()
+	s = &Snapshot{}
+	s.GetSha()
+	s = nil
+	s.GetSha()
+}
+
+func TestSnapshotCreationData_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SnapshotCreationData{CreatedAt: &zeroValue}
+	s.GetCreatedAt()
+	s = &SnapshotCreationData{}
+	s.GetCreatedAt()
+	s = nil
+	s.GetCreatedAt()
+}
+
+func TestSnapshotCreationData_GetMessage(tt *testing.T) {
+	var zeroValue string
+	s := &SnapshotCreationData{Message: &zeroValue}
+	s.GetMessage()
+	s = &SnapshotCreationData{}
+	s.GetMessage()
+	s = nil
+	s.GetMessage()
 }
 
 func TestSource_GetActor(tt *testing.T) {
