@@ -76,6 +76,7 @@ type ListAlertsOptions struct {
 	Sort      *string `url:"sort,omitempty"`
 	Direction *string `url:"direction,omitempty"`
 
+	ListOptions
 	ListCursorOptions
 }
 
