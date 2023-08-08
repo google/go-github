@@ -77,6 +77,7 @@ type ListAlertsOptions struct {
 	Direction *string `url:"direction,omitempty"`
 
 	ListOptions
+	ListCursorOptions
 }
 
 func (s *DependabotService) listAlerts(ctx context.Context, url string, opts *ListAlertsOptions) ([]*DependabotAlert, *Response, error) {
