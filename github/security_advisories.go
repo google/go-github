@@ -12,7 +12,7 @@ import (
 
 type SecurityAdvisoriesService service
 
-// RequestCVE request a CVE for a repository security advisory.
+// RequestCVE requests a Common Vulnerabilities and Exposures (CVE) for a repository security advisory.
 //
 // GitHub API docs: https://docs.github.com/en/rest/security-advisories/repository-advisories#request-a-cve-for-a-repository-security-advisory
 func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo, ghsaID string) (*Response, error) {
@@ -26,8 +26,7 @@ func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo,
 	resp, err := s.client.Do(ctx, req, nil)
 
 	if err != nil {
-		_, ok := err.(*AcceptedError)
-		if ok {
+		if _, ok := err.(*AcceptedError); ok {
 			return resp, nil
 		}
 
