@@ -1339,7 +1339,7 @@ type SecurityAndAnalysisEvent struct {
 }
 
 // SecurityAndAnalysisChange represents the changes when security and analysis
-// features are enabled or disabeld for a repository.
+// features are enabled or disabled for a repository.
 type SecurityAndAnalysisChange struct {
 	From *SecurityAndAnalysisChangeFrom `json:"from,omitempty"`
 }
