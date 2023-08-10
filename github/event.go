@@ -30,7 +30,7 @@ func (e Event) String() string {
 func (e *Event) ParsePayload() (interface{}, error) {
 	// It would be nice if e.Type were the snake_case name of the event,
 	// but the existing interface uses the struct name instead.
-	payload := EventForType(typeToMessageMapping[*e.Type])
+	payload := EventForType(typeToMessageMapping[e.GetType()])
 	err := json.Unmarshal(*e.RawPayload, &payload)
 	return payload, err
 }

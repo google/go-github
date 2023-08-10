@@ -22,6 +22,7 @@ import (
 	"mime"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strings"
 )
 
@@ -43,76 +44,80 @@ const (
 
 var (
 	// eventTypeMapping maps webhooks types to their corresponding go-github struct types.
-	eventTypeMapping = map[string]string{
-		"branch_protection_rule":         "BranchProtectionRuleEvent",
-		"check_run":                      "CheckRunEvent",
-		"check_suite":                    "CheckSuiteEvent",
-		"code_scanning_alert":            "CodeScanningAlertEvent",
-		"commit_comment":                 "CommitCommentEvent",
-		"content_reference":              "ContentReferenceEvent",
-		"create":                         "CreateEvent",
-		"delete":                         "DeleteEvent",
-		"deploy_key":                     "DeployKeyEvent",
-		"deployment":                     "DeploymentEvent",
-		"deployment_status":              "DeploymentStatusEvent",
-		"deployment_protection_rule":     "DeploymentProtectionRuleEvent",
-		"discussion":                     "DiscussionEvent",
-		"discussion_comment":             "DiscussionCommentEvent",
-		"fork":                           "ForkEvent",
-		"github_app_authorization":       "GitHubAppAuthorizationEvent",
-		"gollum":                         "GollumEvent",
-		"installation":                   "InstallationEvent",
-		"installation_repositories":      "InstallationRepositoriesEvent",
-		"installation_target":            "InstallationTargetEvent",
-		"issue_comment":                  "IssueCommentEvent",
-		"issues":                         "IssuesEvent",
-		"label":                          "LabelEvent",
-		"marketplace_purchase":           "MarketplacePurchaseEvent",
-		"member":                         "MemberEvent",
-		"membership":                     "MembershipEvent",
-		"merge_group":                    "MergeGroupEvent",
-		"meta":                           "MetaEvent",
-		"milestone":                      "MilestoneEvent",
-		"organization":                   "OrganizationEvent",
-		"org_block":                      "OrgBlockEvent",
-		"package":                        "PackageEvent",
-		"page_build":                     "PageBuildEvent",
-		"personal_access_token_request":  "PersonalAccessTokenRequestEvent",
-		"ping":                           "PingEvent",
-		"project":                        "ProjectEvent",
-		"project_card":                   "ProjectCardEvent",
-		"project_column":                 "ProjectColumnEvent",
-		"public":                         "PublicEvent",
-		"pull_request":                   "PullRequestEvent",
-		"pull_request_review":            "PullRequestReviewEvent",
-		"pull_request_review_comment":    "PullRequestReviewCommentEvent",
-		"pull_request_review_thread":     "PullRequestReviewThreadEvent",
-		"pull_request_target":            "PullRequestTargetEvent",
-		"push":                           "PushEvent",
-		"repository":                     "RepositoryEvent",
-		"repository_dispatch":            "RepositoryDispatchEvent",
-		"repository_import":              "RepositoryImportEvent",
-		"repository_vulnerability_alert": "RepositoryVulnerabilityAlertEvent",
-		"release":                        "ReleaseEvent",
-		"secret_scanning_alert":          "SecretScanningAlertEvent",
-		"security_advisory":              "SecurityAdvisoryEvent",
-		"star":                           "StarEvent",
-		"status":                         "StatusEvent",
-		"team":                           "TeamEvent",
-		"team_add":                       "TeamAddEvent",
-		"user":                           "UserEvent",
-		"watch":                          "WatchEvent",
-		"workflow_dispatch":              "WorkflowDispatchEvent",
-		"workflow_job":                   "WorkflowJobEvent",
-		"workflow_run":                   "WorkflowRunEvent",
+	eventTypeMapping = map[string]interface{}{
+		"branch_protection_rule":         &BranchProtectionRuleEvent{},
+		"check_run":                      &CheckRunEvent{},
+		"check_suite":                    &CheckSuiteEvent{},
+		"code_scanning_alert":            &CodeScanningAlertEvent{},
+		"commit_comment":                 &CommitCommentEvent{},
+		"content_reference":              &ContentReferenceEvent{},
+		"create":                         &CreateEvent{},
+		"delete":                         &DeleteEvent{},
+		"deploy_key":                     &DeployKeyEvent{},
+		"deployment":                     &DeploymentEvent{},
+		"deployment_status":              &DeploymentStatusEvent{},
+		"deployment_protection_rule":     &DeploymentProtectionRuleEvent{},
+		"discussion":                     &DiscussionEvent{},
+		"discussion_comment":             &DiscussionCommentEvent{},
+		"fork":                           &ForkEvent{},
+		"github_app_authorization":       &GitHubAppAuthorizationEvent{},
+		"gollum":                         &GollumEvent{},
+		"installation":                   &InstallationEvent{},
+		"installation_repositories":      &InstallationRepositoriesEvent{},
+		"installation_target":            &InstallationTargetEvent{},
+		"issue_comment":                  &IssueCommentEvent{},
+		"issues":                         &IssuesEvent{},
+		"label":                          &LabelEvent{},
+		"marketplace_purchase":           &MarketplacePurchaseEvent{},
+		"member":                         &MemberEvent{},
+		"membership":                     &MembershipEvent{},
+		"merge_group":                    &MergeGroupEvent{},
+		"meta":                           &MetaEvent{},
+		"milestone":                      &MilestoneEvent{},
+		"organization":                   &OrganizationEvent{},
+		"org_block":                      &OrgBlockEvent{},
+		"package":                        &PackageEvent{},
+		"page_build":                     &PageBuildEvent{},
+		"personal_access_token_request":  &PersonalAccessTokenRequestEvent{},
+		"ping":                           &PingEvent{},
+		"project":                        &ProjectEvent{},
+		"project_card":                   &ProjectCardEvent{},
+		"project_column":                 &ProjectColumnEvent{},
+		"public":                         &PublicEvent{},
+		"pull_request":                   &PullRequestEvent{},
+		"pull_request_review":            &PullRequestReviewEvent{},
+		"pull_request_review_comment":    &PullRequestReviewCommentEvent{},
+		"pull_request_review_thread":     &PullRequestReviewThreadEvent{},
+		"pull_request_target":            &PullRequestTargetEvent{},
+		"push":                           &PushEvent{},
+		"repository":                     &RepositoryEvent{},
+		"repository_dispatch":            &RepositoryDispatchEvent{},
+		"repository_import":              &RepositoryImportEvent{},
+		"repository_vulnerability_alert": &RepositoryVulnerabilityAlertEvent{},
+		"release":                        &ReleaseEvent{},
+		"secret_scanning_alert":          &SecretScanningAlertEvent{},
+		"security_advisory":              &SecurityAdvisoryEvent{},
+		"star":                           &StarEvent{},
+		"status":                         &StatusEvent{},
+		"team":                           &TeamEvent{},
+		"team_add":                       &TeamAddEvent{},
+		"user":                           &UserEvent{},
+		"watch":                          &WatchEvent{},
+		"workflow_dispatch":              &WorkflowDispatchEvent{},
+		"workflow_job":                   &WorkflowJobEvent{},
+		"workflow_run":                   &WorkflowRunEvent{},
 	}
+	// forward mapping of event types to the sting names of the structs
+	messageToTypeName = make(map[string]string, len(eventTypeMapping))
 	// Inverse map of the above
 	typeToMessageMapping = make(map[string]string, len(eventTypeMapping))
 )
 
 func init() {
 	for k, v := range eventTypeMapping {
-		typeToMessageMapping[v] = k
+		typename := reflect.TypeOf(v).Elem().Name()
+		messageToTypeName[k] = typename
+		typeToMessageMapping[typename] = k
 	}
 }
 
@@ -304,7 +309,7 @@ func DeliveryID(r *http.Request) string {
 //	  }
 //	}
 func ParseWebHook(messageType string, payload []byte) (interface{}, error) {
-	eventType, ok := eventTypeMapping[messageType]
+	eventType, ok := messageToTypeName[messageType]
 	if !ok {
 		return nil, fmt.Errorf("unknown X-Github-Event in message: %v", messageType)
 	}
@@ -329,130 +334,11 @@ func MessageTypes() []string {
 // EventForType returns an empty struct matching the specified GitHub event type.
 // If messageType does not match any known event types, it returns nil.
 func EventForType(messageType string) interface{} {
-	switch messageType {
-	case "branch_protection_rule":
-		return &BranchProtectionRuleEvent{}
-	case "check_run":
-		return &CheckRunEvent{}
-	case "check_suite":
-		return &CheckSuiteEvent{}
-	case "code_scanning_alert":
-		return &CodeScanningAlertEvent{}
-	case "commit_comment":
-		return &CommitCommentEvent{}
-	case "content_reference":
-		return &ContentReferenceEvent{}
-	case "create":
-		return &CreateEvent{}
-	case "delete":
-		return &DeleteEvent{}
-	case "deploy_key":
-		return &DeployKeyEvent{}
-	case "deployment":
-		return &DeploymentEvent{}
-	case "deployment_protection_rule":
-		return &DeploymentProtectionRuleEvent{}
-	case "deployment_status":
-		return &DeploymentStatusEvent{}
-	case "discussion":
-		return &DiscussionEvent{}
-	case "discussion_comment":
-		return &DiscussionCommentEvent{}
-	case "fork":
-		return &ForkEvent{}
-	case "github_app_authorization":
-		return &GitHubAppAuthorizationEvent{}
-	case "gollum":
-		return &GollumEvent{}
-	case "installation":
-		return &InstallationEvent{}
-	case "installation_repositories":
-		return &InstallationRepositoriesEvent{}
-	case "installation_target":
-		return &InstallationTargetEvent{}
-	case "issue_comment":
-		return &IssueCommentEvent{}
-	case "issues":
-		return &IssuesEvent{}
-	case "label":
-		return &LabelEvent{}
-	case "marketplace_purchase":
-		return &MarketplacePurchaseEvent{}
-	case "member":
-		return &MemberEvent{}
-	case "membership":
-		return &MembershipEvent{}
-	case "merge_group":
-		return &MergeGroupEvent{}
-	case "meta":
-		return &MetaEvent{}
-	case "milestone":
-		return &MilestoneEvent{}
-	case "organization":
-		return &OrganizationEvent{}
-	case "org_block":
-		return &OrgBlockEvent{}
-	case "package":
-		return &PackageEvent{}
-	case "page_build":
-		return &PageBuildEvent{}
-	case "personal_access_token_request":
-		return &PersonalAccessTokenRequestEvent{}
-	case "ping":
-		return &PingEvent{}
-	case "project":
-		return &ProjectEvent{}
-	case "project_card":
-		return &ProjectCardEvent{}
-	case "project_column":
-		return &ProjectColumnEvent{}
-	case "public":
-		return &PublicEvent{}
-	case "pull_request":
-		return &PullRequestEvent{}
-	case "pull_request_review":
-		return &PullRequestReviewEvent{}
-	case "pull_request_review_comment":
-		return &PullRequestReviewCommentEvent{}
-	case "pull_request_review_thread":
-		return &PullRequestReviewThreadEvent{}
-	case "pull_request_target":
-		return &PullRequestTargetEvent{}
-	case "push":
-		return &PushEvent{}
-	case "release":
-		return &ReleaseEvent{}
-	case "repository":
-		return &RepositoryEvent{}
-	case "repository_dispatch":
-		return &RepositoryDispatchEvent{}
-	case "repository_import":
-		return &RepositoryImportEvent{}
-	case "repository_vulnerability_alert":
-		return &RepositoryVulnerabilityAlertEvent{}
-	case "secret_scanning_alert":
-		return &SecretScanningAlertEvent{}
-	case "security_advisory":
-		return &SecurityAdvisoryEvent{}
-	case "star":
-		return &StarEvent{}
-	case "status":
-		return &StatusEvent{}
-	case "team":
-		return &TeamEvent{}
-	case "team_add":
-		return &TeamAddEvent{}
-	case "user":
-		return &UserEvent{}
-	case "watch":
-		return &WatchEvent{}
-	case "workflow_dispatch":
-		return &WorkflowDispatchEvent{}
-	case "workflow_job":
-		return &WorkflowJobEvent{}
-	case "workflow_run":
-		return &WorkflowRunEvent{}
-	default:
-		return nil
+	prototype := eventTypeMapping[messageType]
+	if prototype != nil {
+		// return a _copy_ of the pointed-to-object.  Unfortunately, for this
+		// we need to use reflection.
+		return reflect.New(reflect.TypeOf(prototype).Elem()).Interface()
 	}
+	return prototype
 }
