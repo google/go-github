@@ -106,7 +106,15 @@ var (
 		"workflow_job":                   "WorkflowJobEvent",
 		"workflow_run":                   "WorkflowRunEvent",
 	}
+	// Inverse map of the above
+	typeToMessageMapping = make(map[string]string, len(eventTypeMapping))
 )
+
+func init() {
+	for k, v := range eventTypeMapping {
+		typeToMessageMapping[v] = k
+	}
+}
 
 // genMAC generates the HMAC signature for a message provided the secret key
 // and hashFunc.
@@ -306,4 +314,145 @@ func ParseWebHook(messageType string, payload []byte) (interface{}, error) {
 		RawPayload: (*json.RawMessage)(&payload),
 	}
 	return event.ParsePayload()
+}
+
+// WebhookTypes returns a list of all the known GitHub event type strings
+// supported by go-github.
+func MessageTypes() []string {
+	types := make([]string, 0, len(eventTypeMapping))
+	for t := range eventTypeMapping {
+		types = append(types, t)
+	}
+	return types
+}
+
+// EventForType returns an empty struct matching the specified GitHub event type.
+// If messageType does not match any known event types, it returns nil.
+func EventForType(messageType string) interface{} {
+	switch messageType {
+	case "branch_protection_rule":
+		return &BranchProtectionRuleEvent{}
+	case "check_run":
+		return &CheckRunEvent{}
+	case "check_suite":
+		return &CheckSuiteEvent{}
+	case "code_scanning_alert":
+		return &CodeScanningAlertEvent{}
+	case "commit_comment":
+		return &CommitCommentEvent{}
+	case "content_reference":
+		return &ContentReferenceEvent{}
+	case "create":
+		return &CreateEvent{}
+	case "delete":
+		return &DeleteEvent{}
+	case "deploy_key":
+		return &DeployKeyEvent{}
+	case "deployment":
+		return &DeploymentEvent{}
+	case "deployment_protection_rule":
+		return &DeploymentProtectionRuleEvent{}
+	case "deployment_status":
+		return &DeploymentStatusEvent{}
+	case "discussion":
+		return &DiscussionEvent{}
+	case "discussion_comment":
+		return &DiscussionCommentEvent{}
+	case "fork":
+		return &ForkEvent{}
+	case "github_app_authorization":
+		return &GitHubAppAuthorizationEvent{}
+	case "gollum":
+		return &GollumEvent{}
+	case "installation":
+		return &InstallationEvent{}
+	case "installation_repositories":
+		return &InstallationRepositoriesEvent{}
+	case "installation_target":
+		return &InstallationTargetEvent{}
+	case "issue_comment":
+		return &IssueCommentEvent{}
+	case "issues":
+		return &IssuesEvent{}
+	case "label":
+		return &LabelEvent{}
+	case "marketplace_purchase":
+		return &MarketplacePurchaseEvent{}
+	case "member":
+		return &MemberEvent{}
+	case "membership":
+		return &MembershipEvent{}
+	case "merge_group":
+		return &MergeGroupEvent{}
+	case "meta":
+		return &MetaEvent{}
+	case "milestone":
+		return &MilestoneEvent{}
+	case "organization":
+		return &OrganizationEvent{}
+	case "org_block":
+		return &OrgBlockEvent{}
+	case "package":
+		return &PackageEvent{}
+	case "page_build":
+		return &PageBuildEvent{}
+	case "personal_access_token_request":
+		return &PersonalAccessTokenRequestEvent{}
+	case "ping":
+		return &PingEvent{}
+	case "project":
+		return &ProjectEvent{}
+	case "project_card":
+		return &ProjectCardEvent{}
+	case "project_column":
+		return &ProjectColumnEvent{}
+	case "public":
+		return &PublicEvent{}
+	case "pull_request":
+		return &PullRequestEvent{}
+	case "pull_request_review":
+		return &PullRequestReviewEvent{}
+	case "pull_request_review_comment":
+		return &PullRequestReviewCommentEvent{}
+	case "pull_request_review_thread":
+		return &PullRequestReviewThreadEvent{}
+	case "pull_request_target":
+		return &PullRequestTargetEvent{}
+	case "push":
+		return &PushEvent{}
+	case "release":
+		return &ReleaseEvent{}
+	case "repository":
+		return &RepositoryEvent{}
+	case "repository_dispatch":
+		return &RepositoryDispatchEvent{}
+	case "repository_import":
+		return &RepositoryImportEvent{}
+	case "repository_vulnerability_alert":
+		return &RepositoryVulnerabilityAlertEvent{}
+	case "secret_scanning_alert":
+		return &SecretScanningAlertEvent{}
+	case "security_advisory":
+		return &SecurityAdvisoryEvent{}
+	case "star":
+		return &StarEvent{}
+	case "status":
+		return &StatusEvent{}
+	case "team":
+		return &TeamEvent{}
+	case "team_add":
+		return &TeamAddEvent{}
+	case "user":
+		return &UserEvent{}
+	case "watch":
+		return &WatchEvent{}
+	case "workflow_dispatch":
+		return &WorkflowDispatchEvent{}
+	case "workflow_job":
+		return &WorkflowJobEvent{}
+	case "workflow_run":
+		return &WorkflowRunEvent{}
+	default:
+		return nil
+	}
 }

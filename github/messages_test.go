@@ -513,6 +513,14 @@ func TestParseWebHook(t *testing.T) {
 	}
 }
 
+func TestAllMessageTypesMapped(t *testing.T) {
+	for _, mt := range MessageTypes() {
+		if obj := EventForType(mt); obj == nil {
+			t.Errorf("messageMap missing message type %q", mt)
+		}
+	}
+}
+
 func TestParseWebHook_BadMessageType(t *testing.T) {
 	if _, err := ParseWebHook("bogus message type", []byte("{}")); err == nil {
 		t.Fatal("ParseWebHook returned nil; wanted error")
