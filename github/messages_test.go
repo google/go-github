@@ -521,6 +521,15 @@ func TestAllMessageTypesMapped(t *testing.T) {
 	}
 }
 
+func TestUnknownMessageType(t *testing.T) {
+	if obj := EventForType("unknown"); obj != nil {
+		t.Errorf("EventForType(unknown) = %#v, want nil", obj)
+	}
+	if obj := EventForType(""); obj != nil {
+		t.Errorf(`EventForType("") = %#v, want nil`, obj)
+	}
+}
+
 func TestParseWebHook_BadMessageType(t *testing.T) {
 	if _, err := ParseWebHook("bogus message type", []byte("{}")); err == nil {
 		t.Fatal("ParseWebHook returned nil; wanted error")

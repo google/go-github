@@ -30,6 +30,11 @@ func TestPayload_NoPanic(t *testing.T) {
 	e.Payload()
 }
 
+func TestEmptyEvent_NoPanic(t *testing.T) {
+	e := &Event{}
+	e.ParsePayload()
+}
+
 func TestEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Event{}, "{}")
 
