@@ -14300,7 +14300,6 @@ func TestProjectV2Event_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
-
 }
 
 func TestProjectV2ItemEvent_Marshal(t *testing.T) {

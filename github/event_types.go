@@ -943,7 +943,7 @@ type ProjectColumnEvent struct {
 }
 
 // ProjectV2Event is triggered when there is activity relating to an organization-level project.
-// The Webhook event name is "projects_v2"
+// The Webhook event name is "projects_v2".
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2
 type ProjectV2Event struct {
@@ -974,8 +974,8 @@ type ProjectsV2 struct {
 	DeletedBy        *User      `json:"deleted_by,omitempty"`
 }
 
-// ProjectV2ItemEvent triggered when there is activity relating to an item on an organization-level project.
-// The Webhook event name is "projects_v2_item"
+// ProjectV2ItemEvent is triggered when there is activity relating to an item on an organization-level project.
+// The Webhook event name is "projects_v2_item".
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2_item
 type ProjectV2ItemEvent struct {
