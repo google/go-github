@@ -20270,6 +20270,70 @@ func (s *SecurityAndAnalysis) GetSecretScanningPushProtection() *SecretScanningP
 	return s.SecretScanningPushProtection
 }
 
+// GetFrom returns the From field.
+func (s *SecurityAndAnalysisChange) GetFrom() *SecurityAndAnalysisChangeFrom {
+	if s == nil {
+		return nil
+	}
+	return s.From
+}
+
+// GetSecurityAndAnalysis returns the SecurityAndAnalysis field.
+func (s *SecurityAndAnalysisChangeFrom) GetSecurityAndAnalysis() *SecurityAndAnalysis {
+	if s == nil {
+		return nil
+	}
+	return s.SecurityAndAnalysis
+}
+
+// GetChanges returns the Changes field.
+func (s *SecurityAndAnalysisEvent) GetChanges() *SecurityAndAnalysisChange {
+	if s == nil {
+		return nil
+	}
+	return s.Changes
+}
+
+// GetEnterprise returns the Enterprise field.
+func (s *SecurityAndAnalysisEvent) GetEnterprise() *Enterprise {
+	if s == nil {
+		return nil
+	}
+	return s.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (s *SecurityAndAnalysisEvent) GetInstallation() *Installation {
+	if s == nil {
+		return nil
+	}
+	return s.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (s *SecurityAndAnalysisEvent) GetOrganization() *Organization {
+	if s == nil {
+		return nil
+	}
+	return s.Organization
+}
+
+// GetRepository returns the Repository field.
+func (s *SecurityAndAnalysisEvent) GetRepository() *Repository {
+	if s == nil {
+		return nil
+	}
+	return s.Repository
+}
+
+// GetSender returns the Sender field.
+func (s *SecurityAndAnalysisEvent) GetSender() *User {
+	if s == nil {
+		return nil
+	}
+	return s.Sender
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (s *SelectedReposList) GetTotalCount() int {
 	if s == nil || s.TotalCount == nil {
