@@ -42,14 +42,14 @@ type RepoDependencies struct {
 // identifies and catalogs components, licenses, copyrights, security
 // references, and other metadata relating to software.
 type SBOMInfo struct {
-	Spdxid       *string       `json:"SPDXID,omitempty"`
-	SpdxVersion  *string       `json:"spdxVersion,omitempty"`
+	SPDXID       *string       `json:"SPDXID,omitempty"`
+	SPDXVersion  *string       `json:"spdxVersion,omitempty"`
 	CreationInfo *CreationInfo `json:"creationInfo,omitempty"`
 
 	// Repo name
 	Name              *string   `json:"name,omitempty"`
 	DataLicense       *string   `json:"dataLicense,omitempty"`
-	DocumentDescribes []*string `json:"documentDescribes,omitempty"`
+	DocumentDescribes []string `json:"documentDescribes,omitempty"`
 	DocumentNamespace *string   `json:"documentNamespace,omitempty"`
 
 	// List of packages dependencies
@@ -60,7 +60,7 @@ func (s Sbom) String() string {
 	return Stringify(s)
 }
 
-// GetSbom fetches the Software bill of materials for a repository.
+// GetSBOM fetches the software bill of materials for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependency-graph/sboms
 func (s *DependencyGraphService) GetSBOM(ctx context.Context, owner, repo string) (*SBOM, *Response, error) {
