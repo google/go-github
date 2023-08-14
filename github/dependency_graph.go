@@ -16,7 +16,7 @@ type DependencyGraphService service
 // Sbom represents software bill of materials, which descibes the
 // packages/libraries that a repository depends on.
 type Sbom struct {
-	Sbom *SbomInfo `json:"sbom,omitempty"`
+	SBOM *SBOMInfo `json:"sbom,omitempty"`
 }
 
 // CreationInfo represents when the SBOM created and who created it.
