@@ -19,7 +19,7 @@ type Sbom struct {
 	Sbom *SbomInfo `json:"sbom,omitempty"`
 }
 
-// When was the SBOM created and who created it
+// CreationInfo represents when the SBOM created and who created it.
 type CreationInfo struct {
 	Created  *time.Time `json:"created,omitempty"`
 	Creators []*string  `json:"creators,omitempty"`
