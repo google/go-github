@@ -14092,6 +14092,396 @@ func TestProjectColumnEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestProjectV2Event_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectV2Event{}, "{}")
+
+	u := &ProjectV2Event{
+		Action: String("a"),
+		ProjectsV2: &ProjectsV2{
+			ID:     Int64(1),
+			NodeID: String("nid"),
+			Owner: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+			Creator: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+			Title:            String("t"),
+			Description:      String("d"),
+			Public:           Bool(true),
+			ClosedAt:         &Timestamp{referenceTime},
+			CreatedAt:        &Timestamp{referenceTime},
+			UpdatedAt:        &Timestamp{referenceTime},
+			DeletedAt:        &Timestamp{referenceTime},
+			Number:           Int(1),
+			ShortDescription: String("sd"),
+			DeletedBy: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+		},
+		Org: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+		Installation: &Installation{
+			ID:       Int64(1),
+			NodeID:   String("nid"),
+			AppID:    Int64(1),
+			AppSlug:  String("as"),
+			TargetID: Int64(1),
+			Account: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+		},
+	}
+
+	want := `{
+		"action": "a",
+		"projects_v2": {
+			"id": 1,
+			"node_id": "nid",
+			"owner": {
+				"login": "l",
+				"id": 1,
+				"node_id": "n",
+				"avatar_url": "a",
+				"url": "u",
+				"events_url": "e",
+				"repos_url": "r"
+			},
+			"creator": {
+				"login": "l",
+				"id": 1,
+				"node_id": "n",
+				"avatar_url": "a",
+				"url": "u",
+				"events_url": "e",
+				"repos_url": "r"
+			},
+			"title": "t",
+			"description": "d",
+			"public": true,
+			"closed_at": ` + referenceTimeStr + `,
+			"created_at": ` + referenceTimeStr + `,
+			"updated_at": ` + referenceTimeStr + `,
+			"deleted_at": ` + referenceTimeStr + `,
+			"number": 1,
+			"short_description": "sd",
+			"deleted_by": {
+				"login": "l",
+				"id": 1,
+				"node_id": "n",
+				"avatar_url": "a",
+				"url": "u",
+				"events_url": "e",
+				"repos_url": "r"
+			}
+		},
+		"organization": {
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "loc",
+			"email": "e",
+			"twitter_username": "tu",
+			"description": "d",
+			"billing_email": "be",
+			"is_verified": true,
+			"has_organization_projects": true,
+			"has_repository_projects": true,
+			"default_repository_permission": "drp",
+			"members_can_create_repositories": true,
+			"members_can_create_public_repositories": false,
+			"members_can_create_private_repositories": true,
+			"members_can_create_internal_repositories": true,
+			"members_allowed_repository_creation_type": "marct",
+			"members_can_create_pages": true,
+			"members_can_create_public_pages": false,
+			"members_can_create_private_pages": true
+		},
+		"sender": {
+			"login": "l",
+			"id": 1,
+			"node_id": "n",
+			"avatar_url": "a",
+			"url": "u",
+			"events_url": "e",
+			"repos_url": "r"
+		},
+		"installation": {
+			"id": 1,
+			"node_id": "nid",
+			"app_id": 1,
+			"app_slug": "as",
+			"target_id": 1,
+			"account": {
+				"login": "l",
+				"id": 1,
+				"avatar_url": "a",
+				"gravatar_id": "g",
+				"name": "n",
+				"company": "c",
+				"blog": "b",
+				"location": "l",
+				"email": "e",
+				"hireable": true,
+				"bio": "b",
+				"twitter_username": "t",
+				"public_repos": 1,
+				"followers": 1,
+				"following": 1,
+				"created_at": ` + referenceTimeStr + `,
+				"suspended_at": ` + referenceTimeStr + `,
+				"url": "u"
+			}
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectV2ItemEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectV2ItemEvent{}, "{}")
+
+	u := &ProjectV2ItemEvent{
+		Action: String("a"),
+		Changes: &ProjectV2ItemChange{
+			ArchivedAt: &ArchivedAt{
+				From: &Timestamp{referenceTime},
+				To:   &Timestamp{referenceTime},
+			},
+		},
+		ProjectV2Item: &ProjectV2Item{
+			ID:            Int64(1),
+			NodeID:        String("nid"),
+			ProjectNodeID: String("pnid"),
+			ContentNodeID: String("cnid"),
+			ContentType:   String("ct"),
+			Creator: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+			CreatedAt:  &Timestamp{referenceTime},
+			UpdatedAt:  &Timestamp{referenceTime},
+			ArchivedAt: &Timestamp{referenceTime},
+		},
+		Org: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+		Installation: &Installation{
+			ID:       Int64(1),
+			NodeID:   String("nid"),
+			AppID:    Int64(1),
+			AppSlug:  String("as"),
+			TargetID: Int64(1),
+			Account: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+		},
+	}
+
+	want := `{
+		"action":  "a",
+		"changes": {
+			"archived_at": {
+				"from": ` + referenceTimeStr + `,
+				"to": ` + referenceTimeStr + `
+			}
+		},
+		"projects_v2_item": {
+			"id": 1,
+			"node_id": "nid",
+			"project_node_id": "pnid",
+			"content_node_id": "cnid",
+			"content_type": "ct",
+			"creator":  {
+				"login": "l",
+				"id": 1,
+				"node_id": "n",
+				"avatar_url": "a",
+				"url": "u",
+				"events_url": "e",
+				"repos_url": "r"
+			},
+			"created_at": ` + referenceTimeStr + `,
+			"updated_at": ` + referenceTimeStr + `,
+			"archived_at": ` + referenceTimeStr + `
+		},
+		"organization": {
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "loc",
+			"email": "e",
+			"twitter_username": "tu",
+			"description": "d",
+			"billing_email": "be",
+			"is_verified": true,
+			"has_organization_projects": true,
+			"has_repository_projects": true,
+			"default_repository_permission": "drp",
+			"members_can_create_repositories": true,
+			"members_can_create_public_repositories": false,
+			"members_can_create_private_repositories": true,
+			"members_can_create_internal_repositories": true,
+			"members_allowed_repository_creation_type": "marct",
+			"members_can_create_pages": true,
+			"members_can_create_public_pages": false,
+			"members_can_create_private_pages": true
+		},
+		"sender": {
+			"login": "l",
+			"id": 1,
+			"node_id": "n",
+			"avatar_url": "a",
+			"url": "u",
+			"events_url": "e",
+			"repos_url": "r"
+		},
+		"installation": {
+			"id": 1,
+			"node_id": "nid",
+			"app_id": 1,
+			"app_slug": "as",
+			"target_id": 1,
+			"account": {
+				"login": "l",
+				"id": 1,
+				"avatar_url": "a",
+				"gravatar_id": "g",
+				"name": "n",
+				"company": "c",
+				"blog": "b",
+				"location": "l",
+				"email": "e",
+				"hireable": true,
+				"bio": "b",
+				"twitter_username": "t",
+				"public_repos": 1,
+				"followers": 1,
+				"following": 1,
+				"created_at": ` + referenceTimeStr + `,
+				"suspended_at": ` + referenceTimeStr + `,
+				"url": "u"
+			}
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestPullRequestEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestEvent{}, "{}")
 
