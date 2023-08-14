@@ -70,7 +70,7 @@ func (s *DependencyGraphService) GetSBOM(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	var sbom *Sbom
+	var sbom *SBOM
 	resp, err := s.client.Do(ctx, req, &sbom)
 	if err != nil {
 		return nil, resp, err
