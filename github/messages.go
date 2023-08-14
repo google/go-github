@@ -336,10 +336,12 @@ func MessageTypes() []string {
 // If messageType does not match any known event types, it returns nil.
 func EventForType(messageType string) interface{} {
 	prototype := eventTypeMapping[messageType]
-	if prototype != nil {
-		// return a _copy_ of the pointed-to-object.  Unfortunately, for this
-		// we need to use reflection.
-		return reflect.New(reflect.TypeOf(prototype).Elem()).Interface()
+	if prototype == nil {
+		return nil
 	}
-	return prototype
+	// return a _copy_ of the pointed-to-object.  Unfortunately, for this we
+	// need to use reflection.  If we store the actual objects in the map,
+	// we still need to use reflection to convert from `any` to the actual
+	// type, so this was deemed the lesser of two weevils. (#2865)
+	return reflect.New(reflect.TypeOf(prototype).Elem()).Interface()
 }
