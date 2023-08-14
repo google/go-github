@@ -37,10 +37,11 @@ type RepoDependencies struct {
 	LicenseDeclared  *string `json:"licenseDeclared,omitempty"`
 }
 
-// SPDX is an open standard for software bill of materials (SBOM) that
+// SBOMInfo represents a software bill of materials (SBOM) using SPDX.
+// SPDX is an open standard for SBOMs that
 // identifies and catalogs components, licenses, copyrights, security
-// references, and other metadata relating to software
-type SbomInfo struct {
+// references, and other metadata relating to software.
+type SBOMInfo struct {
 	Spdxid       *string       `json:"SPDXID,omitempty"`
 	SpdxVersion  *string       `json:"spdxVersion,omitempty"`
 	CreationInfo *CreationInfo `json:"creationInfo,omitempty"`
