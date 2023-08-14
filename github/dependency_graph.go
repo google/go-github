@@ -16,17 +16,18 @@ type DependencyGraphService service
 // Sbom represents software bill of materials, which descibes the
 // packages/libraries that a repository depends on.
 type Sbom struct {
-	Sbom *SbomInfo `json:"sbom,omitempty"`
+	SBOM *SBOMInfo `json:"sbom,omitempty"`
 }
 
-// When was the SBOM created and who created it
+// CreationInfo represents when the SBOM created and who created it.
 type CreationInfo struct {
 	Created  *time.Time `json:"created,omitempty"`
 	Creators []*string  `json:"creators,omitempty"`
 }
 
+// RepoDependencies represents the dependencies of a repo.
 type RepoDependencies struct {
-	Spdxid *string `json:"SPDXID,omitempty"`
+	SPDXID *string `json:"SPDXID,omitempty"`
 	// Package name
 	Name             *string `json:"name,omitempty"`
 	VersionInfo      *string `json:"versionInfo,omitempty"`
@@ -36,18 +37,19 @@ type RepoDependencies struct {
 	LicenseDeclared  *string `json:"licenseDeclared,omitempty"`
 }
 
-// SPDX is an open standard for software bill of materials (SBOM) that
+// SBOMInfo represents a software bill of materials (SBOM) using SPDX.
+// SPDX is an open standard for SBOMs that
 // identifies and catalogs components, licenses, copyrights, security
-// references, and other metadata relating to software
-type SbomInfo struct {
-	Spdxid       *string       `json:"SPDXID,omitempty"`
-	SpdxVersion  *string       `json:"spdxVersion,omitempty"`
+// references, and other metadata relating to software.
+type SBOMInfo struct {
+	SPDXID       *string       `json:"SPDXID,omitempty"`
+	SPDXVersion  *string       `json:"spdxVersion,omitempty"`
 	CreationInfo *CreationInfo `json:"creationInfo,omitempty"`
 
 	// Repo name
 	Name              *string   `json:"name,omitempty"`
 	DataLicense       *string   `json:"dataLicense,omitempty"`
-	DocumentDescribes []*string `json:"documentDescribes,omitempty"`
+	DocumentDescribes []string `json:"documentDescribes,omitempty"`
 	DocumentNamespace *string   `json:"documentNamespace,omitempty"`
 
 	// List of packages dependencies
@@ -58,10 +60,10 @@ func (s Sbom) String() string {
 	return Stringify(s)
 }
 
-// GetSbom fetches the Software bill of materials for a repository.
+// GetSBOM fetches the software bill of materials for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependency-graph/sboms
-func (s *DependencyGraphService) GetSbom(ctx context.Context, owner string, repo string) (*Sbom, *Response, error) {
+func (s *DependencyGraphService) GetSBOM(ctx context.Context, owner, repo string) (*SBOM, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/dependency-graph/sbom", owner, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -69,7 +71,7 @@ func (s *DependencyGraphService) GetSbom(ctx context.Context, owner string, repo
 		return nil, nil, err
 	}
 
-	var sbom *Sbom
+	var sbom *SBOM
 	resp, err := s.client.Do(ctx, req, &sbom)
 	if err != nil {
 		return nil, resp, err
