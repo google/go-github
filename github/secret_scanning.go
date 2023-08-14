@@ -53,14 +53,14 @@ type SecretScanningAlertLocationDetails struct {
 // SecretScanningAlertListOptions specifies optional parameters to the SecretScanningService.ListAlertsForEnterprise method.
 type SecretScanningAlertListOptions struct {
 	// State of the secret scanning alerts to list. Set to open or resolved to only list secret scanning alerts in a specific state.
-	State string `json:"state,omitempty"`
+	State *string `json:"state,omitempty"`
 
 	// A comma-separated list of secret types to return. By default all secret types are returned.
-	SecretType string `json:"secret_type,omitempty"`
+	SecretType *string `json:"secret_type,omitempty"`
 
 	// A comma-separated list of resolutions. Only secret scanning alerts with one of these resolutions are listed.
 	// Valid resolutions are false_positive, wont_fix, revoked, pattern_edited, pattern_deleted or used_in_tests.
-	Resolution string `json:"resolution,omitempty"`
+	Resolution *string `json:"resolution,omitempty"`
 
 	ListCursorOptions
 
