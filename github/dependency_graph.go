@@ -25,6 +25,7 @@ type CreationInfo struct {
 	Creators []*string  `json:"creators,omitempty"`
 }
 
+// RepoDependencies represents the dependencies of a repo.
 type RepoDependencies struct {
 	Spdxid *string `json:"SPDXID,omitempty"`
 	// Package name
