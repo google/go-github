@@ -27,7 +27,7 @@ type CreationInfo struct {
 
 // RepoDependencies represents the dependencies of a repo.
 type RepoDependencies struct {
-	Spdxid *string `json:"SPDXID,omitempty"`
+	SPDXID *string `json:"SPDXID,omitempty"`
 	// Package name
 	Name             *string `json:"name,omitempty"`
 	VersionInfo      *string `json:"versionInfo,omitempty"`
