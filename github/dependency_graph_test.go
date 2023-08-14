@@ -15,7 +15,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestDependencyGraphService_GetSbom(t *testing.T) {
+func TestDependencyGraphService_GetSBOM(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -38,16 +38,16 @@ func TestDependencyGraphService_GetSbom(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	sbom, _, err := client.DependencyGraph.GetSbom(ctx, "owner", "repo")
+	sbom, _, err := client.DependencyGraph.GetSBOM(ctx, "owner", "repo")
 	if err != nil {
-		t.Errorf("DependencyGraph.GetSbom returned error: %v", err)
+		t.Errorf("DependencyGraph.GetSBOM returned error: %v", err)
 	}
 
 	testTime := time.Date(2021, 9, 1, 0, 0, 0, 0, time.UTC)
-	want := &Sbom{
-		&SbomInfo{
+	want := &SBOM{
+		&SBOMInfo{
 			CreationInfo: &CreationInfo{
-				Created: &testTime,
+				Created: &Timestamp{testTime},
 			},
 			Name: String("owner/repo"),
 			Packages: []*RepoDependencies{
@@ -60,17 +60,17 @@ func TestDependencyGraphService_GetSbom(t *testing.T) {
 	}
 
 	if !cmp.Equal(sbom, want) {
-		t.Errorf("DependencyGraph.GetSbom returned %+v, want %+v", sbom, want)
+		t.Errorf("DependencyGraph.GetSBOM returned %+v, want %+v", sbom, want)
 	}
 
-	const methodName = "GetSbom"
+	const methodName = "GetSBOM"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.DependencyGraph.GetSbom(ctx, "\n", "\n")
+		_, _, err = client.DependencyGraph.GetSBOM(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.DependencyGraph.GetSbom(ctx, "owner", "repo")
+		got, resp, err := client.DependencyGraph.GetSBOM(ctx, "owner", "repo")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

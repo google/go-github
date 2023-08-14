@@ -4695,9 +4695,9 @@ func (c *CreateUserProjectOptions) GetBody() string {
 }
 
 // GetCreated returns the Created field if it's non-nil, zero value otherwise.
-func (c *CreationInfo) GetCreated() time.Time {
+func (c *CreationInfo) GetCreated() Timestamp {
 	if c == nil || c.Created == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *c.Created
 }
@@ -17054,12 +17054,12 @@ func (r *RepoDependencies) GetName() string {
 	return *r.Name
 }
 
-// GetSpdxid returns the Spdxid field if it's non-nil, zero value otherwise.
-func (r *RepoDependencies) GetSpdxid() string {
-	if r == nil || r.Spdxid == nil {
+// GetSPDXID returns the SPDXID field if it's non-nil, zero value otherwise.
+func (r *RepoDependencies) GetSPDXID() string {
+	if r == nil || r.SPDXID == nil {
 		return ""
 	}
-	return *r.Spdxid
+	return *r.SPDXID
 }
 
 // GetVersionInfo returns the VersionInfo field if it's non-nil, zero value otherwise.
@@ -19702,16 +19702,16 @@ func (s *SarifID) GetURL() string {
 	return *s.URL
 }
 
-// GetSbom returns the Sbom field.
-func (s *Sbom) GetSbom() *SbomInfo {
+// GetSBOM returns the SBOM field.
+func (s *SBOM) GetSBOM() *SBOMInfo {
 	if s == nil {
 		return nil
 	}
-	return s.Sbom
+	return s.SBOM
 }
 
 // GetCreationInfo returns the CreationInfo field.
-func (s *SbomInfo) GetCreationInfo() *CreationInfo {
+func (s *SBOMInfo) GetCreationInfo() *CreationInfo {
 	if s == nil {
 		return nil
 	}
@@ -19719,7 +19719,7 @@ func (s *SbomInfo) GetCreationInfo() *CreationInfo {
 }
 
 // GetDataLicense returns the DataLicense field if it's non-nil, zero value otherwise.
-func (s *SbomInfo) GetDataLicense() string {
+func (s *SBOMInfo) GetDataLicense() string {
 	if s == nil || s.DataLicense == nil {
 		return ""
 	}
@@ -19727,7 +19727,7 @@ func (s *SbomInfo) GetDataLicense() string {
 }
 
 // GetDocumentNamespace returns the DocumentNamespace field if it's non-nil, zero value otherwise.
-func (s *SbomInfo) GetDocumentNamespace() string {
+func (s *SBOMInfo) GetDocumentNamespace() string {
 	if s == nil || s.DocumentNamespace == nil {
 		return ""
 	}
@@ -19735,27 +19735,27 @@ func (s *SbomInfo) GetDocumentNamespace() string {
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
-func (s *SbomInfo) GetName() string {
+func (s *SBOMInfo) GetName() string {
 	if s == nil || s.Name == nil {
 		return ""
 	}
 	return *s.Name
 }
 
-// GetSpdxid returns the Spdxid field if it's non-nil, zero value otherwise.
-func (s *SbomInfo) GetSpdxid() string {
-	if s == nil || s.Spdxid == nil {
+// GetSPDXID returns the SPDXID field if it's non-nil, zero value otherwise.
+func (s *SBOMInfo) GetSPDXID() string {
+	if s == nil || s.SPDXID == nil {
 		return ""
 	}
-	return *s.Spdxid
+	return *s.SPDXID
 }
 
-// GetSpdxVersion returns the SpdxVersion field if it's non-nil, zero value otherwise.
-func (s *SbomInfo) GetSpdxVersion() string {
-	if s == nil || s.SpdxVersion == nil {
+// GetSPDXVersion returns the SPDXVersion field if it's non-nil, zero value otherwise.
+func (s *SBOMInfo) GetSPDXVersion() string {
+	if s == nil || s.SPDXVersion == nil {
 		return ""
 	}
-	return *s.SpdxVersion
+	return *s.SPDXVersion
 }
 
 // GetAnalysisKey returns the AnalysisKey field if it's non-nil, zero value otherwise.

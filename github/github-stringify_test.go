@@ -1763,6 +1763,16 @@ func TestRepositoryRelease_String(t *testing.T) {
 	}
 }
 
+func TestSBOM_String(t *testing.T) {
+	v := SBOM{
+		SBOM: &SBOMInfo{},
+	}
+	want := `github.SBOM{SBOM:github.SBOMInfo{}}`
+	if got := v.String(); got != want {
+		t.Errorf("SBOM.String = %v, want %v", got, want)
+	}
+}
+
 func TestSSHSigningKey_String(t *testing.T) {
 	v := SSHSigningKey{
 		ID:        Int64(0),
@@ -1773,16 +1783,6 @@ func TestSSHSigningKey_String(t *testing.T) {
 	want := `github.SSHSigningKey{ID:0, Key:"", Title:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("SSHSigningKey.String = %v, want %v", got, want)
-	}
-}
-
-func TestSbom_String(t *testing.T) {
-	v := Sbom{
-		Sbom: &SbomInfo{},
-	}
-	want := `github.Sbom{Sbom:github.SbomInfo{}}`
-	if got := v.String(); got != want {
-		t.Errorf("Sbom.String = %v, want %v", got, want)
 	}
 }
 

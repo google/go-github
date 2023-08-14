@@ -5536,7 +5536,7 @@ func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 }
 
 func TestCreationInfo_GetCreated(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	c := &CreationInfo{Created: &zeroValue}
 	c.GetCreated()
 	c = &CreationInfo{}
@@ -19818,14 +19818,14 @@ func TestRepoDependencies_GetName(tt *testing.T) {
 	r.GetName()
 }
 
-func TestRepoDependencies_GetSpdxid(tt *testing.T) {
+func TestRepoDependencies_GetSPDXID(tt *testing.T) {
 	var zeroValue string
-	r := &RepoDependencies{Spdxid: &zeroValue}
-	r.GetSpdxid()
+	r := &RepoDependencies{SPDXID: &zeroValue}
+	r.GetSPDXID()
 	r = &RepoDependencies{}
-	r.GetSpdxid()
+	r.GetSPDXID()
 	r = nil
-	r.GetSpdxid()
+	r.GetSPDXID()
 }
 
 func TestRepoDependencies_GetVersionInfo(tt *testing.T) {
@@ -22981,68 +22981,68 @@ func TestSarifID_GetURL(tt *testing.T) {
 	s.GetURL()
 }
 
-func TestSbom_GetSbom(tt *testing.T) {
-	s := &Sbom{}
-	s.GetSbom()
+func TestSBOM_GetSBOM(tt *testing.T) {
+	s := &SBOM{}
+	s.GetSBOM()
 	s = nil
-	s.GetSbom()
+	s.GetSBOM()
 }
 
-func TestSbomInfo_GetCreationInfo(tt *testing.T) {
-	s := &SbomInfo{}
+func TestSBOMInfo_GetCreationInfo(tt *testing.T) {
+	s := &SBOMInfo{}
 	s.GetCreationInfo()
 	s = nil
 	s.GetCreationInfo()
 }
 
-func TestSbomInfo_GetDataLicense(tt *testing.T) {
+func TestSBOMInfo_GetDataLicense(tt *testing.T) {
 	var zeroValue string
-	s := &SbomInfo{DataLicense: &zeroValue}
+	s := &SBOMInfo{DataLicense: &zeroValue}
 	s.GetDataLicense()
-	s = &SbomInfo{}
+	s = &SBOMInfo{}
 	s.GetDataLicense()
 	s = nil
 	s.GetDataLicense()
 }
 
-func TestSbomInfo_GetDocumentNamespace(tt *testing.T) {
+func TestSBOMInfo_GetDocumentNamespace(tt *testing.T) {
 	var zeroValue string
-	s := &SbomInfo{DocumentNamespace: &zeroValue}
+	s := &SBOMInfo{DocumentNamespace: &zeroValue}
 	s.GetDocumentNamespace()
-	s = &SbomInfo{}
+	s = &SBOMInfo{}
 	s.GetDocumentNamespace()
 	s = nil
 	s.GetDocumentNamespace()
 }
 
-func TestSbomInfo_GetName(tt *testing.T) {
+func TestSBOMInfo_GetName(tt *testing.T) {
 	var zeroValue string
-	s := &SbomInfo{Name: &zeroValue}
+	s := &SBOMInfo{Name: &zeroValue}
 	s.GetName()
-	s = &SbomInfo{}
+	s = &SBOMInfo{}
 	s.GetName()
 	s = nil
 	s.GetName()
 }
 
-func TestSbomInfo_GetSpdxid(tt *testing.T) {
+func TestSBOMInfo_GetSPDXID(tt *testing.T) {
 	var zeroValue string
-	s := &SbomInfo{Spdxid: &zeroValue}
-	s.GetSpdxid()
-	s = &SbomInfo{}
-	s.GetSpdxid()
+	s := &SBOMInfo{SPDXID: &zeroValue}
+	s.GetSPDXID()
+	s = &SBOMInfo{}
+	s.GetSPDXID()
 	s = nil
-	s.GetSpdxid()
+	s.GetSPDXID()
 }
 
-func TestSbomInfo_GetSpdxVersion(tt *testing.T) {
+func TestSBOMInfo_GetSPDXVersion(tt *testing.T) {
 	var zeroValue string
-	s := &SbomInfo{SpdxVersion: &zeroValue}
-	s.GetSpdxVersion()
-	s = &SbomInfo{}
-	s.GetSpdxVersion()
+	s := &SBOMInfo{SPDXVersion: &zeroValue}
+	s.GetSPDXVersion()
+	s = &SBOMInfo{}
+	s.GetSPDXVersion()
 	s = nil
-	s.GetSpdxVersion()
+	s.GetSPDXVersion()
 }
 
 func TestScanningAnalysis_GetAnalysisKey(tt *testing.T) {

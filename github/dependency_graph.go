@@ -8,21 +8,20 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 type DependencyGraphService service
 
-// Sbom represents software bill of materials, which descibes the
+// SBOM represents software bill of materials, which descibes the
 // packages/libraries that a repository depends on.
-type Sbom struct {
+type SBOM struct {
 	SBOM *SBOMInfo `json:"sbom,omitempty"`
 }
 
 // CreationInfo represents when the SBOM created and who created it.
 type CreationInfo struct {
-	Created  *time.Time `json:"created,omitempty"`
-	Creators []*string  `json:"creators,omitempty"`
+	Created  *Timestamp `json:"created,omitempty"`
+	Creators []string   `json:"creators,omitempty"`
 }
 
 // RepoDependencies represents the dependencies of a repo.
@@ -47,16 +46,16 @@ type SBOMInfo struct {
 	CreationInfo *CreationInfo `json:"creationInfo,omitempty"`
 
 	// Repo name
-	Name              *string   `json:"name,omitempty"`
-	DataLicense       *string   `json:"dataLicense,omitempty"`
+	Name              *string  `json:"name,omitempty"`
+	DataLicense       *string  `json:"dataLicense,omitempty"`
 	DocumentDescribes []string `json:"documentDescribes,omitempty"`
-	DocumentNamespace *string   `json:"documentNamespace,omitempty"`
+	DocumentNamespace *string  `json:"documentNamespace,omitempty"`
 
 	// List of packages dependencies
 	Packages []*RepoDependencies `json:"packages,omitempty"`
 }
 
-func (s Sbom) String() string {
+func (s SBOM) String() string {
 	return Stringify(s)
 }
 
