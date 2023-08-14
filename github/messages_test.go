@@ -405,6 +405,14 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "project_column",
 		},
 		{
+			payload:     &ProjectV2Event{},
+			messageType: "projects_v2",
+		},
+		{
+			payload:     &ProjectV2ItemEvent{},
+			messageType: "projects_v2_item",
+		},
+		{
 			payload:     &PublicEvent{},
 			messageType: "public",
 		},
