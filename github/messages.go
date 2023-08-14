@@ -97,6 +97,7 @@ var (
 		"release":                        &ReleaseEvent{},
 		"secret_scanning_alert":          &SecretScanningAlertEvent{},
 		"security_advisory":              &SecurityAdvisoryEvent{},
+		"security_and_analysis":          &SecurityAndAnalysisEvent{},
 		"star":                           &StarEvent{},
 		"status":                         &StatusEvent{},
 		"team":                           &TeamEvent{},

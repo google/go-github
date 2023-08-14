@@ -1325,6 +1325,31 @@ type SecretScanningAlertEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// SecurityAndAnalysisEvent is triggered when code security and analysis features
+// are enabled or disabled for a repository.
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#security_and_analysis
+type SecurityAndAnalysisEvent struct {
+	Changes      *SecurityAndAnalysisChange `json:"changes,omitempty"`
+	Enterprise   *Enterprise                `json:"enterprise,omitempty"`
+	Installation *Installation              `json:"installation,omitempty"`
+	Organization *Organization              `json:"organization,omitempty"`
+	Repository   *Repository                `json:"repository,omitempty"`
+	Sender       *User                      `json:"sender,omitempty"`
+}
+
+// SecurityAndAnalysisChange represents the changes when security and analysis
+// features are enabled or disabled for a repository.
+type SecurityAndAnalysisChange struct {
+	From *SecurityAndAnalysisChangeFrom `json:"from,omitempty"`
+}
+
+// SecurityAndAnalysisChangeFrom represents which change was made when security
+// and analysis features are enabled or disabled for a repository.
+type SecurityAndAnalysisChangeFrom struct {
+	SecurityAndAnalysis *SecurityAndAnalysis `json:"security_and_analysis,omitempty"`
+}
+
 // StarEvent is triggered when a star is added or removed from a repository.
 // The Webhook event name is "star".
 //
