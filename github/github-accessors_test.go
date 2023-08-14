@@ -23643,6 +23643,62 @@ func TestSecurityAndAnalysis_GetSecretScanningPushProtection(tt *testing.T) {
 	s.GetSecretScanningPushProtection()
 }
 
+func TestSecurityAndAnalysisChange_GetFrom(tt *testing.T) {
+	s := &SecurityAndAnalysisChange{}
+	s.GetFrom()
+	s = nil
+	s.GetFrom()
+}
+
+func TestSecurityAndAnalysisChangeFrom_GetSecurityAndAnalysis(tt *testing.T) {
+	s := &SecurityAndAnalysisChangeFrom{}
+	s.GetSecurityAndAnalysis()
+	s = nil
+	s.GetSecurityAndAnalysis()
+}
+
+func TestSecurityAndAnalysisEvent_GetChanges(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetChanges()
+	s = nil
+	s.GetChanges()
+}
+
+func TestSecurityAndAnalysisEvent_GetEnterprise(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetEnterprise()
+	s = nil
+	s.GetEnterprise()
+}
+
+func TestSecurityAndAnalysisEvent_GetInstallation(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetInstallation()
+	s = nil
+	s.GetInstallation()
+}
+
+func TestSecurityAndAnalysisEvent_GetOrganization(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetOrganization()
+	s = nil
+	s.GetOrganization()
+}
+
+func TestSecurityAndAnalysisEvent_GetRepository(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetRepository()
+	s = nil
+	s.GetRepository()
+}
+
+func TestSecurityAndAnalysisEvent_GetSender(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetSender()
+	s = nil
+	s.GetSender()
+}
+
 func TestSelectedReposList_GetTotalCount(tt *testing.T) {
 	var zeroValue int
 	s := &SelectedReposList{TotalCount: &zeroValue}
