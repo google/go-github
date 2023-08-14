@@ -179,36 +179,37 @@ type Client struct {
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// Services used for talking to different parts of the GitHub API.
-	Actions        *ActionsService
-	Activity       *ActivityService
-	Admin          *AdminService
-	Apps           *AppsService
-	Authorizations *AuthorizationsService
-	Billing        *BillingService
-	Checks         *ChecksService
-	CodeScanning   *CodeScanningService
-	Codespaces     *CodespacesService
-	Dependabot     *DependabotService
-	Enterprise     *EnterpriseService
-	Gists          *GistsService
-	Git            *GitService
-	Gitignores     *GitignoresService
-	Interactions   *InteractionsService
-	IssueImport    *IssueImportService
-	Issues         *IssuesService
-	Licenses       *LicensesService
-	Marketplace    *MarketplaceService
-	Migrations     *MigrationService
-	Organizations  *OrganizationsService
-	Projects       *ProjectsService
-	PullRequests   *PullRequestsService
-	Reactions      *ReactionsService
-	Repositories   *RepositoriesService
-	SCIM           *SCIMService
-	Search         *SearchService
-	SecretScanning *SecretScanningService
-	Teams          *TeamsService
-	Users          *UsersService
+	Actions         *ActionsService
+	Activity        *ActivityService
+	Admin           *AdminService
+	Apps            *AppsService
+	Authorizations  *AuthorizationsService
+	Billing         *BillingService
+	Checks          *ChecksService
+	CodeScanning    *CodeScanningService
+	Codespaces      *CodespacesService
+	Dependabot      *DependabotService
+	DependencyGraph *DependencyGraphService
+	Enterprise      *EnterpriseService
+	Gists           *GistsService
+	Git             *GitService
+	Gitignores      *GitignoresService
+	Interactions    *InteractionsService
+	IssueImport     *IssueImportService
+	Issues          *IssuesService
+	Licenses        *LicensesService
+	Marketplace     *MarketplaceService
+	Migrations      *MigrationService
+	Organizations   *OrganizationsService
+	Projects        *ProjectsService
+	PullRequests    *PullRequestsService
+	Reactions       *ReactionsService
+	Repositories    *RepositoriesService
+	SCIM            *SCIMService
+	Search          *SearchService
+	SecretScanning  *SecretScanningService
+	Teams           *TeamsService
+	Users           *UsersService
 }
 
 type service struct {
@@ -328,6 +329,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.CodeScanning = (*CodeScanningService)(&c.common)
 	c.Codespaces = (*CodespacesService)(&c.common)
 	c.Dependabot = (*DependabotService)(&c.common)
+	c.DependencyGraph = (*DependencyGraphService)(&c.common)
 	c.Enterprise = (*EnterpriseService)(&c.common)
 	c.Gists = (*GistsService)(&c.common)
 	c.Git = (*GitService)(&c.common)

@@ -1776,6 +1776,16 @@ func TestSSHSigningKey_String(t *testing.T) {
 	}
 }
 
+func TestSbom_String(t *testing.T) {
+	v := Sbom{
+		Sbom: &SbomInfo{},
+	}
+	want := `github.Sbom{Sbom:github.SbomInfo{}}`
+	if got := v.String(); got != want {
+		t.Errorf("Sbom.String = %v, want %v", got, want)
+	}
+}
+
 func TestSecretScanning_String(t *testing.T) {
 	v := SecretScanning{
 		Status: String(""),

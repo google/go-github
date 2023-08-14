@@ -4694,6 +4694,14 @@ func (c *CreateUserProjectOptions) GetBody() string {
 	return *c.Body
 }
 
+// GetCreated returns the Created field if it's non-nil, zero value otherwise.
+func (c *CreationInfo) GetCreated() time.Time {
+	if c == nil || c.Created == nil {
+		return time.Time{}
+	}
+	return *c.Created
+}
+
 // GetAuthorizedCredentialExpiresAt returns the AuthorizedCredentialExpiresAt field if it's non-nil, zero value otherwise.
 func (c *CredentialAuthorization) GetAuthorizedCredentialExpiresAt() Timestamp {
 	if c == nil || c.AuthorizedCredentialExpiresAt == nil {
@@ -17006,6 +17014,62 @@ func (r *RenameOrgResponse) GetURL() string {
 	return *r.URL
 }
 
+// GetDownloadLocation returns the DownloadLocation field if it's non-nil, zero value otherwise.
+func (r *RepoDependencies) GetDownloadLocation() string {
+	if r == nil || r.DownloadLocation == nil {
+		return ""
+	}
+	return *r.DownloadLocation
+}
+
+// GetFilesAnalyzed returns the FilesAnalyzed field if it's non-nil, zero value otherwise.
+func (r *RepoDependencies) GetFilesAnalyzed() bool {
+	if r == nil || r.FilesAnalyzed == nil {
+		return false
+	}
+	return *r.FilesAnalyzed
+}
+
+// GetLicenseConcluded returns the LicenseConcluded field if it's non-nil, zero value otherwise.
+func (r *RepoDependencies) GetLicenseConcluded() string {
+	if r == nil || r.LicenseConcluded == nil {
+		return ""
+	}
+	return *r.LicenseConcluded
+}
+
+// GetLicenseDeclared returns the LicenseDeclared field if it's non-nil, zero value otherwise.
+func (r *RepoDependencies) GetLicenseDeclared() string {
+	if r == nil || r.LicenseDeclared == nil {
+		return ""
+	}
+	return *r.LicenseDeclared
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *RepoDependencies) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
+}
+
+// GetSpdxid returns the Spdxid field if it's non-nil, zero value otherwise.
+func (r *RepoDependencies) GetSpdxid() string {
+	if r == nil || r.Spdxid == nil {
+		return ""
+	}
+	return *r.Spdxid
+}
+
+// GetVersionInfo returns the VersionInfo field if it's non-nil, zero value otherwise.
+func (r *RepoDependencies) GetVersionInfo() string {
+	if r == nil || r.VersionInfo == nil {
+		return ""
+	}
+	return *r.VersionInfo
+}
+
 // GetBranch returns the Branch field if it's non-nil, zero value otherwise.
 func (r *RepoMergeUpstreamRequest) GetBranch() string {
 	if r == nil || r.Branch == nil {
@@ -19636,6 +19700,62 @@ func (s *SarifID) GetURL() string {
 		return ""
 	}
 	return *s.URL
+}
+
+// GetSbom returns the Sbom field.
+func (s *Sbom) GetSbom() *SbomInfo {
+	if s == nil {
+		return nil
+	}
+	return s.Sbom
+}
+
+// GetCreationInfo returns the CreationInfo field.
+func (s *SbomInfo) GetCreationInfo() *CreationInfo {
+	if s == nil {
+		return nil
+	}
+	return s.CreationInfo
+}
+
+// GetDataLicense returns the DataLicense field if it's non-nil, zero value otherwise.
+func (s *SbomInfo) GetDataLicense() string {
+	if s == nil || s.DataLicense == nil {
+		return ""
+	}
+	return *s.DataLicense
+}
+
+// GetDocumentNamespace returns the DocumentNamespace field if it's non-nil, zero value otherwise.
+func (s *SbomInfo) GetDocumentNamespace() string {
+	if s == nil || s.DocumentNamespace == nil {
+		return ""
+	}
+	return *s.DocumentNamespace
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (s *SbomInfo) GetName() string {
+	if s == nil || s.Name == nil {
+		return ""
+	}
+	return *s.Name
+}
+
+// GetSpdxid returns the Spdxid field if it's non-nil, zero value otherwise.
+func (s *SbomInfo) GetSpdxid() string {
+	if s == nil || s.Spdxid == nil {
+		return ""
+	}
+	return *s.Spdxid
+}
+
+// GetSpdxVersion returns the SpdxVersion field if it's non-nil, zero value otherwise.
+func (s *SbomInfo) GetSpdxVersion() string {
+	if s == nil || s.SpdxVersion == nil {
+		return ""
+	}
+	return *s.SpdxVersion
 }
 
 // GetAnalysisKey returns the AnalysisKey field if it's non-nil, zero value otherwise.
