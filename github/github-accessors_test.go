@@ -2265,6 +2265,26 @@ func TestAutolinkOptions_GetURLTemplate(tt *testing.T) {
 	a.GetURLTemplate()
 }
 
+func TestAutomatedSecurityFixes_GetEnabled(tt *testing.T) {
+	var zeroValue bool
+	a := &AutomatedSecurityFixes{Enabled: &zeroValue}
+	a.GetEnabled()
+	a = &AutomatedSecurityFixes{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
+}
+
+func TestAutomatedSecurityFixes_GetPaused(tt *testing.T) {
+	var zeroValue bool
+	a := &AutomatedSecurityFixes{Paused: &zeroValue}
+	a.GetPaused()
+	a = &AutomatedSecurityFixes{}
+	a.GetPaused()
+	a = nil
+	a.GetPaused()
+}
+
 func TestAutoTriggerCheck_GetAppID(tt *testing.T) {
 	var zeroValue int64
 	a := &AutoTriggerCheck{AppID: &zeroValue}
