@@ -12,13 +12,13 @@ import (
 
 type DependencyGraphService service
 
-// SBOM represents software bill of materials, which descibes the
+// SBOM represents a software bill of materials, which descibes the
 // packages/libraries that a repository depends on.
 type SBOM struct {
 	SBOM *SBOMInfo `json:"sbom,omitempty"`
 }
 
-// CreationInfo represents when the SBOM created and who created it.
+// CreationInfo represents when the SBOM was created and who created it.
 type CreationInfo struct {
 	Created  *Timestamp `json:"created,omitempty"`
 	Creators []string   `json:"creators,omitempty"`
