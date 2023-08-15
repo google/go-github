@@ -11374,6 +11374,14 @@ func (n *NewPullRequest) GetHead() string {
 	return *n.Head
 }
 
+// GetHeadRepo returns the HeadRepo field if it's non-nil, zero value otherwise.
+func (n *NewPullRequest) GetHeadRepo() string {
+	if n == nil || n.HeadRepo == nil {
+		return ""
+	}
+	return *n.HeadRepo
+}
+
 // GetIssue returns the Issue field if it's non-nil, zero value otherwise.
 func (n *NewPullRequest) GetIssue() int {
 	if n == nil || n.Issue == nil {
