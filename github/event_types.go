@@ -165,8 +165,10 @@ type DeployKeyEvent struct {
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#deployment
 type DeploymentEvent struct {
-	Deployment *Deployment `json:"deployment,omitempty"`
-	Repo       *Repository `json:"repository,omitempty"`
+	Deployment  *Deployment  `json:"deployment,omitempty"`
+	Repo        *Repository  `json:"repository,omitempty"`
+	Workflow    *Workflow    `json:"workflow,omitempty"`
+	WorkflowRun *WorkflowRun `json:"workflow_run,omitempty"`
 
 	// The following fields are only populated by Webhook events.
 	Sender       *User         `json:"sender,omitempty"`
