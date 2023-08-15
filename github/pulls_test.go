@@ -944,6 +944,7 @@ func TestNewPullRequest_Marshal(t *testing.T) {
 	want := `{
 		"title": "eh",
 		"head": "eh",
+		"head_repo": "eh",
 		"base": "eh",
 		"body": "eh",
 		"issue": 1,
