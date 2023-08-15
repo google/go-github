@@ -23,6 +23,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"sort"
 	"strings"
 )
 
@@ -83,6 +84,8 @@ var (
 		"project":                        &ProjectEvent{},
 		"project_card":                   &ProjectCardEvent{},
 		"project_column":                 &ProjectColumnEvent{},
+		"projects_v2":                    &ProjectV2Event{},
+		"projects_v2_item":               &ProjectV2ItemEvent{},
 		"public":                         &PublicEvent{},
 		"pull_request":                   &PullRequestEvent{},
 		"pull_request_review":            &PullRequestReviewEvent{},
@@ -322,13 +325,14 @@ func ParseWebHook(messageType string, payload []byte) (interface{}, error) {
 	return event.ParsePayload()
 }
 
-// WebhookTypes returns a list of all the known GitHub event type strings
+// WebhookTypes returns a sorted list of all the known GitHub event type strings
 // supported by go-github.
 func MessageTypes() []string {
 	types := make([]string, 0, len(eventTypeMapping))
 	for t := range eventTypeMapping {
 		types = append(types, t)
 	}
+	sort.Strings(types)
 	return types
 }
 
@@ -342,6 +346,6 @@ func EventForType(messageType string) interface{} {
 	// return a _copy_ of the pointed-to-object.  Unfortunately, for this we
 	// need to use reflection.  If we store the actual objects in the map,
 	// we still need to use reflection to convert from `any` to the actual
-	// type, so this was deemed the lesser of two weevils. (#2865)
+	// type, so this was deemed the lesser of two evils. (#2865)
 	return reflect.New(reflect.TypeOf(prototype).Elem()).Interface()
 }

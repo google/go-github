@@ -27,16 +27,16 @@ func (e Event) String() string {
 
 // ParsePayload parses the event payload. For recognized event types,
 // a value of the corresponding struct type will be returned.
-func (e *Event) ParsePayload() (payload interface{}, err error) {
+func (e *Event) ParsePayload() (interface{}, error) {
 	// It would be nice if e.Type were the snake_case name of the event,
 	// but the existing interface uses the struct name instead.
-	typed := EventForType(typeToMessageMapping[e.GetType()])
-	if typed != nil {
-		payload = typed
-	}
-	err = json.Unmarshal(e.GetRawPayload(), &payload)
+	var payload interface{} = EventForType(typeToMessageMapping[e.GetType()])
 
-	return
+	if err := json.Unmarshal(e.GetRawPayload(), &payload); err != nil {
+		return nil, err
+	}
+
+	return payload, nil
 }
 
 // Payload returns the parsed event payload. For recognized event types,
