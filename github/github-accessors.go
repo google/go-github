@@ -5366,6 +5366,22 @@ func (d *DeploymentEvent) GetSender() *User {
 	return d.Sender
 }
 
+// GetWorkflow returns the Workflow field.
+func (d *DeploymentEvent) GetWorkflow() *Workflow {
+	if d == nil {
+		return nil
+	}
+	return d.Workflow
+}
+
+// GetWorkflowRun returns the WorkflowRun field.
+func (d *DeploymentEvent) GetWorkflowRun() *WorkflowRun {
+	if d == nil {
+		return nil
+	}
+	return d.WorkflowRun
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (d *DeploymentProtectionRuleEvent) GetAction() string {
 	if d == nil || d.Action == nil {
