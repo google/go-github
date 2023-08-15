@@ -703,6 +703,25 @@ func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, ow
 	return s.client.Do(ctx, req, nil)
 }
 
+// GetAutomatedSecurityFixes checks if the automated security fixes for a repository are enabled.
+//
+// GitHub API docs: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#check-if-automated-security-fixes-are-enabled-for-a-repository
+func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*AutomatedSecurityFixes, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/automated-security-fixes", owner, repository)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := new(AutomatedSecurityFixes)
+	resp, err := s.client.Do(ctx, req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+	return p, resp, nil
+}
+
 // EnableAutomatedSecurityFixes enables the automated security fixes for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/repos#enable-automated-security-fixes
@@ -713,9 +732,6 @@ func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -730,9 +746,6 @@ func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -1226,6 +1239,12 @@ type SignaturesProtectedBranch struct {
 	URL *string `json:"url,omitempty"`
 	// Commits pushed to matching branches must have verified signatures.
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// AutomatedSecurityFixes represents their status.
+type AutomatedSecurityFixes struct {
+	Enabled *bool `json:"enabled"`
+	Paused  *bool `json:"paused"`
 }
 
 // ListBranches lists branches for the specified repository.
