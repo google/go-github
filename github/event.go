@@ -105,6 +105,10 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &ProjectCardEvent{}
 	case "ProjectColumnEvent":
 		payload = &ProjectColumnEvent{}
+	case "ProjectV2Event":
+		payload = &ProjectV2Event{}
+	case "ProjectV2ItemEvent":
+		payload = &ProjectV2ItemEvent{}
 	case "PublicEvent":
 		payload = &PublicEvent{}
 	case "PullRequestEvent":
@@ -133,6 +137,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &SecretScanningAlertEvent{}
 	case "SecurityAdvisoryEvent":
 		payload = &SecurityAdvisoryEvent{}
+	case "SecurityAndAnalysisEvent":
+		payload = &SecurityAndAnalysisEvent{}
 	case "StarEvent":
 		payload = &StarEvent{}
 	case "StatusEvent":
