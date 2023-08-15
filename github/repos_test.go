@@ -360,7 +360,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"},"security_and_analysis":{"advanced_security":{"status":"enabled"},"secret_scanning":{"status":"enabled"},"secret_scanning_push_protection":{"status":"enabled"}}}`)
+		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"},"security_and_analysis":{"advanced_security":{"status":"enabled"},"secret_scanning":{"status":"enabled"},"secret_scanning_push_protection":{"status":"enabled"},"dependabot_security_updates":{"status": "enabled"}}}`)
 	})
 
 	ctx := context.Background()
@@ -369,7 +369,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 		t.Errorf("Repositories.Get returned error: %v", err)
 	}
 
-	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}, SecurityAndAnalysis: &SecurityAndAnalysis{AdvancedSecurity: &AdvancedSecurity{Status: String("enabled")}, SecretScanning: &SecretScanning{String("enabled")}, SecretScanningPushProtection: &SecretScanningPushProtection{String("enabled")}}}
+	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}, SecurityAndAnalysis: &SecurityAndAnalysis{AdvancedSecurity: &AdvancedSecurity{Status: String("enabled")}, SecretScanning: &SecretScanning{String("enabled")}, SecretScanningPushProtection: &SecretScanningPushProtection{String("enabled")}, DependabotSecurityUpdates: &DependabotSecurityUpdates{String("enabled")}}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.Get returned %+v, want %+v", got, want)
 	}
@@ -653,7 +653,6 @@ func TestRepositoriesService_EnableAutomatedSecurityFixes(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -664,13 +663,49 @@ func TestRepositoriesService_EnableAutomatedSecurityFixes(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetAutomatedSecurityFixes(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"enabled": true, "paused": false}`)
+	})
+
+	ctx := context.Background()
+	fixes, _, err := client.Repositories.GetAutomatedSecurityFixes(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("Repositories.GetAutomatedSecurityFixes returned errpr: #{err}")
+	}
+
+	want := &AutomatedSecurityFixes{
+		Enabled: Bool(true),
+		Paused:  Bool(false),
+	}
+	if !cmp.Equal(fixes, want) {
+		t.Errorf("Repositories.GetAutomatedSecurityFixes returned #{fixes}, want #{want}")
+	}
+
+	const methodName = "GetAutomatedSecurityFixes"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetAutomatedSecurityFixes(ctx, "\n", "\n")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetAutomatedSecurityFixes(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestRepositoriesService_DisableAutomatedSecurityFixes(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -3220,7 +3255,7 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := TransferRequest{NewOwner: "a", TeamID: []int64{123}}
+	input := TransferRequest{NewOwner: "a", NewName: String("b"), TeamID: []int64{123}}
 
 	mux.HandleFunc("/repos/o/r/transfer", func(w http.ResponseWriter, r *http.Request) {
 		var v TransferRequest
@@ -3390,11 +3425,13 @@ func TestTransferRequest_Marshal(t *testing.T) {
 
 	u := &TransferRequest{
 		NewOwner: "testOwner",
+		NewName:  String("testName"),
 		TeamID:   []int64{1, 2},
 	}
 
 	want := `{
 		"new_owner": "testOwner",
+		"new_name": "testName",
 		"team_ids": [1,2]
 	}`
 
@@ -3502,6 +3539,32 @@ func TestRequiredStatusCheck_Marshal(t *testing.T) {
 	want := `{
 		"context": "ctx",
 		"app_id": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRepositoryTag_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryTag{}, "{}")
+
+	u := &RepositoryTag{
+		Name: String("v0.1"),
+		Commit: &Commit{
+			SHA: String("sha"),
+			URL: String("url"),
+		},
+		ZipballURL: String("zball"),
+		TarballURL: String("tball"),
+	}
+
+	want := `{
+		"name": "v0.1",
+		"commit": {
+			"sha": "sha",
+			"url": "url"
+		},
+		"zipball_url": "zball",
+		"tarball_url": "tball"
 	}`
 
 	testJSONMarshal(t, u, want)

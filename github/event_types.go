@@ -175,6 +175,25 @@ type DeploymentEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// DeploymentProtectionRuleEvent represents a deployment protection rule event.
+// The Webhook event name is "deployment_protection_rule".
+//
+// GitHub API docs: https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#deployment_protection_rule
+type DeploymentProtectionRuleEvent struct {
+	Action      *string `json:"action,omitempty"`
+	Environment *string `json:"environment,omitempty"`
+	Event       *string `json:"event,omitempty"`
+
+	// The URL Github provides for a third-party to use in order to pass/fail a deployment gate
+	DeploymentCallbackURL *string        `json:"deployment_callback_url,omitempty"`
+	Deployment            *Deployment    `json:"deployment,omitempty"`
+	Repo                  *Repository    `json:"repository,omitempty"`
+	Organization          *Organization  `json:"organization,omitempty"`
+	PullRequests          []*PullRequest `json:"pull_requests,omitempty"`
+	Sender                *User          `json:"sender,omitempty"`
+	Installation          *Installation  `json:"installation,omitempty"`
+}
+
 // DeploymentStatusEvent represents a deployment status.
 // The Webhook event name is "deployment_status".
 //
@@ -471,7 +490,7 @@ type InstallationEvent struct {
 	Repositories []*Repository `json:"repositories,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
-	// TODO key "requester" is not covered
+	Requester    *User         `json:"requester,omitempty"`
 }
 
 // InstallationRepositoriesEvent is triggered when a repository is added or
@@ -486,6 +505,38 @@ type InstallationRepositoriesEvent struct {
 	RepositorySelection *string       `json:"repository_selection,omitempty"`
 	Sender              *User         `json:"sender,omitempty"`
 	Installation        *Installation `json:"installation,omitempty"`
+}
+
+// InstallationLoginChange represents a change in login on an installation.
+type InstallationLoginChange struct {
+	From *string `json:"from,omitempty"`
+}
+
+// InstallationSlugChange represents a change in slug on an installation.
+type InstallationSlugChange struct {
+	From *string `json:"from,omitempty"`
+}
+
+// InstallationChanges represents a change in slug or login on an installation.
+type InstallationChanges struct {
+	Login *InstallationLoginChange `json:"login,omitempty"`
+	Slug  *InstallationSlugChange  `json:"slug,omitempty"`
+}
+
+// InstallationTargetEvent is triggered when there is activity on an installation from a user or organization account.
+// The Webhook event name is "installation_target".
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#installation_target
+type InstallationTargetEvent struct {
+	Account      *User                `json:"account,omitempty"`
+	Action       *string              `json:"action,omitempty"`
+	Changes      *InstallationChanges `json:"changes,omitempty"`
+	Enterprise   *Enterprise          `json:"enterprise,omitempty"`
+	Installation *Installation        `json:"installation,omitempty"`
+	Organization *Organization        `json:"organization,omitempty"`
+	Repository   *Repository          `json:"repository,omitempty"`
+	Sender       *User                `json:"sender,omitempty"`
+	TargetType   *string              `json:"target_type,omitempty"`
 }
 
 // IssueCommentEvent is triggered when an issue comment is created on an issue
@@ -757,6 +808,74 @@ type PageBuildEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// PersonalAccessTokenRequestEvent occurs when there is activity relating to a
+// request for a fine-grained personal access token to access resources that
+// belong to a resource owner that requires approval for token access.
+// The webhook event name is "personal_access_token_request".
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#personal_access_token_request
+type PersonalAccessTokenRequestEvent struct {
+	// Action is the action that was performed. Possible values are:
+	// "approved", "cancelled", "created" or "denied"
+	Action                     *string                     `json:"action,omitempty"`
+	PersonalAccessTokenRequest *PersonalAccessTokenRequest `json:"personal_access_token_request,omitempty"`
+	Org                        *Organization               `json:"organization,omitempty"`
+	Sender                     *User                       `json:"sender,omitempty"`
+	Installation               *Installation               `json:"installation,omitempty"`
+}
+
+// PersonalAccessTokenRequest contains the details of a PersonalAccessTokenRequestEvent.
+type PersonalAccessTokenRequest struct {
+	// Unique identifier of the request for access via fine-grained personal
+	// access token. Used as the pat_request_id parameter in the list and review
+	// API calls.
+	ID    *int64 `json:"id,omitempty"`
+	Owner *User  `json:"owner,omitempty"`
+
+	// New requested permissions, categorized by type of permission.
+	PermissionsAdded *PersonalAccessTokenPermissions `json:"permissions_added,omitempty"`
+
+	// Requested permissions that elevate access for a previously approved
+	// request for access, categorized by type of permission.
+	PermissionsUpgraded *PersonalAccessTokenPermissions `json:"permissions_upgraded,omitempty"`
+
+	// Permissions requested, categorized by type of permission.
+	// This field incorporates permissions_added and permissions_upgraded.
+	PermissionsResult *PersonalAccessTokenPermissions `json:"permissions_result,omitempty"`
+
+	// Type of repository selection requested. Possible values are:
+	// "none", "all" or "subset"
+	RepositorySelection *string `json:"repository_selection,omitempty"`
+
+	// The number of repositories the token is requesting access to.
+	// This field is only populated when repository_selection is subset.
+	RepositoryCount *int64 `json:"repository_count,omitempty"`
+
+	// An array of repository objects the token is requesting access to.
+	// This field is only populated when repository_selection is subset.
+	Repositories []*Repository `json:"repositories,omitempty"`
+
+	// Date and time when the request for access was created.
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+
+	// Whether the associated fine-grained personal access token has expired.
+	TokenExpired *bool `json:"token_expired,omitempty"`
+
+	// Date and time when the associated fine-grained personal access token expires.
+	TokenExpiresAt *Timestamp `json:"token_expires_at,omitempty"`
+
+	// Date and time when the associated fine-grained personal access token was last used for authentication.
+	TokenLastUsedAt *Timestamp `json:"token_last_used_at,omitempty"`
+}
+
+// PersonalAccessTokenPermissions represents the original or newly requested
+// scope of permissions for a fine-grained personal access token within a PersonalAccessTokenRequest.
+type PersonalAccessTokenPermissions struct {
+	Org   map[string]string `json:"organization,omitempty"`
+	Repo  map[string]string `json:"repository,omitempty"`
+	Other map[string]string `json:"other,omitempty"`
+}
+
 // PingEvent is triggered when a Webhook is added to GitHub.
 //
 // GitHub API docs: https://developer.github.com/webhooks/#ping-event
@@ -823,6 +942,77 @@ type ProjectColumnEvent struct {
 	Org          *Organization `json:"organization,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+}
+
+// ProjectV2Event is triggered when there is activity relating to an organization-level project.
+// The Webhook event name is "projects_v2".
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2
+type ProjectV2Event struct {
+	Action     *string     `json:"action,omitempty"`
+	ProjectsV2 *ProjectsV2 `json:"projects_v2,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Installation *Installation `json:"installation,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
+// ProjectsV2 represents a projects v2 project.
+type ProjectsV2 struct {
+	ID               *int64     `json:"id,omitempty"`
+	NodeID           *string    `json:"node_id,omitempty"`
+	Owner            *User      `json:"owner,omitempty"`
+	Creator          *User      `json:"creator,omitempty"`
+	Title            *string    `json:"title,omitempty"`
+	Description      *string    `json:"description,omitempty"`
+	Public           *bool      `json:"public,omitempty"`
+	ClosedAt         *Timestamp `json:"closed_at,omitempty"`
+	CreatedAt        *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
+	DeletedAt        *Timestamp `json:"deleted_at,omitempty"`
+	Number           *int       `json:"number,omitempty"`
+	ShortDescription *string    `json:"short_description,omitempty"`
+	DeletedBy        *User      `json:"deleted_by,omitempty"`
+}
+
+// ProjectV2ItemEvent is triggered when there is activity relating to an item on an organization-level project.
+// The Webhook event name is "projects_v2_item".
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2_item
+type ProjectV2ItemEvent struct {
+	Action        *string              `json:"action,omitempty"`
+	Changes       *ProjectV2ItemChange `json:"changes,omitempty"`
+	ProjectV2Item *ProjectV2Item       `json:"projects_v2_item,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Installation *Installation `json:"installation,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
+// ProjectV2ItemChange represents a project v2 item change.
+type ProjectV2ItemChange struct {
+	ArchivedAt *ArchivedAt `json:"archived_at,omitempty"`
+}
+
+// ArchivedAt represents an archiving date change.
+type ArchivedAt struct {
+	From *Timestamp `json:"from,omitempty"`
+	To   *Timestamp `json:"to,omitempty"`
+}
+
+// ProjectsV2 represents an item belonging to a project.
+type ProjectV2Item struct {
+	ID            *int64     `json:"id,omitempty"`
+	NodeID        *string    `json:"node_id,omitempty"`
+	ProjectNodeID *string    `json:"project_node_id,omitempty"`
+	ContentNodeID *string    `json:"content_node_id,omitempty"`
+	ContentType   *string    `json:"content_type,omitempty"`
+	Creator       *User      `json:"creator,omitempty"`
+	CreatedAt     *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
+	ArchivedAt    *Timestamp `json:"archived_at,omitempty"`
 }
 
 // PublicEvent is triggered when a private repository is open sourced.
@@ -1206,6 +1396,31 @@ type SecretScanningAlertEvent struct {
 	Organization *Organization `json:"organization,omitempty"`
 	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+}
+
+// SecurityAndAnalysisEvent is triggered when code security and analysis features
+// are enabled or disabled for a repository.
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#security_and_analysis
+type SecurityAndAnalysisEvent struct {
+	Changes      *SecurityAndAnalysisChange `json:"changes,omitempty"`
+	Enterprise   *Enterprise                `json:"enterprise,omitempty"`
+	Installation *Installation              `json:"installation,omitempty"`
+	Organization *Organization              `json:"organization,omitempty"`
+	Repository   *Repository                `json:"repository,omitempty"`
+	Sender       *User                      `json:"sender,omitempty"`
+}
+
+// SecurityAndAnalysisChange represents the changes when security and analysis
+// features are enabled or disabled for a repository.
+type SecurityAndAnalysisChange struct {
+	From *SecurityAndAnalysisChangeFrom `json:"from,omitempty"`
+}
+
+// SecurityAndAnalysisChangeFrom represents which change was made when security
+// and analysis features are enabled or disabled for a repository.
+type SecurityAndAnalysisChangeFrom struct {
+	SecurityAndAnalysis *SecurityAndAnalysis `json:"security_and_analysis,omitempty"`
 }
 
 // StarEvent is triggered when a star is added or removed from a repository.

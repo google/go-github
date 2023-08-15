@@ -293,6 +293,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "deployment",
 		},
 		{
+			payload:     &DeploymentProtectionRuleEvent{},
+			messageType: "deployment_protection_rule",
+		},
+		{
 			payload:     &DeploymentStatusEvent{},
 			messageType: "deployment_status",
 		},
@@ -323,6 +327,10 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &InstallationRepositoriesEvent{},
 			messageType: "installation_repositories",
+		},
+		{
+			payload:     &InstallationTargetEvent{},
+			messageType: "installation_target",
 		},
 		{
 			payload:     &IssueCommentEvent{},
@@ -377,6 +385,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "page_build",
 		},
 		{
+			payload:     &PersonalAccessTokenRequestEvent{},
+			messageType: "personal_access_token_request",
+		},
+		{
 			payload:     &PingEvent{},
 			messageType: "ping",
 		},
@@ -391,6 +403,14 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &ProjectColumnEvent{},
 			messageType: "project_column",
+		},
+		{
+			payload:     &ProjectV2Event{},
+			messageType: "projects_v2",
+		},
+		{
+			payload:     &ProjectV2ItemEvent{},
+			messageType: "projects_v2_item",
 		},
 		{
 			payload:     &PublicEvent{},
@@ -435,6 +455,14 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &SecretScanningAlertEvent{},
 			messageType: "secret_scanning_alert",
+		},
+		{
+			payload:     &SecurityAdvisoryEvent{},
+			messageType: "security_advisory",
+		},
+		{
+			payload:     &SecurityAndAnalysisEvent{},
+			messageType: "security_and_analysis",
 		},
 		{
 			payload:     &StarEvent{},

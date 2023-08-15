@@ -30,7 +30,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/go-github/v51/github"
+	"github.com/google/go-github/v53/github"
 )
 
 var (
@@ -38,6 +38,7 @@ var (
 	sourceRepo    = flag.String("source-repo", "", "Name of repo to create the commit in.")
 	commitMessage = flag.String("commit-message", "", "Content of the commit message.")
 	commitBranch  = flag.String("commit-branch", "", "Name of branch to create the commit in. If it does not already exists, it will be created using the `base-branch` parameter")
+	repoBranch    = flag.String("repo-branch", "", "Name of the repository where the changes in the pull request were made. This field is required for cross-repository pull requests if both repositories are owned by the same organization")
 	baseBranch    = flag.String("base-branch", "master", "Name of branch to create the `commit-branch` from.")
 	prRepoOwner   = flag.String("merge-repo-owner", "", "Name of the owner (user or org) of the repo to create the PR against. If not specified, the value of the `-source-owner` flag will be used.")
 	prRepo        = flag.String("merge-repo", "", "Name of repo to create the PR against. If not specified, the value of the `-source-repo` flag will be used.")
@@ -164,6 +165,7 @@ func createPR() (err error) {
 	newPR := &github.NewPullRequest{
 		Title:               prSubject,
 		Head:                commitBranch,
+		HeadRepo:            repoBranch,
 		Base:                prBranch,
 		Body:                prDescription,
 		MaintainerCanModify: github.Bool(true),

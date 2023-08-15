@@ -49,6 +49,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &DeployKeyEvent{}
 	case "DeploymentEvent":
 		payload = &DeploymentEvent{}
+	case "DeploymentProtectionRuleEvent":
+		payload = &DeploymentProtectionRuleEvent{}
 	case "DeploymentStatusEvent":
 		payload = &DeploymentStatusEvent{}
 	case "DiscussionEvent":
@@ -65,6 +67,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &InstallationEvent{}
 	case "InstallationRepositoriesEvent":
 		payload = &InstallationRepositoriesEvent{}
+	case "InstallationTargetEvent":
+		payload = &InstallationTargetEvent{}
 	case "IssueCommentEvent":
 		payload = &IssueCommentEvent{}
 	case "IssuesEvent":
@@ -91,6 +95,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &PackageEvent{}
 	case "PageBuildEvent":
 		payload = &PageBuildEvent{}
+	case "PersonalAccessTokenRequestEvent":
+		payload = &PersonalAccessTokenRequestEvent{}
 	case "PingEvent":
 		payload = &PingEvent{}
 	case "ProjectEvent":
@@ -99,6 +105,10 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &ProjectCardEvent{}
 	case "ProjectColumnEvent":
 		payload = &ProjectColumnEvent{}
+	case "ProjectV2Event":
+		payload = &ProjectV2Event{}
+	case "ProjectV2ItemEvent":
+		payload = &ProjectV2ItemEvent{}
 	case "PublicEvent":
 		payload = &PublicEvent{}
 	case "PullRequestEvent":
@@ -125,6 +135,10 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &RepositoryVulnerabilityAlertEvent{}
 	case "SecretScanningAlertEvent":
 		payload = &SecretScanningAlertEvent{}
+	case "SecurityAdvisoryEvent":
+		payload = &SecurityAdvisoryEvent{}
+	case "SecurityAndAnalysisEvent":
+		payload = &SecurityAndAnalysisEvent{}
 	case "StarEvent":
 		payload = &StarEvent{}
 	case "StatusEvent":

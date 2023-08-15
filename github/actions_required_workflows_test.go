@@ -83,10 +83,23 @@ func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/orgs/o/actions/required_workflows", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
+		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
 		testBody(t, r, `{"workflow_file_path":".github/workflows/ci.yaml","repository_id":53,"scope":"selected","selected_repository_ids":[32,91]}`+"\n")
-		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, `{
+			"id": 2,
+			"name": "Required CI",
+			"path": ".github/workflows/ci.yml",
+			"scope": "selected",
+			"ref": "refs/head/main",
+			"state": "active",
+			"selected_repositories_url": "https://api.github.com/orgs/octo-org/actions/required_workflows/2/repositories",
+			"created_at": "2020-01-22T19:33:08Z",
+			"updated_at": "2020-01-22T19:33:08Z",
+			"repository": {
+				"id": 53,
+				"name": "Hello-World",
+				"url": "https://api.github.com/repos/o/Hello-World"}}`)
 	})
 	input := &CreateUpdateRequiredWorkflowOptions{
 		WorkflowFilePath:      String(".github/workflows/ci.yaml"),
@@ -95,20 +108,39 @@ func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
 		SelectedRepositoryIDs: &SelectedRepoIDs{32, 91},
 	}
 	ctx := context.Background()
-	_, err := client.Actions.CreateRequiredWorkflow(ctx, "o", input)
-
+	requiredWokflow, _, err := client.Actions.CreateRequiredWorkflow(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Actions.CreateRequiredWorkflow returned error: %v", err)
+	}
+	want := &OrgRequiredWorkflow{
+		ID:                      Int64(2),
+		Name:                    String("Required CI"),
+		Path:                    String(".github/workflows/ci.yml"),
+		Scope:                   String("selected"),
+		Ref:                     String("refs/head/main"),
+		State:                   String("active"),
+		SelectedRepositoriesURL: String("https://api.github.com/orgs/octo-org/actions/required_workflows/2/repositories"),
+		CreatedAt:               &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)},
+		UpdatedAt:               &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)},
+		Repository:              &Repository{ID: Int64(53), URL: String("https://api.github.com/repos/o/Hello-World"), Name: String("Hello-World")},
+	}
+
+	if !cmp.Equal(requiredWokflow, want) {
+		t.Errorf("Actions.CreateRequiredWorkflow returned %+v, want %+v", requiredWokflow, want)
 	}
 
 	const methodName = "CreateRequiredWorkflow"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateRequiredWorkflow(ctx, "\n", input)
+		_, _, err = client.Actions.CreateRequiredWorkflow(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.CreateRequiredWorkflow(ctx, "o", input)
+		got, resp, err := client.Actions.CreateRequiredWorkflow(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
@@ -169,7 +201,20 @@ func TestActionsService_UpdateRequiredWorkflow(t *testing.T) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Content-Type", "application/json")
 		testBody(t, r, `{"workflow_file_path":".github/workflows/ci.yaml","repository_id":53,"scope":"selected","selected_repository_ids":[32,91]}`+"\n")
-		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, `{
+			"id": 12345,
+			"name": "Required CI",
+			"path": ".github/workflows/ci.yml",
+			"scope": "selected",
+			"ref": "refs/head/main",
+			"state": "active",
+			"selected_repositories_url": "https://api.github.com/orgs/octo-org/actions/required_workflows/12345/repositories",
+			"created_at": "2020-01-22T19:33:08Z",
+			"updated_at": "2020-01-22T19:33:08Z",
+			"repository": {
+				"id": 53,
+				"name": "Hello-World",
+				"url": "https://api.github.com/repos/o/Hello-World"}}`)
 	})
 	input := &CreateUpdateRequiredWorkflowOptions{
 		WorkflowFilePath:      String(".github/workflows/ci.yaml"),
@@ -178,20 +223,41 @@ func TestActionsService_UpdateRequiredWorkflow(t *testing.T) {
 		SelectedRepositoryIDs: &SelectedRepoIDs{32, 91},
 	}
 	ctx := context.Background()
-	_, err := client.Actions.UpdateRequiredWorkflow(ctx, "o", 12345, input)
+
+	requiredWokflow, _, err := client.Actions.UpdateRequiredWorkflow(ctx, "o", 12345, input)
 
 	if err != nil {
 		t.Errorf("Actions.UpdateRequiredWorkflow returned error: %v", err)
 	}
+	want := &OrgRequiredWorkflow{
+		ID:                      Int64(12345),
+		Name:                    String("Required CI"),
+		Path:                    String(".github/workflows/ci.yml"),
+		Scope:                   String("selected"),
+		Ref:                     String("refs/head/main"),
+		State:                   String("active"),
+		SelectedRepositoriesURL: String("https://api.github.com/orgs/octo-org/actions/required_workflows/12345/repositories"),
+		CreatedAt:               &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)},
+		UpdatedAt:               &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)},
+		Repository:              &Repository{ID: Int64(53), URL: String("https://api.github.com/repos/o/Hello-World"), Name: String("Hello-World")},
+	}
+
+	if !cmp.Equal(requiredWokflow, want) {
+		t.Errorf("Actions.UpdateRequiredWorkflow returned %+v, want %+v", requiredWokflow, want)
+	}
 
 	const methodName = "UpdateRequiredWorkflow"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.UpdateRequiredWorkflow(ctx, "\n", 12345, input)
+		_, _, err = client.Actions.UpdateRequiredWorkflow(ctx, "\n", 12345, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.UpdateRequiredWorkflow(ctx, "o", 12345, input)
+		got, resp, err := client.Actions.UpdateRequiredWorkflow(ctx, "o", 12345, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 

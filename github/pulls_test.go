@@ -69,17 +69,12 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeListPullsOrBranchesForCommitPreview)
 		testFormValues(t, r, values{
-			"state":     "closed",
-			"head":      "h",
-			"base":      "b",
-			"sort":      "created",
-			"direction": "desc",
-			"page":      "2",
+			"page": "2",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	opts := &PullRequestListOptions{"closed", "h", "b", "created", "desc", ListOptions{Page: 2}}
+	opts := &ListOptions{Page: 2}
 	ctx := context.Background()
 	pulls, _, err := client.PullRequests.ListPullRequestsWithCommit(ctx, "o", "r", "sha", opts)
 	if err != nil {
@@ -938,6 +933,7 @@ func TestNewPullRequest_Marshal(t *testing.T) {
 	u := &NewPullRequest{
 		Title:               String("eh"),
 		Head:                String("eh"),
+		HeadRepo:            String("eh"),
 		Base:                String("eh"),
 		Body:                String("eh"),
 		Issue:               Int(1),
@@ -948,6 +944,7 @@ func TestNewPullRequest_Marshal(t *testing.T) {
 	want := `{
 		"title": "eh",
 		"head": "eh",
+		"head_repo": "eh",
 		"base": "eh",
 		"body": "eh",
 		"issue": 1,

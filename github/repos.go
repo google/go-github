@@ -210,6 +210,7 @@ type SecurityAndAnalysis struct {
 	AdvancedSecurity             *AdvancedSecurity             `json:"advanced_security,omitempty"`
 	SecretScanning               *SecretScanning               `json:"secret_scanning,omitempty"`
 	SecretScanningPushProtection *SecretScanningPushProtection `json:"secret_scanning_push_protection,omitempty"`
+	DependabotSecurityUpdates    *DependabotSecurityUpdates    `json:"dependabot_security_updates,omitempty"`
 }
 
 func (s SecurityAndAnalysis) String() string {
@@ -243,6 +244,21 @@ func (s SecretScanning) String() string {
 // GitHub API docs: https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning#about-secret-scanning-for-partner-patterns
 type SecretScanningPushProtection struct {
 	Status *string `json:"status,omitempty"`
+}
+
+func (s SecretScanningPushProtection) String() string {
+	return Stringify(s)
+}
+
+// DependabotSecurityUpdates specifies the state of Dependabot security updates on a repository.
+//
+// GitHub API docs: https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/about-dependabot-security-updates
+type DependabotSecurityUpdates struct {
+	Status *string `json:"status,omitempty"`
+}
+
+func (d DependabotSecurityUpdates) String() string {
+	return Stringify(d)
 }
 
 // List the repositories for a user. Passing the empty string will list
@@ -687,6 +703,25 @@ func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, ow
 	return s.client.Do(ctx, req, nil)
 }
 
+// GetAutomatedSecurityFixes checks if the automated security fixes for a repository are enabled.
+//
+// GitHub API docs: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#check-if-automated-security-fixes-are-enabled-for-a-repository
+func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*AutomatedSecurityFixes, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/automated-security-fixes", owner, repository)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := new(AutomatedSecurityFixes)
+	resp, err := s.client.Do(ctx, req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+	return p, resp, nil
+}
+
 // EnableAutomatedSecurityFixes enables the automated security fixes for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/repos#enable-automated-security-fixes
@@ -697,9 +732,6 @@ func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -714,9 +746,6 @@ func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -1210,6 +1239,12 @@ type SignaturesProtectedBranch struct {
 	URL *string `json:"url,omitempty"`
 	// Commits pushed to matching branches must have verified signatures.
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// AutomatedSecurityFixes represents their status.
+type AutomatedSecurityFixes struct {
+	Enabled *bool `json:"enabled"`
+	Paused  *bool `json:"paused"`
 }
 
 // ListBranches lists branches for the specified repository.
@@ -1969,6 +2004,7 @@ func (s *RepositoriesService) RemoveUserRestrictions(ctx context.Context, owner,
 // TransferRequest represents a request to transfer a repository.
 type TransferRequest struct {
 	NewOwner string  `json:"new_owner"`
+	NewName  *string `json:"new_name,omitempty"`
 	TeamID   []int64 `json:"team_ids,omitempty"`
 }
 

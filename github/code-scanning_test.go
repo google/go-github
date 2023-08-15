@@ -95,7 +95,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "ref": "heads/master"})
+		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "severity": "warning", "tool_name": "CodeQL"})
 		fmt.Fprint(w, `[{
 				"repository": {
 					"id": 1,
@@ -187,7 +187,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 				}]`)
 	})
 
-	opts := &AlertListOptions{State: "open", Ref: "heads/master"}
+	opts := &AlertListOptions{State: "open", Ref: "heads/master", Severity: "warning", ToolName: "CodeQL"}
 	ctx := context.Background()
 	alerts, _, err := client.CodeScanning.ListAlertsForOrg(ctx, "o", opts)
 	if err != nil {
@@ -299,7 +299,7 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "per_page": "1", "before": "deadbeefb", "after": "deadbeefa"})
+		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "severity": "warning", "tool_name": "CodeQL", "per_page": "1", "before": "deadbeefb", "after": "deadbeefa"})
 		fmt.Fprint(w, `[{
 				"repository": {
 					"id": 1,
@@ -349,7 +349,7 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 				}]`)
 	})
 
-	opts := &AlertListOptions{State: "open", Ref: "heads/master", ListCursorOptions: ListCursorOptions{PerPage: 1, Before: "deadbeefb", After: "deadbeefa"}}
+	opts := &AlertListOptions{State: "open", Ref: "heads/master", Severity: "warning", ToolName: "CodeQL", ListCursorOptions: ListCursorOptions{PerPage: 1, Before: "deadbeefb", After: "deadbeefa"}}
 	ctx := context.Background()
 	alerts, _, err := client.CodeScanning.ListAlertsForOrg(ctx, "o", opts)
 	if err != nil {
@@ -425,7 +425,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "ref": "heads/master"})
+		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "severity": "warning", "tool_name": "CodeQL"})
 		fmt.Fprint(w, `[{
 				"rule_id":"js/trivial-conditional",
 				"rule_severity":"warning",
@@ -512,7 +512,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 				}]`)
 	})
 
-	opts := &AlertListOptions{State: "open", Ref: "heads/master"}
+	opts := &AlertListOptions{State: "open", Ref: "heads/master", Severity: "warning", ToolName: "CodeQL"}
 	ctx := context.Background()
 	alerts, _, err := client.CodeScanning.ListAlertsForRepo(ctx, "o", "r", opts)
 	if err != nil {
@@ -1171,6 +1171,108 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.CodeScanning.GetAnalysis(ctx, "o", "r", 3602840)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/default-setup", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		_, err := fmt.Fprint(w, `{
+		"state": "configured",
+		"languages": [
+			"javascript",
+			"javascript-typescript",
+			"typescript"
+		],
+		"query_suite": "default",
+		"updated_at": "2006-01-02T15:04:05Z"
+		}`)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	ctx := context.Background()
+	cfg, _, err := client.CodeScanning.GetDefaultSetupConfiguration(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("CodeScanning.GetDefaultSetupConfiguration returned error: %v", err)
+	}
+
+	date := &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}
+	want := &DefaultSetupConfiguration{
+		State:      String("configured"),
+		Languages:  []string{"javascript", "javascript-typescript", "typescript"},
+		QuerySuite: String("default"),
+		UpdatedAt:  date,
+	}
+	if !cmp.Equal(cfg, want) {
+		t.Errorf("CodeScanning.GetDefaultSetupConfiguration returned %+v, want %+v", cfg, want)
+	}
+
+	const methodName = "GetDefaultSetupConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.GetDefaultSetupConfiguration(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.GetDefaultSetupConfiguration(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/default-setup", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		_, err := fmt.Fprint(w, `{
+		"run_id": 5301214200,
+		"run_url": "https://api.github.com/repos/o/r/actions/runs/5301214200"
+		}`)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	ctx := context.Background()
+	options := &UpdateDefaultSetupConfigurationOptions{
+		State:      "configured",
+		Languages:  []string{"go"},
+		QuerySuite: String("default"),
+	}
+	got, _, err := client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "o", "r", options)
+	if err != nil {
+		t.Errorf("CodeScanning.UpdateDefaultSetupConfiguration returned error: %v", err)
+	}
+
+	want := &UpdateDefaultSetupConfigurationResponse{
+		RunID:  Int64(5301214200),
+		RunURL: String("https://api.github.com/repos/o/r/actions/runs/5301214200"),
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("CodeScanning.UpdateDefaultSetupConfiguration returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "UpdateDefaultSetupConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "\n", "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "o", "r", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
