@@ -933,6 +933,7 @@ func TestNewPullRequest_Marshal(t *testing.T) {
 	u := &NewPullRequest{
 		Title:               String("eh"),
 		Head:                String("eh"),
+		HeadRepo:            String("eh"),
 		Base:                String("eh"),
 		Body:                String("eh"),
 		Issue:               Int(1),
