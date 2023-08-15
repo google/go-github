@@ -942,6 +942,77 @@ type ProjectColumnEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// ProjectV2Event is triggered when there is activity relating to an organization-level project.
+// The Webhook event name is "projects_v2".
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2
+type ProjectV2Event struct {
+	Action     *string     `json:"action,omitempty"`
+	ProjectsV2 *ProjectsV2 `json:"projects_v2,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Installation *Installation `json:"installation,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
+// ProjectsV2 represents a projects v2 project.
+type ProjectsV2 struct {
+	ID               *int64     `json:"id,omitempty"`
+	NodeID           *string    `json:"node_id,omitempty"`
+	Owner            *User      `json:"owner,omitempty"`
+	Creator          *User      `json:"creator,omitempty"`
+	Title            *string    `json:"title,omitempty"`
+	Description      *string    `json:"description,omitempty"`
+	Public           *bool      `json:"public,omitempty"`
+	ClosedAt         *Timestamp `json:"closed_at,omitempty"`
+	CreatedAt        *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
+	DeletedAt        *Timestamp `json:"deleted_at,omitempty"`
+	Number           *int       `json:"number,omitempty"`
+	ShortDescription *string    `json:"short_description,omitempty"`
+	DeletedBy        *User      `json:"deleted_by,omitempty"`
+}
+
+// ProjectV2ItemEvent is triggered when there is activity relating to an item on an organization-level project.
+// The Webhook event name is "projects_v2_item".
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2_item
+type ProjectV2ItemEvent struct {
+	Action        *string              `json:"action,omitempty"`
+	Changes       *ProjectV2ItemChange `json:"changes,omitempty"`
+	ProjectV2Item *ProjectV2Item       `json:"projects_v2_item,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Installation *Installation `json:"installation,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
+// ProjectV2ItemChange represents a project v2 item change.
+type ProjectV2ItemChange struct {
+	ArchivedAt *ArchivedAt `json:"archived_at,omitempty"`
+}
+
+// ArchivedAt represents an archiving date change.
+type ArchivedAt struct {
+	From *Timestamp `json:"from,omitempty"`
+	To   *Timestamp `json:"to,omitempty"`
+}
+
+// ProjectsV2 represents an item belonging to a project.
+type ProjectV2Item struct {
+	ID            *int64     `json:"id,omitempty"`
+	NodeID        *string    `json:"node_id,omitempty"`
+	ProjectNodeID *string    `json:"project_node_id,omitempty"`
+	ContentNodeID *string    `json:"content_node_id,omitempty"`
+	ContentType   *string    `json:"content_type,omitempty"`
+	Creator       *User      `json:"creator,omitempty"`
+	CreatedAt     *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
+	ArchivedAt    *Timestamp `json:"archived_at,omitempty"`
+}
+
 // PublicEvent is triggered when a private repository is open sourced.
 // According to GitHub: "Without a doubt: the best GitHub event."
 // The Webhook event name is "public".
@@ -1323,6 +1394,31 @@ type SecretScanningAlertEvent struct {
 	Organization *Organization `json:"organization,omitempty"`
 	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+}
+
+// SecurityAndAnalysisEvent is triggered when code security and analysis features
+// are enabled or disabled for a repository.
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#security_and_analysis
+type SecurityAndAnalysisEvent struct {
+	Changes      *SecurityAndAnalysisChange `json:"changes,omitempty"`
+	Enterprise   *Enterprise                `json:"enterprise,omitempty"`
+	Installation *Installation              `json:"installation,omitempty"`
+	Organization *Organization              `json:"organization,omitempty"`
+	Repository   *Repository                `json:"repository,omitempty"`
+	Sender       *User                      `json:"sender,omitempty"`
+}
+
+// SecurityAndAnalysisChange represents the changes when security and analysis
+// features are enabled or disabled for a repository.
+type SecurityAndAnalysisChange struct {
+	From *SecurityAndAnalysisChangeFrom `json:"from,omitempty"`
+}
+
+// SecurityAndAnalysisChangeFrom represents which change was made when security
+// and analysis features are enabled or disabled for a repository.
+type SecurityAndAnalysisChangeFrom struct {
+	SecurityAndAnalysis *SecurityAndAnalysis `json:"security_and_analysis,omitempty"`
 }
 
 // StarEvent is triggered when a star is added or removed from a repository.
