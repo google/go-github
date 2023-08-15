@@ -13275,6 +13275,16 @@ func TestNewPullRequest_GetHead(tt *testing.T) {
 	n.GetHead()
 }
 
+func TestNewPullRequest_GetHeadRepo(tt *testing.T) {
+	var zeroValue string
+	n := &NewPullRequest{HeadRepo: &zeroValue}
+	n.GetHeadRepo()
+	n = &NewPullRequest{}
+	n.GetHeadRepo()
+	n = nil
+	n.GetHeadRepo()
+}
+
 func TestNewPullRequest_GetIssue(tt *testing.T) {
 	var zeroValue int
 	n := &NewPullRequest{Issue: &zeroValue}
