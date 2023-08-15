@@ -5382,6 +5382,20 @@ func TestDeploymentEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 }
 
+func TestDeploymentEvent_GetWorkflow(tt *testing.T) {
+	d := &DeploymentEvent{}
+	d.GetWorkflow()
+	d = nil
+	d.GetWorkflow()
+}
+
+func TestDeploymentEvent_GetWorkflowRun(tt *testing.T) {
+	d := &DeploymentEvent{}
+	d.GetWorkflowRun()
+	d = nil
+	d.GetWorkflowRun()
+}
+
 func TestDeploymentRequest_GetAutoMerge(tt *testing.T) {
 	var zeroValue bool
 	d := &DeploymentRequest{AutoMerge: &zeroValue}

@@ -184,7 +184,8 @@ type DeploymentEvent struct {
 type DeploymentStatusEvent struct {
 	Deployment       *Deployment       `json:"deployment,omitempty"`
 	DeploymentStatus *DeploymentStatus `json:"deployment_status,omitempty"`
-	Repo             *Repository       `json:"repository,omitempty"`
+
+	Repo *Repository `json:"repository,omitempty"`
 	// The following fields are only populated by Webhook events.
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`

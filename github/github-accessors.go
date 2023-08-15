@@ -4598,6 +4598,22 @@ func (d *DeploymentEvent) GetSender() *User {
 	return d.Sender
 }
 
+// GetWorkflow returns the Workflow field.
+func (d *DeploymentEvent) GetWorkflow() *Workflow {
+	if d == nil {
+		return nil
+	}
+	return d.Workflow
+}
+
+// GetWorkflowRun returns the WorkflowRun field.
+func (d *DeploymentEvent) GetWorkflowRun() *WorkflowRun {
+	if d == nil {
+		return nil
+	}
+	return d.WorkflowRun
+}
+
 // GetAutoMerge returns the AutoMerge field if it's non-nil, zero value otherwise.
 func (d *DeploymentRequest) GetAutoMerge() bool {
 	if d == nil || d.AutoMerge == nil {
