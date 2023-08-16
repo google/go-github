@@ -741,6 +741,26 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 			SuspendedAt:     &Timestamp{referenceTime},
 			URL:             String("u"),
 		},
+		TriggeringActor: &User{
+			Login:           String("l2"),
+			ID:              Int64(2),
+			AvatarURL:       String("a2"),
+			GravatarID:      String("g2"),
+			Name:            String("n2"),
+			Company:         String("c2"),
+			Blog:            String("b2"),
+			Location:        String("l2"),
+			Email:           String("e2"),
+			Hireable:        Bool(false),
+			Bio:             String("b2"),
+			TwitterUsername: String("t2"),
+			PublicRepos:     Int(2),
+			Followers:       Int(2),
+			Following:       Int(2),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+			URL:             String("u2"),
+		},
 	}
 
 	want := `{
@@ -841,6 +861,26 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 			"created_at": ` + referenceTimeStr + `,
 			"suspended_at": ` + referenceTimeStr + `,
 			"url": "u"
+		},
+		"triggering_actor": {
+			"login": "l2",
+			"id": 2,
+			"avatar_url": "a2",
+			"gravatar_id": "g2",
+			"name": "n2",
+			"company": "c2",
+			"blog": "b2",
+			"location": "l2",
+			"email": "e2",
+			"hireable": false,
+			"bio": "b2",
+			"twitter_username": "t2",
+			"public_repos": 2,
+			"followers": 2,
+			"following": 2,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u2"
 		}
 	}`
 
@@ -952,6 +992,26 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 					SuspendedAt:     &Timestamp{referenceTime},
 					URL:             String("u"),
 				},
+				TriggeringActor: &User{
+					Login:           String("l2"),
+					ID:              Int64(2),
+					AvatarURL:       String("a2"),
+					GravatarID:      String("g2"),
+					Name:            String("n2"),
+					Company:         String("c2"),
+					Blog:            String("b2"),
+					Location:        String("l2"),
+					Email:           String("e2"),
+					Hireable:        Bool(false),
+					Bio:             String("b2"),
+					TwitterUsername: String("t2"),
+					PublicRepos:     Int(2),
+					Followers:       Int(2),
+					Following:       Int(2),
+					CreatedAt:       &Timestamp{referenceTime},
+					SuspendedAt:     &Timestamp{referenceTime},
+					URL:             String("u2"),
+				},
 			},
 		},
 	}
@@ -1057,6 +1117,26 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 					"created_at": ` + referenceTimeStr + `,
 					"suspended_at": ` + referenceTimeStr + `,
 					"url": "u"
+				},
+				"triggering_actor": {
+					"login": "l2",
+					"id": 2,
+					"avatar_url": "a2",
+					"gravatar_id": "g2",
+					"name": "n2",
+					"company": "c2",
+					"blog": "b2",
+					"location": "l2",
+					"email": "e2",
+					"hireable": false,
+					"bio": "b2",
+					"twitter_username": "t2",
+					"public_repos": 2,
+					"followers": 2,
+					"following": 2,
+					"created_at": ` + referenceTimeStr + `,
+					"suspended_at": ` + referenceTimeStr + `,
+					"url": "u2"
 				}
 			}
 		]
