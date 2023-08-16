@@ -18638,6 +18638,14 @@ func (r *RepositoryContent) GetSize() int {
 	return *r.Size
 }
 
+// GetSubmoduleGitURL returns the SubmoduleGitURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryContent) GetSubmoduleGitURL() string {
+	if r == nil || r.SubmoduleGitURL == nil {
+		return ""
+	}
+	return *r.SubmoduleGitURL
+}
+
 // GetTarget returns the Target field if it's non-nil, zero value otherwise.
 func (r *RepositoryContent) GetTarget() string {
 	if r == nil || r.Target == nil {

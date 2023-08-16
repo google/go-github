@@ -1683,20 +1683,21 @@ func TestRepositoryCommit_String(t *testing.T) {
 
 func TestRepositoryContent_String(t *testing.T) {
 	v := RepositoryContent{
-		Type:        String(""),
-		Target:      String(""),
-		Encoding:    String(""),
-		Size:        Int(0),
-		Name:        String(""),
-		Path:        String(""),
-		Content:     String(""),
-		SHA:         String(""),
-		URL:         String(""),
-		GitURL:      String(""),
-		HTMLURL:     String(""),
-		DownloadURL: String(""),
+		Type:            String(""),
+		Target:          String(""),
+		Encoding:        String(""),
+		Size:            Int(0),
+		Name:            String(""),
+		Path:            String(""),
+		Content:         String(""),
+		SHA:             String(""),
+		URL:             String(""),
+		GitURL:          String(""),
+		HTMLURL:         String(""),
+		DownloadURL:     String(""),
+		SubmoduleGitURL: String(""),
 	}
-	want := `github.RepositoryContent{Type:"", Target:"", Encoding:"", Size:0, Name:"", Path:"", Content:"", SHA:"", URL:"", GitURL:"", HTMLURL:"", DownloadURL:""}`
+	want := `github.RepositoryContent{Type:"", Target:"", Encoding:"", Size:0, Name:"", Path:"", Content:"", SHA:"", URL:"", GitURL:"", HTMLURL:"", DownloadURL:"", SubmoduleGitURL:""}`
 	if got := v.String(); got != want {
 		t.Errorf("RepositoryContent.String = %v, want %v", got, want)
 	}

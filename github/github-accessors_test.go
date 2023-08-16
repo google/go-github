@@ -21705,6 +21705,16 @@ func TestRepositoryContent_GetSize(tt *testing.T) {
 	r.GetSize()
 }
 
+func TestRepositoryContent_GetSubmoduleGitURL(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryContent{SubmoduleGitURL: &zeroValue}
+	r.GetSubmoduleGitURL()
+	r = &RepositoryContent{}
+	r.GetSubmoduleGitURL()
+	r = nil
+	r.GetSubmoduleGitURL()
+}
+
 func TestRepositoryContent_GetTarget(tt *testing.T) {
 	var zeroValue string
 	r := &RepositoryContent{Target: &zeroValue}
