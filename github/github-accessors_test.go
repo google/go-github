@@ -5575,6 +5575,16 @@ func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	c.GetBody()
 }
 
+func TestCreationInfo_GetCreated(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CreationInfo{Created: &zeroValue}
+	c.GetCreated()
+	c = &CreationInfo{}
+	c.GetCreated()
+	c = nil
+	c.GetCreated()
+}
+
 func TestCredentialAuthorization_GetAuthorizedCredentialExpiresAt(tt *testing.T) {
 	var zeroValue Timestamp
 	c := &CredentialAuthorization{AuthorizedCredentialExpiresAt: &zeroValue}
@@ -20130,6 +20140,76 @@ func TestRenameOrgResponse_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRepoDependencies_GetDownloadLocation(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{DownloadLocation: &zeroValue}
+	r.GetDownloadLocation()
+	r = &RepoDependencies{}
+	r.GetDownloadLocation()
+	r = nil
+	r.GetDownloadLocation()
+}
+
+func TestRepoDependencies_GetFilesAnalyzed(tt *testing.T) {
+	var zeroValue bool
+	r := &RepoDependencies{FilesAnalyzed: &zeroValue}
+	r.GetFilesAnalyzed()
+	r = &RepoDependencies{}
+	r.GetFilesAnalyzed()
+	r = nil
+	r.GetFilesAnalyzed()
+}
+
+func TestRepoDependencies_GetLicenseConcluded(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{LicenseConcluded: &zeroValue}
+	r.GetLicenseConcluded()
+	r = &RepoDependencies{}
+	r.GetLicenseConcluded()
+	r = nil
+	r.GetLicenseConcluded()
+}
+
+func TestRepoDependencies_GetLicenseDeclared(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{LicenseDeclared: &zeroValue}
+	r.GetLicenseDeclared()
+	r = &RepoDependencies{}
+	r.GetLicenseDeclared()
+	r = nil
+	r.GetLicenseDeclared()
+}
+
+func TestRepoDependencies_GetName(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{Name: &zeroValue}
+	r.GetName()
+	r = &RepoDependencies{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRepoDependencies_GetSPDXID(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{SPDXID: &zeroValue}
+	r.GetSPDXID()
+	r = &RepoDependencies{}
+	r.GetSPDXID()
+	r = nil
+	r.GetSPDXID()
+}
+
+func TestRepoDependencies_GetVersionInfo(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{VersionInfo: &zeroValue}
+	r.GetVersionInfo()
+	r = &RepoDependencies{}
+	r.GetVersionInfo()
+	r = nil
+	r.GetVersionInfo()
+}
+
 func TestRepoMergeUpstreamRequest_GetBranch(tt *testing.T) {
 	var zeroValue string
 	r := &RepoMergeUpstreamRequest{Branch: &zeroValue}
@@ -23271,6 +23351,70 @@ func TestSarifID_GetURL(tt *testing.T) {
 	s.GetURL()
 	s = nil
 	s.GetURL()
+}
+
+func TestSBOM_GetSBOM(tt *testing.T) {
+	s := &SBOM{}
+	s.GetSBOM()
+	s = nil
+	s.GetSBOM()
+}
+
+func TestSBOMInfo_GetCreationInfo(tt *testing.T) {
+	s := &SBOMInfo{}
+	s.GetCreationInfo()
+	s = nil
+	s.GetCreationInfo()
+}
+
+func TestSBOMInfo_GetDataLicense(tt *testing.T) {
+	var zeroValue string
+	s := &SBOMInfo{DataLicense: &zeroValue}
+	s.GetDataLicense()
+	s = &SBOMInfo{}
+	s.GetDataLicense()
+	s = nil
+	s.GetDataLicense()
+}
+
+func TestSBOMInfo_GetDocumentNamespace(tt *testing.T) {
+	var zeroValue string
+	s := &SBOMInfo{DocumentNamespace: &zeroValue}
+	s.GetDocumentNamespace()
+	s = &SBOMInfo{}
+	s.GetDocumentNamespace()
+	s = nil
+	s.GetDocumentNamespace()
+}
+
+func TestSBOMInfo_GetName(tt *testing.T) {
+	var zeroValue string
+	s := &SBOMInfo{Name: &zeroValue}
+	s.GetName()
+	s = &SBOMInfo{}
+	s.GetName()
+	s = nil
+	s.GetName()
+}
+
+func TestSBOMInfo_GetSPDXID(tt *testing.T) {
+	var zeroValue string
+	s := &SBOMInfo{SPDXID: &zeroValue}
+	s.GetSPDXID()
+	s = &SBOMInfo{}
+	s.GetSPDXID()
+	s = nil
+	s.GetSPDXID()
+}
+
+func TestSBOMInfo_GetSPDXVersion(tt *testing.T) {
+	var zeroValue string
+	s := &SBOMInfo{SPDXVersion: &zeroValue}
+	s.GetSPDXVersion()
+	s = &SBOMInfo{}
+	s.GetSPDXVersion()
+	s = nil
+	s.GetSPDXVersion()
 }
 
 func TestScanningAnalysis_GetAnalysisKey(tt *testing.T) {
