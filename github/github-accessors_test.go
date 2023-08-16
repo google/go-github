@@ -27949,6 +27949,13 @@ func TestWorkflowRun_GetStatus(tt *testing.T) {
 	w.GetStatus()
 }
 
+func TestWorkflowRun_GetTriggeringActor(tt *testing.T) {
+	w := &WorkflowRun{}
+	w.GetTriggeringActor()
+	w = nil
+	w.GetTriggeringActor()
+}
+
 func TestWorkflowRun_GetUpdatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	w := &WorkflowRun{UpdatedAt: &zeroValue}

@@ -23950,6 +23950,14 @@ func (w *WorkflowRun) GetStatus() string {
 	return *w.Status
 }
 
+// GetTriggeringActor returns the TriggeringActor field.
+func (w *WorkflowRun) GetTriggeringActor() *User {
+	if w == nil {
+		return nil
+	}
+	return w.TriggeringActor
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (w *WorkflowRun) GetUpdatedAt() Timestamp {
 	if w == nil || w.UpdatedAt == nil {
