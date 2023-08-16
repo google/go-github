@@ -20,7 +20,7 @@ import (
 	"syscall"
 
 	"github.com/google/go-github/v53/github"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 func main() {
@@ -39,7 +39,7 @@ func main() {
 	pattern = strings.TrimSpace(pattern)
 
 	fmt.Print("GitHub Token: ")
-	byteToken, _ := terminal.ReadPassword(int(syscall.Stdin))
+	byteToken, _ := term.ReadPassword(int(syscall.Stdin))
 	println()
 	token := string(byteToken)
 
