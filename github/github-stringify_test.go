@@ -1763,6 +1763,16 @@ func TestRepositoryRelease_String(t *testing.T) {
 	}
 }
 
+func TestSBOM_String(t *testing.T) {
+	v := SBOM{
+		SBOM: &SBOMInfo{},
+	}
+	want := `github.SBOM{SBOM:github.SBOMInfo{}}`
+	if got := v.String(); got != want {
+		t.Errorf("SBOM.String = %v, want %v", got, want)
+	}
+}
+
 func TestSSHSigningKey_String(t *testing.T) {
 	v := SSHSigningKey{
 		ID:        Int64(0),
