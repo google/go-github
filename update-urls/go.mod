@@ -1,4 +1,4 @@
-module github.com/google/go-github/v53/update-urls
+module github.com/google/go-github/v54/update-urls
 
 go 1.16
 
