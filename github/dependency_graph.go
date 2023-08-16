@@ -12,7 +12,7 @@ import (
 
 type DependencyGraphService service
 
-// SBOM represents a software bill of materials, which descibes the
+// SBOM represents a software bill of materials, which describes the
 // packages/libraries that a repository depends on.
 type SBOM struct {
 	SBOM *SBOMInfo `json:"sbom,omitempty"`
