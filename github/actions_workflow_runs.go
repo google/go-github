@@ -46,6 +46,7 @@ type WorkflowRun struct {
 	Repository         *Repository    `json:"repository,omitempty"`
 	HeadRepository     *Repository    `json:"head_repository,omitempty"`
 	Actor              *User          `json:"actor,omitempty"`
+	TriggeringActor    *User          `json:"triggering_actor,omitempty"`
 }
 
 // WorkflowRuns represents a slice of repository action workflow run.
