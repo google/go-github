@@ -145,7 +145,7 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id": 1,"name": "staging", "deployment_branch_policy": {"protected_branches": true,	"custom_branch_policies": false}, "can_admins_bypass": false}`)
+		fmt.Fprint(w, `{"id": 1,"name": "staging", "can_admins_bypass": false}`)
 	})
 
 	ctx := context.Background()
@@ -154,7 +154,7 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 		t.Errorf("Repositories.GetEnvironment returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &Environment{ID: Int64(1), Name: String("staging"), DeploymentBranchPolicy: &BranchPolicy{ProtectedBranches: Bool(true), CustomBranchPolicies: Bool(false)}, CanAdminsBypass: Bool(false)}
+	want := &Environment{ID: Int64(1), Name: String("staging"), CanAdminsBypass: Bool(false)}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetEnvironment returned %+v, want %+v", release, want)
 	}
@@ -281,7 +281,7 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
-		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "node_id": "id", "type": "branch_policy"}], "deployment_branch_policy": {"protected_branches": true, "custom_branch_policies": false}}`)
+		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "node_id": "id", "type": "branch_policy"}]}`)
 	})
 
 	ctx := context.Background()
@@ -299,10 +299,6 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 				NodeID: String("id"),
 				Type:   String("branch_policy"),
 			},
-		},
-		DeploymentBranchPolicy: &BranchPolicy{
-			ProtectedBranches:    Bool(true),
-			CustomBranchPolicies: Bool(false),
 		},
 	}
 	if !cmp.Equal(release, want) {
@@ -356,24 +352,6 @@ func TestRepoEnvironment_Marshal(t *testing.T) {
 		TotalCount: Int(1),
 		Environments: []*Environment{
 			{
-				Owner:           String("me"),
-				Repo:            String("se"),
-				EnvironmentName: String("dev"),
-				WaitTimer:       Int(123),
-				Reviewers: []*EnvReviewers{
-					{
-						Type: String("main"),
-						ID:   Int64(1),
-					},
-					{
-						Type: String("rev"),
-						ID:   Int64(2),
-					},
-				},
-				DeploymentBranchPolicy: &BranchPolicy{
-					ProtectedBranches:    Bool(false),
-					CustomBranchPolicies: Bool(false),
-				},
 				ID:        Int64(2),
 				NodeID:    String("star"),
 				Name:      String("eg"),
@@ -457,24 +435,6 @@ func TestEnvironment_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Environment{}, "{}")
 
 	repoEnv := &Environment{
-		Owner:           String("o"),
-		Repo:            String("r"),
-		EnvironmentName: String("e"),
-		WaitTimer:       Int(123),
-		Reviewers: []*EnvReviewers{
-			{
-				Type: String("main"),
-				ID:   Int64(1),
-			},
-			{
-				Type: String("rev"),
-				ID:   Int64(2),
-			},
-		},
-		DeploymentBranchPolicy: &BranchPolicy{
-			ProtectedBranches:    Bool(false),
-			CustomBranchPolicies: Bool(false),
-		},
 		ID:        Int64(2),
 		NodeID:    String("star"),
 		Name:      String("eg"),

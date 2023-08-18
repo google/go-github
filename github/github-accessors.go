@@ -6526,22 +6526,6 @@ func (e *Environment) GetCreatedAt() Timestamp {
 	return *e.CreatedAt
 }
 
-// GetDeploymentBranchPolicy returns the DeploymentBranchPolicy field.
-func (e *Environment) GetDeploymentBranchPolicy() *BranchPolicy {
-	if e == nil {
-		return nil
-	}
-	return e.DeploymentBranchPolicy
-}
-
-// GetEnvironmentName returns the EnvironmentName field if it's non-nil, zero value otherwise.
-func (e *Environment) GetEnvironmentName() string {
-	if e == nil || e.EnvironmentName == nil {
-		return ""
-	}
-	return *e.EnvironmentName
-}
-
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (e *Environment) GetHTMLURL() string {
 	if e == nil || e.HTMLURL == nil {
@@ -6574,22 +6558,6 @@ func (e *Environment) GetNodeID() string {
 	return *e.NodeID
 }
 
-// GetOwner returns the Owner field if it's non-nil, zero value otherwise.
-func (e *Environment) GetOwner() string {
-	if e == nil || e.Owner == nil {
-		return ""
-	}
-	return *e.Owner
-}
-
-// GetRepo returns the Repo field if it's non-nil, zero value otherwise.
-func (e *Environment) GetRepo() string {
-	if e == nil || e.Repo == nil {
-		return ""
-	}
-	return *e.Repo
-}
-
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (e *Environment) GetUpdatedAt() Timestamp {
 	if e == nil || e.UpdatedAt == nil {
@@ -6604,14 +6572,6 @@ func (e *Environment) GetURL() string {
 		return ""
 	}
 	return *e.URL
-}
-
-// GetWaitTimer returns the WaitTimer field if it's non-nil, zero value otherwise.
-func (e *Environment) GetWaitTimer() int {
-	if e == nil || e.WaitTimer == nil {
-		return 0
-	}
-	return *e.WaitTimer
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

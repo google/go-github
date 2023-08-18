@@ -7654,23 +7654,6 @@ func TestEnvironment_GetCreatedAt(tt *testing.T) {
 	e.GetCreatedAt()
 }
 
-func TestEnvironment_GetDeploymentBranchPolicy(tt *testing.T) {
-	e := &Environment{}
-	e.GetDeploymentBranchPolicy()
-	e = nil
-	e.GetDeploymentBranchPolicy()
-}
-
-func TestEnvironment_GetEnvironmentName(tt *testing.T) {
-	var zeroValue string
-	e := &Environment{EnvironmentName: &zeroValue}
-	e.GetEnvironmentName()
-	e = &Environment{}
-	e.GetEnvironmentName()
-	e = nil
-	e.GetEnvironmentName()
-}
-
 func TestEnvironment_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	e := &Environment{HTMLURL: &zeroValue}
@@ -7711,26 +7694,6 @@ func TestEnvironment_GetNodeID(tt *testing.T) {
 	e.GetNodeID()
 }
 
-func TestEnvironment_GetOwner(tt *testing.T) {
-	var zeroValue string
-	e := &Environment{Owner: &zeroValue}
-	e.GetOwner()
-	e = &Environment{}
-	e.GetOwner()
-	e = nil
-	e.GetOwner()
-}
-
-func TestEnvironment_GetRepo(tt *testing.T) {
-	var zeroValue string
-	e := &Environment{Repo: &zeroValue}
-	e.GetRepo()
-	e = &Environment{}
-	e.GetRepo()
-	e = nil
-	e.GetRepo()
-}
-
 func TestEnvironment_GetUpdatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	e := &Environment{UpdatedAt: &zeroValue}
@@ -7749,16 +7712,6 @@ func TestEnvironment_GetURL(tt *testing.T) {
 	e.GetURL()
 	e = nil
 	e.GetURL()
-}
-
-func TestEnvironment_GetWaitTimer(tt *testing.T) {
-	var zeroValue int
-	e := &Environment{WaitTimer: &zeroValue}
-	e.GetWaitTimer()
-	e = &Environment{}
-	e.GetWaitTimer()
-	e = nil
-	e.GetWaitTimer()
 }
 
 func TestEnvResponse_GetTotalCount(tt *testing.T) {
