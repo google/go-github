@@ -42,23 +42,23 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 		},
 		Scanned: &Timestamp{time.Date(2022, time.June, 14, 20, 25, 00, 0, time.UTC)},
 		Manifests: map[string]*DependencyGraphSnapshotManifest{
-			"package-lock.json": &DependencyGraphSnapshotManifest{
+			"package-lock.json": {
 				Name: String("package-lock.json"),
 				File: &DependencyGraphSnapshotManifestFile{SourceLocation: String("src/package-lock.json")},
 				Resolved: map[string]*DependencyGraphSnapshotResolvedDependency{
-					"@actions/core": &DependencyGraphSnapshotResolvedDependency{
+					"@actions/core": {
 						PackageUrl:   String("pkg:/npm/%40actions/core@1.1.9"),
 						Relationship: "direct",
 						Scope:        "runtime",
 						Dependencies: []string{"@actions/http-client"},
 					},
-					"@actions/http-client": &DependencyGraphSnapshotResolvedDependency{
+					"@actions/http-client": {
 						PackageUrl:   String("pkg:/npm/%40actions/http-client@1.0.7"),
 						Relationship: "indirect",
 						Scope:        "runtime",
 						Dependencies: []string{"tunnel"},
 					},
-					"tunnel": &DependencyGraphSnapshotResolvedDependency{
+					"tunnel": {
 						PackageUrl:   String("pkg:/npm/tunnel@0.0.6"),
 						Relationship: "indirect",
 						Scope:        "runtime",
