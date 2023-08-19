@@ -10,90 +10,90 @@ import (
 	"fmt"
 )
 
-type DependencyRelationship string
+// DependencyGraphSnapshotResolvedDependencyRelationship represents whether the dependency is requested directly by the manifest or is a dependency of another dependency.
+//
+// Can have the following values:
+//   - "direct": indicates that the dependency is requested directly by the manifest.
+//   - "indirect": indicates that the dependency is a dependency of another dependency.
+type DependencyGraphSnapshotResolvedDependencyRelationship string
 
-const (
-	DIRECT   DependencyRelationship = "direct"
-	INDIRECT                        = "indirect"
-)
+// DependencyGraphSnapshotResolvedDependencyScope represents whether the dependency is required for the primary build artifact or is only used for development.
+//
+// Can have the following values:
+//   - "runtime": indicates that the dependency is required for the primary build artifact.
+//   - "development": indicates that the dependency is only used for development.
+type DependencyGraphSnapshotResolvedDependencyScope string
 
-type DependencyScope string
+// DependencyGraphSnapshotCreationResult represents the snapshot creation result.
+//
+// Can have the following values:
+//   - "SUCCESS": indicates that the snapshot was successfully created and the repository's dependencies were updated.
+//   - "ACCEPTED": indicates that the snapshot was successfully created, but the repository's dependencies were not updated.
+//   - "INVALID": indicates that the snapshot was malformed.
+type DependencyGraphSnapshotCreationResult string
 
-const (
-	RUNTIME     DependencyScope = "runtime"
-	DEVELOPMENT                 = "development"
-)
-
-type SnapshotCreationResult string
-
-const (
-	SUCCESS  SnapshotCreationResult = "SUCCESS"
-	ACCEPTED                        = "ACCEPTED"
-	INVALID                         = "INVALID"
-)
-
-type Resolved struct {
-	PackageUrl   *string                `json:"package_url,omitempty"`
-	Relationship DependencyRelationship `json:"relationship,omitempty"`
-	Scope        DependencyScope        `json:"scope,omitempty"`
-	Dependencies []string               `json:"dependencies,omitempty"`
+type DependencyGraphSnapshotResolvedDependency struct {
+	PackageUrl   *string                                               `json:"package_url,omitempty"`
+	Relationship DependencyGraphSnapshotResolvedDependencyRelationship `json:"relationship,omitempty"`
+	Scope        DependencyGraphSnapshotResolvedDependencyScope        `json:"scope,omitempty"`
+	Dependencies []string                                              `json:"dependencies,omitempty"`
 }
 
-type Job struct {
+type DependencyGraphSnapshotJob struct {
 	Correlator *string `json:"correlator,omitempty"`
 	ID         *string `json:"id,omitempty"`
 	HtmlUrl    *string `json:"html_url,omitempty"`
 }
 
-type Detector struct {
+type DependencyGraphSnapshotDetector struct {
 	Name    *string `json:"name,omitempty"`
 	Version *string `json:"version,omitempty"`
 	URL     *string `json:"url,omitempty"`
 }
 
-type File struct {
+type DependencyGraphSnapshotManifestFile struct {
 	SourceLocation *string `json:"source_location,omitempty"`
 }
 
-type Manifest struct {
-	Name     *string              `json:"name,omitempty"`
-	File     *File                `json:"file,omitempty"`
-	Resolved map[string]*Resolved `json:"resolved,omitempty"`
+type DependencyGraphSnapshotManifest struct {
+	Name     *string                                               `json:"name,omitempty"`
+	File     *DependencyGraphSnapshotManifestFile                  `json:"file,omitempty"`
+	Resolved map[string]*DependencyGraphSnapshotResolvedDependency `json:"resolved,omitempty"`
 }
 
-type Snapshot struct {
-	Version   int                  `json:"version"`
-	Sha       *string              `json:"sha,omitempty"`
-	Ref       *string              `json:"ref,omitempty"`
-	Job       *Job                 `json:"job,omitempty"`
-	Detector  *Detector            `json:"detector,omitempty"`
-	Scanned   *Timestamp           `json:"scanned,omitempty"`
-	Manifests map[string]*Manifest `json:"manifests,omitempty"`
+type DependencyGraphSnapshot struct {
+	Version   int                                         `json:"version"`
+	Sha       *string                                     `json:"sha,omitempty"`
+	Ref       *string                                     `json:"ref,omitempty"`
+	Job       *DependencyGraphSnapshotJob                 `json:"job,omitempty"`
+	Detector  *DependencyGraphSnapshotDetector            `json:"detector,omitempty"`
+	Scanned   *Timestamp                                  `json:"scanned,omitempty"`
+	Manifests map[string]*DependencyGraphSnapshotManifest `json:"manifests,omitempty"`
 }
 
-type SnapshotCreationData struct {
-	ID        int                    `json:"id"`
-	CreatedAt *Timestamp             `json:"created_at"`
-	Message   *string                `json:"message"`
-	Result    SnapshotCreationResult `json:"result"`
+type DependencyGraphSnapshotCreationData struct {
+	ID        int                                   `json:"id"`
+	CreatedAt *Timestamp                            `json:"created_at"`
+	Message   *string                               `json:"message"`
+	Result    DependencyGraphSnapshotCreationResult `json:"result"`
 }
 
-// Create a new snapshot of a repository's dependencies.
+// CreateSnapshot creates a new snapshot of a repository's dependencies.
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
-func (s *DependencyGraphService) CreateSnapshot(ctx context.Context, owner, repo string, snapshot *Snapshot) (*SnapshotCreationData, *Response, error) {
+func (s *DependencyGraphService) CreateSnapshot(ctx context.Context, owner, repo string, dependencyGraphSnapshot *DependencyGraphSnapshot) (*DependencyGraphSnapshotCreationData, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependency-graph/snapshots", owner, repo)
 
-	req, err := s.client.NewRequest("POST", url, snapshot)
+	req, err := s.client.NewRequest("POST", url, dependencyGraphSnapshot)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var spanshotCreationData *SnapshotCreationData
-	resp, err := s.client.Do(ctx, req, &spanshotCreationData)
+	var snapshotCreationData *DependencyGraphSnapshotCreationData
+	resp, err := s.client.Do(ctx, req, &snapshotCreationData)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return spanshotCreationData, resp, nil
+	return snapshotCreationData, resp, nil
 }
