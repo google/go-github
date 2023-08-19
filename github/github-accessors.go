@@ -5206,6 +5206,142 @@ func (d *Dependency) GetScope() string {
 	return *d.Scope
 }
 
+// GetDetector returns the Detector field.
+func (d *DependencyGraphSnapshot) GetDetector() *DependencyGraphSnapshotDetector {
+	if d == nil {
+		return nil
+	}
+	return d.Detector
+}
+
+// GetJob returns the Job field.
+func (d *DependencyGraphSnapshot) GetJob() *DependencyGraphSnapshotJob {
+	if d == nil {
+		return nil
+	}
+	return d.Job
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshot) GetRef() string {
+	if d == nil || d.Ref == nil {
+		return ""
+	}
+	return *d.Ref
+}
+
+// GetScanned returns the Scanned field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshot) GetScanned() Timestamp {
+	if d == nil || d.Scanned == nil {
+		return Timestamp{}
+	}
+	return *d.Scanned
+}
+
+// GetSha returns the Sha field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshot) GetSha() string {
+	if d == nil || d.Sha == nil {
+		return ""
+	}
+	return *d.Sha
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotCreationData) GetCreatedAt() Timestamp {
+	if d == nil || d.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.CreatedAt
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotCreationData) GetMessage() string {
+	if d == nil || d.Message == nil {
+		return ""
+	}
+	return *d.Message
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotDetector) GetName() string {
+	if d == nil || d.Name == nil {
+		return ""
+	}
+	return *d.Name
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotDetector) GetURL() string {
+	if d == nil || d.URL == nil {
+		return ""
+	}
+	return *d.URL
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotDetector) GetVersion() string {
+	if d == nil || d.Version == nil {
+		return ""
+	}
+	return *d.Version
+}
+
+// GetCorrelator returns the Correlator field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotJob) GetCorrelator() string {
+	if d == nil || d.Correlator == nil {
+		return ""
+	}
+	return *d.Correlator
+}
+
+// GetHtmlUrl returns the HtmlUrl field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotJob) GetHtmlUrl() string {
+	if d == nil || d.HtmlUrl == nil {
+		return ""
+	}
+	return *d.HtmlUrl
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotJob) GetID() string {
+	if d == nil || d.ID == nil {
+		return ""
+	}
+	return *d.ID
+}
+
+// GetFile returns the File field.
+func (d *DependencyGraphSnapshotManifest) GetFile() *DependencyGraphSnapshotManifestFile {
+	if d == nil {
+		return nil
+	}
+	return d.File
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotManifest) GetName() string {
+	if d == nil || d.Name == nil {
+		return ""
+	}
+	return *d.Name
+}
+
+// GetSourceLocation returns the SourceLocation field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotManifestFile) GetSourceLocation() string {
+	if d == nil || d.SourceLocation == nil {
+		return ""
+	}
+	return *d.SourceLocation
+}
+
+// GetPackageUrl returns the PackageUrl field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotResolvedDependency) GetPackageUrl() string {
+	if d == nil || d.PackageUrl == nil {
+		return ""
+	}
+	return *d.PackageUrl
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (d *DeployKeyEvent) GetAction() string {
 	if d == nil || d.Action == nil {
@@ -5812,30 +5948,6 @@ func (d *DeploymentStatusRequest) GetState() string {
 		return ""
 	}
 	return *d.State
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (d *Detector) GetName() string {
-	if d == nil || d.Name == nil {
-		return ""
-	}
-	return *d.Name
-}
-
-// GetURL returns the URL field if it's non-nil, zero value otherwise.
-func (d *Detector) GetURL() string {
-	if d == nil || d.URL == nil {
-		return ""
-	}
-	return *d.URL
-}
-
-// GetVersion returns the Version field if it's non-nil, zero value otherwise.
-func (d *Detector) GetVersion() string {
-	if d == nil || d.Version == nil {
-		return ""
-	}
-	return *d.Version
 }
 
 // GetActiveLockReason returns the ActiveLockReason field if it's non-nil, zero value otherwise.
@@ -7140,14 +7252,6 @@ func (f *Feeds) GetUserURL() string {
 		return ""
 	}
 	return *f.UserURL
-}
-
-// GetSourceLocation returns the SourceLocation field if it's non-nil, zero value otherwise.
-func (f *File) GetSourceLocation() string {
-	if f == nil || f.SourceLocation == nil {
-		return ""
-	}
-	return *f.SourceLocation
 }
 
 // GetIdentifier returns the Identifier field if it's non-nil, zero value otherwise.
@@ -10134,30 +10238,6 @@ func (j *JITRunnerConfig) GetRunner() *Runner {
 	return j.Runner
 }
 
-// GetCorrelator returns the Correlator field if it's non-nil, zero value otherwise.
-func (j *Job) GetCorrelator() string {
-	if j == nil || j.Correlator == nil {
-		return ""
-	}
-	return *j.Correlator
-}
-
-// GetHtmlUrl returns the HtmlUrl field if it's non-nil, zero value otherwise.
-func (j *Job) GetHtmlUrl() string {
-	if j == nil || j.HtmlUrl == nil {
-		return ""
-	}
-	return *j.HtmlUrl
-}
-
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (j *Job) GetID() string {
-	if j == nil || j.ID == nil {
-		return ""
-	}
-	return *j.ID
-}
-
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (j *Jobs) GetTotalCount() int {
 	if j == nil || j.TotalCount == nil {
@@ -10884,22 +10964,6 @@ func (l *LockBranch) GetEnabled() bool {
 		return false
 	}
 	return *l.Enabled
-}
-
-// GetFile returns the File field.
-func (m *Manifest) GetFile() *File {
-	if m == nil {
-		return nil
-	}
-	return m.File
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (m *Manifest) GetName() string {
-	if m == nil || m.Name == nil {
-		return ""
-	}
-	return *m.Name
 }
 
 // GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
@@ -20470,14 +20534,6 @@ func (r *RequiredWorkflowSelectedRepos) GetTotalCount() int {
 	return *r.TotalCount
 }
 
-// GetPackageUrl returns the PackageUrl field if it's non-nil, zero value otherwise.
-func (r *Resolved) GetPackageUrl() string {
-	if r == nil || r.PackageUrl == nil {
-		return ""
-	}
-	return *r.PackageUrl
-}
-
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
 func (r *ReviewersRequest) GetNodeID() string {
 	if r == nil || r.NodeID == nil {
@@ -21956,62 +22012,6 @@ func (s *SignatureVerification) GetVerified() bool {
 		return false
 	}
 	return *s.Verified
-}
-
-// GetDetector returns the Detector field.
-func (s *Snapshot) GetDetector() *Detector {
-	if s == nil {
-		return nil
-	}
-	return s.Detector
-}
-
-// GetJob returns the Job field.
-func (s *Snapshot) GetJob() *Job {
-	if s == nil {
-		return nil
-	}
-	return s.Job
-}
-
-// GetRef returns the Ref field if it's non-nil, zero value otherwise.
-func (s *Snapshot) GetRef() string {
-	if s == nil || s.Ref == nil {
-		return ""
-	}
-	return *s.Ref
-}
-
-// GetScanned returns the Scanned field if it's non-nil, zero value otherwise.
-func (s *Snapshot) GetScanned() Timestamp {
-	if s == nil || s.Scanned == nil {
-		return Timestamp{}
-	}
-	return *s.Scanned
-}
-
-// GetSha returns the Sha field if it's non-nil, zero value otherwise.
-func (s *Snapshot) GetSha() string {
-	if s == nil || s.Sha == nil {
-		return ""
-	}
-	return *s.Sha
-}
-
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (s *SnapshotCreationData) GetCreatedAt() Timestamp {
-	if s == nil || s.CreatedAt == nil {
-		return Timestamp{}
-	}
-	return *s.CreatedAt
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (s *SnapshotCreationData) GetMessage() string {
-	if s == nil || s.Message == nil {
-		return ""
-	}
-	return *s.Message
 }
 
 // GetActor returns the Actor field.
