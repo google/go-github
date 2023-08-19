@@ -33,7 +33,7 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 		Job: &DependencyGraphSnapshotJob{
 			Correlator: String("yourworkflowname_youractionname"),
 			ID:         String("yourrunid"),
-			HtmlUrl:    String("https://example.com"),
+			HTMLURL:    String("https://example.com"),
 		},
 		Detector: &DependencyGraphSnapshotDetector{
 			Name:    String("octo-detector"),
@@ -47,19 +47,19 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 				File: &DependencyGraphSnapshotManifestFile{SourceLocation: String("src/package-lock.json")},
 				Resolved: map[string]*DependencyGraphSnapshotResolvedDependency{
 					"@actions/core": {
-						PackageUrl:   String("pkg:/npm/%40actions/core@1.1.9"),
+						PackageURL:   String("pkg:/npm/%40actions/core@1.1.9"),
 						Relationship: "direct",
 						Scope:        "runtime",
 						Dependencies: []string{"@actions/http-client"},
 					},
 					"@actions/http-client": {
-						PackageUrl:   String("pkg:/npm/%40actions/http-client@1.0.7"),
+						PackageURL:   String("pkg:/npm/%40actions/http-client@1.0.7"),
 						Relationship: "indirect",
 						Scope:        "runtime",
 						Dependencies: []string{"tunnel"},
 					},
 					"tunnel": {
-						PackageUrl:   String("pkg:/npm/tunnel@0.0.6"),
+						PackageURL:   String("pkg:/npm/tunnel@0.0.6"),
 						Relationship: "indirect",
 						Scope:        "runtime",
 					},

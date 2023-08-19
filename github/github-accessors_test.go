@@ -6216,14 +6216,14 @@ func TestDependencyGraphSnapshotJob_GetCorrelator(tt *testing.T) {
 	d.GetCorrelator()
 }
 
-func TestDependencyGraphSnapshotJob_GetHtmlUrl(tt *testing.T) {
+func TestDependencyGraphSnapshotJob_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
-	d := &DependencyGraphSnapshotJob{HtmlUrl: &zeroValue}
-	d.GetHtmlUrl()
+	d := &DependencyGraphSnapshotJob{HTMLURL: &zeroValue}
+	d.GetHTMLURL()
 	d = &DependencyGraphSnapshotJob{}
-	d.GetHtmlUrl()
+	d.GetHTMLURL()
 	d = nil
-	d.GetHtmlUrl()
+	d.GetHTMLURL()
 }
 
 func TestDependencyGraphSnapshotJob_GetID(tt *testing.T) {
@@ -6263,14 +6263,14 @@ func TestDependencyGraphSnapshotManifestFile_GetSourceLocation(tt *testing.T) {
 	d.GetSourceLocation()
 }
 
-func TestDependencyGraphSnapshotResolvedDependency_GetPackageUrl(tt *testing.T) {
+func TestDependencyGraphSnapshotResolvedDependency_GetPackageURL(tt *testing.T) {
 	var zeroValue string
-	d := &DependencyGraphSnapshotResolvedDependency{PackageUrl: &zeroValue}
-	d.GetPackageUrl()
+	d := &DependencyGraphSnapshotResolvedDependency{PackageURL: &zeroValue}
+	d.GetPackageURL()
 	d = &DependencyGraphSnapshotResolvedDependency{}
-	d.GetPackageUrl()
+	d.GetPackageURL()
 	d = nil
-	d.GetPackageUrl()
+	d.GetPackageURL()
 }
 
 func TestDeployKeyEvent_GetAction(tt *testing.T) {

@@ -33,7 +33,7 @@ type DependencyGraphSnapshotResolvedDependencyScope string
 type DependencyGraphSnapshotCreationResult string
 
 type DependencyGraphSnapshotResolvedDependency struct {
-	PackageUrl   *string                                               `json:"package_url,omitempty"`
+	PackageURL   *string                                               `json:"package_url,omitempty"`
 	Relationship DependencyGraphSnapshotResolvedDependencyRelationship `json:"relationship,omitempty"`
 	Scope        DependencyGraphSnapshotResolvedDependencyScope        `json:"scope,omitempty"`
 	Dependencies []string                                              `json:"dependencies,omitempty"`
@@ -42,7 +42,7 @@ type DependencyGraphSnapshotResolvedDependency struct {
 type DependencyGraphSnapshotJob struct {
 	Correlator *string `json:"correlator,omitempty"`
 	ID         *string `json:"id,omitempty"`
-	HtmlUrl    *string `json:"html_url,omitempty"`
+	HTMLURL    *string `json:"html_url,omitempty"`
 }
 
 type DependencyGraphSnapshotDetector struct {

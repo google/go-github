@@ -5294,12 +5294,12 @@ func (d *DependencyGraphSnapshotJob) GetCorrelator() string {
 	return *d.Correlator
 }
 
-// GetHtmlUrl returns the HtmlUrl field if it's non-nil, zero value otherwise.
-func (d *DependencyGraphSnapshotJob) GetHtmlUrl() string {
-	if d == nil || d.HtmlUrl == nil {
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotJob) GetHTMLURL() string {
+	if d == nil || d.HTMLURL == nil {
 		return ""
 	}
-	return *d.HtmlUrl
+	return *d.HTMLURL
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -5334,12 +5334,12 @@ func (d *DependencyGraphSnapshotManifestFile) GetSourceLocation() string {
 	return *d.SourceLocation
 }
 
-// GetPackageUrl returns the PackageUrl field if it's non-nil, zero value otherwise.
-func (d *DependencyGraphSnapshotResolvedDependency) GetPackageUrl() string {
-	if d == nil || d.PackageUrl == nil {
+// GetPackageURL returns the PackageURL field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotResolvedDependency) GetPackageURL() string {
+	if d == nil || d.PackageURL == nil {
 		return ""
 	}
-	return *d.PackageUrl
+	return *d.PackageURL
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
