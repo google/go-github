@@ -1683,20 +1683,21 @@ func TestRepositoryCommit_String(t *testing.T) {
 
 func TestRepositoryContent_String(t *testing.T) {
 	v := RepositoryContent{
-		Type:        String(""),
-		Target:      String(""),
-		Encoding:    String(""),
-		Size:        Int(0),
-		Name:        String(""),
-		Path:        String(""),
-		Content:     String(""),
-		SHA:         String(""),
-		URL:         String(""),
-		GitURL:      String(""),
-		HTMLURL:     String(""),
-		DownloadURL: String(""),
+		Type:            String(""),
+		Target:          String(""),
+		Encoding:        String(""),
+		Size:            Int(0),
+		Name:            String(""),
+		Path:            String(""),
+		Content:         String(""),
+		SHA:             String(""),
+		URL:             String(""),
+		GitURL:          String(""),
+		HTMLURL:         String(""),
+		DownloadURL:     String(""),
+		SubmoduleGitURL: String(""),
 	}
-	want := `github.RepositoryContent{Type:"", Target:"", Encoding:"", Size:0, Name:"", Path:"", Content:"", SHA:"", URL:"", GitURL:"", HTMLURL:"", DownloadURL:""}`
+	want := `github.RepositoryContent{Type:"", Target:"", Encoding:"", Size:0, Name:"", Path:"", Content:"", SHA:"", URL:"", GitURL:"", HTMLURL:"", DownloadURL:"", SubmoduleGitURL:""}`
 	if got := v.String(); got != want {
 		t.Errorf("RepositoryContent.String = %v, want %v", got, want)
 	}
@@ -1760,6 +1761,16 @@ func TestRepositoryRelease_String(t *testing.T) {
 	want := `github.RepositoryRelease{TagName:"", TargetCommitish:"", Name:"", Body:"", Draft:false, Prerelease:false, MakeLatest:"", DiscussionCategoryName:"", GenerateReleaseNotes:false, ID:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PublishedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", HTMLURL:"", AssetsURL:"", UploadURL:"", ZipballURL:"", TarballURL:"", Author:github.User{}, NodeID:""}`
 	if got := v.String(); got != want {
 		t.Errorf("RepositoryRelease.String = %v, want %v", got, want)
+	}
+}
+
+func TestSBOM_String(t *testing.T) {
+	v := SBOM{
+		SBOM: &SBOMInfo{},
+	}
+	want := `github.SBOM{SBOM:github.SBOMInfo{}}`
+	if got := v.String(); got != want {
+		t.Errorf("SBOM.String = %v, want %v", got, want)
 	}
 }
 

@@ -97,15 +97,17 @@ func (c *Client) get(urlStr string, a ...interface{}) (*goquery.Document, error)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing URL: %q: %v", urlStr, err)
 	}
+
 	resp, err := c.Client.Get(u.String())
 	if err != nil {
 		return nil, fmt.Errorf("error fetching url %q: %v", u, err)
 	}
+	defer resp.Body.Close()
+
 	if resp.StatusCode == http.StatusNotFound {
 		return nil, fmt.Errorf("received %v response fetching URL %q", resp.StatusCode, u)
 	}
 
-	defer resp.Body.Close()
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing response: %v", err)

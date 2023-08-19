@@ -405,6 +405,14 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "project_column",
 		},
 		{
+			payload:     &ProjectV2Event{},
+			messageType: "projects_v2",
+		},
+		{
+			payload:     &ProjectV2ItemEvent{},
+			messageType: "projects_v2_item",
+		},
+		{
 			payload:     &PublicEvent{},
 			messageType: "public",
 		},
@@ -451,6 +459,10 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &SecurityAdvisoryEvent{},
 			messageType: "security_advisory",
+		},
+		{
+			payload:     &SecurityAndAnalysisEvent{},
+			messageType: "security_and_analysis",
 		},
 		{
 			payload:     &StarEvent{},
@@ -510,6 +522,23 @@ func TestParseWebHook(t *testing.T) {
 		if want := test.payload; !cmp.Equal(got, want) {
 			t.Errorf("ParseWebHook(%#v, %#v) = %#v, want %#v", test.messageType, p, got, want)
 		}
+	}
+}
+
+func TestAllMessageTypesMapped(t *testing.T) {
+	for _, mt := range MessageTypes() {
+		if obj := EventForType(mt); obj == nil {
+			t.Errorf("messageMap missing message type %q", mt)
+		}
+	}
+}
+
+func TestUnknownMessageType(t *testing.T) {
+	if obj := EventForType("unknown"); obj != nil {
+		t.Errorf("EventForType(unknown) = %#v, want nil", obj)
+	}
+	if obj := EventForType(""); obj != nil {
+		t.Errorf(`EventForType("") = %#v, want nil`, obj)
 	}
 }
 

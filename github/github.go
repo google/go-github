@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	Version = "v53.3.0"
+	Version = "v54.0.0"
 
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
@@ -126,9 +126,6 @@ const (
 	// https://developer.github.com/changes/2019-04-24-vulnerability-alerts/
 	mediaTypeRequiredVulnerabilityAlertsPreview = "application/vnd.github.dorian-preview+json"
 
-	// https://developer.github.com/changes/2019-06-04-automated-security-fixes/
-	mediaTypeRequiredAutomatedSecurityFixesPreview = "application/vnd.github.london-preview+json"
-
 	// https://developer.github.com/changes/2019-05-29-update-branch-api/
 	mediaTypeUpdatePullRequestBranchPreview = "application/vnd.github.lydian-preview+json"
 
@@ -207,7 +204,7 @@ type Client struct {
 	Repositories    *RepositoriesService
 	SCIM            *SCIMService
 	Search          *SearchService
-	SecretScanning  *SecretScanningService
+	SecretScanning  *SecretScanningServiceSecurityAdvisories *SecurityAdvisoriesService
 	Teams           *TeamsService
 	Users           *UsersService
 }
@@ -348,6 +345,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.SCIM = (*SCIMService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
 	c.SecretScanning = (*SecretScanningService)(&c.common)
+	c.SecurityAdvisories = (*SecurityAdvisoriesService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
 	return c

@@ -782,18 +782,19 @@ func TestRepositoryContent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepositoryContent{}, "{}")
 
 	r := &RepositoryContent{
-		Type:        String("type"),
-		Target:      String("target"),
-		Encoding:    String("encoding"),
-		Size:        Int(1),
-		Name:        String("name"),
-		Path:        String("path"),
-		Content:     String("content"),
-		SHA:         String("sha"),
-		URL:         String("url"),
-		GitURL:      String("gurl"),
-		HTMLURL:     String("hurl"),
-		DownloadURL: String("durl"),
+		Type:            String("type"),
+		Target:          String("target"),
+		Encoding:        String("encoding"),
+		Size:            Int(1),
+		Name:            String("name"),
+		Path:            String("path"),
+		Content:         String("content"),
+		SHA:             String("sha"),
+		URL:             String("url"),
+		GitURL:          String("gurl"),
+		HTMLURL:         String("hurl"),
+		DownloadURL:     String("durl"),
+		SubmoduleGitURL: String("smgurl"),
 	}
 
 	want := `{
@@ -808,7 +809,8 @@ func TestRepositoryContent_Marshal(t *testing.T) {
 		"url": "url",
 		"git_url": "gurl",
 		"html_url": "hurl",
-		"download_url": "durl"
+		"download_url": "durl",
+		"submodule_git_url": "smgurl"
 	}`
 
 	testJSONMarshal(t, r, want)
@@ -819,18 +821,19 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 
 	r := &RepositoryContentResponse{
 		Content: &RepositoryContent{
-			Type:        String("type"),
-			Target:      String("target"),
-			Encoding:    String("encoding"),
-			Size:        Int(1),
-			Name:        String("name"),
-			Path:        String("path"),
-			Content:     String("content"),
-			SHA:         String("sha"),
-			URL:         String("url"),
-			GitURL:      String("gurl"),
-			HTMLURL:     String("hurl"),
-			DownloadURL: String("durl"),
+			Type:            String("type"),
+			Target:          String("target"),
+			Encoding:        String("encoding"),
+			Size:            Int(1),
+			Name:            String("name"),
+			Path:            String("path"),
+			Content:         String("content"),
+			SHA:             String("sha"),
+			URL:             String("url"),
+			GitURL:          String("gurl"),
+			HTMLURL:         String("hurl"),
+			DownloadURL:     String("durl"),
+			SubmoduleGitURL: String("smgurl"),
 		},
 		Commit: Commit{
 			SHA: String("s"),
@@ -893,7 +896,8 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 			"url": "url",
 			"git_url": "gurl",
 			"html_url": "hurl",
-			"download_url": "durl"
+			"download_url": "durl",
+			"submodule_git_url": "smgurl"
 		},
 		"commit": {
 			"sha": "s",
