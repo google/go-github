@@ -29,6 +29,26 @@ func (s *EnterpriseService) ListRunnerApplicationDownloads(ctx context.Context, 
 	return rads, resp, nil
 }
 
+// GenerateEnterpriseJITConfig generates a just-in-time configuration for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-enterprise
+func (s *EnterpriseService) GenerateEnterpriseJITConfig(ctx context.Context, enterprise string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/runners/generate-jitconfig", enterprise)
+
+	req, err := s.client.NewRequest("POST", u, request)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	jitConfig := new(JITRunnerConfig)
+	resp, err := s.client.Do(ctx, req, jitConfig)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return jitConfig, resp, nil
+}
+
 // CreateRegistrationToken creates a token that can be used to add a self-hosted runner.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-an-enterprise
