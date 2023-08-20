@@ -1591,6 +1591,8 @@ type WorkflowRunEvent struct {
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
 type SecurityAdvisory struct {
+	CVSs            *AdvisoryCVSs            `json:"cvss,omitempty"`
+	CWEs            []*AdvisoryCWEs          `json:"cwes,omitempty"`
 	GHSAID          *string                  `json:"ghsa_id,omitempty"`
 	Summary         *string                  `json:"summary,omitempty"`
 	Description     *string                  `json:"description,omitempty"`
@@ -1639,6 +1641,13 @@ type FirstPatchedVersion struct {
 type SecurityAdvisoryEvent struct {
 	Action           *string           `json:"action,omitempty"`
 	SecurityAdvisory *SecurityAdvisory `json:"security_advisory,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+	Organization *Organization `json:"organization,omitempty"`
+	Repository   *Repository   `json:"repository,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
 }
 
 // CodeScanningAlertEvent is triggered when a code scanning finds a potential vulnerability or error in your code.
