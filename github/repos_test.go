@@ -3569,3 +3569,55 @@ func TestRepositoryTag_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRepositoriesService_EnablePrivateReporting(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/owner/repo/private-vulnerability-reporting", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Repositories.EnablePrivateReporting(ctx, "owner", "repo")
+	if err != nil {
+		t.Errorf("Repositories.EnablePrivateReporting returned error: %v", err)
+	}
+
+	const methodName = "EnablePrivateReporting"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.EnablePrivateReporting(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.EnablePrivateReporting(ctx, "owner", "repo")
+	})
+}
+
+func TestRepositoriesService_DisablePrivateReporting(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/owner/repo/private-vulnerability-reporting", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Repositories.DisablePrivateReporting(ctx, "owner", "repo")
+	if err != nil {
+		t.Errorf("Repositories.DisablePrivateReporting returned error: %v", err)
+	}
+
+	const methodName = "DisablePrivateReporting"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.DisablePrivateReporting(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.DisablePrivateReporting(ctx, "owner", "repo")
+	})
+}
