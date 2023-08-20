@@ -4926,6 +4926,14 @@ func (d *DeleteEvent) GetSender() *User {
 	return d.Sender
 }
 
+// GetAutoDismissedAt returns the AutoDismissedAt field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetAutoDismissedAt() Timestamp {
+	if d == nil || d.AutoDismissedAt == nil {
+		return Timestamp{}
+	}
+	return *d.AutoDismissedAt
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (d *DependabotAlert) GetCreatedAt() Timestamp {
 	if d == nil || d.CreatedAt == nil {
@@ -5044,6 +5052,54 @@ func (d *DependabotAlert) GetURL() string {
 		return ""
 	}
 	return *d.URL
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertEvent) GetAction() string {
+	if d == nil || d.Action == nil {
+		return ""
+	}
+	return *d.Action
+}
+
+// GetEnterprise returns the Enterprise field.
+func (d *DependabotAlertEvent) GetEnterprise() *Enterprise {
+	if d == nil {
+		return nil
+	}
+	return d.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (d *DependabotAlertEvent) GetInstallation() *Installation {
+	if d == nil {
+		return nil
+	}
+	return d.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (d *DependabotAlertEvent) GetOrganization() *Organization {
+	if d == nil {
+		return nil
+	}
+	return d.Organization
+}
+
+// GetRepo returns the Repo field.
+func (d *DependabotAlertEvent) GetRepo() *Repository {
+	if d == nil {
+		return nil
+	}
+	return d.Repo
+}
+
+// GetSender returns the Sender field.
+func (d *DependabotAlertEvent) GetSender() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Sender
 }
 
 // GetCVEID returns the CVEID field if it's non-nil, zero value otherwise.
