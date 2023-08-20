@@ -14,7 +14,7 @@ import (
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-config?apiVersion=2022-11-28#get-a-webhook-configuration-for-a-repository
 func (s *RepositoriesService) GetHookConfiguration(ctx context.Context, owner, repo string, id int64) (*HookConfig, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d/config", owner, repo, id)
+	u := fmt.Sprintf("repos/%v/%v/hooks/%v/config", owner, repo, id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -33,7 +33,7 @@ func (s *RepositoriesService) GetHookConfiguration(ctx context.Context, owner, r
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-config?apiVersion=2022-11-28#update-a-webhook-configuration-for-a-repository
 func (s *RepositoriesService) EditHookConfiguration(ctx context.Context, owner, repo string, id int64, config *HookConfig) (*HookConfig, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d/config", owner, repo, id)
+	u := fmt.Sprintf("repos/%v/%v/hooks/%v/config", owner, repo, id)
 	req, err := s.client.NewRequest("PATCH", u, config)
 	if err != nil {
 		return nil, nil, err
