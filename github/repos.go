@@ -2073,8 +2073,8 @@ func isBranchNotProtected(err error) bool {
 // EnablePrivateReporting enables private reporting of vulnerabilities for a
 // repository.
 //
-// Github API docs: https://docs.github.com/en/rest/repos/repos#enable-private-vulnerability-reporting-for-a-repository
-func (s *RepositoriesService) EnablePrivateReporting(ctx context.Context, owner string, repo string) (*Response, error) {
+// GitHub API docs: https://docs.github.com/en/rest/repos/repos#enable-private-vulnerability-reporting-for-a-repository
+func (s *RepositoriesService) EnablePrivateReporting(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/private-vulnerability-reporting", owner, repo)
 
 	req, err := s.client.NewRequest("PUT", u, nil)
@@ -2093,8 +2093,8 @@ func (s *RepositoriesService) EnablePrivateReporting(ctx context.Context, owner 
 // DisablePrivateReporting disables private reporting of vulnerabilities for a
 // repository.
 //
-// Github API docs: https://docs.github.com/en/rest/repos/repos#disable-private-vulnerability-reporting-for-a-repository
-func (s *RepositoriesService) DisablePrivateReporting(ctx context.Context, owner string, repo string) (*Response, error) {
+// GitHub API docs: https://docs.github.com/en/rest/repos/repos#disable-private-vulnerability-reporting-for-a-repository
+func (s *RepositoriesService) DisablePrivateReporting(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/private-vulnerability-reporting", owner, repo)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
