@@ -33,7 +33,7 @@ type EnterpriseRunnerGroup struct {
 
 // EnterpriseRunnerGroups represents a collection of self-hosted runner groups configured for an enterprise.
 type EnterpriseRunnerGroups struct {
-	TotalCount   *int                     `json:"total_count"`
+	TotalCount   *int                     `json:"total_count,omitempty"`
 	RunnerGroups []*EnterpriseRunnerGroup `json:"runner_groups"`
 }
 
