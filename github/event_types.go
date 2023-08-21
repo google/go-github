@@ -1591,7 +1591,7 @@ type WorkflowRunEvent struct {
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
 type SecurityAdvisory struct {
-	CVSs            *AdvisoryCVSs            `json:"cvss,omitempty"`
+	CVSS            *AdvisoryCVSS            `json:"cvss,omitempty"`
 	CWEs            []*AdvisoryCWEs          `json:"cwes,omitempty"`
 	GHSAID          *string                  `json:"ghsa_id,omitempty"`
 	Summary         *string                  `json:"summary,omitempty"`

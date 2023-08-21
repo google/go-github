@@ -16308,7 +16308,7 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 	u := &SecurityAdvisoryEvent{
 		Action: String("published"),
 		SecurityAdvisory: &SecurityAdvisory{
-			CVSs: &AdvisoryCVSs{
+			CVSS: &AdvisoryCVSS{
 				Score:        Float64(1.0),
 				VectorString: String("vs"),
 			},

@@ -392,18 +392,18 @@ func TestAdvancedSecurityCommittersBreakdown_GetUserLogin(tt *testing.T) {
 	a.GetUserLogin()
 }
 
-func TestAdvisoryCVSs_GetScore(tt *testing.T) {
-	a := &AdvisoryCVSs{}
+func TestAdvisoryCVSS_GetScore(tt *testing.T) {
+	a := &AdvisoryCVSS{}
 	a.GetScore()
 	a = nil
 	a.GetScore()
 }
 
-func TestAdvisoryCVSs_GetVectorString(tt *testing.T) {
+func TestAdvisoryCVSS_GetVectorString(tt *testing.T) {
 	var zeroValue string
-	a := &AdvisoryCVSs{VectorString: &zeroValue}
+	a := &AdvisoryCVSS{VectorString: &zeroValue}
 	a.GetVectorString()
-	a = &AdvisoryCVSs{}
+	a = &AdvisoryCVSS{}
 	a.GetVectorString()
 	a = nil
 	a.GetVectorString()
@@ -5961,11 +5961,11 @@ func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
 	d.GetCVEID()
 }
 
-func TestDependabotSecurityAdvisory_GetCVSs(tt *testing.T) {
+func TestDependabotSecurityAdvisory_GetCVSS(tt *testing.T) {
 	d := &DependabotSecurityAdvisory{}
-	d.GetCVSs()
+	d.GetCVSS()
 	d = nil
-	d.GetCVSs()
+	d.GetCVSS()
 }
 
 func TestDependabotSecurityAdvisory_GetDescription(tt *testing.T) {
@@ -24054,11 +24054,11 @@ func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
-func TestSecurityAdvisory_GetCVSs(tt *testing.T) {
+func TestSecurityAdvisory_GetCVSS(tt *testing.T) {
 	s := &SecurityAdvisory{}
-	s.GetCVSs()
+	s.GetCVSS()
 	s = nil
-	s.GetCVSs()
+	s.GetCVSS()
 }
 
 func TestSecurityAdvisory_GetDescription(tt *testing.T) {

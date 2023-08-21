@@ -343,7 +343,7 @@ func (a *AdvancedSecurityCommittersBreakdown) GetUserLogin() string {
 }
 
 // GetScore returns the Score field.
-func (a *AdvisoryCVSs) GetScore() *float64 {
+func (a *AdvisoryCVSS) GetScore() *float64 {
 	if a == nil {
 		return nil
 	}
@@ -351,7 +351,7 @@ func (a *AdvisoryCVSs) GetScore() *float64 {
 }
 
 // GetVectorString returns the VectorString field if it's non-nil, zero value otherwise.
-func (a *AdvisoryCVSs) GetVectorString() string {
+func (a *AdvisoryCVSS) GetVectorString() string {
 	if a == nil || a.VectorString == nil {
 		return ""
 	}
@@ -5054,12 +5054,12 @@ func (d *DependabotSecurityAdvisory) GetCVEID() string {
 	return *d.CVEID
 }
 
-// GetCVSs returns the CVSs field.
-func (d *DependabotSecurityAdvisory) GetCVSs() *AdvisoryCVSs {
+// GetCVSS returns the CVSS field.
+func (d *DependabotSecurityAdvisory) GetCVSS() *AdvisoryCVSS {
 	if d == nil {
 		return nil
 	}
-	return d.CVSs
+	return d.CVSS
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
@@ -20630,12 +20630,12 @@ func (s *SecretScanningPushProtection) GetStatus() string {
 	return *s.Status
 }
 
-// GetCVSs returns the CVSs field.
-func (s *SecurityAdvisory) GetCVSs() *AdvisoryCVSs {
+// GetCVSS returns the CVSS field.
+func (s *SecurityAdvisory) GetCVSS() *AdvisoryCVSS {
 	if s == nil {
 		return nil
 	}
-	return s.CVSs
+	return s.CVSS
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
