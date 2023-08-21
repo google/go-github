@@ -6590,6 +6590,14 @@ func (e *EnterpriseRunnerGroup) GetWorkflowRestrictionsReadOnly() bool {
 	return *e.WorkflowRestrictionsReadOnly
 }
 
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroups) GetTotalCount() int {
+	if e == nil || e.TotalCount == nil {
+		return 0
+	}
+	return *e.TotalCount
+}
+
 // GetAdvancedSecurityEnabledForNewRepositories returns the AdvancedSecurityEnabledForNewRepositories field if it's non-nil, zero value otherwise.
 func (e *EnterpriseSecurityAnalysisSettings) GetAdvancedSecurityEnabledForNewRepositories() bool {
 	if e == nil || e.AdvancedSecurityEnabledForNewRepositories == nil {

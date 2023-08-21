@@ -7734,6 +7734,16 @@ func TestEnterpriseRunnerGroup_GetWorkflowRestrictionsReadOnly(tt *testing.T) {
 	e.GetWorkflowRestrictionsReadOnly()
 }
 
+func TestEnterpriseRunnerGroups_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	e := &EnterpriseRunnerGroups{TotalCount: &zeroValue}
+	e.GetTotalCount()
+	e = &EnterpriseRunnerGroups{}
+	e.GetTotalCount()
+	e = nil
+	e.GetTotalCount()
+}
+
 func TestEnterpriseSecurityAnalysisSettings_GetAdvancedSecurityEnabledForNewRepositories(tt *testing.T) {
 	var zeroValue bool
 	e := &EnterpriseSecurityAnalysisSettings{AdvancedSecurityEnabledForNewRepositories: &zeroValue}

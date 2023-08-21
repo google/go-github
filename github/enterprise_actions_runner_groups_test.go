@@ -32,7 +32,7 @@ func TestEnterpriseService_ListRunnerGroups(t *testing.T) {
 	}
 
 	want := &EnterpriseRunnerGroups{
-		TotalCount: 3,
+		TotalCount: Int(3),
 		RunnerGroups: []*EnterpriseRunnerGroup{
 			{ID: Int64(1), Name: String("Default"), Visibility: String("all"), Default: Bool(true), RunnersURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/1/runners"), Inherited: Bool(false), AllowsPublicRepositories: Bool(true), RestrictedToWorkflows: Bool(true), SelectedWorkflows: []string{"a", "b"}},
 			{ID: Int64(2), Name: String("octo-runner-group"), Visibility: String("selected"), Default: Bool(false), SelectedOrganizationsURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"), RunnersURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"), Inherited: Bool(true), AllowsPublicRepositories: Bool(true), RestrictedToWorkflows: Bool(false), SelectedWorkflows: []string{}},
@@ -76,7 +76,7 @@ func TestEnterpriseService_ListRunnerGroupsVisibleToOrganization(t *testing.T) {
 	}
 
 	want := &EnterpriseRunnerGroups{
-		TotalCount: 3,
+		TotalCount: Int(3),
 		RunnerGroups: []*EnterpriseRunnerGroup{
 			{ID: Int64(1), Name: String("Default"), Visibility: String("all"), Default: Bool(true), RunnersURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/1/runners"), Inherited: Bool(false), AllowsPublicRepositories: Bool(true), RestrictedToWorkflows: Bool(false), SelectedWorkflows: []string{}},
 			{ID: Int64(2), Name: String("octo-runner-group"), Visibility: String("selected"), Default: Bool(false), SelectedOrganizationsURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"), RunnersURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"), Inherited: Bool(true), AllowsPublicRepositories: Bool(true), RestrictedToWorkflows: Bool(false), SelectedWorkflows: []string{}},
@@ -567,7 +567,7 @@ func TestEnterpriseRunnerGroups_Marshal(t *testing.T) {
 	testJSONMarshal(t, &EnterpriseRunnerGroups{}, "{}")
 
 	u := &EnterpriseRunnerGroups{
-		TotalCount: int(1),
+		TotalCount: Int(1),
 		RunnerGroups: []*EnterpriseRunnerGroup{
 			{
 				ID:                       Int64(1),
