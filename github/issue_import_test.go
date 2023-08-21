@@ -120,6 +120,47 @@ func TestIssueImportService_Create_defered(t *testing.T) {
 	}
 }
 
+func TestIssueImportService_Create_badResponse(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	createdAt := time.Date(2020, time.August, 11, 15, 30, 0, 0, time.UTC)
+	input := &IssueImportRequest{
+		IssueImport: IssueImport{
+			Assignee:  String("developer"),
+			Body:      "Dummy description",
+			CreatedAt: &Timestamp{createdAt},
+			Labels:    []string{"l1", "l2"},
+			Milestone: Int(1),
+			Title:     "Dummy Issue",
+		},
+		Comments: []*Comment{{
+			CreatedAt: &Timestamp{createdAt},
+			Body:      "Comment body",
+		}},
+	}
+
+	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
+		v := new(IssueImportRequest)
+		json.NewDecoder(r.Body).Decode(v)
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		w.WriteHeader(http.StatusAccepted)
+		w.Write([]byte("{[}"))
+	})
+
+	ctx := context.Background()
+	_, _, err := client.IssueImport.Create(ctx, "o", "r", input)
+
+	if err == nil || err.Error() != "invalid character '[' looking for beginning of object key string" {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
+
 func TestIssueImportService_Create_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
