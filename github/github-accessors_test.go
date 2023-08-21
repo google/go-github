@@ -5971,6 +5971,13 @@ func TestDependabotAlertEvent_GetAction(tt *testing.T) {
 	d.GetAction()
 }
 
+func TestDependabotAlertEvent_GetAlert(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetAlert()
+	d = nil
+	d.GetAlert()
+}
+
 func TestDependabotAlertEvent_GetEnterprise(tt *testing.T) {
 	d := &DependabotAlertEvent{}
 	d.GetEnterprise()

@@ -12705,7 +12705,7 @@ func TestDependabotAlertEvent_Marshal(t *testing.T) {
 
 	e := &DependabotAlertEvent{
 		Action: String("a"),
-		Alert: DependabotAlert{
+		Alert: &DependabotAlert{
 			Number: Int(1),
 			State:  String("s"),
 			Dependency: &Dependency{

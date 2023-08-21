@@ -5062,6 +5062,14 @@ func (d *DependabotAlertEvent) GetAction() string {
 	return *d.Action
 }
 
+// GetAlert returns the Alert field.
+func (d *DependabotAlertEvent) GetAlert() *DependabotAlert {
+	if d == nil {
+		return nil
+	}
+	return d.Alert
+}
+
 // GetEnterprise returns the Enterprise field.
 func (d *DependabotAlertEvent) GetEnterprise() *Enterprise {
 	if d == nil {
