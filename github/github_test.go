@@ -311,9 +311,7 @@ func TestNewTokenClient(t *testing.T) {
 	ctx := context.Background()
 	var gotAuthHeaderVals []string
 	wantAuthHeaderVals := []string{"Bearer " + token}
-	count := 0
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		count++
 		gotAuthHeaderVals = r.Header["Authorization"]
 	}))
 	_, err := NewTokenClient(ctx, token).Client().Get(srv.URL)
