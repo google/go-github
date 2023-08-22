@@ -282,6 +282,16 @@ type RawOptions struct {
 	Type RawType
 }
 
+// newURLString uses fmt.Sprintf to build a URL then validates it with url.Parse.
+func newURLString(format string, a ...interface{}) (string, error) {
+	s := fmt.Sprintf(format, a...)
+	_, err := url.Parse(s)
+	if err != nil {
+		return "", err
+	}
+	return s, nil
+}
+
 // addOptions adds the parameters in opts as URL query parameters to s. opts
 // must be a struct whose fields may contain "url" tags.
 func addOptions(s string, opts interface{}) (string, error) {

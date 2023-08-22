@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // RunnerApplicationDownload represents a binary for the self-hosted runner application that can be downloaded.
@@ -30,7 +29,10 @@ type ActionsEnabledOnOrgRepos struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-runner-applications-for-a-repository
 func (s *ActionsService) ListRunnerApplicationDownloads(ctx context.Context, owner, repo string) ([]*RunnerApplicationDownload, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runners/downloads", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/runners/downloads", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -66,7 +68,10 @@ type JITRunnerConfig struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-organization
 func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, owner string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/generate-jitconfig", owner)
+	u, err := newURLString("orgs/%v/actions/runners/generate-jitconfig", owner)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
@@ -85,7 +90,10 @@ func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, owner string,
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-a-repository
 func (s *ActionsService) GenerateRepoJITConfig(ctx context.Context, owner, repo string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runners/generate-jitconfig", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/runners/generate-jitconfig", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
@@ -110,7 +118,10 @@ type RegistrationToken struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-a-repository
 func (s *ActionsService) CreateRegistrationToken(ctx context.Context, owner, repo string) (*RegistrationToken, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runners/registration-token", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/runners/registration-token", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -153,8 +164,11 @@ type Runners struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-self-hosted-runners-for-a-repository
 func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, opts *ListOptions) (*Runners, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runners", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/actions/runners", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -177,7 +191,10 @@ func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, op
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#get-a-self-hosted-runner-for-a-repository
 func (s *ActionsService) GetRunner(ctx context.Context, owner, repo string, runnerID int64) (*Runner, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runners/%v", owner, repo, runnerID)
+	u, err := newURLString("repos/%v/%v/actions/runners/%v", owner, repo, runnerID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -202,7 +219,10 @@ type RemoveToken struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-remove-token-for-a-repository
 func (s *ActionsService) CreateRemoveToken(ctx context.Context, owner, repo string) (*RemoveToken, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runners/remove-token", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/runners/remove-token", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -222,7 +242,10 @@ func (s *ActionsService) CreateRemoveToken(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-a-repository
 func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, runnerID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runners/%v", owner, repo, runnerID)
+	u, err := newURLString("repos/%v/%v/actions/runners/%v", owner, repo, runnerID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -236,7 +259,10 @@ func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, r
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-runner-applications-for-an-organization
 func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.Context, owner string) ([]*RunnerApplicationDownload, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/downloads", owner)
+	u, err := newURLString("orgs/%v/actions/runners/downloads", owner)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -255,7 +281,10 @@ func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-an-organization
 func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context, owner string) (*RegistrationToken, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/registration-token", owner)
+	u, err := newURLString("orgs/%v/actions/runners/registration-token", owner)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -275,8 +304,11 @@ func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-organization
 func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner string, opts *ListOptions) (*Runners, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners", owner)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/actions/runners", owner)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -299,8 +331,11 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#list-selected-repositories-enabled-for-github-actions-in-an-organization
 func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string, opts *ListOptions) (*ActionsEnabledOnOrgRepos, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories", owner)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/actions/permissions/repositories", owner)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -323,7 +358,10 @@ func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-selected-repositories-enabled-for-github-actions-in-an-organization
 func (s *ActionsService) SetEnabledReposInOrg(ctx context.Context, owner string, repositoryIDs []int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories", owner)
+	u, err := newURLString("orgs/%v/actions/permissions/repositories", owner)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, struct {
 		IDs []int64 `json:"selected_repository_ids"`
@@ -344,7 +382,10 @@ func (s *ActionsService) SetEnabledReposInOrg(ctx context.Context, owner string,
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#enable-a-selected-repository-for-github-actions-in-an-organization
 func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
+	u, err := newURLString("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
@@ -363,7 +404,10 @@ func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string,
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#disable-a-selected-repository-for-github-actions-in-an-organization
 func (s *ActionsService) RemoveEnabledRepoInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
+	u, err := newURLString("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -382,7 +426,10 @@ func (s *ActionsService) RemoveEnabledRepoInOrg(ctx context.Context, owner strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#get-a-self-hosted-runner-for-an-organization
 func (s *ActionsService) GetOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Runner, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
+	u, err := newURLString("orgs/%v/actions/runners/%v", owner, runnerID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -401,7 +448,10 @@ func (s *ActionsService) GetOrganizationRunner(ctx context.Context, owner string
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-remove-token-for-an-organization
 func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, owner string) (*RemoveToken, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/remove-token", owner)
+	u, err := newURLString("orgs/%v/actions/runners/remove-token", owner)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -421,7 +471,10 @@ func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, owne
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-an-organization
 func (s *ActionsService) RemoveOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
+	u, err := newURLString("orgs/%v/actions/runners/%v", owner, runnerID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

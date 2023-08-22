@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListCollaboratorsOptions specifies the optional parameters to the
@@ -50,8 +49,11 @@ type CollaboratorInvitation struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#list-repository-collaborators
 func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo string, opts *ListCollaboratorsOptions) ([]*User, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/collaborators", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/collaborators", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -77,7 +79,10 @@ func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo
 //
 // GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#check-if-a-user-is-a-repository-collaborator
 func (s *RepositoriesService) IsCollaborator(ctx context.Context, owner, repo, user string) (bool, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
+	u, err := newURLString("repos/%v/%v/collaborators/%v", owner, repo, user)
+	if err != nil {
+		return false, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return false, nil, err
@@ -101,7 +106,10 @@ type RepositoryPermissionLevel struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#get-repository-permissions-for-a-user
 func (s *RepositoriesService) GetPermissionLevel(ctx context.Context, owner, repo, user string) (*RepositoryPermissionLevel, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/collaborators/%v/permission", owner, repo, user)
+	u, err := newURLString("repos/%v/%v/collaborators/%v/permission", owner, repo, user)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -136,7 +144,10 @@ type RepositoryAddCollaboratorOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#add-a-repository-collaborator
 func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, opts *RepositoryAddCollaboratorOptions) (*CollaboratorInvitation, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
+	u, err := newURLString("repos/%v/%v/collaborators/%v", owner, repo, user)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -156,7 +167,10 @@ func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#remove-a-repository-collaborator
 func (s *RepositoriesService) RemoveCollaborator(ctx context.Context, owner, repo, user string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
+	u, err := newURLString("repos/%v/%v/collaborators/%v", owner, repo, user)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

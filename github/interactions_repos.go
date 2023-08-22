@@ -7,14 +7,16 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // GetRestrictionsForRepo fetches the interaction restrictions for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/interactions/repos#get-interaction-restrictions-for-a-repository
 func (s *InteractionsService) GetRestrictionsForRepo(ctx context.Context, owner, repo string) (*InteractionRestriction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
+	u, err := newURLString("repos/%v/%v/interaction-limits", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -41,7 +43,10 @@ func (s *InteractionsService) GetRestrictionsForRepo(ctx context.Context, owner,
 //
 // GitHub API docs: https://docs.github.com/en/rest/interactions/repos#set-interaction-restrictions-for-a-repository
 func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, owner, repo, limit string) (*InteractionRestriction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
+	u, err := newURLString("repos/%v/%v/interaction-limits", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	interaction := &InteractionRestriction{Limit: String(limit)}
 
@@ -67,7 +72,10 @@ func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, own
 //
 // GitHub API docs: https://docs.github.com/en/rest/interactions/repos#remove-interaction-restrictions-for-a-repository
 func (s *InteractionsService) RemoveRestrictionsFromRepo(ctx context.Context, owner, repo string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
+	u, err := newURLString("repos/%v/%v/interaction-limits", owner, repo)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

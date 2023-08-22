@@ -29,7 +29,10 @@ func (s *DependabotService) getPublicKey(ctx context.Context, url string) (*Publ
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-a-repository-public-key
 func (s *DependabotService) GetRepoPublicKey(ctx context.Context, owner, repo string) (*PublicKey, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets/public-key", owner, repo)
+	url, err := newURLString("repos/%v/%v/dependabot/secrets/public-key", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getPublicKey(ctx, url)
 }
 
@@ -37,7 +40,10 @@ func (s *DependabotService) GetRepoPublicKey(ctx context.Context, owner, repo st
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-an-organization-public-key
 func (s *DependabotService) GetOrgPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/dependabot/secrets/public-key", org)
+	url, err := newURLString("orgs/%v/dependabot/secrets/public-key", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getPublicKey(ctx, url)
 }
 
@@ -66,7 +72,10 @@ func (s *DependabotService) listSecrets(ctx context.Context, url string, opts *L
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-repository-secrets
 func (s *DependabotService) ListRepoSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets", owner, repo)
+	url, err := newURLString("repos/%v/%v/dependabot/secrets", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.listSecrets(ctx, url, opts)
 }
 
@@ -75,7 +84,10 @@ func (s *DependabotService) ListRepoSecrets(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-organization-secrets
 func (s *DependabotService) ListOrgSecrets(ctx context.Context, org string, opts *ListOptions) (*Secrets, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/dependabot/secrets", org)
+	url, err := newURLString("orgs/%v/dependabot/secrets", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.listSecrets(ctx, url, opts)
 }
 
@@ -98,7 +110,10 @@ func (s *DependabotService) getSecret(ctx context.Context, url string) (*Secret,
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-a-repository-secret
 func (s *DependabotService) GetRepoSecret(ctx context.Context, owner, repo, name string) (*Secret, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets/%v", owner, repo, name)
+	url, err := newURLString("repos/%v/%v/dependabot/secrets/%v", owner, repo, name)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getSecret(ctx, url)
 }
 
@@ -106,7 +121,10 @@ func (s *DependabotService) GetRepoSecret(ctx context.Context, owner, repo, name
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-an-organization-secret
 func (s *DependabotService) GetOrgSecret(ctx context.Context, org, name string) (*Secret, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v", org, name)
+	url, err := newURLString("orgs/%v/dependabot/secrets/%v", org, name)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getSecret(ctx, url)
 }
 
@@ -136,7 +154,10 @@ func (s *DependabotService) putSecret(ctx context.Context, url string, eSecret *
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#create-or-update-a-repository-secret
 func (s *DependabotService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *DependabotEncryptedSecret) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets/%v", owner, repo, eSecret.Name)
+	url, err := newURLString("repos/%v/%v/dependabot/secrets/%v", owner, repo, eSecret.Name)
+	if err != nil {
+		return nil, err
+	}
 	return s.putSecret(ctx, url, eSecret)
 }
 
@@ -156,7 +177,10 @@ func (s *DependabotService) CreateOrUpdateOrgSecret(ctx context.Context, org str
 		SelectedRepositoryIDs:     repoIDs,
 	}
 
-	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v", org, eSecret.Name)
+	url, err := newURLString("orgs/%v/dependabot/secrets/%v", org, eSecret.Name)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PUT", url, params)
 	if err != nil {
 		return nil, err
@@ -178,7 +202,10 @@ func (s *DependabotService) deleteSecret(ctx context.Context, url string) (*Resp
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#delete-a-repository-secret
 func (s *DependabotService) DeleteRepoSecret(ctx context.Context, owner, repo, name string) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets/%v", owner, repo, name)
+	url, err := newURLString("repos/%v/%v/dependabot/secrets/%v", owner, repo, name)
+	if err != nil {
+		return nil, err
+	}
 	return s.deleteSecret(ctx, url)
 }
 
@@ -186,7 +213,10 @@ func (s *DependabotService) DeleteRepoSecret(ctx context.Context, owner, repo, n
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#delete-an-organization-secret
 func (s *DependabotService) DeleteOrgSecret(ctx context.Context, org, name string) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v", org, name)
+	url, err := newURLString("orgs/%v/dependabot/secrets/%v", org, name)
+	if err != nil {
+		return nil, err
+	}
 	return s.deleteSecret(ctx, url)
 }
 
@@ -194,7 +224,10 @@ func (s *DependabotService) DeleteOrgSecret(ctx context.Context, org, name strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-selected-repositories-for-an-organization-secret
 func (s *DependabotService) ListSelectedReposForOrgSecret(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories", org, name)
+	url, err := newURLString("orgs/%v/dependabot/secrets/%v/repositories", org, name)
+	if err != nil {
+		return nil, nil, err
+	}
 	u, err := addOptions(url, opts)
 	if err != nil {
 		return nil, nil, err
@@ -221,7 +254,10 @@ type DependabotSecretsSelectedRepoIDs []int64
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#set-selected-repositories-for-an-organization-secret
 func (s *DependabotService) SetSelectedReposForOrgSecret(ctx context.Context, org, name string, ids DependabotSecretsSelectedRepoIDs) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories", org, name)
+	url, err := newURLString("orgs/%v/dependabot/secrets/%v/repositories", org, name)
+	if err != nil {
+		return nil, err
+	}
 	type repoIDs struct {
 		SelectedIDs DependabotSecretsSelectedRepoIDs `json:"selected_repository_ids"`
 	}
@@ -238,7 +274,10 @@ func (s *DependabotService) SetSelectedReposForOrgSecret(ctx context.Context, or
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#add-selected-repository-to-an-organization-secret
 func (s *DependabotService) AddSelectedRepoToOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories/%v", org, name, *repo.ID)
+	url, err := newURLString("orgs/%v/dependabot/secrets/%v/repositories/%v", org, name, *repo.ID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PUT", url, nil)
 	if err != nil {
 		return nil, err
@@ -251,7 +290,10 @@ func (s *DependabotService) AddSelectedRepoToOrgSecret(ctx context.Context, org,
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#remove-selected-repository-from-an-organization-secret
 func (s *DependabotService) RemoveSelectedRepoFromOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories/%v", org, name, *repo.ID)
+	url, err := newURLString("orgs/%v/dependabot/secrets/%v/repositories/%v", org, name, *repo.ID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return nil, err

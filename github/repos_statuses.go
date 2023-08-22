@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // RepoStatus represents the status of a repository at a particular reference.
@@ -47,8 +46,11 @@ func (r RepoStatus) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/statuses#list-commit-statuses-for-a-reference
 func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref string, opts *ListOptions) ([]*RepoStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v/statuses", owner, repo, refURLEscape(ref))
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/commits/%v/statuses", owner, repo, refURLEscape(ref))
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -72,7 +74,10 @@ func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/statuses#create-a-commit-status
 func (s *RepositoriesService) CreateStatus(ctx context.Context, owner, repo, ref string, status *RepoStatus) (*RepoStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, refURLEscape(ref))
+	u, err := newURLString("repos/%v/%v/statuses/%v", owner, repo, refURLEscape(ref))
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, status)
 	if err != nil {
 		return nil, nil, err
@@ -111,8 +116,11 @@ func (s CombinedStatus) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/statuses#get-the-combined-status-for-a-specific-reference
 func (s *RepositoriesService) GetCombinedStatus(ctx context.Context, owner, repo, ref string, opts *ListOptions) (*CombinedStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v/status", owner, repo, refURLEscape(ref))
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/commits/%v/status", owner, repo, refURLEscape(ref))
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

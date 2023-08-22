@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // RepositoryInvitation represents an invitation to collaborate on a repo.
@@ -29,8 +28,11 @@ type RepositoryInvitation struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#list-repository-invitations
 func (s *RepositoriesService) ListInvitations(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryInvitation, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/invitations", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/invitations", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -53,7 +55,10 @@ func (s *RepositoriesService) ListInvitations(ctx context.Context, owner, repo s
 //
 // GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#delete-a-repository-invitation
 func (s *RepositoriesService) DeleteInvitation(ctx context.Context, owner, repo string, invitationID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/invitations/%v", owner, repo, invitationID)
+	u, err := newURLString("repos/%v/%v/invitations/%v", owner, repo, invitationID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -73,7 +78,10 @@ func (s *RepositoriesService) UpdateInvitation(ctx context.Context, owner, repo 
 	opts := &struct {
 		Permissions string `json:"permissions"`
 	}{Permissions: permissions}
-	u := fmt.Sprintf("repos/%v/%v/invitations/%v", owner, repo, invitationID)
+	u, err := newURLString("repos/%v/%v/invitations/%v", owner, repo, invitationID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err

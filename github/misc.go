@@ -8,7 +8,6 @@ package github
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"net/url"
 )
 
@@ -120,7 +119,10 @@ func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Res
 //
 // https://docs.github.com/en/rest/codes_of_conduct/#get-an-individual-code-of-conduct
 func (c *Client) GetCodeOfConduct(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {
-	u := fmt.Sprintf("codes_of_conduct/%s", key)
+	u, err := newURLString("codes_of_conduct/%s", key)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := c.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -209,11 +211,13 @@ func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
 // Octocat returns an ASCII art octocat with the specified message in a speech
 // bubble. If message is empty, a random zen phrase is used.
 func (c *Client) Octocat(ctx context.Context, message string) (string, *Response, error) {
-	u := "octocat"
-	if message != "" {
-		u = fmt.Sprintf("%s?s=%s", u, url.QueryEscape(message))
+	u, err := newURLString("octocat")
+	if err != nil {
+		return "", nil, err
 	}
-
+	if message != "" {
+		u += "?s=" + url.QueryEscape(message)
+	}
 	req, err := c.NewRequest("GET", u, nil)
 	if err != nil {
 		return "", nil, err
@@ -263,7 +267,10 @@ func (s *ServiceHook) String() string {
 //
 // GitHub API docs: https://developer.github.com/webhooks/#services
 func (c *Client) ListServiceHooks(ctx context.Context) ([]*ServiceHook, *Response, error) {
-	u := "hooks"
+	u, err := newURLString("hooks")
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := c.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // Import represents a repository import request.
@@ -148,7 +147,10 @@ func (f LargeFile) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/source-imports#start-an-import
 func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
+	u, err := newURLString("repos/%v/%v/import", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, in)
 	if err != nil {
 		return nil, nil, err
@@ -167,7 +169,10 @@ func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/source-imports#get-an-import-status
 func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo string) (*Import, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
+	u, err := newURLString("repos/%v/%v/import", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -186,7 +191,10 @@ func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/source-imports#update-an-import
 func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
+	u, err := newURLString("repos/%v/%v/import", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, in)
 	if err != nil {
 		return nil, nil, err
@@ -215,7 +223,10 @@ func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string,
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/source-imports#get-commit-authors
 func (s *MigrationService) CommitAuthors(ctx context.Context, owner, repo string) ([]*SourceImportAuthor, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/import/authors", owner, repo)
+	u, err := newURLString("repos/%v/%v/import/authors", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -236,7 +247,10 @@ func (s *MigrationService) CommitAuthors(ctx context.Context, owner, repo string
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/source-imports#map-a-commit-author
 func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo string, id int64, author *SourceImportAuthor) (*SourceImportAuthor, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/import/authors/%v", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/import/authors/%v", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, author)
 	if err != nil {
 		return nil, nil, err
@@ -257,7 +271,10 @@ func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/source-imports#update-git-lfs-preference
 func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/import/lfs", owner, repo)
+	u, err := newURLString("repos/%v/%v/import/lfs", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, in)
 	if err != nil {
 		return nil, nil, err
@@ -276,7 +293,10 @@ func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/source-imports#get-large-files
 func (s *MigrationService) LargeFiles(ctx context.Context, owner, repo string) ([]*LargeFile, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/import/large_files", owner, repo)
+	u, err := newURLString("repos/%v/%v/import/large_files", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -295,7 +315,10 @@ func (s *MigrationService) LargeFiles(ctx context.Context, owner, repo string) (
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/source-imports#cancel-an-import
 func (s *MigrationService) CancelImport(ctx context.Context, owner, repo string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
+	u, err := newURLString("repos/%v/%v/import", owner, repo)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

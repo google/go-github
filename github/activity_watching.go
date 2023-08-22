@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // Subscription identifies a repository or thread subscription.
@@ -29,8 +28,11 @@ type Subscription struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/activity/watching#list-watchers
 func (s *ActivityService) ListWatchers(ctx context.Context, owner, repo string, opts *ListOptions) ([]*User, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/subscribers", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%s/%s/subscribers", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -56,12 +58,16 @@ func (s *ActivityService) ListWatchers(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/en/rest/activity/watching#list-repositories-watched-by-a-user
 func (s *ActivityService) ListWatched(ctx context.Context, user string, opts *ListOptions) ([]*Repository, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/subscriptions", user)
+		u, err = newURLString("users/%v/subscriptions", user)
 	} else {
-		u = "user/subscriptions"
+		u, err = newURLString("user/subscriptions")
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -86,7 +92,10 @@ func (s *ActivityService) ListWatched(ctx context.Context, user string, opts *Li
 //
 // GitHub API docs: https://docs.github.com/en/rest/activity/watching#get-a-repository-subscription
 func (s *ActivityService) GetRepositorySubscription(ctx context.Context, owner, repo string) (*Subscription, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/subscription", owner, repo)
+	u, err := newURLString("repos/%s/%s/subscription", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -113,7 +122,10 @@ func (s *ActivityService) GetRepositorySubscription(ctx context.Context, owner, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/activity/watching#set-a-repository-subscription
 func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, repo string, subscription *Subscription) (*Subscription, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/subscription", owner, repo)
+	u, err := newURLString("repos/%s/%s/subscription", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, subscription)
 	if err != nil {
@@ -137,7 +149,10 @@ func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/activity/watching#delete-a-repository-subscription
 func (s *ActivityService) DeleteRepositorySubscription(ctx context.Context, owner, repo string) (*Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/subscription", owner, repo)
+	u, err := newURLString("repos/%s/%s/subscription", owner, repo)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

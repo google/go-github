@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ActionsPermissionsRepository represents a policy for repositories and allowed actions in a repository.
@@ -27,7 +26,10 @@ func (a ActionsPermissionsRepository) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-github-actions-permissions-for-a-repository
 func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner, repo string) (*ActionsPermissionsRepository, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/permissions", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/permissions", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -46,7 +48,10 @@ func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-github-actions-permissions-for-a-repository
 func (s *RepositoriesService) EditActionsPermissions(ctx context.Context, owner, repo string, actionsPermissionsRepository ActionsPermissionsRepository) (*ActionsPermissionsRepository, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/permissions", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/permissions", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, actionsPermissionsRepository)
 	if err != nil {
 		return nil, nil, err

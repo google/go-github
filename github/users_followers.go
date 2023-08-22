@@ -17,12 +17,16 @@ import (
 // GitHub API docs: https://docs.github.com/en/rest/users/followers#list-followers-of-a-user
 func (s *UsersService) ListFollowers(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/followers", user)
+		u, err = newURLString("users/%v/followers", user)
 	} else {
-		u = "user/followers"
+		u, err = newURLString("user/followers")
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -48,12 +52,16 @@ func (s *UsersService) ListFollowers(ctx context.Context, user string, opts *Lis
 // GitHub API docs: https://docs.github.com/en/rest/users/followers#list-the-people-a-user-follows
 func (s *UsersService) ListFollowing(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/following", user)
+		u, err = newURLString("users/%v/following", user)
 	} else {
-		u = "user/following"
+		u, err = newURLString("user/following")
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -99,7 +107,10 @@ func (s *UsersService) IsFollowing(ctx context.Context, user, target string) (bo
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/followers#follow-a-user
 func (s *UsersService) Follow(ctx context.Context, user string) (*Response, error) {
-	u := fmt.Sprintf("user/following/%v", user)
+	u, err := newURLString("user/following/%v", user)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, err
@@ -112,7 +123,10 @@ func (s *UsersService) Follow(ctx context.Context, user string) (*Response, erro
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/followers#unfollow-a-user
 func (s *UsersService) Unfollow(ctx context.Context, user string) (*Response, error) {
-	u := fmt.Sprintf("user/following/%v", user)
+	u, err := newURLString("user/following/%v", user)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

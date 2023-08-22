@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // CodespacesService handles communication with the Codespaces related
@@ -92,8 +91,11 @@ type ListCodespaces struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#list-codespaces-in-a-repository-for-the-authenticated-user
 func (s *CodespacesService) ListInRepo(ctx context.Context, owner, repo string, opts *ListOptions) (*ListCodespaces, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/codespaces", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/codespaces", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -126,8 +128,11 @@ type ListCodespacesOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#list-codespaces-for-the-authenticated-user
 func (s *CodespacesService) List(ctx context.Context, opts *ListCodespacesOptions) (*ListCodespaces, *Response, error) {
-	u := "user/codespaces"
-	u, err := addOptions(u, opts)
+	u, err := newURLString("user/codespaces")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -174,7 +179,10 @@ type CreateCodespaceOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#create-a-codespace-in-a-repository
 func (s *CodespacesService) CreateInRepo(ctx context.Context, owner, repo string, request *CreateCodespaceOptions) (*Codespace, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/codespaces", owner, repo)
+	u, err := newURLString("repos/%v/%v/codespaces", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
@@ -197,7 +205,10 @@ func (s *CodespacesService) CreateInRepo(ctx context.Context, owner, repo string
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#start-a-codespace-for-the-authenticated-user
 func (s *CodespacesService) Start(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
-	u := fmt.Sprintf("user/codespaces/%v/start", codespaceName)
+	u, err := newURLString("user/codespaces/%v/start", codespaceName)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -220,7 +231,10 @@ func (s *CodespacesService) Start(ctx context.Context, codespaceName string) (*C
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#stop-a-codespace-for-the-authenticated-user
 func (s *CodespacesService) Stop(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
-	u := fmt.Sprintf("user/codespaces/%v/stop", codespaceName)
+	u, err := newURLString("user/codespaces/%v/stop", codespaceName)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -243,7 +257,10 @@ func (s *CodespacesService) Stop(ctx context.Context, codespaceName string) (*Co
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#delete-a-codespace-for-the-authenticated-user
 func (s *CodespacesService) Delete(ctx context.Context, codespaceName string) (*Response, error) {
-	u := fmt.Sprintf("user/codespaces/%v", codespaceName)
+	u, err := newURLString("user/codespaces/%v", codespaceName)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

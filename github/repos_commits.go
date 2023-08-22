@@ -126,8 +126,11 @@ type BranchCommit struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/commits#list-commits
 func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo string, opts *CommitsListOptions) ([]*RepositoryCommit, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/commits", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -151,8 +154,11 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 // GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-single-commit
 // GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-commit
 func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha string, opts *ListOptions) (*RepositoryCommit, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/commits/%v", owner, repo, sha)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -175,7 +181,10 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-commit
 func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner string, repo string, sha string, opts RawOptions) (string, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
+	u, err := newURLString("repos/%v/%v/commits/%v", owner, repo, sha)
+	if err != nil {
+		return "", nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return "", nil, err
@@ -204,7 +213,10 @@ func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner string, re
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-commit
 func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, ref, lastSHA string) (string, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, refURLEscape(ref))
+	u, err := newURLString("repos/%v/%v/commits/%v", owner, repo, refURLEscape(ref))
+	if err != nil {
+		return "", nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -232,8 +244,11 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo st
 	escapedBase := url.QueryEscape(base)
 	escapedHead := url.QueryEscape(head)
 
-	u := fmt.Sprintf("repos/%v/%v/compare/%v...%v", owner, repo, escapedBase, escapedHead)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/compare/%v...%v", owner, repo, escapedBase, escapedHead)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -263,7 +278,10 @@ func (s *RepositoriesService) CompareCommitsRaw(ctx context.Context, owner, repo
 	escapedBase := url.QueryEscape(base)
 	escapedHead := url.QueryEscape(head)
 
-	u := fmt.Sprintf("repos/%v/%v/compare/%v...%v", owner, repo, escapedBase, escapedHead)
+	u, err := newURLString("repos/%v/%v/compare/%v...%v", owner, repo, escapedBase, escapedHead)
+	if err != nil {
+		return "", nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -293,7 +311,10 @@ func (s *RepositoriesService) CompareCommitsRaw(ctx context.Context, owner, repo
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/commits#list-branches-for-head-commit
 func (s *RepositoriesService) ListBranchesHeadCommit(ctx context.Context, owner, repo, sha string) ([]*BranchCommit, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v/branches-where-head", owner, repo, sha)
+	u, err := newURLString("repos/%v/%v/commits/%v/branches-where-head", owner, repo, sha)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

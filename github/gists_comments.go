@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // GistComment represents a Gist comment.
@@ -27,8 +26,11 @@ func (g GistComment) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/comments#list-gist-comments
 func (s *GistsService) ListComments(ctx context.Context, gistID string, opts *ListOptions) ([]*GistComment, *Response, error) {
-	u := fmt.Sprintf("gists/%v/comments", gistID)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("gists/%v/comments", gistID)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -51,7 +53,10 @@ func (s *GistsService) ListComments(ctx context.Context, gistID string, opts *Li
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/comments#get-a-gist-comment
 func (s *GistsService) GetComment(ctx context.Context, gistID string, commentID int64) (*GistComment, *Response, error) {
-	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
+	u, err := newURLString("gists/%v/comments/%v", gistID, commentID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -70,7 +75,10 @@ func (s *GistsService) GetComment(ctx context.Context, gistID string, commentID 
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/comments#create-a-gist-comment
 func (s *GistsService) CreateComment(ctx context.Context, gistID string, comment *GistComment) (*GistComment, *Response, error) {
-	u := fmt.Sprintf("gists/%v/comments", gistID)
+	u, err := newURLString("gists/%v/comments", gistID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -89,7 +97,10 @@ func (s *GistsService) CreateComment(ctx context.Context, gistID string, comment
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/comments#update-a-gist-comment
 func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID int64, comment *GistComment) (*GistComment, *Response, error) {
-	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
+	u, err := newURLString("gists/%v/comments/%v", gistID, commentID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -108,7 +119,10 @@ func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/comments#delete-a-gist-comment
 func (s *GistsService) DeleteComment(ctx context.Context, gistID string, commentID int64) (*Response, error) {
-	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
+	u, err := newURLString("gists/%v/comments/%v", gistID, commentID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

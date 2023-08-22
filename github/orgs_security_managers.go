@@ -7,14 +7,16 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListSecurityManagerTeams lists all security manager teams for an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/security-managers#list-security-manager-teams
 func (s *OrganizationsService) ListSecurityManagerTeams(ctx context.Context, org string) ([]*Team, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/security-managers", org)
+	u, err := newURLString("orgs/%v/security-managers", org)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -34,7 +36,10 @@ func (s *OrganizationsService) ListSecurityManagerTeams(ctx context.Context, org
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/security-managers#add-a-security-manager-team
 func (s *OrganizationsService) AddSecurityManagerTeam(ctx context.Context, org, team string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/security-managers/teams/%v", org, team)
+	u, err := newURLString("orgs/%v/security-managers/teams/%v", org, team)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, err
@@ -47,7 +52,10 @@ func (s *OrganizationsService) AddSecurityManagerTeam(ctx context.Context, org, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/security-managers#remove-a-security-manager-team
 func (s *OrganizationsService) RemoveSecurityManagerTeam(ctx context.Context, org, team string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/security-managers/teams/%v", org, team)
+	u, err := newURLString("orgs/%v/security-managers/teams/%v", org, team)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

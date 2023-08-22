@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // Scope models a GitHub authorization scope.
@@ -145,7 +144,10 @@ func (a AuthorizationUpdateRequest) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#check-a-token
 func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error) {
-	u := fmt.Sprintf("applications/%v/token", clientID)
+	u, err := newURLString("applications/%v/token", clientID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	reqBody := &struct {
 		AccessToken string `json:"access_token"`
@@ -178,7 +180,10 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#reset-a-token
 func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error) {
-	u := fmt.Sprintf("applications/%v/token", clientID)
+	u, err := newURLString("applications/%v/token", clientID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	reqBody := &struct {
 		AccessToken string `json:"access_token"`
@@ -207,7 +212,10 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#delete-an-app-token
 func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToken string) (*Response, error) {
-	u := fmt.Sprintf("applications/%v/token", clientID)
+	u, err := newURLString("applications/%v/token", clientID)
+	if err != nil {
+		return nil, err
+	}
 
 	reqBody := &struct {
 		AccessToken string `json:"access_token"`
@@ -228,7 +236,10 @@ func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToke
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#delete-an-app-authorization
 func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, accessToken string) (*Response, error) {
-	u := fmt.Sprintf("applications/%v/grant", clientID)
+	u, err := newURLString("applications/%v/grant", clientID)
+	if err != nil {
+		return nil, err
+	}
 
 	reqBody := &struct {
 		AccessToken string `json:"access_token"`
@@ -251,7 +262,10 @@ func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, acces
 //
 // GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-an-impersonation-oauth-token
 func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, username string, authReq *AuthorizationRequest) (*Authorization, *Response, error) {
-	u := fmt.Sprintf("admin/users/%v/authorizations", username)
+	u, err := newURLString("admin/users/%v/authorizations", username)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, authReq)
 	if err != nil {
 		return nil, nil, err
@@ -271,7 +285,10 @@ func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, usernam
 //
 // GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-an-impersonation-oauth-token
 func (s *AuthorizationsService) DeleteImpersonation(ctx context.Context, username string) (*Response, error) {
-	u := fmt.Sprintf("admin/users/%v/authorizations", username)
+	u, err := newURLString("admin/users/%v/authorizations", username)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

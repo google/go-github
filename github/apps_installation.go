@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"strings"
 )
 
@@ -54,8 +53,11 @@ func (s *AppsService) ListRepos(ctx context.Context, opts *ListOptions) (*ListRe
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/installations#list-repositories-accessible-to-the-user-access-token
 func (s *AppsService) ListUserRepos(ctx context.Context, id int64, opts *ListOptions) (*ListRepositories, *Response, error) {
-	u := fmt.Sprintf("user/installations/%v/repositories", id)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("user/installations/%v/repositories", id)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -86,7 +88,10 @@ func (s *AppsService) ListUserRepos(ctx context.Context, id int64, opts *ListOpt
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/installations#add-a-repository-to-an-app-installation
 func (s *AppsService) AddRepository(ctx context.Context, instID, repoID int64) (*Repository, *Response, error) {
-	u := fmt.Sprintf("user/installations/%v/repositories/%v", instID, repoID)
+	u, err := newURLString("user/installations/%v/repositories/%v", instID, repoID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -105,7 +110,10 @@ func (s *AppsService) AddRepository(ctx context.Context, instID, repoID int64) (
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/installations#remove-a-repository-from-an-app-installation
 func (s *AppsService) RemoveRepository(ctx context.Context, instID, repoID int64) (*Response, error) {
-	u := fmt.Sprintf("user/installations/%v/repositories/%v", instID, repoID)
+	u, err := newURLString("user/installations/%v/repositories/%v", instID, repoID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -118,7 +126,10 @@ func (s *AppsService) RemoveRepository(ctx context.Context, instID, repoID int64
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/installations#revoke-an-installation-access-token
 func (s *AppsService) RevokeInstallationToken(ctx context.Context) (*Response, error) {
-	u := "installation/token"
+	u, err := newURLString("installation/token")
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

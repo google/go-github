@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // Dependency reprensents the vulnerable dependency.
@@ -104,7 +103,10 @@ func (s *DependabotService) listAlerts(ctx context.Context, url string, opts *Li
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts#list-dependabot-alerts-for-a-repository
 func (s *DependabotService) ListRepoAlerts(ctx context.Context, owner, repo string, opts *ListAlertsOptions) ([]*DependabotAlert, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/dependabot/alerts", owner, repo)
+	url, err := newURLString("repos/%v/%v/dependabot/alerts", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.listAlerts(ctx, url, opts)
 }
 
@@ -112,7 +114,10 @@ func (s *DependabotService) ListRepoAlerts(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts#list-dependabot-alerts-for-an-organization
 func (s *DependabotService) ListOrgAlerts(ctx context.Context, org string, opts *ListAlertsOptions) ([]*DependabotAlert, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/dependabot/alerts", org)
+	url, err := newURLString("orgs/%v/dependabot/alerts", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.listAlerts(ctx, url, opts)
 }
 
@@ -120,7 +125,10 @@ func (s *DependabotService) ListOrgAlerts(ctx context.Context, org string, opts 
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts#get-a-dependabot-alert
 func (s *DependabotService) GetRepoAlert(ctx context.Context, owner, repo string, number int) (*DependabotAlert, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/dependabot/alerts/%v", owner, repo, number)
+	url, err := newURLString("repos/%v/%v/dependabot/alerts/%v", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, nil, err

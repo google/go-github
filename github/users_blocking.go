@@ -7,15 +7,17 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListBlockedUsers lists all the blocked users by the authenticated user.
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/blocking#list-users-blocked-by-the-authenticated-user
 func (s *UsersService) ListBlockedUsers(ctx context.Context, opts *ListOptions) ([]*User, *Response, error) {
-	u := "user/blocks"
-	u, err := addOptions(u, opts)
+	u, err := newURLString("user/blocks")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -41,7 +43,10 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opts *ListOptions) 
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/blocking#check-if-a-user-is-blocked-by-the-authenticated-user
 func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Response, error) {
-	u := fmt.Sprintf("user/blocks/%v", user)
+	u, err := newURLString("user/blocks/%v", user)
+	if err != nil {
+		return false, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -60,7 +65,10 @@ func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Respo
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/blocking#block-a-user
 func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, error) {
-	u := fmt.Sprintf("user/blocks/%v", user)
+	u, err := newURLString("user/blocks/%v", user)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
@@ -77,7 +85,10 @@ func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, e
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/blocking#unblock-a-user
 func (s *UsersService) UnblockUser(ctx context.Context, user string) (*Response, error) {
-	u := fmt.Sprintf("user/blocks/%v", user)
+	u, err := newURLString("user/blocks/%v", user)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListOutsideCollaboratorsOptions specifies optional parameters to the
@@ -29,8 +28,11 @@ type ListOutsideCollaboratorsOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/outside-collaborators#list-outside-collaborators-for-an-organization
 func (s *OrganizationsService) ListOutsideCollaborators(ctx context.Context, org string, opts *ListOutsideCollaboratorsOptions) ([]*User, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/outside_collaborators", org)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/outside_collaborators", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -54,7 +56,10 @@ func (s *OrganizationsService) ListOutsideCollaborators(ctx context.Context, org
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/outside-collaborators#remove-outside-collaborator-from-an-organization
 func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, org string, user string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/outside_collaborators/%v", org, user)
+	u, err := newURLString("orgs/%v/outside_collaborators/%v", org, user)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -71,7 +76,10 @@ func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, or
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/outside-collaborators#convert-an-organization-member-to-outside-collaborator
 func (s *OrganizationsService) ConvertMemberToOutsideCollaborator(ctx context.Context, org string, user string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/outside_collaborators/%v", org, user)
+	u, err := newURLString("orgs/%v/outside_collaborators/%v", org, user)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, err

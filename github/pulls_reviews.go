@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"errors"
-	"fmt"
 )
 
 var ErrMixedCommentStyles = errors.New("cannot use both position and side/line form comments")
@@ -102,8 +101,11 @@ func (r PullRequestReviewDismissalRequest) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#list-reviews-for-a-pull-request
 func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -126,7 +128,10 @@ func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#get-a-review-for-a-pull-request
 func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
+	u, err := newURLString("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -146,7 +151,10 @@ func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string,
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#delete-a-pending-review-for-a-pull-request
 func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
+	u, err := newURLString("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -166,8 +174,11 @@ func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, re
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#list-comments-for-a-pull-request-review
 func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, repo string, number int, reviewID int64, opts *ListOptions) ([]*PullRequestComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/comments", owner, repo, number, reviewID)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/pulls/%d/reviews/%d/comments", owner, repo, number, reviewID)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -224,7 +235,10 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 //	It is waaaaaay better.
 //	```
 func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, review)
 	if err != nil {
@@ -256,7 +270,10 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 	opts := &struct {
 		Body string `json:"body"`
 	}{Body: body}
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
+	u, err := newURLString("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
@@ -276,7 +293,10 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#submit-a-review-for-a-pull-request
 func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/events", owner, repo, number, reviewID)
+	u, err := newURLString("repos/%v/%v/pulls/%d/reviews/%d/events", owner, repo, number, reviewID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, review)
 	if err != nil {
@@ -296,7 +316,10 @@ func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#dismiss-a-review-for-a-pull-request
 func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/dismissals", owner, repo, number, reviewID)
+	u, err := newURLString("repos/%v/%v/pulls/%d/reviews/%d/dismissals", owner, repo, number, reviewID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, review)
 	if err != nil {

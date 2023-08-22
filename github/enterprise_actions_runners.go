@@ -7,14 +7,16 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-runner-applications-for-an-enterprise
 func (s *EnterpriseService) ListRunnerApplicationDownloads(ctx context.Context, enterprise string) ([]*RunnerApplicationDownload, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/actions/runners/downloads", enterprise)
+	u, err := newURLString("enterprises/%v/actions/runners/downloads", enterprise)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -33,7 +35,10 @@ func (s *EnterpriseService) ListRunnerApplicationDownloads(ctx context.Context, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-an-enterprise
 func (s *EnterpriseService) CreateRegistrationToken(ctx context.Context, enterprise string) (*RegistrationToken, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/actions/runners/registration-token", enterprise)
+	u, err := newURLString("enterprises/%v/actions/runners/registration-token", enterprise)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -53,8 +58,11 @@ func (s *EnterpriseService) CreateRegistrationToken(ctx context.Context, enterpr
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-enterprise
 func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, opts *ListOptions) (*Runners, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/actions/runners", enterprise)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("enterprises/%v/actions/runners", enterprise)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -77,7 +85,10 @@ func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-an-enterprise
 func (s *EnterpriseService) RemoveRunner(ctx context.Context, enterprise string, runnerID int64) (*Response, error) {
-	u := fmt.Sprintf("enterprises/%v/actions/runners/%v", enterprise, runnerID)
+	u, err := newURLString("enterprises/%v/actions/runners/%v", enterprise, runnerID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

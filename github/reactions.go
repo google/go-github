@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 )
 
@@ -62,8 +61,11 @@ type ListCommentReactionOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-a-commit-comment
 func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListCommentReactionOptions) ([]*Reaction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/comments/%v/reactions", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -92,7 +94,10 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-commit-comment
 func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/comments/%v/reactions", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	body := &Reaction{Content: String(content)}
 	req, err := s.client.NewRequest("POST", u, body)
@@ -116,7 +121,10 @@ func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, rep
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#delete-a-commit-comment-reaction
 func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
+	u, err := newURLString("repos/%v/%v/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, u)
 }
@@ -125,7 +133,10 @@ func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, rep
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#delete-a-commit-comment-reaction
 func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
-	u := fmt.Sprintf("repositories/%v/comments/%v/reactions/%v", repoID, commentID, reactionID)
+	u, err := newURLString("repositories/%v/comments/%v/reactions/%v", repoID, commentID, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, u)
 }
@@ -134,8 +145,11 @@ func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-an-issue
 func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Reaction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions", owner, repo, number)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/issues/%v/reactions", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -164,7 +178,10 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-an-issue
 func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo string, number int, content string) (*Reaction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/issues/%v/reactions", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	body := &Reaction{Content: String(content)}
 	req, err := s.client.NewRequest("POST", u, body)
@@ -188,7 +205,10 @@ func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#delete-an-issue-reaction
 func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo string, issueNumber int, reactionID int64) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/issues/%v/reactions/%v", owner, repo, issueNumber, reactionID)
+	url, err := newURLString("repos/%v/%v/issues/%v/reactions/%v", owner, repo, issueNumber, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, url)
 }
@@ -197,7 +217,10 @@ func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#delete-an-issue-reaction
 func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, issueNumber int, reactionID int64) (*Response, error) {
-	url := fmt.Sprintf("repositories/%v/issues/%v/reactions/%v", repoID, issueNumber, reactionID)
+	url, err := newURLString("repositories/%v/issues/%v/reactions/%v", repoID, issueNumber, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, url)
 }
@@ -206,8 +229,11 @@ func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-an-issue-comment
 func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -236,7 +262,10 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-an-issue-comment
 func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	body := &Reaction{Content: String(content)}
 	req, err := s.client.NewRequest("POST", u, body)
@@ -260,7 +289,10 @@ func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#delete-an-issue-comment-reaction
 func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
+	url, err := newURLString("repos/%v/%v/issues/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, url)
 }
@@ -269,7 +301,10 @@ func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#delete-an-issue-comment-reaction
 func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
-	url := fmt.Sprintf("repositories/%v/issues/comments/%v/reactions/%v", repoID, commentID, reactionID)
+	url, err := newURLString("repositories/%v/issues/comments/%v/reactions/%v", repoID, commentID, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, url)
 }
@@ -278,8 +313,11 @@ func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, r
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-a-pull-request-review-comment
 func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -308,7 +346,10 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-pull-request-review-comment
 func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	body := &Reaction{Content: String(content)}
 	req, err := s.client.NewRequest("POST", u, body)
@@ -332,7 +373,10 @@ func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context,
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#delete-a-pull-request-comment-reaction
 func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
+	url, err := newURLString("repos/%v/%v/pulls/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, url)
 }
@@ -341,7 +385,10 @@ func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context,
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#delete-a-pull-request-comment-reaction
 func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
-	url := fmt.Sprintf("repositories/%v/pulls/comments/%v/reactions/%v", repoID, commentID, reactionID)
+	url, err := newURLString("repositories/%v/pulls/comments/%v/reactions/%v", repoID, commentID, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, url)
 }
@@ -350,8 +397,11 @@ func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Cont
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-a-team-discussion-legacy
 func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, teamID int64, discussionNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -377,7 +427,10 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-team-discussion-legacy
 func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, teamID int64, discussionNumber int, content string) (*Reaction, *Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
+	u, err := newURLString("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	body := &Reaction{Content: String(content)}
 	req, err := s.client.NewRequest("POST", u, body)
@@ -400,7 +453,10 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#delete-team-discussion-reaction
 func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org, teamSlug string, discussionNumber int, reactionID int64) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/reactions/%v", org, teamSlug, discussionNumber, reactionID)
+	url, err := newURLString("orgs/%v/teams/%v/discussions/%v/reactions/%v", org, teamSlug, discussionNumber, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, url)
 }
@@ -409,7 +465,10 @@ func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-team-discussion
 func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber int, reactionID int64) (*Response, error) {
-	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/reactions/%v", orgID, teamID, discussionNumber, reactionID)
+	url, err := newURLString("organizations/%v/team/%v/discussions/%v/reactions/%v", orgID, teamID, discussionNumber, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, url)
 }
@@ -418,8 +477,11 @@ func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx cont
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#list-reactions-for-a-team-discussion-comment-legacy
 func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Context, teamID int64, discussionNumber, commentNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -444,7 +506,10 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-team-discussion-comment-legacy
 func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Context, teamID int64, discussionNumber, commentNumber int, content string) (*Reaction, *Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
+	u, err := newURLString("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	body := &Reaction{Content: String(content)}
 	req, err := s.client.NewRequest("POST", u, body)
@@ -467,7 +532,10 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#delete-team-discussion-comment-reaction
 func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Context, org, teamSlug string, discussionNumber, commentNumber int, reactionID int64) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments/%v/reactions/%v", org, teamSlug, discussionNumber, commentNumber, reactionID)
+	url, err := newURLString("orgs/%v/teams/%v/discussions/%v/comments/%v/reactions/%v", org, teamSlug, discussionNumber, commentNumber, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, url)
 }
@@ -476,7 +544,10 @@ func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Conte
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-team-discussion-comment
 func (s *ReactionsService) DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber, commentNumber int, reactionID int64) (*Response, error) {
-	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments/%v/reactions/%v", orgID, teamID, discussionNumber, commentNumber, reactionID)
+	url, err := newURLString("organizations/%v/team/%v/discussions/%v/comments/%v/reactions/%v", orgID, teamID, discussionNumber, commentNumber, reactionID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.deleteReaction(ctx, url)
 }
@@ -500,7 +571,10 @@ func (s *ReactionsService) deleteReaction(ctx context.Context, url string) (*Res
 //
 // GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-release
 func (s *ReactionsService) CreateReleaseReaction(ctx context.Context, owner, repo string, releaseID int64, content string) (*Reaction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/releases/%v/reactions", owner, repo, releaseID)
+	u, err := newURLString("repos/%v/%v/releases/%v/reactions", owner, repo, releaseID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	body := &Reaction{Content: String(content)}
 	req, err := s.client.NewRequest("POST", u, body)

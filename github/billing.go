@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // BillingService provides access to the billing related functions
@@ -64,7 +63,10 @@ type AdvancedSecurityCommittersBreakdown struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/billing#get-github-actions-billing-for-an-organization
 func (s *BillingService) GetActionsBillingOrg(ctx context.Context, org string) (*ActionBilling, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/settings/billing/actions", org)
+	u, err := newURLString("orgs/%v/settings/billing/actions", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -83,7 +85,10 @@ func (s *BillingService) GetActionsBillingOrg(ctx context.Context, org string) (
 //
 // GitHub API docs: https://docs.github.com/en/rest/billing#get-github-packages-billing-for-an-organization
 func (s *BillingService) GetPackagesBillingOrg(ctx context.Context, org string) (*PackageBilling, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/settings/billing/packages", org)
+	u, err := newURLString("orgs/%v/settings/billing/packages", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -103,7 +108,10 @@ func (s *BillingService) GetPackagesBillingOrg(ctx context.Context, org string) 
 //
 // GitHub API docs: https://docs.github.com/en/rest/billing#get-shared-storage-billing-for-an-organization
 func (s *BillingService) GetStorageBillingOrg(ctx context.Context, org string) (*StorageBilling, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/settings/billing/shared-storage", org)
+	u, err := newURLString("orgs/%v/settings/billing/shared-storage", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -122,8 +130,11 @@ func (s *BillingService) GetStorageBillingOrg(ctx context.Context, org string) (
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/billing?apiVersion=2022-11-28#get-github-advanced-security-active-committers-for-an-organization
 func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Context, org string, opts *ListOptions) (*ActiveCommitters, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/settings/billing/advanced-security", org)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/settings/billing/advanced-security", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -146,7 +157,10 @@ func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Cont
 //
 // GitHub API docs: https://docs.github.com/en/rest/billing#get-github-actions-billing-for-a-user
 func (s *BillingService) GetActionsBillingUser(ctx context.Context, user string) (*ActionBilling, *Response, error) {
-	u := fmt.Sprintf("users/%v/settings/billing/actions", user)
+	u, err := newURLString("users/%v/settings/billing/actions", user)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -165,7 +179,10 @@ func (s *BillingService) GetActionsBillingUser(ctx context.Context, user string)
 //
 // GitHub API docs: https://docs.github.com/en/rest/billing#get-github-packages-billing-for-a-user
 func (s *BillingService) GetPackagesBillingUser(ctx context.Context, user string) (*PackageBilling, *Response, error) {
-	u := fmt.Sprintf("users/%v/settings/billing/packages", user)
+	u, err := newURLString("users/%v/settings/billing/packages", user)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -185,7 +202,10 @@ func (s *BillingService) GetPackagesBillingUser(ctx context.Context, user string
 //
 // GitHub API docs: https://docs.github.com/en/rest/billing#get-shared-storage-billing-for-a-user
 func (s *BillingService) GetStorageBillingUser(ctx context.Context, user string) (*StorageBilling, *Response, error) {
-	u := fmt.Sprintf("users/%v/settings/billing/shared-storage", user)
+	u, err := newURLString("users/%v/settings/billing/shared-storage", user)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

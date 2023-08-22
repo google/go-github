@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListAssignees fetches all available assignees (owners and collaborators) to
@@ -15,8 +14,11 @@ import (
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/assignees#list-assignees
 func (s *IssuesService) ListAssignees(ctx context.Context, owner, repo string, opts *ListOptions) ([]*User, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/assignees", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/assignees", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -39,7 +41,10 @@ func (s *IssuesService) ListAssignees(ctx context.Context, owner, repo string, o
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/assignees#check-if-a-user-can-be-assigned
 func (s *IssuesService) IsAssignee(ctx context.Context, owner, repo, user string) (bool, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/assignees/%v", owner, repo, user)
+	u, err := newURLString("repos/%v/%v/assignees/%v", owner, repo, user)
+	if err != nil {
+		return false, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return false, nil, err
@@ -57,7 +62,10 @@ func (s *IssuesService) AddAssignees(ctx context.Context, owner, repo string, nu
 	users := &struct {
 		Assignees []string `json:"assignees,omitempty"`
 	}{Assignees: assignees}
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/assignees", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/issues/%v/assignees", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, users)
 	if err != nil {
 		return nil, nil, err
@@ -79,7 +87,10 @@ func (s *IssuesService) RemoveAssignees(ctx context.Context, owner, repo string,
 	users := &struct {
 		Assignees []string `json:"assignees,omitempty"`
 	}{Assignees: assignees}
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/assignees", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/issues/%v/assignees", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, users)
 	if err != nil {
 		return nil, nil, err

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // RepositoryComment represents a comment for a commit, file, or line in a repository.
@@ -37,8 +36,11 @@ func (r RepositoryComment) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/comments#list-commit-comments-for-a-repository
 func (s *RepositoriesService) ListComments(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/comments", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/comments", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -64,8 +66,11 @@ func (s *RepositoriesService) ListComments(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/comments#list-commit-comments
 func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, repo, sha string, opts *ListOptions) ([]*RepositoryComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v/comments", owner, repo, sha)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/commits/%v/comments", owner, repo, sha)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -92,7 +97,10 @@ func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, rep
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/comments#create-a-commit-comment
 func (s *RepositoriesService) CreateComment(ctx context.Context, owner, repo, sha string, comment *RepositoryComment) (*RepositoryComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v/comments", owner, repo, sha)
+	u, err := newURLString("repos/%v/%v/commits/%v/comments", owner, repo, sha)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -111,7 +119,10 @@ func (s *RepositoriesService) CreateComment(ctx context.Context, owner, repo, sh
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/comments#get-a-commit-comment
 func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string, id int64) (*RepositoryComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/comments/%v", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -133,7 +144,10 @@ func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/comments#update-a-commit-comment
 func (s *RepositoriesService) UpdateComment(ctx context.Context, owner, repo string, id int64, comment *RepositoryComment) (*RepositoryComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/comments/%v", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -152,7 +166,10 @@ func (s *RepositoriesService) UpdateComment(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/commits/comments#delete-a-commit-comment
 func (s *RepositoriesService) DeleteComment(ctx context.Context, owner, repo string, id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/comments/%v", owner, repo, id)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

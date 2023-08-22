@@ -351,7 +351,10 @@ type Ruleset struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-rules-for-a-branch
 func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo, branch string) ([]*RepositoryRule, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/rules/branches/%v", owner, repo, branch)
+	u, err := newURLString("repos/%v/%v/rules/branches/%v", owner, repo, branch)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -372,7 +375,10 @@ func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-all-repository-rulesets
 func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo string, includesParents bool) ([]*Ruleset, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/rulesets?includes_parents=%v", owner, repo, includesParents)
+	u, err := newURLString("repos/%v/%v/rulesets?includes_parents=%v", owner, repo, includesParents)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -392,7 +398,10 @@ func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo st
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#create-a-repository-ruleset
 func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo string, rs *Ruleset) (*Ruleset, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/rulesets", owner, repo)
+	u, err := newURLString("repos/%v/%v/rulesets", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, rs)
 	if err != nil {
@@ -413,7 +422,10 @@ func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-a-repository-ruleset
 func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string, rulesetID int64, includesParents bool) (*Ruleset, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/rulesets/%v?includes_parents=%v", owner, repo, rulesetID, includesParents)
+	u, err := newURLString("repos/%v/%v/rulesets/%v?includes_parents=%v", owner, repo, rulesetID, includesParents)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -433,7 +445,10 @@ func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#update-a-repository-ruleset
 func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
+	u, err := newURLString("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, rs)
 	if err != nil {
@@ -453,7 +468,10 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/rules#delete-a-repository-ruleset
 func (s *RepositoriesService) DeleteRuleset(ctx context.Context, owner, repo string, rulesetID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
+	u, err := newURLString("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

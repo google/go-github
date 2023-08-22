@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 )
 
@@ -60,8 +59,11 @@ type CredentialAuthorization struct {
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#list-saml-sso-authorizations-for-an-organization
 func (s *OrganizationsService) ListCredentialAuthorizations(ctx context.Context, org string, opts *ListOptions) ([]*CredentialAuthorization, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/credential-authorizations", org)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/credential-authorizations", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -85,7 +87,10 @@ func (s *OrganizationsService) ListCredentialAuthorizations(ctx context.Context,
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#remove-a-saml-sso-authorization-for-an-organization
 func (s *OrganizationsService) RemoveCredentialAuthorization(ctx context.Context, org string, credentialID int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/credential-authorizations/%v", org, credentialID)
+	u, err := newURLString("orgs/%v/credential-authorizations/%v", org, credentialID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest(http.MethodDelete, u, nil)
 	if err != nil {
 		return nil, err

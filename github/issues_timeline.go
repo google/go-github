@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"strings"
 )
 
@@ -166,8 +165,11 @@ type Source struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/timeline#list-timeline-events-for-an-issue
 func (s *IssuesService) ListIssueTimeline(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Timeline, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/timeline", owner, repo, number)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/issues/%v/timeline", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

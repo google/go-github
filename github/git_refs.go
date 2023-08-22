@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"net/url"
 	"strings"
 )
@@ -52,7 +51,10 @@ type updateRefRequest struct {
 // GitHub API docs: https://docs.github.com/en/rest/git/refs#get-a-reference
 func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref string) (*Reference, *Response, error) {
 	ref = strings.TrimPrefix(ref, "refs/")
-	u := fmt.Sprintf("repos/%v/%v/git/ref/%v", owner, repo, refURLEscape(ref))
+	u, err := newURLString("repos/%v/%v/git/ref/%v", owner, repo, refURLEscape(ref))
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -94,8 +96,11 @@ func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo string, o
 	if opts != nil {
 		ref = strings.TrimPrefix(opts.Ref, "refs/")
 	}
-	u := fmt.Sprintf("repos/%v/%v/git/matching-refs/%v", owner, repo, refURLEscape(ref))
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/git/matching-refs/%v", owner, repo, refURLEscape(ref))
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -118,7 +123,10 @@ func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo string, o
 //
 // GitHub API docs: https://docs.github.com/en/rest/git/refs#create-a-reference
 func (s *GitService) CreateRef(ctx context.Context, owner string, repo string, ref *Reference) (*Reference, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/refs", owner, repo)
+	u, err := newURLString("repos/%v/%v/git/refs", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, &createRefRequest{
 		// back-compat with previous behavior that didn't require 'refs/' prefix
 		Ref: String("refs/" + strings.TrimPrefix(*ref.Ref, "refs/")),
@@ -142,7 +150,10 @@ func (s *GitService) CreateRef(ctx context.Context, owner string, repo string, r
 // GitHub API docs: https://docs.github.com/en/rest/git/refs#update-a-reference
 func (s *GitService) UpdateRef(ctx context.Context, owner string, repo string, ref *Reference, force bool) (*Reference, *Response, error) {
 	refPath := strings.TrimPrefix(*ref.Ref, "refs/")
-	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, refURLEscape(refPath))
+	u, err := newURLString("repos/%v/%v/git/refs/%v", owner, repo, refURLEscape(refPath))
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, &updateRefRequest{
 		SHA:   ref.Object.SHA,
 		Force: &force,
@@ -165,7 +176,10 @@ func (s *GitService) UpdateRef(ctx context.Context, owner string, repo string, r
 // GitHub API docs: https://docs.github.com/en/rest/git/refs#delete-a-reference
 func (s *GitService) DeleteRef(ctx context.Context, owner string, repo string, ref string) (*Response, error) {
 	ref = strings.TrimPrefix(ref, "refs/")
-	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, refURLEscape(ref))
+	u, err := newURLString("repos/%v/%v/git/refs/%v", owner, repo, refURLEscape(ref))
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

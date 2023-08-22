@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // Workflow represents a repository action workflow.
@@ -60,8 +59,11 @@ type CreateWorkflowDispatchEventRequest struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflows#list-repository-workflows
 func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, opts *ListOptions) (*Workflows, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/workflows", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%s/%s/actions/workflows", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -84,7 +86,10 @@ func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflows#get-a-workflow
 func (s *ActionsService) GetWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Workflow, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v", owner, repo, workflowID)
+	u, err := newURLString("repos/%v/%v/actions/workflows/%v", owner, repo, workflowID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	return s.getWorkflow(ctx, u)
 }
@@ -93,7 +98,10 @@ func (s *ActionsService) GetWorkflowByID(ctx context.Context, owner, repo string
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflows#get-a-workflow
 func (s *ActionsService) GetWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Workflow, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v", owner, repo, workflowFileName)
+	u, err := newURLString("repos/%v/%v/actions/workflows/%v", owner, repo, workflowFileName)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	return s.getWorkflow(ctx, u)
 }
@@ -117,7 +125,10 @@ func (s *ActionsService) getWorkflow(ctx context.Context, url string) (*Workflow
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflows#get-workflow-usage
 func (s *ActionsService) GetWorkflowUsageByID(ctx context.Context, owner, repo string, workflowID int64) (*WorkflowUsage, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/timing", owner, repo, workflowID)
+	u, err := newURLString("repos/%v/%v/actions/workflows/%v/timing", owner, repo, workflowID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	return s.getWorkflowUsage(ctx, u)
 }
@@ -126,7 +137,10 @@ func (s *ActionsService) GetWorkflowUsageByID(ctx context.Context, owner, repo s
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflows#get-workflow-usage
 func (s *ActionsService) GetWorkflowUsageByFileName(ctx context.Context, owner, repo, workflowFileName string) (*WorkflowUsage, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/timing", owner, repo, workflowFileName)
+	u, err := newURLString("repos/%v/%v/actions/workflows/%v/timing", owner, repo, workflowFileName)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	return s.getWorkflowUsage(ctx, u)
 }
@@ -150,7 +164,10 @@ func (s *ActionsService) getWorkflowUsage(ctx context.Context, url string) (*Wor
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event
 func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, owner, repo string, workflowID int64, event CreateWorkflowDispatchEventRequest) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowID)
+	u, err := newURLString("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowID)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.createWorkflowDispatchEvent(ctx, u, &event)
 }
@@ -159,7 +176,10 @@ func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, ow
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event
 func (s *ActionsService) CreateWorkflowDispatchEventByFileName(ctx context.Context, owner, repo, workflowFileName string, event CreateWorkflowDispatchEventRequest) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowFileName)
+	u, err := newURLString("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowFileName)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.createWorkflowDispatchEvent(ctx, u, &event)
 }
@@ -177,7 +197,10 @@ func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url st
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflows#enable-a-workflow
 func (s *ActionsService) EnableWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/enable", owner, repo, workflowID)
+	u, err := newURLString("repos/%v/%v/actions/workflows/%v/enable", owner, repo, workflowID)
+	if err != nil {
+		return nil, err
+	}
 	return s.doNewPutRequest(ctx, u)
 }
 
@@ -185,7 +208,10 @@ func (s *ActionsService) EnableWorkflowByID(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflows#enable-a-workflow
 func (s *ActionsService) EnableWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/enable", owner, repo, workflowFileName)
+	u, err := newURLString("repos/%v/%v/actions/workflows/%v/enable", owner, repo, workflowFileName)
+	if err != nil {
+		return nil, err
+	}
 	return s.doNewPutRequest(ctx, u)
 }
 
@@ -193,7 +219,10 @@ func (s *ActionsService) EnableWorkflowByFileName(ctx context.Context, owner, re
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflows#disable-a-workflow
 func (s *ActionsService) DisableWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/disable", owner, repo, workflowID)
+	u, err := newURLString("repos/%v/%v/actions/workflows/%v/disable", owner, repo, workflowID)
+	if err != nil {
+		return nil, err
+	}
 	return s.doNewPutRequest(ctx, u)
 }
 
@@ -201,7 +230,10 @@ func (s *ActionsService) DisableWorkflowByID(ctx context.Context, owner, repo st
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflows#disable-a-workflow
 func (s *ActionsService) DisableWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/disable", owner, repo, workflowFileName)
+	u, err := newURLString("repos/%v/%v/actions/workflows/%v/disable", owner, repo, workflowFileName)
+	if err != nil {
+		return nil, err
+	}
 	return s.doNewPutRequest(ctx, u)
 }
 

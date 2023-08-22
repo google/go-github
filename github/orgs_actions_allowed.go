@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ActionsAllowed represents selected actions that are allowed.
@@ -27,7 +26,10 @@ func (a ActionsAllowed) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-organization
 func (s *OrganizationsService) GetActionsAllowed(ctx context.Context, org string) (*ActionsAllowed, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
+	u, err := newURLString("orgs/%v/actions/permissions/selected-actions", org)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -47,7 +49,10 @@ func (s *OrganizationsService) GetActionsAllowed(ctx context.Context, org string
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-organization
 func (s *OrganizationsService) EditActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
+	u, err := newURLString("orgs/%v/actions/permissions/selected-actions", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, actionsAllowed)
 	if err != nil {
 		return nil, nil, err

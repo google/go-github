@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // AdminService handles communication with the admin related methods of the
@@ -84,7 +83,10 @@ func (m Enterprise) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-server/rest/enterprise-admin/ldap#update-ldap-mapping-for-a-user
 func (s *AdminService) UpdateUserLDAPMapping(ctx context.Context, user string, mapping *UserLDAPMapping) (*UserLDAPMapping, *Response, error) {
-	u := fmt.Sprintf("admin/ldap/users/%v/mapping", user)
+	u, err := newURLString("admin/ldap/users/%v/mapping", user)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, mapping)
 	if err != nil {
 		return nil, nil, err
@@ -103,7 +105,10 @@ func (s *AdminService) UpdateUserLDAPMapping(ctx context.Context, user string, m
 //
 // GitHub API docs: https://docs.github.com/en/rest/enterprise/ldap/#update-ldap-mapping-for-a-team
 func (s *AdminService) UpdateTeamLDAPMapping(ctx context.Context, team int64, mapping *TeamLDAPMapping) (*TeamLDAPMapping, *Response, error) {
-	u := fmt.Sprintf("admin/ldap/teams/%v/mapping", team)
+	u, err := newURLString("admin/ldap/teams/%v/mapping", team)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, mapping)
 	if err != nil {
 		return nil, nil, err

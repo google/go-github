@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"strings"
 )
 
@@ -65,8 +64,11 @@ type DeploymentsListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#list-deployments
 func (s *RepositoriesService) ListDeployments(ctx context.Context, owner, repo string, opts *DeploymentsListOptions) ([]*Deployment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/deployments", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/deployments", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -89,7 +91,10 @@ func (s *RepositoriesService) ListDeployments(ctx context.Context, owner, repo s
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#get-a-deployment
 func (s *RepositoriesService) GetDeployment(ctx context.Context, owner, repo string, deploymentID int64) (*Deployment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
+	u, err := newURLString("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -109,7 +114,10 @@ func (s *RepositoriesService) GetDeployment(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#create-a-deployment
 func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo string, request *DeploymentRequest) (*Deployment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/deployments", owner, repo)
+	u, err := newURLString("repos/%v/%v/deployments", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
@@ -133,7 +141,10 @@ func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#delete-a-deployment
 func (s *RepositoriesService) DeleteDeployment(ctx context.Context, owner, repo string, deploymentID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
+	u, err := newURLString("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -177,8 +188,11 @@ type DeploymentStatusRequest struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#list-deployment-statuses
 func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner, repo string, deployment int64, opts *ListOptions) ([]*DeploymentStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -205,7 +219,10 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#get-a-deployment-status
 func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, repo string, deploymentID, deploymentStatusID int64) (*DeploymentStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses/%v", owner, repo, deploymentID, deploymentStatusID)
+	u, err := newURLString("repos/%v/%v/deployments/%v/statuses/%v", owner, repo, deploymentID, deploymentStatusID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -229,7 +246,10 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#create-a-deployment-status
 func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner, repo string, deployment int64, request *DeploymentStatusRequest) (*DeploymentStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
+	u, err := newURLString("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {

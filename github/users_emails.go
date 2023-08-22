@@ -19,8 +19,11 @@ type UserEmail struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/emails#list-email-addresses-for-the-authenticated-user
 func (s *UsersService) ListEmails(ctx context.Context, opts *ListOptions) ([]*UserEmail, *Response, error) {
-	u := "user/emails"
-	u, err := addOptions(u, opts)
+	u, err := newURLString("user/emails")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -43,7 +46,10 @@ func (s *UsersService) ListEmails(ctx context.Context, opts *ListOptions) ([]*Us
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/emails#add-an-email-address-for-the-authenticated-user
 func (s *UsersService) AddEmails(ctx context.Context, emails []string) ([]*UserEmail, *Response, error) {
-	u := "user/emails"
+	u, err := newURLString("user/emails")
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, emails)
 	if err != nil {
 		return nil, nil, err
@@ -62,7 +68,10 @@ func (s *UsersService) AddEmails(ctx context.Context, emails []string) ([]*UserE
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/emails#delete-an-email-address-for-the-authenticated-user
 func (s *UsersService) DeleteEmails(ctx context.Context, emails []string) (*Response, error) {
-	u := "user/emails"
+	u, err := newURLString("user/emails")
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, emails)
 	if err != nil {
 		return nil, err
@@ -76,7 +85,10 @@ func (s *UsersService) DeleteEmails(ctx context.Context, emails []string) (*Resp
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/emails#set-primary-email-visibility-for-the-authenticated-user
 func (s *UsersService) SetEmailVisibility(ctx context.Context, visibility string) ([]*UserEmail, *Response, error) {
-	u := "user/email/visibility"
+	u, err := newURLString("user/email/visibility")
+	if err != nil {
+		return nil, nil, err
+	}
 
 	updateVisiblilityReq := &UserEmail{
 		Visibility: &visibility,

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
@@ -100,12 +99,16 @@ type GistListOptions struct {
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#list-gists-for-a-user
 func (s *GistsService) List(ctx context.Context, user string, opts *GistListOptions) ([]*Gist, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/gists", user)
+		u, err = newURLString("users/%v/gists", user)
 	} else {
-		u = "gists"
+		u, err = newURLString("gists")
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -174,7 +177,10 @@ func (s *GistsService) ListStarred(ctx context.Context, opts *GistListOptions) (
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#get-a-gist
 func (s *GistsService) Get(ctx context.Context, id string) (*Gist, *Response, error) {
-	u := fmt.Sprintf("gists/%v", id)
+	u, err := newURLString("gists/%v", id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -193,7 +199,10 @@ func (s *GistsService) Get(ctx context.Context, id string) (*Gist, *Response, er
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#get-a-gist-revision
 func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, *Response, error) {
-	u := fmt.Sprintf("gists/%v/%v", id, sha)
+	u, err := newURLString("gists/%v/%v", id, sha)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -212,7 +221,10 @@ func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#create-a-gist
 func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response, error) {
-	u := "gists"
+	u, err := newURLString("gists")
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, gist)
 	if err != nil {
 		return nil, nil, err
@@ -231,7 +243,10 @@ func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#update-a-gist
 func (s *GistsService) Edit(ctx context.Context, id string, gist *Gist) (*Gist, *Response, error) {
-	u := fmt.Sprintf("gists/%v", id)
+	u, err := newURLString("gists/%v", id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, gist)
 	if err != nil {
 		return nil, nil, err
@@ -250,8 +265,11 @@ func (s *GistsService) Edit(ctx context.Context, id string, gist *Gist) (*Gist, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#list-gist-commits
 func (s *GistsService) ListCommits(ctx context.Context, id string, opts *ListOptions) ([]*GistCommit, *Response, error) {
-	u := fmt.Sprintf("gists/%v/commits", id)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("gists/%v/commits", id)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -274,7 +292,10 @@ func (s *GistsService) ListCommits(ctx context.Context, id string, opts *ListOpt
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#delete-a-gist
 func (s *GistsService) Delete(ctx context.Context, id string) (*Response, error) {
-	u := fmt.Sprintf("gists/%v", id)
+	u, err := newURLString("gists/%v", id)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -287,7 +308,10 @@ func (s *GistsService) Delete(ctx context.Context, id string) (*Response, error)
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#star-a-gist
 func (s *GistsService) Star(ctx context.Context, id string) (*Response, error) {
-	u := fmt.Sprintf("gists/%v/star", id)
+	u, err := newURLString("gists/%v/star", id)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, err
@@ -300,7 +324,10 @@ func (s *GistsService) Star(ctx context.Context, id string) (*Response, error) {
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#unstar-a-gist
 func (s *GistsService) Unstar(ctx context.Context, id string) (*Response, error) {
-	u := fmt.Sprintf("gists/%v/star", id)
+	u, err := newURLString("gists/%v/star", id)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -313,7 +340,10 @@ func (s *GistsService) Unstar(ctx context.Context, id string) (*Response, error)
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#check-if-a-gist-is-starred
 func (s *GistsService) IsStarred(ctx context.Context, id string) (bool, *Response, error) {
-	u := fmt.Sprintf("gists/%v/star", id)
+	u, err := newURLString("gists/%v/star", id)
+	if err != nil {
+		return false, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return false, nil, err
@@ -328,7 +358,10 @@ func (s *GistsService) IsStarred(ctx context.Context, id string) (bool, *Respons
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#fork-a-gist
 func (s *GistsService) Fork(ctx context.Context, id string) (*Gist, *Response, error) {
-	u := fmt.Sprintf("gists/%v/forks", id)
+	u, err := newURLString("gists/%v/forks", id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -347,8 +380,11 @@ func (s *GistsService) Fork(ctx context.Context, id string) (*Gist, *Response, e
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#list-gist-forks
 func (s *GistsService) ListForks(ctx context.Context, id string, opts *ListOptions) ([]*GistFork, *Response, error) {
-	u := fmt.Sprintf("gists/%v/forks", id)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("gists/%v/forks", id)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // createUserRequest is a subset of User and is used internally
@@ -21,7 +20,10 @@ type createUserRequest struct {
 //
 // GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-a-new-user
 func (s *AdminService) CreateUser(ctx context.Context, login, email string) (*User, *Response, error) {
-	u := "admin/users"
+	u, err := newURLString("admin/users")
+	if err != nil {
+		return nil, nil, err
+	}
 
 	userReq := &createUserRequest{
 		Login: &login,
@@ -46,7 +48,10 @@ func (s *AdminService) CreateUser(ctx context.Context, login, email string) (*Us
 //
 // GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-a-user
 func (s *AdminService) DeleteUser(ctx context.Context, username string) (*Response, error) {
-	u := "admin/users/" + username
+	u, err := newURLString("admin/users/%s", username)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -97,7 +102,10 @@ type UserAuthorization struct {
 //
 // GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-an-impersonation-oauth-token
 func (s *AdminService) CreateUserImpersonation(ctx context.Context, username string, opts *ImpersonateUserOptions) (*UserAuthorization, *Response, error) {
-	u := fmt.Sprintf("admin/users/%s/authorizations", username)
+	u, err := newURLString("admin/users/%s/authorizations", username)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
@@ -117,7 +125,10 @@ func (s *AdminService) CreateUserImpersonation(ctx context.Context, username str
 //
 // GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-an-impersonation-oauth-token
 func (s *AdminService) DeleteUserImpersonation(ctx context.Context, username string) (*Response, error) {
-	u := fmt.Sprintf("admin/users/%s/authorizations", username)
+	u, err := newURLString("admin/users/%s/authorizations", username)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

@@ -108,8 +108,11 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/environments#get-all-environments
 func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo string, opts *EnvironmentListOptions) (*EnvResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/environments", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%s/%s/environments", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -131,7 +134,10 @@ func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/environments#get-an-environment
 func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, name string) (*Environment, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
+	u, err := newURLString("repos/%s/%s/environments/%s", owner, repo, name)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -186,7 +192,10 @@ type createUpdateEnvironmentNoEnterprise struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/environments#create-or-update-an-environment
 func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner, repo, name string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
+	u, err := newURLString("repos/%s/%s/environments/%s", owner, repo, name)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, environment)
 	if err != nil {
@@ -232,7 +241,10 @@ func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u st
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/environments#delete-an-environment
 func (s *RepositoriesService) DeleteEnvironment(ctx context.Context, owner, repo, name string) (*Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
+	u, err := newURLString("repos/%s/%s/environments/%s", owner, repo, name)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

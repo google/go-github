@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // CodeownersErrors represents a list of syntax errors detected in the CODEOWNERS file.
@@ -30,7 +29,10 @@ type CodeownersError struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-codeowners-errors
 func (s *RepositoriesService) GetCodeownersErrors(ctx context.Context, owner, repo string) (*CodeownersErrors, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/codeowners/errors", owner, repo)
+	u, err := newURLString("repos/%v/%v/codeowners/errors", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

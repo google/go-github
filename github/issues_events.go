@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // IssueEvent represents an event that occurred around an Issue or Pull Request.
@@ -101,8 +100,11 @@ type DismissedReview struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/events#list-issue-events
 func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*IssueEvent, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/events", owner, repo, number)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/issues/%v/events", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -127,8 +129,11 @@ func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string,
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/events#list-issue-events-for-a-repository
 func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*IssueEvent, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/events", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/issues/events", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -151,7 +156,10 @@ func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo st
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/events#get-an-issue-event
 func (s *IssuesService) GetEvent(ctx context.Context, owner, repo string, id int64) (*IssueEvent, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/events/%v", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/issues/events/%v", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

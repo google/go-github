@@ -71,7 +71,10 @@ func (c CommitAuthor) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/git/commits#get-a-commit
 func (s *GitService) GetCommit(ctx context.Context, owner string, repo string, sha string) (*Commit, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/commits/%v", owner, repo, sha)
+	u, err := newURLString("repos/%v/%v/git/commits/%v", owner, repo, sha)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -109,7 +112,10 @@ func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string
 		return nil, nil, fmt.Errorf("commit must be provided")
 	}
 
-	u := fmt.Sprintf("repos/%v/%v/git/commits", owner, repo)
+	u, err := newURLString("repos/%v/%v/git/commits", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	parents := make([]string, len(commit.Parents))
 	for i, parent := range commit.Parents {

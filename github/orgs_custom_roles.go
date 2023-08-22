@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // OrganizationCustomRepoRoles represents custom repository roles available in specified organization.
@@ -32,7 +31,10 @@ type CustomRepoRoles struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#list-custom-repository-roles-in-an-organization
 func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org string) (*OrganizationCustomRepoRoles, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom-repository-roles", org)
+	u, err := newURLString("orgs/%v/custom-repository-roles", org)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -61,7 +63,10 @@ type CreateOrUpdateCustomRoleOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#create-a-custom-repository-role
 func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org string, opts *CreateOrUpdateCustomRoleOptions) (*CustomRepoRoles, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom-repository-roles", org)
+	u, err := newURLString("orgs/%v/custom-repository-roles", org)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
@@ -82,7 +87,10 @@ func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org str
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#update-a-custom-repository-role
 func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org, roleID string, opts *CreateOrUpdateCustomRoleOptions) (*CustomRepoRoles, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
+	u, err := newURLString("orgs/%v/custom-repository-roles/%v", org, roleID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
@@ -103,7 +111,10 @@ func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org, ro
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#delete-a-custom-repository-role
 func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org, roleID string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
+	u, err := newURLString("orgs/%v/custom-repository-roles/%v", org, roleID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

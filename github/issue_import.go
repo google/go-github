@@ -9,7 +9,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 )
 
 // IssueImportService handles communication with the issue import related
@@ -72,7 +71,10 @@ type IssueImportError struct {
 //
 // https://gist.github.com/jonmagic/5282384165e0f86ef105#start-an-issue-import
 func (s *IssueImportService) Create(ctx context.Context, owner, repo string, issue *IssueImportRequest) (*IssueImportResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/import/issues", owner, repo)
+	u, err := newURLString("repos/%v/%v/import/issues", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, issue)
 	if err != nil {
 		return nil, nil, err
@@ -101,7 +103,10 @@ func (s *IssueImportService) Create(ctx context.Context, owner, repo string, iss
 //
 // https://gist.github.com/jonmagic/5282384165e0f86ef105#import-status-request
 func (s *IssueImportService) CheckStatus(ctx context.Context, owner, repo string, issueID int64) (*IssueImportResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/import/issues/%v", owner, repo, issueID)
+	u, err := newURLString("repos/%v/%v/import/issues/%v", owner, repo, issueID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -123,7 +128,10 @@ func (s *IssueImportService) CheckStatus(ctx context.Context, owner, repo string
 //
 // https://gist.github.com/jonmagic/5282384165e0f86ef105#check-status-of-multiple-issues
 func (s *IssueImportService) CheckStatusSince(ctx context.Context, owner, repo string, since Timestamp) ([]*IssueImportResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/import/issues?since=%v", owner, repo, since.Format("2006-01-02"))
+	u, err := newURLString("repos/%v/%v/import/issues?since=%v", owner, repo, since.Format("2006-01-02"))
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

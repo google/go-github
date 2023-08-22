@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // PreReceiveHook represents a GitHub pre-receive hook for a repository.
@@ -26,8 +25,11 @@ func (p PreReceiveHook) String() string {
 //
 // GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#list-pre-receive-hooks
 func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*PreReceiveHook, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/pre-receive-hooks", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -53,7 +55,10 @@ func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, re
 //
 // GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#get-a-single-pre-receive-hook
 func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo string, id int64) (*PreReceiveHook, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks/%d", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/pre-receive-hooks/%d", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -75,7 +80,10 @@ func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo
 //
 // GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#update-pre-receive-hook-enforcement
 func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, repo string, id int64, hook *PreReceiveHook) (*PreReceiveHook, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks/%d", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/pre-receive-hooks/%d", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, hook)
 	if err != nil {
 		return nil, nil, err
@@ -97,7 +105,10 @@ func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, r
 //
 // GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#remove-enforcement-overrides-for-a-pre-receive-hook
 func (s *RepositoriesService) DeletePreReceiveHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks/%d", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/pre-receive-hooks/%d", owner, repo, id)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

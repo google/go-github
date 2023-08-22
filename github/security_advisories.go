@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 type SecurityAdvisoriesService service
@@ -17,7 +16,10 @@ type SecurityAdvisoriesService service
 //
 // GitHub API docs: https://docs.github.com/en/rest/security-advisories/repository-advisories#request-a-cve-for-a-repository-security-advisory
 func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo, ghsaID string) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/security-advisories/%v/cve", owner, repo, ghsaID)
+	url, err := newURLString("repos/%v/%v/security-advisories/%v/cve", owner, repo, ghsaID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", url, nil)
 	if err != nil {

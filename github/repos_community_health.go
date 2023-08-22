@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // Metric represents the different fields for one file in community health files.
@@ -45,7 +44,10 @@ type CommunityHealthMetrics struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/metrics/community#get-community-profile-metrics
 func (s *RepositoriesService) GetCommunityHealthMetrics(ctx context.Context, owner, repo string) (*CommunityHealthMetrics, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/community/profile", owner, repo)
+	u, err := newURLString("repos/%v/%v/community/profile", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

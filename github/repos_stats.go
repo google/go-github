@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
@@ -47,7 +46,10 @@ func (w WeeklyStats) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/metrics/statistics#get-all-contributor-commit-activity
 func (s *RepositoriesService) ListContributorsStats(ctx context.Context, owner, repo string) ([]*ContributorStats, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/stats/contributors", owner, repo)
+	u, err := newURLString("repos/%v/%v/stats/contributors", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -86,7 +88,10 @@ func (w WeeklyCommitActivity) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/metrics/statistics#get-the-last-year-of-commit-activity
 func (s *RepositoriesService) ListCommitActivity(ctx context.Context, owner, repo string) ([]*WeeklyCommitActivity, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/stats/commit_activity", owner, repo)
+	u, err := newURLString("repos/%v/%v/stats/commit_activity", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -113,7 +118,10 @@ func (s *RepositoriesService) ListCommitActivity(ctx context.Context, owner, rep
 //
 // GitHub API docs: https://docs.github.com/en/rest/metrics/statistics#get-the-weekly-commit-activity
 func (s *RepositoriesService) ListCodeFrequency(ctx context.Context, owner, repo string) ([]*WeeklyStats, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/stats/code_frequency", owner, repo)
+	u, err := newURLString("repos/%v/%v/stats/code_frequency", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -169,7 +177,10 @@ func (r RepositoryParticipation) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/metrics/statistics#get-the-weekly-commit-count
 func (s *RepositoriesService) ListParticipation(ctx context.Context, owner, repo string) (*RepositoryParticipation, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/stats/participation", owner, repo)
+	u, err := newURLString("repos/%v/%v/stats/participation", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -202,7 +213,10 @@ type PunchCard struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/metrics/statistics#get-the-hourly-commit-count-for-each-day
 func (s *RepositoriesService) ListPunchCard(ctx context.Context, owner, repo string) ([]*PunchCard, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/stats/punch_card", owner, repo)
+	u, err := newURLString("repos/%v/%v/stats/punch_card", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

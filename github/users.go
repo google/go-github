@@ -106,7 +106,10 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 //
 // Note: GetByID uses the undocumented GitHub API endpoint /user/:id.
 func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response, error) {
-	u := fmt.Sprintf("user/%d", id)
+	u, err := newURLString("user/%d", id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -125,7 +128,10 @@ func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response,
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/users#update-the-authenticated-user
 func (s *UsersService) Edit(ctx context.Context, user *User) (*User, *Response, error) {
-	u := "user"
+	u, err := newURLString("user")
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, user)
 	if err != nil {
 		return nil, nil, err
@@ -167,8 +173,11 @@ type UserContext struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/users#get-contextual-information-for-a-user
 func (s *UsersService) GetHovercard(ctx context.Context, user string, opts *HovercardOptions) (*Hovercard, *Response, error) {
-	u := fmt.Sprintf("users/%v/hovercard", user)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("users/%v/hovercard", user)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -253,7 +262,10 @@ func (s *UsersService) ListInvitations(ctx context.Context, opts *ListOptions) (
 //
 // GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#accept-a-repository-invitation
 func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int64) (*Response, error) {
-	u := fmt.Sprintf("user/repository_invitations/%v", invitationID)
+	u, err := newURLString("user/repository_invitations/%v", invitationID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, nil)
 	if err != nil {
 		return nil, err
@@ -267,7 +279,10 @@ func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int64)
 //
 // GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#decline-a-repository-invitation
 func (s *UsersService) DeclineInvitation(ctx context.Context, invitationID int64) (*Response, error) {
-	u := fmt.Sprintf("user/repository_invitations/%v", invitationID)
+	u, err := newURLString("user/repository_invitations/%v", invitationID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ReviewersRequest specifies users and teams for a pull request review request.
@@ -27,7 +26,10 @@ type Reviewers struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/review-requests#request-reviewers-for-a-pull-request
 func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo string, number int, reviewers ReviewersRequest) (*PullRequest, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/pulls/%d/requested_reviewers", owner, repo, number)
+	u, err := newURLString("repos/%s/%s/pulls/%d/requested_reviewers", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, &reviewers)
 	if err != nil {
 		return nil, nil, err
@@ -46,8 +48,11 @@ func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/review-requests#list-requested-reviewers-for-a-pull-request
 func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo string, number int, opts *ListOptions) (*Reviewers, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/requested_reviewers", owner, repo, number)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/pulls/%d/requested_reviewers", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -70,7 +75,10 @@ func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/review-requests#remove-requested-reviewers-from-a-pull-request
 func (s *PullRequestsService) RemoveReviewers(ctx context.Context, owner, repo string, number int, reviewers ReviewersRequest) (*Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/pulls/%d/requested_reviewers", owner, repo, number)
+	u, err := newURLString("repos/%s/%s/pulls/%d/requested_reviewers", owner, repo, number)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, &reviewers)
 	if err != nil {
 		return nil, err

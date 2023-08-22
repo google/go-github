@@ -234,7 +234,10 @@ func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptio
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/apps#suspend-an-app-installation
 func (s *AppsService) SuspendInstallation(ctx context.Context, id int64) (*Response, error) {
-	u := fmt.Sprintf("app/installations/%v/suspended", id)
+	u, err := newURLString("app/installations/%v/suspended", id)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
@@ -248,7 +251,10 @@ func (s *AppsService) SuspendInstallation(ctx context.Context, id int64) (*Respo
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/apps#unsuspend-an-app-installation
 func (s *AppsService) UnsuspendInstallation(ctx context.Context, id int64) (*Response, error) {
-	u := fmt.Sprintf("app/installations/%v/suspended", id)
+	u, err := newURLString("app/installations/%v/suspended", id)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -262,7 +268,10 @@ func (s *AppsService) UnsuspendInstallation(ctx context.Context, id int64) (*Res
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/apps#delete-an-installation-for-the-authenticated-app
 func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Response, error) {
-	u := fmt.Sprintf("app/installations/%v", id)
+	u, err := newURLString("app/installations/%v", id)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -276,7 +285,10 @@ func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Respon
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/apps#create-an-installation-access-token-for-an-app
 func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opts *InstallationTokenOptions) (*InstallationToken, *Response, error) {
-	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
+	u, err := newURLString("app/installations/%v/access_tokens", id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
@@ -296,7 +308,10 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt
 //
 // TODO: Find GitHub API docs.
 func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID int64, title, body string) (*Attachment, *Response, error) {
-	u := fmt.Sprintf("content_references/%v/attachments", contentReferenceID)
+	u, err := newURLString("content_references/%v/attachments", contentReferenceID)
+	if err != nil {
+		return nil, nil, err
+	}
 	payload := &Attachment{Title: String(title), Body: String(body)}
 	req, err := s.client.NewRequest("POST", u, payload)
 	if err != nil {

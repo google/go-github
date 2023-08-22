@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"mime"
 	"net/http"
@@ -89,8 +88,11 @@ func (r ReleaseAsset) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/releases#list-releases
 func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryRelease, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%s/%s/releases", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -112,7 +114,10 @@ func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/releases#get-a-release
 func (s *RepositoriesService) GetRelease(ctx context.Context, owner, repo string, id int64) (*RepositoryRelease, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
+	u, err := newURLString("repos/%s/%s/releases/%d", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getSingleRelease(ctx, u)
 }
 
@@ -120,7 +125,10 @@ func (s *RepositoriesService) GetRelease(ctx context.Context, owner, repo string
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/releases#get-the-latest-release
 func (s *RepositoriesService) GetLatestRelease(ctx context.Context, owner, repo string) (*RepositoryRelease, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/latest", owner, repo)
+	u, err := newURLString("repos/%s/%s/releases/latest", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getSingleRelease(ctx, u)
 }
 
@@ -128,7 +136,10 @@ func (s *RepositoriesService) GetLatestRelease(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/releases#get-a-release-by-tag-name
 func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, tag string) (*RepositoryRelease, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/tags/%s", owner, repo, tag)
+	u, err := newURLString("repos/%s/%s/releases/tags/%s", owner, repo, tag)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getSingleRelease(ctx, u)
 }
 
@@ -136,7 +147,10 @@ func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/releases#generate-release-notes-content-for-a-release
 func (s *RepositoriesService) GenerateReleaseNotes(ctx context.Context, owner, repo string, opts *GenerateNotesOptions) (*RepositoryReleaseNotes, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/generate-notes", owner, repo)
+	u, err := newURLString("repos/%s/%s/releases/generate-notes", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -190,7 +204,10 @@ type repositoryReleaseRequest struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/releases#create-a-release
 func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
+	u, err := newURLString("repos/%s/%s/releases", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	releaseReq := &repositoryReleaseRequest{
 		TagName:                release.TagName,
@@ -224,7 +241,10 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/releases#update-a-release
 func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo string, id int64, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
+	u, err := newURLString("repos/%s/%s/releases/%d", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	releaseReq := &repositoryReleaseRequest{
 		TagName:                release.TagName,
@@ -254,7 +274,10 @@ func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/releases#delete-a-release
 func (s *RepositoriesService) DeleteRelease(ctx context.Context, owner, repo string, id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
+	u, err := newURLString("repos/%s/%s/releases/%d", owner, repo, id)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -267,8 +290,11 @@ func (s *RepositoriesService) DeleteRelease(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/assets#list-release-assets
 func (s *RepositoriesService) ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*ReleaseAsset, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/%d/assets", owner, repo, id)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%s/%s/releases/%d/assets", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -290,7 +316,10 @@ func (s *RepositoriesService) ListReleaseAssets(ctx context.Context, owner, repo
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/assets#get-a-release-asset
 func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo string, id int64) (*ReleaseAsset, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
+	u, err := newURLString("repos/%s/%s/releases/assets/%d", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -319,7 +348,10 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/assets#get-a-release-asset
 func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, repo string, id int64, followRedirectsClient *http.Client) (rc io.ReadCloser, redirectURL string, err error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
+	u, err := newURLString("repos/%s/%s/releases/assets/%d", owner, repo, id)
+	if err != nil {
+		return nil, "", err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -381,7 +413,10 @@ func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, f
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/assets#update-a-release-asset
 func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo string, id int64, release *ReleaseAsset) (*ReleaseAsset, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
+	u, err := newURLString("repos/%s/%s/releases/assets/%d", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("PATCH", u, release)
 	if err != nil {
@@ -400,7 +435,10 @@ func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/assets#delete-a-release-asset
 func (s *RepositoriesService) DeleteReleaseAsset(ctx context.Context, owner, repo string, id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
+	u, err := newURLString("repos/%s/%s/releases/assets/%d", owner, repo, id)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -414,8 +452,11 @@ func (s *RepositoriesService) DeleteReleaseAsset(ctx context.Context, owner, rep
 //
 // GitHub API docs: https://docs.github.com/en/rest/releases/assets#upload-a-release-asset
 func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, repo string, id int64, opts *UploadOptions, file *os.File) (*ReleaseAsset, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/%d/assets", owner, repo, id)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%s/%s/releases/%d/assets", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // OrgRequiredWorkflow represents a required workflow object at the org level.
@@ -69,7 +68,10 @@ type RepoRequiredWorkflows struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#list-required-workflows
 func (s *ActionsService) ListOrgRequiredWorkflows(ctx context.Context, org string, opts *ListOptions) (*OrgRequiredWorkflows, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/required_workflows", org)
+	url, err := newURLString("orgs/%v/actions/required_workflows", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	u, err := addOptions(url, opts)
 	if err != nil {
 		return nil, nil, err
@@ -93,7 +95,10 @@ func (s *ActionsService) ListOrgRequiredWorkflows(ctx context.Context, org strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#create-a-required-workflow
 func (s *ActionsService) CreateRequiredWorkflow(ctx context.Context, org string, createRequiredWorkflowOptions *CreateUpdateRequiredWorkflowOptions) (*OrgRequiredWorkflow, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/required_workflows", org)
+	url, err := newURLString("orgs/%v/actions/required_workflows", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", url, createRequiredWorkflowOptions)
 	if err != nil {
 		return nil, nil, err
@@ -112,7 +117,10 @@ func (s *ActionsService) CreateRequiredWorkflow(ctx context.Context, org string,
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#list-required-workflows
 func (s *ActionsService) GetRequiredWorkflowByID(ctx context.Context, owner string, requiredWorkflowID int64) (*OrgRequiredWorkflow, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/required_workflows/%v", owner, requiredWorkflowID)
+	u, err := newURLString("orgs/%v/actions/required_workflows/%v", owner, requiredWorkflowID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -132,7 +140,10 @@ func (s *ActionsService) GetRequiredWorkflowByID(ctx context.Context, owner stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#update-a-required-workflow
 func (s *ActionsService) UpdateRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID int64, updateRequiredWorkflowOptions *CreateUpdateRequiredWorkflowOptions) (*OrgRequiredWorkflow, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v", org, requiredWorkflowID)
+	url, err := newURLString("orgs/%v/actions/required_workflows/%v", org, requiredWorkflowID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", url, updateRequiredWorkflowOptions)
 	if err != nil {
 		return nil, nil, err
@@ -151,7 +162,10 @@ func (s *ActionsService) UpdateRequiredWorkflow(ctx context.Context, org string,
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#update-a-required-workflow
 func (s *ActionsService) DeleteRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID int64) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v", org, requiredWorkflowID)
+	url, err := newURLString("orgs/%v/actions/required_workflows/%v", org, requiredWorkflowID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return nil, err
@@ -163,7 +177,10 @@ func (s *ActionsService) DeleteRequiredWorkflow(ctx context.Context, org string,
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#list-selected-repositories-for-a-required-workflow
 func (s *ActionsService) ListRequiredWorkflowSelectedRepos(ctx context.Context, org string, requiredWorkflowID int64, opts *ListOptions) (*RequiredWorkflowSelectedRepos, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v/repositories", org, requiredWorkflowID)
+	url, err := newURLString("orgs/%v/actions/required_workflows/%v/repositories", org, requiredWorkflowID)
+	if err != nil {
+		return nil, nil, err
+	}
 	u, err := addOptions(url, opts)
 	if err != nil {
 		return nil, nil, err
@@ -189,7 +206,10 @@ func (s *ActionsService) SetRequiredWorkflowSelectedRepos(ctx context.Context, o
 	type repoIDs struct {
 		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
 	}
-	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v/repositories", org, requiredWorkflowID)
+	url, err := newURLString("orgs/%v/actions/required_workflows/%v/repositories", org, requiredWorkflowID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PUT", url, repoIDs{SelectedIDs: ids})
 	if err != nil {
 		return nil, err
@@ -202,7 +222,10 @@ func (s *ActionsService) SetRequiredWorkflowSelectedRepos(ctx context.Context, o
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#add-a-repository-to-a-required-workflow
 func (s *ActionsService) AddRepoToRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID, repoID int64) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v/repositories/%v", org, requiredWorkflowID, repoID)
+	url, err := newURLString("orgs/%v/actions/required_workflows/%v/repositories/%v", org, requiredWorkflowID, repoID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PUT", url, nil)
 	if err != nil {
 		return nil, err
@@ -214,7 +237,10 @@ func (s *ActionsService) AddRepoToRequiredWorkflow(ctx context.Context, org stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#add-a-repository-to-a-required-workflow
 func (s *ActionsService) RemoveRepoFromRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID, repoID int64) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v/repositories/%v", org, requiredWorkflowID, repoID)
+	url, err := newURLString("orgs/%v/actions/required_workflows/%v/repositories/%v", org, requiredWorkflowID, repoID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return nil, err
@@ -226,7 +252,10 @@ func (s *ActionsService) RemoveRepoFromRequiredWorkflow(ctx context.Context, org
 //
 // Github API docs:https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#list-repository-required-workflows
 func (s *ActionsService) ListRepoRequiredWorkflows(ctx context.Context, owner, repo string, opts *ListOptions) (*RepoRequiredWorkflows, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/actions/required_workflows", owner, repo)
+	url, err := newURLString("repos/%v/%v/actions/required_workflows", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	u, err := addOptions(url, opts)
 	if err != nil {
 		return nil, nil, err

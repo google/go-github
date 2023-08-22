@@ -81,7 +81,10 @@ type createHookRequest struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#create-a-repository-webhook
 func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string, hook *Hook) (*Hook, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
+	u, err := newURLString("repos/%v/%v/hooks", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	hookReq := &createHookRequest{
 		Name:   "web",
@@ -108,8 +111,11 @@ func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#list-repository-webhooks
 func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Hook, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/hooks", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -132,7 +138,10 @@ func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string,
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#get-a-repository-webhook
 func (s *RepositoriesService) GetHook(ctx context.Context, owner, repo string, id int64) (*Hook, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/hooks/%d", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -150,7 +159,10 @@ func (s *RepositoriesService) GetHook(ctx context.Context, owner, repo string, i
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#update-a-repository-webhook
 func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, id int64, hook *Hook) (*Hook, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/hooks/%d", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, hook)
 	if err != nil {
 		return nil, nil, err
@@ -168,7 +180,10 @@ func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#delete-a-repository-webhook
 func (s *RepositoriesService) DeleteHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/hooks/%d", owner, repo, id)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -180,7 +195,10 @@ func (s *RepositoriesService) DeleteHook(ctx context.Context, owner, repo string
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#ping-a-repository-webhook
 func (s *RepositoriesService) PingHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d/pings", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/hooks/%d/pings", owner, repo, id)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -192,7 +210,10 @@ func (s *RepositoriesService) PingHook(ctx context.Context, owner, repo string, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#test-the-push-repository-webhook
 func (s *RepositoriesService) TestHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d/tests", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/hooks/%d/tests", owner, repo, id)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err

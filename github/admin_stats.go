@@ -154,7 +154,10 @@ func (s RepoStats) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/admin_stats/
 func (s *AdminService) GetAdminStats(ctx context.Context) (*AdminStats, *Response, error) {
-	u := "enterprise/stats/all"
+	u, err := newURLString("enterprise/stats/all")
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

@@ -7,14 +7,16 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // EnableLFS turns the LFS (Large File Storage) feature ON for the selected repo.
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/lfs#enable-git-lfs-for-a-repository
 func (s *RepositoriesService) EnableLFS(ctx context.Context, owner, repo string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/lfs", owner, repo)
+	u, err := newURLString("repos/%v/%v/lfs", owner, repo)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
@@ -33,7 +35,10 @@ func (s *RepositoriesService) EnableLFS(ctx context.Context, owner, repo string)
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/lfs#disable-git-lfs-for-a-repository
 func (s *RepositoriesService) DisableLFS(ctx context.Context, owner, repo string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/lfs", owner, repo)
+	u, err := newURLString("repos/%v/%v/lfs", owner, repo)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

@@ -7,15 +7,17 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListBlockedUsers lists all the users blocked by an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#list-users-blocked-by-an-organization
 func (s *OrganizationsService) ListBlockedUsers(ctx context.Context, org string, opts *ListOptions) ([]*User, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/blocks", org)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/blocks", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -41,7 +43,10 @@ func (s *OrganizationsService) ListBlockedUsers(ctx context.Context, org string,
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#check-if-a-user-is-blocked-by-an-organization
 func (s *OrganizationsService) IsBlocked(ctx context.Context, org string, user string) (bool, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
+	u, err := newURLString("orgs/%v/blocks/%v", org, user)
+	if err != nil {
+		return false, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -60,7 +65,10 @@ func (s *OrganizationsService) IsBlocked(ctx context.Context, org string, user s
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#block-a-user-from-an-organization
 func (s *OrganizationsService) BlockUser(ctx context.Context, org string, user string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
+	u, err := newURLString("orgs/%v/blocks/%v", org, user)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
@@ -77,7 +85,10 @@ func (s *OrganizationsService) BlockUser(ctx context.Context, org string, user s
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#unblock-a-user-from-an-organization
 func (s *OrganizationsService) UnblockUser(ctx context.Context, org string, user string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
+	u, err := newURLString("orgs/%v/blocks/%v", org, user)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

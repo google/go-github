@@ -128,7 +128,10 @@ func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs
 func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo string, workflowID int64, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowID)
+	u, err := newURLString("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowID)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.listWorkflowRuns(ctx, u, opts)
 }
 
@@ -136,7 +139,10 @@ func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo s
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs
 func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, repo, workflowFileName string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowFileName)
+	u, err := newURLString("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowFileName)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.listWorkflowRuns(ctx, u, opts)
 }
 
@@ -144,8 +150,11 @@ func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs-for-a-repository
 func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/runs", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%s/%s/actions/runs", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -168,7 +177,10 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#get-a-workflow-run
 func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRun, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v", owner, repo, runID)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v", owner, repo, runID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -188,8 +200,11 @@ func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#get-a-workflow-run-attempt
 func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo string, runID int64, attemptNumber int, opts *WorkflowRunAttemptOptions) (*WorkflowRun, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/attempts/%v", owner, repo, runID, attemptNumber)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v/attempts/%v", owner, repo, runID, attemptNumber)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -212,7 +227,10 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#download-workflow-run-attempt-logs
 func (s *ActionsService) GetWorkflowRunAttemptLogs(ctx context.Context, owner, repo string, runID int64, attemptNumber int, followRedirects bool) (*url.URL, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/attempts/%v/logs", owner, repo, runID, attemptNumber)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v/attempts/%v/logs", owner, repo, runID, attemptNumber)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
 	if err != nil {
@@ -232,7 +250,10 @@ func (s *ActionsService) GetWorkflowRunAttemptLogs(ctx context.Context, owner, r
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#re-run-a-workflow
 func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/rerun", owner, repo, runID)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v/rerun", owner, repo, runID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -246,7 +267,10 @@ func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#re-run-failed-jobs-from-a-workflow-run
 func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/rerun-failed-jobs", owner, repo, runID)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v/rerun-failed-jobs", owner, repo, runID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -260,7 +284,10 @@ func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo st
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#re-run-a-job-from-a-workflow-run
 func (s *ActionsService) RerunJobByID(ctx context.Context, owner, repo string, jobID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/rerun", owner, repo, jobID)
+	u, err := newURLString("repos/%v/%v/actions/jobs/%v/rerun", owner, repo, jobID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -274,7 +301,10 @@ func (s *ActionsService) RerunJobByID(ctx context.Context, owner, repo string, j
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#cancel-a-workflow-run
 func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/cancel", owner, repo, runID)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v/cancel", owner, repo, runID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -288,7 +318,10 @@ func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#download-workflow-run-logs
 func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64, followRedirects bool) (*url.URL, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
 	if err != nil {
@@ -308,7 +341,10 @@ func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#delete-a-workflow-run
 func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v", owner, repo, runID)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v", owner, repo, runID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -322,7 +358,10 @@ func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#delete-workflow-run-logs
 func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -336,7 +375,10 @@ func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#get-workflow-run-usage
 func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRunUsage, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/timing", owner, repo, runID)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v/timing", owner, repo, runID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -356,7 +398,10 @@ func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, rep
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#review-pending-deployments-for-a-workflow-run
 func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo string, runID int64, request *PendingDeploymentsRequest) ([]*Deployment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/pending_deployments", owner, repo, runID)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v/pending_deployments", owner, repo, runID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {

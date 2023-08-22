@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // Pages represents a GitHub Pages site configuration.
@@ -105,7 +104,10 @@ type createPagesRequest struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/pages#create-a-github-pages-site
 func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo string, pages *Pages) (*Pages, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
+	u, err := newURLString("repos/%v/%v/pages", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	pagesReq := &createPagesRequest{
 		BuildType: pages.BuildType,
@@ -155,7 +157,10 @@ type PagesUpdate struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/pages#update-information-about-a-github-pages-site
 func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, opts *PagesUpdate) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
+	u, err := newURLString("repos/%v/%v/pages", owner, repo)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
@@ -174,7 +179,10 @@ func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/pages#delete-a-github-pages-site
 func (s *RepositoriesService) DisablePages(ctx context.Context, owner, repo string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
+	u, err := newURLString("repos/%v/%v/pages", owner, repo)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -190,7 +198,10 @@ func (s *RepositoriesService) DisablePages(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/pages#get-a-github-pages-site
 func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo string) (*Pages, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
+	u, err := newURLString("repos/%v/%v/pages", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -209,8 +220,11 @@ func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/pages#list-github-pages-builds
 func (s *RepositoriesService) ListPagesBuilds(ctx context.Context, owner, repo string, opts *ListOptions) ([]*PagesBuild, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pages/builds", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/pages/builds", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -233,7 +247,10 @@ func (s *RepositoriesService) ListPagesBuilds(ctx context.Context, owner, repo s
 //
 // GitHub API docs: https://docs.github.com/en/rest/pages#get-latest-pages-build
 func (s *RepositoriesService) GetLatestPagesBuild(ctx context.Context, owner, repo string) (*PagesBuild, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pages/builds/latest", owner, repo)
+	u, err := newURLString("repos/%v/%v/pages/builds/latest", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -252,7 +269,10 @@ func (s *RepositoriesService) GetLatestPagesBuild(ctx context.Context, owner, re
 //
 // GitHub API docs: https://docs.github.com/en/rest/pages#get-github-pages-build
 func (s *RepositoriesService) GetPageBuild(ctx context.Context, owner, repo string, id int64) (*PagesBuild, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pages/builds/%v", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/pages/builds/%v", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -271,7 +291,10 @@ func (s *RepositoriesService) GetPageBuild(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/pages#request-a-github-pages-build
 func (s *RepositoriesService) RequestPageBuild(ctx context.Context, owner, repo string) (*PagesBuild, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pages/builds", owner, repo)
+	u, err := newURLString("repos/%v/%v/pages/builds", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -290,7 +313,10 @@ func (s *RepositoriesService) RequestPageBuild(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/pages#get-a-dns-health-check-for-github-pages
 func (s *RepositoriesService) GetPageHealthCheck(ctx context.Context, owner, repo string) (*PagesHealthCheckResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pages/health", owner, repo)
+	u, err := newURLString("repos/%v/%v/pages/health", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

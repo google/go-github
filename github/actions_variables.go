@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ActionsVariable represents a repository action variable.
@@ -53,7 +52,10 @@ func (s *ActionsService) listVariables(ctx context.Context, url string, opts *Li
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#list-repository-variables
 func (s *ActionsService) ListRepoVariables(ctx context.Context, owner, repo string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/actions/variables", owner, repo)
+	url, err := newURLString("repos/%v/%v/actions/variables", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.listVariables(ctx, url, opts)
 }
 
@@ -61,7 +63,10 @@ func (s *ActionsService) ListRepoVariables(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#list-organization-variables
 func (s *ActionsService) ListOrgVariables(ctx context.Context, org string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables", org)
+	url, err := newURLString("orgs/%v/actions/variables", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.listVariables(ctx, url, opts)
 }
 
@@ -69,7 +74,10 @@ func (s *ActionsService) ListOrgVariables(ctx context.Context, org string, opts 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#list-environment-variables
 func (s *ActionsService) ListEnvVariables(ctx context.Context, repoID int, env string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	url := fmt.Sprintf("repositories/%v/environments/%v/variables", repoID, env)
+	url, err := newURLString("repositories/%v/environments/%v/variables", repoID, env)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.listVariables(ctx, url, opts)
 }
 
@@ -92,7 +100,10 @@ func (s *ActionsService) getVariable(ctx context.Context, url string) (*ActionsV
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#get-a-repository-variable
 func (s *ActionsService) GetRepoVariable(ctx context.Context, owner, repo, name string) (*ActionsVariable, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, name)
+	url, err := newURLString("repos/%v/%v/actions/variables/%v", owner, repo, name)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getVariable(ctx, url)
 }
 
@@ -100,7 +111,10 @@ func (s *ActionsService) GetRepoVariable(ctx context.Context, owner, repo, name 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#get-an-organization-variable
 func (s *ActionsService) GetOrgVariable(ctx context.Context, org, name string) (*ActionsVariable, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v", org, name)
+	url, err := newURLString("orgs/%v/actions/variables/%v", org, name)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getVariable(ctx, url)
 }
 
@@ -108,7 +122,10 @@ func (s *ActionsService) GetOrgVariable(ctx context.Context, org, name string) (
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#get-an-environment-variable
 func (s *ActionsService) GetEnvVariable(ctx context.Context, repoID int, env, variableName string) (*ActionsVariable, *Response, error) {
-	url := fmt.Sprintf("repositories/%v/environments/%v/variables/%v", repoID, env, variableName)
+	url, err := newURLString("repositories/%v/environments/%v/variables/%v", repoID, env, variableName)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getVariable(ctx, url)
 }
 
@@ -124,7 +141,10 @@ func (s *ActionsService) postVariable(ctx context.Context, url string, variable 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#create-a-repository-variable
 func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo string, variable *ActionsVariable) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/actions/variables", owner, repo)
+	url, err := newURLString("repos/%v/%v/actions/variables", owner, repo)
+	if err != nil {
+		return nil, err
+	}
 	return s.postVariable(ctx, url, variable)
 }
 
@@ -132,7 +152,10 @@ func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#create-an-organization-variable
 func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, variable *ActionsVariable) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables", org)
+	url, err := newURLString("orgs/%v/actions/variables", org)
+	if err != nil {
+		return nil, err
+	}
 	return s.postVariable(ctx, url, variable)
 }
 
@@ -140,7 +163,10 @@ func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, vari
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#create-an-environment-variable
 func (s *ActionsService) CreateEnvVariable(ctx context.Context, repoID int, env string, variable *ActionsVariable) (*Response, error) {
-	url := fmt.Sprintf("repositories/%v/environments/%v/variables", repoID, env)
+	url, err := newURLString("repositories/%v/environments/%v/variables", repoID, env)
+	if err != nil {
+		return nil, err
+	}
 	return s.postVariable(ctx, url, variable)
 }
 
@@ -156,7 +182,10 @@ func (s *ActionsService) patchVariable(ctx context.Context, url string, variable
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#update-a-repository-variable
 func (s *ActionsService) UpdateRepoVariable(ctx context.Context, owner, repo string, variable *ActionsVariable) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, variable.Name)
+	url, err := newURLString("repos/%v/%v/actions/variables/%v", owner, repo, variable.Name)
+	if err != nil {
+		return nil, err
+	}
 	return s.patchVariable(ctx, url, variable)
 }
 
@@ -164,7 +193,10 @@ func (s *ActionsService) UpdateRepoVariable(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#update-an-organization-variable
 func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org string, variable *ActionsVariable) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v", org, variable.Name)
+	url, err := newURLString("orgs/%v/actions/variables/%v", org, variable.Name)
+	if err != nil {
+		return nil, err
+	}
 	return s.patchVariable(ctx, url, variable)
 }
 
@@ -172,7 +204,10 @@ func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org string, vari
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#create-an-environment-variable
 func (s *ActionsService) UpdateEnvVariable(ctx context.Context, repoID int, env string, variable *ActionsVariable) (*Response, error) {
-	url := fmt.Sprintf("repositories/%v/environments/%v/variables/%v", repoID, env, variable.Name)
+	url, err := newURLString("repositories/%v/environments/%v/variables/%v", repoID, env, variable.Name)
+	if err != nil {
+		return nil, err
+	}
 	return s.patchVariable(ctx, url, variable)
 }
 
@@ -189,7 +224,10 @@ func (s *ActionsService) deleteVariable(ctx context.Context, url string) (*Respo
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#delete-a-repository-variable
 func (s *ActionsService) DeleteRepoVariable(ctx context.Context, owner, repo, name string) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, name)
+	url, err := newURLString("repos/%v/%v/actions/variables/%v", owner, repo, name)
+	if err != nil {
+		return nil, err
+	}
 	return s.deleteVariable(ctx, url)
 }
 
@@ -197,7 +235,10 @@ func (s *ActionsService) DeleteRepoVariable(ctx context.Context, owner, repo, na
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#delete-an-organization-variable
 func (s *ActionsService) DeleteOrgVariable(ctx context.Context, org, name string) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v", org, name)
+	url, err := newURLString("orgs/%v/actions/variables/%v", org, name)
+	if err != nil {
+		return nil, err
+	}
 	return s.deleteVariable(ctx, url)
 }
 
@@ -205,7 +246,10 @@ func (s *ActionsService) DeleteOrgVariable(ctx context.Context, org, name string
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#delete-an-environment-variable
 func (s *ActionsService) DeleteEnvVariable(ctx context.Context, repoID int, env, variableName string) (*Response, error) {
-	url := fmt.Sprintf("repositories/%v/environments/%v/variables/%v", repoID, env, variableName)
+	url, err := newURLString("repositories/%v/environments/%v/variables/%v", repoID, env, variableName)
+	if err != nil {
+		return nil, err
+	}
 	return s.deleteVariable(ctx, url)
 }
 
@@ -233,7 +277,10 @@ func (s *ActionsService) listSelectedReposForVariable(ctx context.Context, url s
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#list-selected-repositories-for-an-organization-variable
 func (s *ActionsService) ListSelectedReposForOrgVariable(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories", org, name)
+	url, err := newURLString("orgs/%v/actions/variables/%v/repositories", org, name)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.listSelectedReposForVariable(ctx, url, opts)
 }
 
@@ -254,7 +301,10 @@ func (s *ActionsService) setSelectedReposForVariable(ctx context.Context, url st
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#set-selected-repositories-for-an-organization-variable
 func (s *ActionsService) SetSelectedReposForOrgVariable(ctx context.Context, org, name string, ids SelectedRepoIDs) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories", org, name)
+	url, err := newURLString("orgs/%v/actions/variables/%v/repositories", org, name)
+	if err != nil {
+		return nil, err
+	}
 	return s.setSelectedReposForVariable(ctx, url, ids)
 }
 
@@ -271,7 +321,10 @@ func (s *ActionsService) addSelectedRepoToVariable(ctx context.Context, url stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#add-selected-repository-to-an-organization-variable
 func (s *ActionsService) AddSelectedRepoToOrgVariable(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories/%v", org, name, *repo.ID)
+	url, err := newURLString("orgs/%v/actions/variables/%v/repositories/%v", org, name, *repo.ID)
+	if err != nil {
+		return nil, err
+	}
 	return s.addSelectedRepoToVariable(ctx, url)
 }
 
@@ -288,6 +341,9 @@ func (s *ActionsService) removeSelectedRepoFromVariable(ctx context.Context, url
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#remove-selected-repository-from-an-organization-variable
 func (s *ActionsService) RemoveSelectedRepoFromOrgVariable(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories/%v", org, name, *repo.ID)
+	url, err := newURLString("orgs/%v/actions/variables/%v/repositories/%v", org, name, *repo.ID)
+	if err != nil {
+		return nil, err
+	}
 	return s.removeSelectedRepoFromVariable(ctx, url)
 }

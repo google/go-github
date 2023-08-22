@@ -31,8 +31,11 @@ func (s *CodespacesService) ListUserSecrets(ctx context.Context, opts *ListOptio
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#list-organization-secrets
 func (s *CodespacesService) ListOrgSecrets(ctx context.Context, org string, opts *ListOptions) (*Secrets, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/codespaces/secrets", org)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/codespaces/secrets", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -45,8 +48,11 @@ func (s *CodespacesService) ListOrgSecrets(ctx context.Context, org string, opts
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/repository-secrets?apiVersion=2022-11-28#list-repository-secrets
 func (s *CodespacesService) ListRepoSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/codespaces/secrets", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -120,7 +126,10 @@ func (s *CodespacesService) getPublicKey(ctx context.Context, url string) (*Publ
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#get-a-secret-for-the-authenticated-user
 func (s *CodespacesService) GetUserSecret(ctx context.Context, name string) (*Secret, *Response, error) {
-	u := fmt.Sprintf("user/codespaces/secrets/%v", name)
+	u, err := newURLString("user/codespaces/secrets/%v", name)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getSecret(ctx, u)
 }
 
@@ -130,7 +139,10 @@ func (s *CodespacesService) GetUserSecret(ctx context.Context, name string) (*Se
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#get-an-organization-secret
 func (s *CodespacesService) GetOrgSecret(ctx context.Context, org, name string) (*Secret, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v", org, name)
+	u, err := newURLString("orgs/%v/codespaces/secrets/%v", org, name)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getSecret(ctx, u)
 }
 
@@ -140,7 +152,10 @@ func (s *CodespacesService) GetOrgSecret(ctx context.Context, org, name string) 
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/repository-secrets?apiVersion=2022-11-28#get-a-repository-secret
 func (s *CodespacesService) GetRepoSecret(ctx context.Context, owner, repo, name string) (*Secret, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets/%v", owner, repo, name)
+	u, err := newURLString("repos/%v/%v/codespaces/secrets/%v", owner, repo, name)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getSecret(ctx, u)
 }
 
@@ -167,7 +182,10 @@ func (s *CodespacesService) getSecret(ctx context.Context, url string) (*Secret,
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#create-or-update-a-secret-for-the-authenticated-user
 func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, eSecret *EncryptedSecret) (*Response, error) {
-	u := fmt.Sprintf("user/codespaces/secrets/%v", eSecret.Name)
+	u, err := newURLString("user/codespaces/secrets/%v", eSecret.Name)
+	if err != nil {
+		return nil, err
+	}
 	return s.createOrUpdateSecret(ctx, u, eSecret)
 }
 
@@ -177,7 +195,10 @@ func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, eSecre
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#create-or-update-an-organization-secret
 func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v", org, eSecret.Name)
+	u, err := newURLString("orgs/%v/codespaces/secrets/%v", org, eSecret.Name)
+	if err != nil {
+		return nil, err
+	}
 	return s.createOrUpdateSecret(ctx, u, eSecret)
 }
 
@@ -187,7 +208,10 @@ func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org str
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/repository-secrets?apiVersion=2022-11-28#create-or-update-a-repository-secret
 func (s *CodespacesService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets/%v", owner, repo, eSecret.Name)
+	u, err := newURLString("repos/%v/%v/codespaces/secrets/%v", owner, repo, eSecret.Name)
+	if err != nil {
+		return nil, err
+	}
 	return s.createOrUpdateSecret(ctx, u, eSecret)
 }
 
@@ -213,7 +237,10 @@ func (s *CodespacesService) createOrUpdateSecret(ctx context.Context, url string
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#delete-a-secret-for-the-authenticated-user
 func (s *CodespacesService) DeleteUserSecret(ctx context.Context, name string) (*Response, error) {
-	u := fmt.Sprintf("user/codespaces/secrets/%v", name)
+	u, err := newURLString("user/codespaces/secrets/%v", name)
+	if err != nil {
+		return nil, err
+	}
 	return s.deleteSecret(ctx, u)
 }
 
@@ -223,7 +250,10 @@ func (s *CodespacesService) DeleteUserSecret(ctx context.Context, name string) (
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#delete-an-organization-secret
 func (s *CodespacesService) DeleteOrgSecret(ctx context.Context, org, name string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v", org, name)
+	u, err := newURLString("orgs/%v/codespaces/secrets/%v", org, name)
+	if err != nil {
+		return nil, err
+	}
 	return s.deleteSecret(ctx, u)
 }
 
@@ -233,7 +263,10 @@ func (s *CodespacesService) DeleteOrgSecret(ctx context.Context, org, name strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/repository-secrets?apiVersion=2022-11-28#delete-a-repository-secret
 func (s *CodespacesService) DeleteRepoSecret(ctx context.Context, owner, repo, name string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets/%v", owner, repo, name)
+	u, err := newURLString("repos/%v/%v/codespaces/secrets/%v", owner, repo, name)
+	if err != nil {
+		return nil, err
+	}
 	return s.deleteSecret(ctx, u)
 }
 
@@ -258,8 +291,11 @@ func (s *CodespacesService) deleteSecret(ctx context.Context, url string) (*Resp
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#list-selected-repositories-for-a-user-secret
 func (s *CodespacesService) ListSelectedReposForUserSecret(ctx context.Context, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
-	u := fmt.Sprintf("user/codespaces/secrets/%v/repositories", name)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("user/codespaces/secrets/%v/repositories", name)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -273,8 +309,11 @@ func (s *CodespacesService) ListSelectedReposForUserSecret(ctx context.Context, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#list-selected-repositories-for-an-organization-secret
 func (s *CodespacesService) ListSelectedReposForOrgSecret(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v/repositories", org, name)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/codespaces/secrets/%v/repositories", org, name)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -304,7 +343,10 @@ func (s *CodespacesService) listSelectedReposForSecret(ctx context.Context, url 
 //
 // Github API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#set-selected-repositories-for-a-user-secret
 func (s *CodespacesService) SetSelectedReposForUserSecret(ctx context.Context, name string, ids SelectedRepoIDs) (*Response, error) {
-	u := fmt.Sprintf("user/codespaces/secrets/%v/repositories", name)
+	u, err := newURLString("user/codespaces/secrets/%v/repositories", name)
+	if err != nil {
+		return nil, err
+	}
 	return s.setSelectedRepoForSecret(ctx, u, ids)
 }
 
@@ -314,7 +356,10 @@ func (s *CodespacesService) SetSelectedReposForUserSecret(ctx context.Context, n
 //
 // Github API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#set-selected-repositories-for-a-user-secret
 func (s *CodespacesService) SetSelectedReposForOrgSecret(ctx context.Context, org, name string, ids SelectedRepoIDs) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v/repositories", org, name)
+	u, err := newURLString("orgs/%v/codespaces/secrets/%v/repositories", org, name)
+	if err != nil {
+		return nil, err
+	}
 	return s.setSelectedRepoForSecret(ctx, u, ids)
 }
 
@@ -342,7 +387,10 @@ func (s *CodespacesService) setSelectedRepoForSecret(ctx context.Context, url st
 //
 // Github API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#add-a-selected-repository-to-a-user-secret
 func (s *CodespacesService) AddSelectedRepoToUserSecret(ctx context.Context, name string, repo *Repository) (*Response, error) {
-	u := fmt.Sprintf("user/codespaces/secrets/%v/repositories/%v", name, *repo.ID)
+	u, err := newURLString("user/codespaces/secrets/%v/repositories/%v", name, *repo.ID)
+	if err != nil {
+		return nil, err
+	}
 	return s.addSelectedRepoToSecret(ctx, u)
 }
 
@@ -352,7 +400,10 @@ func (s *CodespacesService) AddSelectedRepoToUserSecret(ctx context.Context, nam
 //
 // Github API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#add-selected-repository-to-an-organization-secret
 func (s *CodespacesService) AddSelectedRepoToOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v/repositories/%v", org, name, *repo.ID)
+	u, err := newURLString("orgs/%v/codespaces/secrets/%v/repositories/%v", org, name, *repo.ID)
+	if err != nil {
+		return nil, err
+	}
 	return s.addSelectedRepoToSecret(ctx, u)
 }
 
@@ -376,7 +427,10 @@ func (s *CodespacesService) addSelectedRepoToSecret(ctx context.Context, url str
 //
 // Github API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#remove-a-selected-repository-from-a-user-secret
 func (s *CodespacesService) RemoveSelectedRepoFromUserSecret(ctx context.Context, name string, repo *Repository) (*Response, error) {
-	u := fmt.Sprintf("user/codespaces/secrets/%v/repositories/%v", name, *repo.ID)
+	u, err := newURLString("user/codespaces/secrets/%v/repositories/%v", name, *repo.ID)
+	if err != nil {
+		return nil, err
+	}
 	return s.removeSelectedRepoFromSecret(ctx, u)
 }
 
@@ -386,7 +440,10 @@ func (s *CodespacesService) RemoveSelectedRepoFromUserSecret(ctx context.Context
 //
 // Github API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#remove-selected-repository-from-an-organization-secret
 func (s *CodespacesService) RemoveSelectedRepoFromOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v/repositories/%v", org, name, *repo.ID)
+	u, err := newURLString("orgs/%v/codespaces/secrets/%v/repositories/%v", org, name, *repo.ID)
+	if err != nil {
+		return nil, err
+	}
 	return s.removeSelectedRepoFromSecret(ctx, u)
 }
 

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // AutolinkOptions specifies parameters for RepositoriesService.AddAutolink method.
@@ -30,8 +29,11 @@ type Autolink struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#list-all-autolinks-of-a-repository
 func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Autolink, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/autolinks", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/autolinks", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -55,7 +57,10 @@ func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#create-an-autolink-reference-for-a-repository
 func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo string, opts *AutolinkOptions) (*Autolink, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/autolinks", owner, repo)
+	u, err := newURLString("repos/%v/%v/autolinks", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -74,7 +79,10 @@ func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#get-an-autolink-reference-of-a-repository
 func (s *RepositoriesService) GetAutolink(ctx context.Context, owner, repo string, id int64) (*Autolink, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/autolinks/%v", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/autolinks/%v", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -95,7 +103,10 @@ func (s *RepositoriesService) GetAutolink(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#delete-an-autolink-reference-from-a-repository
 func (s *RepositoriesService) DeleteAutolink(ctx context.Context, owner, repo string, id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/autolinks/%v", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/autolinks/%v", owner, repo, id)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

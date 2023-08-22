@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // DeploymentBranchPolicy represents a single deployment branch policy for an environment.
@@ -32,7 +31,10 @@ type DeploymentBranchPolicyRequest struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/branch-policies#list-deployment-branch-policies
 func (s *RepositoriesService) ListDeploymentBranchPolicies(ctx context.Context, owner, repo, environment string) (*DeploymentBranchPolicyResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies", owner, repo, environment)
+	u, err := newURLString("repos/%v/%v/environments/%v/deployment-branch-policies", owner, repo, environment)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -52,7 +54,10 @@ func (s *RepositoriesService) ListDeploymentBranchPolicies(ctx context.Context, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/branch-policies#get-a-deployment-branch-policy
 func (s *RepositoriesService) GetDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, branchPolicyID int64) (*DeploymentBranchPolicy, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
+	u, err := newURLString("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -72,7 +77,10 @@ func (s *RepositoriesService) GetDeploymentBranchPolicy(ctx context.Context, own
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/branch-policies#create-a-deployment-branch-policy
 func (s *RepositoriesService) CreateDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, request *DeploymentBranchPolicyRequest) (*DeploymentBranchPolicy, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies", owner, repo, environment)
+	u, err := newURLString("repos/%v/%v/environments/%v/deployment-branch-policies", owner, repo, environment)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
@@ -92,7 +100,10 @@ func (s *RepositoriesService) CreateDeploymentBranchPolicy(ctx context.Context, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/branch-policies#update-a-deployment-branch-policy
 func (s *RepositoriesService) UpdateDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, branchPolicyID int64, request *DeploymentBranchPolicyRequest) (*DeploymentBranchPolicy, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
+	u, err := newURLString("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("PUT", u, request)
 	if err != nil {
@@ -112,7 +123,10 @@ func (s *RepositoriesService) UpdateDeploymentBranchPolicy(ctx context.Context, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/branch-policies#delete-a-deployment-branch-policy
 func (s *RepositoriesService) DeleteDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, branchPolicyID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
+	u, err := newURLString("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

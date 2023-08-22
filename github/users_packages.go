@@ -17,12 +17,16 @@ import (
 // GitHub API docs: https://docs.github.com/en/rest/packages#list-packages-for-a-user
 func (s *UsersService) ListPackages(ctx context.Context, user string, opts *PackageListOptions) ([]*Package, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages", user)
+		u, err = newURLString("users/%v/packages", user)
 	} else {
-		u = "user/packages"
+		u, err = newURLString("user/packages")
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -117,12 +121,16 @@ func (s *UsersService) RestorePackage(ctx context.Context, user, packageType, pa
 // GitHub API docs: https://docs.github.com/en/rest/packages#get-all-package-versions-for-a-package-owned-by-a-user
 func (s *UsersService) PackageGetAllVersions(ctx context.Context, user, packageType, packageName string, opts *PackageListOptions) ([]*PackageVersion, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v/versions", user, packageType, packageName)
+		u, err = newURLString("users/%v/packages/%v/%v/versions", user, packageType, packageName)
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v/versions", packageType, packageName)
+		u, err = newURLString("user/packages/%v/%v/versions", packageType, packageName)
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

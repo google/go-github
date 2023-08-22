@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // GitignoresService provides access to the gitignore related functions in the
@@ -48,7 +47,10 @@ func (s *GitignoresService) List(ctx context.Context) ([]string, *Response, erro
 //
 // GitHub API docs: https://docs.github.com/en/rest/gitignore#get-a-gitignore-template
 func (s *GitignoresService) Get(ctx context.Context, name string) (*Gitignore, *Response, error) {
-	u := fmt.Sprintf("gitignore/templates/%v", name)
+	u, err := newURLString("gitignore/templates/%v", name)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

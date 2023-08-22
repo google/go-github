@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 )
 
@@ -23,7 +22,10 @@ type ReviewPersonalAccessTokenRequestOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/personal-access-tokens?apiVersion=2022-11-28#review-a-request-to-access-organization-resources-with-a-fine-grained-personal-access-token
 func (s *OrganizationsService) ReviewPersonalAccessTokenRequest(ctx context.Context, org string, requestID int64, opts ReviewPersonalAccessTokenRequestOptions) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/personal-access-token-requests/%v", org, requestID)
+	u, err := newURLString("orgs/%v/personal-access-token-requests/%v", org, requestID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest(http.MethodPost, u, &opts)
 	if err != nil {

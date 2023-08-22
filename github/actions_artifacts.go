@@ -54,8 +54,11 @@ type ArtifactList struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/artifacts#list-artifacts-for-a-repository
 func (s *ActionsService) ListArtifacts(ctx context.Context, owner, repo string, opts *ListOptions) (*ArtifactList, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/artifacts", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/actions/artifacts", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -78,8 +81,11 @@ func (s *ActionsService) ListArtifacts(ctx context.Context, owner, repo string, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/artifacts#list-workflow-run-artifacts
 func (s *ActionsService) ListWorkflowRunArtifacts(ctx context.Context, owner, repo string, runID int64, opts *ListOptions) (*ArtifactList, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/artifacts", owner, repo, runID)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/actions/runs/%v/artifacts", owner, repo, runID)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -102,7 +108,10 @@ func (s *ActionsService) ListWorkflowRunArtifacts(ctx context.Context, owner, re
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/artifacts#get-an-artifact
 func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, artifactID int64) (*Artifact, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v", owner, repo, artifactID)
+	u, err := newURLString("repos/%v/%v/actions/artifacts/%v", owner, repo, artifactID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -122,7 +131,10 @@ func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, ar
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/artifacts#download-an-artifact
 func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo string, artifactID int64, followRedirects bool) (*url.URL, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v/zip", owner, repo, artifactID)
+	u, err := newURLString("repos/%v/%v/actions/artifacts/%v/zip", owner, repo, artifactID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
 	if err != nil {
@@ -146,7 +158,10 @@ func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/artifacts#delete-an-artifact
 func (s *ActionsService) DeleteArtifact(ctx context.Context, owner, repo string, artifactID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v", owner, repo, artifactID)
+	u, err := newURLString("repos/%v/%v/actions/artifacts/%v", owner, repo, artifactID)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

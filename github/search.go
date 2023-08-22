@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -296,7 +295,10 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 		params.Set("repository_id", strconv.FormatInt(*parameters.RepositoryID, 10))
 	}
 	params.Set("q", parameters.Query)
-	u := fmt.Sprintf("search/%s?%s", searchType, params.Encode())
+	u, err := newURLString("search/%s?%s", searchType, params.Encode())
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
@@ -54,12 +53,16 @@ type IssueListCommentsOptions struct {
 // GitHub API docs: https://docs.github.com/en/rest/issues/comments#list-issue-comments-for-a-repository
 func (s *IssuesService) ListComments(ctx context.Context, owner string, repo string, number int, opts *IssueListCommentsOptions) ([]*IssueComment, *Response, error) {
 	var u string
+	var err error
 	if number == 0 {
-		u = fmt.Sprintf("repos/%v/%v/issues/comments", owner, repo)
+		u, err = newURLString("repos/%v/%v/issues/comments", owner, repo)
 	} else {
-		u = fmt.Sprintf("repos/%v/%v/issues/%d/comments", owner, repo, number)
+		u, err = newURLString("repos/%v/%v/issues/%d/comments", owner, repo, number)
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -85,7 +88,10 @@ func (s *IssuesService) ListComments(ctx context.Context, owner string, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/comments#get-an-issue-comment
 func (s *IssuesService) GetComment(ctx context.Context, owner string, repo string, commentID int64) (*IssueComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/comments/%d", owner, repo, commentID)
+	u, err := newURLString("repos/%v/%v/issues/comments/%d", owner, repo, commentID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -108,7 +114,10 @@ func (s *IssuesService) GetComment(ctx context.Context, owner string, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/comments#create-an-issue-comment
 func (s *IssuesService) CreateComment(ctx context.Context, owner string, repo string, number int, comment *IssueComment) (*IssueComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/comments", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/issues/%d/comments", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -127,7 +136,10 @@ func (s *IssuesService) CreateComment(ctx context.Context, owner string, repo st
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/comments#update-an-issue-comment
 func (s *IssuesService) EditComment(ctx context.Context, owner string, repo string, commentID int64, comment *IssueComment) (*IssueComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/comments/%d", owner, repo, commentID)
+	u, err := newURLString("repos/%v/%v/issues/comments/%d", owner, repo, commentID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -145,7 +157,10 @@ func (s *IssuesService) EditComment(ctx context.Context, owner string, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/comments#delete-an-issue-comment
 func (s *IssuesService) DeleteComment(ctx context.Context, owner string, repo string, commentID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/comments/%d", owner, repo, commentID)
+	u, err := newURLString("repos/%v/%v/issues/comments/%d", owner, repo, commentID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

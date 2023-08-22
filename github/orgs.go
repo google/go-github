@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // OrganizationsService provides access to the organization related functions
@@ -175,12 +174,16 @@ func (s *OrganizationsService) ListAll(ctx context.Context, opts *OrganizationsL
 // GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-organizations-for-a-user
 func (s *OrganizationsService) List(ctx context.Context, user string, opts *ListOptions) ([]*Organization, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/orgs", user)
+		u, err = newURLString("users/%v/orgs", user)
 	} else {
-		u = "user/orgs"
+		u, err = newURLString("user/orgs")
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -203,7 +206,10 @@ func (s *OrganizationsService) List(ctx context.Context, user string, opts *List
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#get-an-organization
 func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organization, *Response, error) {
-	u := fmt.Sprintf("orgs/%v", org)
+	u, err := newURLString("orgs/%v", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -225,7 +231,10 @@ func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organizati
 //
 // Note: GetByID uses the undocumented GitHub API endpoint /organizations/:id.
 func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organization, *Response, error) {
-	u := fmt.Sprintf("organizations/%d", id)
+	u, err := newURLString("organizations/%d", id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -244,7 +253,10 @@ func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organiza
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#update-an-organization
 func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organization) (*Organization, *Response, error) {
-	u := fmt.Sprintf("orgs/%v", name)
+	u, err := newURLString("orgs/%v", name)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, org)
 	if err != nil {
 		return nil, nil, err
@@ -266,7 +278,10 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#delete-an-organization
 func (s *OrganizationsService) Delete(ctx context.Context, org string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v", org)
+	u, err := newURLString("orgs/%v", org)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -279,9 +294,12 @@ func (s *OrganizationsService) Delete(ctx context.Context, org string) (*Respons
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-app-installations-for-an-organization
 func (s *OrganizationsService) ListInstallations(ctx context.Context, org string, opts *ListOptions) (*OrganizationInstallations, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/installations", org)
+	u, err := newURLString("orgs/%v/installations", org)
+	if err != nil {
+		return nil, nil, err
+	}
 
-	u, err := addOptions(u, opts)
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

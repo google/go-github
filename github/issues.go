@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
@@ -149,7 +148,10 @@ func (s *IssuesService) List(ctx context.Context, all bool, opts *IssueListOptio
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/issues#list-organization-issues-assigned-to-the-authenticated-user
 func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueListOptions) ([]*Issue, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/issues", org)
+	u, err := newURLString("orgs/%v/issues", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.listIssues(ctx, u, opts)
 }
 
@@ -220,8 +222,11 @@ type IssueListByRepoOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/issues#list-repository-issues
 func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo string, opts *IssueListByRepoOptions) ([]*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/issues", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -247,7 +252,10 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/issues#get-an-issue
 func (s *IssuesService) Get(ctx context.Context, owner string, repo string, number int) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/issues/%d", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -269,7 +277,10 @@ func (s *IssuesService) Get(ctx context.Context, owner string, repo string, numb
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/issues#create-an-issue
 func (s *IssuesService) Create(ctx context.Context, owner string, repo string, issue *IssueRequest) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
+	u, err := newURLString("repos/%v/%v/issues", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, issue)
 	if err != nil {
 		return nil, nil, err
@@ -288,7 +299,10 @@ func (s *IssuesService) Create(ctx context.Context, owner string, repo string, i
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/issues#update-an-issue
 func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/issues/%d", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, issue)
 	if err != nil {
 		return nil, nil, err
@@ -309,7 +323,10 @@ func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, num
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/issues#update-an-issue
 func (s *IssuesService) RemoveMilestone(ctx context.Context, owner, repo string, issueNumber int) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, issueNumber)
+	u, err := newURLString("repos/%v/%v/issues/%v", owner, repo, issueNumber)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, &struct {
 		Milestone *Milestone `json:"milestone"`
 	}{})
@@ -339,7 +356,10 @@ type LockIssueOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/issues#lock-an-issue
 func (s *IssuesService) Lock(ctx context.Context, owner string, repo string, number int, opts *LockIssueOptions) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/issues/%d/lock", owner, repo, number)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
@@ -352,7 +372,10 @@ func (s *IssuesService) Lock(ctx context.Context, owner string, repo string, num
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/issues#unlock-an-issue
 func (s *IssuesService) Unlock(ctx context.Context, owner string, repo string, number int) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/issues/%d/lock", owner, repo, number)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

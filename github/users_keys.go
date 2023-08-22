@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // Key represents a public SSH key used to authenticate a user or deploy script.
@@ -34,12 +33,16 @@ func (k Key) String() string {
 // GitHub API docs: https://docs.github.com/en/rest/users/keys#list-public-keys-for-a-user
 func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOptions) ([]*Key, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/keys", user)
+		u, err = newURLString("users/%v/keys", user)
 	} else {
-		u = "user/keys"
+		u, err = newURLString("user/keys")
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -62,7 +65,10 @@ func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOpti
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/keys#get-a-public-ssh-key-for-the-authenticated-user
 func (s *UsersService) GetKey(ctx context.Context, id int64) (*Key, *Response, error) {
-	u := fmt.Sprintf("user/keys/%v", id)
+	u, err := newURLString("user/keys/%v", id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -82,7 +88,10 @@ func (s *UsersService) GetKey(ctx context.Context, id int64) (*Key, *Response, e
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/keys#create-a-public-ssh-key-for-the-authenticated-user
 func (s *UsersService) CreateKey(ctx context.Context, key *Key) (*Key, *Response, error) {
-	u := "user/keys"
+	u, err := newURLString("user/keys")
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, key)
 	if err != nil {
@@ -102,7 +111,10 @@ func (s *UsersService) CreateKey(ctx context.Context, key *Key) (*Key, *Response
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/keys#delete-a-public-ssh-key-for-the-authenticated-user
 func (s *UsersService) DeleteKey(ctx context.Context, id int64) (*Response, error) {
-	u := fmt.Sprintf("user/keys/%v", id)
+	u, err := newURLString("user/keys/%v", id)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

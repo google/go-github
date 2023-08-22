@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // RepositoryMergeRequest represents a request to merge a branch in a
@@ -36,7 +35,10 @@ type RepoMergeUpstreamResult struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branches#merge-a-branch
 func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, request *RepositoryMergeRequest) (*RepositoryCommit, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/merges", owner, repo)
+	u, err := newURLString("repos/%v/%v/merges", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
@@ -56,7 +58,10 @@ func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, req
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branches#sync-a-fork-branch-with-the-upstream-repository
 func (s *RepositoriesService) MergeUpstream(ctx context.Context, owner, repo string, request *RepoMergeUpstreamRequest) (*RepoMergeUpstreamResult, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/merge-upstream", owner, repo)
+	u, err := newURLString("repos/%v/%v/merge-upstream", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err

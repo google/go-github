@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // Milestone represents a GitHub repository milestone.
@@ -56,8 +55,11 @@ type MilestoneListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/milestones#list-milestones
 func (s *IssuesService) ListMilestones(ctx context.Context, owner string, repo string, opts *MilestoneListOptions) ([]*Milestone, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/milestones", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/milestones", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -80,7 +82,10 @@ func (s *IssuesService) ListMilestones(ctx context.Context, owner string, repo s
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/milestones#get-a-milestone
 func (s *IssuesService) GetMilestone(ctx context.Context, owner string, repo string, number int) (*Milestone, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/milestones/%d", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/milestones/%d", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -99,7 +104,10 @@ func (s *IssuesService) GetMilestone(ctx context.Context, owner string, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/milestones#create-a-milestone
 func (s *IssuesService) CreateMilestone(ctx context.Context, owner string, repo string, milestone *Milestone) (*Milestone, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/milestones", owner, repo)
+	u, err := newURLString("repos/%v/%v/milestones", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, milestone)
 	if err != nil {
 		return nil, nil, err
@@ -118,7 +126,10 @@ func (s *IssuesService) CreateMilestone(ctx context.Context, owner string, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/milestones#update-a-milestone
 func (s *IssuesService) EditMilestone(ctx context.Context, owner string, repo string, number int, milestone *Milestone) (*Milestone, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/milestones/%d", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/milestones/%d", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, milestone)
 	if err != nil {
 		return nil, nil, err
@@ -137,7 +148,10 @@ func (s *IssuesService) EditMilestone(ctx context.Context, owner string, repo st
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/milestones#delete-a-milestone
 func (s *IssuesService) DeleteMilestone(ctx context.Context, owner string, repo string, number int) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/milestones/%d", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/milestones/%d", owner, repo, number)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

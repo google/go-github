@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 )
 
 // RepositoryListForksOptions specifies the optional parameters to the
@@ -25,8 +24,11 @@ type RepositoryListForksOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/forks#list-forks
 func (s *RepositoriesService) ListForks(ctx context.Context, owner, repo string, opts *RepositoryListForksOptions) ([]*Repository, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/forks", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -68,7 +70,10 @@ type RepositoryCreateForkOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/forks#create-a-fork
 func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string, opts *RepositoryCreateForkOptions) (*Repository, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
+	u, err := newURLString("repos/%v/%v/forks", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {

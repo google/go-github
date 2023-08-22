@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 type DependencyGraphService service
@@ -63,7 +62,10 @@ func (s SBOM) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependency-graph/sboms
 func (s *DependencyGraphService) GetSBOM(ctx context.Context, owner, repo string) (*SBOM, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/dependency-graph/sbom", owner, repo)
+	u, err := newURLString("repos/%v/%v/dependency-graph/sbom", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

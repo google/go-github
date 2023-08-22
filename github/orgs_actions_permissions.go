@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ActionsPermissions represents a policy for repositories and allowed actions in an organization.
@@ -27,7 +26,10 @@ func (a ActionsPermissions) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-github-actions-permissions-for-an-organization
 func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org string) (*ActionsPermissions, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
+	u, err := newURLString("orgs/%v/actions/permissions", org)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -47,7 +49,10 @@ func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org st
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-github-actions-permissions-for-an-organization
 func (s *OrganizationsService) EditActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
+	u, err := newURLString("orgs/%v/actions/permissions", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, actionsPermissions)
 	if err != nil {
 		return nil, nil, err

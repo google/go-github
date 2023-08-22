@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ProjectsService provides access to the projects functions in the
@@ -45,7 +44,10 @@ func (p Project) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/projects#get-a-project
 func (s *ProjectsService) GetProject(ctx context.Context, id int64) (*Project, *Response, error) {
-	u := fmt.Sprintf("projects/%v", id)
+	u, err := newURLString("projects/%v", id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -92,7 +94,10 @@ type ProjectOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/projects#update-a-project
 func (s *ProjectsService) UpdateProject(ctx context.Context, id int64, opts *ProjectOptions) (*Project, *Response, error) {
-	u := fmt.Sprintf("projects/%v", id)
+	u, err := newURLString("projects/%v", id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -114,7 +119,10 @@ func (s *ProjectsService) UpdateProject(ctx context.Context, id int64, opts *Pro
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/projects#delete-a-project
 func (s *ProjectsService) DeleteProject(ctx context.Context, id int64) (*Response, error) {
-	u := fmt.Sprintf("projects/%v", id)
+	u, err := newURLString("projects/%v", id)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -144,8 +152,11 @@ type ProjectColumn struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/columns#list-project-columns
 func (s *ProjectsService) ListProjectColumns(ctx context.Context, projectID int64, opts *ListOptions) ([]*ProjectColumn, *Response, error) {
-	u := fmt.Sprintf("projects/%v/columns", projectID)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("projects/%v/columns", projectID)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -171,7 +182,10 @@ func (s *ProjectsService) ListProjectColumns(ctx context.Context, projectID int6
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/columns#get-a-project-column
 func (s *ProjectsService) GetProjectColumn(ctx context.Context, id int64) (*ProjectColumn, *Response, error) {
-	u := fmt.Sprintf("projects/columns/%v", id)
+	u, err := newURLString("projects/columns/%v", id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -201,7 +215,10 @@ type ProjectColumnOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/columns#create-a-project-column
 func (s *ProjectsService) CreateProjectColumn(ctx context.Context, projectID int64, opts *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
-	u := fmt.Sprintf("projects/%v/columns", projectID)
+	u, err := newURLString("projects/%v/columns", projectID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -223,7 +240,10 @@ func (s *ProjectsService) CreateProjectColumn(ctx context.Context, projectID int
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/columns#update-an-existing-project-column
 func (s *ProjectsService) UpdateProjectColumn(ctx context.Context, columnID int64, opts *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
-	u := fmt.Sprintf("projects/columns/%v", columnID)
+	u, err := newURLString("projects/columns/%v", columnID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -245,7 +265,10 @@ func (s *ProjectsService) UpdateProjectColumn(ctx context.Context, columnID int6
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/columns#delete-a-project-column
 func (s *ProjectsService) DeleteProjectColumn(ctx context.Context, columnID int64) (*Response, error) {
-	u := fmt.Sprintf("projects/columns/%v", columnID)
+	u, err := newURLString("projects/columns/%v", columnID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -269,7 +292,10 @@ type ProjectColumnMoveOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/columns#move-a-project-column
 func (s *ProjectsService) MoveProjectColumn(ctx context.Context, columnID int64, opts *ProjectColumnMoveOptions) (*Response, error) {
-	u := fmt.Sprintf("projects/columns/%v/moves", columnID)
+	u, err := newURLString("projects/columns/%v/moves", columnID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, err
@@ -320,8 +346,11 @@ type ProjectCardListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/cards#list-project-cards
 func (s *ProjectsService) ListProjectCards(ctx context.Context, columnID int64, opts *ProjectCardListOptions) ([]*ProjectCard, *Response, error) {
-	u := fmt.Sprintf("projects/columns/%v/cards", columnID)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("projects/columns/%v/cards", columnID)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -347,7 +376,10 @@ func (s *ProjectsService) ListProjectCards(ctx context.Context, columnID int64, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/cards#get-a-project-card
 func (s *ProjectsService) GetProjectCard(ctx context.Context, cardID int64) (*ProjectCard, *Response, error) {
-	u := fmt.Sprintf("projects/columns/cards/%v", cardID)
+	u, err := newURLString("projects/columns/cards/%v", cardID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -385,7 +417,10 @@ type ProjectCardOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/cards#create-a-project-card
 func (s *ProjectsService) CreateProjectCard(ctx context.Context, columnID int64, opts *ProjectCardOptions) (*ProjectCard, *Response, error) {
-	u := fmt.Sprintf("projects/columns/%v/cards", columnID)
+	u, err := newURLString("projects/columns/%v/cards", columnID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -407,7 +442,10 @@ func (s *ProjectsService) CreateProjectCard(ctx context.Context, columnID int64,
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/cards#update-an-existing-project-card
 func (s *ProjectsService) UpdateProjectCard(ctx context.Context, cardID int64, opts *ProjectCardOptions) (*ProjectCard, *Response, error) {
-	u := fmt.Sprintf("projects/columns/cards/%v", cardID)
+	u, err := newURLString("projects/columns/cards/%v", cardID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -429,7 +467,10 @@ func (s *ProjectsService) UpdateProjectCard(ctx context.Context, cardID int64, o
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/cards#delete-a-project-card
 func (s *ProjectsService) DeleteProjectCard(ctx context.Context, cardID int64) (*Response, error) {
-	u := fmt.Sprintf("projects/columns/cards/%v", cardID)
+	u, err := newURLString("projects/columns/cards/%v", cardID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -457,7 +498,10 @@ type ProjectCardMoveOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/cards#move-a-project-card
 func (s *ProjectsService) MoveProjectCard(ctx context.Context, cardID int64, opts *ProjectCardMoveOptions) (*Response, error) {
-	u := fmt.Sprintf("projects/columns/cards/%v/moves", cardID)
+	u, err := newURLString("projects/columns/cards/%v/moves", cardID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, err
@@ -487,7 +531,10 @@ type ProjectCollaboratorOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#add-project-collaborator
 func (s *ProjectsService) AddProjectCollaborator(ctx context.Context, id int64, username string, opts *ProjectCollaboratorOptions) (*Response, error) {
-	u := fmt.Sprintf("projects/%v/collaborators/%v", id, username)
+	u, err := newURLString("projects/%v/collaborators/%v", id, username)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
@@ -504,7 +551,10 @@ func (s *ProjectsService) AddProjectCollaborator(ctx context.Context, id int64, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#remove-user-as-a-collaborator
 func (s *ProjectsService) RemoveProjectCollaborator(ctx context.Context, id int64, username string) (*Response, error) {
-	u := fmt.Sprintf("projects/%v/collaborators/%v", id, username)
+	u, err := newURLString("projects/%v/collaborators/%v", id, username)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -540,8 +590,11 @@ type ListCollaboratorOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#list-project-collaborators
 func (s *ProjectsService) ListProjectCollaborators(ctx context.Context, id int64, opts *ListCollaboratorOptions) ([]*User, *Response, error) {
-	u := fmt.Sprintf("projects/%v/collaborators", id)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("projects/%v/collaborators", id)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -578,7 +631,10 @@ type ProjectPermissionLevel struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#get-project-permission-for-a-user
 func (s *ProjectsService) ReviewProjectCollaboratorPermission(ctx context.Context, id int64, username string) (*ProjectPermissionLevel, *Response, error) {
-	u := fmt.Sprintf("projects/%v/collaborators/%v/permission", id, username)
+	u, err := newURLString("projects/%v/collaborators/%v/permission", id, username)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

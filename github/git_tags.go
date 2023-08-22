@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // Tag represents a tag object.
@@ -37,7 +36,10 @@ type createTagRequest struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/git/tags#get-a-tag
 func (s *GitService) GetTag(ctx context.Context, owner string, repo string, sha string) (*Tag, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/tags/%v", owner, repo, sha)
+	u, err := newURLString("repos/%v/%v/git/tags/%v", owner, repo, sha)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -56,7 +58,10 @@ func (s *GitService) GetTag(ctx context.Context, owner string, repo string, sha 
 //
 // GitHub API docs: https://docs.github.com/en/rest/git/tags#create-a-tag-object
 func (s *GitService) CreateTag(ctx context.Context, owner string, repo string, tag *Tag) (*Tag, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/tags", owner, repo)
+	u, err := newURLString("repos/%v/%v/git/tags", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	// convert Tag into a createTagRequest
 	tagRequest := &createTagRequest{

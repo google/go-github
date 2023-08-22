@@ -8,7 +8,6 @@ package github
 import (
 	"bytes"
 	"context"
-	"fmt"
 )
 
 // Blob represents a blob object.
@@ -25,7 +24,10 @@ type Blob struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/git/blobs#get-a-blob
 func (s *GitService) GetBlob(ctx context.Context, owner string, repo string, sha string) (*Blob, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/blobs/%v", owner, repo, sha)
+	u, err := newURLString("repos/%v/%v/git/blobs/%v", owner, repo, sha)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -45,7 +47,10 @@ func (s *GitService) GetBlob(ctx context.Context, owner string, repo string, sha
 //
 // GitHub API docs: https://docs.github.com/en/rest/git/blobs#get-a-blob
 func (s *GitService) GetBlobRaw(ctx context.Context, owner, repo, sha string) ([]byte, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/blobs/%v", owner, repo, sha)
+	u, err := newURLString("repos/%v/%v/git/blobs/%v", owner, repo, sha)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -66,7 +71,10 @@ func (s *GitService) GetBlobRaw(ctx context.Context, owner, repo, sha string) ([
 //
 // GitHub API docs: https://docs.github.com/en/rest/git/blobs#create-a-blob
 func (s *GitService) CreateBlob(ctx context.Context, owner string, repo string, blob *Blob) (*Blob, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/blobs", owner, repo)
+	u, err := newURLString("repos/%v/%v/git/blobs", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, blob)
 	if err != nil {
 		return nil, nil, err

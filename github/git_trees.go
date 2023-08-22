@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 )
 
 // Tree represents a GitHub tree.
@@ -95,7 +94,10 @@ func (t *TreeEntry) MarshalJSON() ([]byte, error) {
 //
 // GitHub API docs: https://docs.github.com/en/rest/git/trees#get-a-tree
 func (s *GitService) GetTree(ctx context.Context, owner string, repo string, sha string, recursive bool) (*Tree, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/trees/%v", owner, repo, sha)
+	u, err := newURLString("repos/%v/%v/git/trees/%v", owner, repo, sha)
+	if err != nil {
+		return nil, nil, err
+	}
 	if recursive {
 		u += "?recursive=1"
 	}
@@ -126,7 +128,10 @@ type createTree struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/git/trees#create-a-tree
 func (s *GitService) CreateTree(ctx context.Context, owner string, repo string, baseTree string, entries []*TreeEntry) (*Tree, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/trees", owner, repo)
+	u, err := newURLString("repos/%v/%v/git/trees", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	newEntries := make([]interface{}, 0, len(entries))
 	for _, entry := range entries {

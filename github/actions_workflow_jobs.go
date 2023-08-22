@@ -72,8 +72,11 @@ type ListWorkflowJobsOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-jobs#list-jobs-for-a-workflow-run
 func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo string, runID int64, opts *ListWorkflowJobsOptions) (*Jobs, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/runs/%v/jobs", owner, repo, runID)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%s/%s/actions/runs/%v/jobs", owner, repo, runID)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -96,7 +99,10 @@ func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-jobs#get-a-job-for-a-workflow-run
 func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo string, jobID int64) (*WorkflowJob, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v", owner, repo, jobID)
+	u, err := newURLString("repos/%v/%v/actions/jobs/%v", owner, repo, jobID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -116,7 +122,10 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-jobs#download-job-logs-for-a-workflow-run
 func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, followRedirects bool) (*url.URL, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/logs", owner, repo, jobID)
+	u, err := newURLString("repos/%v/%v/actions/jobs/%v/logs", owner, repo, jobID)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
 	if err != nil {

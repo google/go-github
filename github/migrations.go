@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 )
@@ -76,7 +75,10 @@ type startMigration struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/orgs#start-an-organization-migration
 func (s *MigrationService) StartMigration(ctx context.Context, org string, repos []string, opts *MigrationOptions) (*Migration, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/migrations", org)
+	u, err := newURLString("orgs/%v/migrations", org)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	body := &startMigration{Repositories: repos}
 	if opts != nil {
@@ -105,8 +107,11 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/orgs#list-organization-migrations
 func (s *MigrationService) ListMigrations(ctx context.Context, org string, opts *ListOptions) ([]*Migration, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/migrations", org)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/migrations", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -133,7 +138,10 @@ func (s *MigrationService) ListMigrations(ctx context.Context, org string, opts 
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/orgs#get-an-organization-migration-status
 func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id int64) (*Migration, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/migrations/%v", org, id)
+	u, err := newURLString("orgs/%v/migrations/%v", org, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -157,7 +165,10 @@ func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id i
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/orgs#download-an-organization-migration-archive
 func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, id int64) (url string, err error) {
-	u := fmt.Sprintf("orgs/%v/migrations/%v/archive", org, id)
+	u, err := newURLString("orgs/%v/migrations/%v/archive", org, id)
+	if err != nil {
+		return "", err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -194,7 +205,10 @@ func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/orgs#delete-an-organization-migration-archive
 func (s *MigrationService) DeleteMigration(ctx context.Context, org string, id int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/migrations/%v/archive", org, id)
+	u, err := newURLString("orgs/%v/migrations/%v/archive", org, id)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -214,7 +228,10 @@ func (s *MigrationService) DeleteMigration(ctx context.Context, org string, id i
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/orgs#unlock-an-organization-repository
 func (s *MigrationService) UnlockRepo(ctx context.Context, org string, id int64, repo string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/migrations/%v/repos/%v/lock", org, id, repo)
+	u, err := newURLString("orgs/%v/migrations/%v/repos/%v/lock", org, id, repo)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

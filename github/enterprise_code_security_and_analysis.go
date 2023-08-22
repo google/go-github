@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // EnterpriseSecurityAnalysisSettings represents security analysis settings for an enterprise.
@@ -22,7 +21,10 @@ type EnterpriseSecurityAnalysisSettings struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#get-code-security-and-analysis-features-for-an-enterprise
 func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, enterprise string) (*EnterpriseSecurityAnalysisSettings, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/code_security_and_analysis", enterprise)
+	u, err := newURLString("enterprises/%v/code_security_and_analysis", enterprise)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -42,7 +44,10 @@ func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, ente
 //
 // GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#update-code-security-and-analysis-features-for-an-enterprise
 func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, enterprise string, settings *EnterpriseSecurityAnalysisSettings) (*Response, error) {
-	u := fmt.Sprintf("enterprises/%v/code_security_and_analysis", enterprise)
+	u, err := newURLString("enterprises/%v/code_security_and_analysis", enterprise)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, settings)
 	if err != nil {
 		return nil, err
@@ -63,7 +68,10 @@ func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, e
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#enable-or-disable-a-security-feature
 func (s *EnterpriseService) EnableDisableSecurityFeature(ctx context.Context, enterprise, securityProduct, enablement string) (*Response, error) {
-	u := fmt.Sprintf("enterprises/%v/%v/%v", enterprise, securityProduct, enablement)
+	u, err := newURLString("enterprises/%v/%v/%v", enterprise, securityProduct, enablement)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err

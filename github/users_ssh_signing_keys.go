@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // SSHSigningKey represents a public SSH key used to sign git commits.
@@ -29,12 +28,16 @@ func (k SSHSigningKey) String() string {
 // GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#list-ssh-signing-keys-for-a-user
 func (s *UsersService) ListSSHSigningKeys(ctx context.Context, user string, opts *ListOptions) ([]*SSHSigningKey, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/ssh_signing_keys", user)
+		u, err = newURLString("users/%v/ssh_signing_keys", user)
 	} else {
-		u = "user/ssh_signing_keys"
+		u, err = newURLString("user/ssh_signing_keys")
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -57,7 +60,10 @@ func (s *UsersService) ListSSHSigningKeys(ctx context.Context, user string, opts
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#get-an-ssh-signing-key-for-the-authenticated-user
 func (s *UsersService) GetSSHSigningKey(ctx context.Context, id int64) (*SSHSigningKey, *Response, error) {
-	u := fmt.Sprintf("user/ssh_signing_keys/%v", id)
+	u, err := newURLString("user/ssh_signing_keys/%v", id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -77,7 +83,10 @@ func (s *UsersService) GetSSHSigningKey(ctx context.Context, id int64) (*SSHSign
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#create-a-ssh-signing-key-for-the-authenticated-user
 func (s *UsersService) CreateSSHSigningKey(ctx context.Context, key *Key) (*SSHSigningKey, *Response, error) {
-	u := "user/ssh_signing_keys"
+	u, err := newURLString("user/ssh_signing_keys")
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, key)
 	if err != nil {
@@ -97,7 +106,10 @@ func (s *UsersService) CreateSSHSigningKey(ctx context.Context, key *Key) (*SSHS
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#delete-an-ssh-signing-key-for-the-authenticated-user
 func (s *UsersService) DeleteSSHSigningKey(ctx context.Context, id int64) (*Response, error) {
-	u := fmt.Sprintf("user/ssh_signing_keys/%v", id)
+	u, err := newURLString("user/ssh_signing_keys/%v", id)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

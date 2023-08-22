@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // TrafficReferrer represent information about traffic from a referrer .
@@ -56,7 +55,10 @@ type TrafficBreakdownOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-top-referral-sources
 func (s *RepositoriesService) ListTrafficReferrers(ctx context.Context, owner, repo string) ([]*TrafficReferrer, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/traffic/popular/referrers", owner, repo)
+	u, err := newURLString("repos/%v/%v/traffic/popular/referrers", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -76,7 +78,10 @@ func (s *RepositoriesService) ListTrafficReferrers(ctx context.Context, owner, r
 //
 // GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-top-referral-paths
 func (s *RepositoriesService) ListTrafficPaths(ctx context.Context, owner, repo string) ([]*TrafficPath, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/traffic/popular/paths", owner, repo)
+	u, err := newURLString("repos/%v/%v/traffic/popular/paths", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -96,8 +101,11 @@ func (s *RepositoriesService) ListTrafficPaths(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-page-views
 func (s *RepositoriesService) ListTrafficViews(ctx context.Context, owner, repo string, opts *TrafficBreakdownOptions) (*TrafficViews, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/traffic/views", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/traffic/views", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -120,8 +128,11 @@ func (s *RepositoriesService) ListTrafficViews(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-repository-clones
 func (s *RepositoriesService) ListTrafficClones(ctx context.Context, owner, repo string, opts *TrafficBreakdownOptions) (*TrafficClones, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/traffic/clones", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/traffic/clones", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

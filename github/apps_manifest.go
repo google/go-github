@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // AppConfig describes the configuration of a GitHub App.
@@ -33,7 +32,10 @@ type AppConfig struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/apps#create-a-github-app-from-a-manifest
 func (s *AppsService) CompleteAppManifest(ctx context.Context, code string) (*AppConfig, *Response, error) {
-	u := fmt.Sprintf("app-manifests/%s/conversions", code)
+	u, err := newURLString("app-manifests/%s/conversions", code)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // TeamListTeamMembersOptions specifies the optional parameters to the
@@ -25,8 +24,11 @@ type TeamListTeamMembersOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/members#list-team-members
 func (s *TeamsService) ListTeamMembersByID(ctx context.Context, orgID, teamID int64, opts *TeamListTeamMembersOptions) ([]*User, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/members", orgID, teamID)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("organizations/%v/team/%v/members", orgID, teamID)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -50,8 +52,11 @@ func (s *TeamsService) ListTeamMembersByID(ctx context.Context, orgID, teamID in
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/members#list-team-members
 func (s *TeamsService) ListTeamMembersBySlug(ctx context.Context, org, slug string, opts *TeamListTeamMembersOptions) ([]*User, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/members", org, slug)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/teams/%v/members", org, slug)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -75,7 +80,10 @@ func (s *TeamsService) ListTeamMembersBySlug(ctx context.Context, org, slug stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/members#list-team-members
 func (s *TeamsService) GetTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Membership, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
+	u, err := newURLString("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -95,7 +103,10 @@ func (s *TeamsService) GetTeamMembershipByID(ctx context.Context, orgID, teamID 
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/members#get-team-membership-for-a-user
 func (s *TeamsService) GetTeamMembershipBySlug(ctx context.Context, org, slug, user string) (*Membership, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/memberships/%v", org, slug, user)
+	u, err := newURLString("orgs/%v/teams/%v/memberships/%v", org, slug, user)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -129,7 +140,10 @@ type TeamAddTeamMembershipOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/members#add-or-update-team-membership-for-a-user
 func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string, opts *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
+	u, err := newURLString("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -149,7 +163,10 @@ func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID 
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/members#add-or-update-team-membership-for-a-user
 func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, user string, opts *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/memberships/%v", org, slug, user)
+	u, err := newURLString("orgs/%v/teams/%v/memberships/%v", org, slug, user)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -169,7 +186,10 @@ func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, u
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/members#remove-team-membership-for-a-user
 func (s *TeamsService) RemoveTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
+	u, err := newURLString("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -183,7 +203,10 @@ func (s *TeamsService) RemoveTeamMembershipByID(ctx context.Context, orgID, team
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/members#remove-team-membership-for-a-user
 func (s *TeamsService) RemoveTeamMembershipBySlug(ctx context.Context, org, slug, user string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/memberships/%v", org, slug, user)
+	u, err := newURLString("orgs/%v/teams/%v/memberships/%v", org, slug, user)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -197,8 +220,11 @@ func (s *TeamsService) RemoveTeamMembershipBySlug(ctx context.Context, org, slug
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/members#list-pending-team-invitations
 func (s *TeamsService) ListPendingTeamInvitationsByID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Invitation, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/invitations", orgID, teamID)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("organizations/%v/team/%v/invitations", orgID, teamID)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -222,8 +248,11 @@ func (s *TeamsService) ListPendingTeamInvitationsByID(ctx context.Context, orgID
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/members#list-pending-team-invitations
 func (s *TeamsService) ListPendingTeamInvitationsBySlug(ctx context.Context, org, slug string, opts *ListOptions) ([]*Invitation, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/invitations", org, slug)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/teams/%v/invitations", org, slug)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

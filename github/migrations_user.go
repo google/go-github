@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 )
 
@@ -69,7 +68,10 @@ type startUserMigration struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/users#start-a-user-migration
 func (s *MigrationService) StartUserMigration(ctx context.Context, repos []string, opts *UserMigrationOptions) (*UserMigration, *Response, error) {
-	u := "user/migrations"
+	u, err := newURLString("user/migrations")
+	if err != nil {
+		return nil, nil, err
+	}
 
 	body := &startUserMigration{Repositories: repos}
 	if opts != nil {
@@ -98,8 +100,11 @@ func (s *MigrationService) StartUserMigration(ctx context.Context, repos []strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/users#list-user-migrations
 func (s *MigrationService) ListUserMigrations(ctx context.Context, opts *ListOptions) ([]*UserMigration, *Response, error) {
-	u := "user/migrations"
-	u, err := addOptions(u, opts)
+	u, err := newURLString("user/migrations")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -126,7 +131,10 @@ func (s *MigrationService) ListUserMigrations(ctx context.Context, opts *ListOpt
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/users#get-a-user-migration-status
 func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*UserMigration, *Response, error) {
-	u := fmt.Sprintf("user/migrations/%v", id)
+	u, err := newURLString("user/migrations/%v", id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -150,7 +158,10 @@ func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/users#download-a-user-migration-archive
 func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64) (string, error) {
-	url := fmt.Sprintf("user/migrations/%v/archive", id)
+	url, err := newURLString("user/migrations/%v/archive", id)
+	if err != nil {
+		return "", err
+	}
 
 	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
@@ -184,7 +195,10 @@ func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/users#delete-a-user-migration-archive
 func (s *MigrationService) DeleteUserMigration(ctx context.Context, id int64) (*Response, error) {
-	url := fmt.Sprintf("user/migrations/%v/archive", id)
+	url, err := newURLString("user/migrations/%v/archive", id)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", url, nil)
 	if err != nil {
@@ -204,7 +218,10 @@ func (s *MigrationService) DeleteUserMigration(ctx context.Context, id int64) (*
 //
 // GitHub API docs: https://docs.github.com/en/rest/migrations/users#unlock-a-user-repository
 func (s *MigrationService) UnlockUserRepo(ctx context.Context, id int64, repo string) (*Response, error) {
-	url := fmt.Sprintf("user/migrations/%v/repos/%v/lock", id, repo)
+	url, err := newURLString("user/migrations/%v/repos/%v/lock", id, repo)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := s.client.NewRequest("DELETE", url, nil)
 	if err != nil {

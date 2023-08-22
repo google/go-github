@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // TeamDiscussion represents a GitHub dicussion in a team.
@@ -51,8 +50,11 @@ type DiscussionListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussions#list-discussions
 func (s *TeamsService) ListDiscussionsByID(ctx context.Context, orgID, teamID int64, opts *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/discussions", orgID, teamID)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("organizations/%v/team/%v/discussions", orgID, teamID)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -76,8 +78,11 @@ func (s *TeamsService) ListDiscussionsByID(ctx context.Context, orgID, teamID in
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussions#list-discussions
 func (s *TeamsService) ListDiscussionsBySlug(ctx context.Context, org, slug string, opts *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/discussions", org, slug)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/teams/%v/discussions", org, slug)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -101,7 +106,10 @@ func (s *TeamsService) ListDiscussionsBySlug(ctx context.Context, org, slug stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussions#get-a-discussion
 func (s *TeamsService) GetDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int) (*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
+	u, err := newURLString("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -121,7 +129,10 @@ func (s *TeamsService) GetDiscussionByID(ctx context.Context, orgID, teamID int6
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussions#get-a-discussion
 func (s *TeamsService) GetDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int) (*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
+	u, err := newURLString("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -141,7 +152,10 @@ func (s *TeamsService) GetDiscussionBySlug(ctx context.Context, org, slug string
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussions#create-a-discussion
 func (s *TeamsService) CreateDiscussionByID(ctx context.Context, orgID, teamID int64, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/discussions", orgID, teamID)
+	u, err := newURLString("organizations/%v/team/%v/discussions", orgID, teamID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, discussion)
 	if err != nil {
 		return nil, nil, err
@@ -161,7 +175,10 @@ func (s *TeamsService) CreateDiscussionByID(ctx context.Context, orgID, teamID i
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussions#create-a-discussion
 func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug string, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/discussions", org, slug)
+	u, err := newURLString("orgs/%v/teams/%v/discussions", org, slug)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, discussion)
 	if err != nil {
 		return nil, nil, err
@@ -182,7 +199,10 @@ func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug str
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussions#update-a-discussion
 func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
+	u, err := newURLString("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, discussion)
 	if err != nil {
 		return nil, nil, err
@@ -203,7 +223,10 @@ func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussions#update-a-discussion
 func (s *TeamsService) EditDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
+	u, err := newURLString("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, discussion)
 	if err != nil {
 		return nil, nil, err
@@ -223,7 +246,10 @@ func (s *TeamsService) EditDiscussionBySlug(ctx context.Context, org, slug strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussions#delete-a-discussion
 func (s *TeamsService) DeleteDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int) (*Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
+	u, err := newURLString("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -237,7 +263,10 @@ func (s *TeamsService) DeleteDiscussionByID(ctx context.Context, orgID, teamID i
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussions#delete-a-discussion
 func (s *TeamsService) DeleteDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
+	u, err := newURLString("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListHookDeliveries lists deliveries of an App webhook.
@@ -37,7 +36,10 @@ func (s *AppsService) ListHookDeliveries(ctx context.Context, opts *ListCursorOp
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/webhooks#get-a-delivery-for-an-app-webhook
 func (s *AppsService) GetHookDelivery(ctx context.Context, deliveryID int64) (*HookDelivery, *Response, error) {
-	u := fmt.Sprintf("app/hook/deliveries/%v", deliveryID)
+	u, err := newURLString("app/hook/deliveries/%v", deliveryID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -56,7 +58,10 @@ func (s *AppsService) GetHookDelivery(ctx context.Context, deliveryID int64) (*H
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/webhooks#redeliver-a-delivery-for-an-app-webhook
 func (s *AppsService) RedeliverHookDelivery(ctx context.Context, deliveryID int64) (*HookDelivery, *Response, error) {
-	u := fmt.Sprintf("app/hook/deliveries/%v/attempts", deliveryID)
+	u, err := newURLString("app/hook/deliveries/%v/attempts", deliveryID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err

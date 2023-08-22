@@ -7,15 +7,17 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListHookDeliveries lists webhook deliveries for a webhook configured in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#list-deliveries-for-an-organization-webhook
 func (s *OrganizationsService) ListHookDeliveries(ctx context.Context, org string, id int64, opts *ListCursorOptions) ([]*HookDelivery, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/hooks/%v/deliveries", org, id)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/hooks/%v/deliveries", org, id)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -38,7 +40,10 @@ func (s *OrganizationsService) ListHookDeliveries(ctx context.Context, org strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#get-a-webhook-delivery-for-an-organization-webhook
 func (s *OrganizationsService) GetHookDelivery(ctx context.Context, owner string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/hooks/%v/deliveries/%v", owner, hookID, deliveryID)
+	u, err := newURLString("orgs/%v/hooks/%v/deliveries/%v", owner, hookID, deliveryID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -57,7 +62,10 @@ func (s *OrganizationsService) GetHookDelivery(ctx context.Context, owner string
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks#redeliver-a-delivery-for-an-organization-webhook
 func (s *OrganizationsService) RedeliverHookDelivery(ctx context.Context, owner string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/hooks/%v/deliveries/%v/attempts", owner, hookID, deliveryID)
+	u, err := newURLString("orgs/%v/hooks/%v/deliveries/%v/attempts", owner, hookID, deliveryID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // createOrgRequest is a subset of Organization and is used internally
@@ -24,7 +23,10 @@ type createOrgRequest struct {
 //
 // GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#create-an-organization
 func (s *AdminService) CreateOrg(ctx context.Context, org *Organization, admin string) (*Organization, *Response, error) {
-	u := "admin/organizations"
+	u, err := newURLString("admin/organizations")
+	if err != nil {
+		return nil, nil, err
+	}
 
 	orgReq := &createOrgRequest{
 		Login: org.Login,
@@ -68,7 +70,10 @@ func (s *AdminService) RenameOrg(ctx context.Context, org *Organization, newName
 //
 // GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#rename-an-organization
 func (s *AdminService) RenameOrgByName(ctx context.Context, org, newName string) (*RenameOrgResponse, *Response, error) {
-	u := fmt.Sprintf("admin/organizations/%v", org)
+	u, err := newURLString("admin/organizations/%v", org)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	orgReq := &renameOrgRequest{
 		Login: &newName,

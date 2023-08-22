@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -210,8 +209,11 @@ type SarifID struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-code-scanning-alerts-for-an-organization
 func (s *CodeScanningService) ListAlertsForOrg(ctx context.Context, org string, opts *AlertListOptions) ([]*Alert, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/code-scanning/alerts", org)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/code-scanning/alerts", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -238,8 +240,11 @@ func (s *CodeScanningService) ListAlertsForOrg(ctx context.Context, org string, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-code-scanning-alerts-for-a-repository
 func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo string, opts *AlertListOptions) ([]*Alert, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/code-scanning/alerts", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -267,7 +272,10 @@ func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning#get-a-code-scanning-alert
 func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, id int64) (*Alert, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -292,7 +300,10 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-alert
 func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, stateInfo *CodeScanningAlertState) (*Alert, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("PATCH", u, stateInfo)
 	if err != nil {
@@ -316,7 +327,10 @@ func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning#upload-an-analysis-as-sarif-data
 func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, sarif *SarifAnalysis) (*SarifID, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs", owner, repo)
+	u, err := newURLString("repos/%v/%v/code-scanning/sarifs", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("POST", u, sarif)
 	if err != nil {
@@ -340,8 +354,11 @@ func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-code-scanning-analyses-for-a-repository
 func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, repo string, opts *AnalysesListOptions) ([]*ScanningAnalysis, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/code-scanning/analyses", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -369,7 +386,10 @@ func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, re
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning#get-a-code-scanning-analysis-for-a-repository
 func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo string, id int64) (*ScanningAnalysis, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses/%v", owner, repo, id)
+	u, err := newURLString("repos/%v/%v/code-scanning/analyses/%v", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -401,7 +421,10 @@ type DefaultSetupConfiguration struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning#get-a-code-scanning-default-setup-configuration
 func (s *CodeScanningService) GetDefaultSetupConfiguration(ctx context.Context, owner, repo string) (*DefaultSetupConfiguration, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/code-scanning/default-setup", owner, repo)
+	u, err := newURLString("repos/%s/%s/code-scanning/default-setup", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -442,7 +465,10 @@ type UpdateDefaultSetupConfigurationResponse struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning#update-a-code-scanning-default-setup-configuration
 func (s *CodeScanningService) UpdateDefaultSetupConfiguration(ctx context.Context, owner, repo string, options *UpdateDefaultSetupConfigurationOptions) (*UpdateDefaultSetupConfigurationResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/code-scanning/default-setup", owner, repo)
+	u, err := newURLString("repos/%s/%s/code-scanning/default-setup", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("PATCH", u, options)
 	if err != nil {

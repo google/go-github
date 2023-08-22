@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // RepositoryActionsAccessLevel represents the repository actions access level.
@@ -25,7 +24,10 @@ type RepositoryActionsAccessLevel struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-the-level-of-access-for-workflows-outside-of-the-repository
 func (s *RepositoriesService) GetActionsAccessLevel(ctx context.Context, owner, repo string) (*RepositoryActionsAccessLevel, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/permissions/access", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/permissions/access", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -45,7 +47,10 @@ func (s *RepositoriesService) GetActionsAccessLevel(ctx context.Context, owner, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-the-level-of-access-for-workflows-outside-of-the-repository
 func (s *RepositoriesService) EditActionsAccessLevel(ctx context.Context, owner, repo string, repositoryActionsAccessLevel RepositoryActionsAccessLevel) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/permissions/access", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/permissions/access", owner, repo)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, repositoryActionsAccessLevel)
 	if err != nil {
 		return nil, err

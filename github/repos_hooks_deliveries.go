@@ -65,8 +65,11 @@ func (r HookResponse) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-deliveries#list-deliveries-for-a-repository-webhook
 func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, repo string, id int64, opts *ListCursorOptions) ([]*HookDelivery, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries", owner, repo, id)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/hooks/%v/deliveries", owner, repo, id)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -89,7 +92,10 @@ func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, rep
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-deliveries#get-a-delivery-for-a-repository-webhook
 func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries/%v", owner, repo, hookID, deliveryID)
+	u, err := newURLString("repos/%v/%v/hooks/%v/deliveries/%v", owner, repo, hookID, deliveryID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -108,7 +114,10 @@ func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo s
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-deliveries#redeliver-a-delivery-for-a-repository-webhook
 func (s *RepositoriesService) RedeliverHookDelivery(ctx context.Context, owner, repo string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries/%v/attempts", owner, repo, hookID, deliveryID)
+	u, err := newURLString("repos/%v/%v/hooks/%v/deliveries/%v/attempts", owner, repo, hookID, deliveryID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err

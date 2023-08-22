@@ -100,8 +100,11 @@ func (r *RepositoryContent) GetContent() (string, error) {
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/contents#get-a-repository-readme
 func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string, opts *RepositoryContentGetOptions) (*RepositoryContent, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/readme", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/readme", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -205,7 +208,10 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 	}
 
 	escapedPath := (&url.URL{Path: strings.TrimSuffix(path, "/")}).String()
-	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, escapedPath)
+	u, err := newURLString("repos/%s/%s/contents/%s", owner, repo, escapedPath)
+	if err != nil {
+		return nil, nil, nil, err
+	}
 	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, nil, err
@@ -240,7 +246,10 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/contents#create-or-update-file-contents
 func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
+	u, err := newURLString("repos/%s/%s/contents/%s", owner, repo, path)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -260,7 +269,10 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/contents#create-or-update-file-contents
 func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
+	u, err := newURLString("repos/%s/%s/contents/%s", owner, repo, path)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -280,7 +292,10 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/contents#delete-a-file
 func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
+	u, err := newURLString("repos/%s/%s/contents/%s", owner, repo, path)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -312,7 +327,10 @@ const (
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/contents/#get-archive-link
 func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat ArchiveFormat, opts *RepositoryContentGetOptions, followRedirects bool) (*url.URL, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
+	u, err := newURLString("repos/%s/%s/%s", owner, repo, archiveformat)
+	if err != nil {
+		return nil, nil, err
+	}
 	if opts != nil && opts.Ref != "" {
 		u += fmt.Sprintf("/%s", opts.Ref)
 	}

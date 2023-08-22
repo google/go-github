@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // OIDCSubjectClaimCustomTemplate represents an OIDC subject claim customization template.
@@ -20,7 +19,10 @@ type OIDCSubjectClaimCustomTemplate struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/oidc#get-the-customization-template-for-an-oidc-subject-claim-for-an-organization
 func (s *ActionsService) GetOrgOIDCSubjectClaimCustomTemplate(ctx context.Context, org string) (*OIDCSubjectClaimCustomTemplate, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/oidc/customization/sub", org)
+	u, err := newURLString("orgs/%v/actions/oidc/customization/sub", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getOIDCSubjectClaimCustomTemplate(ctx, u)
 }
 
@@ -28,7 +30,10 @@ func (s *ActionsService) GetOrgOIDCSubjectClaimCustomTemplate(ctx context.Contex
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/oidc#get-the-customization-template-for-an-oidc-subject-claim-for-a-repository
 func (s *ActionsService) GetRepoOIDCSubjectClaimCustomTemplate(ctx context.Context, owner, repo string) (*OIDCSubjectClaimCustomTemplate, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/oidc/customization/sub", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/oidc/customization/sub", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	return s.getOIDCSubjectClaimCustomTemplate(ctx, u)
 }
 
@@ -51,7 +56,10 @@ func (s *ActionsService) getOIDCSubjectClaimCustomTemplate(ctx context.Context, 
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/oidc#set-the-customization-template-for-an-oidc-subject-claim-for-an-organization
 func (s *ActionsService) SetOrgOIDCSubjectClaimCustomTemplate(ctx context.Context, org string, template *OIDCSubjectClaimCustomTemplate) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/oidc/customization/sub", org)
+	u, err := newURLString("orgs/%v/actions/oidc/customization/sub", org)
+	if err != nil {
+		return nil, err
+	}
 	return s.setOIDCSubjectClaimCustomTemplate(ctx, u, template)
 }
 
@@ -59,7 +67,10 @@ func (s *ActionsService) SetOrgOIDCSubjectClaimCustomTemplate(ctx context.Contex
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/oidc#set-the-customization-template-for-an-oidc-subject-claim-for-a-repository
 func (s *ActionsService) SetRepoOIDCSubjectClaimCustomTemplate(ctx context.Context, owner, repo string, template *OIDCSubjectClaimCustomTemplate) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/oidc/customization/sub", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/oidc/customization/sub", owner, repo)
+	if err != nil {
+		return nil, err
+	}
 	return s.setOIDCSubjectClaimCustomTemplate(ctx, u, template)
 }
 

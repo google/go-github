@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // TagProtection represents a repository tag protection.
@@ -26,7 +25,10 @@ type tagProtectionRequest struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/tags#list-tag-protection-states-for-a-repository
 func (s *RepositoriesService) ListTagProtection(ctx context.Context, owner, repo string) ([]*TagProtection, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/tags/protection", owner, repo)
+	u, err := newURLString("repos/%v/%v/tags/protection", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -46,7 +48,10 @@ func (s *RepositoriesService) ListTagProtection(ctx context.Context, owner, repo
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/tags#create-a-tag-protection-state-for-a-repository
 func (s *RepositoriesService) CreateTagProtection(ctx context.Context, owner, repo, pattern string) (*TagProtection, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/tags/protection", owner, repo)
+	u, err := newURLString("repos/%v/%v/tags/protection", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	r := &tagProtectionRequest{Pattern: pattern}
 	req, err := s.client.NewRequest("POST", u, r)
 	if err != nil {
@@ -66,7 +71,10 @@ func (s *RepositoriesService) CreateTagProtection(ctx context.Context, owner, re
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/tags#delete-a-tag-protection-state-for-a-repository
 func (s *RepositoriesService) DeleteTagProtection(ctx context.Context, owner, repo string, tagProtectionID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/tags/protection/%v", owner, repo, tagProtectionID)
+	u, err := newURLString("repos/%v/%v/tags/protection/%v", owner, repo, tagProtectionID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

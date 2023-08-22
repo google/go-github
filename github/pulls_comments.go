@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"time"
 )
@@ -72,12 +71,16 @@ type PullRequestListCommentsOptions struct {
 // GitHub API docs: https://docs.github.com/en/rest/pulls/comments#list-review-comments-in-a-repository
 func (s *PullRequestsService) ListComments(ctx context.Context, owner, repo string, number int, opts *PullRequestListCommentsOptions) ([]*PullRequestComment, *Response, error) {
 	var u string
+	var err error
 	if number == 0 {
-		u = fmt.Sprintf("repos/%v/%v/pulls/comments", owner, repo)
+		u, err = newURLString("repos/%v/%v/pulls/comments", owner, repo)
 	} else {
-		u = fmt.Sprintf("repos/%v/%v/pulls/%d/comments", owner, repo, number)
+		u, err = newURLString("repos/%v/%v/pulls/%d/comments", owner, repo, number)
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -104,7 +107,10 @@ func (s *PullRequestsService) ListComments(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/comments#get-a-review-comment-for-a-pull-request
 func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string, commentID int64) (*PullRequestComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
+	u, err := newURLString("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -127,7 +133,10 @@ func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/comments#create-a-review-comment-for-a-pull-request
 func (s *PullRequestsService) CreateComment(ctx context.Context, owner, repo string, number int, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/comments", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/pulls/%d/comments", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -156,7 +165,10 @@ func (s *PullRequestsService) CreateCommentInReplyTo(ctx context.Context, owner,
 		Body:      body,
 		InReplyTo: commentID,
 	}
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/comments", owner, repo, number)
+	u, err := newURLString("repos/%v/%v/pulls/%d/comments", owner, repo, number)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -176,7 +188,10 @@ func (s *PullRequestsService) CreateCommentInReplyTo(ctx context.Context, owner,
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/comments#update-a-review-comment-for-a-pull-request
 func (s *PullRequestsService) EditComment(ctx context.Context, owner, repo string, commentID int64, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
+	u, err := newURLString("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -195,7 +210,10 @@ func (s *PullRequestsService) EditComment(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/pulls/comments#delete-a-review-comment-for-a-pull-request
 func (s *PullRequestsService) DeleteComment(ctx context.Context, owner, repo string, commentID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
+	u, err := newURLString("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

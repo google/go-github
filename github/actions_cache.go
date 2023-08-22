@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ActionsCache represents a GitHub action cache.
@@ -79,8 +78,11 @@ type ActionsCacheListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#list-github-actions-caches-for-a-repository
 func (s *ActionsService) ListCaches(ctx context.Context, owner, repo string, opts *ActionsCacheListOptions) (*ActionsCacheList, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/caches", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/actions/caches", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -109,8 +111,11 @@ func (s *ActionsService) ListCaches(ctx context.Context, owner, repo string, opt
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#delete-github-actions-caches-for-a-repository-using-a-cache-key
 func (s *ActionsService) DeleteCachesByKey(ctx context.Context, owner, repo, key string, ref *string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/caches", owner, repo)
-	u, err := addOptions(u, ActionsCache{Key: &key, Ref: ref})
+	u, err := newURLString("repos/%v/%v/actions/caches", owner, repo)
+	if err != nil {
+		return nil, err
+	}
+	u, err = addOptions(u, ActionsCache{Key: &key, Ref: ref})
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +134,10 @@ func (s *ActionsService) DeleteCachesByKey(ctx context.Context, owner, repo, key
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#delete-a-github-actions-cache-for-a-repository-using-a-cache-id
 func (s *ActionsService) DeleteCachesByID(ctx context.Context, owner, repo string, cacheID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/caches/%v", owner, repo, cacheID)
+	u, err := newURLString("repos/%v/%v/actions/caches/%v", owner, repo, cacheID)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -146,7 +154,10 @@ func (s *ActionsService) DeleteCachesByID(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-usage-for-a-repository
 func (s *ActionsService) GetCacheUsageForRepo(ctx context.Context, owner, repo string) (*ActionsCacheUsage, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/cache/usage", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/cache/usage", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -169,8 +180,11 @@ func (s *ActionsService) GetCacheUsageForRepo(ctx context.Context, owner, repo s
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#list-repositories-with-github-actions-cache-usage-for-an-organization
 func (s *ActionsService) ListCacheUsageByRepoForOrg(ctx context.Context, org string, opts *ListOptions) (*ActionsCacheUsageList, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/cache/usage-by-repository", org)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/actions/cache/usage-by-repository", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -197,7 +211,10 @@ func (s *ActionsService) ListCacheUsageByRepoForOrg(ctx context.Context, org str
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-usage-for-an-organization
 func (s *ActionsService) GetTotalCacheUsageForOrg(ctx context.Context, org string) (*TotalCacheUsage, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/cache/usage", org)
+	u, err := newURLString("orgs/%v/actions/cache/usage", org)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -219,7 +236,10 @@ func (s *ActionsService) GetTotalCacheUsageForOrg(ctx context.Context, org strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-usage-for-an-enterprise
 func (s *ActionsService) GetTotalCacheUsageForEnterprise(ctx context.Context, enterprise string) (*TotalCacheUsage, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/actions/cache/usage", enterprise)
+	u, err := newURLString("enterprises/%v/actions/cache/usage", enterprise)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

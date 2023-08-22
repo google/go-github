@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // GetAuditLogOptions sets up optional parameters to query audit-log endpoint.
@@ -135,8 +134,11 @@ type AuditEntryData struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#get-the-audit-log-for-an-organization
 func (s *OrganizationsService) GetAuditLog(ctx context.Context, org string, opts *GetAuditLogOptions) ([]*AuditEntry, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/audit-log", org)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/audit-log", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

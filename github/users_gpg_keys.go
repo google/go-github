@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // GPGKey represents a GitHub user's public GPG key used to verify GPG signed commits and tags.
@@ -48,12 +47,16 @@ type GPGEmail struct {
 // GitHub API docs: https://docs.github.com/en/rest/users/gpg-keys#list-gpg-keys-for-a-user
 func (s *UsersService) ListGPGKeys(ctx context.Context, user string, opts *ListOptions) ([]*GPGKey, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/gpg_keys", user)
+		u, err = newURLString("users/%v/gpg_keys", user)
 	} else {
-		u = "user/gpg_keys"
+		u, err = newURLString("user/gpg_keys")
 	}
-	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -77,7 +80,10 @@ func (s *UsersService) ListGPGKeys(ctx context.Context, user string, opts *ListO
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/gpg-keys#get-a-gpg-key-for-the-authenticated-user
 func (s *UsersService) GetGPGKey(ctx context.Context, id int64) (*GPGKey, *Response, error) {
-	u := fmt.Sprintf("user/gpg_keys/%v", id)
+	u, err := newURLString("user/gpg_keys/%v", id)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -119,7 +125,10 @@ func (s *UsersService) CreateGPGKey(ctx context.Context, armoredPublicKey string
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/gpg-keys#delete-a-gpg-key-for-the-authenticated-user
 func (s *UsersService) DeleteGPGKey(ctx context.Context, id int64) (*Response, error) {
-	u := fmt.Sprintf("user/gpg_keys/%v", id)
+	u, err := newURLString("user/gpg_keys/%v", id)
+	if err != nil {
+		return nil, err
+	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

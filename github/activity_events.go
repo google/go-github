@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListEvents drinks from the firehose of all public events across GitHub.
@@ -37,8 +36,11 @@ func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]
 //
 // GitHub API docs: https://docs.github.com/en/rest/activity/events#list-repository-events
 func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/events", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/events", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -61,8 +63,11 @@ func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://docs.github.com/en/rest/issues/events#list-issue-events-for-a-repository
 func (s *ActivityService) ListIssueEventsForRepository(ctx context.Context, owner, repo string, opts *ListOptions) ([]*IssueEvent, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/events", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("repos/%v/%v/issues/events", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -85,8 +90,11 @@ func (s *ActivityService) ListIssueEventsForRepository(ctx context.Context, owne
 //
 // GitHub API docs: https://docs.github.com/en/rest/activity/events#list-public-events-for-a-network-of-repositories
 func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
-	u := fmt.Sprintf("networks/%v/%v/events", owner, repo)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("networks/%v/%v/events", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -109,8 +117,11 @@ func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, r
 //
 // GitHub API docs: https://docs.github.com/en/rest/activity/events#list-public-organization-events
 func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org string, opts *ListOptions) ([]*Event, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/events", org)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("orgs/%v/events", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -135,13 +146,15 @@ func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org str
 // GitHub API docs: https://docs.github.com/en/rest/activity/events#list-events-for-the-authenticated-user
 // GitHub API docs: https://docs.github.com/en/rest/activity/events#list-public-events-for-a-user
 func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
-	var u string
+	urlFormat := "users/%v/events"
 	if publicOnly {
-		u = fmt.Sprintf("users/%v/events/public", user)
-	} else {
-		u = fmt.Sprintf("users/%v/events", user)
+		urlFormat += "/public"
 	}
-	u, err := addOptions(u, opts)
+	u, err := newURLString(urlFormat, user)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -166,13 +179,15 @@ func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user st
 // GitHub API docs: https://docs.github.com/en/rest/activity/events#list-events-received-by-the-authenticated-user
 // GitHub API docs: https://docs.github.com/en/rest/activity/events#list-public-events-received-by-a-user
 func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
-	var u string
+	urlFormat := "users/%v/received_events"
 	if publicOnly {
-		u = fmt.Sprintf("users/%v/received_events/public", user)
-	} else {
-		u = fmt.Sprintf("users/%v/received_events", user)
+		urlFormat += "/public"
 	}
-	u, err := addOptions(u, opts)
+	u, err := newURLString(urlFormat, user)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -196,8 +211,11 @@ func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user str
 //
 // GitHub API docs: https://docs.github.com/en/rest/activity/events#list-organization-events-for-the-authenticated-user
 func (s *ActivityService) ListUserEventsForOrganization(ctx context.Context, org, user string, opts *ListOptions) ([]*Event, *Response, error) {
-	u := fmt.Sprintf("users/%v/events/orgs/%v", user, org)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("users/%v/events/orgs/%v", user, org)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // LicensesService handles communication with the license related
@@ -80,7 +79,10 @@ func (s *LicensesService) List(ctx context.Context) ([]*License, *Response, erro
 //
 // GitHub API docs: https://docs.github.com/en/rest/licenses#get-a-license
 func (s *LicensesService) Get(ctx context.Context, licenseName string) (*License, *Response, error) {
-	u := fmt.Sprintf("licenses/%s", licenseName)
+	u, err := newURLString("licenses/%s", licenseName)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

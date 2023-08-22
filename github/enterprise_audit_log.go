@@ -7,15 +7,17 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // GetAuditLog gets the audit-log entries for an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/audit-log#get-the-audit-log-for-an-enterprise
 func (s *EnterpriseService) GetAuditLog(ctx context.Context, enterprise string, opts *GetAuditLogOptions) ([]*AuditEntry, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/audit-log", enterprise)
-	u, err := addOptions(u, opts)
+	u, err := newURLString("enterprises/%v/audit-log", enterprise)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
