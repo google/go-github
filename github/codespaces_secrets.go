@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListUserSecrets list all secrets available for a users codespace
@@ -95,7 +94,11 @@ func (s *CodespacesService) GetUserPublicKey(ctx context.Context) (*PublicKey, *
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#get-an-organization-public-key
 func (s *CodespacesService) GetOrgPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error) {
-	return s.getPublicKey(ctx, fmt.Sprintf("orgs/%v/codespaces/secrets/public-key", org))
+	u, err := newURLString("orgs/%v/codespaces/secrets/public-key", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	return s.getPublicKey(ctx, u)
 }
 
 // GetRepoPublicKey gets the repo public key for encrypting codespace secrets
@@ -104,7 +107,11 @@ func (s *CodespacesService) GetOrgPublicKey(ctx context.Context, org string) (*P
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/repository-secrets?apiVersion=2022-11-28#get-a-repository-public-key
 func (s *CodespacesService) GetRepoPublicKey(ctx context.Context, owner, repo string) (*PublicKey, *Response, error) {
-	return s.getPublicKey(ctx, fmt.Sprintf("repos/%v/%v/codespaces/secrets/public-key", owner, repo))
+	u, err := newURLString("repos/%v/%v/codespaces/secrets/public-key", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	return s.getPublicKey(ctx, u)
 }
 
 func (s *CodespacesService) getPublicKey(ctx context.Context, url string) (*PublicKey, *Response, error) {

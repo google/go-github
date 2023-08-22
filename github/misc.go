@@ -216,7 +216,10 @@ func (c *Client) Octocat(ctx context.Context, message string) (string, *Response
 		return "", nil, err
 	}
 	if message != "" {
-		u += "?s=" + url.QueryEscape(message)
+		u, err = addQueryParams(u, url.Values{"s": []string{message}})
+		if err != nil {
+			return "", nil, err
+		}
 	}
 	req, err := c.NewRequest("GET", u, nil)
 	if err != nil {

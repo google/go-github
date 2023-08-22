@@ -438,10 +438,14 @@ type createRepoRequest struct {
 // GitHub API docs: https://docs.github.com/en/rest/repos/repos#create-an-organization-repository
 func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repository) (*Repository, *Response, error) {
 	var u string
+	var err error
 	if org != "" {
-		u = fmt.Sprintf("orgs/%v/repos", org)
+		u, err = newURLString("orgs/%v/repos", org)
 	} else {
-		u = "user/repos"
+		u, err = newURLString("user/repos")
+	}
+	if err != nil {
+		return nil, nil, err
 	}
 
 	repoReq := &createRepoRequest{

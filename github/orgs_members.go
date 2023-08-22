@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // Membership represents the status of a user's membership in an organization or team.
@@ -233,10 +232,14 @@ func (s *OrganizationsService) ListOrgMemberships(ctx context.Context, opts *Lis
 // GitHub API docs: https://docs.github.com/en/rest/orgs/members#get-organization-membership-for-a-user
 func (s *OrganizationsService) GetOrgMembership(ctx context.Context, user, org string) (*Membership, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("orgs/%v/memberships/%v", org, user)
+		u, err = newURLString("orgs/%v/memberships/%v", org, user)
 	} else {
-		u = fmt.Sprintf("user/memberships/orgs/%v", org)
+		u, err = newURLString("user/memberships/orgs/%v", org)
+	}
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -261,12 +264,17 @@ func (s *OrganizationsService) GetOrgMembership(ctx context.Context, user, org s
 // GitHub API docs: https://docs.github.com/en/rest/orgs/members#set-organization-membership-for-a-user
 func (s *OrganizationsService) EditOrgMembership(ctx context.Context, user, org string, membership *Membership) (*Membership, *Response, error) {
 	var u, method string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("orgs/%v/memberships/%v", org, user)
 		method = "PUT"
+		u, err = newURLString("orgs/%v/memberships/%v", org, user)
+
 	} else {
-		u = fmt.Sprintf("user/memberships/orgs/%v", org)
 		method = "PATCH"
+		u, err = newURLString("user/memberships/orgs/%v", org)
+	}
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest(method, u, membership)

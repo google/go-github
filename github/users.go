@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // UsersService handles communication with the user related
@@ -83,10 +82,14 @@ func (u User) String() string {
 // GitHub API docs: https://docs.github.com/en/rest/users/users#get-a-user
 func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v", user)
+		u, err = newURLString("users/%v", user)
 	} else {
-		u = "user"
+		u, err = newURLString("user")
+	}
+	if err != nil {
+		return nil, nil, err
 	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

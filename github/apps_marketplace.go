@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // MarketplaceService handles communication with the marketplace related
@@ -91,7 +90,11 @@ type MarketplacePurchaseAccount struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps#list-plans
 func (s *MarketplaceService) ListPlans(ctx context.Context, opts *ListOptions) ([]*MarketplacePlan, *Response, error) {
-	u, err := s.marketplaceURI("plans")
+	u, err := newURLString("plans")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = s.marketplaceURI(u)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -118,7 +121,11 @@ func (s *MarketplaceService) ListPlans(ctx context.Context, opts *ListOptions) (
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps#list-accounts-for-a-plan
 func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
-	u, err := s.marketplaceURI(fmt.Sprintf("plans/%v/accounts", planID))
+	u, err := newURLString("plans/%v/accounts", planID)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = s.marketplaceURI(u)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -145,12 +152,16 @@ func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps#get-a-subscription-plan-for-an-account
 func (s *MarketplaceService) GetPlanAccountForAccount(ctx context.Context, accountID int64) (*MarketplacePlanAccount, *Response, error) {
-	uri, err := s.marketplaceURI(fmt.Sprintf("accounts/%v", accountID))
+	u, err := newURLString("accounts/%v", accountID)
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = s.marketplaceURI(u)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", uri, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -203,6 +214,5 @@ func (s *MarketplaceService) marketplaceURI(endpoint string) (string, error) {
 	if s.Stubbed {
 		url = "marketplace_listing/stubbed"
 	}
-	url += "/" + endpoint
-	return newURLString(url)
+	return newURLString(url + "/" + endpoint)
 }

@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // List the packages for a user. Passing the empty string for "user" will
@@ -52,10 +51,14 @@ func (s *UsersService) ListPackages(ctx context.Context, user string, opts *Pack
 // GitHub API docs: https://docs.github.com/en/rest/packages#get-a-package-for-a-user
 func (s *UsersService) GetPackage(ctx context.Context, user, packageType, packageName string) (*Package, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v", user, packageType, packageName)
+		u, err = newURLString("users/%v/packages/%v/%v", user, packageType, packageName)
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v", packageType, packageName)
+		u, err = newURLString("user/packages/%v/%v", packageType, packageName)
+	}
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -79,10 +82,14 @@ func (s *UsersService) GetPackage(ctx context.Context, user, packageType, packag
 // GitHub API docs: https://docs.github.com/en/rest/packages#delete-a-package-for-a-user
 func (s *UsersService) DeletePackage(ctx context.Context, user, packageType, packageName string) (*Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v", user, packageType, packageName)
+		u, err = newURLString("users/%v/packages/%v/%v", user, packageType, packageName)
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v", packageType, packageName)
+		u, err = newURLString("user/packages/%v/%v", packageType, packageName)
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -100,10 +107,14 @@ func (s *UsersService) DeletePackage(ctx context.Context, user, packageType, pac
 // GitHub API docs: https://docs.github.com/en/rest/packages#restore-a-package-for-a-user
 func (s *UsersService) RestorePackage(ctx context.Context, user, packageType, packageName string) (*Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v/restore", user, packageType, packageName)
+		u, err = newURLString("users/%v/packages/%v/%v/restore", user, packageType, packageName)
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v/restore", packageType, packageName)
+		u, err = newURLString("user/packages/%v/%v/restore", packageType, packageName)
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
@@ -156,10 +167,14 @@ func (s *UsersService) PackageGetAllVersions(ctx context.Context, user, packageT
 // GitHub API docs: https://docs.github.com/en/rest/packages#get-a-package-version-for-a-user
 func (s *UsersService) PackageGetVersion(ctx context.Context, user, packageType, packageName string, packageVersionID int64) (*PackageVersion, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v", user, packageType, packageName, packageVersionID)
+		u, err = newURLString("users/%v/packages/%v/%v/versions/%v", user, packageType, packageName, packageVersionID)
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v/versions/%v", packageType, packageName, packageVersionID)
+		u, err = newURLString("user/packages/%v/%v/versions/%v", packageType, packageName, packageVersionID)
+	}
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -183,10 +198,14 @@ func (s *UsersService) PackageGetVersion(ctx context.Context, user, packageType,
 // GitHub API docs: https://docs.github.com/en/rest/packages#delete-package-version-for-a-user
 func (s *UsersService) PackageDeleteVersion(ctx context.Context, user, packageType, packageName string, packageVersionID int64) (*Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v", user, packageType, packageName, packageVersionID)
+		u, err = newURLString("users/%v/packages/%v/%v/versions/%v", user, packageType, packageName, packageVersionID)
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v/versions/%v", packageType, packageName, packageVersionID)
+		u, err = newURLString("user/packages/%v/%v/versions/%v", packageType, packageName, packageVersionID)
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -204,10 +223,14 @@ func (s *UsersService) PackageDeleteVersion(ctx context.Context, user, packageTy
 // GitHub API docs: https://docs.github.com/en/rest/packages#restore-package-version-for-a-user
 func (s *UsersService) PackageRestoreVersion(ctx context.Context, user, packageType, packageName string, packageVersionID int64) (*Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v/restore", user, packageType, packageName, packageVersionID)
+		u, err = newURLString("users/%v/packages/%v/%v/versions/%v/restore", user, packageType, packageName, packageVersionID)
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v/versions/%v/restore", packageType, packageName, packageVersionID)
+		u, err = newURLString("user/packages/%v/%v/versions/%v/restore", packageType, packageName, packageVersionID)
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	req, err := s.client.NewRequest("POST", u, nil)

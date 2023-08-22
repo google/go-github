@@ -332,7 +332,10 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 		return nil, nil, err
 	}
 	if opts != nil && opts.Ref != "" {
-		u += fmt.Sprintf("/%s", opts.Ref)
+		u, err = url.JoinPath(u, opts.Ref)
+		if err != nil {
+			return nil, nil, err
+		}
 	}
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
 	if err != nil {

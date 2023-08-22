@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -250,12 +249,15 @@ func (s *RepositoriesService) Unsubscribe(ctx context.Context, owner, repo, even
 //
 // See: https://www.w3.org/TR/websub/#subscriber-sends-subscription-request
 func (s *RepositoriesService) createWebSubRequest(hubMode, owner, repo, event, callback string, secret []byte) (*http.Request, error) {
-	topic := fmt.Sprintf(
+	topic, err := newURLString(
 		"https://github.com/%s/%s/events/%s",
 		owner,
 		repo,
 		event,
 	)
+	if err != nil {
+		return nil, err
+	}
 	form := url.Values{}
 	form.Add("hub.mode", hubMode)
 	form.Add("hub.topic", topic)

@@ -295,7 +295,11 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 		params.Set("repository_id", strconv.FormatInt(*parameters.RepositoryID, 10))
 	}
 	params.Set("q", parameters.Query)
-	u, err := newURLString("search/%s?%s", searchType, params.Encode())
+	u, err := newURLString("search/%s", searchType)
+	if err != nil {
+		return nil, err
+	}
+	u, err = addQueryParams(u, params)
 	if err != nil {
 		return nil, err
 	}

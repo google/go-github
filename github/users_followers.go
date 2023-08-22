@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // ListFollowers lists the followers for a user. Passing the empty string will
@@ -87,10 +86,14 @@ func (s *UsersService) ListFollowing(ctx context.Context, user string, opts *Lis
 // GitHub API docs: https://docs.github.com/en/rest/users/followers#check-if-a-user-follows-another-user
 func (s *UsersService) IsFollowing(ctx context.Context, user, target string) (bool, *Response, error) {
 	var u string
+	var err error
 	if user != "" {
-		u = fmt.Sprintf("users/%v/following/%v", user, target)
+		u, err = newURLString("users/%v/following/%v", user, target)
 	} else {
-		u = fmt.Sprintf("user/following/%v", target)
+		u, err = newURLString("user/following/%v", target)
+	}
+	if err != nil {
+		return false, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

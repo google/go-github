@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"net/url"
 )
 
 // Tree represents a GitHub tree.
@@ -99,7 +100,10 @@ func (s *GitService) GetTree(ctx context.Context, owner string, repo string, sha
 		return nil, nil, err
 	}
 	if recursive {
-		u += "?recursive=1"
+		u, err = addQueryParams(u, url.Values{"recursive": []string{"1"}})
+		if err != nil {
+			return nil, nil, err
+		}
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

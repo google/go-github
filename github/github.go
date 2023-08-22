@@ -300,16 +300,23 @@ func addOptions(s string, opts interface{}) (string, error) {
 		return s, nil
 	}
 
-	u, err := url.Parse(s)
-	if err != nil {
-		return s, err
-	}
-
 	qs, err := query.Values(opts)
 	if err != nil {
 		return s, err
 	}
+	return addQueryParams(s, qs)
+}
 
+// addQueryParams parses s as a url and adds params to the existing query
+func addQueryParams(s string, params url.Values) (string, error) {
+	u, err := url.Parse(s)
+	if err != nil {
+		return s, err
+	}
+	qs := u.Query()
+	for k, v := range params {
+		qs[k] = v
+	}
 	u.RawQuery = qs.Encode()
 	return u.String(), nil
 }

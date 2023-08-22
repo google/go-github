@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // AppsService provides access to the installation related functions
@@ -155,10 +154,14 @@ func (i Installation) String() string {
 // GitHub API docs: https://docs.github.com/en/rest/apps/apps#get-an-app
 func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response, error) {
 	var u string
+	var err error
 	if appSlug != "" {
-		u = fmt.Sprintf("apps/%v", appSlug)
+		u, err = newURLString("apps/%v", appSlug)
 	} else {
-		u = "app"
+		u, err = newURLString("app")
+	}
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -206,7 +209,11 @@ func (s *AppsService) ListInstallations(ctx context.Context, opts *ListOptions) 
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/apps#get-an-installation-for-the-authenticated-app
 func (s *AppsService) GetInstallation(ctx context.Context, id int64) (*Installation, *Response, error) {
-	return s.getInstallation(ctx, fmt.Sprintf("app/installations/%v", id))
+	u, err := newURLString("app/installations/%v", id)
+	if err != nil {
+		return nil, nil, err
+	}
+	return s.getInstallation(ctx, u)
 }
 
 // ListUserInstallations lists installations that are accessible to the authenticated user.
@@ -342,28 +349,44 @@ func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID i
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/apps#get-an-organization-installation-for-the-authenticated-app
 func (s *AppsService) FindOrganizationInstallation(ctx context.Context, org string) (*Installation, *Response, error) {
-	return s.getInstallation(ctx, fmt.Sprintf("orgs/%v/installation", org))
+	u, err := newURLString("orgs/%v/installation", org)
+	if err != nil {
+		return nil, nil, err
+	}
+	return s.getInstallation(ctx, u)
 }
 
 // FindRepositoryInstallation finds the repository's installation information.
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/apps#get-a-repository-installation-for-the-authenticated-app
 func (s *AppsService) FindRepositoryInstallation(ctx context.Context, owner, repo string) (*Installation, *Response, error) {
-	return s.getInstallation(ctx, fmt.Sprintf("repos/%v/%v/installation", owner, repo))
+	u, err := newURLString("repos/%v/%v/installation", owner, repo)
+	if err != nil {
+		return nil, nil, err
+	}
+	return s.getInstallation(ctx, u)
 }
 
 // FindRepositoryInstallationByID finds the repository's installation information.
 //
 // Note: FindRepositoryInstallationByID uses the undocumented GitHub API endpoint /repositories/:id/installation.
 func (s *AppsService) FindRepositoryInstallationByID(ctx context.Context, id int64) (*Installation, *Response, error) {
-	return s.getInstallation(ctx, fmt.Sprintf("repositories/%d/installation", id))
+	u, err := newURLString("repositories/%v/installation", id)
+	if err != nil {
+		return nil, nil, err
+	}
+	return s.getInstallation(ctx, u)
 }
 
 // FindUserInstallation finds the user's installation information.
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/apps#get-a-user-installation-for-the-authenticated-app
 func (s *AppsService) FindUserInstallation(ctx context.Context, user string) (*Installation, *Response, error) {
-	return s.getInstallation(ctx, fmt.Sprintf("users/%v/installation", user))
+	u, err := newURLString("users/%v/installation", user)
+	if err != nil {
+		return nil, nil, err
+	}
+	return s.getInstallation(ctx, u)
 }
 
 func (s *AppsService) getInstallation(ctx context.Context, url string) (*Installation, *Response, error) {
