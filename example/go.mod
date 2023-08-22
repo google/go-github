@@ -6,7 +6,7 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.4
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/google/go-github/v54 v54.0.0
-	golang.org/x/crypto v0.7.0
+	golang.org/x/crypto v0.12.0
 	golang.org/x/oauth2 v0.7.0
 	google.golang.org/appengine v1.6.7
 )
@@ -16,9 +16,9 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-github/v41 v41.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
-	golang.org/x/net v0.9.0 // indirect
-	golang.org/x/sys v0.7.0 // indirect
-	golang.org/x/term v0.7.0 // indirect
+	golang.org/x/net v0.10.0 // indirect
+	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/term v0.11.0 // indirect
 )
 
 // Use version at HEAD, not the latest published.

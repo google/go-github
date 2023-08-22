@@ -24,7 +24,6 @@ import (
 	"time"
 
 	"github.com/google/go-querystring/query"
-	"golang.org/x/oauth2"
 )
 
 const (
@@ -358,8 +357,14 @@ func NewClientWithEnvProxy() *Client {
 }
 
 // NewTokenClient returns a new GitHub API client authenticated with the provided token.
-func NewTokenClient(ctx context.Context, token string) *Client {
-	return NewClient(oauth2.NewClient(ctx, oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})))
+func NewTokenClient(_ context.Context, token string) *Client {
+	return NewClient(&http.Client{
+		Transport: roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+			req = req.Clone(req.Context())
+			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+			return http.DefaultTransport.RoundTrip(req)
+		}),
+	})
 }
 
 // NewEnterpriseClient returns a new GitHub API client with provided
@@ -1539,3 +1544,10 @@ func Int64(v int64) *int64 { return &v }
 // String is a helper routine that allocates a new string value
 // to store v and returns a pointer to it.
 func String(v string) *string { return &v }
+
+// roundTripperFunc creates a RoundTripper (transport)
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
+	return fn(r)
+}
