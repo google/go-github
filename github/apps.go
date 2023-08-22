@@ -179,7 +179,11 @@ func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response,
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/apps#list-installations-for-the-authenticated-app
 func (s *AppsService) ListInstallations(ctx context.Context, opts *ListOptions) ([]*Installation, *Response, error) {
-	u, err := addOptions("app/installations", opts)
+	u, err := newURLString("app/installations")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -209,7 +213,11 @@ func (s *AppsService) GetInstallation(ctx context.Context, id int64) (*Installat
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/installations#list-app-installations-accessible-to-the-user-access-token
 func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptions) ([]*Installation, *Response, error) {
-	u, err := addOptions("user/installations", opts)
+	u, err := newURLString("user/installations")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -72,11 +72,11 @@ func (s *DependabotService) listSecrets(ctx context.Context, url string, opts *L
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-repository-secrets
 func (s *DependabotService) ListRepoSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
-	url, err := newURLString("repos/%v/%v/dependabot/secrets", owner, repo)
+	u, err := newURLString("repos/%v/%v/dependabot/secrets", owner, repo)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listSecrets(ctx, url, opts)
+	return s.listSecrets(ctx, u, opts)
 }
 
 // ListOrgSecrets lists all Dependabot secrets available in an organization
@@ -84,11 +84,11 @@ func (s *DependabotService) ListRepoSecrets(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-organization-secrets
 func (s *DependabotService) ListOrgSecrets(ctx context.Context, org string, opts *ListOptions) (*Secrets, *Response, error) {
-	url, err := newURLString("orgs/%v/dependabot/secrets", org)
+	u, err := newURLString("orgs/%v/dependabot/secrets", org)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listSecrets(ctx, url, opts)
+	return s.listSecrets(ctx, u, opts)
 }
 
 func (s *DependabotService) getSecret(ctx context.Context, url string) (*Secret, *Response, error) {
@@ -224,11 +224,11 @@ func (s *DependabotService) DeleteOrgSecret(ctx context.Context, org, name strin
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-selected-repositories-for-an-organization-secret
 func (s *DependabotService) ListSelectedReposForOrgSecret(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
-	url, err := newURLString("orgs/%v/dependabot/secrets/%v/repositories", org, name)
+	u, err := newURLString("orgs/%v/dependabot/secrets/%v/repositories", org, name)
 	if err != nil {
 		return nil, nil, err
 	}
-	u, err := addOptions(url, opts)
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

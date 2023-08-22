@@ -135,10 +135,14 @@ type PullRequestLinks struct {
 // GitHub API docs: https://docs.github.com/en/rest/issues/issues#list-issues-assigned-to-the-authenticated-user
 func (s *IssuesService) List(ctx context.Context, all bool, opts *IssueListOptions) ([]*Issue, *Response, error) {
 	var u string
+	var err error
 	if all {
-		u = "issues"
+		u, err = newURLString("issues")
 	} else {
-		u = "user/issues"
+		u, err = newURLString("user/issues")
+	}
+	if err != nil {
+		return nil, nil, err
 	}
 	return s.listIssues(ctx, u, opts)
 }

@@ -13,7 +13,11 @@ import (
 //
 // GitHub API docs: https://docs.github.com/en/rest/activity/events#list-public-events
 func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]*Event, *Response, error) {
-	u, err := addOptions("events", opts)
+	u, err := newURLString("events")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

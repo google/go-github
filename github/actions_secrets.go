@@ -135,11 +135,11 @@ func (s *ActionsService) listSecrets(ctx context.Context, url string, opts *List
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-repository-secrets
 func (s *ActionsService) ListRepoSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
-	url, err := newURLString("repos/%v/%v/actions/secrets", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/secrets", owner, repo)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listSecrets(ctx, url, opts)
+	return s.listSecrets(ctx, u, opts)
 }
 
 // ListOrgSecrets lists all secrets available in an organization
@@ -147,22 +147,22 @@ func (s *ActionsService) ListRepoSecrets(ctx context.Context, owner, repo string
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-organization-secrets
 func (s *ActionsService) ListOrgSecrets(ctx context.Context, org string, opts *ListOptions) (*Secrets, *Response, error) {
-	url, err := newURLString("orgs/%v/actions/secrets", org)
+	u, err := newURLString("orgs/%v/actions/secrets", org)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listSecrets(ctx, url, opts)
+	return s.listSecrets(ctx, u, opts)
 }
 
 // ListEnvSecrets lists all secrets available in an environment.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-environment-secrets
 func (s *ActionsService) ListEnvSecrets(ctx context.Context, repoID int, env string, opts *ListOptions) (*Secrets, *Response, error) {
-	url, err := newURLString("repositories/%v/environments/%v/secrets", repoID, env)
+	u, err := newURLString("repositories/%v/environments/%v/secrets", repoID, env)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listSecrets(ctx, url, opts)
+	return s.listSecrets(ctx, u, opts)
 }
 
 func (s *ActionsService) getSecret(ctx context.Context, url string) (*Secret, *Response, error) {
@@ -343,11 +343,11 @@ func (s *ActionsService) listSelectedReposForSecret(ctx context.Context, url str
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-selected-repositories-for-an-organization-secret
 func (s *ActionsService) ListSelectedReposForOrgSecret(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
-	url, err := newURLString("orgs/%v/actions/secrets/%v/repositories", org, name)
+	u, err := newURLString("orgs/%v/actions/secrets/%v/repositories", org, name)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listSelectedReposForSecret(ctx, url, opts)
+	return s.listSelectedReposForSecret(ctx, u, opts)
 }
 
 func (s *ActionsService) setSelectedReposForSecret(ctx context.Context, url string, ids SelectedRepoIDs) (*Response, error) {

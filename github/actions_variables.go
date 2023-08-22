@@ -52,33 +52,33 @@ func (s *ActionsService) listVariables(ctx context.Context, url string, opts *Li
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#list-repository-variables
 func (s *ActionsService) ListRepoVariables(ctx context.Context, owner, repo string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	url, err := newURLString("repos/%v/%v/actions/variables", owner, repo)
+	u, err := newURLString("repos/%v/%v/actions/variables", owner, repo)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listVariables(ctx, url, opts)
+	return s.listVariables(ctx, u, opts)
 }
 
 // ListOrgVariables lists all variables available in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#list-organization-variables
 func (s *ActionsService) ListOrgVariables(ctx context.Context, org string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	url, err := newURLString("orgs/%v/actions/variables", org)
+	u, err := newURLString("orgs/%v/actions/variables", org)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listVariables(ctx, url, opts)
+	return s.listVariables(ctx, u, opts)
 }
 
 // ListEnvVariables lists all variables available in an environment.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#list-environment-variables
 func (s *ActionsService) ListEnvVariables(ctx context.Context, repoID int, env string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	url, err := newURLString("repositories/%v/environments/%v/variables", repoID, env)
+	u, err := newURLString("repositories/%v/environments/%v/variables", repoID, env)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listVariables(ctx, url, opts)
+	return s.listVariables(ctx, u, opts)
 }
 
 func (s *ActionsService) getVariable(ctx context.Context, url string) (*ActionsVariable, *Response, error) {
@@ -277,11 +277,11 @@ func (s *ActionsService) listSelectedReposForVariable(ctx context.Context, url s
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#list-selected-repositories-for-an-organization-variable
 func (s *ActionsService) ListSelectedReposForOrgVariable(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
-	url, err := newURLString("orgs/%v/actions/variables/%v/repositories", org, name)
+	u, err := newURLString("orgs/%v/actions/variables/%v/repositories", org, name)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listSelectedReposForVariable(ctx, url, opts)
+	return s.listSelectedReposForVariable(ctx, u, opts)
 }
 
 func (s *ActionsService) setSelectedReposForVariable(ctx context.Context, url string, ids SelectedRepoIDs) (*Response, error) {

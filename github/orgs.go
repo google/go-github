@@ -149,7 +149,11 @@ type OrganizationsListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-organizations
 func (s *OrganizationsService) ListAll(ctx context.Context, opts *OrganizationsListOptions) ([]*Organization, *Response, error) {
-	u, err := addOptions("organizations", opts)
+	u, err := newURLString("organizations")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

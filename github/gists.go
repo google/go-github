@@ -131,7 +131,11 @@ func (s *GistsService) List(ctx context.Context, user string, opts *GistListOpti
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#list-public-gists
 func (s *GistsService) ListAll(ctx context.Context, opts *GistListOptions) ([]*Gist, *Response, error) {
-	u, err := addOptions("gists/public", opts)
+	u, err := newURLString("gists/public")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -154,7 +158,11 @@ func (s *GistsService) ListAll(ctx context.Context, opts *GistListOptions) ([]*G
 //
 // GitHub API docs: https://docs.github.com/en/rest/gists/gists#list-starred-gists
 func (s *GistsService) ListStarred(ctx context.Context, opts *GistListOptions) ([]*Gist, *Response, error) {
-	u, err := addOptions("gists/starred", opts)
+	u, err := newURLString("gists/starred")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

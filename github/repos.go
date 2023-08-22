@@ -360,7 +360,11 @@ type RepositoryListAllOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-public-repositories
 func (s *RepositoriesService) ListAll(ctx context.Context, opts *RepositoryListAllOptions) ([]*Repository, *Response, error) {
-	u, err := addOptions("repositories", opts)
+	u, err := newURLString("repositories")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

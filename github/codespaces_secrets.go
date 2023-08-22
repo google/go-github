@@ -18,7 +18,11 @@ import (
 //
 // GitHub API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#list-secrets-for-the-authenticated-user
 func (s *CodespacesService) ListUserSecrets(ctx context.Context, opts *ListOptions) (*Secrets, *Response, error) {
-	u, err := addOptions("user/codespaces/secrets", opts)
+	u, err := newURLString("user/codespaces/secrets")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -20,7 +20,11 @@ type ListRepositories struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/installations#list-repositories-accessible-to-the-app-installation
 func (s *AppsService) ListRepos(ctx context.Context, opts *ListOptions) (*ListRepositories, *Response, error) {
-	u, err := addOptions("installation/repositories", opts)
+	u, err := newURLString("installation/repositories")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

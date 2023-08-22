@@ -214,7 +214,11 @@ type UserListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/users#list-users
 func (s *UsersService) ListAll(ctx context.Context, opts *UserListOptions) ([]*User, *Response, error) {
-	u, err := addOptions("users", opts)
+	u, err := newURLString("users")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -238,7 +242,11 @@ func (s *UsersService) ListAll(ctx context.Context, opts *UserListOptions) ([]*U
 //
 // GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#list-repository-invitations-for-the-authenticated-user
 func (s *UsersService) ListInvitations(ctx context.Context, opts *ListOptions) ([]*RepositoryInvitation, *Response, error) {
-	u, err := addOptions("user/repository_invitations", opts)
+	u, err := newURLString("user/repository_invitations")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -54,10 +54,6 @@ func (s *ActivityService) ListNotifications(ctx context.Context, opts *Notificat
 	if err != nil {
 		return nil, nil, err
 	}
-	u, err = addOptions("notifications", opts)
-	if err != nil {
-		return nil, nil, err
-	}
 	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err

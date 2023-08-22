@@ -91,8 +91,11 @@ type MarketplacePurchaseAccount struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps#list-plans
 func (s *MarketplaceService) ListPlans(ctx context.Context, opts *ListOptions) ([]*MarketplacePlan, *Response, error) {
-	uri := s.marketplaceURI("plans")
-	u, err := addOptions(uri, opts)
+	u, err := s.marketplaceURI("plans")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -115,8 +118,11 @@ func (s *MarketplaceService) ListPlans(ctx context.Context, opts *ListOptions) (
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps#list-accounts-for-a-plan
 func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
-	uri := s.marketplaceURI(fmt.Sprintf("plans/%v/accounts", planID))
-	u, err := addOptions(uri, opts)
+	u, err := s.marketplaceURI(fmt.Sprintf("plans/%v/accounts", planID))
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -139,7 +145,10 @@ func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps#get-a-subscription-plan-for-an-account
 func (s *MarketplaceService) GetPlanAccountForAccount(ctx context.Context, accountID int64) (*MarketplacePlanAccount, *Response, error) {
-	uri := s.marketplaceURI(fmt.Sprintf("accounts/%v", accountID))
+	uri, err := s.marketplaceURI(fmt.Sprintf("accounts/%v", accountID))
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", uri, nil)
 	if err != nil {
@@ -160,12 +169,18 @@ func (s *MarketplaceService) GetPlanAccountForAccount(ctx context.Context, accou
 // GitHub API docs: https://docs.github.com/en/rest/apps/marketplace#list-subscriptions-for-the-authenticated-user-stubbed
 // GitHub API docs: https://docs.github.com/en/rest/apps/marketplace#list-subscriptions-for-the-authenticated-user
 func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context, opts *ListOptions) ([]*MarketplacePurchase, *Response, error) {
-	uri := "user/marketplace_purchases"
+	var u string
+	var err error
 	if s.Stubbed {
-		uri = "user/marketplace_purchases/stubbed"
+		u, err = newURLString("user/marketplace_purchases/stubbed")
+	} else {
+		u, err = newURLString("user/marketplace_purchases")
+	}
+	if err != nil {
+		return nil, nil, err
 	}
 
-	u, err := addOptions(uri, opts)
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -183,10 +198,11 @@ func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context
 	return purchases, resp, nil
 }
 
-func (s *MarketplaceService) marketplaceURI(endpoint string) string {
+func (s *MarketplaceService) marketplaceURI(endpoint string) (string, error) {
 	url := "marketplace_listing"
 	if s.Stubbed {
 		url = "marketplace_listing/stubbed"
 	}
-	return url + "/" + endpoint
+	url += "/" + endpoint
+	return newURLString(url)
 }

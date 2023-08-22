@@ -13,7 +13,11 @@ import (
 //
 // GitHub API docs: https://docs.github.com/en/rest/apps/webhooks#list-deliveries-for-an-app-webhook
 func (s *AppsService) ListHookDeliveries(ctx context.Context, opts *ListCursorOptions) ([]*HookDelivery, *Response, error) {
-	u, err := addOptions("app/hook/deliveries", opts)
+	u, err := newURLString("app/hook/deliveries")
+	if err != nil {
+		return nil, nil, err
+	}
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -103,22 +103,22 @@ func (s *DependabotService) listAlerts(ctx context.Context, url string, opts *Li
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts#list-dependabot-alerts-for-a-repository
 func (s *DependabotService) ListRepoAlerts(ctx context.Context, owner, repo string, opts *ListAlertsOptions) ([]*DependabotAlert, *Response, error) {
-	url, err := newURLString("repos/%v/%v/dependabot/alerts", owner, repo)
+	u, err := newURLString("repos/%v/%v/dependabot/alerts", owner, repo)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listAlerts(ctx, url, opts)
+	return s.listAlerts(ctx, u, opts)
 }
 
 // ListOrgAlerts lists all Dependabot alerts of an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts#list-dependabot-alerts-for-an-organization
 func (s *DependabotService) ListOrgAlerts(ctx context.Context, org string, opts *ListAlertsOptions) ([]*DependabotAlert, *Response, error) {
-	url, err := newURLString("orgs/%v/dependabot/alerts", org)
+	u, err := newURLString("orgs/%v/dependabot/alerts", org)
 	if err != nil {
 		return nil, nil, err
 	}
-	return s.listAlerts(ctx, url, opts)
+	return s.listAlerts(ctx, u, opts)
 }
 
 // GetRepoAlert gets a single repository Dependabot alert.
