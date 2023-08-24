@@ -306,16 +306,98 @@ func addOptions(s string, opts interface{}) (string, error) {
 
 // NewClient returns a new GitHub API client. If a nil httpClient is
 // provided, a new http.Client will be used. To use API methods which require
-// authentication, provide an http.Client that will perform the authentication
-// for you (such as that provided by the golang.org/x/oauth2 library).
+// authentication, either use NewTokenClient instead or provide NewClient with
+// an http.Client that will perform the authentication for you (such as that
+// provided by the golang.org/x/oauth2 library).
 func NewClient(httpClient *http.Client) *Client {
-	if httpClient == nil {
-		httpClient = &http.Client{}
+	c := &Client{
+		client: httpClient,
 	}
-	baseURL, _ := url.Parse(defaultBaseURL)
-	uploadURL, _ := url.Parse(uploadBaseURL)
+	// empty WithOptions always returns a nil error.
+	_ = c.initialize()
+	return c
+}
 
-	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: defaultUserAgent, UploadURL: uploadURL}
+type ClientOption func(*Client) error
+
+// WithAuthToken configures the client to use the provided token for the Authorization header.
+func WithAuthToken(token string) ClientOption {
+	return func(c *Client) error {
+		c.client.Transport = &oauth2.Transport{
+			Source: oauth2.StaticTokenSource(
+				&oauth2.Token{AccessToken: token},
+			),
+			Base: c.client.Transport,
+		}
+		return nil
+	}
+}
+
+// WithEnterpriseURLs configures the client to use the provided base and upload URLs.
+// If the base URL does not have the suffix "/api/v3/", it will be added automatically.
+// If the upload URL does not have the suffix "/api/uploads", it will be added automatically.
+//
+// Note that WithEnterpriseURLs is a convenience helper only;
+// its behavior is equivalent to setting the BaseURL and UploadURL fields.
+//
+// Another important thing is that by default, the GitHub Enterprise URL format
+// should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code.
+// The upload URL format should be http(s)://[hostname]/api/uploads/.
+func WithEnterpriseURLs(baseURL, uploadURL string) ClientOption {
+	return func(c *Client) error {
+		var err error
+		c.BaseURL, err = url.Parse(baseURL)
+		if err != nil {
+			return err
+		}
+
+		if !strings.HasSuffix(c.BaseURL.Path, "/") {
+			c.BaseURL.Path += "/"
+		}
+		if !strings.HasSuffix(c.BaseURL.Path, "/api/v3/") &&
+			!strings.HasPrefix(c.BaseURL.Host, "api.") &&
+			!strings.Contains(c.BaseURL.Host, ".api.") {
+			c.BaseURL.Path += "api/v3/"
+		}
+
+		c.UploadURL, err = url.Parse(uploadURL)
+		if err != nil {
+			return err
+		}
+
+		if !strings.HasSuffix(c.UploadURL.Path, "/") {
+			c.UploadURL.Path += "/"
+		}
+		if !strings.HasSuffix(c.UploadURL.Path, "/api/uploads/") &&
+			!strings.HasPrefix(c.UploadURL.Host, "api.") &&
+			!strings.Contains(c.UploadURL.Host, ".api.") {
+			c.UploadURL.Path += "api/uploads/"
+		}
+		return nil
+	}
+}
+
+// initialize applies the given options to the client, sets defaults and
+// initializes services.
+func (c *Client) initialize(opts ...ClientOption) error {
+	if c.client == nil {
+		c.client = &http.Client{}
+	}
+	for _, opt := range opts {
+		err := opt(c)
+		if err != nil {
+			return err
+		}
+	}
+	if c.BaseURL == nil {
+		c.BaseURL, _ = url.Parse(defaultBaseURL)
+	}
+	if c.UploadURL == nil {
+		c.UploadURL, _ = url.Parse(uploadBaseURL)
+	}
+	if c.UserAgent == "" {
+		c.UserAgent = defaultUserAgent
+	}
 	c.common.client = c
 	c.Actions = (*ActionsService)(&c.common)
 	c.Activity = (*ActivityService)(&c.common)
@@ -349,65 +431,46 @@ func NewClient(httpClient *http.Client) *Client {
 	c.SecurityAdvisories = (*SecurityAdvisoriesService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
-	return c
+	return nil
+}
+
+// WithOptions returns a clone of the client with the specified options.
+func (c *Client) WithOptions(opts ...ClientOption) (*Client, error) {
+	c.clientMu.Lock()
+	clone := &Client{
+		client:                  c.client,
+		UserAgent:               c.UserAgent,
+		BaseURL:                 c.BaseURL,
+		UploadURL:               c.UploadURL,
+		secondaryRateLimitReset: c.secondaryRateLimitReset,
+	}
+	c.clientMu.Unlock()
+	c.rateMu.Lock()
+	copy(clone.rateLimits[:], c.rateLimits[:])
+	c.rateMu.Unlock()
+	err := clone.initialize(opts...)
+	if err != nil {
+		return nil, err
+	}
+	return clone, nil
 }
 
 // NewClientWithEnvProxy enhances NewClient with the HttpProxy env.
+// Deprecated: Use NewClient(nil) instead.
 func NewClientWithEnvProxy() *Client {
 	return NewClient(&http.Client{Transport: &http.Transport{Proxy: http.ProxyFromEnvironment}})
 }
 
-// NewTokenClient returns a new GitHub API client authenticated with the provided token.
-func NewTokenClient(ctx context.Context, token string) *Client {
-	return NewClient(oauth2.NewClient(ctx, oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})))
+// Deprecated: Use NewClient(nil).WithOptions(WithAuthToken(token)) instead.
+func NewTokenClient(_ context.Context, token string) *Client {
+	// WithAuthToken always returns a nil error.
+	c, _ := NewClient(nil).WithOptions(WithAuthToken(token))
+	return c
 }
 
-// NewEnterpriseClient returns a new GitHub API client with provided
-// base URL and upload URL (often is your GitHub Enterprise hostname).
-// If the base URL does not have the suffix "/api/v3/", it will be added automatically.
-// If the upload URL does not have the suffix "/api/uploads", it will be added automatically.
-// If a nil httpClient is provided, a new http.Client will be used.
-//
-// Note that NewEnterpriseClient is a convenience helper only;
-// its behavior is equivalent to using NewClient, followed by setting
-// the BaseURL and UploadURL fields.
-//
-// Another important thing is that by default, the GitHub Enterprise URL format
-// should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code.
-// The upload URL format should be http(s)://[hostname]/api/uploads/.
+// Deprecated: Use NewClient(httpClient).WithOptions(WithEnterpriseURLs(baseURL, uploadURL)) instead.
 func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*Client, error) {
-	baseEndpoint, err := url.Parse(baseURL)
-	if err != nil {
-		return nil, err
-	}
-
-	if !strings.HasSuffix(baseEndpoint.Path, "/") {
-		baseEndpoint.Path += "/"
-	}
-	if !strings.HasSuffix(baseEndpoint.Path, "/api/v3/") &&
-		!strings.HasPrefix(baseEndpoint.Host, "api.") &&
-		!strings.Contains(baseEndpoint.Host, ".api.") {
-		baseEndpoint.Path += "api/v3/"
-	}
-
-	uploadEndpoint, err := url.Parse(uploadURL)
-	if err != nil {
-		return nil, err
-	}
-
-	if !strings.HasSuffix(uploadEndpoint.Path, "/") {
-		uploadEndpoint.Path += "/"
-	}
-	if !strings.HasSuffix(uploadEndpoint.Path, "/api/uploads/") &&
-		!strings.HasPrefix(uploadEndpoint.Host, "api.") &&
-		!strings.Contains(uploadEndpoint.Host, ".api.") {
-		uploadEndpoint.Path += "api/uploads/"
-	}
-
-	c := NewClient(httpClient)
-	c.BaseURL = baseEndpoint
-	c.UploadURL = uploadEndpoint
-	return c, nil
+	return NewClient(httpClient).WithOptions(WithEnterpriseURLs(baseURL, uploadURL))
 }
 
 // RequestOption represents an option that can modify an http.Request.
