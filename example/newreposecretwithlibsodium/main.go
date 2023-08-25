@@ -71,7 +71,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	client := github.NewTokenClient(ctx, token)
+	client, _ := github.NewClient(nil).WithOptions(github.WithAuthToken(token))
 	if err != nil {
 		log.Fatalf("unable to authorize using env GITHUB_AUTH_TOKEN: %v", err)
 	}

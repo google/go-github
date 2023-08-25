@@ -17,8 +17,18 @@ import (
 	"google.golang.org/appengine/log"
 )
 
+var client = github.NewClient(nil)
+
 func init() {
 	http.HandleFunc("/", handler)
+	token := os.Getenv("GITHUB_AUTH_TOKEN")
+	if token != "" {
+		var err error
+		client, err = client.WithOptions(github.WithAuthToken(token))
+		if err != nil {
+			panic(err)
+		}
+	}
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -28,7 +38,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := appengine.NewContext(r)
-	client := github.NewTokenClient(ctx, os.Getenv("GITHUB_AUTH_TOKEN"))
 
 	commits, _, err := client.Repositories.ListCommits(ctx, "google", "go-github", nil)
 	if err != nil {
