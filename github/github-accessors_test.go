@@ -3364,6 +3364,83 @@ func TestCodeownersError_GetSuggestion(tt *testing.T) {
 	c.GetSuggestion()
 }
 
+func TestCodeqlDatabase_GetContentType(tt *testing.T) {
+	var zeroValue string
+	c := &CodeqlDatabase{ContentType: &zeroValue}
+	c.GetContentType()
+	c = &CodeqlDatabase{}
+	c.GetContentType()
+	c = nil
+	c.GetContentType()
+}
+
+func TestCodeqlDatabase_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CodeqlDatabase{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CodeqlDatabase{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCodeqlDatabase_GetId(tt *testing.T) {
+	var zeroValue int64
+	c := &CodeqlDatabase{Id: &zeroValue}
+	c.GetId()
+	c = &CodeqlDatabase{}
+	c.GetId()
+	c = nil
+	c.GetId()
+}
+
+func TestCodeqlDatabase_GetLanguage(tt *testing.T) {
+	var zeroValue string
+	c := &CodeqlDatabase{Language: &zeroValue}
+	c.GetLanguage()
+	c = &CodeqlDatabase{}
+	c.GetLanguage()
+	c = nil
+	c.GetLanguage()
+}
+
+func TestCodeqlDatabase_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CodeqlDatabase{Name: &zeroValue}
+	c.GetName()
+	c = &CodeqlDatabase{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCodeqlDatabase_GetSize(tt *testing.T) {
+	var zeroValue int64
+	c := &CodeqlDatabase{Size: &zeroValue}
+	c.GetSize()
+	c = &CodeqlDatabase{}
+	c.GetSize()
+	c = nil
+	c.GetSize()
+}
+
+func TestCodeqlDatabase_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CodeqlDatabase{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CodeqlDatabase{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCodeqlDatabase_GetUploader(tt *testing.T) {
+	c := &CodeqlDatabase{}
+	c.GetUploader()
+	c = nil
+	c.GetUploader()
+}
+
 func TestCodeResult_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	c := &CodeResult{HTMLURL: &zeroValue}
@@ -5763,6 +5840,26 @@ func TestDefaultSetupConfiguration_GetUpdatedAt(tt *testing.T) {
 	d.GetUpdatedAt()
 	d = nil
 	d.GetUpdatedAt()
+}
+
+func TestDeleteAnalysis_GetConfirmDeleteUrl(tt *testing.T) {
+	var zeroValue string
+	d := &DeleteAnalysis{ConfirmDeleteUrl: &zeroValue}
+	d.GetConfirmDeleteUrl()
+	d = &DeleteAnalysis{}
+	d.GetConfirmDeleteUrl()
+	d = nil
+	d.GetConfirmDeleteUrl()
+}
+
+func TestDeleteAnalysis_GetNextAnalysisUrl(tt *testing.T) {
+	var zeroValue string
+	d := &DeleteAnalysis{NextAnalysisUrl: &zeroValue}
+	d.GetNextAnalysisUrl()
+	d = &DeleteAnalysis{}
+	d.GetNextAnalysisUrl()
+	d = nil
+	d.GetNextAnalysisUrl()
 }
 
 func TestDeleteEvent_GetInstallation(tt *testing.T) {
@@ -13245,6 +13342,16 @@ func TestMostRecentInstance_GetAnalysisKey(tt *testing.T) {
 	m.GetAnalysisKey()
 }
 
+func TestMostRecentInstance_GetCategory(tt *testing.T) {
+	var zeroValue string
+	m := &MostRecentInstance{Category: &zeroValue}
+	m.GetCategory()
+	m = &MostRecentInstance{}
+	m.GetCategory()
+	m = nil
+	m.GetCategory()
+}
+
 func TestMostRecentInstance_GetCommitSHA(tt *testing.T) {
 	var zeroValue string
 	m := &MostRecentInstance{CommitSHA: &zeroValue}
@@ -13263,6 +13370,16 @@ func TestMostRecentInstance_GetEnvironment(tt *testing.T) {
 	m.GetEnvironment()
 	m = nil
 	m.GetEnvironment()
+}
+
+func TestMostRecentInstance_GetHtmlUrl(tt *testing.T) {
+	var zeroValue string
+	m := &MostRecentInstance{HtmlUrl: &zeroValue}
+	m.GetHtmlUrl()
+	m = &MostRecentInstance{}
+	m.GetHtmlUrl()
+	m = nil
+	m.GetHtmlUrl()
 }
 
 func TestMostRecentInstance_GetLocation(tt *testing.T) {

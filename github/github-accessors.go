@@ -2830,6 +2830,70 @@ func (c *CodeownersError) GetSuggestion() string {
 	return *c.Suggestion
 }
 
+// GetContentType returns the ContentType field if it's non-nil, zero value otherwise.
+func (c *CodeqlDatabase) GetContentType() string {
+	if c == nil || c.ContentType == nil {
+		return ""
+	}
+	return *c.ContentType
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CodeqlDatabase) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetId returns the Id field if it's non-nil, zero value otherwise.
+func (c *CodeqlDatabase) GetId() int64 {
+	if c == nil || c.Id == nil {
+		return 0
+	}
+	return *c.Id
+}
+
+// GetLanguage returns the Language field if it's non-nil, zero value otherwise.
+func (c *CodeqlDatabase) GetLanguage() string {
+	if c == nil || c.Language == nil {
+		return ""
+	}
+	return *c.Language
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CodeqlDatabase) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetSize returns the Size field if it's non-nil, zero value otherwise.
+func (c *CodeqlDatabase) GetSize() int64 {
+	if c == nil || c.Size == nil {
+		return 0
+	}
+	return *c.Size
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CodeqlDatabase) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
+}
+
+// GetUploader returns the Uploader field.
+func (c *CodeqlDatabase) GetUploader() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Uploader
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (c *CodeResult) GetHTMLURL() string {
 	if c == nil || c.HTMLURL == nil {
@@ -4876,6 +4940,22 @@ func (d *DefaultSetupConfiguration) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *d.UpdatedAt
+}
+
+// GetConfirmDeleteUrl returns the ConfirmDeleteUrl field if it's non-nil, zero value otherwise.
+func (d *DeleteAnalysis) GetConfirmDeleteUrl() string {
+	if d == nil || d.ConfirmDeleteUrl == nil {
+		return ""
+	}
+	return *d.ConfirmDeleteUrl
+}
+
+// GetNextAnalysisUrl returns the NextAnalysisUrl field if it's non-nil, zero value otherwise.
+func (d *DeleteAnalysis) GetNextAnalysisUrl() string {
+	if d == nil || d.NextAnalysisUrl == nil {
+		return ""
+	}
+	return *d.NextAnalysisUrl
 }
 
 // GetInstallation returns the Installation field.
@@ -11318,6 +11398,14 @@ func (m *MostRecentInstance) GetAnalysisKey() string {
 	return *m.AnalysisKey
 }
 
+// GetCategory returns the Category field if it's non-nil, zero value otherwise.
+func (m *MostRecentInstance) GetCategory() string {
+	if m == nil || m.Category == nil {
+		return ""
+	}
+	return *m.Category
+}
+
 // GetCommitSHA returns the CommitSHA field if it's non-nil, zero value otherwise.
 func (m *MostRecentInstance) GetCommitSHA() string {
 	if m == nil || m.CommitSHA == nil {
@@ -11332,6 +11420,14 @@ func (m *MostRecentInstance) GetEnvironment() string {
 		return ""
 	}
 	return *m.Environment
+}
+
+// GetHtmlUrl returns the HtmlUrl field if it's non-nil, zero value otherwise.
+func (m *MostRecentInstance) GetHtmlUrl() string {
+	if m == nil || m.HtmlUrl == nil {
+		return ""
+	}
+	return *m.HtmlUrl
 }
 
 // GetLocation returns the Location field.

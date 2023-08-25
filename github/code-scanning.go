@@ -48,11 +48,13 @@ type Message struct {
 type MostRecentInstance struct {
 	Ref             *string   `json:"ref,omitempty"`
 	AnalysisKey     *string   `json:"analysis_key,omitempty"`
+	Category        *string   `json:"category,omitempty"`
 	Environment     *string   `json:"environment,omitempty"`
 	State           *string   `json:"state,omitempty"`
 	CommitSHA       *string   `json:"commit_sha,omitempty"`
 	Message         *Message  `json:"message,omitempty"`
 	Location        *Location `json:"location,omitempty"`
+	HtmlUrl         *string   `json:"html_url,omitempty"`
 	Classifications []string  `json:"classifications,omitempty"`
 }
 
@@ -113,13 +115,22 @@ func (a *Alert) ID() int64 {
 	return id
 }
 
-// AlertListOptions specifies optional parameters to the CodeScanningService.ListAlerts
-// method.
+// AlertInstancesListOptions specifies optional parameters to the CodeScanningService.ListAlertInstances method.
+type AlertInstancesListOptions struct {
+	// Return code scanning alert instances for a specific branch reference.
+	// The ref can be formatted as refs/heads/<branch name> or simply <branch name>. To reference a pull request use refs/pull/<number>/merge
+	Ref string `url:"ref,omitempty"`
+
+	ListOptions
+}
+
+// AlertListOptions specifies optional parameters to the CodeScanningService.ListAlerts method.
 type AlertListOptions struct {
 	// State of the code scanning alerts to list. Set to closed to list only closed code scanning alerts. Default: open
 	State string `url:"state,omitempty"`
 
-	// Return code scanning alerts for a specific branch reference. The ref must be formatted as heads/<branch name>.
+	// Return code scanning alerts for a specific branch reference.
+	// The ref can be formatted as refs/heads/<branch name> or simply <branch name>. To reference a pull request use refs/pull/<number>/merge
 	Ref string `url:"ref,omitempty"`
 
 	// If specified, only code scanning alerts with this severity will be returned. Possible values are: critical, high, medium, low, warning, note, error.
@@ -140,10 +151,26 @@ type AnalysesListOptions struct {
 	// Return code scanning analyses belonging to the same SARIF upload.
 	SarifID *string `url:"sarif_id,omitempty"`
 
-	// Return code scanning analyses for a specific branch reference. The ref can be formatted as refs/heads/<branch name> or simply <branch name>.
+	// Return code scanning analyses for a specific branch reference.
+	// The ref can be formatted as refs/heads/<branch name> or simply <branch name>. To reference a pull request use refs/pull/<number>/merge
 	Ref *string `url:"ref,omitempty"`
 
 	ListOptions
+}
+
+// CodeqlDatabase represents a metadata about the CodeQL database.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning
+type CodeqlDatabase struct {
+	Id          *int64     `json:"id,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	Language    *string    `json:"language,omitempty"`
+	Uploader    *User      `json:"uploader,omitempty"`
+	ContentType *string    `json:"content_type,omitempty"`
+	Size        *int64     `json:"size,omitempty"`
+	CreatedAt   *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
+	Url         *string    `json:"url,omitempty"`
 }
 
 // ScanningAnalysis represents an individual GitHub Code Scanning ScanningAnalysis on a single repository.
@@ -308,6 +335,34 @@ func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo strin
 	return a, resp, nil
 }
 
+// ListAlertInstances lists instances of a code scanning alert.
+//
+// Lists all instances of the specified code scanning alert.
+// You must use an access token with the security_events scope to use this endpoint.
+// GitHub Apps must have the security_events read permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-instances-of-a-code-scanning-alert
+func (s *CodeScanningService) ListAlertInstances(ctx context.Context, owner, repo string, id int64, opts *AlertInstancesListOptions) ([]*MostRecentInstance, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v/instances", owner, repo, id)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var alertInstances []*MostRecentInstance
+	resp, err := s.client.Do(ctx, req, &alertInstances)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return alertInstances, resp, nil
+}
+
 // UploadSarif uploads the result of code scanning job to GitHub.
 //
 // For the parameter sarif, you must first compress your SARIF file using gzip and then translate the contents of the file into a Base64 encoding string.
@@ -383,6 +438,86 @@ func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo strin
 	}
 
 	return analysis, resp, nil
+}
+
+// DeleteAnalysis represents a successful deletion of a code scanning analysis
+type DeleteAnalysis struct {
+	// Next deletable analysis in chain, without last analysis deletion confirmation
+	NextAnalysisUrl *string `json:"next_analysis_url,omitempty"`
+	// Next deletable analysis in chain, with last analysis deletion confirmation
+	ConfirmDeleteUrl *string `json:"confirm_delete_url,omitempty"`
+}
+
+// DeleteAnalysis deletes a single code scanning analysis from a repository.
+//
+// You must use an access token with the repo scope to use this endpoint.
+// GitHub Apps must have the security_events read permission to use this endpoint.
+//
+// The security analysis_id is the ID of the analysis, as returned from the ListAnalysesForRepo operation.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#delete-a-code-scanning-analysis-from-a-repository
+
+func (s *CodeScanningService) DeleteAnalysis(ctx context.Context, owner, repo string, id int64) (*DeleteAnalysis, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses/%v", owner, repo, id)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	deleteAnalysis := new(DeleteAnalysis)
+	resp, err := s.client.Do(ctx, req, deleteAnalysis)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return deleteAnalysis, resp, nil
+}
+
+// ListCodeqlDatabases lists the CodeQL databases that are available in a repository.
+//
+// You must use an access token with the security_events scope to use this endpoint.
+// GitHub Apps must have the contents read permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-codeql-databases-for-a-repository
+func (s *CodeScanningService) ListCodeqlDatabases(ctx context.Context, owner, repo string) ([]*CodeqlDatabase, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/codeql/databases", owner, repo)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codeqlDatabases []*CodeqlDatabase
+	resp, err := s.client.Do(ctx, req, &codeqlDatabases)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codeqlDatabases, resp, nil
+}
+
+// GetCodeqlDatabase gets a CodeQL database for a language in a repository.
+//
+// You must use an access token with the security_events scope to use this endpoint.
+// GitHub Apps must have the contents read permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#get-a-codeql-database-for-a-repository
+func (s *CodeScanningService) GetCodeqlDatabase(ctx context.Context, owner, repo, language string) (*CodeqlDatabase, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/codeql/databases/%v", owner, repo, language)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	codeqlDatabase := new(CodeqlDatabase)
+	resp, err := s.client.Do(ctx, req, codeqlDatabase)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codeqlDatabase, resp, nil
 }
 
 // DefaultSetupConfiguration represents a code scanning default setup configuration.
