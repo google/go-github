@@ -3441,6 +3441,16 @@ func TestCodeqlDatabase_GetUploader(tt *testing.T) {
 	c.GetUploader()
 }
 
+func TestCodeqlDatabase_GetUrl(tt *testing.T) {
+	var zeroValue string
+	c := &CodeqlDatabase{Url: &zeroValue}
+	c.GetUrl()
+	c = &CodeqlDatabase{}
+	c.GetUrl()
+	c = nil
+	c.GetUrl()
+}
+
 func TestCodeResult_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	c := &CodeResult{HTMLURL: &zeroValue}
@@ -23478,6 +23488,26 @@ func TestSarifID_GetURL(tt *testing.T) {
 	s.GetURL()
 	s = nil
 	s.GetURL()
+}
+
+func TestSarifUpload_GetAnalysesUrl(tt *testing.T) {
+	var zeroValue string
+	s := &SarifUpload{AnalysesUrl: &zeroValue}
+	s.GetAnalysesUrl()
+	s = &SarifUpload{}
+	s.GetAnalysesUrl()
+	s = nil
+	s.GetAnalysesUrl()
+}
+
+func TestSarifUpload_GetProcessingStatus(tt *testing.T) {
+	var zeroValue string
+	s := &SarifUpload{ProcessingStatus: &zeroValue}
+	s.GetProcessingStatus()
+	s = &SarifUpload{}
+	s.GetProcessingStatus()
+	s = nil
+	s.GetProcessingStatus()
 }
 
 func TestSBOM_GetSBOM(tt *testing.T) {

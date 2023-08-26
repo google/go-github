@@ -89,6 +89,47 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 	})
 }
 
+func TestCodeScanningService_GetSarif(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/sarifs/abc", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"processing_status": "s",
+			"analyses_url": "u"
+		}`)
+	})
+
+	ctx := context.Background()
+	sarifUpload, _, err := client.CodeScanning.GetSarif(ctx, "o", "r", "abc")
+	if err != nil {
+		t.Errorf("CodeScanning.GetSarif returned error: %v", err)
+	}
+
+	want := &SarifUpload{
+		ProcessingStatus: String("s"),
+		AnalysesUrl:      String("u"),
+	}
+	if !cmp.Equal(sarifUpload, want) {
+		t.Errorf("CodeScanning.GetSarif returned %+v, want %+v", sarifUpload, want)
+	}
+
+	const methodName = "GetSarif"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.GetSarif(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.GetSarif(ctx, "o", "r", "abc")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

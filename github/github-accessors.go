@@ -2894,6 +2894,14 @@ func (c *CodeqlDatabase) GetUploader() *User {
 	return c.Uploader
 }
 
+// GetUrl returns the Url field if it's non-nil, zero value otherwise.
+func (c *CodeqlDatabase) GetUrl() string {
+	if c == nil || c.Url == nil {
+		return ""
+	}
+	return *c.Url
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (c *CodeResult) GetHTMLURL() string {
 	if c == nil || c.HTMLURL == nil {
@@ -20140,6 +20148,22 @@ func (s *SarifID) GetURL() string {
 		return ""
 	}
 	return *s.URL
+}
+
+// GetAnalysesUrl returns the AnalysesUrl field if it's non-nil, zero value otherwise.
+func (s *SarifUpload) GetAnalysesUrl() string {
+	if s == nil || s.AnalysesUrl == nil {
+		return ""
+	}
+	return *s.AnalysesUrl
+}
+
+// GetProcessingStatus returns the ProcessingStatus field if it's non-nil, zero value otherwise.
+func (s *SarifUpload) GetProcessingStatus() string {
+	if s == nil || s.ProcessingStatus == nil {
+		return ""
+	}
+	return *s.ProcessingStatus
 }
 
 // GetSBOM returns the SBOM field.

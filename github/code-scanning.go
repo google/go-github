@@ -337,7 +337,6 @@ func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo strin
 
 // ListAlertInstances lists instances of a code scanning alert.
 //
-// Lists all instances of the specified code scanning alert.
 // You must use an access token with the security_events scope to use this endpoint.
 // GitHub Apps must have the security_events read permission to use this endpoint.
 //
@@ -385,6 +384,38 @@ func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo strin
 	}
 
 	return sarifID, resp, nil
+}
+
+// SarifUpload represents information about a SARIF upload.
+type SarifUpload struct {
+	// `pending` files have not yet been processed, while `complete` means results from the SARIF have been stored.
+	// `failed` files have either not been processed at all, or could only be partially processed.
+	ProcessingStatus *string `json:"processing_status,omitempty"`
+	// The REST API URL for getting the analyses associated with the upload.
+	AnalysesUrl *string `json:"analyses_url,omitempty"`
+}
+
+// GetSarif get information about a SARIF upload.
+//
+// You must use an access token with the security_events scope to use this endpoint.
+// GitHub Apps must have the security_events read permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#get-information-about-a-sarif-upload
+func (s *CodeScanningService) GetSarif(ctx context.Context, owner, repo, id string) (*SarifUpload, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs/%v", owner, repo, id)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	sarifUpload := new(SarifUpload)
+	resp, err := s.client.Do(ctx, req, sarifUpload)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return sarifUpload, resp, nil
 }
 
 // ListAnalysesForRepo lists code scanning analyses for a repository.
