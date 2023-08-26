@@ -258,3 +258,27 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx c
 
 	return advisories, resp, nil
 }
+
+// ListRepositorySecurityAdvisories lists the security advisories in a repository.
+//
+// Github API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories
+func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisories(ctx context.Context, owner string, repo string, opt *ListRepositorySecurityAdvisoriesOptions) ([]*RepoSecurityAdvisory, *Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/security-advisories", owner, repo)
+	url, err := addOptions(url, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var advisories []*RepoSecurityAdvisory
+	resp, err := s.client.Do(ctx, req, &advisories)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return advisories, resp, nil
+}
