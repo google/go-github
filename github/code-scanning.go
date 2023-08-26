@@ -54,7 +54,7 @@ type MostRecentInstance struct {
 	CommitSHA       *string   `json:"commit_sha,omitempty"`
 	Message         *Message  `json:"message,omitempty"`
 	Location        *Location `json:"location,omitempty"`
-	HtmlUrl         *string   `json:"html_url,omitempty"`
+	HTMLURL         *string   `json:"html_url,omitempty"`
 	Classifications []string  `json:"classifications,omitempty"`
 }
 
@@ -162,7 +162,7 @@ type AnalysesListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning
 type CodeqlDatabase struct {
-	Id          *int64     `json:"id,omitempty"`
+	ID          *int64     `json:"id,omitempty"`
 	Name        *string    `json:"name,omitempty"`
 	Language    *string    `json:"language,omitempty"`
 	Uploader    *User      `json:"uploader,omitempty"`
@@ -170,7 +170,7 @@ type CodeqlDatabase struct {
 	Size        *int64     `json:"size,omitempty"`
 	CreatedAt   *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
-	Url         *string    `json:"url,omitempty"`
+	URL         *string    `json:"url,omitempty"`
 }
 
 // ScanningAnalysis represents an individual GitHub Code Scanning ScanningAnalysis on a single repository.
@@ -392,7 +392,7 @@ type SarifUpload struct {
 	// `failed` files have either not been processed at all, or could only be partially processed.
 	ProcessingStatus *string `json:"processing_status,omitempty"`
 	// The REST API URL for getting the analyses associated with the upload.
-	AnalysesUrl *string `json:"analyses_url,omitempty"`
+	AnalysesURL *string `json:"analyses_url,omitempty"`
 }
 
 // GetSarif get information about a SARIF upload.
@@ -474,9 +474,9 @@ func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo strin
 // DeleteAnalysis represents a successful deletion of a code scanning analysis
 type DeleteAnalysis struct {
 	// Next deletable analysis in chain, without last analysis deletion confirmation
-	NextAnalysisUrl *string `json:"next_analysis_url,omitempty"`
+	NextAnalysisURL *string `json:"next_analysis_url,omitempty"`
 	// Next deletable analysis in chain, with last analysis deletion confirmation
-	ConfirmDeleteUrl *string `json:"confirm_delete_url,omitempty"`
+	ConfirmDeleteURL *string `json:"confirm_delete_url,omitempty"`
 }
 
 // DeleteAnalysis deletes a single code scanning analysis from a repository.

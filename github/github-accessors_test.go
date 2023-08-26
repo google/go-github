@@ -3384,14 +3384,14 @@ func TestCodeqlDatabase_GetCreatedAt(tt *testing.T) {
 	c.GetCreatedAt()
 }
 
-func TestCodeqlDatabase_GetId(tt *testing.T) {
+func TestCodeqlDatabase_GetID(tt *testing.T) {
 	var zeroValue int64
-	c := &CodeqlDatabase{Id: &zeroValue}
-	c.GetId()
+	c := &CodeqlDatabase{ID: &zeroValue}
+	c.GetID()
 	c = &CodeqlDatabase{}
-	c.GetId()
+	c.GetID()
 	c = nil
-	c.GetId()
+	c.GetID()
 }
 
 func TestCodeqlDatabase_GetLanguage(tt *testing.T) {
@@ -3441,14 +3441,14 @@ func TestCodeqlDatabase_GetUploader(tt *testing.T) {
 	c.GetUploader()
 }
 
-func TestCodeqlDatabase_GetUrl(tt *testing.T) {
+func TestCodeqlDatabase_GetURL(tt *testing.T) {
 	var zeroValue string
-	c := &CodeqlDatabase{Url: &zeroValue}
-	c.GetUrl()
+	c := &CodeqlDatabase{URL: &zeroValue}
+	c.GetURL()
 	c = &CodeqlDatabase{}
-	c.GetUrl()
+	c.GetURL()
 	c = nil
-	c.GetUrl()
+	c.GetURL()
 }
 
 func TestCodeResult_GetHTMLURL(tt *testing.T) {
@@ -5852,24 +5852,24 @@ func TestDefaultSetupConfiguration_GetUpdatedAt(tt *testing.T) {
 	d.GetUpdatedAt()
 }
 
-func TestDeleteAnalysis_GetConfirmDeleteUrl(tt *testing.T) {
+func TestDeleteAnalysis_GetConfirmDeleteURL(tt *testing.T) {
 	var zeroValue string
-	d := &DeleteAnalysis{ConfirmDeleteUrl: &zeroValue}
-	d.GetConfirmDeleteUrl()
+	d := &DeleteAnalysis{ConfirmDeleteURL: &zeroValue}
+	d.GetConfirmDeleteURL()
 	d = &DeleteAnalysis{}
-	d.GetConfirmDeleteUrl()
+	d.GetConfirmDeleteURL()
 	d = nil
-	d.GetConfirmDeleteUrl()
+	d.GetConfirmDeleteURL()
 }
 
-func TestDeleteAnalysis_GetNextAnalysisUrl(tt *testing.T) {
+func TestDeleteAnalysis_GetNextAnalysisURL(tt *testing.T) {
 	var zeroValue string
-	d := &DeleteAnalysis{NextAnalysisUrl: &zeroValue}
-	d.GetNextAnalysisUrl()
+	d := &DeleteAnalysis{NextAnalysisURL: &zeroValue}
+	d.GetNextAnalysisURL()
 	d = &DeleteAnalysis{}
-	d.GetNextAnalysisUrl()
+	d.GetNextAnalysisURL()
 	d = nil
-	d.GetNextAnalysisUrl()
+	d.GetNextAnalysisURL()
 }
 
 func TestDeleteEvent_GetInstallation(tt *testing.T) {
@@ -13382,14 +13382,14 @@ func TestMostRecentInstance_GetEnvironment(tt *testing.T) {
 	m.GetEnvironment()
 }
 
-func TestMostRecentInstance_GetHtmlUrl(tt *testing.T) {
+func TestMostRecentInstance_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
-	m := &MostRecentInstance{HtmlUrl: &zeroValue}
-	m.GetHtmlUrl()
+	m := &MostRecentInstance{HTMLURL: &zeroValue}
+	m.GetHTMLURL()
 	m = &MostRecentInstance{}
-	m.GetHtmlUrl()
+	m.GetHTMLURL()
 	m = nil
-	m.GetHtmlUrl()
+	m.GetHTMLURL()
 }
 
 func TestMostRecentInstance_GetLocation(tt *testing.T) {
@@ -23490,14 +23490,14 @@ func TestSarifID_GetURL(tt *testing.T) {
 	s.GetURL()
 }
 
-func TestSarifUpload_GetAnalysesUrl(tt *testing.T) {
+func TestSarifUpload_GetAnalysesURL(tt *testing.T) {
 	var zeroValue string
-	s := &SarifUpload{AnalysesUrl: &zeroValue}
-	s.GetAnalysesUrl()
+	s := &SarifUpload{AnalysesURL: &zeroValue}
+	s.GetAnalysesURL()
 	s = &SarifUpload{}
-	s.GetAnalysesUrl()
+	s.GetAnalysesURL()
 	s = nil
-	s.GetAnalysesUrl()
+	s.GetAnalysesURL()
 }
 
 func TestSarifUpload_GetProcessingStatus(tt *testing.T) {

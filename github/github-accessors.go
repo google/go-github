@@ -2846,12 +2846,12 @@ func (c *CodeqlDatabase) GetCreatedAt() Timestamp {
 	return *c.CreatedAt
 }
 
-// GetId returns the Id field if it's non-nil, zero value otherwise.
-func (c *CodeqlDatabase) GetId() int64 {
-	if c == nil || c.Id == nil {
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CodeqlDatabase) GetID() int64 {
+	if c == nil || c.ID == nil {
 		return 0
 	}
-	return *c.Id
+	return *c.ID
 }
 
 // GetLanguage returns the Language field if it's non-nil, zero value otherwise.
@@ -2894,12 +2894,12 @@ func (c *CodeqlDatabase) GetUploader() *User {
 	return c.Uploader
 }
 
-// GetUrl returns the Url field if it's non-nil, zero value otherwise.
-func (c *CodeqlDatabase) GetUrl() string {
-	if c == nil || c.Url == nil {
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CodeqlDatabase) GetURL() string {
+	if c == nil || c.URL == nil {
 		return ""
 	}
-	return *c.Url
+	return *c.URL
 }
 
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
@@ -4950,20 +4950,20 @@ func (d *DefaultSetupConfiguration) GetUpdatedAt() Timestamp {
 	return *d.UpdatedAt
 }
 
-// GetConfirmDeleteUrl returns the ConfirmDeleteUrl field if it's non-nil, zero value otherwise.
-func (d *DeleteAnalysis) GetConfirmDeleteUrl() string {
-	if d == nil || d.ConfirmDeleteUrl == nil {
+// GetConfirmDeleteURL returns the ConfirmDeleteURL field if it's non-nil, zero value otherwise.
+func (d *DeleteAnalysis) GetConfirmDeleteURL() string {
+	if d == nil || d.ConfirmDeleteURL == nil {
 		return ""
 	}
-	return *d.ConfirmDeleteUrl
+	return *d.ConfirmDeleteURL
 }
 
-// GetNextAnalysisUrl returns the NextAnalysisUrl field if it's non-nil, zero value otherwise.
-func (d *DeleteAnalysis) GetNextAnalysisUrl() string {
-	if d == nil || d.NextAnalysisUrl == nil {
+// GetNextAnalysisURL returns the NextAnalysisURL field if it's non-nil, zero value otherwise.
+func (d *DeleteAnalysis) GetNextAnalysisURL() string {
+	if d == nil || d.NextAnalysisURL == nil {
 		return ""
 	}
-	return *d.NextAnalysisUrl
+	return *d.NextAnalysisURL
 }
 
 // GetInstallation returns the Installation field.
@@ -11430,12 +11430,12 @@ func (m *MostRecentInstance) GetEnvironment() string {
 	return *m.Environment
 }
 
-// GetHtmlUrl returns the HtmlUrl field if it's non-nil, zero value otherwise.
-func (m *MostRecentInstance) GetHtmlUrl() string {
-	if m == nil || m.HtmlUrl == nil {
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (m *MostRecentInstance) GetHTMLURL() string {
+	if m == nil || m.HTMLURL == nil {
 		return ""
 	}
-	return *m.HtmlUrl
+	return *m.HTMLURL
 }
 
 // GetLocation returns the Location field.
@@ -20150,12 +20150,12 @@ func (s *SarifID) GetURL() string {
 	return *s.URL
 }
 
-// GetAnalysesUrl returns the AnalysesUrl field if it's non-nil, zero value otherwise.
-func (s *SarifUpload) GetAnalysesUrl() string {
-	if s == nil || s.AnalysesUrl == nil {
+// GetAnalysesURL returns the AnalysesURL field if it's non-nil, zero value otherwise.
+func (s *SarifUpload) GetAnalysesURL() string {
+	if s == nil || s.AnalysesURL == nil {
 		return ""
 	}
-	return *s.AnalysesUrl
+	return *s.AnalysesURL
 }
 
 // GetProcessingStatus returns the ProcessingStatus field if it's non-nil, zero value otherwise.

@@ -109,7 +109,7 @@ func TestCodeScanningService_GetSarif(t *testing.T) {
 
 	want := &SarifUpload{
 		ProcessingStatus: String("s"),
-		AnalysesUrl:      String("u"),
+		AnalysesURL:      String("u"),
 	}
 	if !cmp.Equal(sarifUpload, want) {
 		t.Errorf("CodeScanning.GetSarif returned %+v, want %+v", sarifUpload, want)
@@ -1319,8 +1319,8 @@ func TestCodeScanningService_DeleteAnalysis(t *testing.T) {
 	}
 
 	want := &DeleteAnalysis{
-		NextAnalysisUrl:  String("a"),
-		ConfirmDeleteUrl: String("b"),
+		NextAnalysisURL:  String("a"),
+		ConfirmDeleteURL: String("b"),
 	}
 	if !cmp.Equal(analysis, want) {
 		t.Errorf("CodeScanning.DeleteAnalysis returned %+v, want %+v", analysis, want)
@@ -1390,7 +1390,7 @@ func TestCodeScanningService_ListCodeqlDatabases(t *testing.T) {
 	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
 	want := []*CodeqlDatabase{
 		{
-			Id:       Int64(1),
+			ID:       Int64(1),
 			Name:     String("name"),
 			Language: String("language"),
 			Uploader: &User{
@@ -1417,7 +1417,7 @@ func TestCodeScanningService_ListCodeqlDatabases(t *testing.T) {
 			Size:        Int64(1024),
 			CreatedAt:   date,
 			UpdatedAt:   date,
-			Url:         String("s"),
+			URL:         String("s"),
 		},
 	}
 
@@ -1486,7 +1486,7 @@ func TestCodeScanningService_GetCodeqlDatabase(t *testing.T) {
 
 	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
 	want := &CodeqlDatabase{
-		Id:       Int64(1),
+		ID:       Int64(1),
 		Name:     String("name"),
 		Language: String("language"),
 		Uploader: &User{
@@ -1513,7 +1513,7 @@ func TestCodeScanningService_GetCodeqlDatabase(t *testing.T) {
 		Size:        Int64(1024),
 		CreatedAt:   date,
 		UpdatedAt:   date,
-		Url:         String("s"),
+		URL:         String("s"),
 	}
 
 	if !cmp.Equal(database, want) {
