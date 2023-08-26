@@ -400,7 +400,7 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
 		v := new(InstallationTokenOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		if !cmp.Equal(v, installationTokenOptions) {
 			t.Errorf("request sent %+v, want %+v", v, installationTokenOptions)
@@ -431,7 +431,7 @@ func TestAppsService_CreateAttachement(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeContentAttachmentsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"id":1,"title":"title1","body":"body1"}`))
+		assertWrite(t, w, []byte(`{"id":1,"title":"title1","body":"body1"}`))
 	})
 
 	ctx := context.Background()

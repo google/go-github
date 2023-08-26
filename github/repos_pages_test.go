@@ -32,7 +32,7 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createPagesRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
@@ -82,7 +82,7 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createPagesRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
@@ -133,7 +133,7 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PagesUpdate)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		want := &PagesUpdate{CNAME: String("www.my-domain.com"), BuildType: String("legacy"), Source: &PagesSource{Branch: String("gh-pages")}}
@@ -172,7 +172,7 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PagesUpdate)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		want := &PagesUpdate{CNAME: String("www.my-domain.com"), BuildType: String("workflow")}

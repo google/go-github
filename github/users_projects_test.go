@@ -64,7 +64,7 @@ func TestUsersService_CreateProject(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &CreateUserProjectOptions{}
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
