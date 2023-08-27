@@ -23,7 +23,6 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"golang.org/x/oauth2"
 )
 
 const (
@@ -310,13 +309,17 @@ func TestClient(t *testing.T) {
 func TestNewTokenClient(t *testing.T) {
 	token := "gh_test_token"
 	ctx := context.Background()
-	c := NewTokenClient(ctx, token)
-	tr, ok := c.Client().Transport.(*oauth2.Transport)
-	if !ok {
-		t.Error("Client transport is not oauth2.Transport")
+	var gotAuthHeaderVals []string
+	wantAuthHeaderVals := []string{"Bearer " + token}
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotAuthHeaderVals = r.Header["Authorization"]
+	}))
+	_, err := NewTokenClient(ctx, token).Client().Get(srv.URL)
+	if err != nil {
+		t.Fatalf("Get returned unexpected error: %v", err)
 	}
-	if tok, err := tr.Source.Token(); err != nil || tok.AccessToken != token {
-		t.Errorf("Client not using correct token")
+	if diff := cmp.Diff(wantAuthHeaderVals, gotAuthHeaderVals); diff != "" {
+		t.Errorf("Authorization header values mismatch (-want +got):\n%s", diff)
 	}
 }
 
@@ -2703,13 +2706,6 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 	if err := resp.Body.Close(); err != nil {
 		t.Fatalf("resp.Body.Close() returned error: %v", err)
 	}
-}
-
-// roundTripperFunc creates a mock RoundTripper (transport)
-type roundTripperFunc func(*http.Request) (*http.Response, error)
-
-func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
-	return fn(r)
 }
 
 func TestErrorResponse_Marshal(t *testing.T) {
