@@ -26,7 +26,7 @@ func main() {
 	token := string(byteToken)
 
 	ctx := context.Background()
-	client, _ := github.NewClient(nil).WithOptions(github.WithAuthToken(token))
+	client := github.NewClient(nil).WithAuthToken(token)
 
 	user, resp, err := client.Users.Get(ctx, "")
 	if err != nil {

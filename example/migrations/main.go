@@ -17,7 +17,7 @@ import (
 
 func fetchAllUserMigrations() ([]*github.UserMigration, error) {
 	ctx := context.Background()
-	client, _ := github.NewClient(nil).WithOptions(github.WithAuthToken("<GITHUB_AUTH_TOKEN>"))
+	client := github.NewClient(nil).WithAuthToken("<GITHUB_AUTH_TOKEN>")
 
 	migrations, _, err := client.Migrations.ListUserMigrations(ctx, &github.ListOptions{Page: 1})
 	return migrations, err

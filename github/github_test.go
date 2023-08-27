@@ -416,7 +416,7 @@ func TestWithEnterpriseURLs(t *testing.T) {
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			c, err := NewClient(nil).WithOptions(WithEnterpriseURLs(test.baseURL, test.uploadURL))
+			c, err := NewClient(nil).WithEnterpriseURLs(test.baseURL, test.uploadURL)
 			if test.wantErr != "" {
 				if err == nil || !strings.Contains(err.Error(), test.wantErr) {
 					t.Fatalf("error does not contain expected string %q: %v", test.wantErr, err)

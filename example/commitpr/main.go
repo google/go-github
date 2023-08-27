@@ -189,7 +189,7 @@ func main() {
 	if *sourceOwner == "" || *sourceRepo == "" || *commitBranch == "" || *sourceFiles == "" || *authorName == "" || *authorEmail == "" {
 		log.Fatal("You need to specify a non-empty value for the flags `-source-owner`, `-source-repo`, `-commit-branch`, `-files`, `-author-name` and `-author-email`")
 	}
-	client, _ = github.NewClient(nil).WithOptions(github.WithAuthToken(token))
+	client = github.NewClient(nil).WithAuthToken(token)
 
 	ref, err := getRef()
 	if err != nil {

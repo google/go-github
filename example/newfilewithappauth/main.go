@@ -17,7 +17,6 @@ import (
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
 	"github.com/google/go-github/v54/github"
-	"golang.org/x/oauth2"
 )
 
 func main() {
@@ -40,7 +39,7 @@ func main() {
 			Transport: itr,
 			Timeout:   time.Second * 30,
 		},
-	).WithOptions(github.WithEnterpriseURLs(gitHost, gitHost))
+	).WithEnterpriseURLs(gitHost, gitHost)
 
 	if err != nil {
 		log.Fatalf("faild to create git client for app: %v\n", err)
@@ -66,12 +65,9 @@ func main() {
 		log.Fatalf("failed to create installation token: %v\n", err)
 	}
 
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: token.GetToken()},
-	)
-	oAuthClient := oauth2.NewClient(context.Background(), ts)
-
-	apiClient, err := github.NewClient(oAuthClient).WithOptions(github.WithEnterpriseURLs(gitHost, gitHost))
+	apiClient, err := github.NewClient(nil).WithAuthToken(
+		token.GetToken(),
+	).WithEnterpriseURLs(gitHost, gitHost)
 	if err != nil {
 		log.Fatalf("failed to create new git client with token: %v\n", err)
 	}

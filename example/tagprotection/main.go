@@ -44,7 +44,7 @@ func main() {
 	token := string(byteToken)
 
 	ctx := context.Background()
-	client, _ := github.NewClient(nil).WithOptions(github.WithAuthToken(token))
+	client := github.NewClient(nil).WithAuthToken(token)
 
 	// create new tag protection
 	if pattern != "" {
