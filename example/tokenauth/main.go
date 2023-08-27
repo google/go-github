@@ -3,7 +3,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// The tokenauth command demonstrates using the oauth2.StaticTokenSource.
+// The tokenauth command demonstrates using a Personal Access Token (PAT) to
+// authenticate with GitHub.
 // You can test out a GitHub Personal Access Token using this simple example.
 // You can generate them here: https://github.com/settings/tokens
 package main
