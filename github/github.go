@@ -448,7 +448,6 @@ func (c *Client) copy() *Client {
 }
 
 // NewClientWithEnvProxy enhances NewClient with the HttpProxy env.
-// Deprecated: Use NewClient(nil) instead.
 func NewClientWithEnvProxy() *Client {
 	return NewClient(&http.Client{Transport: &http.Transport{Proxy: http.ProxyFromEnvironment}})
 }
