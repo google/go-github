@@ -7,10 +7,11 @@ package github
 
 import (
 	"context"
-	"github.com/google/go-cmp/cmp"
 	"net/http"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestSecurityAdvisoriesService_RequestCVE(t *testing.T) {
