@@ -3364,88 +3364,88 @@ func TestCodeownersError_GetSuggestion(tt *testing.T) {
 	c.GetSuggestion()
 }
 
-func TestCodeqlDatabase_GetContentType(tt *testing.T) {
+func TestCodeQLDatabase_GetContentType(tt *testing.T) {
 	var zeroValue string
-	c := &CodeqlDatabase{ContentType: &zeroValue}
+	c := &CodeQLDatabase{ContentType: &zeroValue}
 	c.GetContentType()
-	c = &CodeqlDatabase{}
+	c = &CodeQLDatabase{}
 	c.GetContentType()
 	c = nil
 	c.GetContentType()
 }
 
-func TestCodeqlDatabase_GetCreatedAt(tt *testing.T) {
+func TestCodeQLDatabase_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
-	c := &CodeqlDatabase{CreatedAt: &zeroValue}
+	c := &CodeQLDatabase{CreatedAt: &zeroValue}
 	c.GetCreatedAt()
-	c = &CodeqlDatabase{}
+	c = &CodeQLDatabase{}
 	c.GetCreatedAt()
 	c = nil
 	c.GetCreatedAt()
 }
 
-func TestCodeqlDatabase_GetID(tt *testing.T) {
+func TestCodeQLDatabase_GetID(tt *testing.T) {
 	var zeroValue int64
-	c := &CodeqlDatabase{ID: &zeroValue}
+	c := &CodeQLDatabase{ID: &zeroValue}
 	c.GetID()
-	c = &CodeqlDatabase{}
+	c = &CodeQLDatabase{}
 	c.GetID()
 	c = nil
 	c.GetID()
 }
 
-func TestCodeqlDatabase_GetLanguage(tt *testing.T) {
+func TestCodeQLDatabase_GetLanguage(tt *testing.T) {
 	var zeroValue string
-	c := &CodeqlDatabase{Language: &zeroValue}
+	c := &CodeQLDatabase{Language: &zeroValue}
 	c.GetLanguage()
-	c = &CodeqlDatabase{}
+	c = &CodeQLDatabase{}
 	c.GetLanguage()
 	c = nil
 	c.GetLanguage()
 }
 
-func TestCodeqlDatabase_GetName(tt *testing.T) {
+func TestCodeQLDatabase_GetName(tt *testing.T) {
 	var zeroValue string
-	c := &CodeqlDatabase{Name: &zeroValue}
+	c := &CodeQLDatabase{Name: &zeroValue}
 	c.GetName()
-	c = &CodeqlDatabase{}
+	c = &CodeQLDatabase{}
 	c.GetName()
 	c = nil
 	c.GetName()
 }
 
-func TestCodeqlDatabase_GetSize(tt *testing.T) {
+func TestCodeQLDatabase_GetSize(tt *testing.T) {
 	var zeroValue int64
-	c := &CodeqlDatabase{Size: &zeroValue}
+	c := &CodeQLDatabase{Size: &zeroValue}
 	c.GetSize()
-	c = &CodeqlDatabase{}
+	c = &CodeQLDatabase{}
 	c.GetSize()
 	c = nil
 	c.GetSize()
 }
 
-func TestCodeqlDatabase_GetUpdatedAt(tt *testing.T) {
+func TestCodeQLDatabase_GetUpdatedAt(tt *testing.T) {
 	var zeroValue Timestamp
-	c := &CodeqlDatabase{UpdatedAt: &zeroValue}
+	c := &CodeQLDatabase{UpdatedAt: &zeroValue}
 	c.GetUpdatedAt()
-	c = &CodeqlDatabase{}
+	c = &CodeQLDatabase{}
 	c.GetUpdatedAt()
 	c = nil
 	c.GetUpdatedAt()
 }
 
-func TestCodeqlDatabase_GetUploader(tt *testing.T) {
-	c := &CodeqlDatabase{}
+func TestCodeQLDatabase_GetUploader(tt *testing.T) {
+	c := &CodeQLDatabase{}
 	c.GetUploader()
 	c = nil
 	c.GetUploader()
 }
 
-func TestCodeqlDatabase_GetURL(tt *testing.T) {
+func TestCodeQLDatabase_GetURL(tt *testing.T) {
 	var zeroValue string
-	c := &CodeqlDatabase{URL: &zeroValue}
+	c := &CodeQLDatabase{URL: &zeroValue}
 	c.GetURL()
-	c = &CodeqlDatabase{}
+	c = &CodeQLDatabase{}
 	c.GetURL()
 	c = nil
 	c.GetURL()
@@ -23490,21 +23490,21 @@ func TestSarifID_GetURL(tt *testing.T) {
 	s.GetURL()
 }
 
-func TestSarifUpload_GetAnalysesURL(tt *testing.T) {
+func TestSARIFUpload_GetAnalysesURL(tt *testing.T) {
 	var zeroValue string
-	s := &SarifUpload{AnalysesURL: &zeroValue}
+	s := &SARIFUpload{AnalysesURL: &zeroValue}
 	s.GetAnalysesURL()
-	s = &SarifUpload{}
+	s = &SARIFUpload{}
 	s.GetAnalysesURL()
 	s = nil
 	s.GetAnalysesURL()
 }
 
-func TestSarifUpload_GetProcessingStatus(tt *testing.T) {
+func TestSARIFUpload_GetProcessingStatus(tt *testing.T) {
 	var zeroValue string
-	s := &SarifUpload{ProcessingStatus: &zeroValue}
+	s := &SARIFUpload{ProcessingStatus: &zeroValue}
 	s.GetProcessingStatus()
-	s = &SarifUpload{}
+	s = &SARIFUpload{}
 	s.GetProcessingStatus()
 	s = nil
 	s.GetProcessingStatus()

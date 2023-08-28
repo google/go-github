@@ -89,7 +89,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 	})
 }
 
-func TestCodeScanningService_GetSarif(t *testing.T) {
+func TestCodeScanningService_GetSARIF(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -102,27 +102,27 @@ func TestCodeScanningService_GetSarif(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	sarifUpload, _, err := client.CodeScanning.GetSarif(ctx, "o", "r", "abc")
+	sarifUpload, _, err := client.CodeScanning.GetSARIF(ctx, "o", "r", "abc")
 	if err != nil {
-		t.Errorf("CodeScanning.GetSarif returned error: %v", err)
+		t.Errorf("CodeScanning.GetSARIF returned error: %v", err)
 	}
 
-	want := &SarifUpload{
+	want := &SARIFUpload{
 		ProcessingStatus: String("s"),
 		AnalysesURL:      String("u"),
 	}
 	if !cmp.Equal(sarifUpload, want) {
-		t.Errorf("CodeScanning.GetSarif returned %+v, want %+v", sarifUpload, want)
+		t.Errorf("CodeScanning.GetSARIF returned %+v, want %+v", sarifUpload, want)
 	}
 
-	const methodName = "GetSarif"
+	const methodName = "GetSARIF"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.CodeScanning.GetSarif(ctx, "\n", "\n", "\n")
+		_, _, err = client.CodeScanning.GetSARIF(ctx, "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.CodeScanning.GetSarif(ctx, "o", "r", "abc")
+		got, resp, err := client.CodeScanning.GetSARIF(ctx, "o", "r", "abc")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1341,7 +1341,7 @@ func TestCodeScanningService_DeleteAnalysis(t *testing.T) {
 	})
 }
 
-func TestCodeScanningService_ListCodeqlDatabases(t *testing.T) {
+func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -1382,13 +1382,13 @@ func TestCodeScanningService_ListCodeqlDatabases(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	databases, _, err := client.CodeScanning.ListCodeqlDatabases(ctx, "o", "r")
+	databases, _, err := client.CodeScanning.ListCodeQLDatabases(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("CodeScanning.ListCodeqlDatabases returned error: %v", err)
+		t.Errorf("CodeScanning.ListCodeQLDatabases returned error: %v", err)
 	}
 
 	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
-	want := []*CodeqlDatabase{
+	want := []*CodeQLDatabase{
 		{
 			ID:       Int64(1),
 			Name:     String("name"),
@@ -1422,17 +1422,17 @@ func TestCodeScanningService_ListCodeqlDatabases(t *testing.T) {
 	}
 
 	if !cmp.Equal(databases, want) {
-		t.Errorf("CodeScanning.ListCodeqlDatabases returned %+v, want %+v", databases, want)
+		t.Errorf("CodeScanning.ListCodeQLDatabases returned %+v, want %+v", databases, want)
 	}
 
-	const methodName = "ListCodeqlDatabases"
+	const methodName = "ListCodeQLDatabases"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.CodeScanning.ListCodeqlDatabases(ctx, "\n", "\n")
+		_, _, err = client.CodeScanning.ListCodeQLDatabases(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.CodeScanning.ListCodeqlDatabases(ctx, "o", "r")
+		got, resp, err := client.CodeScanning.ListCodeQLDatabases(ctx, "o", "r")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1440,7 +1440,7 @@ func TestCodeScanningService_ListCodeqlDatabases(t *testing.T) {
 	})
 }
 
-func TestCodeScanningService_GetCodeqlDatabase(t *testing.T) {
+func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -1479,13 +1479,13 @@ func TestCodeScanningService_GetCodeqlDatabase(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	database, _, err := client.CodeScanning.GetCodeqlDatabase(ctx, "o", "r", "lang")
+	database, _, err := client.CodeScanning.GetCodeQLDatabase(ctx, "o", "r", "lang")
 	if err != nil {
-		t.Errorf("CodeScanning.GetCodeqlDatabase returned error: %v", err)
+		t.Errorf("CodeScanning.GetCodeQLDatabase returned error: %v", err)
 	}
 
 	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
-	want := &CodeqlDatabase{
+	want := &CodeQLDatabase{
 		ID:       Int64(1),
 		Name:     String("name"),
 		Language: String("language"),
@@ -1517,17 +1517,17 @@ func TestCodeScanningService_GetCodeqlDatabase(t *testing.T) {
 	}
 
 	if !cmp.Equal(database, want) {
-		t.Errorf("CodeScanning.GetCodeqlDatabase returned %+v, want %+v", database, want)
+		t.Errorf("CodeScanning.GetCodeQLDatabase returned %+v, want %+v", database, want)
 	}
 
-	const methodName = "GetCodeqlDatabase"
+	const methodName = "GetCodeQLDatabase"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.CodeScanning.GetCodeqlDatabase(ctx, "\n", "\n", "\n")
+		_, _, err = client.CodeScanning.GetCodeQLDatabase(ctx, "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.CodeScanning.GetCodeqlDatabase(ctx, "o", "r", "lang")
+		got, resp, err := client.CodeScanning.GetCodeQLDatabase(ctx, "o", "r", "lang")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

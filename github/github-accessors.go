@@ -2831,7 +2831,7 @@ func (c *CodeownersError) GetSuggestion() string {
 }
 
 // GetContentType returns the ContentType field if it's non-nil, zero value otherwise.
-func (c *CodeqlDatabase) GetContentType() string {
+func (c *CodeQLDatabase) GetContentType() string {
 	if c == nil || c.ContentType == nil {
 		return ""
 	}
@@ -2839,7 +2839,7 @@ func (c *CodeqlDatabase) GetContentType() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (c *CodeqlDatabase) GetCreatedAt() Timestamp {
+func (c *CodeQLDatabase) GetCreatedAt() Timestamp {
 	if c == nil || c.CreatedAt == nil {
 		return Timestamp{}
 	}
@@ -2847,7 +2847,7 @@ func (c *CodeqlDatabase) GetCreatedAt() Timestamp {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (c *CodeqlDatabase) GetID() int64 {
+func (c *CodeQLDatabase) GetID() int64 {
 	if c == nil || c.ID == nil {
 		return 0
 	}
@@ -2855,7 +2855,7 @@ func (c *CodeqlDatabase) GetID() int64 {
 }
 
 // GetLanguage returns the Language field if it's non-nil, zero value otherwise.
-func (c *CodeqlDatabase) GetLanguage() string {
+func (c *CodeQLDatabase) GetLanguage() string {
 	if c == nil || c.Language == nil {
 		return ""
 	}
@@ -2863,7 +2863,7 @@ func (c *CodeqlDatabase) GetLanguage() string {
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CodeqlDatabase) GetName() string {
+func (c *CodeQLDatabase) GetName() string {
 	if c == nil || c.Name == nil {
 		return ""
 	}
@@ -2871,7 +2871,7 @@ func (c *CodeqlDatabase) GetName() string {
 }
 
 // GetSize returns the Size field if it's non-nil, zero value otherwise.
-func (c *CodeqlDatabase) GetSize() int64 {
+func (c *CodeQLDatabase) GetSize() int64 {
 	if c == nil || c.Size == nil {
 		return 0
 	}
@@ -2879,7 +2879,7 @@ func (c *CodeqlDatabase) GetSize() int64 {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (c *CodeqlDatabase) GetUpdatedAt() Timestamp {
+func (c *CodeQLDatabase) GetUpdatedAt() Timestamp {
 	if c == nil || c.UpdatedAt == nil {
 		return Timestamp{}
 	}
@@ -2887,7 +2887,7 @@ func (c *CodeqlDatabase) GetUpdatedAt() Timestamp {
 }
 
 // GetUploader returns the Uploader field.
-func (c *CodeqlDatabase) GetUploader() *User {
+func (c *CodeQLDatabase) GetUploader() *User {
 	if c == nil {
 		return nil
 	}
@@ -2895,7 +2895,7 @@ func (c *CodeqlDatabase) GetUploader() *User {
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
-func (c *CodeqlDatabase) GetURL() string {
+func (c *CodeQLDatabase) GetURL() string {
 	if c == nil || c.URL == nil {
 		return ""
 	}
@@ -20151,7 +20151,7 @@ func (s *SarifID) GetURL() string {
 }
 
 // GetAnalysesURL returns the AnalysesURL field if it's non-nil, zero value otherwise.
-func (s *SarifUpload) GetAnalysesURL() string {
+func (s *SARIFUpload) GetAnalysesURL() string {
 	if s == nil || s.AnalysesURL == nil {
 		return ""
 	}
@@ -20159,7 +20159,7 @@ func (s *SarifUpload) GetAnalysesURL() string {
 }
 
 // GetProcessingStatus returns the ProcessingStatus field if it's non-nil, zero value otherwise.
-func (s *SarifUpload) GetProcessingStatus() string {
+func (s *SARIFUpload) GetProcessingStatus() string {
 	if s == nil || s.ProcessingStatus == nil {
 		return ""
 	}
