@@ -392,18 +392,18 @@ func TestAdvancedSecurityCommittersBreakdown_GetUserLogin(tt *testing.T) {
 	a.GetUserLogin()
 }
 
-func TestAdvisoryCVSs_GetScore(tt *testing.T) {
-	a := &AdvisoryCVSs{}
+func TestAdvisoryCVSS_GetScore(tt *testing.T) {
+	a := &AdvisoryCVSS{}
 	a.GetScore()
 	a = nil
 	a.GetScore()
 }
 
-func TestAdvisoryCVSs_GetVectorString(tt *testing.T) {
+func TestAdvisoryCVSS_GetVectorString(tt *testing.T) {
 	var zeroValue string
-	a := &AdvisoryCVSs{VectorString: &zeroValue}
+	a := &AdvisoryCVSS{VectorString: &zeroValue}
 	a.GetVectorString()
-	a = &AdvisoryCVSs{}
+	a = &AdvisoryCVSS{}
 	a.GetVectorString()
 	a = nil
 	a.GetVectorString()
@@ -6023,11 +6023,11 @@ func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
 	d.GetCVEID()
 }
 
-func TestDependabotSecurityAdvisory_GetCVSs(tt *testing.T) {
+func TestDependabotSecurityAdvisory_GetCVSS(tt *testing.T) {
 	d := &DependabotSecurityAdvisory{}
-	d.GetCVSs()
+	d.GetCVSS()
 	d = nil
-	d.GetCVSs()
+	d.GetCVSS()
 }
 
 func TestDependabotSecurityAdvisory_GetDescription(tt *testing.T) {
@@ -24116,6 +24116,13 @@ func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
+func TestSecurityAdvisory_GetCVSS(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetCVSS()
+	s = nil
+	s.GetCVSS()
+}
+
 func TestSecurityAdvisory_GetDescription(tt *testing.T) {
 	var zeroValue string
 	s := &SecurityAdvisory{Description: &zeroValue}
@@ -24196,11 +24203,46 @@ func TestSecurityAdvisoryEvent_GetAction(tt *testing.T) {
 	s.GetAction()
 }
 
+func TestSecurityAdvisoryEvent_GetEnterprise(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetEnterprise()
+	s = nil
+	s.GetEnterprise()
+}
+
+func TestSecurityAdvisoryEvent_GetInstallation(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetInstallation()
+	s = nil
+	s.GetInstallation()
+}
+
+func TestSecurityAdvisoryEvent_GetOrganization(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetOrganization()
+	s = nil
+	s.GetOrganization()
+}
+
+func TestSecurityAdvisoryEvent_GetRepository(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetRepository()
+	s = nil
+	s.GetRepository()
+}
+
 func TestSecurityAdvisoryEvent_GetSecurityAdvisory(tt *testing.T) {
 	s := &SecurityAdvisoryEvent{}
 	s.GetSecurityAdvisory()
 	s = nil
 	s.GetSecurityAdvisory()
+}
+
+func TestSecurityAdvisoryEvent_GetSender(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetSender()
+	s = nil
+	s.GetSender()
 }
 
 func TestSecurityAndAnalysis_GetAdvancedSecurity(tt *testing.T) {

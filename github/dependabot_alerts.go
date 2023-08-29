@@ -17,8 +17,8 @@ type Dependency struct {
 	Scope        *string               `json:"scope,omitempty"`
 }
 
-// AdvisoryCVSs represents the advisory pertaining to the Common Vulnerability Scoring System.
-type AdvisoryCVSs struct {
+// AdvisoryCVSS represents the advisory pertaining to the Common Vulnerability Scoring System.
+type AdvisoryCVSS struct {
 	Score        *float64 `json:"score,omitempty"`
 	VectorString *string  `json:"vector_string,omitempty"`
 }
@@ -37,7 +37,7 @@ type DependabotSecurityAdvisory struct {
 	Description     *string                  `json:"description,omitempty"`
 	Vulnerabilities []*AdvisoryVulnerability `json:"vulnerabilities,omitempty"`
 	Severity        *string                  `json:"severity,omitempty"`
-	CVSs            *AdvisoryCVSs            `json:"cvss,omitempty"`
+	CVSS            *AdvisoryCVSS            `json:"cvss,omitempty"`
 	CWEs            []*AdvisoryCWEs          `json:"cwes,omitempty"`
 	Identifiers     []*AdvisoryIdentifier    `json:"identifiers,omitempty"`
 	References      []*AdvisoryReference     `json:"references,omitempty"`
