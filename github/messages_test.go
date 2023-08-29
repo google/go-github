@@ -285,6 +285,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "delete",
 		},
 		{
+			payload:     &DependabotAlertEvent{},
+			messageType: "dependabot_alert",
+		},
+		{
 			payload:     &DeployKeyEvent{},
 			messageType: "deploy_key",
 		},

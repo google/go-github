@@ -150,6 +150,7 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"content_reference":              &ContentReferenceEvent{},
 	"create":                         &CreateEvent{},
 	"delete":                         &DeleteEvent{},
+	"dependabot_alert":               &DependabotAlertEvent{},
 	"deploy_key":                     &DeployKeyEvent{},
 	"deployment":                     &DeploymentEvent{},
 	"deployment_status":              &DeploymentStatusEvent{},

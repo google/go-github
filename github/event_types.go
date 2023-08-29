@@ -134,6 +134,25 @@ type DeleteEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// DependabotAlertEvent is triggered when there is activity relating to Dependabot alerts.
+// The Webhook event name is "dependabot_alert".
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#dependabot_alert
+type DependabotAlertEvent struct {
+	Action *string          `json:"action,omitempty"`
+	Alert  *DependabotAlert `json:"alert,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Installation *Installation `json:"installation,omitempty"`
+	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
+	Repo         *Repository   `json:"repository,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Organization *Organization `json:"organization,omitempty"`
+}
+
 // DeployKeyEvent is triggered when a deploy key is added or removed from a repository.
 // The Webhook event name is "deploy_key".
 //
