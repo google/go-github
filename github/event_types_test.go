@@ -12731,7 +12731,7 @@ func TestDependabotAlertEvent_Marshal(t *testing.T) {
 					},
 				},
 				Severity: String("s"),
-				CVSs: &AdvisoryCVSs{
+				CVSS: &AdvisoryCVSS{
 					Score:        Float64(1.0),
 					VectorString: String("vs"),
 				},
