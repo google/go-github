@@ -5816,6 +5816,16 @@ func TestDeleteEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 }
 
+func TestDependabotAlert_GetAutoDismissedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependabotAlert{AutoDismissedAt: &zeroValue}
+	d.GetAutoDismissedAt()
+	d = &DependabotAlert{}
+	d.GetAutoDismissedAt()
+	d = nil
+	d.GetAutoDismissedAt()
+}
+
 func TestDependabotAlert_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	d := &DependabotAlert{CreatedAt: &zeroValue}
@@ -5949,6 +5959,58 @@ func TestDependabotAlert_GetURL(tt *testing.T) {
 	d.GetURL()
 	d = nil
 	d.GetURL()
+}
+
+func TestDependabotAlertEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlertEvent{Action: &zeroValue}
+	d.GetAction()
+	d = &DependabotAlertEvent{}
+	d.GetAction()
+	d = nil
+	d.GetAction()
+}
+
+func TestDependabotAlertEvent_GetAlert(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetAlert()
+	d = nil
+	d.GetAlert()
+}
+
+func TestDependabotAlertEvent_GetEnterprise(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetEnterprise()
+	d = nil
+	d.GetEnterprise()
+}
+
+func TestDependabotAlertEvent_GetInstallation(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetInstallation()
+	d = nil
+	d.GetInstallation()
+}
+
+func TestDependabotAlertEvent_GetOrganization(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetOrganization()
+	d = nil
+	d.GetOrganization()
+}
+
+func TestDependabotAlertEvent_GetRepo(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetRepo()
+	d = nil
+	d.GetRepo()
+}
+
+func TestDependabotAlertEvent_GetSender(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetSender()
+	d = nil
+	d.GetSender()
 }
 
 func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
