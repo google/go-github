@@ -459,6 +459,9 @@ func NewTokenClient(_ context.Context, token string) *Client {
 	return NewClient(nil).WithAuthToken(token)
 }
 
+// NewEnterpriseClient returns a new GitHub API client with provided
+// base URL and upload URL (often is your GitHub Enterprise hostname).
+//
 // Deprecated: Use NewClient(httpClient).WithOptions(WithEnterpriseURLs(baseURL, uploadURL)) instead.
 func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*Client, error) {
 	return NewClient(httpClient).WithEnterpriseURLs(baseURL, uploadURL)
