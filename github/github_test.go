@@ -306,21 +306,28 @@ func TestClient(t *testing.T) {
 	}
 }
 
-func TestNewTokenClient(t *testing.T) {
+func TestWithAuthToken(t *testing.T) {
 	token := "gh_test_token"
-	ctx := context.Background()
 	var gotAuthHeaderVals []string
 	wantAuthHeaderVals := []string{"Bearer " + token}
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		gotAuthHeaderVals = r.Header["Authorization"]
 	}))
-	_, err := NewTokenClient(ctx, token).Client().Get(srv.URL)
-	if err != nil {
-		t.Fatalf("Get returned unexpected error: %v", err)
+	validate := func(c *Client) {
+		t.Helper()
+		gotAuthHeaderVals = nil
+		_, err := c.Client().Get(srv.URL)
+		if err != nil {
+			t.Fatalf("Get returned unexpected error: %v", err)
+		}
+		diff := cmp.Diff(wantAuthHeaderVals, gotAuthHeaderVals)
+		if diff != "" {
+			t.Errorf("Authorization header values mismatch (-want +got):\n%s", diff)
+		}
 	}
-	if diff := cmp.Diff(wantAuthHeaderVals, gotAuthHeaderVals); diff != "" {
-		t.Errorf("Authorization header values mismatch (-want +got):\n%s", diff)
-	}
+	validate(NewClient(nil).WithAuthToken(token))
+	validate(new(Client).WithAuthToken(token))
+	validate(NewTokenClient(context.Background(), token))
 }
 
 func TestWithEnterpriseURLs(t *testing.T) {
@@ -416,22 +423,27 @@ func TestWithEnterpriseURLs(t *testing.T) {
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			c, err := NewClient(nil).WithEnterpriseURLs(test.baseURL, test.uploadURL)
-			if test.wantErr != "" {
-				if err == nil || !strings.Contains(err.Error(), test.wantErr) {
-					t.Fatalf("error does not contain expected string %q: %v", test.wantErr, err)
+			validate := func(c *Client, err error) {
+				t.Helper()
+				if test.wantErr != "" {
+					if err == nil || !strings.Contains(err.Error(), test.wantErr) {
+						t.Fatalf("error does not contain expected string %q: %v", test.wantErr, err)
+					}
+					return
 				}
-				return
+				if err != nil {
+					t.Fatalf("got unexpected error: %v", err)
+				}
+				if c.BaseURL.String() != test.wantBaseURL {
+					t.Errorf("BaseURL is %v, want %v", c.BaseURL.String(), test.wantBaseURL)
+				}
+				if c.UploadURL.String() != test.wantUploadURL {
+					t.Errorf("UploadURL is %v, want %v", c.UploadURL.String(), test.wantUploadURL)
+				}
 			}
-			if err != nil {
-				t.Fatalf("got unexpected error: %v", err)
-			}
-			if c.BaseURL.String() != test.wantBaseURL {
-				t.Errorf("BaseURL is %v, want %v", c.BaseURL.String(), test.wantBaseURL)
-			}
-			if c.UploadURL.String() != test.wantUploadURL {
-				t.Errorf("UploadURL is %v, want %v", c.UploadURL.String(), test.wantUploadURL)
-			}
+			validate(NewClient(nil).WithEnterpriseURLs(test.baseURL, test.uploadURL))
+			validate(new(Client).WithEnterpriseURLs(test.baseURL, test.uploadURL))
+			validate(NewEnterpriseClient(test.baseURL, test.uploadURL, nil))
 		})
 	}
 }
