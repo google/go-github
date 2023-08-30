@@ -2830,6 +2830,78 @@ func (c *CodeownersError) GetSuggestion() string {
 	return *c.Suggestion
 }
 
+// GetContentType returns the ContentType field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetContentType() string {
+	if c == nil || c.ContentType == nil {
+		return ""
+	}
+	return *c.ContentType
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetLanguage returns the Language field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetLanguage() string {
+	if c == nil || c.Language == nil {
+		return ""
+	}
+	return *c.Language
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetSize returns the Size field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetSize() int64 {
+	if c == nil || c.Size == nil {
+		return 0
+	}
+	return *c.Size
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
+}
+
+// GetUploader returns the Uploader field.
+func (c *CodeQLDatabase) GetUploader() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Uploader
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (c *CodeResult) GetHTMLURL() string {
 	if c == nil || c.HTMLURL == nil {
@@ -4876,6 +4948,22 @@ func (d *DefaultSetupConfiguration) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *d.UpdatedAt
+}
+
+// GetConfirmDeleteURL returns the ConfirmDeleteURL field if it's non-nil, zero value otherwise.
+func (d *DeleteAnalysis) GetConfirmDeleteURL() string {
+	if d == nil || d.ConfirmDeleteURL == nil {
+		return ""
+	}
+	return *d.ConfirmDeleteURL
+}
+
+// GetNextAnalysisURL returns the NextAnalysisURL field if it's non-nil, zero value otherwise.
+func (d *DeleteAnalysis) GetNextAnalysisURL() string {
+	if d == nil || d.NextAnalysisURL == nil {
+		return ""
+	}
+	return *d.NextAnalysisURL
 }
 
 // GetInstallation returns the Installation field.
@@ -11382,6 +11470,14 @@ func (m *MostRecentInstance) GetAnalysisKey() string {
 	return *m.AnalysisKey
 }
 
+// GetCategory returns the Category field if it's non-nil, zero value otherwise.
+func (m *MostRecentInstance) GetCategory() string {
+	if m == nil || m.Category == nil {
+		return ""
+	}
+	return *m.Category
+}
+
 // GetCommitSHA returns the CommitSHA field if it's non-nil, zero value otherwise.
 func (m *MostRecentInstance) GetCommitSHA() string {
 	if m == nil || m.CommitSHA == nil {
@@ -11396,6 +11492,14 @@ func (m *MostRecentInstance) GetEnvironment() string {
 		return ""
 	}
 	return *m.Environment
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (m *MostRecentInstance) GetHTMLURL() string {
+	if m == nil || m.HTMLURL == nil {
+		return ""
+	}
+	return *m.HTMLURL
 }
 
 // GetLocation returns the Location field.
@@ -20108,6 +20212,22 @@ func (s *SarifID) GetURL() string {
 		return ""
 	}
 	return *s.URL
+}
+
+// GetAnalysesURL returns the AnalysesURL field if it's non-nil, zero value otherwise.
+func (s *SARIFUpload) GetAnalysesURL() string {
+	if s == nil || s.AnalysesURL == nil {
+		return ""
+	}
+	return *s.AnalysesURL
+}
+
+// GetProcessingStatus returns the ProcessingStatus field if it's non-nil, zero value otherwise.
+func (s *SARIFUpload) GetProcessingStatus() string {
+	if s == nil || s.ProcessingStatus == nil {
+		return ""
+	}
+	return *s.ProcessingStatus
 }
 
 // GetSBOM returns the SBOM field.
