@@ -7,7 +7,6 @@ require (
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/google/go-github/v54 v54.0.0
 	golang.org/x/crypto v0.12.0
-	golang.org/x/oauth2 v0.7.0
 	golang.org/x/term v0.11.0
 	google.golang.org/appengine v1.6.7
 )
