@@ -28,7 +28,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := appengine.NewContext(r)
-	client := github.NewTokenClient(ctx, os.Getenv("GITHUB_AUTH_TOKEN"))
+	client := github.NewClient(nil).WithAuthToken(os.Getenv("GITHUB_AUTH_TOKEN"))
 
 	commits, _, err := client.Repositories.ListCommits(ctx, "google", "go-github", nil)
 	if err != nil {
