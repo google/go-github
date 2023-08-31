@@ -32,7 +32,7 @@ func init() {
 		print("!!! No OAuth token. Some tests won't run. !!!\n\n")
 		client = github.NewClient(nil)
 	} else {
-		client = github.NewTokenClient(context.Background(), token)
+		client = github.NewClient(nil).WithAuthToken(token)
 		auth = true
 	}
 }

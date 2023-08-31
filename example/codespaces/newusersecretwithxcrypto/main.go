@@ -65,7 +65,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	client := github.NewTokenClient(ctx, token)
+	client := github.NewClient(nil).WithAuthToken(token)
 
 	if err := addUserSecret(ctx, client, secretName, secretValue, *owner, *repo); err != nil {
 		log.Fatal(err)

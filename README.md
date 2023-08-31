@@ -84,35 +84,17 @@ For more sample code snippets, head over to the
 
 ### Authentication ###
 
-The go-github library does not directly handle authentication. Instead, when
-creating a new client, pass an `http.Client` that can handle authentication for
-you. The easiest and recommended way to do this is using the [oauth2][]
-library, but you can always use any other library that provides an
-`http.Client`. If you have an OAuth2 access token (for example, a [personal
-API token][]), you can use it with the oauth2 library using:
+Use the `WithAuthToken` method to configure your client to authenticate using an
+OAuth token (for example, a [personal access token][]). This is what is needed
+for a majority of use cases aside from GitHub Apps.
 
 ```go
-import "golang.org/x/oauth2"
-
-func main() {
-	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: "... your access token ..."},
-	)
-	tc := oauth2.NewClient(ctx, ts)
-
-	client := github.NewClient(tc)
-
-	// list all repositories for the authenticated user
-	repos, _, err := client.Repositories.List(ctx, "", nil)
-}
+client := github.NewClient(nil).WithAuthToken("... your access token ...")
 ```
 
 Note that when using an authenticated Client, all calls made by the client will
 include the specified OAuth token. Therefore, authenticated clients should
 almost never be shared between different users.
-
-See the [oauth2 docs][] for complete instructions on using that library.
 
 For API methods that require HTTP Basic Authentication, use the
 [`BasicAuthTransport`](https://godoc.org/github.com/google/go-github/github#BasicAuthTransport).
@@ -232,16 +214,9 @@ https://github.com/gregjones/httpcache for that. For example:
 ```go
 import "github.com/gregjones/httpcache"
 
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
-	)
-	tc := &http.Client{
-		Transport: &oauth2.Transport{
-			Base:   httpcache.NewMemoryCacheTransport(),
-			Source: ts,
-		},
-	}
-	client := github.NewClient(tc)
+	client := github.NewClient(
+		httpcache.NewMemoryCacheTransport().Client()
+    ).WithAuthToken(os.Getenv("GITHUB_TOKEN"))
 ```
 
 Learn more about GitHub conditional requests at
@@ -320,9 +295,7 @@ Furthermore, there are libraries like [cbrgm/githubevents][] that build upon the
 For complete usage of go-github, see the full [package docs][].
 
 [GitHub API v3]: https://docs.github.com/en/rest
-[oauth2]: https://github.com/golang/oauth2
-[oauth2 docs]: https://godoc.org/golang.org/x/oauth2
-[personal API token]: https://github.com/blog/1509-personal-api-tokens
+[personal access token]: https://github.com/blog/1509-personal-api-tokens
 [package docs]: https://pkg.go.dev/github.com/google/go-github/v54/github
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4

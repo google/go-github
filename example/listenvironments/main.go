@@ -31,7 +31,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	client := github.NewTokenClient(ctx, token)
+	client := github.NewClient(nil).WithAuthToken(token)
 
 	expectedPageSize := 2
 
