@@ -23,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: golangci-lint ${{ matrix.working-directory }}
       uses: golangci/golangci-lint-action@v3
