@@ -21038,14 +21038,6 @@ func (s *SelectedReposList) GetTotalCount() int {
 	return *s.TotalCount
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (s *ServiceHook) GetName() string {
-	if s == nil || s.Name == nil {
-		return ""
-	}
-	return *s.Name
-}
-
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
 func (s *SignatureRequirementEnforcementLevelChanges) GetFrom() string {
 	if s == nil || s.From == nil {

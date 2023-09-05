@@ -1820,18 +1820,6 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 	}
 }
 
-func TestServiceHook_String(t *testing.T) {
-	v := ServiceHook{
-		Name:            String(""),
-		Events:          []string{""},
-		SupportedEvents: []string{""},
-	}
-	want := `github.ServiceHook{Name:"", Events:[""], SupportedEvents:[""]}`
-	if got := v.String(); got != want {
-		t.Errorf("ServiceHook.String = %v, want %v", got, want)
-	}
-}
-
 func TestSourceImportAuthor_String(t *testing.T) {
 	v := SourceImportAuthor{
 		ID:         Int64(0),
