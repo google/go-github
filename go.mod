@@ -1,4 +1,4 @@
-module github.com/google/go-github/v54
+module github.com/google/go-github/v55
 
 require (
 	github.com/ProtonMail/go-crypto v0.0.0-20230217124315-7d5c6f04bbb8
