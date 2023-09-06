@@ -12,12 +12,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/google/go-github/v54/github"
+	"github.com/google/go-github/v55/github"
 )
 
 func fetchAllUserMigrations() ([]*github.UserMigration, error) {
 	ctx := context.Background()
-	client := github.NewTokenClient(ctx, "<GITHUB_AUTH_TOKEN>")
+	client := github.NewClient(nil).WithAuthToken("<GITHUB_AUTH_TOKEN>")
 
 	migrations, _, err := client.Migrations.ListUserMigrations(ctx, &github.ListOptions{Page: 1})
 	return migrations, err

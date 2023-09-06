@@ -343,7 +343,7 @@ func (a *AdvancedSecurityCommittersBreakdown) GetUserLogin() string {
 }
 
 // GetScore returns the Score field.
-func (a *AdvisoryCVSs) GetScore() *float64 {
+func (a *AdvisoryCVSS) GetScore() *float64 {
 	if a == nil {
 		return nil
 	}
@@ -351,7 +351,7 @@ func (a *AdvisoryCVSs) GetScore() *float64 {
 }
 
 // GetVectorString returns the VectorString field if it's non-nil, zero value otherwise.
-func (a *AdvisoryCVSs) GetVectorString() string {
+func (a *AdvisoryCVSS) GetVectorString() string {
 	if a == nil || a.VectorString == nil {
 		return ""
 	}
@@ -2830,6 +2830,78 @@ func (c *CodeownersError) GetSuggestion() string {
 	return *c.Suggestion
 }
 
+// GetContentType returns the ContentType field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetContentType() string {
+	if c == nil || c.ContentType == nil {
+		return ""
+	}
+	return *c.ContentType
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetLanguage returns the Language field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetLanguage() string {
+	if c == nil || c.Language == nil {
+		return ""
+	}
+	return *c.Language
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetSize returns the Size field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetSize() int64 {
+	if c == nil || c.Size == nil {
+		return 0
+	}
+	return *c.Size
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
+}
+
+// GetUploader returns the Uploader field.
+func (c *CodeQLDatabase) GetUploader() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Uploader
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CodeQLDatabase) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (c *CodeResult) GetHTMLURL() string {
 	if c == nil || c.HTMLURL == nil {
@@ -4878,6 +4950,22 @@ func (d *DefaultSetupConfiguration) GetUpdatedAt() Timestamp {
 	return *d.UpdatedAt
 }
 
+// GetConfirmDeleteURL returns the ConfirmDeleteURL field if it's non-nil, zero value otherwise.
+func (d *DeleteAnalysis) GetConfirmDeleteURL() string {
+	if d == nil || d.ConfirmDeleteURL == nil {
+		return ""
+	}
+	return *d.ConfirmDeleteURL
+}
+
+// GetNextAnalysisURL returns the NextAnalysisURL field if it's non-nil, zero value otherwise.
+func (d *DeleteAnalysis) GetNextAnalysisURL() string {
+	if d == nil || d.NextAnalysisURL == nil {
+		return ""
+	}
+	return *d.NextAnalysisURL
+}
+
 // GetInstallation returns the Installation field.
 func (d *DeleteEvent) GetInstallation() *Installation {
 	if d == nil {
@@ -4924,6 +5012,14 @@ func (d *DeleteEvent) GetSender() *User {
 		return nil
 	}
 	return d.Sender
+}
+
+// GetAutoDismissedAt returns the AutoDismissedAt field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetAutoDismissedAt() Timestamp {
+	if d == nil || d.AutoDismissedAt == nil {
+		return Timestamp{}
+	}
+	return *d.AutoDismissedAt
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
@@ -5046,6 +5142,62 @@ func (d *DependabotAlert) GetURL() string {
 	return *d.URL
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertEvent) GetAction() string {
+	if d == nil || d.Action == nil {
+		return ""
+	}
+	return *d.Action
+}
+
+// GetAlert returns the Alert field.
+func (d *DependabotAlertEvent) GetAlert() *DependabotAlert {
+	if d == nil {
+		return nil
+	}
+	return d.Alert
+}
+
+// GetEnterprise returns the Enterprise field.
+func (d *DependabotAlertEvent) GetEnterprise() *Enterprise {
+	if d == nil {
+		return nil
+	}
+	return d.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (d *DependabotAlertEvent) GetInstallation() *Installation {
+	if d == nil {
+		return nil
+	}
+	return d.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (d *DependabotAlertEvent) GetOrganization() *Organization {
+	if d == nil {
+		return nil
+	}
+	return d.Organization
+}
+
+// GetRepo returns the Repo field.
+func (d *DependabotAlertEvent) GetRepo() *Repository {
+	if d == nil {
+		return nil
+	}
+	return d.Repo
+}
+
+// GetSender returns the Sender field.
+func (d *DependabotAlertEvent) GetSender() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Sender
+}
+
 // GetCVEID returns the CVEID field if it's non-nil, zero value otherwise.
 func (d *DependabotSecurityAdvisory) GetCVEID() string {
 	if d == nil || d.CVEID == nil {
@@ -5054,12 +5206,12 @@ func (d *DependabotSecurityAdvisory) GetCVEID() string {
 	return *d.CVEID
 }
 
-// GetCVSs returns the CVSs field.
-func (d *DependabotSecurityAdvisory) GetCVSs() *AdvisoryCVSs {
+// GetCVSS returns the CVSS field.
+func (d *DependabotSecurityAdvisory) GetCVSS() *AdvisoryCVSS {
 	if d == nil {
 		return nil
 	}
-	return d.CVSs
+	return d.CVSS
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
@@ -11318,6 +11470,14 @@ func (m *MostRecentInstance) GetAnalysisKey() string {
 	return *m.AnalysisKey
 }
 
+// GetCategory returns the Category field if it's non-nil, zero value otherwise.
+func (m *MostRecentInstance) GetCategory() string {
+	if m == nil || m.Category == nil {
+		return ""
+	}
+	return *m.Category
+}
+
 // GetCommitSHA returns the CommitSHA field if it's non-nil, zero value otherwise.
 func (m *MostRecentInstance) GetCommitSHA() string {
 	if m == nil || m.CommitSHA == nil {
@@ -11332,6 +11492,14 @@ func (m *MostRecentInstance) GetEnvironment() string {
 		return ""
 	}
 	return *m.Environment
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (m *MostRecentInstance) GetHTMLURL() string {
+	if m == nil || m.HTMLURL == nil {
+		return ""
+	}
+	return *m.HTMLURL
 }
 
 // GetLocation returns the Location field.
@@ -20046,6 +20214,22 @@ func (s *SarifID) GetURL() string {
 	return *s.URL
 }
 
+// GetAnalysesURL returns the AnalysesURL field if it's non-nil, zero value otherwise.
+func (s *SARIFUpload) GetAnalysesURL() string {
+	if s == nil || s.AnalysesURL == nil {
+		return ""
+	}
+	return *s.AnalysesURL
+}
+
+// GetProcessingStatus returns the ProcessingStatus field if it's non-nil, zero value otherwise.
+func (s *SARIFUpload) GetProcessingStatus() string {
+	if s == nil || s.ProcessingStatus == nil {
+		return ""
+	}
+	return *s.ProcessingStatus
+}
+
 // GetSBOM returns the SBOM field.
 func (s *SBOM) GetSBOM() *SBOMInfo {
 	if s == nil {
@@ -20630,6 +20814,14 @@ func (s *SecretScanningPushProtection) GetStatus() string {
 	return *s.Status
 }
 
+// GetCVSS returns the CVSS field.
+func (s *SecurityAdvisory) GetCVSS() *AdvisoryCVSS {
+	if s == nil {
+		return nil
+	}
+	return s.CVSS
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (s *SecurityAdvisory) GetDescription() string {
 	if s == nil || s.Description == nil {
@@ -20694,12 +20886,52 @@ func (s *SecurityAdvisoryEvent) GetAction() string {
 	return *s.Action
 }
 
+// GetEnterprise returns the Enterprise field.
+func (s *SecurityAdvisoryEvent) GetEnterprise() *Enterprise {
+	if s == nil {
+		return nil
+	}
+	return s.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (s *SecurityAdvisoryEvent) GetInstallation() *Installation {
+	if s == nil {
+		return nil
+	}
+	return s.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (s *SecurityAdvisoryEvent) GetOrganization() *Organization {
+	if s == nil {
+		return nil
+	}
+	return s.Organization
+}
+
+// GetRepository returns the Repository field.
+func (s *SecurityAdvisoryEvent) GetRepository() *Repository {
+	if s == nil {
+		return nil
+	}
+	return s.Repository
+}
+
 // GetSecurityAdvisory returns the SecurityAdvisory field.
 func (s *SecurityAdvisoryEvent) GetSecurityAdvisory() *SecurityAdvisory {
 	if s == nil {
 		return nil
 	}
 	return s.SecurityAdvisory
+}
+
+// GetSender returns the Sender field.
+func (s *SecurityAdvisoryEvent) GetSender() *User {
+	if s == nil {
+		return nil
+	}
+	return s.Sender
 }
 
 // GetAdvancedSecurity returns the AdvancedSecurity field.

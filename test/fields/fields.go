@@ -25,7 +25,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/google/go-github/v54/github"
+	"github.com/google/go-github/v55/github"
 )
 
 var (
@@ -46,7 +46,7 @@ func main() {
 		print("!!! No OAuth token. Some tests won't run. !!!\n\n")
 		client = github.NewClient(nil)
 	} else {
-		client = github.NewTokenClient(context.Background(), token)
+		client = github.NewClient(nil).WithAuthToken(token)
 		auth = true
 	}
 

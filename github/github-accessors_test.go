@@ -392,18 +392,18 @@ func TestAdvancedSecurityCommittersBreakdown_GetUserLogin(tt *testing.T) {
 	a.GetUserLogin()
 }
 
-func TestAdvisoryCVSs_GetScore(tt *testing.T) {
-	a := &AdvisoryCVSs{}
+func TestAdvisoryCVSS_GetScore(tt *testing.T) {
+	a := &AdvisoryCVSS{}
 	a.GetScore()
 	a = nil
 	a.GetScore()
 }
 
-func TestAdvisoryCVSs_GetVectorString(tt *testing.T) {
+func TestAdvisoryCVSS_GetVectorString(tt *testing.T) {
 	var zeroValue string
-	a := &AdvisoryCVSs{VectorString: &zeroValue}
+	a := &AdvisoryCVSS{VectorString: &zeroValue}
 	a.GetVectorString()
-	a = &AdvisoryCVSs{}
+	a = &AdvisoryCVSS{}
 	a.GetVectorString()
 	a = nil
 	a.GetVectorString()
@@ -3364,6 +3364,93 @@ func TestCodeownersError_GetSuggestion(tt *testing.T) {
 	c.GetSuggestion()
 }
 
+func TestCodeQLDatabase_GetContentType(tt *testing.T) {
+	var zeroValue string
+	c := &CodeQLDatabase{ContentType: &zeroValue}
+	c.GetContentType()
+	c = &CodeQLDatabase{}
+	c.GetContentType()
+	c = nil
+	c.GetContentType()
+}
+
+func TestCodeQLDatabase_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CodeQLDatabase{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CodeQLDatabase{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCodeQLDatabase_GetID(tt *testing.T) {
+	var zeroValue int64
+	c := &CodeQLDatabase{ID: &zeroValue}
+	c.GetID()
+	c = &CodeQLDatabase{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCodeQLDatabase_GetLanguage(tt *testing.T) {
+	var zeroValue string
+	c := &CodeQLDatabase{Language: &zeroValue}
+	c.GetLanguage()
+	c = &CodeQLDatabase{}
+	c.GetLanguage()
+	c = nil
+	c.GetLanguage()
+}
+
+func TestCodeQLDatabase_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CodeQLDatabase{Name: &zeroValue}
+	c.GetName()
+	c = &CodeQLDatabase{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCodeQLDatabase_GetSize(tt *testing.T) {
+	var zeroValue int64
+	c := &CodeQLDatabase{Size: &zeroValue}
+	c.GetSize()
+	c = &CodeQLDatabase{}
+	c.GetSize()
+	c = nil
+	c.GetSize()
+}
+
+func TestCodeQLDatabase_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CodeQLDatabase{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CodeQLDatabase{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCodeQLDatabase_GetUploader(tt *testing.T) {
+	c := &CodeQLDatabase{}
+	c.GetUploader()
+	c = nil
+	c.GetUploader()
+}
+
+func TestCodeQLDatabase_GetURL(tt *testing.T) {
+	var zeroValue string
+	c := &CodeQLDatabase{URL: &zeroValue}
+	c.GetURL()
+	c = &CodeQLDatabase{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
+}
+
 func TestCodeResult_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	c := &CodeResult{HTMLURL: &zeroValue}
@@ -5765,6 +5852,26 @@ func TestDefaultSetupConfiguration_GetUpdatedAt(tt *testing.T) {
 	d.GetUpdatedAt()
 }
 
+func TestDeleteAnalysis_GetConfirmDeleteURL(tt *testing.T) {
+	var zeroValue string
+	d := &DeleteAnalysis{ConfirmDeleteURL: &zeroValue}
+	d.GetConfirmDeleteURL()
+	d = &DeleteAnalysis{}
+	d.GetConfirmDeleteURL()
+	d = nil
+	d.GetConfirmDeleteURL()
+}
+
+func TestDeleteAnalysis_GetNextAnalysisURL(tt *testing.T) {
+	var zeroValue string
+	d := &DeleteAnalysis{NextAnalysisURL: &zeroValue}
+	d.GetNextAnalysisURL()
+	d = &DeleteAnalysis{}
+	d.GetNextAnalysisURL()
+	d = nil
+	d.GetNextAnalysisURL()
+}
+
 func TestDeleteEvent_GetInstallation(tt *testing.T) {
 	d := &DeleteEvent{}
 	d.GetInstallation()
@@ -5814,6 +5921,16 @@ func TestDeleteEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 	d = nil
 	d.GetSender()
+}
+
+func TestDependabotAlert_GetAutoDismissedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependabotAlert{AutoDismissedAt: &zeroValue}
+	d.GetAutoDismissedAt()
+	d = &DependabotAlert{}
+	d.GetAutoDismissedAt()
+	d = nil
+	d.GetAutoDismissedAt()
 }
 
 func TestDependabotAlert_GetCreatedAt(tt *testing.T) {
@@ -5951,6 +6068,58 @@ func TestDependabotAlert_GetURL(tt *testing.T) {
 	d.GetURL()
 }
 
+func TestDependabotAlertEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlertEvent{Action: &zeroValue}
+	d.GetAction()
+	d = &DependabotAlertEvent{}
+	d.GetAction()
+	d = nil
+	d.GetAction()
+}
+
+func TestDependabotAlertEvent_GetAlert(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetAlert()
+	d = nil
+	d.GetAlert()
+}
+
+func TestDependabotAlertEvent_GetEnterprise(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetEnterprise()
+	d = nil
+	d.GetEnterprise()
+}
+
+func TestDependabotAlertEvent_GetInstallation(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetInstallation()
+	d = nil
+	d.GetInstallation()
+}
+
+func TestDependabotAlertEvent_GetOrganization(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetOrganization()
+	d = nil
+	d.GetOrganization()
+}
+
+func TestDependabotAlertEvent_GetRepo(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetRepo()
+	d = nil
+	d.GetRepo()
+}
+
+func TestDependabotAlertEvent_GetSender(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetSender()
+	d = nil
+	d.GetSender()
+}
+
 func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
 	var zeroValue string
 	d := &DependabotSecurityAdvisory{CVEID: &zeroValue}
@@ -5961,11 +6130,11 @@ func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
 	d.GetCVEID()
 }
 
-func TestDependabotSecurityAdvisory_GetCVSs(tt *testing.T) {
+func TestDependabotSecurityAdvisory_GetCVSS(tt *testing.T) {
 	d := &DependabotSecurityAdvisory{}
-	d.GetCVSs()
+	d.GetCVSS()
 	d = nil
-	d.GetCVSs()
+	d.GetCVSS()
 }
 
 func TestDependabotSecurityAdvisory_GetDescription(tt *testing.T) {
@@ -13245,6 +13414,16 @@ func TestMostRecentInstance_GetAnalysisKey(tt *testing.T) {
 	m.GetAnalysisKey()
 }
 
+func TestMostRecentInstance_GetCategory(tt *testing.T) {
+	var zeroValue string
+	m := &MostRecentInstance{Category: &zeroValue}
+	m.GetCategory()
+	m = &MostRecentInstance{}
+	m.GetCategory()
+	m = nil
+	m.GetCategory()
+}
+
 func TestMostRecentInstance_GetCommitSHA(tt *testing.T) {
 	var zeroValue string
 	m := &MostRecentInstance{CommitSHA: &zeroValue}
@@ -13263,6 +13442,16 @@ func TestMostRecentInstance_GetEnvironment(tt *testing.T) {
 	m.GetEnvironment()
 	m = nil
 	m.GetEnvironment()
+}
+
+func TestMostRecentInstance_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	m := &MostRecentInstance{HTMLURL: &zeroValue}
+	m.GetHTMLURL()
+	m = &MostRecentInstance{}
+	m.GetHTMLURL()
+	m = nil
+	m.GetHTMLURL()
 }
 
 func TestMostRecentInstance_GetLocation(tt *testing.T) {
@@ -23363,6 +23552,26 @@ func TestSarifID_GetURL(tt *testing.T) {
 	s.GetURL()
 }
 
+func TestSARIFUpload_GetAnalysesURL(tt *testing.T) {
+	var zeroValue string
+	s := &SARIFUpload{AnalysesURL: &zeroValue}
+	s.GetAnalysesURL()
+	s = &SARIFUpload{}
+	s.GetAnalysesURL()
+	s = nil
+	s.GetAnalysesURL()
+}
+
+func TestSARIFUpload_GetProcessingStatus(tt *testing.T) {
+	var zeroValue string
+	s := &SARIFUpload{ProcessingStatus: &zeroValue}
+	s.GetProcessingStatus()
+	s = &SARIFUpload{}
+	s.GetProcessingStatus()
+	s = nil
+	s.GetProcessingStatus()
+}
+
 func TestSBOM_GetSBOM(tt *testing.T) {
 	s := &SBOM{}
 	s.GetSBOM()
@@ -24054,6 +24263,13 @@ func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
+func TestSecurityAdvisory_GetCVSS(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetCVSS()
+	s = nil
+	s.GetCVSS()
+}
+
 func TestSecurityAdvisory_GetDescription(tt *testing.T) {
 	var zeroValue string
 	s := &SecurityAdvisory{Description: &zeroValue}
@@ -24134,11 +24350,46 @@ func TestSecurityAdvisoryEvent_GetAction(tt *testing.T) {
 	s.GetAction()
 }
 
+func TestSecurityAdvisoryEvent_GetEnterprise(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetEnterprise()
+	s = nil
+	s.GetEnterprise()
+}
+
+func TestSecurityAdvisoryEvent_GetInstallation(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetInstallation()
+	s = nil
+	s.GetInstallation()
+}
+
+func TestSecurityAdvisoryEvent_GetOrganization(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetOrganization()
+	s = nil
+	s.GetOrganization()
+}
+
+func TestSecurityAdvisoryEvent_GetRepository(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetRepository()
+	s = nil
+	s.GetRepository()
+}
+
 func TestSecurityAdvisoryEvent_GetSecurityAdvisory(tt *testing.T) {
 	s := &SecurityAdvisoryEvent{}
 	s.GetSecurityAdvisory()
 	s = nil
 	s.GetSecurityAdvisory()
+}
+
+func TestSecurityAdvisoryEvent_GetSender(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetSender()
+	s = nil
+	s.GetSender()
 }
 
 func TestSecurityAndAnalysis_GetAdvancedSecurity(tt *testing.T) {
