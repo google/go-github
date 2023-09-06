@@ -112,7 +112,7 @@ func TestEnterpriseService_GetRunnerGroup(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	group, _, err := client.Enterprise.GetRunnerGroup(ctx, "o", 2)
+	group, _, err := client.Enterprise.GetEnterpriseRunnerGroup(ctx, "o", 2)
 	if err != nil {
 		t.Errorf("Enterprise.GetRunnerGroup returned error: %v", err)
 	}
@@ -136,12 +136,12 @@ func TestEnterpriseService_GetRunnerGroup(t *testing.T) {
 
 	const methodName = "GetRunnerGroup"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.GetRunnerGroup(ctx, "\n", 2)
+		_, _, err = client.Enterprise.GetEnterpriseRunnerGroup(ctx, "\n", 2)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.GetRunnerGroup(ctx, "o", 2)
+		got, resp, err := client.Enterprise.GetEnterpriseRunnerGroup(ctx, "o", 2)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -158,19 +158,19 @@ func TestEnterpriseService_DeleteRunnerGroup(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Enterprise.DeleteRunnerGroup(ctx, "o", 2)
+	_, err := client.Enterprise.DeleteEnterpriseRunnerGroup(ctx, "o", 2)
 	if err != nil {
 		t.Errorf("Enterprise.DeleteRunnerGroup returned error: %v", err)
 	}
 
 	const methodName = "DeleteRunnerGroup"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Enterprise.DeleteRunnerGroup(ctx, "\n", 2)
+		_, err = client.Enterprise.DeleteEnterpriseRunnerGroup(ctx, "\n", 2)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.DeleteRunnerGroup(ctx, "o", 2)
+		return client.Enterprise.DeleteEnterpriseRunnerGroup(ctx, "o", 2)
 	})
 }
 
@@ -191,7 +191,7 @@ func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
 		RestrictedToWorkflows:    Bool(false),
 		SelectedWorkflows:        []string{},
 	}
-	group, _, err := client.Enterprise.CreateRunnerGroup(ctx, "o", req)
+	group, _, err := client.Enterprise.CreateEnterpriseRunnerGroup(ctx, "o", req)
 	if err != nil {
 		t.Errorf("Enterprise.CreateRunnerGroup returned error: %v", err)
 	}
@@ -215,12 +215,12 @@ func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
 
 	const methodName = "CreateRunnerGroup"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.CreateRunnerGroup(ctx, "\n", req)
+		_, _, err = client.Enterprise.CreateEnterpriseRunnerGroup(ctx, "\n", req)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.CreateRunnerGroup(ctx, "o", req)
+		got, resp, err := client.Enterprise.CreateEnterpriseRunnerGroup(ctx, "o", req)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -245,7 +245,7 @@ func TestEnterpriseService_UpdateRunnerGroup(t *testing.T) {
 		RestrictedToWorkflows:    Bool(false),
 		SelectedWorkflows:        []string{},
 	}
-	group, _, err := client.Enterprise.UpdateRunnerGroup(ctx, "o", 2, req)
+	group, _, err := client.Enterprise.UpdateEnterpriseRunnerGroup(ctx, "o", 2, req)
 	if err != nil {
 		t.Errorf("Enterprise.UpdateRunnerGroup returned error: %v", err)
 	}
@@ -269,12 +269,12 @@ func TestEnterpriseService_UpdateRunnerGroup(t *testing.T) {
 
 	const methodName = "UpdateRunnerGroup"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.UpdateRunnerGroup(ctx, "\n", 2, req)
+		_, _, err = client.Enterprise.UpdateEnterpriseRunnerGroup(ctx, "\n", 2, req)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.UpdateRunnerGroup(ctx, "o", 2, req)
+		got, resp, err := client.Enterprise.UpdateEnterpriseRunnerGroup(ctx, "o", 2, req)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -418,7 +418,7 @@ func TestEnterpriseService_ListEnterpriseRunnerGroupRunners(t *testing.T) {
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := context.Background()
-	runners, _, err := client.Enterprise.ListEnterpriseRunnerGroupRunners(ctx, "o", 2, opts)
+	runners, _, err := client.Enterprise.ListRunnerGroupRunners(ctx, "o", 2, opts)
 	if err != nil {
 		t.Errorf("Enterprise.ListEnterpriseRunnerGroupRunners returned error: %v", err)
 	}
@@ -436,12 +436,12 @@ func TestEnterpriseService_ListEnterpriseRunnerGroupRunners(t *testing.T) {
 
 	const methodName = "ListEnterpriseRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.ListEnterpriseRunnerGroupRunners(ctx, "\n", 2, opts)
+		_, _, err = client.Enterprise.ListRunnerGroupRunners(ctx, "\n", 2, opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.ListEnterpriseRunnerGroupRunners(ctx, "o", 2, opts)
+		got, resp, err := client.Enterprise.ListRunnerGroupRunners(ctx, "o", 2, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -465,19 +465,19 @@ func TestEnterpriseService_SetEnterpriseRunnerGroupRunners(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	_, err := client.Enterprise.SetEnterpriseRunnerGroupRunners(ctx, "o", 2, req)
+	_, err := client.Enterprise.SetRunnerGroupRunners(ctx, "o", 2, req)
 	if err != nil {
 		t.Errorf("Enterprise.SetEnterpriseRunnerGroupRunners returned error: %v", err)
 	}
 
 	const methodName = "SetEnterpriseRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Enterprise.SetEnterpriseRunnerGroupRunners(ctx, "\n", 2, req)
+		_, err = client.Enterprise.SetRunnerGroupRunners(ctx, "\n", 2, req)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.SetEnterpriseRunnerGroupRunners(ctx, "o", 2, req)
+		return client.Enterprise.SetRunnerGroupRunners(ctx, "o", 2, req)
 	})
 }
 
@@ -490,19 +490,19 @@ func TestEnterpriseService_AddEnterpriseRunnerGroupRunners(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Enterprise.AddEnterpriseRunnerGroupRunners(ctx, "o", 2, 42)
+	_, err := client.Enterprise.AddRunnerGroupRunners(ctx, "o", 2, 42)
 	if err != nil {
 		t.Errorf("Enterprise.AddEnterpriseRunnerGroupRunners returned error: %v", err)
 	}
 
 	const methodName = "AddEnterpriseRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Enterprise.AddEnterpriseRunnerGroupRunners(ctx, "\n", 2, 42)
+		_, err = client.Enterprise.AddRunnerGroupRunners(ctx, "\n", 2, 42)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.AddEnterpriseRunnerGroupRunners(ctx, "o", 2, 42)
+		return client.Enterprise.AddRunnerGroupRunners(ctx, "o", 2, 42)
 	})
 }
 
@@ -515,19 +515,19 @@ func TestEnterpriseService_RemoveEnterpriseRunnerGroupRunners(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Enterprise.RemoveEnterpriseRunnerGroupRunners(ctx, "o", 2, 42)
+	_, err := client.Enterprise.RemoveRunnerGroupRunners(ctx, "o", 2, 42)
 	if err != nil {
 		t.Errorf("Enterprise.RemoveEnterpriseRunnerGroupRunners returned error: %v", err)
 	}
 
 	const methodName = "RemoveEnterpriseRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Enterprise.RemoveEnterpriseRunnerGroupRunners(ctx, "\n", 2, 42)
+		_, err = client.Enterprise.RemoveRunnerGroupRunners(ctx, "\n", 2, 42)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.RemoveEnterpriseRunnerGroupRunners(ctx, "o", 2, 42)
+		return client.Enterprise.RemoveRunnerGroupRunners(ctx, "o", 2, 42)
 	})
 }
 

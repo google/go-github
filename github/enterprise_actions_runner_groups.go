@@ -101,10 +101,10 @@ func (s *EnterpriseService) ListRunnerGroups(ctx context.Context, enterprise str
 	return groups, resp, nil
 }
 
-// GetRunnerGroup gets a specific self-hosted runner group for an enterprise using its RunnerGroup ID.
+// GetEnterpriseRunnerGroup gets a specific self-hosted runner group for an enterprise using its RunnerGroup ID.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/actions/self-hosted-runner-groups?apiVersion=2022-11-28#get-a-self-hosted-runner-group-for-an-enterprise
-func (s *EnterpriseService) GetRunnerGroup(ctx context.Context, enterprise string, groupID int64) (*EnterpriseRunnerGroup, *Response, error) {
+func (s *EnterpriseService) GetEnterpriseRunnerGroup(ctx context.Context, enterprise string, groupID int64) (*EnterpriseRunnerGroup, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runner-groups/%v", enterprise, groupID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -120,10 +120,10 @@ func (s *EnterpriseService) GetRunnerGroup(ctx context.Context, enterprise strin
 	return runnerGroup, resp, nil
 }
 
-// DeleteRunnerGroup deletes a self-hosted runner group from an enterprise.
+// DeleteEnterpriseRunnerGroup deletes a self-hosted runner group from an enterprise.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/actions/self-hosted-runner-groups?apiVersion=2022-11-28#delete-a-self-hosted-runner-group-from-an-enterprise
-func (s *EnterpriseService) DeleteRunnerGroup(ctx context.Context, enterprise string, groupID int64) (*Response, error) {
+func (s *EnterpriseService) DeleteEnterpriseRunnerGroup(ctx context.Context, enterprise string, groupID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runner-groups/%v", enterprise, groupID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -134,10 +134,10 @@ func (s *EnterpriseService) DeleteRunnerGroup(ctx context.Context, enterprise st
 	return s.client.Do(ctx, req, nil)
 }
 
-// CreateRunnerGroup creates a new self-hosted runner group for an enterprise.
+// CreateEnterpriseRunnerGroup creates a new self-hosted runner group for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/actions/self-hosted-runner-groups?apiVersion=2022-11-28#create-a-self-hosted-runner-group-for-an-enterprise
-func (s *EnterpriseService) CreateRunnerGroup(ctx context.Context, enterprise string, createReq CreateEnterpriseRunnerGroupRequest) (*EnterpriseRunnerGroup, *Response, error) {
+func (s *EnterpriseService) CreateEnterpriseRunnerGroup(ctx context.Context, enterprise string, createReq CreateEnterpriseRunnerGroupRequest) (*EnterpriseRunnerGroup, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runner-groups", enterprise)
 	req, err := s.client.NewRequest("POST", u, createReq)
 	if err != nil {
@@ -153,10 +153,10 @@ func (s *EnterpriseService) CreateRunnerGroup(ctx context.Context, enterprise st
 	return runnerGroup, resp, nil
 }
 
-// UpdateRunnerGroup updates a self-hosted runner group for an enterprise.
+// UpdateEnterpriseRunnerGroup updates a self-hosted runner group for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/actions/self-hosted-runner-groups?apiVersion=2022-11-28#update-a-self-hosted-runner-group-for-an-enterprise
-func (s *EnterpriseService) UpdateRunnerGroup(ctx context.Context, enterprise string, groupID int64, updateReq UpdateEnterpriseRunnerGroupRequest) (*EnterpriseRunnerGroup, *Response, error) {
+func (s *EnterpriseService) UpdateEnterpriseRunnerGroup(ctx context.Context, enterprise string, groupID int64, updateReq UpdateEnterpriseRunnerGroupRequest) (*EnterpriseRunnerGroup, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runner-groups/%v", enterprise, groupID)
 	req, err := s.client.NewRequest("PATCH", u, updateReq)
 	if err != nil {
@@ -241,10 +241,10 @@ func (s *EnterpriseService) RemoveOrganizationAccessRunnerGroup(ctx context.Cont
 	return s.client.Do(ctx, req, nil)
 }
 
-// ListEnterpriseRunnerGroupRunners lists self-hosted runners that are in a specific enterprise group.
+// ListRunnerGroupRunners lists self-hosted runners that are in a specific enterprise group.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/actions/self-hosted-runner-groups?apiVersion=2022-11-28#list-self-hosted-runners-in-a-group-for-an-enterprise
-func (s *EnterpriseService) ListEnterpriseRunnerGroupRunners(ctx context.Context, enterprise string, groupID int64, opts *ListOptions) (*Runners, *Response, error) {
+func (s *EnterpriseService) ListRunnerGroupRunners(ctx context.Context, enterprise string, groupID int64, opts *ListOptions) (*Runners, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runner-groups/%v/runners", enterprise, groupID)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -265,11 +265,11 @@ func (s *EnterpriseService) ListEnterpriseRunnerGroupRunners(ctx context.Context
 	return runners, resp, nil
 }
 
-// SetEnterpriseRunnerGroupRunners replaces the list of self-hosted runners that are part of an enterprise runner group
+// SetRunnerGroupRunners replaces the list of self-hosted runners that are part of an enterprise runner group
 // with a new list of runners.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/actions/self-hosted-runner-groups?apiVersion=2022-11-28#set-self-hosted-runners-in-a-group-for-an-enterprise
-func (s *EnterpriseService) SetEnterpriseRunnerGroupRunners(ctx context.Context, enterprise string, groupID int64, ids SetRunnerGroupRunnersRequest) (*Response, error) {
+func (s *EnterpriseService) SetRunnerGroupRunners(ctx context.Context, enterprise string, groupID int64, ids SetRunnerGroupRunnersRequest) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runner-groups/%v/runners", enterprise, groupID)
 
 	req, err := s.client.NewRequest("PUT", u, ids)
@@ -280,10 +280,10 @@ func (s *EnterpriseService) SetEnterpriseRunnerGroupRunners(ctx context.Context,
 	return s.client.Do(ctx, req, nil)
 }
 
-// AddEnterpriseRunnerGroupRunners adds a self-hosted runner to a runner group configured in an enterprise.
+// AddRunnerGroupRunners adds a self-hosted runner to a runner group configured in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/actions/self-hosted-runner-groups?apiVersion=2022-11-28#add-a-self-hosted-runner-to-a-group-for-an-enterprise
-func (s *EnterpriseService) AddEnterpriseRunnerGroupRunners(ctx context.Context, enterprise string, groupID, runnerID int64) (*Response, error) {
+func (s *EnterpriseService) AddRunnerGroupRunners(ctx context.Context, enterprise string, groupID, runnerID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runner-groups/%v/runners/%v", enterprise, groupID, runnerID)
 
 	req, err := s.client.NewRequest("PUT", u, nil)
@@ -294,11 +294,11 @@ func (s *EnterpriseService) AddEnterpriseRunnerGroupRunners(ctx context.Context,
 	return s.client.Do(ctx, req, nil)
 }
 
-// RemoveEnterpriseRunnerGroupRunners removes a self-hosted runner from a group configured in an enterprise.
+// RemoveRunnerGroupRunners removes a self-hosted runner from a group configured in an enterprise.
 // The runner is then returned to the default group.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/actions/self-hosted-runner-groups?apiVersion=2022-11-28#remove-a-self-hosted-runner-from-a-group-for-an-enterprise
-func (s *EnterpriseService) RemoveEnterpriseRunnerGroupRunners(ctx context.Context, enterprise string, groupID, runnerID int64) (*Response, error) {
+func (s *EnterpriseService) RemoveRunnerGroupRunners(ctx context.Context, enterprise string, groupID, runnerID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runner-groups/%v/runners/%v", enterprise, groupID, runnerID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
