@@ -19,7 +19,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/google/go-github/v54/github"
+	"github.com/google/go-github/v55/github"
 	"golang.org/x/term"
 )
 
@@ -44,7 +44,7 @@ func main() {
 	token := string(byteToken)
 
 	ctx := context.Background()
-	client := github.NewTokenClient(ctx, token)
+	client := github.NewClient(nil).WithAuthToken(token)
 
 	// create new tag protection
 	if pattern != "" {

@@ -24,11 +24,10 @@ import (
 	"time"
 
 	"github.com/google/go-querystring/query"
-	"golang.org/x/oauth2"
 )
 
 const (
-	Version = "v54.0.0"
+	Version = "v55.0.0"
 
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
@@ -306,16 +305,92 @@ func addOptions(s string, opts interface{}) (string, error) {
 
 // NewClient returns a new GitHub API client. If a nil httpClient is
 // provided, a new http.Client will be used. To use API methods which require
-// authentication, provide an http.Client that will perform the authentication
-// for you (such as that provided by the golang.org/x/oauth2 library).
+// authentication, either use Client.WithAuthToken or provide NewClient with
+// an http.Client that will perform the authentication for you (such as that
+// provided by the golang.org/x/oauth2 library).
 func NewClient(httpClient *http.Client) *Client {
-	if httpClient == nil {
-		httpClient = &http.Client{}
-	}
-	baseURL, _ := url.Parse(defaultBaseURL)
-	uploadURL, _ := url.Parse(uploadBaseURL)
+	c := &Client{client: httpClient}
+	c.initialize()
+	return c
+}
 
-	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: defaultUserAgent, UploadURL: uploadURL}
+// WithAuthToken returns a copy of the client configured to use the provided token for the Authorization header.
+func (c *Client) WithAuthToken(token string) *Client {
+	c2 := c.copy()
+	defer c2.initialize()
+	transport := c2.client.Transport
+	if transport == nil {
+		transport = http.DefaultTransport
+	}
+	c2.client.Transport = roundTripperFunc(
+		func(req *http.Request) (*http.Response, error) {
+			req = req.Clone(req.Context())
+			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+			return transport.RoundTrip(req)
+		},
+	)
+	return c2
+}
+
+// WithEnterpriseURLs returns a copy of the client configured to use the provided base and
+// upload URLs. If the base URL does not have the suffix "/api/v3/", it will be added
+// automatically. If the upload URL does not have the suffix "/api/uploads", it will be
+// added automatically.
+//
+// Note that WithEnterpriseURLs is a convenience helper only;
+// its behavior is equivalent to setting the BaseURL and UploadURL fields.
+//
+// Another important thing is that by default, the GitHub Enterprise URL format
+// should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code.
+// The upload URL format should be http(s)://[hostname]/api/uploads/.
+func (c *Client) WithEnterpriseURLs(baseURL, uploadURL string) (*Client, error) {
+	c2 := c.copy()
+	defer c2.initialize()
+	var err error
+	c2.BaseURL, err = url.Parse(baseURL)
+	if err != nil {
+		return nil, err
+	}
+
+	if !strings.HasSuffix(c2.BaseURL.Path, "/") {
+		c2.BaseURL.Path += "/"
+	}
+	if !strings.HasSuffix(c2.BaseURL.Path, "/api/v3/") &&
+		!strings.HasPrefix(c2.BaseURL.Host, "api.") &&
+		!strings.Contains(c2.BaseURL.Host, ".api.") {
+		c2.BaseURL.Path += "api/v3/"
+	}
+
+	c2.UploadURL, err = url.Parse(uploadURL)
+	if err != nil {
+		return nil, err
+	}
+
+	if !strings.HasSuffix(c2.UploadURL.Path, "/") {
+		c2.UploadURL.Path += "/"
+	}
+	if !strings.HasSuffix(c2.UploadURL.Path, "/api/uploads/") &&
+		!strings.HasPrefix(c2.UploadURL.Host, "api.") &&
+		!strings.Contains(c2.UploadURL.Host, ".api.") {
+		c2.UploadURL.Path += "api/uploads/"
+	}
+	return c2, nil
+}
+
+// initialize sets default values and initializes services.
+func (c *Client) initialize() {
+	if c.client == nil {
+		c.client = &http.Client{}
+	}
+	if c.BaseURL == nil {
+		c.BaseURL, _ = url.Parse(defaultBaseURL)
+	}
+	if c.UploadURL == nil {
+		c.UploadURL, _ = url.Parse(uploadBaseURL)
+	}
+	if c.UserAgent == "" {
+		c.UserAgent = defaultUserAgent
+	}
 	c.common.client = c
 	c.Actions = (*ActionsService)(&c.common)
 	c.Activity = (*ActivityService)(&c.common)
@@ -349,7 +424,27 @@ func NewClient(httpClient *http.Client) *Client {
 	c.SecurityAdvisories = (*SecurityAdvisoriesService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
-	return c
+}
+
+// copy returns a copy of the current client. It must be initialized before use.
+func (c *Client) copy() *Client {
+	c.clientMu.Lock()
+	// can't use *c here because that would copy mutexes by value.
+	clone := Client{
+		client:                  c.client,
+		UserAgent:               c.UserAgent,
+		BaseURL:                 c.BaseURL,
+		UploadURL:               c.UploadURL,
+		secondaryRateLimitReset: c.secondaryRateLimitReset,
+	}
+	c.clientMu.Unlock()
+	if clone.client == nil {
+		clone.client = &http.Client{}
+	}
+	c.rateMu.Lock()
+	copy(clone.rateLimits[:], c.rateLimits[:])
+	c.rateMu.Unlock()
+	return &clone
 }
 
 // NewClientWithEnvProxy enhances NewClient with the HttpProxy env.
@@ -358,56 +453,18 @@ func NewClientWithEnvProxy() *Client {
 }
 
 // NewTokenClient returns a new GitHub API client authenticated with the provided token.
-func NewTokenClient(ctx context.Context, token string) *Client {
-	return NewClient(oauth2.NewClient(ctx, oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})))
+// Deprecated: Use NewClient(nil).WithAuthToken(token) instead.
+func NewTokenClient(_ context.Context, token string) *Client {
+	// This always returns a nil error.
+	return NewClient(nil).WithAuthToken(token)
 }
 
 // NewEnterpriseClient returns a new GitHub API client with provided
 // base URL and upload URL (often is your GitHub Enterprise hostname).
-// If the base URL does not have the suffix "/api/v3/", it will be added automatically.
-// If the upload URL does not have the suffix "/api/uploads", it will be added automatically.
-// If a nil httpClient is provided, a new http.Client will be used.
 //
-// Note that NewEnterpriseClient is a convenience helper only;
-// its behavior is equivalent to using NewClient, followed by setting
-// the BaseURL and UploadURL fields.
-//
-// Another important thing is that by default, the GitHub Enterprise URL format
-// should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code.
-// The upload URL format should be http(s)://[hostname]/api/uploads/.
+// Deprecated: Use NewClient(httpClient).WithOptions(WithEnterpriseURLs(baseURL, uploadURL)) instead.
 func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*Client, error) {
-	baseEndpoint, err := url.Parse(baseURL)
-	if err != nil {
-		return nil, err
-	}
-
-	if !strings.HasSuffix(baseEndpoint.Path, "/") {
-		baseEndpoint.Path += "/"
-	}
-	if !strings.HasSuffix(baseEndpoint.Path, "/api/v3/") &&
-		!strings.HasPrefix(baseEndpoint.Host, "api.") &&
-		!strings.Contains(baseEndpoint.Host, ".api.") {
-		baseEndpoint.Path += "api/v3/"
-	}
-
-	uploadEndpoint, err := url.Parse(uploadURL)
-	if err != nil {
-		return nil, err
-	}
-
-	if !strings.HasSuffix(uploadEndpoint.Path, "/") {
-		uploadEndpoint.Path += "/"
-	}
-	if !strings.HasSuffix(uploadEndpoint.Path, "/api/uploads/") &&
-		!strings.HasPrefix(uploadEndpoint.Host, "api.") &&
-		!strings.Contains(uploadEndpoint.Host, ".api.") {
-		uploadEndpoint.Path += "api/uploads/"
-	}
-
-	c := NewClient(httpClient)
-	c.BaseURL = baseEndpoint
-	c.UploadURL = uploadEndpoint
-	return c, nil
+	return NewClient(httpClient).WithEnterpriseURLs(baseURL, uploadURL)
 }
 
 // RequestOption represents an option that can modify an http.Request.
@@ -1539,3 +1596,10 @@ func Int64(v int64) *int64 { return &v }
 // String is a helper routine that allocates a new string value
 // to store v and returns a pointer to it.
 func String(v string) *string { return &v }
+
+// roundTripperFunc creates a RoundTripper (transport)
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
+	return fn(r)
+}
