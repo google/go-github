@@ -4574,6 +4574,38 @@ func (c *CreateCodespaceOptions) GetWorkingDirectory() string {
 	return *c.WorkingDirectory
 }
 
+// GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
+func (c *CreateEnterpriseRunnerGroupRequest) GetAllowsPublicRepositories() bool {
+	if c == nil || c.AllowsPublicRepositories == nil {
+		return false
+	}
+	return *c.AllowsPublicRepositories
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CreateEnterpriseRunnerGroupRequest) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
+func (c *CreateEnterpriseRunnerGroupRequest) GetRestrictedToWorkflows() bool {
+	if c == nil || c.RestrictedToWorkflows == nil {
+		return false
+	}
+	return *c.RestrictedToWorkflows
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (c *CreateEnterpriseRunnerGroupRequest) GetVisibility() string {
+	if c == nil || c.Visibility == nil {
+		return ""
+	}
+	return *c.Visibility
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (c *CreateEvent) GetDescription() string {
 	if c == nil || c.Description == nil {
@@ -6628,6 +6660,94 @@ func (e *Enterprise) GetWebsiteURL() string {
 		return ""
 	}
 	return *e.WebsiteURL
+}
+
+// GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetAllowsPublicRepositories() bool {
+	if e == nil || e.AllowsPublicRepositories == nil {
+		return false
+	}
+	return *e.AllowsPublicRepositories
+}
+
+// GetDefault returns the Default field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetDefault() bool {
+	if e == nil || e.Default == nil {
+		return false
+	}
+	return *e.Default
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetID() int64 {
+	if e == nil || e.ID == nil {
+		return 0
+	}
+	return *e.ID
+}
+
+// GetInherited returns the Inherited field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetInherited() bool {
+	if e == nil || e.Inherited == nil {
+		return false
+	}
+	return *e.Inherited
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetName() string {
+	if e == nil || e.Name == nil {
+		return ""
+	}
+	return *e.Name
+}
+
+// GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetRestrictedToWorkflows() bool {
+	if e == nil || e.RestrictedToWorkflows == nil {
+		return false
+	}
+	return *e.RestrictedToWorkflows
+}
+
+// GetRunnersURL returns the RunnersURL field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetRunnersURL() string {
+	if e == nil || e.RunnersURL == nil {
+		return ""
+	}
+	return *e.RunnersURL
+}
+
+// GetSelectedOrganizationsURL returns the SelectedOrganizationsURL field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetSelectedOrganizationsURL() string {
+	if e == nil || e.SelectedOrganizationsURL == nil {
+		return ""
+	}
+	return *e.SelectedOrganizationsURL
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetVisibility() string {
+	if e == nil || e.Visibility == nil {
+		return ""
+	}
+	return *e.Visibility
+}
+
+// GetWorkflowRestrictionsReadOnly returns the WorkflowRestrictionsReadOnly field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetWorkflowRestrictionsReadOnly() bool {
+	if e == nil || e.WorkflowRestrictionsReadOnly == nil {
+		return false
+	}
+	return *e.WorkflowRestrictionsReadOnly
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroups) GetTotalCount() int {
+	if e == nil || e.TotalCount == nil {
+		return 0
+	}
+	return *e.TotalCount
 }
 
 // GetAdvancedSecurityEnabledForNewRepositories returns the AdvancedSecurityEnabledForNewRepositories field if it's non-nil, zero value otherwise.
@@ -10396,6 +10516,14 @@ func (l *ListExternalGroupsOptions) GetDisplayName() string {
 		return ""
 	}
 	return *l.DisplayName
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (l *ListOrganizations) GetTotalCount() int {
+	if l == nil || l.TotalCount == nil {
+		return 0
+	}
+	return *l.TotalCount
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
@@ -22820,6 +22948,38 @@ func (u *UpdateDefaultSetupConfigurationResponse) GetRunURL() string {
 		return ""
 	}
 	return *u.RunURL
+}
+
+// GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
+func (u *UpdateEnterpriseRunnerGroupRequest) GetAllowsPublicRepositories() bool {
+	if u == nil || u.AllowsPublicRepositories == nil {
+		return false
+	}
+	return *u.AllowsPublicRepositories
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateEnterpriseRunnerGroupRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
+func (u *UpdateEnterpriseRunnerGroupRequest) GetRestrictedToWorkflows() bool {
+	if u == nil || u.RestrictedToWorkflows == nil {
+		return false
+	}
+	return *u.RestrictedToWorkflows
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (u *UpdateEnterpriseRunnerGroupRequest) GetVisibility() string {
+	if u == nil || u.Visibility == nil {
+		return ""
+	}
+	return *u.Visibility
 }
 
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.

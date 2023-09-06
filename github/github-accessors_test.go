@@ -5400,6 +5400,46 @@ func TestCreateCodespaceOptions_GetWorkingDirectory(tt *testing.T) {
 	c.GetWorkingDirectory()
 }
 
+func TestCreateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateEnterpriseRunnerGroupRequest{AllowsPublicRepositories: &zeroValue}
+	c.GetAllowsPublicRepositories()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetAllowsPublicRepositories()
+	c = nil
+	c.GetAllowsPublicRepositories()
+}
+
+func TestCreateEnterpriseRunnerGroupRequest_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CreateEnterpriseRunnerGroupRequest{Name: &zeroValue}
+	c.GetName()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateEnterpriseRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateEnterpriseRunnerGroupRequest{RestrictedToWorkflows: &zeroValue}
+	c.GetRestrictedToWorkflows()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetRestrictedToWorkflows()
+	c = nil
+	c.GetRestrictedToWorkflows()
+}
+
+func TestCreateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	c := &CreateEnterpriseRunnerGroupRequest{Visibility: &zeroValue}
+	c.GetVisibility()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetVisibility()
+	c = nil
+	c.GetVisibility()
+}
+
 func TestCreateEvent_GetDescription(tt *testing.T) {
 	var zeroValue string
 	c := &CreateEvent{Description: &zeroValue}
@@ -7761,6 +7801,116 @@ func TestEnterprise_GetWebsiteURL(tt *testing.T) {
 	e.GetWebsiteURL()
 	e = nil
 	e.GetWebsiteURL()
+}
+
+func TestEnterpriseRunnerGroup_GetAllowsPublicRepositories(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseRunnerGroup{AllowsPublicRepositories: &zeroValue}
+	e.GetAllowsPublicRepositories()
+	e = &EnterpriseRunnerGroup{}
+	e.GetAllowsPublicRepositories()
+	e = nil
+	e.GetAllowsPublicRepositories()
+}
+
+func TestEnterpriseRunnerGroup_GetDefault(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseRunnerGroup{Default: &zeroValue}
+	e.GetDefault()
+	e = &EnterpriseRunnerGroup{}
+	e.GetDefault()
+	e = nil
+	e.GetDefault()
+}
+
+func TestEnterpriseRunnerGroup_GetID(tt *testing.T) {
+	var zeroValue int64
+	e := &EnterpriseRunnerGroup{ID: &zeroValue}
+	e.GetID()
+	e = &EnterpriseRunnerGroup{}
+	e.GetID()
+	e = nil
+	e.GetID()
+}
+
+func TestEnterpriseRunnerGroup_GetInherited(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseRunnerGroup{Inherited: &zeroValue}
+	e.GetInherited()
+	e = &EnterpriseRunnerGroup{}
+	e.GetInherited()
+	e = nil
+	e.GetInherited()
+}
+
+func TestEnterpriseRunnerGroup_GetName(tt *testing.T) {
+	var zeroValue string
+	e := &EnterpriseRunnerGroup{Name: &zeroValue}
+	e.GetName()
+	e = &EnterpriseRunnerGroup{}
+	e.GetName()
+	e = nil
+	e.GetName()
+}
+
+func TestEnterpriseRunnerGroup_GetRestrictedToWorkflows(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseRunnerGroup{RestrictedToWorkflows: &zeroValue}
+	e.GetRestrictedToWorkflows()
+	e = &EnterpriseRunnerGroup{}
+	e.GetRestrictedToWorkflows()
+	e = nil
+	e.GetRestrictedToWorkflows()
+}
+
+func TestEnterpriseRunnerGroup_GetRunnersURL(tt *testing.T) {
+	var zeroValue string
+	e := &EnterpriseRunnerGroup{RunnersURL: &zeroValue}
+	e.GetRunnersURL()
+	e = &EnterpriseRunnerGroup{}
+	e.GetRunnersURL()
+	e = nil
+	e.GetRunnersURL()
+}
+
+func TestEnterpriseRunnerGroup_GetSelectedOrganizationsURL(tt *testing.T) {
+	var zeroValue string
+	e := &EnterpriseRunnerGroup{SelectedOrganizationsURL: &zeroValue}
+	e.GetSelectedOrganizationsURL()
+	e = &EnterpriseRunnerGroup{}
+	e.GetSelectedOrganizationsURL()
+	e = nil
+	e.GetSelectedOrganizationsURL()
+}
+
+func TestEnterpriseRunnerGroup_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	e := &EnterpriseRunnerGroup{Visibility: &zeroValue}
+	e.GetVisibility()
+	e = &EnterpriseRunnerGroup{}
+	e.GetVisibility()
+	e = nil
+	e.GetVisibility()
+}
+
+func TestEnterpriseRunnerGroup_GetWorkflowRestrictionsReadOnly(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseRunnerGroup{WorkflowRestrictionsReadOnly: &zeroValue}
+	e.GetWorkflowRestrictionsReadOnly()
+	e = &EnterpriseRunnerGroup{}
+	e.GetWorkflowRestrictionsReadOnly()
+	e = nil
+	e.GetWorkflowRestrictionsReadOnly()
+}
+
+func TestEnterpriseRunnerGroups_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	e := &EnterpriseRunnerGroups{TotalCount: &zeroValue}
+	e.GetTotalCount()
+	e = &EnterpriseRunnerGroups{}
+	e.GetTotalCount()
+	e = nil
+	e.GetTotalCount()
 }
 
 func TestEnterpriseSecurityAnalysisSettings_GetAdvancedSecurityEnabledForNewRepositories(tt *testing.T) {
@@ -12186,6 +12336,16 @@ func TestListExternalGroupsOptions_GetDisplayName(tt *testing.T) {
 	l.GetDisplayName()
 	l = nil
 	l.GetDisplayName()
+}
+
+func TestListOrganizations_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	l := &ListOrganizations{TotalCount: &zeroValue}
+	l.GetTotalCount()
+	l = &ListOrganizations{}
+	l.GetTotalCount()
+	l = nil
+	l.GetTotalCount()
 }
 
 func TestListRepositories_GetTotalCount(tt *testing.T) {
@@ -26558,6 +26718,46 @@ func TestUpdateDefaultSetupConfigurationResponse_GetRunURL(tt *testing.T) {
 	u.GetRunURL()
 	u = nil
 	u.GetRunURL()
+}
+
+func TestUpdateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
+	var zeroValue bool
+	u := &UpdateEnterpriseRunnerGroupRequest{AllowsPublicRepositories: &zeroValue}
+	u.GetAllowsPublicRepositories()
+	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetAllowsPublicRepositories()
+	u = nil
+	u.GetAllowsPublicRepositories()
+}
+
+func TestUpdateEnterpriseRunnerGroupRequest_GetName(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateEnterpriseRunnerGroupRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateEnterpriseRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
+	var zeroValue bool
+	u := &UpdateEnterpriseRunnerGroupRequest{RestrictedToWorkflows: &zeroValue}
+	u.GetRestrictedToWorkflows()
+	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetRestrictedToWorkflows()
+	u = nil
+	u.GetRestrictedToWorkflows()
+}
+
+func TestUpdateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateEnterpriseRunnerGroupRequest{Visibility: &zeroValue}
+	u.GetVisibility()
+	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetVisibility()
+	u = nil
+	u.GetVisibility()
 }
 
 func TestUpdateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
