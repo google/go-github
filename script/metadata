@@ -1,0 +1,15 @@
+#!/bin/sh
+#/ metadata builds and runs tools/metadata with the given arguments.
+
+set -e
+
+REPO_DIR="$(CDPATH="" cd -- "$(dirname -- "$0")/.." && pwd -P)"
+
+mkdir -p "$REPO_DIR"/bin
+
+(
+  cd "$REPO_DIR"/tools
+  go build -o "$REPO_DIR"/bin/metadata ./metadata
+)
+
+exec "$REPO_DIR"/bin/metadata "$@"

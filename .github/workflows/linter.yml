@@ -18,15 +18,18 @@ jobs:
           - ""
           - example
           - scrape
-          - update-urls
+          - tools
     runs-on: ${{ matrix.platform }}
 
     steps:
     - uses: actions/checkout@v4
+    - uses: actions/setup-go@v4
+      with:
+        go-version: 1.x
 
     - name: golangci-lint ${{ matrix.working-directory }}
       uses: golangci/golangci-lint-action@v3
       with:
-        version: latest
+        version: v1.54.2
         working-directory: ${{ matrix.working-directory}}
         args: --verbose

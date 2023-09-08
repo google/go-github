@@ -1,0 +1,50 @@
+#!/bin/sh
+#/ diff-check checks whether running the given command results in changes to the repo.
+#/ The given command is run with a working directory that is the top level of the repo in a
+#/ temporary git worktree. The command exits non-zero and outputs the diff if the command results
+#/ in changes to the worktree.
+#/
+#/ Usage: script/diff-check <command>
+#/
+#/ Example:
+#/   script/diff-check 'go generate ./...'
+
+set -e
+
+CDPATH="" cd -- "$(dirname -- "$0")/.."
+
+usage() {
+  grep '^#/' "$0" | cut -c4-
+  exit 1
+}
+
+if [ "$1" = "--help" ]; then
+  usage
+fi
+
+if [ $# -ne 1 ]; then
+  usage
+fi
+
+GENTEMP="$(mktemp -d)"
+git worktree add -q --detach "$GENTEMP"
+trap 'git worktree remove -f "$GENTEMP"; rm -rf "$GENTEMP"' EXIT
+for f in $(git ls-files -com --exclude-standard); do
+  target="$GENTEMP/$f"
+  mkdir -p "$(dirname -- "$target")"
+  cp "$f" "$target"
+done
+if [ -f "$(pwd)"/bin ]; then
+  ln -s "$(pwd)"/bin "$GENTEMP"/bin
+fi
+
+cd "$GENTEMP"
+git add .
+git -c user.name='bot' -c user.email='bot@localhost' commit -m "diff-check" -q --allow-empty
+sh -c "$*"
+git add -N .
+[ -z "$(git status --porcelain)" ] || {
+  echo "$* resulted in changes." 1>&2
+  git diff -u . "$GENTEMP"
+  exit 1
+}
