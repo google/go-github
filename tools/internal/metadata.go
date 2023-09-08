@@ -271,6 +271,9 @@ func UpdateDocLinks(meta *Metadata, dir string) error {
 		if err != nil {
 			return err
 		}
+		if bytes.Equal(content, updatedContent) {
+			return nil
+		}
 		f, err := os.Create(path)
 		if err != nil {
 			return err
