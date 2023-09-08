@@ -109,7 +109,7 @@ func testFormValues(t *testing.T, r *http.Request, values values) {
 		want.Set(k, v)
 	}
 
-	r.ParseForm()
+	assertNilError(t, r.ParseForm())
 	if got := r.Form; !cmp.Equal(got, want) {
 		t.Errorf("Request parameters: %v, want %v", got, want)
 	}
@@ -273,6 +273,19 @@ func testErrorResponseForStatusCode(t *testing.T, code int) {
 	default:
 		t.Error("Unknown error response type")
 	}
+}
+
+func assertNilError(t *testing.T, err error) {
+	t.Helper()
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
+
+func assertWrite(t *testing.T, w io.Writer, data []byte) {
+	t.Helper()
+	_, err := w.Write(data)
+	assertNilError(t, err)
 }
 
 func TestNewClient(t *testing.T) {
@@ -991,7 +1004,8 @@ func TestDo(t *testing.T) {
 	req, _ := client.NewRequest("GET", ".", nil)
 	body := new(foo)
 	ctx := context.Background()
-	client.Do(ctx, req, body)
+	_, err := client.Do(ctx, req, body)
+	assertNilError(t, err)
 
 	want := &foo{"a"}
 	if !cmp.Equal(body, want) {
@@ -1266,11 +1280,14 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	// First request is made, and it makes the client aware of rate reset time being in the future.
 	req, _ := client.NewRequest("GET", "first", nil)
 	ctx := context.Background()
-	client.Do(ctx, req, nil)
+	_, err := client.Do(ctx, req, nil)
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
 
 	// Second request should not cause a network call to be made, since client can predict a rate limit error.
 	req, _ = client.NewRequest("GET", "second", nil)
-	_, err := client.Do(ctx, req, nil)
+	_, err = client.Do(ctx, req, nil)
 
 	if madeNetworkCall {
 		t.Fatal("Network call was made, even though rate limit is known to still be exceeded.")
@@ -1323,11 +1340,14 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 	// First request is made so afterwards we can check the returned rate limit headers were ignored.
 	req, _ := client.NewRequest("GET", "first", nil)
 	ctx := context.Background()
-	client.Do(ctx, req, nil)
+	_, err := client.Do(ctx, req, nil)
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
 
 	// Second request should not by hindered by rate limits.
 	req, _ = client.NewRequest("GET", "second", nil)
-	_, err := client.Do(ctx, req, nil)
+	_, err = client.Do(ctx, req, nil)
 
 	if err != nil {
 		t.Fatalf("Second request failed, even though the rate limits from the cache should've been ignored: %v", err)
@@ -2393,7 +2413,8 @@ func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 	unauthedClient.BaseURL = client.BaseURL
 	req, _ := unauthedClient.NewRequest("GET", ".", nil)
 	ctx := context.Background()
-	unauthedClient.Do(ctx, req, nil)
+	_, err := unauthedClient.Do(ctx, req, nil)
+	assertNilError(t, err)
 }
 
 func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
@@ -2468,7 +2489,8 @@ func TestBasicAuthTransport(t *testing.T) {
 	basicAuthClient.BaseURL = client.BaseURL
 	req, _ := basicAuthClient.NewRequest("GET", ".", nil)
 	ctx := context.Background()
-	basicAuthClient.Do(ctx, req, nil)
+	_, err := basicAuthClient.Do(ctx, req, nil)
+	assertNilError(t, err)
 }
 
 func TestBasicAuthTransport_transport(t *testing.T) {

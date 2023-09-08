@@ -184,7 +184,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		v := new(CreateUpdateEnvironment)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		want := &CreateUpdateEnvironment{WaitTimer: Int(30), CanAdminsBypass: Bool(true)}
@@ -229,7 +229,7 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		v := new(CreateUpdateEnvironment)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if callCount == 0 {
@@ -269,7 +269,7 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createUpdateEnvironmentNoEnterprise)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		want := &createUpdateEnvironmentNoEnterprise{

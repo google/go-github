@@ -134,7 +134,7 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 		var gpgKey struct {
 			ArmoredPublicKey *string `json:"armored_public_key,omitempty"`
 		}
-		json.NewDecoder(r.Body).Decode(&gpgKey)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&gpgKey))
 
 		testMethod(t, r, "POST")
 		if gpgKey.ArmoredPublicKey == nil || *gpgKey.ArmoredPublicKey != input {

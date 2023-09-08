@@ -38,14 +38,14 @@ func TestIssueImportService_Create(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
 		v := new(IssueImportRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
 		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
-		w.Write(issueImportResponseJSON)
+		assertWrite(t, w, issueImportResponseJSON)
 	})
 
 	ctx := context.Background()
@@ -96,7 +96,7 @@ func TestIssueImportService_Create_defered(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
 		v := new(IssueImportRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
 		if !cmp.Equal(v, input) {
@@ -104,7 +104,7 @@ func TestIssueImportService_Create_defered(t *testing.T) {
 		}
 
 		w.WriteHeader(http.StatusAccepted)
-		w.Write(issueImportResponseJSON)
+		assertWrite(t, w, issueImportResponseJSON)
 	})
 
 	ctx := context.Background()
@@ -142,7 +142,7 @@ func TestIssueImportService_Create_badResponse(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
 		v := new(IssueImportRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
 		if !cmp.Equal(v, input) {
@@ -150,7 +150,7 @@ func TestIssueImportService_Create_badResponse(t *testing.T) {
 		}
 
 		w.WriteHeader(http.StatusAccepted)
-		w.Write([]byte("{[}"))
+		assertWrite(t, w, []byte("{[}"))
 	})
 
 	ctx := context.Background()
@@ -178,7 +178,7 @@ func TestIssueImportService_CheckStatus(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
 		w.WriteHeader(http.StatusOK)
-		w.Write(issueImportResponseJSON)
+		assertWrite(t, w, issueImportResponseJSON)
 	})
 
 	ctx := context.Background()
@@ -224,7 +224,7 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(fmt.Sprintf("[%s]", issueImportResponseJSON)))
+		assertWrite(t, w, []byte(fmt.Sprintf("[%s]", issueImportResponseJSON)))
 	})
 
 	ctx := context.Background()
@@ -261,7 +261,7 @@ func TestIssueImportService_CheckStatusSince_badResponse(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("{badly-formed JSON"))
+		assertWrite(t, w, []byte("{badly-formed JSON"))
 	})
 
 	ctx := context.Background()

@@ -474,7 +474,7 @@ func findAllServices(pkgs map[string]*ast.Package) servicesMap {
 			}
 
 			logf("Step 1 - Processing %v ...", filename)
-			if err := findClientServices(filename, f, services); err != nil {
+			if err := findClientServices(f, services); err != nil {
 				log.Fatal(err)
 			}
 		}
@@ -581,12 +581,14 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID, filename string, pos to
 
 	logf("GET %q ...", fullURL)
 	time.Sleep(httpGetDelay)
+	//nolint:gosec // G107: Potential HTTP request made with variable url
 	resp, err := http.Get(fullURL)
 	check("Unable to get URL: %v: %v", fullURL, err)
 	switch resp.StatusCode {
 	case http.StatusTooManyRequests, http.StatusServiceUnavailable:
 		logf("Sleeping 60 seconds and trying again...")
 		time.Sleep(60 * time.Second)
+		//nolint:gosec // G107: Potential HTTP request made with variable url
 		resp, err = http.Get(fullURL)
 		check("Unable to get URL: %v: %v", fullURL, err)
 	case http.StatusOK:
@@ -602,7 +604,7 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID, filename string, pos to
 	b, err := io.ReadAll(resp.Body)
 	check("Unable to read body of URL: %v, %v", url, err)
 	check("Unable to close body of URL: %v, %v", url, resp.Body.Close())
-	dc.apiDocs[url], err = parseWebPageEndpoints(string(b))
+	dc.apiDocs[url] = parseWebPageEndpoints(string(b))
 	check("Unable to parse web page endpoints: url: %v, filename: %v, err: %v", url, filename, err)
 	logf("Found %v web page fragment identifiers.", len(dc.apiDocs[url]))
 	if len(dc.apiDocs[url]) == 0 {
@@ -1138,7 +1140,7 @@ func processCallExpr(expr *ast.CallExpr) (recv, funcName string, args []string) 
 }
 
 // findClientServices finds all go-github services from the Client struct.
-func findClientServices(filename string, f *ast.File, services servicesMap) error {
+func findClientServices(f *ast.File, services servicesMap) error {
 	for _, decl := range f.Decls {
 		switch decl := decl.(type) {
 		case *ast.GenDecl:
@@ -1196,7 +1198,7 @@ func endpointsEqual(a, b *Endpoint) bool {
 
 // parseWebPageEndpoints returns endpoint information, mapped by
 // web page fragment identifier.
-func parseWebPageEndpoints(buf string) (map[string][]*Endpoint, error) {
+func parseWebPageEndpoints(buf string) map[string][]*Endpoint {
 	result := map[string][]*Endpoint{}
 
 	// The GitHub v3 API web pages do not appear to be auto-generated
@@ -1259,7 +1261,7 @@ func parseWebPageEndpoints(buf string) (map[string][]*Endpoint, error) {
 		}
 	}
 
-	return result, nil
+	return result
 }
 
 func stripHTML(s string) string {

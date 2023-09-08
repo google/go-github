@@ -60,7 +60,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
 		v := new(SarifAnalysis)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		testMethod(t, r, "POST")
 		want := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: String("codeql-cli")}
 		if !cmp.Equal(v, want) {
@@ -316,7 +316,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(alerts, want) {
-		t.Errorf("CodeScanning.ListAlertsForOrg returned %+v, want %+v", *&alerts, *&want)
+		t.Errorf("CodeScanning.ListAlertsForOrg returned %+v, want %+v", alerts, want)
 	}
 
 	const methodName = "ListAlertsForOrg"
@@ -442,7 +442,7 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(alerts, want) {
-		t.Errorf("CodeScanning.ListAlertsForOrg returned %+v, want %+v", *&alerts, *&want)
+		t.Errorf("CodeScanning.ListAlertsForOrg returned %+v, want %+v", alerts, want)
 	}
 
 	const methodName = "ListAlertsForOrg"

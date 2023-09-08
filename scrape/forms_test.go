@@ -94,7 +94,10 @@ func Test_FetchAndSumbitForm(t *testing.T) {
 		</form></html>`)
 	})
 	mux.HandleFunc("/submit", func(w http.ResponseWriter, r *http.Request) {
-		r.ParseForm()
+		err := r.ParseForm()
+		if err != nil {
+			t.Errorf("error parsing form: %v", err)
+		}
 		want := url.Values{"hidden": {"h"}, "name": {"n"}}
 		if got := r.Form; !cmp.Equal(got, want) {
 			t.Errorf("submitted form contained values %v, want %v", got, want)
@@ -103,7 +106,10 @@ func Test_FetchAndSumbitForm(t *testing.T) {
 	})
 
 	setValues := func(values url.Values) { values.Set("name", "n") }
-	fetchAndSubmitForm(client.Client, client.baseURL.String()+"/", setValues)
+	_, err := fetchAndSubmitForm(client.Client, client.baseURL.String()+"/", setValues)
+	if err != nil {
+		t.Errorf("fetchAndSubmitForm returned err: %v", err)
+	}
 	if !submitted {
 		t.Error("form was never submitted")
 	}

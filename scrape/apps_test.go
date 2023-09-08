@@ -33,7 +33,7 @@ func Test_AppRestrictionsEnabled(t *testing.T) {
 			defer cleanup()
 
 			mux.HandleFunc("/organizations/o/settings/oauth_application_policy", func(w http.ResponseWriter, r *http.Request) {
-				copyTestFile(w, tt.testFile)
+				copyTestFile(t, w, tt.testFile)
 			})
 
 			got, err := client.AppRestrictionsEnabled("o")
@@ -52,7 +52,7 @@ func Test_ListOAuthApps(t *testing.T) {
 	defer cleanup()
 
 	mux.HandleFunc("/organizations/e/settings/oauth_application_policy", func(w http.ResponseWriter, r *http.Request) {
-		copyTestFile(w, "access-restrictions-enabled.html")
+		copyTestFile(t, w, "access-restrictions-enabled.html")
 	})
 
 	got, err := client.ListOAuthApps("e")
