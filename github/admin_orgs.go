@@ -22,7 +22,7 @@ type createOrgRequest struct {
 // Note that only a subset of the org fields are used and org must
 // not be nil.
 //
-// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#create-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-server@3.10/rest/enterprise-admin/orgs#create-an-organization
 func (s *AdminService) CreateOrg(ctx context.Context, org *Organization, admin string) (*Organization, *Response, error) {
 	u := "admin/organizations"
 
@@ -59,14 +59,14 @@ type RenameOrgResponse struct {
 
 // RenameOrg renames an organization in GitHub Enterprise.
 //
-// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#rename-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-server@3.10/rest/enterprise-admin/orgs#update-an-organization-name
 func (s *AdminService) RenameOrg(ctx context.Context, org *Organization, newName string) (*RenameOrgResponse, *Response, error) {
 	return s.RenameOrgByName(ctx, *org.Login, newName)
 }
 
 // RenameOrgByName renames an organization in GitHub Enterprise using its current name.
 //
-// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#rename-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-server@3.10/rest/enterprise-admin/orgs#update-an-organization-name
 func (s *AdminService) RenameOrgByName(ctx context.Context, org, newName string) (*RenameOrgResponse, *Response, error) {
 	u := fmt.Sprintf("admin/organizations/%v", org)
 

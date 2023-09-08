@@ -68,8 +68,8 @@ type PullRequestListCommentsOptions struct {
 // pull request number of 0 will return all comments on all pull requests for
 // the repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/comments#list-review-comments-on-a-pull-request
-// GitHub API docs: https://docs.github.com/en/rest/pulls/comments#list-review-comments-in-a-repository
+// GitHub API docs: https://docs.github.com/rest/pulls/comments#list-review-comments-in-a-repository
+// GitHub API docs: https://docs.github.com/rest/pulls/comments#list-review-comments-on-a-pull-request
 func (s *PullRequestsService) ListComments(ctx context.Context, owner, repo string, number int, opts *PullRequestListCommentsOptions) ([]*PullRequestComment, *Response, error) {
 	var u string
 	if number == 0 {
@@ -102,7 +102,7 @@ func (s *PullRequestsService) ListComments(ctx context.Context, owner, repo stri
 
 // GetComment fetches the specified pull request comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/comments#get-a-review-comment-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/comments#get-a-review-comment-for-a-pull-request
 func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string, commentID int64) (*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -125,7 +125,7 @@ func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string
 
 // CreateComment creates a new comment on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/comments#create-a-review-comment-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/comments#create-a-review-comment-for-a-pull-request
 func (s *PullRequestsService) CreateComment(ctx context.Context, owner, repo string, number int, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/comments", owner, repo, number)
 	req, err := s.client.NewRequest("POST", u, comment)
@@ -147,7 +147,7 @@ func (s *PullRequestsService) CreateComment(ctx context.Context, owner, repo str
 
 // CreateCommentInReplyTo creates a new comment as a reply to an existing pull request comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/comments#create-a-review-comment-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/comments#create-a-review-comment-for-a-pull-request
 func (s *PullRequestsService) CreateCommentInReplyTo(ctx context.Context, owner, repo string, number int, body string, commentID int64) (*PullRequestComment, *Response, error) {
 	comment := &struct {
 		Body      string `json:"body,omitempty"`
@@ -174,7 +174,7 @@ func (s *PullRequestsService) CreateCommentInReplyTo(ctx context.Context, owner,
 // EditComment updates a pull request comment.
 // A non-nil comment.Body must be provided. Other comment fields should be left nil.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/comments#update-a-review-comment-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/comments#update-a-review-comment-for-a-pull-request
 func (s *PullRequestsService) EditComment(ctx context.Context, owner, repo string, commentID int64, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
 	req, err := s.client.NewRequest("PATCH", u, comment)
@@ -193,7 +193,7 @@ func (s *PullRequestsService) EditComment(ctx context.Context, owner, repo strin
 
 // DeleteComment deletes a pull request comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/comments#delete-a-review-comment-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/comments#delete-a-review-comment-for-a-pull-request
 func (s *PullRequestsService) DeleteComment(ctx context.Context, owner, repo string, commentID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
 	req, err := s.client.NewRequest("DELETE", u, nil)

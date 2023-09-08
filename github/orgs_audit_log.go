@@ -133,7 +133,7 @@ type AuditEntryData struct {
 
 // GetAuditLog gets the audit-log entries for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#get-the-audit-log-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest//rest/orgs/orgs#get-the-audit-log-for-an-organization
 func (s *OrganizationsService) GetAuditLog(ctx context.Context, org string, opts *GetAuditLogOptions) ([]*AuditEntry, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/audit-log", org)
 	u, err := addOptions(u, opts)

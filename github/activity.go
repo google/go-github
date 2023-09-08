@@ -57,6 +57,8 @@ type FeedLinks struct {
 //
 // Note: Private feeds are only returned when authenticating via Basic Auth
 // since current feed URIs use the older, non revocable auth tokens.
+//
+// GitHub API docs: https://docs.github.com/rest/activity/feeds#get-feeds
 func (s *ActivityService) ListFeeds(ctx context.Context) (*Feeds, *Response, error) {
 	req, err := s.client.NewRequest("GET", "feeds", nil)
 	if err != nil {

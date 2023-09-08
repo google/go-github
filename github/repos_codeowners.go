@@ -28,7 +28,7 @@ type CodeownersError struct {
 
 // GetCodeownersErrors lists any syntax errors that are detected in the CODEOWNERS file.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-codeowners-errors
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-codeowners-errors
 func (s *RepositoriesService) GetCodeownersErrors(ctx context.Context, owner, repo string) (*CodeownersErrors, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codeowners/errors", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)

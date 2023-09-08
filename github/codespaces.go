@@ -90,7 +90,7 @@ type ListCodespaces struct {
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have read access to the codespaces repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#list-codespaces-in-a-repository-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#list-codespaces-in-a-repository-for-the-authenticated-user
 func (s *CodespacesService) ListInRepo(ctx context.Context, owner, repo string, opts *ListOptions) (*ListCodespaces, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces", owner, repo)
 	u, err := addOptions(u, opts)
@@ -124,7 +124,7 @@ type ListCodespacesOptions struct {
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have read access to the codespaces repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#list-codespaces-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#list-codespaces-for-the-authenticated-user
 func (s *CodespacesService) List(ctx context.Context, opts *ListCodespacesOptions) (*ListCodespaces, *Response, error) {
 	u := "user/codespaces"
 	u, err := addOptions(u, opts)
@@ -172,7 +172,7 @@ type CreateCodespaceOptions struct {
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have write access to the codespaces repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#create-a-codespace-in-a-repository
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#create-a-codespace-in-a-repository
 func (s *CodespacesService) CreateInRepo(ctx context.Context, owner, repo string, request *CreateCodespaceOptions) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces", owner, repo)
 
@@ -195,7 +195,7 @@ func (s *CodespacesService) CreateInRepo(ctx context.Context, owner, repo string
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have write access to the codespaces_lifecycle_admin repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#start-a-codespace-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#start-a-codespace-for-the-authenticated-user
 func (s *CodespacesService) Start(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v/start", codespaceName)
 
@@ -218,7 +218,7 @@ func (s *CodespacesService) Start(ctx context.Context, codespaceName string) (*C
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have write access to the codespaces_lifecycle_admin repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#stop-a-codespace-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#stop-a-codespace-for-the-authenticated-user
 func (s *CodespacesService) Stop(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v/stop", codespaceName)
 
@@ -241,7 +241,7 @@ func (s *CodespacesService) Stop(ctx context.Context, codespaceName string) (*Co
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have write access to the codespaces repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/codespaces?apiVersion=2022-11-28#delete-a-codespace-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#delete-a-codespace-for-the-authenticated-user
 func (s *CodespacesService) Delete(ctx context.Context, codespaceName string) (*Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v", codespaceName)
 

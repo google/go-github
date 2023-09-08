@@ -235,7 +235,7 @@ type SarifID struct {
 // You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
 // read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#list-code-scanning-alerts-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#list-code-scanning-alerts-for-an-organization
 func (s *CodeScanningService) ListAlertsForOrg(ctx context.Context, org string, opts *AlertListOptions) ([]*Alert, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-scanning/alerts", org)
 	u, err := addOptions(u, opts)
@@ -263,7 +263,7 @@ func (s *CodeScanningService) ListAlertsForOrg(ctx context.Context, org string, 
 // You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
 // read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#list-code-scanning-alerts-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#list-code-scanning-alerts-for-a-repository
 func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo string, opts *AlertListOptions) ([]*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts", owner, repo)
 	u, err := addOptions(u, opts)
@@ -292,7 +292,7 @@ func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo
 //
 // The security alert_id is the number at the end of the security alert's URL.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#get-a-code-scanning-alert
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#get-a-code-scanning-alert
 func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, id int64) (*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 
@@ -317,7 +317,7 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 //
 // The security alert_id is the number at the end of the security alert's URL.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-alert
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#update-a-code-scanning-alert
 func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, stateInfo *CodeScanningAlertState) (*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 
@@ -340,7 +340,7 @@ func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo strin
 // You must use an access token with the security_events scope to use this endpoint.
 // GitHub Apps must have the security_events read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#list-instances-of-a-code-scanning-alert
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#list-instances-of-a-code-scanning-alert
 func (s *CodeScanningService) ListAlertInstances(ctx context.Context, owner, repo string, id int64, opts *AlertInstancesListOptions) ([]*MostRecentInstance, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v/instances", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -368,7 +368,7 @@ func (s *CodeScanningService) ListAlertInstances(ctx context.Context, owner, rep
 // You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
 // write permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#upload-an-analysis-as-sarif-data
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#upload-an-analysis-as-sarif-data
 func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, sarif *SarifAnalysis) (*SarifID, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs", owner, repo)
 
@@ -400,7 +400,7 @@ type SARIFUpload struct {
 // You must use an access token with the security_events scope to use this endpoint.
 // GitHub Apps must have the security_events read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#get-information-about-a-sarif-upload
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#get-information-about-a-sarif-upload
 func (s *CodeScanningService) GetSARIF(ctx context.Context, owner, repo, sarifID string) (*SARIFUpload, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs/%v", owner, repo, sarifID)
 
@@ -424,7 +424,7 @@ func (s *CodeScanningService) GetSARIF(ctx context.Context, owner, repo, sarifID
 // You must use an access token with the security_events scope to use this endpoint.
 // GitHub Apps must have the security_events read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#list-code-scanning-analyses-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#list-code-scanning-analyses-for-a-repository
 func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, repo string, opts *AnalysesListOptions) ([]*ScanningAnalysis, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses", owner, repo)
 	u, err := addOptions(u, opts)
@@ -453,7 +453,7 @@ func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, re
 //
 // The security analysis_id is the ID of the analysis, as returned from the ListAnalysesForRepo operation.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#get-a-code-scanning-analysis-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#get-a-code-scanning-analysis-for-a-repository
 func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo string, id int64) (*ScanningAnalysis, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses/%v", owner, repo, id)
 
@@ -486,7 +486,7 @@ type DeleteAnalysis struct {
 //
 // The security analysis_id is the ID of the analysis, as returned from the ListAnalysesForRepo operation.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#delete-a-code-scanning-analysis-from-a-repository
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#delete-a-code-scanning-analysis-from-a-repository
 func (s *CodeScanningService) DeleteAnalysis(ctx context.Context, owner, repo string, id int64) (*DeleteAnalysis, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses/%v", owner, repo, id)
 
@@ -509,7 +509,7 @@ func (s *CodeScanningService) DeleteAnalysis(ctx context.Context, owner, repo st
 // You must use an access token with the security_events scope to use this endpoint.
 // GitHub Apps must have the contents read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#list-codeql-databases-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#list-codeql-databases-for-a-repository
 func (s *CodeScanningService) ListCodeQLDatabases(ctx context.Context, owner, repo string) ([]*CodeQLDatabase, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/codeql/databases", owner, repo)
 
@@ -532,7 +532,7 @@ func (s *CodeScanningService) ListCodeQLDatabases(ctx context.Context, owner, re
 // You must use an access token with the security_events scope to use this endpoint.
 // GitHub Apps must have the contents read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#get-a-codeql-database-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#get-a-codeql-database-for-a-repository
 func (s *CodeScanningService) GetCodeQLDatabase(ctx context.Context, owner, repo, language string) (*CodeQLDatabase, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/codeql/databases/%v", owner, repo, language)
 
@@ -564,7 +564,7 @@ type DefaultSetupConfiguration struct {
 // endpoint with private repos or the public_repo scope for public repos. GitHub Apps must have the repo write
 // permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#get-a-code-scanning-default-setup-configuration
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#get-a-code-scanning-default-setup-configuration
 func (s *CodeScanningService) GetDefaultSetupConfiguration(ctx context.Context, owner, repo string) (*DefaultSetupConfiguration, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/code-scanning/default-setup", owner, repo)
 
@@ -605,7 +605,7 @@ type UpdateDefaultSetupConfigurationResponse struct {
 // This method might return an AcceptedError and a status code of 202. This is because this is the status that GitHub
 // returns to signify that it has now scheduled the update of the pull request branch in a background task.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/code-scanning#update-a-code-scanning-default-setup-configuration
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#update-a-code-scanning-default-setup-configuration
 func (s *CodeScanningService) UpdateDefaultSetupConfiguration(ctx context.Context, owner, repo string, options *UpdateDefaultSetupConfigurationOptions) (*UpdateDefaultSetupConfigurationResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/code-scanning/default-setup", owner, repo)
 

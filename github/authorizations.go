@@ -143,7 +143,7 @@ func (a AuthorizationUpdateRequest) String() string {
 //
 // The returned Authorization.User field will be populated.
 //
-// GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#check-a-token
+// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications#check-a-token
 func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
@@ -176,7 +176,7 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken
 //
 // The returned Authorization.User field will be populated.
 //
-// GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#reset-a-token
+// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications#reset-a-token
 func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
@@ -205,7 +205,7 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken
 // username is the OAuth application clientID, and the password is its
 // clientSecret. Invalid tokens will return a 404 Not Found.
 //
-// GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#delete-an-app-token
+// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications#delete-an-app-token
 func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToken string) (*Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
@@ -226,7 +226,7 @@ func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToke
 // grant will also delete all OAuth tokens associated with the application for
 // the user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#delete-an-app-authorization
+// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications#delete-an-app-authorization
 func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, accessToken string) (*Response, error) {
 	u := fmt.Sprintf("applications/%v/grant", clientID)
 
@@ -249,7 +249,7 @@ func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, acces
 // you can e.g. create or delete a user's public SSH key. NOTE: creating a
 // new token automatically revokes an existing one.
 //
-// GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-an-impersonation-oauth-token
+// GitHub API docs: https://docs.github.com/enterprise-server@3.10/rest/enterprise-admin/users#create-an-impersonation-oauth-token
 func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, username string, authReq *AuthorizationRequest) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 	req, err := s.client.NewRequest("POST", u, authReq)
@@ -269,7 +269,7 @@ func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, usernam
 //
 // NOTE: there can be only one at a time.
 //
-// GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-an-impersonation-oauth-token
+// GitHub API docs: https://docs.github.com/enterprise-server@3.10/rest/enterprise-admin/users#delete-an-impersonation-oauth-token
 func (s *AuthorizationsService) DeleteImpersonation(ctx context.Context, username string) (*Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 	req, err := s.client.NewRequest("DELETE", u, nil)

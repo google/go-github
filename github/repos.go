@@ -264,8 +264,8 @@ func (d DependabotSecurityUpdates) String() string {
 // List the repositories for a user. Passing the empty string will list
 // repositories for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repositories-for-a-user
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repositories-for-a-user
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repositories-for-the-authenticated-user
 func (s *RepositoriesService) List(ctx context.Context, user string, opts *RepositoryListOptions) ([]*Repository, *Response, error) {
 	var u string
 	if user != "" {
@@ -316,7 +316,7 @@ type RepositoryListByOrgOptions struct {
 
 // ListByOrg lists the repositories for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-organization-repositories
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-organization-repositories
 func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opts *RepositoryListByOrgOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/repos", org)
 	u, err := addOptions(u, opts)
@@ -351,7 +351,7 @@ type RepositoryListAllOptions struct {
 
 // ListAll lists all GitHub repositories in the order that they were created.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-public-repositories
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-public-repositories
 func (s *RepositoriesService) ListAll(ctx context.Context, opts *RepositoryListAllOptions) ([]*Repository, *Response, error) {
 	u, err := addOptions("repositories", opts)
 	if err != nil {
@@ -423,8 +423,8 @@ type createRepoRequest struct {
 // changes propagate throughout its servers. You may set up a loop with
 // exponential back-off to verify repository's creation.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#create-a-repository-for-the-authenticated-user
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#create-an-organization-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#create-a-repository-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/repos/repos#create-an-organization-repository
 func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repository) (*Repository, *Response, error) {
 	var u string
 	if org != "" {
@@ -491,7 +491,7 @@ type TemplateRepoRequest struct {
 
 // CreateFromTemplate generates a repository from a template.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#create-a-repository-using-a-template
+// GitHub API docs: https://docs.github.com/rest/repos/repos#create-a-repository-using-a-template
 func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOwner, templateRepo string, templateRepoReq *TemplateRepoRequest) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/generate", templateOwner, templateRepo)
 
@@ -512,7 +512,7 @@ func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOw
 
 // Get fetches a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#get-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#get-a-repository
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -543,7 +543,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 // Note that https://docs.github.com/en/rest/codes-of-conduct#about-the-codes-of-conduct-api
 // says to use the GET /repos/{owner}/{repo} endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#update-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#get-a-repository
 func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -584,7 +584,7 @@ func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repositor
 
 // Edit updates a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#update-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#update-a-repository
 func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repository *Repository) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("PATCH", u, repository)
@@ -605,7 +605,7 @@ func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repo
 
 // Delete a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#delete-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#delete-a-repository
 func (s *RepositoriesService) Delete(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -652,7 +652,7 @@ type ListContributorsOptions struct {
 
 // GetVulnerabilityAlerts checks if vulnerability alerts are enabled for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#check-if-vulnerability-alerts-are-enabled-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#check-if-vulnerability-alerts-are-enabled-for-a-repository
 func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner, repository string) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/vulnerability-alerts", owner, repository)
 
@@ -671,7 +671,7 @@ func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner,
 
 // EnableVulnerabilityAlerts enables vulnerability alerts and the dependency graph for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#enable-vulnerability-alerts
+// GitHub API docs: https://docs.github.com/rest/repos/repos#enable-vulnerability-alerts
 func (s *RepositoriesService) EnableVulnerabilityAlerts(ctx context.Context, owner, repository string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/vulnerability-alerts", owner, repository)
 
@@ -688,7 +688,7 @@ func (s *RepositoriesService) EnableVulnerabilityAlerts(ctx context.Context, own
 
 // DisableVulnerabilityAlerts disables vulnerability alerts and the dependency graph for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#disable-vulnerability-alerts
+// GitHub API docs: https://docs.github.com/rest/repos/repos#disable-vulnerability-alerts
 func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, owner, repository string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/vulnerability-alerts", owner, repository)
 
@@ -705,7 +705,7 @@ func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, ow
 
 // GetAutomatedSecurityFixes checks if the automated security fixes for a repository are enabled.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#check-if-automated-security-fixes-are-enabled-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#check-if-automated-security-fixes-are-enabled-for-a-repository
 func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*AutomatedSecurityFixes, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/automated-security-fixes", owner, repository)
 
@@ -724,7 +724,7 @@ func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, own
 
 // EnableAutomatedSecurityFixes enables the automated security fixes for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#enable-automated-security-fixes
+// GitHub API docs: https://docs.github.com/rest/repos/repos#enable-automated-security-fixes
 func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/automated-security-fixes", owner, repository)
 
@@ -738,7 +738,7 @@ func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, 
 
 // DisableAutomatedSecurityFixes disables vulnerability alerts and the dependency graph for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#disable-automated-security-fixes
+// GitHub API docs: https://docs.github.com/rest/repos/repos#disable-automated-security-fixes
 func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/automated-security-fixes", owner, repository)
 
@@ -752,7 +752,7 @@ func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context,
 
 // ListContributors lists contributors for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repository-contributors
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-contributors
 func (s *RepositoriesService) ListContributors(ctx context.Context, owner string, repository string, opts *ListContributorsOptions) ([]*Contributor, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/contributors", owner, repository)
 	u, err := addOptions(u, opts)
@@ -783,7 +783,7 @@ func (s *RepositoriesService) ListContributors(ctx context.Context, owner string
 //	  "Python": 7769
 //	}
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repository-languages
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-languages
 func (s *RepositoriesService) ListLanguages(ctx context.Context, owner string, repo string) (map[string]int, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/languages", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -802,7 +802,7 @@ func (s *RepositoriesService) ListLanguages(ctx context.Context, owner string, r
 
 // ListTeams lists the teams for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repository-teams
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-teams
 func (s *RepositoriesService) ListTeams(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/teams", owner, repo)
 	u, err := addOptions(u, opts)
@@ -834,7 +834,7 @@ type RepositoryTag struct {
 
 // ListTags lists tags for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#list-repository-tags
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-tags
 func (s *RepositoriesService) ListTags(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*RepositoryTag, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/tags", owner, repo)
 	u, err := addOptions(u, opts)
@@ -1249,7 +1249,7 @@ type AutomatedSecurityFixes struct {
 
 // ListBranches lists branches for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branches#list-branches
+// GitHub API docs: https://docs.github.com/rest/branches/branches#list-branches
 func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, repo string, opts *BranchListOptions) ([]*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches", owner, repo)
 	u, err := addOptions(u, opts)
@@ -1273,7 +1273,7 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 
 // GetBranch gets the specified branch for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branches#get-a-branch
+// GitHub API docs: https://docs.github.com/rest/branches/branches#get-a-branch
 func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string, followRedirects bool) (*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, branch)
 
@@ -1302,7 +1302,7 @@ type renameBranchRequest struct {
 // To rename a non-default branch: Users must have push access. GitHub Apps must have the `contents:write` repository permission.
 // To rename the default branch: Users must have admin or owner permissions. GitHub Apps must have the `administration:write` repository permission.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branches#rename-a-branch
+// GitHub API docs: https://docs.github.com/rest/branches/branches#rename-a-branch
 func (s *RepositoriesService) RenameBranch(ctx context.Context, owner, repo, branch, newName string) (*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/rename", owner, repo, branch)
 	r := &renameBranchRequest{NewName: newName}
@@ -1322,7 +1322,7 @@ func (s *RepositoriesService) RenameBranch(ctx context.Context, owner, repo, bra
 
 // GetBranchProtection gets the protection of a given branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-branch-protection
 func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, repo, branch string) (*Protection, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1347,7 +1347,7 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 
 // GetRequiredStatusChecks gets the required status checks for a given protected branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-status-checks-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-status-checks-protection
 func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*RequiredStatusChecks, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1369,7 +1369,7 @@ func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner
 
 // ListRequiredStatusChecksContexts lists the required status checks contexts for a given protected branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-all-status-check-contexts
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-all-status-check-contexts
 func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Context, owner, repo, branch string) (contexts []string, resp *Response, err error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks/contexts", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1390,7 +1390,7 @@ func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Conte
 
 // UpdateBranchProtection updates the protection of a given branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#update-branch-protection
 func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner, repo, branch string, preq *ProtectionRequest) (*Protection, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, branch)
 	req, err := s.client.NewRequest("PUT", u, preq)
@@ -1412,7 +1412,7 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 
 // RemoveBranchProtection removes the protection of a given branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#delete-branch-protection
 func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner, repo, branch string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -1425,7 +1425,7 @@ func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner,
 
 // GetSignaturesProtectedBranch gets required signatures of protected branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-commit-signature-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-commit-signature-protection
 func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1448,7 +1448,7 @@ func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, 
 // RequireSignaturesOnProtectedBranch makes signed commits required on a protected branch.
 // It requires admin access and branch protection to be enabled.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#create-commit-signature-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#create-commit-signature-protection
 func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, branch)
 	req, err := s.client.NewRequest("POST", u, nil)
@@ -1470,7 +1470,7 @@ func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Con
 
 // OptionalSignaturesOnProtectedBranch removes required signed commits on a given branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-commit-signature-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#delete-commit-signature-protection
 func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -1486,7 +1486,7 @@ func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Co
 
 // UpdateRequiredStatusChecks updates the required status checks for a given protected branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-status-check-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#update-status-check-protection
 func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, owner, repo, branch string, sreq *RequiredStatusChecksRequest) (*RequiredStatusChecks, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, branch)
 	req, err := s.client.NewRequest("PATCH", u, sreq)
@@ -1505,7 +1505,7 @@ func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, ow
 
 // RemoveRequiredStatusChecks removes the required status checks for a given protected branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-status-check-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#remove-status-check-protection
 func (s *RepositoriesService) RemoveRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -1518,7 +1518,7 @@ func (s *RepositoriesService) RemoveRequiredStatusChecks(ctx context.Context, ow
 
 // License gets the contents of a repository's license if one is detected.
 //
-// GitHub API docs: https://docs.github.com/en/rest/licenses#get-the-license-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/licenses/licenses#get-the-license-for-a-repository
 func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (*RepositoryLicense, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/license", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1537,7 +1537,7 @@ func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (
 
 // GetPullRequestReviewEnforcement gets pull request review enforcement of a protected branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-pull-request-review-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-pull-request-review-protection
 func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1560,7 +1560,7 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 // UpdatePullRequestReviewEnforcement patches pull request review enforcement of a protected branch.
 // It requires admin access and branch protection to be enabled.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-pull-request-review-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#update-pull-request-review-protection
 func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string, patch *PullRequestReviewsEnforcementUpdate) (*PullRequestReviewsEnforcement, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
 	req, err := s.client.NewRequest("PATCH", u, patch)
@@ -1583,7 +1583,7 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 // DisableDismissalRestrictions disables dismissal restrictions of a protected branch.
 // It requires admin access and branch protection to be enabled.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-pull-request-review-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#update-pull-request-review-protection
 func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
 
@@ -1610,7 +1610,7 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 
 // RemovePullRequestReviewEnforcement removes pull request enforcement of a protected branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-pull-request-review-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#delete-pull-request-review-protection
 func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -1623,7 +1623,7 @@ func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Con
 
 // GetAdminEnforcement gets admin enforcement information of a protected branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-admin-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-admin-branch-protection
 func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1643,7 +1643,7 @@ func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, re
 // AddAdminEnforcement adds admin enforcement to a protected branch.
 // It requires admin access and branch protection to be enabled.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-admin-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#set-admin-branch-protection
 func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
 	req, err := s.client.NewRequest("POST", u, nil)
@@ -1662,7 +1662,7 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 
 // RemoveAdminEnforcement removes admin enforcement from a protected branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-admin-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#delete-admin-branch-protection
 func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -1680,7 +1680,7 @@ type repositoryTopics struct {
 
 // ListAllTopics lists topics for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#get-all-repository-topics
+// GitHub API docs: https://docs.github.com/rest/repos/repos#get-all-repository-topics
 func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo string) ([]string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/topics", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1702,7 +1702,7 @@ func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo str
 
 // ReplaceAllTopics replaces all repository topics.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#replace-all-repository-topics
+// GitHub API docs: https://docs.github.com/rest/repos/repos#replace-all-repository-topics
 func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo string, topics []string) ([]string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/topics", owner, repo)
 	t := &repositoryTopics{
@@ -1731,9 +1731,9 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 // ListApps lists the GitHub apps that have push access to a given protected branch.
 // It requires the GitHub apps to have `write` access to the `content` permission.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-apps-with-access-to-the-protected-branch
-//
 // Deprecated: Please use ListAppRestrictions instead.
+//
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-apps-with-access-to-the-protected-branch
 func (s *RepositoriesService) ListApps(ctx context.Context, owner, repo, branch string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1753,9 +1753,9 @@ func (s *RepositoriesService) ListApps(ctx context.Context, owner, repo, branch 
 // ListAppRestrictions lists the GitHub apps that have push access to a given protected branch.
 // It requires the GitHub apps to have `write` access to the `content` permission.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-apps-with-access-to-the-protected-branch
-//
 // Note: This is a wrapper around ListApps so a naming convention with ListUserRestrictions and ListTeamRestrictions is preserved.
+//
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-apps-with-access-to-the-protected-branch
 func (s *RepositoriesService) ListAppRestrictions(ctx context.Context, owner, repo, branch string) ([]*App, *Response, error) {
 	return s.ListApps(ctx, owner, repo, branch)
 }
@@ -1766,7 +1766,7 @@ func (s *RepositoriesService) ListAppRestrictions(ctx context.Context, owner, re
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-app-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#set-app-access-restrictions
 func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
 	req, err := s.client.NewRequest("PUT", u, apps)
@@ -1788,7 +1788,7 @@ func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner,
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-app-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#add-app-access-restrictions
 func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
 	req, err := s.client.NewRequest("POST", u, apps)
@@ -1810,7 +1810,7 @@ func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, rep
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-app-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#remove-app-access-restrictions
 func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, apps)
@@ -1830,7 +1830,7 @@ func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, 
 // ListTeamRestrictions lists the GitHub teams that have push access to a given protected branch.
 // It requires the GitHub teams to have `write` access to the `content` permission.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-teams-with-access-to-the-protected-branch
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-teams-with-access-to-the-protected-branch
 func (s *RepositoriesService) ListTeamRestrictions(ctx context.Context, owner, repo, branch string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1853,7 +1853,7 @@ func (s *RepositoriesService) ListTeamRestrictions(ctx context.Context, owner, r
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#set-team-access-restrictions
 func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
 	req, err := s.client.NewRequest("PUT", u, teams)
@@ -1875,7 +1875,7 @@ func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#add-team-access-restrictions
 func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
 	req, err := s.client.NewRequest("POST", u, teams)
@@ -1897,7 +1897,7 @@ func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, re
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#remove-team-access-restrictions
 func (s *RepositoriesService) RemoveTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, teams)
@@ -1917,7 +1917,7 @@ func (s *RepositoriesService) RemoveTeamRestrictions(ctx context.Context, owner,
 // ListUserRestrictions lists the GitHub users that have push access to a given protected branch.
 // It requires the GitHub users to have `write` access to the `content` permission.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-users-with-access-to-the-protected-branch
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-users-with-access-to-the-protected-branch
 func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, repo, branch string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1940,7 +1940,7 @@ func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, r
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#set-user-access-restrictions
 func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
 	req, err := s.client.NewRequest("PUT", u, users)
@@ -1962,7 +1962,7 @@ func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#add-user-access-restrictions
 func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
 	req, err := s.client.NewRequest("POST", u, users)
@@ -1984,7 +1984,7 @@ func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, re
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#remove-user-access-restrictions
 func (s *RepositoriesService) RemoveUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, users)
@@ -2016,7 +2016,7 @@ type TransferRequest struct {
 // A follow up request, after a delay of a second or so, should result
 // in a successful request.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#transfer-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#transfer-a-repository
 func (s *RepositoriesService) Transfer(ctx context.Context, owner, repo string, transfer TransferRequest) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/transfer", owner, repo)
 
@@ -2045,7 +2045,7 @@ type DispatchRequestOptions struct {
 
 // Dispatch triggers a repository_dispatch event in a GitHub Actions workflow.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#create-a-repository-dispatch-event
+// GitHub API docs: https://docs.github.com/rest/repos/repos#create-a-repository-dispatch-event
 func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, opts DispatchRequestOptions) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/dispatches", owner, repo)
 
@@ -2073,7 +2073,7 @@ func isBranchNotProtected(err error) bool {
 // EnablePrivateReporting enables private reporting of vulnerabilities for a
 // repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#enable-private-vulnerability-reporting-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#enable-private-vulnerability-reporting-for-a-repository
 func (s *RepositoriesService) EnablePrivateReporting(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/private-vulnerability-reporting", owner, repo)
 
@@ -2093,7 +2093,7 @@ func (s *RepositoriesService) EnablePrivateReporting(ctx context.Context, owner,
 // DisablePrivateReporting disables private reporting of vulnerabilities for a
 // repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#disable-private-vulnerability-reporting-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#disable-private-vulnerability-reporting-for-a-repository
 func (s *RepositoriesService) DisablePrivateReporting(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/private-vulnerability-reporting", owner, repo)
 

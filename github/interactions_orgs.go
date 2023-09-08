@@ -12,7 +12,7 @@ import (
 
 // GetRestrictionsForOrg fetches the interaction restrictions for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/interactions/orgs#get-interaction-restrictions-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/interactions/orgs#get-interaction-restrictions-for-an-organization
 func (s *InteractionsService) GetRestrictionsForOrg(ctx context.Context, organization string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/interaction-limits", organization)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -39,7 +39,7 @@ func (s *InteractionsService) GetRestrictionsForOrg(ctx context.Context, organiz
 // in public repositories for the given organization.
 // Possible values are: "existing_users", "contributors_only", "collaborators_only".
 //
-// GitHub API docs: https://docs.github.com/en/rest/interactions/orgs#set-interaction-restrictions-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/interactions/orgs#set-interaction-restrictions-for-an-organization
 func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, organization, limit string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/interaction-limits", organization)
 
@@ -65,7 +65,7 @@ func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, orga
 
 // RemoveRestrictionsFromOrg removes the interaction restrictions for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/interactions/orgs#remove-interaction-restrictions-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/interactions/orgs#remove-interaction-restrictions-for-an-organization
 func (s *InteractionsService) RemoveRestrictionsFromOrg(ctx context.Context, organization string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/interaction-limits", organization)
 	req, err := s.client.NewRequest("DELETE", u, nil)

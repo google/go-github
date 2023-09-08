@@ -23,7 +23,7 @@ type RepositoryActionsAccessLevel struct {
 // GetActionsAccessLevel gets the level of access that workflows outside of the repository have
 // to actions and reusable workflows in the repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-the-level-of-access-for-workflows-outside-of-the-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-the-level-of-access-for-workflows-outside-of-the-repository
 func (s *RepositoriesService) GetActionsAccessLevel(ctx context.Context, owner, repo string) (*RepositoryActionsAccessLevel, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/access", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -43,7 +43,7 @@ func (s *RepositoriesService) GetActionsAccessLevel(ctx context.Context, owner, 
 // EditActionsAccessLevel sets the level of access that workflows outside of the repository have
 // to actions and reusable workflows in the repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-the-level-of-access-for-workflows-outside-of-the-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-the-level-of-access-for-workflows-outside-of-the-repository
 func (s *RepositoriesService) EditActionsAccessLevel(ctx context.Context, owner, repo string, repositoryActionsAccessLevel RepositoryActionsAccessLevel) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/access", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, repositoryActionsAccessLevel)

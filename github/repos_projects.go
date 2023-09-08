@@ -21,7 +21,7 @@ type ProjectListOptions struct {
 
 // ListProjects lists the projects for a repo.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/projects#list-repository-projects
+// GitHub API docs: https://docs.github.com/rest/projects/projects#list-repository-projects
 func (s *RepositoriesService) ListProjects(ctx context.Context, owner, repo string, opts *ProjectListOptions) ([]*Project, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/projects", owner, repo)
 	u, err := addOptions(u, opts)
@@ -48,7 +48,7 @@ func (s *RepositoriesService) ListProjects(ctx context.Context, owner, repo stri
 
 // CreateProject creates a GitHub Project for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/projects#create-a-repository-project
+// GitHub API docs: https://docs.github.com/rest/projects/projects#create-a-repository-project
 func (s *RepositoriesService) CreateProject(ctx context.Context, owner, repo string, opts *ProjectOptions) (*Project, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/projects", owner, repo)
 	req, err := s.client.NewRequest("POST", u, opts)

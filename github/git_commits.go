@@ -69,7 +69,7 @@ func (c CommitAuthor) String() string {
 
 // GetCommit fetches the Commit object for a given SHA.
 //
-// GitHub API docs: https://docs.github.com/en/rest/git/commits#get-a-commit
+// GitHub API docs: https://docs.github.com/rest/git/commits#get-a-commit-object
 func (s *GitService) GetCommit(ctx context.Context, owner string, repo string, sha string) (*Commit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/commits/%v", owner, repo, sha)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -103,7 +103,7 @@ type createCommit struct {
 // data if omitted. If the commit.Author is omitted, it will be filled in with
 // the authenticated user’s information and the current date.
 //
-// GitHub API docs: https://docs.github.com/en/rest/git/commits#create-a-commit
+// GitHub API docs: https://docs.github.com/rest/git/commits#create-a-commit
 func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string, commit *Commit) (*Commit, *Response, error) {
 	if commit == nil {
 		return nil, nil, fmt.Errorf("commit must be provided")

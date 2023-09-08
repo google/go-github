@@ -15,7 +15,7 @@ type SecurityAdvisoriesService service
 // RequestCVE requests a Common Vulnerabilities and Exposures (CVE) for a repository security advisory.
 // The ghsaID is the GitHub Security Advisory identifier of the advisory.
 //
-// GitHub API docs: https://docs.github.com/en/rest/security-advisories/repository-advisories#request-a-cve-for-a-repository-security-advisory
+// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#request-a-cve-for-a-repository-security-advisory
 func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo, ghsaID string) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/security-advisories/%v/cve", owner, repo, ghsaID)
 

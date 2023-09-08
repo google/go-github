@@ -63,7 +63,7 @@ func (r HookResponse) String() string {
 
 // ListHookDeliveries lists webhook deliveries for a webhook configured in a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-deliveries#list-deliveries-for-a-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/webhooks/repo-deliveries#list-deliveries-for-a-repository-webhook
 func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, repo string, id int64, opts *ListCursorOptions) ([]*HookDelivery, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -87,7 +87,7 @@ func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, rep
 
 // GetHookDelivery returns a delivery for a webhook configured in a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-deliveries#get-a-delivery-for-a-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/webhooks/repo-deliveries#get-a-delivery-for-a-repository-webhook
 func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries/%v", owner, repo, hookID, deliveryID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -106,7 +106,7 @@ func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo s
 
 // RedeliverHookDelivery redelivers a delivery for a webhook configured in a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-deliveries#redeliver-a-delivery-for-a-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/webhooks/repo-deliveries#redeliver-a-delivery-for-a-repository-webhook
 func (s *RepositoriesService) RedeliverHookDelivery(ctx context.Context, owner, repo string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries/%v/attempts", owner, repo, hookID, deliveryID)
 	req, err := s.client.NewRequest("POST", u, nil)

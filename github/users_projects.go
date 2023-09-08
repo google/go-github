@@ -12,7 +12,7 @@ import (
 
 // ListProjects lists the projects for the specified user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/projects#list-user-projects
+// GitHub API docs: https://docs.github.com/rest/projects/projects#list-user-projects
 func (s *UsersService) ListProjects(ctx context.Context, user string, opts *ProjectListOptions) ([]*Project, *Response, error) {
 	u := fmt.Sprintf("users/%v/projects", user)
 	u, err := addOptions(u, opts)
@@ -47,7 +47,7 @@ type CreateUserProjectOptions struct {
 
 // CreateProject creates a GitHub Project for the current user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/projects#create-a-user-project
+// GitHub API docs: https://docs.github.com/rest/projects/projects#create-a-user-project
 func (s *UsersService) CreateProject(ctx context.Context, opts *CreateUserProjectOptions) (*Project, *Response, error) {
 	u := "user/projects"
 	req, err := s.client.NewRequest("POST", u, opts)

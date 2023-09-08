@@ -70,7 +70,7 @@ type ListWorkflowJobsOptions struct {
 
 // ListWorkflowJobs lists all jobs for a workflow run.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-jobs#list-jobs-for-a-workflow-run
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-jobs#list-jobs-for-a-workflow-run
 func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo string, runID int64, opts *ListWorkflowJobsOptions) (*Jobs, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/runs/%v/jobs", owner, repo, runID)
 	u, err := addOptions(u, opts)
@@ -94,7 +94,7 @@ func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo strin
 
 // GetWorkflowJobByID gets a specific job in a workflow run by ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-jobs#get-a-job-for-a-workflow-run
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-jobs#get-a-job-for-a-workflow-run
 func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo string, jobID int64) (*WorkflowJob, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v", owner, repo, jobID)
 
@@ -114,7 +114,7 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 
 // GetWorkflowJobLogs gets a redirect URL to download a plain text file of logs for a workflow job.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-jobs#download-job-logs-for-a-workflow-run
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-jobs#download-job-logs-for-a-workflow-run
 func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/logs", owner, repo, jobID)
 

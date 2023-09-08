@@ -106,7 +106,7 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 
 // ListEnvironments lists all environments for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/environments#get-all-environments
+// GitHub API docs: https://docs.github.com/rest/deployments/environments#list-environments
 func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo string, opts *EnvironmentListOptions) (*EnvResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/environments", owner, repo)
 	u, err := addOptions(u, opts)
@@ -129,7 +129,7 @@ func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo 
 
 // GetEnvironment get a single environment for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/environments#get-an-environment
+// GitHub API docs: https://docs.github.com/rest/deployments/environments#get-an-environment
 func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, name string) (*Environment, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
 
@@ -184,7 +184,7 @@ type createUpdateEnvironmentNoEnterprise struct {
 
 // CreateUpdateEnvironment create or update a new environment for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/environments#create-or-update-an-environment
+// GitHub API docs: https://docs.github.com/rest/deployments/environments#create-or-update-an-environment
 func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner, repo, name string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
 
@@ -230,7 +230,7 @@ func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u st
 
 // DeleteEnvironment delete an environment from a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/environments#delete-an-environment
+// GitHub API docs: https://docs.github.com/rest/deployments/environments#delete-an-environment
 func (s *RepositoriesService) DeleteEnvironment(ctx context.Context, owner, repo, name string) (*Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
 

@@ -43,7 +43,7 @@ func (p Project) String() string {
 
 // GetProject gets a GitHub Project for a repo.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/projects#get-a-project
+// GitHub API docs: https://docs.github.com/rest/projects/projects#get-a-project
 func (s *ProjectsService) GetProject(ctx context.Context, id int64) (*Project, *Response, error) {
 	u := fmt.Sprintf("projects/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -90,7 +90,7 @@ type ProjectOptions struct {
 
 // UpdateProject updates a repository project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/projects#update-a-project
+// GitHub API docs: https://docs.github.com/rest/projects/projects#update-a-project
 func (s *ProjectsService) UpdateProject(ctx context.Context, id int64, opts *ProjectOptions) (*Project, *Response, error) {
 	u := fmt.Sprintf("projects/%v", id)
 	req, err := s.client.NewRequest("PATCH", u, opts)
@@ -112,7 +112,7 @@ func (s *ProjectsService) UpdateProject(ctx context.Context, id int64, opts *Pro
 
 // DeleteProject deletes a GitHub Project from a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/projects#delete-a-project
+// GitHub API docs: https://docs.github.com/rest/projects/projects#delete-a-project
 func (s *ProjectsService) DeleteProject(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("projects/%v", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -142,7 +142,7 @@ type ProjectColumn struct {
 
 // ListProjectColumns lists the columns of a GitHub Project for a repo.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/columns#list-project-columns
+// GitHub API docs: https://docs.github.com/rest/projects/columns#list-project-columns
 func (s *ProjectsService) ListProjectColumns(ctx context.Context, projectID int64, opts *ListOptions) ([]*ProjectColumn, *Response, error) {
 	u := fmt.Sprintf("projects/%v/columns", projectID)
 	u, err := addOptions(u, opts)
@@ -169,7 +169,7 @@ func (s *ProjectsService) ListProjectColumns(ctx context.Context, projectID int6
 
 // GetProjectColumn gets a column of a GitHub Project for a repo.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/columns#get-a-project-column
+// GitHub API docs: https://docs.github.com/rest/projects/columns#get-a-project-column
 func (s *ProjectsService) GetProjectColumn(ctx context.Context, id int64) (*ProjectColumn, *Response, error) {
 	u := fmt.Sprintf("projects/columns/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -199,7 +199,7 @@ type ProjectColumnOptions struct {
 
 // CreateProjectColumn creates a column for the specified (by number) project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/columns#create-a-project-column
+// GitHub API docs: https://docs.github.com/rest/projects/columns#create-a-project-column
 func (s *ProjectsService) CreateProjectColumn(ctx context.Context, projectID int64, opts *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
 	u := fmt.Sprintf("projects/%v/columns", projectID)
 	req, err := s.client.NewRequest("POST", u, opts)
@@ -221,7 +221,7 @@ func (s *ProjectsService) CreateProjectColumn(ctx context.Context, projectID int
 
 // UpdateProjectColumn updates a column of a GitHub Project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/columns#update-an-existing-project-column
+// GitHub API docs: https://docs.github.com/rest/projects/columns#update-an-existing-project-column
 func (s *ProjectsService) UpdateProjectColumn(ctx context.Context, columnID int64, opts *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
 	u := fmt.Sprintf("projects/columns/%v", columnID)
 	req, err := s.client.NewRequest("PATCH", u, opts)
@@ -243,7 +243,7 @@ func (s *ProjectsService) UpdateProjectColumn(ctx context.Context, columnID int6
 
 // DeleteProjectColumn deletes a column from a GitHub Project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/columns#delete-a-project-column
+// GitHub API docs: https://docs.github.com/rest/projects/columns#delete-a-project-column
 func (s *ProjectsService) DeleteProjectColumn(ctx context.Context, columnID int64) (*Response, error) {
 	u := fmt.Sprintf("projects/columns/%v", columnID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -267,7 +267,7 @@ type ProjectColumnMoveOptions struct {
 
 // MoveProjectColumn moves a column within a GitHub Project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/columns#move-a-project-column
+// GitHub API docs: https://docs.github.com/rest/projects/columns#move-a-project-column
 func (s *ProjectsService) MoveProjectColumn(ctx context.Context, columnID int64, opts *ProjectColumnMoveOptions) (*Response, error) {
 	u := fmt.Sprintf("projects/columns/%v/moves", columnID)
 	req, err := s.client.NewRequest("POST", u, opts)
@@ -318,7 +318,7 @@ type ProjectCardListOptions struct {
 
 // ListProjectCards lists the cards in a column of a GitHub Project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/cards#list-project-cards
+// GitHub API docs: https://docs.github.com/rest/projects/cards#list-project-cards
 func (s *ProjectsService) ListProjectCards(ctx context.Context, columnID int64, opts *ProjectCardListOptions) ([]*ProjectCard, *Response, error) {
 	u := fmt.Sprintf("projects/columns/%v/cards", columnID)
 	u, err := addOptions(u, opts)
@@ -345,7 +345,7 @@ func (s *ProjectsService) ListProjectCards(ctx context.Context, columnID int64, 
 
 // GetProjectCard gets a card in a column of a GitHub Project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/cards#get-a-project-card
+// GitHub API docs: https://docs.github.com/rest/projects/cards#get-a-project-card
 func (s *ProjectsService) GetProjectCard(ctx context.Context, cardID int64) (*ProjectCard, *Response, error) {
 	u := fmt.Sprintf("projects/columns/cards/%v", cardID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -383,7 +383,7 @@ type ProjectCardOptions struct {
 
 // CreateProjectCard creates a card in the specified column of a GitHub Project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/cards#create-a-project-card
+// GitHub API docs: https://docs.github.com/rest/projects/cards#create-a-project-card
 func (s *ProjectsService) CreateProjectCard(ctx context.Context, columnID int64, opts *ProjectCardOptions) (*ProjectCard, *Response, error) {
 	u := fmt.Sprintf("projects/columns/%v/cards", columnID)
 	req, err := s.client.NewRequest("POST", u, opts)
@@ -405,7 +405,7 @@ func (s *ProjectsService) CreateProjectCard(ctx context.Context, columnID int64,
 
 // UpdateProjectCard updates a card of a GitHub Project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/cards#update-an-existing-project-card
+// GitHub API docs: https://docs.github.com/rest/projects/cards#update-an-existing-project-card
 func (s *ProjectsService) UpdateProjectCard(ctx context.Context, cardID int64, opts *ProjectCardOptions) (*ProjectCard, *Response, error) {
 	u := fmt.Sprintf("projects/columns/cards/%v", cardID)
 	req, err := s.client.NewRequest("PATCH", u, opts)
@@ -427,7 +427,7 @@ func (s *ProjectsService) UpdateProjectCard(ctx context.Context, cardID int64, o
 
 // DeleteProjectCard deletes a card from a GitHub Project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/cards#delete-a-project-card
+// GitHub API docs: https://docs.github.com/rest/projects/cards#delete-a-project-card
 func (s *ProjectsService) DeleteProjectCard(ctx context.Context, cardID int64) (*Response, error) {
 	u := fmt.Sprintf("projects/columns/cards/%v", cardID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -455,7 +455,7 @@ type ProjectCardMoveOptions struct {
 
 // MoveProjectCard moves a card within a GitHub Project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/cards#move-a-project-card
+// GitHub API docs: https://docs.github.com/rest/projects/cards#move-a-project-card
 func (s *ProjectsService) MoveProjectCard(ctx context.Context, cardID int64, opts *ProjectCardMoveOptions) (*Response, error) {
 	u := fmt.Sprintf("projects/columns/cards/%v/moves", cardID)
 	req, err := s.client.NewRequest("POST", u, opts)
@@ -485,7 +485,7 @@ type ProjectCollaboratorOptions struct {
 // AddProjectCollaborator adds a collaborator to an organization project and sets
 // their permission level. You must be an organization owner or a project admin to add a collaborator.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#add-project-collaborator
+// GitHub API docs: https://docs.github.com/rest/projects/collaborators#add-project-collaborator
 func (s *ProjectsService) AddProjectCollaborator(ctx context.Context, id int64, username string, opts *ProjectCollaboratorOptions) (*Response, error) {
 	u := fmt.Sprintf("projects/%v/collaborators/%v", id, username)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -502,7 +502,7 @@ func (s *ProjectsService) AddProjectCollaborator(ctx context.Context, id int64, 
 // RemoveProjectCollaborator removes a collaborator from an organization project.
 // You must be an organization owner or a project admin to remove a collaborator.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#remove-user-as-a-collaborator
+// GitHub API docs: https://docs.github.com/rest/projects/collaborators#remove-user-as-a-collaborator
 func (s *ProjectsService) RemoveProjectCollaborator(ctx context.Context, id int64, username string) (*Response, error) {
 	u := fmt.Sprintf("projects/%v/collaborators/%v", id, username)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -538,7 +538,7 @@ type ListCollaboratorOptions struct {
 // with access through default organization permissions, and organization owners. You must be an
 // organization owner or a project admin to list collaborators.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#list-project-collaborators
+// GitHub API docs: https://docs.github.com/rest/projects/collaborators#list-project-collaborators
 func (s *ProjectsService) ListProjectCollaborators(ctx context.Context, id int64, opts *ListCollaboratorOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("projects/%v/collaborators", id)
 	u, err := addOptions(u, opts)
@@ -576,7 +576,7 @@ type ProjectPermissionLevel struct {
 // project. Possible values for the permission key: "admin", "write", "read", "none".
 // You must be an organization owner or a project admin to review a user's permission level.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/collaborators#get-project-permission-for-a-user
+// GitHub API docs: https://docs.github.com/rest/projects/collaborators#get-project-permission-for-a-user
 func (s *ProjectsService) ReviewProjectCollaboratorPermission(ctx context.Context, id int64, username string) (*ProjectPermissionLevel, *Response, error) {
 	u := fmt.Sprintf("projects/%v/collaborators/%v/permission", id, username)
 	req, err := s.client.NewRequest("GET", u, nil)

@@ -48,7 +48,7 @@ type CollaboratorInvitation struct {
 
 // ListCollaborators lists the GitHub users that have access to the repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#list-repository-collaborators
+// GitHub API docs: https://docs.github.com/rest/collaborators/collaborators#list-repository-collaborators
 func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo string, opts *ListCollaboratorsOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators", owner, repo)
 	u, err := addOptions(u, opts)
@@ -75,7 +75,7 @@ func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo
 // Note: This will return false if the user is not a collaborator OR the user
 // is not a GitHub user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#check-if-a-user-is-a-repository-collaborator
+// GitHub API docs: https://docs.github.com/rest/collaborators/collaborators#check-if-a-user-is-a-repository-collaborator
 func (s *RepositoriesService) IsCollaborator(ctx context.Context, owner, repo, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -99,7 +99,7 @@ type RepositoryPermissionLevel struct {
 
 // GetPermissionLevel retrieves the specific permission level a collaborator has for a given repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#get-repository-permissions-for-a-user
+// GitHub API docs: https://docs.github.com/rest/collaborators/collaborators#get-repository-permissions-for-a-user
 func (s *RepositoriesService) GetPermissionLevel(ctx context.Context, owner, repo, user string) (*RepositoryPermissionLevel, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v/permission", owner, repo, user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -134,7 +134,7 @@ type RepositoryAddCollaboratorOptions struct {
 // AddCollaborator sends an invitation to the specified GitHub user
 // to become a collaborator to the given repo.
 //
-// GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#add-a-repository-collaborator
+// GitHub API docs: https://docs.github.com/rest/collaborators/collaborators#add-a-repository-collaborator
 func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, opts *RepositoryAddCollaboratorOptions) (*CollaboratorInvitation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -154,7 +154,7 @@ func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, 
 // RemoveCollaborator removes the specified GitHub user as collaborator from the given repo.
 // Note: Does not return error if a valid user that is not a collaborator is removed.
 //
-// GitHub API docs: https://docs.github.com/en/rest/collaborators/collaborators#remove-a-repository-collaborator
+// GitHub API docs: https://docs.github.com/rest/collaborators/collaborators#remove-a-repository-collaborator
 func (s *RepositoriesService) RemoveCollaborator(ctx context.Context, owner, repo, user string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
 	req, err := s.client.NewRequest("DELETE", u, nil)

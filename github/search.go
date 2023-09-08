@@ -72,7 +72,7 @@ type RepositoriesSearchResult struct {
 
 // Repositories searches repositories via various criteria.
 //
-// GitHub API docs: https://docs.github.com/en/rest/search#search-repositories
+// GitHub API docs: https://docs.github.com/rest/search/search#search-repositories
 func (s *SearchService) Repositories(ctx context.Context, query string, opts *SearchOptions) (*RepositoriesSearchResult, *Response, error) {
 	result := new(RepositoriesSearchResult)
 	resp, err := s.search(ctx, "repositories", &searchParameters{Query: query}, opts, result)
@@ -107,7 +107,7 @@ type TopicResult struct {
 // Please see https://help.github.com/en/articles/searching-topics for more
 // information about search qualifiers.
 //
-// GitHub API docs: https://docs.github.com/en/rest/search#search-topics
+// GitHub API docs: https://docs.github.com/rest/search/search#search-topics
 func (s *SearchService) Topics(ctx context.Context, query string, opts *SearchOptions) (*TopicsSearchResult, *Response, error) {
 	result := new(TopicsSearchResult)
 	resp, err := s.search(ctx, "topics", &searchParameters{Query: query}, opts, result)
@@ -142,7 +142,7 @@ type CommitResult struct {
 
 // Commits searches commits via various criteria.
 //
-// GitHub API docs: https://docs.github.com/en/rest/search#search-commits
+// GitHub API docs: https://docs.github.com/rest/search/search#search-commits
 func (s *SearchService) Commits(ctx context.Context, query string, opts *SearchOptions) (*CommitsSearchResult, *Response, error) {
 	result := new(CommitsSearchResult)
 	resp, err := s.search(ctx, "commits", &searchParameters{Query: query}, opts, result)
@@ -162,7 +162,7 @@ type IssuesSearchResult struct {
 
 // Issues searches issues via various criteria.
 //
-// GitHub API docs: https://docs.github.com/en/rest/search#search-issues-and-pull-requests
+// GitHub API docs: https://docs.github.com/rest/search/search#search-issues-and-pull-requests
 func (s *SearchService) Issues(ctx context.Context, query string, opts *SearchOptions) (*IssuesSearchResult, *Response, error) {
 	result := new(IssuesSearchResult)
 	resp, err := s.search(ctx, "issues", &searchParameters{Query: query}, opts, result)
@@ -182,7 +182,7 @@ type UsersSearchResult struct {
 
 // Users searches users via various criteria.
 //
-// GitHub API docs: https://docs.github.com/en/rest/search#search-users
+// GitHub API docs: https://docs.github.com/rest/search/search#search-users
 func (s *SearchService) Users(ctx context.Context, query string, opts *SearchOptions) (*UsersSearchResult, *Response, error) {
 	result := new(UsersSearchResult)
 	resp, err := s.search(ctx, "users", &searchParameters{Query: query}, opts, result)
@@ -235,7 +235,7 @@ func (c CodeResult) String() string {
 
 // Code searches code via various criteria.
 //
-// GitHub API docs: https://docs.github.com/en/rest/search#search-code
+// GitHub API docs: https://docs.github.com/rest/search/search#search-code
 func (s *SearchService) Code(ctx context.Context, query string, opts *SearchOptions) (*CodeSearchResult, *Response, error) {
 	result := new(CodeSearchResult)
 	resp, err := s.search(ctx, "code", &searchParameters{Query: query}, opts, result)
@@ -270,7 +270,7 @@ func (l LabelResult) String() string {
 
 // Labels searches labels in the repository with ID repoID via various criteria.
 //
-// GitHub API docs: https://docs.github.com/en/rest/search#search-labels
+// GitHub API docs: https://docs.github.com/rest/search/search#search-labels
 func (s *SearchService) Labels(ctx context.Context, repoID int64, query string, opts *SearchOptions) (*LabelsSearchResult, *Response, error) {
 	result := new(LabelsSearchResult)
 	resp, err := s.search(ctx, "labels", &searchParameters{RepositoryID: &repoID, Query: query}, opts, result)

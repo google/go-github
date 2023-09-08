@@ -77,7 +77,7 @@ type ActionsCacheListOptions struct {
 //
 // Permissions: must have the actions:read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#list-github-actions-caches-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/cache#list-github-actions-caches-for-a-repository
 func (s *ActionsService) ListCaches(ctx context.Context, owner, repo string, opts *ActionsCacheListOptions) (*ActionsCacheList, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/caches", owner, repo)
 	u, err := addOptions(u, opts)
@@ -107,7 +107,7 @@ func (s *ActionsService) ListCaches(ctx context.Context, owner, repo string, opt
 //
 // Permissions: You must authenticate using an access token with the repo scope to use this endpoint. GitHub Apps must have the actions:write permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#delete-github-actions-caches-for-a-repository-using-a-cache-key
+// GitHub API docs: https://docs.github.com/rest/actions/cache#delete-github-actions-caches-for-a-repository-using-a-cache-key
 func (s *ActionsService) DeleteCachesByKey(ctx context.Context, owner, repo, key string, ref *string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/caches", owner, repo)
 	u, err := addOptions(u, ActionsCache{Key: &key, Ref: ref})
@@ -127,7 +127,7 @@ func (s *ActionsService) DeleteCachesByKey(ctx context.Context, owner, repo, key
 //
 // Permissions: You must authenticate using an access token with the repo scope to use this endpoint. GitHub Apps must have the actions:write permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#delete-a-github-actions-cache-for-a-repository-using-a-cache-id
+// GitHub API docs: https://docs.github.com/rest/actions/cache#delete-a-github-actions-cache-for-a-repository-using-a-cache-id
 func (s *ActionsService) DeleteCachesByID(ctx context.Context, owner, repo string, cacheID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/caches/%v", owner, repo, cacheID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -144,7 +144,7 @@ func (s *ActionsService) DeleteCachesByID(ctx context.Context, owner, repo strin
 // Permissions: Anyone with read access to the repository can use this endpoint. If the repository is private, you must use an
 // access token with the repo scope. GitHub Apps must have the actions:read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-usage-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/cache#get-github-actions-cache-usage-for-a-repository
 func (s *ActionsService) GetCacheUsageForRepo(ctx context.Context, owner, repo string) (*ActionsCacheUsage, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/cache/usage", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -167,7 +167,7 @@ func (s *ActionsService) GetCacheUsageForRepo(ctx context.Context, owner, repo s
 // Permissions: You must authenticate using an access token with the read:org scope to use this endpoint.
 // GitHub Apps must have the organization_admistration:read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#list-repositories-with-github-actions-cache-usage-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/cache#list-repositories-with-github-actions-cache-usage-for-an-organization
 func (s *ActionsService) ListCacheUsageByRepoForOrg(ctx context.Context, org string, opts *ListOptions) (*ActionsCacheUsageList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/cache/usage-by-repository", org)
 	u, err := addOptions(u, opts)
@@ -195,7 +195,7 @@ func (s *ActionsService) ListCacheUsageByRepoForOrg(ctx context.Context, org str
 // Permissions: You must authenticate using an access token with the read:org scope to use this endpoint.
 // GitHub Apps must have the organization_admistration:read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-usage-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/cache#get-github-actions-cache-usage-for-an-organization
 func (s *ActionsService) GetTotalCacheUsageForOrg(ctx context.Context, org string) (*TotalCacheUsage, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/cache/usage", org)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -217,7 +217,7 @@ func (s *ActionsService) GetTotalCacheUsageForOrg(ctx context.Context, org strin
 //
 // Permissions: You must authenticate using an access token with the "admin:enterprise" scope to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-usage-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest//rest/actions/cache#get-github-actions-cache-usage-for-an-enterprise
 func (s *ActionsService) GetTotalCacheUsageForEnterprise(ctx context.Context, enterprise string) (*TotalCacheUsage, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/cache/usage", enterprise)
 	req, err := s.client.NewRequest("GET", u, nil)

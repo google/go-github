@@ -104,7 +104,7 @@ func (s *DependabotService) listAlerts(ctx context.Context, url string, opts *Li
 
 // ListRepoAlerts lists all Dependabot alerts of a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts#list-dependabot-alerts-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/dependabot/alerts#list-dependabot-alerts-for-a-repository
 func (s *DependabotService) ListRepoAlerts(ctx context.Context, owner, repo string, opts *ListAlertsOptions) ([]*DependabotAlert, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/alerts", owner, repo)
 	return s.listAlerts(ctx, url, opts)
@@ -112,7 +112,7 @@ func (s *DependabotService) ListRepoAlerts(ctx context.Context, owner, repo stri
 
 // ListOrgAlerts lists all Dependabot alerts of an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts#list-dependabot-alerts-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/dependabot/alerts#list-dependabot-alerts-for-an-organization
 func (s *DependabotService) ListOrgAlerts(ctx context.Context, org string, opts *ListAlertsOptions) ([]*DependabotAlert, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/dependabot/alerts", org)
 	return s.listAlerts(ctx, url, opts)
@@ -120,7 +120,7 @@ func (s *DependabotService) ListOrgAlerts(ctx context.Context, org string, opts 
 
 // GetRepoAlert gets a single repository Dependabot alert.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts#get-a-dependabot-alert
+// GitHub API docs: https://docs.github.com/rest/dependabot/alerts#get-a-dependabot-alert
 func (s *DependabotService) GetRepoAlert(ctx context.Context, owner, repo string, number int) (*DependabotAlert, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/alerts/%v", owner, repo, number)
 	req, err := s.client.NewRequest("GET", url, nil)

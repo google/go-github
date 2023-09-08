@@ -79,8 +79,8 @@ func (u User) String() string {
 // Get fetches a user. Passing the empty string will fetch the authenticated
 // user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/users/users#get-the-authenticated-user
-// GitHub API docs: https://docs.github.com/en/rest/users/users#get-a-user
+// GitHub API docs: https://docs.github.com/rest/users/users#get-a-user
+// GitHub API docs: https://docs.github.com/rest/users/users#get-the-authenticated-user
 func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, error) {
 	var u string
 	if user != "" {
@@ -123,7 +123,7 @@ func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response,
 
 // Edit the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/users/users#update-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/users#update-the-authenticated-user
 func (s *UsersService) Edit(ctx context.Context, user *User) (*User, *Response, error) {
 	u := "user"
 	req, err := s.client.NewRequest("PATCH", u, user)
@@ -165,7 +165,7 @@ type UserContext struct {
 // GetHovercard fetches contextual information about user. It requires authentication
 // via Basic Auth or via OAuth with the repo scope.
 //
-// GitHub API docs: https://docs.github.com/en/rest/users/users#get-contextual-information-for-a-user
+// GitHub API docs: https://docs.github.com/rest/users/users#get-contextual-information-for-a-user
 func (s *UsersService) GetHovercard(ctx context.Context, user string, opts *HovercardOptions) (*Hovercard, *Response, error) {
 	u := fmt.Sprintf("users/%v/hovercard", user)
 	u, err := addOptions(u, opts)
@@ -203,7 +203,7 @@ type UserListOptions struct {
 //
 // To paginate through all users, populate 'Since' with the ID of the last user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/users/users#list-users
+// GitHub API docs: https://docs.github.com/rest/users/users#list-users
 func (s *UsersService) ListAll(ctx context.Context, opts *UserListOptions) ([]*User, *Response, error) {
 	u, err := addOptions("users", opts)
 	if err != nil {
@@ -227,7 +227,7 @@ func (s *UsersService) ListAll(ctx context.Context, opts *UserListOptions) ([]*U
 // ListInvitations lists all currently-open repository invitations for the
 // authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#list-repository-invitations-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/collaborators/invitations#list-repository-invitations-for-the-authenticated-user
 func (s *UsersService) ListInvitations(ctx context.Context, opts *ListOptions) ([]*RepositoryInvitation, *Response, error) {
 	u, err := addOptions("user/repository_invitations", opts)
 	if err != nil {
@@ -251,7 +251,7 @@ func (s *UsersService) ListInvitations(ctx context.Context, opts *ListOptions) (
 // AcceptInvitation accepts the currently-open repository invitation for the
 // authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#accept-a-repository-invitation
+// GitHub API docs: https://docs.github.com/rest/collaborators/invitations#accept-a-repository-invitation
 func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int64) (*Response, error) {
 	u := fmt.Sprintf("user/repository_invitations/%v", invitationID)
 	req, err := s.client.NewRequest("PATCH", u, nil)
@@ -265,7 +265,7 @@ func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int64)
 // DeclineInvitation declines the currently-open repository invitation for the
 // authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/collaborators/invitations#decline-a-repository-invitation
+// GitHub API docs: https://docs.github.com/rest/collaborators/invitations#decline-a-repository-invitation
 func (s *UsersService) DeclineInvitation(ctx context.Context, invitationID int64) (*Response, error) {
 	u := fmt.Sprintf("user/repository_invitations/%v", invitationID)
 	req, err := s.client.NewRequest("DELETE", u, nil)

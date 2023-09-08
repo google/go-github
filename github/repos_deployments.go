@@ -63,7 +63,7 @@ type DeploymentsListOptions struct {
 
 // ListDeployments lists the deployments of a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#list-deployments
+// GitHub API docs: https://docs.github.com/rest/deployments/deployments#list-deployments
 func (s *RepositoriesService) ListDeployments(ctx context.Context, owner, repo string, opts *DeploymentsListOptions) ([]*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments", owner, repo)
 	u, err := addOptions(u, opts)
@@ -87,7 +87,7 @@ func (s *RepositoriesService) ListDeployments(ctx context.Context, owner, repo s
 
 // GetDeployment returns a single deployment of a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#get-a-deployment
+// GitHub API docs: https://docs.github.com/rest/deployments/deployments#get-a-deployment
 func (s *RepositoriesService) GetDeployment(ctx context.Context, owner, repo string, deploymentID int64) (*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
 
@@ -107,7 +107,7 @@ func (s *RepositoriesService) GetDeployment(ctx context.Context, owner, repo str
 
 // CreateDeployment creates a new deployment for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#create-a-deployment
+// GitHub API docs: https://docs.github.com/rest/deployments/deployments#create-a-deployment
 func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo string, request *DeploymentRequest) (*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments", owner, repo)
 
@@ -131,7 +131,7 @@ func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo 
 
 // DeleteDeployment deletes an existing deployment for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#delete-a-deployment
+// GitHub API docs: https://docs.github.com/rest/deployments/deployments#delete-a-deployment
 func (s *RepositoriesService) DeleteDeployment(ctx context.Context, owner, repo string, deploymentID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -175,7 +175,7 @@ type DeploymentStatusRequest struct {
 
 // ListDeploymentStatuses lists the statuses of a given deployment of a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#list-deployment-statuses
+// GitHub API docs: https://docs.github.com/rest/deployments/statuses#list-deployment-statuses
 func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner, repo string, deployment int64, opts *ListOptions) ([]*DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
 	u, err := addOptions(u, opts)
@@ -203,7 +203,7 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 
 // GetDeploymentStatus returns a single deployment status of a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#get-a-deployment-status
+// GitHub API docs: https://docs.github.com/rest/deployments/statuses#get-a-deployment-status
 func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, repo string, deploymentID, deploymentStatusID int64) (*DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses/%v", owner, repo, deploymentID, deploymentStatusID)
 
@@ -227,7 +227,7 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 
 // CreateDeploymentStatus creates a new status for a deployment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#create-a-deployment-status
+// GitHub API docs: https://docs.github.com/rest/deployments/statuses#create-a-deployment-status
 func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner, repo string, deployment int64, request *DeploymentStatusRequest) (*DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
 

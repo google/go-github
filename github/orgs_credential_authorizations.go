@@ -58,7 +58,7 @@ type CredentialAuthorization struct {
 // ListCredentialAuthorizations lists credentials authorized through SAML SSO
 // for a given organization. Only available with GitHub Enterprise Cloud.
 //
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#list-saml-sso-authorizations-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest//rest/orgs/orgs#list-saml-sso-authorizations-for-an-organization
 func (s *OrganizationsService) ListCredentialAuthorizations(ctx context.Context, org string, opts *ListOptions) ([]*CredentialAuthorization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/credential-authorizations", org)
 	u, err := addOptions(u, opts)
@@ -83,7 +83,7 @@ func (s *OrganizationsService) ListCredentialAuthorizations(ctx context.Context,
 // RemoveCredentialAuthorization revokes the SAML SSO authorization for a given
 // credential within an organization. Only available with GitHub Enterprise Cloud.
 //
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#remove-a-saml-sso-authorization-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest//rest/orgs/orgs#remove-a-saml-sso-authorization-for-an-organization
 func (s *OrganizationsService) RemoveCredentialAuthorization(ctx context.Context, org string, credentialID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/credential-authorizations/%v", org, credentialID)
 	req, err := s.client.NewRequest(http.MethodDelete, u, nil)

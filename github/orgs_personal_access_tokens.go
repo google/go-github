@@ -21,7 +21,7 @@ type ReviewPersonalAccessTokenRequestOptions struct {
 // Only GitHub Apps can call this API, using the `organization_personal_access_token_requests: write` permission.
 // `action` can be one of `approve` or `deny`.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/personal-access-tokens?apiVersion=2022-11-28#review-a-request-to-access-organization-resources-with-a-fine-grained-personal-access-token
+// GitHub API docs: https://docs.github.com/rest/orgs/personal-access-tokens#review-a-request-to-access-organization-resources-with-a-fine-grained-personal-access-token
 func (s *OrganizationsService) ReviewPersonalAccessTokenRequest(ctx context.Context, org string, requestID int64, opts ReviewPersonalAccessTokenRequestOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/personal-access-token-requests/%v", org, requestID)
 

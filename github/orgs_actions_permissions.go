@@ -25,7 +25,7 @@ func (a ActionsPermissions) String() string {
 
 // GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-github-actions-permissions-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-github-actions-permissions-for-an-organization
 func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org string) (*ActionsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
 
@@ -45,7 +45,7 @@ func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org st
 
 // EditActionsPermissions sets the permissions policy for repositories and allowed actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-github-actions-permissions-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-github-actions-permissions-for-an-organization
 func (s *OrganizationsService) EditActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
 	req, err := s.client.NewRequest("PUT", u, actionsPermissions)

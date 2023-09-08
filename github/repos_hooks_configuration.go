@@ -12,7 +12,7 @@ import (
 
 // GetHookConfiguration returns the configuration for the specified repository webhook.
 //
-// GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-config?apiVersion=2022-11-28#get-a-webhook-configuration-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/webhooks/repo-config#get-a-webhook-configuration-for-a-repository
 func (s *RepositoriesService) GetHookConfiguration(ctx context.Context, owner, repo string, id int64) (*HookConfig, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%v/config", owner, repo, id)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -31,7 +31,7 @@ func (s *RepositoriesService) GetHookConfiguration(ctx context.Context, owner, r
 
 // EditHookConfiguration updates the configuration for the specified repository webhook.
 //
-// GitHub API docs: https://docs.github.com/en/rest/webhooks/repo-config?apiVersion=2022-11-28#update-a-webhook-configuration-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/webhooks/repo-config#update-a-webhook-configuration-for-a-repository
 func (s *RepositoriesService) EditHookConfiguration(ctx context.Context, owner, repo string, id int64, config *HookConfig) (*HookConfig, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%v/config", owner, repo, id)
 	req, err := s.client.NewRequest("PATCH", u, config)

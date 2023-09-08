@@ -25,7 +25,7 @@ func (a ActionsAllowed) String() string {
 
 // GetActionsAllowed gets the actions that are allowed in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-organization
 func (s *OrganizationsService) GetActionsAllowed(ctx context.Context, org string) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
 
@@ -45,7 +45,7 @@ func (s *OrganizationsService) GetActionsAllowed(ctx context.Context, org string
 
 // EditActionsAllowed sets the actions that are allowed in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-organization
 func (s *OrganizationsService) EditActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
 	req, err := s.client.NewRequest("PUT", u, actionsAllowed)
