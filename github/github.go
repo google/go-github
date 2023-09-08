@@ -5,7 +5,7 @@
 
 //go:generate go run gen-accessors.go
 //go:generate go run gen-stringify-test.go
-//go:generate ../script/metadata update-urls
+//go:generate go run -C ../tools ./cmd/metadata update-urls
 
 package github
 

@@ -84,4 +84,5 @@ jobs:
 
     - name: Validate metadata.yaml
       if: ${{ matrix.update-coverage }}
-      run: script/metadata validate
+      working-directory: tools
+      run: go run ./cmd/metadata validate

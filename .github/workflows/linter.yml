@@ -30,6 +30,6 @@ jobs:
     - name: golangci-lint ${{ matrix.working-directory }}
       uses: golangci/golangci-lint-action@v3
       with:
-        version: v1.54.2
+        version: latest
         working-directory: ${{ matrix.working-directory}}
         args: --verbose
