@@ -20,9 +20,9 @@ const (
 )
 
 type openapiFile struct {
-	description *openapi3.T
-	filename    string
-	plan        string
+	description  *openapi3.T
+	filename     string
+	plan         string
 	planIdx      int
 	releaseMajor int
 	releaseMinor int
