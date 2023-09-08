@@ -357,7 +357,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		testMethod(t, r, "PATCH")
 
 		v := new(SecretScanningAlertUpdateOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		want := &SecretScanningAlertUpdateOptions{State: String("resolved"), Resolution: String("used_in_tests")}
 

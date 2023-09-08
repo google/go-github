@@ -24,7 +24,7 @@ func TestMigrationService_StartMigration(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write(migrationJSON)
+		assertWrite(t, w, migrationJSON)
 	})
 
 	opt := &MigrationOptions{
@@ -64,7 +64,7 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(fmt.Sprintf("[%s]", migrationJSON)))
+		assertWrite(t, w, []byte(fmt.Sprintf("[%s]", migrationJSON)))
 	})
 
 	ctx := context.Background()
@@ -100,7 +100,7 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write(migrationJSON)
+		assertWrite(t, w, migrationJSON)
 	})
 
 	ctx := context.Background()
@@ -141,7 +141,7 @@ func TestMigrationService_MigrationArchiveURL(t *testing.T) {
 		testMethod(t, r, "GET")
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("0123456789abcdef"))
+		assertWrite(t, w, []byte("0123456789abcdef"))
 	})
 
 	ctx := context.Background()
