@@ -8,8 +8,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	"tools/internal"
+
 	"github.com/alecthomas/kong"
-	"github.com/google/go-github/tools/internal"
 	"github.com/google/go-github/v55/github"
 )
 

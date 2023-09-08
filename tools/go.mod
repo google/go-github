@@ -1,4 +1,4 @@
-module github.com/google/go-github/tools
+module tools
 
 go 1.21
 
