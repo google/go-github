@@ -2,8 +2,9 @@ package internal
 
 import (
 	"fmt"
-	"slices"
 	"sort"
+
+	"golang.org/x/exp/slices"
 )
 
 // ValidateMetadata returns a list of issues with the metadata file. An error means
