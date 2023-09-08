@@ -34,6 +34,9 @@ func ProjRootDir(dir string) (string, error) {
 	return ProjRootDir(parent)
 }
 
+// isGoGithubRoot determines whether dir is the repo root of go-github. It does
+// this by checking whether go.mod exists and contains a module directive with
+// the path "github.com/google/go-github/vNN".
 func isGoGithubRoot(dir string) (bool, error) {
 	filename := filepath.Join(dir, "go.mod")
 	b, err := os.ReadFile(filename)
@@ -59,30 +62,22 @@ func isGoGithubRoot(dir string) (bool, error) {
 	return base == "github.com/google/go-github", nil
 }
 
-func ExitErr(err error) {
-	if err == nil {
-		return
-	}
-	fmt.Fprintf(os.Stderr, "error: %v\n", err)
-	os.Exit(1)
+type serviceMethod struct {
+	receiverName string
+	methodName   string
+	filename     string
 }
 
-type ServiceMethod struct {
-	ReceiverName string
-	MethodName   string
-	Filename     string
+func (m *serviceMethod) name() string {
+	return fmt.Sprintf("%s.%s", m.receiverName, m.methodName)
 }
 
-func (m *ServiceMethod) Name() string {
-	return fmt.Sprintf("%s.%s", m.ReceiverName, m.MethodName)
-}
-
-func GetServiceMethods(dir string) ([]*ServiceMethod, error) {
+func getServiceMethods(dir string) ([]*serviceMethod, error) {
 	dirEntries, err := os.ReadDir(dir)
 	if err != nil {
 		return nil, err
 	}
-	var serviceMethods []*ServiceMethod
+	var serviceMethods []*serviceMethod
 	for _, filename := range dirEntries {
 		m, err := getServiceMethodsFromFile(filepath.Join(dir, filename.Name()))
 		if err != nil {
@@ -91,15 +86,15 @@ func GetServiceMethods(dir string) ([]*ServiceMethod, error) {
 		serviceMethods = append(serviceMethods, m...)
 	}
 	sort.Slice(serviceMethods, func(i, j int) bool {
-		if serviceMethods[i].Filename != serviceMethods[j].Filename {
-			return serviceMethods[i].Filename < serviceMethods[j].Filename
+		if serviceMethods[i].filename != serviceMethods[j].filename {
+			return serviceMethods[i].filename < serviceMethods[j].filename
 		}
-		return serviceMethods[i].Name() < serviceMethods[j].Name()
+		return serviceMethods[i].name() < serviceMethods[j].name()
 	})
 	return serviceMethods, nil
 }
 
-func getServiceMethodsFromFile(filename string) ([]*ServiceMethod, error) {
+func getServiceMethodsFromFile(filename string) ([]*serviceMethod, error) {
 	if !strings.HasSuffix(filename, ".go") ||
 		strings.HasSuffix(filename, "_test.go") {
 		return nil, nil
@@ -114,7 +109,7 @@ func getServiceMethodsFromFile(filename string) ([]*ServiceMethod, error) {
 	if df.Name.Name != "github" {
 		return nil, nil
 	}
-	var serviceMethods []*ServiceMethod
+	var serviceMethods []*serviceMethod
 	dst.Inspect(df, func(n dst.Node) bool {
 		decl, ok := n.(*dst.FuncDecl)
 		if !ok {
@@ -133,20 +128,24 @@ func getServiceMethodsFromFile(filename string) ([]*ServiceMethod, error) {
 		}
 		receiverName := id.Name
 		methodName := decl.Name.Name
+
+		// We only want exported methods on exported types.
+		// The receiver must either end with Service or be named Client.
+		// The exception is github.go, which contains Client methods we want to skip.
+
 		if !dst.IsExported(methodName) || !dst.IsExported(receiverName) {
 			return true
 		}
 		if receiverName != "Client" && !strings.HasSuffix(receiverName, "Service") {
 			return true
 		}
-		// Skip Client methods in github.go
 		if receiverName == "Client" && filepath.Base(filename) == "github.go" {
 			return true
 		}
-		serviceMethods = append(serviceMethods, &ServiceMethod{
-			ReceiverName: receiverName,
-			MethodName:   methodName,
-			Filename:     filename,
+		serviceMethods = append(serviceMethods, &serviceMethod{
+			receiverName: receiverName,
+			methodName:   methodName,
+			filename:     filename,
 		})
 		return true
 	})

@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/fs"
-	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -102,7 +101,7 @@ func (o *Operation) Summary() string {
 	return o.OpenAPI.Summary
 }
 
-func (o *Operation) Less(other *Operation) bool {
+func (o *Operation) less(other *Operation) bool {
 	if o.EndpointURL() != other.EndpointURL() {
 		return o.EndpointURL() < other.EndpointURL()
 	}
@@ -111,7 +110,7 @@ func (o *Operation) Less(other *Operation) bool {
 
 // matchesOpenAPIDesc returns true if this is describing the same operation as desc
 // based on endpoint and method.
-func (o *Operation) matchesOpenAPIDesc(desc *OperationDesc) bool {
+func (o *Operation) matchesOpenAPIDesc(desc OperationDesc) bool {
 	if o.Method() != desc.Method {
 		return false
 	}
@@ -175,11 +174,14 @@ func (m *Metadata) SaveFile(filename string) (errOut error) {
 	return enc.Encode(m)
 }
 
-func (m *Metadata) AddOperation(filename string, desc *OperationDesc) {
-	update := func(op *Operation) {
+func (m *Metadata) addOperation(filename string, desc OperationDesc) {
+	for _, op := range m.Operations {
+		if !op.matchesOpenAPIDesc(desc) {
+			continue
+		}
 		if len(op.OpenAPIFiles) == 0 {
 			op.OpenAPIFiles = append(op.OpenAPIFiles, filename)
-			op.OpenAPI = *desc
+			op.OpenAPI = desc
 			return
 		}
 		// just append to files, but only add the first ghes file
@@ -193,51 +195,15 @@ func (m *Metadata) AddOperation(filename string, desc *OperationDesc) {
 			}
 		}
 		op.OpenAPIFiles = append(op.OpenAPIFiles, filename)
-	}
-	for _, op := range m.Operations {
-		if op.matchesOpenAPIDesc(desc) {
-			update(op)
-			return
-		}
+		return
 	}
 	m.Operations = append(m.Operations, &Operation{
 		OpenAPIFiles: []string{filename},
-		OpenAPI:      *desc,
+		OpenAPI:      desc,
 	})
 }
 
-func (m *Metadata) OperationsByDocURL(docURL string) *Operation {
-	wantIdx := urlIndex(docURL)
-	var found []*Operation
-	for _, op := range m.Operations {
-		hasIdx := urlIndex(op.DocumentationURL())
-		if hasIdx == wantIdx {
-			found = append(found, op)
-		}
-	}
-	switch len(found) {
-	case 0:
-		return nil
-	case 1:
-		return found[0]
-	}
-	fmt.Println("found multiple operations for", wantIdx)
-	for _, op := range found {
-		fmt.Println("  ", op.OpenAPI.EndpointURL, op.OpenAPI.Method)
-	}
-	return nil
-}
-
-func (m *Metadata) DocLinksForMethod(method string) []string {
-	var links []string
-	for _, op := range m.OperationsForMethod(method) {
-		links = append(links, op.DocumentationURL())
-	}
-	sort.Strings(links)
-	return links
-}
-
-func (m *Metadata) OperationsForMethod(method string) []*Operation {
+func (m *Metadata) operationsForMethod(method string) []*Operation {
 	var operations []*Operation
 	for _, op := range m.Operations {
 		if !slices.Contains(op.GoMethods, method) {
@@ -246,13 +212,13 @@ func (m *Metadata) OperationsForMethod(method string) []*Operation {
 		operations = append(operations, op)
 	}
 	sort.Slice(operations, func(i, j int) bool {
-		return operations[i].Less(operations[j])
+		return operations[i].less(operations[j])
 	})
 	return operations
 }
 
 func (m *Metadata) UpdateFromGithub(ctx context.Context, client contentsClient, ref string) error {
-	descs, err := GetDescriptions(ctx, client, ref)
+	descs, err := getDescriptions(ctx, client, ref)
 	if err != nil {
 		return err
 	}
@@ -260,13 +226,13 @@ func (m *Metadata) UpdateFromGithub(ctx context.Context, client contentsClient, 
 		op.OpenAPIFiles = op.OpenAPIFiles[:0]
 	}
 	for _, desc := range descs {
-		for p, pathItem := range desc.Description.Paths {
+		for p, pathItem := range desc.description.Paths {
 			for method, op := range pathItem.Operations() {
 				docURL := ""
 				if op.ExternalDocs != nil {
 					docURL = op.ExternalDocs.URL
 				}
-				m.AddOperation(desc.Filename, &OperationDesc{
+				m.addOperation(desc.filename, OperationDesc{
 					Method:           method,
 					EndpointURL:      p,
 					DocumentationURL: docURL,
@@ -276,7 +242,7 @@ func (m *Metadata) UpdateFromGithub(ctx context.Context, client contentsClient, 
 		}
 	}
 	sort.Slice(m.Operations, func(i, j int) bool {
-		return m.Operations[i].Less(m.Operations[j])
+		return m.Operations[i].less(m.Operations[j])
 	})
 	return nil
 }
@@ -301,7 +267,7 @@ func UpdateDocLinks(meta *Metadata, dir string) error {
 		if err != nil {
 			return err
 		}
-		updatedContent, err := UpdateDocsLinksInFile(meta, content)
+		updatedContent, err := updateDocsLinksInFile(meta, content)
 		if err != nil {
 			return err
 		}
@@ -317,8 +283,8 @@ func UpdateDocLinks(meta *Metadata, dir string) error {
 	})
 }
 
-// UpdateDocsLinksInFile updates in the code comments in content with doc urls from metadata.
-func UpdateDocsLinksInFile(metadata *Metadata, content []byte) ([]byte, error) {
+// updateDocsLinksInFile updates in the code comments in content with doc urls from metadata.
+func updateDocsLinksInFile(metadata *Metadata, content []byte) ([]byte, error) {
 	df, err := decorator.Parse(content)
 	if err != nil {
 		return nil, err
@@ -364,7 +330,12 @@ func UpdateDocsLinksInFile(metadata *Metadata, content []byte) ([]byte, error) {
 			starts = starts[:len(starts)-1]
 		}
 
-		docLinks := metadata.DocLinksForMethod(strings.Join([]string{receiverType, methodName}, "."))
+		var links []string
+		for _, op := range metadata.operationsForMethod(strings.Join([]string{receiverType, methodName}, ".")) {
+			links = append(links, op.DocumentationURL())
+		}
+		sort.Strings(links)
+		docLinks := links
 
 		// add an empty line before adding doc links
 		if len(docLinks) > 0 {
@@ -384,19 +355,4 @@ func UpdateDocsLinksInFile(metadata *Metadata, content []byte) ([]byte, error) {
 		return nil, err
 	}
 	return buf.Bytes(), nil
-}
-
-// urlIndex returns the part of the path that comes after /rest/ followed by the fragment.
-func urlIndex(s string) string {
-	u, err := url.Parse(s)
-	if err != nil {
-		return ""
-	}
-	restIdx := strings.Index(u.Path, "/rest/")
-	if restIdx == -1 {
-		return ""
-	}
-	p := u.Path[restIdx+len("/rest/"):]
-	p = strings.TrimSuffix(p, "/")
-	return p + "#" + u.Fragment
 }

@@ -19,10 +19,10 @@ const (
 	descriptionsPath      = "descriptions"
 )
 
-type OpenapiFile struct {
-	Description  openapi3.T
-	Filename     string
-	plan         string
+type openapiFile struct {
+	description *openapi3.T
+	filename    string
+	plan        string
 	planIdx      int
 	releaseMajor int
 	releaseMinor int
@@ -33,12 +33,12 @@ type contentsClient interface {
 	GetContents(ctx context.Context, owner, repo, path string, opts *github.RepositoryContentGetOptions) (*github.RepositoryContent, []*github.RepositoryContent, *github.Response, error)
 }
 
-func (o *OpenapiFile) loadDescription(ctx context.Context, client contentsClient, gitRef string) error {
+func (o *openapiFile) loadDescription(ctx context.Context, client contentsClient, gitRef string) error {
 	contents, resp, err := client.DownloadContents(
 		ctx,
 		descriptionsOwnerName,
 		descriptionsRepoName,
-		o.Filename,
+		o.filename,
 		&github.RepositoryContentGetOptions{Ref: gitRef},
 	)
 	if err != nil {
@@ -55,19 +55,15 @@ func (o *OpenapiFile) loadDescription(ctx context.Context, client contentsClient
 	if err != nil {
 		return err
 	}
-	desc, err := openapi3.NewLoader().LoadFromData(b)
-	if err != nil {
-		return err
-	}
-	o.Description = *desc
-	return nil
+	o.description, err = openapi3.NewLoader().LoadFromData(b)
+	return err
 }
 
 // less sorts by the following rules:
 //   - planIdx ascending
 //   - releaseMajor descending
 //   - releaseMinor descending
-func (o *OpenapiFile) less(other *OpenapiFile) bool {
+func (o *openapiFile) less(other *openapiFile) bool {
 	if o.planIdx != other.planIdx {
 		return o.planIdx < other.planIdx
 	}
@@ -83,14 +79,14 @@ var dirPatterns = []*regexp.Regexp{
 	regexp.MustCompile(`^(?P<plan>ghes)(-(?P<major>\d+)\.(?P<minor>\d+))?$`),
 }
 
-// GetDescriptions loads OpenapiFiles for all the OpenAPI 3.0 description files in github/rest-api-description.
+// getDescriptions loads OpenapiFiles for all the OpenAPI 3.0 description files in github/rest-api-description.
 // This assumes that all directories in "descriptions/" contain OpenAPI 3.0 description files with the same
 // name as the directory (plus the ".json" extension). For example, "descriptions/api.github.com/api.github.com.json".
 // Results are sorted by these rules:
 //   - Directories that don't match any of the patterns in dirPatterns are removed.
 //   - Directories are sorted by the pattern that matched in the same order they appear in dirPatterns.
 //   - Directories are then sorted by major and minor version in descending order.
-func GetDescriptions(ctx context.Context, client contentsClient, gitRef string) ([]*OpenapiFile, error) {
+func getDescriptions(ctx context.Context, client contentsClient, gitRef string) ([]*openapiFile, error) {
 	_, dir, resp, err := client.GetContents(
 		ctx,
 		descriptionsOwnerName,
@@ -104,7 +100,7 @@ func GetDescriptions(ctx context.Context, client contentsClient, gitRef string) 
 	if resp.StatusCode != 200 {
 		return nil, fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
-	files := make([]*OpenapiFile, 0, len(dir))
+	files := make([]*openapiFile, 0, len(dir))
 	for _, d := range dir {
 		for i, pattern := range dirPatterns {
 			m := pattern.FindStringSubmatch(d.GetName())
@@ -118,8 +114,8 @@ func GetDescriptions(ctx context.Context, client contentsClient, gitRef string) 
 				continue
 			}
 			filename := fmt.Sprintf("descriptions/%s/%s.json", d.GetName(), d.GetName())
-			files = append(files, &OpenapiFile{
-				Filename:     filename,
+			files = append(files, &openapiFile{
+				filename:     filename,
 				plan:         plan,
 				planIdx:      i,
 				releaseMajor: major,

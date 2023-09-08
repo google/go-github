@@ -1,5 +1,5 @@
 #!/bin/sh
-#/ metadata builds and runs tools/metadata with the given arguments.
+#/ metadata builds and runs tools/cmd/metadata with the given arguments.
 
 set -e
 
@@ -9,7 +9,7 @@ mkdir -p "$REPO_DIR"/bin
 
 (
   cd "$REPO_DIR"/tools
-  go build -o "$REPO_DIR"/bin/metadata ./metadata
+  go build -o "$REPO_DIR"/bin/metadata ./cmd/metadata
 )
 
 exec "$REPO_DIR"/bin/metadata "$@"

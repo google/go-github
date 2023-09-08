@@ -69,11 +69,11 @@ func TestGetDescriptions(t *testing.T) {
 		"descriptions/ghes-3.2/ghes-3.2.json",
 		"descriptions/ghes-3.1/ghes-3.1.json",
 	}
-	got, err := GetDescriptions(ctx, client, "main")
+	got, err := getDescriptions(ctx, client, "main")
 	require.NoError(t, err)
 	require.Equal(t, len(wantFiles), len(got))
 	for i := range wantFiles {
-		require.Equal(t, wantFiles[i], got[i].Filename)
-		require.Equal(t, "1.2.3", got[i].Description.Info.Version)
+		require.Equal(t, wantFiles[i], got[i].filename)
+		require.Equal(t, "1.2.3", got[i].description.Info.Version)
 	}
 }

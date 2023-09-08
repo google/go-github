@@ -15,7 +15,7 @@ func ValidateMetadata(dir string, meta *Metadata) ([]string, error) {
 	}
 	var result []string
 	for _, m := range undocumentedMethods {
-		msg := fmt.Sprintf("Undocumented method %s. Please add it to metadata.", m.Name())
+		msg := fmt.Sprintf("Undocumented method %s. Please add it to metadata.", m.name())
 		result = append(result, msg)
 	}
 	metaMethodMap := map[string]bool{}
@@ -44,18 +44,18 @@ func ValidateMetadata(dir string, meta *Metadata) ([]string, error) {
 }
 
 // getUndocumentedMethods returns a list of methods that are not mapped to any operation in metadata.yaml
-func getUndocumentedMethods(dir string, metadata *Metadata) ([]*ServiceMethod, error) {
-	var result []*ServiceMethod
-	methods, err := GetServiceMethods(dir)
+func getUndocumentedMethods(dir string, metadata *Metadata) ([]*serviceMethod, error) {
+	var result []*serviceMethod
+	methods, err := getServiceMethods(dir)
 	if err != nil {
 		return nil, err
 	}
 	for _, method := range methods {
-		ops := metadata.OperationsForMethod(method.Name())
+		ops := metadata.operationsForMethod(method.name())
 		if len(ops) > 0 {
 			continue
 		}
-		if slices.Contains(metadata.UndocumentedMethods, method.Name()) {
+		if slices.Contains(metadata.UndocumentedMethods, method.name()) {
 			continue
 		}
 		result = append(result, method)
@@ -67,12 +67,12 @@ func getUndocumentedMethods(dir string, metadata *Metadata) ([]*ServiceMethod, e
 func missingMethods(dir string, methods []string) ([]string, error) {
 	var result []string
 	existingMap := map[string]bool{}
-	sm, err := GetServiceMethods(dir)
+	sm, err := getServiceMethods(dir)
 	if err != nil {
 		return nil, err
 	}
 	for _, method := range sm {
-		existingMap[method.Name()] = true
+		existingMap[method.name()] = true
 	}
 	for _, m := range methods {
 		if !existingMap[m] {
