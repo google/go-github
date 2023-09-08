@@ -69,13 +69,13 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 	}
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
 		v := new(AutolinkOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`
+		assertWrite(t, w, []byte(`
 			{
 				"key_prefix": "TICKET-",
 				"url_template": "https://example.com/TICKET?query=<num>",

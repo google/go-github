@@ -230,7 +230,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createRepoRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -280,7 +280,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createRepoRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -314,7 +314,7 @@ func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
 
 	mux.HandleFunc("/repos/to/tr/generate", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TemplateRepoRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
@@ -478,7 +478,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Repository)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -1041,7 +1041,7 @@ func TestRepositoriesService_RenameBranch(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/rename", func(w http.ResponseWriter, r *http.Request) {
 		v := new(renameBranchRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		want := &renameBranchRequest{NewName: "nn"}
@@ -1083,9 +1083,6 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ProtectionRequest)
-		json.NewDecoder(r.Body).Decode(v)
-
 		testMethod(t, r, "GET")
 		// TODO: remove custom Accept header when this API fully launches
 		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
@@ -1359,7 +1356,7 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ProtectionRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -1536,7 +1533,7 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ProtectionRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -1677,7 +1674,7 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ProtectionRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -1791,7 +1788,7 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ProtectionRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -1907,9 +1904,6 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ProtectionRequest)
-		json.NewDecoder(r.Body).Decode(v)
-
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"strict": true,
@@ -2008,7 +2002,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
 		v := new(RequiredStatusChecksRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {
@@ -2086,7 +2080,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
 		v := new(RequiredStatusChecksRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {
@@ -2172,9 +2166,6 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks/contexts", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ProtectionRequest)
-		json.NewDecoder(r.Body).Decode(v)
-
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `["x", "y", "z"]`)
 	})
@@ -2307,7 +2298,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PullRequestReviewsEnforcementUpdate)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {
@@ -3259,7 +3250,7 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/transfer", func(w http.ResponseWriter, r *http.Request) {
 		var v TransferRequest
-		json.NewDecoder(r.Body).Decode(&v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -3303,7 +3294,7 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/dispatches", func(w http.ResponseWriter, r *http.Request) {
 		var v DispatchRequestOptions
-		json.NewDecoder(r.Body).Decode(&v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

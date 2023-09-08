@@ -58,7 +58,7 @@ func TestGitService_CreateTag(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/tags", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createTagRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

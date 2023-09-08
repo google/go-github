@@ -32,7 +32,7 @@ func main() {
 	username, _ := r.ReadString('\n')
 
 	fmt.Print("GitHub Password: ")
-	bytePassword, _ := term.ReadPassword(int(syscall.Stdin))
+	bytePassword, _ := term.ReadPassword(syscall.Stdin)
 	password := string(bytePassword)
 
 	tp := github.BasicAuthTransport{

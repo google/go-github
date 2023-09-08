@@ -72,7 +72,7 @@ func TestRepositoriesService_EditHookConfiguration(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/hooks/1/config", func(w http.ResponseWriter, r *http.Request) {
 		v := new(HookConfig)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

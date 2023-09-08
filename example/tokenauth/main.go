@@ -21,7 +21,7 @@ import (
 
 func main() {
 	fmt.Print("GitHub Token: ")
-	byteToken, _ := term.ReadPassword(int(syscall.Stdin))
+	byteToken, _ := term.ReadPassword(syscall.Stdin)
 	println()
 	token := string(byteToken)
 

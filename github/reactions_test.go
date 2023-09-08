@@ -112,7 +112,7 @@ func TestReactionsService_CreateCommentReaction(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
+		assertWrite(t, w, []byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
 	ctx := context.Background()
@@ -149,7 +149,7 @@ func TestReactionsService_ListIssueReactions(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
+		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
 	ctx := context.Background()
@@ -193,7 +193,7 @@ func TestReactionsService_CreateIssueReaction(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
+		assertWrite(t, w, []byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
 	ctx := context.Background()
@@ -230,7 +230,7 @@ func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
+		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
 	ctx := context.Background()
@@ -274,7 +274,7 @@ func TestReactionsService_CreateIssueCommentReaction(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
+		assertWrite(t, w, []byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
 	ctx := context.Background()
@@ -311,7 +311,7 @@ func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
+		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
 	ctx := context.Background()
@@ -355,7 +355,7 @@ func TestReactionsService_CreatePullRequestCommentReaction(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
+		assertWrite(t, w, []byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
 	ctx := context.Background()
@@ -392,7 +392,7 @@ func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
+		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
 	ctx := context.Background()
@@ -436,7 +436,7 @@ func TestReactionsService_CreateTeamDiscussionReaction(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
+		assertWrite(t, w, []byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
 	ctx := context.Background()
@@ -473,7 +473,7 @@ func TestReactionService_ListTeamDiscussionCommentReactions(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
+		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
 	ctx := context.Background()
@@ -517,7 +517,7 @@ func TestReactionService_CreateTeamDiscussionCommentReaction(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
+		assertWrite(t, w, []byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
 	ctx := context.Background()
@@ -878,7 +878,7 @@ func TestReactionService_CreateReleaseReaction(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"rocket"}`))
+		assertWrite(t, w, []byte(`{"id":1,"user":{"login":"l","id":2},"content":"rocket"}`))
 	})
 
 	const methodName = "CreateReleaseReaction"

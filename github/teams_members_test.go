@@ -333,7 +333,7 @@ func TestTeamsService__AddTeamMembershipByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamAddTeamMembershipOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, opt) {
@@ -377,7 +377,7 @@ func TestTeamsService__AddTeamMembershipByID_notFound(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamAddTeamMembershipOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, opt) {
@@ -422,7 +422,7 @@ func TestTeamsService__AddTeamMembershipBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamAddTeamMembershipOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, opt) {
@@ -466,7 +466,7 @@ func TestTeamsService__AddTeamMembershipBySlug_notFound(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamAddTeamMembershipOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, opt) {

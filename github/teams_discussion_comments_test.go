@@ -247,7 +247,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		v := new(DiscussionComment)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, &input) {
@@ -319,7 +319,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 	input := DiscussionComment{Body: String("e")}
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		v := new(DiscussionComment)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, &input) {

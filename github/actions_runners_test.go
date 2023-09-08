@@ -65,7 +65,7 @@ func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		v := new(GenerateJITConfigRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -109,7 +109,7 @@ func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		v := new(GenerateJITConfigRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

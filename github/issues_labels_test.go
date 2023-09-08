@@ -113,7 +113,7 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/labels", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Label)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -166,7 +166,7 @@ func TestIssuesService_EditLabel(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/labels/n", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Label)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {
@@ -302,7 +302,7 @@ func TestIssuesService_AddLabelsToIssue(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
 		var v []string
-		json.NewDecoder(r.Body).Decode(&v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -389,7 +389,7 @@ func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
 		var v []string
-		json.NewDecoder(r.Body).Decode(&v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {

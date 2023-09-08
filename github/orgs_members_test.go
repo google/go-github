@@ -445,7 +445,7 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 
 	mux.HandleFunc("/user/memberships/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Membership)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {
@@ -489,7 +489,7 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Membership)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -647,7 +647,7 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/invitations", func(w http.ResponseWriter, r *http.Request) {
 		v := new(CreateOrgInvitationOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

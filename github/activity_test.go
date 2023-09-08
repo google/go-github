@@ -21,7 +21,7 @@ func TestActivityService_List(t *testing.T) {
 		testMethod(t, r, "GET")
 
 		w.WriteHeader(http.StatusOK)
-		w.Write(feedsJSON)
+		assertWrite(t, w, feedsJSON)
 	})
 
 	ctx := context.Background()

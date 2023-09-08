@@ -48,10 +48,7 @@ func TestPipeline_Reactions_FirstStripAllURLsAndDestroyReceivers(t *testing.T) {
 }
 
 func TestParseWebPageEndpoints_Reactions(t *testing.T) {
-	got, err := parseWebPageEndpoints(reactionsTestWebPage)
-	if err != nil {
-		t.Fatal(err)
-	}
+	got := parseWebPageEndpoints(reactionsTestWebPage)
 	testWebPageHelper(t, got, reactionsWant)
 }
 

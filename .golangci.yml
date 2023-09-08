@@ -1,34 +1,39 @@
+run:
+  build-tags:
+    - integration
 linters:
-  # TODO: fix errors so that all of the linters below pass.
-  # The linters that are commented out, as well as those explicitly disabled,
-  # are currently failing.  We should fix those failures or define exclusion
-  # rules, and then enable those linters.
   enable:
     - dogsled
     - dupl
     - gofmt
     - goimports
-  # - gosec
+    - gosec
     - misspell
     - nakedret
     - stylecheck
-  # - unconvert
-  # - unparam
+    - unconvert
+    - unparam
     - whitespace
-  disable:
-    - errcheck
-    - gosimple
-    - staticcheck
-    - ineffassign
-    - unused
+linters-settings:
+  gosec:
+    excludes:
+      # performance issue: see https://github.com/golangci/golangci-lint/issues/4039
+      # and https://github.com/securego/gosec/issues/1007
+      - G602
 issues:
-  exclude:
-    - composites
   exclude-rules:
-  - linters:
-    - dogsled
-    text:  "declaration has 3 blank identifiers"
-    path: _test\.go
-  - linters:
-    - dupl
-    path: _test\.go
+    - linters:
+        - dupl
+        - unparam
+        - gosec
+        - dogsled
+      path: _test\.go
+
+    # We need to pass nil Context in order to test DoBare erroring on nil ctx.
+    - linters: [ staticcheck ]
+      text: 'SA1012: do not pass a nil Context'
+      path: _test\.go
+
+    # We need to use sha1 for validating signatures
+    - linters: [ gosec ]
+      text: 'G505: Blocklisted import crypto/sha1: weak cryptographic primitive'

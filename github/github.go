@@ -810,7 +810,7 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 			}, err
 		}
 		// If we've hit a secondary rate limit, don't make further requests before Retry After.
-		if err := c.checkSecondaryRateLimitBeforeDo(ctx, req); err != nil {
+		if err := c.checkSecondaryRateLimitBeforeDo(req); err != nil {
 			return &Response{
 				Response: err.Response,
 			}, err
@@ -942,7 +942,7 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory rat
 // current client state in order to quickly check if *AbuseRateLimitError can be immediately returned
 // from Client.Do, and if so, returns it so that Client.Do can skip making a network API call unnecessarily.
 // Otherwise it returns nil, and Client.Do should proceed normally.
-func (c *Client) checkSecondaryRateLimitBeforeDo(ctx context.Context, req *http.Request) *AbuseRateLimitError {
+func (c *Client) checkSecondaryRateLimitBeforeDo(req *http.Request) *AbuseRateLimitError {
 	c.rateMu.Lock()
 	secondary := c.secondaryRateLimitReset
 	c.rateMu.Unlock()
@@ -1219,7 +1219,11 @@ func CheckResponse(r *http.Response) error {
 	errorResponse := &ErrorResponse{Response: r}
 	data, err := io.ReadAll(r.Body)
 	if err == nil && data != nil {
-		json.Unmarshal(data, errorResponse)
+		err = json.Unmarshal(data, errorResponse)
+		if err != nil {
+			// reset the response as if this never happened
+			errorResponse = &ErrorResponse{Response: r}
+		}
 	}
 	// Re-populate error response body because GitHub error responses are often
 	// undocumented and inconsistent.
@@ -1574,7 +1578,7 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 
 	// If redirect response is returned, follow it
 	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
-		resp.Body.Close()
+		_ = resp.Body.Close()
 		u = resp.Header.Get("Location")
 		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, false, opts...)
 	}

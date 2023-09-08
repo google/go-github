@@ -268,13 +268,13 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 	opt := &RepositoryAddCollaboratorOptions{Permission: "admin"}
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		v := new(RepositoryAddCollaboratorOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"permissions": "write","url": "https://api.github.com/user/repository_invitations/1296269","html_url": "https://github.com/octocat/Hello-World/invitations","id":1,"permissions":"write","repository":{"url":"s","name":"r","id":1},"invitee":{"login":"u"},"inviter":{"login":"o"}}`))
+		assertWrite(t, w, []byte(`{"permissions": "write","url": "https://api.github.com/user/repository_invitations/1296269","html_url": "https://github.com/octocat/Hello-World/invitations","id":1,"permissions":"write","repository":{"url":"s","name":"r","id":1},"invitee":{"login":"u"},"inviter":{"login":"o"}}`))
 	})
 	ctx := context.Background()
 	collaboratorInvitation, _, err := client.Repositories.AddCollaborator(ctx, "o", "r", "u", opt)

@@ -116,7 +116,7 @@ func TestRepositoriesService_UpdatePreReceiveHook(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PreReceiveHook)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

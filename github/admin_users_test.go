@@ -22,7 +22,7 @@ func TestAdminUsers_Create(t *testing.T) {
 
 	mux.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createUserRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		want := &createUserRequest{Login: String("github"), Email: String("email@domain.com")}

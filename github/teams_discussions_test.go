@@ -324,7 +324,7 @@ func TestTeamsService_CreateDiscussionByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/2/discussions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamDiscussion)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, &input) {
@@ -368,7 +368,7 @@ func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamDiscussion)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, &input) {
@@ -412,7 +412,7 @@ func TestTeamsService_EditDiscussionByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamDiscussion)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, &input) {
@@ -456,7 +456,7 @@ func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions/3", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamDiscussion)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, &input) {

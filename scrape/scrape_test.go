@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"os"
+	"testing"
 )
 
 // setup a test HTTP server along with a scrape.Client that is configured to
@@ -21,13 +22,18 @@ func setup() (client *Client, mux *http.ServeMux, cleanup func()) {
 	return client, mux, server.Close
 }
 
-func copyTestFile(w io.Writer, filename string) error {
+func copyTestFile(t *testing.T, w io.Writer, filename string) {
+	t.Helper()
 	f, err := os.Open("testdata/" + filename)
 	if err != nil {
-		return err
+		t.Errorf("unable to open test file: %v", err)
 	}
-	defer f.Close()
-
 	_, err = io.Copy(w, f)
-	return err
+	if err != nil {
+		t.Errorf("failure copying test file: %v", err)
+	}
+	err = f.Close()
+	if err != nil {
+		t.Errorf("failure closing test file: %v", err)
+	}
 }

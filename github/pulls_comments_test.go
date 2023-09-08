@@ -269,7 +269,7 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PullRequestComment)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		// TODO: remove custom Accept header assertion when the API fully launches.
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -324,7 +324,7 @@ func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PullRequestComment)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -368,7 +368,7 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PullRequestComment)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

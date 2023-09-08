@@ -361,7 +361,7 @@ func TestPullRequestsService_Create(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewPullRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -488,7 +488,8 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v", i), func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PATCH")
 			testBody(t, r, tt.wantUpdate+"\n")
-			io.WriteString(w, tt.sendResponse)
+			_, err := io.WriteString(w, tt.sendResponse)
+			assertNilError(t, err)
 			madeRequest = true
 		})
 
