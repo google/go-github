@@ -1,23 +1,8 @@
 undocumented_methods:
-  - ActionsService.AddRepoToRequiredWorkflow
-  - ActionsService.CreateRequiredWorkflow
-  - ActionsService.DeleteRequiredWorkflow
-  - ActionsService.GetRequiredWorkflowByID
-  - ActionsService.ListOrgRequiredWorkflows
-  - ActionsService.ListRepoRequiredWorkflows
-  - ActionsService.ListRequiredWorkflowSelectedRepos
-  - ActionsService.RemoveRepoFromRequiredWorkflow
-  - ActionsService.SetRequiredWorkflowSelectedRepos
-  - ActionsService.UpdateRequiredWorkflow
   - AppsService.FindRepositoryInstallationByID
   - Client.ListServiceHooks
-  - IssueImportService.CheckStatus
-  - IssueImportService.CheckStatusSince
-  - IssueImportService.Create
   - OrganizationsService.GetByID
   - RepositoriesService.GetByID
-  - RepositoriesService.Subscribe
-  - RepositoriesService.Unsubscribe
   - UsersService.GetByID
 operations:
   - openapi:
@@ -1495,6 +1480,13 @@ operations:
       - descriptions/ghes-3.10/ghes-3.10.json
     go_methods:
       - GitignoresService.Get
+  - override:
+      method: POST
+      endpoint_url: /hub
+      documentation_url: https://docs.github.com/webhooks/about-webhooks-for-repositories#pubsubhubbub
+    go_methods:
+      - RepositoriesService.Subscribe
+      - RepositoriesService.Unsubscribe
   - openapi:
       method: GET
       endpoint_url: /installation/repositories
@@ -1979,6 +1971,60 @@ operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.10/ghes-3.10.json
+  - override:
+      method: GET
+      endpoint_url: /orgs/{org}/actions/required_workflows
+      documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
+    go_methods:
+      - ActionsService.ListOrgRequiredWorkflows
+  - override:
+      method: POST
+      endpoint_url: /orgs/{org}/actions/required_workflows
+      documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
+    go_methods:
+      - ActionsService.CreateRequiredWorkflow
+  - override:
+      method: DELETE
+      endpoint_url: /orgs/{org}/actions/required_workflows/{workflow_id}
+      documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
+    go_methods:
+      - ActionsService.DeleteRequiredWorkflow
+  - override:
+      method: GET
+      endpoint_url: /orgs/{org}/actions/required_workflows/{workflow_id}
+      documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
+    go_methods:
+      - ActionsService.GetRequiredWorkflowByID
+  - override:
+      method: PATCH
+      endpoint_url: /orgs/{org}/actions/required_workflows/{workflow_id}
+      documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
+    go_methods:
+      - ActionsService.UpdateRequiredWorkflow
+  - override:
+      method: GET
+      endpoint_url: /orgs/{org}/actions/required_workflows/{workflow_id}/repositories
+      documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
+    go_methods:
+      - ActionsService.ListRequiredWorkflowSelectedRepos
+  - override:
+      method: PUT
+      endpoint_url: /orgs/{org}/actions/required_workflows/{workflow_id}/repositories
+      documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
+    go_methods:
+      - ActionsService.SetRequiredWorkflowSelectedRepos
+  - override:
+      method: DELETE
+      endpoint_url: /orgs/{org}/actions/required_workflows/{workflow_id}/repositories/{repository_id}
+      documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
+    go_methods:
+      - ActionsService.RemoveRepoFromRequiredWorkflow
+  - override:
+      method: PUT
+      endpoint_url: /orgs/{org}/actions/required_workflows/{workflow_id}/repositories/{repository_id}
+      documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
+    go_methods:
+      - ActionsService.AddRepoToRequiredWorkflow
   - openapi:
       method: GET
       endpoint_url: /orgs/{org}/actions/runner-groups
@@ -4794,6 +4840,12 @@ operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.10/ghes-3.10.json
+  - override:
+      method: GET
+      endpoint_url: /repos/{owner}/{repo}/actions/required_workflows
+      documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
+    go_methods:
+      - ActionsService.ListRepoRequiredWorkflows
   - openapi:
       method: GET
       endpoint_url: /repos/{owner}/{repo}/actions/runners
@@ -7193,6 +7245,24 @@ operations:
       - descriptions/ghec/ghec.json
     go_methods:
       - MigrationService.MapCommitAuthor
+  - override:
+      method: GET
+      endpoint_url: /repos/{owner}/{repo}/import/issues
+      documentation_url: https://gist.github.com/jonmagic/5282384165e0f86ef105#check-status-of-multiple-issues
+    go_methods:
+      - IssueImportService.CheckStatusSince
+  - override:
+      method: POST
+      endpoint_url: /repos/{owner}/{repo}/import/issues
+      documentation_url: https://gist.github.com/jonmagic/5282384165e0f86ef105#start-an-issue-import
+    go_methods:
+      - IssueImportService.Create
+  - override:
+      method: GET
+      endpoint_url: /repos/{owner}/{repo}/import/issues/{issue_number}
+      documentation_url: https://gist.github.com/jonmagic/5282384165e0f86ef105#import-status-request
+    go_methods:
+      - IssueImportService.CheckStatus
   - openapi:
       method: GET
       endpoint_url: /repos/{owner}/{repo}/import/large_files

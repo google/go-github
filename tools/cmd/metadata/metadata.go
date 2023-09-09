@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"tools/internal"
@@ -90,6 +91,9 @@ func (c *formatCmd) Run(root *rootCmd) error {
 	if err != nil {
 		return err
 	}
+	sort.Slice(meta.Operations, func(i, j int) bool {
+		return meta.Operations[i].Less(meta.Operations[j])
+	})
 	return meta.SaveFile(filename)
 }
 

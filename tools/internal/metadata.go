@@ -101,7 +101,7 @@ func (o *Operation) Summary() string {
 	return o.OpenAPI.Summary
 }
 
-func (o *Operation) less(other *Operation) bool {
+func (o *Operation) Less(other *Operation) bool {
 	if o.EndpointURL() != other.EndpointURL() {
 		return o.EndpointURL() < other.EndpointURL()
 	}
@@ -212,7 +212,7 @@ func (m *Metadata) operationsForMethod(method string) []*Operation {
 		operations = append(operations, op)
 	}
 	sort.Slice(operations, func(i, j int) bool {
-		return operations[i].less(operations[j])
+		return operations[i].Less(operations[j])
 	})
 	return operations
 }
@@ -242,7 +242,7 @@ func (m *Metadata) UpdateFromGithub(ctx context.Context, client contentsClient, 
 		}
 	}
 	sort.Slice(m.Operations, func(i, j int) bool {
-		return m.Operations[i].less(m.Operations[j])
+		return m.Operations[i].Less(m.Operations[j])
 	})
 	return nil
 }
