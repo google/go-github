@@ -8,7 +8,7 @@ Package github provides a client for using the GitHub API.
 
 Usage:
 
-	import "github.com/google/go-github/v54/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+	import "github.com/google/go-github/v55/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 	import "github.com/google/go-github/github"     // with go modules disabled
 
 Construct a new GitHub client, then use the various services on the client to
@@ -40,33 +40,15 @@ For more sample code snippets, head over to the https://github.com/google/go-git
 
 # Authentication
 
-The go-github library does not directly handle authentication. Instead, when
-creating a new client, pass an http.Client that can handle authentication for
-you. The easiest and recommended way to do this is using the golang.org/x/oauth2
-library, but you can always use any other library that provides an http.Client.
-If you have an OAuth2 access token (for example, a personal API token), you can
-use it with the oauth2 library using:
+Use Client.WithAuthToken to configure your client to authenticate using an Oauth token
+(for example, a personal access token). This is what is needed for a majority of use cases
+aside from GitHub Apps.
 
-	import "golang.org/x/oauth2"
-
-	func main() {
-		ctx := context.Background()
-		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: "... your access token ..."},
-		)
-		tc := oauth2.NewClient(ctx, ts)
-
-		client := github.NewClient(tc)
-
-		// list all repositories for the authenticated user
-		repos, _, err := client.Repositories.List(ctx, "", nil)
-	}
+	client := github.NewClient(nil).WithAuthToken("... your access token ...")
 
 Note that when using an authenticated Client, all calls made by the client will
 include the specified OAuth token. Therefore, authenticated clients should
 almost never be shared between different users.
-
-See the oauth2 docs for complete instructions on using that library.
 
 For API methods that require HTTP Basic Authentication, use the
 BasicAuthTransport.

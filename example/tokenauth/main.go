@@ -3,7 +3,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// The tokenauth command demonstrates using the oauth2.StaticTokenSource.
+// The tokenauth command demonstrates using a Personal Access Token (PAT) to
+// authenticate with GitHub.
 // You can test out a GitHub Personal Access Token using this simple example.
 // You can generate them here: https://github.com/settings/tokens
 package main
@@ -14,18 +15,18 @@ import (
 	"log"
 	"syscall"
 
-	"github.com/google/go-github/v54/github"
+	"github.com/google/go-github/v55/github"
 	"golang.org/x/term"
 )
 
 func main() {
 	fmt.Print("GitHub Token: ")
-	byteToken, _ := term.ReadPassword(int(syscall.Stdin))
+	byteToken, _ := term.ReadPassword(syscall.Stdin)
 	println()
 	token := string(byteToken)
 
 	ctx := context.Background()
-	client := github.NewTokenClient(ctx, token)
+	client := github.NewClient(nil).WithAuthToken(token)
 
 	user, resp, err := client.Users.Get(ctx, "")
 	if err != nil {

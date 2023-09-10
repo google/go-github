@@ -60,7 +60,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
 		v := new(SarifAnalysis)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		testMethod(t, r, "POST")
 		want := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: String("codeql-cli")}
 		if !cmp.Equal(v, want) {
@@ -85,6 +85,47 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 
 	testNewRequestAndDoFailureCategory(t, methodName, client, codeScanningUploadCategory, func() (*Response, error) {
 		_, resp, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
+		return resp, err
+	})
+}
+
+func TestCodeScanningService_GetSARIF(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/sarifs/abc", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"processing_status": "s",
+			"analyses_url": "u"
+		}`)
+	})
+
+	ctx := context.Background()
+	sarifUpload, _, err := client.CodeScanning.GetSARIF(ctx, "o", "r", "abc")
+	if err != nil {
+		t.Errorf("CodeScanning.GetSARIF returned error: %v", err)
+	}
+
+	want := &SARIFUpload{
+		ProcessingStatus: String("s"),
+		AnalysesURL:      String("u"),
+	}
+	if !cmp.Equal(sarifUpload, want) {
+		t.Errorf("CodeScanning.GetSARIF returned %+v, want %+v", sarifUpload, want)
+	}
+
+	const methodName = "GetSARIF"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.GetSARIF(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.GetSARIF(ctx, "o", "r", "abc")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
 		return resp, err
 	})
 }
@@ -275,7 +316,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(alerts, want) {
-		t.Errorf("CodeScanning.ListAlertsForOrg returned %+v, want %+v", *&alerts, *&want)
+		t.Errorf("CodeScanning.ListAlertsForOrg returned %+v, want %+v", alerts, want)
 	}
 
 	const methodName = "ListAlertsForOrg"
@@ -401,7 +442,7 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(alerts, want) {
-		t.Errorf("CodeScanning.ListAlertsForOrg returned %+v, want %+v", *&alerts, *&want)
+		t.Errorf("CodeScanning.ListAlertsForOrg returned %+v, want %+v", alerts, want)
 	}
 
 	const methodName = "ListAlertsForOrg"
@@ -730,52 +771,133 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 	})
 }
 
+func TestCodeScanningService_ListAlertInstances(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/alerts/88/instances", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+			  "ref": "refs/heads/main",
+			  "analysis_key": ".github/workflows/codeql-analysis.yml:analyze",
+			  "environment": "",
+			  "category": ".github/workflows/codeql-analysis.yml:analyze",
+			  "state": "open",
+			  "fixed_at": null,
+			  "commit_sha": "abcdefg12345",
+			  "message": {
+				"text": "This path depends on a user-provided value."
+			  },
+			  "location": {
+				"path": "spec-main/api-session-spec.ts",
+				"start_line": 917,
+				"end_line": 917,
+				"start_column": 7,
+				"end_column": 18
+			  },
+			  "classifications": [
+				"test"
+			  ]
+			}
+		  ]`)
+	})
+
+	opts := &AlertInstancesListOptions{Ref: "heads/main", ListOptions: ListOptions{Page: 1}}
+	ctx := context.Background()
+	instances, _, err := client.CodeScanning.ListAlertInstances(ctx, "o", "r", 88, opts)
+	if err != nil {
+		t.Errorf("CodeScanning.ListAlertInstances returned error: %v", err)
+	}
+
+	want := []*MostRecentInstance{
+		{
+			Ref:         String("refs/heads/main"),
+			AnalysisKey: String(".github/workflows/codeql-analysis.yml:analyze"),
+			Category:    String(".github/workflows/codeql-analysis.yml:analyze"),
+			Environment: String(""),
+			State:       String("open"),
+			CommitSHA:   String("abcdefg12345"),
+			Message: &Message{
+				Text: String("This path depends on a user-provided value."),
+			},
+			Location: &Location{
+				Path:        String("spec-main/api-session-spec.ts"),
+				StartLine:   Int(917),
+				EndLine:     Int(917),
+				StartColumn: Int(7),
+				EndColumn:   Int(18),
+			},
+			Classifications: []string{"test"},
+		},
+	}
+	if !cmp.Equal(instances, want) {
+		t.Errorf("CodeScanning.ListAlertInstances returned %+v, want %+v", instances, want)
+	}
+
+	const methodName = "ListAlertInstances"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.ListAlertInstances(ctx, "\n", "\n", -1, opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.ListAlertInstances(ctx, "o", "r", 88, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestCodeScanningService_GetAlert(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts/88", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"rule_id":"js/useless-expression",
-				"rule_severity":"warning",
-				"rule_description":"Expression has no effect",
-				"tool": {
-					"name": "CodeQL",
-					"guid": null,
-					"version": "1.4.0"
+		fmt.Fprint(w, `{
+			"rule_id":"js/useless-expression",
+			"rule_severity":"warning",
+			"rule_description":"Expression has no effect",
+			"tool": {
+				"name": "CodeQL",
+				"guid": null,
+				"version": "1.4.0"
+			},
+			"rule": {
+				"id": "useless expression",
+				"severity": "warning",
+				"description": "Expression has no effect",
+				"name": "useless expression",
+				"full_description": "Expression has no effect",
+				"help": "Expression has no effect"
+			},
+			"most_recent_instance": {
+				"ref": "refs/heads/main",
+				"state": "open",
+				"commit_sha": "abcdefg12345",
+				"message": {
+					"text": "This path depends on a user-provided value."
 				},
-				"rule": {
-					"id": "useless expression",
-					"severity": "warning",
-					"description": "Expression has no effect",
-					"name": "useless expression",
-					"full_description": "Expression has no effect",
-					"help": "Expression has no effect"
+				"location": {
+					"path": "spec-main/api-session-spec.ts",
+					"start_line": 917,
+					"end_line": 917,
+					"start_column": 7,
+					"end_column": 18
 				},
-				"most_recent_instance": {
-					"ref": "refs/heads/main",
-					"state": "open",
-					"commit_sha": "abcdefg12345",
-					"message": {
-						"text": "This path depends on a user-provided value."
-					},
-					"location": {
-						"path": "spec-main/api-session-spec.ts",
-						"start_line": 917,
-						"end_line": 917,
-						"start_column": 7,
-						"end_column": 18
-					},
-					"classifications": [
-						"test"
-					]
-				},
-				"created_at":"2019-01-02T15:04:05Z",
-				"state":"open",
-				"closed_by":null,
-				"closed_at":null,
-				"url":"https://api.github.com/repos/o/r/code-scanning/alerts/88",
-				"html_url":"https://github.com/o/r/security/code-scanning/88"}`)
+				"classifications": [
+					"test"
+				]
+			},
+			"created_at":"2019-01-02T15:04:05Z",
+			"state":"open",
+			"closed_by":null,
+			"closed_at":null,
+			"url":"https://api.github.com/repos/o/r/code-scanning/alerts/88",
+			"html_url":"https://github.com/o/r/security/code-scanning/88"
+		}`)
 	})
 
 	ctx := context.Background()
@@ -1171,6 +1293,241 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.CodeScanning.GetAnalysis(ctx, "o", "r", 3602840)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodeScanningService_DeleteAnalysis(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/analyses/40", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		fmt.Fprint(w, `{
+			"next_analysis_url": "a",
+			"confirm_delete_url": "b"
+		}`)
+	})
+
+	ctx := context.Background()
+	analysis, _, err := client.CodeScanning.DeleteAnalysis(ctx, "o", "r", 40)
+	if err != nil {
+		t.Errorf("CodeScanning.DeleteAnalysis returned error: %v", err)
+	}
+
+	want := &DeleteAnalysis{
+		NextAnalysisURL:  String("a"),
+		ConfirmDeleteURL: String("b"),
+	}
+	if !cmp.Equal(analysis, want) {
+		t.Errorf("CodeScanning.DeleteAnalysis returned %+v, want %+v", analysis, want)
+	}
+
+	const methodName = "DeleteAnalysis"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.DeleteAnalysis(ctx, "\n", "\n", -123)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.DeleteAnalysis(ctx, "o", "r", 40)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/codeql/databases", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+				"id": 1,
+				"name": "name",
+				"language": "language",
+				"uploader": {
+					"login": "a",
+					"id": 1,
+					"node_id": "b",
+					"avatar_url": "c",
+					"gravatar_id": "d",
+					"url": "e",
+					"html_url": "f",
+					"followers_url": "g",
+					"following_url": "h",
+					"gists_url": "i",
+					"starred_url": "j",
+					"subscriptions_url": "k",
+					"organizations_url": "l",
+					"repos_url": "m",
+					"events_url": "n",
+					"received_events_url": "o",
+					"type": "p",
+					"site_admin": false
+				},
+				"content_type": "r",
+				"size": 1024,
+				"created_at": "2021-01-13T11:55:49Z",
+				"updated_at": "2021-01-13T11:55:49Z",
+				"url": "s"
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	databases, _, err := client.CodeScanning.ListCodeQLDatabases(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("CodeScanning.ListCodeQLDatabases returned error: %v", err)
+	}
+
+	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
+	want := []*CodeQLDatabase{
+		{
+			ID:       Int64(1),
+			Name:     String("name"),
+			Language: String("language"),
+			Uploader: &User{
+				Login:             String("a"),
+				ID:                Int64(1),
+				NodeID:            String("b"),
+				AvatarURL:         String("c"),
+				GravatarID:        String("d"),
+				URL:               String("e"),
+				HTMLURL:           String("f"),
+				FollowersURL:      String("g"),
+				FollowingURL:      String("h"),
+				GistsURL:          String("i"),
+				StarredURL:        String("j"),
+				SubscriptionsURL:  String("k"),
+				OrganizationsURL:  String("l"),
+				ReposURL:          String("m"),
+				EventsURL:         String("n"),
+				ReceivedEventsURL: String("o"),
+				Type:              String("p"),
+				SiteAdmin:         Bool(false),
+			},
+			ContentType: String("r"),
+			Size:        Int64(1024),
+			CreatedAt:   date,
+			UpdatedAt:   date,
+			URL:         String("s"),
+		},
+	}
+
+	if !cmp.Equal(databases, want) {
+		t.Errorf("CodeScanning.ListCodeQLDatabases returned %+v, want %+v", databases, want)
+	}
+
+	const methodName = "ListCodeQLDatabases"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.ListCodeQLDatabases(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.ListCodeQLDatabases(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/codeql/databases/lang", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"id": 1,
+			"name": "name",
+			"language": "language",
+			"uploader": {
+				"login": "a",
+				"id": 1,
+				"node_id": "b",
+				"avatar_url": "c",
+				"gravatar_id": "d",
+				"url": "e",
+				"html_url": "f",
+				"followers_url": "g",
+				"following_url": "h",
+				"gists_url": "i",
+				"starred_url": "j",
+				"subscriptions_url": "k",
+				"organizations_url": "l",
+				"repos_url": "m",
+				"events_url": "n",
+				"received_events_url": "o",
+				"type": "p",
+				"site_admin": false
+			},
+			"content_type": "r",
+			"size": 1024,
+			"created_at": "2021-01-13T11:55:49Z",
+			"updated_at": "2021-01-13T11:55:49Z",
+			"url": "s"
+		}`)
+	})
+
+	ctx := context.Background()
+	database, _, err := client.CodeScanning.GetCodeQLDatabase(ctx, "o", "r", "lang")
+	if err != nil {
+		t.Errorf("CodeScanning.GetCodeQLDatabase returned error: %v", err)
+	}
+
+	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
+	want := &CodeQLDatabase{
+		ID:       Int64(1),
+		Name:     String("name"),
+		Language: String("language"),
+		Uploader: &User{
+			Login:             String("a"),
+			ID:                Int64(1),
+			NodeID:            String("b"),
+			AvatarURL:         String("c"),
+			GravatarID:        String("d"),
+			URL:               String("e"),
+			HTMLURL:           String("f"),
+			FollowersURL:      String("g"),
+			FollowingURL:      String("h"),
+			GistsURL:          String("i"),
+			StarredURL:        String("j"),
+			SubscriptionsURL:  String("k"),
+			OrganizationsURL:  String("l"),
+			ReposURL:          String("m"),
+			EventsURL:         String("n"),
+			ReceivedEventsURL: String("o"),
+			Type:              String("p"),
+			SiteAdmin:         Bool(false),
+		},
+		ContentType: String("r"),
+		Size:        Int64(1024),
+		CreatedAt:   date,
+		UpdatedAt:   date,
+		URL:         String("s"),
+	}
+
+	if !cmp.Equal(database, want) {
+		t.Errorf("CodeScanning.GetCodeQLDatabase returned %+v, want %+v", database, want)
+	}
+
+	const methodName = "GetCodeQLDatabase"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.GetCodeQLDatabase(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.GetCodeQLDatabase(ctx, "o", "r", "lang")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
