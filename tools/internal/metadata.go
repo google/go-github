@@ -394,6 +394,9 @@ func normalizeDocURLPath(u string) string {
 	if pre == "" {
 		return u
 	}
+	if strings.Contains(u, "docs.github.com/enterprise-server") {
+		return u
+	}
 	return docURLPrefix + strings.TrimPrefix(u, pre)
 }
 

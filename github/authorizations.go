@@ -249,7 +249,7 @@ func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, acces
 // you can e.g. create or delete a user's public SSH key. NOTE: creating a
 // new token automatically revokes an existing one.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-admin/users#create-an-impersonation-oauth-token
+// GitHub API docs: https://docs.github.com/enterprise-server@3.10/rest/enterprise-admin/users#create-an-impersonation-oauth-token
 func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, username string, authReq *AuthorizationRequest) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 	req, err := s.client.NewRequest("POST", u, authReq)
@@ -269,7 +269,7 @@ func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, usernam
 //
 // NOTE: there can be only one at a time.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-admin/users#delete-an-impersonation-oauth-token
+// GitHub API docs: https://docs.github.com/enterprise-server@3.10/rest/enterprise-admin/users#delete-an-impersonation-oauth-token
 func (s *AuthorizationsService) DeleteImpersonation(ctx context.Context, username string) (*Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 	req, err := s.client.NewRequest("DELETE", u, nil)
