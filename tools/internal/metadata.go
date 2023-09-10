@@ -308,7 +308,7 @@ func updateDocsLinksInFile(metadata *Metadata, content []byte) ([]byte, error) {
 }
 
 var (
-	docLineRE   = regexp.MustCompile(`(?i)\s*(//\s*)?GitHub\s+API\s+docs:\s+(https?://\S+)`)
+	docLineRE   = regexp.MustCompile(`(?i)\s*(//\s*)?GitHub\s+API\s+docs:\s*(https?://\S+)`)
 	emptyLineRE = regexp.MustCompile(`^\s*(//\s*)$`)
 )
 
