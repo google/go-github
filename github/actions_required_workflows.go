@@ -67,12 +67,7 @@ type RepoRequiredWorkflows struct {
 
 // ListOrgRequiredWorkflows lists the RequiredWorkflows for an org.
 //
-// Deprecated: This endpoint will be removed from the GitHub API on October 18th, 2023. For more information, see the
-// [GitHub blog].
-//
-// GitHub API docs: https://docs.github.com/actions/using-workflows/required-workflows
-//
-// [GitHub blog]: https://github.blog/changelog/2023-08-02-github-actions-required-workflows-will-move-to-repository-rules/
+// GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#list-required-workflows
 func (s *ActionsService) ListOrgRequiredWorkflows(ctx context.Context, org string, opts *ListOptions) (*OrgRequiredWorkflows, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows", org)
 	u, err := addOptions(url, opts)
@@ -96,12 +91,7 @@ func (s *ActionsService) ListOrgRequiredWorkflows(ctx context.Context, org strin
 
 // CreateRequiredWorkflow creates the required workflow in an org.
 //
-// Deprecated: This endpoint will be removed from the GitHub API on October 18th, 2023. For more information, see the
-// [GitHub blog].
-//
-// GitHub API docs: https://docs.github.com/actions/using-workflows/required-workflows
-//
-// [GitHub blog]: https://github.blog/changelog/2023-08-02-github-actions-required-workflows-will-move-to-repository-rules/
+// GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#create-a-required-workflow
 func (s *ActionsService) CreateRequiredWorkflow(ctx context.Context, org string, createRequiredWorkflowOptions *CreateUpdateRequiredWorkflowOptions) (*OrgRequiredWorkflow, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows", org)
 	req, err := s.client.NewRequest("POST", url, createRequiredWorkflowOptions)
@@ -120,12 +110,7 @@ func (s *ActionsService) CreateRequiredWorkflow(ctx context.Context, org string,
 
 // GetRequiredWorkflowByID get the RequiredWorkflows for an org by its ID.
 //
-// Deprecated: This endpoint will be removed from the GitHub API on October 18th, 2023. For more information, see the
-// [GitHub blog].
-//
-// GitHub API docs: https://docs.github.com/actions/using-workflows/required-workflows
-//
-// [GitHub blog]: https://github.blog/changelog/2023-08-02-github-actions-required-workflows-will-move-to-repository-rules/
+// GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#list-required-workflows
 func (s *ActionsService) GetRequiredWorkflowByID(ctx context.Context, owner string, requiredWorkflowID int64) (*OrgRequiredWorkflow, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/required_workflows/%v", owner, requiredWorkflowID)
 
@@ -145,12 +130,7 @@ func (s *ActionsService) GetRequiredWorkflowByID(ctx context.Context, owner stri
 
 // UpdateRequiredWorkflow updates a required workflow in an org.
 //
-// Deprecated: This endpoint will be removed from the GitHub API on October 18th, 2023. For more information, see the
-// [GitHub blog].
-//
-// GitHub API docs: https://docs.github.com/actions/using-workflows/required-workflows
-//
-// [GitHub blog]: https://github.blog/changelog/2023-08-02-github-actions-required-workflows-will-move-to-repository-rules/
+// GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#update-a-required-workflow
 func (s *ActionsService) UpdateRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID int64, updateRequiredWorkflowOptions *CreateUpdateRequiredWorkflowOptions) (*OrgRequiredWorkflow, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v", org, requiredWorkflowID)
 	req, err := s.client.NewRequest("PATCH", url, updateRequiredWorkflowOptions)
@@ -169,12 +149,7 @@ func (s *ActionsService) UpdateRequiredWorkflow(ctx context.Context, org string,
 
 // DeleteRequiredWorkflow deletes a required workflow in an org.
 //
-// Deprecated: This endpoint will be removed from the GitHub API on October 18th, 2023. For more information, see the
-// [GitHub blog].
-//
-// GitHub API docs: https://docs.github.com/actions/using-workflows/required-workflows
-//
-// [GitHub blog]: https://github.blog/changelog/2023-08-02-github-actions-required-workflows-will-move-to-repository-rules/
+// GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#update-a-required-workflow
 func (s *ActionsService) DeleteRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID int64) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v", org, requiredWorkflowID)
 	req, err := s.client.NewRequest("DELETE", url, nil)
@@ -186,12 +161,7 @@ func (s *ActionsService) DeleteRequiredWorkflow(ctx context.Context, org string,
 
 // ListRequiredWorkflowSelectedRepos lists the Repositories selected for a workflow.
 //
-// Deprecated: This endpoint will be removed from the GitHub API on October 18th, 2023. For more information, see the
-// [GitHub blog].
-//
-// GitHub API docs: https://docs.github.com/actions/using-workflows/required-workflows
-//
-// [GitHub blog]: https://github.blog/changelog/2023-08-02-github-actions-required-workflows-will-move-to-repository-rules/
+// GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#list-selected-repositories-for-a-required-workflow
 func (s *ActionsService) ListRequiredWorkflowSelectedRepos(ctx context.Context, org string, requiredWorkflowID int64, opts *ListOptions) (*RequiredWorkflowSelectedRepos, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v/repositories", org, requiredWorkflowID)
 	u, err := addOptions(url, opts)
@@ -214,12 +184,7 @@ func (s *ActionsService) ListRequiredWorkflowSelectedRepos(ctx context.Context, 
 
 // SetRequiredWorkflowSelectedRepos sets the Repositories selected for a workflow.
 //
-// Deprecated: This endpoint will be removed from the GitHub API on October 18th, 2023. For more information, see the
-// [GitHub blog].
-//
-// GitHub API docs: https://docs.github.com/actions/using-workflows/required-workflows
-//
-// [GitHub blog]: https://github.blog/changelog/2023-08-02-github-actions-required-workflows-will-move-to-repository-rules/
+// GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#sets-repositories-for-a-required-workflow
 func (s *ActionsService) SetRequiredWorkflowSelectedRepos(ctx context.Context, org string, requiredWorkflowID int64, ids SelectedRepoIDs) (*Response, error) {
 	type repoIDs struct {
 		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
@@ -235,12 +200,7 @@ func (s *ActionsService) SetRequiredWorkflowSelectedRepos(ctx context.Context, o
 
 // AddRepoToRequiredWorkflow adds the Repository to a required workflow.
 //
-// Deprecated: This endpoint will be removed from the GitHub API on October 18th, 2023. For more information, see the
-// [GitHub blog].
-//
-// GitHub API docs: https://docs.github.com/actions/using-workflows/required-workflows
-//
-// [GitHub blog]: https://github.blog/changelog/2023-08-02-github-actions-required-workflows-will-move-to-repository-rules/
+// GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#add-a-repository-to-a-required-workflow
 func (s *ActionsService) AddRepoToRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID, repoID int64) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v/repositories/%v", org, requiredWorkflowID, repoID)
 	req, err := s.client.NewRequest("PUT", url, nil)
@@ -252,12 +212,7 @@ func (s *ActionsService) AddRepoToRequiredWorkflow(ctx context.Context, org stri
 
 // RemoveRepoFromRequiredWorkflow removes the Repository from a required workflow.
 //
-// Deprecated: This endpoint will be removed from the GitHub API on October 18th, 2023. For more information, see the
-// [GitHub blog].
-//
-// GitHub API docs: https://docs.github.com/actions/using-workflows/required-workflows
-//
-// [GitHub blog]: https://github.blog/changelog/2023-08-02-github-actions-required-workflows-will-move-to-repository-rules/
+// GitHub API docs: https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#add-a-repository-to-a-required-workflow
 func (s *ActionsService) RemoveRepoFromRequiredWorkflow(ctx context.Context, org string, requiredWorkflowID, repoID int64) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/required_workflows/%v/repositories/%v", org, requiredWorkflowID, repoID)
 	req, err := s.client.NewRequest("DELETE", url, nil)
@@ -269,12 +224,7 @@ func (s *ActionsService) RemoveRepoFromRequiredWorkflow(ctx context.Context, org
 
 // ListRepoRequiredWorkflows lists the RequiredWorkflows for a repo.
 //
-// Deprecated: This endpoint will be removed from the GitHub API on October 18th, 2023. For more information, see the
-// [GitHub blog].
-//
-// GitHub API docs: https://docs.github.com/actions/using-workflows/required-workflows
-//
-// [GitHub blog]: https://github.blog/changelog/2023-08-02-github-actions-required-workflows-will-move-to-repository-rules/
+// Github API docs:https://docs.github.com/en/rest/actions/required-workflows?apiVersion=2022-11-28#list-repository-required-workflows
 func (s *ActionsService) ListRepoRequiredWorkflows(ctx context.Context, owner, repo string, opts *ListOptions) (*RepoRequiredWorkflows, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/required_workflows", owner, repo)
 	u, err := addOptions(url, opts)
