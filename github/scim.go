@@ -81,7 +81,7 @@ type ListSCIMProvisionedIdentitiesOptions struct {
 
 // ListSCIMProvisionedIdentities lists SCIM provisioned identities.
 //
-// GitHub API docs: https://docs.github.com/en/rest/scim#list-scim-provisioned-identities
+// GitHub API docs: https://docs.github.com/rest/scim/scim#list-scim-provisioned-identities
 func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org string, opts *ListSCIMProvisionedIdentitiesOptions) (*SCIMProvisionedIdentities, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
 	u, err := addOptions(u, opts)
@@ -105,7 +105,7 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 
 // ProvisionAndInviteSCIMUser provisions organization membership for a user, and sends an activation email to the email address.
 //
-// GitHub API docs: https://docs.github.com/en/rest/scim#provision-and-invite-a-scim-user
+// GitHub API docs: https://docs.github.com/rest/scim/scim#provision-and-invite-a-scim-user
 func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, opts *SCIMUserAttributes) (*Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
 	u, err := addOptions(u, opts)
@@ -123,7 +123,7 @@ func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string
 
 // GetSCIMProvisioningInfoForUser returns SCIM provisioning information for a user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/scim#supported-scim-user-attributes
+// GitHub API docs: https://docs.github.com/rest/scim/scim#get-scim-provisioning-information-for-a-user
 func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*SCIMUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -142,7 +142,7 @@ func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, s
 
 // UpdateProvisionedOrgMembership updates a provisioned organization membership.
 //
-// GitHub API docs: https://docs.github.com/en/rest/scim#update-a-provisioned-organization-membership
+// GitHub API docs: https://docs.github.com/rest/scim/scim#update-a-provisioned-organization-membership
 func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, scimUserID string, opts *SCIMUserAttributes) (*Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	u, err := addOptions(u, opts)
@@ -175,7 +175,7 @@ type UpdateAttributeForSCIMUserOperations struct {
 
 // UpdateAttributeForSCIMUser updates an attribute for an SCIM user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/scim#update-an-attribute-for-a-scim-user
+// GitHub API docs: https://docs.github.com/rest/scim/scim#update-an-attribute-for-a-scim-user
 func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimUserID string, opts *UpdateAttributeForSCIMUserOptions) (*Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	u, err := addOptions(u, opts)
@@ -193,7 +193,7 @@ func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimU
 
 // DeleteSCIMUserFromOrg deletes SCIM user from an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/scim#delete-a-scim-user-from-an-organization
+// GitHub API docs: https://docs.github.com/rest/scim/scim#delete-a-scim-user-from-an-organization
 func (s *SCIMService) DeleteSCIMUserFromOrg(ctx context.Context, org, scimUserID string) (*Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	req, err := s.client.NewRequest("DELETE", u, nil)

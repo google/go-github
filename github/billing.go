@@ -62,7 +62,7 @@ type AdvancedSecurityCommittersBreakdown struct {
 
 // GetActionsBillingOrg returns the summary of the free and paid GitHub Actions minutes used for an Org.
 //
-// GitHub API docs: https://docs.github.com/en/rest/billing#get-github-actions-billing-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-actions-billing-for-an-organization
 func (s *BillingService) GetActionsBillingOrg(ctx context.Context, org string) (*ActionBilling, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/actions", org)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -81,7 +81,7 @@ func (s *BillingService) GetActionsBillingOrg(ctx context.Context, org string) (
 
 // GetPackagesBillingOrg returns the free and paid storage used for GitHub Packages in gigabytes for an Org.
 //
-// GitHub API docs: https://docs.github.com/en/rest/billing#get-github-packages-billing-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-packages-billing-for-an-organization
 func (s *BillingService) GetPackagesBillingOrg(ctx context.Context, org string) (*PackageBilling, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/packages", org)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -101,7 +101,7 @@ func (s *BillingService) GetPackagesBillingOrg(ctx context.Context, org string) 
 // GetStorageBillingOrg returns the estimated paid and estimated total storage used for GitHub Actions
 // and GitHub Packages in gigabytes for an Org.
 //
-// GitHub API docs: https://docs.github.com/en/rest/billing#get-shared-storage-billing-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/billing/billing#get-shared-storage-billing-for-an-organization
 func (s *BillingService) GetStorageBillingOrg(ctx context.Context, org string) (*StorageBilling, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/shared-storage", org)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -120,7 +120,7 @@ func (s *BillingService) GetStorageBillingOrg(ctx context.Context, org string) (
 
 // GetAdvancedSecurityActiveCommittersOrg returns the GitHub Advanced Security active committers for an organization per repository.
 //
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/billing?apiVersion=2022-11-28#get-github-advanced-security-active-committers-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-advanced-security-active-committers-for-an-organization
 func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Context, org string, opts *ListOptions) (*ActiveCommitters, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/advanced-security", org)
 	u, err := addOptions(u, opts)
@@ -144,7 +144,7 @@ func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Cont
 
 // GetActionsBillingUser returns the summary of the free and paid GitHub Actions minutes used for a user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/billing#get-github-actions-billing-for-a-user
+// GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-actions-billing-for-a-user
 func (s *BillingService) GetActionsBillingUser(ctx context.Context, user string) (*ActionBilling, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/actions", user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -163,7 +163,7 @@ func (s *BillingService) GetActionsBillingUser(ctx context.Context, user string)
 
 // GetPackagesBillingUser returns the free and paid storage used for GitHub Packages in gigabytes for a user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/billing#get-github-packages-billing-for-a-user
+// GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-packages-billing-for-a-user
 func (s *BillingService) GetPackagesBillingUser(ctx context.Context, user string) (*PackageBilling, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/packages", user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -183,7 +183,7 @@ func (s *BillingService) GetPackagesBillingUser(ctx context.Context, user string
 // GetStorageBillingUser returns the estimated paid and estimated total storage used for GitHub Actions
 // and GitHub Packages in gigabytes for a user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/billing#get-shared-storage-billing-for-a-user
+// GitHub API docs: https://docs.github.com/rest/billing/billing#get-shared-storage-billing-for-a-user
 func (s *BillingService) GetStorageBillingUser(ctx context.Context, user string) (*StorageBilling, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/shared-storage", user)
 	req, err := s.client.NewRequest("GET", u, nil)

@@ -317,7 +317,7 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 //
 // The security alert_id is the number at the end of the security alert's URL.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-alert
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning#update-a-code-scanning-alert
 func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, stateInfo *CodeScanningAlertState) (*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 

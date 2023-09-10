@@ -102,7 +102,7 @@ type markReadOptions struct {
 
 // MarkNotificationsRead marks all notifications up to lastRead as read.
 //
-// GitHub API docs: https://docs.github.com/en/rest/activity#mark-as-read
+// GitHub API docs: https://docs.github.com/rest/activity/notifications#mark-notifications-as-read
 func (s *ActivityService) MarkNotificationsRead(ctx context.Context, lastRead Timestamp) (*Response, error) {
 	opts := &markReadOptions{
 		LastReadAt: lastRead,

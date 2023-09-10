@@ -312,7 +312,7 @@ func (s *CodespacesService) SetSelectedReposForUserSecret(ctx context.Context, n
 //
 // Replaces all repositories for an organization secret when the visibility for repository access is set to selected. The visibility is set when you Create or update an organization secret. You must authenticate using an access token with the admin:org scope to use this endpoint.
 //
-// Github API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#set-selected-repositories-for-a-user-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets#set-selected-repositories-for-an-organization-secret
 func (s *CodespacesService) SetSelectedReposForOrgSecret(ctx context.Context, org, name string, ids SelectedRepoIDs) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v/repositories", org, name)
 	return s.setSelectedRepoForSecret(ctx, u, ids)

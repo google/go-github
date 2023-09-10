@@ -106,7 +106,7 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 
 // ListEnvironments lists all environments for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/environments#get-all-environments
+// GitHub API docs: https://docs.github.com/rest/deployments/environments#list-environments
 func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo string, opts *EnvironmentListOptions) (*EnvResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/environments", owner, repo)
 	u, err := addOptions(u, opts)

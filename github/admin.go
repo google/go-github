@@ -101,7 +101,7 @@ func (s *AdminService) UpdateUserLDAPMapping(ctx context.Context, user string, m
 
 // UpdateTeamLDAPMapping updates the mapping between a GitHub team and an LDAP group.
 //
-// GitHub API docs: https://docs.github.com/en/rest/enterprise/ldap/#update-ldap-mapping-for-a-team
+// GitHub API docs: https://docs.github.com/rest/enterprise-admin/ldap#update-ldap-mapping-for-a-team
 func (s *AdminService) UpdateTeamLDAPMapping(ctx context.Context, team int64, mapping *TeamLDAPMapping) (*TeamLDAPMapping, *Response, error) {
 	u := fmt.Sprintf("admin/ldap/teams/%v/mapping", team)
 	req, err := s.client.NewRequest("PATCH", u, mapping)

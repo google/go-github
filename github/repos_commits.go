@@ -148,7 +148,6 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 
 // GetCommit fetches the specified commit, including all details about it.
 //
-// GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-single-commit
 // GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-commit
 func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha string, opts *ListOptions) (*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)

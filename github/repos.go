@@ -543,7 +543,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 // Note that https://docs.github.com/en/rest/codes-of-conduct#about-the-codes-of-conduct-api
 // says to use the GET /repos/{owner}/{repo} endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#update-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#get-a-repository
 func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1518,7 +1518,7 @@ func (s *RepositoriesService) RemoveRequiredStatusChecks(ctx context.Context, ow
 
 // License gets the contents of a repository's license if one is detected.
 //
-// GitHub API docs: https://docs.github.com/en/rest/licenses#get-the-license-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/licenses/licenses#get-the-license-for-a-repository
 func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (*RepositoryLicense, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/license", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1940,7 +1940,7 @@ func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, r
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#set-user-access-restrictions
 func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
 	req, err := s.client.NewRequest("PUT", u, users)
@@ -1962,7 +1962,7 @@ func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#add-user-access-restrictions
 func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
 	req, err := s.client.NewRequest("POST", u, users)
@@ -1984,7 +1984,7 @@ func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, re
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
-// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#remove-user-access-restrictions
 func (s *RepositoriesService) RemoveUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, users)

@@ -44,7 +44,7 @@ func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo 
 
 // ListReviewers lists reviewers whose reviews have been requested on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/review-requests#list-requested-reviewers-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/review-requests#get-all-requested-reviewers-for-a-pull-request
 func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo string, number int, opts *ListOptions) (*Reviewers, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/requested_reviewers", owner, repo, number)
 	u, err := addOptions(u, opts)

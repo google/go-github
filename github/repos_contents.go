@@ -128,6 +128,8 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 // It is possible for the download to result in a failed response when the
 // returned error is nil. Callers should check the returned Response status
 // code to verify the content is from a successful response.
+//
+// GitHub API docs: https://docs.github.com/rest/repos/contents#get-repository-content
 func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *Response, error) {
 	dir := path.Dir(filepath)
 	filename := path.Base(filepath)
@@ -162,6 +164,8 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 // It is possible for the download to result in a failed response when the
 // returned error is nil. Callers should check the returned Response status
 // code to verify the content is from a successful response.
+//
+// GitHub API docs: https://docs.github.com/rest/repos/contents#get-repository-content
 func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *RepositoryContent, *Response, error) {
 	dir := path.Dir(filepath)
 	filename := path.Base(filepath)
@@ -310,7 +314,8 @@ const (
 // repository. The archiveFormat can be specified by either the github.Tarball
 // or github.Zipball constant.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/contents/#get-archive-link
+// GitHub API docs: https://docs.github.com/rest/repos/contents#download-a-repository-archive-tar
+// GitHub API docs: https://docs.github.com/rest/repos/contents#download-a-repository-archive-zip
 func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat ArchiveFormat, opts *RepositoryContentGetOptions, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
 	if opts != nil && opts.Ref != "" {

@@ -61,7 +61,7 @@ func (s SBOM) String() string {
 
 // GetSBOM fetches the software bill of materials for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependency-graph/sboms
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/sboms#export-a-software-bill-of-materials-sbom-for-a-repository
 func (s *DependencyGraphService) GetSBOM(ctx context.Context, owner, repo string) (*SBOM, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/dependency-graph/sbom", owner, repo)
 

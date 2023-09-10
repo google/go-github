@@ -39,7 +39,7 @@ type markdownRequest struct {
 
 // Markdown renders an arbitrary Markdown document.
 //
-// GitHub API docs: https://docs.github.com/en/rest/markdown/
+// GitHub API docs: https://docs.github.com/rest/markdown/markdown#render-a-markdown-document
 func (c *Client) Markdown(ctx context.Context, text string, opts *MarkdownOptions) (string, *Response, error) {
 	request := &markdownRequest{Text: String(text)}
 	if opts != nil {
@@ -67,7 +67,7 @@ func (c *Client) Markdown(ctx context.Context, text string, opts *MarkdownOption
 
 // ListEmojis returns the emojis available to use on GitHub.
 //
-// GitHub API docs: https://docs.github.com/en/rest/emojis/
+// GitHub API docs: https://docs.github.com/rest/emojis/emojis#get-emojis
 func (c *Client) ListEmojis(ctx context.Context) (map[string]string, *Response, error) {
 	req, err := c.NewRequest("GET", "emojis", nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func (c *CodeOfConduct) String() string {
 
 // ListCodesOfConduct returns all codes of conduct.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codes_of_conduct/#list-all-codes-of-conduct
+// GitHub API docs: https://docs.github.com/rest/codes-of-conduct/codes-of-conduct#get-all-codes-of-conduct
 func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Response, error) {
 	req, err := c.NewRequest("GET", "codes_of_conduct", nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Res
 
 // GetCodeOfConduct returns an individual code of conduct.
 //
-// https://docs.github.com/en/rest/codes_of_conduct/#get-an-individual-code-of-conduct
+// GitHub API docs: https://docs.github.com/rest/codes-of-conduct/codes-of-conduct#get-a-code-of-conduct
 func (c *Client) GetCodeOfConduct(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("codes_of_conduct/%s", key)
 	req, err := c.NewRequest("GET", u, nil)
@@ -190,7 +190,7 @@ type APIMeta struct {
 // this endpoint on your organization’s GitHub Enterprise installation, this
 // endpoint provides information about that installation.
 //
-// GitHub API docs: https://docs.github.com/en/rest/meta#get-github-meta-information
+// GitHub API docs: https://docs.github.com/rest/meta/meta#get-github-meta-information
 func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
 	req, err := c.NewRequest("GET", "meta", nil)
 	if err != nil {
@@ -208,6 +208,8 @@ func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
 
 // Octocat returns an ASCII art octocat with the specified message in a speech
 // bubble. If message is empty, a random zen phrase is used.
+//
+// GitHub API docs: https://docs.github.com/rest/meta/meta#get-octocat
 func (c *Client) Octocat(ctx context.Context, message string) (string, *Response, error) {
 	u := "octocat"
 	if message != "" {
@@ -231,6 +233,8 @@ func (c *Client) Octocat(ctx context.Context, message string) (string, *Response
 // Zen returns a random line from The Zen of GitHub.
 //
 // see also: http://warpspire.com/posts/taste/
+//
+// GitHub API docs: https://docs.github.com/rest/meta/meta#get-the-zen-of-github
 func (c *Client) Zen(ctx context.Context) (string, *Response, error) {
 	req, err := c.NewRequest("GET", "zen", nil)
 	if err != nil {
@@ -260,8 +264,6 @@ func (s *ServiceHook) String() string {
 }
 
 // ListServiceHooks lists all of the available service hooks.
-//
-// GitHub API docs: https://developer.github.com/webhooks/#services
 func (c *Client) ListServiceHooks(ctx context.Context) ([]*ServiceHook, *Response, error) {
 	u := "hooks"
 	req, err := c.NewRequest("GET", u, nil)

@@ -126,7 +126,7 @@ func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, 
 
 // ListWorkflowRunsByID lists all workflow runs by workflow ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#list-workflow-runs-for-a-workflow
 func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo string, workflowID int64, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowID)
 	return s.listWorkflowRuns(ctx, u, opts)
@@ -134,7 +134,7 @@ func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo s
 
 // ListWorkflowRunsByFileName lists all workflow runs by workflow file name.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#list-workflow-runs-for-a-workflow
 func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, repo, workflowFileName string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowFileName)
 	return s.listWorkflowRuns(ctx, u, opts)

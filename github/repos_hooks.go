@@ -202,7 +202,7 @@ func (s *RepositoriesService) TestHook(ctx context.Context, owner, repo string, 
 
 // Subscribe lets servers register to receive updates when a topic is updated.
 //
-// GitHub API docs: https://docs.github.com/en/rest/webhooks#pubsubhubbub
+// GitHub API docs: https://docs.github.com/webhooks/about-webhooks-for-repositories#pubsubhubbub
 func (s *RepositoriesService) Subscribe(ctx context.Context, owner, repo, event, callback string, secret []byte) (*Response, error) {
 	req, err := s.createWebSubRequest("subscribe", owner, repo, event, callback, secret)
 	if err != nil {
@@ -214,7 +214,7 @@ func (s *RepositoriesService) Subscribe(ctx context.Context, owner, repo, event,
 
 // Unsubscribe lets servers unregister to no longer receive updates when a topic is updated.
 //
-// GitHub API docs: https://docs.github.com/en/rest/webhooks#pubsubhubbub
+// GitHub API docs: https://docs.github.com/webhooks/about-webhooks-for-repositories#pubsubhubbub
 func (s *RepositoriesService) Unsubscribe(ctx context.Context, owner, repo, event, callback string, secret []byte) (*Response, error) {
 	req, err := s.createWebSubRequest("unsubscribe", owner, repo, event, callback, secret)
 	if err != nil {

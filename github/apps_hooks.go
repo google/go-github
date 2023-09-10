@@ -12,7 +12,7 @@ import (
 // GetHookConfig returns the webhook configuration for a GitHub App.
 // The underlying transport must be authenticated as an app.
 //
-// GitHub API docs: https://docs.github.com/en/rest/apps#get-a-webhook-configuration-for-an-app
+// GitHub API docs: https://docs.github.com/rest/apps/webhooks#get-a-webhook-configuration-for-an-app
 func (s *AppsService) GetHookConfig(ctx context.Context) (*HookConfig, *Response, error) {
 	req, err := s.client.NewRequest("GET", "app/hook/config", nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func (s *AppsService) GetHookConfig(ctx context.Context) (*HookConfig, *Response
 // UpdateHookConfig updates the webhook configuration for a GitHub App.
 // The underlying transport must be authenticated as an app.
 //
-// GitHub API docs: https://docs.github.com/en/rest/apps#update-a-webhook-configuration-for-an-app
+// GitHub API docs: https://docs.github.com/rest/apps/webhooks#update-a-webhook-configuration-for-an-app
 func (s *AppsService) UpdateHookConfig(ctx context.Context, config *HookConfig) (*HookConfig, *Response, error) {
 	req, err := s.client.NewRequest("PATCH", "app/hook/config", config)
 	if err != nil {
