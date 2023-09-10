@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/fs"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -15,6 +16,7 @@ import (
 
 	"github.com/dave/dst"
 	"github.com/dave/dst/decorator"
+	"golang.org/x/exp/maps"
 	"golang.org/x/exp/slices"
 	"gopkg.in/yaml.v3"
 )
@@ -247,11 +249,6 @@ func (m *Metadata) UpdateFromGithub(ctx context.Context, client contentsClient, 
 	return nil
 }
 
-var (
-	docLineRE   = regexp.MustCompile(`(?i)\s*(//\s*)?GitHub\s+API\s+docs:`)
-	emptyLineRE = regexp.MustCompile(`^\s*(//\s*)$`)
-)
-
 // UpdateDocLinks updates the code comments in dir with doc urls from metadata.
 func UpdateDocLinks(meta *Metadata, dir string) error {
 	return filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
@@ -299,57 +296,7 @@ func updateDocsLinksInFile(metadata *Metadata, content []byte) ([]byte, error) {
 	}
 
 	dst.Inspect(df, func(n dst.Node) bool {
-		d, ok := n.(*dst.FuncDecl)
-		if !ok ||
-			!d.Name.IsExported() ||
-			d.Recv == nil {
-			return true
-		}
-
-		// Get the method's receiver. It can be either an identifier or a pointer to an identifier.
-		// This assumes all receivers are named and we don't have something like: `func (Client) Foo()`.
-		methodName := d.Name.Name
-		receiverType := ""
-		switch x := d.Recv.List[0].Type.(type) {
-		case *dst.Ident:
-			receiverType = x.Name
-		case *dst.StarExpr:
-			receiverType = x.X.(*dst.Ident).Name
-		}
-
-		// create copy of comments without doc links
-		var starts []string
-		for _, s := range d.Decs.Start.All() {
-			if !docLineRE.MatchString(s) {
-				starts = append(starts, s)
-			}
-		}
-
-		// remove trailing empty lines
-		for len(starts) > 0 {
-			if !emptyLineRE.MatchString(starts[len(starts)-1]) {
-				break
-			}
-			starts = starts[:len(starts)-1]
-		}
-
-		var links []string
-		for _, op := range metadata.operationsForMethod(strings.Join([]string{receiverType, methodName}, ".")) {
-			links = append(links, op.DocumentationURL())
-		}
-		sort.Strings(links)
-		docLinks := links
-
-		// add an empty line before adding doc links
-		if len(docLinks) > 0 {
-			starts = append(starts, "//")
-		}
-
-		for _, dl := range docLinks {
-			starts = append(starts, fmt.Sprintf("// GitHub API docs: %s", dl))
-		}
-		d.Decs.Start.Replace(starts...)
-		return true
+		return updateDocsLinksForNode(metadata, n)
 	})
 
 	var buf bytes.Buffer
@@ -358,4 +305,118 @@ func updateDocsLinksInFile(metadata *Metadata, content []byte) ([]byte, error) {
 		return nil, err
 	}
 	return buf.Bytes(), nil
+}
+
+var (
+	docLineRE   = regexp.MustCompile(`(?i)\s*(//\s*)?GitHub\s+API\s+docs:\s+(https?://\S+)`)
+	emptyLineRE = regexp.MustCompile(`^\s*(//\s*)$`)
+)
+
+func updateDocsLinksForNode(metadata *Metadata, n dst.Node) bool {
+	d, ok := n.(*dst.FuncDecl)
+	if !ok ||
+		!d.Name.IsExported() ||
+		d.Recv == nil {
+		return true
+	}
+
+	// Get the method's receiver. It can be either an identifier or a pointer to an identifier.
+	// This assumes all receivers are named and we don't have something like: `func (Client) Foo()`.
+	methodName := d.Name.Name
+	receiverType := ""
+	switch x := d.Recv.List[0].Type.(type) {
+	case *dst.Ident:
+		receiverType = x.Name
+	case *dst.StarExpr:
+		receiverType = x.X.(*dst.Ident).Name
+	}
+
+	linksMap := map[string]struct{}{}
+	ops := metadata.operationsForMethod(strings.Join([]string{receiverType, methodName}, "."))
+	for _, op := range ops {
+		linksMap[op.DocumentationURL()] = struct{}{}
+	}
+
+	// create copy of comments with non-matching doc links removed
+	var commentLines []string
+	for _, line := range d.Decs.Start.All() {
+		match := docLineRE.FindStringSubmatch(line)
+		if match == nil {
+			commentLines = append(commentLines, line)
+			continue
+		}
+		matchesLink := false
+		for link := range linksMap {
+			if sameDocLink(match[2], link) {
+				//fmt.Println("match", match[2], link)
+				matchesLink = true
+				delete(linksMap, link)
+				break
+			}
+		}
+		if matchesLink {
+			commentLines = append(commentLines, line)
+		}
+	}
+
+	docLinks := maps.Keys(linksMap)
+	sort.Strings(docLinks)
+
+	// remove trailing empty lines
+	for len(commentLines) > 0 {
+		if !emptyLineRE.MatchString(commentLines[len(commentLines)-1]) {
+			break
+		}
+		commentLines = commentLines[:len(commentLines)-1]
+	}
+
+	// add an empty line before adding doc links
+	if len(docLinks) > 0 &&
+		len(commentLines) > 0 &&
+		!emptyLineRE.MatchString(commentLines[len(commentLines)-1]) {
+		commentLines = append(commentLines, "//")
+	}
+
+	for _, dl := range docLinks {
+		dl = normalizeDocURLPath(dl)
+		commentLines = append(commentLines, fmt.Sprintf("// GitHub API docs: %s", dl))
+	}
+	d.Decs.Start.Replace(commentLines...)
+	return true
+}
+
+const docURLPrefix = "https://docs.github.com/rest/"
+
+var docURLPrefixRE = regexp.MustCompile(`^https://docs\.github\.com.*/rest/`)
+
+func normalizeDocURLPath(u string) string {
+	pre := docURLPrefixRE.FindString(u)
+	if pre == "" {
+		return u
+	}
+	return docURLPrefix + strings.TrimPrefix(u, pre)
+}
+
+// sameDocLink returns true if the two doc links are going to end up rendering the same page pointed
+// to the same section.
+//
+// If a url path starts with *./rest/ it ignores query parameters and everything before /rest/ when
+// making the comparison.
+func sameDocLink(left, right string) bool {
+	if !docURLPrefixRE.MatchString(left) ||
+		!docURLPrefixRE.MatchString(right) {
+		return left == right
+	}
+	left = stripURLQuery(normalizeDocURLPath(left))
+	right = stripURLQuery(normalizeDocURLPath(right))
+	return left == right
+}
+
+func stripURLQuery(u string) string {
+	p, err := url.Parse(u)
+	if err != nil {
+		return u
+	}
+	p.RawQuery = ""
+	return p.String()
 }
