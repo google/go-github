@@ -31,12 +31,6 @@ func TestRepositoryContent_GetContent(t *testing.T) {
 			wantErr:  false,
 		},
 		{
-			encoding: String("none"),
-			content:  String("hello"),
-			want:     "hello",
-			wantErr:  false,
-		},
-		{
 			encoding: nil,
 			content:  String("hello"),
 			want:     "hello",
@@ -57,6 +51,12 @@ func TestRepositoryContent_GetContent(t *testing.T) {
 		{
 			encoding: String("bad"),
 			content:  String("aGVsbG8="),
+			want:     "",
+			wantErr:  true,
+		},
+		{
+			encoding: String("none"),
+			content:  String(""),
 			want:     "",
 			wantErr:  true,
 		},

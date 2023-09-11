@@ -86,11 +86,13 @@ func (r *RepositoryContent) GetContent() (string, error) {
 		}
 		c, err := base64.StdEncoding.DecodeString(*r.Content)
 		return string(c), err
-	case "", "none":
+	case "":
 		if r.Content == nil {
 			return "", nil
 		}
 		return *r.Content, nil
+	case "none":
+		return "", fmt.Errorf("unsupported content encoding: %v, this may occur when the file size > 1 MB, if that is the case consider using DownloadContents", encoding)
 	default:
 		return "", fmt.Errorf("unsupported content encoding: %v", encoding)
 	}
