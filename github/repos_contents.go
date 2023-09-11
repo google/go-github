@@ -86,7 +86,7 @@ func (r *RepositoryContent) GetContent() (string, error) {
 		}
 		c, err := base64.StdEncoding.DecodeString(*r.Content)
 		return string(c), err
-	case "":
+	case "", "none":
 		if r.Content == nil {
 			return "", nil
 		}
