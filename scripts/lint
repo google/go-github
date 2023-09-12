@@ -1,0 +1,41 @@
+#!/bin/sh
+#/ scripts/lint runs linters and validates generated files.
+
+set -e
+
+GOLANGCI_LINT_VERSION="1.54.2"
+
+CDPATH="" cd -- "$(dirname -- "$0")/.."
+BIN="$(pwd -P)"/bin
+
+install_golangci_lint() {
+  mkdir -p "$BIN"
+  if [ -f "$BIN"/golangci-lint ]; then
+    if "$BIN"/golangci-lint --version | grep -q "$GOLANGCI_LINT_VERSION"; then
+      return
+    fi
+  fi
+  GOBIN="$BIN" go install "github.com/golangci/golangci-lint/cmd/golangci-lint@v$GOLANGCI_LINT_VERSION"
+}
+
+install_golangci_lint
+
+MOD_DIRS="$(
+  git ls-files '*go.mod' |
+    xargs dirname |
+    grep -v newreposecretwithlibsodium |
+    sort
+)"
+
+for dir in $MOD_DIRS; do
+  echo linting "$dir"
+  (
+    cd "$dir"
+    # github actions output when running in an action
+    if [ -n "$GITHUB_ACTIONS" ]; then
+      "$BIN"/golangci-lint run --path-prefix "$dir" --out-format github-actions
+      continue
+    fi
+    "$BIN"/golangci-lint run --path-prefix "$dir"
+  )
+done

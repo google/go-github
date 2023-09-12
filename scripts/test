@@ -1,0 +1,25 @@
+#!/bin/sh
+#/ scripts/test runs tests on each go module in . When COVERPROFILE is set, it
+#/ collects coverage information in the file named by COVERPROFILE.
+
+set -e
+
+CDPATH="" cd -- "$(dirname -- "$0")/.."
+
+MOD_DIRS="$(
+  git ls-files '*go.mod' |
+    xargs dirname |
+    grep -v newreposecretwithlibsodium |
+    sort
+)"
+
+for dir in $MOD_DIRS; do
+  (
+    cd "$dir"
+    if [ -n "$COVERPROFILE" ]; then
+      go test -race -covermode atomic -coverprofile "$COVERPROFILE" ./...
+      continue
+    fi
+    go test -race -covermode atomic ./...
+  )
+done
