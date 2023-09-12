@@ -39,3 +39,5 @@ for dir in $MOD_DIRS; do
     "$BIN"/golangci-lint run --path-prefix "$dir"
   )
 done
+
+scripts/generate --check

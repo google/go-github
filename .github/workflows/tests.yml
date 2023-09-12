@@ -41,7 +41,7 @@ jobs:
         go-version: ${{ matrix.go-version }}
     - uses: actions/checkout@v4
 
-      # Get values for cache paths to be used in later steps
+    # Get values for cache paths to be used in later steps
     - id: cache-paths
       run: |
         echo "go-cache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
