@@ -6,7 +6,8 @@ set -e
 GOLANGCI_LINT_VERSION="1.54.2"
 
 CDPATH="" cd -- "$(dirname -- "$0")/.."
-BIN="$(pwd -P)"/bin
+REPO_DIR="$(pwd -P)"
+BIN="$REPO_DIR"/bin
 
 install_golangci_lint() {
   mkdir -p "$BIN"
@@ -20,24 +21,24 @@ install_golangci_lint() {
 
 install_golangci_lint
 
-MOD_DIRS="$(
-  git ls-files '*go.mod' |
-    xargs dirname |
-    grep -v newreposecretwithlibsodium |
-    sort
-)"
+MOD_DIRS="$(git ls-files '*go.mod' | xargs dirname | sort)"
 
 for dir in $MOD_DIRS; do
+  [ "$dir" = "example/newreposecretwithlibsodium" ] && continue
   echo linting "$dir"
   (
     cd "$dir"
     # github actions output when running in an action
     if [ -n "$GITHUB_ACTIONS" ]; then
       "$BIN"/golangci-lint run --path-prefix "$dir" --out-format github-actions
-      continue
+    else
+      "$BIN"/golangci-lint run --path-prefix "$dir"
     fi
-    "$BIN"/golangci-lint run --path-prefix "$dir"
-  )
+  ) || FAILED=1
 done
 
 scripts/generate --check
+
+if [ -n "$FAILED" ]; then
+  exit 1
+fi

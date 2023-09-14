@@ -5,11 +5,7 @@ set -e
 
 CDPATH="" cd -- "$(dirname -- "$0")/.."
 
-MOD_DIRS="$(
-  git ls-files '*go.mod' |
-    xargs dirname |
-    sort
-)"
+MOD_DIRS="$(git ls-files '*go.mod' | xargs dirname | sort)"
 
 for dir in $MOD_DIRS; do
   (

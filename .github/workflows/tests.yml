@@ -19,6 +19,9 @@ permissions:
 
 jobs:
   test:
+    defaults:
+      run:
+        shell: bash
     strategy:
       matrix:
         go-version: [1.x, 1.20.x]
@@ -46,7 +49,6 @@ jobs:
       run: |
         echo "go-cache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
         echo "go-mod-cache=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
-      shell: bash
 
     - name: Cache go modules
       uses: actions/cache@v3
@@ -58,9 +60,12 @@ jobs:
         restore-keys: ${{ runner.os }}-go-
 
     - name: Run go test
-      env:
-        COVERPROFILE: coverage.txt
-      run: scripts/test
+      run: |
+        if [ -n "${{ matrix.update-coverage }}" ]; then
+          scripts/test -race -covermode atomic -coverprofile coverage.txt ./...
+          exit
+        fi
+        scripts/test -race -covermode atomic ./...
 
     - name: Ensure integration tests build
       # don't actually run tests since they hit live GitHub API

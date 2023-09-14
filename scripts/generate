@@ -24,7 +24,12 @@ if [ "$1" = "--check" ]; then
     git -c user.name='bot' -c user.email='bot@localhost' commit -m "generate" -q --allow-empty
     scripts/generate
     [ -z "$(git status --porcelain)" ] || {
-      echo "scripts/generate resulted in changes." 1>&2
+      msg="Generated files are out of date. Please run scripts/generate and commit the results"
+      if [ -n "$GITHUB_ACTIONS" ]; then
+        echo "::error ::$msg"
+      else
+        echo "$msg" 1>&2
+      fi
       git diff
       exit 1
     }
@@ -32,11 +37,7 @@ if [ "$1" = "--check" ]; then
   exit 0
 fi
 
-MOD_DIRS="$(
-  git ls-files '*go.mod' |
-    xargs dirname |
-    sort
-)"
+MOD_DIRS="$(git ls-files '*go.mod' | xargs dirname | sort)"
 
 for dir in $MOD_DIRS; do
   (
