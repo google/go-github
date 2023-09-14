@@ -15,6 +15,7 @@ type ActionsEnabledOnEnterpriseOrgs struct {
 	TotalCount    int             `json:"total_count"`
 	Organizations []*Organization `json:"organizations"`
 }
+
 // ActionsPermissionsEnterprise represents a policy for allowed actions in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions
@@ -23,6 +24,7 @@ type ActionsPermissionsEnterprise struct {
 	AllowedActions       *string `json:"allowed_actions,omitempty"`
 	SelectedActionsURL   *string `json:"selected_actions_url,omitempty"`
 }
+
 func (a ActionsPermissionsEnterprise) String() string {
 	return Stringify(a)
 }
