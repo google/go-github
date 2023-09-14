@@ -12,7 +12,7 @@ import (
 
 // GetActionsAllowed gets the actions that are allowed in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-enterprise
 func (s *EnterpriseService) GetActionsAllowed(ctx context.Context, enterprise string) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/selected-actions", enterprise)
 
@@ -32,7 +32,7 @@ func (s *EnterpriseService) GetActionsAllowed(ctx context.Context, enterprise st
 
 // EditActionsAllowed sets the actions that are allowed in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-enterprise
 func (s *EnterpriseService) EditActionsAllowed(ctx context.Context, enterprise string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/selected-actions", enterprise)
 	req, err := s.client.NewRequest("PUT", u, actionsAllowed)

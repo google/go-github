@@ -57,7 +57,7 @@ func TestEnterpriseService_EditActionsPermissions(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ActionsPermissionsEnterprise)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
