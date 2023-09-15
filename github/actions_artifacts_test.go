@@ -16,6 +16,10 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+func TestFail(t *testing.T) {
+	t.Errorf("This test fails")
+}
+
 func TestActionsService_ListArtifacts(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

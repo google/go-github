@@ -1,6 +1,6 @@
 module github.com/google/go-github/v55/example
 
-go 1.17
+  go 1.17
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.4

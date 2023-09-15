@@ -45,10 +45,7 @@ func main() {
 	fmt.Printf("Current ActionsPermissions %s\n", actionsPermissionsRepository.String())
 
 	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: github.Bool(true), AllowedActions: github.String("selected")}
-	_, _, err = client.Repositories.EditActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
-	if err != nil {
-		log.Fatal(err)
-	}
+	_, _, _ = client.Repositories.EditActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
 
 	fmt.Printf("Current ActionsPermissions %s\n", actionsPermissionsRepository.String())
 
