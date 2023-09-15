@@ -23771,6 +23771,33 @@ func TestSecretScanningAlert_GetNumber(tt *testing.T) {
 	s.GetNumber()
 }
 
+func TestSecretScanningAlert_GetPushProtectionBypassed(tt *testing.T) {
+	var zeroValue bool
+	s := &SecretScanningAlert{PushProtectionBypassed: &zeroValue}
+	s.GetPushProtectionBypassed()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassed()
+	s = nil
+	s.GetPushProtectionBypassed()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecretScanningAlert{PushProtectionBypassedAt: &zeroValue}
+	s.GetPushProtectionBypassedAt()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassedAt()
+	s = nil
+	s.GetPushProtectionBypassedAt()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassedBy(tt *testing.T) {
+	s := &SecretScanningAlert{}
+	s.GetPushProtectionBypassedBy()
+	s = nil
+	s.GetPushProtectionBypassedBy()
+}
+
 func TestSecretScanningAlert_GetRepository(tt *testing.T) {
 	s := &SecretScanningAlert{}
 	s.GetRepository()
@@ -23786,6 +23813,16 @@ func TestSecretScanningAlert_GetResolution(tt *testing.T) {
 	s.GetResolution()
 	s = nil
 	s.GetResolution()
+}
+
+func TestSecretScanningAlert_GetResolutionComment(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{ResolutionComment: &zeroValue}
+	s.GetResolutionComment()
+	s = &SecretScanningAlert{}
+	s.GetResolutionComment()
+	s = nil
+	s.GetResolutionComment()
 }
 
 func TestSecretScanningAlert_GetResolvedAt(tt *testing.T) {
@@ -23843,6 +23880,16 @@ func TestSecretScanningAlert_GetState(tt *testing.T) {
 	s.GetState()
 	s = nil
 	s.GetState()
+}
+
+func TestSecretScanningAlert_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecretScanningAlert{UpdatedAt: &zeroValue}
+	s.GetUpdatedAt()
+	s = &SecretScanningAlert{}
+	s.GetUpdatedAt()
+	s = nil
+	s.GetUpdatedAt()
 }
 
 func TestSecretScanningAlert_GetURL(tt *testing.T) {
