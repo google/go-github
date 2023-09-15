@@ -11,11 +11,9 @@ BIN="$REPO_DIR"/bin
 
 mkdir -p "$BIN"
 
-# install golangci-lint if it doesn't exist or is the wrong version
-if [ ! -f "$BIN"/golangci-lint ]; then
-  if ! "$BIN"/golangci-lint --version | grep -q "$GOLANGCI_LINT_VERSION"; then
-    GOBIN="$BIN" go install "github.com/golangci/golangci-lint/cmd/golangci-lint@v$GOLANGCI_LINT_VERSION"
-  fi
+# install golangci-lint bin/golangci-lint doesn't exist with the correct version
+if ! "$BIN"/golangci-lint --version 2> /dev/null | grep -q "$GOLANGCI_LINT_VERSION"; then
+  GOBIN="$BIN" go install "github.com/golangci/golangci-lint/cmd/golangci-lint@v$GOLANGCI_LINT_VERSION"
 fi
 
 MOD_DIRS="$(git ls-files '*go.mod' | xargs dirname | sort)"
