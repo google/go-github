@@ -23,12 +23,12 @@ for dir in $MOD_DIRS; do
   echo linting "$dir"
   (
     cd "$dir"
+    cmd="$BIN/golangci-lint run --path-prefix '$dir'"
+
     # github actions output when running in an action
-    if [ -n "$GITHUB_ACTIONS" ]; then
-      "$BIN"/golangci-lint run --path-prefix "$dir" --out-format github-actions
-    else
-      "$BIN"/golangci-lint run --path-prefix "$dir"
-    fi
+    [ -n "$GITHUB_ACTIONS" ] && cmd="$cmd --out-format github-actions"
+
+    $cmd
   ) || FAILED=1
 done
 
