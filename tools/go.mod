@@ -4,7 +4,6 @@ go 1.20
 
 require (
 	github.com/alecthomas/kong v0.8.0
-	github.com/dave/dst v0.27.2
 	github.com/getkin/kin-openapi v0.119.0
 	github.com/google/go-github/v55 v55.0.0
 	github.com/stretchr/testify v1.8.4
@@ -29,5 +28,4 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/crypto v0.12.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
-	golang.org/x/tools v0.13.0 // indirect
 )

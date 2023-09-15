@@ -7,13 +7,14 @@ package internal
 
 import (
 	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/token"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 
-	"github.com/dave/dst"
-	"github.com/dave/dst/decorator"
 	"golang.org/x/mod/modfile"
 	"golang.org/x/mod/module"
 )
@@ -99,35 +100,38 @@ func getServiceMethods(dir string) ([]*serviceMethod, error) {
 	return serviceMethods, nil
 }
 
+// getServiceMethodsFromFile is like getServiceMethodsFromFileDST, but uses
+// the AST package instead of the DST package.
 func getServiceMethodsFromFile(filename string) ([]*serviceMethod, error) {
 	if !strings.HasSuffix(filename, ".go") ||
 		strings.HasSuffix(filename, "_test.go") {
 		return nil, nil
 	}
 
-	df, err := decorator.ParseFile(nil, filename, nil, 0)
+	fset := token.NewFileSet()
+	f, err := parser.ParseFile(fset, filename, nil, parser.ParseComments)
 	if err != nil {
 		return nil, err
 	}
 
 	// Only look at the github package
-	if df.Name.Name != "github" {
+	if f.Name.Name != "github" {
 		return nil, nil
 	}
 	var serviceMethods []*serviceMethod
-	dst.Inspect(df, func(n dst.Node) bool {
-		decl, ok := n.(*dst.FuncDecl)
+	ast.Inspect(f, func(n ast.Node) bool {
+		decl, ok := n.(*ast.FuncDecl)
 		if !ok {
 			return true
 		}
 		if decl.Recv == nil || len(decl.Recv.List) != 1 {
 			return true
 		}
-		se, ok := decl.Recv.List[0].Type.(*dst.StarExpr)
+		se, ok := decl.Recv.List[0].Type.(*ast.StarExpr)
 		if !ok {
 			return true
 		}
-		id, ok := se.X.(*dst.Ident)
+		id, ok := se.X.(*ast.Ident)
 		if !ok {
 			return true
 		}
@@ -138,7 +142,7 @@ func getServiceMethodsFromFile(filename string) ([]*serviceMethod, error) {
 		// The receiver must either end with Service or be named Client.
 		// The exception is github.go, which contains Client methods we want to skip.
 
-		if !dst.IsExported(methodName) || !dst.IsExported(receiverName) {
+		if !ast.IsExported(methodName) || !ast.IsExported(receiverName) {
 			return true
 		}
 		if receiverName != "Client" && !strings.HasSuffix(receiverName, "Service") {
