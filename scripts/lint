@@ -6,8 +6,7 @@ set -e
 GOLANGCI_LINT_VERSION="1.54.2"
 
 CDPATH="" cd -- "$(dirname -- "$0")/.."
-REPO_DIR="$(pwd -P)"
-BIN="$REPO_DIR"/bin
+BIN="$(pwd -P)"/bin
 
 mkdir -p "$BIN"
 
