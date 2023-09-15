@@ -31,58 +31,58 @@ are more sensitive, emailed to <opensource@google.com>.
 
 ## Submitting a patch ##
 
-  1. It's generally best to start by opening a new issue describing the bug or
-     feature you're intending to fix. Even if you think it's relatively minor,
-     it's helpful to know what people are working on. Mention in the initial
-     issue that you are planning to work on that bug or feature so that it can
-     be assigned to you.
+1. It's generally best to start by opening a new issue describing the bug or
+   feature you're intending to fix. Even if you think it's relatively minor,
+   it's helpful to know what people are working on. Mention in the initial issue
+   that you are planning to work on that bug or feature so that it can be
+   assigned to you.
 
-  1. Follow the normal process of [forking][] the project, and setup a new
-     branch to work in. It's important that each group of changes be done in
-     separate branches in order to ensure that a pull request only includes the
-     commits related to that bug or feature.
+2. Follow the normal process of [forking][] the project, and setup a new branch
+   to work in. It's important that each group of changes be done in separate
+   branches in order to ensure that a pull request only includes the commits
+   related to that bug or feature.
 
-  1. Go makes it very simple to ensure properly formatted code, so always run
-     `go fmt` on your code before committing it. You should also run
-     [go vet][] over your code. this will help you find common style issues
-     within your code and will keep styling consistent within the project.
+3. Go makes it very simple to ensure properly formatted code, so always run
+   `go fmt` on your code before committing it. You should also run
+   [go vet][] over your code. this will help you find common style issues within
+   your code and will keep styling consistent within the project.
 
-  1. Any significant changes should almost always be accompanied by tests. The
-     project already has good test coverage, so look at some of the existing
-     tests if you're unsure how to go about it. [gocov][] and [gocov-html][]
-     are invaluable tools for seeing which parts of your code aren't being
-     exercised by your tests.
+4. Any significant changes should almost always be accompanied by tests. The
+   project already has good test coverage, so look at some of the existing tests
+   if you're unsure how to go about it. [gocov][] and [gocov-html][]
+   are invaluable tools for seeing which parts of your code aren't being
+   exercised by your tests.
 
-  1. Please run:
-     * `go generate github.com/google/go-github/...`
-     * `go test github.com/google/go-github/...`
-     * `go vet github.com/google/go-github/...`
+5. Please run:
+   * `go generate github.com/google/go-github/...`
+   * `go test github.com/google/go-github/...`
+   * `go vet github.com/google/go-github/...`
 
-   The `go generate ./...` command will update or generate certain files, and the 
-   resulting changes should be included in your pull request.
+   The `go generate ./...` command will update or generate certain files, and
+   the resulting changes should be included in your pull request.
 
-   The `go test ./...` command will run tests inside your code. This will help you
-   spot places where code might be faulty before committing.
+   The `go test ./...` command will run tests inside your code. This will help
+   you spot places where code might be faulty before committing.
 
-   And finally, the `go vet ./...` command will check linting and styling over your 
-   code, keeping the project consistent formatting-wise.
+   And finally, the `go vet ./...` command will check linting and styling over
+   your code, keeping the project consistent formatting-wise.
 
-   In any case, it is always a good idea to read [official Go documentation][] when working 
-   on this project, as the definition of tools and commands of the Go programming 
-   language is described in further detail there.
+   In any case, it is always a good idea to read [official Go documentation][]
+   when working on this project, as the definition of tools and commands of the
+   Go programming language is described in further detail there.
 
-  1. Do your best to have [well-formed commit messages][] for each change.
-     This provides consistency throughout the project, and ensures that commit
-     messages are able to be formatted properly by various git tools.
+6. Do your best to have [well-formed commit messages][] for each change. This
+   provides consistency throughout the project, and ensures that commit messages
+   are able to be formatted properly by various git tools.
 
-  1. Finally, push the commits to your fork and submit a [pull request][].
-     Before pushing commits, it is highly advised to check for generated files
-     that were either created or modified for the sake of your commit. Running
-     `go generate -x ./...` should return a log of modified generated files that should
-     be included alongside the manually written code in the commit.
-     **NOTE:** Please do not use force-push on PRs in this repo, as it makes
-     it more difficult for reviewers to see what has changed since the last
-     code review.
+7. Finally, push the commits to your fork and submit a [pull request][]. Before
+   pushing commits, it is highly advised to check for generated files that were
+   either created or modified for the sake of your commit. Running
+   `go generate -x ./...` should return a log of modified generated files that
+   should be included alongside the manually written code in the commit.
+   **NOTE:** Please do not use force-push on PRs in this repo, as it makes it
+   more difficult for reviewers to see what has changed since the last code
+   review.
 
 [official Go documentation]: https://pkg.go.dev/std
 [forking]: https://help.github.com/articles/fork-a-repo
