@@ -9,17 +9,14 @@ CDPATH="" cd -- "$(dirname -- "$0")/.."
 REPO_DIR="$(pwd -P)"
 BIN="$REPO_DIR"/bin
 
-install_golangci_lint() {
-  mkdir -p "$BIN"
-  if [ -f "$BIN"/golangci-lint ]; then
-    if "$BIN"/golangci-lint --version | grep -q "$GOLANGCI_LINT_VERSION"; then
-      return
-    fi
-  fi
-  GOBIN="$BIN" go install "github.com/golangci/golangci-lint/cmd/golangci-lint@v$GOLANGCI_LINT_VERSION"
-}
+mkdir -p "$BIN"
 
-install_golangci_lint
+# install golangci-lint if it doesn't exist or is the wrong version
+if [ ! -f "$BIN"/golangci-lint ]; then
+  if ! "$BIN"/golangci-lint --version | grep -q "$GOLANGCI_LINT_VERSION"; then
+    GOBIN="$BIN" go install "github.com/golangci/golangci-lint/cmd/golangci-lint@v$GOLANGCI_LINT_VERSION"
+  fi
+fi
 
 MOD_DIRS="$(git ls-files '*go.mod' | xargs dirname | sort)"
 
@@ -37,7 +34,7 @@ for dir in $MOD_DIRS; do
   ) || FAILED=1
 done
 
-scripts/generate --check
+scripts/generate --check || FAILED=1
 
 if [ -n "$FAILED" ]; then
   exit 1
