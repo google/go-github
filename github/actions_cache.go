@@ -217,7 +217,7 @@ func (s *ActionsService) GetTotalCacheUsageForOrg(ctx context.Context, org strin
 //
 // Permissions: You must authenticate using an access token with the "admin:enterprise" scope to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-usage-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/cache#get-github-actions-cache-usage-for-an-enterprise
 func (s *ActionsService) GetTotalCacheUsageForEnterprise(ctx context.Context, enterprise string) (*TotalCacheUsage, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/cache/usage", enterprise)
 	req, err := s.client.NewRequest("GET", u, nil)

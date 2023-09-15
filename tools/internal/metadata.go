@@ -407,9 +407,19 @@ const docURLPrefix = "https://docs.github.com/rest/"
 var docURLPrefixRE = regexp.MustCompile(`^https://docs\.github\.com.*/rest/`)
 
 func normalizeDocURLPath(u string) string {
+	u = strings.Replace(u, "/en/", "/", 1)
 	pre := docURLPrefixRE.FindString(u)
 	if pre == "" {
 		return u
+	}
+	if strings.Contains(u, "docs.github.com/enterprise-cloud@latest/") {
+		// remove unsightly double slash
+		// https://docs.github.com/enterprise-cloud@latest/
+		return strings.ReplaceAll(
+			u,
+			"docs.github.com/enterprise-cloud@latest//",
+			"docs.github.com/enterprise-cloud@latest/",
+		)
 	}
 	if strings.Contains(u, "docs.github.com/enterprise-server") {
 		return u

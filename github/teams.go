@@ -752,7 +752,7 @@ type IDPGroup struct {
 
 // ListIDPGroupsInOrganization lists IDP groups available in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#list-idp-groups-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#list-idp-groups-for-an-organization
 func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opts *ListCursorOptions) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/team-sync/groups", org)
 	u, err := addOptions(u, opts)
@@ -777,7 +777,7 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 // ListIDPGroupsForTeamByID lists IDP groups connected to a team on GitHub
 // given organization and team IDs.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#list-idp-groups-for-a-team
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#list-idp-groups-for-a-team
 func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, teamID int64) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/team-sync/group-mappings", orgID, teamID)
 
@@ -798,7 +798,7 @@ func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, team
 // ListIDPGroupsForTeamBySlug lists IDP groups connected to a team on GitHub
 // given organization name and team slug.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#list-idp-groups-for-a-team
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#list-idp-groups-for-a-team
 func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug string) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
 
@@ -819,7 +819,7 @@ func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug
 // CreateOrUpdateIDPGroupConnectionsByID creates, updates, or removes a connection
 // between a team and an IDP group given organization and team IDs.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#create-or-update-idp-group-connections
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#create-or-update-idp-group-connections
 func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context, orgID, teamID int64, opts IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/team-sync/group-mappings", orgID, teamID)
 
@@ -840,7 +840,7 @@ func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context
 // CreateOrUpdateIDPGroupConnectionsBySlug creates, updates, or removes a connection
 // between a team and an IDP group given organization name and team slug.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#create-or-update-idp-group-connections
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#create-or-update-idp-group-connections
 func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Context, org, slug string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
 

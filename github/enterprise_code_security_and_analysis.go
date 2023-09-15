@@ -20,7 +20,7 @@ type EnterpriseSecurityAnalysisSettings struct {
 
 // GetCodeSecurityAndAnalysis gets code security and analysis features for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#get-code-security-and-analysis-features-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis#get-code-security-and-analysis-features-for-an-enterprise
 func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, enterprise string) (*EnterpriseSecurityAnalysisSettings, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code_security_and_analysis", enterprise)
 
@@ -40,7 +40,7 @@ func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, ente
 
 // UpdateCodeSecurityAndAnalysis updates code security and analysis features for new repositories in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#update-code-security-and-analysis-features-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis#update-code-security-and-analysis-features-for-an-enterprise
 func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, enterprise string, settings *EnterpriseSecurityAnalysisSettings) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code_security_and_analysis", enterprise)
 	req, err := s.client.NewRequest("PATCH", u, settings)
