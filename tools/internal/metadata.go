@@ -9,7 +9,11 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
+	"go/ast"
+	"go/format"
+	"go/parser"
+	"go/printer"
+	"go/token"
 	"io/fs"
 	"net/url"
 	"os"
@@ -19,8 +23,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/dave/dst"
-	"github.com/dave/dst/decorator"
 	"golang.org/x/exp/maps"
 	"golang.org/x/exp/slices"
 	"gopkg.in/yaml.v3"
@@ -290,26 +292,27 @@ func UpdateDocLinks(meta *Metadata, dir string) error {
 
 // updateDocsLinksInFile updates in the code comments in content with doc urls from metadata.
 func updateDocsLinksInFile(metadata *Metadata, content []byte) ([]byte, error) {
-	df, err := decorator.Parse(content)
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, "", content, parser.ParseComments)
 	if err != nil {
 		return nil, err
 	}
 
 	// ignore files where package is not github
-	if df.Name.Name != "github" {
+	if node.Name.Name != "github" {
 		return content, nil
 	}
 
-	dst.Inspect(df, func(n dst.Node) bool {
+	ast.Inspect(node, func(n ast.Node) bool {
 		return updateDocsLinksForNode(metadata, n)
 	})
 
 	var buf bytes.Buffer
-	err = decorator.Fprint(&buf, df)
+	err = printer.Fprint(&buf, fset, node)
 	if err != nil {
 		return nil, err
 	}
-	return buf.Bytes(), nil
+	return format.Source(buf.Bytes())
 }
 
 var (
@@ -317,23 +320,26 @@ var (
 	emptyLineRE = regexp.MustCompile(`^\s*(//\s*)$`)
 )
 
-func updateDocsLinksForNode(metadata *Metadata, n dst.Node) bool {
-	d, ok := n.(*dst.FuncDecl)
-	if !ok ||
-		!d.Name.IsExported() ||
-		d.Recv == nil {
+func updateDocsLinksForNode(metadata *Metadata, n ast.Node) bool {
+	fn, ok := n.(*ast.FuncDecl)
+	if !ok || !fn.Name.IsExported() {
 		return true
 	}
+	methodName := fn.Name.Name
 
 	// Get the method's receiver. It can be either an identifier or a pointer to an identifier.
 	// This assumes all receivers are named and we don't have something like: `func (Client) Foo()`.
-	methodName := d.Name.Name
 	receiverType := ""
-	switch x := d.Recv.List[0].Type.(type) {
-	case *dst.Ident:
-		receiverType = x.Name
-	case *dst.StarExpr:
-		receiverType = x.X.(*dst.Ident).Name
+	if fn.Recv != nil {
+		switch x := fn.Recv.List[0].Type.(type) {
+		case *ast.Ident:
+			receiverType = x.Name
+		case *ast.StarExpr:
+			receiverType = x.X.(*ast.Ident).Name
+		}
+	}
+	if !ast.IsExported(receiverType) {
+		return true
 	}
 
 	linksMap := map[string]struct{}{}
@@ -342,51 +348,57 @@ func updateDocsLinksForNode(metadata *Metadata, n dst.Node) bool {
 		linksMap[op.DocumentationURL()] = struct{}{}
 	}
 
-	// create copy of comments with non-matching doc links removed
-	var commentLines []string
-	for _, line := range d.Decs.Start.All() {
-		match := docLineRE.FindStringSubmatch(line)
+	// create copy of comment group with non-matching doc links removed
+	if fn.Doc == nil {
+		fn.Doc = &ast.CommentGroup{}
+	}
+	fnComments := make([]*ast.Comment, 0, len(fn.Doc.List))
+	for _, comment := range fn.Doc.List {
+		match := docLineRE.FindStringSubmatch(comment.Text)
 		if match == nil {
-			commentLines = append(commentLines, line)
+			fnComments = append(fnComments, comment)
 			continue
 		}
 		matchesLink := false
 		for link := range linksMap {
 			if sameDocLink(match[2], link) {
-				//fmt.Println("match", match[2], link)
 				matchesLink = true
 				delete(linksMap, link)
 				break
 			}
 		}
 		if matchesLink {
-			commentLines = append(commentLines, line)
+			fnComments = append(fnComments, comment)
 		}
+	}
+
+	// remove trailing empty lines
+	for len(fnComments) > 0 {
+		if !emptyLineRE.MatchString(fnComments[len(fnComments)-1].Text) {
+			break
+		}
+		fnComments = fnComments[:len(fnComments)-1]
+	}
+
+	// add an empty line before adding doc links
+	if len(linksMap) > 0 &&
+		len(fnComments) > 0 &&
+		!emptyLineRE.MatchString(fnComments[len(fnComments)-1].Text) {
+		fnComments = append(fnComments, &ast.Comment{Text: "//"})
 	}
 
 	docLinks := maps.Keys(linksMap)
 	sort.Strings(docLinks)
 
-	// remove trailing empty lines
-	for len(commentLines) > 0 {
-		if !emptyLineRE.MatchString(commentLines[len(commentLines)-1]) {
-			break
-		}
-		commentLines = commentLines[:len(commentLines)-1]
-	}
-
-	// add an empty line before adding doc links
-	if len(docLinks) > 0 &&
-		len(commentLines) > 0 &&
-		!emptyLineRE.MatchString(commentLines[len(commentLines)-1]) {
-		commentLines = append(commentLines, "//")
-	}
-
 	for _, dl := range docLinks {
-		dl = normalizeDocURLPath(dl)
-		commentLines = append(commentLines, fmt.Sprintf("// GitHub API docs: %s", dl))
+		fnComments = append(
+			fnComments,
+			&ast.Comment{
+				Text: "// GitHub API docs: " + normalizeDocURLPath(dl),
+			},
+		)
 	}
-	d.Decs.Start.Replace(commentLines...)
+	fn.Doc.List = fnComments
 	return true
 }
 
