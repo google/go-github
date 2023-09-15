@@ -37,7 +37,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v54/github"
+	"github.com/google/go-github/v55/github"
 	"golang.org/x/crypto/nacl/box"
 )
 
@@ -65,7 +65,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	client := github.NewTokenClient(ctx, token)
+	client := github.NewClient(nil).WithAuthToken(token)
 
 	if err := addUserSecret(ctx, client, secretName, secretValue, *owner, *repo); err != nil {
 		log.Fatal(err)

@@ -23,7 +23,6 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"golang.org/x/oauth2"
 )
 
 const (
@@ -110,7 +109,7 @@ func testFormValues(t *testing.T, r *http.Request, values values) {
 		want.Set(k, v)
 	}
 
-	r.ParseForm()
+	assertNilError(t, r.ParseForm())
 	if got := r.Form; !cmp.Equal(got, want) {
 		t.Errorf("Request parameters: %v, want %v", got, want)
 	}
@@ -276,6 +275,19 @@ func testErrorResponseForStatusCode(t *testing.T, code int) {
 	}
 }
 
+func assertNilError(t *testing.T, err error) {
+	t.Helper()
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
+
+func assertWrite(t *testing.T, w io.Writer, data []byte) {
+	t.Helper()
+	_, err := w.Write(data)
+	assertNilError(t, err)
+}
+
 func TestNewClient(t *testing.T) {
 	c := NewClient(nil)
 
@@ -307,215 +319,145 @@ func TestClient(t *testing.T) {
 	}
 }
 
-func TestNewTokenClient(t *testing.T) {
+func TestWithAuthToken(t *testing.T) {
 	token := "gh_test_token"
-	ctx := context.Background()
-	c := NewTokenClient(ctx, token)
-	tr, ok := c.Client().Transport.(*oauth2.Transport)
-	if !ok {
-		t.Error("Client transport is not oauth2.Transport")
+	var gotAuthHeaderVals []string
+	wantAuthHeaderVals := []string{"Bearer " + token}
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotAuthHeaderVals = r.Header["Authorization"]
+	}))
+	validate := func(c *Client) {
+		t.Helper()
+		gotAuthHeaderVals = nil
+		_, err := c.Client().Get(srv.URL)
+		if err != nil {
+			t.Fatalf("Get returned unexpected error: %v", err)
+		}
+		diff := cmp.Diff(wantAuthHeaderVals, gotAuthHeaderVals)
+		if diff != "" {
+			t.Errorf("Authorization header values mismatch (-want +got):\n%s", diff)
+		}
 	}
-	if tok, err := tr.Source.Token(); err != nil || tok.AccessToken != token {
-		t.Errorf("Client not using correct token")
-	}
+	validate(NewClient(nil).WithAuthToken(token))
+	validate(new(Client).WithAuthToken(token))
+	validate(NewTokenClient(context.Background(), token))
 }
 
-func TestNewEnterpriseClient(t *testing.T) {
-	baseURL := "https://custom-url/api/v3/"
-	uploadURL := "https://custom-upload-url/api/uploads/"
-	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
-	if err != nil {
-		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
-	}
-
-	if got, want := c.BaseURL.String(), baseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
-	if got, want := c.UploadURL.String(), uploadURL; got != want {
-		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
-	}
-}
-
-func TestNewEnterpriseClient_addsTrailingSlashToURLs(t *testing.T) {
-	baseURL := "https://custom-url/api/v3"
-	uploadURL := "https://custom-upload-url/api/uploads"
-	formattedBaseURL := baseURL + "/"
-	formattedUploadURL := uploadURL + "/"
-
-	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
-	if err != nil {
-		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
-	}
-
-	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
-	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
-		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
-	}
-}
-
-func TestNewEnterpriseClient_addsEnterpriseSuffixToURLs(t *testing.T) {
-	baseURL := "https://custom-url/"
-	uploadURL := "https://custom-upload-url/"
-	formattedBaseURL := baseURL + "api/v3/"
-	formattedUploadURL := uploadURL + "api/uploads/"
-
-	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
-	if err != nil {
-		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
-	}
-
-	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
-	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
-		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
-	}
-}
-
-func TestNewEnterpriseClient_addsEnterpriseSuffixAndTrailingSlashToURLs(t *testing.T) {
-	baseURL := "https://custom-url"
-	uploadURL := "https://custom-upload-url"
-	formattedBaseURL := baseURL + "/api/v3/"
-	formattedUploadURL := uploadURL + "/api/uploads/"
-
-	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
-	if err != nil {
-		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
-	}
-
-	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
-	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
-		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
-	}
-}
-
-func TestNewEnterpriseClient_badBaseURL(t *testing.T) {
-	baseURL := "bogus\nbase\nURL"
-	uploadURL := "https://custom-upload-url/api/uploads/"
-	if _, err := NewEnterpriseClient(baseURL, uploadURL, nil); err == nil {
-		t.Fatal("NewEnterpriseClient returned nil, expected error")
-	}
-}
-
-func TestNewEnterpriseClient_badUploadURL(t *testing.T) {
-	baseURL := "https://custom-url/api/v3/"
-	uploadURL := "bogus\nupload\nURL"
-	if _, err := NewEnterpriseClient(baseURL, uploadURL, nil); err == nil {
-		t.Fatal("NewEnterpriseClient returned nil, expected error")
-	}
-}
-
-func TestNewEnterpriseClient_URLHasExistingAPIPrefix_AddTrailingSlash(t *testing.T) {
-	baseURL := "https://api.custom-url"
-	uploadURL := "https://api.custom-upload-url"
-	formattedBaseURL := baseURL + "/"
-	formattedUploadURL := uploadURL + "/"
-
-	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
-	if err != nil {
-		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
-	}
-
-	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
-	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
-		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
-	}
-}
-
-func TestNewEnterpriseClient_URLHasExistingAPIPrefixAndTrailingSlash(t *testing.T) {
-	baseURL := "https://api.custom-url/"
-	uploadURL := "https://api.custom-upload-url/"
-
-	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
-	if err != nil {
-		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
-	}
-
-	if got, want := c.BaseURL.String(), baseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
-	if got, want := c.UploadURL.String(), uploadURL; got != want {
-		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
-	}
-}
-
-func TestNewEnterpriseClient_URLHasAPISubdomain_AddTrailingSlash(t *testing.T) {
-	baseURL := "https://catalog.api.custom-url"
-	uploadURL := "https://catalog.api.custom-upload-url"
-	formattedBaseURL := baseURL + "/"
-	formattedUploadURL := uploadURL + "/"
-
-	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
-	if err != nil {
-		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
-	}
-
-	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
-	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
-		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
-	}
-}
-
-func TestNewEnterpriseClient_URLHasAPISubdomainAndTrailingSlash(t *testing.T) {
-	baseURL := "https://catalog.api.custom-url/"
-	uploadURL := "https://catalog.api.custom-upload-url/"
-
-	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
-	if err != nil {
-		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
-	}
-
-	if got, want := c.BaseURL.String(), baseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
-	if got, want := c.UploadURL.String(), uploadURL; got != want {
-		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
-	}
-}
-
-func TestNewEnterpriseClient_URLIsNotAProperAPISubdomain_addsEnterpriseSuffixAndSlash(t *testing.T) {
-	baseURL := "https://cloud-api.custom-url"
-	uploadURL := "https://cloud-api.custom-upload-url"
-	formattedBaseURL := baseURL + "/api/v3/"
-	formattedUploadURL := uploadURL + "/api/uploads/"
-
-	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
-	if err != nil {
-		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
-	}
-
-	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
-	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
-		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
-	}
-}
-
-func TestNewEnterpriseClient_URLIsNotAProperAPISubdomain_addsEnterpriseSuffix(t *testing.T) {
-	baseURL := "https://cloud-api.custom-url/"
-	uploadURL := "https://cloud-api.custom-upload-url/"
-	formattedBaseURL := baseURL + "api/v3/"
-	formattedUploadURL := uploadURL + "api/uploads/"
-
-	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
-	if err != nil {
-		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
-	}
-
-	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
-	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
-		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
+func TestWithEnterpriseURLs(t *testing.T) {
+	for _, test := range []struct {
+		name          string
+		baseURL       string
+		wantBaseURL   string
+		uploadURL     string
+		wantUploadURL string
+		wantErr       string
+	}{
+		{
+			name:          "does not modify properly formed URLs",
+			baseURL:       "https://custom-url/api/v3/",
+			wantBaseURL:   "https://custom-url/api/v3/",
+			uploadURL:     "https://custom-upload-url/api/uploads/",
+			wantUploadURL: "https://custom-upload-url/api/uploads/",
+		},
+		{
+			name:          "adds trailing slash",
+			baseURL:       "https://custom-url/api/v3",
+			wantBaseURL:   "https://custom-url/api/v3/",
+			uploadURL:     "https://custom-upload-url/api/uploads",
+			wantUploadURL: "https://custom-upload-url/api/uploads/",
+		},
+		{
+			name:          "adds enterprise suffix",
+			baseURL:       "https://custom-url/",
+			wantBaseURL:   "https://custom-url/api/v3/",
+			uploadURL:     "https://custom-upload-url/",
+			wantUploadURL: "https://custom-upload-url/api/uploads/",
+		},
+		{
+			name:          "adds enterprise suffix and trailing slash",
+			baseURL:       "https://custom-url",
+			wantBaseURL:   "https://custom-url/api/v3/",
+			uploadURL:     "https://custom-upload-url",
+			wantUploadURL: "https://custom-upload-url/api/uploads/",
+		},
+		{
+			name:      "bad base URL",
+			baseURL:   "bogus\nbase\nURL",
+			uploadURL: "https://custom-upload-url/api/uploads/",
+			wantErr:   `invalid control character in URL`,
+		},
+		{
+			name:      "bad upload URL",
+			baseURL:   "https://custom-url/api/v3/",
+			uploadURL: "bogus\nupload\nURL",
+			wantErr:   `invalid control character in URL`,
+		},
+		{
+			name:          "URL has existing API prefix, adds trailing slash",
+			baseURL:       "https://api.custom-url",
+			wantBaseURL:   "https://api.custom-url/",
+			uploadURL:     "https://api.custom-upload-url",
+			wantUploadURL: "https://api.custom-upload-url/",
+		},
+		{
+			name:          "URL has existing API prefix and trailing slash",
+			baseURL:       "https://api.custom-url/",
+			wantBaseURL:   "https://api.custom-url/",
+			uploadURL:     "https://api.custom-upload-url/",
+			wantUploadURL: "https://api.custom-upload-url/",
+		},
+		{
+			name:          "URL has API subdomain, adds trailing slash",
+			baseURL:       "https://catalog.api.custom-url",
+			wantBaseURL:   "https://catalog.api.custom-url/",
+			uploadURL:     "https://catalog.api.custom-upload-url",
+			wantUploadURL: "https://catalog.api.custom-upload-url/",
+		},
+		{
+			name:          "URL has API subdomain and trailing slash",
+			baseURL:       "https://catalog.api.custom-url/",
+			wantBaseURL:   "https://catalog.api.custom-url/",
+			uploadURL:     "https://catalog.api.custom-upload-url/",
+			wantUploadURL: "https://catalog.api.custom-upload-url/",
+		},
+		{
+			name:          "URL is not a proper API subdomain, adds enterprise suffix and slash",
+			baseURL:       "https://cloud-api.custom-url",
+			wantBaseURL:   "https://cloud-api.custom-url/api/v3/",
+			uploadURL:     "https://cloud-api.custom-upload-url",
+			wantUploadURL: "https://cloud-api.custom-upload-url/api/uploads/",
+		},
+		{
+			name:          "URL is not a proper API subdomain, adds enterprise suffix",
+			baseURL:       "https://cloud-api.custom-url/",
+			wantBaseURL:   "https://cloud-api.custom-url/api/v3/",
+			uploadURL:     "https://cloud-api.custom-upload-url/",
+			wantUploadURL: "https://cloud-api.custom-upload-url/api/uploads/",
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			validate := func(c *Client, err error) {
+				t.Helper()
+				if test.wantErr != "" {
+					if err == nil || !strings.Contains(err.Error(), test.wantErr) {
+						t.Fatalf("error does not contain expected string %q: %v", test.wantErr, err)
+					}
+					return
+				}
+				if err != nil {
+					t.Fatalf("got unexpected error: %v", err)
+				}
+				if c.BaseURL.String() != test.wantBaseURL {
+					t.Errorf("BaseURL is %v, want %v", c.BaseURL.String(), test.wantBaseURL)
+				}
+				if c.UploadURL.String() != test.wantUploadURL {
+					t.Errorf("UploadURL is %v, want %v", c.UploadURL.String(), test.wantUploadURL)
+				}
+			}
+			validate(NewClient(nil).WithEnterpriseURLs(test.baseURL, test.uploadURL))
+			validate(new(Client).WithEnterpriseURLs(test.baseURL, test.uploadURL))
+			validate(NewEnterpriseClient(test.baseURL, test.uploadURL, nil))
+		})
 	}
 }
 
@@ -1062,7 +1004,8 @@ func TestDo(t *testing.T) {
 	req, _ := client.NewRequest("GET", ".", nil)
 	body := new(foo)
 	ctx := context.Background()
-	client.Do(ctx, req, body)
+	_, err := client.Do(ctx, req, body)
+	assertNilError(t, err)
 
 	want := &foo{"a"}
 	if !cmp.Equal(body, want) {
@@ -1337,11 +1280,14 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	// First request is made, and it makes the client aware of rate reset time being in the future.
 	req, _ := client.NewRequest("GET", "first", nil)
 	ctx := context.Background()
-	client.Do(ctx, req, nil)
+	_, err := client.Do(ctx, req, nil)
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
 
 	// Second request should not cause a network call to be made, since client can predict a rate limit error.
 	req, _ = client.NewRequest("GET", "second", nil)
-	_, err := client.Do(ctx, req, nil)
+	_, err = client.Do(ctx, req, nil)
 
 	if madeNetworkCall {
 		t.Fatal("Network call was made, even though rate limit is known to still be exceeded.")
@@ -1394,11 +1340,14 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 	// First request is made so afterwards we can check the returned rate limit headers were ignored.
 	req, _ := client.NewRequest("GET", "first", nil)
 	ctx := context.Background()
-	client.Do(ctx, req, nil)
+	_, err := client.Do(ctx, req, nil)
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
 
 	// Second request should not by hindered by rate limits.
 	req, _ = client.NewRequest("GET", "second", nil)
-	_, err := client.Do(ctx, req, nil)
+	_, err = client.Do(ctx, req, nil)
 
 	if err != nil {
 		t.Fatalf("Second request failed, even though the rate limits from the cache should've been ignored: %v", err)
@@ -2464,7 +2413,8 @@ func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 	unauthedClient.BaseURL = client.BaseURL
 	req, _ := unauthedClient.NewRequest("GET", ".", nil)
 	ctx := context.Background()
-	unauthedClient.Do(ctx, req, nil)
+	_, err := unauthedClient.Do(ctx, req, nil)
+	assertNilError(t, err)
 }
 
 func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
@@ -2539,7 +2489,8 @@ func TestBasicAuthTransport(t *testing.T) {
 	basicAuthClient.BaseURL = client.BaseURL
 	req, _ := basicAuthClient.NewRequest("GET", ".", nil)
 	ctx := context.Background()
-	basicAuthClient.Do(ctx, req, nil)
+	_, err := basicAuthClient.Do(ctx, req, nil)
+	assertNilError(t, err)
 }
 
 func TestBasicAuthTransport_transport(t *testing.T) {
@@ -2703,13 +2654,6 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 	if err := resp.Body.Close(); err != nil {
 		t.Fatalf("resp.Body.Close() returned error: %v", err)
 	}
-}
-
-// roundTripperFunc creates a mock RoundTripper (transport)
-type roundTripperFunc func(*http.Request) (*http.Response, error)
-
-func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
-	return fn(r)
 }
 
 func TestErrorResponse_Marshal(t *testing.T) {

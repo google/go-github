@@ -30,7 +30,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/go-github/v54/github"
+	"github.com/google/go-github/v55/github"
 )
 
 var (
@@ -133,7 +133,7 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 
 	// Create the commit using the tree.
 	date := time.Now()
-	author := &github.CommitAuthor{Date: &github.Timestamp{date}, Name: authorName, Email: authorEmail}
+	author := &github.CommitAuthor{Date: &github.Timestamp{Time: date}, Name: authorName, Email: authorEmail}
 	commit := &github.Commit{Author: author, Message: commitMessage, Tree: tree, Parents: []*github.Commit{parent.Commit}}
 	newCommit, _, err := client.Git.CreateCommit(ctx, *sourceOwner, *sourceRepo, commit)
 	if err != nil {
@@ -189,7 +189,7 @@ func main() {
 	if *sourceOwner == "" || *sourceRepo == "" || *commitBranch == "" || *sourceFiles == "" || *authorName == "" || *authorEmail == "" {
 		log.Fatal("You need to specify a non-empty value for the flags `-source-owner`, `-source-repo`, `-commit-branch`, `-files`, `-author-name` and `-author-email`")
 	}
-	client = github.NewTokenClient(ctx, token)
+	client = github.NewClient(nil).WithAuthToken(token)
 
 	ref, err := getRef()
 	if err != nil {

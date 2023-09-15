@@ -59,7 +59,7 @@ func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
 		v := new(InteractionRestriction)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)

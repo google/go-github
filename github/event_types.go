@@ -134,6 +134,25 @@ type DeleteEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// DependabotAlertEvent is triggered when there is activity relating to Dependabot alerts.
+// The Webhook event name is "dependabot_alert".
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#dependabot_alert
+type DependabotAlertEvent struct {
+	Action *string          `json:"action,omitempty"`
+	Alert  *DependabotAlert `json:"alert,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Installation *Installation `json:"installation,omitempty"`
+	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
+	Repo         *Repository   `json:"repository,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Organization *Organization `json:"organization,omitempty"`
+}
+
 // DeployKeyEvent is triggered when a deploy key is added or removed from a repository.
 // The Webhook event name is "deploy_key".
 //
@@ -1591,6 +1610,8 @@ type WorkflowRunEvent struct {
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
 type SecurityAdvisory struct {
+	CVSS            *AdvisoryCVSS            `json:"cvss,omitempty"`
+	CWEs            []*AdvisoryCWEs          `json:"cwes,omitempty"`
 	GHSAID          *string                  `json:"ghsa_id,omitempty"`
 	Summary         *string                  `json:"summary,omitempty"`
 	Description     *string                  `json:"description,omitempty"`
@@ -1639,6 +1660,13 @@ type FirstPatchedVersion struct {
 type SecurityAdvisoryEvent struct {
 	Action           *string           `json:"action,omitempty"`
 	SecurityAdvisory *SecurityAdvisory `json:"security_advisory,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+	Organization *Organization `json:"organization,omitempty"`
+	Repository   *Repository   `json:"repository,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
 }
 
 // CodeScanningAlertEvent is triggered when a code scanning finds a potential vulnerability or error in your code.

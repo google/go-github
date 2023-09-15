@@ -69,7 +69,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/statuses/r", func(w http.ResponseWriter, r *http.Request) {
 		v := new(RepoStatus)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

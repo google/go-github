@@ -59,7 +59,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
 		var v []string
-		json.NewDecoder(r.Body).Decode(&v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -101,7 +101,7 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
 		var v []string
-		json.NewDecoder(r.Body).Decode(&v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "DELETE")
 		if !cmp.Equal(v, input) {
@@ -149,7 +149,7 @@ func TestUsersService_SetEmailVisibility(t *testing.T) {
 
 	mux.HandleFunc("/user/email/visibility", func(w http.ResponseWriter, r *http.Request) {
 		v := new(UserEmail)
-		json.NewDecoder(r.Body).Decode(&v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

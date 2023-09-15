@@ -243,7 +243,7 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeV3SHA)
 
-		fmt.Fprintf(w, sha1)
+		fmt.Fprint(w, sha1)
 	})
 
 	ctx := context.Background()
@@ -299,7 +299,7 @@ func TestRepositoriesService_NonAlphabetCharacter_GetCommitSHA1(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeV3SHA)
 
-		fmt.Fprintf(w, sha1)
+		fmt.Fprint(w, sha1)
 	})
 
 	ctx := context.Background()
@@ -339,7 +339,7 @@ func TestRepositoriesService_TrailingPercent_GetCommitSHA1(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeV3SHA)
 
-		fmt.Fprintf(w, sha1)
+		fmt.Fprint(w, sha1)
 	})
 
 	ctx := context.Background()

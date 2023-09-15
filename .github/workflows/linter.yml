@@ -9,7 +9,6 @@ jobs:
   lint:
     strategy:
       matrix:
-        go-version: [1.x]
         platform: [ubuntu-latest]
 
         # golangci-lint will only process a single module, so we need to call it
@@ -17,13 +16,13 @@ jobs:
         # since that needs libsodium to run.
         working-directory:
           - ""
-          # - example  # Fails with "no go files to analyze"
+          - example
           - scrape
           - update-urls
     runs-on: ${{ matrix.platform }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: golangci-lint ${{ matrix.working-directory }}
       uses: golangci/golangci-lint-action@v3
