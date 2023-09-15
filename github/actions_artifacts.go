@@ -56,6 +56,9 @@ type ArtifactList struct {
 func (s *ActionsService) ListArtifacts(ctx context.Context, owner, repo string, opts *ListOptions) (*ArtifactList, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts", owner, repo)
 	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

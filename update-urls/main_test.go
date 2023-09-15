@@ -18,10 +18,6 @@ import (
 	"github.com/pmezard/go-difflib/difflib"
 )
 
-func TestFail(t *testing.T) {
-	t.Errorf("This test fails")
-}
-
 type pipelineSetup struct {
 	// Fields filled in by the unit test:
 	baseURL              string
