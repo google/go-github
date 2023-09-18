@@ -20694,6 +20694,30 @@ func (s *SecretScanningAlert) GetNumber() int {
 	return *s.Number
 }
 
+// GetPushProtectionBypassed returns the PushProtectionBypassed field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetPushProtectionBypassed() bool {
+	if s == nil || s.PushProtectionBypassed == nil {
+		return false
+	}
+	return *s.PushProtectionBypassed
+}
+
+// GetPushProtectionBypassedAt returns the PushProtectionBypassedAt field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetPushProtectionBypassedAt() Timestamp {
+	if s == nil || s.PushProtectionBypassedAt == nil {
+		return Timestamp{}
+	}
+	return *s.PushProtectionBypassedAt
+}
+
+// GetPushProtectionBypassedBy returns the PushProtectionBypassedBy field.
+func (s *SecretScanningAlert) GetPushProtectionBypassedBy() *User {
+	if s == nil {
+		return nil
+	}
+	return s.PushProtectionBypassedBy
+}
+
 // GetRepository returns the Repository field.
 func (s *SecretScanningAlert) GetRepository() *Repository {
 	if s == nil {
@@ -20708,6 +20732,14 @@ func (s *SecretScanningAlert) GetResolution() string {
 		return ""
 	}
 	return *s.Resolution
+}
+
+// GetResolutionComment returns the ResolutionComment field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetResolutionComment() string {
+	if s == nil || s.ResolutionComment == nil {
+		return ""
+	}
+	return *s.ResolutionComment
 }
 
 // GetResolvedAt returns the ResolvedAt field if it's non-nil, zero value otherwise.
@@ -20756,6 +20788,14 @@ func (s *SecretScanningAlert) GetState() string {
 		return ""
 	}
 	return *s.State
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetUpdatedAt() Timestamp {
+	if s == nil || s.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *s.UpdatedAt
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
