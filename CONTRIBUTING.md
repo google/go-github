@@ -37,7 +37,7 @@ are more sensitive, emailed to <opensource@google.com>.
    that you are planning to work on that bug or feature so that it can be
    assigned to you.
 
-2. Follow the normal process of [forking][] the project, and setup a new branch
+2. Follow the normal process of [forking][] the project, and set up a new branch
    to work in. It's important that each group of changes be done in separate
    branches in order to ensure that a pull request only includes the commits
    related to that bug or feature.
