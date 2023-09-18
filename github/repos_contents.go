@@ -92,7 +92,7 @@ func (r *RepositoryContent) GetContent() (string, error) {
 		}
 		return *r.Content, nil
 	case "none":
-		return "", fmt.Errorf("unsupported content encoding: %v, this may occur when file size > 1 MB, if that is the case consider using DownloadContents", encoding)
+		return "", errors.New("unsupported content encoding: none, this may occur when file size > 1 MB, if that is the case consider using DownloadContents")
 	default:
 		return "", fmt.Errorf("unsupported content encoding: %v", encoding)
 	}
