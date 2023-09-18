@@ -54,6 +54,12 @@ func TestRepositoryContent_GetContent(t *testing.T) {
 			want:     "",
 			wantErr:  true,
 		},
+		{
+			encoding: String("none"),
+			content:  nil,
+			want:     "",
+			wantErr:  true,
+		},
 	}
 
 	for _, tt := range tests {
