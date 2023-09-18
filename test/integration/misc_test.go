@@ -67,14 +67,3 @@ func TestRateLimits(t *testing.T) {
 		t.Errorf("Core.Reset is more than 1 minute in the past; that doesn't seem right.")
 	}
 }
-
-func TestListServiceHooks(t *testing.T) {
-	hooks, _, err := client.ListServiceHooks(context.Background())
-	if err != nil {
-		t.Fatalf("ListServiceHooks returned error: %v", err)
-	}
-
-	if len(hooks) == 0 {
-		t.Fatalf("ListServiceHooks returned no hooks")
-	}
-}

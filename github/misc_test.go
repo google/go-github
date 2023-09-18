@@ -317,48 +317,6 @@ func TestZen(t *testing.T) {
 	})
 }
 
-func TestListServiceHooks(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/hooks", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{
-			"name":"n",
-			"events":["e"],
-			"supported_events":["s"],
-			"schema":[
-			  ["a", "b"]
-			]
-		}]`)
-	})
-
-	ctx := context.Background()
-	hooks, _, err := client.ListServiceHooks(ctx)
-	if err != nil {
-		t.Errorf("ListServiceHooks returned error: %v", err)
-	}
-
-	want := []*ServiceHook{{
-		Name:            String("n"),
-		Events:          []string{"e"},
-		SupportedEvents: []string{"s"},
-		Schema:          [][]string{{"a", "b"}},
-	}}
-	if !cmp.Equal(hooks, want) {
-		t.Errorf("ListServiceHooks returned %+v, want %+v", hooks, want)
-	}
-
-	const methodName = "ListServiceHooks"
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.ListServiceHooks(ctx)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
 func TestMarkdownRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &markdownRequest{}, "{}")
 
@@ -392,33 +350,6 @@ func TestCodeOfConduct_Marshal(t *testing.T) {
 		"key": "key",
 		"url": "url",
 		"body": "body"
-	}`
-
-	testJSONMarshal(t, a, want)
-}
-
-func TestServiceHook_Marshal(t *testing.T) {
-	testJSONMarshal(t, &ServiceHook{}, "{}")
-
-	a := &ServiceHook{
-		Name:            String("name"),
-		Events:          []string{"e"},
-		SupportedEvents: []string{"se"},
-		Schema:          [][]string{{"g"}},
-	}
-	want := `{
-		"name": "name",
-		"events": [
-			"e"
-		],
-		"supported_events": [
-			"se"
-		],
-		"schema": [
-			[
-				"g"
-			]
-		]
 	}`
 
 	testJSONMarshal(t, a, want)
