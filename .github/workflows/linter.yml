@@ -29,4 +29,4 @@ jobs:
       with:
         version: latest
         working-directory: ${{ matrix.working-directory}}
-        args: --verbose
+        args: --verbose --timeout=10m
