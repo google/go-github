@@ -24676,16 +24676,6 @@ func TestSelectedReposList_GetTotalCount(tt *testing.T) {
 	s.GetTotalCount()
 }
 
-func TestServiceHook_GetName(tt *testing.T) {
-	var zeroValue string
-	s := &ServiceHook{Name: &zeroValue}
-	s.GetName()
-	s = &ServiceHook{}
-	s.GetName()
-	s = nil
-	s.GetName()
-}
-
 func TestSignatureRequirementEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	var zeroValue string
 	s := &SignatureRequirementEnforcementLevelChanges{From: &zeroValue}
