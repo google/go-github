@@ -1,5 +1,5 @@
 #!/bin/sh
-#/ scripts/fmt runs go fmt on all go files in the project.
+#/ scripts/fmt.sh runs go fmt on all go files in the project.
 
 set -e
 

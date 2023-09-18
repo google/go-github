@@ -1,6 +1,6 @@
 #!/bin/sh
-#/ scripts/generate runs go generate on all modules in this repo.
-#/ `scripts/generate --check` checks that the generated files are up to date.
+#/ scripts/generate.sh runs go generate on all modules in this repo.
+#/ `scripts/generate.sh --check` checks that the generated files are up to date.
 
 set -e
 
@@ -22,9 +22,9 @@ if [ "$1" = "--check" ]; then
     cd "$GENTEMP"
     git add .
     git -c user.name='bot' -c user.email='bot@localhost' commit -m "generate" -q --allow-empty
-    scripts/generate
+    scripts/generate.sh
     [ -z "$(git status --porcelain)" ] || {
-      msg="Generated files are out of date. Please run scripts/generate and commit the results"
+      msg="Generated files are out of date. Please run scripts/generate.sh and commit the results"
       if [ -n "$GITHUB_ACTIONS" ]; then
         echo "::error ::$msg"
       else
