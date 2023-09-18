@@ -245,35 +245,3 @@ func (c *Client) Zen(ctx context.Context) (string, *Response, error) {
 
 	return buf.String(), resp, nil
 }
-
-// ServiceHook represents a hook that has configuration settings, a list of
-// available events, and default events.
-type ServiceHook struct {
-	Name            *string    `json:"name,omitempty"`
-	Events          []string   `json:"events,omitempty"`
-	SupportedEvents []string   `json:"supported_events,omitempty"`
-	Schema          [][]string `json:"schema,omitempty"`
-}
-
-func (s *ServiceHook) String() string {
-	return Stringify(s)
-}
-
-// ListServiceHooks lists all of the available service hooks.
-//
-// GitHub API docs: https://developer.github.com/webhooks/#services
-func (c *Client) ListServiceHooks(ctx context.Context) ([]*ServiceHook, *Response, error) {
-	u := "hooks"
-	req, err := c.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	var hooks []*ServiceHook
-	resp, err := c.Do(ctx, req, &hooks)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return hooks, resp, nil
-}
