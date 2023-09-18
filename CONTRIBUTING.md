@@ -63,7 +63,10 @@ are more sensitive, emailed to <opensource@google.com>.
 6. Finally, push the commits to your fork and submit a [pull request][].
    **NOTE:** Please do not use force-push on PRs in this repo, as it makes it
    more difficult for reviewers to see what has changed since the last code
-   review.
+   review. We always perform "squash and merge" actions on PRs in this repo, so it doesn't
+   matter how many commits your PR has, as they will end up being a single commit after merging.
+   This is done to make a much cleaner `git log` history and helps to find regressions in the code
+   using existing tools such as "git bisect".
 
 [forking]: https://help.github.com/articles/fork-a-repo
 [well-formed commit messages]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
