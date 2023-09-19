@@ -27,10 +27,9 @@ type SignatureVerification struct {
 // To create a MessageSigner that signs a commit with a [golang.org/x/crypto/openpgp.Entity],
 // or [github.com/ProtonMail/go-crypto/openpgp.Entity], use:
 //
-// 		commit.Signer = github.MessageSignerFunc(func(w io.Writer, r io.Reader) error {
-// 			return openpgp.ArmoredDetachSign(w, openpgpEntity, r, nil)
-// 		})
-//
+//	commit.Signer = github.MessageSignerFunc(func(w io.Writer, r io.Reader) error {
+//		return openpgp.ArmoredDetachSign(w, openpgpEntity, r, nil)
+//	})
 type MessageSigner interface {
 	Sign(w io.Writer, r io.Reader) error
 }
