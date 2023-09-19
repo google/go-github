@@ -24323,36 +24323,6 @@ func TestSecretScanningAlertEvent_GetSender(tt *testing.T) {
 	s.GetSender()
 }
 
-func TestSecretScanningAlertListOptions_GetResolution(tt *testing.T) {
-	var zeroValue string
-	s := &SecretScanningAlertListOptions{Resolution: &zeroValue}
-	s.GetResolution()
-	s = &SecretScanningAlertListOptions{}
-	s.GetResolution()
-	s = nil
-	s.GetResolution()
-}
-
-func TestSecretScanningAlertListOptions_GetSecretType(tt *testing.T) {
-	var zeroValue string
-	s := &SecretScanningAlertListOptions{SecretType: &zeroValue}
-	s.GetSecretType()
-	s = &SecretScanningAlertListOptions{}
-	s.GetSecretType()
-	s = nil
-	s.GetSecretType()
-}
-
-func TestSecretScanningAlertListOptions_GetState(tt *testing.T) {
-	var zeroValue string
-	s := &SecretScanningAlertListOptions{State: &zeroValue}
-	s.GetState()
-	s = &SecretScanningAlertListOptions{}
-	s.GetState()
-	s = nil
-	s.GetState()
-}
-
 func TestSecretScanningAlertLocation_GetDetails(tt *testing.T) {
 	s := &SecretScanningAlertLocation{}
 	s.GetDetails()
