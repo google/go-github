@@ -24440,26 +24440,6 @@ func TestSecretScanningAlertUpdateOptions_GetResolution(tt *testing.T) {
 	s.GetResolution()
 }
 
-func TestSecretScanningAlertUpdateOptions_GetSecretType(tt *testing.T) {
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{SecretType: &zeroValue}
-	s.GetSecretType()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetSecretType()
-	s = nil
-	s.GetSecretType()
-}
-
-func TestSecretScanningAlertUpdateOptions_GetState(tt *testing.T) {
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{State: &zeroValue}
-	s.GetState()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetState()
-	s = nil
-	s.GetState()
-}
-
 func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	var zeroValue string
 	s := &SecretScanningPushProtection{Status: &zeroValue}
