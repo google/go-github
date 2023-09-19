@@ -20958,22 +20958,6 @@ func (s *SecretScanningAlertUpdateOptions) GetResolution() string {
 	return *s.Resolution
 }
 
-// GetSecretType returns the SecretType field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlertUpdateOptions) GetSecretType() string {
-	if s == nil || s.SecretType == nil {
-		return ""
-	}
-	return *s.SecretType
-}
-
-// GetState returns the State field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlertUpdateOptions) GetState() string {
-	if s == nil || s.State == nil {
-		return ""
-	}
-	return *s.State
-}
-
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
 func (s *SecretScanningPushProtection) GetStatus() string {
 	if s == nil || s.Status == nil {
