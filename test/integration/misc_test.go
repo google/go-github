@@ -15,7 +15,7 @@ import (
 )
 
 func TestEmojis(t *testing.T) {
-	emoji, _, err := client.ListEmojis(context.Background())
+	emoji, _, err := client.Emojis.ListEmojis(context.Background())
 	if err != nil {
 		t.Fatalf("ListEmojis returned error: %v", err)
 	}
@@ -30,7 +30,7 @@ func TestEmojis(t *testing.T) {
 }
 
 func TestAPIMeta(t *testing.T) {
-	meta, _, err := client.APIMeta(context.Background())
+	meta, _, err := client.Meta.APIMeta(context.Background())
 	if err != nil {
 		t.Fatalf("APIMeta returned error: %v", err)
 	}

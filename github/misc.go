@@ -91,18 +91,7 @@ func (s *EmojisService) ListEmojis(ctx context.Context) (map[string]string, *Res
 //
 // Deprecated: Use EmojisService.ListEmojis instead
 func (c *Client) ListEmojis(ctx context.Context) (map[string]string, *Response, error) {
-	req, err := c.NewRequest("GET", "emojis", nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	var emoji map[string]string
-	resp, err := c.Do(ctx, req, &emoji)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return emoji, resp, nil
+	return c.Emojis.ListEmojis(ctx)
 }
 
 // CodeOfConduct represents a code of conduct.
