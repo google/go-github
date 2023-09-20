@@ -15,7 +15,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestMarkdown(t *testing.T) {
+func TestMarkdownService_Markdown(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -36,7 +36,7 @@ func TestMarkdown(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	md, _, err := client.Markdown(ctx, "# text #", &MarkdownOptions{
+	md, _, err := client.Markdown.Markdown(ctx, "# text #", &MarkdownOptions{
 		Mode:    "gfm",
 		Context: "google/go-github",
 	})
@@ -50,7 +50,7 @@ func TestMarkdown(t *testing.T) {
 
 	const methodName = "Markdown"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Markdown(ctx, "# text #", &MarkdownOptions{
+		got, resp, err := client.Markdown.Markdown(ctx, "# text #", &MarkdownOptions{
 			Mode:    "gfm",
 			Context: "google/go-github",
 		})
@@ -61,7 +61,7 @@ func TestMarkdown(t *testing.T) {
 	})
 }
 
-func TestListEmojis(t *testing.T) {
+func TestEmojisService_ListEmojis(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -71,7 +71,7 @@ func TestListEmojis(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	emoji, _, err := client.ListEmojis(ctx)
+	emoji, _, err := client.Emojis.ListEmojis(ctx)
 	if err != nil {
 		t.Errorf("ListEmojis returned error: %v", err)
 	}
@@ -83,7 +83,7 @@ func TestListEmojis(t *testing.T) {
 
 	const methodName = "ListEmojis"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.ListEmojis(ctx)
+		got, resp, err := client.Emojis.ListEmojis(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -91,7 +91,7 @@ func TestListEmojis(t *testing.T) {
 	})
 }
 
-func TestListCodesOfConduct(t *testing.T) {
+func TestCodesOfConductService_ListCodesOfConduct(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -106,7 +106,7 @@ func TestListCodesOfConduct(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	cs, _, err := client.ListCodesOfConduct(ctx)
+	cs, _, err := client.CodesOfConduct.ListCodesOfConduct(ctx)
 	if err != nil {
 		t.Errorf("ListCodesOfConduct returned error: %v", err)
 	}
@@ -123,7 +123,7 @@ func TestListCodesOfConduct(t *testing.T) {
 
 	const methodName = "ListCodesOfConduct"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.ListCodesOfConduct(ctx)
+		got, resp, err := client.CodesOfConduct.ListCodesOfConduct(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -131,7 +131,7 @@ func TestListCodesOfConduct(t *testing.T) {
 	})
 }
 
-func TestGetCodeOfConduct(t *testing.T) {
+func TestCodesOfConductService_GetCodeOfConduct(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -147,7 +147,7 @@ func TestGetCodeOfConduct(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	coc, _, err := client.GetCodeOfConduct(ctx, "k")
+	coc, _, err := client.CodesOfConduct.GetCodeOfConduct(ctx, "k")
 	if err != nil {
 		t.Errorf("ListCodesOfConduct returned error: %v", err)
 	}
@@ -164,12 +164,12 @@ func TestGetCodeOfConduct(t *testing.T) {
 
 	const methodName = "GetCodeOfConduct"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.GetCodeOfConduct(ctx, "\n")
+		_, _, err = client.CodesOfConduct.GetCodeOfConduct(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.GetCodeOfConduct(ctx, "k")
+		got, resp, err := client.CodesOfConduct.GetCodeOfConduct(ctx, "k")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -210,7 +210,7 @@ func TestAPIMeta_Marshal(t *testing.T) {
 	testJSONMarshal(t, a, want)
 }
 
-func TestAPIMeta(t *testing.T) {
+func TestMetaService_APIMeta(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -220,7 +220,7 @@ func TestAPIMeta(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	meta, _, err := client.APIMeta(ctx)
+	meta, _, err := client.Meta.APIMeta(ctx)
 	if err != nil {
 		t.Errorf("APIMeta returned error: %v", err)
 	}
@@ -243,7 +243,7 @@ func TestAPIMeta(t *testing.T) {
 
 	const methodName = "APIMeta"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.APIMeta(ctx)
+		got, resp, err := client.Meta.APIMeta(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -251,7 +251,7 @@ func TestAPIMeta(t *testing.T) {
 	})
 }
 
-func TestOctocat(t *testing.T) {
+func TestMetaService_Octocat(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -266,7 +266,7 @@ func TestOctocat(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Octocat(ctx, input)
+	got, _, err := client.Meta.Octocat(ctx, input)
 	if err != nil {
 		t.Errorf("Octocat returned error: %v", err)
 	}
@@ -277,7 +277,7 @@ func TestOctocat(t *testing.T) {
 
 	const methodName = "Octocat"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Octocat(ctx, input)
+		got, resp, err := client.Meta.Octocat(ctx, input)
 		if got != "" {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -285,7 +285,7 @@ func TestOctocat(t *testing.T) {
 	})
 }
 
-func TestZen(t *testing.T) {
+func TestMetaService_Zen(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -298,7 +298,7 @@ func TestZen(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Zen(ctx)
+	got, _, err := client.Meta.Zen(ctx)
 	if err != nil {
 		t.Errorf("Zen returned error: %v", err)
 	}
@@ -309,7 +309,7 @@ func TestZen(t *testing.T) {
 
 	const methodName = "Zen"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Zen(ctx)
+		got, resp, err := client.Meta.Zen(ctx)
 		if got != "" {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
