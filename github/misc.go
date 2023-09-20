@@ -37,6 +37,7 @@ type markdownRequest struct {
 	Context *string `json:"context,omitempty"`
 }
 
+// MarkdownService provides access to markdown-related functions in the GitHub API.
 type MarkdownService service
 
 // Markdown renders an arbitrary Markdown document.
@@ -67,6 +68,7 @@ func (s *MarkdownService) Markdown(ctx context.Context, text string, opts *Markd
 	return buf.String(), resp, nil
 }
 
+// EmojisService provides access to emoji-related functions in the GitHub API.
 type EmojisService service
 
 // ListEmojis returns the emojis available to use on GitHub.
@@ -106,6 +108,7 @@ func (c *CodeOfConduct) String() string {
 	return Stringify(c)
 }
 
+// CodesOfConductService provides access to code-of-conduct-related functions in the GitHub API.
 type CodesOfConductService service
 
 // ListCodesOfConduct returns all codes of conduct.
@@ -163,6 +166,7 @@ func (c *Client) GetCodeOfConduct(ctx context.Context, key string) (*CodeOfCondu
 	return c.CodesOfConduct.GetCodeOfConduct(ctx, key)
 }
 
+// MetaService provides access to functions in the GitHub API that GitHub categorizes as "meta".
 type MetaService service
 
 // APIMeta represents metadata about the GitHub API.
