@@ -71,7 +71,7 @@ func TestEmojisService_ListEmojis(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	emoji, _, err := client.Emojis.ListEmojis(ctx)
+	emoji, _, err := client.ListEmojis(ctx)
 	if err != nil {
 		t.Errorf("ListEmojis returned error: %v", err)
 	}
@@ -83,7 +83,7 @@ func TestEmojisService_ListEmojis(t *testing.T) {
 
 	const methodName = "ListEmojis"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Emojis.ListEmojis(ctx)
+		got, resp, err := client.ListEmojis(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -106,7 +106,7 @@ func TestCodesOfConductService_ListCodesOfConduct(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	cs, _, err := client.CodesOfConduct.ListCodesOfConduct(ctx)
+	cs, _, err := client.ListCodesOfConduct(ctx)
 	if err != nil {
 		t.Errorf("ListCodesOfConduct returned error: %v", err)
 	}
@@ -123,7 +123,7 @@ func TestCodesOfConductService_ListCodesOfConduct(t *testing.T) {
 
 	const methodName = "ListCodesOfConduct"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.CodesOfConduct.ListCodesOfConduct(ctx)
+		got, resp, err := client.ListCodesOfConduct(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -147,7 +147,7 @@ func TestCodesOfConductService_GetCodeOfConduct(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	coc, _, err := client.CodesOfConduct.GetCodeOfConduct(ctx, "k")
+	coc, _, err := client.GetCodeOfConduct(ctx, "k")
 	if err != nil {
 		t.Errorf("ListCodesOfConduct returned error: %v", err)
 	}
@@ -164,12 +164,12 @@ func TestCodesOfConductService_GetCodeOfConduct(t *testing.T) {
 
 	const methodName = "GetCodeOfConduct"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.CodesOfConduct.GetCodeOfConduct(ctx, "\n")
+		_, _, err = client.GetCodeOfConduct(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.CodesOfConduct.GetCodeOfConduct(ctx, "k")
+		got, resp, err := client.GetCodeOfConduct(ctx, "k")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -220,7 +220,7 @@ func TestMetaService_APIMeta(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	meta, _, err := client.Meta.APIMeta(ctx)
+	meta, _, err := client.APIMeta(ctx)
 	if err != nil {
 		t.Errorf("APIMeta returned error: %v", err)
 	}
@@ -243,7 +243,7 @@ func TestMetaService_APIMeta(t *testing.T) {
 
 	const methodName = "APIMeta"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Meta.APIMeta(ctx)
+		got, resp, err := client.APIMeta(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -266,7 +266,7 @@ func TestMetaService_Octocat(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Meta.Octocat(ctx, input)
+	got, _, err := client.Octocat(ctx, input)
 	if err != nil {
 		t.Errorf("Octocat returned error: %v", err)
 	}
@@ -277,7 +277,7 @@ func TestMetaService_Octocat(t *testing.T) {
 
 	const methodName = "Octocat"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Meta.Octocat(ctx, input)
+		got, resp, err := client.Octocat(ctx, input)
 		if got != "" {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -298,7 +298,7 @@ func TestMetaService_Zen(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Meta.Zen(ctx)
+	got, _, err := client.Zen(ctx)
 	if err != nil {
 		t.Errorf("Zen returned error: %v", err)
 	}
@@ -309,7 +309,7 @@ func TestMetaService_Zen(t *testing.T) {
 
 	const methodName = "Zen"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Meta.Zen(ctx)
+		got, resp, err := client.Zen(ctx)
 		if got != "" {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
