@@ -13,10 +13,10 @@ import (
 // MarkdownService provides access to markdown-related functions in the GitHub API.
 type MarkdownService service
 
-// MarkdownOptions specifies optional parameters to the Markdown method.
+// MarkdownOptions specifies optional parameters to the Render method.
 type MarkdownOptions struct {
 	// Mode identifies the rendering mode. Possible values are:
-	//   markdown - render a document as plain Markdown, just like
+	//   markdown - render a document as plain Render, just like
 	//   README files are rendered.
 	//
 	//   gfm - to render a document as user-content, e.g. like user
@@ -32,17 +32,17 @@ type MarkdownOptions struct {
 	Context string
 }
 
-type markdownRequest struct {
+type markdownRenderRequest struct {
 	Text    *string `json:"text,omitempty"`
 	Mode    *string `json:"mode,omitempty"`
 	Context *string `json:"context,omitempty"`
 }
 
-// Markdown renders an arbitrary Markdown document.
+// Render renders an arbitrary Render document.
 //
 // GitHub API docs: https://docs.github.com/rest/markdown/markdown#render-a-markdown-document
-func (s *MarkdownService) Markdown(ctx context.Context, text string, opts *MarkdownOptions) (string, *Response, error) {
-	request := &markdownRequest{Text: String(text)}
+func (s *MarkdownService) Render(ctx context.Context, text string, opts *MarkdownOptions) (string, *Response, error) {
+	request := &markdownRenderRequest{Text: String(text)}
 	if opts != nil {
 		if opts.Mode != "" {
 			request.Mode = String(opts.Mode)

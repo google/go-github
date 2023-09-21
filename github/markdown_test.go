@@ -19,13 +19,13 @@ func TestMarkdownService_Markdown(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &markdownRequest{
+	input := &markdownRenderRequest{
 		Text:    String("# text #"),
 		Mode:    String("gfm"),
 		Context: String("google/go-github"),
 	}
 	mux.HandleFunc("/markdown", func(w http.ResponseWriter, r *http.Request) {
-		v := new(markdownRequest)
+		v := new(markdownRenderRequest)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
@@ -36,21 +36,21 @@ func TestMarkdownService_Markdown(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	md, _, err := client.Markdown.Markdown(ctx, "# text #", &MarkdownOptions{
+	md, _, err := client.Markdown.Render(ctx, "# text #", &MarkdownOptions{
 		Mode:    "gfm",
 		Context: "google/go-github",
 	})
 	if err != nil {
-		t.Errorf("Markdown returned error: %v", err)
+		t.Errorf("Render returned error: %v", err)
 	}
 
 	if want := "<h1>text</h1>"; want != md {
-		t.Errorf("Markdown returned %+v, want %+v", md, want)
+		t.Errorf("Render returned %+v, want %+v", md, want)
 	}
 
-	const methodName = "Markdown"
+	const methodName = "Render"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Markdown.Markdown(ctx, "# text #", &MarkdownOptions{
+		got, resp, err := client.Markdown.Render(ctx, "# text #", &MarkdownOptions{
 			Mode:    "gfm",
 			Context: "google/go-github",
 		})
@@ -61,10 +61,10 @@ func TestMarkdownService_Markdown(t *testing.T) {
 	})
 }
 
-func TestMarkdownRequest_Marshal(t *testing.T) {
-	testJSONMarshal(t, &markdownRequest{}, "{}")
+func TestMarkdownRenderRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &markdownRenderRequest{}, "{}")
 
-	a := &markdownRequest{
+	a := &markdownRenderRequest{
 		Text:    String("txt"),
 		Mode:    String("mode"),
 		Context: String("ctx"),
