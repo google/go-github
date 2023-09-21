@@ -121,7 +121,7 @@ func (c *Client) Octocat(ctx context.Context, message string) (string, *Response
 
 // Zen returns a random line from The Zen of GitHub.
 //
-// see also: http://warpspire.com/posts/taste/
+// See also: http://warpspire.com/posts/taste/
 //
 // GitHub API docs: https://docs.github.com/rest/meta/meta#get-the-zen-of-github
 func (s *MetaService) Zen(ctx context.Context) (string, *Response, error) {
