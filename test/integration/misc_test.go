@@ -30,17 +30,17 @@ func TestEmojis(t *testing.T) {
 }
 
 func TestAPIMeta(t *testing.T) {
-	meta, _, err := client.Meta.APIMeta(context.Background())
+	meta, _, err := client.Meta.Get(context.Background())
 	if err != nil {
-		t.Fatalf("APIMeta returned error: %v", err)
+		t.Fatalf("Get returned error: %v", err)
 	}
 
 	if len(meta.Hooks) == 0 {
-		t.Errorf("APIMeta returned no hook addresses")
+		t.Errorf("Get returned no hook addresses")
 	}
 
 	if len(meta.Git) == 0 {
-		t.Errorf("APIMeta returned no git addresses")
+		t.Errorf("Get returned no git addresses")
 	}
 
 	if !*meta.VerifiablePasswordAuthentication {

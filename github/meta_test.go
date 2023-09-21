@@ -59,7 +59,7 @@ func TestMetaService_APIMeta(t *testing.T) {
 	ctx := context.Background()
 	meta, _, err := client.APIMeta(ctx)
 	if err != nil {
-		t.Errorf("APIMeta returned error: %v", err)
+		t.Errorf("Get returned error: %v", err)
 	}
 
 	want := &APIMeta{
@@ -75,10 +75,10 @@ func TestMetaService_APIMeta(t *testing.T) {
 		VerifiablePasswordAuthentication: Bool(true),
 	}
 	if !cmp.Equal(want, meta) {
-		t.Errorf("APIMeta returned %+v, want %+v", meta, want)
+		t.Errorf("Get returned %+v, want %+v", meta, want)
 	}
 
-	const methodName = "APIMeta"
+	const methodName = "Get"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.APIMeta(ctx)
 		if got != nil {

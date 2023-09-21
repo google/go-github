@@ -63,12 +63,12 @@ type APIMeta struct {
 	API []string `json:"api,omitempty"`
 }
 
-// APIMeta returns information about GitHub.com, the service. Or, if you access
+// Get returns information about GitHub.com, the service. Or, if you access
 // this endpoint on your organization’s GitHub Enterprise installation, this
 // endpoint provides information about that installation.
 //
 // GitHub API docs: https://docs.github.com/rest/meta/meta#get-github-meta-information
-func (s *MetaService) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
+func (s *MetaService) Get(ctx context.Context) (*APIMeta, *Response, error) {
 	req, err := s.client.NewRequest("GET", "meta", nil)
 	if err != nil {
 		return nil, nil, err
@@ -84,9 +84,9 @@ func (s *MetaService) APIMeta(ctx context.Context) (*APIMeta, *Response, error) 
 }
 
 // APIMeta
-// Deprecated: Use MetaService.APIMeta instead.
+// Deprecated: Use MetaService.Get instead.
 func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
-	return c.Meta.APIMeta(ctx)
+	return c.Meta.Get(ctx)
 }
 
 // Octocat returns an ASCII art octocat with the specified message in a speech
