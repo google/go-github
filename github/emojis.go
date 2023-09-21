@@ -12,10 +12,10 @@ import (
 // EmojisService provides access to emoji-related functions in the GitHub API.
 type EmojisService service
 
-// ListEmojis returns the emojis available to use on GitHub.
+// List returns the emojis available to use on GitHub.
 //
 // GitHub API docs: https://docs.github.com/rest/emojis/emojis#get-emojis
-func (s *EmojisService) ListEmojis(ctx context.Context) (map[string]string, *Response, error) {
+func (s *EmojisService) List(ctx context.Context) (map[string]string, *Response, error) {
 	req, err := s.client.NewRequest("GET", "emojis", nil)
 	if err != nil {
 		return nil, nil, err
@@ -31,7 +31,7 @@ func (s *EmojisService) ListEmojis(ctx context.Context) (map[string]string, *Res
 }
 
 // ListEmojis
-// Deprecated: Use EmojisService.ListEmojis instead
+// Deprecated: Use EmojisService.List instead
 func (c *Client) ListEmojis(ctx context.Context) (map[string]string, *Response, error) {
-	return c.Emojis.ListEmojis(ctx)
+	return c.Emojis.List(ctx)
 }

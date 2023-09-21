@@ -25,10 +25,10 @@ func (c *CodeOfConduct) String() string {
 	return Stringify(c)
 }
 
-// ListCodesOfConduct returns all codes of conduct.
+// List returns all codes of conduct.
 //
 // GitHub API docs: https://docs.github.com/rest/codes-of-conduct/codes-of-conduct#get-all-codes-of-conduct
-func (s *CodesOfConductService) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Response, error) {
+func (s *CodesOfConductService) List(ctx context.Context) ([]*CodeOfConduct, *Response, error) {
 	req, err := s.client.NewRequest("GET", "codes_of_conduct", nil)
 	if err != nil {
 		return nil, nil, err
@@ -47,15 +47,15 @@ func (s *CodesOfConductService) ListCodesOfConduct(ctx context.Context) ([]*Code
 }
 
 // ListCodesOfConduct
-// Deprecated: Use CodesOfConductService.ListCodesOfConduct instead
+// Deprecated: Use CodesOfConductService.List instead
 func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Response, error) {
-	return c.CodesOfConduct.ListCodesOfConduct(ctx)
+	return c.CodesOfConduct.List(ctx)
 }
 
-// GetCodeOfConduct returns an individual code of conduct.
+// Get returns an individual code of conduct.
 //
 // GitHub API docs: https://docs.github.com/rest/codes-of-conduct/codes-of-conduct#get-a-code-of-conduct
-func (s *CodesOfConductService) GetCodeOfConduct(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {
+func (s *CodesOfConductService) Get(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("codes_of_conduct/%s", key)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func (s *CodesOfConductService) GetCodeOfConduct(ctx context.Context, key string
 }
 
 // GetCodeOfConduct
-// Deprecated: Use CodesOfConductService.GetCodeOfConduct instead
+// Deprecated: Use CodesOfConductService.Get instead
 func (c *Client) GetCodeOfConduct(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {
-	return c.CodesOfConduct.GetCodeOfConduct(ctx, key)
+	return c.CodesOfConduct.Get(ctx, key)
 }

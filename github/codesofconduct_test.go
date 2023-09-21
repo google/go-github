@@ -14,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestCodesOfConductService_ListCodesOfConduct(t *testing.T) {
+func TestCodesOfConductService_List(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -30,9 +30,7 @@ func TestCodesOfConductService_ListCodesOfConduct(t *testing.T) {
 
 	ctx := context.Background()
 	cs, _, err := client.ListCodesOfConduct(ctx)
-	if err != nil {
-		t.Errorf("ListCodesOfConduct returned error: %v", err)
-	}
+	assertNilError(t, err)
 
 	want := []*CodeOfConduct{
 		{
@@ -41,12 +39,12 @@ func TestCodesOfConductService_ListCodesOfConduct(t *testing.T) {
 			URL:  String("url"),
 		}}
 	if !cmp.Equal(want, cs) {
-		t.Errorf("ListCodesOfConduct returned %+v, want %+v", cs, want)
+		t.Errorf("returned %+v, want %+v", cs, want)
 	}
 
-	const methodName = "ListCodesOfConduct"
+	const methodName = "List"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.ListCodesOfConduct(ctx)
+		got, resp, err := client.CodesOfConduct.List(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -54,7 +52,7 @@ func TestCodesOfConductService_ListCodesOfConduct(t *testing.T) {
 	})
 }
 
-func TestCodesOfConductService_GetCodeOfConduct(t *testing.T) {
+func TestCodesOfConductService_Get(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -71,9 +69,7 @@ func TestCodesOfConductService_GetCodeOfConduct(t *testing.T) {
 
 	ctx := context.Background()
 	coc, _, err := client.GetCodeOfConduct(ctx, "k")
-	if err != nil {
-		t.Errorf("ListCodesOfConduct returned error: %v", err)
-	}
+	assertNilError(t, err)
 
 	want := &CodeOfConduct{
 		Key:  String("key"),
@@ -82,17 +78,17 @@ func TestCodesOfConductService_GetCodeOfConduct(t *testing.T) {
 		Body: String("body"),
 	}
 	if !cmp.Equal(want, coc) {
-		t.Errorf("GetCodeOfConductByKey returned %+v, want %+v", coc, want)
+		t.Errorf("returned %+v, want %+v", coc, want)
 	}
 
-	const methodName = "GetCodeOfConduct"
+	const methodName = "Get"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.GetCodeOfConduct(ctx, "\n")
+		_, _, err = client.CodesOfConduct.Get(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.GetCodeOfConduct(ctx, "k")
+		got, resp, err := client.CodesOfConduct.Get(ctx, "k")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

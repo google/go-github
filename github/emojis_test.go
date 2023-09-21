@@ -14,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestEmojisService_ListEmojis(t *testing.T) {
+func TestEmojisService_List(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -26,17 +26,17 @@ func TestEmojisService_ListEmojis(t *testing.T) {
 	ctx := context.Background()
 	emoji, _, err := client.ListEmojis(ctx)
 	if err != nil {
-		t.Errorf("ListEmojis returned error: %v", err)
+		t.Errorf("List returned error: %v", err)
 	}
 
 	want := map[string]string{"+1": "+1.png"}
 	if !cmp.Equal(want, emoji) {
-		t.Errorf("ListEmojis returned %+v, want %+v", emoji, want)
+		t.Errorf("List returned %+v, want %+v", emoji, want)
 	}
 
-	const methodName = "ListEmojis"
+	const methodName = "List"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.ListEmojis(ctx)
+		got, resp, err := client.Emojis.List(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
