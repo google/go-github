@@ -51,9 +51,9 @@ are more sensitive, emailed to <opensource@google.com>.
    either add tests to cover those lines or add a PR comment explaining the
    untested lines.
 
-4. Run `scripts/fmt.sh`, `scripts/test.sh` and `scripts/lint.sh` to format your code and
-   check that it passes all tests and linters. `scripts/lint.sh` may also tell you
-   that generated files need to be updated. If so, run `scripts/generate.sh` to
+4. Run `script/fmt.sh`, `script/test.sh` and `script/lint.sh` to format your code and
+   check that it passes all tests and linters. `script/lint.sh` may also tell you
+   that generated files need to be updated. If so, run `script/generate.sh` to
    update them.
 
 5. Do your best to have [well-formed commit messages][] for each change. This
@@ -75,18 +75,18 @@ are more sensitive, emailed to <opensource@google.com>.
 
 ## Scripts ##
 
-The `scripts` directory has shell scripts that help with common development
+The `script` directory has shell scripts that help with common development
 tasks.
 
-**scripts/fmt.sh** formats all go code in the repository.
+**script/fmt.sh** formats all go code in the repository.
 
-**scripts/generate.sh** runs code generators and `go mod tidy` on all modules. With
+**script/generate.sh** runs code generators and `go mod tidy` on all modules. With
 `--check` it checks that the generated files are current.
 
-**scripts/lint.sh** runs linters on the project and checks generated files are
+**script/lint.sh** runs linters on the project and checks generated files are
 current.
 
-**scripts/test.sh** runs tests on all modules.
+**script/test.sh** runs tests on all modules.
 
 ## Other notes on code organization ##
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-#/ scripts/lint.sh runs linters and validates generated files.
+#/ script/lint.sh runs linters and validates generated files.
 
 set -e
 
@@ -31,7 +31,7 @@ for dir in $MOD_DIRS; do
   ) || FAILED=1
 done
 
-scripts/generate.sh --check || FAILED=1
+script/generate.sh --check || FAILED=1
 
 if [ -n "$FAILED" ]; then
   exit 1

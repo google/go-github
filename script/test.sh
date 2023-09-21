@@ -1,5 +1,5 @@
 #!/bin/sh
-#/ scripts/test.sh runs tests on each go module in go-github. Arguments are passed to each go test invocation.
+#/ script/test.sh runs tests on each go module in go-github. Arguments are passed to each go test invocation.
 #/ "-race -covermode atomic ./..." is used when no arguments are given.
 
 set -e

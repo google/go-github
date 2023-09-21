@@ -1,5 +1,5 @@
 *.sh
-!/scripts/*.sh
+!/script/*.sh
 *.test
 coverage.out
 /bin
