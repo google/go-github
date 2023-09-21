@@ -1,6 +1,7 @@
 run:
   build-tags:
     - integration
+  timeout: 10m
 linters:
   enable:
     - dogsled
