@@ -359,7 +359,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		v := new(SecretScanningAlertUpdateOptions)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-		want := &SecretScanningAlertUpdateOptions{State: String("resolved"), Resolution: String("used_in_tests")}
+		want := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: String("used_in_tests")}
 
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -381,7 +381,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertUpdateOptions{State: String("resolved"), Resolution: String("used_in_tests")}
+	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: String("used_in_tests")}
 
 	alert, _, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
 	if err != nil {

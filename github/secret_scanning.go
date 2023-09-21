@@ -80,16 +80,14 @@ type SecretScanningAlertListOptions struct {
 
 // SecretScanningAlertUpdateOptions specifies optional parameters to the SecretScanningService.UpdateAlert method.
 type SecretScanningAlertUpdateOptions struct {
-	// Required. Sets the state of the secret scanning alert. Can be either open or resolved.
-	// You must provide resolution when you set the state to resolved.
-	State *string `url:"state,omitempty"`
+	// State is required and sets the state of the secret scanning alert.
+	// Can be either "open" or "resolved".
+	// You must provide resolution when you set the state to "resolved".
+	State string `json:"state"`
 
-	// A comma-separated list of secret types to return. By default all secret types are returned.
-	SecretType *string `url:"secret_type,omitempty"`
-
-	// Required when the state is resolved. The reason for resolving the alert. Can be one of false_positive,
-	// wont_fix, revoked, or used_in_tests.
-	Resolution *string `url:"resolution,omitempty"`
+	// Required when the state is "resolved" and represents the reason for resolving the alert.
+	// Can be one of: "false_positive", "wont_fix", "revoked", or "used_in_tests".
+	Resolution *string `json:"resolution,omitempty"`
 }
 
 // Lists secret scanning alerts for eligible repositories in an enterprise, from newest to oldest.
