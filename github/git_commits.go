@@ -10,9 +10,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"strings"
-
-	"github.com/ProtonMail/go-crypto/openpgp"
 )
 
 // SignatureVerification represents GPG signature verification.
@@ -21,6 +20,25 @@ type SignatureVerification struct {
 	Reason    *string `json:"reason,omitempty"`
 	Signature *string `json:"signature,omitempty"`
 	Payload   *string `json:"payload,omitempty"`
+}
+
+// MessageSigner is used by GitService.CreateCommit to sign a commit.
+//
+// To create a MessageSigner that signs a commit with a [golang.org/x/crypto/openpgp.Entity],
+// or [github.com/ProtonMail/go-crypto/openpgp.Entity], use:
+//
+//	commit.Signer = github.MessageSignerFunc(func(w io.Writer, r io.Reader) error {
+//		return openpgp.ArmoredDetachSign(w, openpgpEntity, r, nil)
+//	})
+type MessageSigner interface {
+	Sign(w io.Writer, r io.Reader) error
+}
+
+// MessageSignerFunc is a single function implementation of MessageSigner.
+type MessageSignerFunc func(w io.Writer, r io.Reader) error
+
+func (f MessageSignerFunc) Sign(w io.Writer, r io.Reader) error {
+	return f(w, r)
 }
 
 // Commit represents a GitHub commit.
@@ -41,11 +59,6 @@ type Commit struct {
 	// is only populated for requests that fetch GitHub data like
 	// Pulls.ListCommits, Repositories.ListCommits, etc.
 	CommentCount *int `json:"comment_count,omitempty"`
-
-	// SigningKey denotes a key to sign the commit with. If not nil this key will
-	// be used to sign the commit. The private key must be present and already
-	// decrypted. Ignored if Verification.Signature is defined.
-	SigningKey *openpgp.Entity `json:"-"`
 }
 
 func (c Commit) String() string {
@@ -96,6 +109,12 @@ type createCommit struct {
 	Signature *string       `json:"signature,omitempty"`
 }
 
+type CreateCommitOptions struct {
+	// CreateCommit will sign the commit with this signer. See MessageSigner doc for more details.
+	// Ignored on commits where Verification.Signature is defined.
+	Signer MessageSigner
+}
+
 // CreateCommit creates a new commit in a repository.
 // commit must not be nil.
 //
@@ -104,9 +123,12 @@ type createCommit struct {
 // the authenticated user’s information and the current date.
 //
 // GitHub API docs: https://docs.github.com/en/rest/git/commits#create-a-commit
-func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string, commit *Commit) (*Commit, *Response, error) {
+func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string, commit *Commit, opts *CreateCommitOptions) (*Commit, *Response, error) {
 	if commit == nil {
 		return nil, nil, fmt.Errorf("commit must be provided")
+	}
+	if opts == nil {
+		opts = &CreateCommitOptions{}
 	}
 
 	u := fmt.Sprintf("repos/%v/%v/git/commits", owner, repo)
@@ -125,15 +147,15 @@ func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string
 	if commit.Tree != nil {
 		body.Tree = commit.Tree.SHA
 	}
-	if commit.SigningKey != nil {
-		signature, err := createSignature(commit.SigningKey, body)
+	switch {
+	case commit.Verification != nil:
+		body.Signature = commit.Verification.Signature
+	case opts.Signer != nil:
+		signature, err := createSignature(opts.Signer, body)
 		if err != nil {
 			return nil, nil, err
 		}
 		body.Signature = &signature
-	}
-	if commit.Verification != nil {
-		body.Signature = commit.Verification.Signature
 	}
 
 	req, err := s.client.NewRequest("POST", u, body)
@@ -150,8 +172,8 @@ func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string
 	return c, resp, nil
 }
 
-func createSignature(signingKey *openpgp.Entity, commit *createCommit) (string, error) {
-	if signingKey == nil || commit == nil {
+func createSignature(signer MessageSigner, commit *createCommit) (string, error) {
+	if signer == nil {
 		return "", errors.New("createSignature: invalid parameters")
 	}
 
@@ -160,9 +182,9 @@ func createSignature(signingKey *openpgp.Entity, commit *createCommit) (string, 
 		return "", err
 	}
 
-	writer := new(bytes.Buffer)
-	reader := bytes.NewReader([]byte(message))
-	if err := openpgp.ArmoredDetachSign(writer, signingKey, reader, nil); err != nil {
+	var writer bytes.Buffer
+	err = signer.Sign(&writer, strings.NewReader(message))
+	if err != nil {
 		return "", err
 	}
 

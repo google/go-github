@@ -21,15 +21,18 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strings"
 	"time"
 
+	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/google/go-github/v55/github"
 )
 
@@ -51,6 +54,7 @@ If the file should be in the same location with the same name, you can just put 
 Example: README.md,main.go:github/examples/commitpr/main.go`)
 	authorName  = flag.String("author-name", "", "Name of the author of the commit.")
 	authorEmail = flag.String("author-email", "", "Email of the author of the commit.")
+	privateKey  = flag.String("private-key", "", "Path to the private key to use to sign the commit.")
 )
 
 var client *github.Client
@@ -135,7 +139,25 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 	date := time.Now()
 	author := &github.CommitAuthor{Date: &github.Timestamp{Time: date}, Name: authorName, Email: authorEmail}
 	commit := &github.Commit{Author: author, Message: commitMessage, Tree: tree, Parents: []*github.Commit{parent.Commit}}
-	newCommit, _, err := client.Git.CreateCommit(ctx, *sourceOwner, *sourceRepo, commit)
+	opts := github.CreateCommitOptions{}
+	if *privateKey != "" {
+		armoredBlock, e := os.ReadFile(*privateKey)
+		if e != nil {
+			return e
+		}
+		keyring, e := openpgp.ReadArmoredKeyRing(bytes.NewReader(armoredBlock))
+		if e != nil {
+			return e
+		}
+		if len(keyring) != 1 {
+			return errors.New("expected exactly one key in the keyring")
+		}
+		key := keyring[0]
+		opts.Signer = github.MessageSignerFunc(func(w io.Writer, r io.Reader) error {
+			return openpgp.ArmoredDetachSign(w, key, r, nil)
+		})
+	}
+	newCommit, _, err := client.Git.CreateCommit(ctx, *sourceOwner, *sourceRepo, commit, &opts)
 	if err != nil {
 		return err
 	}

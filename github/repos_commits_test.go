@@ -14,7 +14,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -713,7 +712,6 @@ func TestBranchCommit_Marshal(t *testing.T) {
 			},
 			NodeID:       String("n"),
 			CommentCount: Int(1),
-			SigningKey:   &openpgp.Entity{},
 		},
 		Protected: Bool(false),
 	}
