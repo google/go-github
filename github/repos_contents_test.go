@@ -14,7 +14,6 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -885,7 +884,6 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 			},
 			NodeID:       String("n"),
 			CommentCount: Int(1),
-			SigningKey:   &openpgp.Entity{},
 		},
 	}
 
