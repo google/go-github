@@ -17,7 +17,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"syscall"
 
 	"github.com/google/go-github/v55/github"
 	"golang.org/x/term"
@@ -39,7 +38,7 @@ func main() {
 	pattern = strings.TrimSpace(pattern)
 
 	fmt.Print("GitHub Token: ")
-	byteToken, _ := term.ReadPassword(syscall.Stdin)
+	byteToken, _ := term.ReadPassword(int(os.Stdin.Fd()))
 	println()
 	token := string(byteToken)
 

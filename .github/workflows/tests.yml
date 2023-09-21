@@ -19,6 +19,9 @@ permissions:
 
 jobs:
   test:
+    defaults:
+      run:
+        shell: bash
     strategy:
       matrix:
         go-version: [1.x, 1.20.x]
@@ -41,12 +44,11 @@ jobs:
         go-version: ${{ matrix.go-version }}
     - uses: actions/checkout@v4
 
-    # Get values for cache paths to be used in later steps 
+    # Get values for cache paths to be used in later steps
     - id: cache-paths
       run: |
         echo "go-cache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
         echo "go-mod-cache=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
-      shell: bash
 
     - name: Cache go modules
       uses: actions/cache@v3
@@ -57,29 +59,18 @@ jobs:
         key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
         restore-keys: ${{ runner.os }}-go-
 
-    - name: Ensure go generate produces a zero diff
-      shell: bash
-      run: go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
-
     - name: Run go test
-      run: go test -v -race -coverprofile coverage.txt -covermode atomic ./...
+      run: |
+        if [ -n "${{ matrix.update-coverage }}" ]; then
+          script/test.sh -race -covermode atomic -coverprofile coverage.txt ./...
+          exit
+        fi
+        script/test.sh -race -covermode atomic ./...
 
     - name: Ensure integration tests build
       # don't actually run tests since they hit live GitHub API
       run: go test -v -tags=integration -run=^$ ./test/integration
 
-    - name: Run scrape tests
-      run: |
-        cd scrape
-        go test ./...
-
     - name: Upload coverage to Codecov
       if: ${{ matrix.update-coverage }}
       uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d #v3.1.4
-
-    - name: Ensure go generate produces a zero diff for update-urls
-      shell: bash
-      run: cd update-urls && go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
-
-    - name: Run go test for update-urls
-      run: cd update-urls && go test -v -race ./...
