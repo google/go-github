@@ -32,7 +32,7 @@ func (a ActionsPermissionsEnterprise) String() string {
 // GetActionsPermissions gets the GitHub Actions permissions policy for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-github-actions-permissions-for-an-enterprise
-func (s *EnterpriseService) GetActionsPermissions(ctx context.Context, enterprise string) (*ActionsPermissionsEnterprise, *Response, error) {
+func (s *ActionsService) GetEnterpriseActionsPermissions(ctx context.Context, enterprise string) (*ActionsPermissionsEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions", enterprise)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -52,7 +52,7 @@ func (s *EnterpriseService) GetActionsPermissions(ctx context.Context, enterpris
 // EditActionsPermissions sets the permissions policy in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-github-actions-permissions-for-an-enterprise
-func (s *EnterpriseService) EditActionsPermissions(ctx context.Context, enterprise string, actionsPermissionsEnterprise ActionsPermissionsEnterprise) (*ActionsPermissionsEnterprise, *Response, error) {
+func (s *ActionsService) EditEnterpriseActionsPermissions(ctx context.Context, enterprise string, actionsPermissionsEnterprise ActionsPermissionsEnterprise) (*ActionsPermissionsEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions", enterprise)
 	req, err := s.client.NewRequest("PUT", u, actionsPermissionsEnterprise)
 	if err != nil {

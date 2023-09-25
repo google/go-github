@@ -29,10 +29,23 @@ type ActionsEnabledOnOrgRepos struct {
 	Repositories []*Repository `json:"repositories"`
 }
 
+// ActionsAllowed represents selected actions that are allowed.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions
+type ActionsAllowed struct {
+	GithubOwnedAllowed *bool    `json:"github_owned_allowed,omitempty"`
+	VerifiedAllowed    *bool    `json:"verified_allowed,omitempty"`
+	PatternsAllowed    []string `json:"patterns_allowed,omitempty"`
+}
+
+func (a ActionsAllowed) String() string {
+	return Stringify(a)
+}
+
 // GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-github-actions-permissions-for-an-organization
-func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org string) (*ActionsPermissions, *Response, error) {
+func (s *ActionsService) GetOrgsActionsPermissions(ctx context.Context, org string) (*ActionsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -52,7 +65,7 @@ func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org st
 // EditActionsPermissions sets the permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-github-actions-permissions-for-an-organization
-func (s *OrganizationsService) EditActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
+func (s *ActionsService) EditOrgsActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
 	req, err := s.client.NewRequest("PUT", u, actionsPermissions)
 	if err != nil {
@@ -149,4 +162,43 @@ func (s *ActionsService) RemoveEnabledRepoInOrg(ctx context.Context, owner strin
 	}
 
 	return resp, nil
+}
+
+// GetActionsAllowed gets the actions that are allowed in an organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-organization
+func (s *ActionsService) GetActionsAllowedForOrg(ctx context.Context, org string) (*ActionsAllowed, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	actionsAllowed := new(ActionsAllowed)
+	resp, err := s.client.Do(ctx, req, actionsAllowed)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return actionsAllowed, resp, nil
+}
+
+// EditActionsAllowed sets the actions that are allowed in an organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-organization
+func (s *ActionsService) EditActionsAllowedForOrg(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
+	req, err := s.client.NewRequest("PUT", u, actionsAllowed)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := new(ActionsAllowed)
+	resp, err := s.client.Do(ctx, req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return p, resp, nil
 }

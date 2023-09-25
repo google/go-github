@@ -25,23 +25,23 @@ func TestEnterpriseService_GetActionsPermissions(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ent, _, err := client.Enterprise.GetActionsPermissions(ctx, "e")
+	ent, _, err := client.Actions.GetEnterpriseActionsPermissions(ctx, "e")
 	if err != nil {
-		t.Errorf("Enterprise.GetActionsPermissions returned error: %v", err)
+		t.Errorf("Actions.GetActionsPermissions returned error: %v", err)
 	}
 	want := &ActionsPermissionsEnterprise{EnabledOrganizations: String("all"), AllowedActions: String("all")}
 	if !cmp.Equal(ent, want) {
-		t.Errorf("Enterprise.GetActionsPermissions returned %+v, want %+v", ent, want)
+		t.Errorf("Actions.GetActionsPermissions returned %+v, want %+v", ent, want)
 	}
 
 	const methodName = "GetActionsPermissions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.GetActionsPermissions(ctx, "\n")
+		_, _, err = client.Actions.GetEnterpriseActionsPermissions(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.GetActionsPermissions(ctx, "e")
+		got, resp, err := client.Actions.GetEnterpriseActionsPermissions(ctx, "e")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -68,24 +68,24 @@ func TestEnterpriseService_EditActionsPermissions(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ent, _, err := client.Enterprise.EditActionsPermissions(ctx, "e", *input)
+	ent, _, err := client.Actions.EditEnterpriseActionsPermissions(ctx, "e", *input)
 	if err != nil {
-		t.Errorf("Enterprise.EditActionsPermissions returned error: %v", err)
+		t.Errorf("Actions.EditActionsPermissions returned error: %v", err)
 	}
 
 	want := &ActionsPermissionsEnterprise{EnabledOrganizations: String("all"), AllowedActions: String("selected")}
 	if !cmp.Equal(ent, want) {
-		t.Errorf("Enterprise.EditActionsPermissions returned %+v, want %+v", ent, want)
+		t.Errorf("Actions.EditActionsPermissions returned %+v, want %+v", ent, want)
 	}
 
 	const methodName = "EditActionsPermissions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.EditActionsPermissions(ctx, "\n", *input)
+		_, _, err = client.Actions.EditEnterpriseActionsPermissions(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.EditActionsPermissions(ctx, "e", *input)
+		got, resp, err := client.Actions.EditEnterpriseActionsPermissions(ctx, "e", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
