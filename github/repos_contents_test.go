@@ -694,7 +694,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
 	ctx := context.Background()
-	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{Ref: "yo"}, true)
+	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{Ref: "yo"}, 1)
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}
@@ -708,7 +708,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 
 	const methodName = "GetArchiveLink"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetArchiveLink(ctx, "\n", "\n", Tarball, &RepositoryContentGetOptions{}, true)
+		_, _, err = client.Repositories.GetArchiveLink(ctx, "\n", "\n", Tarball, &RepositoryContentGetOptions{}, 1)
 		return err
 	})
 
@@ -717,7 +717,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		return nil, errors.New("failed to get archive link")
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, true)
+		_, _, err = client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 1)
 		return err
 	})
 }
@@ -730,7 +730,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRed
 		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
 	})
 	ctx := context.Background()
-	_, resp, _ := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, false)
+	_, resp, _ := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 0)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
@@ -750,7 +750,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
 	ctx := context.Background()
-	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, true)
+	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 1)
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}

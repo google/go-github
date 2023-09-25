@@ -1274,10 +1274,10 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 // GetBranch gets the specified branch for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branches#get-a-branch
-func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string, followRedirects bool) (*Branch, *Response, error) {
+func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string, maxRedirects int) (*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, branch)
 
-	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
 	}

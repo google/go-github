@@ -64,7 +64,7 @@ func TestRepositories_BranchesTags(t *testing.T) {
 		t.Fatalf("Repositories.ListBranches('git', 'git') returned no branches")
 	}
 
-	_, _, err = client.Repositories.GetBranch(context.Background(), "git", "git", *branches[0].Name, false)
+	_, _, err = client.Repositories.GetBranch(context.Background(), "git", "git", *branches[0].Name, 0)
 	if err != nil {
 		t.Fatalf("Repositories.GetBranch() returned error: %v", err)
 	}
@@ -91,7 +91,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 		t.Fatalf("createRandomTestRepository returned error: %v", err)
 	}
 
-	branch, _, err := client.Repositories.GetBranch(context.Background(), *repo.Owner.Login, *repo.Name, "master", false)
+	branch, _, err := client.Repositories.GetBranch(context.Background(), *repo.Owner.Login, *repo.Name, "master", 0)
 	if err != nil {
 		t.Fatalf("Repositories.GetBranch() returned error: %v", err)
 	}
