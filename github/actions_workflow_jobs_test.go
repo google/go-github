@@ -138,7 +138,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, true)
+	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 	}
@@ -152,7 +152,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 
 	const methodName = "GetWorkflowJobLogs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "\n", "\n", 399444496, true)
+		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "\n", "\n", 399444496, 1)
 		return err
 	})
 
@@ -161,7 +161,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 		return nil, errors.New("failed to get workflow logs")
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, true)
+		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
 		return err
 	})
 }
@@ -176,7 +176,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedi
 	})
 
 	ctx := context.Background()
-	_, resp, _ := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, false)
+	_, resp, _ := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 0)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
@@ -199,7 +199,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirect
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, true)
+	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 	}

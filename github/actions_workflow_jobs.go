@@ -115,10 +115,10 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 // GetWorkflowJobLogs gets a redirect URL to download a plain text file of logs for a workflow job.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-jobs#download-job-logs-for-a-workflow-run
-func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, followRedirects bool) (*url.URL, *Response, error) {
+func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/logs", owner, repo, jobID)
 
-	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
