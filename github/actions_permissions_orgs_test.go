@@ -178,10 +178,10 @@ func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
 	ctx := context.Background()
 	_, err := client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
 	if err != nil {
-		t.Errorf("Actions.AddEnabledRepos returned error: %v", err)
+		t.Errorf("Actions.AddEnabledReposInOrg returned error: %v", err)
 	}
 
-	const methodName = "AddEnabledRepos"
+	const methodName = "AddEnabledReposInOrg"
 
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.AddEnabledReposInOrg(ctx, "\n", 123)
@@ -205,10 +205,10 @@ func TestActionsService_RemoveEnabledReposInOrg(t *testing.T) {
 	ctx := context.Background()
 	_, err := client.Actions.RemoveEnabledReposInOrg(ctx, "o", 123)
 	if err != nil {
-		t.Errorf("Actions.RemoveEnabledRepo returned error: %v", err)
+		t.Errorf("Actions.RemoveEnabledReposInOrg returned error: %v", err)
 	}
 
-	const methodName = "RemoveEnabledRepo"
+	const methodName = "RemoveEnabledReposInOrg"
 
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.RemoveEnabledReposInOrg(ctx, "\n", 123)
