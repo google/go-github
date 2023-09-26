@@ -15,7 +15,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestActionsService_GetActionsPermissionsForEnterprise(t *testing.T) {
+func TestActionsService_GetActionsPermissionsInEnterprise(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -25,23 +25,23 @@ func TestActionsService_GetActionsPermissionsForEnterprise(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ent, _, err := client.Actions.GetActionsPermissionsForEnterprise(ctx, "e")
+	ent, _, err := client.Actions.GetActionsPermissionsInEnterprise(ctx, "e")
 	if err != nil {
-		t.Errorf("Actions.GetActionsPermissionsForEnterprise returned error: %v", err)
+		t.Errorf("Actions.GetActionsPermissionsInEnterprise returned error: %v", err)
 	}
 	want := &ActionsPermissionsEnterprise{EnabledOrganizations: String("all"), AllowedActions: String("all")}
 	if !cmp.Equal(ent, want) {
-		t.Errorf("Actions.GetActionsPermissionsForEnterprise returned %+v, want %+v", ent, want)
+		t.Errorf("Actions.GetActionsPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
 
-	const methodName = "GetActionsPermissionsForEnterprise"
+	const methodName = "GetActionsPermissionsInEnterprise"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetActionsPermissionsForEnterprise(ctx, "\n")
+		_, _, err = client.Actions.GetActionsPermissionsInEnterprise(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetActionsPermissionsForEnterprise(ctx, "e")
+		got, resp, err := client.Actions.GetActionsPermissionsInEnterprise(ctx, "e")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -49,7 +49,7 @@ func TestActionsService_GetActionsPermissionsForEnterprise(t *testing.T) {
 	})
 }
 
-func TestActionsService_EditActionsPermissionsForEnterprise(t *testing.T) {
+func TestActionsService_EditActionsPermissionsInEnterprise(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -68,24 +68,24 @@ func TestActionsService_EditActionsPermissionsForEnterprise(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ent, _, err := client.Actions.EditActionsPermissionsForEnterprise(ctx, "e", *input)
+	ent, _, err := client.Actions.EditActionsPermissionsInEnterprise(ctx, "e", *input)
 	if err != nil {
-		t.Errorf("Actions.EditActionsPermissionsForEnterprise returned error: %v", err)
+		t.Errorf("Actions.EditActionsPermissionsInEnterprise returned error: %v", err)
 	}
 
 	want := &ActionsPermissionsEnterprise{EnabledOrganizations: String("all"), AllowedActions: String("selected")}
 	if !cmp.Equal(ent, want) {
-		t.Errorf("Actions.EditActionsPermissionsForEnterprise returned %+v, want %+v", ent, want)
+		t.Errorf("Actions.EditActionsPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
 
-	const methodName = "EditActionsPermissionsForEnterprise"
+	const methodName = "EditActionsPermissionsInEnterprise"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.EditActionsPermissionsForEnterprise(ctx, "\n", *input)
+		_, _, err = client.Actions.EditActionsPermissionsInEnterprise(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.EditActionsPermissionsForEnterprise(ctx, "e", *input)
+		got, resp, err := client.Actions.EditActionsPermissionsInEnterprise(ctx, "e", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -220,7 +220,7 @@ func TestActionsService_RemoveEnabledOrgInEnterprise(t *testing.T) {
 	})
 }
 
-func TestActionsService_GetActionsAllowedForEnterprise(t *testing.T) {
+func TestActionsService_GetActionsAllowedInEnterprise(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -230,23 +230,23 @@ func TestActionsService_GetActionsAllowedForEnterprise(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ent, _, err := client.Actions.GetActionsAllowedForEnterprise(ctx, "e")
+	ent, _, err := client.Actions.GetActionsAllowedInEnterprise(ctx, "e")
 	if err != nil {
-		t.Errorf("Actions.GetActionsAllowedForEnterprise returned error: %v", err)
+		t.Errorf("Actions.GetActionsAllowedInEnterprise returned error: %v", err)
 	}
 	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(ent, want) {
-		t.Errorf("Actions.GetActionsAllowedForEnterprise returned %+v, want %+v", ent, want)
+		t.Errorf("Actions.GetActionsAllowedInEnterprise returned %+v, want %+v", ent, want)
 	}
 
-	const methodName = "GetActionsAllowedForEnterprise"
+	const methodName = "GetActionsAllowedInEnterprise"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetActionsAllowedForEnterprise(ctx, "\n")
+		_, _, err = client.Actions.GetActionsAllowedInEnterprise(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetActionsAllowedForEnterprise(ctx, "e")
+		got, resp, err := client.Actions.GetActionsAllowedInEnterprise(ctx, "e")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -254,7 +254,7 @@ func TestActionsService_GetActionsAllowedForEnterprise(t *testing.T) {
 	})
 }
 
-func TestActionsService_EditActionsAllowedForEnterprise(t *testing.T) {
+func TestActionsService_EditActionsAllowedInEnterprise(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 	input := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
@@ -272,24 +272,24 @@ func TestActionsService_EditActionsAllowedForEnterprise(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ent, _, err := client.Actions.EditActionsAllowedForEnterprise(ctx, "e", *input)
+	ent, _, err := client.Actions.EditActionsAllowedInEnterprise(ctx, "e", *input)
 	if err != nil {
-		t.Errorf("Actions.EditActionsAllowedForEnterprise returned error: %v", err)
+		t.Errorf("Actions.EditActionsAllowedInEnterprise returned error: %v", err)
 	}
 
 	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(ent, want) {
-		t.Errorf("Actions.EditActionsAllowedForEnterprise returned %+v, want %+v", ent, want)
+		t.Errorf("Actions.EditActionsAllowedInEnterprise returned %+v, want %+v", ent, want)
 	}
 
-	const methodName = "EditActionsAllowedForEnterprise"
+	const methodName = "EditActionsAllowedInEnterprise"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.EditActionsAllowedForEnterprise(ctx, "\n", *input)
+		_, _, err = client.Actions.EditActionsAllowedInEnterprise(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.EditActionsAllowedForEnterprise(ctx, "e", *input)
+		got, resp, err := client.Actions.EditActionsAllowedInEnterprise(ctx, "e", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

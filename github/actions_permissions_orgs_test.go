@@ -93,7 +93,7 @@ func TestActionsService_EditActionsPermissions(t *testing.T) {
 	})
 }
 
-func TestActionsService_ListEnabledRepos(t *testing.T) {
+func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -109,7 +109,7 @@ func TestActionsService_ListEnabledRepos(t *testing.T) {
 	opt := &ListOptions{
 		Page: 1,
 	}
-	got, _, err := client.Actions.ListEnabledRepos(ctx, "o", opt)
+	got, _, err := client.Actions.ListEnabledReposInOrg(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Actions.ListEnabledRepos returned error: %v", err)
 	}
@@ -124,12 +124,12 @@ func TestActionsService_ListEnabledRepos(t *testing.T) {
 
 	const methodName = "ListEnabledRepos"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListEnabledRepos(ctx, "\n", opt)
+		_, _, err = client.Actions.ListEnabledReposInOrg(ctx, "\n", opt)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListEnabledRepos(ctx, "o", opt)
+		got, resp, err := client.Actions.ListEnabledReposInOrg(ctx, "o", opt)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -137,7 +137,7 @@ func TestActionsService_ListEnabledRepos(t *testing.T) {
 	})
 }
 
-func TestActionsService_SetEnabledRepos(t *testing.T) {
+func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -149,7 +149,7 @@ func TestActionsService_SetEnabledRepos(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.SetEnabledRepos(ctx, "o", []int64{123, 1234})
+	_, err := client.Actions.SetEnabledReposInOrg(ctx, "o", []int64{123, 1234})
 	if err != nil {
 		t.Errorf("Actions.SetEnabledRepos returned error: %v", err)
 	}
@@ -157,16 +157,16 @@ func TestActionsService_SetEnabledRepos(t *testing.T) {
 	const methodName = "SetEnabledRepos"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetEnabledRepos(ctx, "\n", []int64{123, 1234})
+		_, err = client.Actions.SetEnabledReposInOrg(ctx, "\n", []int64{123, 1234})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetEnabledRepos(ctx, "o", []int64{123, 1234})
+		return client.Actions.SetEnabledReposInOrg(ctx, "o", []int64{123, 1234})
 	})
 }
 
-func TestActionsService_AddEnabledRepos(t *testing.T) {
+func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -176,7 +176,7 @@ func TestActionsService_AddEnabledRepos(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.AddEnabledRepos(ctx, "o", 123)
+	_, err := client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
 	if err != nil {
 		t.Errorf("Actions.AddEnabledRepos returned error: %v", err)
 	}
@@ -184,16 +184,16 @@ func TestActionsService_AddEnabledRepos(t *testing.T) {
 	const methodName = "AddEnabledRepos"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.AddEnabledRepos(ctx, "\n", 123)
+		_, err = client.Actions.AddEnabledReposInOrg(ctx, "\n", 123)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.AddEnabledRepos(ctx, "o", 123)
+		return client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
 	})
 }
 
-func TestActionsService_RemoveEnabledRepo(t *testing.T) {
+func TestActionsService_RemoveEnabledReposInOrg(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -203,7 +203,7 @@ func TestActionsService_RemoveEnabledRepo(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.RemoveEnabledRepo(ctx, "o", 123)
+	_, err := client.Actions.RemoveEnabledReposInOrg(ctx, "o", 123)
 	if err != nil {
 		t.Errorf("Actions.RemoveEnabledRepo returned error: %v", err)
 	}
@@ -211,12 +211,12 @@ func TestActionsService_RemoveEnabledRepo(t *testing.T) {
 	const methodName = "RemoveEnabledRepo"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.RemoveEnabledRepo(ctx, "\n", 123)
+		_, err = client.Actions.RemoveEnabledReposInOrg(ctx, "\n", 123)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.RemoveEnabledRepo(ctx, "o", 123)
+		return client.Actions.RemoveEnabledReposInOrg(ctx, "o", 123)
 	})
 }
 
