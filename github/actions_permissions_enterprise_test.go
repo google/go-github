@@ -296,4 +296,3 @@ func TestActionsService_EditActionsAllowedForEnterprise(t *testing.T) {
 		return resp, err
 	})
 }
-
