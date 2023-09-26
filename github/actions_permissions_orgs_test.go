@@ -1,4 +1,4 @@
-// Copyright 2021 The go-github AUTHORS. All rights reserved.
+// Copyright 2023 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -15,7 +15,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestOrganizationsService_GetOrgsActionsPermissions(t *testing.T) {
+func TestActionsService_GetActionsPermissions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -25,7 +25,7 @@ func TestOrganizationsService_GetOrgsActionsPermissions(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Actions.GetOrgsActionsPermissions(ctx, "o")
+	org, _, err := client.Actions.GetActionsPermissions(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.GetActionsPermissions returned error: %v", err)
 	}
@@ -36,12 +36,12 @@ func TestOrganizationsService_GetOrgsActionsPermissions(t *testing.T) {
 
 	const methodName = "GetActionsPermissions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetOrgsActionsPermissions(ctx, "\n")
+		_, _, err = client.Actions.GetActionsPermissions(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetOrgsActionsPermissions(ctx, "o")
+		got, resp, err := client.Actions.GetActionsPermissions(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -49,7 +49,7 @@ func TestOrganizationsService_GetOrgsActionsPermissions(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_EditOrgsActionsPermissions(t *testing.T) {
+func TestActionsService_EditActionsPermissions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -68,7 +68,7 @@ func TestOrganizationsService_EditOrgsActionsPermissions(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Actions.EditOrgsActionsPermissions(ctx, "o", *input)
+	org, _, err := client.Actions.EditActionsPermissions(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("Actions.EditActionsPermissions returned error: %v", err)
 	}
@@ -80,12 +80,12 @@ func TestOrganizationsService_EditOrgsActionsPermissions(t *testing.T) {
 
 	const methodName = "EditActionsPermissions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.EditOrgsActionsPermissions(ctx, "\n", *input)
+		_, _, err = client.Actions.EditActionsPermissions(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.EditOrgsActionsPermissions(ctx, "o", *input)
+		got, resp, err := client.Actions.EditActionsPermissions(ctx, "o", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -93,7 +93,7 @@ func TestOrganizationsService_EditOrgsActionsPermissions(t *testing.T) {
 	})
 }
 
-func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
+func TestActionsService_ListEnabledRepos(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -109,9 +109,9 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 	opt := &ListOptions{
 		Page: 1,
 	}
-	got, _, err := client.Actions.ListEnabledReposInOrg(ctx, "o", opt)
+	got, _, err := client.Actions.ListEnabledRepos(ctx, "o", opt)
 	if err != nil {
-		t.Errorf("Actions.ListEnabledReposInOrg returned error: %v", err)
+		t.Errorf("Actions.ListEnabledRepos returned error: %v", err)
 	}
 
 	want := &ActionsEnabledOnOrgRepos{TotalCount: int(2), Repositories: []*Repository{
@@ -119,17 +119,17 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 		{ID: Int64(3)},
 	}}
 	if !cmp.Equal(got, want) {
-		t.Errorf("Actions.ListEnabledReposInOrg returned %+v, want %+v", got, want)
+		t.Errorf("Actions.ListEnabledRepos returned %+v, want %+v", got, want)
 	}
 
-	const methodName = "ListEnabledReposInOrg"
+	const methodName = "ListEnabledRepos"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListEnabledReposInOrg(ctx, "\n", opt)
+		_, _, err = client.Actions.ListEnabledRepos(ctx, "\n", opt)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListEnabledReposInOrg(ctx, "o", opt)
+		got, resp, err := client.Actions.ListEnabledRepos(ctx, "o", opt)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -137,7 +137,7 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 	})
 }
 
-func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
+func TestActionsService_SetEnabledRepos(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -149,24 +149,24 @@ func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.SetEnabledReposInOrg(ctx, "o", []int64{123, 1234})
+	_, err := client.Actions.SetEnabledRepos(ctx, "o", []int64{123, 1234})
 	if err != nil {
-		t.Errorf("Actions.SetEnabledReposInOrg returned error: %v", err)
+		t.Errorf("Actions.SetEnabledRepos returned error: %v", err)
 	}
 
-	const methodName = "SetEnabledReposInOrg"
+	const methodName = "SetEnabledRepos"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetEnabledReposInOrg(ctx, "\n", []int64{123, 1234})
+		_, err = client.Actions.SetEnabledRepos(ctx, "\n", []int64{123, 1234})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetEnabledReposInOrg(ctx, "o", []int64{123, 1234})
+		return client.Actions.SetEnabledRepos(ctx, "o", []int64{123, 1234})
 	})
 }
 
-func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
+func TestActionsService_AddEnabledRepos(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -176,24 +176,24 @@ func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
+	_, err := client.Actions.AddEnabledRepos(ctx, "o", 123)
 	if err != nil {
-		t.Errorf("Actions.AddEnabledReposInOrg returned error: %v", err)
+		t.Errorf("Actions.AddEnabledRepos returned error: %v", err)
 	}
 
-	const methodName = "AddEnabledReposInOrg"
+	const methodName = "AddEnabledRepos"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.AddEnabledReposInOrg(ctx, "\n", 123)
+		_, err = client.Actions.AddEnabledRepos(ctx, "\n", 123)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
+		return client.Actions.AddEnabledRepos(ctx, "o", 123)
 	})
 }
 
-func TestActionsService_RemoveEnabledRepoInOrg(t *testing.T) {
+func TestActionsService_RemoveEnabledRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -203,24 +203,24 @@ func TestActionsService_RemoveEnabledRepoInOrg(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.RemoveEnabledRepoInOrg(ctx, "o", 123)
+	_, err := client.Actions.RemoveEnabledRepo(ctx, "o", 123)
 	if err != nil {
-		t.Errorf("Actions.RemoveEnabledRepoInOrg returned error: %v", err)
+		t.Errorf("Actions.RemoveEnabledRepo returned error: %v", err)
 	}
 
-	const methodName = "RemoveEnabledRepoInOrg"
+	const methodName = "RemoveEnabledRepo"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.RemoveEnabledRepoInOrg(ctx, "\n", 123)
+		_, err = client.Actions.RemoveEnabledRepo(ctx, "\n", 123)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.RemoveEnabledRepoInOrg(ctx, "o", 123)
+		return client.Actions.RemoveEnabledRepo(ctx, "o", 123)
 	})
 }
 
-func TestOrganizationsService_GetActionsAllowedForOrg(t *testing.T) {
+func TestActionsService_GetActionsAllowed(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -230,23 +230,23 @@ func TestOrganizationsService_GetActionsAllowedForOrg(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Actions.GetActionsAllowedForOrg(ctx, "o")
+	org, _, err := client.Actions.GetActionsAllowed(ctx, "o")
 	if err != nil {
-		t.Errorf("Actions.GetActionsAllowedForOrg returned error: %v", err)
+		t.Errorf("Actions.GetActionsAllowed returned error: %v", err)
 	}
 	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Actions.GetActionsAllowedForOrg returned %+v, want %+v", org, want)
+		t.Errorf("Actions.GetActionsAllowed returned %+v, want %+v", org, want)
 	}
 
-	const methodName = "GetActionsAllowedForOrg"
+	const methodName = "GetActionsAllowed"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetActionsAllowedForOrg(ctx, "\n")
+		_, _, err = client.Actions.GetActionsAllowed(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetActionsAllowedForOrg(ctx, "o")
+		got, resp, err := client.Actions.GetActionsAllowed(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -254,7 +254,7 @@ func TestOrganizationsService_GetActionsAllowedForOrg(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_EditActionsAllowedForOrg(t *testing.T) {
+func TestActionsService_EditActionsAllowed(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 	input := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
@@ -272,24 +272,24 @@ func TestOrganizationsService_EditActionsAllowedForOrg(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Actions.EditActionsAllowedForOrg(ctx, "o", *input)
+	org, _, err := client.Actions.EditActionsAllowed(ctx, "o", *input)
 	if err != nil {
-		t.Errorf("Actions.EditActionsAllowedForOrg returned error: %v", err)
+		t.Errorf("Actions.EditActionsAllowed returned error: %v", err)
 	}
 
 	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Actions.EditActionsAllowedForOrg returned %+v, want %+v", org, want)
+		t.Errorf("Actions.EditActionsAllowed returned %+v, want %+v", org, want)
 	}
 
-	const methodName = "EditActionsAllowedForOrg"
+	const methodName = "EditActionsAllowed"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.EditActionsAllowedForOrg(ctx, "\n", *input)
+		_, _, err = client.Actions.EditActionsAllowed(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.EditActionsAllowedForOrg(ctx, "o", *input)
+		got, resp, err := client.Actions.EditActionsAllowed(ctx, "o", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

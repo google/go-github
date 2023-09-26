@@ -1,4 +1,4 @@
-// Copyright 2022 The go-github AUTHORS. All rights reserved.
+// Copyright 2023 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -11,7 +11,7 @@ import (
 )
 
 // ActionsEnabledOnEnterpriseOrgs represents all the repositories in an enterprise for which Actions is enabled.
-type ActionsEnabledOnEnterpriseOrgs struct {
+type ActionsEnabledOnEnterpriseRepos struct {
 	TotalCount    int             `json:"total_count"`
 	Organizations []*Organization `json:"organizations"`
 }
@@ -29,10 +29,10 @@ func (a ActionsPermissionsEnterprise) String() string {
 	return Stringify(a)
 }
 
-// GetActionsPermissions gets the GitHub Actions permissions policy for an enterprise.
+// GetActionsPermissionsForEnterprise gets the GitHub Actions permissions policy for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-github-actions-permissions-for-an-enterprise
-func (s *ActionsService) GetEnterpriseActionsPermissions(ctx context.Context, enterprise string) (*ActionsPermissionsEnterprise, *Response, error) {
+func (s *ActionsService) GetActionsPermissionsForEnterprise(ctx context.Context, enterprise string) (*ActionsPermissionsEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions", enterprise)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -49,10 +49,10 @@ func (s *ActionsService) GetEnterpriseActionsPermissions(ctx context.Context, en
 	return permissions, resp, nil
 }
 
-// EditActionsPermissions sets the permissions policy in an enterprise.
+// EditActionsPermissionsForEnterprise sets the permissions policy in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-github-actions-permissions-for-an-enterprise
-func (s *ActionsService) EditEnterpriseActionsPermissions(ctx context.Context, enterprise string, actionsPermissionsEnterprise ActionsPermissionsEnterprise) (*ActionsPermissionsEnterprise, *Response, error) {
+func (s *ActionsService) EditActionsPermissionsForEnterprise(ctx context.Context, enterprise string, actionsPermissionsEnterprise ActionsPermissionsEnterprise) (*ActionsPermissionsEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions", enterprise)
 	req, err := s.client.NewRequest("PUT", u, actionsPermissionsEnterprise)
 	if err != nil {
@@ -71,7 +71,7 @@ func (s *ActionsService) EditEnterpriseActionsPermissions(ctx context.Context, e
 // ListEnabledOrgsInEnterprise lists the selected organizations that are enabled for GitHub Actions in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#list-selected-organizations-enabled-for-github-actions-in-an-enterprise
-func (s *ActionsService) ListEnabledOrgsInEnterprise(ctx context.Context, owner string, opts *ListOptions) (*ActionsEnabledOnEnterpriseOrgs, *Response, error) {
+func (s *ActionsService) ListEnabledOrgsInEnterprise(ctx context.Context, owner string, opts *ListOptions) (*ActionsEnabledOnEnterpriseRepos, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations", owner)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -83,7 +83,7 @@ func (s *ActionsService) ListEnabledOrgsInEnterprise(ctx context.Context, owner 
 		return nil, nil, err
 	}
 
-	orgs := &ActionsEnabledOnEnterpriseOrgs{}
+	orgs := &ActionsEnabledOnEnterpriseRepos{}
 	resp, err := s.client.Do(ctx, req, orgs)
 	if err != nil {
 		return nil, resp, err
@@ -149,4 +149,43 @@ func (s *ActionsService) RemoveEnabledOrgInEnterprise(ctx context.Context, owner
 	}
 
 	return resp, nil
+}
+
+// GetActionsAllowedForEnterprise gets the actions that are allowed in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-enterprise
+func (s *ActionsService) GetActionsAllowedForEnterprise(ctx context.Context, enterprise string) (*ActionsAllowed, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/selected-actions", enterprise)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	actionsAllowed := new(ActionsAllowed)
+	resp, err := s.client.Do(ctx, req, actionsAllowed)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return actionsAllowed, resp, nil
+}
+
+// EditActionsAllowedForEnterprise sets the actions that are allowed in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-enterprise
+func (s *ActionsService) EditActionsAllowedForEnterprise(ctx context.Context, enterprise string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/selected-actions", enterprise)
+	req, err := s.client.NewRequest("PUT", u, actionsAllowed)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := new(ActionsAllowed)
+	resp, err := s.client.Do(ctx, req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return p, resp, nil
 }
