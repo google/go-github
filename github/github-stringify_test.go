@@ -39,6 +39,18 @@ func TestActionsPermissions_String(t *testing.T) {
 	}
 }
 
+func TestActionsPermissionsEnterprise_String(t *testing.T) {
+	v := ActionsPermissionsEnterprise{
+		EnabledOrganizations: String(""),
+		AllowedActions:       String(""),
+		SelectedActionsURL:   String(""),
+	}
+	want := `github.ActionsPermissionsEnterprise{EnabledOrganizations:"", AllowedActions:"", SelectedActionsURL:""}`
+	if got := v.String(); got != want {
+		t.Errorf("ActionsPermissionsEnterprise.String = %v, want %v", got, want)
+	}
+}
+
 func TestActionsPermissionsRepository_String(t *testing.T) {
 	v := ActionsPermissionsRepository{
 		Enabled:            Bool(false),

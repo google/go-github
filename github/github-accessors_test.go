@@ -185,6 +185,36 @@ func TestActionsPermissions_GetSelectedActionsURL(tt *testing.T) {
 	a.GetSelectedActionsURL()
 }
 
+func TestActionsPermissionsEnterprise_GetAllowedActions(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{AllowedActions: &zeroValue}
+	a.GetAllowedActions()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetAllowedActions()
+	a = nil
+	a.GetAllowedActions()
+}
+
+func TestActionsPermissionsEnterprise_GetEnabledOrganizations(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{EnabledOrganizations: &zeroValue}
+	a.GetEnabledOrganizations()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetEnabledOrganizations()
+	a = nil
+	a.GetEnabledOrganizations()
+}
+
+func TestActionsPermissionsEnterprise_GetSelectedActionsURL(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{SelectedActionsURL: &zeroValue}
+	a.GetSelectedActionsURL()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetSelectedActionsURL()
+	a = nil
+	a.GetSelectedActionsURL()
+}
+
 func TestActionsPermissionsRepository_GetAllowedActions(tt *testing.T) {
 	var zeroValue string
 	a := &ActionsPermissionsRepository{AllowedActions: &zeroValue}
