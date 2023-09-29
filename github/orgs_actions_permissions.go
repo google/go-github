@@ -21,7 +21,7 @@ func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org st
 // EditActionsPermissions sets the permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-github-actions-permissions-for-an-organization
-// Deprecated: please use `client.Actions.EditActionsPermissions` instead
+// Deprecated: please use `client.Actions.EditActionsPermissions` instead.
 func (s *OrganizationsService) EditActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
 	s2 := (*ActionsService)(s)
 	return s2.EditActionsPermissions(ctx, org, actionsPermissions)
