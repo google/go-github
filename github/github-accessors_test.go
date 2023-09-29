@@ -1451,6 +1451,26 @@ func TestAuditEntry_GetExplanation(tt *testing.T) {
 	a.GetExplanation()
 }
 
+func TestAuditEntry_GetExternalIdentityNameID(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ExternalIdentityNameID: &zeroValue}
+	a.GetExternalIdentityNameID()
+	a = &AuditEntry{}
+	a.GetExternalIdentityNameID()
+	a = nil
+	a.GetExternalIdentityNameID()
+}
+
+func TestAuditEntry_GetExternalIdentityUsername(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ExternalIdentityUsername: &zeroValue}
+	a.GetExternalIdentityUsername()
+	a = &AuditEntry{}
+	a.GetExternalIdentityUsername()
+	a = nil
+	a.GetExternalIdentityUsername()
+}
+
 func TestAuditEntry_GetFingerprint(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{Fingerprint: &zeroValue}
