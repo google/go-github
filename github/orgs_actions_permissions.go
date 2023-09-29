@@ -12,7 +12,7 @@ import (
 // GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-github-actions-permissions-for-an-organization
-// Deprecated: please use `client.Actions.GetActionsPermissions` instead
+// Deprecated: please use `client.Actions.GetActionsPermissions` instead.
 func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org string) (*ActionsPermissions, *Response, error) {
 	s2 := (*ActionsService)(s)
 	return s2.GetActionsPermissions(ctx, org)
