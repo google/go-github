@@ -21,7 +21,7 @@ func (s *OrganizationsService) GetActionsAllowed(ctx context.Context, org string
 // EditActionsAllowed sets the actions that are allowed in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-organization
-// Deprecated: please use `client.Actions.EditActionsAllowed` instead
+// Deprecated: please use `client.Actions.EditActionsAllowed` instead.
 func (s *OrganizationsService) EditActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	s2 := (*ActionsService)(s)
 	return s2.EditActionsAllowed(ctx, org, actionsAllowed)
