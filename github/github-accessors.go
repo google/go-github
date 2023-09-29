@@ -1230,6 +1230,22 @@ func (a *AuditEntry) GetExplanation() string {
 	return *a.Explanation
 }
 
+// GetExternalIdentityNameID returns the ExternalIdentityNameID field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetExternalIdentityNameID() string {
+	if a == nil || a.ExternalIdentityNameID == nil {
+		return ""
+	}
+	return *a.ExternalIdentityNameID
+}
+
+// GetExternalIdentityUsername returns the ExternalIdentityUsername field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetExternalIdentityUsername() string {
+	if a == nil || a.ExternalIdentityUsername == nil {
+		return ""
+	}
+	return *a.ExternalIdentityUsername
+}
+
 // GetFingerprint returns the Fingerprint field if it's non-nil, zero value otherwise.
 func (a *AuditEntry) GetFingerprint() string {
 	if a == nil || a.Fingerprint == nil {
