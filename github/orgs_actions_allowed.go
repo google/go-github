@@ -12,7 +12,7 @@ import (
 // GetActionsAllowed gets the actions that are allowed in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-organization
-// Deprecated: please use `client.Actions.GetActionsAllowed` instead
+// Deprecated: please use `client.Actions.GetActionsAllowed` instead.
 func (s *OrganizationsService) GetActionsAllowed(ctx context.Context, org string) (*ActionsAllowed, *Response, error) {
 	s2 := (*ActionsService)(s)
 	return s2.GetActionsAllowed(ctx, org)
