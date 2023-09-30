@@ -925,7 +925,7 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	branch, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b", false)
+	branch, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b", 0)
 	if err != nil {
 		t.Errorf("Repositories.GetBranch returned error: %v", err)
 	}
@@ -947,7 +947,7 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 
 	const methodName = "GetBranch"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", false)
+		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", 0)
 		return err
 	})
 }
@@ -962,7 +962,7 @@ func TestRepositoriesService_GetBranch_BadJSONResponse(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	if _, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b", false); err == nil {
+	if _, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b", 0); err == nil {
 		t.Error("Repositories.GetBranch returned no error; wanted JSON error")
 	}
 }
@@ -981,7 +981,7 @@ func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t 
 		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true}`)
 	})
 	ctx := context.Background()
-	branch, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", true)
+	branch, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetBranch returned error: %v", err)
 	}
@@ -1013,7 +1013,7 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 		http.Error(w, "branch not found", http.StatusNotFound)
 	})
 	ctx := context.Background()
-	_, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", true)
+	_, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", 1)
 	if err == nil {
 		t.Error("Repositories.GetBranch returned error: nil")
 	}
@@ -1028,7 +1028,7 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 
 	const methodName = "GetBranch"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", true)
+		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", 1)
 		return err
 	})
 }

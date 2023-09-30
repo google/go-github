@@ -198,7 +198,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, true)
+	url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 1)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned error: %v", err)
 	}
@@ -212,7 +212,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
 
 	const methodName = "GetWorkflowRunAttemptLogs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowRunAttemptLogs(ctx, "\n", "\n", 399444496, 2, true)
+		_, _, err = client.Actions.GetWorkflowRunAttemptLogs(ctx, "\n", "\n", 399444496, 2, 1)
 		return err
 	})
 }
@@ -227,7 +227,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_dontFol
 	})
 
 	ctx := context.Background()
-	_, resp, _ := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, false)
+	_, resp, _ := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 0)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
@@ -250,7 +250,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followR
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, true)
+	url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 1)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned error: %v", err)
 	}
@@ -266,7 +266,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followR
 
 	const methodName = "GetWorkflowRunAttemptLogs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowRunAttemptLogs(ctx, "\n", "\n", 399444496, 2, true)
+		_, _, err = client.Actions.GetWorkflowRunAttemptLogs(ctx, "\n", "\n", 399444496, 2, 1)
 		return err
 	})
 }
@@ -397,7 +397,7 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, true)
+	url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 1)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowRunLogs returned error: %v", err)
 	}
@@ -411,7 +411,7 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 
 	const methodName = "GetWorkflowRunLogs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowRunLogs(ctx, "\n", "\n", 399444496, true)
+		_, _, err = client.Actions.GetWorkflowRunLogs(ctx, "\n", "\n", 399444496, 1)
 		return err
 	})
 }
@@ -426,7 +426,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedi
 	})
 
 	ctx := context.Background()
-	_, resp, _ := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, false)
+	_, resp, _ := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 0)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
@@ -449,7 +449,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, true)
+	url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 1)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 	}
@@ -465,7 +465,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 
 	const methodName = "GetWorkflowRunLogs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowRunLogs(ctx, "\n", "\n", 399444496, true)
+		_, _, err = client.Actions.GetWorkflowRunLogs(ctx, "\n", "\n", 399444496, 1)
 		return err
 	})
 }

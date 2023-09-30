@@ -121,10 +121,10 @@ func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, ar
 // DownloadArtifact gets a redirect URL to download an archive for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/artifacts#download-an-artifact
-func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo string, artifactID int64, followRedirects bool) (*url.URL, *Response, error) {
+func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo string, artifactID int64, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v/zip", owner, repo, artifactID)
 
-	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
 	}

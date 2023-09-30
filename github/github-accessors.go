@@ -151,6 +151,30 @@ func (a *ActionsPermissions) GetSelectedActionsURL() string {
 }
 
 // GetAllowedActions returns the AllowedActions field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissionsEnterprise) GetAllowedActions() string {
+	if a == nil || a.AllowedActions == nil {
+		return ""
+	}
+	return *a.AllowedActions
+}
+
+// GetEnabledOrganizations returns the EnabledOrganizations field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissionsEnterprise) GetEnabledOrganizations() string {
+	if a == nil || a.EnabledOrganizations == nil {
+		return ""
+	}
+	return *a.EnabledOrganizations
+}
+
+// GetSelectedActionsURL returns the SelectedActionsURL field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissionsEnterprise) GetSelectedActionsURL() string {
+	if a == nil || a.SelectedActionsURL == nil {
+		return ""
+	}
+	return *a.SelectedActionsURL
+}
+
+// GetAllowedActions returns the AllowedActions field if it's non-nil, zero value otherwise.
 func (a *ActionsPermissionsRepository) GetAllowedActions() string {
 	if a == nil || a.AllowedActions == nil {
 		return ""
@@ -1204,6 +1228,22 @@ func (a *AuditEntry) GetExplanation() string {
 		return ""
 	}
 	return *a.Explanation
+}
+
+// GetExternalIdentityNameID returns the ExternalIdentityNameID field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetExternalIdentityNameID() string {
+	if a == nil || a.ExternalIdentityNameID == nil {
+		return ""
+	}
+	return *a.ExternalIdentityNameID
+}
+
+// GetExternalIdentityUsername returns the ExternalIdentityUsername field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetExternalIdentityUsername() string {
+	if a == nil || a.ExternalIdentityUsername == nil {
+		return ""
+	}
+	return *a.ExternalIdentityUsername
 }
 
 // GetFingerprint returns the Fingerprint field if it's non-nil, zero value otherwise.
@@ -20694,6 +20734,30 @@ func (s *SecretScanningAlert) GetNumber() int {
 	return *s.Number
 }
 
+// GetPushProtectionBypassed returns the PushProtectionBypassed field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetPushProtectionBypassed() bool {
+	if s == nil || s.PushProtectionBypassed == nil {
+		return false
+	}
+	return *s.PushProtectionBypassed
+}
+
+// GetPushProtectionBypassedAt returns the PushProtectionBypassedAt field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetPushProtectionBypassedAt() Timestamp {
+	if s == nil || s.PushProtectionBypassedAt == nil {
+		return Timestamp{}
+	}
+	return *s.PushProtectionBypassedAt
+}
+
+// GetPushProtectionBypassedBy returns the PushProtectionBypassedBy field.
+func (s *SecretScanningAlert) GetPushProtectionBypassedBy() *User {
+	if s == nil {
+		return nil
+	}
+	return s.PushProtectionBypassedBy
+}
+
 // GetRepository returns the Repository field.
 func (s *SecretScanningAlert) GetRepository() *Repository {
 	if s == nil {
@@ -20708,6 +20772,14 @@ func (s *SecretScanningAlert) GetResolution() string {
 		return ""
 	}
 	return *s.Resolution
+}
+
+// GetResolutionComment returns the ResolutionComment field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetResolutionComment() string {
+	if s == nil || s.ResolutionComment == nil {
+		return ""
+	}
+	return *s.ResolutionComment
 }
 
 // GetResolvedAt returns the ResolvedAt field if it's non-nil, zero value otherwise.
@@ -20756,6 +20828,14 @@ func (s *SecretScanningAlert) GetState() string {
 		return ""
 	}
 	return *s.State
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetUpdatedAt() Timestamp {
+	if s == nil || s.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *s.UpdatedAt
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
@@ -20916,22 +20996,6 @@ func (s *SecretScanningAlertUpdateOptions) GetResolution() string {
 		return ""
 	}
 	return *s.Resolution
-}
-
-// GetSecretType returns the SecretType field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlertUpdateOptions) GetSecretType() string {
-	if s == nil || s.SecretType == nil {
-		return ""
-	}
-	return *s.SecretType
-}
-
-// GetState returns the State field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlertUpdateOptions) GetState() string {
-	if s == nil || s.State == nil {
-		return ""
-	}
-	return *s.State
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
@@ -21164,14 +21228,6 @@ func (s *SelectedReposList) GetTotalCount() int {
 		return 0
 	}
 	return *s.TotalCount
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (s *ServiceHook) GetName() string {
-	if s == nil || s.Name == nil {
-		return ""
-	}
-	return *s.Name
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.

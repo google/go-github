@@ -185,6 +185,36 @@ func TestActionsPermissions_GetSelectedActionsURL(tt *testing.T) {
 	a.GetSelectedActionsURL()
 }
 
+func TestActionsPermissionsEnterprise_GetAllowedActions(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{AllowedActions: &zeroValue}
+	a.GetAllowedActions()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetAllowedActions()
+	a = nil
+	a.GetAllowedActions()
+}
+
+func TestActionsPermissionsEnterprise_GetEnabledOrganizations(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{EnabledOrganizations: &zeroValue}
+	a.GetEnabledOrganizations()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetEnabledOrganizations()
+	a = nil
+	a.GetEnabledOrganizations()
+}
+
+func TestActionsPermissionsEnterprise_GetSelectedActionsURL(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{SelectedActionsURL: &zeroValue}
+	a.GetSelectedActionsURL()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetSelectedActionsURL()
+	a = nil
+	a.GetSelectedActionsURL()
+}
+
 func TestActionsPermissionsRepository_GetAllowedActions(tt *testing.T) {
 	var zeroValue string
 	a := &ActionsPermissionsRepository{AllowedActions: &zeroValue}
@@ -1419,6 +1449,26 @@ func TestAuditEntry_GetExplanation(tt *testing.T) {
 	a.GetExplanation()
 	a = nil
 	a.GetExplanation()
+}
+
+func TestAuditEntry_GetExternalIdentityNameID(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ExternalIdentityNameID: &zeroValue}
+	a.GetExternalIdentityNameID()
+	a = &AuditEntry{}
+	a.GetExternalIdentityNameID()
+	a = nil
+	a.GetExternalIdentityNameID()
+}
+
+func TestAuditEntry_GetExternalIdentityUsername(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ExternalIdentityUsername: &zeroValue}
+	a.GetExternalIdentityUsername()
+	a = &AuditEntry{}
+	a.GetExternalIdentityUsername()
+	a = nil
+	a.GetExternalIdentityUsername()
 }
 
 func TestAuditEntry_GetFingerprint(tt *testing.T) {
@@ -24140,6 +24190,33 @@ func TestSecretScanningAlert_GetNumber(tt *testing.T) {
 	s.GetNumber()
 }
 
+func TestSecretScanningAlert_GetPushProtectionBypassed(tt *testing.T) {
+	var zeroValue bool
+	s := &SecretScanningAlert{PushProtectionBypassed: &zeroValue}
+	s.GetPushProtectionBypassed()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassed()
+	s = nil
+	s.GetPushProtectionBypassed()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecretScanningAlert{PushProtectionBypassedAt: &zeroValue}
+	s.GetPushProtectionBypassedAt()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassedAt()
+	s = nil
+	s.GetPushProtectionBypassedAt()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassedBy(tt *testing.T) {
+	s := &SecretScanningAlert{}
+	s.GetPushProtectionBypassedBy()
+	s = nil
+	s.GetPushProtectionBypassedBy()
+}
+
 func TestSecretScanningAlert_GetRepository(tt *testing.T) {
 	s := &SecretScanningAlert{}
 	s.GetRepository()
@@ -24155,6 +24232,16 @@ func TestSecretScanningAlert_GetResolution(tt *testing.T) {
 	s.GetResolution()
 	s = nil
 	s.GetResolution()
+}
+
+func TestSecretScanningAlert_GetResolutionComment(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{ResolutionComment: &zeroValue}
+	s.GetResolutionComment()
+	s = &SecretScanningAlert{}
+	s.GetResolutionComment()
+	s = nil
+	s.GetResolutionComment()
 }
 
 func TestSecretScanningAlert_GetResolvedAt(tt *testing.T) {
@@ -24212,6 +24299,16 @@ func TestSecretScanningAlert_GetState(tt *testing.T) {
 	s.GetState()
 	s = nil
 	s.GetState()
+}
+
+func TestSecretScanningAlert_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecretScanningAlert{UpdatedAt: &zeroValue}
+	s.GetUpdatedAt()
+	s = &SecretScanningAlert{}
+	s.GetUpdatedAt()
+	s = nil
+	s.GetUpdatedAt()
 }
 
 func TestSecretScanningAlert_GetURL(tt *testing.T) {
@@ -24391,26 +24488,6 @@ func TestSecretScanningAlertUpdateOptions_GetResolution(tt *testing.T) {
 	s.GetResolution()
 	s = nil
 	s.GetResolution()
-}
-
-func TestSecretScanningAlertUpdateOptions_GetSecretType(tt *testing.T) {
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{SecretType: &zeroValue}
-	s.GetSecretType()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetSecretType()
-	s = nil
-	s.GetSecretType()
-}
-
-func TestSecretScanningAlertUpdateOptions_GetState(tt *testing.T) {
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{State: &zeroValue}
-	s.GetState()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetState()
-	s = nil
-	s.GetState()
 }
 
 func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
@@ -24644,16 +24721,6 @@ func TestSelectedReposList_GetTotalCount(tt *testing.T) {
 	s.GetTotalCount()
 	s = nil
 	s.GetTotalCount()
-}
-
-func TestServiceHook_GetName(tt *testing.T) {
-	var zeroValue string
-	s := &ServiceHook{Name: &zeroValue}
-	s.GetName()
-	s = &ServiceHook{}
-	s.GetName()
-	s = nil
-	s.GetName()
 }
 
 func TestSignatureRequirementEnforcementLevelChanges_GetFrom(tt *testing.T) {

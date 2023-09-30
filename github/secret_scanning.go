@@ -16,19 +16,24 @@ type SecretScanningService service
 
 // SecretScanningAlert represents a GitHub secret scanning alert.
 type SecretScanningAlert struct {
-	Number                *int        `json:"number,omitempty"`
-	CreatedAt             *Timestamp  `json:"created_at,omitempty"`
-	URL                   *string     `json:"url,omitempty"`
-	HTMLURL               *string     `json:"html_url,omitempty"`
-	LocationsURL          *string     `json:"locations_url,omitempty"`
-	State                 *string     `json:"state,omitempty"`
-	Resolution            *string     `json:"resolution,omitempty"`
-	ResolvedAt            *Timestamp  `json:"resolved_at,omitempty"`
-	ResolvedBy            *User       `json:"resolved_by,omitempty"`
-	SecretType            *string     `json:"secret_type,omitempty"`
-	SecretTypeDisplayName *string     `json:"secret_type_display_name,omitempty"`
-	Secret                *string     `json:"secret,omitempty"`
-	Repository            *Repository `json:"repository,omitempty"`
+	Number                   *int        `json:"number,omitempty"`
+	CreatedAt                *Timestamp  `json:"created_at,omitempty"`
+	URL                      *string     `json:"url,omitempty"`
+	HTMLURL                  *string     `json:"html_url,omitempty"`
+	LocationsURL             *string     `json:"locations_url,omitempty"`
+	State                    *string     `json:"state,omitempty"`
+	Resolution               *string     `json:"resolution,omitempty"`
+	ResolvedAt               *Timestamp  `json:"resolved_at,omitempty"`
+	ResolvedBy               *User       `json:"resolved_by,omitempty"`
+	SecretType               *string     `json:"secret_type,omitempty"`
+	SecretTypeDisplayName    *string     `json:"secret_type_display_name,omitempty"`
+	Secret                   *string     `json:"secret,omitempty"`
+	Repository               *Repository `json:"repository,omitempty"`
+	UpdatedAt                *Timestamp  `json:"updated_at,omitempty"`
+	PushProtectionBypassed   *bool       `json:"push_protection_bypassed,omitempty"`
+	PushProtectionBypassedBy *User       `json:"push_protection_bypassed_by,omitempty"`
+	PushProtectionBypassedAt *Timestamp  `json:"push_protection_bypassed_at,omitempty"`
+	ResolutionComment        *string     `json:"resolution_comment,omitempty"`
 }
 
 // SecretScanningAlertLocation represents the location for a secret scanning alert.
@@ -75,16 +80,14 @@ type SecretScanningAlertListOptions struct {
 
 // SecretScanningAlertUpdateOptions specifies optional parameters to the SecretScanningService.UpdateAlert method.
 type SecretScanningAlertUpdateOptions struct {
-	// Required. Sets the state of the secret scanning alert. Can be either open or resolved.
-	// You must provide resolution when you set the state to resolved.
-	State *string `url:"state,omitempty"`
+	// State is required and sets the state of the secret scanning alert.
+	// Can be either "open" or "resolved".
+	// You must provide resolution when you set the state to "resolved".
+	State string `json:"state"`
 
-	// A comma-separated list of secret types to return. By default all secret types are returned.
-	SecretType *string `url:"secret_type,omitempty"`
-
-	// Required when the state is resolved. The reason for resolving the alert. Can be one of false_positive,
-	// wont_fix, revoked, or used_in_tests.
-	Resolution *string `url:"resolution,omitempty"`
+	// Required when the state is "resolved" and represents the reason for resolving the alert.
+	// Can be one of: "false_positive", "wont_fix", "revoked", or "used_in_tests".
+	Resolution *string `json:"resolution,omitempty"`
 }
 
 // Lists secret scanning alerts for eligible repositories in an enterprise, from newest to oldest.
