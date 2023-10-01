@@ -457,6 +457,62 @@ func TestIssueEvent_Marshal(t *testing.T) {
 			"suspended_at": ` + referenceTimeStr + `,
 			"url": "u"
 		},
+		"requested_team": {
+			"id": 1,
+			"node_id": "n",
+			"name": "n",
+			"description": "d",
+			"url": "u",
+			"slug": "s",
+			"permission": "p",
+			"privacy": "p",
+			"members_count": 1,
+			"repos_count": 1,
+			"members_url": "m",
+			"repositories_url": "r",
+			"organization": {
+				"login": "l",
+				"id": 1,
+				"node_id": "n",
+				"avatar_url": "a",
+				"html_url": "h",
+				"name": "n",
+				"company": "c",
+				"blog": "b",
+				"location": "l",
+				"email": "e"
+			},
+			"parent": {
+				"id": 1,
+				"node_id": "n",
+				"name": "n",
+				"description": "d",
+				"url": "u",
+				"slug": "s",
+				"permission": "p",
+				"privacy": "p",
+				"members_count": 1,
+				"repos_count": 1
+			},
+			"ldap_dn": "l"
+		},
+		"performed_via_github_app": {
+			"id": 1,
+			"node_id": "n",
+			"owner": {
+				"login": "l",
+				"id": 1,
+				"node_id": "n",
+				"url": "u",
+				"repos_url": "r",
+				"events_url": "e",
+				"avatar_url": "a"
+			},
+			"name": "n",
+			"description": "d",
+			"html_url": "h",
+			"external_url": "u"
+		},
 		"review_requester": {
 			"login": "l",
 			"id": 1,

@@ -15372,7 +15372,7 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 			"name": "n",
 			"description": "d",
 			"external_url": "e",
-			"html_url": "h",
+			"html_url": "h"
 		},
 		"organization": {
 			"name": "n",
@@ -16273,7 +16273,7 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 			"name": "n",
 			"description": "d",
 			"external_url": "e",
-			"html_url": "h",
+			"html_url": "h"
 		},
 		"organization": {
 			"name": "n",
