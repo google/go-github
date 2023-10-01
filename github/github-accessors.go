@@ -16190,6 +16190,14 @@ func (p *PullRequestEvent) GetRequestedTeam() *Team {
 	return p.RequestedTeam
 }
 
+// GetPerformedViaGithubApp returns the PerformedViaGithubApp field.
+func (p *PullRequestEvent) GetPerformedViaGithubApp() *App {
+	if p == nil {
+		return nil
+	}
+	return p.PerformedViaGithubApp
+}
+
 // GetSender returns the Sender field.
 func (p *PullRequestEvent) GetSender() *User {
 	if p == nil {
@@ -16724,6 +16732,14 @@ func (p *PullRequestTargetEvent) GetRequestedTeam() *Team {
 		return nil
 	}
 	return p.RequestedTeam
+}
+
+// GetPerformedViaGithubApp returns the PerformedViaGithubApp field.
+func (p *PullRequestTargetEvent) GetPerformedViaGithubApp() *App {
+	if p == nil {
+		return nil
+	}
+	return p.PerformedViaGithubApp
 }
 
 // GetSender returns the Sender field.
@@ -22548,6 +22564,14 @@ func (t *Timeline) GetRequestedTeam() *Team {
 		return nil
 	}
 	return t.RequestedTeam
+}
+
+// GetPerformedViaGithubApp returns the PerformedViaGithubApp field.
+func (t *Timeline) GetPerformedViaGithubApp() *App {
+	if t == nil {
+		return nil
+	}
+	return t.PerformedViaGithubApp
 }
 
 // GetRequester returns the Requester field.

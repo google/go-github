@@ -18840,6 +18840,13 @@ func TestPullRequestEvent_GetRequestedTeam(tt *testing.T) {
 	p.GetRequestedTeam()
 }
 
+func TestPullRequestEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	p := &PullRequestEvent{}
+	p.GetPerformedViaGithubApp()
+	p = nil
+	p.GetPerformedViaGithubApp()
+}
+
 func TestPullRequestEvent_GetSender(tt *testing.T) {
 	p := &PullRequestEvent{}
 	p.GetSender()
@@ -19406,6 +19413,13 @@ func TestPullRequestTargetEvent_GetRequestedTeam(tt *testing.T) {
 	p.GetRequestedTeam()
 	p = nil
 	p.GetRequestedTeam()
+}
+
+func TestPullRequestTargetEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetPerformedViaGithubApp()
+	p = nil
+	p.GetPerformedViaGithubApp()
 }
 
 func TestPullRequestTargetEvent_GetSender(tt *testing.T) {
@@ -26233,6 +26247,13 @@ func TestTimeline_GetRequestedTeam(tt *testing.T) {
 	t.GetRequestedTeam()
 	t = nil
 	t.GetRequestedTeam()
+}
+
+func TestTimeline_GetPerformedViaGithubApp(tt *testing.T) {
+	t := &Timeline{}
+	t.GetPerformedViaGithubApp()
+	t = nil
+	t.GetPerformedViaGithubApp()
 }
 
 func TestTimeline_GetRequester(tt *testing.T) {
