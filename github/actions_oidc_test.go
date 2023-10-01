@@ -179,3 +179,21 @@ func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing
 		return client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
 	})
 }
+
+func TestOIDCSubjectClaimCustomTemplate_Marshal(t *testing.T) {
+	testJSONMarshal(t, &OIDCSubjectClaimCustomTemplate{}, "{}")
+
+	u := &OIDCSubjectClaimCustomTemplate{
+		UseDefault:       Bool(false),
+		IncludeClaimKeys: []string{"s"},
+	}
+
+	want := `{
+		"use_default": false,
+		"include_claim_keys": [
+			"s"
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
