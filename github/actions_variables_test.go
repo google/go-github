@@ -657,3 +657,31 @@ func TestActionsService_DeleteEnvVariable(t *testing.T) {
 		return client.Actions.DeleteEnvVariable(ctx, 1, "r", "variable")
 	})
 }
+
+func TestActionVariable_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ActionsVariable{}, "{}")
+
+	av := &ActionsVariable{
+		Name:                    "n",
+		Value:                   "v",
+		CreatedAt:               &Timestamp{referenceTime},
+		UpdatedAt:               &Timestamp{referenceTime},
+		Visibility:              String("v"),
+		SelectedRepositoriesURL: String("s"),
+		SelectedRepositoryIDs:   &SelectedRepoIDs{1, 2, 3},
+	}
+
+	want := fmt.Sprintf(`{
+		"name": "n",
+		"value": "v",
+		"created_at": %s,
+		"updated_at": %s,
+		"visibility": "v",
+		"selected_repositories_url": "s",
+		"selected_repository_ids": [1,2,3]
+	}`, referenceTimeStr, referenceTimeStr)
+
+	fmt.Println(want)
+
+	testJSONMarshal(t, av, want)
+}
