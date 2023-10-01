@@ -11248,6 +11248,13 @@ func TestIssueEvent_GetMilestone(tt *testing.T) {
 	i.GetMilestone()
 }
 
+func TestIssueEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	i := &IssueEvent{}
+	i.GetPerformedViaGithubApp()
+	i = nil
+	i.GetPerformedViaGithubApp()
+}
+
 func TestIssueEvent_GetProjectCard(tt *testing.T) {
 	i := &IssueEvent{}
 	i.GetProjectCard()
@@ -11267,6 +11274,13 @@ func TestIssueEvent_GetRequestedReviewer(tt *testing.T) {
 	i.GetRequestedReviewer()
 	i = nil
 	i.GetRequestedReviewer()
+}
+
+func TestIssueEvent_GetRequestedTeam(tt *testing.T) {
+	i := &IssueEvent{}
+	i.GetRequestedTeam()
+	i = nil
+	i.GetRequestedTeam()
 }
 
 func TestIssueEvent_GetReviewRequester(tt *testing.T) {
@@ -18812,6 +18826,13 @@ func TestPullRequestEvent_GetOrganization(tt *testing.T) {
 	p.GetOrganization()
 }
 
+func TestPullRequestEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	p := &PullRequestEvent{}
+	p.GetPerformedViaGithubApp()
+	p = nil
+	p.GetPerformedViaGithubApp()
+}
+
 func TestPullRequestEvent_GetPullRequest(tt *testing.T) {
 	p := &PullRequestEvent{}
 	p.GetPullRequest()
@@ -18838,13 +18859,6 @@ func TestPullRequestEvent_GetRequestedTeam(tt *testing.T) {
 	p.GetRequestedTeam()
 	p = nil
 	p.GetRequestedTeam()
-}
-
-func TestPullRequestEvent_GetPerformedViaGithubApp(tt *testing.T) {
-	p := &PullRequestEvent{}
-	p.GetPerformedViaGithubApp()
-	p = nil
-	p.GetPerformedViaGithubApp()
 }
 
 func TestPullRequestEvent_GetSender(tt *testing.T) {
@@ -19387,6 +19401,13 @@ func TestPullRequestTargetEvent_GetOrganization(tt *testing.T) {
 	p.GetOrganization()
 }
 
+func TestPullRequestTargetEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetPerformedViaGithubApp()
+	p = nil
+	p.GetPerformedViaGithubApp()
+}
+
 func TestPullRequestTargetEvent_GetPullRequest(tt *testing.T) {
 	p := &PullRequestTargetEvent{}
 	p.GetPullRequest()
@@ -19413,13 +19434,6 @@ func TestPullRequestTargetEvent_GetRequestedTeam(tt *testing.T) {
 	p.GetRequestedTeam()
 	p = nil
 	p.GetRequestedTeam()
-}
-
-func TestPullRequestTargetEvent_GetPerformedViaGithubApp(tt *testing.T) {
-	p := &PullRequestTargetEvent{}
-	p.GetPerformedViaGithubApp()
-	p = nil
-	p.GetPerformedViaGithubApp()
 }
 
 func TestPullRequestTargetEvent_GetSender(tt *testing.T) {
@@ -26228,6 +26242,13 @@ func TestTimeline_GetMilestone(tt *testing.T) {
 	t.GetMilestone()
 }
 
+func TestTimeline_GetPerformedViaGithubApp(tt *testing.T) {
+	t := &Timeline{}
+	t.GetPerformedViaGithubApp()
+	t = nil
+	t.GetPerformedViaGithubApp()
+}
+
 func TestTimeline_GetProjectCard(tt *testing.T) {
 	t := &Timeline{}
 	t.GetProjectCard()
@@ -26247,13 +26268,6 @@ func TestTimeline_GetRequestedTeam(tt *testing.T) {
 	t.GetRequestedTeam()
 	t = nil
 	t.GetRequestedTeam()
-}
-
-func TestTimeline_GetPerformedViaGithubApp(tt *testing.T) {
-	t := &Timeline{}
-	t.GetPerformedViaGithubApp()
-	t = nil
-	t.GetPerformedViaGithubApp()
 }
 
 func TestTimeline_GetRequester(tt *testing.T) {
