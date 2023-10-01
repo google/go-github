@@ -674,12 +674,14 @@ func TestActionVariable_Marshal(t *testing.T) {
 	want := fmt.Sprintf(`{
 		"name": "n",
 		"value": "v",
-		"created_at": "%s",
-		"updated_at": "%s",
+		"created_at": %s,
+		"updated_at": %s,
 		"visibility": "v",
 		"selected_repositories_url": "s",
-		"selected_repositories_ids": [1,2,3]
+		"selected_repository_ids": [1,2,3]
 	}`, referenceTimeStr, referenceTimeStr)
+
+	fmt.Println(want)
 
 	testJSONMarshal(t, av, want)
 }
