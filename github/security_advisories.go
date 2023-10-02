@@ -31,16 +31,7 @@ type RepoAdvisoryCreditDetailed struct {
 	State *string `json:"state,omitempty"`
 }
 
-// Permissions represent a team's permissions.
-type Permissions struct {
-	Admin    *bool `json:"admin,omitempty"`
-	Pull     *bool `json:"pull,omitempty"`
-	Push     *bool `json:"push,omitempty"`
-	Triage   *bool `json:"triage,omitempty"`
-	Maintain *bool `json:"maintain,omitempty"`
-}
-
-// ListRepositorySecurityAdvisoriesOptions specifies the optional parameters to lists the repository security advisories.
+// ListRepositorySecurityAdvisoriesOptions specifies the optional parameters to list the repository security advisories.
 type ListRepositorySecurityAdvisoriesOptions struct {
 	ListCursorOptions
 
@@ -82,7 +73,7 @@ func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo,
 
 // ListRepositorySecurityAdvisoriesForOrg lists the repository security advisories for an organization.
 //
-// Github API docs: https://docs.github.com/en/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories-for-an-organization
 func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx context.Context, org string, opt *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/security-advisories", org)
 	url, err := addOptions(url, opt)
@@ -106,8 +97,8 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx c
 
 // ListRepositorySecurityAdvisories lists the security advisories in a repository.
 //
-// Github API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories
-func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisories(ctx context.Context, owner string, repo string, opt *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
+// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories
+func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisories(ctx context.Context, owner, repo string, opt *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/security-advisories", owner, repo)
 	url, err := addOptions(url, opt)
 	if err != nil {
