@@ -158,7 +158,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *tes
 		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return status %d, want %d", got, want)
 	}
 
-	want := []*RepoSecurityAdvisory{
+	want := []*SecurityAdvisory{
 		{
 			GHSAID: String("GHSA-abcd-1234-efgh"),
 			CVEID:  String("CVE-2050-00000"),
@@ -289,7 +289,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T
 		t.Errorf("ListRepositorySecurityAdvisories return status %d, want %d", got, want)
 	}
 
-	want := []*RepoSecurityAdvisory{
+	want := []*SecurityAdvisory{
 		{
 			GHSAID: String("GHSA-abcd-1234-efgh"),
 			CVEID:  String("CVE-2050-00000"),
