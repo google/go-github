@@ -6584,11 +6584,11 @@ func TestDeploymentEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 }
 
-func TestDeploymentEvent_GetOrganization(tt *testing.T) {
+func TestDeploymentEvent_GetOrg(tt *testing.T) {
 	d := &DeploymentEvent{}
-	d.GetOrganization()
+	d.GetOrg()
 	d = nil
-	d.GetOrganization()
+	d.GetOrg()
 }
 
 func TestDeploymentEvent_GetRepo(tt *testing.T) {
@@ -6932,11 +6932,11 @@ func TestDeploymentStatusEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 }
 
-func TestDeploymentStatusEvent_GetOrganization(tt *testing.T) {
+func TestDeploymentStatusEvent_GetOrg(tt *testing.T) {
 	d := &DeploymentStatusEvent{}
-	d.GetOrganization()
+	d.GetOrg()
 	d = nil
-	d.GetOrganization()
+	d.GetOrg()
 }
 
 func TestDeploymentStatusEvent_GetRepo(tt *testing.T) {
@@ -9039,11 +9039,11 @@ func TestGollumEvent_GetInstallation(tt *testing.T) {
 	g.GetInstallation()
 }
 
-func TestGollumEvent_GetOrganization(tt *testing.T) {
+func TestGollumEvent_GetOrg(tt *testing.T) {
 	g := &GollumEvent{}
-	g.GetOrganization()
+	g.GetOrg()
 	g = nil
-	g.GetOrganization()
+	g.GetOrg()
 }
 
 func TestGollumEvent_GetRepo(tt *testing.T) {
@@ -10094,11 +10094,11 @@ func TestInstallationEvent_GetInstallation(tt *testing.T) {
 	i.GetInstallation()
 }
 
-func TestInstallationEvent_GetOrganization(tt *testing.T) {
+func TestInstallationEvent_GetOrg(tt *testing.T) {
 	i := &InstallationEvent{}
-	i.GetOrganization()
+	i.GetOrg()
 	i = nil
-	i.GetOrganization()
+	i.GetOrg()
 }
 
 func TestInstallationEvent_GetRequester(tt *testing.T) {
@@ -10512,11 +10512,11 @@ func TestInstallationRepositoriesEvent_GetInstallation(tt *testing.T) {
 	i.GetInstallation()
 }
 
-func TestInstallationRepositoriesEvent_GetOrganization(tt *testing.T) {
+func TestInstallationRepositoriesEvent_GetOrg(tt *testing.T) {
 	i := &InstallationRepositoriesEvent{}
-	i.GetOrganization()
+	i.GetOrg()
 	i = nil
-	i.GetOrganization()
+	i.GetOrg()
 }
 
 func TestInstallationRepositoriesEvent_GetRepositorySelection(tt *testing.T) {
@@ -11697,11 +11697,11 @@ func TestIssuesEvent_GetMilestone(tt *testing.T) {
 	i.GetMilestone()
 }
 
-func TestIssuesEvent_GetOrganization(tt *testing.T) {
+func TestIssuesEvent_GetOrg(tt *testing.T) {
 	i := &IssuesEvent{}
-	i.GetOrganization()
+	i.GetOrg()
 	i = nil
-	i.GetOrganization()
+	i.GetOrg()
 }
 
 func TestIssuesEvent_GetRepo(tt *testing.T) {
@@ -12963,11 +12963,11 @@ func TestMarketplacePurchaseEvent_GetMarketplacePurchase(tt *testing.T) {
 	m.GetMarketplacePurchase()
 }
 
-func TestMarketplacePurchaseEvent_GetOrganization(tt *testing.T) {
+func TestMarketplacePurchaseEvent_GetOrg(tt *testing.T) {
 	m := &MarketplacePurchaseEvent{}
-	m.GetOrganization()
+	m.GetOrg()
 	m = nil
-	m.GetOrganization()
+	m.GetOrg()
 }
 
 func TestMarketplacePurchaseEvent_GetPreviousMarketplacePurchase(tt *testing.T) {
@@ -13018,11 +13018,11 @@ func TestMemberEvent_GetMember(tt *testing.T) {
 	m.GetMember()
 }
 
-func TestMemberEvent_GetOrganization(tt *testing.T) {
+func TestMemberEvent_GetOrg(tt *testing.T) {
 	m := &MemberEvent{}
-	m.GetOrganization()
+	m.GetOrg()
 	m = nil
-	m.GetOrganization()
+	m.GetOrg()
 }
 
 func TestMemberEvent_GetRepo(tt *testing.T) {
@@ -15632,11 +15632,11 @@ func TestPageBuildEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
-func TestPageBuildEvent_GetOrganization(tt *testing.T) {
+func TestPageBuildEvent_GetOrg(tt *testing.T) {
 	p := &PageBuildEvent{}
-	p.GetOrganization()
+	p.GetOrg()
 	p = nil
-	p.GetOrganization()
+	p.GetOrg()
 }
 
 func TestPageBuildEvent_GetRepo(tt *testing.T) {
@@ -16282,11 +16282,11 @@ func TestPersonalAccessTokenRequest_GetID(tt *testing.T) {
 	p.GetID()
 }
 
-func TestPersonalAccessTokenRequest_GetOrganization(tt *testing.T) {
+func TestPersonalAccessTokenRequest_GetOrg(tt *testing.T) {
 	p := &PersonalAccessTokenRequest{}
-	p.GetOrganization()
+	p.GetOrg()
 	p = nil
-	p.GetOrganization()
+	p.GetOrg()
 }
 
 func TestPersonalAccessTokenRequest_GetOwner(tt *testing.T) {
@@ -18006,11 +18006,11 @@ func TestPublicEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
-func TestPublicEvent_GetOrganization(tt *testing.T) {
+func TestPublicEvent_GetOrg(tt *testing.T) {
 	p := &PublicEvent{}
-	p.GetOrganization()
+	p.GetOrg()
 	p = nil
-	p.GetOrganization()
+	p.GetOrg()
 }
 
 func TestPublicEvent_GetRepo(tt *testing.T) {
@@ -19136,11 +19136,11 @@ func TestPullRequestReviewCommentEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
-func TestPullRequestReviewCommentEvent_GetOrganization(tt *testing.T) {
+func TestPullRequestReviewCommentEvent_GetOrg(tt *testing.T) {
 	p := &PullRequestReviewCommentEvent{}
-	p.GetOrganization()
+	p.GetOrg()
 	p = nil
-	p.GetOrganization()
+	p.GetOrg()
 }
 
 func TestPullRequestReviewCommentEvent_GetPullRequest(tt *testing.T) {
@@ -19375,11 +19375,11 @@ func TestPullRequestReviewThreadEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
-func TestPullRequestReviewThreadEvent_GetOrganization(tt *testing.T) {
+func TestPullRequestReviewThreadEvent_GetOrg(tt *testing.T) {
 	p := &PullRequestReviewThreadEvent{}
-	p.GetOrganization()
+	p.GetOrg()
 	p = nil
-	p.GetOrganization()
+	p.GetOrg()
 }
 
 func TestPullRequestReviewThreadEvent_GetPullRequest(tt *testing.T) {
@@ -20563,11 +20563,11 @@ func TestReleaseEvent_GetInstallation(tt *testing.T) {
 	r.GetInstallation()
 }
 
-func TestReleaseEvent_GetOrganization(tt *testing.T) {
+func TestReleaseEvent_GetOrg(tt *testing.T) {
 	r := &ReleaseEvent{}
-	r.GetOrganization()
+	r.GetOrg()
 	r = nil
-	r.GetOrganization()
+	r.GetOrg()
 }
 
 func TestReleaseEvent_GetRelease(tt *testing.T) {
@@ -23051,11 +23051,11 @@ func TestRepositoryVulnerabilityAlertEvent_GetInstallation(tt *testing.T) {
 	r.GetInstallation()
 }
 
-func TestRepositoryVulnerabilityAlertEvent_GetOrganization(tt *testing.T) {
+func TestRepositoryVulnerabilityAlertEvent_GetOrg(tt *testing.T) {
 	r := &RepositoryVulnerabilityAlertEvent{}
-	r.GetOrganization()
+	r.GetOrg()
 	r = nil
-	r.GetOrganization()
+	r.GetOrg()
 }
 
 func TestRepositoryVulnerabilityAlertEvent_GetRepository(tt *testing.T) {
@@ -25212,11 +25212,11 @@ func TestStatusEvent_GetName(tt *testing.T) {
 	s.GetName()
 }
 
-func TestStatusEvent_GetOrganization(tt *testing.T) {
+func TestStatusEvent_GetOrg(tt *testing.T) {
 	s := &StatusEvent{}
-	s.GetOrganization()
+	s.GetOrg()
 	s = nil
-	s.GetOrganization()
+	s.GetOrg()
 }
 
 func TestStatusEvent_GetRepo(tt *testing.T) {
@@ -27972,11 +27972,11 @@ func TestWatchEvent_GetInstallation(tt *testing.T) {
 	w.GetInstallation()
 }
 
-func TestWatchEvent_GetOrganization(tt *testing.T) {
+func TestWatchEvent_GetOrg(tt *testing.T) {
 	w := &WatchEvent{}
-	w.GetOrganization()
+	w.GetOrg()
 	w = nil
-	w.GetOrganization()
+	w.GetOrg()
 }
 
 func TestWatchEvent_GetRepo(tt *testing.T) {

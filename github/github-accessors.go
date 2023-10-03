@@ -5598,12 +5598,12 @@ func (d *DeploymentEvent) GetInstallation() *Installation {
 	return d.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (d *DeploymentEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (d *DeploymentEvent) GetOrg() *Organization {
 	if d == nil {
 		return nil
 	}
-	return d.Organization
+	return d.Org
 }
 
 // GetRepo returns the Repo field.
@@ -5910,12 +5910,12 @@ func (d *DeploymentStatusEvent) GetInstallation() *Installation {
 	return d.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (d *DeploymentStatusEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (d *DeploymentStatusEvent) GetOrg() *Organization {
 	if d == nil {
 		return nil
 	}
-	return d.Organization
+	return d.Org
 }
 
 // GetRepo returns the Repo field.
@@ -7718,12 +7718,12 @@ func (g *GollumEvent) GetInstallation() *Installation {
 	return g.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (g *GollumEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (g *GollumEvent) GetOrg() *Organization {
 	if g == nil {
 		return nil
 	}
-	return g.Organization
+	return g.Org
 }
 
 // GetRepo returns the Repo field.
@@ -8598,12 +8598,12 @@ func (i *InstallationEvent) GetInstallation() *Installation {
 	return i.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (i *InstallationEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (i *InstallationEvent) GetOrg() *Organization {
 	if i == nil {
 		return nil
 	}
-	return i.Organization
+	return i.Org
 }
 
 // GetRequester returns the Requester field.
@@ -8942,12 +8942,12 @@ func (i *InstallationRepositoriesEvent) GetInstallation() *Installation {
 	return i.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (i *InstallationRepositoriesEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (i *InstallationRepositoriesEvent) GetOrg() *Organization {
 	if i == nil {
 		return nil
 	}
-	return i.Organization
+	return i.Org
 }
 
 // GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
@@ -9998,12 +9998,12 @@ func (i *IssuesEvent) GetMilestone() *Milestone {
 	return i.Milestone
 }
 
-// GetOrganization returns the Organization field.
-func (i *IssuesEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (i *IssuesEvent) GetOrg() *Organization {
 	if i == nil {
 		return nil
 	}
-	return i.Organization
+	return i.Org
 }
 
 // GetRepo returns the Repo field.
@@ -11054,12 +11054,12 @@ func (m *MarketplacePurchaseEvent) GetMarketplacePurchase() *MarketplacePurchase
 	return m.MarketplacePurchase
 }
 
-// GetOrganization returns the Organization field.
-func (m *MarketplacePurchaseEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (m *MarketplacePurchaseEvent) GetOrg() *Organization {
 	if m == nil {
 		return nil
 	}
-	return m.Organization
+	return m.Org
 }
 
 // GetPreviousMarketplacePurchase returns the PreviousMarketplacePurchase field.
@@ -11110,12 +11110,12 @@ func (m *MemberEvent) GetMember() *User {
 	return m.Member
 }
 
-// GetOrganization returns the Organization field.
-func (m *MemberEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (m *MemberEvent) GetOrg() *Organization {
 	if m == nil {
 		return nil
 	}
-	return m.Organization
+	return m.Org
 }
 
 // GetRepo returns the Repo field.
@@ -13350,12 +13350,12 @@ func (p *PageBuildEvent) GetInstallation() *Installation {
 	return p.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (p *PageBuildEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (p *PageBuildEvent) GetOrg() *Organization {
 	if p == nil {
 		return nil
 	}
-	return p.Organization
+	return p.Org
 }
 
 // GetRepo returns the Repo field.
@@ -13894,12 +13894,12 @@ func (p *PersonalAccessTokenRequest) GetID() int64 {
 	return *p.ID
 }
 
-// GetOrganization returns the Organization field.
-func (p *PersonalAccessTokenRequest) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (p *PersonalAccessTokenRequest) GetOrg() *Organization {
 	if p == nil {
 		return nil
 	}
-	return p.Organization
+	return p.Org
 }
 
 // GetOwner returns the Owner field.
@@ -15494,12 +15494,12 @@ func (p *PublicEvent) GetInstallation() *Installation {
 	return p.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (p *PublicEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (p *PublicEvent) GetOrg() *Organization {
 	if p == nil {
 		return nil
 	}
-	return p.Organization
+	return p.Org
 }
 
 // GetRepo returns the Repo field.
@@ -16470,12 +16470,12 @@ func (p *PullRequestReviewCommentEvent) GetInstallation() *Installation {
 	return p.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (p *PullRequestReviewCommentEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (p *PullRequestReviewCommentEvent) GetOrg() *Organization {
 	if p == nil {
 		return nil
 	}
-	return p.Organization
+	return p.Org
 }
 
 // GetPullRequest returns the PullRequest field.
@@ -16702,12 +16702,12 @@ func (p *PullRequestReviewThreadEvent) GetInstallation() *Installation {
 	return p.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (p *PullRequestReviewThreadEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (p *PullRequestReviewThreadEvent) GetOrg() *Organization {
 	if p == nil {
 		return nil
 	}
-	return p.Organization
+	return p.Org
 }
 
 // GetPullRequest returns the PullRequest field.
@@ -17734,12 +17734,12 @@ func (r *ReleaseEvent) GetInstallation() *Installation {
 	return r.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (r *ReleaseEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (r *ReleaseEvent) GetOrg() *Organization {
 	if r == nil {
 		return nil
 	}
-	return r.Organization
+	return r.Org
 }
 
 // GetRelease returns the Release field.
@@ -19830,12 +19830,12 @@ func (r *RepositoryVulnerabilityAlertEvent) GetInstallation() *Installation {
 	return r.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (r *RepositoryVulnerabilityAlertEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (r *RepositoryVulnerabilityAlertEvent) GetOrg() *Organization {
 	if r == nil {
 		return nil
 	}
-	return r.Organization
+	return r.Org
 }
 
 // GetRepository returns the Repository field.
@@ -21686,12 +21686,12 @@ func (s *StatusEvent) GetName() string {
 	return *s.Name
 }
 
-// GetOrganization returns the Organization field.
-func (s *StatusEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (s *StatusEvent) GetOrg() *Organization {
 	if s == nil {
 		return nil
 	}
-	return s.Organization
+	return s.Org
 }
 
 // GetRepo returns the Repo field.
@@ -24014,12 +24014,12 @@ func (w *WatchEvent) GetInstallation() *Installation {
 	return w.Installation
 }
 
-// GetOrganization returns the Organization field.
-func (w *WatchEvent) GetOrganization() *Organization {
+// GetOrg returns the Org field.
+func (w *WatchEvent) GetOrg() *Organization {
 	if w == nil {
 		return nil
 	}
-	return w.Organization
+	return w.Org
 }
 
 // GetRepo returns the Repo field.
