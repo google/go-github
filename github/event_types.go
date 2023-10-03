@@ -1086,6 +1086,9 @@ type PullRequestEvent struct {
 	// The following fields are only populated when the Action is "synchronize".
 	Before *string `json:"before,omitempty"`
 	After  *string `json:"after,omitempty"`
+
+	// The following will be populated if the event was performed by an App
+	PerformedViaGithubApp *App `json:"performed_via_github_app,omitempty"`
 }
 
 // PullRequestReviewEvent is triggered when a review is submitted on a pull
@@ -1186,6 +1189,9 @@ type PullRequestTargetEvent struct {
 	// The following fields are only populated when the Action is "synchronize".
 	Before *string `json:"before,omitempty"`
 	After  *string `json:"after,omitempty"`
+
+	// The following will be populated if the event was performed by an App
+	PerformedViaGithubApp *App `json:"performed_via_github_app,omitempty"`
 }
 
 // PushEvent represents a git push to a GitHub repository.

@@ -9638,6 +9638,14 @@ func (i *IssueEvent) GetMilestone() *Milestone {
 	return i.Milestone
 }
 
+// GetPerformedViaGithubApp returns the PerformedViaGithubApp field.
+func (i *IssueEvent) GetPerformedViaGithubApp() *App {
+	if i == nil {
+		return nil
+	}
+	return i.PerformedViaGithubApp
+}
+
 // GetProjectCard returns the ProjectCard field.
 func (i *IssueEvent) GetProjectCard() *ProjectCard {
 	if i == nil {
@@ -9660,6 +9668,14 @@ func (i *IssueEvent) GetRequestedReviewer() *User {
 		return nil
 	}
 	return i.RequestedReviewer
+}
+
+// GetRequestedTeam returns the RequestedTeam field.
+func (i *IssueEvent) GetRequestedTeam() *Team {
+	if i == nil {
+		return nil
+	}
+	return i.RequestedTeam
 }
 
 // GetReviewRequester returns the ReviewRequester field.
@@ -16198,6 +16214,14 @@ func (p *PullRequestEvent) GetOrganization() *Organization {
 	return p.Organization
 }
 
+// GetPerformedViaGithubApp returns the PerformedViaGithubApp field.
+func (p *PullRequestEvent) GetPerformedViaGithubApp() *App {
+	if p == nil {
+		return nil
+	}
+	return p.PerformedViaGithubApp
+}
+
 // GetPullRequest returns the PullRequest field.
 func (p *PullRequestEvent) GetPullRequest() *PullRequest {
 	if p == nil {
@@ -16732,6 +16756,14 @@ func (p *PullRequestTargetEvent) GetOrganization() *Organization {
 		return nil
 	}
 	return p.Organization
+}
+
+// GetPerformedViaGithubApp returns the PerformedViaGithubApp field.
+func (p *PullRequestTargetEvent) GetPerformedViaGithubApp() *App {
+	if p == nil {
+		return nil
+	}
+	return p.PerformedViaGithubApp
 }
 
 // GetPullRequest returns the PullRequest field.
@@ -22564,6 +22596,14 @@ func (t *Timeline) GetMilestone() *Milestone {
 		return nil
 	}
 	return t.Milestone
+}
+
+// GetPerformedViaGithubApp returns the PerformedViaGithubApp field.
+func (t *Timeline) GetPerformedViaGithubApp() *App {
+	if t == nil {
+		return nil
+	}
+	return t.PerformedViaGithubApp
 }
 
 // GetProjectCard returns the ProjectCard field.
