@@ -4519,6 +4519,13 @@ func TestCommitCommentEvent_GetInstallation(tt *testing.T) {
 	c.GetInstallation()
 }
 
+func TestCommitCommentEvent_GetOrg(tt *testing.T) {
+	c := &CommitCommentEvent{}
+	c.GetOrg()
+	c = nil
+	c.GetOrg()
+}
+
 func TestCommitCommentEvent_GetRepo(tt *testing.T) {
 	c := &CommitCommentEvent{}
 	c.GetRepo()
@@ -5969,6 +5976,13 @@ func TestDeleteEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 }
 
+func TestDeleteEvent_GetOrg(tt *testing.T) {
+	d := &DeleteEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
+}
+
 func TestDeleteEvent_GetPusherType(tt *testing.T) {
 	var zeroValue string
 	d := &DeleteEvent{PusherType: &zeroValue}
@@ -6570,6 +6584,13 @@ func TestDeploymentEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 }
 
+func TestDeploymentEvent_GetOrganization(tt *testing.T) {
+	d := &DeploymentEvent{}
+	d.GetOrganization()
+	d = nil
+	d.GetOrganization()
+}
+
 func TestDeploymentEvent_GetRepo(tt *testing.T) {
 	d := &DeploymentEvent{}
 	d.GetRepo()
@@ -6909,6 +6930,13 @@ func TestDeploymentStatusEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 	d = nil
 	d.GetInstallation()
+}
+
+func TestDeploymentStatusEvent_GetOrganization(tt *testing.T) {
+	d := &DeploymentStatusEvent{}
+	d.GetOrganization()
+	d = nil
+	d.GetOrganization()
 }
 
 func TestDeploymentStatusEvent_GetRepo(tt *testing.T) {
@@ -9011,6 +9039,13 @@ func TestGollumEvent_GetInstallation(tt *testing.T) {
 	g.GetInstallation()
 }
 
+func TestGollumEvent_GetOrganization(tt *testing.T) {
+	g := &GollumEvent{}
+	g.GetOrganization()
+	g = nil
+	g.GetOrganization()
+}
+
 func TestGollumEvent_GetRepo(tt *testing.T) {
 	g := &GollumEvent{}
 	g.GetRepo()
@@ -10059,6 +10094,13 @@ func TestInstallationEvent_GetInstallation(tt *testing.T) {
 	i.GetInstallation()
 }
 
+func TestInstallationEvent_GetOrganization(tt *testing.T) {
+	i := &InstallationEvent{}
+	i.GetOrganization()
+	i = nil
+	i.GetOrganization()
+}
+
 func TestInstallationEvent_GetRequester(tt *testing.T) {
 	i := &InstallationEvent{}
 	i.GetRequester()
@@ -10468,6 +10510,13 @@ func TestInstallationRepositoriesEvent_GetInstallation(tt *testing.T) {
 	i.GetInstallation()
 	i = nil
 	i.GetInstallation()
+}
+
+func TestInstallationRepositoriesEvent_GetOrganization(tt *testing.T) {
+	i := &InstallationRepositoriesEvent{}
+	i.GetOrganization()
+	i = nil
+	i.GetOrganization()
 }
 
 func TestInstallationRepositoriesEvent_GetRepositorySelection(tt *testing.T) {
@@ -11646,6 +11695,13 @@ func TestIssuesEvent_GetMilestone(tt *testing.T) {
 	i.GetMilestone()
 	i = nil
 	i.GetMilestone()
+}
+
+func TestIssuesEvent_GetOrganization(tt *testing.T) {
+	i := &IssuesEvent{}
+	i.GetOrganization()
+	i = nil
+	i.GetOrganization()
 }
 
 func TestIssuesEvent_GetRepo(tt *testing.T) {
@@ -12907,6 +12963,13 @@ func TestMarketplacePurchaseEvent_GetMarketplacePurchase(tt *testing.T) {
 	m.GetMarketplacePurchase()
 }
 
+func TestMarketplacePurchaseEvent_GetOrganization(tt *testing.T) {
+	m := &MarketplacePurchaseEvent{}
+	m.GetOrganization()
+	m = nil
+	m.GetOrganization()
+}
+
 func TestMarketplacePurchaseEvent_GetPreviousMarketplacePurchase(tt *testing.T) {
 	m := &MarketplacePurchaseEvent{}
 	m.GetPreviousMarketplacePurchase()
@@ -12953,6 +13016,13 @@ func TestMemberEvent_GetMember(tt *testing.T) {
 	m.GetMember()
 	m = nil
 	m.GetMember()
+}
+
+func TestMemberEvent_GetOrganization(tt *testing.T) {
+	m := &MemberEvent{}
+	m.GetOrganization()
+	m = nil
+	m.GetOrganization()
 }
 
 func TestMemberEvent_GetRepo(tt *testing.T) {
@@ -15562,6 +15632,13 @@ func TestPageBuildEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPageBuildEvent_GetOrganization(tt *testing.T) {
+	p := &PageBuildEvent{}
+	p.GetOrganization()
+	p = nil
+	p.GetOrganization()
+}
+
 func TestPageBuildEvent_GetRepo(tt *testing.T) {
 	p := &PageBuildEvent{}
 	p.GetRepo()
@@ -16203,6 +16280,13 @@ func TestPersonalAccessTokenRequest_GetID(tt *testing.T) {
 	p.GetID()
 	p = nil
 	p.GetID()
+}
+
+func TestPersonalAccessTokenRequest_GetOrganization(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetOrganization()
+	p = nil
+	p.GetOrganization()
 }
 
 func TestPersonalAccessTokenRequest_GetOwner(tt *testing.T) {
@@ -17922,6 +18006,13 @@ func TestPublicEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPublicEvent_GetOrganization(tt *testing.T) {
+	p := &PublicEvent{}
+	p.GetOrganization()
+	p = nil
+	p.GetOrganization()
+}
+
 func TestPublicEvent_GetRepo(tt *testing.T) {
 	p := &PublicEvent{}
 	p.GetRepo()
@@ -19045,6 +19136,13 @@ func TestPullRequestReviewCommentEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPullRequestReviewCommentEvent_GetOrganization(tt *testing.T) {
+	p := &PullRequestReviewCommentEvent{}
+	p.GetOrganization()
+	p = nil
+	p.GetOrganization()
+}
+
 func TestPullRequestReviewCommentEvent_GetPullRequest(tt *testing.T) {
 	p := &PullRequestReviewCommentEvent{}
 	p.GetPullRequest()
@@ -19275,6 +19373,13 @@ func TestPullRequestReviewThreadEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 	p = nil
 	p.GetInstallation()
+}
+
+func TestPullRequestReviewThreadEvent_GetOrganization(tt *testing.T) {
+	p := &PullRequestReviewThreadEvent{}
+	p.GetOrganization()
+	p = nil
+	p.GetOrganization()
 }
 
 func TestPullRequestReviewThreadEvent_GetPullRequest(tt *testing.T) {
@@ -20456,6 +20561,13 @@ func TestReleaseEvent_GetInstallation(tt *testing.T) {
 	r.GetInstallation()
 	r = nil
 	r.GetInstallation()
+}
+
+func TestReleaseEvent_GetOrganization(tt *testing.T) {
+	r := &ReleaseEvent{}
+	r.GetOrganization()
+	r = nil
+	r.GetOrganization()
 }
 
 func TestReleaseEvent_GetRelease(tt *testing.T) {
@@ -22939,6 +23051,13 @@ func TestRepositoryVulnerabilityAlertEvent_GetInstallation(tt *testing.T) {
 	r.GetInstallation()
 }
 
+func TestRepositoryVulnerabilityAlertEvent_GetOrganization(tt *testing.T) {
+	r := &RepositoryVulnerabilityAlertEvent{}
+	r.GetOrganization()
+	r = nil
+	r.GetOrganization()
+}
+
 func TestRepositoryVulnerabilityAlertEvent_GetRepository(tt *testing.T) {
 	r := &RepositoryVulnerabilityAlertEvent{}
 	r.GetRepository()
@@ -25091,6 +25210,13 @@ func TestStatusEvent_GetName(tt *testing.T) {
 	s.GetName()
 	s = nil
 	s.GetName()
+}
+
+func TestStatusEvent_GetOrganization(tt *testing.T) {
+	s := &StatusEvent{}
+	s.GetOrganization()
+	s = nil
+	s.GetOrganization()
 }
 
 func TestStatusEvent_GetRepo(tt *testing.T) {
@@ -27844,6 +27970,13 @@ func TestWatchEvent_GetInstallation(tt *testing.T) {
 	w.GetInstallation()
 	w = nil
 	w.GetInstallation()
+}
+
+func TestWatchEvent_GetOrganization(tt *testing.T) {
+	w := &WatchEvent{}
+	w.GetOrganization()
+	w = nil
+	w.GetOrganization()
 }
 
 func TestWatchEvent_GetRepo(tt *testing.T) {
