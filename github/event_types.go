@@ -79,7 +79,7 @@ type CommitCommentEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Org          *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // ContentReferenceEvent is triggered when the body or comment of an issue or
@@ -138,8 +138,8 @@ type DeleteEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 
 	// The following field is only present when the webhook is triggered on
-	// a repository belonging to an organization.	
-	Org          *Organization `json:"organization,omitempty"`
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // DependabotAlertEvent is triggered when there is activity relating to Dependabot alerts.
@@ -631,7 +631,7 @@ type IssuesEvent struct {
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 	Milestone    *Milestone    `json:"milestone,omitempty"`
-	
+
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
 	Organization *Organization `json:"organization,omitempty"`
@@ -671,7 +671,7 @@ type MarketplacePurchaseEvent struct {
 	PreviousMarketplacePurchase *MarketplacePurchase `json:"previous_marketplace_purchase,omitempty"`
 	Sender                      *User                `json:"sender,omitempty"`
 	Installation                *Installation        `json:"installation,omitempty"`
-	
+
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
 	Organization *Organization `json:"organization,omitempty"`
@@ -1627,7 +1627,6 @@ type WatchEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
-
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
