@@ -8910,6 +8910,46 @@ func (i *InstallationRepositoriesEvent) GetSender() *User {
 	return i.Sender
 }
 
+// GetAccount returns the Account field.
+func (i *InstallationRequest) GetAccount() *User {
+	if i == nil {
+		return nil
+	}
+	return i.Account
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (i *InstallationRequest) GetCreatedAt() Timestamp {
+	if i == nil || i.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *i.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (i *InstallationRequest) GetID() int64 {
+	if i == nil || i.ID == nil {
+		return 0
+	}
+	return *i.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (i *InstallationRequest) GetNodeID() string {
+	if i == nil || i.NodeID == nil {
+		return ""
+	}
+	return *i.NodeID
+}
+
+// GetRequester returns the Requester field.
+func (i *InstallationRequest) GetRequester() *User {
+	if i == nil {
+		return nil
+	}
+	return i.Requester
+}
+
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
 func (i *InstallationSlugChange) GetFrom() string {
 	if i == nil || i.From == nil {

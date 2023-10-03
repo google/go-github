@@ -102,6 +102,15 @@ type InstallationPermissions struct {
 	Workflows                     *string `json:"workflows,omitempty"`
 }
 
+// InstallationRequest represents a pending GitHub App installation request.
+type InstallationRequest struct {
+	ID        *int64     `json:"id,omitempty"`
+	NodeID    *string    `json:"node_id,omitempty"`
+	Account   *User      `json:"account,omitempty"`
+	Requester *User      `json:"requester,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+}
+
 // Installation represents a GitHub Apps installation.
 type Installation struct {
 	ID                     *int64                   `json:"id,omitempty"`
@@ -173,6 +182,29 @@ func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response,
 	}
 
 	return app, resp, nil
+}
+
+// ListInstallationRequests lists the pending installation requests that the current GitHub App has.
+//
+// GitHub API docs: https://docs.github.com/en/rest/apps/apps#list-installation-requests-for-the-authenticated-app
+func (s *AppsService) ListInstallationRequests(ctx context.Context, opts *ListOptions) ([]*InstallationRequest, *Response, error) {
+	u, err := addOptions("app/installation-requests", opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var i []*InstallationRequest
+	resp, err := s.client.Do(ctx, req, &i)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return i, resp, nil
 }
 
 // ListInstallations lists the installations that the current GitHub App has.
