@@ -203,7 +203,7 @@ type DeploymentEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // DeploymentProtectionRuleEvent represents a deployment protection rule event.
@@ -242,7 +242,7 @@ type DeploymentStatusEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // DiscussionCommentEvent represents a webhook event for a comment on discussion.
@@ -382,7 +382,7 @@ type GollumEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // EditChange represents the changes when an issue, pull request, comment,
@@ -533,7 +533,7 @@ type InstallationEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // InstallationRepositoriesEvent is triggered when a repository is added or
@@ -551,7 +551,7 @@ type InstallationRepositoriesEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // InstallationLoginChange represents a change in login on an installation.
@@ -634,7 +634,7 @@ type IssuesEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // LabelEvent is triggered when a repository's label is created, edited, or deleted.
@@ -674,7 +674,7 @@ type MarketplacePurchaseEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // MemberEvent is triggered when a user is added as a collaborator to a repository.
@@ -693,7 +693,7 @@ type MemberEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // MembershipEvent is triggered when a user is added or removed from a team.
@@ -868,7 +868,7 @@ type PageBuildEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // PersonalAccessTokenRequestEvent occurs when there is activity relating to a
@@ -932,7 +932,7 @@ type PersonalAccessTokenRequest struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // PersonalAccessTokenPermissions represents the original or newly requested
@@ -1095,7 +1095,7 @@ type PublicEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // PullRequestEvent is triggered when a pull request is assigned, unassigned, labeled,
@@ -1181,7 +1181,7 @@ type PullRequestReviewCommentEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // PullRequestReviewThreadEvent is triggered when a comment made as part of a
@@ -1203,7 +1203,7 @@ type PullRequestReviewThreadEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // PullRequestTargetEvent is triggered when a pull request is assigned, unassigned, labeled,
@@ -1372,7 +1372,7 @@ type ReleaseEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // RepositoryEvent is triggered when a repository is created, archived, unarchived,
@@ -1446,7 +1446,7 @@ type RepositoryVulnerabilityAlertEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // RepositoryVulnerabilityAlert represents a repository security alert.
@@ -1556,7 +1556,7 @@ type StatusEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // TeamEvent is triggered when an organization's team is created, modified or deleted.
@@ -1630,7 +1630,7 @@ type WatchEvent struct {
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
-	Organization *Organization `json:"organization,omitempty"`
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // WorkflowDispatchEvent is triggered when someone triggers a workflow run on GitHub or
