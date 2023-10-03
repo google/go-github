@@ -144,8 +144,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *tes
 		w.Write([]byte(`[
 			{
 				"ghsa_id": "GHSA-abcd-1234-efgh",
-    			"cve_id": "CVE-2050-00000",
-  			}
+   				"cve_id": "CVE-2050-00000"
+ 			}
 		]`))
 	})
 
