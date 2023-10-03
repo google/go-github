@@ -151,6 +151,30 @@ func (a *ActionsPermissions) GetSelectedActionsURL() string {
 }
 
 // GetAllowedActions returns the AllowedActions field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissionsEnterprise) GetAllowedActions() string {
+	if a == nil || a.AllowedActions == nil {
+		return ""
+	}
+	return *a.AllowedActions
+}
+
+// GetEnabledOrganizations returns the EnabledOrganizations field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissionsEnterprise) GetEnabledOrganizations() string {
+	if a == nil || a.EnabledOrganizations == nil {
+		return ""
+	}
+	return *a.EnabledOrganizations
+}
+
+// GetSelectedActionsURL returns the SelectedActionsURL field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissionsEnterprise) GetSelectedActionsURL() string {
+	if a == nil || a.SelectedActionsURL == nil {
+		return ""
+	}
+	return *a.SelectedActionsURL
+}
+
+// GetAllowedActions returns the AllowedActions field if it's non-nil, zero value otherwise.
 func (a *ActionsPermissionsRepository) GetAllowedActions() string {
 	if a == nil || a.AllowedActions == nil {
 		return ""
@@ -1204,6 +1228,22 @@ func (a *AuditEntry) GetExplanation() string {
 		return ""
 	}
 	return *a.Explanation
+}
+
+// GetExternalIdentityNameID returns the ExternalIdentityNameID field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetExternalIdentityNameID() string {
+	if a == nil || a.ExternalIdentityNameID == nil {
+		return ""
+	}
+	return *a.ExternalIdentityNameID
+}
+
+// GetExternalIdentityUsername returns the ExternalIdentityUsername field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetExternalIdentityUsername() string {
+	if a == nil || a.ExternalIdentityUsername == nil {
+		return ""
+	}
+	return *a.ExternalIdentityUsername
 }
 
 // GetFingerprint returns the Fingerprint field if it's non-nil, zero value otherwise.
