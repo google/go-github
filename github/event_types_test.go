@@ -15177,6 +15177,15 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 			URL:  String("s"),
 			Name: String("n"),
 		},
+		PerformedViaGithubApp: &App{
+			ID:          Int64(1),
+			NodeID:      String("n"),
+			Slug:        String("s"),
+			Name:        String("n"),
+			Description: String("d"),
+			ExternalURL: String("e"),
+			HTMLURL:     String("h"),
+		},
 		Organization: &Organization{
 			BillingEmail:                         String("be"),
 			Blog:                                 String("b"),
@@ -15346,10 +15355,46 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 		"requested_team": {
 			"id": 1
 		},
+		"label": {
+			"id": 1
+		},
+		"before": "before",
+		"after": "after",
 		"repository": {
 			"id": 1,
 			"name": "n",
 			"url": "s"
+		},
+		"performed_via_github_app": {
+			"id": 1,
+			"node_id": "n",
+			"slug": "s",
+			"name": "n",
+			"description": "d",
+			"external_url": "e",
+			"html_url": "h"
+		},
+		"organization": {
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "loc",
+			"email": "e",
+			"twitter_username": "tu",
+			"description": "d",
+			"billing_email": "be",
+			"is_verified": true,
+			"has_organization_projects": true,
+			"has_repository_projects": true,
+			"default_repository_permission": "drp",
+			"members_can_create_repositories": true,
+			"members_can_create_public_repositories": false,
+			"members_can_create_private_repositories": true,
+			"members_can_create_internal_repositories": true,
+			"members_allowed_repository_creation_type": "marct",
+			"members_can_create_pages": true,
+			"members_can_create_public_pages": false,
+			"members_can_create_private_pages": true
 		},
 		"sender": {
 			"login": "l",
@@ -15456,34 +15501,7 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 				"url": "u"
 			},
 			"suspended_at": ` + referenceTimeStr + `
-		},
-		"label": {
-			"id": 1
-		},
-		"organization": {
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "loc",
-			"email": "e",
-			"twitter_username": "tu",
-			"description": "d",
-			"billing_email": "be",
-			"is_verified": true,
-			"has_organization_projects": true,
-			"has_repository_projects": true,
-			"default_repository_permission": "drp",
-			"members_can_create_repositories": true,
-			"members_can_create_public_repositories": false,
-			"members_can_create_private_repositories": true,
-			"members_can_create_internal_repositories": true,
-			"members_allowed_repository_creation_type": "marct",
-			"members_can_create_pages": true,
-			"members_can_create_public_pages": false,
-			"members_can_create_private_pages": true
-		},
-		"before": "before",
-		"after": "after"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -16060,6 +16078,15 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 			URL:  String("s"),
 			Name: String("n"),
 		},
+		PerformedViaGithubApp: &App{
+			ID:          Int64(1),
+			NodeID:      String("n"),
+			Slug:        String("s"),
+			Name:        String("n"),
+			Description: String("d"),
+			ExternalURL: String("e"),
+			HTMLURL:     String("h"),
+		},
 		Organization: &Organization{
 			BillingEmail:                         String("be"),
 			Blog:                                 String("b"),
@@ -16229,10 +16256,46 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 		"requested_team": {
 			"id": 1
 		},
+		"label": {
+			"id": 1
+		},
+		"before": "before",
+		"after": "after",
 		"repository": {
 			"id": 1,
 			"name": "n",
 			"url": "s"
+		},
+		"performed_via_github_app": {
+			"id": 1,
+			"node_id": "n",
+			"slug": "s",
+			"name": "n",
+			"description": "d",
+			"external_url": "e",
+			"html_url": "h"
+		},
+		"organization": {
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "loc",
+			"email": "e",
+			"twitter_username": "tu",
+			"description": "d",
+			"billing_email": "be",
+			"is_verified": true,
+			"has_organization_projects": true,
+			"has_repository_projects": true,
+			"default_repository_permission": "drp",
+			"members_can_create_repositories": true,
+			"members_can_create_public_repositories": false,
+			"members_can_create_private_repositories": true,
+			"members_can_create_internal_repositories": true,
+			"members_allowed_repository_creation_type": "marct",
+			"members_can_create_pages": true,
+			"members_can_create_public_pages": false,
+			"members_can_create_private_pages": true
 		},
 		"sender": {
 			"login": "l",
@@ -16339,34 +16402,7 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 				"url": "u"
 			},
 			"suspended_at": ` + referenceTimeStr + `
-		},
-		"label": {
-			"id": 1
-		},
-		"organization": {
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "loc",
-			"email": "e",
-			"twitter_username": "tu",
-			"description": "d",
-			"billing_email": "be",
-			"is_verified": true,
-			"has_organization_projects": true,
-			"has_repository_projects": true,
-			"default_repository_permission": "drp",
-			"members_can_create_repositories": true,
-			"members_can_create_public_repositories": false,
-			"members_can_create_private_repositories": true,
-			"members_can_create_internal_repositories": true,
-			"members_allowed_repository_creation_type": "marct",
-			"members_can_create_pages": true,
-			"members_can_create_public_pages": false,
-			"members_can_create_private_pages": true
-		},
-		"before": "before",
-		"after": "after"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
