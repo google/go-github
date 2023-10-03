@@ -10487,6 +10487,50 @@ func TestInstallationRepositoriesEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 }
 
+func TestInstallationRequest_GetAccount(tt *testing.T) {
+	i := &InstallationRequest{}
+	i.GetAccount()
+	i = nil
+	i.GetAccount()
+}
+
+func TestInstallationRequest_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	i := &InstallationRequest{CreatedAt: &zeroValue}
+	i.GetCreatedAt()
+	i = &InstallationRequest{}
+	i.GetCreatedAt()
+	i = nil
+	i.GetCreatedAt()
+}
+
+func TestInstallationRequest_GetID(tt *testing.T) {
+	var zeroValue int64
+	i := &InstallationRequest{ID: &zeroValue}
+	i.GetID()
+	i = &InstallationRequest{}
+	i.GetID()
+	i = nil
+	i.GetID()
+}
+
+func TestInstallationRequest_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationRequest{NodeID: &zeroValue}
+	i.GetNodeID()
+	i = &InstallationRequest{}
+	i.GetNodeID()
+	i = nil
+	i.GetNodeID()
+}
+
+func TestInstallationRequest_GetRequester(tt *testing.T) {
+	i := &InstallationRequest{}
+	i.GetRequester()
+	i = nil
+	i.GetRequester()
+}
+
 func TestInstallationSlugChange_GetFrom(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationSlugChange{From: &zeroValue}
