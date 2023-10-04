@@ -4519,6 +4519,13 @@ func TestCommitCommentEvent_GetInstallation(tt *testing.T) {
 	c.GetInstallation()
 }
 
+func TestCommitCommentEvent_GetOrg(tt *testing.T) {
+	c := &CommitCommentEvent{}
+	c.GetOrg()
+	c = nil
+	c.GetOrg()
+}
+
 func TestCommitCommentEvent_GetRepo(tt *testing.T) {
 	c := &CommitCommentEvent{}
 	c.GetRepo()
@@ -5969,6 +5976,13 @@ func TestDeleteEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 }
 
+func TestDeleteEvent_GetOrg(tt *testing.T) {
+	d := &DeleteEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
+}
+
 func TestDeleteEvent_GetPusherType(tt *testing.T) {
 	var zeroValue string
 	d := &DeleteEvent{PusherType: &zeroValue}
@@ -6570,6 +6584,13 @@ func TestDeploymentEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 }
 
+func TestDeploymentEvent_GetOrg(tt *testing.T) {
+	d := &DeploymentEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
+}
+
 func TestDeploymentEvent_GetRepo(tt *testing.T) {
 	d := &DeploymentEvent{}
 	d.GetRepo()
@@ -6909,6 +6930,13 @@ func TestDeploymentStatusEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 	d = nil
 	d.GetInstallation()
+}
+
+func TestDeploymentStatusEvent_GetOrg(tt *testing.T) {
+	d := &DeploymentStatusEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
 }
 
 func TestDeploymentStatusEvent_GetRepo(tt *testing.T) {
@@ -9011,6 +9039,13 @@ func TestGollumEvent_GetInstallation(tt *testing.T) {
 	g.GetInstallation()
 }
 
+func TestGollumEvent_GetOrg(tt *testing.T) {
+	g := &GollumEvent{}
+	g.GetOrg()
+	g = nil
+	g.GetOrg()
+}
+
 func TestGollumEvent_GetRepo(tt *testing.T) {
 	g := &GollumEvent{}
 	g.GetRepo()
@@ -10059,6 +10094,13 @@ func TestInstallationEvent_GetInstallation(tt *testing.T) {
 	i.GetInstallation()
 }
 
+func TestInstallationEvent_GetOrg(tt *testing.T) {
+	i := &InstallationEvent{}
+	i.GetOrg()
+	i = nil
+	i.GetOrg()
+}
+
 func TestInstallationEvent_GetRequester(tt *testing.T) {
 	i := &InstallationEvent{}
 	i.GetRequester()
@@ -10468,6 +10510,13 @@ func TestInstallationRepositoriesEvent_GetInstallation(tt *testing.T) {
 	i.GetInstallation()
 	i = nil
 	i.GetInstallation()
+}
+
+func TestInstallationRepositoriesEvent_GetOrg(tt *testing.T) {
+	i := &InstallationRepositoriesEvent{}
+	i.GetOrg()
+	i = nil
+	i.GetOrg()
 }
 
 func TestInstallationRepositoriesEvent_GetRepositorySelection(tt *testing.T) {
@@ -11704,6 +11753,13 @@ func TestIssuesEvent_GetMilestone(tt *testing.T) {
 	i.GetMilestone()
 	i = nil
 	i.GetMilestone()
+}
+
+func TestIssuesEvent_GetOrg(tt *testing.T) {
+	i := &IssuesEvent{}
+	i.GetOrg()
+	i = nil
+	i.GetOrg()
 }
 
 func TestIssuesEvent_GetRepo(tt *testing.T) {
@@ -12965,6 +13021,13 @@ func TestMarketplacePurchaseEvent_GetMarketplacePurchase(tt *testing.T) {
 	m.GetMarketplacePurchase()
 }
 
+func TestMarketplacePurchaseEvent_GetOrg(tt *testing.T) {
+	m := &MarketplacePurchaseEvent{}
+	m.GetOrg()
+	m = nil
+	m.GetOrg()
+}
+
 func TestMarketplacePurchaseEvent_GetPreviousMarketplacePurchase(tt *testing.T) {
 	m := &MarketplacePurchaseEvent{}
 	m.GetPreviousMarketplacePurchase()
@@ -13011,6 +13074,13 @@ func TestMemberEvent_GetMember(tt *testing.T) {
 	m.GetMember()
 	m = nil
 	m.GetMember()
+}
+
+func TestMemberEvent_GetOrg(tt *testing.T) {
+	m := &MemberEvent{}
+	m.GetOrg()
+	m = nil
+	m.GetOrg()
 }
 
 func TestMemberEvent_GetRepo(tt *testing.T) {
@@ -15620,6 +15690,13 @@ func TestPageBuildEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPageBuildEvent_GetOrg(tt *testing.T) {
+	p := &PageBuildEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
 func TestPageBuildEvent_GetRepo(tt *testing.T) {
 	p := &PageBuildEvent{}
 	p.GetRepo()
@@ -16261,6 +16338,13 @@ func TestPersonalAccessTokenRequest_GetID(tt *testing.T) {
 	p.GetID()
 	p = nil
 	p.GetID()
+}
+
+func TestPersonalAccessTokenRequest_GetOrg(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
 }
 
 func TestPersonalAccessTokenRequest_GetOwner(tt *testing.T) {
@@ -17980,6 +18064,13 @@ func TestPublicEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPublicEvent_GetOrg(tt *testing.T) {
+	p := &PublicEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
 func TestPublicEvent_GetRepo(tt *testing.T) {
 	p := &PublicEvent{}
 	p.GetRepo()
@@ -19110,6 +19201,13 @@ func TestPullRequestReviewCommentEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPullRequestReviewCommentEvent_GetOrg(tt *testing.T) {
+	p := &PullRequestReviewCommentEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
 func TestPullRequestReviewCommentEvent_GetPullRequest(tt *testing.T) {
 	p := &PullRequestReviewCommentEvent{}
 	p.GetPullRequest()
@@ -19340,6 +19438,13 @@ func TestPullRequestReviewThreadEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 	p = nil
 	p.GetInstallation()
+}
+
+func TestPullRequestReviewThreadEvent_GetOrg(tt *testing.T) {
+	p := &PullRequestReviewThreadEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
 }
 
 func TestPullRequestReviewThreadEvent_GetPullRequest(tt *testing.T) {
@@ -20528,6 +20633,13 @@ func TestReleaseEvent_GetInstallation(tt *testing.T) {
 	r.GetInstallation()
 	r = nil
 	r.GetInstallation()
+}
+
+func TestReleaseEvent_GetOrg(tt *testing.T) {
+	r := &ReleaseEvent{}
+	r.GetOrg()
+	r = nil
+	r.GetOrg()
 }
 
 func TestReleaseEvent_GetRelease(tt *testing.T) {
@@ -23011,6 +23123,13 @@ func TestRepositoryVulnerabilityAlertEvent_GetInstallation(tt *testing.T) {
 	r.GetInstallation()
 }
 
+func TestRepositoryVulnerabilityAlertEvent_GetOrg(tt *testing.T) {
+	r := &RepositoryVulnerabilityAlertEvent{}
+	r.GetOrg()
+	r = nil
+	r.GetOrg()
+}
+
 func TestRepositoryVulnerabilityAlertEvent_GetRepository(tt *testing.T) {
 	r := &RepositoryVulnerabilityAlertEvent{}
 	r.GetRepository()
@@ -25163,6 +25282,13 @@ func TestStatusEvent_GetName(tt *testing.T) {
 	s.GetName()
 	s = nil
 	s.GetName()
+}
+
+func TestStatusEvent_GetOrg(tt *testing.T) {
+	s := &StatusEvent{}
+	s.GetOrg()
+	s = nil
+	s.GetOrg()
 }
 
 func TestStatusEvent_GetRepo(tt *testing.T) {
@@ -27923,6 +28049,13 @@ func TestWatchEvent_GetInstallation(tt *testing.T) {
 	w.GetInstallation()
 	w = nil
 	w.GetInstallation()
+}
+
+func TestWatchEvent_GetOrg(tt *testing.T) {
+	w := &WatchEvent{}
+	w.GetOrg()
+	w = nil
+	w.GetOrg()
 }
 
 func TestWatchEvent_GetRepo(tt *testing.T) {
