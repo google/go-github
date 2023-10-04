@@ -10497,6 +10497,50 @@ func TestInstallationRepositoriesEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 }
 
+func TestInstallationRequest_GetAccount(tt *testing.T) {
+	i := &InstallationRequest{}
+	i.GetAccount()
+	i = nil
+	i.GetAccount()
+}
+
+func TestInstallationRequest_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	i := &InstallationRequest{CreatedAt: &zeroValue}
+	i.GetCreatedAt()
+	i = &InstallationRequest{}
+	i.GetCreatedAt()
+	i = nil
+	i.GetCreatedAt()
+}
+
+func TestInstallationRequest_GetID(tt *testing.T) {
+	var zeroValue int64
+	i := &InstallationRequest{ID: &zeroValue}
+	i.GetID()
+	i = &InstallationRequest{}
+	i.GetID()
+	i = nil
+	i.GetID()
+}
+
+func TestInstallationRequest_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationRequest{NodeID: &zeroValue}
+	i.GetNodeID()
+	i = &InstallationRequest{}
+	i.GetNodeID()
+	i = nil
+	i.GetNodeID()
+}
+
+func TestInstallationRequest_GetRequester(tt *testing.T) {
+	i := &InstallationRequest{}
+	i.GetRequester()
+	i = nil
+	i.GetRequester()
+}
+
 func TestInstallationSlugChange_GetFrom(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationSlugChange{From: &zeroValue}
@@ -11258,6 +11302,13 @@ func TestIssueEvent_GetMilestone(tt *testing.T) {
 	i.GetMilestone()
 }
 
+func TestIssueEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	i := &IssueEvent{}
+	i.GetPerformedViaGithubApp()
+	i = nil
+	i.GetPerformedViaGithubApp()
+}
+
 func TestIssueEvent_GetProjectCard(tt *testing.T) {
 	i := &IssueEvent{}
 	i.GetProjectCard()
@@ -11277,6 +11328,13 @@ func TestIssueEvent_GetRequestedReviewer(tt *testing.T) {
 	i.GetRequestedReviewer()
 	i = nil
 	i.GetRequestedReviewer()
+}
+
+func TestIssueEvent_GetRequestedTeam(tt *testing.T) {
+	i := &IssueEvent{}
+	i.GetRequestedTeam()
+	i = nil
+	i.GetRequestedTeam()
 }
 
 func TestIssueEvent_GetReviewRequester(tt *testing.T) {
@@ -18822,6 +18880,13 @@ func TestPullRequestEvent_GetOrganization(tt *testing.T) {
 	p.GetOrganization()
 }
 
+func TestPullRequestEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	p := &PullRequestEvent{}
+	p.GetPerformedViaGithubApp()
+	p = nil
+	p.GetPerformedViaGithubApp()
+}
+
 func TestPullRequestEvent_GetPullRequest(tt *testing.T) {
 	p := &PullRequestEvent{}
 	p.GetPullRequest()
@@ -19388,6 +19453,13 @@ func TestPullRequestTargetEvent_GetOrganization(tt *testing.T) {
 	p.GetOrganization()
 	p = nil
 	p.GetOrganization()
+}
+
+func TestPullRequestTargetEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetPerformedViaGithubApp()
+	p = nil
+	p.GetPerformedViaGithubApp()
 }
 
 func TestPullRequestTargetEvent_GetPullRequest(tt *testing.T) {
@@ -26367,6 +26439,13 @@ func TestTimeline_GetMilestone(tt *testing.T) {
 	t.GetMilestone()
 	t = nil
 	t.GetMilestone()
+}
+
+func TestTimeline_GetPerformedViaGithubApp(tt *testing.T) {
+	t := &Timeline{}
+	t.GetPerformedViaGithubApp()
+	t = nil
+	t.GetPerformedViaGithubApp()
 }
 
 func TestTimeline_GetProjectCard(tt *testing.T) {
