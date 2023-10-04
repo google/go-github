@@ -115,7 +115,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_Unmars
 		testMethod(t, r, "GET")
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"ghsa_id": 12334354}]`))
+		assertWrite(t, w, []byte(`[{"ghsa_id": 12334354}]`))
 	})
 
 	ctx := context.Background()
@@ -141,7 +141,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *tes
 		testMethod(t, r, "GET")
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[
+		assertWrite(t, w, []byte(`[
 			{
 				"ghsa_id": "GHSA-abcd-1234-efgh",
    				"cve_id": "CVE-2050-00000"
@@ -246,7 +246,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_UnmarshalErr
 		testMethod(t, r, "GET")
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"ghsa_id": 12334354}]`))
+		assertWrite(t, w, []byte(`[{"ghsa_id": 12334354}]`))
 	})
 
 	ctx := context.Background()
@@ -272,7 +272,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T
 		testMethod(t, r, "GET")
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[
+		assertWrite(t, w, []byte(`[
 			{
 				"ghsa_id": "GHSA-abcd-1234-efgh",
    				"cve_id": "CVE-2050-00000"
