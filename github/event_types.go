@@ -1692,18 +1692,33 @@ type WorkflowRunEvent struct {
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
 type SecurityAdvisory struct {
-	CVSS            *AdvisoryCVSS            `json:"cvss,omitempty"`
-	CWEs            []*AdvisoryCWEs          `json:"cwes,omitempty"`
-	GHSAID          *string                  `json:"ghsa_id,omitempty"`
-	Summary         *string                  `json:"summary,omitempty"`
-	Description     *string                  `json:"description,omitempty"`
-	Severity        *string                  `json:"severity,omitempty"`
-	Identifiers     []*AdvisoryIdentifier    `json:"identifiers,omitempty"`
-	References      []*AdvisoryReference     `json:"references,omitempty"`
-	PublishedAt     *Timestamp               `json:"published_at,omitempty"`
-	UpdatedAt       *Timestamp               `json:"updated_at,omitempty"`
-	WithdrawnAt     *Timestamp               `json:"withdrawn_at,omitempty"`
-	Vulnerabilities []*AdvisoryVulnerability `json:"vulnerabilities,omitempty"`
+	CVSS               *AdvisoryCVSS                 `json:"cvss,omitempty"`
+	CWEs               []*AdvisoryCWEs               `json:"cwes,omitempty"`
+	GHSAID             *string                       `json:"ghsa_id,omitempty"`
+	Summary            *string                       `json:"summary,omitempty"`
+	Description        *string                       `json:"description,omitempty"`
+	Severity           *string                       `json:"severity,omitempty"`
+	Identifiers        []*AdvisoryIdentifier         `json:"identifiers,omitempty"`
+	References         []*AdvisoryReference          `json:"references,omitempty"`
+	PublishedAt        *Timestamp                    `json:"published_at,omitempty"`
+	UpdatedAt          *Timestamp                    `json:"updated_at,omitempty"`
+	WithdrawnAt        *Timestamp                    `json:"withdrawn_at,omitempty"`
+	Vulnerabilities    []*AdvisoryVulnerability      `json:"vulnerabilities,omitempty"`
+	CVEID              *string                       `json:"cve_id,omitempty"`
+	URL                *string                       `json:"url,omitempty"`
+	HTMLURL            *string                       `json:"html_url,omitempty"`
+	Author             *User                         `json:"author,omitempty"`
+	Publisher          *User                         `json:"publisher,omitempty"`
+	State              *string                       `json:"state,omitempty"`
+	CreatedAt          *Timestamp                    `json:"created_at,omitempty"`
+	ClosedAt           *Timestamp                    `json:"closed_at,omitempty"`
+	Submission         *SecurityAdvisorySubmission   `json:"submission,omitempty"`
+	CWEIDs             []string                      `json:"cwe_ids,omitempty"`
+	Credits            []*RepoAdvisoryCredit         `json:"credits,omitempty"`
+	CreditsDetailed    []*RepoAdvisoryCreditDetailed `json:"credits_detailed,omitempty"`
+	CollaboratingUsers []*User                       `json:"collaborating_users,omitempty"`
+	CollaboratingTeams []*Team                       `json:"collaborating_teams,omitempty"`
+	PrivateFork        *Repository                   `json:"private_fork,omitempty"`
 }
 
 // AdvisoryIdentifier represents the identifier for a Security Advisory.
@@ -1723,6 +1738,12 @@ type AdvisoryVulnerability struct {
 	Severity               *string               `json:"severity,omitempty"`
 	VulnerableVersionRange *string               `json:"vulnerable_version_range,omitempty"`
 	FirstPatchedVersion    *FirstPatchedVersion  `json:"first_patched_version,omitempty"`
+
+	// PatchedVersions and VulnerableFunctions are used in the following APIs:
+	// - https://docs.github.com/en/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories-for-an-organization
+	// - https://docs.github.com/en/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories
+	PatchedVersions     *string  `json:"patched_versions,omitempty"`
+	VulnerableFunctions []string `json:"vulnerable_functions,omitempty"`
 }
 
 // VulnerabilityPackage represents the package object for an Advisory Vulnerability.

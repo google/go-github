@@ -503,6 +503,16 @@ func TestAdvisoryVulnerability_GetPackage(tt *testing.T) {
 	a.GetPackage()
 }
 
+func TestAdvisoryVulnerability_GetPatchedVersions(tt *testing.T) {
+	var zeroValue string
+	a := &AdvisoryVulnerability{PatchedVersions: &zeroValue}
+	a.GetPatchedVersions()
+	a = &AdvisoryVulnerability{}
+	a.GetPatchedVersions()
+	a = nil
+	a.GetPatchedVersions()
+}
+
 func TestAdvisoryVulnerability_GetSeverity(tt *testing.T) {
 	var zeroValue string
 	a := &AdvisoryVulnerability{Severity: &zeroValue}
@@ -20723,6 +20733,53 @@ func TestRenameOrgResponse_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRepoAdvisoryCredit_GetLogin(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCredit{Login: &zeroValue}
+	r.GetLogin()
+	r = &RepoAdvisoryCredit{}
+	r.GetLogin()
+	r = nil
+	r.GetLogin()
+}
+
+func TestRepoAdvisoryCredit_GetType(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCredit{Type: &zeroValue}
+	r.GetType()
+	r = &RepoAdvisoryCredit{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepoAdvisoryCreditDetailed_GetState(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCreditDetailed{State: &zeroValue}
+	r.GetState()
+	r = &RepoAdvisoryCreditDetailed{}
+	r.GetState()
+	r = nil
+	r.GetState()
+}
+
+func TestRepoAdvisoryCreditDetailed_GetType(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCreditDetailed{Type: &zeroValue}
+	r.GetType()
+	r = &RepoAdvisoryCreditDetailed{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepoAdvisoryCreditDetailed_GetUser(tt *testing.T) {
+	r := &RepoAdvisoryCreditDetailed{}
+	r.GetUser()
+	r = nil
+	r.GetUser()
+}
+
 func TestRepoDependencies_GetDownloadLocation(tt *testing.T) {
 	var zeroValue string
 	r := &RepoDependencies{DownloadLocation: &zeroValue}
@@ -24691,6 +24748,43 @@ func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
+func TestSecurityAdvisory_GetAuthor(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetAuthor()
+	s = nil
+	s.GetAuthor()
+}
+
+func TestSecurityAdvisory_GetClosedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecurityAdvisory{ClosedAt: &zeroValue}
+	s.GetClosedAt()
+	s = &SecurityAdvisory{}
+	s.GetClosedAt()
+	s = nil
+	s.GetClosedAt()
+}
+
+func TestSecurityAdvisory_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecurityAdvisory{CreatedAt: &zeroValue}
+	s.GetCreatedAt()
+	s = &SecurityAdvisory{}
+	s.GetCreatedAt()
+	s = nil
+	s.GetCreatedAt()
+}
+
+func TestSecurityAdvisory_GetCVEID(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{CVEID: &zeroValue}
+	s.GetCVEID()
+	s = &SecurityAdvisory{}
+	s.GetCVEID()
+	s = nil
+	s.GetCVEID()
+}
+
 func TestSecurityAdvisory_GetCVSS(tt *testing.T) {
 	s := &SecurityAdvisory{}
 	s.GetCVSS()
@@ -24718,6 +24812,23 @@ func TestSecurityAdvisory_GetGHSAID(tt *testing.T) {
 	s.GetGHSAID()
 }
 
+func TestSecurityAdvisory_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{HTMLURL: &zeroValue}
+	s.GetHTMLURL()
+	s = &SecurityAdvisory{}
+	s.GetHTMLURL()
+	s = nil
+	s.GetHTMLURL()
+}
+
+func TestSecurityAdvisory_GetPrivateFork(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetPrivateFork()
+	s = nil
+	s.GetPrivateFork()
+}
+
 func TestSecurityAdvisory_GetPublishedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	s := &SecurityAdvisory{PublishedAt: &zeroValue}
@@ -24728,6 +24839,13 @@ func TestSecurityAdvisory_GetPublishedAt(tt *testing.T) {
 	s.GetPublishedAt()
 }
 
+func TestSecurityAdvisory_GetPublisher(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetPublisher()
+	s = nil
+	s.GetPublisher()
+}
+
 func TestSecurityAdvisory_GetSeverity(tt *testing.T) {
 	var zeroValue string
 	s := &SecurityAdvisory{Severity: &zeroValue}
@@ -24736,6 +24854,23 @@ func TestSecurityAdvisory_GetSeverity(tt *testing.T) {
 	s.GetSeverity()
 	s = nil
 	s.GetSeverity()
+}
+
+func TestSecurityAdvisory_GetState(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{State: &zeroValue}
+	s.GetState()
+	s = &SecurityAdvisory{}
+	s.GetState()
+	s = nil
+	s.GetState()
+}
+
+func TestSecurityAdvisory_GetSubmission(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetSubmission()
+	s = nil
+	s.GetSubmission()
 }
 
 func TestSecurityAdvisory_GetSummary(tt *testing.T) {
@@ -24756,6 +24891,16 @@ func TestSecurityAdvisory_GetUpdatedAt(tt *testing.T) {
 	s.GetUpdatedAt()
 	s = nil
 	s.GetUpdatedAt()
+}
+
+func TestSecurityAdvisory_GetURL(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{URL: &zeroValue}
+	s.GetURL()
+	s = &SecurityAdvisory{}
+	s.GetURL()
+	s = nil
+	s.GetURL()
 }
 
 func TestSecurityAdvisory_GetWithdrawnAt(tt *testing.T) {
@@ -24818,6 +24963,16 @@ func TestSecurityAdvisoryEvent_GetSender(tt *testing.T) {
 	s.GetSender()
 	s = nil
 	s.GetSender()
+}
+
+func TestSecurityAdvisorySubmission_GetAccepted(tt *testing.T) {
+	var zeroValue bool
+	s := &SecurityAdvisorySubmission{Accepted: &zeroValue}
+	s.GetAccepted()
+	s = &SecurityAdvisorySubmission{}
+	s.GetAccepted()
+	s = nil
+	s.GetAccepted()
 }
 
 func TestSecurityAndAnalysis_GetAdvancedSecurity(tt *testing.T) {
