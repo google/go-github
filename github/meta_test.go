@@ -47,7 +47,7 @@ func TestAPIMeta_Marshal(t *testing.T) {
 	testJSONMarshal(t, a, want)
 }
 
-func TestMetaService_APIMeta(t *testing.T) {
+func TestMetaService_Get(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -57,7 +57,7 @@ func TestMetaService_APIMeta(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	meta, _, err := client.APIMeta(ctx)
+	meta, _, err := client.MetaService.Get(ctx)
 	if err != nil {
 		t.Errorf("Get returned error: %v", err)
 	}
@@ -80,7 +80,7 @@ func TestMetaService_APIMeta(t *testing.T) {
 
 	const methodName = "Get"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.APIMeta(ctx)
+		got, resp, err := client.MetaService.Get(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -103,7 +103,7 @@ func TestMetaService_Octocat(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Octocat(ctx, input)
+	got, _, err := client.MetaService.Octocat(ctx, input)
 	if err != nil {
 		t.Errorf("Octocat returned error: %v", err)
 	}
@@ -114,7 +114,7 @@ func TestMetaService_Octocat(t *testing.T) {
 
 	const methodName = "Octocat"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Octocat(ctx, input)
+		got, resp, err := client.MetaService.Octocat(ctx, input)
 		if got != "" {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -135,7 +135,7 @@ func TestMetaService_Zen(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Zen(ctx)
+	got, _, err := client.MetaService.Zen(ctx)
 	if err != nil {
 		t.Errorf("Zen returned error: %v", err)
 	}
@@ -146,7 +146,7 @@ func TestMetaService_Zen(t *testing.T) {
 
 	const methodName = "Zen"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Zen(ctx)
+		got, resp, err := client.MetaService.Zen(ctx)
 		if got != "" {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
