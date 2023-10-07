@@ -185,6 +185,36 @@ func TestActionsPermissions_GetSelectedActionsURL(tt *testing.T) {
 	a.GetSelectedActionsURL()
 }
 
+func TestActionsPermissionsEnterprise_GetAllowedActions(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{AllowedActions: &zeroValue}
+	a.GetAllowedActions()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetAllowedActions()
+	a = nil
+	a.GetAllowedActions()
+}
+
+func TestActionsPermissionsEnterprise_GetEnabledOrganizations(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{EnabledOrganizations: &zeroValue}
+	a.GetEnabledOrganizations()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetEnabledOrganizations()
+	a = nil
+	a.GetEnabledOrganizations()
+}
+
+func TestActionsPermissionsEnterprise_GetSelectedActionsURL(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{SelectedActionsURL: &zeroValue}
+	a.GetSelectedActionsURL()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetSelectedActionsURL()
+	a = nil
+	a.GetSelectedActionsURL()
+}
+
 func TestActionsPermissionsRepository_GetAllowedActions(tt *testing.T) {
 	var zeroValue string
 	a := &ActionsPermissionsRepository{AllowedActions: &zeroValue}
@@ -471,6 +501,16 @@ func TestAdvisoryVulnerability_GetPackage(tt *testing.T) {
 	a.GetPackage()
 	a = nil
 	a.GetPackage()
+}
+
+func TestAdvisoryVulnerability_GetPatchedVersions(tt *testing.T) {
+	var zeroValue string
+	a := &AdvisoryVulnerability{PatchedVersions: &zeroValue}
+	a.GetPatchedVersions()
+	a = &AdvisoryVulnerability{}
+	a.GetPatchedVersions()
+	a = nil
+	a.GetPatchedVersions()
 }
 
 func TestAdvisoryVulnerability_GetSeverity(tt *testing.T) {
@@ -1419,6 +1459,26 @@ func TestAuditEntry_GetExplanation(tt *testing.T) {
 	a.GetExplanation()
 	a = nil
 	a.GetExplanation()
+}
+
+func TestAuditEntry_GetExternalIdentityNameID(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ExternalIdentityNameID: &zeroValue}
+	a.GetExternalIdentityNameID()
+	a = &AuditEntry{}
+	a.GetExternalIdentityNameID()
+	a = nil
+	a.GetExternalIdentityNameID()
+}
+
+func TestAuditEntry_GetExternalIdentityUsername(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ExternalIdentityUsername: &zeroValue}
+	a.GetExternalIdentityUsername()
+	a = &AuditEntry{}
+	a.GetExternalIdentityUsername()
+	a = nil
+	a.GetExternalIdentityUsername()
 }
 
 func TestAuditEntry_GetFingerprint(tt *testing.T) {
@@ -4469,6 +4529,13 @@ func TestCommitCommentEvent_GetInstallation(tt *testing.T) {
 	c.GetInstallation()
 }
 
+func TestCommitCommentEvent_GetOrg(tt *testing.T) {
+	c := &CommitCommentEvent{}
+	c.GetOrg()
+	c = nil
+	c.GetOrg()
+}
+
 func TestCommitCommentEvent_GetRepo(tt *testing.T) {
 	c := &CommitCommentEvent{}
 	c.GetRepo()
@@ -5919,6 +5986,13 @@ func TestDeleteEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 }
 
+func TestDeleteEvent_GetOrg(tt *testing.T) {
+	d := &DeleteEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
+}
+
 func TestDeleteEvent_GetPusherType(tt *testing.T) {
 	var zeroValue string
 	d := &DeleteEvent{PusherType: &zeroValue}
@@ -6520,6 +6594,13 @@ func TestDeploymentEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 }
 
+func TestDeploymentEvent_GetOrg(tt *testing.T) {
+	d := &DeploymentEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
+}
+
 func TestDeploymentEvent_GetRepo(tt *testing.T) {
 	d := &DeploymentEvent{}
 	d.GetRepo()
@@ -6859,6 +6940,13 @@ func TestDeploymentStatusEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 	d = nil
 	d.GetInstallation()
+}
+
+func TestDeploymentStatusEvent_GetOrg(tt *testing.T) {
+	d := &DeploymentStatusEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
 }
 
 func TestDeploymentStatusEvent_GetRepo(tt *testing.T) {
@@ -8961,6 +9049,13 @@ func TestGollumEvent_GetInstallation(tt *testing.T) {
 	g.GetInstallation()
 }
 
+func TestGollumEvent_GetOrg(tt *testing.T) {
+	g := &GollumEvent{}
+	g.GetOrg()
+	g = nil
+	g.GetOrg()
+}
+
 func TestGollumEvent_GetRepo(tt *testing.T) {
 	g := &GollumEvent{}
 	g.GetRepo()
@@ -10009,6 +10104,13 @@ func TestInstallationEvent_GetInstallation(tt *testing.T) {
 	i.GetInstallation()
 }
 
+func TestInstallationEvent_GetOrg(tt *testing.T) {
+	i := &InstallationEvent{}
+	i.GetOrg()
+	i = nil
+	i.GetOrg()
+}
+
 func TestInstallationEvent_GetRequester(tt *testing.T) {
 	i := &InstallationEvent{}
 	i.GetRequester()
@@ -10420,6 +10522,13 @@ func TestInstallationRepositoriesEvent_GetInstallation(tt *testing.T) {
 	i.GetInstallation()
 }
 
+func TestInstallationRepositoriesEvent_GetOrg(tt *testing.T) {
+	i := &InstallationRepositoriesEvent{}
+	i.GetOrg()
+	i = nil
+	i.GetOrg()
+}
+
 func TestInstallationRepositoriesEvent_GetRepositorySelection(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationRepositoriesEvent{RepositorySelection: &zeroValue}
@@ -10435,6 +10544,50 @@ func TestInstallationRepositoriesEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 	i = nil
 	i.GetSender()
+}
+
+func TestInstallationRequest_GetAccount(tt *testing.T) {
+	i := &InstallationRequest{}
+	i.GetAccount()
+	i = nil
+	i.GetAccount()
+}
+
+func TestInstallationRequest_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	i := &InstallationRequest{CreatedAt: &zeroValue}
+	i.GetCreatedAt()
+	i = &InstallationRequest{}
+	i.GetCreatedAt()
+	i = nil
+	i.GetCreatedAt()
+}
+
+func TestInstallationRequest_GetID(tt *testing.T) {
+	var zeroValue int64
+	i := &InstallationRequest{ID: &zeroValue}
+	i.GetID()
+	i = &InstallationRequest{}
+	i.GetID()
+	i = nil
+	i.GetID()
+}
+
+func TestInstallationRequest_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationRequest{NodeID: &zeroValue}
+	i.GetNodeID()
+	i = &InstallationRequest{}
+	i.GetNodeID()
+	i = nil
+	i.GetNodeID()
+}
+
+func TestInstallationRequest_GetRequester(tt *testing.T) {
+	i := &InstallationRequest{}
+	i.GetRequester()
+	i = nil
+	i.GetRequester()
 }
 
 func TestInstallationSlugChange_GetFrom(tt *testing.T) {
@@ -11198,6 +11351,13 @@ func TestIssueEvent_GetMilestone(tt *testing.T) {
 	i.GetMilestone()
 }
 
+func TestIssueEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	i := &IssueEvent{}
+	i.GetPerformedViaGithubApp()
+	i = nil
+	i.GetPerformedViaGithubApp()
+}
+
 func TestIssueEvent_GetProjectCard(tt *testing.T) {
 	i := &IssueEvent{}
 	i.GetProjectCard()
@@ -11217,6 +11377,13 @@ func TestIssueEvent_GetRequestedReviewer(tt *testing.T) {
 	i.GetRequestedReviewer()
 	i = nil
 	i.GetRequestedReviewer()
+}
+
+func TestIssueEvent_GetRequestedTeam(tt *testing.T) {
+	i := &IssueEvent{}
+	i.GetRequestedTeam()
+	i = nil
+	i.GetRequestedTeam()
 }
 
 func TestIssueEvent_GetReviewRequester(tt *testing.T) {
@@ -11596,6 +11763,13 @@ func TestIssuesEvent_GetMilestone(tt *testing.T) {
 	i.GetMilestone()
 	i = nil
 	i.GetMilestone()
+}
+
+func TestIssuesEvent_GetOrg(tt *testing.T) {
+	i := &IssuesEvent{}
+	i.GetOrg()
+	i = nil
+	i.GetOrg()
 }
 
 func TestIssuesEvent_GetRepo(tt *testing.T) {
@@ -12857,6 +13031,13 @@ func TestMarketplacePurchaseEvent_GetMarketplacePurchase(tt *testing.T) {
 	m.GetMarketplacePurchase()
 }
 
+func TestMarketplacePurchaseEvent_GetOrg(tt *testing.T) {
+	m := &MarketplacePurchaseEvent{}
+	m.GetOrg()
+	m = nil
+	m.GetOrg()
+}
+
 func TestMarketplacePurchaseEvent_GetPreviousMarketplacePurchase(tt *testing.T) {
 	m := &MarketplacePurchaseEvent{}
 	m.GetPreviousMarketplacePurchase()
@@ -12903,6 +13084,13 @@ func TestMemberEvent_GetMember(tt *testing.T) {
 	m.GetMember()
 	m = nil
 	m.GetMember()
+}
+
+func TestMemberEvent_GetOrg(tt *testing.T) {
+	m := &MemberEvent{}
+	m.GetOrg()
+	m = nil
+	m.GetOrg()
 }
 
 func TestMemberEvent_GetRepo(tt *testing.T) {
@@ -15512,6 +15700,13 @@ func TestPageBuildEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPageBuildEvent_GetOrg(tt *testing.T) {
+	p := &PageBuildEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
 func TestPageBuildEvent_GetRepo(tt *testing.T) {
 	p := &PageBuildEvent{}
 	p.GetRepo()
@@ -16153,6 +16348,13 @@ func TestPersonalAccessTokenRequest_GetID(tt *testing.T) {
 	p.GetID()
 	p = nil
 	p.GetID()
+}
+
+func TestPersonalAccessTokenRequest_GetOrg(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
 }
 
 func TestPersonalAccessTokenRequest_GetOwner(tt *testing.T) {
@@ -17872,6 +18074,13 @@ func TestPublicEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPublicEvent_GetOrg(tt *testing.T) {
+	p := &PublicEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
 func TestPublicEvent_GetRepo(tt *testing.T) {
 	p := &PublicEvent{}
 	p.GetRepo()
@@ -18762,6 +18971,13 @@ func TestPullRequestEvent_GetOrganization(tt *testing.T) {
 	p.GetOrganization()
 }
 
+func TestPullRequestEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	p := &PullRequestEvent{}
+	p.GetPerformedViaGithubApp()
+	p = nil
+	p.GetPerformedViaGithubApp()
+}
+
 func TestPullRequestEvent_GetPullRequest(tt *testing.T) {
 	p := &PullRequestEvent{}
 	p.GetPullRequest()
@@ -18993,6 +19209,13 @@ func TestPullRequestReviewCommentEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 	p = nil
 	p.GetInstallation()
+}
+
+func TestPullRequestReviewCommentEvent_GetOrg(tt *testing.T) {
+	p := &PullRequestReviewCommentEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
 }
 
 func TestPullRequestReviewCommentEvent_GetPullRequest(tt *testing.T) {
@@ -19227,6 +19450,13 @@ func TestPullRequestReviewThreadEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPullRequestReviewThreadEvent_GetOrg(tt *testing.T) {
+	p := &PullRequestReviewThreadEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
 func TestPullRequestReviewThreadEvent_GetPullRequest(tt *testing.T) {
 	p := &PullRequestReviewThreadEvent{}
 	p.GetPullRequest()
@@ -19328,6 +19558,13 @@ func TestPullRequestTargetEvent_GetOrganization(tt *testing.T) {
 	p.GetOrganization()
 	p = nil
 	p.GetOrganization()
+}
+
+func TestPullRequestTargetEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetPerformedViaGithubApp()
+	p = nil
+	p.GetPerformedViaGithubApp()
 }
 
 func TestPullRequestTargetEvent_GetPullRequest(tt *testing.T) {
@@ -20408,6 +20645,13 @@ func TestReleaseEvent_GetInstallation(tt *testing.T) {
 	r.GetInstallation()
 }
 
+func TestReleaseEvent_GetOrg(tt *testing.T) {
+	r := &ReleaseEvent{}
+	r.GetOrg()
+	r = nil
+	r.GetOrg()
+}
+
 func TestReleaseEvent_GetRelease(tt *testing.T) {
 	r := &ReleaseEvent{}
 	r.GetRelease()
@@ -20487,6 +20731,53 @@ func TestRenameOrgResponse_GetURL(tt *testing.T) {
 	r.GetURL()
 	r = nil
 	r.GetURL()
+}
+
+func TestRepoAdvisoryCredit_GetLogin(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCredit{Login: &zeroValue}
+	r.GetLogin()
+	r = &RepoAdvisoryCredit{}
+	r.GetLogin()
+	r = nil
+	r.GetLogin()
+}
+
+func TestRepoAdvisoryCredit_GetType(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCredit{Type: &zeroValue}
+	r.GetType()
+	r = &RepoAdvisoryCredit{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepoAdvisoryCreditDetailed_GetState(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCreditDetailed{State: &zeroValue}
+	r.GetState()
+	r = &RepoAdvisoryCreditDetailed{}
+	r.GetState()
+	r = nil
+	r.GetState()
+}
+
+func TestRepoAdvisoryCreditDetailed_GetType(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCreditDetailed{Type: &zeroValue}
+	r.GetType()
+	r = &RepoAdvisoryCreditDetailed{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepoAdvisoryCreditDetailed_GetUser(tt *testing.T) {
+	r := &RepoAdvisoryCreditDetailed{}
+	r.GetUser()
+	r = nil
+	r.GetUser()
 }
 
 func TestRepoDependencies_GetDownloadLocation(tt *testing.T) {
@@ -22889,6 +23180,13 @@ func TestRepositoryVulnerabilityAlertEvent_GetInstallation(tt *testing.T) {
 	r.GetInstallation()
 }
 
+func TestRepositoryVulnerabilityAlertEvent_GetOrg(tt *testing.T) {
+	r := &RepositoryVulnerabilityAlertEvent{}
+	r.GetOrg()
+	r = nil
+	r.GetOrg()
+}
+
 func TestRepositoryVulnerabilityAlertEvent_GetRepository(tt *testing.T) {
 	r := &RepositoryVulnerabilityAlertEvent{}
 	r.GetRepository()
@@ -24450,6 +24748,43 @@ func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
+func TestSecurityAdvisory_GetAuthor(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetAuthor()
+	s = nil
+	s.GetAuthor()
+}
+
+func TestSecurityAdvisory_GetClosedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecurityAdvisory{ClosedAt: &zeroValue}
+	s.GetClosedAt()
+	s = &SecurityAdvisory{}
+	s.GetClosedAt()
+	s = nil
+	s.GetClosedAt()
+}
+
+func TestSecurityAdvisory_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecurityAdvisory{CreatedAt: &zeroValue}
+	s.GetCreatedAt()
+	s = &SecurityAdvisory{}
+	s.GetCreatedAt()
+	s = nil
+	s.GetCreatedAt()
+}
+
+func TestSecurityAdvisory_GetCVEID(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{CVEID: &zeroValue}
+	s.GetCVEID()
+	s = &SecurityAdvisory{}
+	s.GetCVEID()
+	s = nil
+	s.GetCVEID()
+}
+
 func TestSecurityAdvisory_GetCVSS(tt *testing.T) {
 	s := &SecurityAdvisory{}
 	s.GetCVSS()
@@ -24477,6 +24812,23 @@ func TestSecurityAdvisory_GetGHSAID(tt *testing.T) {
 	s.GetGHSAID()
 }
 
+func TestSecurityAdvisory_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{HTMLURL: &zeroValue}
+	s.GetHTMLURL()
+	s = &SecurityAdvisory{}
+	s.GetHTMLURL()
+	s = nil
+	s.GetHTMLURL()
+}
+
+func TestSecurityAdvisory_GetPrivateFork(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetPrivateFork()
+	s = nil
+	s.GetPrivateFork()
+}
+
 func TestSecurityAdvisory_GetPublishedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	s := &SecurityAdvisory{PublishedAt: &zeroValue}
@@ -24487,6 +24839,13 @@ func TestSecurityAdvisory_GetPublishedAt(tt *testing.T) {
 	s.GetPublishedAt()
 }
 
+func TestSecurityAdvisory_GetPublisher(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetPublisher()
+	s = nil
+	s.GetPublisher()
+}
+
 func TestSecurityAdvisory_GetSeverity(tt *testing.T) {
 	var zeroValue string
 	s := &SecurityAdvisory{Severity: &zeroValue}
@@ -24495,6 +24854,23 @@ func TestSecurityAdvisory_GetSeverity(tt *testing.T) {
 	s.GetSeverity()
 	s = nil
 	s.GetSeverity()
+}
+
+func TestSecurityAdvisory_GetState(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{State: &zeroValue}
+	s.GetState()
+	s = &SecurityAdvisory{}
+	s.GetState()
+	s = nil
+	s.GetState()
+}
+
+func TestSecurityAdvisory_GetSubmission(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetSubmission()
+	s = nil
+	s.GetSubmission()
 }
 
 func TestSecurityAdvisory_GetSummary(tt *testing.T) {
@@ -24515,6 +24891,16 @@ func TestSecurityAdvisory_GetUpdatedAt(tt *testing.T) {
 	s.GetUpdatedAt()
 	s = nil
 	s.GetUpdatedAt()
+}
+
+func TestSecurityAdvisory_GetURL(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{URL: &zeroValue}
+	s.GetURL()
+	s = &SecurityAdvisory{}
+	s.GetURL()
+	s = nil
+	s.GetURL()
 }
 
 func TestSecurityAdvisory_GetWithdrawnAt(tt *testing.T) {
@@ -24577,6 +24963,16 @@ func TestSecurityAdvisoryEvent_GetSender(tt *testing.T) {
 	s.GetSender()
 	s = nil
 	s.GetSender()
+}
+
+func TestSecurityAdvisorySubmission_GetAccepted(tt *testing.T) {
+	var zeroValue bool
+	s := &SecurityAdvisorySubmission{Accepted: &zeroValue}
+	s.GetAccepted()
+	s = &SecurityAdvisorySubmission{}
+	s.GetAccepted()
+	s = nil
+	s.GetAccepted()
 }
 
 func TestSecurityAndAnalysis_GetAdvancedSecurity(tt *testing.T) {
@@ -25041,6 +25437,13 @@ func TestStatusEvent_GetName(tt *testing.T) {
 	s.GetName()
 	s = nil
 	s.GetName()
+}
+
+func TestStatusEvent_GetOrg(tt *testing.T) {
+	s := &StatusEvent{}
+	s.GetOrg()
+	s = nil
+	s.GetOrg()
 }
 
 func TestStatusEvent_GetRepo(tt *testing.T) {
@@ -26162,6 +26565,13 @@ func TestTimeline_GetMilestone(tt *testing.T) {
 	t.GetMilestone()
 	t = nil
 	t.GetMilestone()
+}
+
+func TestTimeline_GetPerformedViaGithubApp(tt *testing.T) {
+	t := &Timeline{}
+	t.GetPerformedViaGithubApp()
+	t = nil
+	t.GetPerformedViaGithubApp()
 }
 
 func TestTimeline_GetProjectCard(tt *testing.T) {
@@ -27794,6 +28204,13 @@ func TestWatchEvent_GetInstallation(tt *testing.T) {
 	w.GetInstallation()
 	w = nil
 	w.GetInstallation()
+}
+
+func TestWatchEvent_GetOrg(tt *testing.T) {
+	w := &WatchEvent{}
+	w.GetOrg()
+	w = nil
+	w.GetOrg()
 }
 
 func TestWatchEvent_GetRepo(tt *testing.T) {

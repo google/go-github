@@ -1566,7 +1566,7 @@ func formatRateReset(d time.Duration) string {
 
 // When using roundTripWithOptionalFollowRedirect, note that it
 // is the responsibility of the caller to close the response body.
-func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, followRedirects bool, opts ...RequestOption) (*http.Response, error) {
+func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, maxRedirects int, opts ...RequestOption) (*http.Response, error) {
 	req, err := c.NewRequest("GET", u, nil, opts...)
 	if err != nil {
 		return nil, err
@@ -1585,10 +1585,10 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 	}
 
 	// If redirect response is returned, follow it
-	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
+	if maxRedirects > 0 && resp.StatusCode == http.StatusMovedPermanently {
 		_ = resp.Body.Close()
 		u = resp.Header.Get("Location")
-		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, false, opts...)
+		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects-1, opts...)
 	}
 	return resp, err
 }

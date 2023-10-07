@@ -919,51 +919,73 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true}`)
-	})
-
-	ctx := context.Background()
-	branch, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b", false)
-	if err != nil {
-		t.Errorf("Repositories.GetBranch returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%"},
 	}
 
-	want := &Branch{
-		Name: String("n"),
-		Commit: &RepositoryCommit{
-			SHA: String("s"),
-			Commit: &Commit{
-				Message: String("m"),
+	for _, test := range tests {
+		mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+			testMethod(t, r, "GET")
+			fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true}`)
+		})
+
+		ctx := context.Background()
+		branch, _, err := client.Repositories.GetBranch(ctx, "o", "r", test.branch, 0)
+		if err != nil {
+			t.Errorf("Repositories.GetBranch returned error: %v", err)
+		}
+
+		want := &Branch{
+			Name: String("n"),
+			Commit: &RepositoryCommit{
+				SHA: String("s"),
+				Commit: &Commit{
+					Message: String("m"),
+				},
 			},
-		},
-		Protected: Bool(true),
-	}
+			Protected: Bool(true),
+		}
 
-	if !cmp.Equal(branch, want) {
-		t.Errorf("Repositories.GetBranch returned %+v, want %+v", branch, want)
-	}
+		if !cmp.Equal(branch, want) {
+			t.Errorf("Repositories.GetBranch returned %+v, want %+v", branch, want)
+		}
 
-	const methodName = "GetBranch"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", false)
-		return err
-	})
+		const methodName = "GetBranch"
+		testBadOptions(t, methodName, func() (err error) {
+			_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", 0)
+			return err
+		})
+	}
 }
 
 func TestRepositoriesService_GetBranch_BadJSONResponse(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"name":"n", "commit":{"sha":...truncated`)
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	ctx := context.Background()
-	if _, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b", false); err == nil {
-		t.Error("Repositories.GetBranch returned no error; wanted JSON error")
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				fmt.Fprint(w, `{"name":"n", "commit":{"sha":...truncated`)
+			})
+
+			ctx := context.Background()
+			if _, _, err := client.Repositories.GetBranch(ctx, "o", "r", test.branch, 0); err == nil {
+				t.Error("Repositories.GetBranch returned no error; wanted JSON error")
+			}
+		})
 	}
 }
 
@@ -981,7 +1003,7 @@ func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t 
 		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true}`)
 	})
 	ctx := context.Background()
-	branch, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", true)
+	branch, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetBranch returned error: %v", err)
 	}
@@ -1005,843 +1027,963 @@ func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t 
 }
 
 func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		http.Error(w, "branch not found", http.StatusNotFound)
-	})
-	ctx := context.Background()
-	_, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", true)
-	if err == nil {
-		t.Error("Repositories.GetBranch returned error: nil")
-	}
-	if resp.StatusCode != http.StatusNotFound {
-		t.Errorf("Repositories.GetBranch returned status: %d, want %d", resp.StatusCode, http.StatusNotFound)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat-branch-50%"},
 	}
 
-	// Add custom round tripper
-	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
-		return nil, errors.New("failed to get branch")
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	const methodName = "GetBranch"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", true)
-		return err
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				http.Error(w, "branch not found", http.StatusNotFound)
+			})
+			ctx := context.Background()
+			_, resp, err := client.Repositories.GetBranch(ctx, "o", "r", test.branch, 1)
+			if err == nil {
+				t.Error("Repositories.GetBranch returned error: nil")
+			}
+			if resp.StatusCode != http.StatusNotFound {
+				t.Errorf("Repositories.GetBranch returned status: %d, want %d", resp.StatusCode, http.StatusNotFound)
+			}
+
+			// Add custom round tripper
+			client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+				return nil, errors.New("failed to get branch")
+			})
+
+			const methodName = "GetBranch"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", 1)
+				return err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_RenameBranch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	renameBranchReq := "nn"
-
-	mux.HandleFunc("/repos/o/r/branches/b/rename", func(w http.ResponseWriter, r *http.Request) {
-		v := new(renameBranchRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
-
-		testMethod(t, r, "POST")
-		want := &renameBranchRequest{NewName: "nn"}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
-		fmt.Fprint(w, `{"protected":true,"name":"nn"}`)
-	})
-
-	ctx := context.Background()
-	got, _, err := client.Repositories.RenameBranch(ctx, "o", "r", "b", renameBranchReq)
-	if err != nil {
-		t.Errorf("Repositories.RenameBranch returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/rename"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/rename"},
 	}
 
-	want := &Branch{Name: String("nn"), Protected: Bool(true)}
-	if !cmp.Equal(got, want) {
-		t.Errorf("Repositories.RenameBranch returned %+v, want %+v", got, want)
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			renameBranchReq := "nn"
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				v := new(renameBranchRequest)
+				assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+				testMethod(t, r, "POST")
+				want := &renameBranchRequest{NewName: renameBranchReq}
+				if !cmp.Equal(v, want) {
+					t.Errorf("Request body = %+v, want %+v", v, want)
+				}
+
+				fmt.Fprint(w, `{"protected":true,"name":"nn"}`)
+			})
+
+			ctx := context.Background()
+			got, _, err := client.Repositories.RenameBranch(ctx, "o", "r", test.branch, renameBranchReq)
+			if err != nil {
+				t.Errorf("Repositories.RenameBranch returned error: %v", err)
+			}
+
+			want := &Branch{Name: String("nn"), Protected: Bool(true)}
+			if !cmp.Equal(got, want) {
+				t.Errorf("Repositories.RenameBranch returned %+v, want %+v", got, want)
+			}
+
+			const methodName = "RenameBranch"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.RenameBranch(ctx, "\n", "\n", "\n", renameBranchReq)
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.RenameBranch(ctx, "o", "r", test.branch, renameBranchReq)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
 	}
-
-	const methodName = "RenameBranch"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.RenameBranch(ctx, "\n", "\n", "\n", renameBranchReq)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.RenameBranch(ctx, "o", "r", "b", renameBranchReq)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_GetBranchProtection(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch               string
+		urlPath              string
+		enforceAdminsURLPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection", enforceAdminsURLPath: "/repos/o/r/branches/b/protection/enforce_admins"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection", enforceAdminsURLPath: "/repos/o/r/branches/feat/branch-50%/protection/enforce_admins"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-		fmt.Fprintf(w, `{
-				"required_status_checks":{
-					"strict":true,
-					"contexts":["continuous-integration"],
-					"checks": [
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				// TODO: remove custom Accept header when this API fully launches
+				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+				fmt.Fprintf(w, `{
+						"required_status_checks":{
+							"strict":true,
+							"contexts":["continuous-integration"],
+							"checks": [
+								{
+									"context": "continuous-integration",
+									"app_id": null
+								}
+							]
+						},
+						"required_pull_request_reviews":{
+							"dismissal_restrictions":{
+								"users":[{
+									"id":3,
+									"login":"u"
+								}],
+								"teams":[{
+									"id":4,
+									"slug":"t"
+								}],
+								"apps":[{
+									"id":5,
+									"slug":"a"
+								}]
+							},
+							"dismiss_stale_reviews":true,
+							"require_code_owner_reviews":true,
+							"require_last_push_approval":false,
+							"required_approving_review_count":1
+							},
+							"enforce_admins":{
+								"url":"%s",
+								"enabled":true
+							},
+							"restrictions":{
+								"users":[{"id":1,"login":"u"}],
+								"teams":[{"id":2,"slug":"t"}],
+								"apps":[{"id":3,"slug":"a"}]
+							},
+							"required_conversation_resolution": {
+								"enabled": true
+							},
+							"block_creations": {
+								"enabled": false
+							},
+							"lock_branch": {
+								"enabled": false
+							},
+							"allow_fork_syncing": {
+								"enabled": false
+							}
+						}`, test.enforceAdminsURLPath)
+			})
+
+			ctx := context.Background()
+			protection, _, err := client.Repositories.GetBranchProtection(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.GetBranchProtection returned error: %v", err)
+			}
+
+			want := &Protection{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Strict:   true,
+					Contexts: []string{"continuous-integration"},
+					Checks: []*RequiredStatusCheck{
 						{
-							"context": "continuous-integration",
-							"app_id": null
-						}
-					]
+							Context: "continuous-integration",
+						},
+					},
 				},
-				"required_pull_request_reviews":{
-					"dismissal_restrictions":{
-						"users":[{
-							"id":3,
-							"login":"u"
-						}],
-						"teams":[{
-							"id":4,
-							"slug":"t"
-						}],
-						"apps":[{
-							"id":5,
-							"slug":"a"
-						}]
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+					DismissStaleReviews: true,
+					DismissalRestrictions: &DismissalRestrictions{
+						Users: []*User{
+							{Login: String("u"), ID: Int64(3)},
+						},
+						Teams: []*Team{
+							{Slug: String("t"), ID: Int64(4)},
+						},
+						Apps: []*App{
+							{Slug: String("a"), ID: Int64(5)},
+						},
 					},
-					"dismiss_stale_reviews":true,
-					"require_code_owner_reviews":true,
-					"require_last_push_approval":false,
-					"required_approving_review_count":1
+					RequireCodeOwnerReviews:      true,
+					RequiredApprovingReviewCount: 1,
+					RequireLastPushApproval:      false,
+				},
+				EnforceAdmins: &AdminEnforcement{
+					URL:     String(test.enforceAdminsURLPath),
+					Enabled: true,
+				},
+				Restrictions: &BranchRestrictions{
+					Users: []*User{
+						{Login: String("u"), ID: Int64(1)},
 					},
-					"enforce_admins":{
-						"url":"/repos/o/r/branches/b/protection/enforce_admins",
-						"enabled":true
+					Teams: []*Team{
+						{Slug: String("t"), ID: Int64(2)},
 					},
-					"restrictions":{
-						"users":[{"id":1,"login":"u"}],
-						"teams":[{"id":2,"slug":"t"}],
-						"apps":[{"id":3,"slug":"a"}]
+					Apps: []*App{
+						{Slug: String("a"), ID: Int64(3)},
 					},
-					"required_conversation_resolution": {
-						"enabled": true
-					},
-					"block_creations": {
-						"enabled": false
-					},
-					"lock_branch": {
-						"enabled": false
-					},
-					"allow_fork_syncing": {
-						"enabled": false
-					}
-				}`)
-	})
+				},
+				RequiredConversationResolution: &RequiredConversationResolution{
+					Enabled: true,
+				},
+				BlockCreations: &BlockCreations{
+					Enabled: Bool(false),
+				},
+				LockBranch: &LockBranch{
+					Enabled: Bool(false),
+				},
+				AllowForkSyncing: &AllowForkSyncing{
+					Enabled: Bool(false),
+				},
+			}
+			if !cmp.Equal(protection, want) {
+				t.Errorf("Repositories.GetBranchProtection returned %+v, want %+v", protection, want)
+			}
 
-	ctx := context.Background()
-	protection, _, err := client.Repositories.GetBranchProtection(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.GetBranchProtection returned error: %v", err)
+			const methodName = "GetBranchProtection"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.GetBranchProtection(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.GetBranchProtection(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
 	}
-
-	want := &Protection{
-		RequiredStatusChecks: &RequiredStatusChecks{
-			Strict:   true,
-			Contexts: []string{"continuous-integration"},
-			Checks: []*RequiredStatusCheck{
-				{
-					Context: "continuous-integration",
-				},
-			},
-		},
-		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
-			DismissStaleReviews: true,
-			DismissalRestrictions: &DismissalRestrictions{
-				Users: []*User{
-					{Login: String("u"), ID: Int64(3)},
-				},
-				Teams: []*Team{
-					{Slug: String("t"), ID: Int64(4)},
-				},
-				Apps: []*App{
-					{Slug: String("a"), ID: Int64(5)},
-				},
-			},
-			RequireCodeOwnerReviews:      true,
-			RequiredApprovingReviewCount: 1,
-			RequireLastPushApproval:      false,
-		},
-		EnforceAdmins: &AdminEnforcement{
-			URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
-			Enabled: true,
-		},
-		Restrictions: &BranchRestrictions{
-			Users: []*User{
-				{Login: String("u"), ID: Int64(1)},
-			},
-			Teams: []*Team{
-				{Slug: String("t"), ID: Int64(2)},
-			},
-			Apps: []*App{
-				{Slug: String("a"), ID: Int64(3)},
-			},
-		},
-		RequiredConversationResolution: &RequiredConversationResolution{
-			Enabled: true,
-		},
-		BlockCreations: &BlockCreations{
-			Enabled: Bool(false),
-		},
-		LockBranch: &LockBranch{
-			Enabled: Bool(false),
-		},
-		AllowForkSyncing: &AllowForkSyncing{
-			Enabled: Bool(false),
-		},
-	}
-	if !cmp.Equal(protection, want) {
-		t.Errorf("Repositories.GetBranchProtection returned %+v, want %+v", protection, want)
-	}
-
-	const methodName = "GetBranchProtection"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetBranchProtection(ctx, "\n", "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetBranchProtection(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-		fmt.Fprintf(w, `{
-				"required_status_checks":{
-					"strict":true,
-					"contexts":["continuous-integration"],
-					"checks": [
-						{
-							"context": "continuous-integration",
-							"app_id": null
+	tests := []struct {
+		branch               string
+		urlPath              string
+		enforceAdminsURLPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection", enforceAdminsURLPath: "/repos/o/r/branches/b/protection/enforce_admins"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection", enforceAdminsURLPath: "/repos/o/r/branches/feat/branch-50%/protection/enforce_admins"},
+	}
+
+	for _, test := range tests {
+		mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+			testMethod(t, r, "GET")
+			// TODO: remove custom Accept header when this API fully launches
+			testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+			fmt.Fprintf(w, `{
+					"required_status_checks":{
+						"strict":true,
+						"contexts":["continuous-integration"],
+						"checks": [
+							{
+								"context": "continuous-integration",
+								"app_id": null
+							}
+						]
+					},
+					"required_pull_request_reviews":{
+						"dismiss_stale_reviews":true,
+						"require_code_owner_reviews":true,
+						"required_approving_review_count":1
+						},
+						"enforce_admins":{
+							"url":"%s",
+							"enabled":true
+						},
+						"restrictions":{
+							"users":[{"id":1,"login":"u"}],
+							"teams":[{"id":2,"slug":"t"}]
 						}
-					]
-				},
-				"required_pull_request_reviews":{
-					"dismiss_stale_reviews":true,
-					"require_code_owner_reviews":true,
-					"required_approving_review_count":1
-					},
-					"enforce_admins":{
-						"url":"/repos/o/r/branches/b/protection/enforce_admins",
-						"enabled":true
-					},
-					"restrictions":{
-						"users":[{"id":1,"login":"u"}],
-						"teams":[{"id":2,"slug":"t"}]
-					}
-				}`)
-	})
+					}`, test.enforceAdminsURLPath)
+		})
 
-	ctx := context.Background()
-	protection, _, err := client.Repositories.GetBranchProtection(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.GetBranchProtection returned error: %v", err)
-	}
+		ctx := context.Background()
+		protection, _, err := client.Repositories.GetBranchProtection(ctx, "o", "r", test.branch)
+		if err != nil {
+			t.Errorf("Repositories.GetBranchProtection returned error: %v", err)
+		}
 
-	want := &Protection{
-		RequiredStatusChecks: &RequiredStatusChecks{
-			Strict:   true,
-			Contexts: []string{"continuous-integration"},
-			Checks: []*RequiredStatusCheck{
-				{
-					Context: "continuous-integration",
+		want := &Protection{
+			RequiredStatusChecks: &RequiredStatusChecks{
+				Strict:   true,
+				Contexts: []string{"continuous-integration"},
+				Checks: []*RequiredStatusCheck{
+					{
+						Context: "continuous-integration",
+					},
 				},
 			},
-		},
-		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
-			DismissStaleReviews:          true,
-			DismissalRestrictions:        nil,
-			RequireCodeOwnerReviews:      true,
-			RequiredApprovingReviewCount: 1,
-		},
-		EnforceAdmins: &AdminEnforcement{
-			URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
-			Enabled: true,
-		},
-		Restrictions: &BranchRestrictions{
-			Users: []*User{
-				{Login: String("u"), ID: Int64(1)},
+			RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+				DismissStaleReviews:          true,
+				DismissalRestrictions:        nil,
+				RequireCodeOwnerReviews:      true,
+				RequiredApprovingReviewCount: 1,
 			},
-			Teams: []*Team{
-				{Slug: String("t"), ID: Int64(2)},
+			EnforceAdmins: &AdminEnforcement{
+				URL:     String(test.enforceAdminsURLPath),
+				Enabled: true,
 			},
-		},
-	}
-	if !cmp.Equal(protection, want) {
-		t.Errorf("Repositories.GetBranchProtection returned %+v, want %+v", protection, want)
+			Restrictions: &BranchRestrictions{
+				Users: []*User{
+					{Login: String("u"), ID: Int64(1)},
+				},
+				Teams: []*Team{
+					{Slug: String("t"), ID: Int64(2)},
+				},
+			},
+		}
+		if !cmp.Equal(protection, want) {
+			t.Errorf("Repositories.GetBranchProtection returned %+v, want %+v", protection, want)
+		}
 	}
 }
 
 func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, `{
-			"message": %q,
-			"documentation_url": "https://docs.github.com/rest/repos#get-branch-protection"
-			}`, githubBranchNotProtected)
-	})
-
-	ctx := context.Background()
-	protection, _, err := client.Repositories.GetBranchProtection(ctx, "o", "r", "b")
-
-	if protection != nil {
-		t.Errorf("Repositories.GetBranchProtection returned non-nil protection data")
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
 	}
 
-	if err != ErrBranchNotProtected {
-		t.Errorf("Repositories.GetBranchProtection returned an invalid error: %v", err)
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+
+				w.WriteHeader(http.StatusBadRequest)
+				fmt.Fprintf(w, `{
+					"message": %q,
+					"documentation_url": "https://docs.github.com/rest/repos#get-branch-protection"
+					}`, githubBranchNotProtected)
+			})
+
+			ctx := context.Background()
+			protection, _, err := client.Repositories.GetBranchProtection(ctx, "o", "r", test.branch)
+
+			if protection != nil {
+				t.Errorf("Repositories.GetBranchProtection returned non-nil protection data")
+			}
+
+			if err != ErrBranchNotProtected {
+				t.Errorf("Repositories.GetBranchProtection returned an invalid error: %v", err)
+			}
+		})
 	}
 }
 
 func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	input := &ProtectionRequest{
-		RequiredStatusChecks: &RequiredStatusChecks{
-			Strict:   true,
-			Contexts: []string{"continuous-integration"},
-		},
-		RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
-			DismissStaleReviews: true,
-			DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
-				Users: &[]string{"uu"},
-				Teams: &[]string{"tt"},
-				Apps:  &[]string{"aa"},
-			},
-			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
-				Users: []string{"uuu"},
-				Teams: []string{"ttt"},
-				Apps:  []string{"aaa"},
-			},
-		},
-		Restrictions: &BranchRestrictionsRequest{
-			Users: []string{"u"},
-			Teams: []string{"t"},
-			Apps:  []string{"a"},
-		},
-		BlockCreations:   Bool(true),
-		LockBranch:       Bool(true),
-		AllowForkSyncing: Bool(true),
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
 	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ProtectionRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-		fmt.Fprintf(w, `{
-			"required_status_checks":{
-				"strict":true,
-				"contexts":["continuous-integration"],
-				"checks": [
-					{
-						"context": "continuous-integration",
-						"app_id": null
-					}
-				]
-			},
-			"required_pull_request_reviews":{
-				"dismissal_restrictions":{
-					"users":[{
-						"id":3,
-						"login":"uu"
-					}],
-					"teams":[{
-						"id":4,
-						"slug":"tt"
-					}],
-					"apps":[{
-						"id":5,
-						"slug":"aa"
-					}]
+			input := &ProtectionRequest{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Strict:   true,
+					Contexts: []string{"continuous-integration"},
 				},
-				"dismiss_stale_reviews":true,
-				"require_code_owner_reviews":true,
-				"bypass_pull_request_allowances": {
-					"users":[{"id":10,"login":"uuu"}],
-					"teams":[{"id":20,"slug":"ttt"}],
-					"apps":[{"id":30,"slug":"aaa"}]
-				}
-			},
-			"restrictions":{
-				"users":[{"id":1,"login":"u"}],
-				"teams":[{"id":2,"slug":"t"}],
-				"apps":[{"id":3,"slug":"a"}]
-			},
-			"block_creations": {
-				"enabled": true
-			},
-			"lock_branch": {
-				"enabled": true
-			},
-			"allow_fork_syncing": {
-				"enabled": true
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
+					DismissStaleReviews: true,
+					DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
+						Users: &[]string{"uu"},
+						Teams: &[]string{"tt"},
+						Apps:  &[]string{"aa"},
+					},
+					BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
+						Users: []string{"uuu"},
+						Teams: []string{"ttt"},
+						Apps:  []string{"aaa"},
+					},
+				},
+				Restrictions: &BranchRestrictionsRequest{
+					Users: []string{"u"},
+					Teams: []string{"t"},
+					Apps:  []string{"a"},
+				},
+				BlockCreations:   Bool(true),
+				LockBranch:       Bool(true),
+				AllowForkSyncing: Bool(true),
 			}
-		}`)
-	})
 
-	ctx := context.Background()
-	protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				v := new(ProtectionRequest)
+				assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+				testMethod(t, r, "PUT")
+				if !cmp.Equal(v, input) {
+					t.Errorf("Request body = %+v, want %+v", v, input)
+				}
+
+				// TODO: remove custom Accept header when this API fully launches
+				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+				fmt.Fprintf(w, `{
+					"required_status_checks":{
+						"strict":true,
+						"contexts":["continuous-integration"],
+						"checks": [
+							{
+								"context": "continuous-integration",
+								"app_id": null
+							}
+						]
+					},
+					"required_pull_request_reviews":{
+						"dismissal_restrictions":{
+							"users":[{
+								"id":3,
+								"login":"uu"
+							}],
+							"teams":[{
+								"id":4,
+								"slug":"tt"
+							}],
+							"apps":[{
+								"id":5,
+								"slug":"aa"
+							}]
+						},
+						"dismiss_stale_reviews":true,
+						"require_code_owner_reviews":true,
+						"bypass_pull_request_allowances": {
+							"users":[{"id":10,"login":"uuu"}],
+							"teams":[{"id":20,"slug":"ttt"}],
+							"apps":[{"id":30,"slug":"aaa"}]
+						}
+					},
+					"restrictions":{
+						"users":[{"id":1,"login":"u"}],
+						"teams":[{"id":2,"slug":"t"}],
+						"apps":[{"id":3,"slug":"a"}]
+					},
+					"block_creations": {
+						"enabled": true
+					},
+					"lock_branch": {
+						"enabled": true
+					},
+					"allow_fork_syncing": {
+						"enabled": true
+					}
+				}`)
+			})
+
+			ctx := context.Background()
+			protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
+			}
+
+			want := &Protection{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Strict:   true,
+					Contexts: []string{"continuous-integration"},
+					Checks: []*RequiredStatusCheck{
+						{
+							Context: "continuous-integration",
+						},
+					},
+				},
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+					DismissStaleReviews: true,
+					DismissalRestrictions: &DismissalRestrictions{
+						Users: []*User{
+							{Login: String("uu"), ID: Int64(3)},
+						},
+						Teams: []*Team{
+							{Slug: String("tt"), ID: Int64(4)},
+						},
+						Apps: []*App{
+							{Slug: String("aa"), ID: Int64(5)},
+						},
+					},
+					RequireCodeOwnerReviews: true,
+					BypassPullRequestAllowances: &BypassPullRequestAllowances{
+						Users: []*User{
+							{Login: String("uuu"), ID: Int64(10)},
+						},
+						Teams: []*Team{
+							{Slug: String("ttt"), ID: Int64(20)},
+						},
+						Apps: []*App{
+							{Slug: String("aaa"), ID: Int64(30)},
+						},
+					},
+				},
+				Restrictions: &BranchRestrictions{
+					Users: []*User{
+						{Login: String("u"), ID: Int64(1)},
+					},
+					Teams: []*Team{
+						{Slug: String("t"), ID: Int64(2)},
+					},
+					Apps: []*App{
+						{Slug: String("a"), ID: Int64(3)},
+					},
+				},
+				BlockCreations: &BlockCreations{
+					Enabled: Bool(true),
+				},
+				LockBranch: &LockBranch{
+					Enabled: Bool(true),
+				},
+				AllowForkSyncing: &AllowForkSyncing{
+					Enabled: Bool(true),
+				},
+			}
+			if !cmp.Equal(protection, want) {
+				t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+			}
+
+			const methodName = "UpdateBranchProtection"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.UpdateBranchProtection(ctx, "\n", "\n", "\n", input)
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
 	}
-
-	want := &Protection{
-		RequiredStatusChecks: &RequiredStatusChecks{
-			Strict:   true,
-			Contexts: []string{"continuous-integration"},
-			Checks: []*RequiredStatusCheck{
-				{
-					Context: "continuous-integration",
-				},
-			},
-		},
-		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
-			DismissStaleReviews: true,
-			DismissalRestrictions: &DismissalRestrictions{
-				Users: []*User{
-					{Login: String("uu"), ID: Int64(3)},
-				},
-				Teams: []*Team{
-					{Slug: String("tt"), ID: Int64(4)},
-				},
-				Apps: []*App{
-					{Slug: String("aa"), ID: Int64(5)},
-				},
-			},
-			RequireCodeOwnerReviews: true,
-			BypassPullRequestAllowances: &BypassPullRequestAllowances{
-				Users: []*User{
-					{Login: String("uuu"), ID: Int64(10)},
-				},
-				Teams: []*Team{
-					{Slug: String("ttt"), ID: Int64(20)},
-				},
-				Apps: []*App{
-					{Slug: String("aaa"), ID: Int64(30)},
-				},
-			},
-		},
-		Restrictions: &BranchRestrictions{
-			Users: []*User{
-				{Login: String("u"), ID: Int64(1)},
-			},
-			Teams: []*Team{
-				{Slug: String("t"), ID: Int64(2)},
-			},
-			Apps: []*App{
-				{Slug: String("a"), ID: Int64(3)},
-			},
-		},
-		BlockCreations: &BlockCreations{
-			Enabled: Bool(true),
-		},
-		LockBranch: &LockBranch{
-			Enabled: Bool(true),
-		},
-		AllowForkSyncing: &AllowForkSyncing{
-			Enabled: Bool(true),
-		},
-	}
-	if !cmp.Equal(protection, want) {
-		t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
-	}
-
-	const methodName = "UpdateBranchProtection"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.UpdateBranchProtection(ctx, "\n", "\n", "\n", input)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	input := &ProtectionRequest{
-		RequiredStatusChecks: &RequiredStatusChecks{
-			Strict: true,
-			Checks: []*RequiredStatusCheck{
-				{
-					Context: "continuous-integration",
-				},
-			},
-		},
-		RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
-			DismissStaleReviews: true,
-			DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
-				Users: &[]string{"uu"},
-				Teams: &[]string{"tt"},
-				Apps:  &[]string{"aa"},
-			},
-			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
-				Users: []string{"uuu"},
-				Teams: []string{"ttt"},
-				Apps:  []string{"aaa"},
-			},
-		},
-		Restrictions: &BranchRestrictionsRequest{
-			Users: []string{"u"},
-			Teams: []string{"t"},
-			Apps:  []string{"a"},
-		},
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
 	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ProtectionRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-		fmt.Fprintf(w, `{
-			"required_status_checks":{
-				"strict":true,
-				"contexts":["continuous-integration"],
-				"checks": [
-					{
-						"context": "continuous-integration",
-						"app_id": null
-					}
-				]
-			},
-			"required_pull_request_reviews":{
-				"dismissal_restrictions":{
-					"users":[{
-						"id":3,
-						"login":"uu"
-					}],
-					"teams":[{
-						"id":4,
-						"slug":"tt"
-					}],
-					"apps":[{
-						"id":5,
-						"slug":"aa"
-					}]
+			input := &ProtectionRequest{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Strict: true,
+					Checks: []*RequiredStatusCheck{
+						{
+							Context: "continuous-integration",
+						},
+					},
 				},
-				"dismiss_stale_reviews":true,
-				"require_code_owner_reviews":true,
-				"bypass_pull_request_allowances": {
-					"users":[{"id":10,"login":"uuu"}],
-					"teams":[{"id":20,"slug":"ttt"}],
-					"apps":[{"id":30,"slug":"aaa"}]
-				}
-			},
-			"restrictions":{
-				"users":[{"id":1,"login":"u"}],
-				"teams":[{"id":2,"slug":"t"}],
-				"apps":[{"id":3,"slug":"a"}]
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
+					DismissStaleReviews: true,
+					DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
+						Users: &[]string{"uu"},
+						Teams: &[]string{"tt"},
+						Apps:  &[]string{"aa"},
+					},
+					BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
+						Users: []string{"uuu"},
+						Teams: []string{"ttt"},
+						Apps:  []string{"aaa"},
+					},
+				},
+				Restrictions: &BranchRestrictionsRequest{
+					Users: []string{"u"},
+					Teams: []string{"t"},
+					Apps:  []string{"a"},
+				},
 			}
-		}`)
-	})
 
-	ctx := context.Background()
-	protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
-	}
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				v := new(ProtectionRequest)
+				assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-	want := &Protection{
-		RequiredStatusChecks: &RequiredStatusChecks{
-			Strict:   true,
-			Contexts: []string{"continuous-integration"},
-			Checks: []*RequiredStatusCheck{
-				{
-					Context: "continuous-integration",
+				testMethod(t, r, "PUT")
+				if !cmp.Equal(v, input) {
+					t.Errorf("Request body = %+v, want %+v", v, input)
+				}
+
+				// TODO: remove custom Accept header when this API fully launches
+				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+				fmt.Fprintf(w, `{
+					"required_status_checks":{
+						"strict":true,
+						"contexts":["continuous-integration"],
+						"checks": [
+							{
+								"context": "continuous-integration",
+								"app_id": null
+							}
+						]
+					},
+					"required_pull_request_reviews":{
+						"dismissal_restrictions":{
+							"users":[{
+								"id":3,
+								"login":"uu"
+							}],
+							"teams":[{
+								"id":4,
+								"slug":"tt"
+							}],
+							"apps":[{
+								"id":5,
+								"slug":"aa"
+							}]
+						},
+						"dismiss_stale_reviews":true,
+						"require_code_owner_reviews":true,
+						"bypass_pull_request_allowances": {
+							"users":[{"id":10,"login":"uuu"}],
+							"teams":[{"id":20,"slug":"ttt"}],
+							"apps":[{"id":30,"slug":"aaa"}]
+						}
+					},
+					"restrictions":{
+						"users":[{"id":1,"login":"u"}],
+						"teams":[{"id":2,"slug":"t"}],
+						"apps":[{"id":3,"slug":"a"}]
+					}
+				}`)
+			})
+
+			ctx := context.Background()
+			protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
+			}
+
+			want := &Protection{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Strict:   true,
+					Contexts: []string{"continuous-integration"},
+					Checks: []*RequiredStatusCheck{
+						{
+							Context: "continuous-integration",
+						},
+					},
 				},
-			},
-		},
-		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
-			DismissStaleReviews: true,
-			DismissalRestrictions: &DismissalRestrictions{
-				Users: []*User{
-					{Login: String("uu"), ID: Int64(3)},
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+					DismissStaleReviews: true,
+					DismissalRestrictions: &DismissalRestrictions{
+						Users: []*User{
+							{Login: String("uu"), ID: Int64(3)},
+						},
+						Teams: []*Team{
+							{Slug: String("tt"), ID: Int64(4)},
+						},
+						Apps: []*App{
+							{Slug: String("aa"), ID: Int64(5)},
+						},
+					},
+					RequireCodeOwnerReviews: true,
+					BypassPullRequestAllowances: &BypassPullRequestAllowances{
+						Users: []*User{
+							{Login: String("uuu"), ID: Int64(10)},
+						},
+						Teams: []*Team{
+							{Slug: String("ttt"), ID: Int64(20)},
+						},
+						Apps: []*App{
+							{Slug: String("aaa"), ID: Int64(30)},
+						},
+					},
 				},
-				Teams: []*Team{
-					{Slug: String("tt"), ID: Int64(4)},
+				Restrictions: &BranchRestrictions{
+					Users: []*User{
+						{Login: String("u"), ID: Int64(1)},
+					},
+					Teams: []*Team{
+						{Slug: String("t"), ID: Int64(2)},
+					},
+					Apps: []*App{
+						{Slug: String("a"), ID: Int64(3)},
+					},
 				},
-				Apps: []*App{
-					{Slug: String("aa"), ID: Int64(5)},
-				},
-			},
-			RequireCodeOwnerReviews: true,
-			BypassPullRequestAllowances: &BypassPullRequestAllowances{
-				Users: []*User{
-					{Login: String("uuu"), ID: Int64(10)},
-				},
-				Teams: []*Team{
-					{Slug: String("ttt"), ID: Int64(20)},
-				},
-				Apps: []*App{
-					{Slug: String("aaa"), ID: Int64(30)},
-				},
-			},
-		},
-		Restrictions: &BranchRestrictions{
-			Users: []*User{
-				{Login: String("u"), ID: Int64(1)},
-			},
-			Teams: []*Team{
-				{Slug: String("t"), ID: Int64(2)},
-			},
-			Apps: []*App{
-				{Slug: String("a"), ID: Int64(3)},
-			},
-		},
-	}
-	if !cmp.Equal(protection, want) {
-		t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+			}
+			if !cmp.Equal(protection, want) {
+				t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+			}
+		})
 	}
 }
 
 func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	input := &ProtectionRequest{
-		RequiredStatusChecks: &RequiredStatusChecks{
-			Strict: true,
-			Checks: []*RequiredStatusCheck{},
-		},
-		RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
-			DismissStaleReviews: true,
-			DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
-				Users: &[]string{"uu"},
-				Teams: &[]string{"tt"},
-				Apps:  &[]string{"aa"},
-			},
-			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
-				Users: []string{"uuu"},
-				Teams: []string{"ttt"},
-				Apps:  []string{"aaa"},
-			},
-		},
-		Restrictions: &BranchRestrictionsRequest{
-			Users: []string{"u"},
-			Teams: []string{"t"},
-			Apps:  []string{"a"},
-		},
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
 	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ProtectionRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-		fmt.Fprintf(w, `{
-			"required_status_checks":{
-				"strict":true,
-				"contexts":[],
-				"checks": []
-			},
-			"required_pull_request_reviews":{
-				"dismissal_restrictions":{
-					"users":[{
-						"id":3,
-						"login":"uu"
-					}],
-					"teams":[{
-						"id":4,
-						"slug":"tt"
-					}],
-					"apps":[{
-						"id":5,
-						"slug":"aa"
-					}]
+			input := &ProtectionRequest{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Strict: true,
+					Checks: []*RequiredStatusCheck{},
 				},
-				"dismiss_stale_reviews":true,
-				"require_code_owner_reviews":true,
-				"require_last_push_approval":false,
-				"bypass_pull_request_allowances": {
-					"users":[{"id":10,"login":"uuu"}],
-					"teams":[{"id":20,"slug":"ttt"}],
-					"apps":[{"id":30,"slug":"aaa"}]
-				}
-			},
-			"restrictions":{
-				"users":[{"id":1,"login":"u"}],
-				"teams":[{"id":2,"slug":"t"}],
-				"apps":[{"id":3,"slug":"a"}]
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
+					DismissStaleReviews: true,
+					DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
+						Users: &[]string{"uu"},
+						Teams: &[]string{"tt"},
+						Apps:  &[]string{"aa"},
+					},
+					BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
+						Users: []string{"uuu"},
+						Teams: []string{"ttt"},
+						Apps:  []string{"aaa"},
+					},
+				},
+				Restrictions: &BranchRestrictionsRequest{
+					Users: []string{"u"},
+					Teams: []string{"t"},
+					Apps:  []string{"a"},
+				},
 			}
-		}`)
-	})
 
-	ctx := context.Background()
-	protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
-	}
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				v := new(ProtectionRequest)
+				assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-	want := &Protection{
-		RequiredStatusChecks: &RequiredStatusChecks{
-			Strict:   true,
-			Contexts: []string{},
-			Checks:   []*RequiredStatusCheck{},
-		},
-		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
-			DismissStaleReviews: true,
-			DismissalRestrictions: &DismissalRestrictions{
-				Users: []*User{
-					{Login: String("uu"), ID: Int64(3)},
+				testMethod(t, r, "PUT")
+				if !cmp.Equal(v, input) {
+					t.Errorf("Request body = %+v, want %+v", v, input)
+				}
+
+				// TODO: remove custom Accept header when this API fully launches
+				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+				fmt.Fprintf(w, `{
+					"required_status_checks":{
+						"strict":true,
+						"contexts":[],
+						"checks": []
+					},
+					"required_pull_request_reviews":{
+						"dismissal_restrictions":{
+							"users":[{
+								"id":3,
+								"login":"uu"
+							}],
+							"teams":[{
+								"id":4,
+								"slug":"tt"
+							}],
+							"apps":[{
+								"id":5,
+								"slug":"aa"
+							}]
+						},
+						"dismiss_stale_reviews":true,
+						"require_code_owner_reviews":true,
+						"require_last_push_approval":false,
+						"bypass_pull_request_allowances": {
+							"users":[{"id":10,"login":"uuu"}],
+							"teams":[{"id":20,"slug":"ttt"}],
+							"apps":[{"id":30,"slug":"aaa"}]
+						}
+					},
+					"restrictions":{
+						"users":[{"id":1,"login":"u"}],
+						"teams":[{"id":2,"slug":"t"}],
+						"apps":[{"id":3,"slug":"a"}]
+					}
+				}`)
+			})
+
+			ctx := context.Background()
+			protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
+			}
+
+			want := &Protection{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Strict:   true,
+					Contexts: []string{},
+					Checks:   []*RequiredStatusCheck{},
 				},
-				Teams: []*Team{
-					{Slug: String("tt"), ID: Int64(4)},
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+					DismissStaleReviews: true,
+					DismissalRestrictions: &DismissalRestrictions{
+						Users: []*User{
+							{Login: String("uu"), ID: Int64(3)},
+						},
+						Teams: []*Team{
+							{Slug: String("tt"), ID: Int64(4)},
+						},
+						Apps: []*App{
+							{Slug: String("aa"), ID: Int64(5)},
+						},
+					},
+					RequireCodeOwnerReviews: true,
+					BypassPullRequestAllowances: &BypassPullRequestAllowances{
+						Users: []*User{
+							{Login: String("uuu"), ID: Int64(10)},
+						},
+						Teams: []*Team{
+							{Slug: String("ttt"), ID: Int64(20)},
+						},
+						Apps: []*App{
+							{Slug: String("aaa"), ID: Int64(30)},
+						},
+					},
 				},
-				Apps: []*App{
-					{Slug: String("aa"), ID: Int64(5)},
+				Restrictions: &BranchRestrictions{
+					Users: []*User{
+						{Login: String("u"), ID: Int64(1)},
+					},
+					Teams: []*Team{
+						{Slug: String("t"), ID: Int64(2)},
+					},
+					Apps: []*App{
+						{Slug: String("a"), ID: Int64(3)},
+					},
 				},
-			},
-			RequireCodeOwnerReviews: true,
-			BypassPullRequestAllowances: &BypassPullRequestAllowances{
-				Users: []*User{
-					{Login: String("uuu"), ID: Int64(10)},
-				},
-				Teams: []*Team{
-					{Slug: String("ttt"), ID: Int64(20)},
-				},
-				Apps: []*App{
-					{Slug: String("aaa"), ID: Int64(30)},
-				},
-			},
-		},
-		Restrictions: &BranchRestrictions{
-			Users: []*User{
-				{Login: String("u"), ID: Int64(1)},
-			},
-			Teams: []*Team{
-				{Slug: String("t"), ID: Int64(2)},
-			},
-			Apps: []*App{
-				{Slug: String("a"), ID: Int64(3)},
-			},
-		},
-	}
-	if !cmp.Equal(protection, want) {
-		t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+			}
+			if !cmp.Equal(protection, want) {
+				t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+			}
+		})
 	}
 }
 
 func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	input := &ProtectionRequest{
-		RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
-			RequireLastPushApproval: Bool(true),
-		},
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
 	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ProtectionRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
-		fmt.Fprintf(w, `{
-			"required_pull_request_reviews":{
-				"require_last_push_approval":true
+			input := &ProtectionRequest{
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
+					RequireLastPushApproval: Bool(true),
+				},
 			}
-		}`)
-	})
 
-	ctx := context.Background()
-	protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
-	}
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				v := new(ProtectionRequest)
+				assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-	want := &Protection{
-		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
-			RequireLastPushApproval: true,
-		},
-	}
-	if !cmp.Equal(protection, want) {
-		t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+				testMethod(t, r, "PUT")
+				if !cmp.Equal(v, input) {
+					t.Errorf("Request body = %+v, want %+v", v, input)
+				}
+
+				fmt.Fprintf(w, `{
+					"required_pull_request_reviews":{
+						"require_last_push_approval":true
+					}
+				}`)
+			})
+
+			ctx := context.Background()
+			protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
+			}
+
+			want := &Protection{
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+					RequireLastPushApproval: true,
+				},
+			}
+			if !cmp.Equal(protection, want) {
+				t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+			}
+		})
 	}
 }
 
 func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		w.WriteHeader(http.StatusNoContent)
-	})
-
-	ctx := context.Background()
-	_, err := client.Repositories.RemoveBranchProtection(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.RemoveBranchProtection returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
 	}
 
-	const methodName = "RemoveBranchProtection"
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Repositories.RemoveBranchProtection(ctx, "\n", "\n", "\n")
-		return err
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.RemoveBranchProtection(ctx, "o", "r", "b")
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "DELETE")
+				w.WriteHeader(http.StatusNoContent)
+			})
+
+			ctx := context.Background()
+			_, err := client.Repositories.RemoveBranchProtection(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.RemoveBranchProtection returned error: %v", err)
+			}
+
+			const methodName = "RemoveBranchProtection"
+			testBadOptions(t, methodName, func() (err error) {
+				_, err = client.Repositories.RemoveBranchProtection(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				return client.Repositories.RemoveBranchProtection(ctx, "o", "r", test.branch)
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
@@ -1900,337 +2042,431 @@ func TestRepositoriesService_License(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-			"strict": true,
-			"contexts": ["x","y","z"],
-			"checks": [
-				{
-					"context": "x",
-					"app_id": null
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				fmt.Fprint(w, `{
+					"strict": true,
+					"contexts": ["x","y","z"],
+					"checks": [
+						{
+							"context": "x",
+							"app_id": null
+						},
+						{
+							"context": "y",
+							"app_id": null
+						},
+						{
+							"context": "z",
+							"app_id": null
+						}
+					]
+				}`)
+			})
+
+			ctx := context.Background()
+			checks, _, err := client.Repositories.GetRequiredStatusChecks(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.GetRequiredStatusChecks returned error: %v", err)
+			}
+
+			want := &RequiredStatusChecks{
+				Strict:   true,
+				Contexts: []string{"x", "y", "z"},
+				Checks: []*RequiredStatusCheck{
+					{
+						Context: "x",
+					},
+					{
+						Context: "y",
+					},
+					{
+						Context: "z",
+					},
 				},
-				{
-					"context": "y",
-					"app_id": null
-				},
-				{
-					"context": "z",
-					"app_id": null
+			}
+			if !cmp.Equal(checks, want) {
+				t.Errorf("Repositories.GetRequiredStatusChecks returned %+v, want %+v", checks, want)
+			}
+
+			const methodName = "GetRequiredStatusChecks"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.GetRequiredStatusChecks(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.GetRequiredStatusChecks(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 				}
-			]
-		}`)
-	})
-
-	ctx := context.Background()
-	checks, _, err := client.Repositories.GetRequiredStatusChecks(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.GetRequiredStatusChecks returned error: %v", err)
+				return resp, err
+			})
+		})
 	}
-
-	want := &RequiredStatusChecks{
-		Strict:   true,
-		Contexts: []string{"x", "y", "z"},
-		Checks: []*RequiredStatusCheck{
-			{
-				Context: "x",
-			},
-			{
-				Context: "y",
-			},
-			{
-				Context: "z",
-			},
-		},
-	}
-	if !cmp.Equal(checks, want) {
-		t.Errorf("Repositories.GetRequiredStatusChecks returned %+v, want %+v", checks, want)
-	}
-
-	const methodName = "GetRequiredStatusChecks"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetRequiredStatusChecks(ctx, "\n", "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetRequiredStatusChecks(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, `{
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+
+				w.WriteHeader(http.StatusBadRequest)
+				fmt.Fprintf(w, `{
 			"message": %q,
 			"documentation_url": "https://docs.github.com/rest/repos#get-branch-protection"
 			}`, githubBranchNotProtected)
-	})
+			})
 
-	ctx := context.Background()
-	checks, _, err := client.Repositories.GetRequiredStatusChecks(ctx, "o", "r", "b")
+			ctx := context.Background()
+			checks, _, err := client.Repositories.GetRequiredStatusChecks(ctx, "o", "r", test.branch)
 
-	if checks != nil {
-		t.Errorf("Repositories.GetRequiredStatusChecks returned non-nil status-checks data")
-	}
+			if checks != nil {
+				t.Errorf("Repositories.GetRequiredStatusChecks returned non-nil status-checks data")
+			}
 
-	if err != ErrBranchNotProtected {
-		t.Errorf("Repositories.GetRequiredStatusChecks returned an invalid error: %v", err)
+			if err != ErrBranchNotProtected {
+				t.Errorf("Repositories.GetRequiredStatusChecks returned an invalid error: %v", err)
+			}
+		})
 	}
 }
 
 func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	input := &RequiredStatusChecksRequest{
-		Strict:   Bool(true),
-		Contexts: []string{"continuous-integration"},
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks"},
 	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
-		v := new(RequiredStatusChecksRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-		testHeader(t, r, "Accept", mediaTypeV3)
-		fmt.Fprintf(w, `{
-			"strict":true,
-			"contexts":["continuous-integration"],
-			"checks": [
-				{
-					"context": "continuous-integration",
-					"app_id": null
+			input := &RequiredStatusChecksRequest{
+				Strict:   Bool(true),
+				Contexts: []string{"continuous-integration"},
+			}
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				v := new(RequiredStatusChecksRequest)
+				assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+				testMethod(t, r, "PATCH")
+				if !cmp.Equal(v, input) {
+					t.Errorf("Request body = %+v, want %+v", v, input)
 				}
-			]
-		}`)
-	})
+				testHeader(t, r, "Accept", mediaTypeV3)
+				fmt.Fprintf(w, `{
+					"strict":true,
+					"contexts":["continuous-integration"],
+					"checks": [
+						{
+							"context": "continuous-integration",
+							"app_id": null
+						}
+					]
+				}`)
+			})
 
-	ctx := context.Background()
-	statusChecks, _, err := client.Repositories.UpdateRequiredStatusChecks(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.UpdateRequiredStatusChecks returned error: %v", err)
+			ctx := context.Background()
+			statusChecks, _, err := client.Repositories.UpdateRequiredStatusChecks(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.UpdateRequiredStatusChecks returned error: %v", err)
+			}
+
+			want := &RequiredStatusChecks{
+				Strict:   true,
+				Contexts: []string{"continuous-integration"},
+				Checks: []*RequiredStatusCheck{
+					{
+						Context: "continuous-integration",
+					},
+				},
+			}
+			if !cmp.Equal(statusChecks, want) {
+				t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
+			}
+
+			const methodName = "UpdateRequiredStatusChecks"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.UpdateRequiredStatusChecks(ctx, "\n", "\n", "\n", input)
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.UpdateRequiredStatusChecks(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
 	}
-
-	want := &RequiredStatusChecks{
-		Strict:   true,
-		Contexts: []string{"continuous-integration"},
-		Checks: []*RequiredStatusCheck{
-			{
-				Context: "continuous-integration",
-			},
-		},
-	}
-	if !cmp.Equal(statusChecks, want) {
-		t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
-	}
-
-	const methodName = "UpdateRequiredStatusChecks"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.UpdateRequiredStatusChecks(ctx, "\n", "\n", "\n", input)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.UpdateRequiredStatusChecks(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	appID := int64(123)
-	noAppID := int64(-1)
-	input := &RequiredStatusChecksRequest{
-		Strict: Bool(true),
-		Checks: []*RequiredStatusCheck{
-			{
-				Context: "continuous-integration",
-			},
-			{
-				Context: "continuous-integration2",
-				AppID:   &appID,
-			},
-			{
-				Context: "continuous-integration3",
-				AppID:   &noAppID,
-			},
-		},
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks"},
 	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
-		v := new(RequiredStatusChecksRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-		testHeader(t, r, "Accept", mediaTypeV3)
-		fmt.Fprintf(w, `{
-			"strict":true,
-			"contexts":["continuous-integration"],
-			"checks": [
-				{
-					"context": "continuous-integration",
-					"app_id": null
+			appID := int64(123)
+			noAppID := int64(-1)
+			input := &RequiredStatusChecksRequest{
+				Strict: Bool(true),
+				Checks: []*RequiredStatusCheck{
+					{
+						Context: "continuous-integration",
+					},
+					{
+						Context: "continuous-integration2",
+						AppID:   &appID,
+					},
+					{
+						Context: "continuous-integration3",
+						AppID:   &noAppID,
+					},
 				},
-				{
-					"context": "continuous-integration2",
-					"app_id": 123
-				},
-				{
-					"context": "continuous-integration3",
-					"app_id": null
+			}
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				v := new(RequiredStatusChecksRequest)
+				assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+				testMethod(t, r, "PATCH")
+				if !cmp.Equal(v, input) {
+					t.Errorf("Request body = %+v, want %+v", v, input)
 				}
-			]
-		}`)
-	})
+				testHeader(t, r, "Accept", mediaTypeV3)
+				fmt.Fprintf(w, `{
+					"strict":true,
+					"contexts":["continuous-integration"],
+					"checks": [
+						{
+							"context": "continuous-integration",
+							"app_id": null
+						},
+						{
+							"context": "continuous-integration2",
+							"app_id": 123
+						},
+						{
+							"context": "continuous-integration3",
+							"app_id": null
+						}
+					]
+				}`)
+			})
 
-	ctx := context.Background()
-	statusChecks, _, err := client.Repositories.UpdateRequiredStatusChecks(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.UpdateRequiredStatusChecks returned error: %v", err)
-	}
+			ctx := context.Background()
+			statusChecks, _, err := client.Repositories.UpdateRequiredStatusChecks(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.UpdateRequiredStatusChecks returned error: %v", err)
+			}
 
-	want := &RequiredStatusChecks{
-		Strict:   true,
-		Contexts: []string{"continuous-integration"},
-		Checks: []*RequiredStatusCheck{
-			{
-				Context: "continuous-integration",
-			},
-			{
-				Context: "continuous-integration2",
-				AppID:   &appID,
-			},
-			{
-				Context: "continuous-integration3",
-			},
-		},
-	}
-	if !cmp.Equal(statusChecks, want) {
-		t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
+			want := &RequiredStatusChecks{
+				Strict:   true,
+				Contexts: []string{"continuous-integration"},
+				Checks: []*RequiredStatusCheck{
+					{
+						Context: "continuous-integration",
+					},
+					{
+						Context: "continuous-integration2",
+						AppID:   &appID,
+					},
+					{
+						Context: "continuous-integration3",
+					},
+				},
+			}
+			if !cmp.Equal(statusChecks, want) {
+				t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
+			}
+		})
 	}
 }
 
 func TestRepositoriesService_RemoveRequiredStatusChecks(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeV3)
-		w.WriteHeader(http.StatusNoContent)
-	})
-
-	ctx := context.Background()
-	_, err := client.Repositories.RemoveRequiredStatusChecks(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.RemoveRequiredStatusChecks returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks"},
 	}
 
-	const methodName = "RemoveRequiredStatusChecks"
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Repositories.RemoveRequiredStatusChecks(ctx, "\n", "\n", "\n")
-		return err
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.RemoveRequiredStatusChecks(ctx, "o", "r", "b")
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "DELETE")
+				testHeader(t, r, "Accept", mediaTypeV3)
+				w.WriteHeader(http.StatusNoContent)
+			})
+
+			ctx := context.Background()
+			_, err := client.Repositories.RemoveRequiredStatusChecks(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.RemoveRequiredStatusChecks returned error: %v", err)
+			}
+
+			const methodName = "RemoveRequiredStatusChecks"
+			testBadOptions(t, methodName, func() (err error) {
+				_, err = client.Repositories.RemoveRequiredStatusChecks(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				return client.Repositories.RemoveRequiredStatusChecks(ctx, "o", "r", test.branch)
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks/contexts", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `["x", "y", "z"]`)
-	})
-
-	ctx := context.Background()
-	contexts, _, err := client.Repositories.ListRequiredStatusChecksContexts(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks/contexts"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks/contexts"},
 	}
 
-	want := []string{"x", "y", "z"}
-	if !cmp.Equal(contexts, want) {
-		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned %+v, want %+v", contexts, want)
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				fmt.Fprint(w, `["x", "y", "z"]`)
+			})
+
+			ctx := context.Background()
+			contexts, _, err := client.Repositories.ListRequiredStatusChecksContexts(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.ListRequiredStatusChecksContexts returned error: %v", err)
+			}
+
+			want := []string{"x", "y", "z"}
+			if !cmp.Equal(contexts, want) {
+				t.Errorf("Repositories.ListRequiredStatusChecksContexts returned %+v, want %+v", contexts, want)
+			}
+
+			const methodName = "ListRequiredStatusChecksContexts"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.ListRequiredStatusChecksContexts(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.ListRequiredStatusChecksContexts(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
 	}
-
-	const methodName = "ListRequiredStatusChecksContexts"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListRequiredStatusChecksContexts(ctx, "\n", "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListRequiredStatusChecksContexts(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks/contexts"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks/contexts"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks/contexts", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, `{
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+
+				w.WriteHeader(http.StatusBadRequest)
+				fmt.Fprintf(w, `{
 			"message": %q,
 			"documentation_url": "https://docs.github.com/rest/repos#get-branch-protection"
 			}`, githubBranchNotProtected)
-	})
+			})
 
-	ctx := context.Background()
-	contexts, _, err := client.Repositories.ListRequiredStatusChecksContexts(ctx, "o", "r", "b")
+			ctx := context.Background()
+			contexts, _, err := client.Repositories.ListRequiredStatusChecksContexts(ctx, "o", "r", test.branch)
 
-	if contexts != nil {
-		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned non-nil contexts data")
-	}
+			if contexts != nil {
+				t.Errorf("Repositories.ListRequiredStatusChecksContexts returned non-nil contexts data")
+			}
 
-	if err != ErrBranchNotProtected {
-		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned an invalid error: %v", err)
+			if err != ErrBranchNotProtected {
+				t.Errorf("Repositories.ListRequiredStatusChecksContexts returned an invalid error: %v", err)
+			}
+		})
 	}
 }
 
 func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_pull_request_reviews"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_pull_request_reviews"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-		fmt.Fprintf(w, `{
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				// TODO: remove custom Accept header when this API fully launches
+				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+				fmt.Fprintf(w, `{
 			"dismissal_restrictions":{
 				"users":[{"id":1,"login":"u"}],
 				"teams":[{"id":2,"slug":"t"}],
@@ -2240,402 +2476,512 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 			"require_code_owner_reviews":true,
 			"required_approving_review_count":1
 		}`)
-	})
+			})
 
-	ctx := context.Background()
-	enforcement, _, err := client.Repositories.GetPullRequestReviewEnforcement(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.GetPullRequestReviewEnforcement returned error: %v", err)
+			ctx := context.Background()
+			enforcement, _, err := client.Repositories.GetPullRequestReviewEnforcement(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.GetPullRequestReviewEnforcement returned error: %v", err)
+			}
+
+			want := &PullRequestReviewsEnforcement{
+				DismissStaleReviews: true,
+				DismissalRestrictions: &DismissalRestrictions{
+					Users: []*User{
+						{Login: String("u"), ID: Int64(1)},
+					},
+					Teams: []*Team{
+						{Slug: String("t"), ID: Int64(2)},
+					},
+					Apps: []*App{
+						{Slug: String("a"), ID: Int64(3)},
+					},
+				},
+				RequireCodeOwnerReviews:      true,
+				RequiredApprovingReviewCount: 1,
+			}
+
+			if !cmp.Equal(enforcement, want) {
+				t.Errorf("Repositories.GetPullRequestReviewEnforcement returned %+v, want %+v", enforcement, want)
+			}
+
+			const methodName = "GetPullRequestReviewEnforcement"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.GetPullRequestReviewEnforcement(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.GetPullRequestReviewEnforcement(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
 	}
-
-	want := &PullRequestReviewsEnforcement{
-		DismissStaleReviews: true,
-		DismissalRestrictions: &DismissalRestrictions{
-			Users: []*User{
-				{Login: String("u"), ID: Int64(1)},
-			},
-			Teams: []*Team{
-				{Slug: String("t"), ID: Int64(2)},
-			},
-			Apps: []*App{
-				{Slug: String("a"), ID: Int64(3)},
-			},
-		},
-		RequireCodeOwnerReviews:      true,
-		RequiredApprovingReviewCount: 1,
-	}
-
-	if !cmp.Equal(enforcement, want) {
-		t.Errorf("Repositories.GetPullRequestReviewEnforcement returned %+v, want %+v", enforcement, want)
-	}
-
-	const methodName = "GetPullRequestReviewEnforcement"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetPullRequestReviewEnforcement(ctx, "\n", "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetPullRequestReviewEnforcement(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	input := &PullRequestReviewsEnforcementUpdate{
-		DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
-			Users: &[]string{"u"},
-			Teams: &[]string{"t"},
-			Apps:  &[]string{"a"},
-		},
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_pull_request_reviews"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_pull_request_reviews"},
 	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
-		v := new(PullRequestReviewsEnforcementUpdate)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-		fmt.Fprintf(w, `{
-			"dismissal_restrictions":{
-				"users":[{"id":1,"login":"u"}],
-				"teams":[{"id":2,"slug":"t"}],
-				"apps":[{"id":3,"slug":"a"}]
-			},
-			"dismiss_stale_reviews":true,
-			"require_code_owner_reviews":true,
-			"required_approving_review_count":3
-		}`)
-	})
+			input := &PullRequestReviewsEnforcementUpdate{
+				DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
+					Users: &[]string{"u"},
+					Teams: &[]string{"t"},
+					Apps:  &[]string{"a"},
+				},
+			}
 
-	ctx := context.Background()
-	enforcement, _, err := client.Repositories.UpdatePullRequestReviewEnforcement(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.UpdatePullRequestReviewEnforcement returned error: %v", err)
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				v := new(PullRequestReviewsEnforcementUpdate)
+				assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+				testMethod(t, r, "PATCH")
+				if !cmp.Equal(v, input) {
+					t.Errorf("Request body = %+v, want %+v", v, input)
+				}
+				// TODO: remove custom Accept header when this API fully launches
+				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+				fmt.Fprintf(w, `{
+					"dismissal_restrictions":{
+						"users":[{"id":1,"login":"u"}],
+						"teams":[{"id":2,"slug":"t"}],
+						"apps":[{"id":3,"slug":"a"}]
+					},
+					"dismiss_stale_reviews":true,
+					"require_code_owner_reviews":true,
+					"required_approving_review_count":3
+				}`)
+			})
+
+			ctx := context.Background()
+			enforcement, _, err := client.Repositories.UpdatePullRequestReviewEnforcement(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.UpdatePullRequestReviewEnforcement returned error: %v", err)
+			}
+
+			want := &PullRequestReviewsEnforcement{
+				DismissStaleReviews: true,
+				DismissalRestrictions: &DismissalRestrictions{
+					Users: []*User{
+						{Login: String("u"), ID: Int64(1)},
+					},
+					Teams: []*Team{
+						{Slug: String("t"), ID: Int64(2)},
+					},
+					Apps: []*App{
+						{Slug: String("a"), ID: Int64(3)},
+					},
+				},
+				RequireCodeOwnerReviews:      true,
+				RequiredApprovingReviewCount: 3,
+			}
+			if !cmp.Equal(enforcement, want) {
+				t.Errorf("Repositories.UpdatePullRequestReviewEnforcement returned %+v, want %+v", enforcement, want)
+			}
+
+			const methodName = "UpdatePullRequestReviewEnforcement"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.UpdatePullRequestReviewEnforcement(ctx, "\n", "\n", "\n", input)
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.UpdatePullRequestReviewEnforcement(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
 	}
-
-	want := &PullRequestReviewsEnforcement{
-		DismissStaleReviews: true,
-		DismissalRestrictions: &DismissalRestrictions{
-			Users: []*User{
-				{Login: String("u"), ID: Int64(1)},
-			},
-			Teams: []*Team{
-				{Slug: String("t"), ID: Int64(2)},
-			},
-			Apps: []*App{
-				{Slug: String("a"), ID: Int64(3)},
-			},
-		},
-		RequireCodeOwnerReviews:      true,
-		RequiredApprovingReviewCount: 3,
-	}
-	if !cmp.Equal(enforcement, want) {
-		t.Errorf("Repositories.UpdatePullRequestReviewEnforcement returned %+v, want %+v", enforcement, want)
-	}
-
-	const methodName = "UpdatePullRequestReviewEnforcement"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.UpdatePullRequestReviewEnforcement(ctx, "\n", "\n", "\n", input)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.UpdatePullRequestReviewEnforcement(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-		testBody(t, r, `{"dismissal_restrictions":{}}`+"\n")
-		fmt.Fprintf(w, `{"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
-	})
-
-	ctx := context.Background()
-	enforcement, _, err := client.Repositories.DisableDismissalRestrictions(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.DisableDismissalRestrictions returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_pull_request_reviews"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_pull_request_reviews"},
 	}
 
-	want := &PullRequestReviewsEnforcement{
-		DismissStaleReviews:          true,
-		DismissalRestrictions:        nil,
-		RequireCodeOwnerReviews:      true,
-		RequiredApprovingReviewCount: 1,
-	}
-	if !cmp.Equal(enforcement, want) {
-		t.Errorf("Repositories.DisableDismissalRestrictions returned %+v, want %+v", enforcement, want)
-	}
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	const methodName = "DisableDismissalRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.DisableDismissalRestrictions(ctx, "\n", "\n", "\n")
-		return err
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "PATCH")
+				// TODO: remove custom Accept header when this API fully launches
+				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+				testBody(t, r, `{"dismissal_restrictions":{}}`+"\n")
+				fmt.Fprintf(w, `{"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
+			})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.DisableDismissalRestrictions(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			ctx := context.Background()
+			enforcement, _, err := client.Repositories.DisableDismissalRestrictions(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.DisableDismissalRestrictions returned error: %v", err)
+			}
+
+			want := &PullRequestReviewsEnforcement{
+				DismissStaleReviews:          true,
+				DismissalRestrictions:        nil,
+				RequireCodeOwnerReviews:      true,
+				RequiredApprovingReviewCount: 1,
+			}
+			if !cmp.Equal(enforcement, want) {
+				t.Errorf("Repositories.DisableDismissalRestrictions returned %+v, want %+v", enforcement, want)
+			}
+
+			const methodName = "DisableDismissalRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.DisableDismissalRestrictions(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.DisableDismissalRestrictions(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		w.WriteHeader(http.StatusNoContent)
-	})
-
-	ctx := context.Background()
-	_, err := client.Repositories.RemovePullRequestReviewEnforcement(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.RemovePullRequestReviewEnforcement returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_pull_request_reviews"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_pull_request_reviews"},
 	}
 
-	const methodName = "RemovePullRequestReviewEnforcement"
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Repositories.RemovePullRequestReviewEnforcement(ctx, "\n", "\n", "\n")
-		return err
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.RemovePullRequestReviewEnforcement(ctx, "o", "r", "b")
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "DELETE")
+				w.WriteHeader(http.StatusNoContent)
+			})
+
+			ctx := context.Background()
+			_, err := client.Repositories.RemovePullRequestReviewEnforcement(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.RemovePullRequestReviewEnforcement returned error: %v", err)
+			}
+
+			const methodName = "RemovePullRequestReviewEnforcement"
+			testBadOptions(t, methodName, func() (err error) {
+				_, err = client.Repositories.RemovePullRequestReviewEnforcement(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				return client.Repositories.RemovePullRequestReviewEnforcement(ctx, "o", "r", test.branch)
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/enforce_admins", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
-	})
-
-	ctx := context.Background()
-	enforcement, _, err := client.Repositories.GetAdminEnforcement(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.GetAdminEnforcement returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/enforce_admins"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/enforce_admins"},
 	}
 
-	want := &AdminEnforcement{
-		URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
-		Enabled: true,
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
+			})
+
+			ctx := context.Background()
+			enforcement, _, err := client.Repositories.GetAdminEnforcement(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.GetAdminEnforcement returned error: %v", err)
+			}
+
+			want := &AdminEnforcement{
+				URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
+				Enabled: true,
+			}
+
+			if !cmp.Equal(enforcement, want) {
+				t.Errorf("Repositories.GetAdminEnforcement returned %+v, want %+v", enforcement, want)
+			}
+
+			const methodName = "GetAdminEnforcement"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.GetAdminEnforcement(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.GetAdminEnforcement(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
 	}
-
-	if !cmp.Equal(enforcement, want) {
-		t.Errorf("Repositories.GetAdminEnforcement returned %+v, want %+v", enforcement, want)
-	}
-
-	const methodName = "GetAdminEnforcement"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetAdminEnforcement(ctx, "\n", "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetAdminEnforcement(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/enforce_admins", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
-	})
-
-	ctx := context.Background()
-	enforcement, _, err := client.Repositories.AddAdminEnforcement(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.AddAdminEnforcement returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/enforce_admins"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/enforce_admins"},
 	}
 
-	want := &AdminEnforcement{
-		URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
-		Enabled: true,
-	}
-	if !cmp.Equal(enforcement, want) {
-		t.Errorf("Repositories.AddAdminEnforcement returned %+v, want %+v", enforcement, want)
-	}
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	const methodName = "AddAdminEnforcement"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.AddAdminEnforcement(ctx, "\n", "\n", "\n")
-		return err
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "POST")
+				fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
+			})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.AddAdminEnforcement(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			ctx := context.Background()
+			enforcement, _, err := client.Repositories.AddAdminEnforcement(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.AddAdminEnforcement returned error: %v", err)
+			}
+
+			want := &AdminEnforcement{
+				URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
+				Enabled: true,
+			}
+			if !cmp.Equal(enforcement, want) {
+				t.Errorf("Repositories.AddAdminEnforcement returned %+v, want %+v", enforcement, want)
+			}
+
+			const methodName = "AddAdminEnforcement"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.AddAdminEnforcement(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.AddAdminEnforcement(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/enforce_admins", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		w.WriteHeader(http.StatusNoContent)
-	})
-
-	ctx := context.Background()
-	_, err := client.Repositories.RemoveAdminEnforcement(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.RemoveAdminEnforcement returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/enforce_admins"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/enforce_admins"},
 	}
 
-	const methodName = "RemoveAdminEnforcement"
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Repositories.RemoveAdminEnforcement(ctx, "\n", "\n", "\n")
-		return err
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.RemoveAdminEnforcement(ctx, "o", "r", "b")
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "DELETE")
+				w.WriteHeader(http.StatusNoContent)
+			})
+
+			ctx := context.Background()
+			_, err := client.Repositories.RemoveAdminEnforcement(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.RemoveAdminEnforcement returned error: %v", err)
+			}
+
+			const methodName = "RemoveAdminEnforcement"
+			testBadOptions(t, methodName, func() (err error) {
+				_, err = client.Repositories.RemoveAdminEnforcement(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				return client.Repositories.RemoveAdminEnforcement(ctx, "o", "r", test.branch)
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_signatures", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeSignaturePreview)
-		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":false}`)
-	})
-
-	ctx := context.Background()
-	signature, _, err := client.Repositories.GetSignaturesProtectedBranch(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.GetSignaturesProtectedBranch returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_signatures"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_signatures"},
 	}
 
-	want := &SignaturesProtectedBranch{
-		URL:     String("/repos/o/r/branches/b/protection/required_signatures"),
-		Enabled: Bool(false),
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				testHeader(t, r, "Accept", mediaTypeSignaturePreview)
+				fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":false}`)
+			})
+
+			ctx := context.Background()
+			signature, _, err := client.Repositories.GetSignaturesProtectedBranch(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.GetSignaturesProtectedBranch returned error: %v", err)
+			}
+
+			want := &SignaturesProtectedBranch{
+				URL:     String("/repos/o/r/branches/b/protection/required_signatures"),
+				Enabled: Bool(false),
+			}
+
+			if !cmp.Equal(signature, want) {
+				t.Errorf("Repositories.GetSignaturesProtectedBranch returned %+v, want %+v", signature, want)
+			}
+
+			const methodName = "GetSignaturesProtectedBranch"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.GetSignaturesProtectedBranch(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.GetSignaturesProtectedBranch(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
 	}
-
-	if !cmp.Equal(signature, want) {
-		t.Errorf("Repositories.GetSignaturesProtectedBranch returned %+v, want %+v", signature, want)
-	}
-
-	const methodName = "GetSignaturesProtectedBranch"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetSignaturesProtectedBranch(ctx, "\n", "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetSignaturesProtectedBranch(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_signatures", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeSignaturePreview)
-		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":true}`)
-	})
-
-	ctx := context.Background()
-	signature, _, err := client.Repositories.RequireSignaturesOnProtectedBranch(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_signatures"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_signatures"},
 	}
 
-	want := &SignaturesProtectedBranch{
-		URL:     String("/repos/o/r/branches/b/protection/required_signatures"),
-		Enabled: Bool(true),
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "POST")
+				testHeader(t, r, "Accept", mediaTypeSignaturePreview)
+				fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":true}`)
+			})
+
+			ctx := context.Background()
+			signature, _, err := client.Repositories.RequireSignaturesOnProtectedBranch(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned error: %v", err)
+			}
+
+			want := &SignaturesProtectedBranch{
+				URL:     String("/repos/o/r/branches/b/protection/required_signatures"),
+				Enabled: Bool(true),
+			}
+
+			if !cmp.Equal(signature, want) {
+				t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned %+v, want %+v", signature, want)
+			}
+
+			const methodName = "RequireSignaturesOnProtectedBranch"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.RequireSignaturesOnProtectedBranch(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.RequireSignaturesOnProtectedBranch(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
 	}
-
-	if !cmp.Equal(signature, want) {
-		t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned %+v, want %+v", signature, want)
-	}
-
-	const methodName = "RequireSignaturesOnProtectedBranch"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.RequireSignaturesOnProtectedBranch(ctx, "\n", "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.RequireSignaturesOnProtectedBranch(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/required_signatures", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeSignaturePreview)
-		w.WriteHeader(http.StatusNoContent)
-	})
-
-	ctx := context.Background()
-	_, err := client.Repositories.OptionalSignaturesOnProtectedBranch(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.OptionalSignaturesOnProtectedBranch returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_signatures"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_signatures"},
 	}
 
-	const methodName = "OptionalSignaturesOnProtectedBranch"
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Repositories.OptionalSignaturesOnProtectedBranch(ctx, "\n", "\n", "\n")
-		return err
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.OptionalSignaturesOnProtectedBranch(ctx, "o", "r", "b")
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "DELETE")
+				testHeader(t, r, "Accept", mediaTypeSignaturePreview)
+				w.WriteHeader(http.StatusNoContent)
+			})
+
+			ctx := context.Background()
+			_, err := client.Repositories.OptionalSignaturesOnProtectedBranch(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.OptionalSignaturesOnProtectedBranch returned error: %v", err)
+			}
+
+			const methodName = "OptionalSignaturesOnProtectedBranch"
+			testBadOptions(t, methodName, func() (err error) {
+				_, err = client.Repositories.OptionalSignaturesOnProtectedBranch(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				return client.Repositories.OptionalSignaturesOnProtectedBranch(ctx, "o", "r", test.branch)
+			})
+		})
+	}
 }
 
 func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctions(t *testing.T) {
@@ -2826,420 +3172,564 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 }
 
 func TestRepositoriesService_ListAppRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/apps", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-	})
-
-	ctx := context.Background()
-	_, _, err := client.Repositories.ListAppRestrictions(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.ListAppRestrictions returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/apps"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/apps"},
 	}
 
-	const methodName = "ListAppRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListAppRestrictions(ctx, "\n", "\n", "\n")
-		return err
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListAppRestrictions(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+			})
+
+			ctx := context.Background()
+			_, _, err := client.Repositories.ListAppRestrictions(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.ListAppRestrictions returned error: %v", err)
+			}
+
+			const methodName = "ListAppRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.ListAppRestrictions(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.ListAppRestrictions(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/apps"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/apps"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/apps", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		fmt.Fprint(w, `[{
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "PUT")
+				fmt.Fprint(w, `[{
 				"name": "octocat"
 			}]`)
-	})
-	input := []string{"octocat"}
-	ctx := context.Background()
-	got, _, err := client.Repositories.ReplaceAppRestrictions(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.ReplaceAppRestrictions returned error: %v", err)
-	}
-	want := []*App{
-		{Name: String("octocat")},
-	}
-	if !cmp.Equal(got, want) {
-		t.Errorf("Repositories.ReplaceAppRestrictions returned %+v, want %+v", got, want)
-	}
+			})
+			input := []string{"octocat"}
+			ctx := context.Background()
+			got, _, err := client.Repositories.ReplaceAppRestrictions(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.ReplaceAppRestrictions returned error: %v", err)
+			}
+			want := []*App{
+				{Name: String("octocat")},
+			}
+			if !cmp.Equal(got, want) {
+				t.Errorf("Repositories.ReplaceAppRestrictions returned %+v, want %+v", got, want)
+			}
 
-	const methodName = "ReplaceAppRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ReplaceAppRestrictions(ctx, "\n", "\n", "\n", input)
-		return err
-	})
+			const methodName = "ReplaceAppRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.ReplaceAppRestrictions(ctx, "\n", "\n", "\n", input)
+				return err
+			})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ReplaceAppRestrictions(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.ReplaceAppRestrictions(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/apps"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/apps"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/apps", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		fmt.Fprint(w, `[{
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "POST")
+				fmt.Fprint(w, `[{
 				"name": "octocat"
 			}]`)
-	})
-	input := []string{"octocat"}
-	ctx := context.Background()
-	got, _, err := client.Repositories.AddAppRestrictions(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.AddAppRestrictions returned error: %v", err)
-	}
-	want := []*App{
-		{Name: String("octocat")},
-	}
-	if !cmp.Equal(got, want) {
-		t.Errorf("Repositories.AddAppRestrictions returned %+v, want %+v", got, want)
-	}
+			})
+			input := []string{"octocat"}
+			ctx := context.Background()
+			got, _, err := client.Repositories.AddAppRestrictions(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.AddAppRestrictions returned error: %v", err)
+			}
+			want := []*App{
+				{Name: String("octocat")},
+			}
+			if !cmp.Equal(got, want) {
+				t.Errorf("Repositories.AddAppRestrictions returned %+v, want %+v", got, want)
+			}
 
-	const methodName = "AddAppRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.AddAppRestrictions(ctx, "\n", "\n", "\n", input)
-		return err
-	})
+			const methodName = "AddAppRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.AddAppRestrictions(ctx, "\n", "\n", "\n", input)
+				return err
+			})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.AddAppRestrictions(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.AddAppRestrictions(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/apps", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		fmt.Fprint(w, `[]`)
-	})
-	input := []string{"octocat"}
-	ctx := context.Background()
-	got, _, err := client.Repositories.RemoveAppRestrictions(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.RemoveAppRestrictions returned error: %v", err)
-	}
-	want := []*App{}
-	if !cmp.Equal(got, want) {
-		t.Errorf("Repositories.RemoveAppRestrictions returned %+v, want %+v", got, want)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/apps"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/apps"},
 	}
 
-	const methodName = "RemoveAppRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.RemoveAppRestrictions(ctx, "\n", "\n", "\n", input)
-		return err
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.RemoveAppRestrictions(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "DELETE")
+				fmt.Fprint(w, `[]`)
+			})
+			input := []string{"octocat"}
+			ctx := context.Background()
+			got, _, err := client.Repositories.RemoveAppRestrictions(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.RemoveAppRestrictions returned error: %v", err)
+			}
+			want := []*App{}
+			if !cmp.Equal(got, want) {
+				t.Errorf("Repositories.RemoveAppRestrictions returned %+v, want %+v", got, want)
+			}
+
+			const methodName = "RemoveAppRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.RemoveAppRestrictions(ctx, "\n", "\n", "\n", input)
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.RemoveAppRestrictions(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_ListTeamRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/teams", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-	})
-
-	ctx := context.Background()
-	_, _, err := client.Repositories.ListTeamRestrictions(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.ListTeamRestrictions returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/teams"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/teams"},
 	}
 
-	const methodName = "ListTeamRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListTeamRestrictions(ctx, "\n", "\n", "\n")
-		return err
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListTeamRestrictions(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+			})
+
+			ctx := context.Background()
+			_, _, err := client.Repositories.ListTeamRestrictions(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.ListTeamRestrictions returned error: %v", err)
+			}
+
+			const methodName = "ListTeamRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.ListTeamRestrictions(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.ListTeamRestrictions(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_ReplaceTeamRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/teams"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/teams"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/teams", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		fmt.Fprint(w, `[{
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "PUT")
+				fmt.Fprint(w, `[{
 				"name": "octocat"
 			}]`)
-	})
-	input := []string{"octocat"}
-	ctx := context.Background()
-	got, _, err := client.Repositories.ReplaceTeamRestrictions(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.ReplaceTeamRestrictions returned error: %v", err)
-	}
-	want := []*Team{
-		{Name: String("octocat")},
-	}
-	if !cmp.Equal(got, want) {
-		t.Errorf("Repositories.ReplaceTeamRestrictions returned %+v, want %+v", got, want)
-	}
+			})
+			input := []string{"octocat"}
+			ctx := context.Background()
+			got, _, err := client.Repositories.ReplaceTeamRestrictions(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.ReplaceTeamRestrictions returned error: %v", err)
+			}
+			want := []*Team{
+				{Name: String("octocat")},
+			}
+			if !cmp.Equal(got, want) {
+				t.Errorf("Repositories.ReplaceTeamRestrictions returned %+v, want %+v", got, want)
+			}
 
-	const methodName = "ReplaceTeamRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ReplaceTeamRestrictions(ctx, "\n", "\n", "\n", input)
-		return err
-	})
+			const methodName = "ReplaceTeamRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.ReplaceTeamRestrictions(ctx, "\n", "\n", "\n", input)
+				return err
+			})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ReplaceTeamRestrictions(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.ReplaceTeamRestrictions(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_AddTeamRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/teams"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/teams"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/teams", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		fmt.Fprint(w, `[{
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "POST")
+				fmt.Fprint(w, `[{
 				"name": "octocat"
 			}]`)
-	})
-	input := []string{"octocat"}
-	ctx := context.Background()
-	got, _, err := client.Repositories.AddTeamRestrictions(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.AddTeamRestrictions returned error: %v", err)
-	}
-	want := []*Team{
-		{Name: String("octocat")},
-	}
-	if !cmp.Equal(got, want) {
-		t.Errorf("Repositories.AddTeamRestrictions returned %+v, want %+v", got, want)
-	}
+			})
+			input := []string{"octocat"}
+			ctx := context.Background()
+			got, _, err := client.Repositories.AddTeamRestrictions(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.AddTeamRestrictions returned error: %v", err)
+			}
+			want := []*Team{
+				{Name: String("octocat")},
+			}
+			if !cmp.Equal(got, want) {
+				t.Errorf("Repositories.AddTeamRestrictions returned %+v, want %+v", got, want)
+			}
 
-	const methodName = "AddTeamRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.AddTeamRestrictions(ctx, "\n", "\n", "\n", input)
-		return err
-	})
+			const methodName = "AddTeamRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.AddTeamRestrictions(ctx, "\n", "\n", "\n", input)
+				return err
+			})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.AddTeamRestrictions(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.AddTeamRestrictions(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_RemoveTeamRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/teams", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		fmt.Fprint(w, `[]`)
-	})
-	input := []string{"octocat"}
-	ctx := context.Background()
-	got, _, err := client.Repositories.RemoveTeamRestrictions(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.RemoveTeamRestrictions returned error: %v", err)
-	}
-	want := []*Team{}
-	if !cmp.Equal(got, want) {
-		t.Errorf("Repositories.RemoveTeamRestrictions returned %+v, want %+v", got, want)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/teams"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/teams"},
 	}
 
-	const methodName = "RemoveTeamRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.RemoveTeamRestrictions(ctx, "\n", "\n", "\n", input)
-		return err
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.RemoveTeamRestrictions(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "DELETE")
+				fmt.Fprint(w, `[]`)
+			})
+			input := []string{"octocat"}
+			ctx := context.Background()
+			got, _, err := client.Repositories.RemoveTeamRestrictions(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.RemoveTeamRestrictions returned error: %v", err)
+			}
+			want := []*Team{}
+			if !cmp.Equal(got, want) {
+				t.Errorf("Repositories.RemoveTeamRestrictions returned %+v, want %+v", got, want)
+			}
+
+			const methodName = "RemoveTeamRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.RemoveTeamRestrictions(ctx, "\n", "\n", "\n", input)
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.RemoveTeamRestrictions(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_ListUserRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/users", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-	})
-
-	ctx := context.Background()
-	_, _, err := client.Repositories.ListUserRestrictions(ctx, "o", "r", "b")
-	if err != nil {
-		t.Errorf("Repositories.ListUserRestrictions returned error: %v", err)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/users"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/users"},
 	}
 
-	const methodName = "ListUserRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListUserRestrictions(ctx, "\n", "\n", "\n")
-		return err
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListUserRestrictions(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+			})
+
+			ctx := context.Background()
+			_, _, err := client.Repositories.ListUserRestrictions(ctx, "o", "r", test.branch)
+			if err != nil {
+				t.Errorf("Repositories.ListUserRestrictions returned error: %v", err)
+			}
+
+			const methodName = "ListUserRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.ListUserRestrictions(ctx, "\n", "\n", "\n")
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.ListUserRestrictions(ctx, "o", "r", test.branch)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_ReplaceUserRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/users"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/users"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/users", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		fmt.Fprint(w, `[{
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "PUT")
+				fmt.Fprint(w, `[{
 				"name": "octocat"
 			}]`)
-	})
-	input := []string{"octocat"}
-	ctx := context.Background()
-	got, _, err := client.Repositories.ReplaceUserRestrictions(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.ReplaceUserRestrictions returned error: %v", err)
-	}
-	want := []*User{
-		{Name: String("octocat")},
-	}
-	if !cmp.Equal(got, want) {
-		t.Errorf("Repositories.ReplaceUserRestrictions returned %+v, want %+v", got, want)
-	}
+			})
+			input := []string{"octocat"}
+			ctx := context.Background()
+			got, _, err := client.Repositories.ReplaceUserRestrictions(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.ReplaceUserRestrictions returned error: %v", err)
+			}
+			want := []*User{
+				{Name: String("octocat")},
+			}
+			if !cmp.Equal(got, want) {
+				t.Errorf("Repositories.ReplaceUserRestrictions returned %+v, want %+v", got, want)
+			}
 
-	const methodName = "ReplaceUserRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ReplaceUserRestrictions(ctx, "\n", "\n", "\n", input)
-		return err
-	})
+			const methodName = "ReplaceUserRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.ReplaceUserRestrictions(ctx, "\n", "\n", "\n", input)
+				return err
+			})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ReplaceUserRestrictions(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.ReplaceUserRestrictions(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_AddUserRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/users"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/users"},
+	}
 
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/users", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		fmt.Fprint(w, `[{
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "POST")
+				fmt.Fprint(w, `[{
 				"name": "octocat"
 			}]`)
-	})
-	input := []string{"octocat"}
-	ctx := context.Background()
-	got, _, err := client.Repositories.AddUserRestrictions(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.AddUserRestrictions returned error: %v", err)
-	}
-	want := []*User{
-		{Name: String("octocat")},
-	}
-	if !cmp.Equal(got, want) {
-		t.Errorf("Repositories.AddUserRestrictions returned %+v, want %+v", got, want)
-	}
+			})
+			input := []string{"octocat"}
+			ctx := context.Background()
+			got, _, err := client.Repositories.AddUserRestrictions(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.AddUserRestrictions returned error: %v", err)
+			}
+			want := []*User{
+				{Name: String("octocat")},
+			}
+			if !cmp.Equal(got, want) {
+				t.Errorf("Repositories.AddUserRestrictions returned %+v, want %+v", got, want)
+			}
 
-	const methodName = "AddUserRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.AddUserRestrictions(ctx, "\n", "\n", "\n", input)
-		return err
-	})
+			const methodName = "AddUserRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.AddUserRestrictions(ctx, "\n", "\n", "\n", input)
+				return err
+			})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.AddUserRestrictions(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.AddUserRestrictions(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_RemoveUserRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/users", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		fmt.Fprint(w, `[]`)
-	})
-	input := []string{"octocat"}
-	ctx := context.Background()
-	got, _, err := client.Repositories.RemoveUserRestrictions(ctx, "o", "r", "b", input)
-	if err != nil {
-		t.Errorf("Repositories.RemoveUserRestrictions returned error: %v", err)
-	}
-	want := []*User{}
-	if !cmp.Equal(got, want) {
-		t.Errorf("Repositories.RemoveUserRestrictions returned %+v, want %+v", got, want)
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/users"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/users"},
 	}
 
-	const methodName = "RemoveUserRestrictions"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.RemoveUserRestrictions(ctx, "\n", "\n", "\n", input)
-		return err
-	})
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.RemoveUserRestrictions(ctx, "o", "r", "b", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "DELETE")
+				fmt.Fprint(w, `[]`)
+			})
+			input := []string{"octocat"}
+			ctx := context.Background()
+			got, _, err := client.Repositories.RemoveUserRestrictions(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.RemoveUserRestrictions returned error: %v", err)
+			}
+			want := []*User{}
+			if !cmp.Equal(got, want) {
+				t.Errorf("Repositories.RemoveUserRestrictions returned %+v, want %+v", got, want)
+			}
+
+			const methodName = "RemoveUserRestrictions"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.RemoveUserRestrictions(ctx, "\n", "\n", "\n", input)
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.RemoveUserRestrictions(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_Transfer(t *testing.T) {

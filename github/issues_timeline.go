@@ -151,6 +151,8 @@ type Timeline struct {
 	// The review summary text.
 	Body        *string    `json:"body,omitempty"`
 	SubmittedAt *Timestamp `json:"submitted_at,omitempty"`
+
+	PerformedViaGithubApp *App `json:"performed_via_github_app,omitempty"`
 }
 
 // Source represents a reference's source.
