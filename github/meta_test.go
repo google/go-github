@@ -57,7 +57,7 @@ func TestMetaService_Get(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	meta, _, err := client.MetaService.Get(ctx)
+	meta, _, err := client.Meta.Get(ctx)
 	if err != nil {
 		t.Errorf("Get returned error: %v", err)
 	}
@@ -80,7 +80,7 @@ func TestMetaService_Get(t *testing.T) {
 
 	const methodName = "Get"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.MetaService.Get(ctx)
+		got, resp, err := client.Meta.Get(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -103,7 +103,7 @@ func TestMetaService_Octocat(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.MetaService.Octocat(ctx, input)
+	got, _, err := client.Meta.Octocat(ctx, input)
 	if err != nil {
 		t.Errorf("Octocat returned error: %v", err)
 	}
@@ -114,7 +114,7 @@ func TestMetaService_Octocat(t *testing.T) {
 
 	const methodName = "Octocat"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.MetaService.Octocat(ctx, input)
+		got, resp, err := client.Meta.Octocat(ctx, input)
 		if got != "" {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -135,7 +135,7 @@ func TestMetaService_Zen(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.MetaService.Zen(ctx)
+	got, _, err := client.Meta.Zen(ctx)
 	if err != nil {
 		t.Errorf("Zen returned error: %v", err)
 	}
@@ -146,7 +146,7 @@ func TestMetaService_Zen(t *testing.T) {
 
 	const methodName = "Zen"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.MetaService.Zen(ctx)
+		got, resp, err := client.Meta.Zen(ctx)
 		if got != "" {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
