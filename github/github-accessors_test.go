@@ -5712,6 +5712,16 @@ func TestCreateUpdateEnvironment_GetDeploymentBranchPolicy(tt *testing.T) {
 	c.GetDeploymentBranchPolicy()
 }
 
+func TestCreateUpdateEnvironment_GetPreventSelfReview(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateUpdateEnvironment{PreventSelfReview: &zeroValue}
+	c.GetPreventSelfReview()
+	c = &CreateUpdateEnvironment{}
+	c.GetPreventSelfReview()
+	c = nil
+	c.GetPreventSelfReview()
+}
+
 func TestCreateUpdateEnvironment_GetWaitTimer(tt *testing.T) {
 	var zeroValue int
 	c := &CreateUpdateEnvironment{WaitTimer: &zeroValue}
@@ -8126,16 +8136,6 @@ func TestEnvironment_GetOwner(tt *testing.T) {
 	e.GetOwner()
 	e = nil
 	e.GetOwner()
-}
-
-func TestEnvironment_GetPreventSelfReview(tt *testing.T) {
-	var zeroValue bool
-	e := &Environment{PreventSelfReview: &zeroValue}
-	e.GetPreventSelfReview()
-	e = &Environment{}
-	e.GetPreventSelfReview()
-	e = nil
-	e.GetPreventSelfReview()
 }
 
 func TestEnvironment_GetRepo(tt *testing.T) {

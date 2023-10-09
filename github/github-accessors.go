@@ -4838,6 +4838,14 @@ func (c *CreateUpdateEnvironment) GetDeploymentBranchPolicy() *BranchPolicy {
 	return c.DeploymentBranchPolicy
 }
 
+// GetPreventSelfReview returns the PreventSelfReview field if it's non-nil, zero value otherwise.
+func (c *CreateUpdateEnvironment) GetPreventSelfReview() bool {
+	if c == nil || c.PreventSelfReview == nil {
+		return false
+	}
+	return *c.PreventSelfReview
+}
+
 // GetWaitTimer returns the WaitTimer field if it's non-nil, zero value otherwise.
 func (c *CreateUpdateEnvironment) GetWaitTimer() int {
 	if c == nil || c.WaitTimer == nil {
@@ -6932,14 +6940,6 @@ func (e *Environment) GetOwner() string {
 		return ""
 	}
 	return *e.Owner
-}
-
-// GetPreventSelfReview returns the PreventSelfReview field if it's non-nil, zero value otherwise.
-func (e *Environment) GetPreventSelfReview() bool {
-	if e == nil || e.PreventSelfReview == nil {
-		return false
-	}
-	return *e.PreventSelfReview
 }
 
 // GetRepo returns the Repo field if it's non-nil, zero value otherwise.

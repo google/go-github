@@ -17,7 +17,6 @@ type Environment struct {
 	Owner                  *string         `json:"owner,omitempty"`
 	Repo                   *string         `json:"repo,omitempty"`
 	EnvironmentName        *string         `json:"environment_name,omitempty"`
-	PreventSelfReview      *bool           `json:"prevent_self_review,omitempty"`
 	WaitTimer              *int            `json:"wait_timer,omitempty"`
 	Reviewers              []*EnvReviewers `json:"reviewers,omitempty"`
 	DeploymentBranchPolicy *BranchPolicy   `json:"deployment_branch_policy,omitempty"`
@@ -175,6 +174,7 @@ type CreateUpdateEnvironment struct {
 	Reviewers              []*EnvReviewers `json:"reviewers"`
 	CanAdminsBypass        *bool           `json:"can_admins_bypass"`
 	DeploymentBranchPolicy *BranchPolicy   `json:"deployment_branch_policy"`
+	PreventSelfReview      *bool           `json:"prevent_self_review,omitempty"`
 }
 
 // createUpdateEnvironmentNoEnterprise represents the fields accepted for Pro/Teams private repos.
