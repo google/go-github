@@ -38,7 +38,7 @@ func TestRepositoriesService_GetCodeownersErrors(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	codeownersErrors, _, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r")
+	codeownersErrors, _, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.GetCodeownersErrors returned error: %v", err)
 	}
@@ -62,12 +62,12 @@ func TestRepositoriesService_GetCodeownersErrors(t *testing.T) {
 
 	const methodName = "GetCodeownersErrors"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetCodeownersErrors(ctx, "\n", "\n")
+		_, _, err = client.Repositories.GetCodeownersErrors(ctx, "\n", "\n", nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r")
+		got, resp, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
