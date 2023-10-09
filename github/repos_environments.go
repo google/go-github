@@ -17,6 +17,7 @@ type Environment struct {
 	Owner                  *string         `json:"owner,omitempty"`
 	Repo                   *string         `json:"repo,omitempty"`
 	EnvironmentName        *string         `json:"environment_name,omitempty"`
+	PreventSelfReview      *bool           `json:"prevent_self_review,omitempty"`
 	WaitTimer              *int            `json:"wait_timer,omitempty"`
 	Reviewers              []*EnvReviewers `json:"reviewers,omitempty"`
 	DeploymentBranchPolicy *BranchPolicy   `json:"deployment_branch_policy,omitempty"`
@@ -52,11 +53,12 @@ type EnvResponse struct {
 
 // ProtectionRule represents a single protection rule applied to the environment.
 type ProtectionRule struct {
-	ID        *int64              `json:"id,omitempty"`
-	NodeID    *string             `json:"node_id,omitempty"`
-	Type      *string             `json:"type,omitempty"`
-	WaitTimer *int                `json:"wait_timer,omitempty"`
-	Reviewers []*RequiredReviewer `json:"reviewers,omitempty"`
+	ID                *int64              `json:"id,omitempty"`
+	NodeID            *string             `json:"node_id,omitempty"`
+	PreventSelfReview *bool               `json:"prevent_self_review,omitempty"`
+	Type              *string             `json:"type,omitempty"`
+	WaitTimer         *int                `json:"wait_timer,omitempty"`
+	Reviewers         []*RequiredReviewer `json:"reviewers,omitempty"`
 }
 
 // RequiredReviewer represents a required reviewer.

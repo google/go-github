@@ -8128,6 +8128,16 @@ func TestEnvironment_GetOwner(tt *testing.T) {
 	e.GetOwner()
 }
 
+func TestEnvironment_GetPreventSelfReview(tt *testing.T) {
+	var zeroValue bool
+	e := &Environment{PreventSelfReview: &zeroValue}
+	e.GetPreventSelfReview()
+	e = &Environment{}
+	e.GetPreventSelfReview()
+	e = nil
+	e.GetPreventSelfReview()
+}
+
 func TestEnvironment_GetRepo(tt *testing.T) {
 	var zeroValue string
 	e := &Environment{Repo: &zeroValue}
@@ -18045,6 +18055,16 @@ func TestProtectionRule_GetNodeID(tt *testing.T) {
 	p.GetNodeID()
 	p = nil
 	p.GetNodeID()
+}
+
+func TestProtectionRule_GetPreventSelfReview(tt *testing.T) {
+	var zeroValue bool
+	p := &ProtectionRule{PreventSelfReview: &zeroValue}
+	p.GetPreventSelfReview()
+	p = &ProtectionRule{}
+	p.GetPreventSelfReview()
+	p = nil
+	p.GetPreventSelfReview()
 }
 
 func TestProtectionRule_GetType(tt *testing.T) {

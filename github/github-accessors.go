@@ -6934,6 +6934,14 @@ func (e *Environment) GetOwner() string {
 	return *e.Owner
 }
 
+// GetPreventSelfReview returns the PreventSelfReview field if it's non-nil, zero value otherwise.
+func (e *Environment) GetPreventSelfReview() bool {
+	if e == nil || e.PreventSelfReview == nil {
+		return false
+	}
+	return *e.PreventSelfReview
+}
+
 // GetRepo returns the Repo field if it's non-nil, zero value otherwise.
 func (e *Environment) GetRepo() string {
 	if e == nil || e.Repo == nil {
@@ -15532,6 +15540,14 @@ func (p *ProtectionRule) GetNodeID() string {
 		return ""
 	}
 	return *p.NodeID
+}
+
+// GetPreventSelfReview returns the PreventSelfReview field if it's non-nil, zero value otherwise.
+func (p *ProtectionRule) GetPreventSelfReview() bool {
+	if p == nil || p.PreventSelfReview == nil {
+		return false
+	}
+	return *p.PreventSelfReview
 }
 
 // GetType returns the Type field if it's non-nil, zero value otherwise.
