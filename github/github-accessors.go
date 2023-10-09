@@ -4838,6 +4838,14 @@ func (c *CreateUpdateEnvironment) GetDeploymentBranchPolicy() *BranchPolicy {
 	return c.DeploymentBranchPolicy
 }
 
+// GetPreventSelfReview returns the PreventSelfReview field if it's non-nil, zero value otherwise.
+func (c *CreateUpdateEnvironment) GetPreventSelfReview() bool {
+	if c == nil || c.PreventSelfReview == nil {
+		return false
+	}
+	return *c.PreventSelfReview
+}
+
 // GetWaitTimer returns the WaitTimer field if it's non-nil, zero value otherwise.
 func (c *CreateUpdateEnvironment) GetWaitTimer() int {
 	if c == nil || c.WaitTimer == nil {
@@ -15532,6 +15540,14 @@ func (p *ProtectionRule) GetNodeID() string {
 		return ""
 	}
 	return *p.NodeID
+}
+
+// GetPreventSelfReview returns the PreventSelfReview field if it's non-nil, zero value otherwise.
+func (p *ProtectionRule) GetPreventSelfReview() bool {
+	if p == nil || p.PreventSelfReview == nil {
+		return false
+	}
+	return *p.PreventSelfReview
 }
 
 // GetType returns the Type field if it's non-nil, zero value otherwise.
