@@ -82,6 +82,7 @@ func TestRepositoriesService_GetCodeownersErrors_specificRef(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/codeowners/errors", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeV3)
+		testFormValues(t, r, values{"ref": "mybranch"})
 		fmt.Fprint(w, `{
 		  "errors": [
 			{
