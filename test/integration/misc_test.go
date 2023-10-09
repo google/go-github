@@ -15,32 +15,32 @@ import (
 )
 
 func TestEmojis(t *testing.T) {
-	emoji, _, err := client.ListEmojis(context.Background())
+	emoji, _, err := client.Emojis.List(context.Background())
 	if err != nil {
-		t.Fatalf("ListEmojis returned error: %v", err)
+		t.Fatalf("List returned error: %v", err)
 	}
 
 	if len(emoji) == 0 {
-		t.Errorf("ListEmojis returned no emojis")
+		t.Errorf("List returned no emojis")
 	}
 
 	if _, ok := emoji["+1"]; !ok {
-		t.Errorf("ListEmojis missing '+1' emoji")
+		t.Errorf("List missing '+1' emoji")
 	}
 }
 
 func TestAPIMeta(t *testing.T) {
-	meta, _, err := client.APIMeta(context.Background())
+	meta, _, err := client.Meta.Get(context.Background())
 	if err != nil {
-		t.Fatalf("APIMeta returned error: %v", err)
+		t.Fatalf("Get returned error: %v", err)
 	}
 
 	if len(meta.Hooks) == 0 {
-		t.Errorf("APIMeta returned no hook addresses")
+		t.Errorf("Get returned no hook addresses")
 	}
 
 	if len(meta.Git) == 0 {
-		t.Errorf("APIMeta returned no git addresses")
+		t.Errorf("Get returned no git addresses")
 	}
 
 	if !*meta.VerifiablePasswordAuthentication {
