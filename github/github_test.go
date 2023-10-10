@@ -167,18 +167,21 @@ func testStructTags(t *testing.T, v interface{}, tag string) {
 // Since this is a strictly exact comparison, it is important that we follow
 // some rules when constructing the expected value:
 //
-// - No extra spaces. JSON strings can be formatted using only line breaks
-// and tabs (make sure they are tabs and not spaces).
+//   - No extra spaces. JSON strings can be formatted using only line breaks and tabs
+//     (make sure they are tabs and not spaces).
 //
-// - The JSON fields must be in the same order as they were defined in the
-// structure, or in lexicographical order if it's a map.
+//   - The JSON fields must be in the same order as they were defined in the
+//     structure, or in lexicographical order if it's a map.
 //
-// - All fields must have the JSON tag.
+//   - All fields must have the JSON tag.
 func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	t.Helper()
 
+	// As the comparison can be made using structures and maps, we need to
+	// determine the name of the type of v to know if it's a map or not.
 	interfaceName := fmt.Sprintf("%s", reflect.ValueOf(&v).Elem().Interface())
 
+	// If the type of v is a structure, check that all fields have the JSON tag.
 	if !strings.HasPrefix(interfaceName, "&map") {
 		testStructTags(t, v, "json")
 	}
@@ -188,8 +191,11 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 		t.Errorf("Unable to unmarshal JSON for %v: %v", v, err)
 	}
 
+	// Remove all spaces and new lines from the JSON strings.
 	want = strings.Replace(want, "\t", "", -1)
 	want = strings.Replace(want, "\n", "", -1)
+
+	// Replace the "<" and ">" characters with their unicode escape sequences.
 	want = strings.Replace(want, "<", "\\u003c", -1)
 	want = strings.Replace(want, ">", "\\u003e", -1)
 
