@@ -226,7 +226,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
 		v := new(repositoryReleaseRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		want := &repositoryReleaseRequest{
@@ -291,7 +291,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(repositoryReleaseRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		want := &repositoryReleaseRequest{
@@ -498,14 +498,47 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 
 	ctx := context.Background()
 	reader, _, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, http.DefaultClient)
-	content, err := io.ReadAll(reader)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
+	}
+	content, err := io.ReadAll(reader)
+	if err != nil {
+		t.Errorf("Reading Repositories.DownloadReleaseAsset returned error: %v", err)
 	}
 	reader.Close()
 	want := []byte("Hello World")
 	if !bytes.Equal(want, content) {
 		t.Errorf("Repositories.DownloadReleaseAsset returned %+v, want %+v", content, want)
+	}
+}
+
+func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		// /yo, below will be served as baseURLPath/yo
+		http.Redirect(w, r, baseURLPath+"/yo", http.StatusFound)
+	})
+	mux.HandleFunc("/yo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", "*/*")
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	ctx := context.Background()
+	resp, loc, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, http.DefaultClient)
+	if err == nil {
+		t.Error("Repositories.DownloadReleaseAsset did not return an error")
+	}
+	if resp != nil {
+		resp.Close()
+		t.Error("Repositories.DownloadReleaseAsset returned stream, want nil")
+	}
+	if loc != "" {
+		t.Errorf(`Repositories.DownloadReleaseAsset returned "%s", want empty ""`, loc)
 	}
 }
 
@@ -544,7 +577,7 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ReleaseAsset)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

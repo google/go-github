@@ -14,7 +14,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -243,7 +242,7 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeV3SHA)
 
-		fmt.Fprintf(w, sha1)
+		fmt.Fprint(w, sha1)
 	})
 
 	ctx := context.Background()
@@ -299,7 +298,7 @@ func TestRepositoriesService_NonAlphabetCharacter_GetCommitSHA1(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeV3SHA)
 
-		fmt.Fprintf(w, sha1)
+		fmt.Fprint(w, sha1)
 	})
 
 	ctx := context.Background()
@@ -339,7 +338,7 @@ func TestRepositoriesService_TrailingPercent_GetCommitSHA1(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeV3SHA)
 
-		fmt.Fprintf(w, sha1)
+		fmt.Fprint(w, sha1)
 	})
 
 	ctx := context.Background()
@@ -713,7 +712,6 @@ func TestBranchCommit_Marshal(t *testing.T) {
 			},
 			NodeID:       String("n"),
 			CommentCount: Int(1),
-			SigningKey:   &openpgp.Entity{},
 		},
 		Protected: Bool(false),
 	}

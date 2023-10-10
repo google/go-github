@@ -17,6 +17,7 @@ type Pages struct {
 	CNAME            *string                `json:"cname,omitempty"`
 	Custom404        *bool                  `json:"custom_404,omitempty"`
 	HTMLURL          *string                `json:"html_url,omitempty"`
+	BuildType        *string                `json:"build_type,omitempty"`
 	Source           *PagesSource           `json:"source,omitempty"`
 	Public           *bool                  `json:"public,omitempty"`
 	HTTPSCertificate *PagesHTTPSCertificate `json:"https_certificate,omitempty"`
@@ -46,6 +47,44 @@ type PagesBuild struct {
 	UpdatedAt *Timestamp  `json:"updated_at,omitempty"`
 }
 
+// PagesDomain represents a domain associated with a GitHub Pages site.
+type PagesDomain struct {
+	Host                          *string `json:"host,omitempty"`
+	URI                           *string `json:"uri,omitempty"`
+	Nameservers                   *string `json:"nameservers,omitempty"`
+	DNSResolves                   *bool   `json:"dns_resolves,omitempty"`
+	IsProxied                     *bool   `json:"is_proxied,omitempty"`
+	IsCloudflareIP                *bool   `json:"is_cloudflare_ip,omitempty"`
+	IsFastlyIP                    *bool   `json:"is_fastly_ip,omitempty"`
+	IsOldIPAddress                *bool   `json:"is_old_ip_address,omitempty"`
+	IsARecord                     *bool   `json:"is_a_record,omitempty"`
+	HasCNAMERecord                *bool   `json:"has_cname_record,omitempty"`
+	HasMXRecordsPresent           *bool   `json:"has_mx_records_present,omitempty"`
+	IsValidDomain                 *bool   `json:"is_valid_domain,omitempty"`
+	IsApexDomain                  *bool   `json:"is_apex_domain,omitempty"`
+	ShouldBeARecord               *bool   `json:"should_be_a_record,omitempty"`
+	IsCNAMEToGithubUserDomain     *bool   `json:"is_cname_to_github_user_domain,omitempty"`
+	IsCNAMEToPagesDotGithubDotCom *bool   `json:"is_cname_to_pages_dot_github_dot_com,omitempty"`
+	IsCNAMEToFastly               *bool   `json:"is_cname_to_fastly,omitempty"`
+	IsPointedToGithubPagesIP      *bool   `json:"is_pointed_to_github_pages_ip,omitempty"`
+	IsNonGithubPagesIPPresent     *bool   `json:"is_non_github_pages_ip_present,omitempty"`
+	IsPagesDomain                 *bool   `json:"is_pages_domain,omitempty"`
+	IsServedByPages               *bool   `json:"is_served_by_pages,omitempty"`
+	IsValid                       *bool   `json:"is_valid,omitempty"`
+	Reason                        *string `json:"reason,omitempty"`
+	RespondsToHTTPS               *bool   `json:"responds_to_https,omitempty"`
+	EnforcesHTTPS                 *bool   `json:"enforces_https,omitempty"`
+	HTTPSError                    *string `json:"https_error,omitempty"`
+	IsHTTPSEligible               *bool   `json:"is_https_eligible,omitempty"`
+	CAAError                      *string `json:"caa_error,omitempty"`
+}
+
+// PagesHealthCheckResponse represents the response given for the health check of a GitHub Pages site.
+type PagesHealthCheckResponse struct {
+	Domain    *PagesDomain `json:"domain,omitempty"`
+	AltDomain *PagesDomain `json:"alt_domain,omitempty"`
+}
+
 // PagesHTTPSCertificate represents the HTTPS Certificate information for a GitHub Pages site.
 type PagesHTTPSCertificate struct {
 	State       *string  `json:"state,omitempty"`
@@ -58,7 +97,8 @@ type PagesHTTPSCertificate struct {
 // createPagesRequest is a subset of Pages and is used internally
 // by EnablePages to pass only the known fields for the endpoint.
 type createPagesRequest struct {
-	Source *PagesSource `json:"source,omitempty"`
+	BuildType *string      `json:"build_type,omitempty"`
+	Source    *PagesSource `json:"source,omitempty"`
 }
 
 // EnablePages enables GitHub Pages for the named repo.
@@ -68,7 +108,8 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
 	pagesReq := &createPagesRequest{
-		Source: pages.Source,
+		BuildType: pages.BuildType,
+		Source:    pages.Source,
 	}
 
 	req, err := s.client.NewRequest("POST", u, pagesReq)
@@ -92,6 +133,10 @@ type PagesUpdate struct {
 	// CNAME represents a custom domain for the repository.
 	// Leaving CNAME empty will remove the custom domain.
 	CNAME *string `json:"cname"`
+	// BuildType is optional and can either be "legacy" or "workflow".
+	// "workflow" - You are using a github workflow to build your pages.
+	// "legacy"   - You are deploying from a branch.
+	BuildType *string `json:"build_type,omitempty"`
 	// Source must include the branch name, and may optionally specify the subdirectory "/docs".
 	// Possible values for Source.Branch are usually "gh-pages", "main", and "master",
 	// or any other existing branch name.
@@ -239,4 +284,23 @@ func (s *RepositoriesService) RequestPageBuild(ctx context.Context, owner, repo 
 	}
 
 	return build, resp, nil
+}
+
+// GetPagesHealthCheck gets a DNS health check for the CNAME record configured for a repository's GitHub Pages.
+//
+// GitHub API docs: https://docs.github.com/en/rest/pages#get-a-dns-health-check-for-github-pages
+func (s *RepositoriesService) GetPageHealthCheck(ctx context.Context, owner, repo string) (*PagesHealthCheckResponse, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pages/health", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	healthCheckResponse := new(PagesHealthCheckResponse)
+	resp, err := s.client.Do(ctx, req, healthCheckResponse)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return healthCheckResponse, resp, nil
 }

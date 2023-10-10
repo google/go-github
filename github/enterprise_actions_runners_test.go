@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -14,6 +15,53 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 )
+
+func TestEnterpriseService_GenerateEnterpriseJITConfig(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+
+	mux.HandleFunc("/enterprises/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
+		v := new(GenerateJITConfigRequest)
+		err := json.NewDecoder(r.Body).Decode(v)
+		if err != nil {
+			t.Errorf("Request body decode failed: %v", err)
+		}
+
+		testMethod(t, r, "POST")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"encoded_jit_config":"foo"}`)
+	})
+
+	ctx := context.Background()
+	jitConfig, _, err := client.Enterprise.GenerateEnterpriseJITConfig(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Enterprise.GenerateEnterpriseJITConfig returned error: %v", err)
+	}
+
+	want := &JITRunnerConfig{EncodedJITConfig: String("foo")}
+	if !cmp.Equal(jitConfig, want) {
+		t.Errorf("Enterprise.GenerateEnterpriseJITConfig returned %+v, want %+v", jitConfig, want)
+	}
+
+	const methodName = "GenerateEnterpriseJITConfig"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.GenerateEnterpriseJITConfig(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GenerateEnterpriseJITConfig(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
 
 func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
 	client, mux, _, teardown := setup()

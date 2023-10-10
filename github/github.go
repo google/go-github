@@ -24,11 +24,10 @@ import (
 	"time"
 
 	"github.com/google/go-querystring/query"
-	"golang.org/x/oauth2"
 )
 
 const (
-	Version = "v50.1.0"
+	Version = "v55.0.0"
 
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
@@ -40,6 +39,7 @@ const (
 	headerRateRemaining = "X-RateLimit-Remaining"
 	headerRateReset     = "X-RateLimit-Reset"
 	headerOTP           = "X-GitHub-OTP"
+	headerRetryAfter    = "Retry-After"
 
 	headerTokenExpiration = "GitHub-Authentication-Token-Expiration"
 
@@ -125,9 +125,6 @@ const (
 	// https://developer.github.com/changes/2019-04-24-vulnerability-alerts/
 	mediaTypeRequiredVulnerabilityAlertsPreview = "application/vnd.github.dorian-preview+json"
 
-	// https://developer.github.com/changes/2019-06-04-automated-security-fixes/
-	mediaTypeRequiredAutomatedSecurityFixesPreview = "application/vnd.github.london-preview+json"
-
 	// https://developer.github.com/changes/2019-05-29-update-branch-api/
 	mediaTypeUpdatePullRequestBranchPreview = "application/vnd.github.lydian-preview+json"
 
@@ -178,35 +175,42 @@ type Client struct {
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// Services used for talking to different parts of the GitHub API.
-	Actions        *ActionsService
-	Activity       *ActivityService
-	Admin          *AdminService
-	Apps           *AppsService
-	Authorizations *AuthorizationsService
-	Billing        *BillingService
-	Checks         *ChecksService
-	CodeScanning   *CodeScanningService
-	Dependabot     *DependabotService
-	Enterprise     *EnterpriseService
-	Gists          *GistsService
-	Git            *GitService
-	Gitignores     *GitignoresService
-	Interactions   *InteractionsService
-	IssueImport    *IssueImportService
-	Issues         *IssuesService
-	Licenses       *LicensesService
-	Marketplace    *MarketplaceService
-	Migrations     *MigrationService
-	Organizations  *OrganizationsService
-	Projects       *ProjectsService
-	PullRequests   *PullRequestsService
-	Reactions      *ReactionsService
-	Repositories   *RepositoriesService
-	SCIM           *SCIMService
-	Search         *SearchService
-	SecretScanning *SecretScanningService
-	Teams          *TeamsService
-	Users          *UsersService
+	Actions            *ActionsService
+	Activity           *ActivityService
+	Admin              *AdminService
+	Apps               *AppsService
+	Authorizations     *AuthorizationsService
+	Billing            *BillingService
+	Checks             *ChecksService
+	CodeScanning       *CodeScanningService
+	CodesOfConduct     *CodesOfConductService
+	Codespaces         *CodespacesService
+	Dependabot         *DependabotService
+	DependencyGraph    *DependencyGraphService
+	Emojis             *EmojisService
+	Enterprise         *EnterpriseService
+	Gists              *GistsService
+	Git                *GitService
+	Gitignores         *GitignoresService
+	Interactions       *InteractionsService
+	IssueImport        *IssueImportService
+	Issues             *IssuesService
+	Licenses           *LicensesService
+	Markdown           *MarkdownService
+	Marketplace        *MarketplaceService
+	Meta               *MetaService
+	Migrations         *MigrationService
+	Organizations      *OrganizationsService
+	Projects           *ProjectsService
+	PullRequests       *PullRequestsService
+	Reactions          *ReactionsService
+	Repositories       *RepositoriesService
+	SCIM               *SCIMService
+	Search             *SearchService
+	SecretScanning     *SecretScanningService
+	SecurityAdvisories *SecurityAdvisoriesService
+	Teams              *TeamsService
+	Users              *UsersService
 }
 
 type service struct {
@@ -305,16 +309,92 @@ func addOptions(s string, opts interface{}) (string, error) {
 
 // NewClient returns a new GitHub API client. If a nil httpClient is
 // provided, a new http.Client will be used. To use API methods which require
-// authentication, provide an http.Client that will perform the authentication
-// for you (such as that provided by the golang.org/x/oauth2 library).
+// authentication, either use Client.WithAuthToken or provide NewClient with
+// an http.Client that will perform the authentication for you (such as that
+// provided by the golang.org/x/oauth2 library).
 func NewClient(httpClient *http.Client) *Client {
-	if httpClient == nil {
-		httpClient = &http.Client{}
-	}
-	baseURL, _ := url.Parse(defaultBaseURL)
-	uploadURL, _ := url.Parse(uploadBaseURL)
+	c := &Client{client: httpClient}
+	c.initialize()
+	return c
+}
 
-	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: defaultUserAgent, UploadURL: uploadURL}
+// WithAuthToken returns a copy of the client configured to use the provided token for the Authorization header.
+func (c *Client) WithAuthToken(token string) *Client {
+	c2 := c.copy()
+	defer c2.initialize()
+	transport := c2.client.Transport
+	if transport == nil {
+		transport = http.DefaultTransport
+	}
+	c2.client.Transport = roundTripperFunc(
+		func(req *http.Request) (*http.Response, error) {
+			req = req.Clone(req.Context())
+			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+			return transport.RoundTrip(req)
+		},
+	)
+	return c2
+}
+
+// WithEnterpriseURLs returns a copy of the client configured to use the provided base and
+// upload URLs. If the base URL does not have the suffix "/api/v3/", it will be added
+// automatically. If the upload URL does not have the suffix "/api/uploads", it will be
+// added automatically.
+//
+// Note that WithEnterpriseURLs is a convenience helper only;
+// its behavior is equivalent to setting the BaseURL and UploadURL fields.
+//
+// Another important thing is that by default, the GitHub Enterprise URL format
+// should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code.
+// The upload URL format should be http(s)://[hostname]/api/uploads/.
+func (c *Client) WithEnterpriseURLs(baseURL, uploadURL string) (*Client, error) {
+	c2 := c.copy()
+	defer c2.initialize()
+	var err error
+	c2.BaseURL, err = url.Parse(baseURL)
+	if err != nil {
+		return nil, err
+	}
+
+	if !strings.HasSuffix(c2.BaseURL.Path, "/") {
+		c2.BaseURL.Path += "/"
+	}
+	if !strings.HasSuffix(c2.BaseURL.Path, "/api/v3/") &&
+		!strings.HasPrefix(c2.BaseURL.Host, "api.") &&
+		!strings.Contains(c2.BaseURL.Host, ".api.") {
+		c2.BaseURL.Path += "api/v3/"
+	}
+
+	c2.UploadURL, err = url.Parse(uploadURL)
+	if err != nil {
+		return nil, err
+	}
+
+	if !strings.HasSuffix(c2.UploadURL.Path, "/") {
+		c2.UploadURL.Path += "/"
+	}
+	if !strings.HasSuffix(c2.UploadURL.Path, "/api/uploads/") &&
+		!strings.HasPrefix(c2.UploadURL.Host, "api.") &&
+		!strings.Contains(c2.UploadURL.Host, ".api.") {
+		c2.UploadURL.Path += "api/uploads/"
+	}
+	return c2, nil
+}
+
+// initialize sets default values and initializes services.
+func (c *Client) initialize() {
+	if c.client == nil {
+		c.client = &http.Client{}
+	}
+	if c.BaseURL == nil {
+		c.BaseURL, _ = url.Parse(defaultBaseURL)
+	}
+	if c.UploadURL == nil {
+		c.UploadURL, _ = url.Parse(uploadBaseURL)
+	}
+	if c.UserAgent == "" {
+		c.UserAgent = defaultUserAgent
+	}
 	c.common.client = c
 	c.Actions = (*ActionsService)(&c.common)
 	c.Activity = (*ActivityService)(&c.common)
@@ -324,7 +404,11 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Billing = (*BillingService)(&c.common)
 	c.Checks = (*ChecksService)(&c.common)
 	c.CodeScanning = (*CodeScanningService)(&c.common)
+	c.Codespaces = (*CodespacesService)(&c.common)
+	c.CodesOfConduct = (*CodesOfConductService)(&c.common)
 	c.Dependabot = (*DependabotService)(&c.common)
+	c.DependencyGraph = (*DependencyGraphService)(&c.common)
+	c.Emojis = (*EmojisService)(&c.common)
 	c.Enterprise = (*EnterpriseService)(&c.common)
 	c.Gists = (*GistsService)(&c.common)
 	c.Git = (*GitService)(&c.common)
@@ -333,7 +417,9 @@ func NewClient(httpClient *http.Client) *Client {
 	c.IssueImport = (*IssueImportService)(&c.common)
 	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
+	c.Markdown = (*MarkdownService)(&c.common)
 	c.Marketplace = &MarketplaceService{client: c}
+	c.Meta = (*MetaService)(&c.common)
 	c.Migrations = (*MigrationService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
 	c.Projects = (*ProjectsService)(&c.common)
@@ -343,9 +429,30 @@ func NewClient(httpClient *http.Client) *Client {
 	c.SCIM = (*SCIMService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
 	c.SecretScanning = (*SecretScanningService)(&c.common)
+	c.SecurityAdvisories = (*SecurityAdvisoriesService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
-	return c
+}
+
+// copy returns a copy of the current client. It must be initialized before use.
+func (c *Client) copy() *Client {
+	c.clientMu.Lock()
+	// can't use *c here because that would copy mutexes by value.
+	clone := Client{
+		client:                  c.client,
+		UserAgent:               c.UserAgent,
+		BaseURL:                 c.BaseURL,
+		UploadURL:               c.UploadURL,
+		secondaryRateLimitReset: c.secondaryRateLimitReset,
+	}
+	c.clientMu.Unlock()
+	if clone.client == nil {
+		clone.client = &http.Client{}
+	}
+	c.rateMu.Lock()
+	copy(clone.rateLimits[:], c.rateLimits[:])
+	c.rateMu.Unlock()
+	return &clone
 }
 
 // NewClientWithEnvProxy enhances NewClient with the HttpProxy env.
@@ -354,56 +461,18 @@ func NewClientWithEnvProxy() *Client {
 }
 
 // NewTokenClient returns a new GitHub API client authenticated with the provided token.
-func NewTokenClient(ctx context.Context, token string) *Client {
-	return NewClient(oauth2.NewClient(ctx, oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})))
+// Deprecated: Use NewClient(nil).WithAuthToken(token) instead.
+func NewTokenClient(_ context.Context, token string) *Client {
+	// This always returns a nil error.
+	return NewClient(nil).WithAuthToken(token)
 }
 
 // NewEnterpriseClient returns a new GitHub API client with provided
 // base URL and upload URL (often is your GitHub Enterprise hostname).
-// If the base URL does not have the suffix "/api/v3/", it will be added automatically.
-// If the upload URL does not have the suffix "/api/uploads", it will be added automatically.
-// If a nil httpClient is provided, a new http.Client will be used.
 //
-// Note that NewEnterpriseClient is a convenience helper only;
-// its behavior is equivalent to using NewClient, followed by setting
-// the BaseURL and UploadURL fields.
-//
-// Another important thing is that by default, the GitHub Enterprise URL format
-// should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code.
-// The upload URL format should be http(s)://[hostname]/api/uploads/.
+// Deprecated: Use NewClient(httpClient).WithEnterpriseURLs(baseURL, uploadURL) instead.
 func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*Client, error) {
-	baseEndpoint, err := url.Parse(baseURL)
-	if err != nil {
-		return nil, err
-	}
-
-	if !strings.HasSuffix(baseEndpoint.Path, "/") {
-		baseEndpoint.Path += "/"
-	}
-	if !strings.HasSuffix(baseEndpoint.Path, "/api/v3/") &&
-		!strings.HasPrefix(baseEndpoint.Host, "api.") &&
-		!strings.Contains(baseEndpoint.Host, ".api.") {
-		baseEndpoint.Path += "api/v3/"
-	}
-
-	uploadEndpoint, err := url.Parse(uploadURL)
-	if err != nil {
-		return nil, err
-	}
-
-	if !strings.HasSuffix(uploadEndpoint.Path, "/") {
-		uploadEndpoint.Path += "/"
-	}
-	if !strings.HasSuffix(uploadEndpoint.Path, "/api/uploads/") &&
-		!strings.HasPrefix(uploadEndpoint.Host, "api.") &&
-		!strings.Contains(uploadEndpoint.Host, ".api.") {
-		uploadEndpoint.Path += "api/uploads/"
-	}
-
-	c := NewClient(httpClient)
-	c.BaseURL = baseEndpoint
-	c.UploadURL = uploadEndpoint
-	return c, nil
+	return NewClient(httpClient).WithEnterpriseURLs(baseURL, uploadURL)
 }
 
 // RequestOption represents an option that can modify an http.Request.
@@ -677,6 +746,30 @@ func parseRate(r *http.Response) Rate {
 	return rate
 }
 
+// parseSecondaryRate parses the secondary rate related headers,
+// and returns the time to retry after.
+func parseSecondaryRate(r *http.Response) *time.Duration {
+	// According to GitHub support, the "Retry-After" header value will be
+	// an integer which represents the number of seconds that one should
+	// wait before resuming making requests.
+	if v := r.Header.Get(headerRetryAfter); v != "" {
+		retryAfterSeconds, _ := strconv.ParseInt(v, 10, 64) // Error handling is noop.
+		retryAfter := time.Duration(retryAfterSeconds) * time.Second
+		return &retryAfter
+	}
+
+	// According to GitHub support, endpoints might return x-ratelimit-reset instead,
+	// as an integer which represents the number of seconds since epoch UTC,
+	// represting the time to resume making requests.
+	if v := r.Header.Get(headerRateReset); v != "" {
+		secondsSinceEpoch, _ := strconv.ParseInt(v, 10, 64) // Error handling is noop.
+		retryAfter := time.Until(time.Unix(secondsSinceEpoch, 0))
+		return &retryAfter
+	}
+
+	return nil
+}
+
 // parseTokenExpiration parses the TokenExpiration related headers.
 // Returns 0001-01-01 if the header is not defined or could not be parsed.
 func parseTokenExpiration(r *http.Response) Timestamp {
@@ -725,7 +818,7 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 			}, err
 		}
 		// If we've hit a secondary rate limit, don't make further requests before Retry After.
-		if err := c.checkSecondaryRateLimitBeforeDo(ctx, req); err != nil {
+		if err := c.checkSecondaryRateLimitBeforeDo(req); err != nil {
 			return &Response{
 				Response: err.Response,
 			}, err
@@ -857,7 +950,7 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory rat
 // current client state in order to quickly check if *AbuseRateLimitError can be immediately returned
 // from Client.Do, and if so, returns it so that Client.Do can skip making a network API call unnecessarily.
 // Otherwise it returns nil, and Client.Do should proceed normally.
-func (c *Client) checkSecondaryRateLimitBeforeDo(ctx context.Context, req *http.Request) *AbuseRateLimitError {
+func (c *Client) checkSecondaryRateLimitBeforeDo(req *http.Request) *AbuseRateLimitError {
 	c.rateMu.Lock()
 	secondary := c.secondaryRateLimitReset
 	c.rateMu.Unlock()
@@ -1025,7 +1118,7 @@ func (ae *AcceptedError) Is(target error) bool {
 	if !ok {
 		return false
 	}
-	return bytes.Compare(ae.Raw, v.Raw) == 0
+	return bytes.Equal(ae.Raw, v.Raw)
 }
 
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
@@ -1134,7 +1227,11 @@ func CheckResponse(r *http.Response) error {
 	errorResponse := &ErrorResponse{Response: r}
 	data, err := io.ReadAll(r.Body)
 	if err == nil && data != nil {
-		json.Unmarshal(data, errorResponse)
+		err = json.Unmarshal(data, errorResponse)
+		if err != nil {
+			// reset the response as if this never happened
+			errorResponse = &ErrorResponse{Response: r}
+		}
 	}
 	// Re-populate error response body because GitHub error responses are often
 	// undocumented and inconsistent.
@@ -1156,13 +1253,8 @@ func CheckResponse(r *http.Response) error {
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
 		}
-		if v := r.Header["Retry-After"]; len(v) > 0 {
-			// According to GitHub support, the "Retry-After" header value will be
-			// an integer which represents the number of seconds that one should
-			// wait before resuming making requests.
-			retryAfterSeconds, _ := strconv.ParseInt(v[0], 10, 64) // Error handling is noop.
-			retryAfter := time.Duration(retryAfterSeconds) * time.Second
-			abuseRateLimitError.RetryAfter = &retryAfter
+		if retryAfter := parseSecondaryRate(r); retryAfter != nil {
+			abuseRateLimitError.RetryAfter = retryAfter
 		}
 		return abuseRateLimitError
 	default:
@@ -1474,7 +1566,7 @@ func formatRateReset(d time.Duration) string {
 
 // When using roundTripWithOptionalFollowRedirect, note that it
 // is the responsibility of the caller to close the response body.
-func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, followRedirects bool, opts ...RequestOption) (*http.Response, error) {
+func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, maxRedirects int, opts ...RequestOption) (*http.Response, error) {
 	req, err := c.NewRequest("GET", u, nil, opts...)
 	if err != nil {
 		return nil, err
@@ -1493,10 +1585,10 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 	}
 
 	// If redirect response is returned, follow it
-	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
-		resp.Body.Close()
+	if maxRedirects > 0 && resp.StatusCode == http.StatusMovedPermanently {
+		_ = resp.Body.Close()
 		u = resp.Header.Get("Location")
-		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, false, opts...)
+		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects-1, opts...)
 	}
 	return resp, err
 }
@@ -1516,3 +1608,10 @@ func Int64(v int64) *int64 { return &v }
 // String is a helper routine that allocates a new string value
 // to store v and returns a pointer to it.
 func String(v string) *string { return &v }
+
+// roundTripperFunc creates a RoundTripper (transport)
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
+	return fn(r)
+}

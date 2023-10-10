@@ -185,6 +185,36 @@ func TestActionsPermissions_GetSelectedActionsURL(tt *testing.T) {
 	a.GetSelectedActionsURL()
 }
 
+func TestActionsPermissionsEnterprise_GetAllowedActions(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{AllowedActions: &zeroValue}
+	a.GetAllowedActions()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetAllowedActions()
+	a = nil
+	a.GetAllowedActions()
+}
+
+func TestActionsPermissionsEnterprise_GetEnabledOrganizations(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{EnabledOrganizations: &zeroValue}
+	a.GetEnabledOrganizations()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetEnabledOrganizations()
+	a = nil
+	a.GetEnabledOrganizations()
+}
+
+func TestActionsPermissionsEnterprise_GetSelectedActionsURL(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsEnterprise{SelectedActionsURL: &zeroValue}
+	a.GetSelectedActionsURL()
+	a = &ActionsPermissionsEnterprise{}
+	a.GetSelectedActionsURL()
+	a = nil
+	a.GetSelectedActionsURL()
+}
+
 func TestActionsPermissionsRepository_GetAllowedActions(tt *testing.T) {
 	var zeroValue string
 	a := &ActionsPermissionsRepository{AllowedActions: &zeroValue}
@@ -260,6 +290,16 @@ func TestActionsVariable_GetVisibility(tt *testing.T) {
 	a.GetVisibility()
 	a = nil
 	a.GetVisibility()
+}
+
+func TestActorLocation_GetCountryCode(tt *testing.T) {
+	var zeroValue string
+	a := &ActorLocation{CountryCode: &zeroValue}
+	a.GetCountryCode()
+	a = &ActorLocation{}
+	a.GetCountryCode()
+	a = nil
+	a.GetCountryCode()
 }
 
 func TestAdminEnforcedChanges_GetFrom(tt *testing.T) {
@@ -382,18 +422,18 @@ func TestAdvancedSecurityCommittersBreakdown_GetUserLogin(tt *testing.T) {
 	a.GetUserLogin()
 }
 
-func TestAdvisoryCVSs_GetScore(tt *testing.T) {
-	a := &AdvisoryCVSs{}
+func TestAdvisoryCVSS_GetScore(tt *testing.T) {
+	a := &AdvisoryCVSS{}
 	a.GetScore()
 	a = nil
 	a.GetScore()
 }
 
-func TestAdvisoryCVSs_GetVectorString(tt *testing.T) {
+func TestAdvisoryCVSS_GetVectorString(tt *testing.T) {
 	var zeroValue string
-	a := &AdvisoryCVSs{VectorString: &zeroValue}
+	a := &AdvisoryCVSS{VectorString: &zeroValue}
 	a.GetVectorString()
-	a = &AdvisoryCVSs{}
+	a = &AdvisoryCVSS{}
 	a.GetVectorString()
 	a = nil
 	a.GetVectorString()
@@ -461,6 +501,16 @@ func TestAdvisoryVulnerability_GetPackage(tt *testing.T) {
 	a.GetPackage()
 	a = nil
 	a.GetPackage()
+}
+
+func TestAdvisoryVulnerability_GetPatchedVersions(tt *testing.T) {
+	var zeroValue string
+	a := &AdvisoryVulnerability{PatchedVersions: &zeroValue}
+	a.GetPatchedVersions()
+	a = &AdvisoryVulnerability{}
+	a.GetPatchedVersions()
+	a = nil
+	a.GetPatchedVersions()
 }
 
 func TestAdvisoryVulnerability_GetSeverity(tt *testing.T) {
@@ -785,6 +835,16 @@ func TestApp_GetID(tt *testing.T) {
 	a.GetID()
 }
 
+func TestApp_GetInstallationsCount(tt *testing.T) {
+	var zeroValue int
+	a := &App{InstallationsCount: &zeroValue}
+	a.GetInstallationsCount()
+	a = &App{}
+	a.GetInstallationsCount()
+	a = nil
+	a.GetInstallationsCount()
+}
+
 func TestApp_GetName(tt *testing.T) {
 	var zeroValue string
 	a := &App{Name: &zeroValue}
@@ -974,6 +1034,26 @@ func TestAppConfig_GetWebhookSecret(tt *testing.T) {
 	a.GetWebhookSecret()
 	a = nil
 	a.GetWebhookSecret()
+}
+
+func TestArchivedAt_GetFrom(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &ArchivedAt{From: &zeroValue}
+	a.GetFrom()
+	a = &ArchivedAt{}
+	a.GetFrom()
+	a = nil
+	a.GetFrom()
+}
+
+func TestArchivedAt_GetTo(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &ArchivedAt{To: &zeroValue}
+	a.GetTo()
+	a = &ArchivedAt{}
+	a.GetTo()
+	a = nil
+	a.GetTo()
 }
 
 func TestArtifact_GetArchiveDownloadURL(tt *testing.T) {
@@ -1213,6 +1293,23 @@ func TestAuditEntry_GetActor(tt *testing.T) {
 	a.GetActor()
 }
 
+func TestAuditEntry_GetActorIP(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ActorIP: &zeroValue}
+	a.GetActorIP()
+	a = &AuditEntry{}
+	a.GetActorIP()
+	a = nil
+	a.GetActorIP()
+}
+
+func TestAuditEntry_GetActorLocation(tt *testing.T) {
+	a := &AuditEntry{}
+	a.GetActorLocation()
+	a = nil
+	a.GetActorLocation()
+}
+
 func TestAuditEntry_GetBlockedUser(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{BlockedUser: &zeroValue}
@@ -1297,6 +1394,13 @@ func TestAuditEntry_GetCreatedAt(tt *testing.T) {
 	a.GetCreatedAt()
 }
 
+func TestAuditEntry_GetData(tt *testing.T) {
+	a := &AuditEntry{}
+	a.GetData()
+	a = nil
+	a.GetData()
+}
+
 func TestAuditEntry_GetDeployKeyFingerprint(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{DeployKeyFingerprint: &zeroValue}
@@ -1357,6 +1461,26 @@ func TestAuditEntry_GetExplanation(tt *testing.T) {
 	a.GetExplanation()
 }
 
+func TestAuditEntry_GetExternalIdentityNameID(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ExternalIdentityNameID: &zeroValue}
+	a.GetExternalIdentityNameID()
+	a = &AuditEntry{}
+	a.GetExternalIdentityNameID()
+	a = nil
+	a.GetExternalIdentityNameID()
+}
+
+func TestAuditEntry_GetExternalIdentityUsername(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ExternalIdentityUsername: &zeroValue}
+	a.GetExternalIdentityUsername()
+	a = &AuditEntry{}
+	a.GetExternalIdentityUsername()
+	a = nil
+	a.GetExternalIdentityUsername()
+}
+
 func TestAuditEntry_GetFingerprint(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{Fingerprint: &zeroValue}
@@ -1365,6 +1489,16 @@ func TestAuditEntry_GetFingerprint(tt *testing.T) {
 	a.GetFingerprint()
 	a = nil
 	a.GetFingerprint()
+}
+
+func TestAuditEntry_GetHashedToken(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{HashedToken: &zeroValue}
+	a.GetHashedToken()
+	a = &AuditEntry{}
+	a.GetHashedToken()
+	a = nil
+	a.GetHashedToken()
 }
 
 func TestAuditEntry_GetHeadBranch(tt *testing.T) {
@@ -1417,6 +1551,16 @@ func TestAuditEntry_GetJobName(tt *testing.T) {
 	a.GetJobName()
 }
 
+func TestAuditEntry_GetJobWorkflowRef(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{JobWorkflowRef: &zeroValue}
+	a.GetJobWorkflowRef()
+	a = &AuditEntry{}
+	a.GetJobWorkflowRef()
+	a = nil
+	a.GetJobWorkflowRef()
+}
+
 func TestAuditEntry_GetLimitedAvailability(tt *testing.T) {
 	var zeroValue bool
 	a := &AuditEntry{LimitedAvailability: &zeroValue}
@@ -1445,6 +1589,16 @@ func TestAuditEntry_GetName(tt *testing.T) {
 	a.GetName()
 	a = nil
 	a.GetName()
+}
+
+func TestAuditEntry_GetOAuthApplicationID(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{OAuthApplicationID: &zeroValue}
+	a.GetOAuthApplicationID()
+	a = &AuditEntry{}
+	a.GetOAuthApplicationID()
+	a = nil
+	a.GetOAuthApplicationID()
 }
 
 func TestAuditEntry_GetOldPermission(tt *testing.T) {
@@ -1477,6 +1631,16 @@ func TestAuditEntry_GetOpenSSHPublicKey(tt *testing.T) {
 	a.GetOpenSSHPublicKey()
 }
 
+func TestAuditEntry_GetOperationType(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{OperationType: &zeroValue}
+	a.GetOperationType()
+	a = &AuditEntry{}
+	a.GetOperationType()
+	a = nil
+	a.GetOperationType()
+}
+
 func TestAuditEntry_GetOrg(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{Org: &zeroValue}
@@ -1485,6 +1649,16 @@ func TestAuditEntry_GetOrg(tt *testing.T) {
 	a.GetOrg()
 	a = nil
 	a.GetOrg()
+}
+
+func TestAuditEntry_GetOrgID(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{OrgID: &zeroValue}
+	a.GetOrgID()
+	a = &AuditEntry{}
+	a.GetOrgID()
+	a = nil
+	a.GetOrgID()
 }
 
 func TestAuditEntry_GetPermission(tt *testing.T) {
@@ -1505,6 +1679,46 @@ func TestAuditEntry_GetPreviousVisibility(tt *testing.T) {
 	a.GetPreviousVisibility()
 	a = nil
 	a.GetPreviousVisibility()
+}
+
+func TestAuditEntry_GetProgrammaticAccessType(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ProgrammaticAccessType: &zeroValue}
+	a.GetProgrammaticAccessType()
+	a = &AuditEntry{}
+	a.GetProgrammaticAccessType()
+	a = nil
+	a.GetProgrammaticAccessType()
+}
+
+func TestAuditEntry_GetPullRequestID(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{PullRequestID: &zeroValue}
+	a.GetPullRequestID()
+	a = &AuditEntry{}
+	a.GetPullRequestID()
+	a = nil
+	a.GetPullRequestID()
+}
+
+func TestAuditEntry_GetPullRequestTitle(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{PullRequestTitle: &zeroValue}
+	a.GetPullRequestTitle()
+	a = &AuditEntry{}
+	a.GetPullRequestTitle()
+	a = nil
+	a.GetPullRequestTitle()
+}
+
+func TestAuditEntry_GetPullRequestURL(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{PullRequestURL: &zeroValue}
+	a.GetPullRequestURL()
+	a = &AuditEntry{}
+	a.GetPullRequestURL()
+	a = nil
+	a.GetPullRequestURL()
 }
 
 func TestAuditEntry_GetReadOnly(tt *testing.T) {
@@ -1597,6 +1811,16 @@ func TestAuditEntry_GetRunnerName(tt *testing.T) {
 	a.GetRunnerName()
 }
 
+func TestAuditEntry_GetRunNumber(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{RunNumber: &zeroValue}
+	a.GetRunNumber()
+	a = &AuditEntry{}
+	a.GetRunNumber()
+	a = nil
+	a.GetRunNumber()
+}
+
 func TestAuditEntry_GetSourceVersion(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{SourceVersion: &zeroValue}
@@ -1657,6 +1881,36 @@ func TestAuditEntry_GetTimestamp(tt *testing.T) {
 	a.GetTimestamp()
 }
 
+func TestAuditEntry_GetTokenID(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{TokenID: &zeroValue}
+	a.GetTokenID()
+	a = &AuditEntry{}
+	a.GetTokenID()
+	a = nil
+	a.GetTokenID()
+}
+
+func TestAuditEntry_GetTokenScopes(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{TokenScopes: &zeroValue}
+	a.GetTokenScopes()
+	a = &AuditEntry{}
+	a.GetTokenScopes()
+	a = nil
+	a.GetTokenScopes()
+}
+
+func TestAuditEntry_GetTopic(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Topic: &zeroValue}
+	a.GetTopic()
+	a = &AuditEntry{}
+	a.GetTopic()
+	a = nil
+	a.GetTopic()
+}
+
 func TestAuditEntry_GetTransportProtocol(tt *testing.T) {
 	var zeroValue int
 	a := &AuditEntry{TransportProtocol: &zeroValue}
@@ -1697,6 +1951,16 @@ func TestAuditEntry_GetUser(tt *testing.T) {
 	a.GetUser()
 }
 
+func TestAuditEntry_GetUserAgent(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{UserAgent: &zeroValue}
+	a.GetUserAgent()
+	a = &AuditEntry{}
+	a.GetUserAgent()
+	a = nil
+	a.GetUserAgent()
+}
+
 func TestAuditEntry_GetVisibility(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{Visibility: &zeroValue}
@@ -1725,6 +1989,26 @@ func TestAuditEntry_GetWorkflowRunID(tt *testing.T) {
 	a.GetWorkflowRunID()
 	a = nil
 	a.GetWorkflowRunID()
+}
+
+func TestAuditEntryData_GetOldLogin(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntryData{OldLogin: &zeroValue}
+	a.GetOldLogin()
+	a = &AuditEntryData{}
+	a.GetOldLogin()
+	a = nil
+	a.GetOldLogin()
+}
+
+func TestAuditEntryData_GetOldName(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntryData{OldName: &zeroValue}
+	a.GetOldName()
+	a = &AuditEntryData{}
+	a.GetOldName()
+	a = nil
+	a.GetOldName()
 }
 
 func TestAuthorization_GetApp(tt *testing.T) {
@@ -2041,6 +2325,26 @@ func TestAutolinkOptions_GetURLTemplate(tt *testing.T) {
 	a.GetURLTemplate()
 }
 
+func TestAutomatedSecurityFixes_GetEnabled(tt *testing.T) {
+	var zeroValue bool
+	a := &AutomatedSecurityFixes{Enabled: &zeroValue}
+	a.GetEnabled()
+	a = &AutomatedSecurityFixes{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
+}
+
+func TestAutomatedSecurityFixes_GetPaused(tt *testing.T) {
+	var zeroValue bool
+	a := &AutomatedSecurityFixes{Paused: &zeroValue}
+	a.GetPaused()
+	a = &AutomatedSecurityFixes{}
+	a.GetPaused()
+	a = nil
+	a.GetPaused()
+}
+
 func TestAutoTriggerCheck_GetAppID(tt *testing.T) {
 	var zeroValue int64
 	a := &AutoTriggerCheck{AppID: &zeroValue}
@@ -2119,6 +2423,16 @@ func TestBlob_GetURL(tt *testing.T) {
 	b.GetURL()
 	b = nil
 	b.GetURL()
+}
+
+func TestBlockCreations_GetEnabled(tt *testing.T) {
+	var zeroValue bool
+	b := &BlockCreations{Enabled: &zeroValue}
+	b.GetEnabled()
+	b = &BlockCreations{}
+	b.GetEnabled()
+	b = nil
+	b.GetEnabled()
 }
 
 func TestBranch_GetCommit(tt *testing.T) {
@@ -2475,6 +2789,36 @@ func TestBranchProtectionRuleEvent_GetSender(tt *testing.T) {
 	b.GetSender()
 	b = nil
 	b.GetSender()
+}
+
+func TestBypassActor_GetActorID(tt *testing.T) {
+	var zeroValue int64
+	b := &BypassActor{ActorID: &zeroValue}
+	b.GetActorID()
+	b = &BypassActor{}
+	b.GetActorID()
+	b = nil
+	b.GetActorID()
+}
+
+func TestBypassActor_GetActorType(tt *testing.T) {
+	var zeroValue string
+	b := &BypassActor{ActorType: &zeroValue}
+	b.GetActorType()
+	b = &BypassActor{}
+	b.GetActorType()
+	b = nil
+	b.GetActorType()
+}
+
+func TestBypassActor_GetBypassMode(tt *testing.T) {
+	var zeroValue string
+	b := &BypassActor{BypassMode: &zeroValue}
+	b.GetBypassMode()
+	b = &BypassActor{}
+	b.GetBypassMode()
+	b = nil
+	b.GetBypassMode()
 }
 
 func TestCheckRun_GetApp(tt *testing.T) {
@@ -3080,6 +3424,93 @@ func TestCodeownersError_GetSuggestion(tt *testing.T) {
 	c.GetSuggestion()
 }
 
+func TestCodeQLDatabase_GetContentType(tt *testing.T) {
+	var zeroValue string
+	c := &CodeQLDatabase{ContentType: &zeroValue}
+	c.GetContentType()
+	c = &CodeQLDatabase{}
+	c.GetContentType()
+	c = nil
+	c.GetContentType()
+}
+
+func TestCodeQLDatabase_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CodeQLDatabase{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CodeQLDatabase{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCodeQLDatabase_GetID(tt *testing.T) {
+	var zeroValue int64
+	c := &CodeQLDatabase{ID: &zeroValue}
+	c.GetID()
+	c = &CodeQLDatabase{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCodeQLDatabase_GetLanguage(tt *testing.T) {
+	var zeroValue string
+	c := &CodeQLDatabase{Language: &zeroValue}
+	c.GetLanguage()
+	c = &CodeQLDatabase{}
+	c.GetLanguage()
+	c = nil
+	c.GetLanguage()
+}
+
+func TestCodeQLDatabase_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CodeQLDatabase{Name: &zeroValue}
+	c.GetName()
+	c = &CodeQLDatabase{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCodeQLDatabase_GetSize(tt *testing.T) {
+	var zeroValue int64
+	c := &CodeQLDatabase{Size: &zeroValue}
+	c.GetSize()
+	c = &CodeQLDatabase{}
+	c.GetSize()
+	c = nil
+	c.GetSize()
+}
+
+func TestCodeQLDatabase_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CodeQLDatabase{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CodeQLDatabase{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCodeQLDatabase_GetUploader(tt *testing.T) {
+	c := &CodeQLDatabase{}
+	c.GetUploader()
+	c = nil
+	c.GetUploader()
+}
+
+func TestCodeQLDatabase_GetURL(tt *testing.T) {
+	var zeroValue string
+	c := &CodeQLDatabase{URL: &zeroValue}
+	c.GetURL()
+	c = &CodeQLDatabase{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
+}
+
 func TestCodeResult_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	c := &CodeResult{HTMLURL: &zeroValue}
@@ -3230,6 +3661,408 @@ func TestCodeSearchResult_GetTotal(tt *testing.T) {
 	c.GetTotal()
 	c = nil
 	c.GetTotal()
+}
+
+func TestCodespace_GetBillableOwner(tt *testing.T) {
+	c := &Codespace{}
+	c.GetBillableOwner()
+	c = nil
+	c.GetBillableOwner()
+}
+
+func TestCodespace_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &Codespace{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &Codespace{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCodespace_GetDevcontainerPath(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{DevcontainerPath: &zeroValue}
+	c.GetDevcontainerPath()
+	c = &Codespace{}
+	c.GetDevcontainerPath()
+	c = nil
+	c.GetDevcontainerPath()
+}
+
+func TestCodespace_GetDisplayName(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{DisplayName: &zeroValue}
+	c.GetDisplayName()
+	c = &Codespace{}
+	c.GetDisplayName()
+	c = nil
+	c.GetDisplayName()
+}
+
+func TestCodespace_GetEnvironmentID(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{EnvironmentID: &zeroValue}
+	c.GetEnvironmentID()
+	c = &Codespace{}
+	c.GetEnvironmentID()
+	c = nil
+	c.GetEnvironmentID()
+}
+
+func TestCodespace_GetGitStatus(tt *testing.T) {
+	c := &Codespace{}
+	c.GetGitStatus()
+	c = nil
+	c.GetGitStatus()
+}
+
+func TestCodespace_GetID(tt *testing.T) {
+	var zeroValue int64
+	c := &Codespace{ID: &zeroValue}
+	c.GetID()
+	c = &Codespace{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCodespace_GetIdleTimeoutMinutes(tt *testing.T) {
+	var zeroValue int
+	c := &Codespace{IdleTimeoutMinutes: &zeroValue}
+	c.GetIdleTimeoutMinutes()
+	c = &Codespace{}
+	c.GetIdleTimeoutMinutes()
+	c = nil
+	c.GetIdleTimeoutMinutes()
+}
+
+func TestCodespace_GetIdleTimeoutNotice(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{IdleTimeoutNotice: &zeroValue}
+	c.GetIdleTimeoutNotice()
+	c = &Codespace{}
+	c.GetIdleTimeoutNotice()
+	c = nil
+	c.GetIdleTimeoutNotice()
+}
+
+func TestCodespace_GetLastKnownStopNotice(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{LastKnownStopNotice: &zeroValue}
+	c.GetLastKnownStopNotice()
+	c = &Codespace{}
+	c.GetLastKnownStopNotice()
+	c = nil
+	c.GetLastKnownStopNotice()
+}
+
+func TestCodespace_GetLastUsedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &Codespace{LastUsedAt: &zeroValue}
+	c.GetLastUsedAt()
+	c = &Codespace{}
+	c.GetLastUsedAt()
+	c = nil
+	c.GetLastUsedAt()
+}
+
+func TestCodespace_GetLocation(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{Location: &zeroValue}
+	c.GetLocation()
+	c = &Codespace{}
+	c.GetLocation()
+	c = nil
+	c.GetLocation()
+}
+
+func TestCodespace_GetMachine(tt *testing.T) {
+	c := &Codespace{}
+	c.GetMachine()
+	c = nil
+	c.GetMachine()
+}
+
+func TestCodespace_GetMachinesURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{MachinesURL: &zeroValue}
+	c.GetMachinesURL()
+	c = &Codespace{}
+	c.GetMachinesURL()
+	c = nil
+	c.GetMachinesURL()
+}
+
+func TestCodespace_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{Name: &zeroValue}
+	c.GetName()
+	c = &Codespace{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCodespace_GetOwner(tt *testing.T) {
+	c := &Codespace{}
+	c.GetOwner()
+	c = nil
+	c.GetOwner()
+}
+
+func TestCodespace_GetPendingOperation(tt *testing.T) {
+	var zeroValue bool
+	c := &Codespace{PendingOperation: &zeroValue}
+	c.GetPendingOperation()
+	c = &Codespace{}
+	c.GetPendingOperation()
+	c = nil
+	c.GetPendingOperation()
+}
+
+func TestCodespace_GetPendingOperationDisabledReason(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{PendingOperationDisabledReason: &zeroValue}
+	c.GetPendingOperationDisabledReason()
+	c = &Codespace{}
+	c.GetPendingOperationDisabledReason()
+	c = nil
+	c.GetPendingOperationDisabledReason()
+}
+
+func TestCodespace_GetPrebuild(tt *testing.T) {
+	var zeroValue bool
+	c := &Codespace{Prebuild: &zeroValue}
+	c.GetPrebuild()
+	c = &Codespace{}
+	c.GetPrebuild()
+	c = nil
+	c.GetPrebuild()
+}
+
+func TestCodespace_GetPullsURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{PullsURL: &zeroValue}
+	c.GetPullsURL()
+	c = &Codespace{}
+	c.GetPullsURL()
+	c = nil
+	c.GetPullsURL()
+}
+
+func TestCodespace_GetRepository(tt *testing.T) {
+	c := &Codespace{}
+	c.GetRepository()
+	c = nil
+	c.GetRepository()
+}
+
+func TestCodespace_GetRetentionExpiresAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &Codespace{RetentionExpiresAt: &zeroValue}
+	c.GetRetentionExpiresAt()
+	c = &Codespace{}
+	c.GetRetentionExpiresAt()
+	c = nil
+	c.GetRetentionExpiresAt()
+}
+
+func TestCodespace_GetRetentionPeriodMinutes(tt *testing.T) {
+	var zeroValue int
+	c := &Codespace{RetentionPeriodMinutes: &zeroValue}
+	c.GetRetentionPeriodMinutes()
+	c = &Codespace{}
+	c.GetRetentionPeriodMinutes()
+	c = nil
+	c.GetRetentionPeriodMinutes()
+}
+
+func TestCodespace_GetRuntimeConstraints(tt *testing.T) {
+	c := &Codespace{}
+	c.GetRuntimeConstraints()
+	c = nil
+	c.GetRuntimeConstraints()
+}
+
+func TestCodespace_GetStartURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{StartURL: &zeroValue}
+	c.GetStartURL()
+	c = &Codespace{}
+	c.GetStartURL()
+	c = nil
+	c.GetStartURL()
+}
+
+func TestCodespace_GetState(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{State: &zeroValue}
+	c.GetState()
+	c = &Codespace{}
+	c.GetState()
+	c = nil
+	c.GetState()
+}
+
+func TestCodespace_GetStopURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{StopURL: &zeroValue}
+	c.GetStopURL()
+	c = &Codespace{}
+	c.GetStopURL()
+	c = nil
+	c.GetStopURL()
+}
+
+func TestCodespace_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &Codespace{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &Codespace{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCodespace_GetURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{URL: &zeroValue}
+	c.GetURL()
+	c = &Codespace{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
+}
+
+func TestCodespace_GetWebURL(tt *testing.T) {
+	var zeroValue string
+	c := &Codespace{WebURL: &zeroValue}
+	c.GetWebURL()
+	c = &Codespace{}
+	c.GetWebURL()
+	c = nil
+	c.GetWebURL()
+}
+
+func TestCodespacesGitStatus_GetAhead(tt *testing.T) {
+	var zeroValue int
+	c := &CodespacesGitStatus{Ahead: &zeroValue}
+	c.GetAhead()
+	c = &CodespacesGitStatus{}
+	c.GetAhead()
+	c = nil
+	c.GetAhead()
+}
+
+func TestCodespacesGitStatus_GetBehind(tt *testing.T) {
+	var zeroValue int
+	c := &CodespacesGitStatus{Behind: &zeroValue}
+	c.GetBehind()
+	c = &CodespacesGitStatus{}
+	c.GetBehind()
+	c = nil
+	c.GetBehind()
+}
+
+func TestCodespacesGitStatus_GetHasUncommittedChanges(tt *testing.T) {
+	var zeroValue bool
+	c := &CodespacesGitStatus{HasUncommittedChanges: &zeroValue}
+	c.GetHasUncommittedChanges()
+	c = &CodespacesGitStatus{}
+	c.GetHasUncommittedChanges()
+	c = nil
+	c.GetHasUncommittedChanges()
+}
+
+func TestCodespacesGitStatus_GetHasUnpushedChanges(tt *testing.T) {
+	var zeroValue bool
+	c := &CodespacesGitStatus{HasUnpushedChanges: &zeroValue}
+	c.GetHasUnpushedChanges()
+	c = &CodespacesGitStatus{}
+	c.GetHasUnpushedChanges()
+	c = nil
+	c.GetHasUnpushedChanges()
+}
+
+func TestCodespacesGitStatus_GetRef(tt *testing.T) {
+	var zeroValue string
+	c := &CodespacesGitStatus{Ref: &zeroValue}
+	c.GetRef()
+	c = &CodespacesGitStatus{}
+	c.GetRef()
+	c = nil
+	c.GetRef()
+}
+
+func TestCodespacesMachine_GetCPUs(tt *testing.T) {
+	var zeroValue int
+	c := &CodespacesMachine{CPUs: &zeroValue}
+	c.GetCPUs()
+	c = &CodespacesMachine{}
+	c.GetCPUs()
+	c = nil
+	c.GetCPUs()
+}
+
+func TestCodespacesMachine_GetDisplayName(tt *testing.T) {
+	var zeroValue string
+	c := &CodespacesMachine{DisplayName: &zeroValue}
+	c.GetDisplayName()
+	c = &CodespacesMachine{}
+	c.GetDisplayName()
+	c = nil
+	c.GetDisplayName()
+}
+
+func TestCodespacesMachine_GetMemoryInBytes(tt *testing.T) {
+	var zeroValue int64
+	c := &CodespacesMachine{MemoryInBytes: &zeroValue}
+	c.GetMemoryInBytes()
+	c = &CodespacesMachine{}
+	c.GetMemoryInBytes()
+	c = nil
+	c.GetMemoryInBytes()
+}
+
+func TestCodespacesMachine_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CodespacesMachine{Name: &zeroValue}
+	c.GetName()
+	c = &CodespacesMachine{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCodespacesMachine_GetOperatingSystem(tt *testing.T) {
+	var zeroValue string
+	c := &CodespacesMachine{OperatingSystem: &zeroValue}
+	c.GetOperatingSystem()
+	c = &CodespacesMachine{}
+	c.GetOperatingSystem()
+	c = nil
+	c.GetOperatingSystem()
+}
+
+func TestCodespacesMachine_GetPrebuildAvailability(tt *testing.T) {
+	var zeroValue string
+	c := &CodespacesMachine{PrebuildAvailability: &zeroValue}
+	c.GetPrebuildAvailability()
+	c = &CodespacesMachine{}
+	c.GetPrebuildAvailability()
+	c = nil
+	c.GetPrebuildAvailability()
+}
+
+func TestCodespacesMachine_GetStorageInBytes(tt *testing.T) {
+	var zeroValue int64
+	c := &CodespacesMachine{StorageInBytes: &zeroValue}
+	c.GetStorageInBytes()
+	c = &CodespacesMachine{}
+	c.GetStorageInBytes()
+	c = nil
+	c.GetStorageInBytes()
 }
 
 func TestCollaboratorInvitation_GetCreatedAt(tt *testing.T) {
@@ -3694,6 +4527,13 @@ func TestCommitCommentEvent_GetInstallation(tt *testing.T) {
 	c.GetInstallation()
 	c = nil
 	c.GetInstallation()
+}
+
+func TestCommitCommentEvent_GetOrg(tt *testing.T) {
+	c := &CommitCommentEvent{}
+	c.GetOrg()
+	c = nil
+	c.GetOrg()
 }
 
 func TestCommitCommentEvent_GetRepo(tt *testing.T) {
@@ -4527,6 +5367,146 @@ func TestCreateCheckSuiteOptions_GetHeadBranch(tt *testing.T) {
 	c.GetHeadBranch()
 }
 
+func TestCreateCodespaceOptions_GetClientIP(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{ClientIP: &zeroValue}
+	c.GetClientIP()
+	c = &CreateCodespaceOptions{}
+	c.GetClientIP()
+	c = nil
+	c.GetClientIP()
+}
+
+func TestCreateCodespaceOptions_GetDevcontainerPath(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{DevcontainerPath: &zeroValue}
+	c.GetDevcontainerPath()
+	c = &CreateCodespaceOptions{}
+	c.GetDevcontainerPath()
+	c = nil
+	c.GetDevcontainerPath()
+}
+
+func TestCreateCodespaceOptions_GetDisplayName(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{DisplayName: &zeroValue}
+	c.GetDisplayName()
+	c = &CreateCodespaceOptions{}
+	c.GetDisplayName()
+	c = nil
+	c.GetDisplayName()
+}
+
+func TestCreateCodespaceOptions_GetGeo(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{Geo: &zeroValue}
+	c.GetGeo()
+	c = &CreateCodespaceOptions{}
+	c.GetGeo()
+	c = nil
+	c.GetGeo()
+}
+
+func TestCreateCodespaceOptions_GetIdleTimeoutMinutes(tt *testing.T) {
+	var zeroValue int
+	c := &CreateCodespaceOptions{IdleTimeoutMinutes: &zeroValue}
+	c.GetIdleTimeoutMinutes()
+	c = &CreateCodespaceOptions{}
+	c.GetIdleTimeoutMinutes()
+	c = nil
+	c.GetIdleTimeoutMinutes()
+}
+
+func TestCreateCodespaceOptions_GetMachine(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{Machine: &zeroValue}
+	c.GetMachine()
+	c = &CreateCodespaceOptions{}
+	c.GetMachine()
+	c = nil
+	c.GetMachine()
+}
+
+func TestCreateCodespaceOptions_GetMultiRepoPermissionsOptOut(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateCodespaceOptions{MultiRepoPermissionsOptOut: &zeroValue}
+	c.GetMultiRepoPermissionsOptOut()
+	c = &CreateCodespaceOptions{}
+	c.GetMultiRepoPermissionsOptOut()
+	c = nil
+	c.GetMultiRepoPermissionsOptOut()
+}
+
+func TestCreateCodespaceOptions_GetRef(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{Ref: &zeroValue}
+	c.GetRef()
+	c = &CreateCodespaceOptions{}
+	c.GetRef()
+	c = nil
+	c.GetRef()
+}
+
+func TestCreateCodespaceOptions_GetRetentionPeriodMinutes(tt *testing.T) {
+	var zeroValue int
+	c := &CreateCodespaceOptions{RetentionPeriodMinutes: &zeroValue}
+	c.GetRetentionPeriodMinutes()
+	c = &CreateCodespaceOptions{}
+	c.GetRetentionPeriodMinutes()
+	c = nil
+	c.GetRetentionPeriodMinutes()
+}
+
+func TestCreateCodespaceOptions_GetWorkingDirectory(tt *testing.T) {
+	var zeroValue string
+	c := &CreateCodespaceOptions{WorkingDirectory: &zeroValue}
+	c.GetWorkingDirectory()
+	c = &CreateCodespaceOptions{}
+	c.GetWorkingDirectory()
+	c = nil
+	c.GetWorkingDirectory()
+}
+
+func TestCreateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateEnterpriseRunnerGroupRequest{AllowsPublicRepositories: &zeroValue}
+	c.GetAllowsPublicRepositories()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetAllowsPublicRepositories()
+	c = nil
+	c.GetAllowsPublicRepositories()
+}
+
+func TestCreateEnterpriseRunnerGroupRequest_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CreateEnterpriseRunnerGroupRequest{Name: &zeroValue}
+	c.GetName()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateEnterpriseRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateEnterpriseRunnerGroupRequest{RestrictedToWorkflows: &zeroValue}
+	c.GetRestrictedToWorkflows()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetRestrictedToWorkflows()
+	c = nil
+	c.GetRestrictedToWorkflows()
+}
+
+func TestCreateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	c := &CreateEnterpriseRunnerGroupRequest{Visibility: &zeroValue}
+	c.GetVisibility()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetVisibility()
+	c = nil
+	c.GetVisibility()
+}
+
 func TestCreateEvent_GetDescription(tt *testing.T) {
 	var zeroValue string
 	c := &CreateEvent{Description: &zeroValue}
@@ -4715,11 +5695,31 @@ func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	c.GetVisibility()
 }
 
+func TestCreateUpdateEnvironment_GetCanAdminsBypass(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateUpdateEnvironment{CanAdminsBypass: &zeroValue}
+	c.GetCanAdminsBypass()
+	c = &CreateUpdateEnvironment{}
+	c.GetCanAdminsBypass()
+	c = nil
+	c.GetCanAdminsBypass()
+}
+
 func TestCreateUpdateEnvironment_GetDeploymentBranchPolicy(tt *testing.T) {
 	c := &CreateUpdateEnvironment{}
 	c.GetDeploymentBranchPolicy()
 	c = nil
 	c.GetDeploymentBranchPolicy()
+}
+
+func TestCreateUpdateEnvironment_GetPreventSelfReview(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateUpdateEnvironment{PreventSelfReview: &zeroValue}
+	c.GetPreventSelfReview()
+	c = &CreateUpdateEnvironment{}
+	c.GetPreventSelfReview()
+	c = nil
+	c.GetPreventSelfReview()
 }
 
 func TestCreateUpdateEnvironment_GetWaitTimer(tt *testing.T) {
@@ -4732,6 +5732,43 @@ func TestCreateUpdateEnvironment_GetWaitTimer(tt *testing.T) {
 	c.GetWaitTimer()
 }
 
+func TestCreateUpdateRequiredWorkflowOptions_GetRepositoryID(tt *testing.T) {
+	var zeroValue int64
+	c := &CreateUpdateRequiredWorkflowOptions{RepositoryID: &zeroValue}
+	c.GetRepositoryID()
+	c = &CreateUpdateRequiredWorkflowOptions{}
+	c.GetRepositoryID()
+	c = nil
+	c.GetRepositoryID()
+}
+
+func TestCreateUpdateRequiredWorkflowOptions_GetScope(tt *testing.T) {
+	var zeroValue string
+	c := &CreateUpdateRequiredWorkflowOptions{Scope: &zeroValue}
+	c.GetScope()
+	c = &CreateUpdateRequiredWorkflowOptions{}
+	c.GetScope()
+	c = nil
+	c.GetScope()
+}
+
+func TestCreateUpdateRequiredWorkflowOptions_GetSelectedRepositoryIDs(tt *testing.T) {
+	c := &CreateUpdateRequiredWorkflowOptions{}
+	c.GetSelectedRepositoryIDs()
+	c = nil
+	c.GetSelectedRepositoryIDs()
+}
+
+func TestCreateUpdateRequiredWorkflowOptions_GetWorkflowFilePath(tt *testing.T) {
+	var zeroValue string
+	c := &CreateUpdateRequiredWorkflowOptions{WorkflowFilePath: &zeroValue}
+	c.GetWorkflowFilePath()
+	c = &CreateUpdateRequiredWorkflowOptions{}
+	c.GetWorkflowFilePath()
+	c = nil
+	c.GetWorkflowFilePath()
+}
+
 func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	var zeroValue string
 	c := &CreateUserProjectOptions{Body: &zeroValue}
@@ -4740,6 +5777,126 @@ func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	c.GetBody()
 	c = nil
 	c.GetBody()
+}
+
+func TestCreationInfo_GetCreated(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CreationInfo{Created: &zeroValue}
+	c.GetCreated()
+	c = &CreationInfo{}
+	c.GetCreated()
+	c = nil
+	c.GetCreated()
+}
+
+func TestCredentialAuthorization_GetAuthorizedCredentialExpiresAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CredentialAuthorization{AuthorizedCredentialExpiresAt: &zeroValue}
+	c.GetAuthorizedCredentialExpiresAt()
+	c = &CredentialAuthorization{}
+	c.GetAuthorizedCredentialExpiresAt()
+	c = nil
+	c.GetAuthorizedCredentialExpiresAt()
+}
+
+func TestCredentialAuthorization_GetAuthorizedCredentialID(tt *testing.T) {
+	var zeroValue int64
+	c := &CredentialAuthorization{AuthorizedCredentialID: &zeroValue}
+	c.GetAuthorizedCredentialID()
+	c = &CredentialAuthorization{}
+	c.GetAuthorizedCredentialID()
+	c = nil
+	c.GetAuthorizedCredentialID()
+}
+
+func TestCredentialAuthorization_GetAuthorizedCredentialNote(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{AuthorizedCredentialNote: &zeroValue}
+	c.GetAuthorizedCredentialNote()
+	c = &CredentialAuthorization{}
+	c.GetAuthorizedCredentialNote()
+	c = nil
+	c.GetAuthorizedCredentialNote()
+}
+
+func TestCredentialAuthorization_GetAuthorizedCredentialTitle(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{AuthorizedCredentialTitle: &zeroValue}
+	c.GetAuthorizedCredentialTitle()
+	c = &CredentialAuthorization{}
+	c.GetAuthorizedCredentialTitle()
+	c = nil
+	c.GetAuthorizedCredentialTitle()
+}
+
+func TestCredentialAuthorization_GetCredentialAccessedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CredentialAuthorization{CredentialAccessedAt: &zeroValue}
+	c.GetCredentialAccessedAt()
+	c = &CredentialAuthorization{}
+	c.GetCredentialAccessedAt()
+	c = nil
+	c.GetCredentialAccessedAt()
+}
+
+func TestCredentialAuthorization_GetCredentialAuthorizedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CredentialAuthorization{CredentialAuthorizedAt: &zeroValue}
+	c.GetCredentialAuthorizedAt()
+	c = &CredentialAuthorization{}
+	c.GetCredentialAuthorizedAt()
+	c = nil
+	c.GetCredentialAuthorizedAt()
+}
+
+func TestCredentialAuthorization_GetCredentialID(tt *testing.T) {
+	var zeroValue int64
+	c := &CredentialAuthorization{CredentialID: &zeroValue}
+	c.GetCredentialID()
+	c = &CredentialAuthorization{}
+	c.GetCredentialID()
+	c = nil
+	c.GetCredentialID()
+}
+
+func TestCredentialAuthorization_GetCredentialType(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{CredentialType: &zeroValue}
+	c.GetCredentialType()
+	c = &CredentialAuthorization{}
+	c.GetCredentialType()
+	c = nil
+	c.GetCredentialType()
+}
+
+func TestCredentialAuthorization_GetFingerprint(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{Fingerprint: &zeroValue}
+	c.GetFingerprint()
+	c = &CredentialAuthorization{}
+	c.GetFingerprint()
+	c = nil
+	c.GetFingerprint()
+}
+
+func TestCredentialAuthorization_GetLogin(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{Login: &zeroValue}
+	c.GetLogin()
+	c = &CredentialAuthorization{}
+	c.GetLogin()
+	c = nil
+	c.GetLogin()
+}
+
+func TestCredentialAuthorization_GetTokenLastEight(tt *testing.T) {
+	var zeroValue string
+	c := &CredentialAuthorization{TokenLastEight: &zeroValue}
+	c.GetTokenLastEight()
+	c = &CredentialAuthorization{}
+	c.GetTokenLastEight()
+	c = nil
+	c.GetTokenLastEight()
 }
 
 func TestCustomRepoRoles_GetBaseRole(tt *testing.T) {
@@ -4782,11 +5939,68 @@ func TestCustomRepoRoles_GetName(tt *testing.T) {
 	c.GetName()
 }
 
+func TestDefaultSetupConfiguration_GetQuerySuite(tt *testing.T) {
+	var zeroValue string
+	d := &DefaultSetupConfiguration{QuerySuite: &zeroValue}
+	d.GetQuerySuite()
+	d = &DefaultSetupConfiguration{}
+	d.GetQuerySuite()
+	d = nil
+	d.GetQuerySuite()
+}
+
+func TestDefaultSetupConfiguration_GetState(tt *testing.T) {
+	var zeroValue string
+	d := &DefaultSetupConfiguration{State: &zeroValue}
+	d.GetState()
+	d = &DefaultSetupConfiguration{}
+	d.GetState()
+	d = nil
+	d.GetState()
+}
+
+func TestDefaultSetupConfiguration_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DefaultSetupConfiguration{UpdatedAt: &zeroValue}
+	d.GetUpdatedAt()
+	d = &DefaultSetupConfiguration{}
+	d.GetUpdatedAt()
+	d = nil
+	d.GetUpdatedAt()
+}
+
+func TestDeleteAnalysis_GetConfirmDeleteURL(tt *testing.T) {
+	var zeroValue string
+	d := &DeleteAnalysis{ConfirmDeleteURL: &zeroValue}
+	d.GetConfirmDeleteURL()
+	d = &DeleteAnalysis{}
+	d.GetConfirmDeleteURL()
+	d = nil
+	d.GetConfirmDeleteURL()
+}
+
+func TestDeleteAnalysis_GetNextAnalysisURL(tt *testing.T) {
+	var zeroValue string
+	d := &DeleteAnalysis{NextAnalysisURL: &zeroValue}
+	d.GetNextAnalysisURL()
+	d = &DeleteAnalysis{}
+	d.GetNextAnalysisURL()
+	d = nil
+	d.GetNextAnalysisURL()
+}
+
 func TestDeleteEvent_GetInstallation(tt *testing.T) {
 	d := &DeleteEvent{}
 	d.GetInstallation()
 	d = nil
 	d.GetInstallation()
+}
+
+func TestDeleteEvent_GetOrg(tt *testing.T) {
+	d := &DeleteEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
 }
 
 func TestDeleteEvent_GetPusherType(tt *testing.T) {
@@ -4831,6 +6045,16 @@ func TestDeleteEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 	d = nil
 	d.GetSender()
+}
+
+func TestDependabotAlert_GetAutoDismissedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependabotAlert{AutoDismissedAt: &zeroValue}
+	d.GetAutoDismissedAt()
+	d = &DependabotAlert{}
+	d.GetAutoDismissedAt()
+	d = nil
+	d.GetAutoDismissedAt()
 }
 
 func TestDependabotAlert_GetCreatedAt(tt *testing.T) {
@@ -4917,6 +6141,13 @@ func TestDependabotAlert_GetNumber(tt *testing.T) {
 	d.GetNumber()
 }
 
+func TestDependabotAlert_GetRepository(tt *testing.T) {
+	d := &DependabotAlert{}
+	d.GetRepository()
+	d = nil
+	d.GetRepository()
+}
+
 func TestDependabotAlert_GetSecurityAdvisory(tt *testing.T) {
 	d := &DependabotAlert{}
 	d.GetSecurityAdvisory()
@@ -4961,6 +6192,58 @@ func TestDependabotAlert_GetURL(tt *testing.T) {
 	d.GetURL()
 }
 
+func TestDependabotAlertEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlertEvent{Action: &zeroValue}
+	d.GetAction()
+	d = &DependabotAlertEvent{}
+	d.GetAction()
+	d = nil
+	d.GetAction()
+}
+
+func TestDependabotAlertEvent_GetAlert(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetAlert()
+	d = nil
+	d.GetAlert()
+}
+
+func TestDependabotAlertEvent_GetEnterprise(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetEnterprise()
+	d = nil
+	d.GetEnterprise()
+}
+
+func TestDependabotAlertEvent_GetInstallation(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetInstallation()
+	d = nil
+	d.GetInstallation()
+}
+
+func TestDependabotAlertEvent_GetOrganization(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetOrganization()
+	d = nil
+	d.GetOrganization()
+}
+
+func TestDependabotAlertEvent_GetRepo(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetRepo()
+	d = nil
+	d.GetRepo()
+}
+
+func TestDependabotAlertEvent_GetSender(tt *testing.T) {
+	d := &DependabotAlertEvent{}
+	d.GetSender()
+	d = nil
+	d.GetSender()
+}
+
 func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
 	var zeroValue string
 	d := &DependabotSecurityAdvisory{CVEID: &zeroValue}
@@ -4971,11 +6254,11 @@ func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
 	d.GetCVEID()
 }
 
-func TestDependabotSecurityAdvisory_GetCVSs(tt *testing.T) {
+func TestDependabotSecurityAdvisory_GetCVSS(tt *testing.T) {
 	d := &DependabotSecurityAdvisory{}
-	d.GetCVSs()
+	d.GetCVSS()
 	d = nil
-	d.GetCVSs()
+	d.GetCVSS()
 }
 
 func TestDependabotSecurityAdvisory_GetDescription(tt *testing.T) {
@@ -5046,6 +6329,16 @@ func TestDependabotSecurityAdvisory_GetWithdrawnAt(tt *testing.T) {
 	d.GetWithdrawnAt()
 	d = nil
 	d.GetWithdrawnAt()
+}
+
+func TestDependabotSecurityUpdates_GetStatus(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotSecurityUpdates{Status: &zeroValue}
+	d.GetStatus()
+	d = &DependabotSecurityUpdates{}
+	d.GetStatus()
+	d = nil
+	d.GetStatus()
 }
 
 func TestDependency_GetManifestPath(tt *testing.T) {
@@ -5311,6 +6604,13 @@ func TestDeploymentEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 }
 
+func TestDeploymentEvent_GetOrg(tt *testing.T) {
+	d := &DeploymentEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
+}
+
 func TestDeploymentEvent_GetRepo(tt *testing.T) {
 	d := &DeploymentEvent{}
 	d.GetRepo()
@@ -5320,6 +6620,95 @@ func TestDeploymentEvent_GetRepo(tt *testing.T) {
 
 func TestDeploymentEvent_GetSender(tt *testing.T) {
 	d := &DeploymentEvent{}
+	d.GetSender()
+	d = nil
+	d.GetSender()
+}
+
+func TestDeploymentEvent_GetWorkflow(tt *testing.T) {
+	d := &DeploymentEvent{}
+	d.GetWorkflow()
+	d = nil
+	d.GetWorkflow()
+}
+
+func TestDeploymentEvent_GetWorkflowRun(tt *testing.T) {
+	d := &DeploymentEvent{}
+	d.GetWorkflowRun()
+	d = nil
+	d.GetWorkflowRun()
+}
+
+func TestDeploymentProtectionRuleEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentProtectionRuleEvent{Action: &zeroValue}
+	d.GetAction()
+	d = &DeploymentProtectionRuleEvent{}
+	d.GetAction()
+	d = nil
+	d.GetAction()
+}
+
+func TestDeploymentProtectionRuleEvent_GetDeployment(tt *testing.T) {
+	d := &DeploymentProtectionRuleEvent{}
+	d.GetDeployment()
+	d = nil
+	d.GetDeployment()
+}
+
+func TestDeploymentProtectionRuleEvent_GetDeploymentCallbackURL(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentProtectionRuleEvent{DeploymentCallbackURL: &zeroValue}
+	d.GetDeploymentCallbackURL()
+	d = &DeploymentProtectionRuleEvent{}
+	d.GetDeploymentCallbackURL()
+	d = nil
+	d.GetDeploymentCallbackURL()
+}
+
+func TestDeploymentProtectionRuleEvent_GetEnvironment(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentProtectionRuleEvent{Environment: &zeroValue}
+	d.GetEnvironment()
+	d = &DeploymentProtectionRuleEvent{}
+	d.GetEnvironment()
+	d = nil
+	d.GetEnvironment()
+}
+
+func TestDeploymentProtectionRuleEvent_GetEvent(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentProtectionRuleEvent{Event: &zeroValue}
+	d.GetEvent()
+	d = &DeploymentProtectionRuleEvent{}
+	d.GetEvent()
+	d = nil
+	d.GetEvent()
+}
+
+func TestDeploymentProtectionRuleEvent_GetInstallation(tt *testing.T) {
+	d := &DeploymentProtectionRuleEvent{}
+	d.GetInstallation()
+	d = nil
+	d.GetInstallation()
+}
+
+func TestDeploymentProtectionRuleEvent_GetOrganization(tt *testing.T) {
+	d := &DeploymentProtectionRuleEvent{}
+	d.GetOrganization()
+	d = nil
+	d.GetOrganization()
+}
+
+func TestDeploymentProtectionRuleEvent_GetRepo(tt *testing.T) {
+	d := &DeploymentProtectionRuleEvent{}
+	d.GetRepo()
+	d = nil
+	d.GetRepo()
+}
+
+func TestDeploymentProtectionRuleEvent_GetSender(tt *testing.T) {
+	d := &DeploymentProtectionRuleEvent{}
 	d.GetSender()
 	d = nil
 	d.GetSender()
@@ -5561,6 +6950,13 @@ func TestDeploymentStatusEvent_GetInstallation(tt *testing.T) {
 	d.GetInstallation()
 	d = nil
 	d.GetInstallation()
+}
+
+func TestDeploymentStatusEvent_GetOrg(tt *testing.T) {
+	d := &DeploymentStatusEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
 }
 
 func TestDeploymentStatusEvent_GetRepo(tt *testing.T) {
@@ -6340,6 +7736,13 @@ func TestEditChange_GetBody(tt *testing.T) {
 	e.GetBody()
 }
 
+func TestEditChange_GetOwner(tt *testing.T) {
+	e := &EditChange{}
+	e.GetOwner()
+	e = nil
+	e.GetOwner()
+}
+
 func TestEditChange_GetRepo(tt *testing.T) {
 	e := &EditChange{}
 	e.GetRepo()
@@ -6352,6 +7755,13 @@ func TestEditChange_GetTitle(tt *testing.T) {
 	e.GetTitle()
 	e = nil
 	e.GetTitle()
+}
+
+func TestEditOwner_GetOwnerInfo(tt *testing.T) {
+	e := &EditOwner{}
+	e.GetOwnerInfo()
+	e = nil
+	e.GetOwnerInfo()
 }
 
 func TestEditRef_GetFrom(tt *testing.T) {
@@ -6491,6 +7901,116 @@ func TestEnterprise_GetWebsiteURL(tt *testing.T) {
 	e.GetWebsiteURL()
 }
 
+func TestEnterpriseRunnerGroup_GetAllowsPublicRepositories(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseRunnerGroup{AllowsPublicRepositories: &zeroValue}
+	e.GetAllowsPublicRepositories()
+	e = &EnterpriseRunnerGroup{}
+	e.GetAllowsPublicRepositories()
+	e = nil
+	e.GetAllowsPublicRepositories()
+}
+
+func TestEnterpriseRunnerGroup_GetDefault(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseRunnerGroup{Default: &zeroValue}
+	e.GetDefault()
+	e = &EnterpriseRunnerGroup{}
+	e.GetDefault()
+	e = nil
+	e.GetDefault()
+}
+
+func TestEnterpriseRunnerGroup_GetID(tt *testing.T) {
+	var zeroValue int64
+	e := &EnterpriseRunnerGroup{ID: &zeroValue}
+	e.GetID()
+	e = &EnterpriseRunnerGroup{}
+	e.GetID()
+	e = nil
+	e.GetID()
+}
+
+func TestEnterpriseRunnerGroup_GetInherited(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseRunnerGroup{Inherited: &zeroValue}
+	e.GetInherited()
+	e = &EnterpriseRunnerGroup{}
+	e.GetInherited()
+	e = nil
+	e.GetInherited()
+}
+
+func TestEnterpriseRunnerGroup_GetName(tt *testing.T) {
+	var zeroValue string
+	e := &EnterpriseRunnerGroup{Name: &zeroValue}
+	e.GetName()
+	e = &EnterpriseRunnerGroup{}
+	e.GetName()
+	e = nil
+	e.GetName()
+}
+
+func TestEnterpriseRunnerGroup_GetRestrictedToWorkflows(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseRunnerGroup{RestrictedToWorkflows: &zeroValue}
+	e.GetRestrictedToWorkflows()
+	e = &EnterpriseRunnerGroup{}
+	e.GetRestrictedToWorkflows()
+	e = nil
+	e.GetRestrictedToWorkflows()
+}
+
+func TestEnterpriseRunnerGroup_GetRunnersURL(tt *testing.T) {
+	var zeroValue string
+	e := &EnterpriseRunnerGroup{RunnersURL: &zeroValue}
+	e.GetRunnersURL()
+	e = &EnterpriseRunnerGroup{}
+	e.GetRunnersURL()
+	e = nil
+	e.GetRunnersURL()
+}
+
+func TestEnterpriseRunnerGroup_GetSelectedOrganizationsURL(tt *testing.T) {
+	var zeroValue string
+	e := &EnterpriseRunnerGroup{SelectedOrganizationsURL: &zeroValue}
+	e.GetSelectedOrganizationsURL()
+	e = &EnterpriseRunnerGroup{}
+	e.GetSelectedOrganizationsURL()
+	e = nil
+	e.GetSelectedOrganizationsURL()
+}
+
+func TestEnterpriseRunnerGroup_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	e := &EnterpriseRunnerGroup{Visibility: &zeroValue}
+	e.GetVisibility()
+	e = &EnterpriseRunnerGroup{}
+	e.GetVisibility()
+	e = nil
+	e.GetVisibility()
+}
+
+func TestEnterpriseRunnerGroup_GetWorkflowRestrictionsReadOnly(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseRunnerGroup{WorkflowRestrictionsReadOnly: &zeroValue}
+	e.GetWorkflowRestrictionsReadOnly()
+	e = &EnterpriseRunnerGroup{}
+	e.GetWorkflowRestrictionsReadOnly()
+	e = nil
+	e.GetWorkflowRestrictionsReadOnly()
+}
+
+func TestEnterpriseRunnerGroups_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	e := &EnterpriseRunnerGroups{TotalCount: &zeroValue}
+	e.GetTotalCount()
+	e = &EnterpriseRunnerGroups{}
+	e.GetTotalCount()
+	e = nil
+	e.GetTotalCount()
+}
+
 func TestEnterpriseSecurityAnalysisSettings_GetAdvancedSecurityEnabledForNewRepositories(tt *testing.T) {
 	var zeroValue bool
 	e := &EnterpriseSecurityAnalysisSettings{AdvancedSecurityEnabledForNewRepositories: &zeroValue}
@@ -6529,6 +8049,16 @@ func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningPushProtectionEnabl
 	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
 	e = nil
 	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
+}
+
+func TestEnvironment_GetCanAdminsBypass(tt *testing.T) {
+	var zeroValue bool
+	e := &Environment{CanAdminsBypass: &zeroValue}
+	e.GetCanAdminsBypass()
+	e = &Environment{}
+	e.GetCanAdminsBypass()
+	e = nil
+	e.GetCanAdminsBypass()
 }
 
 func TestEnvironment_GetCreatedAt(tt *testing.T) {
@@ -7021,6 +8551,16 @@ func TestForkEvent_GetSender(tt *testing.T) {
 	f.GetSender()
 	f = nil
 	f.GetSender()
+}
+
+func TestGenerateJITConfigRequest_GetWorkFolder(tt *testing.T) {
+	var zeroValue string
+	g := &GenerateJITConfigRequest{WorkFolder: &zeroValue}
+	g.GetWorkFolder()
+	g = &GenerateJITConfigRequest{}
+	g.GetWorkFolder()
+	g = nil
+	g.GetWorkFolder()
 }
 
 func TestGenerateNotesOptions_GetPreviousTagName(tt *testing.T) {
@@ -7517,6 +9057,13 @@ func TestGollumEvent_GetInstallation(tt *testing.T) {
 	g.GetInstallation()
 	g = nil
 	g.GetInstallation()
+}
+
+func TestGollumEvent_GetOrg(tt *testing.T) {
+	g := &GollumEvent{}
+	g.GetOrg()
+	g = nil
+	g.GetOrg()
 }
 
 func TestGollumEvent_GetRepo(tt *testing.T) {
@@ -8536,6 +10083,20 @@ func TestInstallation_GetUpdatedAt(tt *testing.T) {
 	i.GetUpdatedAt()
 }
 
+func TestInstallationChanges_GetLogin(tt *testing.T) {
+	i := &InstallationChanges{}
+	i.GetLogin()
+	i = nil
+	i.GetLogin()
+}
+
+func TestInstallationChanges_GetSlug(tt *testing.T) {
+	i := &InstallationChanges{}
+	i.GetSlug()
+	i = nil
+	i.GetSlug()
+}
+
 func TestInstallationEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationEvent{Action: &zeroValue}
@@ -8553,11 +10114,35 @@ func TestInstallationEvent_GetInstallation(tt *testing.T) {
 	i.GetInstallation()
 }
 
+func TestInstallationEvent_GetOrg(tt *testing.T) {
+	i := &InstallationEvent{}
+	i.GetOrg()
+	i = nil
+	i.GetOrg()
+}
+
+func TestInstallationEvent_GetRequester(tt *testing.T) {
+	i := &InstallationEvent{}
+	i.GetRequester()
+	i = nil
+	i.GetRequester()
+}
+
 func TestInstallationEvent_GetSender(tt *testing.T) {
 	i := &InstallationEvent{}
 	i.GetSender()
 	i = nil
 	i.GetSender()
+}
+
+func TestInstallationLoginChange_GetFrom(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationLoginChange{From: &zeroValue}
+	i.GetFrom()
+	i = &InstallationLoginChange{}
+	i.GetFrom()
+	i = nil
+	i.GetFrom()
 }
 
 func TestInstallationPermissions_GetActions(tt *testing.T) {
@@ -8947,6 +10532,13 @@ func TestInstallationRepositoriesEvent_GetInstallation(tt *testing.T) {
 	i.GetInstallation()
 }
 
+func TestInstallationRepositoriesEvent_GetOrg(tt *testing.T) {
+	i := &InstallationRepositoriesEvent{}
+	i.GetOrg()
+	i = nil
+	i.GetOrg()
+}
+
 func TestInstallationRepositoriesEvent_GetRepositorySelection(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationRepositoriesEvent{RepositorySelection: &zeroValue}
@@ -8962,6 +10554,129 @@ func TestInstallationRepositoriesEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 	i = nil
 	i.GetSender()
+}
+
+func TestInstallationRequest_GetAccount(tt *testing.T) {
+	i := &InstallationRequest{}
+	i.GetAccount()
+	i = nil
+	i.GetAccount()
+}
+
+func TestInstallationRequest_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	i := &InstallationRequest{CreatedAt: &zeroValue}
+	i.GetCreatedAt()
+	i = &InstallationRequest{}
+	i.GetCreatedAt()
+	i = nil
+	i.GetCreatedAt()
+}
+
+func TestInstallationRequest_GetID(tt *testing.T) {
+	var zeroValue int64
+	i := &InstallationRequest{ID: &zeroValue}
+	i.GetID()
+	i = &InstallationRequest{}
+	i.GetID()
+	i = nil
+	i.GetID()
+}
+
+func TestInstallationRequest_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationRequest{NodeID: &zeroValue}
+	i.GetNodeID()
+	i = &InstallationRequest{}
+	i.GetNodeID()
+	i = nil
+	i.GetNodeID()
+}
+
+func TestInstallationRequest_GetRequester(tt *testing.T) {
+	i := &InstallationRequest{}
+	i.GetRequester()
+	i = nil
+	i.GetRequester()
+}
+
+func TestInstallationSlugChange_GetFrom(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationSlugChange{From: &zeroValue}
+	i.GetFrom()
+	i = &InstallationSlugChange{}
+	i.GetFrom()
+	i = nil
+	i.GetFrom()
+}
+
+func TestInstallationTargetEvent_GetAccount(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetAccount()
+	i = nil
+	i.GetAccount()
+}
+
+func TestInstallationTargetEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationTargetEvent{Action: &zeroValue}
+	i.GetAction()
+	i = &InstallationTargetEvent{}
+	i.GetAction()
+	i = nil
+	i.GetAction()
+}
+
+func TestInstallationTargetEvent_GetChanges(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetChanges()
+	i = nil
+	i.GetChanges()
+}
+
+func TestInstallationTargetEvent_GetEnterprise(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetEnterprise()
+	i = nil
+	i.GetEnterprise()
+}
+
+func TestInstallationTargetEvent_GetInstallation(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetInstallation()
+	i = nil
+	i.GetInstallation()
+}
+
+func TestInstallationTargetEvent_GetOrganization(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetOrganization()
+	i = nil
+	i.GetOrganization()
+}
+
+func TestInstallationTargetEvent_GetRepository(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetRepository()
+	i = nil
+	i.GetRepository()
+}
+
+func TestInstallationTargetEvent_GetSender(tt *testing.T) {
+	i := &InstallationTargetEvent{}
+	i.GetSender()
+	i = nil
+	i.GetSender()
+}
+
+func TestInstallationTargetEvent_GetTargetType(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationTargetEvent{TargetType: &zeroValue}
+	i.GetTargetType()
+	i = &InstallationTargetEvent{}
+	i.GetTargetType()
+	i = nil
+	i.GetTargetType()
 }
 
 func TestInstallationToken_GetExpiresAt(tt *testing.T) {
@@ -9646,6 +11361,13 @@ func TestIssueEvent_GetMilestone(tt *testing.T) {
 	i.GetMilestone()
 }
 
+func TestIssueEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	i := &IssueEvent{}
+	i.GetPerformedViaGithubApp()
+	i = nil
+	i.GetPerformedViaGithubApp()
+}
+
 func TestIssueEvent_GetProjectCard(tt *testing.T) {
 	i := &IssueEvent{}
 	i.GetProjectCard()
@@ -9665,6 +11387,13 @@ func TestIssueEvent_GetRequestedReviewer(tt *testing.T) {
 	i.GetRequestedReviewer()
 	i = nil
 	i.GetRequestedReviewer()
+}
+
+func TestIssueEvent_GetRequestedTeam(tt *testing.T) {
+	i := &IssueEvent{}
+	i.GetRequestedTeam()
+	i = nil
+	i.GetRequestedTeam()
 }
 
 func TestIssueEvent_GetReviewRequester(tt *testing.T) {
@@ -10046,6 +11775,13 @@ func TestIssuesEvent_GetMilestone(tt *testing.T) {
 	i.GetMilestone()
 }
 
+func TestIssuesEvent_GetOrg(tt *testing.T) {
+	i := &IssuesEvent{}
+	i.GetOrg()
+	i = nil
+	i.GetOrg()
+}
+
 func TestIssuesEvent_GetRepo(tt *testing.T) {
 	i := &IssuesEvent{}
 	i.GetRepo()
@@ -10110,6 +11846,23 @@ func TestIssueStats_GetTotalIssues(tt *testing.T) {
 	i.GetTotalIssues()
 }
 
+func TestJITRunnerConfig_GetEncodedJITConfig(tt *testing.T) {
+	var zeroValue string
+	j := &JITRunnerConfig{EncodedJITConfig: &zeroValue}
+	j.GetEncodedJITConfig()
+	j = &JITRunnerConfig{}
+	j.GetEncodedJITConfig()
+	j = nil
+	j.GetEncodedJITConfig()
+}
+
+func TestJITRunnerConfig_GetRunner(tt *testing.T) {
+	j := &JITRunnerConfig{}
+	j.GetRunner()
+	j = nil
+	j.GetRunner()
+}
+
 func TestJobs_GetTotalCount(tt *testing.T) {
 	var zeroValue int
 	j := &Jobs{TotalCount: &zeroValue}
@@ -10118,6 +11871,16 @@ func TestJobs_GetTotalCount(tt *testing.T) {
 	j.GetTotalCount()
 	j = nil
 	j.GetTotalCount()
+}
+
+func TestKey_GetAddedBy(tt *testing.T) {
+	var zeroValue string
+	k := &Key{AddedBy: &zeroValue}
+	k.GetAddedBy()
+	k = &Key{}
+	k.GetAddedBy()
+	k = nil
+	k.GetAddedBy()
 }
 
 func TestKey_GetCreatedAt(tt *testing.T) {
@@ -10148,6 +11911,16 @@ func TestKey_GetKey(tt *testing.T) {
 	k.GetKey()
 	k = nil
 	k.GetKey()
+}
+
+func TestKey_GetLastUsed(tt *testing.T) {
+	var zeroValue Timestamp
+	k := &Key{LastUsed: &zeroValue}
+	k.GetLastUsed()
+	k = &Key{}
+	k.GetLastUsed()
+	k = nil
+	k.GetLastUsed()
 }
 
 func TestKey_GetReadOnly(tt *testing.T) {
@@ -10719,6 +12492,16 @@ func TestListCheckSuiteResults_GetTotal(tt *testing.T) {
 	l.GetTotal()
 }
 
+func TestListCodespaces_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	l := &ListCodespaces{TotalCount: &zeroValue}
+	l.GetTotalCount()
+	l = &ListCodespaces{}
+	l.GetTotalCount()
+	l = nil
+	l.GetTotalCount()
+}
+
 func TestListCollaboratorOptions_GetAffiliation(tt *testing.T) {
 	var zeroValue string
 	l := &ListCollaboratorOptions{Affiliation: &zeroValue}
@@ -10737,6 +12520,16 @@ func TestListExternalGroupsOptions_GetDisplayName(tt *testing.T) {
 	l.GetDisplayName()
 	l = nil
 	l.GetDisplayName()
+}
+
+func TestListOrganizations_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	l := &ListOrganizations{TotalCount: &zeroValue}
+	l.GetTotalCount()
+	l = &ListOrganizations{}
+	l.GetTotalCount()
+	l = nil
+	l.GetTotalCount()
 }
 
 func TestListRepositories_GetTotalCount(tt *testing.T) {
@@ -11248,6 +13041,13 @@ func TestMarketplacePurchaseEvent_GetMarketplacePurchase(tt *testing.T) {
 	m.GetMarketplacePurchase()
 }
 
+func TestMarketplacePurchaseEvent_GetOrg(tt *testing.T) {
+	m := &MarketplacePurchaseEvent{}
+	m.GetOrg()
+	m = nil
+	m.GetOrg()
+}
+
 func TestMarketplacePurchaseEvent_GetPreviousMarketplacePurchase(tt *testing.T) {
 	m := &MarketplacePurchaseEvent{}
 	m.GetPreviousMarketplacePurchase()
@@ -11294,6 +13094,13 @@ func TestMemberEvent_GetMember(tt *testing.T) {
 	m.GetMember()
 	m = nil
 	m.GetMember()
+}
+
+func TestMemberEvent_GetOrg(tt *testing.T) {
+	m := &MemberEvent{}
+	m.GetOrg()
+	m = nil
+	m.GetOrg()
 }
 
 func TestMemberEvent_GetRepo(tt *testing.T) {
@@ -11965,6 +13772,16 @@ func TestMostRecentInstance_GetAnalysisKey(tt *testing.T) {
 	m.GetAnalysisKey()
 }
 
+func TestMostRecentInstance_GetCategory(tt *testing.T) {
+	var zeroValue string
+	m := &MostRecentInstance{Category: &zeroValue}
+	m.GetCategory()
+	m = &MostRecentInstance{}
+	m.GetCategory()
+	m = nil
+	m.GetCategory()
+}
+
 func TestMostRecentInstance_GetCommitSHA(tt *testing.T) {
 	var zeroValue string
 	m := &MostRecentInstance{CommitSHA: &zeroValue}
@@ -11983,6 +13800,16 @@ func TestMostRecentInstance_GetEnvironment(tt *testing.T) {
 	m.GetEnvironment()
 	m = nil
 	m.GetEnvironment()
+}
+
+func TestMostRecentInstance_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	m := &MostRecentInstance{HTMLURL: &zeroValue}
+	m.GetHTMLURL()
+	m = &MostRecentInstance{}
+	m.GetHTMLURL()
+	m = nil
+	m.GetHTMLURL()
 }
 
 func TestMostRecentInstance_GetLocation(tt *testing.T) {
@@ -12057,6 +13884,16 @@ func TestNewPullRequest_GetHead(tt *testing.T) {
 	n.GetHead()
 	n = nil
 	n.GetHead()
+}
+
+func TestNewPullRequest_GetHeadRepo(tt *testing.T) {
+	var zeroValue string
+	n := &NewPullRequest{HeadRepo: &zeroValue}
+	n.GetHeadRepo()
+	n = &NewPullRequest{}
+	n.GetHeadRepo()
+	n = nil
+	n.GetHeadRepo()
 }
 
 func TestNewPullRequest_GetIssue(tt *testing.T) {
@@ -12684,7 +14521,7 @@ func TestOrganization_GetNodeID(tt *testing.T) {
 }
 
 func TestOrganization_GetOwnedPrivateRepos(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	o := &Organization{OwnedPrivateRepos: &zeroValue}
 	o.GetOwnedPrivateRepos()
 	o = &Organization{}
@@ -12771,7 +14608,7 @@ func TestOrganization_GetSecretScanningPushProtectionEnabledForNewRepos(tt *test
 }
 
 func TestOrganization_GetTotalPrivateRepos(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	o := &Organization{TotalPrivateRepos: &zeroValue}
 	o.GetTotalPrivateRepos()
 	o = &Organization{}
@@ -12943,6 +14780,113 @@ func TestOrgBlockEvent_GetSender(tt *testing.T) {
 	o.GetSender()
 }
 
+func TestOrgRequiredWorkflow_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	o := &OrgRequiredWorkflow{CreatedAt: &zeroValue}
+	o.GetCreatedAt()
+	o = &OrgRequiredWorkflow{}
+	o.GetCreatedAt()
+	o = nil
+	o.GetCreatedAt()
+}
+
+func TestOrgRequiredWorkflow_GetID(tt *testing.T) {
+	var zeroValue int64
+	o := &OrgRequiredWorkflow{ID: &zeroValue}
+	o.GetID()
+	o = &OrgRequiredWorkflow{}
+	o.GetID()
+	o = nil
+	o.GetID()
+}
+
+func TestOrgRequiredWorkflow_GetName(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{Name: &zeroValue}
+	o.GetName()
+	o = &OrgRequiredWorkflow{}
+	o.GetName()
+	o = nil
+	o.GetName()
+}
+
+func TestOrgRequiredWorkflow_GetPath(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{Path: &zeroValue}
+	o.GetPath()
+	o = &OrgRequiredWorkflow{}
+	o.GetPath()
+	o = nil
+	o.GetPath()
+}
+
+func TestOrgRequiredWorkflow_GetRef(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{Ref: &zeroValue}
+	o.GetRef()
+	o = &OrgRequiredWorkflow{}
+	o.GetRef()
+	o = nil
+	o.GetRef()
+}
+
+func TestOrgRequiredWorkflow_GetRepository(tt *testing.T) {
+	o := &OrgRequiredWorkflow{}
+	o.GetRepository()
+	o = nil
+	o.GetRepository()
+}
+
+func TestOrgRequiredWorkflow_GetScope(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{Scope: &zeroValue}
+	o.GetScope()
+	o = &OrgRequiredWorkflow{}
+	o.GetScope()
+	o = nil
+	o.GetScope()
+}
+
+func TestOrgRequiredWorkflow_GetSelectedRepositoriesURL(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{SelectedRepositoriesURL: &zeroValue}
+	o.GetSelectedRepositoriesURL()
+	o = &OrgRequiredWorkflow{}
+	o.GetSelectedRepositoriesURL()
+	o = nil
+	o.GetSelectedRepositoriesURL()
+}
+
+func TestOrgRequiredWorkflow_GetState(tt *testing.T) {
+	var zeroValue string
+	o := &OrgRequiredWorkflow{State: &zeroValue}
+	o.GetState()
+	o = &OrgRequiredWorkflow{}
+	o.GetState()
+	o = nil
+	o.GetState()
+}
+
+func TestOrgRequiredWorkflow_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	o := &OrgRequiredWorkflow{UpdatedAt: &zeroValue}
+	o.GetUpdatedAt()
+	o = &OrgRequiredWorkflow{}
+	o.GetUpdatedAt()
+	o = nil
+	o.GetUpdatedAt()
+}
+
+func TestOrgRequiredWorkflows_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	o := &OrgRequiredWorkflows{TotalCount: &zeroValue}
+	o.GetTotalCount()
+	o = &OrgRequiredWorkflows{}
+	o.GetTotalCount()
+	o = nil
+	o.GetTotalCount()
+}
+
 func TestOrgStats_GetDisabledOrgs(tt *testing.T) {
 	var zeroValue int
 	o := &OrgStats{DisabledOrgs: &zeroValue}
@@ -12981,6 +14925,20 @@ func TestOrgStats_GetTotalTeams(tt *testing.T) {
 	o.GetTotalTeams()
 	o = nil
 	o.GetTotalTeams()
+}
+
+func TestOwnerInfo_GetOrg(tt *testing.T) {
+	o := &OwnerInfo{}
+	o.GetOrg()
+	o = nil
+	o.GetOrg()
+}
+
+func TestOwnerInfo_GetUser(tt *testing.T) {
+	o := &OwnerInfo{}
+	o.GetUser()
+	o = nil
+	o.GetUser()
 }
 
 func TestPackage_GetCreatedAt(tt *testing.T) {
@@ -13752,6 +15710,13 @@ func TestPageBuildEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPageBuildEvent_GetOrg(tt *testing.T) {
+	p := &PageBuildEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
 func TestPageBuildEvent_GetRepo(tt *testing.T) {
 	p := &PageBuildEvent{}
 	p.GetRepo()
@@ -13764,6 +15729,16 @@ func TestPageBuildEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 	p = nil
 	p.GetSender()
+}
+
+func TestPages_GetBuildType(tt *testing.T) {
+	var zeroValue string
+	p := &Pages{BuildType: &zeroValue}
+	p.GetBuildType()
+	p = &Pages{}
+	p.GetBuildType()
+	p = nil
+	p.GetBuildType()
 }
 
 func TestPages_GetCNAME(tt *testing.T) {
@@ -13924,6 +15899,286 @@ func TestPagesBuild_GetURL(tt *testing.T) {
 	p.GetURL()
 }
 
+func TestPagesDomain_GetCAAError(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{CAAError: &zeroValue}
+	p.GetCAAError()
+	p = &PagesDomain{}
+	p.GetCAAError()
+	p = nil
+	p.GetCAAError()
+}
+
+func TestPagesDomain_GetDNSResolves(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{DNSResolves: &zeroValue}
+	p.GetDNSResolves()
+	p = &PagesDomain{}
+	p.GetDNSResolves()
+	p = nil
+	p.GetDNSResolves()
+}
+
+func TestPagesDomain_GetEnforcesHTTPS(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{EnforcesHTTPS: &zeroValue}
+	p.GetEnforcesHTTPS()
+	p = &PagesDomain{}
+	p.GetEnforcesHTTPS()
+	p = nil
+	p.GetEnforcesHTTPS()
+}
+
+func TestPagesDomain_GetHasCNAMERecord(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{HasCNAMERecord: &zeroValue}
+	p.GetHasCNAMERecord()
+	p = &PagesDomain{}
+	p.GetHasCNAMERecord()
+	p = nil
+	p.GetHasCNAMERecord()
+}
+
+func TestPagesDomain_GetHasMXRecordsPresent(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{HasMXRecordsPresent: &zeroValue}
+	p.GetHasMXRecordsPresent()
+	p = &PagesDomain{}
+	p.GetHasMXRecordsPresent()
+	p = nil
+	p.GetHasMXRecordsPresent()
+}
+
+func TestPagesDomain_GetHost(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{Host: &zeroValue}
+	p.GetHost()
+	p = &PagesDomain{}
+	p.GetHost()
+	p = nil
+	p.GetHost()
+}
+
+func TestPagesDomain_GetHTTPSError(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{HTTPSError: &zeroValue}
+	p.GetHTTPSError()
+	p = &PagesDomain{}
+	p.GetHTTPSError()
+	p = nil
+	p.GetHTTPSError()
+}
+
+func TestPagesDomain_GetIsApexDomain(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsApexDomain: &zeroValue}
+	p.GetIsApexDomain()
+	p = &PagesDomain{}
+	p.GetIsApexDomain()
+	p = nil
+	p.GetIsApexDomain()
+}
+
+func TestPagesDomain_GetIsARecord(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsARecord: &zeroValue}
+	p.GetIsARecord()
+	p = &PagesDomain{}
+	p.GetIsARecord()
+	p = nil
+	p.GetIsARecord()
+}
+
+func TestPagesDomain_GetIsCloudflareIP(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsCloudflareIP: &zeroValue}
+	p.GetIsCloudflareIP()
+	p = &PagesDomain{}
+	p.GetIsCloudflareIP()
+	p = nil
+	p.GetIsCloudflareIP()
+}
+
+func TestPagesDomain_GetIsCNAMEToFastly(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsCNAMEToFastly: &zeroValue}
+	p.GetIsCNAMEToFastly()
+	p = &PagesDomain{}
+	p.GetIsCNAMEToFastly()
+	p = nil
+	p.GetIsCNAMEToFastly()
+}
+
+func TestPagesDomain_GetIsCNAMEToGithubUserDomain(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsCNAMEToGithubUserDomain: &zeroValue}
+	p.GetIsCNAMEToGithubUserDomain()
+	p = &PagesDomain{}
+	p.GetIsCNAMEToGithubUserDomain()
+	p = nil
+	p.GetIsCNAMEToGithubUserDomain()
+}
+
+func TestPagesDomain_GetIsCNAMEToPagesDotGithubDotCom(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsCNAMEToPagesDotGithubDotCom: &zeroValue}
+	p.GetIsCNAMEToPagesDotGithubDotCom()
+	p = &PagesDomain{}
+	p.GetIsCNAMEToPagesDotGithubDotCom()
+	p = nil
+	p.GetIsCNAMEToPagesDotGithubDotCom()
+}
+
+func TestPagesDomain_GetIsFastlyIP(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsFastlyIP: &zeroValue}
+	p.GetIsFastlyIP()
+	p = &PagesDomain{}
+	p.GetIsFastlyIP()
+	p = nil
+	p.GetIsFastlyIP()
+}
+
+func TestPagesDomain_GetIsHTTPSEligible(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsHTTPSEligible: &zeroValue}
+	p.GetIsHTTPSEligible()
+	p = &PagesDomain{}
+	p.GetIsHTTPSEligible()
+	p = nil
+	p.GetIsHTTPSEligible()
+}
+
+func TestPagesDomain_GetIsNonGithubPagesIPPresent(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsNonGithubPagesIPPresent: &zeroValue}
+	p.GetIsNonGithubPagesIPPresent()
+	p = &PagesDomain{}
+	p.GetIsNonGithubPagesIPPresent()
+	p = nil
+	p.GetIsNonGithubPagesIPPresent()
+}
+
+func TestPagesDomain_GetIsOldIPAddress(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsOldIPAddress: &zeroValue}
+	p.GetIsOldIPAddress()
+	p = &PagesDomain{}
+	p.GetIsOldIPAddress()
+	p = nil
+	p.GetIsOldIPAddress()
+}
+
+func TestPagesDomain_GetIsPagesDomain(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsPagesDomain: &zeroValue}
+	p.GetIsPagesDomain()
+	p = &PagesDomain{}
+	p.GetIsPagesDomain()
+	p = nil
+	p.GetIsPagesDomain()
+}
+
+func TestPagesDomain_GetIsPointedToGithubPagesIP(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsPointedToGithubPagesIP: &zeroValue}
+	p.GetIsPointedToGithubPagesIP()
+	p = &PagesDomain{}
+	p.GetIsPointedToGithubPagesIP()
+	p = nil
+	p.GetIsPointedToGithubPagesIP()
+}
+
+func TestPagesDomain_GetIsProxied(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsProxied: &zeroValue}
+	p.GetIsProxied()
+	p = &PagesDomain{}
+	p.GetIsProxied()
+	p = nil
+	p.GetIsProxied()
+}
+
+func TestPagesDomain_GetIsServedByPages(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsServedByPages: &zeroValue}
+	p.GetIsServedByPages()
+	p = &PagesDomain{}
+	p.GetIsServedByPages()
+	p = nil
+	p.GetIsServedByPages()
+}
+
+func TestPagesDomain_GetIsValid(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsValid: &zeroValue}
+	p.GetIsValid()
+	p = &PagesDomain{}
+	p.GetIsValid()
+	p = nil
+	p.GetIsValid()
+}
+
+func TestPagesDomain_GetIsValidDomain(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{IsValidDomain: &zeroValue}
+	p.GetIsValidDomain()
+	p = &PagesDomain{}
+	p.GetIsValidDomain()
+	p = nil
+	p.GetIsValidDomain()
+}
+
+func TestPagesDomain_GetNameservers(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{Nameservers: &zeroValue}
+	p.GetNameservers()
+	p = &PagesDomain{}
+	p.GetNameservers()
+	p = nil
+	p.GetNameservers()
+}
+
+func TestPagesDomain_GetReason(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{Reason: &zeroValue}
+	p.GetReason()
+	p = &PagesDomain{}
+	p.GetReason()
+	p = nil
+	p.GetReason()
+}
+
+func TestPagesDomain_GetRespondsToHTTPS(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{RespondsToHTTPS: &zeroValue}
+	p.GetRespondsToHTTPS()
+	p = &PagesDomain{}
+	p.GetRespondsToHTTPS()
+	p = nil
+	p.GetRespondsToHTTPS()
+}
+
+func TestPagesDomain_GetShouldBeARecord(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesDomain{ShouldBeARecord: &zeroValue}
+	p.GetShouldBeARecord()
+	p = &PagesDomain{}
+	p.GetShouldBeARecord()
+	p = nil
+	p.GetShouldBeARecord()
+}
+
+func TestPagesDomain_GetURI(tt *testing.T) {
+	var zeroValue string
+	p := &PagesDomain{URI: &zeroValue}
+	p.GetURI()
+	p = &PagesDomain{}
+	p.GetURI()
+	p = nil
+	p.GetURI()
+}
+
 func TestPagesError_GetMessage(tt *testing.T) {
 	var zeroValue string
 	p := &PagesError{Message: &zeroValue}
@@ -13932,6 +16187,20 @@ func TestPagesError_GetMessage(tt *testing.T) {
 	p.GetMessage()
 	p = nil
 	p.GetMessage()
+}
+
+func TestPagesHealthCheckResponse_GetAltDomain(tt *testing.T) {
+	p := &PagesHealthCheckResponse{}
+	p.GetAltDomain()
+	p = nil
+	p.GetAltDomain()
+}
+
+func TestPagesHealthCheckResponse_GetDomain(tt *testing.T) {
+	p := &PagesHealthCheckResponse{}
+	p.GetDomain()
+	p = nil
+	p.GetDomain()
 }
 
 func TestPagesHTTPSCertificate_GetDescription(tt *testing.T) {
@@ -13994,6 +16263,16 @@ func TestPageStats_GetTotalPages(tt *testing.T) {
 	p.GetTotalPages()
 }
 
+func TestPagesUpdate_GetBuildType(tt *testing.T) {
+	var zeroValue string
+	p := &PagesUpdate{BuildType: &zeroValue}
+	p.GetBuildType()
+	p = &PagesUpdate{}
+	p.GetBuildType()
+	p = nil
+	p.GetBuildType()
+}
+
 func TestPagesUpdate_GetCNAME(tt *testing.T) {
 	var zeroValue string
 	p := &PagesUpdate{CNAME: &zeroValue}
@@ -14029,6 +16308,179 @@ func TestPagesUpdate_GetSource(tt *testing.T) {
 	p.GetSource()
 	p = nil
 	p.GetSource()
+}
+
+func TestPersonalAccessTokenPermissions_GetOrg(tt *testing.T) {
+	zeroValue := map[string]string{}
+	p := &PersonalAccessTokenPermissions{Org: zeroValue}
+	p.GetOrg()
+	p = &PersonalAccessTokenPermissions{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
+func TestPersonalAccessTokenPermissions_GetOther(tt *testing.T) {
+	zeroValue := map[string]string{}
+	p := &PersonalAccessTokenPermissions{Other: zeroValue}
+	p.GetOther()
+	p = &PersonalAccessTokenPermissions{}
+	p.GetOther()
+	p = nil
+	p.GetOther()
+}
+
+func TestPersonalAccessTokenPermissions_GetRepo(tt *testing.T) {
+	zeroValue := map[string]string{}
+	p := &PersonalAccessTokenPermissions{Repo: zeroValue}
+	p.GetRepo()
+	p = &PersonalAccessTokenPermissions{}
+	p.GetRepo()
+	p = nil
+	p.GetRepo()
+}
+
+func TestPersonalAccessTokenRequest_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessTokenRequest{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &PersonalAccessTokenRequest{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestPersonalAccessTokenRequest_GetID(tt *testing.T) {
+	var zeroValue int64
+	p := &PersonalAccessTokenRequest{ID: &zeroValue}
+	p.GetID()
+	p = &PersonalAccessTokenRequest{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPersonalAccessTokenRequest_GetOrg(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
+func TestPersonalAccessTokenRequest_GetOwner(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetOwner()
+	p = nil
+	p.GetOwner()
+}
+
+func TestPersonalAccessTokenRequest_GetPermissionsAdded(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetPermissionsAdded()
+	p = nil
+	p.GetPermissionsAdded()
+}
+
+func TestPersonalAccessTokenRequest_GetPermissionsResult(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetPermissionsResult()
+	p = nil
+	p.GetPermissionsResult()
+}
+
+func TestPersonalAccessTokenRequest_GetPermissionsUpgraded(tt *testing.T) {
+	p := &PersonalAccessTokenRequest{}
+	p.GetPermissionsUpgraded()
+	p = nil
+	p.GetPermissionsUpgraded()
+}
+
+func TestPersonalAccessTokenRequest_GetRepositoryCount(tt *testing.T) {
+	var zeroValue int64
+	p := &PersonalAccessTokenRequest{RepositoryCount: &zeroValue}
+	p.GetRepositoryCount()
+	p = &PersonalAccessTokenRequest{}
+	p.GetRepositoryCount()
+	p = nil
+	p.GetRepositoryCount()
+}
+
+func TestPersonalAccessTokenRequest_GetRepositorySelection(tt *testing.T) {
+	var zeroValue string
+	p := &PersonalAccessTokenRequest{RepositorySelection: &zeroValue}
+	p.GetRepositorySelection()
+	p = &PersonalAccessTokenRequest{}
+	p.GetRepositorySelection()
+	p = nil
+	p.GetRepositorySelection()
+}
+
+func TestPersonalAccessTokenRequest_GetTokenExpired(tt *testing.T) {
+	var zeroValue bool
+	p := &PersonalAccessTokenRequest{TokenExpired: &zeroValue}
+	p.GetTokenExpired()
+	p = &PersonalAccessTokenRequest{}
+	p.GetTokenExpired()
+	p = nil
+	p.GetTokenExpired()
+}
+
+func TestPersonalAccessTokenRequest_GetTokenExpiresAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessTokenRequest{TokenExpiresAt: &zeroValue}
+	p.GetTokenExpiresAt()
+	p = &PersonalAccessTokenRequest{}
+	p.GetTokenExpiresAt()
+	p = nil
+	p.GetTokenExpiresAt()
+}
+
+func TestPersonalAccessTokenRequest_GetTokenLastUsedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessTokenRequest{TokenLastUsedAt: &zeroValue}
+	p.GetTokenLastUsedAt()
+	p = &PersonalAccessTokenRequest{}
+	p.GetTokenLastUsedAt()
+	p = nil
+	p.GetTokenLastUsedAt()
+}
+
+func TestPersonalAccessTokenRequestEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	p := &PersonalAccessTokenRequestEvent{Action: &zeroValue}
+	p.GetAction()
+	p = &PersonalAccessTokenRequestEvent{}
+	p.GetAction()
+	p = nil
+	p.GetAction()
+}
+
+func TestPersonalAccessTokenRequestEvent_GetInstallation(tt *testing.T) {
+	p := &PersonalAccessTokenRequestEvent{}
+	p.GetInstallation()
+	p = nil
+	p.GetInstallation()
+}
+
+func TestPersonalAccessTokenRequestEvent_GetOrg(tt *testing.T) {
+	p := &PersonalAccessTokenRequestEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
+func TestPersonalAccessTokenRequestEvent_GetPersonalAccessTokenRequest(tt *testing.T) {
+	p := &PersonalAccessTokenRequestEvent{}
+	p.GetPersonalAccessTokenRequest()
+	p = nil
+	p.GetPersonalAccessTokenRequest()
+}
+
+func TestPersonalAccessTokenRequestEvent_GetSender(tt *testing.T) {
+	p := &PersonalAccessTokenRequestEvent{}
+	p.GetSender()
+	p = nil
+	p.GetSender()
 }
 
 func TestPingEvent_GetHook(tt *testing.T) {
@@ -14117,7 +16569,7 @@ func TestPlan_GetName(tt *testing.T) {
 }
 
 func TestPlan_GetPrivateRepos(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	p := &Plan{PrivateRepos: &zeroValue}
 	p.GetPrivateRepos()
 	p = &Plan{}
@@ -14144,6 +16596,26 @@ func TestPlan_GetSpace(tt *testing.T) {
 	p.GetSpace()
 	p = nil
 	p.GetSpace()
+}
+
+func TestPolicyOverrideReason_GetCode(tt *testing.T) {
+	var zeroValue string
+	p := &PolicyOverrideReason{Code: &zeroValue}
+	p.GetCode()
+	p = &PolicyOverrideReason{}
+	p.GetCode()
+	p = nil
+	p.GetCode()
+}
+
+func TestPolicyOverrideReason_GetMessage(tt *testing.T) {
+	var zeroValue string
+	p := &PolicyOverrideReason{Message: &zeroValue}
+	p.GetMessage()
+	p = &PolicyOverrideReason{}
+	p.GetMessage()
+	p = nil
+	p.GetMessage()
 }
 
 func TestPreReceiveHook_GetConfigURL(tt *testing.T) {
@@ -14967,6 +17439,314 @@ func TestProjectPermissionLevel_GetUser(tt *testing.T) {
 	p.GetUser()
 }
 
+func TestProjectsV2_GetClosedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &ProjectsV2{ClosedAt: &zeroValue}
+	p.GetClosedAt()
+	p = &ProjectsV2{}
+	p.GetClosedAt()
+	p = nil
+	p.GetClosedAt()
+}
+
+func TestProjectsV2_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &ProjectsV2{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &ProjectsV2{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestProjectsV2_GetCreator(tt *testing.T) {
+	p := &ProjectsV2{}
+	p.GetCreator()
+	p = nil
+	p.GetCreator()
+}
+
+func TestProjectsV2_GetDeletedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &ProjectsV2{DeletedAt: &zeroValue}
+	p.GetDeletedAt()
+	p = &ProjectsV2{}
+	p.GetDeletedAt()
+	p = nil
+	p.GetDeletedAt()
+}
+
+func TestProjectsV2_GetDeletedBy(tt *testing.T) {
+	p := &ProjectsV2{}
+	p.GetDeletedBy()
+	p = nil
+	p.GetDeletedBy()
+}
+
+func TestProjectsV2_GetDescription(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectsV2{Description: &zeroValue}
+	p.GetDescription()
+	p = &ProjectsV2{}
+	p.GetDescription()
+	p = nil
+	p.GetDescription()
+}
+
+func TestProjectsV2_GetID(tt *testing.T) {
+	var zeroValue int64
+	p := &ProjectsV2{ID: &zeroValue}
+	p.GetID()
+	p = &ProjectsV2{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestProjectsV2_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectsV2{NodeID: &zeroValue}
+	p.GetNodeID()
+	p = &ProjectsV2{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestProjectsV2_GetNumber(tt *testing.T) {
+	var zeroValue int
+	p := &ProjectsV2{Number: &zeroValue}
+	p.GetNumber()
+	p = &ProjectsV2{}
+	p.GetNumber()
+	p = nil
+	p.GetNumber()
+}
+
+func TestProjectsV2_GetOwner(tt *testing.T) {
+	p := &ProjectsV2{}
+	p.GetOwner()
+	p = nil
+	p.GetOwner()
+}
+
+func TestProjectsV2_GetPublic(tt *testing.T) {
+	var zeroValue bool
+	p := &ProjectsV2{Public: &zeroValue}
+	p.GetPublic()
+	p = &ProjectsV2{}
+	p.GetPublic()
+	p = nil
+	p.GetPublic()
+}
+
+func TestProjectsV2_GetShortDescription(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectsV2{ShortDescription: &zeroValue}
+	p.GetShortDescription()
+	p = &ProjectsV2{}
+	p.GetShortDescription()
+	p = nil
+	p.GetShortDescription()
+}
+
+func TestProjectsV2_GetTitle(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectsV2{Title: &zeroValue}
+	p.GetTitle()
+	p = &ProjectsV2{}
+	p.GetTitle()
+	p = nil
+	p.GetTitle()
+}
+
+func TestProjectsV2_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &ProjectsV2{UpdatedAt: &zeroValue}
+	p.GetUpdatedAt()
+	p = &ProjectsV2{}
+	p.GetUpdatedAt()
+	p = nil
+	p.GetUpdatedAt()
+}
+
+func TestProjectV2Event_GetAction(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectV2Event{Action: &zeroValue}
+	p.GetAction()
+	p = &ProjectV2Event{}
+	p.GetAction()
+	p = nil
+	p.GetAction()
+}
+
+func TestProjectV2Event_GetInstallation(tt *testing.T) {
+	p := &ProjectV2Event{}
+	p.GetInstallation()
+	p = nil
+	p.GetInstallation()
+}
+
+func TestProjectV2Event_GetOrg(tt *testing.T) {
+	p := &ProjectV2Event{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
+func TestProjectV2Event_GetProjectsV2(tt *testing.T) {
+	p := &ProjectV2Event{}
+	p.GetProjectsV2()
+	p = nil
+	p.GetProjectsV2()
+}
+
+func TestProjectV2Event_GetSender(tt *testing.T) {
+	p := &ProjectV2Event{}
+	p.GetSender()
+	p = nil
+	p.GetSender()
+}
+
+func TestProjectV2Item_GetArchivedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &ProjectV2Item{ArchivedAt: &zeroValue}
+	p.GetArchivedAt()
+	p = &ProjectV2Item{}
+	p.GetArchivedAt()
+	p = nil
+	p.GetArchivedAt()
+}
+
+func TestProjectV2Item_GetContentNodeID(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectV2Item{ContentNodeID: &zeroValue}
+	p.GetContentNodeID()
+	p = &ProjectV2Item{}
+	p.GetContentNodeID()
+	p = nil
+	p.GetContentNodeID()
+}
+
+func TestProjectV2Item_GetContentType(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectV2Item{ContentType: &zeroValue}
+	p.GetContentType()
+	p = &ProjectV2Item{}
+	p.GetContentType()
+	p = nil
+	p.GetContentType()
+}
+
+func TestProjectV2Item_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &ProjectV2Item{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &ProjectV2Item{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestProjectV2Item_GetCreator(tt *testing.T) {
+	p := &ProjectV2Item{}
+	p.GetCreator()
+	p = nil
+	p.GetCreator()
+}
+
+func TestProjectV2Item_GetID(tt *testing.T) {
+	var zeroValue int64
+	p := &ProjectV2Item{ID: &zeroValue}
+	p.GetID()
+	p = &ProjectV2Item{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestProjectV2Item_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectV2Item{NodeID: &zeroValue}
+	p.GetNodeID()
+	p = &ProjectV2Item{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestProjectV2Item_GetProjectNodeID(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectV2Item{ProjectNodeID: &zeroValue}
+	p.GetProjectNodeID()
+	p = &ProjectV2Item{}
+	p.GetProjectNodeID()
+	p = nil
+	p.GetProjectNodeID()
+}
+
+func TestProjectV2Item_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &ProjectV2Item{UpdatedAt: &zeroValue}
+	p.GetUpdatedAt()
+	p = &ProjectV2Item{}
+	p.GetUpdatedAt()
+	p = nil
+	p.GetUpdatedAt()
+}
+
+func TestProjectV2ItemChange_GetArchivedAt(tt *testing.T) {
+	p := &ProjectV2ItemChange{}
+	p.GetArchivedAt()
+	p = nil
+	p.GetArchivedAt()
+}
+
+func TestProjectV2ItemEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectV2ItemEvent{Action: &zeroValue}
+	p.GetAction()
+	p = &ProjectV2ItemEvent{}
+	p.GetAction()
+	p = nil
+	p.GetAction()
+}
+
+func TestProjectV2ItemEvent_GetChanges(tt *testing.T) {
+	p := &ProjectV2ItemEvent{}
+	p.GetChanges()
+	p = nil
+	p.GetChanges()
+}
+
+func TestProjectV2ItemEvent_GetInstallation(tt *testing.T) {
+	p := &ProjectV2ItemEvent{}
+	p.GetInstallation()
+	p = nil
+	p.GetInstallation()
+}
+
+func TestProjectV2ItemEvent_GetOrg(tt *testing.T) {
+	p := &ProjectV2ItemEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
+func TestProjectV2ItemEvent_GetProjectV2Item(tt *testing.T) {
+	p := &ProjectV2ItemEvent{}
+	p.GetProjectV2Item()
+	p = nil
+	p.GetProjectV2Item()
+}
+
+func TestProjectV2ItemEvent_GetSender(tt *testing.T) {
+	p := &ProjectV2ItemEvent{}
+	p.GetSender()
+	p = nil
+	p.GetSender()
+}
+
 func TestProtection_GetAllowDeletions(tt *testing.T) {
 	p := &Protection{}
 	p.GetAllowDeletions()
@@ -14986,6 +17766,13 @@ func TestProtection_GetAllowForkSyncing(tt *testing.T) {
 	p.GetAllowForkSyncing()
 	p = nil
 	p.GetAllowForkSyncing()
+}
+
+func TestProtection_GetBlockCreations(tt *testing.T) {
+	p := &Protection{}
+	p.GetBlockCreations()
+	p = nil
+	p.GetBlockCreations()
 }
 
 func TestProtection_GetEnforceAdmins(tt *testing.T) {
@@ -15016,6 +17803,13 @@ func TestProtection_GetRequiredPullRequestReviews(tt *testing.T) {
 	p.GetRequiredPullRequestReviews()
 }
 
+func TestProtection_GetRequiredSignatures(tt *testing.T) {
+	p := &Protection{}
+	p.GetRequiredSignatures()
+	p = nil
+	p.GetRequiredSignatures()
+}
+
 func TestProtection_GetRequiredStatusChecks(tt *testing.T) {
 	p := &Protection{}
 	p.GetRequiredStatusChecks()
@@ -15035,6 +17829,16 @@ func TestProtection_GetRestrictions(tt *testing.T) {
 	p.GetRestrictions()
 	p = nil
 	p.GetRestrictions()
+}
+
+func TestProtection_GetURL(tt *testing.T) {
+	var zeroValue string
+	p := &Protection{URL: &zeroValue}
+	p.GetURL()
+	p = &Protection{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
 }
 
 func TestProtectionChanges_GetAdminEnforced(tt *testing.T) {
@@ -15162,6 +17966,36 @@ func TestProtectionRequest_GetAllowForcePushes(tt *testing.T) {
 	p.GetAllowForcePushes()
 }
 
+func TestProtectionRequest_GetAllowForkSyncing(tt *testing.T) {
+	var zeroValue bool
+	p := &ProtectionRequest{AllowForkSyncing: &zeroValue}
+	p.GetAllowForkSyncing()
+	p = &ProtectionRequest{}
+	p.GetAllowForkSyncing()
+	p = nil
+	p.GetAllowForkSyncing()
+}
+
+func TestProtectionRequest_GetBlockCreations(tt *testing.T) {
+	var zeroValue bool
+	p := &ProtectionRequest{BlockCreations: &zeroValue}
+	p.GetBlockCreations()
+	p = &ProtectionRequest{}
+	p.GetBlockCreations()
+	p = nil
+	p.GetBlockCreations()
+}
+
+func TestProtectionRequest_GetLockBranch(tt *testing.T) {
+	var zeroValue bool
+	p := &ProtectionRequest{LockBranch: &zeroValue}
+	p.GetLockBranch()
+	p = &ProtectionRequest{}
+	p.GetLockBranch()
+	p = nil
+	p.GetLockBranch()
+}
+
 func TestProtectionRequest_GetRequiredConversationResolution(tt *testing.T) {
 	var zeroValue bool
 	p := &ProtectionRequest{RequiredConversationResolution: &zeroValue}
@@ -15223,6 +18057,16 @@ func TestProtectionRule_GetNodeID(tt *testing.T) {
 	p.GetNodeID()
 }
 
+func TestProtectionRule_GetPreventSelfReview(tt *testing.T) {
+	var zeroValue bool
+	p := &ProtectionRule{PreventSelfReview: &zeroValue}
+	p.GetPreventSelfReview()
+	p = &ProtectionRule{}
+	p.GetPreventSelfReview()
+	p = nil
+	p.GetPreventSelfReview()
+}
+
 func TestProtectionRule_GetType(tt *testing.T) {
 	var zeroValue string
 	p := &ProtectionRule{Type: &zeroValue}
@@ -15248,6 +18092,13 @@ func TestPublicEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 	p = nil
 	p.GetInstallation()
+}
+
+func TestPublicEvent_GetOrg(tt *testing.T) {
+	p := &PublicEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
 }
 
 func TestPublicEvent_GetRepo(tt *testing.T) {
@@ -16028,6 +18879,16 @@ func TestPullRequestComment_GetStartSide(tt *testing.T) {
 	p.GetStartSide()
 }
 
+func TestPullRequestComment_GetSubjectType(tt *testing.T) {
+	var zeroValue string
+	p := &PullRequestComment{SubjectType: &zeroValue}
+	p.GetSubjectType()
+	p = &PullRequestComment{}
+	p.GetSubjectType()
+	p = nil
+	p.GetSubjectType()
+}
+
 func TestPullRequestComment_GetUpdatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	p := &PullRequestComment{UpdatedAt: &zeroValue}
@@ -16128,6 +18989,13 @@ func TestPullRequestEvent_GetOrganization(tt *testing.T) {
 	p.GetOrganization()
 	p = nil
 	p.GetOrganization()
+}
+
+func TestPullRequestEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	p := &PullRequestEvent{}
+	p.GetPerformedViaGithubApp()
+	p = nil
+	p.GetPerformedViaGithubApp()
 }
 
 func TestPullRequestEvent_GetPullRequest(tt *testing.T) {
@@ -16363,6 +19231,13 @@ func TestPullRequestReviewCommentEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPullRequestReviewCommentEvent_GetOrg(tt *testing.T) {
+	p := &PullRequestReviewCommentEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
 func TestPullRequestReviewCommentEvent_GetPullRequest(tt *testing.T) {
 	p := &PullRequestReviewCommentEvent{}
 	p.GetPullRequest()
@@ -16595,6 +19470,13 @@ func TestPullRequestReviewThreadEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 }
 
+func TestPullRequestReviewThreadEvent_GetOrg(tt *testing.T) {
+	p := &PullRequestReviewThreadEvent{}
+	p.GetOrg()
+	p = nil
+	p.GetOrg()
+}
+
 func TestPullRequestReviewThreadEvent_GetPullRequest(tt *testing.T) {
 	p := &PullRequestReviewThreadEvent{}
 	p.GetPullRequest()
@@ -16696,6 +19578,13 @@ func TestPullRequestTargetEvent_GetOrganization(tt *testing.T) {
 	p.GetOrganization()
 	p = nil
 	p.GetOrganization()
+}
+
+func TestPullRequestTargetEvent_GetPerformedViaGithubApp(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetPerformedViaGithubApp()
+	p = nil
+	p.GetPerformedViaGithubApp()
 }
 
 func TestPullRequestTargetEvent_GetPullRequest(tt *testing.T) {
@@ -16861,6 +19750,16 @@ func TestPushEvent_GetBefore(tt *testing.T) {
 	p.GetBefore()
 	p = nil
 	p.GetBefore()
+}
+
+func TestPushEvent_GetCommits(tt *testing.T) {
+	zeroValue := []*HeadCommit{}
+	p := &PushEvent{Commits: zeroValue}
+	p.GetCommits()
+	p = &PushEvent{}
+	p.GetCommits()
+	p = nil
+	p.GetCommits()
 }
 
 func TestPushEvent_GetCompare(tt *testing.T) {
@@ -17766,6 +20665,13 @@ func TestReleaseEvent_GetInstallation(tt *testing.T) {
 	r.GetInstallation()
 }
 
+func TestReleaseEvent_GetOrg(tt *testing.T) {
+	r := &ReleaseEvent{}
+	r.GetOrg()
+	r = nil
+	r.GetOrg()
+}
+
 func TestReleaseEvent_GetRelease(tt *testing.T) {
 	r := &ReleaseEvent{}
 	r.GetRelease()
@@ -17847,6 +20753,123 @@ func TestRenameOrgResponse_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRepoAdvisoryCredit_GetLogin(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCredit{Login: &zeroValue}
+	r.GetLogin()
+	r = &RepoAdvisoryCredit{}
+	r.GetLogin()
+	r = nil
+	r.GetLogin()
+}
+
+func TestRepoAdvisoryCredit_GetType(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCredit{Type: &zeroValue}
+	r.GetType()
+	r = &RepoAdvisoryCredit{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepoAdvisoryCreditDetailed_GetState(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCreditDetailed{State: &zeroValue}
+	r.GetState()
+	r = &RepoAdvisoryCreditDetailed{}
+	r.GetState()
+	r = nil
+	r.GetState()
+}
+
+func TestRepoAdvisoryCreditDetailed_GetType(tt *testing.T) {
+	var zeroValue string
+	r := &RepoAdvisoryCreditDetailed{Type: &zeroValue}
+	r.GetType()
+	r = &RepoAdvisoryCreditDetailed{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepoAdvisoryCreditDetailed_GetUser(tt *testing.T) {
+	r := &RepoAdvisoryCreditDetailed{}
+	r.GetUser()
+	r = nil
+	r.GetUser()
+}
+
+func TestRepoDependencies_GetDownloadLocation(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{DownloadLocation: &zeroValue}
+	r.GetDownloadLocation()
+	r = &RepoDependencies{}
+	r.GetDownloadLocation()
+	r = nil
+	r.GetDownloadLocation()
+}
+
+func TestRepoDependencies_GetFilesAnalyzed(tt *testing.T) {
+	var zeroValue bool
+	r := &RepoDependencies{FilesAnalyzed: &zeroValue}
+	r.GetFilesAnalyzed()
+	r = &RepoDependencies{}
+	r.GetFilesAnalyzed()
+	r = nil
+	r.GetFilesAnalyzed()
+}
+
+func TestRepoDependencies_GetLicenseConcluded(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{LicenseConcluded: &zeroValue}
+	r.GetLicenseConcluded()
+	r = &RepoDependencies{}
+	r.GetLicenseConcluded()
+	r = nil
+	r.GetLicenseConcluded()
+}
+
+func TestRepoDependencies_GetLicenseDeclared(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{LicenseDeclared: &zeroValue}
+	r.GetLicenseDeclared()
+	r = &RepoDependencies{}
+	r.GetLicenseDeclared()
+	r = nil
+	r.GetLicenseDeclared()
+}
+
+func TestRepoDependencies_GetName(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{Name: &zeroValue}
+	r.GetName()
+	r = &RepoDependencies{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRepoDependencies_GetSPDXID(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{SPDXID: &zeroValue}
+	r.GetSPDXID()
+	r = &RepoDependencies{}
+	r.GetSPDXID()
+	r = nil
+	r.GetSPDXID()
+}
+
+func TestRepoDependencies_GetVersionInfo(tt *testing.T) {
+	var zeroValue string
+	r := &RepoDependencies{VersionInfo: &zeroValue}
+	r.GetVersionInfo()
+	r = &RepoDependencies{}
+	r.GetVersionInfo()
+	r = nil
+	r.GetVersionInfo()
+}
+
 func TestRepoMergeUpstreamRequest_GetBranch(tt *testing.T) {
 	var zeroValue string
 	r := &RepoMergeUpstreamRequest{Branch: &zeroValue}
@@ -17895,6 +20918,123 @@ func TestRepoName_GetFrom(tt *testing.T) {
 	r.GetFrom()
 	r = nil
 	r.GetFrom()
+}
+
+func TestRepoRequiredWorkflow_GetBadgeURL(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{BadgeURL: &zeroValue}
+	r.GetBadgeURL()
+	r = &RepoRequiredWorkflow{}
+	r.GetBadgeURL()
+	r = nil
+	r.GetBadgeURL()
+}
+
+func TestRepoRequiredWorkflow_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	r := &RepoRequiredWorkflow{CreatedAt: &zeroValue}
+	r.GetCreatedAt()
+	r = &RepoRequiredWorkflow{}
+	r.GetCreatedAt()
+	r = nil
+	r.GetCreatedAt()
+}
+
+func TestRepoRequiredWorkflow_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{HTMLURL: &zeroValue}
+	r.GetHTMLURL()
+	r = &RepoRequiredWorkflow{}
+	r.GetHTMLURL()
+	r = nil
+	r.GetHTMLURL()
+}
+
+func TestRepoRequiredWorkflow_GetID(tt *testing.T) {
+	var zeroValue int64
+	r := &RepoRequiredWorkflow{ID: &zeroValue}
+	r.GetID()
+	r = &RepoRequiredWorkflow{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRepoRequiredWorkflow_GetName(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{Name: &zeroValue}
+	r.GetName()
+	r = &RepoRequiredWorkflow{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRepoRequiredWorkflow_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{NodeID: &zeroValue}
+	r.GetNodeID()
+	r = &RepoRequiredWorkflow{}
+	r.GetNodeID()
+	r = nil
+	r.GetNodeID()
+}
+
+func TestRepoRequiredWorkflow_GetPath(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{Path: &zeroValue}
+	r.GetPath()
+	r = &RepoRequiredWorkflow{}
+	r.GetPath()
+	r = nil
+	r.GetPath()
+}
+
+func TestRepoRequiredWorkflow_GetSourceRepository(tt *testing.T) {
+	r := &RepoRequiredWorkflow{}
+	r.GetSourceRepository()
+	r = nil
+	r.GetSourceRepository()
+}
+
+func TestRepoRequiredWorkflow_GetState(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{State: &zeroValue}
+	r.GetState()
+	r = &RepoRequiredWorkflow{}
+	r.GetState()
+	r = nil
+	r.GetState()
+}
+
+func TestRepoRequiredWorkflow_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	r := &RepoRequiredWorkflow{UpdatedAt: &zeroValue}
+	r.GetUpdatedAt()
+	r = &RepoRequiredWorkflow{}
+	r.GetUpdatedAt()
+	r = nil
+	r.GetUpdatedAt()
+}
+
+func TestRepoRequiredWorkflow_GetURL(tt *testing.T) {
+	var zeroValue string
+	r := &RepoRequiredWorkflow{URL: &zeroValue}
+	r.GetURL()
+	r = &RepoRequiredWorkflow{}
+	r.GetURL()
+	r = nil
+	r.GetURL()
+}
+
+func TestRepoRequiredWorkflows_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	r := &RepoRequiredWorkflows{TotalCount: &zeroValue}
+	r.GetTotalCount()
+	r = &RepoRequiredWorkflows{}
+	r.GetTotalCount()
+	r = nil
+	r.GetTotalCount()
 }
 
 func TestRepositoriesSearchResult_GetIncompleteResults(tt *testing.T) {
@@ -18913,6 +22053,16 @@ func TestRepository_GetWatchersCount(tt *testing.T) {
 	r.GetWatchersCount()
 }
 
+func TestRepository_GetWebCommitSignoffRequired(tt *testing.T) {
+	var zeroValue bool
+	r := &Repository{WebCommitSignoffRequired: &zeroValue}
+	r.GetWebCommitSignoffRequired()
+	r = &Repository{}
+	r.GetWebCommitSignoffRequired()
+	r = nil
+	r.GetWebCommitSignoffRequired()
+}
+
 func TestRepositoryActionsAccessLevel_GetAccessLevel(tt *testing.T) {
 	var zeroValue string
 	r := &RepositoryActionsAccessLevel{AccessLevel: &zeroValue}
@@ -19213,6 +22363,16 @@ func TestRepositoryContent_GetSize(tt *testing.T) {
 	r.GetSize()
 	r = nil
 	r.GetSize()
+}
+
+func TestRepositoryContent_GetSubmoduleGitURL(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryContent{SubmoduleGitURL: &zeroValue}
+	r.GetSubmoduleGitURL()
+	r = &RepositoryContent{}
+	r.GetSubmoduleGitURL()
+	r = nil
+	r.GetSubmoduleGitURL()
 }
 
 func TestRepositoryContent_GetTarget(tt *testing.T) {
@@ -19852,6 +23012,16 @@ func TestRepositoryRelease_GetZipballURL(tt *testing.T) {
 	r.GetZipballURL()
 }
 
+func TestRepositoryRule_GetParameters(tt *testing.T) {
+	var zeroValue json.RawMessage
+	r := &RepositoryRule{Parameters: &zeroValue}
+	r.GetParameters()
+	r = &RepositoryRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
 func TestRepositoryTag_GetCommit(tt *testing.T) {
 	r := &RepositoryTag{}
 	r.GetCommit()
@@ -20028,6 +23198,13 @@ func TestRepositoryVulnerabilityAlertEvent_GetInstallation(tt *testing.T) {
 	r.GetInstallation()
 	r = nil
 	r.GetInstallation()
+}
+
+func TestRepositoryVulnerabilityAlertEvent_GetOrg(tt *testing.T) {
+	r := &RepositoryVulnerabilityAlertEvent{}
+	r.GetOrg()
+	r = nil
+	r.GetOrg()
 }
 
 func TestRepositoryVulnerabilityAlertEvent_GetRepository(tt *testing.T) {
@@ -20261,6 +23438,26 @@ func TestRequiredStatusCheck_GetAppID(tt *testing.T) {
 	r.GetAppID()
 }
 
+func TestRequiredStatusChecks_GetContextsURL(tt *testing.T) {
+	var zeroValue string
+	r := &RequiredStatusChecks{ContextsURL: &zeroValue}
+	r.GetContextsURL()
+	r = &RequiredStatusChecks{}
+	r.GetContextsURL()
+	r = nil
+	r.GetContextsURL()
+}
+
+func TestRequiredStatusChecks_GetURL(tt *testing.T) {
+	var zeroValue string
+	r := &RequiredStatusChecks{URL: &zeroValue}
+	r.GetURL()
+	r = &RequiredStatusChecks{}
+	r.GetURL()
+	r = nil
+	r.GetURL()
+}
+
 func TestRequiredStatusChecksEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	var zeroValue string
 	r := &RequiredStatusChecksEnforcementLevelChanges{From: &zeroValue}
@@ -20281,6 +23478,16 @@ func TestRequiredStatusChecksRequest_GetStrict(tt *testing.T) {
 	r.GetStrict()
 }
 
+func TestRequiredWorkflowSelectedRepos_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	r := &RequiredWorkflowSelectedRepos{TotalCount: &zeroValue}
+	r.GetTotalCount()
+	r = &RequiredWorkflowSelectedRepos{}
+	r.GetTotalCount()
+	r = nil
+	r.GetTotalCount()
+}
+
 func TestReviewersRequest_GetNodeID(tt *testing.T) {
 	var zeroValue string
 	r := &ReviewersRequest{NodeID: &zeroValue}
@@ -20289,6 +23496,16 @@ func TestReviewersRequest_GetNodeID(tt *testing.T) {
 	r.GetNodeID()
 	r = nil
 	r.GetNodeID()
+}
+
+func TestReviewPersonalAccessTokenRequestOptions_GetReason(tt *testing.T) {
+	var zeroValue string
+	r := &ReviewPersonalAccessTokenRequestOptions{Reason: &zeroValue}
+	r.GetReason()
+	r = &ReviewPersonalAccessTokenRequestOptions{}
+	r.GetReason()
+	r = nil
+	r.GetReason()
 }
 
 func TestRule_GetDescription(tt *testing.T) {
@@ -20359,6 +23576,138 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 	r = nil
 	r.GetSeverity()
+}
+
+func TestRulePatternParameters_GetName(tt *testing.T) {
+	var zeroValue string
+	r := &RulePatternParameters{Name: &zeroValue}
+	r.GetName()
+	r = &RulePatternParameters{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRulePatternParameters_GetNegate(tt *testing.T) {
+	var zeroValue bool
+	r := &RulePatternParameters{Negate: &zeroValue}
+	r.GetNegate()
+	r = &RulePatternParameters{}
+	r.GetNegate()
+	r = nil
+	r.GetNegate()
+}
+
+func TestRuleRequiredStatusChecks_GetIntegrationID(tt *testing.T) {
+	var zeroValue int64
+	r := &RuleRequiredStatusChecks{IntegrationID: &zeroValue}
+	r.GetIntegrationID()
+	r = &RuleRequiredStatusChecks{}
+	r.GetIntegrationID()
+	r = nil
+	r.GetIntegrationID()
+}
+
+func TestRuleset_GetConditions(tt *testing.T) {
+	r := &Ruleset{}
+	r.GetConditions()
+	r = nil
+	r.GetConditions()
+}
+
+func TestRuleset_GetID(tt *testing.T) {
+	var zeroValue int64
+	r := &Ruleset{ID: &zeroValue}
+	r.GetID()
+	r = &Ruleset{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRuleset_GetLinks(tt *testing.T) {
+	r := &Ruleset{}
+	r.GetLinks()
+	r = nil
+	r.GetLinks()
+}
+
+func TestRuleset_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	r := &Ruleset{NodeID: &zeroValue}
+	r.GetNodeID()
+	r = &Ruleset{}
+	r.GetNodeID()
+	r = nil
+	r.GetNodeID()
+}
+
+func TestRuleset_GetSourceType(tt *testing.T) {
+	var zeroValue string
+	r := &Ruleset{SourceType: &zeroValue}
+	r.GetSourceType()
+	r = &Ruleset{}
+	r.GetSourceType()
+	r = nil
+	r.GetSourceType()
+}
+
+func TestRuleset_GetTarget(tt *testing.T) {
+	var zeroValue string
+	r := &Ruleset{Target: &zeroValue}
+	r.GetTarget()
+	r = &Ruleset{}
+	r.GetTarget()
+	r = nil
+	r.GetTarget()
+}
+
+func TestRulesetConditions_GetRefName(tt *testing.T) {
+	r := &RulesetConditions{}
+	r.GetRefName()
+	r = nil
+	r.GetRefName()
+}
+
+func TestRulesetConditions_GetRepositoryID(tt *testing.T) {
+	r := &RulesetConditions{}
+	r.GetRepositoryID()
+	r = nil
+	r.GetRepositoryID()
+}
+
+func TestRulesetConditions_GetRepositoryName(tt *testing.T) {
+	r := &RulesetConditions{}
+	r.GetRepositoryName()
+	r = nil
+	r.GetRepositoryName()
+}
+
+func TestRulesetLink_GetHRef(tt *testing.T) {
+	var zeroValue string
+	r := &RulesetLink{HRef: &zeroValue}
+	r.GetHRef()
+	r = &RulesetLink{}
+	r.GetHRef()
+	r = nil
+	r.GetHRef()
+}
+
+func TestRulesetLinks_GetSelf(tt *testing.T) {
+	r := &RulesetLinks{}
+	r.GetSelf()
+	r = nil
+	r.GetSelf()
+}
+
+func TestRulesetRepositoryNamesConditionParameters_GetProtected(tt *testing.T) {
+	var zeroValue bool
+	r := &RulesetRepositoryNamesConditionParameters{Protected: &zeroValue}
+	r.GetProtected()
+	r = &RulesetRepositoryNamesConditionParameters{}
+	r.GetProtected()
+	r = nil
+	r.GetProtected()
 }
 
 func TestRunner_GetBusy(tt *testing.T) {
@@ -20679,6 +24028,90 @@ func TestSarifID_GetURL(tt *testing.T) {
 	s.GetURL()
 	s = nil
 	s.GetURL()
+}
+
+func TestSARIFUpload_GetAnalysesURL(tt *testing.T) {
+	var zeroValue string
+	s := &SARIFUpload{AnalysesURL: &zeroValue}
+	s.GetAnalysesURL()
+	s = &SARIFUpload{}
+	s.GetAnalysesURL()
+	s = nil
+	s.GetAnalysesURL()
+}
+
+func TestSARIFUpload_GetProcessingStatus(tt *testing.T) {
+	var zeroValue string
+	s := &SARIFUpload{ProcessingStatus: &zeroValue}
+	s.GetProcessingStatus()
+	s = &SARIFUpload{}
+	s.GetProcessingStatus()
+	s = nil
+	s.GetProcessingStatus()
+}
+
+func TestSBOM_GetSBOM(tt *testing.T) {
+	s := &SBOM{}
+	s.GetSBOM()
+	s = nil
+	s.GetSBOM()
+}
+
+func TestSBOMInfo_GetCreationInfo(tt *testing.T) {
+	s := &SBOMInfo{}
+	s.GetCreationInfo()
+	s = nil
+	s.GetCreationInfo()
+}
+
+func TestSBOMInfo_GetDataLicense(tt *testing.T) {
+	var zeroValue string
+	s := &SBOMInfo{DataLicense: &zeroValue}
+	s.GetDataLicense()
+	s = &SBOMInfo{}
+	s.GetDataLicense()
+	s = nil
+	s.GetDataLicense()
+}
+
+func TestSBOMInfo_GetDocumentNamespace(tt *testing.T) {
+	var zeroValue string
+	s := &SBOMInfo{DocumentNamespace: &zeroValue}
+	s.GetDocumentNamespace()
+	s = &SBOMInfo{}
+	s.GetDocumentNamespace()
+	s = nil
+	s.GetDocumentNamespace()
+}
+
+func TestSBOMInfo_GetName(tt *testing.T) {
+	var zeroValue string
+	s := &SBOMInfo{Name: &zeroValue}
+	s.GetName()
+	s = &SBOMInfo{}
+	s.GetName()
+	s = nil
+	s.GetName()
+}
+
+func TestSBOMInfo_GetSPDXID(tt *testing.T) {
+	var zeroValue string
+	s := &SBOMInfo{SPDXID: &zeroValue}
+	s.GetSPDXID()
+	s = &SBOMInfo{}
+	s.GetSPDXID()
+	s = nil
+	s.GetSPDXID()
+}
+
+func TestSBOMInfo_GetSPDXVersion(tt *testing.T) {
+	var zeroValue string
+	s := &SBOMInfo{SPDXVersion: &zeroValue}
+	s.GetSPDXVersion()
+	s = &SBOMInfo{}
+	s.GetSPDXVersion()
+	s = nil
+	s.GetSPDXVersion()
 }
 
 func TestScanningAnalysis_GetAnalysisKey(tt *testing.T) {
@@ -21025,6 +24458,40 @@ func TestSecretScanningAlert_GetNumber(tt *testing.T) {
 	s.GetNumber()
 }
 
+func TestSecretScanningAlert_GetPushProtectionBypassed(tt *testing.T) {
+	var zeroValue bool
+	s := &SecretScanningAlert{PushProtectionBypassed: &zeroValue}
+	s.GetPushProtectionBypassed()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassed()
+	s = nil
+	s.GetPushProtectionBypassed()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecretScanningAlert{PushProtectionBypassedAt: &zeroValue}
+	s.GetPushProtectionBypassedAt()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassedAt()
+	s = nil
+	s.GetPushProtectionBypassedAt()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassedBy(tt *testing.T) {
+	s := &SecretScanningAlert{}
+	s.GetPushProtectionBypassedBy()
+	s = nil
+	s.GetPushProtectionBypassedBy()
+}
+
+func TestSecretScanningAlert_GetRepository(tt *testing.T) {
+	s := &SecretScanningAlert{}
+	s.GetRepository()
+	s = nil
+	s.GetRepository()
+}
+
 func TestSecretScanningAlert_GetResolution(tt *testing.T) {
 	var zeroValue string
 	s := &SecretScanningAlert{Resolution: &zeroValue}
@@ -21033,6 +24500,16 @@ func TestSecretScanningAlert_GetResolution(tt *testing.T) {
 	s.GetResolution()
 	s = nil
 	s.GetResolution()
+}
+
+func TestSecretScanningAlert_GetResolutionComment(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{ResolutionComment: &zeroValue}
+	s.GetResolutionComment()
+	s = &SecretScanningAlert{}
+	s.GetResolutionComment()
+	s = nil
+	s.GetResolutionComment()
 }
 
 func TestSecretScanningAlert_GetResolvedAt(tt *testing.T) {
@@ -21072,6 +24549,16 @@ func TestSecretScanningAlert_GetSecretType(tt *testing.T) {
 	s.GetSecretType()
 }
 
+func TestSecretScanningAlert_GetSecretTypeDisplayName(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{SecretTypeDisplayName: &zeroValue}
+	s.GetSecretTypeDisplayName()
+	s = &SecretScanningAlert{}
+	s.GetSecretTypeDisplayName()
+	s = nil
+	s.GetSecretTypeDisplayName()
+}
+
 func TestSecretScanningAlert_GetState(tt *testing.T) {
 	var zeroValue string
 	s := &SecretScanningAlert{State: &zeroValue}
@@ -21080,6 +24567,16 @@ func TestSecretScanningAlert_GetState(tt *testing.T) {
 	s.GetState()
 	s = nil
 	s.GetState()
+}
+
+func TestSecretScanningAlert_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecretScanningAlert{UpdatedAt: &zeroValue}
+	s.GetUpdatedAt()
+	s = &SecretScanningAlert{}
+	s.GetUpdatedAt()
+	s = nil
+	s.GetUpdatedAt()
 }
 
 func TestSecretScanningAlert_GetURL(tt *testing.T) {
@@ -21261,26 +24758,6 @@ func TestSecretScanningAlertUpdateOptions_GetResolution(tt *testing.T) {
 	s.GetResolution()
 }
 
-func TestSecretScanningAlertUpdateOptions_GetSecretType(tt *testing.T) {
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{SecretType: &zeroValue}
-	s.GetSecretType()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetSecretType()
-	s = nil
-	s.GetSecretType()
-}
-
-func TestSecretScanningAlertUpdateOptions_GetState(tt *testing.T) {
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{State: &zeroValue}
-	s.GetState()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetState()
-	s = nil
-	s.GetState()
-}
-
 func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	var zeroValue string
 	s := &SecretScanningPushProtection{Status: &zeroValue}
@@ -21289,6 +24766,50 @@ func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	s.GetStatus()
 	s = nil
 	s.GetStatus()
+}
+
+func TestSecurityAdvisory_GetAuthor(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetAuthor()
+	s = nil
+	s.GetAuthor()
+}
+
+func TestSecurityAdvisory_GetClosedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecurityAdvisory{ClosedAt: &zeroValue}
+	s.GetClosedAt()
+	s = &SecurityAdvisory{}
+	s.GetClosedAt()
+	s = nil
+	s.GetClosedAt()
+}
+
+func TestSecurityAdvisory_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecurityAdvisory{CreatedAt: &zeroValue}
+	s.GetCreatedAt()
+	s = &SecurityAdvisory{}
+	s.GetCreatedAt()
+	s = nil
+	s.GetCreatedAt()
+}
+
+func TestSecurityAdvisory_GetCVEID(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{CVEID: &zeroValue}
+	s.GetCVEID()
+	s = &SecurityAdvisory{}
+	s.GetCVEID()
+	s = nil
+	s.GetCVEID()
+}
+
+func TestSecurityAdvisory_GetCVSS(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetCVSS()
+	s = nil
+	s.GetCVSS()
 }
 
 func TestSecurityAdvisory_GetDescription(tt *testing.T) {
@@ -21311,6 +24832,23 @@ func TestSecurityAdvisory_GetGHSAID(tt *testing.T) {
 	s.GetGHSAID()
 }
 
+func TestSecurityAdvisory_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{HTMLURL: &zeroValue}
+	s.GetHTMLURL()
+	s = &SecurityAdvisory{}
+	s.GetHTMLURL()
+	s = nil
+	s.GetHTMLURL()
+}
+
+func TestSecurityAdvisory_GetPrivateFork(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetPrivateFork()
+	s = nil
+	s.GetPrivateFork()
+}
+
 func TestSecurityAdvisory_GetPublishedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	s := &SecurityAdvisory{PublishedAt: &zeroValue}
@@ -21321,6 +24859,13 @@ func TestSecurityAdvisory_GetPublishedAt(tt *testing.T) {
 	s.GetPublishedAt()
 }
 
+func TestSecurityAdvisory_GetPublisher(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetPublisher()
+	s = nil
+	s.GetPublisher()
+}
+
 func TestSecurityAdvisory_GetSeverity(tt *testing.T) {
 	var zeroValue string
 	s := &SecurityAdvisory{Severity: &zeroValue}
@@ -21329,6 +24874,23 @@ func TestSecurityAdvisory_GetSeverity(tt *testing.T) {
 	s.GetSeverity()
 	s = nil
 	s.GetSeverity()
+}
+
+func TestSecurityAdvisory_GetState(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{State: &zeroValue}
+	s.GetState()
+	s = &SecurityAdvisory{}
+	s.GetState()
+	s = nil
+	s.GetState()
+}
+
+func TestSecurityAdvisory_GetSubmission(tt *testing.T) {
+	s := &SecurityAdvisory{}
+	s.GetSubmission()
+	s = nil
+	s.GetSubmission()
 }
 
 func TestSecurityAdvisory_GetSummary(tt *testing.T) {
@@ -21351,6 +24913,16 @@ func TestSecurityAdvisory_GetUpdatedAt(tt *testing.T) {
 	s.GetUpdatedAt()
 }
 
+func TestSecurityAdvisory_GetURL(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{URL: &zeroValue}
+	s.GetURL()
+	s = &SecurityAdvisory{}
+	s.GetURL()
+	s = nil
+	s.GetURL()
+}
+
 func TestSecurityAdvisory_GetWithdrawnAt(tt *testing.T) {
 	var zeroValue Timestamp
 	s := &SecurityAdvisory{WithdrawnAt: &zeroValue}
@@ -21371,6 +24943,34 @@ func TestSecurityAdvisoryEvent_GetAction(tt *testing.T) {
 	s.GetAction()
 }
 
+func TestSecurityAdvisoryEvent_GetEnterprise(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetEnterprise()
+	s = nil
+	s.GetEnterprise()
+}
+
+func TestSecurityAdvisoryEvent_GetInstallation(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetInstallation()
+	s = nil
+	s.GetInstallation()
+}
+
+func TestSecurityAdvisoryEvent_GetOrganization(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetOrganization()
+	s = nil
+	s.GetOrganization()
+}
+
+func TestSecurityAdvisoryEvent_GetRepository(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetRepository()
+	s = nil
+	s.GetRepository()
+}
+
 func TestSecurityAdvisoryEvent_GetSecurityAdvisory(tt *testing.T) {
 	s := &SecurityAdvisoryEvent{}
 	s.GetSecurityAdvisory()
@@ -21378,11 +24978,35 @@ func TestSecurityAdvisoryEvent_GetSecurityAdvisory(tt *testing.T) {
 	s.GetSecurityAdvisory()
 }
 
+func TestSecurityAdvisoryEvent_GetSender(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetSender()
+	s = nil
+	s.GetSender()
+}
+
+func TestSecurityAdvisorySubmission_GetAccepted(tt *testing.T) {
+	var zeroValue bool
+	s := &SecurityAdvisorySubmission{Accepted: &zeroValue}
+	s.GetAccepted()
+	s = &SecurityAdvisorySubmission{}
+	s.GetAccepted()
+	s = nil
+	s.GetAccepted()
+}
+
 func TestSecurityAndAnalysis_GetAdvancedSecurity(tt *testing.T) {
 	s := &SecurityAndAnalysis{}
 	s.GetAdvancedSecurity()
 	s = nil
 	s.GetAdvancedSecurity()
+}
+
+func TestSecurityAndAnalysis_GetDependabotSecurityUpdates(tt *testing.T) {
+	s := &SecurityAndAnalysis{}
+	s.GetDependabotSecurityUpdates()
+	s = nil
+	s.GetDependabotSecurityUpdates()
 }
 
 func TestSecurityAndAnalysis_GetSecretScanning(tt *testing.T) {
@@ -21399,6 +25023,62 @@ func TestSecurityAndAnalysis_GetSecretScanningPushProtection(tt *testing.T) {
 	s.GetSecretScanningPushProtection()
 }
 
+func TestSecurityAndAnalysisChange_GetFrom(tt *testing.T) {
+	s := &SecurityAndAnalysisChange{}
+	s.GetFrom()
+	s = nil
+	s.GetFrom()
+}
+
+func TestSecurityAndAnalysisChangeFrom_GetSecurityAndAnalysis(tt *testing.T) {
+	s := &SecurityAndAnalysisChangeFrom{}
+	s.GetSecurityAndAnalysis()
+	s = nil
+	s.GetSecurityAndAnalysis()
+}
+
+func TestSecurityAndAnalysisEvent_GetChanges(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetChanges()
+	s = nil
+	s.GetChanges()
+}
+
+func TestSecurityAndAnalysisEvent_GetEnterprise(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetEnterprise()
+	s = nil
+	s.GetEnterprise()
+}
+
+func TestSecurityAndAnalysisEvent_GetInstallation(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetInstallation()
+	s = nil
+	s.GetInstallation()
+}
+
+func TestSecurityAndAnalysisEvent_GetOrganization(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetOrganization()
+	s = nil
+	s.GetOrganization()
+}
+
+func TestSecurityAndAnalysisEvent_GetRepository(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetRepository()
+	s = nil
+	s.GetRepository()
+}
+
+func TestSecurityAndAnalysisEvent_GetSender(tt *testing.T) {
+	s := &SecurityAndAnalysisEvent{}
+	s.GetSender()
+	s = nil
+	s.GetSender()
+}
+
 func TestSelectedReposList_GetTotalCount(tt *testing.T) {
 	var zeroValue int
 	s := &SelectedReposList{TotalCount: &zeroValue}
@@ -21407,16 +25087,6 @@ func TestSelectedReposList_GetTotalCount(tt *testing.T) {
 	s.GetTotalCount()
 	s = nil
 	s.GetTotalCount()
-}
-
-func TestServiceHook_GetName(tt *testing.T) {
-	var zeroValue string
-	s := &ServiceHook{Name: &zeroValue}
-	s.GetName()
-	s = &ServiceHook{}
-	s.GetName()
-	s = nil
-	s.GetName()
 }
 
 func TestSignatureRequirementEnforcementLevelChanges_GetFrom(tt *testing.T) {
@@ -21787,6 +25457,13 @@ func TestStatusEvent_GetName(tt *testing.T) {
 	s.GetName()
 	s = nil
 	s.GetName()
+}
+
+func TestStatusEvent_GetOrg(tt *testing.T) {
+	s := &StatusEvent{}
+	s.GetOrg()
+	s = nil
+	s.GetOrg()
 }
 
 func TestStatusEvent_GetRepo(tt *testing.T) {
@@ -22910,6 +26587,13 @@ func TestTimeline_GetMilestone(tt *testing.T) {
 	t.GetMilestone()
 }
 
+func TestTimeline_GetPerformedViaGithubApp(tt *testing.T) {
+	t := &Timeline{}
+	t.GetPerformedViaGithubApp()
+	t = nil
+	t.GetPerformedViaGithubApp()
+}
+
 func TestTimeline_GetProjectCard(tt *testing.T) {
 	t := &Timeline{}
 	t.GetProjectCard()
@@ -23286,6 +26970,16 @@ func TestTrafficViews_GetUniques(tt *testing.T) {
 	t.GetUniques()
 }
 
+func TestTransferRequest_GetNewName(tt *testing.T) {
+	var zeroValue string
+	t := &TransferRequest{NewName: &zeroValue}
+	t.GetNewName()
+	t = &TransferRequest{}
+	t.GetNewName()
+	t = nil
+	t.GetNewName()
+}
+
 func TestTree_GetSHA(tt *testing.T) {
 	var zeroValue string
 	t := &Tree{SHA: &zeroValue}
@@ -23441,6 +27135,76 @@ func TestUpdateCheckRunOptions_GetStatus(tt *testing.T) {
 	u.GetStatus()
 	u = nil
 	u.GetStatus()
+}
+
+func TestUpdateDefaultSetupConfigurationOptions_GetQuerySuite(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationOptions{QuerySuite: &zeroValue}
+	u.GetQuerySuite()
+	u = &UpdateDefaultSetupConfigurationOptions{}
+	u.GetQuerySuite()
+	u = nil
+	u.GetQuerySuite()
+}
+
+func TestUpdateDefaultSetupConfigurationResponse_GetRunID(tt *testing.T) {
+	var zeroValue int64
+	u := &UpdateDefaultSetupConfigurationResponse{RunID: &zeroValue}
+	u.GetRunID()
+	u = &UpdateDefaultSetupConfigurationResponse{}
+	u.GetRunID()
+	u = nil
+	u.GetRunID()
+}
+
+func TestUpdateDefaultSetupConfigurationResponse_GetRunURL(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateDefaultSetupConfigurationResponse{RunURL: &zeroValue}
+	u.GetRunURL()
+	u = &UpdateDefaultSetupConfigurationResponse{}
+	u.GetRunURL()
+	u = nil
+	u.GetRunURL()
+}
+
+func TestUpdateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
+	var zeroValue bool
+	u := &UpdateEnterpriseRunnerGroupRequest{AllowsPublicRepositories: &zeroValue}
+	u.GetAllowsPublicRepositories()
+	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetAllowsPublicRepositories()
+	u = nil
+	u.GetAllowsPublicRepositories()
+}
+
+func TestUpdateEnterpriseRunnerGroupRequest_GetName(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateEnterpriseRunnerGroupRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateEnterpriseRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
+	var zeroValue bool
+	u := &UpdateEnterpriseRunnerGroupRequest{RestrictedToWorkflows: &zeroValue}
+	u.GetRestrictedToWorkflows()
+	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetRestrictedToWorkflows()
+	u = nil
+	u.GetRestrictedToWorkflows()
+}
+
+func TestUpdateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateEnterpriseRunnerGroupRequest{Visibility: &zeroValue}
+	u.GetVisibility()
+	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetVisibility()
+	u = nil
+	u.GetVisibility()
 }
 
 func TestUpdateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
@@ -23724,7 +27488,7 @@ func TestUser_GetOrganizationsURL(tt *testing.T) {
 }
 
 func TestUser_GetOwnedPrivateRepos(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	u := &User{OwnedPrivateRepos: &zeroValue}
 	u.GetOwnedPrivateRepos()
 	u = &User{}
@@ -23851,7 +27615,7 @@ func TestUser_GetSuspendedAt(tt *testing.T) {
 }
 
 func TestUser_GetTotalPrivateRepos(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	u := &User{TotalPrivateRepos: &zeroValue}
 	u.GetTotalPrivateRepos()
 	u = &User{}
@@ -24462,6 +28226,13 @@ func TestWatchEvent_GetInstallation(tt *testing.T) {
 	w.GetInstallation()
 }
 
+func TestWatchEvent_GetOrg(tt *testing.T) {
+	w := &WatchEvent{}
+	w.GetOrg()
+	w = nil
+	w.GetOrg()
+}
+
 func TestWatchEvent_GetRepo(tt *testing.T) {
 	w := &WatchEvent{}
 	w.GetRepo()
@@ -24732,6 +28503,16 @@ func TestWorkflowJob_GetCreatedAt(tt *testing.T) {
 	w.GetCreatedAt()
 	w = nil
 	w.GetCreatedAt()
+}
+
+func TestWorkflowJob_GetHeadBranch(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJob{HeadBranch: &zeroValue}
+	w.GetHeadBranch()
+	w = &WorkflowJob{}
+	w.GetHeadBranch()
+	w = nil
+	w.GetHeadBranch()
 }
 
 func TestWorkflowJob_GetHeadSHA(tt *testing.T) {
@@ -25016,6 +28797,16 @@ func TestWorkflowRun_GetCreatedAt(tt *testing.T) {
 	w.GetCreatedAt()
 }
 
+func TestWorkflowRun_GetDisplayTitle(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowRun{DisplayTitle: &zeroValue}
+	w.GetDisplayTitle()
+	w = &WorkflowRun{}
+	w.GetDisplayTitle()
+	w = nil
+	w.GetDisplayTitle()
+}
+
 func TestWorkflowRun_GetEvent(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowRun{Event: &zeroValue}
@@ -25185,6 +28976,13 @@ func TestWorkflowRun_GetStatus(tt *testing.T) {
 	w.GetStatus()
 	w = nil
 	w.GetStatus()
+}
+
+func TestWorkflowRun_GetTriggeringActor(tt *testing.T) {
+	w := &WorkflowRun{}
+	w.GetTriggeringActor()
+	w = nil
+	w.GetTriggeringActor()
 }
 
 func TestWorkflowRun_GetUpdatedAt(tt *testing.T) {

@@ -35,7 +35,12 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 			"resolved_at": null,
 			"resolved_by": null,
 			"secret_type": "mailchimp_api_key",
-			"secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"
+			"secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2",
+			"repository": {
+				"id": 1,
+				"name": "n",
+				"url": "url"
+			}
 		}]`)
 	})
 
@@ -61,6 +66,11 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 			ResolvedBy:   nil,
 			SecretType:   String("mailchimp_api_key"),
 			Secret:       String("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+			Repository: &Repository{
+				ID:   Int64(1),
+				URL:  String("url"),
+				Name: String("n"),
+			},
 		},
 	}
 
@@ -347,9 +357,9 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		testMethod(t, r, "PATCH")
 
 		v := new(SecretScanningAlertUpdateOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-		want := &SecretScanningAlertUpdateOptions{State: String("resolved"), Resolution: String("used_in_tests")}
+		want := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: String("used_in_tests")}
 
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -371,7 +381,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertUpdateOptions{State: String("resolved"), Resolution: String("used_in_tests")}
+	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: String("used_in_tests")}
 
 	alert, _, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
 	if err != nil {

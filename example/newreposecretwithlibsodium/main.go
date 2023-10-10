@@ -36,7 +36,7 @@ import (
 	"os"
 
 	sodium "github.com/GoKillers/libsodium-go/cryptobox"
-	"github.com/google/go-github/v50/github"
+	"github.com/google/go-github/v55/github"
 )
 
 var (
@@ -71,10 +71,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	client := github.NewTokenClient(ctx, token)
-	if err != nil {
-		log.Fatalf("unable to authorize using env GITHUB_AUTH_TOKEN: %v", err)
-	}
+	client := github.NewClient(nil).WithAuthToken(token)
 
 	if err := addRepoSecret(ctx, client, *owner, *repo, secretName, secretValue); err != nil {
 		log.Fatal(err)

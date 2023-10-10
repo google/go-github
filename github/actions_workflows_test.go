@@ -243,7 +243,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(w http.ResponseWriter, r *http.Request) {
 		var v CreateWorkflowDispatchEventRequest
-		json.NewDecoder(r.Body).Decode(&v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, event) {
@@ -287,7 +287,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(w http.ResponseWriter, r *http.Request) {
 		var v CreateWorkflowDispatchEventRequest
-		json.NewDecoder(r.Body).Decode(&v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, event) {

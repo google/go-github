@@ -41,8 +41,8 @@ type User struct {
 	SuspendedAt             *Timestamp `json:"suspended_at,omitempty"`
 	Type                    *string    `json:"type,omitempty"`
 	SiteAdmin               *bool      `json:"site_admin,omitempty"`
-	TotalPrivateRepos       *int       `json:"total_private_repos,omitempty"`
-	OwnedPrivateRepos       *int       `json:"owned_private_repos,omitempty"`
+	TotalPrivateRepos       *int64     `json:"total_private_repos,omitempty"`
+	OwnedPrivateRepos       *int64     `json:"owned_private_repos,omitempty"`
 	PrivateGists            *int       `json:"private_gists,omitempty"`
 	DiskUsage               *int       `json:"disk_usage,omitempty"`
 	Collaborators           *int       `json:"collaborators,omitempty"`

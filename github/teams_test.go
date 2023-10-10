@@ -195,7 +195,7 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, &input) {
@@ -248,7 +248,7 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, &input) {
@@ -298,7 +298,7 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 			t.Errorf("Unable to read body: %v", err)
 		}
 		body = string(buf)
-		json.NewDecoder(bytes.NewBuffer(buf)).Decode(v)
+		assertNilError(t, json.NewDecoder(bytes.NewBuffer(buf)).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, &input) {
@@ -332,7 +332,7 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, &input) {
@@ -382,7 +382,7 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 			t.Errorf("Unable to read body: %v", err)
 		}
 		body = string(buf)
-		json.NewDecoder(bytes.NewBuffer(buf)).Decode(v)
+		assertNilError(t, json.NewDecoder(bytes.NewBuffer(buf)).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, &input) {
@@ -798,7 +798,7 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamAddTeamRepoOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, opt) {
@@ -833,7 +833,7 @@ func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamAddTeamRepoOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, opt) {
@@ -1174,7 +1174,7 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 
 		v := &TeamProjectOptions{}
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
@@ -1213,7 +1213,7 @@ func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 
 		v := &TeamProjectOptions{}
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}

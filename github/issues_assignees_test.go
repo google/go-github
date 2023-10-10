@@ -176,7 +176,7 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 		var assignees struct {
 			Assignees []string `json:"assignees,omitempty"`
 		}
-		json.NewDecoder(r.Body).Decode(&assignees)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&assignees))
 
 		testMethod(t, r, "POST")
 		want := []string{"user1", "user2"}
@@ -220,7 +220,7 @@ func TestIssuesService_RemoveAssignees(t *testing.T) {
 		var assignees struct {
 			Assignees []string `json:"assignees,omitempty"`
 		}
-		json.NewDecoder(r.Body).Decode(&assignees)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&assignees))
 
 		testMethod(t, r, "DELETE")
 		want := []string{"user1", "user2"}

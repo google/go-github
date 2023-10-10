@@ -25,7 +25,7 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 
 	mux.HandleFunc("/admin/ldap/users/u/mapping", func(w http.ResponseWriter, r *http.Request) {
 		v := new(UserLDAPMapping)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {
@@ -73,7 +73,7 @@ func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
 
 	mux.HandleFunc("/admin/ldap/teams/1/mapping", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamLDAPMapping)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

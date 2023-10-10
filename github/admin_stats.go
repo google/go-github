@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 // AdminStats represents a variety of stats of a GitHub Enterprise
@@ -155,7 +154,7 @@ func (s RepoStats) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/admin_stats/
 func (s *AdminService) GetAdminStats(ctx context.Context) (*AdminStats, *Response, error) {
-	u := fmt.Sprintf("enterprise/stats/all")
+	u := "enterprise/stats/all"
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

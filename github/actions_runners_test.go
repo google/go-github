@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -49,6 +50,94 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Actions.ListRunnerApplicationDownloads(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+
+	mux.HandleFunc("/orgs/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
+		v := new(GenerateJITConfigRequest)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "POST")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"encoded_jit_config":"foo"}`)
+	})
+
+	ctx := context.Background()
+	jitConfig, _, err := client.Actions.GenerateOrgJITConfig(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Actions.GenerateOrgJITConfig returned error: %v", err)
+	}
+
+	want := &JITRunnerConfig{EncodedJITConfig: String("foo")}
+	if !cmp.Equal(jitConfig, want) {
+		t.Errorf("Actions.GenerateOrgJITConfig returned %+v, want %+v", jitConfig, want)
+	}
+
+	const methodName = "GenerateOrgJITConfig"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GenerateOrgJITConfig(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GenerateOrgJITConfig(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+
+	mux.HandleFunc("/repos/o/r/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
+		v := new(GenerateJITConfigRequest)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "POST")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"encoded_jit_config":"foo"}`)
+	})
+
+	ctx := context.Background()
+	jitConfig, _, err := client.Actions.GenerateRepoJITConfig(ctx, "o", "r", input)
+	if err != nil {
+		t.Errorf("Actions.GenerateRepoJITConfig returned error: %v", err)
+	}
+
+	want := &JITRunnerConfig{EncodedJITConfig: String("foo")}
+	if !cmp.Equal(jitConfig, want) {
+		t.Errorf("Actions.GenerateRepoJITConfig returned %+v, want %+v", jitConfig, want)
+	}
+
+	const methodName = "GenerateRepoJITConfig"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GenerateRepoJITConfig(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GenerateRepoJITConfig(ctx, "o", "r", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -354,133 +443,6 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
-	})
-}
-
-func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/orgs/o/actions/permissions/repositories", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		testFormValues(t, r, values{
-			"page": "1",
-		})
-		fmt.Fprint(w, `{"total_count":2,"repositories":[{"id":2}, {"id": 3}]}`)
-	})
-
-	ctx := context.Background()
-	opt := &ListOptions{
-		Page: 1,
-	}
-	got, _, err := client.Actions.ListEnabledReposInOrg(ctx, "o", opt)
-	if err != nil {
-		t.Errorf("Actions.ListEnabledReposInOrg returned error: %v", err)
-	}
-
-	want := &ActionsEnabledOnOrgRepos{TotalCount: int(2), Repositories: []*Repository{
-		{ID: Int64(2)},
-		{ID: Int64(3)},
-	}}
-	if !cmp.Equal(got, want) {
-		t.Errorf("Actions.ListEnabledReposInOrg returned %+v, want %+v", got, want)
-	}
-
-	const methodName = "ListEnabledReposInOrg"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListEnabledReposInOrg(ctx, "\n", opt)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListEnabledReposInOrg(ctx, "o", opt)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
-func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/orgs/o/actions/permissions/repositories", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"selected_repository_ids":[123,1234]}`+"\n")
-		w.WriteHeader(http.StatusNoContent)
-	})
-
-	ctx := context.Background()
-	_, err := client.Actions.SetEnabledReposInOrg(ctx, "o", []int64{123, 1234})
-	if err != nil {
-		t.Errorf("Actions.SetEnabledReposInOrg returned error: %v", err)
-	}
-
-	const methodName = "SetEnabledReposInOrg"
-
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetEnabledReposInOrg(ctx, "\n", []int64{123, 1234})
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetEnabledReposInOrg(ctx, "o", []int64{123, 1234})
-	})
-}
-
-func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/orgs/o/actions/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		w.WriteHeader(http.StatusNoContent)
-	})
-
-	ctx := context.Background()
-	_, err := client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
-	if err != nil {
-		t.Errorf("Actions.AddEnabledReposInOrg returned error: %v", err)
-	}
-
-	const methodName = "AddEnabledReposInOrg"
-
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.AddEnabledReposInOrg(ctx, "\n", 123)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
-	})
-}
-
-func TestActionsService_RemoveEnabledRepoInOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/orgs/o/actions/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		w.WriteHeader(http.StatusNoContent)
-	})
-
-	ctx := context.Background()
-	_, err := client.Actions.RemoveEnabledRepoInOrg(ctx, "o", 123)
-	if err != nil {
-		t.Errorf("Actions.RemoveEnabledRepoInOrg returned error: %v", err)
-	}
-
-	const methodName = "RemoveEnabledRepoInOrg"
-
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.RemoveEnabledRepoInOrg(ctx, "\n", 123)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.RemoveEnabledRepoInOrg(ctx, "o", 123)
 	})
 }
 

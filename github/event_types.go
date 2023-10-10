@@ -76,6 +76,10 @@ type CommitCommentEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // ContentReferenceEvent is triggered when the body or comment of an issue or
@@ -132,6 +136,29 @@ type DeleteEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
+}
+
+// DependabotAlertEvent is triggered when there is activity relating to Dependabot alerts.
+// The Webhook event name is "dependabot_alert".
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#dependabot_alert
+type DependabotAlertEvent struct {
+	Action *string          `json:"action,omitempty"`
+	Alert  *DependabotAlert `json:"alert,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Installation *Installation `json:"installation,omitempty"`
+	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
+	Repo         *Repository   `json:"repository,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Organization *Organization `json:"organization,omitempty"`
 }
 
 // DeployKeyEvent is triggered when a deploy key is added or removed from a repository.
@@ -165,12 +192,37 @@ type DeployKeyEvent struct {
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#deployment
 type DeploymentEvent struct {
-	Deployment *Deployment `json:"deployment,omitempty"`
-	Repo       *Repository `json:"repository,omitempty"`
+	Deployment  *Deployment  `json:"deployment,omitempty"`
+	Repo        *Repository  `json:"repository,omitempty"`
+	Workflow    *Workflow    `json:"workflow,omitempty"`
+	WorkflowRun *WorkflowRun `json:"workflow_run,omitempty"`
 
 	// The following fields are only populated by Webhook events.
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
+}
+
+// DeploymentProtectionRuleEvent represents a deployment protection rule event.
+// The Webhook event name is "deployment_protection_rule".
+//
+// GitHub API docs: https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#deployment_protection_rule
+type DeploymentProtectionRuleEvent struct {
+	Action      *string `json:"action,omitempty"`
+	Environment *string `json:"environment,omitempty"`
+	Event       *string `json:"event,omitempty"`
+
+	// The URL Github provides for a third-party to use in order to pass/fail a deployment gate
+	DeploymentCallbackURL *string        `json:"deployment_callback_url,omitempty"`
+	Deployment            *Deployment    `json:"deployment,omitempty"`
+	Repo                  *Repository    `json:"repository,omitempty"`
+	Organization          *Organization  `json:"organization,omitempty"`
+	PullRequests          []*PullRequest `json:"pull_requests,omitempty"`
+	Sender                *User          `json:"sender,omitempty"`
+	Installation          *Installation  `json:"installation,omitempty"`
 }
 
 // DeploymentStatusEvent represents a deployment status.
@@ -187,6 +239,10 @@ type DeploymentStatusEvent struct {
 	// The following fields are only populated by Webhook events.
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // DiscussionCommentEvent represents a webhook event for a comment on discussion.
@@ -323,6 +379,10 @@ type GollumEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // EditChange represents the changes when an issue, pull request, comment,
@@ -332,6 +392,7 @@ type EditChange struct {
 	Body  *EditBody  `json:"body,omitempty"`
 	Base  *EditBase  `json:"base,omitempty"`
 	Repo  *EditRepo  `json:"repository,omitempty"`
+	Owner *EditOwner `json:"owner,omitempty"`
 }
 
 // EditTitle represents a pull-request title change.
@@ -358,6 +419,17 @@ type EditRef struct {
 // EditRepo represents a change of repository name.
 type EditRepo struct {
 	Name *RepoName `json:"name,omitempty"`
+}
+
+// EditOwner represents a change of repository ownership.
+type EditOwner struct {
+	OwnerInfo *OwnerInfo `json:"from,omitempty"`
+}
+
+// OwnerInfo represents the account info of the owner of the repo (could be User or Organization but both are User structs).
+type OwnerInfo struct {
+	User *User `json:"user,omitempty"`
+	Org  *User `json:"organization,omitempty"`
 }
 
 // RepoName represents a change of repository name.
@@ -457,7 +529,11 @@ type InstallationEvent struct {
 	Repositories []*Repository `json:"repositories,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
-	// TODO key "requester" is not covered
+	Requester    *User         `json:"requester,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // InstallationRepositoriesEvent is triggered when a repository is added or
@@ -472,6 +548,42 @@ type InstallationRepositoriesEvent struct {
 	RepositorySelection *string       `json:"repository_selection,omitempty"`
 	Sender              *User         `json:"sender,omitempty"`
 	Installation        *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
+}
+
+// InstallationLoginChange represents a change in login on an installation.
+type InstallationLoginChange struct {
+	From *string `json:"from,omitempty"`
+}
+
+// InstallationSlugChange represents a change in slug on an installation.
+type InstallationSlugChange struct {
+	From *string `json:"from,omitempty"`
+}
+
+// InstallationChanges represents a change in slug or login on an installation.
+type InstallationChanges struct {
+	Login *InstallationLoginChange `json:"login,omitempty"`
+	Slug  *InstallationSlugChange  `json:"slug,omitempty"`
+}
+
+// InstallationTargetEvent is triggered when there is activity on an installation from a user or organization account.
+// The Webhook event name is "installation_target".
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#installation_target
+type InstallationTargetEvent struct {
+	Account      *User                `json:"account,omitempty"`
+	Action       *string              `json:"action,omitempty"`
+	Changes      *InstallationChanges `json:"changes,omitempty"`
+	Enterprise   *Enterprise          `json:"enterprise,omitempty"`
+	Installation *Installation        `json:"installation,omitempty"`
+	Organization *Organization        `json:"organization,omitempty"`
+	Repository   *Repository          `json:"repository,omitempty"`
+	Sender       *User                `json:"sender,omitempty"`
+	TargetType   *string              `json:"target_type,omitempty"`
 }
 
 // IssueCommentEvent is triggered when an issue comment is created on an issue
@@ -519,6 +631,10 @@ type IssuesEvent struct {
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 	Milestone    *Milestone    `json:"milestone,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // LabelEvent is triggered when a repository's label is created, edited, or deleted.
@@ -555,6 +671,10 @@ type MarketplacePurchaseEvent struct {
 	PreviousMarketplacePurchase *MarketplacePurchase `json:"previous_marketplace_purchase,omitempty"`
 	Sender                      *User                `json:"sender,omitempty"`
 	Installation                *Installation        `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // MemberEvent is triggered when a user is added as a collaborator to a repository.
@@ -570,6 +690,10 @@ type MemberEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // MembershipEvent is triggered when a user is added or removed from a team.
@@ -741,6 +865,82 @@ type PageBuildEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
+}
+
+// PersonalAccessTokenRequestEvent occurs when there is activity relating to a
+// request for a fine-grained personal access token to access resources that
+// belong to a resource owner that requires approval for token access.
+// The webhook event name is "personal_access_token_request".
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#personal_access_token_request
+type PersonalAccessTokenRequestEvent struct {
+	// Action is the action that was performed. Possible values are:
+	// "approved", "cancelled", "created" or "denied"
+	Action                     *string                     `json:"action,omitempty"`
+	PersonalAccessTokenRequest *PersonalAccessTokenRequest `json:"personal_access_token_request,omitempty"`
+	Org                        *Organization               `json:"organization,omitempty"`
+	Sender                     *User                       `json:"sender,omitempty"`
+	Installation               *Installation               `json:"installation,omitempty"`
+}
+
+// PersonalAccessTokenRequest contains the details of a PersonalAccessTokenRequestEvent.
+type PersonalAccessTokenRequest struct {
+	// Unique identifier of the request for access via fine-grained personal
+	// access token. Used as the pat_request_id parameter in the list and review
+	// API calls.
+	ID    *int64 `json:"id,omitempty"`
+	Owner *User  `json:"owner,omitempty"`
+
+	// New requested permissions, categorized by type of permission.
+	PermissionsAdded *PersonalAccessTokenPermissions `json:"permissions_added,omitempty"`
+
+	// Requested permissions that elevate access for a previously approved
+	// request for access, categorized by type of permission.
+	PermissionsUpgraded *PersonalAccessTokenPermissions `json:"permissions_upgraded,omitempty"`
+
+	// Permissions requested, categorized by type of permission.
+	// This field incorporates permissions_added and permissions_upgraded.
+	PermissionsResult *PersonalAccessTokenPermissions `json:"permissions_result,omitempty"`
+
+	// Type of repository selection requested. Possible values are:
+	// "none", "all" or "subset"
+	RepositorySelection *string `json:"repository_selection,omitempty"`
+
+	// The number of repositories the token is requesting access to.
+	// This field is only populated when repository_selection is subset.
+	RepositoryCount *int64 `json:"repository_count,omitempty"`
+
+	// An array of repository objects the token is requesting access to.
+	// This field is only populated when repository_selection is subset.
+	Repositories []*Repository `json:"repositories,omitempty"`
+
+	// Date and time when the request for access was created.
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+
+	// Whether the associated fine-grained personal access token has expired.
+	TokenExpired *bool `json:"token_expired,omitempty"`
+
+	// Date and time when the associated fine-grained personal access token expires.
+	TokenExpiresAt *Timestamp `json:"token_expires_at,omitempty"`
+
+	// Date and time when the associated fine-grained personal access token was last used for authentication.
+	TokenLastUsedAt *Timestamp `json:"token_last_used_at,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
+}
+
+// PersonalAccessTokenPermissions represents the original or newly requested
+// scope of permissions for a fine-grained personal access token within a PersonalAccessTokenRequest.
+type PersonalAccessTokenPermissions struct {
+	Org   map[string]string `json:"organization,omitempty"`
+	Repo  map[string]string `json:"repository,omitempty"`
+	Other map[string]string `json:"other,omitempty"`
 }
 
 // PingEvent is triggered when a Webhook is added to GitHub.
@@ -811,6 +1011,77 @@ type ProjectColumnEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// ProjectV2Event is triggered when there is activity relating to an organization-level project.
+// The Webhook event name is "projects_v2".
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2
+type ProjectV2Event struct {
+	Action     *string     `json:"action,omitempty"`
+	ProjectsV2 *ProjectsV2 `json:"projects_v2,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Installation *Installation `json:"installation,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
+// ProjectsV2 represents a projects v2 project.
+type ProjectsV2 struct {
+	ID               *int64     `json:"id,omitempty"`
+	NodeID           *string    `json:"node_id,omitempty"`
+	Owner            *User      `json:"owner,omitempty"`
+	Creator          *User      `json:"creator,omitempty"`
+	Title            *string    `json:"title,omitempty"`
+	Description      *string    `json:"description,omitempty"`
+	Public           *bool      `json:"public,omitempty"`
+	ClosedAt         *Timestamp `json:"closed_at,omitempty"`
+	CreatedAt        *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
+	DeletedAt        *Timestamp `json:"deleted_at,omitempty"`
+	Number           *int       `json:"number,omitempty"`
+	ShortDescription *string    `json:"short_description,omitempty"`
+	DeletedBy        *User      `json:"deleted_by,omitempty"`
+}
+
+// ProjectV2ItemEvent is triggered when there is activity relating to an item on an organization-level project.
+// The Webhook event name is "projects_v2_item".
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2_item
+type ProjectV2ItemEvent struct {
+	Action        *string              `json:"action,omitempty"`
+	Changes       *ProjectV2ItemChange `json:"changes,omitempty"`
+	ProjectV2Item *ProjectV2Item       `json:"projects_v2_item,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Installation *Installation `json:"installation,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
+// ProjectV2ItemChange represents a project v2 item change.
+type ProjectV2ItemChange struct {
+	ArchivedAt *ArchivedAt `json:"archived_at,omitempty"`
+}
+
+// ArchivedAt represents an archiving date change.
+type ArchivedAt struct {
+	From *Timestamp `json:"from,omitempty"`
+	To   *Timestamp `json:"to,omitempty"`
+}
+
+// ProjectsV2 represents an item belonging to a project.
+type ProjectV2Item struct {
+	ID            *int64     `json:"id,omitempty"`
+	NodeID        *string    `json:"node_id,omitempty"`
+	ProjectNodeID *string    `json:"project_node_id,omitempty"`
+	ContentNodeID *string    `json:"content_node_id,omitempty"`
+	ContentType   *string    `json:"content_type,omitempty"`
+	Creator       *User      `json:"creator,omitempty"`
+	CreatedAt     *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
+	ArchivedAt    *Timestamp `json:"archived_at,omitempty"`
+}
+
 // PublicEvent is triggered when a private repository is open sourced.
 // According to GitHub: "Without a doubt: the best GitHub event."
 // The Webhook event name is "public".
@@ -821,6 +1092,10 @@ type PublicEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // PullRequestEvent is triggered when a pull request is assigned, unassigned, labeled,
@@ -863,6 +1138,9 @@ type PullRequestEvent struct {
 	// The following fields are only populated when the Action is "synchronize".
 	Before *string `json:"before,omitempty"`
 	After  *string `json:"after,omitempty"`
+
+	// The following will be populated if the event was performed by an App
+	PerformedViaGithubApp *App `json:"performed_via_github_app,omitempty"`
 }
 
 // PullRequestReviewEvent is triggered when a review is submitted on a pull
@@ -903,6 +1181,10 @@ type PullRequestReviewCommentEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // PullRequestReviewThreadEvent is triggered when a comment made as part of a
@@ -921,6 +1203,10 @@ type PullRequestReviewThreadEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // PullRequestTargetEvent is triggered when a pull request is assigned, unassigned, labeled,
@@ -963,6 +1249,9 @@ type PullRequestTargetEvent struct {
 	// The following fields are only populated when the Action is "synchronize".
 	Before *string `json:"before,omitempty"`
 	After  *string `json:"after,omitempty"`
+
+	// The following will be populated if the event was performed by an App
+	PerformedViaGithubApp *App `json:"performed_via_github_app,omitempty"`
 }
 
 // PushEvent represents a git push to a GitHub repository.
@@ -1062,6 +1351,7 @@ type PushEventRepository struct {
 	SSHURL          *string    `json:"ssh_url,omitempty"`
 	CloneURL        *string    `json:"clone_url,omitempty"`
 	SVNURL          *string    `json:"svn_url,omitempty"`
+	Topics          []string   `json:"topics,omitempty"`
 }
 
 // PushEventRepoOwner is a basic representation of user/org in a PushEvent payload.
@@ -1085,6 +1375,10 @@ type ReleaseEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // RepositoryEvent is triggered when a repository is created, archived, unarchived,
@@ -1155,6 +1449,10 @@ type RepositoryVulnerabilityAlertEvent struct {
 
 	// The user that triggered the event.
 	Sender *User `json:"sender,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // RepositoryVulnerabilityAlert represents a repository security alert.
@@ -1191,6 +1489,31 @@ type SecretScanningAlertEvent struct {
 	Organization *Organization `json:"organization,omitempty"`
 	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+}
+
+// SecurityAndAnalysisEvent is triggered when code security and analysis features
+// are enabled or disabled for a repository.
+//
+// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#security_and_analysis
+type SecurityAndAnalysisEvent struct {
+	Changes      *SecurityAndAnalysisChange `json:"changes,omitempty"`
+	Enterprise   *Enterprise                `json:"enterprise,omitempty"`
+	Installation *Installation              `json:"installation,omitempty"`
+	Organization *Organization              `json:"organization,omitempty"`
+	Repository   *Repository                `json:"repository,omitempty"`
+	Sender       *User                      `json:"sender,omitempty"`
+}
+
+// SecurityAndAnalysisChange represents the changes when security and analysis
+// features are enabled or disabled for a repository.
+type SecurityAndAnalysisChange struct {
+	From *SecurityAndAnalysisChangeFrom `json:"from,omitempty"`
+}
+
+// SecurityAndAnalysisChangeFrom represents which change was made when security
+// and analysis features are enabled or disabled for a repository.
+type SecurityAndAnalysisChangeFrom struct {
+	SecurityAndAnalysis *SecurityAndAnalysis `json:"security_and_analysis,omitempty"`
 }
 
 // StarEvent is triggered when a star is added or removed from a repository.
@@ -1236,6 +1559,10 @@ type StatusEvent struct {
 	Repo         *Repository       `json:"repository,omitempty"`
 	Sender       *User             `json:"sender,omitempty"`
 	Installation *Installation     `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // TeamEvent is triggered when an organization's team is created, modified or deleted.
@@ -1306,6 +1633,10 @@ type WatchEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Org *Organization `json:"organization,omitempty"`
 }
 
 // WorkflowDispatchEvent is triggered when someone triggers a workflow run on GitHub or
@@ -1361,16 +1692,33 @@ type WorkflowRunEvent struct {
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
 type SecurityAdvisory struct {
-	GHSAID          *string                  `json:"ghsa_id,omitempty"`
-	Summary         *string                  `json:"summary,omitempty"`
-	Description     *string                  `json:"description,omitempty"`
-	Severity        *string                  `json:"severity,omitempty"`
-	Identifiers     []*AdvisoryIdentifier    `json:"identifiers,omitempty"`
-	References      []*AdvisoryReference     `json:"references,omitempty"`
-	PublishedAt     *Timestamp               `json:"published_at,omitempty"`
-	UpdatedAt       *Timestamp               `json:"updated_at,omitempty"`
-	WithdrawnAt     *Timestamp               `json:"withdrawn_at,omitempty"`
-	Vulnerabilities []*AdvisoryVulnerability `json:"vulnerabilities,omitempty"`
+	CVSS               *AdvisoryCVSS                 `json:"cvss,omitempty"`
+	CWEs               []*AdvisoryCWEs               `json:"cwes,omitempty"`
+	GHSAID             *string                       `json:"ghsa_id,omitempty"`
+	Summary            *string                       `json:"summary,omitempty"`
+	Description        *string                       `json:"description,omitempty"`
+	Severity           *string                       `json:"severity,omitempty"`
+	Identifiers        []*AdvisoryIdentifier         `json:"identifiers,omitempty"`
+	References         []*AdvisoryReference          `json:"references,omitempty"`
+	PublishedAt        *Timestamp                    `json:"published_at,omitempty"`
+	UpdatedAt          *Timestamp                    `json:"updated_at,omitempty"`
+	WithdrawnAt        *Timestamp                    `json:"withdrawn_at,omitempty"`
+	Vulnerabilities    []*AdvisoryVulnerability      `json:"vulnerabilities,omitempty"`
+	CVEID              *string                       `json:"cve_id,omitempty"`
+	URL                *string                       `json:"url,omitempty"`
+	HTMLURL            *string                       `json:"html_url,omitempty"`
+	Author             *User                         `json:"author,omitempty"`
+	Publisher          *User                         `json:"publisher,omitempty"`
+	State              *string                       `json:"state,omitempty"`
+	CreatedAt          *Timestamp                    `json:"created_at,omitempty"`
+	ClosedAt           *Timestamp                    `json:"closed_at,omitempty"`
+	Submission         *SecurityAdvisorySubmission   `json:"submission,omitempty"`
+	CWEIDs             []string                      `json:"cwe_ids,omitempty"`
+	Credits            []*RepoAdvisoryCredit         `json:"credits,omitempty"`
+	CreditsDetailed    []*RepoAdvisoryCreditDetailed `json:"credits_detailed,omitempty"`
+	CollaboratingUsers []*User                       `json:"collaborating_users,omitempty"`
+	CollaboratingTeams []*Team                       `json:"collaborating_teams,omitempty"`
+	PrivateFork        *Repository                   `json:"private_fork,omitempty"`
 }
 
 // AdvisoryIdentifier represents the identifier for a Security Advisory.
@@ -1390,6 +1738,12 @@ type AdvisoryVulnerability struct {
 	Severity               *string               `json:"severity,omitempty"`
 	VulnerableVersionRange *string               `json:"vulnerable_version_range,omitempty"`
 	FirstPatchedVersion    *FirstPatchedVersion  `json:"first_patched_version,omitempty"`
+
+	// PatchedVersions and VulnerableFunctions are used in the following APIs:
+	// - https://docs.github.com/en/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories-for-an-organization
+	// - https://docs.github.com/en/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories
+	PatchedVersions     *string  `json:"patched_versions,omitempty"`
+	VulnerableFunctions []string `json:"vulnerable_functions,omitempty"`
 }
 
 // VulnerabilityPackage represents the package object for an Advisory Vulnerability.
@@ -1409,6 +1763,13 @@ type FirstPatchedVersion struct {
 type SecurityAdvisoryEvent struct {
 	Action           *string           `json:"action,omitempty"`
 	SecurityAdvisory *SecurityAdvisory `json:"security_advisory,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+	Organization *Organization `json:"organization,omitempty"`
+	Repository   *Repository   `json:"repository,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
 }
 
 // CodeScanningAlertEvent is triggered when a code scanning finds a potential vulnerability or error in your code.

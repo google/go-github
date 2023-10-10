@@ -86,14 +86,11 @@ func (s *IssueImportService) Create(ctx context.Context, owner, repo string, iss
 	if err != nil {
 		aerr, ok := err.(*AcceptedError)
 		if ok {
-			decErr := json.Unmarshal(aerr.Raw, i)
-			if decErr != nil {
-				err = decErr
+			if err := json.Unmarshal(aerr.Raw, i); err != nil {
+				return i, resp, err
 			}
-
-			return i, resp, nil
+			return i, resp, err
 		}
-
 		return nil, resp, err
 	}
 

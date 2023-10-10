@@ -188,6 +188,89 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 	})
 }
 
+func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+	})
+
+	ctx := context.Background()
+	url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 1)
+	if err != nil {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusFound {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+	}
+	want := "http://github.com/a"
+	if url.String() != want {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url.String(), want)
+	}
+
+	const methodName = "GetWorkflowRunAttemptLogs"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowRunAttemptLogs(ctx, "\n", "\n", 399444496, 2, 1)
+		return err
+	})
+}
+
+func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
+	})
+
+	ctx := context.Background()
+	_, resp, _ := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 0)
+	if resp.StatusCode != http.StatusMovedPermanently {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+	}
+}
+
+func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followRedirects(t *testing.T) {
+	client, mux, serverURL, teardown := setup()
+	defer teardown()
+
+	// Mock a redirect link, which leads to an archive link
+	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
+		http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
+	})
+
+	mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+	})
+
+	ctx := context.Background()
+	url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 1)
+	if err != nil {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned error: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusFound {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+	}
+
+	want := "http://github.com/a"
+	if url.String() != want {
+		t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url.String(), want)
+	}
+
+	const methodName = "GetWorkflowRunAttemptLogs"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowRunAttemptLogs(ctx, "\n", "\n", 399444496, 2, 1)
+		return err
+	})
+}
+
 func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -314,7 +397,7 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, true)
+	url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 1)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowRunLogs returned error: %v", err)
 	}
@@ -328,7 +411,7 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 
 	const methodName = "GetWorkflowRunLogs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowRunLogs(ctx, "\n", "\n", 399444496, true)
+		_, _, err = client.Actions.GetWorkflowRunLogs(ctx, "\n", "\n", 399444496, 1)
 		return err
 	})
 }
@@ -343,7 +426,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedi
 	})
 
 	ctx := context.Background()
-	_, resp, _ := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, false)
+	_, resp, _ := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 0)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
@@ -366,7 +449,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, true)
+	url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 1)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 	}
@@ -382,7 +465,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 
 	const methodName = "GetWorkflowRunLogs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowRunLogs(ctx, "\n", "\n", 399444496, true)
+		_, _, err = client.Actions.GetWorkflowRunLogs(ctx, "\n", "\n", 399444496, 1)
 		return err
 	})
 }
@@ -658,6 +741,26 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 			SuspendedAt:     &Timestamp{referenceTime},
 			URL:             String("u"),
 		},
+		TriggeringActor: &User{
+			Login:           String("l2"),
+			ID:              Int64(2),
+			AvatarURL:       String("a2"),
+			GravatarID:      String("g2"),
+			Name:            String("n2"),
+			Company:         String("c2"),
+			Blog:            String("b2"),
+			Location:        String("l2"),
+			Email:           String("e2"),
+			Hireable:        Bool(false),
+			Bio:             String("b2"),
+			TwitterUsername: String("t2"),
+			PublicRepos:     Int(2),
+			Followers:       Int(2),
+			Following:       Int(2),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+			URL:             String("u2"),
+		},
 	}
 
 	want := `{
@@ -758,6 +861,26 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 			"created_at":` + referenceTimeStr + `,
 			"suspended_at":` + referenceTimeStr + `,
 			"url":"u"
+		},
+		"triggering_actor":{
+			"login":"l2",
+			"id":2,
+			"avatar_url":"a2",
+			"gravatar_id":"g2",
+			"name":"n2",
+			"company":"c2",
+			"blog":"b2",
+			"location":"l2",
+			"email":"e2",
+			"hireable":false,
+			"bio":"b2",
+			"twitter_username":"t2",
+			"public_repos":2,
+			"followers":2,
+			"following":2,
+			"created_at":` + referenceTimeStr + `,
+			"suspended_at":` + referenceTimeStr + `,
+			"url":"u2"
 		}
 	}`
 
@@ -869,6 +992,26 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 					SuspendedAt:     &Timestamp{referenceTime},
 					URL:             String("u"),
 				},
+				TriggeringActor: &User{
+					Login:           String("l2"),
+					ID:              Int64(2),
+					AvatarURL:       String("a2"),
+					GravatarID:      String("g2"),
+					Name:            String("n2"),
+					Company:         String("c2"),
+					Blog:            String("b2"),
+					Location:        String("l2"),
+					Email:           String("e2"),
+					Hireable:        Bool(false),
+					Bio:             String("b2"),
+					TwitterUsername: String("t2"),
+					PublicRepos:     Int(2),
+					Followers:       Int(2),
+					Following:       Int(2),
+					CreatedAt:       &Timestamp{referenceTime},
+					SuspendedAt:     &Timestamp{referenceTime},
+					URL:             String("u2"),
+				},
 			},
 		},
 	}
@@ -974,6 +1117,26 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 					"created_at":` + referenceTimeStr + `,
 					"suspended_at":` + referenceTimeStr + `,
 					"url":"u"
+				},
+				"triggering_actor":{
+					"login":"l2",
+					"id":2,
+					"avatar_url":"a2",
+					"gravatar_id":"g2",
+					"name":"n2",
+					"company":"c2",
+					"blog":"b2",
+					"location":"l2",
+					"email":"e2",
+					"hireable":false,
+					"bio":"b2",
+					"twitter_username":"t2",
+					"public_repos":2,
+					"followers":2,
+					"following":2,
+					"created_at":` + referenceTimeStr + `,
+					"suspended_at":` + referenceTimeStr + `,
+					"url":"u2"
 				}
 			}
 		]
@@ -1084,7 +1247,7 @@ func TestActionService_PendingDeployments(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PendingDeploymentsRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

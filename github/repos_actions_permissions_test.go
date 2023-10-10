@@ -57,7 +57,7 @@ func TestRepositoriesService_EditActionsPermissions(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ActionsPermissionsRepository)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {

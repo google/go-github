@@ -72,6 +72,53 @@ func TestAppsService_Get_specifiedApp(t *testing.T) {
 	}
 }
 
+func TestAppsService_ListInstallationRequests(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/app/installation-requests", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page":     "1",
+			"per_page": "2",
+		})
+		fmt.Fprint(w, `[{
+			"id": 1,
+			"account": { "id": 2 },
+			"requester": { "id": 3 },
+			"created_at": "2018-01-01T00:00:00Z"
+		}]`,
+		)
+	})
+
+	opt := &ListOptions{Page: 1, PerPage: 2}
+	ctx := context.Background()
+	installationRequests, _, err := client.Apps.ListInstallationRequests(ctx, opt)
+	if err != nil {
+		t.Errorf("Apps.ListInstallations returned error: %v", err)
+	}
+
+	date := Timestamp{Time: time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
+	want := []*InstallationRequest{{
+		ID:        Int64(1),
+		Account:   &User{ID: Int64(2)},
+		Requester: &User{ID: Int64(3)},
+		CreatedAt: &date,
+	}}
+	if !cmp.Equal(installationRequests, want) {
+		t.Errorf("Apps.ListInstallationRequests returned %+v, want %+v", installationRequests, want)
+	}
+
+	const methodName = "ListInstallationRequests"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Apps.ListInstallationRequests(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestAppsService_ListInstallations(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -400,7 +447,7 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
 		v := new(InstallationTokenOptions)
-		json.NewDecoder(r.Body).Decode(v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		if !cmp.Equal(v, installationTokenOptions) {
 			t.Errorf("request sent %+v, want %+v", v, installationTokenOptions)
@@ -431,7 +478,7 @@ func TestAppsService_CreateAttachement(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeContentAttachmentsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"id":1,"title":"title1","body":"body1"}`))
+		assertWrite(t, w, []byte(`{"id":1,"title":"title1","body":"body1"}`))
 	})
 
 	ctx := context.Background()

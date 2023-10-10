@@ -59,7 +59,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
 		var v []string
-		json.NewDecoder(r.Body).Decode(&v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -101,7 +101,7 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
 		var v []string
-		json.NewDecoder(r.Body).Decode(&v)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "DELETE")
 		if !cmp.Equal(v, input) {
@@ -139,4 +139,48 @@ func TestUserEmail_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestUsersService_SetEmailVisibility(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &UserEmail{Visibility: String("private")}
+
+	mux.HandleFunc("/user/email/visibility", func(w http.ResponseWriter, r *http.Request) {
+		v := new(UserEmail)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
+
+		testMethod(t, r, "PATCH")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `[{
+			"email": "user@example.com",
+			"verified": false,
+			"primary": true,
+			"visibility": "private"
+		}]`)
+	})
+
+	ctx := context.Background()
+	emails, _, err := client.Users.SetEmailVisibility(ctx, "private")
+	if err != nil {
+		t.Errorf("Users.SetEmailVisibility returned error: %v", err)
+	}
+
+	want := []*UserEmail{{Email: String("user@example.com"), Verified: Bool(false), Primary: Bool(true), Visibility: String("private")}}
+	if !cmp.Equal(emails, want) {
+		t.Errorf("Users.SetEmailVisibility returned %+v, want %+v", emails, want)
+	}
+
+	const methodName = "SetEmailVisibility"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.SetEmailVisibility(ctx, "private")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }

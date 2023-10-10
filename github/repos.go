@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -68,6 +69,7 @@ type Repository struct {
 	AllowMergeCommit          *bool           `json:"allow_merge_commit,omitempty"`
 	AllowAutoMerge            *bool           `json:"allow_auto_merge,omitempty"`
 	AllowForking              *bool           `json:"allow_forking,omitempty"`
+	WebCommitSignoffRequired  *bool           `json:"web_commit_signoff_required,omitempty"`
 	DeleteBranchOnMerge       *bool           `json:"delete_branch_on_merge,omitempty"`
 	UseSquashPRTitleAsDefault *bool           `json:"use_squash_pr_title_as_default,omitempty"`
 	SquashMergeCommitTitle    *string         `json:"squash_merge_commit_title,omitempty"`   // Can be one of: "PR_TITLE", "COMMIT_OR_PR_TITLE"
@@ -209,6 +211,7 @@ type SecurityAndAnalysis struct {
 	AdvancedSecurity             *AdvancedSecurity             `json:"advanced_security,omitempty"`
 	SecretScanning               *SecretScanning               `json:"secret_scanning,omitempty"`
 	SecretScanningPushProtection *SecretScanningPushProtection `json:"secret_scanning_push_protection,omitempty"`
+	DependabotSecurityUpdates    *DependabotSecurityUpdates    `json:"dependabot_security_updates,omitempty"`
 }
 
 func (s SecurityAndAnalysis) String() string {
@@ -242,6 +245,21 @@ func (s SecretScanning) String() string {
 // GitHub API docs: https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning#about-secret-scanning-for-partner-patterns
 type SecretScanningPushProtection struct {
 	Status *string `json:"status,omitempty"`
+}
+
+func (s SecretScanningPushProtection) String() string {
+	return Stringify(s)
+}
+
+// DependabotSecurityUpdates specifies the state of Dependabot security updates on a repository.
+//
+// GitHub API docs: https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/about-dependabot-security-updates
+type DependabotSecurityUpdates struct {
+	Status *string `json:"status,omitempty"`
+}
+
+func (d DependabotSecurityUpdates) String() string {
+	return Stringify(d)
 }
 
 // List the repositories for a user. Passing the empty string will list
@@ -686,6 +704,25 @@ func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, ow
 	return s.client.Do(ctx, req, nil)
 }
 
+// GetAutomatedSecurityFixes checks if the automated security fixes for a repository are enabled.
+//
+// GitHub API docs: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#check-if-automated-security-fixes-are-enabled-for-a-repository
+func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*AutomatedSecurityFixes, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/automated-security-fixes", owner, repository)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := new(AutomatedSecurityFixes)
+	resp, err := s.client.Do(ctx, req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+	return p, resp, nil
+}
+
 // EnableAutomatedSecurityFixes enables the automated security fixes for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/repos#enable-automated-security-fixes
@@ -696,9 +733,6 @@ func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -713,9 +747,6 @@ func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -843,8 +874,18 @@ type Protection struct {
 	AllowForcePushes               *AllowForcePushes               `json:"allow_force_pushes"`
 	AllowDeletions                 *AllowDeletions                 `json:"allow_deletions"`
 	RequiredConversationResolution *RequiredConversationResolution `json:"required_conversation_resolution"`
+	BlockCreations                 *BlockCreations                 `json:"block_creations,omitempty"`
 	LockBranch                     *LockBranch                     `json:"lock_branch,omitempty"`
 	AllowForkSyncing               *AllowForkSyncing               `json:"allow_fork_syncing,omitempty"`
+	RequiredSignatures             *SignaturesProtectedBranch      `json:"required_signatures,omitempty"`
+	URL                            *string                         `json:"url,omitempty"`
+}
+
+// BlockCreations represents whether users can push changes that create branches. If this is true, this
+// setting blocks pushes that create new branches, unless the push is initiated by a user, team, or app
+// which has the ability to push.
+type BlockCreations struct {
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // LockBranch represents if the branch is marked as read-only. If this is true, users will not be able to push to the branch.
@@ -994,6 +1035,14 @@ type ProtectionRequest struct {
 	// RequiredConversationResolution, if set to true, requires all comments
 	// on the pull request to be resolved before it can be merged to a protected branch.
 	RequiredConversationResolution *bool `json:"required_conversation_resolution,omitempty"`
+	// BlockCreations, if set to true, will cause the restrictions setting to also block pushes
+	// which create new branches, unless initiated by a user, team, app with the ability to push.
+	BlockCreations *bool `json:"block_creations,omitempty"`
+	// LockBranch, if set to true, will prevent users from pushing to the branch.
+	LockBranch *bool `json:"lock_branch,omitempty"`
+	// AllowForkSyncing, if set to true, will allow users to pull changes from upstream
+	// when the branch is locked.
+	AllowForkSyncing *bool `json:"allow_fork_syncing,omitempty"`
 }
 
 // RequiredStatusChecks represents the protection status of a individual branch.
@@ -1006,7 +1055,9 @@ type RequiredStatusChecks struct {
 	Contexts []string `json:"contexts,omitempty"`
 	// The list of status checks to require in order to merge into this
 	// branch.
-	Checks []*RequiredStatusCheck `json:"checks"`
+	Checks      []*RequiredStatusCheck `json:"checks"`
+	ContextsURL *string                `json:"contexts_url,omitempty"`
+	URL         *string                `json:"url,omitempty"`
 }
 
 // RequiredStatusChecksRequest represents a request to edit a protected branch's status checks.
@@ -1191,6 +1242,12 @@ type SignaturesProtectedBranch struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// AutomatedSecurityFixes represents their status.
+type AutomatedSecurityFixes struct {
+	Enabled *bool `json:"enabled"`
+	Paused  *bool `json:"paused"`
+}
+
 // ListBranches lists branches for the specified repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branches#list-branches
@@ -1217,11 +1274,13 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 
 // GetBranch gets the specified branch for a repository.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branches#get-a-branch
-func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string, followRedirects bool) (*Branch, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, branch)
+func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string, maxRedirects int) (*Branch, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, url.PathEscape(branch))
 
-	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1246,9 +1305,11 @@ type renameBranchRequest struct {
 // To rename a non-default branch: Users must have push access. GitHub Apps must have the `contents:write` repository permission.
 // To rename the default branch: Users must have admin or owner permissions. GitHub Apps must have the `administration:write` repository permission.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branches#rename-a-branch
 func (s *RepositoriesService) RenameBranch(ctx context.Context, owner, repo, branch, newName string) (*Branch, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/rename", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/rename", owner, repo, url.PathEscape(branch))
 	r := &renameBranchRequest{NewName: newName}
 	req, err := s.client.NewRequest("POST", u, r)
 	if err != nil {
@@ -1266,9 +1327,11 @@ func (s *RepositoriesService) RenameBranch(ctx context.Context, owner, repo, bra
 
 // GetBranchProtection gets the protection of a given branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-branch-protection
 func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, repo, branch string) (*Protection, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1291,9 +1354,11 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 
 // GetRequiredStatusChecks gets the required status checks for a given protected branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-status-checks-protection
 func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*RequiredStatusChecks, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1313,9 +1378,11 @@ func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner
 
 // ListRequiredStatusChecksContexts lists the required status checks contexts for a given protected branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-all-status-check-contexts
 func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Context, owner, repo, branch string) (contexts []string, resp *Response, err error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks/contexts", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks/contexts", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1334,9 +1401,11 @@ func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Conte
 
 // UpdateBranchProtection updates the protection of a given branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-branch-protection
 func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner, repo, branch string, preq *ProtectionRequest) (*Protection, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("PUT", u, preq)
 	if err != nil {
 		return nil, nil, err
@@ -1356,9 +1425,11 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 
 // RemoveBranchProtection removes the protection of a given branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-branch-protection
 func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner, repo, branch string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -1369,9 +1440,11 @@ func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner,
 
 // GetSignaturesProtectedBranch gets required signatures of protected branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-commit-signature-protection
 func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1392,9 +1465,11 @@ func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, 
 // RequireSignaturesOnProtectedBranch makes signed commits required on a protected branch.
 // It requires admin access and branch protection to be enabled.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#create-commit-signature-protection
 func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1414,9 +1489,11 @@ func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Con
 
 // OptionalSignaturesOnProtectedBranch removes required signed commits on a given branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-commit-signature-protection
 func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -1430,9 +1507,11 @@ func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Co
 
 // UpdateRequiredStatusChecks updates the required status checks for a given protected branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-status-check-protection
 func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, owner, repo, branch string, sreq *RequiredStatusChecksRequest) (*RequiredStatusChecks, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("PATCH", u, sreq)
 	if err != nil {
 		return nil, nil, err
@@ -1449,9 +1528,11 @@ func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, ow
 
 // RemoveRequiredStatusChecks removes the required status checks for a given protected branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-status-check-protection
 func (s *RepositoriesService) RemoveRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -1481,9 +1562,11 @@ func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (
 
 // GetPullRequestReviewEnforcement gets pull request review enforcement of a protected branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-pull-request-review-protection
 func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1504,9 +1587,11 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 // UpdatePullRequestReviewEnforcement patches pull request review enforcement of a protected branch.
 // It requires admin access and branch protection to be enabled.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-pull-request-review-protection
 func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string, patch *PullRequestReviewsEnforcementUpdate) (*PullRequestReviewsEnforcement, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("PATCH", u, patch)
 	if err != nil {
 		return nil, nil, err
@@ -1527,9 +1612,11 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 // DisableDismissalRestrictions disables dismissal restrictions of a protected branch.
 // It requires admin access and branch protection to be enabled.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#update-pull-request-review-protection
 func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, url.PathEscape(branch))
 
 	data := new(struct {
 		DismissalRestrictionsRequest `json:"dismissal_restrictions"`
@@ -1554,9 +1641,11 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 
 // RemovePullRequestReviewEnforcement removes pull request enforcement of a protected branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-pull-request-review-protection
 func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -1567,9 +1656,11 @@ func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Con
 
 // GetAdminEnforcement gets admin enforcement information of a protected branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-admin-branch-protection
 func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1587,9 +1678,11 @@ func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, re
 // AddAdminEnforcement adds admin enforcement to a protected branch.
 // It requires admin access and branch protection to be enabled.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-admin-branch-protection
 func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1606,9 +1699,11 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 
 // RemoveAdminEnforcement removes admin enforcement from a protected branch.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#delete-admin-branch-protection
 func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -1675,11 +1770,13 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 // ListApps lists the GitHub apps that have push access to a given protected branch.
 // It requires the GitHub apps to have `write` access to the `content` permission.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-apps-with-access-to-the-protected-branch
 //
 // Deprecated: Please use ListAppRestrictions instead.
 func (s *RepositoriesService) ListApps(ctx context.Context, owner, repo, branch string) ([]*App, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1710,9 +1807,11 @@ func (s *RepositoriesService) ListAppRestrictions(ctx context.Context, owner, re
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-app-access-restrictions
 func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("PUT", u, apps)
 	if err != nil {
 		return nil, nil, err
@@ -1732,9 +1831,11 @@ func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner,
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-app-access-restrictions
 func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("POST", u, apps)
 	if err != nil {
 		return nil, nil, err
@@ -1754,9 +1855,11 @@ func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, rep
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-app-access-restrictions
 func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("DELETE", u, apps)
 	if err != nil {
 		return nil, nil, err
@@ -1774,9 +1877,11 @@ func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, 
 // ListTeamRestrictions lists the GitHub teams that have push access to a given protected branch.
 // It requires the GitHub teams to have `write` access to the `content` permission.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-teams-with-access-to-the-protected-branch
 func (s *RepositoriesService) ListTeamRestrictions(ctx context.Context, owner, repo, branch string) ([]*Team, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1797,9 +1902,11 @@ func (s *RepositoriesService) ListTeamRestrictions(ctx context.Context, owner, r
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-team-access-restrictions
 func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("PUT", u, teams)
 	if err != nil {
 		return nil, nil, err
@@ -1819,9 +1926,11 @@ func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-team-access-restrictions
 func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("POST", u, teams)
 	if err != nil {
 		return nil, nil, err
@@ -1841,9 +1950,11 @@ func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, re
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-team-access-restrictions
 func (s *RepositoriesService) RemoveTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("DELETE", u, teams)
 	if err != nil {
 		return nil, nil, err
@@ -1861,9 +1972,11 @@ func (s *RepositoriesService) RemoveTeamRestrictions(ctx context.Context, owner,
 // ListUserRestrictions lists the GitHub users that have push access to a given protected branch.
 // It requires the GitHub users to have `write` access to the `content` permission.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-users-with-access-to-the-protected-branch
 func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, repo, branch string) ([]*User, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1884,9 +1997,11 @@ func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, r
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-team-access-restrictions
 func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("PUT", u, users)
 	if err != nil {
 		return nil, nil, err
@@ -1906,9 +2021,11 @@ func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-team-access-restrictions
 func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("POST", u, users)
 	if err != nil {
 		return nil, nil, err
@@ -1928,9 +2045,11 @@ func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, re
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
+// Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-team-access-restrictions
 func (s *RepositoriesService) RemoveUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, url.PathEscape(branch))
 	req, err := s.client.NewRequest("DELETE", u, users)
 	if err != nil {
 		return nil, nil, err
@@ -1948,6 +2067,7 @@ func (s *RepositoriesService) RemoveUserRestrictions(ctx context.Context, owner,
 // TransferRequest represents a request to transfer a repository.
 type TransferRequest struct {
 	NewOwner string  `json:"new_owner"`
+	NewName  *string `json:"new_name,omitempty"`
 	TeamID   []int64 `json:"team_ids,omitempty"`
 }
 
@@ -2011,4 +2131,44 @@ func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, 
 func isBranchNotProtected(err error) bool {
 	errorResponse, ok := err.(*ErrorResponse)
 	return ok && errorResponse.Message == githubBranchNotProtected
+}
+
+// EnablePrivateReporting enables private reporting of vulnerabilities for a
+// repository.
+//
+// GitHub API docs: https://docs.github.com/en/rest/repos/repos#enable-private-vulnerability-reporting-for-a-repository
+func (s *RepositoriesService) EnablePrivateReporting(ctx context.Context, owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/private-vulnerability-reporting", owner, repo)
+
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
+// DisablePrivateReporting disables private reporting of vulnerabilities for a
+// repository.
+//
+// GitHub API docs: https://docs.github.com/en/rest/repos/repos#disable-private-vulnerability-reporting-for-a-repository
+func (s *RepositoriesService) DisablePrivateReporting(ctx context.Context, owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/private-vulnerability-reporting", owner, repo)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
 }

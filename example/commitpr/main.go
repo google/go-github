@@ -21,16 +21,19 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/google/go-github/v50/github"
+	"github.com/ProtonMail/go-crypto/openpgp"
+	"github.com/google/go-github/v55/github"
 )
 
 var (
@@ -38,6 +41,7 @@ var (
 	sourceRepo    = flag.String("source-repo", "", "Name of repo to create the commit in.")
 	commitMessage = flag.String("commit-message", "", "Content of the commit message.")
 	commitBranch  = flag.String("commit-branch", "", "Name of branch to create the commit in. If it does not already exists, it will be created using the `base-branch` parameter")
+	repoBranch    = flag.String("repo-branch", "", "Name of the repository where the changes in the pull request were made. This field is required for cross-repository pull requests if both repositories are owned by the same organization")
 	baseBranch    = flag.String("base-branch", "master", "Name of branch to create the `commit-branch` from.")
 	prRepoOwner   = flag.String("merge-repo-owner", "", "Name of the owner (user or org) of the repo to create the PR against. If not specified, the value of the `-source-owner` flag will be used.")
 	prRepo        = flag.String("merge-repo", "", "Name of repo to create the PR against. If not specified, the value of the `-source-repo` flag will be used.")
@@ -50,6 +54,7 @@ If the file should be in the same location with the same name, you can just put 
 Example: README.md,main.go:github/examples/commitpr/main.go`)
 	authorName  = flag.String("author-name", "", "Name of the author of the commit.")
 	authorEmail = flag.String("author-email", "", "Email of the author of the commit.")
+	privateKey  = flag.String("private-key", "", "Path to the private key to use to sign the commit.")
 )
 
 var client *github.Client
@@ -132,9 +137,27 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 
 	// Create the commit using the tree.
 	date := time.Now()
-	author := &github.CommitAuthor{Date: &github.Timestamp{date}, Name: authorName, Email: authorEmail}
+	author := &github.CommitAuthor{Date: &github.Timestamp{Time: date}, Name: authorName, Email: authorEmail}
 	commit := &github.Commit{Author: author, Message: commitMessage, Tree: tree, Parents: []*github.Commit{parent.Commit}}
-	newCommit, _, err := client.Git.CreateCommit(ctx, *sourceOwner, *sourceRepo, commit)
+	opts := github.CreateCommitOptions{}
+	if *privateKey != "" {
+		armoredBlock, e := os.ReadFile(*privateKey)
+		if e != nil {
+			return e
+		}
+		keyring, e := openpgp.ReadArmoredKeyRing(bytes.NewReader(armoredBlock))
+		if e != nil {
+			return e
+		}
+		if len(keyring) != 1 {
+			return errors.New("expected exactly one key in the keyring")
+		}
+		key := keyring[0]
+		opts.Signer = github.MessageSignerFunc(func(w io.Writer, r io.Reader) error {
+			return openpgp.ArmoredDetachSign(w, key, r, nil)
+		})
+	}
+	newCommit, _, err := client.Git.CreateCommit(ctx, *sourceOwner, *sourceRepo, commit, &opts)
 	if err != nil {
 		return err
 	}
@@ -164,6 +187,7 @@ func createPR() (err error) {
 	newPR := &github.NewPullRequest{
 		Title:               prSubject,
 		Head:                commitBranch,
+		HeadRepo:            repoBranch,
 		Base:                prBranch,
 		Body:                prDescription,
 		MaintainerCanModify: github.Bool(true),
@@ -187,7 +211,7 @@ func main() {
 	if *sourceOwner == "" || *sourceRepo == "" || *commitBranch == "" || *sourceFiles == "" || *authorName == "" || *authorEmail == "" {
 		log.Fatal("You need to specify a non-empty value for the flags `-source-owner`, `-source-repo`, `-commit-branch`, `-files`, `-author-name` and `-author-email`")
 	}
-	client = github.NewTokenClient(ctx, token)
+	client = github.NewClient(nil).WithAuthToken(token)
 
 	ref, err := getRef()
 	if err != nil {

@@ -15,7 +15,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v50/github"
+	"github.com/google/go-github/v55/github"
 )
 
 func TestRepositories_CRUD(t *testing.T) {
@@ -64,7 +64,7 @@ func TestRepositories_BranchesTags(t *testing.T) {
 		t.Fatalf("Repositories.ListBranches('git', 'git') returned no branches")
 	}
 
-	_, _, err = client.Repositories.GetBranch(context.Background(), "git", "git", *branches[0].Name, false)
+	_, _, err = client.Repositories.GetBranch(context.Background(), "git", "git", *branches[0].Name, 0)
 	if err != nil {
 		t.Fatalf("Repositories.GetBranch() returned error: %v", err)
 	}
@@ -91,7 +91,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 		t.Fatalf("createRandomTestRepository returned error: %v", err)
 	}
 
-	branch, _, err := client.Repositories.GetBranch(context.Background(), *repo.Owner.Login, *repo.Name, "master", false)
+	branch, _, err := client.Repositories.GetBranch(context.Background(), *repo.Owner.Login, *repo.Name, "master", 0)
 	if err != nil {
 		t.Fatalf("Repositories.GetBranch() returned error: %v", err)
 	}
@@ -112,7 +112,10 @@ func TestRepositories_EditBranches(t *testing.T) {
 		// TODO: Only organization repositories can have users and team restrictions.
 		//       In order to be able to test these Restrictions, need to add support
 		//       for creating temporary organization repositories.
-		Restrictions: nil,
+		Restrictions:     nil,
+		BlockCreations:   github.Bool(false),
+		LockBranch:       github.Bool(false),
+		AllowForkSyncing: github.Bool(false),
 	}
 
 	protection, _, err := client.Repositories.UpdateBranchProtection(context.Background(), *repo.Owner.Login, *repo.Name, "master", protectionRequest)
@@ -134,6 +137,15 @@ func TestRepositories_EditBranches(t *testing.T) {
 			Enabled: true,
 		},
 		Restrictions: nil,
+		BlockCreations: &github.BlockCreations{
+			Enabled: github.Bool(false),
+		},
+		LockBranch: &github.LockBranch{
+			Enabled: github.Bool(false),
+		},
+		AllowForkSyncing: &github.AllowForkSyncing{
+			Enabled: github.Bool(false),
+		},
 	}
 	if !cmp.Equal(protection, want) {
 		t.Errorf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want)

@@ -15,7 +15,6 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -52,6 +51,12 @@ func TestRepositoryContent_GetContent(t *testing.T) {
 		{
 			encoding: String("bad"),
 			content:  String("aGVsbG8="),
+			want:     "",
+			wantErr:  true,
+		},
+		{
+			encoding: String("none"),
+			content:  nil,
 			want:     "",
 			wantErr:  true,
 		},
@@ -466,6 +471,20 @@ func TestRepositoriesService_GetContents_DirectoryWithSpaces(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetContents_PathWithParent(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/contents/some/../directory/file.go", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{}`)
+	})
+	ctx := context.Background()
+	_, _, _, err := client.Repositories.GetContents(ctx, "o", "r", "some/../directory/file.go", &RepositoryContentGetOptions{})
+	if err == nil {
+		t.Fatal("Repositories.GetContents expected error but got none")
+	}
+}
+
 func TestRepositoriesService_GetContents_DirectoryWithPlusChars(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -676,7 +695,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
 	ctx := context.Background()
-	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{Ref: "yo"}, true)
+	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{Ref: "yo"}, 1)
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}
@@ -690,7 +709,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 
 	const methodName = "GetArchiveLink"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetArchiveLink(ctx, "\n", "\n", Tarball, &RepositoryContentGetOptions{}, true)
+		_, _, err = client.Repositories.GetArchiveLink(ctx, "\n", "\n", Tarball, &RepositoryContentGetOptions{}, 1)
 		return err
 	})
 
@@ -699,7 +718,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		return nil, errors.New("failed to get archive link")
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, true)
+		_, _, err = client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 1)
 		return err
 	})
 }
@@ -712,7 +731,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRed
 		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
 	})
 	ctx := context.Background()
-	_, resp, _ := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, false)
+	_, resp, _ := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 0)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
@@ -732,7 +751,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
 	ctx := context.Background()
-	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, true)
+	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 1)
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}
@@ -769,18 +788,19 @@ func TestRepositoryContent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepositoryContent{}, "{}")
 
 	r := &RepositoryContent{
-		Type:        String("type"),
-		Target:      String("target"),
-		Encoding:    String("encoding"),
-		Size:        Int(1),
-		Name:        String("name"),
-		Path:        String("path"),
-		Content:     String("content"),
-		SHA:         String("sha"),
-		URL:         String("url"),
-		GitURL:      String("gurl"),
-		HTMLURL:     String("hurl"),
-		DownloadURL: String("durl"),
+		Type:            String("type"),
+		Target:          String("target"),
+		Encoding:        String("encoding"),
+		Size:            Int(1),
+		Name:            String("name"),
+		Path:            String("path"),
+		Content:         String("content"),
+		SHA:             String("sha"),
+		URL:             String("url"),
+		GitURL:          String("gurl"),
+		HTMLURL:         String("hurl"),
+		DownloadURL:     String("durl"),
+		SubmoduleGitURL: String("smgurl"),
 	}
 
 	want := `{
@@ -795,7 +815,8 @@ func TestRepositoryContent_Marshal(t *testing.T) {
 		"url":"url",
 		"git_url":"gurl",
 		"html_url":"hurl",
-		"download_url":"durl"
+		"download_url":"durl",
+		"submodule_git_url":"smgurl"
 	}`
 
 	testJSONMarshal(t, r, want)
@@ -806,18 +827,19 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 
 	r := &RepositoryContentResponse{
 		Content: &RepositoryContent{
-			Type:        String("type"),
-			Target:      String("target"),
-			Encoding:    String("encoding"),
-			Size:        Int(1),
-			Name:        String("name"),
-			Path:        String("path"),
-			Content:     String("content"),
-			SHA:         String("sha"),
-			URL:         String("url"),
-			GitURL:      String("gurl"),
-			HTMLURL:     String("hurl"),
-			DownloadURL: String("durl"),
+			Type:            String("type"),
+			Target:          String("target"),
+			Encoding:        String("encoding"),
+			Size:            Int(1),
+			Name:            String("name"),
+			Path:            String("path"),
+			Content:         String("content"),
+			SHA:             String("sha"),
+			URL:             String("url"),
+			GitURL:          String("gurl"),
+			HTMLURL:         String("hurl"),
+			DownloadURL:     String("durl"),
+			SubmoduleGitURL: String("smgurl"),
 		},
 		Commit: Commit{
 			SHA: String("s"),
@@ -863,7 +885,6 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 			},
 			NodeID:       String("n"),
 			CommentCount: Int(1),
-			SigningKey:   &openpgp.Entity{},
 		},
 	}
 
@@ -880,7 +901,8 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 			"url":"url",
 			"git_url":"gurl",
 			"html_url":"hurl",
-			"download_url":"durl"
+			"download_url":"durl",
+			"submodule_git_url":"smgurl"
 		},
 		"commit":{
 			"sha":"s",

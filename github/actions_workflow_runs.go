@@ -22,6 +22,7 @@ type WorkflowRun struct {
 	RunNumber          *int           `json:"run_number,omitempty"`
 	RunAttempt         *int           `json:"run_attempt,omitempty"`
 	Event              *string        `json:"event,omitempty"`
+	DisplayTitle       *string        `json:"display_title,omitempty"`
 	Status             *string        `json:"status,omitempty"`
 	Conclusion         *string        `json:"conclusion,omitempty"`
 	WorkflowID         *int64         `json:"workflow_id,omitempty"`
@@ -45,6 +46,7 @@ type WorkflowRun struct {
 	Repository         *Repository    `json:"repository,omitempty"`
 	HeadRepository     *Repository    `json:"head_repository,omitempty"`
 	Actor              *User          `json:"actor,omitempty"`
+	TriggeringActor    *User          `json:"triggering_actor,omitempty"`
 }
 
 // WorkflowRuns represents a slice of repository action workflow run.
@@ -55,12 +57,14 @@ type WorkflowRuns struct {
 
 // ListWorkflowRunsOptions specifies optional parameters to ListWorkflowRuns.
 type ListWorkflowRunsOptions struct {
-	Actor   string `url:"actor,omitempty"`
-	Branch  string `url:"branch,omitempty"`
-	Event   string `url:"event,omitempty"`
-	Status  string `url:"status,omitempty"`
-	Created string `url:"created,omitempty"`
-	HeadSHA string `url:"head_sha,omitempty"`
+	Actor               string `url:"actor,omitempty"`
+	Branch              string `url:"branch,omitempty"`
+	Event               string `url:"event,omitempty"`
+	Status              string `url:"status,omitempty"`
+	Created             string `url:"created,omitempty"`
+	HeadSHA             string `url:"head_sha,omitempty"`
+	ExcludePullRequests bool   `url:"exclude_pull_requests,omitempty"`
+	CheckSuiteID        int64  `url:"check_suite_id,omitempty"`
 	ListOptions
 }
 
@@ -204,6 +208,26 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 	return run, resp, nil
 }
 
+// GetWorkflowRunAttemptLogs gets a redirect URL to download a plain text file of logs for a workflow run for attempt number.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#download-workflow-run-attempt-logs
+func (s *ActionsService) GetWorkflowRunAttemptLogs(ctx context.Context, owner, repo string, runID int64, attemptNumber int, maxRedirects int) (*url.URL, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/attempts/%v/logs", owner, repo, runID, attemptNumber)
+
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusFound {
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+	}
+
+	parsedURL, err := url.Parse(resp.Header.Get("Location"))
+	return parsedURL, newResponse(resp), err
+}
+
 // RerunWorkflowByID re-runs a workflow by ID.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#re-run-a-workflow
@@ -263,10 +287,10 @@ func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo 
 // GetWorkflowRunLogs gets a redirect URL to download a plain text file of logs for a workflow run.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#download-workflow-run-logs
-func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64, followRedirects bool) (*url.URL, *Response, error) {
+func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
 
-	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
 	}

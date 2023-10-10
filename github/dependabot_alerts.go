@@ -17,8 +17,8 @@ type Dependency struct {
 	Scope        *string               `json:"scope,omitempty"`
 }
 
-// AdvisoryCVSs represents the advisory pertaining to the Common Vulnerability Scoring System.
-type AdvisoryCVSs struct {
+// AdvisoryCVSS represents the advisory pertaining to the Common Vulnerability Scoring System.
+type AdvisoryCVSS struct {
 	Score        *float64 `json:"score,omitempty"`
 	VectorString *string  `json:"vector_string,omitempty"`
 }
@@ -37,7 +37,7 @@ type DependabotSecurityAdvisory struct {
 	Description     *string                  `json:"description,omitempty"`
 	Vulnerabilities []*AdvisoryVulnerability `json:"vulnerabilities,omitempty"`
 	Severity        *string                  `json:"severity,omitempty"`
-	CVSs            *AdvisoryCVSs            `json:"cvss,omitempty"`
+	CVSS            *AdvisoryCVSS            `json:"cvss,omitempty"`
 	CWEs            []*AdvisoryCWEs          `json:"cwes,omitempty"`
 	Identifiers     []*AdvisoryIdentifier    `json:"identifiers,omitempty"`
 	References      []*AdvisoryReference     `json:"references,omitempty"`
@@ -62,6 +62,9 @@ type DependabotAlert struct {
 	DismissedReason       *string                     `json:"dismissed_reason,omitempty"`
 	DismissedComment      *string                     `json:"dismissed_comment,omitempty"`
 	FixedAt               *Timestamp                  `json:"fixed_at,omitempty"`
+	AutoDismissedAt       *Timestamp                  `json:"auto_dismissed_at,omitempty"`
+	// The repository is always empty for events
+	Repository *Repository `json:"repository,omitempty"`
 }
 
 // ListAlertsOptions specifies the optional parameters to the DependabotService.ListRepoAlerts
@@ -75,6 +78,7 @@ type ListAlertsOptions struct {
 	Sort      *string `url:"sort,omitempty"`
 	Direction *string `url:"direction,omitempty"`
 
+	ListOptions
 	ListCursorOptions
 }
 

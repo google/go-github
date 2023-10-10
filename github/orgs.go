@@ -36,8 +36,8 @@ type Organization struct {
 	Following                   *int       `json:"following,omitempty"`
 	CreatedAt                   *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt                   *Timestamp `json:"updated_at,omitempty"`
-	TotalPrivateRepos           *int       `json:"total_private_repos,omitempty"`
-	OwnedPrivateRepos           *int       `json:"owned_private_repos,omitempty"`
+	TotalPrivateRepos           *int64     `json:"total_private_repos,omitempty"`
+	OwnedPrivateRepos           *int64     `json:"owned_private_repos,omitempty"`
 	PrivateGists                *int       `json:"private_gists,omitempty"`
 	DiskUsage                   *int       `json:"disk_usage,omitempty"`
 	Collaborators               *int       `json:"collaborators,omitempty"`
@@ -121,7 +121,7 @@ type Plan struct {
 	Name          *string `json:"name,omitempty"`
 	Space         *int    `json:"space,omitempty"`
 	Collaborators *int    `json:"collaborators,omitempty"`
-	PrivateRepos  *int    `json:"private_repos,omitempty"`
+	PrivateRepos  *int64  `json:"private_repos,omitempty"`
 	FilledSeats   *int    `json:"filled_seats,omitempty"`
 	Seats         *int    `json:"seats,omitempty"`
 }
@@ -260,6 +260,19 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 	}
 
 	return o, resp, nil
+}
+
+// Delete an organization by name.
+//
+// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#delete-an-organization
+func (s *OrganizationsService) Delete(ctx context.Context, org string) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v", org)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
 }
 
 // ListInstallations lists installations for an organization.

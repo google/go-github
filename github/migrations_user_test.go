@@ -24,7 +24,7 @@ func TestMigrationService_StartUserMigration(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write(userMigrationJSON)
+		assertWrite(t, w, userMigrationJSON)
 	})
 
 	opt := &UserMigrationOptions{
@@ -62,7 +62,7 @@ func TestMigrationService_ListUserMigrations(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(fmt.Sprintf("[%s]", userMigrationJSON)))
+		assertWrite(t, w, []byte(fmt.Sprintf("[%s]", userMigrationJSON)))
 	})
 
 	ctx := context.Background()
@@ -95,7 +95,7 @@ func TestMigrationService_UserMigrationStatus(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write(userMigrationJSON)
+		assertWrite(t, w, userMigrationJSON)
 	})
 
 	ctx := context.Background()

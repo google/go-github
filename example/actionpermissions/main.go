@@ -14,7 +14,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v50/github"
+	"github.com/google/go-github/v55/github"
 )
 
 var (
@@ -35,7 +35,7 @@ func main() {
 		log.Fatal("No owner: owner of repo must be given")
 	}
 	ctx := context.Background()
-	client := github.NewTokenClient(ctx, token)
+	client := github.NewClient(nil).WithAuthToken(token)
 
 	actionsPermissionsRepository, _, err := client.Repositories.GetActionsPermissions(ctx, *owner, *name)
 	if err != nil {

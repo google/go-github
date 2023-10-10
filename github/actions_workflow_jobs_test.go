@@ -138,7 +138,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, true)
+	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 	}
@@ -152,7 +152,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 
 	const methodName = "GetWorkflowJobLogs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "\n", "\n", 399444496, true)
+		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "\n", "\n", 399444496, 1)
 		return err
 	})
 
@@ -161,7 +161,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 		return nil, errors.New("failed to get workflow logs")
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, true)
+		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
 		return err
 	})
 }
@@ -176,7 +176,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedi
 	})
 
 	ctx := context.Background()
-	_, resp, _ := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, false)
+	_, resp, _ := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 0)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
@@ -199,7 +199,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirect
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, true)
+	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 	}
@@ -246,6 +246,7 @@ func TestWorkflowJob_Marshal(t *testing.T) {
 		RunID:       Int64(1),
 		RunURL:      String("r"),
 		NodeID:      String("n"),
+		HeadBranch:  String("b"),
 		HeadSHA:     String("h"),
 		URL:         String("u"),
 		HTMLURL:     String("h"),
@@ -274,6 +275,7 @@ func TestWorkflowJob_Marshal(t *testing.T) {
 		"run_id":1,
 		"run_url":"r",
 		"node_id":"n",
+		"head_branch":"b",
 		"head_sha":"h",
 		"url":"u",
 		"html_url":"h",
@@ -311,6 +313,7 @@ func TestJobs_Marshal(t *testing.T) {
 				RunID:       Int64(1),
 				RunURL:      String("r"),
 				NodeID:      String("n"),
+				HeadBranch:  String("b"),
 				HeadSHA:     String("h"),
 				URL:         String("u"),
 				HTMLURL:     String("h"),
@@ -338,38 +341,39 @@ func TestJobs_Marshal(t *testing.T) {
 	}
 
 	want := `{
-	"total_count":1,
-	"jobs":[
-		{
-			"id":1,
-			"run_id":1,
-			"run_url":"r",
-			"node_id":"n",
-			"head_sha":"h",
-			"url":"u",
-			"html_url":"h",
-			"status":"s",
-			"conclusion":"c",
-			"created_at":` + referenceTimeStr + `,
-			"started_at":` + referenceTimeStr + `,
-			"completed_at":` + referenceTimeStr + `,
-			"name":"n",
-			"steps":[
-				{
-					"name":"n",
-					"status":"s",
-					"conclusion":"c",
-					"number":1,
-					"started_at":` + referenceTimeStr + `,
-					"completed_at":` + referenceTimeStr + `
-				}
-			],
-			"check_run_url":"c",
-			"run_attempt":2,
-			"workflow_name":"w"
-		}
-	]
-}`
+		"total_count":1,
+		"jobs":[
+			{
+				"id":1,
+				"run_id":1,
+				"run_url":"r",
+				"node_id":"n",
+				"head_branch":"b",
+				"head_sha":"h",
+				"url":"u",
+				"html_url":"h",
+				"status":"s",
+				"conclusion":"c",
+				"created_at":` + referenceTimeStr + `,
+				"started_at":` + referenceTimeStr + `,
+				"completed_at":` + referenceTimeStr + `,
+				"name":"n",
+				"steps":[
+					{
+						"name":"n",
+						"status":"s",
+						"conclusion":"c",
+						"number":1,
+						"started_at":` + referenceTimeStr + `,
+						"completed_at":` + referenceTimeStr + `
+					}
+				],
+				"check_run_url":"c",
+				"run_attempt":2,
+				"workflow_name":"w"
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }

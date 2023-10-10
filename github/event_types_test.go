@@ -104,6 +104,82 @@ func TestEditChange_Marshal_Repo(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestEditChange_Marshal_TransferFromUser(t *testing.T) {
+	testJSONMarshal(t, &EditChange{}, "{}")
+
+	u := &EditChange{
+		Owner: &EditOwner{
+			OwnerInfo: &OwnerInfo{
+				User: &User{
+					Login:     String("l"),
+					ID:        Int64(1),
+					NodeID:    String("n"),
+					URL:       String("u"),
+					ReposURL:  String("r"),
+					EventsURL: String("e"),
+					AvatarURL: String("a"),
+				},
+			},
+		},
+	}
+
+	want := `{
+		"owner":{
+			"from":{
+				"user":{
+					"login":"l",
+					"id":1,
+					"node_id":"n",
+					"avatar_url":"a",
+					"url":"u",
+					"events_url":"e",
+					"repos_url":"r"
+				}
+			}
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestEditChange_Marshal_TransferFromOrg(t *testing.T) {
+	testJSONMarshal(t, &EditChange{}, "{}")
+
+	u := &EditChange{
+		Owner: &EditOwner{
+			OwnerInfo: &OwnerInfo{
+				Org: &User{
+					Login:     String("l"),
+					ID:        Int64(1),
+					NodeID:    String("n"),
+					URL:       String("u"),
+					ReposURL:  String("r"),
+					EventsURL: String("e"),
+					AvatarURL: String("a"),
+				},
+			},
+		},
+	}
+
+	want := `{
+		"owner":{
+			"from":{
+				"organization":{
+					"login":"l",
+					"id":1,
+					"node_id":"n",
+					"avatar_url":"a",
+					"url":"u",
+					"events_url":"e",
+					"repos_url":"r"
+				}
+			}
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestProjectChange_Marshal_NameChange(t *testing.T) {
 	testJSONMarshal(t, &ProjectChange{}, "{}")
 
@@ -1251,6 +1327,342 @@ func TestInstallationRepositoriesEvent_Marshal(t *testing.T) {
 			},
 			"suspended_at":` + referenceTimeStr + `
 		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestInstallationTargetEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &InstallationTargetEvent{}, "{}")
+
+	u := &InstallationTargetEvent{
+		Account: &User{
+			Login:     String("u"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("l"),
+		},
+		Action: String("a"),
+		Changes: &InstallationChanges{
+			Login: &InstallationLoginChange{
+				From: String("p"),
+			},
+			Slug: &InstallationSlugChange{
+				From: String("j"),
+			},
+		},
+		Enterprise: &Enterprise{
+			ID:          Int(1),
+			Slug:        String("s"),
+			Name:        String("n"),
+			NodeID:      String("nid"),
+			AvatarURL:   String("au"),
+			Description: String("d"),
+			WebsiteURL:  String("wu"),
+			HTMLURL:     String("hu"),
+			CreatedAt:   &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
+		},
+		Installation: &Installation{
+			ID:       Int64(1),
+			NodeID:   String("nid"),
+			AppID:    Int64(1),
+			AppSlug:  String("as"),
+			TargetID: Int64(1),
+			Account: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+			AccessTokensURL:     String("atu"),
+			RepositoriesURL:     String("ru"),
+			HTMLURL:             String("hu"),
+			TargetType:          String("tt"),
+			SingleFileName:      String("sfn"),
+			RepositorySelection: String("rs"),
+			Events:              []string{"e"},
+			SingleFilePaths:     []string{"s"},
+			Permissions: &InstallationPermissions{
+				Actions:                       String("a"),
+				Administration:                String("ad"),
+				Checks:                        String("c"),
+				Contents:                      String("co"),
+				ContentReferences:             String("cr"),
+				Deployments:                   String("d"),
+				Environments:                  String("e"),
+				Issues:                        String("i"),
+				Metadata:                      String("md"),
+				Members:                       String("m"),
+				OrganizationAdministration:    String("oa"),
+				OrganizationHooks:             String("oh"),
+				OrganizationPlan:              String("op"),
+				OrganizationPreReceiveHooks:   String("opr"),
+				OrganizationProjects:          String("op"),
+				OrganizationSecrets:           String("os"),
+				OrganizationSelfHostedRunners: String("osh"),
+				OrganizationUserBlocking:      String("oub"),
+				Packages:                      String("pkg"),
+				Pages:                         String("pg"),
+				PullRequests:                  String("pr"),
+				RepositoryHooks:               String("rh"),
+				RepositoryProjects:            String("rp"),
+				RepositoryPreReceiveHooks:     String("rprh"),
+				Secrets:                       String("s"),
+				SecretScanningAlerts:          String("ssa"),
+				SecurityEvents:                String("se"),
+				SingleFile:                    String("sf"),
+				Statuses:                      String("s"),
+				TeamDiscussions:               String("td"),
+				VulnerabilityAlerts:           String("va"),
+				Workflows:                     String("w"),
+			},
+			CreatedAt:              &Timestamp{referenceTime},
+			UpdatedAt:              &Timestamp{referenceTime},
+			HasMultipleSingleFiles: Bool(false),
+			SuspendedBy: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+			SuspendedAt: &Timestamp{referenceTime},
+		},
+		Organization: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		Repository: &Repository{
+			ID:   Int64(1),
+			URL:  String("s"),
+			Name: String("n"),
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+		TargetType: String("running"),
+	}
+
+	want := `{
+		"account":{
+			"login":"u",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"l",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"action":"a",
+		"changes":{
+			"login":{
+				"from":"p"
+			},
+			"slug":{
+				"from":"j"
+			}
+		},
+		"enterprise":{
+			"id":1,
+			"slug":"s",
+			"name":"n",
+			"node_id":"nid",
+			"avatar_url":"au",
+			"description":"d",
+			"website_url":"wu",
+			"html_url":"hu",
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"target_type":"running"
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -5240,6 +5652,98 @@ func TestDeploymentEvent_Marshal(t *testing.T) {
 			},
 			SuspendedAt: &Timestamp{referenceTime},
 		},
+		Workflow: &Workflow{
+			ID:        Int64(1),
+			NodeID:    String("nid"),
+			Name:      String("n"),
+			Path:      String("p"),
+			State:     String("s"),
+			CreatedAt: &Timestamp{referenceTime},
+			UpdatedAt: &Timestamp{referenceTime},
+			URL:       String("u"),
+			HTMLURL:   String("h"),
+			BadgeURL:  String("b"),
+		},
+		WorkflowRun: &WorkflowRun{
+			ID:         Int64(1),
+			Name:       String("n"),
+			NodeID:     String("nid"),
+			HeadBranch: String("hb"),
+			HeadSHA:    String("hs"),
+			RunNumber:  Int(1),
+			RunAttempt: Int(1),
+			Event:      String("e"),
+			Status:     String("s"),
+			Conclusion: String("c"),
+			WorkflowID: Int64(1),
+			URL:        String("u"),
+			HTMLURL:    String("h"),
+			PullRequests: []*PullRequest{
+				{
+					URL:    String("u"),
+					ID:     Int64(1),
+					Number: Int(1),
+					Head: &PullRequestBranch{
+						Ref: String("r"),
+						SHA: String("s"),
+						Repo: &Repository{
+							ID:   Int64(1),
+							URL:  String("s"),
+							Name: String("n"),
+						},
+					},
+					Base: &PullRequestBranch{
+						Ref: String("r"),
+						SHA: String("s"),
+						Repo: &Repository{
+							ID:   Int64(1),
+							URL:  String("u"),
+							Name: String("n"),
+						},
+					},
+				},
+			},
+			CreatedAt:          &Timestamp{referenceTime},
+			UpdatedAt:          &Timestamp{referenceTime},
+			RunStartedAt:       &Timestamp{referenceTime},
+			JobsURL:            String("j"),
+			LogsURL:            String("l"),
+			CheckSuiteURL:      String("c"),
+			ArtifactsURL:       String("a"),
+			CancelURL:          String("c"),
+			RerunURL:           String("r"),
+			PreviousAttemptURL: String("p"),
+			HeadCommit: &HeadCommit{
+				Message: String("m"),
+				Author: &CommitAuthor{
+					Name:  String("n"),
+					Email: String("e"),
+					Login: String("l"),
+				},
+				URL:       String("u"),
+				Distinct:  Bool(false),
+				SHA:       String("s"),
+				ID:        String("i"),
+				TreeID:    String("tid"),
+				Timestamp: &Timestamp{referenceTime},
+				Committer: &CommitAuthor{
+					Name:  String("n"),
+					Email: String("e"),
+					Login: String("l"),
+				},
+			},
+			WorkflowURL: String("w"),
+			Repository: &Repository{
+				ID:   Int64(1),
+				URL:  String("u"),
+				Name: String("n"),
+			},
+			HeadRepository: &Repository{
+				ID:   Int64(1),
+				URL:  String("u"),
+				Name: String("n"),
+			},
+		},
 	}
 
 	want := `{
@@ -5274,6 +5778,483 @@ func TestDeploymentEvent_Marshal(t *testing.T) {
 			"name":"n",
 			"url":"s"
 		},
+		"workflow":{
+			"id":1,
+			"node_id":"nid",
+			"name":"n",
+			"path":"p",
+			"state":"s",
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"url":"u",
+			"html_url":"h",
+			"badge_url":"b"
+		},
+		"workflow_run":{
+			"id":1,
+			"name":"n",
+			"node_id":"nid",
+			"head_branch":"hb",
+			"head_sha":"hs",
+			"run_number":1,
+			"run_attempt":1,
+			"event":"e",
+			"status":"s",
+			"conclusion":"c",
+			"workflow_id":1,
+			"url":"u",
+			"html_url":"h",
+			"pull_requests":[
+				{
+					"id":1,
+					"number":1,
+					"url":"u",
+					"head":{
+						"ref":"r",
+						"sha":"s",
+						"repo":{
+							"id":1,
+							"name":"n",
+							"url":"s"
+						}
+					},
+					"base":{
+						"ref":"r",
+						"sha":"s",
+						"repo":{
+							"id":1,
+							"name":"n",
+							"url":"u"
+						}
+					}
+				}
+			],
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"run_started_at":` + referenceTimeStr + `,
+			"jobs_url":"j",
+			"logs_url":"l",
+			"check_suite_url":"c",
+			"artifacts_url":"a",
+			"cancel_url":"c",
+			"rerun_url":"r",
+			"previous_attempt_url":"p",
+			"head_commit":{
+				"message":"m",
+				"author":{
+					"name":"n",
+					"email":"e",
+					"username":"l"
+				},
+				"url":"u",
+				"distinct":false,
+				"sha":"s",
+				"id":"i",
+				"tree_id":"tid",
+				"timestamp":` + referenceTimeStr + `,
+				"committer":{
+					"name":"n",
+					"email":"e",
+					"username":"l"
+				}
+			},
+			"workflow_url":"w",
+			"repository":{
+				"id":1,
+				"name":"n",
+				"url":"u"
+			},
+			"head_repository":{
+				"id":1,
+				"name":"n",
+				"url":"u"
+			}
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &DeploymentProtectionRuleEvent{}, "{}")
+
+	l := make(map[string]interface{})
+	l["key"] = "value"
+
+	jsonMsg, _ := json.Marshal(&l)
+
+	u := &DeploymentProtectionRuleEvent{
+		Action:                String("a"),
+		Environment:           String("e"),
+		DeploymentCallbackURL: String("b"),
+		Deployment: &Deployment{
+			URL:         String("url"),
+			ID:          Int64(1),
+			SHA:         String("sha"),
+			Ref:         String("ref"),
+			Task:        String("t"),
+			Payload:     jsonMsg,
+			Environment: String("e"),
+			Description: String("d"),
+			Creator: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+			CreatedAt:     &Timestamp{referenceTime},
+			UpdatedAt:     &Timestamp{referenceTime},
+			StatusesURL:   String("surl"),
+			RepositoryURL: String("rurl"),
+			NodeID:        String("nid"),
+		},
+		Repo: &Repository{
+			ID:   Int64(1),
+			URL:  String("s"),
+			Name: String("n"),
+		},
+		Organization: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		PullRequests: []*PullRequest{
+			{
+				URL:    String("u"),
+				ID:     Int64(1),
+				Number: Int(1),
+				Head: &PullRequestBranch{
+					Ref: String("r"),
+					SHA: String("s"),
+					Repo: &Repository{
+						ID:   Int64(1),
+						URL:  String("s"),
+						Name: String("n"),
+					},
+				},
+				Base: &PullRequestBranch{
+					Ref: String("r"),
+					SHA: String("s"),
+					Repo: &Repository{
+						ID:   Int64(1),
+						URL:  String("u"),
+						Name: String("n"),
+					},
+				},
+			},
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+		Installation: &Installation{
+			ID:       Int64(1),
+			NodeID:   String("nid"),
+			AppID:    Int64(1),
+			AppSlug:  String("as"),
+			TargetID: Int64(1),
+			Account: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+			AccessTokensURL:     String("atu"),
+			RepositoriesURL:     String("ru"),
+			HTMLURL:             String("hu"),
+			TargetType:          String("tt"),
+			SingleFileName:      String("sfn"),
+			RepositorySelection: String("rs"),
+			Events:              []string{"e"},
+			SingleFilePaths:     []string{"s"},
+			Permissions: &InstallationPermissions{
+				Actions:                       String("a"),
+				Administration:                String("ad"),
+				Checks:                        String("c"),
+				Contents:                      String("co"),
+				ContentReferences:             String("cr"),
+				Deployments:                   String("d"),
+				Environments:                  String("e"),
+				Issues:                        String("i"),
+				Metadata:                      String("md"),
+				Members:                       String("m"),
+				OrganizationAdministration:    String("oa"),
+				OrganizationHooks:             String("oh"),
+				OrganizationPlan:              String("op"),
+				OrganizationPreReceiveHooks:   String("opr"),
+				OrganizationProjects:          String("op"),
+				OrganizationSecrets:           String("os"),
+				OrganizationSelfHostedRunners: String("osh"),
+				OrganizationUserBlocking:      String("oub"),
+				Packages:                      String("pkg"),
+				Pages:                         String("pg"),
+				PullRequests:                  String("pr"),
+				RepositoryHooks:               String("rh"),
+				RepositoryProjects:            String("rp"),
+				RepositoryPreReceiveHooks:     String("rprh"),
+				Secrets:                       String("s"),
+				SecretScanningAlerts:          String("ssa"),
+				SecurityEvents:                String("se"),
+				SingleFile:                    String("sf"),
+				Statuses:                      String("s"),
+				TeamDiscussions:               String("td"),
+				VulnerabilityAlerts:           String("va"),
+				Workflows:                     String("w"),
+			},
+			CreatedAt:              &Timestamp{referenceTime},
+			UpdatedAt:              &Timestamp{referenceTime},
+			HasMultipleSingleFiles: Bool(false),
+			SuspendedBy: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+			SuspendedAt: &Timestamp{referenceTime},
+		},
+	}
+
+	want := `{
+		"action":"a",
+		"environment":"e",
+		"deployment_callback_url":"b",
+		"deployment":{
+			"url":"url",
+			"id":1,
+			"sha":"sha",
+			"ref":"ref",
+			"task":"t",
+			"payload":{
+				"key":"value"
+			},
+			"environment":"e",
+			"description":"d",
+			"creator":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"statuses_url":"surl",
+			"repository_url":"rurl",
+			"node_id":"nid"
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"pull_requests":[
+			{
+				"id":1,
+				"number":1,
+				"url":"u",
+				"head":{
+					"ref":"r",
+					"sha":"s",
+					"repo":{
+						"id":1,
+						"name":"n",
+						"url":"s"
+					}
+				},
+				"base":{
+					"ref":"r",
+					"sha":"s",
+					"repo":{
+						"id":1,
+						"name":"n",
+						"url":"u"
+					}
+				}
+			}
+		],
 		"sender":{
 			"login":"l",
 			"id":1,
@@ -6604,6 +7585,80 @@ func TestPackageEvent_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestPersonalAccessTokenRequestEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PersonalAccessTokenRequestEvent{}, "{}")
+
+	event := &PersonalAccessTokenRequestEvent{
+		Action: String("a"),
+		PersonalAccessTokenRequest: &PersonalAccessTokenRequest{
+			ID:    Int64(1),
+			Owner: &User{Login: String("l")},
+			PermissionsAdded: &PersonalAccessTokenPermissions{
+				Org:  map[string]string{"organization_events": "read"},
+				Repo: map[string]string{"security_events": "write"},
+			},
+			CreatedAt:           &Timestamp{referenceTime},
+			TokenExpired:        Bool(false),
+			TokenExpiresAt:      &Timestamp{referenceTime},
+			TokenLastUsedAt:     &Timestamp{referenceTime},
+			RepositoryCount:     Int64(1),
+			RepositorySelection: String("rs"),
+			Repositories: []*Repository{
+				{
+					Name: String("n"),
+				},
+			},
+		},
+		Org: &Organization{Name: String("n")},
+		Sender: &User{
+			Login: String("l"),
+		},
+		Installation: &Installation{
+			ID: Int64(1),
+		},
+	}
+
+	want := `{
+		"action":"a",
+		"personal_access_token_request":{
+			"id":1,
+			"owner":{
+				"login":"l"
+			},
+			"permissions_added":{
+				"organization":{
+					"organization_events":"read"
+				},
+				"repository":{
+					"security_events":"write"
+				}
+			},
+			"repository_selection":"rs",
+			"repository_count":1,
+			"repositories":[
+				{
+					"name":"n"
+				}
+			],
+			"created_at":` + referenceTimeStr + `,
+			"token_expired":false,
+			"token_expires_at":` + referenceTimeStr + `,
+			"token_last_used_at":` + referenceTimeStr + `
+		},
+		"organization":{
+			"name":"n"
+		},
+		"sender":{
+			"login":"l"
+		},
+		"installation":{
+			"id":1
+		}
+	}`
+
+	testJSONMarshal(t, event, want)
 }
 
 func TestPingEvent_Marshal(t *testing.T) {
@@ -11621,6 +12676,467 @@ func TestDeleteEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, r, want)
 }
 
+func TestDependabotAlertEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &DependabotAlertEvent{}, "{}")
+
+	e := &DependabotAlertEvent{
+		Action: String("a"),
+		Alert: &DependabotAlert{
+			Number: Int(1),
+			State:  String("s"),
+			Dependency: &Dependency{
+				Package: &VulnerabilityPackage{
+					Ecosystem: String("e"),
+					Name:      String("n"),
+				},
+				ManifestPath: String("mp"),
+				Scope:        String("s"),
+			},
+			SecurityAdvisory: &DependabotSecurityAdvisory{
+				GHSAID:      String("ghsaid"),
+				CVEID:       String("cveid"),
+				Summary:     String("s"),
+				Description: String("d"),
+				Vulnerabilities: []*AdvisoryVulnerability{
+					{
+						Package: &VulnerabilityPackage{
+							Ecosystem: String("e"),
+							Name:      String("n"),
+						},
+						Severity: String("s"),
+					},
+				},
+				Severity: String("s"),
+				CVSS: &AdvisoryCVSS{
+					Score:        Float64(1.0),
+					VectorString: String("vs"),
+				},
+				CWEs: []*AdvisoryCWEs{
+					{
+						CWEID: String("cweid"),
+						Name:  String("n"),
+					},
+				},
+				Identifiers: []*AdvisoryIdentifier{
+					{
+						Value: String("v"),
+						Type:  String("t"),
+					},
+				},
+				References: []*AdvisoryReference{
+					{
+						URL: String("u"),
+					},
+				},
+				PublishedAt: &Timestamp{referenceTime},
+				UpdatedAt:   &Timestamp{referenceTime},
+				WithdrawnAt: &Timestamp{referenceTime},
+			},
+			SecurityVulnerability: &AdvisoryVulnerability{
+				Package: &VulnerabilityPackage{
+					Ecosystem: String("e"),
+					Name:      String("n"),
+				},
+				Severity:               String("s"),
+				VulnerableVersionRange: String("vvr"),
+				FirstPatchedVersion: &FirstPatchedVersion{
+					Identifier: String("i"),
+				},
+			},
+			URL:         String("u"),
+			HTMLURL:     String("hu"),
+			CreatedAt:   &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
+			DismissedAt: &Timestamp{referenceTime},
+			DismissedBy: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+			DismissedReason:  String("dr"),
+			DismissedComment: String("dc"),
+			FixedAt:          &Timestamp{referenceTime},
+			AutoDismissedAt:  &Timestamp{referenceTime},
+		},
+		Repo: &Repository{
+			ID:   Int64(1),
+			URL:  String("s"),
+			Name: String("n"),
+		},
+		Organization: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		Enterprise: &Enterprise{
+			ID:          Int(1),
+			Slug:        String("s"),
+			Name:        String("n"),
+			NodeID:      String("nid"),
+			AvatarURL:   String("au"),
+			Description: String("d"),
+			WebsiteURL:  String("wu"),
+			HTMLURL:     String("hu"),
+			CreatedAt:   &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+		Installation: &Installation{
+			ID:       Int64(1),
+			NodeID:   String("nid"),
+			AppID:    Int64(1),
+			AppSlug:  String("as"),
+			TargetID: Int64(1),
+			Account: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+			AccessTokensURL:     String("atu"),
+			RepositoriesURL:     String("ru"),
+			HTMLURL:             String("hu"),
+			TargetType:          String("tt"),
+			SingleFileName:      String("sfn"),
+			RepositorySelection: String("rs"),
+			Events:              []string{"e"},
+			SingleFilePaths:     []string{"s"},
+			Permissions: &InstallationPermissions{
+				Actions:                       String("a"),
+				Administration:                String("ad"),
+				Checks:                        String("c"),
+				Contents:                      String("co"),
+				ContentReferences:             String("cr"),
+				Deployments:                   String("d"),
+				Environments:                  String("e"),
+				Issues:                        String("i"),
+				Metadata:                      String("md"),
+				Members:                       String("m"),
+				OrganizationAdministration:    String("oa"),
+				OrganizationHooks:             String("oh"),
+				OrganizationPlan:              String("op"),
+				OrganizationPreReceiveHooks:   String("opr"),
+				OrganizationProjects:          String("op"),
+				OrganizationSecrets:           String("os"),
+				OrganizationSelfHostedRunners: String("osh"),
+				OrganizationUserBlocking:      String("oub"),
+				Packages:                      String("pkg"),
+				Pages:                         String("pg"),
+				PullRequests:                  String("pr"),
+				RepositoryHooks:               String("rh"),
+				RepositoryProjects:            String("rp"),
+				RepositoryPreReceiveHooks:     String("rprh"),
+				Secrets:                       String("s"),
+				SecretScanningAlerts:          String("ssa"),
+				SecurityEvents:                String("se"),
+				SingleFile:                    String("sf"),
+				Statuses:                      String("s"),
+				TeamDiscussions:               String("td"),
+				VulnerabilityAlerts:           String("va"),
+				Workflows:                     String("w"),
+			},
+			CreatedAt:              &Timestamp{referenceTime},
+			UpdatedAt:              &Timestamp{referenceTime},
+			HasMultipleSingleFiles: Bool(false),
+			SuspendedBy: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+			SuspendedAt: &Timestamp{referenceTime},
+		},
+	}
+	want := `{
+		"action":"a",
+		"alert":{
+			"number":1,
+			"state":"s",
+			"dependency":{
+				"package":{
+					"ecosystem":"e",
+					"name":"n"
+				},
+				"manifest_path":"mp",
+				"scope":"s"
+			},
+			"security_advisory":{
+				"ghsa_id":"ghsaid",
+				"cve_id":"cveid",
+				"summary":"s",
+				"description":"d",
+				"vulnerabilities":[
+					{
+						"package":{
+							"ecosystem":"e",
+							"name":"n"
+						},
+						"severity":"s"
+					}
+				],
+				"severity":"s",
+				"cvss":{
+					"score":1,
+					"vector_string":"vs"
+				},
+				"cwes":[
+					{
+						"cwe_id":"cweid",
+						"name":"n"
+					}
+				],
+				"identifiers":[
+					{
+						"value":"v",
+						"type":"t"
+					}
+				],
+				"references":[
+					{
+						"url":"u"
+					}
+				],
+				"published_at":` + referenceTimeStr + `,
+				"updated_at":` + referenceTimeStr + `,
+				"withdrawn_at":` + referenceTimeStr + `
+			},
+			"security_vulnerability":{
+				"package":{
+					"ecosystem":"e",
+					"name":"n"
+				},
+				"severity":"s",
+				"vulnerable_version_range":"vvr",
+				"first_patched_version":{
+					"identifier":"i"
+				}
+			},
+			"url":"u",
+			"html_url":"hu",
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"dismissed_at":` + referenceTimeStr + `,
+			"dismissed_by":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"dismissed_reason":"dr",
+			"dismissed_comment":"dc",
+			"fixed_at":` + referenceTimeStr + `,
+			"auto_dismissed_at":` + referenceTimeStr + `
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		},
+		"enterprise":{
+			"id":1,
+			"slug":"s",
+			"name":"n",
+			"node_id":"nid",
+			"avatar_url":"au",
+			"description":"d",
+			"website_url":"wu",
+			"html_url":"hu",
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		}
+	}`
+
+	testJSONMarshal(t, e, want)
+}
+
 func TestForkEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ForkEvent{}, "{}")
 
@@ -12247,6 +13763,7 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 		SSHURL:          String("s"),
 		CloneURL:        String("c"),
 		SVNURL:          String("s"),
+		Topics:          []string{"octocat", "api"},
 	}
 
 	want := `{
@@ -12301,7 +13818,11 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 		"git_url":"g",
 		"ssh_url":"s",
 		"clone_url":"c",
-		"svn_url":"s"
+		"svn_url":"s",
+		"topics":[
+			"octocat",
+			"api"
+		]
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -13195,6 +14716,396 @@ func TestProjectColumnEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestProjectV2Event_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectV2Event{}, "{}")
+
+	u := &ProjectV2Event{
+		Action: String("a"),
+		ProjectsV2: &ProjectsV2{
+			ID:     Int64(1),
+			NodeID: String("nid"),
+			Owner: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+			Creator: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+			Title:            String("t"),
+			Description:      String("d"),
+			Public:           Bool(true),
+			ClosedAt:         &Timestamp{referenceTime},
+			CreatedAt:        &Timestamp{referenceTime},
+			UpdatedAt:        &Timestamp{referenceTime},
+			DeletedAt:        &Timestamp{referenceTime},
+			Number:           Int(1),
+			ShortDescription: String("sd"),
+			DeletedBy: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+		},
+		Org: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+		Installation: &Installation{
+			ID:       Int64(1),
+			NodeID:   String("nid"),
+			AppID:    Int64(1),
+			AppSlug:  String("as"),
+			TargetID: Int64(1),
+			Account: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+		},
+	}
+
+	want := `{
+		"action":"a",
+		"projects_v2":{
+			"id":1,
+			"node_id":"nid",
+			"owner":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"creator":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"title":"t",
+			"description":"d",
+			"public":true,
+			"closed_at":` + referenceTimeStr + `,
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"deleted_at":` + referenceTimeStr + `,
+			"number":1,
+			"short_description":"sd",
+			"deleted_by":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			}
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			}
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectV2ItemEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectV2ItemEvent{}, "{}")
+
+	u := &ProjectV2ItemEvent{
+		Action: String("a"),
+		Changes: &ProjectV2ItemChange{
+			ArchivedAt: &ArchivedAt{
+				From: &Timestamp{referenceTime},
+				To:   &Timestamp{referenceTime},
+			},
+		},
+		ProjectV2Item: &ProjectV2Item{
+			ID:            Int64(1),
+			NodeID:        String("nid"),
+			ProjectNodeID: String("pnid"),
+			ContentNodeID: String("cnid"),
+			ContentType:   String("ct"),
+			Creator: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+			CreatedAt:  &Timestamp{referenceTime},
+			UpdatedAt:  &Timestamp{referenceTime},
+			ArchivedAt: &Timestamp{referenceTime},
+		},
+		Org: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+		Installation: &Installation{
+			ID:       Int64(1),
+			NodeID:   String("nid"),
+			AppID:    Int64(1),
+			AppSlug:  String("as"),
+			TargetID: Int64(1),
+			Account: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+		},
+	}
+
+	want := `{
+		"action":"a",
+		"changes":{
+			"archived_at":{
+				"from":` + referenceTimeStr + `,
+				"to":` + referenceTimeStr + `
+			}
+		},
+		"projects_v2_item":{
+			"id":1,
+			"node_id":"nid",
+			"project_node_id":"pnid",
+			"content_node_id":"cnid",
+			"content_type":"ct",
+			"creator":{
+				"login":"l",
+				"id":1,
+				"node_id":"n",
+				"avatar_url":"a",
+				"url":"u",
+				"events_url":"e",
+				"repos_url":"r"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"archived_at":` + referenceTimeStr + `
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			}
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestPullRequestEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestEvent{}, "{}")
 
@@ -13244,6 +15155,15 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 			ID:   Int64(1),
 			URL:  String("s"),
 			Name: String("n"),
+		},
+		PerformedViaGithubApp: &App{
+			ID:          Int64(1),
+			NodeID:      String("n"),
+			Slug:        String("s"),
+			Name:        String("n"),
+			Description: String("d"),
+			ExternalURL: String("e"),
+			HTMLURL:     String("h"),
 		},
 		Organization: &Organization{
 			BillingEmail:                         String("be"),
@@ -13551,7 +15471,16 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 			"members_can_create_private_pages":true
 		},
 		"before":"before",
-		"after":"after"
+		"after":"after",
+		"performed_via_github_app":{
+			"id":1,
+			"slug":"s",
+			"node_id":"n",
+			"name":"n",
+			"description":"d",
+			"external_url":"e",
+			"html_url":"h"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -14128,6 +16057,15 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 			URL:  String("s"),
 			Name: String("n"),
 		},
+		PerformedViaGithubApp: &App{
+			ID:          Int64(1),
+			NodeID:      String("n"),
+			Slug:        String("s"),
+			Name:        String("n"),
+			Description: String("d"),
+			ExternalURL: String("e"),
+			HTMLURL:     String("h"),
+		},
 		Organization: &Organization{
 			BillingEmail:                         String("be"),
 			Blog:                                 String("b"),
@@ -14434,7 +16372,16 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 			"members_can_create_private_pages":true
 		},
 		"before":"before",
-		"after":"after"
+		"after":"after",
+		"performed_via_github_app":{
+			"id":1,
+			"slug":"s",
+			"node_id":"n",
+			"name":"n",
+			"description":"d",
+			"external_url":"e",
+			"html_url":"h"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -14837,6 +16784,16 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 	u := &SecurityAdvisoryEvent{
 		Action: String("published"),
 		SecurityAdvisory: &SecurityAdvisory{
+			CVSS: &AdvisoryCVSS{
+				Score:        Float64(1.0),
+				VectorString: String("vs"),
+			},
+			CWEs: []*AdvisoryCWEs{
+				{
+					CWEID: String("cweid"),
+					Name:  String("n"),
+				},
+			},
 			GHSAID:      String("GHSA-rf4j-j272-some"),
 			Summary:     String("Siuuuuuuuuu"),
 			Description: String("desc"),
@@ -14869,11 +16826,162 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 				},
 			},
 		},
+		Enterprise: &Enterprise{
+			ID:          Int(1),
+			Slug:        String("s"),
+			Name:        String("n"),
+			NodeID:      String("nid"),
+			AvatarURL:   String("au"),
+			Description: String("d"),
+			WebsiteURL:  String("wu"),
+			HTMLURL:     String("hu"),
+			CreatedAt:   &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
+		},
+		Installation: &Installation{
+			ID:       Int64(1),
+			NodeID:   String("nid"),
+			AppID:    Int64(1),
+			AppSlug:  String("as"),
+			TargetID: Int64(1),
+			Account: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+			AccessTokensURL:     String("atu"),
+			RepositoriesURL:     String("ru"),
+			HTMLURL:             String("hu"),
+			TargetType:          String("tt"),
+			SingleFileName:      String("sfn"),
+			RepositorySelection: String("rs"),
+			Events:              []string{"e"},
+			SingleFilePaths:     []string{"s"},
+			Permissions: &InstallationPermissions{
+				Actions:                       String("a"),
+				Administration:                String("ad"),
+				Checks:                        String("c"),
+				Contents:                      String("co"),
+				ContentReferences:             String("cr"),
+				Deployments:                   String("d"),
+				Environments:                  String("e"),
+				Issues:                        String("i"),
+				Metadata:                      String("md"),
+				Members:                       String("m"),
+				OrganizationAdministration:    String("oa"),
+				OrganizationHooks:             String("oh"),
+				OrganizationPlan:              String("op"),
+				OrganizationPreReceiveHooks:   String("opr"),
+				OrganizationProjects:          String("op"),
+				OrganizationSecrets:           String("os"),
+				OrganizationSelfHostedRunners: String("osh"),
+				OrganizationUserBlocking:      String("oub"),
+				Packages:                      String("pkg"),
+				Pages:                         String("pg"),
+				PullRequests:                  String("pr"),
+				RepositoryHooks:               String("rh"),
+				RepositoryProjects:            String("rp"),
+				RepositoryPreReceiveHooks:     String("rprh"),
+				Secrets:                       String("s"),
+				SecretScanningAlerts:          String("ssa"),
+				SecurityEvents:                String("se"),
+				SingleFile:                    String("sf"),
+				Statuses:                      String("s"),
+				TeamDiscussions:               String("td"),
+				VulnerabilityAlerts:           String("va"),
+				Workflows:                     String("w"),
+			},
+			CreatedAt:              &Timestamp{referenceTime},
+			UpdatedAt:              &Timestamp{referenceTime},
+			HasMultipleSingleFiles: Bool(false),
+			SuspendedBy: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+			SuspendedAt: &Timestamp{referenceTime},
+		},
+		Organization: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		Repository: &Repository{
+			ID:   Int64(1),
+			URL:  String("s"),
+			Name: String("n"),
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
 	}
 
 	want := `{
 		"action":"published",
 		"security_advisory":{
+			"cvss":{
+				"score":1,
+				"vector_string":"vs"
+			},
+			"cwes":[
+				{
+					"cwe_id":"cweid",
+					"name":"n"
+				}
+			],
 			"ghsa_id":"GHSA-rf4j-j272-some",
 			"summary":"Siuuuuuuuuu",
 			"description":"desc",
@@ -14898,12 +17006,491 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 						"name":"penaldo"
 					},
 					"severity":"moderate",
-					"vulnerable_version_range":">= 2.0.0, < 2.0.2",
+					"vulnerable_version_range":"\u003e= 2.0.0, \u003c 2.0.2",
 					"first_patched_version":{
 						"identifier":"2.0.2"
 					}
 				}
 			]
+		},
+		"enterprise":{
+			"id":1,
+			"slug":"s",
+			"name":"n",
+			"node_id":"nid",
+			"avatar_url":"au",
+			"description":"d",
+			"website_url":"wu",
+			"html_url":"hu",
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSecurityAndAnalysisEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SecurityAndAnalysisEvent{}, "{}")
+
+	u := &SecurityAndAnalysisEvent{
+		Changes: &SecurityAndAnalysisChange{
+			From: &SecurityAndAnalysisChangeFrom{
+				SecurityAndAnalysis: &SecurityAndAnalysis{
+					AdvancedSecurity: &AdvancedSecurity{
+						Status: String("enabled"),
+					},
+					SecretScanning: &SecretScanning{
+						Status: String("enabled"),
+					},
+					SecretScanningPushProtection: &SecretScanningPushProtection{
+						Status: String("enabled"),
+					},
+					DependabotSecurityUpdates: &DependabotSecurityUpdates{
+						Status: String("enabled"),
+					},
+				},
+			},
+		},
+		Enterprise: &Enterprise{
+			ID:          Int(1),
+			Slug:        String("s"),
+			Name:        String("n"),
+			NodeID:      String("nid"),
+			AvatarURL:   String("au"),
+			Description: String("d"),
+			WebsiteURL:  String("wu"),
+			HTMLURL:     String("hu"),
+			CreatedAt:   &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
+		},
+		Installation: &Installation{
+			ID:       Int64(1),
+			NodeID:   String("nid"),
+			AppID:    Int64(1),
+			AppSlug:  String("as"),
+			TargetID: Int64(1),
+			Account: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+			AccessTokensURL:     String("atu"),
+			RepositoriesURL:     String("ru"),
+			HTMLURL:             String("hu"),
+			TargetType:          String("tt"),
+			SingleFileName:      String("sfn"),
+			RepositorySelection: String("rs"),
+			Events:              []string{"e"},
+			SingleFilePaths:     []string{"s"},
+			Permissions: &InstallationPermissions{
+				Actions:                       String("a"),
+				Administration:                String("ad"),
+				Checks:                        String("c"),
+				Contents:                      String("co"),
+				ContentReferences:             String("cr"),
+				Deployments:                   String("d"),
+				Environments:                  String("e"),
+				Issues:                        String("i"),
+				Metadata:                      String("md"),
+				Members:                       String("m"),
+				OrganizationAdministration:    String("oa"),
+				OrganizationHooks:             String("oh"),
+				OrganizationPlan:              String("op"),
+				OrganizationPreReceiveHooks:   String("opr"),
+				OrganizationProjects:          String("op"),
+				OrganizationSecrets:           String("os"),
+				OrganizationSelfHostedRunners: String("osh"),
+				OrganizationUserBlocking:      String("oub"),
+				Packages:                      String("pkg"),
+				Pages:                         String("pg"),
+				PullRequests:                  String("pr"),
+				RepositoryHooks:               String("rh"),
+				RepositoryProjects:            String("rp"),
+				RepositoryPreReceiveHooks:     String("rprh"),
+				Secrets:                       String("s"),
+				SecretScanningAlerts:          String("ssa"),
+				SecurityEvents:                String("se"),
+				SingleFile:                    String("sf"),
+				Statuses:                      String("s"),
+				TeamDiscussions:               String("td"),
+				VulnerabilityAlerts:           String("va"),
+				Workflows:                     String("w"),
+			},
+			CreatedAt:              &Timestamp{referenceTime},
+			UpdatedAt:              &Timestamp{referenceTime},
+			HasMultipleSingleFiles: Bool(false),
+			SuspendedBy: &User{
+				Login:           String("l"),
+				ID:              Int64(1),
+				URL:             String("u"),
+				AvatarURL:       String("a"),
+				GravatarID:      String("g"),
+				Name:            String("n"),
+				Company:         String("c"),
+				Blog:            String("b"),
+				Location:        String("l"),
+				Email:           String("e"),
+				Hireable:        Bool(true),
+				Bio:             String("b"),
+				TwitterUsername: String("t"),
+				PublicRepos:     Int(1),
+				Followers:       Int(1),
+				Following:       Int(1),
+				CreatedAt:       &Timestamp{referenceTime},
+				SuspendedAt:     &Timestamp{referenceTime},
+			},
+			SuspendedAt: &Timestamp{referenceTime},
+		},
+		Organization: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		Repository: &Repository{
+			ID:   Int64(1),
+			URL:  String("s"),
+			Name: String("n"),
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+	}
+
+	want := `{
+		"changes":{
+			"from":{
+				"security_and_analysis":{
+					"advanced_security":{
+						"status":"enabled"
+					},
+					"secret_scanning":{
+						"status":"enabled"
+					},
+					"secret_scanning_push_protection":{
+						"status":"enabled"
+					},
+					"dependabot_security_updates":{
+						"status":"enabled"
+					}
+				}
+			}
+		},
+		"enterprise":{
+			"id":1,
+			"slug":"s",
+			"name":"n",
+			"node_id":"nid",
+			"avatar_url":"au",
+			"description":"d",
+			"website_url":"wu",
+			"html_url":"hu",
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `
+		},
+		"installation":{
+			"id":1,
+			"node_id":"nid",
+			"app_id":1,
+			"app_slug":"as",
+			"target_id":1,
+			"account":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"access_tokens_url":"atu",
+			"repositories_url":"ru",
+			"html_url":"hu",
+			"target_type":"tt",
+			"single_file_name":"sfn",
+			"repository_selection":"rs",
+			"events":[
+				"e"
+			],
+			"single_file_paths":[
+				"s"
+			],
+			"permissions":{
+				"actions":"a",
+				"administration":"ad",
+				"checks":"c",
+				"contents":"co",
+				"content_references":"cr",
+				"deployments":"d",
+				"environments":"e",
+				"issues":"i",
+				"metadata":"md",
+				"members":"m",
+				"organization_administration":"oa",
+				"organization_hooks":"oh",
+				"organization_plan":"op",
+				"organization_pre_receive_hooks":"opr",
+				"organization_projects":"op",
+				"organization_secrets":"os",
+				"organization_self_hosted_runners":"osh",
+				"organization_user_blocking":"oub",
+				"packages":"pkg",
+				"pages":"pg",
+				"pull_requests":"pr",
+				"repository_hooks":"rh",
+				"repository_projects":"rp",
+				"repository_pre_receive_hooks":"rprh",
+				"secrets":"s",
+				"secret_scanning_alerts":"ssa",
+				"security_events":"se",
+				"single_file":"sf",
+				"statuses":"s",
+				"team_discussions":"td",
+				"vulnerability_alerts":"va",
+				"workflows":"w"
+			},
+			"created_at":` + referenceTimeStr + `,
+			"updated_at":` + referenceTimeStr + `,
+			"has_multiple_single_files":false,
+			"suspended_by":{
+				"login":"l",
+				"id":1,
+				"avatar_url":"a",
+				"gravatar_id":"g",
+				"name":"n",
+				"company":"c",
+				"blog":"b",
+				"location":"l",
+				"email":"e",
+				"hireable":true,
+				"bio":"b",
+				"twitter_username":"t",
+				"public_repos":1,
+				"followers":1,
+				"following":1,
+				"created_at":` + referenceTimeStr + `,
+				"suspended_at":` + referenceTimeStr + `,
+				"url":"u"
+			},
+			"suspended_at":` + referenceTimeStr + `
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
 		}
 	}`
 
