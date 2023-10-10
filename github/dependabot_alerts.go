@@ -82,6 +82,13 @@ type ListAlertsOptions struct {
 	ListCursorOptions
 }
 
+// AlertUpdate specifies the optional parameters to the DependabotService.UpdateRepoAlert method.
+type AlertUpdate struct {
+	State            string  `json:"state"`
+	DismissedReason  *string `json:"dismissed_reason,omitempty"`
+	DismissedComment *string `json:"dismissed_comment,omitempty"`
+}
+
 func (s *DependabotService) listAlerts(ctx context.Context, url string, opts *ListAlertsOptions) ([]*DependabotAlert, *Response, error) {
 	u, err := addOptions(url, opts)
 	if err != nil {
@@ -128,11 +135,27 @@ func (s *DependabotService) GetRepoAlert(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	alert := new(DependabotAlert)
+	var alert DependabotAlert
 	resp, err := s.client.Do(ctx, req, alert)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return alert, resp, nil
+	return &alert, resp, nil
+}
+
+func (s *DependabotService) UpdateRepoAlert(ctx context.Context, owner, repo string, number int, update *AlertUpdate) (*DependabotAlert, *Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/dependabot/alerts/%v", owner, repo, number)
+	req, err := s.client.NewRequest("PATCH", url, update)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var alert DependabotAlert
+	resp, err := s.client.Do(ctx, req, alert)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return &alert, resp, nil
 }
