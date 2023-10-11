@@ -15,6 +15,7 @@ type DeploymentBranchPolicy struct {
 	Name   *string `json:"name,omitempty"`
 	ID     *int64  `json:"id,omitempty"`
 	NodeID *string `json:"node_id,omitempty"`
+	Type   *string `json:"type,omitempty"`
 }
 
 // DeploymentBranchPolicyResponse represents the slightly different format of response that comes back when you list deployment branch policies.
@@ -26,6 +27,7 @@ type DeploymentBranchPolicyResponse struct {
 // DeploymentBranchPolicyRequest represents a deployment branch policy request.
 type DeploymentBranchPolicyRequest struct {
 	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // ListDeploymentBranchPolicies lists the deployment branch policies for an environment.

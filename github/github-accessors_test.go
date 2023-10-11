@@ -6570,6 +6570,16 @@ func TestDeploymentBranchPolicy_GetNodeID(tt *testing.T) {
 	d.GetNodeID()
 }
 
+func TestDeploymentBranchPolicy_GetType(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentBranchPolicy{Type: &zeroValue}
+	d.GetType()
+	d = &DeploymentBranchPolicy{}
+	d.GetType()
+	d = nil
+	d.GetType()
+}
+
 func TestDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
 	var zeroValue string
 	d := &DeploymentBranchPolicyRequest{Name: &zeroValue}
@@ -6578,6 +6588,16 @@ func TestDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
 	d.GetName()
 	d = nil
 	d.GetName()
+}
+
+func TestDeploymentBranchPolicyRequest_GetType(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentBranchPolicyRequest{Type: &zeroValue}
+	d.GetType()
+	d = &DeploymentBranchPolicyRequest{}
+	d.GetType()
+	d = nil
+	d.GetType()
 }
 
 func TestDeploymentBranchPolicyResponse_GetTotalCount(tt *testing.T) {
