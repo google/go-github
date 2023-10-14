@@ -39,6 +39,18 @@ func TestActionsPermissions_String(t *testing.T) {
 	}
 }
 
+func TestActionsPermissionsEnterprise_String(t *testing.T) {
+	v := ActionsPermissionsEnterprise{
+		EnabledOrganizations: String(""),
+		AllowedActions:       String(""),
+		SelectedActionsURL:   String(""),
+	}
+	want := `github.ActionsPermissionsEnterprise{EnabledOrganizations:"", AllowedActions:"", SelectedActionsURL:""}`
+	if got := v.String(); got != want {
+		t.Errorf("ActionsPermissionsEnterprise.String = %v, want %v", got, want)
+	}
+}
+
 func TestActionsPermissionsRepository_String(t *testing.T) {
 	v := ActionsPermissionsRepository{
 		Enabled:            Bool(false),
@@ -1817,18 +1829,6 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}, SecretScanningPushProtection:github.SecretScanningPushProtection{}, DependabotSecurityUpdates:github.DependabotSecurityUpdates{}}`
 	if got := v.String(); got != want {
 		t.Errorf("SecurityAndAnalysis.String = %v, want %v", got, want)
-	}
-}
-
-func TestServiceHook_String(t *testing.T) {
-	v := ServiceHook{
-		Name:            String(""),
-		Events:          []string{""},
-		SupportedEvents: []string{""},
-	}
-	want := `github.ServiceHook{Name:"", Events:[""], SupportedEvents:[""]}`
-	if got := v.String(); got != want {
-		t.Errorf("ServiceHook.String = %v, want %v", got, want)
 	}
 }
 

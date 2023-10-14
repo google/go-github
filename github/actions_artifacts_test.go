@@ -277,7 +277,7 @@ func TestActionsSerivice_DownloadArtifact(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, true)
+	url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
 	if err != nil {
 		t.Errorf("Actions.DownloadArtifact returned error: %v", err)
 	}
@@ -292,7 +292,7 @@ func TestActionsSerivice_DownloadArtifact(t *testing.T) {
 
 	const methodName = "DownloadArtifact"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.DownloadArtifact(ctx, "\n", "\n", -1, true)
+		_, _, err = client.Actions.DownloadArtifact(ctx, "\n", "\n", -1, 1)
 		return err
 	})
 
@@ -301,7 +301,7 @@ func TestActionsSerivice_DownloadArtifact(t *testing.T) {
 		return nil, errors.New("failed to download artifact")
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.DownloadArtifact(ctx, "o", "r", 1, true)
+		_, _, err = client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
 		return err
 	})
 }
@@ -311,7 +311,7 @@ func TestActionsService_DownloadArtifact_invalidOwner(t *testing.T) {
 	defer teardown()
 
 	ctx := context.Background()
-	_, _, err := client.Actions.DownloadArtifact(ctx, "%", "r", 1, true)
+	_, _, err := client.Actions.DownloadArtifact(ctx, "%", "r", 1, 1)
 	testURLParseError(t, err)
 }
 
@@ -320,7 +320,7 @@ func TestActionsService_DownloadArtifact_invalidRepo(t *testing.T) {
 	defer teardown()
 
 	ctx := context.Background()
-	_, _, err := client.Actions.DownloadArtifact(ctx, "o", "%", 1, true)
+	_, _, err := client.Actions.DownloadArtifact(ctx, "o", "%", 1, 1)
 	testURLParseError(t, err)
 }
 
@@ -334,7 +334,7 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_dontFollowRedire
 	})
 
 	ctx := context.Background()
-	_, resp, _ := client.Actions.DownloadArtifact(ctx, "o", "r", 1, false)
+	_, resp, _ := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 0)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
@@ -355,7 +355,7 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 	})
 
 	ctx := context.Background()
-	url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, true)
+	url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
 	if err != nil {
 		t.Errorf("Actions.DownloadArtifact return error: %v", err)
 	}

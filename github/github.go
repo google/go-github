@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	Version = "v55.0.0"
+	Version = "v56.0.0"
 
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
@@ -184,9 +184,11 @@ type Client struct {
 	Billing            *BillingService
 	Checks             *ChecksService
 	CodeScanning       *CodeScanningService
+	CodesOfConduct     *CodesOfConductService
 	Codespaces         *CodespacesService
 	Dependabot         *DependabotService
 	DependencyGraph    *DependencyGraphService
+	Emojis             *EmojisService
 	Enterprise         *EnterpriseService
 	Gists              *GistsService
 	Git                *GitService
@@ -195,7 +197,9 @@ type Client struct {
 	IssueImport        *IssueImportService
 	Issues             *IssuesService
 	Licenses           *LicensesService
+	Markdown           *MarkdownService
 	Marketplace        *MarketplaceService
+	Meta               *MetaService
 	Migrations         *MigrationService
 	Organizations      *OrganizationsService
 	Projects           *ProjectsService
@@ -402,8 +406,10 @@ func (c *Client) initialize() {
 	c.Checks = (*ChecksService)(&c.common)
 	c.CodeScanning = (*CodeScanningService)(&c.common)
 	c.Codespaces = (*CodespacesService)(&c.common)
+	c.CodesOfConduct = (*CodesOfConductService)(&c.common)
 	c.Dependabot = (*DependabotService)(&c.common)
 	c.DependencyGraph = (*DependencyGraphService)(&c.common)
+	c.Emojis = (*EmojisService)(&c.common)
 	c.Enterprise = (*EnterpriseService)(&c.common)
 	c.Gists = (*GistsService)(&c.common)
 	c.Git = (*GitService)(&c.common)
@@ -412,7 +418,9 @@ func (c *Client) initialize() {
 	c.IssueImport = (*IssueImportService)(&c.common)
 	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
+	c.Markdown = (*MarkdownService)(&c.common)
 	c.Marketplace = &MarketplaceService{client: c}
+	c.Meta = (*MetaService)(&c.common)
 	c.Migrations = (*MigrationService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
 	c.Projects = (*ProjectsService)(&c.common)
@@ -463,7 +471,7 @@ func NewTokenClient(_ context.Context, token string) *Client {
 // NewEnterpriseClient returns a new GitHub API client with provided
 // base URL and upload URL (often is your GitHub Enterprise hostname).
 //
-// Deprecated: Use NewClient(httpClient).WithOptions(WithEnterpriseURLs(baseURL, uploadURL)) instead.
+// Deprecated: Use NewClient(httpClient).WithEnterpriseURLs(baseURL, uploadURL) instead.
 func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*Client, error) {
 	return NewClient(httpClient).WithEnterpriseURLs(baseURL, uploadURL)
 }
@@ -1559,7 +1567,7 @@ func formatRateReset(d time.Duration) string {
 
 // When using roundTripWithOptionalFollowRedirect, note that it
 // is the responsibility of the caller to close the response body.
-func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, followRedirects bool, opts ...RequestOption) (*http.Response, error) {
+func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, maxRedirects int, opts ...RequestOption) (*http.Response, error) {
 	req, err := c.NewRequest("GET", u, nil, opts...)
 	if err != nil {
 		return nil, err
@@ -1578,10 +1586,10 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 	}
 
 	// If redirect response is returned, follow it
-	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
+	if maxRedirects > 0 && resp.StatusCode == http.StatusMovedPermanently {
 		_ = resp.Body.Close()
 		u = resp.Header.Get("Location")
-		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, false, opts...)
+		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects-1, opts...)
 	}
 	return resp, err
 }

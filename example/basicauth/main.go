@@ -20,9 +20,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"syscall"
 
-	"github.com/google/go-github/v55/github"
+	"github.com/google/go-github/v56/github"
 	"golang.org/x/term"
 )
 
@@ -32,7 +31,7 @@ func main() {
 	username, _ := r.ReadString('\n')
 
 	fmt.Print("GitHub Password: ")
-	bytePassword, _ := term.ReadPassword(syscall.Stdin)
+	bytePassword, _ := term.ReadPassword(int(os.Stdin.Fd()))
 	password := string(bytePassword)
 
 	tp := github.BasicAuthTransport{

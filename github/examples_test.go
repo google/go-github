@@ -12,17 +12,17 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/go-github/v55/github"
+	"github.com/google/go-github/v56/github"
 )
 
-func ExampleClient_Markdown() {
+func ExampleMarkdownService_Render() {
 	client := github.NewClient(nil)
 
 	input := "# heading #\n\nLink to issue #1"
 	opt := &github.MarkdownOptions{Mode: "gfm", Context: "google/go-github"}
 
 	ctx := context.Background()
-	output, _, err := client.Markdown(ctx, input, opt)
+	output, _, err := client.Markdown.Render(ctx, input, opt)
 	if err != nil {
 		fmt.Println(err)
 	}

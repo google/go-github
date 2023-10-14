@@ -52,11 +52,12 @@ type EnvResponse struct {
 
 // ProtectionRule represents a single protection rule applied to the environment.
 type ProtectionRule struct {
-	ID        *int64              `json:"id,omitempty"`
-	NodeID    *string             `json:"node_id,omitempty"`
-	Type      *string             `json:"type,omitempty"`
-	WaitTimer *int                `json:"wait_timer,omitempty"`
-	Reviewers []*RequiredReviewer `json:"reviewers,omitempty"`
+	ID                *int64              `json:"id,omitempty"`
+	NodeID            *string             `json:"node_id,omitempty"`
+	PreventSelfReview *bool               `json:"prevent_self_review,omitempty"`
+	Type              *string             `json:"type,omitempty"`
+	WaitTimer         *int                `json:"wait_timer,omitempty"`
+	Reviewers         []*RequiredReviewer `json:"reviewers,omitempty"`
 }
 
 // RequiredReviewer represents a required reviewer.
@@ -173,6 +174,7 @@ type CreateUpdateEnvironment struct {
 	Reviewers              []*EnvReviewers `json:"reviewers"`
 	CanAdminsBypass        *bool           `json:"can_admins_bypass"`
 	DeploymentBranchPolicy *BranchPolicy   `json:"deployment_branch_policy"`
+	PreventSelfReview      *bool           `json:"prevent_self_review,omitempty"`
 }
 
 // createUpdateEnvironmentNoEnterprise represents the fields accepted for Pro/Teams private repos.
