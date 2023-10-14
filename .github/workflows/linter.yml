@@ -6,20 +6,7 @@ permissions:
 
 jobs:
   lint:
-    strategy:
-      matrix:
-        platform: [ubuntu-latest]
-
-        # golangci-lint will only process a single module, so we need to call it
-        # separately for each module in the repo.  We dont lint example/newreposecretwithlibsodium
-        # since that needs libsodium to run.
-        working-directory:
-          - ""
-          - example
-          - scrape
-          - tools
-    runs-on: ${{ matrix.platform }}
-
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-go@v4
@@ -27,3 +14,6 @@ jobs:
         go-version: 1.x
         cache-dependency-path: "**/go.sum"
     - run: script/lint.sh
+      env:
+        CHECK_GITHUB_OPENAPI: 1
+        GITHUB_TOKEN: ${{ github.token }}

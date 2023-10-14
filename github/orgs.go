@@ -223,7 +223,7 @@ func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organizati
 
 // GetByID fetches an organization.
 //
-// Note: GetByID uses the undocumented GitHub API endpoint /organizations/:id.
+// Note: GetByID uses the undocumented GitHub API endpoint "GET /organizations/{organization_id}".
 func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organization, *Response, error) {
 	u := fmt.Sprintf("organizations/%d", id)
 	req, err := s.client.NewRequest("GET", u, nil)

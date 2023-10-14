@@ -566,7 +566,7 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 
 // GetByID fetches a repository.
 //
-// Note: GetByID uses the undocumented GitHub API endpoint /repositories/:id.
+// Note: GetByID uses the undocumented GitHub API endpoint "GET /repositories/{repository_id}".
 func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repositories/%d", id)
 	req, err := s.client.NewRequest("GET", u, nil)

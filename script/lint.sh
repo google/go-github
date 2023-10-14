@@ -1,5 +1,7 @@
 #!/bin/sh
-#/ script/lint.sh runs linters and validates generated files.
+#/ [ CHECK_GITHUB_OPENAPI=1 ] script/lint.sh runs linters and validates generated files.
+#/ When CHECK_GITHUB is set, it validates that metadata.yaml is consistent with the
+#/ descriptions from github.com/github/rest-api-description.
 
 set -e
 
@@ -31,6 +33,14 @@ for dir in $MOD_DIRS; do
   ) || FAILED=1
 done
 
+echo validating metadata.yaml
+if [ -n "$CHECK_GITHUB_OPENAPI" ]; then
+  script/metadata.sh validate --check-github || FAILED=1
+else
+  script/metadata.sh validate || FAILED=1
+fi
+
+echo validating generated files
 script/generate.sh --check || FAILED=1
 
 if [ -n "$FAILED" ]; then

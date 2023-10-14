@@ -3,7 +3,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package internal
+package main
 
 import (
 	"context"
@@ -14,7 +14,7 @@ import (
 	"strconv"
 
 	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/google/go-github/v55/github"
+	"github.com/google/go-github/v56/github"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -33,13 +33,29 @@ type openapiFile struct {
 	releaseMinor int
 }
 
-type contentsClient interface {
-	DownloadContents(ctx context.Context, owner, repo, filepath string, opts *github.RepositoryContentGetOptions) (io.ReadCloser, *github.Response, error)
-	GetContents(ctx context.Context, owner, repo, path string, opts *github.RepositoryContentGetOptions) (*github.RepositoryContent, []*github.RepositoryContent, *github.Response, error)
+func getOpsFromGithub(ctx context.Context, client *github.Client, gitRef string) ([]*operation, error) {
+	descs, err := getDescriptions(ctx, client, gitRef)
+	if err != nil {
+		return nil, err
+	}
+	var ops []*operation
+	for _, desc := range descs {
+		for p, pathItem := range desc.description.Paths {
+			for method, op := range pathItem.Operations() {
+				docURL := ""
+				if op.ExternalDocs != nil {
+					docURL = op.ExternalDocs.URL
+				}
+				ops = addOperation(ops, desc.filename, method+" "+p, docURL)
+			}
+		}
+	}
+	sortOperations(ops)
+	return ops, nil
 }
 
-func (o *openapiFile) loadDescription(ctx context.Context, client contentsClient, gitRef string) error {
-	contents, resp, err := client.DownloadContents(
+func (o *openapiFile) loadDescription(ctx context.Context, client *github.Client, gitRef string) error {
+	contents, resp, err := client.Repositories.DownloadContents(
 		ctx,
 		descriptionsOwnerName,
 		descriptionsRepoName,
@@ -91,8 +107,8 @@ var dirPatterns = []*regexp.Regexp{
 //   - Directories that don't match any of the patterns in dirPatterns are removed.
 //   - Directories are sorted by the pattern that matched in the same order they appear in dirPatterns.
 //   - Directories are then sorted by major and minor version in descending order.
-func getDescriptions(ctx context.Context, client contentsClient, gitRef string) ([]*openapiFile, error) {
-	_, dir, resp, err := client.GetContents(
+func getDescriptions(ctx context.Context, client *github.Client, gitRef string) ([]*openapiFile, error) {
+	_, dir, resp, err := client.Repositories.GetContents(
 		ctx,
 		descriptionsOwnerName,
 		descriptionsRepoName,

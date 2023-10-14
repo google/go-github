@@ -1,0 +1,33 @@
+
+operations:
+  - name: POST /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#update-a
+openapi_operations:
+  - name: GET /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#get-a
+  - name: GET /undocumented/{undocumented_id}
+operation_overrides:
+  - name: GET /a/{a_id_noncanonical2}
+    documentation_url: https://docs.github.com/rest/a/a#overridden-get-a
+  - name: GET /fake/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#overridden-get-a
+
+
+methods:
+    - name: AService.Get
+      operations:
+        - GET /a/{a_id_noncanonical}
+    - name: AService.Undocumented
+      operations:
+        - GET /undocumented/{undocumented_id}
+    - name: AService.OutdatedLinks
+      operations:
+        - POST /a/{a_id}
+    - name: AService.AcceptableLinks
+      operations:
+        - POST /a/{a_id}
+        - GET /a/{a_id}
+    - name: AService.Uncommented
+      operations:
+        - GET /a/{a_id}
+openapi_commit: b8dafbe912a3be421d21346faa2b29bf15e6f84d

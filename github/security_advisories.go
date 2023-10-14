@@ -97,7 +97,7 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx c
 
 // ListRepositorySecurityAdvisories lists the security advisories in a repository.
 //
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories
+// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories
 func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisories(ctx context.Context, owner, repo string, opt *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/security-advisories", owner, repo)
 	url, err := addOptions(url, opt)
