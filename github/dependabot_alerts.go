@@ -152,7 +152,7 @@ func (s *DependabotService) UpdateRepoAlert(ctx context.Context, owner, repo str
 	}
 
 	var alert DependabotAlert
-	resp, err := s.client.Do(ctx, req, alert)
+	resp, err := s.client.Do(ctx, req, &alert)
 	if err != nil {
 		return nil, resp, err
 	}
