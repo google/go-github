@@ -1,5 +1,5 @@
 #!/bin/sh
-#/ script/metadata.sh runs ./tools/cmd/metadata in the repository root with the given arguments
+#/ script/metadata.sh runs ./tools/metadata in the repository root with the given arguments
 
 set -e
 
