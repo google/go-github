@@ -92,6 +92,47 @@ func TestDependabotService_GetRepoAlert(t *testing.T) {
 	})
 }
 
+func TestDependabotService_UpdateRepoAlert(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/dependabot/alerts/42", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"number":42,"state":"fixed"}`)
+	})
+
+	update := AlertUpdate{
+		State: "fixed",
+	}
+	ctx := context.Background()
+	alert, _, err := client.Dependabot.UpdateRepoAlert(ctx, "o", "r", 42, &update)
+	if err != nil {
+		t.Errorf("Dependabot.GetRepoAlert returned error: %v", err)
+	}
+
+	want := &DependabotAlert{
+		Number: Int(42),
+		State:  String("fixed"),
+	}
+	if !cmp.Equal(alert, want) {
+		t.Errorf("Dependabot.UpdateRepoAlert returned %+v, want %+v", alert, want)
+	}
+
+	const methodName = "UpdateRepoAlert"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Dependabot.UpdateRepoAlert(ctx, "\n", "\n", 0, &update)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Dependabot.UpdateRepoAlert(ctx, "o", "r", 42, &update)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestDependabotService_ListOrgAlerts(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
