@@ -73,6 +73,16 @@ are more sensitive, emailed to <opensource@google.com>.
 [pull request]: https://help.github.com/articles/creating-a-pull-request
 [monitored by codecov.io]: https://codecov.io/gh/google/go-github
 
+## Metadata ##
+
+`metadata.yaml` contains metadata about go-github's code and GitHub's OpenAPI
+specification. We use this metadata to keep documentation links up to date and
+to keep tabs on coverage of the GitHub API.
+
+All exported methods on `*Service` structs need to have an entry in the
+"methods" section of `metadata.yaml` that maps it to the corresponding
+OpenAPI operation.
+
 ## Scripts ##
 
 The `script` directory has shell scripts that help with common development
