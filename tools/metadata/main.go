@@ -17,24 +17,33 @@ import (
 )
 
 var helpVars = kong.Vars{
-	"update_help":     `Update metadata.yaml from OpenAPI descriptions in github.com/github/rest-api-description.`,
-	"format_help":     `Format metadata.yaml.`,
-	"validate_help":   `Validate that metadata.yaml is consistent with source code.`,
-	"unused_ops_help": `List operations in metadata.yaml that don't have any associated go methods'.`,
-	"canonize_help":   `Update metadata.yaml to use canonical operation names.`,
+	"update_openapi_help":  `Update metadata.yaml from OpenAPI descriptions in github.com/github/rest-api-description.`,
+	"update_doc_urls_help": `Update documentation urls in the Go source files in the github directory to match the urls in the metadata file.`,
+	"format_help":          `Format metadata.yaml.`,
+	"validate_help":        `Validate that metadata.yaml is consistent with source code.`,
+	"unused_ops_help":      `List operations in metadata.yaml that don't have any associated go methods'.`,
+	"canonize_help":        `Update metadata.yaml to use canonical operation names.`,
+	"working_dir_help":     `Working directory. Should be the root of the go-github repository.`,
+	"filename_help":        `Path to metadata.yaml. Defaults to <working dir>/metadata.yaml.`,
+	"github_dir_help":      `Path to the github package. Defaults to <working dir>/github.`,
+	"openapi_ref_help":     `Git ref to pull OpenAPI descriptions from.`,
+	"output_json_help":     `Output JSON.`,
+	"validate_github_help": `Check that metadata.yaml is consistent with the OpenAPI descriptions in github.com/github/rest-api-description.`,
 }
 
 type rootCmd struct {
-	WorkingDir     string            `kong:"short=C,default=.,help='Working directory. Must be within a go-github root.'"`
-	Filename       string            `kong:"help='Path to metadata.yaml. Defaults to <go-github-root>/metadata.yaml.'"`
-	GithubDir      string            `kong:"help='Path to the github package. Defaults to <go-github-root>/github.'"`
-	GithubURL      string            `kong:"hidden,default='https://api.github.com'"`
-	UpdateMetadata updateMetadataCmd `kong:"cmd,help=${update_help}"`
-	UpdateUrls     updateUrlsCmd     `kong:"cmd,help='Update documentation URLs in the Go source files in the github directory to match the urls in the metadata file.'"`
-	Format         formatCmd         `kong:"cmd,help=${format_help}"`
-	Validate       validateCmd       `kong:"cmd,help=${validate_help}"`
-	UnusedOps      unusedOpsCmd      `kong:"cmd,help=${unused_ops_help}"`
-	Canonize       canonizeCmd       `kong:"cmd,help=${canonize_help}"`
+	WorkingDir    string           `kong:"short=C,default=.,help=${working_dir_help}"`
+	Filename      string           `kong:"help=${filename_help}"`
+	GithubDir     string           `kong:"help=${github_dir_help}"`
+	UpdateOpenAPI updateOpenAPICmd `kong:"cmd,name=update-openapi,help=${update_openapi_help}"`
+	UpdateDocURLs updateDocURLsCmd `kong:"cmd,name=update-doc-urls,help=${update_doc_urls_help}"`
+	Format        formatCmd        `kong:"cmd,help=${format_help}"`
+	Validate      validateCmd      `kong:"cmd,help=${validate_help}"`
+	UnusedOps     unusedOpsCmd     `kong:"cmd,help=${unused_ops_help}"`
+	Canonize      canonizeCmd      `kong:"cmd,help=${canonize_help}"`
+
+	// for testing
+	GithubURL string `kong:"hidden,default='https://api.github.com'"`
 }
 
 func (c *rootCmd) metadata() (string, *metadata, error) {
@@ -57,11 +66,11 @@ func githubClient(apiURL string) (*github.Client, error) {
 	return github.NewClient(nil).WithAuthToken(token).WithEnterpriseURLs(apiURL, "")
 }
 
-type updateMetadataCmd struct {
-	Ref string `kong:"default=main,help='git ref to pull OpenAPI descriptions from'"`
+type updateOpenAPICmd struct {
+	Ref string `kong:"default=main,help=${openapi_ref_help}"`
 }
 
-func (c *updateMetadataCmd) Run(root *rootCmd) error {
+func (c *updateOpenAPICmd) Run(root *rootCmd) error {
 	ctx := context.Background()
 	filename, meta, err := root.metadata()
 	if err != nil {
@@ -90,7 +99,7 @@ func (c *formatCmd) Run(root *rootCmd) error {
 }
 
 type validateCmd struct {
-	CheckGithub bool `kong:"help='Check that metadata.yaml is consistent with the OpenAPI descriptions in github.com/github/rest-api-description.'"`
+	CheckGithub bool `kong:"help=${validate_github_help}"`
 }
 
 func (c *validateCmd) Run(k *kong.Context, root *rootCmd) error {
@@ -127,9 +136,9 @@ func (c *validateCmd) Run(k *kong.Context, root *rootCmd) error {
 	return fmt.Errorf("found %d issues in %s", len(issues), filename)
 }
 
-type updateUrlsCmd struct{}
+type updateDocURLsCmd struct{}
 
-func (c *updateUrlsCmd) Run(root *rootCmd) error {
+func (c *updateDocURLsCmd) Run(root *rootCmd) error {
 	githubDir := filepath.Join(root.WorkingDir, "github")
 	_, meta, err := root.metadata()
 	if err != nil {
@@ -140,7 +149,7 @@ func (c *updateUrlsCmd) Run(root *rootCmd) error {
 }
 
 type unusedOpsCmd struct {
-	JSON bool `kong:"help='Output JSON.'"`
+	JSON bool `kong:"help=${output_json_help}"`
 }
 
 func (c *unusedOpsCmd) Run(root *rootCmd) error {

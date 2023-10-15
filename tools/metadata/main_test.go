@@ -26,8 +26,8 @@ import (
 	"github.com/google/go-github/v56/github"
 )
 
-func TestUpdateURLs(t *testing.T) {
-	res := runTest(t, "testdata/update-urls", "update-urls")
+func TestUpdateDocURLs(t *testing.T) {
+	res := runTest(t, "testdata/update-doc-urls", "update-doc-urls")
 	res.assertOutput("", "")
 	res.assertNoErr()
 	res.checkGolden()
@@ -54,7 +54,7 @@ Name in override_operations does not exist in operations or openapi_operations: 
 	})
 }
 
-func TestUpdateMetadata(t *testing.T) {
+func TestUpdateOpenAPI(t *testing.T) {
 	testServer := newTestServer(t, "main", map[string]interface{}{
 		"api.github.com/api.github.com.json": openapi3.T{
 			Paths: openapi3.Paths{
@@ -113,7 +113,7 @@ func TestUpdateMetadata(t *testing.T) {
 		},
 	})
 
-	res := runTest(t, "testdata/update-metadata", "update-metadata", "--github-url", testServer.URL)
+	res := runTest(t, "testdata/update-openapi", "update-openapi", "--github-url", testServer.URL)
 	res.assertOutput("", "")
 	res.assertNoErr()
 	res.checkGolden()
