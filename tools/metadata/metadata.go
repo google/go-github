@@ -92,7 +92,10 @@ func normalizedURL(u string) string {
 	}
 	parts := strings.Split(u, "/")
 	for i, p := range parts {
-		if len(p) > 0 && p[0] == '{' {
+		if len(p) == 0 {
+			continue
+		}
+		if p[0] == '{' || p[0] == '%' {
 			parts[i] = "*"
 		}
 	}
@@ -107,8 +110,12 @@ func normalizedOpName(name string) string {
 }
 
 func parseOpName(id string) (verb, url string) {
-	verb, url, _ = strings.Cut(id, " ")
-	return verb, url
+	fields := strings.Fields(id)
+	verb = fields[0]
+	if len(fields) > 1 {
+		url = fields[1]
+	}
+	return strings.ToUpper(verb), url
 }
 
 type method struct {
@@ -290,24 +297,24 @@ func (m *metadata) operationsForMethod(methodName string) []*operation {
 }
 
 func (m *metadata) canonizeMethodOperations() error {
-	for _, method := range m.Methods {
-		for i := range method.OpNames {
-			opName := method.OpNames[i]
+	for _, mm := range m.Methods {
+		for i := range mm.OpNames {
+			opName := mm.OpNames[i]
 			if m.getOperation(opName) != nil {
 				continue
 			}
 			ops := m.getOperationsWithNormalizedName(opName)
 			switch len(ops) {
 			case 0:
-				return fmt.Errorf("method %q has an operation that can not be canonized to any defined name: %s", method.Name, opName)
+				return fmt.Errorf("method %q has an operation that can not be canonized to any defined name: %s", mm.Name, opName)
 			case 1:
-				method.OpNames[i] = ops[0].Name
+				mm.OpNames[i] = ops[0].Name
 			default:
 				candidateList := ""
 				for _, op := range ops {
 					candidateList += "\n    " + op.Name
 				}
-				return fmt.Errorf("method %q has an operation that can be canonized to multiple defined names:\n  operation: %s\n  matches: %s", method.Name, opName, candidateList)
+				return fmt.Errorf("method %q has an operation that can be canonized to multiple defined names:\n  operation: %s\n  matches: %s", mm.Name, opName, candidateList)
 			}
 		}
 	}

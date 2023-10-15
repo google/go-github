@@ -2,6 +2,11 @@ methods:
   - name: AService.Get
     operations:
       - GET /a/{a_id}
+  - name: BService.GetC
+    operations:
+      - GET /b/{b_id}/c/{c_id}
 openapi_operations:
   - name: GET /a/{a_id}
     documentation_url: https://docs.github.com/rest/a/a#get-a
+  - name: GET /b/{b_id}/c/{c_id}
+    documentation_url: https://docs.github.com/rest/b/b#get-c

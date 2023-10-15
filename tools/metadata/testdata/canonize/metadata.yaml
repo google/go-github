@@ -2,6 +2,12 @@ methods:
   - name: AService.Get
     operations:
       - GET /a/{a_id_noncanonical}
+  - name: BService.GetC
+    operations:
+      - get
+           /b/%s/c/%s
 openapi_operations:
   - name: GET /a/{a_id}
     documentation_url: https://docs.github.com/rest/a/a#get-a
+  - name: GET /b/{b_id}/c/{c_id}
+    documentation_url: https://docs.github.com/rest/b/b#get-c
