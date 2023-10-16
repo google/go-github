@@ -14,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestRepositoriesService_GetCodeownersErrors(t *testing.T) {
+func TestRepositoriesService_GetCodeownersErrors_noRef(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -38,7 +38,7 @@ func TestRepositoriesService_GetCodeownersErrors(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	codeownersErrors, _, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r")
+	codeownersErrors, _, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.GetCodeownersErrors returned error: %v", err)
 	}
@@ -62,12 +62,75 @@ func TestRepositoriesService_GetCodeownersErrors(t *testing.T) {
 
 	const methodName = "GetCodeownersErrors"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetCodeownersErrors(ctx, "\n", "\n")
+		_, _, err = client.Repositories.GetCodeownersErrors(ctx, "\n", "\n", nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r")
+		got, resp, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_GetCodeownersErrors_specificRef(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/codeowners/errors", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeV3)
+		testFormValues(t, r, values{"ref": "mybranch"})
+		fmt.Fprint(w, `{
+		  "errors": [
+			{
+			  "line": 1,
+			  "column": 1,
+			  "kind": "Invalid pattern",
+			  "source": "***/*.rb @monalisa",
+			  "suggestion": "Did you mean **/*.rb?",
+			  "message": "Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^",
+			  "path": ".github/CODEOWNERS"
+			}
+		  ]
+		}
+	`)
+	})
+
+	opts := &GetCodeownersErrorsOptions{Ref: "mybranch"}
+	ctx := context.Background()
+	codeownersErrors, _, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r", opts)
+	if err != nil {
+		t.Errorf("Repositories.GetCodeownersErrors returned error: %v", err)
+	}
+
+	want := &CodeownersErrors{
+		Errors: []*CodeownersError{
+			{
+				Line:       1,
+				Column:     1,
+				Kind:       "Invalid pattern",
+				Source:     "***/*.rb @monalisa",
+				Suggestion: String("Did you mean **/*.rb?"),
+				Message:    "Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^",
+				Path:       ".github/CODEOWNERS",
+			},
+		},
+	}
+	if !cmp.Equal(codeownersErrors, want) {
+		t.Errorf("Repositories.GetCodeownersErrors returned %+v, want %+v", codeownersErrors, want)
+	}
+
+	const methodName = "GetCodeownersErrors"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetCodeownersErrors(ctx, "\n", "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

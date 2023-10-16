@@ -5582,12 +5582,28 @@ func (d *DeploymentBranchPolicy) GetNodeID() string {
 	return *d.NodeID
 }
 
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicy) GetType() string {
+	if d == nil || d.Type == nil {
+		return ""
+	}
+	return *d.Type
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (d *DeploymentBranchPolicyRequest) GetName() string {
 	if d == nil || d.Name == nil {
 		return ""
 	}
 	return *d.Name
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicyRequest) GetType() string {
+	if d == nil || d.Type == nil {
+		return ""
+	}
+	return *d.Type
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

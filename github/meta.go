@@ -33,6 +33,10 @@ type APIMeta struct {
 	VerifiablePasswordAuthentication *bool `json:"verifiable_password_authentication,omitempty"`
 
 	// An array of IP addresses in CIDR format specifying the addresses
+	// which serve GitHub Packages.
+	Packages []string `json:"packages,omitempty"`
+
+	// An array of IP addresses in CIDR format specifying the addresses
 	// which serve GitHub Pages websites.
 	Pages []string `json:"pages,omitempty"`
 

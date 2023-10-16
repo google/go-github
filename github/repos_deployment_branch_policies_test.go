@@ -83,16 +83,16 @@ func TestRepositoriesService_CreateDeploymentBranchPolicy(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprint(w, `{"id":1}`)
+		fmt.Fprint(w, `{"id":1, "type":"branch"}`)
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Repositories.CreateDeploymentBranchPolicy(ctx, "o", "r", "e", &DeploymentBranchPolicyRequest{Name: String("n")})
+	got, _, err := client.Repositories.CreateDeploymentBranchPolicy(ctx, "o", "r", "e", &DeploymentBranchPolicyRequest{Name: String("n"), Type: String("branch")})
 	if err != nil {
 		t.Errorf("Repositories.CreateDeploymentBranchPolicy returned error: %v", err)
 	}
 
-	want := &DeploymentBranchPolicy{ID: Int64(1)}
+	want := &DeploymentBranchPolicy{ID: Int64(1), Type: String("branch")}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.CreateDeploymentBranchPolicy = %+v, want %+v", got, want)
 	}
