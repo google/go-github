@@ -128,20 +128,29 @@ func getDescriptions(ctx context.Context, client *github.Client, gitRef string) 
 			if m == nil {
 				continue
 			}
-			plan := m[pattern.SubexpIndex("plan")]
-			major, _ := strconv.Atoi(m[pattern.SubexpIndex("major")])
-			minor, _ := strconv.Atoi(m[pattern.SubexpIndex("minor")])
-			if plan == "ghes" && major < 3 {
+			file := openapiFile{
+				filename: fmt.Sprintf("descriptions/%s/%s.json", d.GetName(), d.GetName()),
+				plan:     m[pattern.SubexpIndex("plan")],
+				planIdx:  i,
+			}
+			rawMajor := m[pattern.SubexpIndex("major")]
+			if rawMajor != "" {
+				file.releaseMajor, err = strconv.Atoi(rawMajor)
+				if err != nil {
+					return nil, err
+				}
+			}
+			rawMinor := m[pattern.SubexpIndex("minor")]
+			if rawMinor != "" {
+				file.releaseMinor, err = strconv.Atoi(rawMinor)
+				if err != nil {
+					return nil, err
+				}
+			}
+			if file.plan == "ghes" && file.releaseMajor < 3 {
 				continue
 			}
-			filename := fmt.Sprintf("descriptions/%s/%s.json", d.GetName(), d.GetName())
-			files = append(files, &openapiFile{
-				filename:     filename,
-				plan:         plan,
-				planIdx:      i,
-				releaseMajor: major,
-				releaseMinor: minor,
-			})
+			files = append(files, &file)
 			break
 		}
 	}
