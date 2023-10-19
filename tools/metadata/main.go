@@ -3,6 +3,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// metadata is a command-line tool used to check and update this repo.
+// See CONTRIBUTING.md for details.
 package main
 
 import (
