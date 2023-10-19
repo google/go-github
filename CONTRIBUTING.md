@@ -166,7 +166,7 @@ Its subcommands are:
   in `openapi_commit`. `update-openapi --validate` is called
   by `script/lint.sh`.
 
-- `update-go` - updates go files with documentation urls and formats comments.
+- `update-go` - updates Go files with documentation URLs and formats comments.
   It is used by `script/generate.sh`.
 
 - `format` - formats whitespace in `openapi_operations.yaml` and sorts its
