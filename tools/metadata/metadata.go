@@ -8,15 +8,16 @@ package main
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"go/ast"
 	"go/format"
 	"go/parser"
 	"go/printer"
 	"go/token"
-	"io/fs"
 	"net/url"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -79,52 +80,44 @@ func sortOperations(ops []*operation) {
 	})
 }
 
-var normalizedURLs = map[string]string{}
-var normalizedURLsMu sync.Mutex
-
-// normalizedURL returns an endpoint with all templated path parameters replaced with *.
-func normalizedURL(u string) string {
-	normalizedURLsMu.Lock()
-	defer normalizedURLsMu.Unlock()
-	n, ok := normalizedURLs[u]
-	if ok {
-		return n
+// normalizeOpPath returns an endpoint with all templated path parameters replaced with *.
+func normalizeOpPath(opPath string) string {
+	if !strings.ContainsAny(opPath, "{%") {
+		return opPath
 	}
-	parts := strings.Split(u, "/")
-	for i, p := range parts {
-		if len(p) == 0 {
+	segments := strings.Split(opPath, "/")
+	for i, segment := range segments {
+		if len(segment) == 0 {
 			continue
 		}
-		if p[0] == '{' || p[0] == '%' {
-			parts[i] = "*"
+		if segment[0] == '{' || segment[0] == '%' {
+			segments[i] = "*"
 		}
 	}
-	n = strings.Join(parts, "/")
-	normalizedURLs[u] = n
-	return n
+	return strings.Join(segments, "/")
 }
 
 func normalizedOpName(name string) string {
 	verb, u := parseOpName(name)
-	return verb + " " + normalizedURL(u)
+	return strings.TrimSpace(verb + " " + normalizeOpPath(u))
 }
+
+// matches something like "GET /some/path"
+var opNameRe = regexp.MustCompile(`(?i)(\S+)(?:\s+(\S.*))?`)
 
 func parseOpName(id string) (verb, url string) {
-	fields := strings.Fields(id)
-	verb = fields[0]
-	if len(fields) > 1 {
-		url = fields[1]
+	match := opNameRe.FindStringSubmatch(id)
+	if match == nil {
+		return "", ""
 	}
-	return strings.ToUpper(verb), url
+	u := strings.TrimSpace(match[2])
+	if !strings.HasPrefix(u, "/") {
+		u = "/" + u
+	}
+	return strings.ToUpper(match[1]), u
 }
 
-type method struct {
-	Name    string   `yaml:"name" json:"name"`
-	OpNames []string `yaml:"operations,omitempty" json:"operations,omitempty"`
-}
-
-type metadata struct {
-	Methods     []*method    `yaml:"methods,omitempty"`
+type operationsFile struct {
 	ManualOps   []*operation `yaml:"operations,omitempty"`
 	OverrideOps []*operation `yaml:"operation_overrides,omitempty"`
 	GitCommit   string       `yaml:"openapi_commit,omitempty"`
@@ -134,7 +127,7 @@ type metadata struct {
 	resolvedOps map[string]*operation
 }
 
-func (m *metadata) resolve() {
+func (m *operationsFile) resolve() {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	if m.resolvedOps != nil {
@@ -162,42 +155,13 @@ func (m *metadata) resolve() {
 	}
 }
 
-func (m *metadata) operations() []*operation {
-	m.resolve()
-	ops := make([]*operation, 0, len(m.resolvedOps))
-	for _, op := range m.resolvedOps {
-		ops = append(ops, op)
-	}
-	sortOperations(ops)
-	return ops
-}
-
-func loadMetadataFile(filename string) (*metadata, error) {
-	b, err := os.ReadFile(filename)
-	if err != nil {
-		return nil, err
-	}
-	var meta metadata
-	err = yaml.Unmarshal(b, &meta)
-	if err != nil {
-		return nil, err
-	}
-	return &meta, nil
-}
-
-func (m *metadata) saveFile(filename string) (errOut error) {
+func (m *operationsFile) saveFile(filename string) (errOut error) {
 	sortOperations(m.ManualOps)
 	sortOperations(m.OverrideOps)
 	sortOperations(m.OpenapiOps)
-	sort.Slice(m.Methods, func(i, j int) bool {
-		return m.Methods[i].Name < m.Methods[j].Name
-	})
-	for _, method := range m.Methods {
-		sort.Strings(method.OpNames)
-	}
 	f, err := os.Create(filename)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer func() {
 		e := f.Close()
@@ -207,7 +171,45 @@ func (m *metadata) saveFile(filename string) (errOut error) {
 	}()
 	enc := yaml.NewEncoder(f)
 	enc.SetIndent(2)
+	defer func() {
+		e := enc.Close()
+		if errOut == nil {
+			errOut = e
+		}
+	}()
 	return enc.Encode(m)
+}
+
+func (m *operationsFile) updateFromGithub(ctx context.Context, client *github.Client, ref string) error {
+	commit, resp, err := client.Repositories.GetCommit(ctx, descriptionsOwnerName, descriptionsRepoName, ref, nil)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("unexpected status code: %s", resp.Status)
+	}
+	ops, err := getOpsFromGithub(ctx, client, ref)
+	if err != nil {
+		return err
+	}
+	if !operationsEqual(m.OpenapiOps, ops) {
+		m.OpenapiOps = ops
+		m.GitCommit = commit.GetSHA()
+	}
+	return nil
+}
+
+func loadOperationsFile(filename string) (*operationsFile, error) {
+	b, err := os.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	var opsFile operationsFile
+	err = yaml.Unmarshal(b, &opsFile)
+	if err != nil {
+		return nil, err
+	}
+	return &opsFile, nil
 }
 
 func addOperation(ops []*operation, filename, opName, docURL string) []*operation {
@@ -240,328 +242,266 @@ func addOperation(ops []*operation, filename, opName, docURL string) []*operatio
 	})
 }
 
-// operationMethods returns a list methods that are mapped to the given operation id.
-func (m *metadata) operationMethods(opName string) []string {
-	var methods []string
-	for _, method := range m.Methods {
-		for _, methodOpName := range method.OpNames {
-			if methodOpName == opName {
-				methods = append(methods, method.Name)
-			}
+func unusedOps(opsFile *operationsFile, dir string) ([]*operation, error) {
+	var usedOps map[string]bool
+	err := visitServiceMethods(dir, false, func(_ string, fn *ast.FuncDecl, cmap ast.CommentMap) error {
+		ops, err := methodOps(opsFile, cmap, fn)
+		if err != nil {
+			return err
 		}
+		for _, op := range ops {
+			if usedOps == nil {
+				usedOps = map[string]bool{}
+			}
+			usedOps[op.Name] = true
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
 	}
-	return methods
-}
-
-func (m *metadata) getOperation(name string) *operation {
-	m.resolve()
-	return m.resolvedOps[name]
-}
-
-func (m *metadata) getOperationsWithNormalizedName(name string) []*operation {
-	m.resolve()
 	var result []*operation
-	norm := normalizedOpName(name)
-	for n := range m.resolvedOps {
-		if normalizedOpName(n) == norm {
-			result = append(result, m.resolvedOps[n])
+	opsFile.resolve()
+	for opName, op := range opsFile.resolvedOps {
+		if !usedOps[opName] {
+			result = append(result, op)
 		}
 	}
 	sortOperations(result)
-	return result
+	return result, nil
 }
 
-func (m *metadata) getMethod(name string) *method {
-	for _, method := range m.Methods {
-		if method.Name == name {
-			return method
+func updateDocsVisitor(opsFile *operationsFile) nodeVisitor {
+	return func(serviceMethod string, fn *ast.FuncDecl, cmap ast.CommentMap) error {
+		linksMap := map[string]struct{}{}
+		undocMap := map[string]bool{}
+
+		ops, err := methodOps(opsFile, cmap, fn)
+		if err != nil {
+			return err
 		}
-	}
-	return nil
-}
-
-func (m *metadata) operationsForMethod(methodName string) []*operation {
-	method := m.getMethod(methodName)
-	if method == nil {
-		return nil
-	}
-	var operations []*operation
-	for _, name := range method.OpNames {
-		op := m.getOperation(name)
-		if op != nil {
-			operations = append(operations, op)
+		if len(ops) == 0 {
+			return fmt.Errorf("no operations defined for %s", serviceMethod)
 		}
-	}
-	sortOperations(operations)
-	return operations
-}
 
-func (m *metadata) canonizeMethodOperations() error {
-	for _, mm := range m.Methods {
-		for i := range mm.OpNames {
-			opName := mm.OpNames[i]
-			if m.getOperation(opName) != nil {
+		for _, op := range ops {
+			if op.DocumentationURL == "" {
+				undocMap[op.Name] = true
 				continue
 			}
-			ops := m.getOperationsWithNormalizedName(opName)
-			switch len(ops) {
-			case 0:
-				return fmt.Errorf("method %q has an operation that can not be canonized to any defined name: %s", mm.Name, opName)
-			case 1:
-				mm.OpNames[i] = ops[0].Name
-			default:
-				candidateList := ""
-				for _, op := range ops {
-					candidateList += "\n    " + op.Name
-				}
-				return fmt.Errorf("method %q has an operation that can be canonized to multiple defined names:\n  operation: %s\n  matches: %s", mm.Name, opName, candidateList)
+			linksMap[op.DocumentationURL] = struct{}{}
+		}
+		var undocumentedOps []string
+		for op := range undocMap {
+			undocumentedOps = append(undocumentedOps, op)
+		}
+		sort.Strings(undocumentedOps)
+
+		// Find the group that comes before the function
+		var group *ast.CommentGroup
+		for _, g := range cmap[fn] {
+			if g.End() == fn.Pos()-1 {
+				group = g
 			}
 		}
+
+		// If there is no group, create one
+		if group == nil {
+			group = &ast.CommentGroup{
+				List: []*ast.Comment{{Text: "//", Slash: fn.Pos() - 1}},
+			}
+			cmap[fn] = append(cmap[fn], group)
+		}
+
+		origList := group.List
+		group.List = nil
+		for _, comment := range origList {
+			if metaOpRe.MatchString(comment.Text) ||
+				docLineRE.MatchString(comment.Text) ||
+				undocRE.MatchString(comment.Text) {
+				continue
+			}
+			group.List = append(group.List, comment)
+		}
+
+		// add an empty line before adding doc links
+		group.List = append(group.List, &ast.Comment{Text: "//"})
+
+		var docLinks []string
+		for link := range linksMap {
+			docLinks = append(docLinks, link)
+		}
+		sort.Strings(docLinks)
+
+		for _, dl := range docLinks {
+			group.List = append(
+				group.List,
+				&ast.Comment{
+					Text: "// GitHub API docs: " + cleanURLPath(dl),
+				},
+			)
+		}
+		_, methodName, _ := strings.Cut(serviceMethod, ".")
+		for _, opName := range undocumentedOps {
+			line := fmt.Sprintf("// Note: %s uses the undocumented GitHub API endpoint %q.", methodName, opName)
+			group.List = append(group.List, &ast.Comment{Text: line})
+		}
+		for _, op := range ops {
+			group.List = append(group.List, &ast.Comment{
+				Text: fmt.Sprintf("//meta:operation %s", op.Name),
+			})
+		}
+		group.List[0].Slash = fn.Pos() - 1
+		for i := 1; i < len(group.List); i++ {
+			group.List[i].Slash = token.NoPos
+		}
+		return nil
 	}
-	return nil
 }
 
-func (m *metadata) updateFromGithub(ctx context.Context, client *github.Client, ref string) error {
-	commit, resp, err := client.Repositories.GetCommit(ctx, descriptionsOwnerName, descriptionsRepoName, ref, nil)
+// updateDocs updates the code comments in dir with doc urls from metadata.
+func updateDocs(opsFile *operationsFile, dir string) error {
+	return visitServiceMethods(dir, true, updateDocsVisitor(opsFile))
+}
+
+type nodeVisitor func(serviceMethod string, fn *ast.FuncDecl, cmap ast.CommentMap) error
+
+// visitServiceMethods runs visit on the ast.Node of every service method in dir. When writeFiles is true it will
+// save any changes back to the original file.
+func visitServiceMethods(dir string, writeFiles bool, visit nodeVisitor) error {
+	dirEntries, err := os.ReadDir(dir)
 	if err != nil {
 		return err
 	}
-	if resp.StatusCode != 200 {
-		return fmt.Errorf("unexpected status code: %s", resp.Status)
+	for _, dirEntry := range dirEntries {
+		filename := filepath.Join(dir, dirEntry.Name())
+		if dirEntry.IsDir() ||
+			!strings.HasSuffix(filename, ".go") ||
+			strings.HasSuffix(filename, "_test.go") {
+			continue
+		}
+		err = errors.Join(err, visitFileMethods(writeFiles, filename, visit))
 	}
-	ops, err := getOpsFromGithub(ctx, client, ref)
+	return err
+}
+
+func visitFileMethods(updateFile bool, filename string, visit nodeVisitor) error {
+	content, err := os.ReadFile(filename)
 	if err != nil {
 		return err
 	}
-	if !operationsEqual(m.OpenapiOps, ops) {
-		m.OpenapiOps = ops
-		m.GitCommit = commit.GetSHA()
-	}
-	return nil
-}
+	content = bytes.ReplaceAll(content, []byte("\r\n"), []byte("\n"))
 
-// updateDocLinks updates the code comments in dir with doc urls from metadata.
-func updateDocLinks(meta *metadata, dir string) error {
-	return filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if d.IsDir() ||
-			!strings.HasSuffix(path, ".go") ||
-			strings.HasSuffix(path, "_test.go") {
-			return nil
-		}
-		content, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-		content = bytes.ReplaceAll(content, []byte("\r\n"), []byte("\n"))
-		updatedContent, err := updateDocsLinksInFile(meta, content)
-		if err != nil {
-			return err
-		}
-		if bytes.Equal(content, updatedContent) {
-			return nil
-		}
-		f, err := os.Create(path)
-		if err != nil {
-			return err
-		}
-		_, err = f.Write(updatedContent)
-		if err != nil {
-			return err
-		}
-		return f.Close()
-	})
-}
-
-// updateDocsLinksInFile updates in the code comments in content with doc urls from metadata.
-func updateDocsLinksInFile(metadata *metadata, content []byte) ([]byte, error) {
 	fset := token.NewFileSet()
-	file, err := parser.ParseFile(fset, "", content, parser.ParseComments)
+	fileNode, err := parser.ParseFile(fset, "", content, parser.ParseComments)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	cmap := ast.NewCommentMap(fset, file, file.Comments)
+	cmap := ast.NewCommentMap(fset, fileNode, fileNode.Comments)
 
-	// ignore files where package is not github
-	if file.Name.Name != "github" {
-		return content, nil
-	}
-
-	ast.Inspect(file, func(n ast.Node) bool {
-		return updateDocsLinksForNode(metadata, cmap, n)
+	ast.Inspect(fileNode, func(n ast.Node) bool {
+		fn, ok := n.(*ast.FuncDecl)
+		if !ok {
+			return true
+		}
+		serviceMethod := nodeServiceMethod(fn)
+		if serviceMethod == "" {
+			return true
+		}
+		e := visit(serviceMethod, fn, cmap)
+		err = errors.Join(err, e)
+		return true
 	})
-
-	file.Comments = cmap.Filter(file).Comments()
-
-	var buf bytes.Buffer
-	err = printer.Fprint(&buf, fset, file)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return format.Source(buf.Bytes())
+	if !updateFile {
+		return nil
+	}
+	fileNode.Comments = cmap.Filter(fileNode).Comments()
+	var buf bytes.Buffer
+	err = printer.Fprint(&buf, fset, fileNode)
+	if err != nil {
+		return err
+	}
+	updatedContent, err := format.Source(buf.Bytes())
+	if err != nil {
+		return err
+	}
+	if bytes.Equal(content, updatedContent) {
+		return nil
+	}
+	return os.WriteFile(filename, updatedContent, 0600)
 }
 
 var (
-	docLineRE = regexp.MustCompile(`(?i)\s*(//\s*)?GitHub\s+API\s+docs:\s*(https?://\S+)`)
+	metaOpRe  = regexp.MustCompile(`(?i)\s*//\s*meta:operation\s+(\S.+)`)
+	undocRE   = regexp.MustCompile(`(?i)\s*//\s*Note:\s+\S.+ uses the undocumented GitHub API endpoint`)
+	docLineRE = regexp.MustCompile(`(?i)\s*//\s*GitHub\s+API\s+docs:`)
 )
 
-func updateDocsLinksForNode(metadata *metadata, cmap ast.CommentMap, n ast.Node) bool {
-	fn, ok := n.(*ast.FuncDecl)
-	if !ok {
-		return true
-	}
-	sm := serviceMethodFromNode(n)
-	if sm == "" {
-		return true
-	}
-
-	linksMap := map[string]struct{}{}
-	undocMap := map[string]bool{}
-	ops := metadata.operationsForMethod(sm)
-	for _, op := range ops {
-		if op.DocumentationURL == "" {
-			undocMap[op.Name] = true
-			continue
-		}
-		linksMap[op.DocumentationURL] = struct{}{}
-	}
-	var undocumentedOps []string
-	for op := range undocMap {
-		undocumentedOps = append(undocumentedOps, op)
-	}
-	sort.Strings(undocumentedOps)
-
-	// Find the group that comes before the function
-	var group *ast.CommentGroup
+// methodOps parses a method's comments for //meta:operation lines and returns the corresponding operations.
+func methodOps(opsFile *operationsFile, cmap ast.CommentMap, fn *ast.FuncDecl) ([]*operation, error) {
+	var ops []*operation
+	var err error
+	seen := map[string]bool{}
 	for _, g := range cmap[fn] {
-		if g.End() == fn.Pos()-1 {
-			group = g
-		}
-	}
-
-	// If there is no group, create one
-	if group == nil {
-		group = &ast.CommentGroup{
-			List: []*ast.Comment{{Text: "//", Slash: fn.Pos() - 1}},
-		}
-		cmap[fn] = append(cmap[fn], group)
-	}
-
-	skipSpacer := false
-	var newList []*ast.Comment
-	for _, comment := range group.List {
-		if strings.Contains(comment.Text, "uses the undocumented GitHub API endpoint") {
-			skipSpacer = true
-			continue
-		}
-		match := docLineRE.FindStringSubmatch(comment.Text)
-		if match == nil {
-			newList = append(newList, comment)
-			continue
-		}
-		matchesLink := false
-		for link := range linksMap {
-			if sameDocLink(match[2], link) {
-				matchesLink = true
-				skipSpacer = true
-				delete(linksMap, link)
-				break
+		for _, c := range g.List {
+			match := metaOpRe.FindStringSubmatch(c.Text)
+			if match == nil {
+				continue
+			}
+			opName := strings.TrimSpace(match[1])
+			opsFile.resolve()
+			var found []*operation
+			norm := normalizedOpName(opName)
+			for n := range opsFile.resolvedOps {
+				if normalizedOpName(n) == norm {
+					found = append(found, opsFile.resolvedOps[n])
+				}
+			}
+			switch len(found) {
+			case 0:
+				err = errors.Join(err, fmt.Errorf("could not find operation %q in openapi_operations.yaml", opName))
+			case 1:
+				name := found[0].Name
+				if seen[name] {
+					err = errors.Join(err, fmt.Errorf("duplicate operation: %s", name))
+				}
+				seen[name] = true
+				ops = append(ops, found[0])
+			default:
+				var foundNames []string
+				for _, op := range found {
+					foundNames = append(foundNames, op.Name)
+				}
+				sort.Strings(foundNames)
+				err = errors.Join(err, fmt.Errorf("ambiguous operation %q could match any of: %v", opName, foundNames))
 			}
 		}
-		if matchesLink {
-			newList = append(newList, comment)
-		}
 	}
-	group.List = newList
-
-	// add an empty line before adding doc links
-	if !skipSpacer {
-		group.List = append(group.List, &ast.Comment{Text: "//"})
-	}
-
-	var docLinks []string
-	for link := range linksMap {
-		docLinks = append(docLinks, link)
-	}
-	sort.Strings(docLinks)
-
-	for _, dl := range docLinks {
-		group.List = append(
-			group.List,
-			&ast.Comment{
-				Text: "// GitHub API docs: " + normalizeDocURLPath(dl),
-			},
-		)
-	}
-	_, methodName, _ := strings.Cut(sm, ".")
-	for _, opName := range undocumentedOps {
-		line := fmt.Sprintf("// Note: %s uses the undocumented GitHub API endpoint %q.", methodName, opName)
-		group.List = append(group.List, &ast.Comment{Text: line})
-	}
-	group.List[0].Slash = fn.Pos() - 1
-	for i := 1; i < len(group.List); i++ {
-		group.List[i].Slash = token.NoPos
-	}
-	return true
+	sortOperations(ops)
+	return ops, err
 }
 
-const docURLPrefix = "https://docs.github.com/rest/"
-
-var docURLPrefixRE = regexp.MustCompile(`^https://docs\.github\.com.*/rest/`)
-
-func normalizeDocURLPath(u string) string {
-	u = strings.Replace(u, "/en/", "/", 1)
-	pre := docURLPrefixRE.FindString(u)
-	if pre == "" {
-		return u
-	}
-	if strings.Contains(u, "docs.github.com/enterprise-cloud@latest/") {
-		// remove unsightly double slash
-		// https://docs.github.com/enterprise-cloud@latest/
-		return strings.ReplaceAll(
-			u,
-			"docs.github.com/enterprise-cloud@latest//",
-			"docs.github.com/enterprise-cloud@latest/",
-		)
-	}
-	if strings.Contains(u, "docs.github.com/enterprise-server") {
-		return u
-	}
-	return docURLPrefix + strings.TrimPrefix(u, pre)
-}
-
-// sameDocLink returns true if the two doc links are going to end up rendering the same page pointed
-// to the same section.
-//
-// If a url path starts with *./rest/ it ignores query parameters and everything before /rest/ when
-// making the comparison.
-func sameDocLink(left, right string) bool {
-	if !docURLPrefixRE.MatchString(left) ||
-		!docURLPrefixRE.MatchString(right) {
-		return left == right
-	}
-	left = stripURLQuery(normalizeDocURLPath(left))
-	right = stripURLQuery(normalizeDocURLPath(right))
-	return left == right
-}
-
-func stripURLQuery(u string) string {
-	p, err := url.Parse(u)
+// cleanURLPath runs path.Clean on the url path. This is to remove the unsightly double slashes from some
+// of the urls in github's openapi descriptions.
+func cleanURLPath(docURL string) string {
+	u, err := url.Parse(docURL)
 	if err != nil {
-		return u
+		return docURL
 	}
-	p.RawQuery = ""
-	return p.String()
+	u.Path = path.Clean(u.Path)
+	return u.String()
 }
 
-func serviceMethodFromNode(node ast.Node) string {
-	decl, ok := node.(*ast.FuncDecl)
-	if !ok || decl.Recv == nil || len(decl.Recv.List) != 1 {
+// nodeServiceMethod returns the name of the service method represented by fn, or "" if fn is not a service method.
+// Name is in the form of "Receiver.Function", for example "IssuesService.Create".
+func nodeServiceMethod(fn *ast.FuncDecl) string {
+	if fn.Recv == nil || len(fn.Recv.List) != 1 {
 		return ""
 	}
-	recv := decl.Recv.List[0]
+	recv := fn.Recv.List[0]
 	se, ok := recv.Type.(*ast.StarExpr)
 	if !ok {
 		return ""
@@ -572,9 +512,9 @@ func serviceMethodFromNode(node ast.Node) string {
 	}
 
 	// We only want exported methods on exported types where the type name ends in "Service".
-	if !id.IsExported() || !decl.Name.IsExported() || !strings.HasSuffix(id.Name, "Service") {
+	if !id.IsExported() || !fn.Name.IsExported() || !strings.HasSuffix(id.Name, "Service") {
 		return ""
 	}
 
-	return id.Name + "." + decl.Name.Name
+	return id.Name + "." + fn.Name.Name
 }

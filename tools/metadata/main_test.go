@@ -26,32 +26,41 @@ import (
 	"github.com/google/go-github/v56/github"
 )
 
-func TestUpdateDocURLs(t *testing.T) {
-	res := runTest(t, "testdata/update-doc-urls", "update-doc-urls")
-	res.assertOutput("", "")
-	res.assertNoErr()
-	res.checkGolden()
-}
-
-func TestValidate(t *testing.T) {
-	t.Run("invalid", func(t *testing.T) {
-		res := runTest(t, "testdata/validate_invalid", "validate")
-		res.assertErr("found 4 issues in")
-		res.assertOutput("", `
-Method AService.MissingFromMetadata does not exist in metadata.yaml. Please add it.
-Method AService.Get has operation which is does not use the canonical name. You may be able to automatically fix this by running 'script/metadata.sh canonize': GET /a/{a_id_noncanonical}.
-Name in override_operations does not exist in operations or openapi_operations: GET /a/{a_id_noncanonical2}
-Name in override_operations does not exist in operations or openapi_operations: GET /fake/{a_id}
-`)
-		res.checkGolden()
-	})
-
+func TestUpdateGo(t *testing.T) {
 	t.Run("valid", func(t *testing.T) {
-		res := runTest(t, "testdata/validate_valid", "validate")
+		res := runTest(t, "testdata/update-go/valid", "update-go")
 		res.assertOutput("", "")
 		res.assertNoErr()
 		res.checkGolden()
 	})
+
+	t.Run("invalid", func(t *testing.T) {
+		res := runTest(t, "testdata/update-go/invalid", "update-go")
+		res.assertOutput("", "")
+		res.assertErr(`
+no operations defined for AService.NoOperation
+no operations defined for AService.NoComment
+ambiguous operation "GET /ambiguous/{}" could match any of: [GET /ambiguous/{id} GET /ambiguous/{name}]
+could not find operation "GET /missing/{id}" in openapi_operations.yaml
+duplicate operation: GET /a/{a_id}
+`)
+		res.checkGolden()
+	})
+}
+
+func TestUnused(t *testing.T) {
+	res := runTest(t, "testdata/unused", "unused")
+	res.assertOutput(`
+Found 3 unused operations
+
+GET /a/{a_id}
+doc:     https://docs.github.com/rest/a/a#overridden-get-a
+
+POST /a/{a_id}
+doc:     https://docs.github.com/rest/a/a#update-a
+
+GET /undocumented/{undocumented_id}
+`, "")
 }
 
 func TestUpdateOpenAPI(t *testing.T) {
@@ -119,13 +128,6 @@ func TestUpdateOpenAPI(t *testing.T) {
 	res.checkGolden()
 }
 
-func TestCanonize(t *testing.T) {
-	res := runTest(t, "testdata/canonize", "canonize")
-	res.assertOutput("", "")
-	res.assertNoErr()
-	res.checkGolden()
-}
-
 func TestFormat(t *testing.T) {
 	res := runTest(t, "testdata/format", "format")
 	res.assertOutput("", "")
@@ -135,6 +137,9 @@ func TestFormat(t *testing.T) {
 
 func updateGoldenDir(t *testing.T, origDir, resultDir, goldenDir string) {
 	t.Helper()
+	if os.Getenv("UPDATE_GOLDEN") == "" {
+		return
+	}
 	assertNilError(t, os.RemoveAll(goldenDir))
 	assertNilError(t, filepath.WalkDir(resultDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() {
@@ -170,10 +175,14 @@ func updateGoldenDir(t *testing.T, origDir, resultDir, goldenDir string) {
 
 func checkGoldenDir(t *testing.T, origDir, resultDir, goldenDir string) {
 	t.Helper()
-	if os.Getenv("UPDATE_GOLDEN") != "" {
-		updateGoldenDir(t, origDir, resultDir, goldenDir)
-		return
-	}
+	golden := true
+	t.Cleanup(func() {
+		t.Helper()
+		if !golden {
+			t.Log("To regenerate golden files run `UPDATE_GOLDEN=1 script/test.sh`")
+		}
+	})
+	updateGoldenDir(t, origDir, resultDir, goldenDir)
 	checked := map[string]bool{}
 	_, err := os.Stat(goldenDir)
 	if err == nil {
@@ -182,7 +191,9 @@ func checkGoldenDir(t *testing.T, origDir, resultDir, goldenDir string) {
 			if err != nil || info.IsDir() {
 				return err
 			}
-			assertEqualFiles(t, wantPath, filepath.Join(resultDir, relPath))
+			if !assertEqualFiles(t, wantPath, filepath.Join(resultDir, relPath)) {
+				golden = false
+			}
 			checked[relPath] = true
 			return nil
 		}))
@@ -192,7 +203,9 @@ func checkGoldenDir(t *testing.T, origDir, resultDir, goldenDir string) {
 		if err != nil || info.IsDir() || checked[relPath] {
 			return err
 		}
-		assertEqualFiles(t, wantPath, filepath.Join(resultDir, relPath))
+		if !assertEqualFiles(t, wantPath, filepath.Join(resultDir, relPath)) {
+			golden = false
+		}
 		checked[relPath] = true
 		return nil
 	}))
@@ -201,6 +214,7 @@ func checkGoldenDir(t *testing.T, origDir, resultDir, goldenDir string) {
 		if err != nil || info.IsDir() || checked[relPath] {
 			return err
 		}
+		golden = false
 		return fmt.Errorf("found unexpected file:\n%s", relPath)
 	}))
 }
@@ -292,8 +306,8 @@ func (r testRun) assertErr(want string) {
 		r.t.Error("expected error")
 		return
 	}
-	if !strings.Contains(r.err.Error(), want) {
-		r.t.Errorf("expected error to contain %q, got %q", want, r.err.Error())
+	if strings.TrimSpace(r.err.Error()) != strings.TrimSpace(want) {
+		r.t.Errorf("unexpected error:\nwant:\n%s\ngot:\n%s", want, r.err.Error())
 	}
 }
 
@@ -378,23 +392,24 @@ func assertEqualStrings(t *testing.T, want, got string) {
 	}
 }
 
-func assertEqualFiles(t *testing.T, want, got string) {
+func assertEqualFiles(t *testing.T, want, got string) bool {
 	t.Helper()
 	wantBytes, err := os.ReadFile(want)
 	if !assertNilError(t, err) {
-		return
+		return false
 	}
 	wantBytes = bytes.ReplaceAll(wantBytes, []byte("\r\n"), []byte("\n"))
 	gotBytes, err := os.ReadFile(got)
 	if !assertNilError(t, err) {
-		return
+		return false
 	}
 	gotBytes = bytes.ReplaceAll(gotBytes, []byte("\r\n"), []byte("\n"))
-	if bytes.Equal(wantBytes, gotBytes) {
-		return
+	if !bytes.Equal(wantBytes, gotBytes) {
+		diff := cmp.Diff(string(wantBytes), string(gotBytes))
+		t.Errorf("files %q and %q differ: %s", want, got, diff)
+		return false
 	}
-	diff := cmp.Diff(string(wantBytes), string(gotBytes))
-	t.Errorf("files %q and %q differ: %s", want, got, diff)
+	return true
 }
 
 func assertNilError(t *testing.T, err error) bool {

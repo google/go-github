@@ -87,7 +87,9 @@ func (r ReleaseAsset) String() string {
 
 // ListReleases lists the releases for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/releases#list-releases
+// GitHub API docs: https://docs.github.com/rest/releases/releases#list-releases
+//
+//meta:operation GET /repos/{owner}/{repo}/releases
 func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
 	u, err := addOptions(u, opts)
@@ -110,7 +112,9 @@ func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo stri
 
 // GetRelease fetches a single release.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/releases#get-a-release
+// GitHub API docs: https://docs.github.com/rest/releases/releases#get-a-release
+//
+//meta:operation GET /repos/{owner}/{repo}/releases/{release_id}
 func (s *RepositoriesService) GetRelease(ctx context.Context, owner, repo string, id int64) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 	return s.getSingleRelease(ctx, u)
@@ -118,7 +122,9 @@ func (s *RepositoriesService) GetRelease(ctx context.Context, owner, repo string
 
 // GetLatestRelease fetches the latest published release for the repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/releases#get-the-latest-release
+// GitHub API docs: https://docs.github.com/rest/releases/releases#get-the-latest-release
+//
+//meta:operation GET /repos/{owner}/{repo}/releases/latest
 func (s *RepositoriesService) GetLatestRelease(ctx context.Context, owner, repo string) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/latest", owner, repo)
 	return s.getSingleRelease(ctx, u)
@@ -126,7 +132,9 @@ func (s *RepositoriesService) GetLatestRelease(ctx context.Context, owner, repo 
 
 // GetReleaseByTag fetches a release with the specified tag.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/releases#get-a-release-by-tag-name
+// GitHub API docs: https://docs.github.com/rest/releases/releases#get-a-release-by-tag-name
+//
+//meta:operation GET /repos/{owner}/{repo}/releases/tags/{tag}
 func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, tag string) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/tags/%s", owner, repo, tag)
 	return s.getSingleRelease(ctx, u)
@@ -134,7 +142,9 @@ func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, 
 
 // GenerateReleaseNotes generates the release notes for the given tag.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/releases#generate-release-notes-content-for-a-release
+// GitHub API docs: https://docs.github.com/rest/releases/releases#generate-release-notes-content-for-a-release
+//
+//meta:operation POST /repos/{owner}/{repo}/releases/generate-notes
 func (s *RepositoriesService) GenerateReleaseNotes(ctx context.Context, owner, repo string, opts *GenerateNotesOptions) (*RepositoryReleaseNotes, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/generate-notes", owner, repo)
 	req, err := s.client.NewRequest("POST", u, opts)
@@ -188,7 +198,9 @@ type repositoryReleaseRequest struct {
 // Note that only a subset of the release fields are used.
 // See RepositoryRelease for more information.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/releases#create-a-release
+// GitHub API docs: https://docs.github.com/rest/releases/releases#create-a-release
+//
+//meta:operation POST /repos/{owner}/{repo}/releases
 func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
 
@@ -222,7 +234,9 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 // Note that only a subset of the release fields are used.
 // See RepositoryRelease for more information.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/releases#update-a-release
+// GitHub API docs: https://docs.github.com/rest/releases/releases#update-a-release
+//
+//meta:operation PATCH /repos/{owner}/{repo}/releases/{release_id}
 func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo string, id int64, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 
@@ -252,7 +266,9 @@ func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo strin
 
 // DeleteRelease delete a single release from a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/releases#delete-a-release
+// GitHub API docs: https://docs.github.com/rest/releases/releases#delete-a-release
+//
+//meta:operation DELETE /repos/{owner}/{repo}/releases/{release_id}
 func (s *RepositoriesService) DeleteRelease(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 
@@ -265,7 +281,9 @@ func (s *RepositoriesService) DeleteRelease(ctx context.Context, owner, repo str
 
 // ListReleaseAssets lists the release's assets.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/assets#list-release-assets
+// GitHub API docs: https://docs.github.com/rest/releases/assets#list-release-assets
+//
+//meta:operation GET /repos/{owner}/{repo}/releases/{release_id}/assets
 func (s *RepositoriesService) ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d/assets", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -288,7 +306,9 @@ func (s *RepositoriesService) ListReleaseAssets(ctx context.Context, owner, repo
 
 // GetReleaseAsset fetches a single release asset.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/assets#get-a-release-asset
+// GitHub API docs: https://docs.github.com/rest/releases/assets#get-a-release-asset
+//
+//meta:operation GET /repos/{owner}/{repo}/releases/assets/{asset_id}
 func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo string, id int64) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
@@ -317,7 +337,9 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 // exist, but it's possible to pass any http.Client. If nil is passed the
 // redirectURL will be returned instead.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/assets#get-a-release-asset
+// GitHub API docs: https://docs.github.com/rest/releases/assets#get-a-release-asset
+//
+//meta:operation GET /repos/{owner}/{repo}/releases/assets/{asset_id}
 func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, repo string, id int64, followRedirectsClient *http.Client) (rc io.ReadCloser, redirectURL string, err error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
@@ -379,7 +401,9 @@ func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, f
 
 // EditReleaseAsset edits a repository release asset.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/assets#update-a-release-asset
+// GitHub API docs: https://docs.github.com/rest/releases/assets#update-a-release-asset
+//
+//meta:operation PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}
 func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo string, id int64, release *ReleaseAsset) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
@@ -398,7 +422,9 @@ func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo 
 
 // DeleteReleaseAsset delete a single release asset from a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/assets#delete-a-release-asset
+// GitHub API docs: https://docs.github.com/rest/releases/assets#delete-a-release-asset
+//
+//meta:operation DELETE /repos/{owner}/{repo}/releases/assets/{asset_id}
 func (s *RepositoriesService) DeleteReleaseAsset(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
@@ -412,7 +438,9 @@ func (s *RepositoriesService) DeleteReleaseAsset(ctx context.Context, owner, rep
 // UploadReleaseAsset creates an asset by uploading a file into a release repository.
 // To upload assets that cannot be represented by an os.File, call NewUploadRequest directly.
 //
-// GitHub API docs: https://docs.github.com/en/rest/releases/assets#upload-a-release-asset
+// GitHub API docs: https://docs.github.com/rest/releases/assets#upload-a-release-asset
+//
+//meta:operation POST /repos/{owner}/{repo}/releases/{release_id}/assets
 func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, repo string, id int64, opts *UploadOptions, file *os.File) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d/assets", owner, repo, id)
 	u, err := addOptions(u, opts)

@@ -17,7 +17,7 @@ type OrganizationCustomRepoRoles struct {
 }
 
 // CustomRepoRoles represents custom repository roles for an organization.
-// See https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization
+// See https://docs.github.com/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization
 // for more information.
 type CustomRepoRoles struct {
 	ID          *int64   `json:"id,omitempty"`
@@ -31,6 +31,8 @@ type CustomRepoRoles struct {
 // In order to see custom repository roles in an organization, the authenticated user must be an organization owner.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#list-custom-repository-roles-in-an-organization
+//
+//meta:operation GET /orgs/{org}/custom-repository-roles
 func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org string) (*OrganizationCustomRepoRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/custom-repository-roles", org)
 
@@ -60,6 +62,8 @@ type CreateOrUpdateCustomRoleOptions struct {
 // In order to create custom repository roles in an organization, the authenticated user must be an organization owner.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#create-a-custom-repository-role
+//
+//meta:operation POST /orgs/{org}/custom-repository-roles
 func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org string, opts *CreateOrUpdateCustomRoleOptions) (*CustomRepoRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/custom-repository-roles", org)
 
@@ -81,6 +85,8 @@ func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org str
 // In order to update custom repository roles in an organization, the authenticated user must be an organization owner.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#update-a-custom-repository-role
+//
+//meta:operation PATCH /orgs/{org}/custom-repository-roles/{role_id}
 func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org, roleID string, opts *CreateOrUpdateCustomRoleOptions) (*CustomRepoRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
 
@@ -102,6 +108,8 @@ func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org, ro
 // In order to delete custom repository roles in an organization, the authenticated user must be an organization owner.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#delete-a-custom-repository-role
+//
+//meta:operation DELETE /orgs/{org}/custom-repository-roles/{role_id}
 func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org, roleID string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
 

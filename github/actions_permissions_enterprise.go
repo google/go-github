@@ -32,6 +32,8 @@ func (a ActionsPermissionsEnterprise) String() string {
 // GetActionsPermissionsInEnterprise gets the GitHub Actions permissions policy for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-github-actions-permissions-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/permissions
 func (s *ActionsService) GetActionsPermissionsInEnterprise(ctx context.Context, enterprise string) (*ActionsPermissionsEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions", enterprise)
 
@@ -52,6 +54,8 @@ func (s *ActionsService) GetActionsPermissionsInEnterprise(ctx context.Context, 
 // EditActionsPermissionsInEnterprise sets the permissions policy in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-github-actions-permissions-for-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/actions/permissions
 func (s *ActionsService) EditActionsPermissionsInEnterprise(ctx context.Context, enterprise string, actionsPermissionsEnterprise ActionsPermissionsEnterprise) (*ActionsPermissionsEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions", enterprise)
 	req, err := s.client.NewRequest("PUT", u, actionsPermissionsEnterprise)
@@ -71,6 +75,8 @@ func (s *ActionsService) EditActionsPermissionsInEnterprise(ctx context.Context,
 // ListEnabledOrgsInEnterprise lists the selected organizations that are enabled for GitHub Actions in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#list-selected-organizations-enabled-for-github-actions-in-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/permissions/organizations
 func (s *ActionsService) ListEnabledOrgsInEnterprise(ctx context.Context, owner string, opts *ListOptions) (*ActionsEnabledOnEnterpriseRepos, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations", owner)
 	u, err := addOptions(u, opts)
@@ -95,6 +101,8 @@ func (s *ActionsService) ListEnabledOrgsInEnterprise(ctx context.Context, owner 
 // SetEnabledOrgsInEnterprise replaces the list of selected organizations that are enabled for GitHub Actions in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-selected-organizations-enabled-for-github-actions-in-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/actions/permissions/organizations
 func (s *ActionsService) SetEnabledOrgsInEnterprise(ctx context.Context, owner string, organizationIDs []int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations", owner)
 
@@ -116,6 +124,8 @@ func (s *ActionsService) SetEnabledOrgsInEnterprise(ctx context.Context, owner s
 // AddEnabledOrgInEnterprise adds an organization to the list of selected organizations that are enabled for GitHub Actions in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#enable-a-selected-organization-for-github-actions-in-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/actions/permissions/organizations/{org_id}
 func (s *ActionsService) AddEnabledOrgInEnterprise(ctx context.Context, owner string, organizationID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations/%v", owner, organizationID)
 
@@ -135,6 +145,8 @@ func (s *ActionsService) AddEnabledOrgInEnterprise(ctx context.Context, owner st
 // RemoveEnabledOrgInEnterprise removes an organization from the list of selected organizations that are enabled for GitHub Actions in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#disable-a-selected-organization-for-github-actions-in-an-enterprise
+//
+//meta:operation DELETE /enterprises/{enterprise}/actions/permissions/organizations/{org_id}
 func (s *ActionsService) RemoveEnabledOrgInEnterprise(ctx context.Context, owner string, organizationID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations/%v", owner, organizationID)
 
@@ -154,6 +166,8 @@ func (s *ActionsService) RemoveEnabledOrgInEnterprise(ctx context.Context, owner
 // GetActionsAllowedInEnterprise gets the actions that are allowed in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/permissions/selected-actions
 func (s *ActionsService) GetActionsAllowedInEnterprise(ctx context.Context, enterprise string) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/selected-actions", enterprise)
 
@@ -174,6 +188,8 @@ func (s *ActionsService) GetActionsAllowedInEnterprise(ctx context.Context, ente
 // EditActionsAllowedInEnterprise sets the actions that are allowed in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/actions/permissions/selected-actions
 func (s *ActionsService) EditActionsAllowedInEnterprise(ctx context.Context, enterprise string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/selected-actions", enterprise)
 	req, err := s.client.NewRequest("PUT", u, actionsAllowed)

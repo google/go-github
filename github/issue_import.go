@@ -71,6 +71,8 @@ type IssueImportError struct {
 // Create a new imported issue on the specified repository.
 //
 // GitHub API docs: https://gist.github.com/jonmagic/5282384165e0f86ef105#start-an-issue-import
+//
+//meta:operation POST /repos/{owner}/{repo}/import/issues
 func (s *IssueImportService) Create(ctx context.Context, owner, repo string, issue *IssueImportRequest) (*IssueImportResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/issues", owner, repo)
 	req, err := s.client.NewRequest("POST", u, issue)
@@ -100,6 +102,8 @@ func (s *IssueImportService) Create(ctx context.Context, owner, repo string, iss
 // CheckStatus checks the status of an imported issue.
 //
 // GitHub API docs: https://gist.github.com/jonmagic/5282384165e0f86ef105#import-status-request
+//
+//meta:operation GET /repos/{owner}/{repo}/import/issues/{issue_number}
 func (s *IssueImportService) CheckStatus(ctx context.Context, owner, repo string, issueID int64) (*IssueImportResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/issues/%v", owner, repo, issueID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -122,6 +126,8 @@ func (s *IssueImportService) CheckStatus(ctx context.Context, owner, repo string
 // CheckStatusSince checks the status of multiple imported issues since a given date.
 //
 // GitHub API docs: https://gist.github.com/jonmagic/5282384165e0f86ef105#check-status-of-multiple-issues
+//
+//meta:operation GET /repos/{owner}/{repo}/import/issues
 func (s *IssueImportService) CheckStatusSince(ctx context.Context, owner, repo string, since Timestamp) ([]*IssueImportResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/issues?since=%v", owner, repo, since.Format("2006-01-02"))
 	req, err := s.client.NewRequest("GET", u, nil)

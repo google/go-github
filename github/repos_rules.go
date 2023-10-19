@@ -349,7 +349,9 @@ type Ruleset struct {
 
 // GetRulesForBranch gets all the rules that apply to the specified branch.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-rules-for-a-branch
+// GitHub API docs: https://docs.github.com/rest/repos/rules#get-rules-for-a-branch
+//
+//meta:operation GET /repos/{owner}/{repo}/rules/branches/{branch}
 func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo, branch string) ([]*RepositoryRule, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rules/branches/%v", owner, repo, branch)
 
@@ -370,7 +372,9 @@ func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo
 // GetAllRulesets gets all the rules that apply to the specified repository.
 // If includesParents is true, rulesets configured at the organization level that apply to the repository will be returned.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-all-repository-rulesets
+// GitHub API docs: https://docs.github.com/rest/repos/rules#get-all-repository-rulesets
+//
+//meta:operation GET /repos/{owner}/{repo}/rulesets
 func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo string, includesParents bool) ([]*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets?includes_parents=%v", owner, repo, includesParents)
 
@@ -390,7 +394,9 @@ func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo st
 
 // CreateRuleset creates a ruleset for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/rules#create-a-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/repos/rules#create-a-repository-ruleset
+//
+//meta:operation POST /repos/{owner}/{repo}/rulesets
 func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo string, rs *Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets", owner, repo)
 
@@ -411,7 +417,9 @@ func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo str
 // GetRuleset gets a ruleset for the specified repository.
 // If includesParents is true, rulesets configured at the organization level that apply to the repository will be returned.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/rules#get-a-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/repos/rules#get-a-repository-ruleset
+//
+//meta:operation GET /repos/{owner}/{repo}/rulesets/{ruleset_id}
 func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string, rulesetID int64, includesParents bool) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v?includes_parents=%v", owner, repo, rulesetID, includesParents)
 
@@ -431,7 +439,9 @@ func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string
 
 // UpdateRuleset updates a ruleset for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/rules#update-a-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
+//
+//meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
 func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 
@@ -451,7 +461,9 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 
 // DeleteRuleset deletes a ruleset for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/rules#delete-a-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/repos/rules#delete-a-repository-ruleset
+//
+//meta:operation DELETE /repos/{owner}/{repo}/rulesets/{ruleset_id}
 func (s *RepositoriesService) DeleteRuleset(ctx context.Context, owner, repo string, rulesetID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 

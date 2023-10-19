@@ -1,20 +1,3 @@
-methods:
-  - name: AService.AcceptableLinks
-    operations:
-      - GET /a/{a_id}
-      - POST /a/{a_id}
-  - name: AService.Get
-    operations:
-      - GET /a/{a_id_noncanonical}
-  - name: AService.OutdatedLinks
-    operations:
-      - POST /a/{a_id}
-  - name: AService.Uncommented
-    operations:
-      - GET /a/{a_id}
-  - name: AService.Undocumented
-    operations:
-      - GET /undocumented/{undocumented_id}
 operations:
   - name: POST /a/{a_id}
     documentation_url: https://docs.github.com/rest/a/a#update-a

@@ -15,7 +15,7 @@ import (
 // TeamsService provides access to the team-related functions
 // in the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/
+// GitHub API docs: https://docs.github.com/rest/teams/
 type TeamsService service
 
 // Team represents a team within a GitHub organization. Teams are used to
@@ -81,7 +81,9 @@ func (i Invitation) String() string {
 
 // ListTeams lists all of the teams for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-teams
+// GitHub API docs: https://docs.github.com/rest/teams/teams#list-teams
+//
+//meta:operation GET /orgs/{org}/teams
 func (s *TeamsService) ListTeams(ctx context.Context, org string, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
 	u, err := addOptions(u, opts)
@@ -105,7 +107,9 @@ func (s *TeamsService) ListTeams(ctx context.Context, org string, opts *ListOpti
 
 // GetTeamByID fetches a team, given a specified organization ID, by ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#get-a-team-by-name
+// GitHub API docs: https://docs.github.com/rest/teams/teams#get-a-team-by-name
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) GetTeamByID(ctx context.Context, orgID, teamID int64) (*Team, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v", orgID, teamID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -124,7 +128,9 @@ func (s *TeamsService) GetTeamByID(ctx context.Context, orgID, teamID int64) (*T
 
 // GetTeamBySlug fetches a team, given a specified organization name, by slug.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#get-a-team-by-name
+// GitHub API docs: https://docs.github.com/rest/teams/teams#get-a-team-by-name
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) GetTeamBySlug(ctx context.Context, org, slug string) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v", org, slug)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -174,7 +180,9 @@ func (s NewTeam) String() string {
 
 // CreateTeam creates a new team within an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#create-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams#create-a-team
+//
+//meta:operation POST /orgs/{org}/teams
 func (s *TeamsService) CreateTeam(ctx context.Context, org string, team NewTeam) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
 	req, err := s.client.NewRequest("POST", u, team)
@@ -220,7 +228,9 @@ func copyNewTeamWithoutParent(team *NewTeam) *newTeamNoParent {
 
 // EditTeamByID edits a team, given an organization ID, selected by ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#update-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams#update-a-team
+//
+//meta:operation PATCH /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, team NewTeam, removeParent bool) (*Team, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v", orgID, teamID)
 
@@ -247,7 +257,9 @@ func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, te
 
 // EditTeamBySlug edits a team, given an organization name, by slug.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#update-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams#update-a-team
+//
+//meta:operation PATCH /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) EditTeamBySlug(ctx context.Context, org, slug string, team NewTeam, removeParent bool) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v", org, slug)
 
@@ -274,7 +286,9 @@ func (s *TeamsService) EditTeamBySlug(ctx context.Context, org, slug string, tea
 
 // DeleteTeamByID deletes a team referenced by ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#delete-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams#delete-a-team
+//
+//meta:operation DELETE /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) DeleteTeamByID(ctx context.Context, orgID, teamID int64) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v", orgID, teamID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -287,7 +301,9 @@ func (s *TeamsService) DeleteTeamByID(ctx context.Context, orgID, teamID int64) 
 
 // DeleteTeamBySlug deletes a team reference by slug.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#delete-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams#delete-a-team
+//
+//meta:operation DELETE /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) DeleteTeamBySlug(ctx context.Context, org, slug string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v", org, slug)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -300,7 +316,9 @@ func (s *TeamsService) DeleteTeamBySlug(ctx context.Context, org, slug string) (
 
 // ListChildTeamsByParentID lists child teams for a parent team given parent ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-child-teams
+// GitHub API docs: https://docs.github.com/rest/teams/teams#list-child-teams
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/teams
 func (s *TeamsService) ListChildTeamsByParentID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/teams", orgID, teamID)
 	u, err := addOptions(u, opts)
@@ -324,7 +342,9 @@ func (s *TeamsService) ListChildTeamsByParentID(ctx context.Context, orgID, team
 
 // ListChildTeamsByParentSlug lists child teams for a parent team given parent slug.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-child-teams
+// GitHub API docs: https://docs.github.com/rest/teams/teams#list-child-teams
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/teams
 func (s *TeamsService) ListChildTeamsByParentSlug(ctx context.Context, org, slug string, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/teams", org, slug)
 	u, err := addOptions(u, opts)
@@ -348,7 +368,9 @@ func (s *TeamsService) ListChildTeamsByParentSlug(ctx context.Context, org, slug
 
 // ListTeamReposByID lists the repositories given a team ID that the specified team has access to.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-team-repositories
+// GitHub API docs: https://docs.github.com/rest/teams/teams#list-team-repositories
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/repos
 func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos", orgID, teamID)
 	u, err := addOptions(u, opts)
@@ -376,7 +398,9 @@ func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int6
 
 // ListTeamReposBySlug lists the repositories given a team slug that the specified team has access to.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-team-repositories
+// GitHub API docs: https://docs.github.com/rest/teams/teams#list-team-repositories
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/repos
 func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string, opts *ListOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos", org, slug)
 	u, err := addOptions(u, opts)
@@ -406,7 +430,9 @@ func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string
 // repository is managed by team, a Repository is returned which includes the
 // permissions team has for that repo.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#check-team-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-repository
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) IsTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -430,7 +456,9 @@ func (s *TeamsService) IsTeamRepoByID(ctx context.Context, orgID, teamID int64, 
 // repository is managed by team, a Repository is returned which includes the
 // permissions team has for that repo.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#check-team-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-repository
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) IsTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -469,7 +497,9 @@ type TeamAddTeamRepoOptions struct {
 // The specified repository must be owned by the organization to which the team
 // belongs, or a direct fork of a repository owned by the organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#add-or-update-team-repository-permissions
+// GitHub API docs: https://docs.github.com/rest/teams/teams#add-or-update-team-repository-permissions
+//
+//meta:operation PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -484,7 +514,9 @@ func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64,
 // The specified repository must be owned by the organization to which the team
 // belongs, or a direct fork of a repository owned by the organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#add-or-update-team-repository-permissions
+// GitHub API docs: https://docs.github.com/rest/teams/teams#add-or-update-team-repository-permissions
+//
+//meta:operation PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -499,7 +531,9 @@ func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, 
 // team given the team ID. Note that this does not delete the repository, it
 // just removes it from the team.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#remove-a-repository-from-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams#remove-a-repository-from-a-team
+//
+//meta:operation DELETE /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -514,7 +548,9 @@ func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int
 // team given the team slug. Note that this does not delete the repository, it
 // just removes it from the team.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#remove-a-repository-from-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams#remove-a-repository-from-a-team
+//
+//meta:operation DELETE /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) RemoveTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -526,7 +562,10 @@ func (s *TeamsService) RemoveTeamRepoBySlug(ctx context.Context, org, slug, owne
 }
 
 // ListUserTeams lists a user's teams
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-teams-for-the-authenticated-user
+//
+// GitHub API docs: https://docs.github.com/rest/teams/teams#list-teams-for-the-authenticated-user
+//
+//meta:operation GET /user/teams
 func (s *TeamsService) ListUserTeams(ctx context.Context, opts *ListOptions) ([]*Team, *Response, error) {
 	u := "user/teams"
 	u, err := addOptions(u, opts)
@@ -550,7 +589,9 @@ func (s *TeamsService) ListUserTeams(ctx context.Context, opts *ListOptions) ([]
 
 // ListTeamProjectsByID lists the organization projects for a team given the team ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-team-projects
+// GitHub API docs: https://docs.github.com/rest/teams/teams#list-team-projects
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/projects
 func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID int64) ([]*Project, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects", orgID, teamID)
 
@@ -574,7 +615,9 @@ func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID i
 
 // ListTeamProjectsBySlug lists the organization projects for a team given the team slug.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#list-team-projects
+// GitHub API docs: https://docs.github.com/rest/teams/teams#list-team-projects
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/projects
 func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug string) ([]*Project, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects", org, slug)
 
@@ -599,7 +642,9 @@ func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug str
 // ReviewTeamProjectsByID checks whether a team, given its ID, has read, write, or admin
 // permissions for an organization project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#check-team-permissions-for-a-project
+// GitHub API docs: https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-project
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID, projectID int64) (*Project, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -623,7 +668,9 @@ func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID
 // ReviewTeamProjectsBySlug checks whether a team, given its slug, has read, write, or admin
 // permissions for an organization project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#check-team-permissions-for-a-project
+// GitHub API docs: https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-project
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) ReviewTeamProjectsBySlug(ctx context.Context, org, slug string, projectID int64) (*Project, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects/%v", org, slug, projectID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -660,7 +707,9 @@ type TeamProjectOptions struct {
 // To add a project to a team or update the team's permission on a project, the
 // authenticated user must have admin permissions for the project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#add-or-update-team-project-permissions
+// GitHub API docs: https://docs.github.com/rest/teams/teams#add-or-update-team-project-permissions
+//
+//meta:operation PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, opts *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -679,7 +728,9 @@ func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, pr
 // To add a project to a team or update the team's permission on a project, the
 // authenticated user must have admin permissions for the project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#add-or-update-team-project-permissions
+// GitHub API docs: https://docs.github.com/rest/teams/teams#add-or-update-team-project-permissions
+//
+//meta:operation PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64, opts *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects/%v", org, slug, projectID)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -701,7 +752,9 @@ func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug strin
 // or project.
 // Note: This endpoint removes the project from the team, but does not delete it.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#remove-a-project-from-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams#remove-a-project-from-a-team
+//
+//meta:operation DELETE /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) RemoveTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -723,7 +776,9 @@ func (s *TeamsService) RemoveTeamProjectByID(ctx context.Context, orgID, teamID,
 // or project.
 // Note: This endpoint removes the project from the team, but does not delete it.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/teams#remove-a-project-from-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams#remove-a-project-from-a-team
+//
+//meta:operation DELETE /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) RemoveTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects/%v", org, slug, projectID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -753,6 +808,8 @@ type IDPGroup struct {
 // ListIDPGroupsInOrganization lists IDP groups available in an organization.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#list-idp-groups-for-an-organization
+//
+//meta:operation GET /orgs/{org}/team-sync/groups
 func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opts *ListCursorOptions) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/team-sync/groups", org)
 	u, err := addOptions(u, opts)
@@ -778,6 +835,8 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 // given organization and team IDs.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#list-idp-groups-for-a-team
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/team-sync/group-mappings
 func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, teamID int64) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/team-sync/group-mappings", orgID, teamID)
 
@@ -799,6 +858,8 @@ func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, team
 // given organization name and team slug.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#list-idp-groups-for-a-team
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/team-sync/group-mappings
 func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug string) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
 
@@ -820,6 +881,8 @@ func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug
 // between a team and an IDP group given organization and team IDs.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#create-or-update-idp-group-connections
+//
+//meta:operation PATCH /orgs/{org}/teams/{team_slug}/team-sync/group-mappings
 func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context, orgID, teamID int64, opts IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/team-sync/group-mappings", orgID, teamID)
 
@@ -841,6 +904,8 @@ func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context
 // between a team and an IDP group given organization name and team slug.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#create-or-update-idp-group-connections
+//
+//meta:operation PATCH /orgs/{org}/teams/{team_slug}/team-sync/group-mappings
 func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Context, org, slug string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
 
@@ -888,7 +953,9 @@ type ExternalGroupList struct {
 
 // GetExternalGroup fetches an external group.
 //
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/teams/external-groups#get-an-external-group
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#get-an-external-group
+//
+//meta:operation GET /orgs/{org}/external-group/{group_id}
 func (s *TeamsService) GetExternalGroup(ctx context.Context, org string, groupID int64) (*ExternalGroup, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/external-group/%v", org, groupID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -915,7 +982,9 @@ type ListExternalGroupsOptions struct {
 
 // ListExternalGroups lists external groups in an organization on GitHub.
 //
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/teams/external-groups#list-external-groups-in-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#list-external-groups-in-an-organization
+//
+//meta:operation GET /orgs/{org}/external-groups
 func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts *ListExternalGroupsOptions) (*ExternalGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/external-groups", org)
 	u, err := addOptions(u, opts)
@@ -939,7 +1008,9 @@ func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts 
 
 // ListExternalGroupsForTeamBySlug lists external groups connected to a team on GitHub.
 //
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/teams/external-groups#list-a-connection-between-an-external-group-and-a-team
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#list-a-connection-between-an-external-group-and-a-team
+//
+//meta:operation GET /orgs/{org}/teams/{team_slug}/external-groups
 func (s *TeamsService) ListExternalGroupsForTeamBySlug(ctx context.Context, org, slug string) (*ExternalGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/external-groups", org, slug)
 
@@ -959,7 +1030,9 @@ func (s *TeamsService) ListExternalGroupsForTeamBySlug(ctx context.Context, org,
 
 // UpdateConnectedExternalGroup updates the connection between an external group and a team.
 //
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/teams/external-groups#update-the-connection-between-an-external-group-and-a-team
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#update-the-connection-between-an-external-group-and-a-team
+//
+//meta:operation PATCH /orgs/{org}/teams/{team_slug}/external-groups
 func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, slug string, eg *ExternalGroup) (*ExternalGroup, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/external-groups", org, slug)
 
@@ -979,7 +1052,9 @@ func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, sl
 
 // RemoveConnectedExternalGroup removes the connection between an external group and a team.
 //
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/teams/external-groups#remove-the-connection-between-an-external-group-and-a-team
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#remove-the-connection-between-an-external-group-and-a-team
+//
+//meta:operation DELETE /orgs/{org}/teams/{team_slug}/external-groups
 func (s *TeamsService) RemoveConnectedExternalGroup(ctx context.Context, org, slug string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/external-groups", org, slug)
 

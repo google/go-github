@@ -13,6 +13,8 @@ import (
 // PromoteSiteAdmin promotes a user to a site administrator of a GitHub Enterprise instance.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.10/rest/enterprise-admin/users#promote-a-user-to-be-a-site-administrator
+//
+//meta:operation PUT /users/{username}/site_admin
 func (s *UsersService) PromoteSiteAdmin(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("users/%v/site_admin", user)
 
@@ -27,6 +29,8 @@ func (s *UsersService) PromoteSiteAdmin(ctx context.Context, user string) (*Resp
 // DemoteSiteAdmin demotes a user from site administrator of a GitHub Enterprise instance.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.10/rest/enterprise-admin/users#demote-a-site-administrator
+//
+//meta:operation DELETE /users/{username}/site_admin
 func (s *UsersService) DemoteSiteAdmin(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("users/%v/site_admin", user)
 
@@ -46,6 +50,8 @@ type UserSuspendOptions struct {
 // Suspend a user on a GitHub Enterprise instance.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.10/rest/enterprise-admin/users#suspend-a-user
+//
+//meta:operation PUT /users/{username}/suspended
 func (s *UsersService) Suspend(ctx context.Context, user string, opts *UserSuspendOptions) (*Response, error) {
 	u := fmt.Sprintf("users/%v/suspended", user)
 
@@ -60,6 +66,8 @@ func (s *UsersService) Suspend(ctx context.Context, user string, opts *UserSuspe
 // Unsuspend a user on a GitHub Enterprise instance.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.10/rest/enterprise-admin/users#unsuspend-a-user
+//
+//meta:operation DELETE /users/{username}/suspended
 func (s *UsersService) Unsuspend(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("users/%v/suspended", user)
 

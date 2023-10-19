@@ -12,7 +12,9 @@ import (
 
 // ListBlockedUsers lists all the users blocked by an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#list-users-blocked-by-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/blocking#list-users-blocked-by-an-organization
+//
+//meta:operation GET /orgs/{org}/blocks
 func (s *OrganizationsService) ListBlockedUsers(ctx context.Context, org string, opts *ListOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/blocks", org)
 	u, err := addOptions(u, opts)
@@ -39,7 +41,9 @@ func (s *OrganizationsService) ListBlockedUsers(ctx context.Context, org string,
 
 // IsBlocked reports whether specified user is blocked from an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#check-if-a-user-is-blocked-by-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/blocking#check-if-a-user-is-blocked-by-an-organization
+//
+//meta:operation GET /orgs/{org}/blocks/{username}
 func (s *OrganizationsService) IsBlocked(ctx context.Context, org string, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
 
@@ -58,7 +62,9 @@ func (s *OrganizationsService) IsBlocked(ctx context.Context, org string, user s
 
 // BlockUser blocks specified user from an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#block-a-user-from-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/blocking#block-a-user-from-an-organization
+//
+//meta:operation PUT /orgs/{org}/blocks/{username}
 func (s *OrganizationsService) BlockUser(ctx context.Context, org string, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
 
@@ -75,7 +81,9 @@ func (s *OrganizationsService) BlockUser(ctx context.Context, org string, user s
 
 // UnblockUser unblocks specified user from an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/blocking#unblock-a-user-from-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/blocking#unblock-a-user-from-an-organization
+//
+//meta:operation DELETE /orgs/{org}/blocks/{username}
 func (s *OrganizationsService) UnblockUser(ctx context.Context, org string, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
 

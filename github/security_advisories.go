@@ -50,7 +50,9 @@ type ListRepositorySecurityAdvisoriesOptions struct {
 // RequestCVE requests a Common Vulnerabilities and Exposures (CVE) for a repository security advisory.
 // The ghsaID is the GitHub Security Advisory identifier of the advisory.
 //
-// GitHub API docs: https://docs.github.com/en/rest/security-advisories/repository-advisories#request-a-cve-for-a-repository-security-advisory
+// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#request-a-cve-for-a-repository-security-advisory
+//
+//meta:operation POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve
 func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo, ghsaID string) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/security-advisories/%v/cve", owner, repo, ghsaID)
 
@@ -73,7 +75,9 @@ func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo,
 
 // ListRepositorySecurityAdvisoriesForOrg lists the repository security advisories for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories-for-an-organization
+//
+//meta:operation GET /orgs/{org}/security-advisories
 func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx context.Context, org string, opt *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/security-advisories", org)
 	url, err := addOptions(url, opt)
@@ -98,6 +102,8 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx c
 // ListRepositorySecurityAdvisories lists the security advisories in a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories
+//
+//meta:operation GET /repos/{owner}/{repo}/security-advisories
 func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisories(ctx context.Context, owner, repo string, opt *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/security-advisories", owner, repo)
 	url, err := addOptions(url, opt)

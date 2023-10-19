@@ -13,7 +13,7 @@ import (
 // LicensesService handles communication with the license related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/licenses/
+// GitHub API docs: https://docs.github.com/rest/licenses/
 type LicensesService service
 
 // RepositoryLicense represents the license for a repository.
@@ -61,6 +61,8 @@ func (l License) String() string {
 // List popular open source licenses.
 //
 // GitHub API docs: https://docs.github.com/rest/licenses/licenses#get-all-commonly-used-licenses
+//
+//meta:operation GET /licenses
 func (s *LicensesService) List(ctx context.Context) ([]*License, *Response, error) {
 	req, err := s.client.NewRequest("GET", "licenses", nil)
 	if err != nil {
@@ -79,6 +81,8 @@ func (s *LicensesService) List(ctx context.Context) ([]*License, *Response, erro
 // Get extended metadata for one license.
 //
 // GitHub API docs: https://docs.github.com/rest/licenses/licenses#get-a-license
+//
+//meta:operation GET /licenses/{license}
 func (s *LicensesService) Get(ctx context.Context, licenseName string) (*License, *Response, error) {
 	u := fmt.Sprintf("licenses/%s", licenseName)
 

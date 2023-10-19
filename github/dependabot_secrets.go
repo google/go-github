@@ -27,7 +27,9 @@ func (s *DependabotService) getPublicKey(ctx context.Context, url string) (*Publ
 
 // GetRepoPublicKey gets a public key that should be used for Dependabot secret encryption.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-a-repository-public-key
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#get-a-repository-public-key
+//
+//meta:operation GET /repos/{owner}/{repo}/dependabot/secrets/public-key
 func (s *DependabotService) GetRepoPublicKey(ctx context.Context, owner, repo string) (*PublicKey, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets/public-key", owner, repo)
 	return s.getPublicKey(ctx, url)
@@ -35,7 +37,9 @@ func (s *DependabotService) GetRepoPublicKey(ctx context.Context, owner, repo st
 
 // GetOrgPublicKey gets a public key that should be used for Dependabot secret encryption.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-an-organization-public-key
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#get-an-organization-public-key
+//
+//meta:operation GET /orgs/{org}/dependabot/secrets/public-key
 func (s *DependabotService) GetOrgPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/public-key", org)
 	return s.getPublicKey(ctx, url)
@@ -64,7 +68,9 @@ func (s *DependabotService) listSecrets(ctx context.Context, url string, opts *L
 // ListRepoSecrets lists all Dependabot secrets available in a repository
 // without revealing their encrypted values.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-repository-secrets
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#list-repository-secrets
+//
+//meta:operation GET /repos/{owner}/{repo}/dependabot/secrets
 func (s *DependabotService) ListRepoSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets", owner, repo)
 	return s.listSecrets(ctx, url, opts)
@@ -73,7 +79,9 @@ func (s *DependabotService) ListRepoSecrets(ctx context.Context, owner, repo str
 // ListOrgSecrets lists all Dependabot secrets available in an organization
 // without revealing their encrypted values.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-organization-secrets
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#list-organization-secrets
+//
+//meta:operation GET /orgs/{org}/dependabot/secrets
 func (s *DependabotService) ListOrgSecrets(ctx context.Context, org string, opts *ListOptions) (*Secrets, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets", org)
 	return s.listSecrets(ctx, url, opts)
@@ -96,7 +104,9 @@ func (s *DependabotService) getSecret(ctx context.Context, url string) (*Secret,
 
 // GetRepoSecret gets a single repository Dependabot secret without revealing its encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#get-a-repository-secret
+//
+//meta:operation GET /repos/{owner}/{repo}/dependabot/secrets/{secret_name}
 func (s *DependabotService) GetRepoSecret(ctx context.Context, owner, repo, name string) (*Secret, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets/%v", owner, repo, name)
 	return s.getSecret(ctx, url)
@@ -104,7 +114,9 @@ func (s *DependabotService) GetRepoSecret(ctx context.Context, owner, repo, name
 
 // GetOrgSecret gets a single organization Dependabot secret without revealing its encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#get-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#get-an-organization-secret
+//
+//meta:operation GET /orgs/{org}/dependabot/secrets/{secret_name}
 func (s *DependabotService) GetOrgSecret(ctx context.Context, org, name string) (*Secret, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v", org, name)
 	return s.getSecret(ctx, url)
@@ -134,7 +146,9 @@ func (s *DependabotService) putSecret(ctx context.Context, url string, eSecret *
 
 // CreateOrUpdateRepoSecret creates or updates a repository Dependabot secret with an encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#create-or-update-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#create-or-update-a-repository-secret
+//
+//meta:operation PUT /repos/{owner}/{repo}/dependabot/secrets/{secret_name}
 func (s *DependabotService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *DependabotEncryptedSecret) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets/%v", owner, repo, eSecret.Name)
 	return s.putSecret(ctx, url, eSecret)
@@ -142,7 +156,9 @@ func (s *DependabotService) CreateOrUpdateRepoSecret(ctx context.Context, owner,
 
 // CreateOrUpdateOrgSecret creates or updates an organization Dependabot secret with an encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#create-or-update-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#create-or-update-an-organization-secret
+//
+//meta:operation PUT /orgs/{org}/dependabot/secrets/{secret_name}
 func (s *DependabotService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *DependabotEncryptedSecret) (*Response, error) {
 	repoIDs := make([]string, len(eSecret.SelectedRepositoryIDs))
 	for i, secret := range eSecret.SelectedRepositoryIDs {
@@ -176,7 +192,9 @@ func (s *DependabotService) deleteSecret(ctx context.Context, url string) (*Resp
 
 // DeleteRepoSecret deletes a Dependabot secret in a repository using the secret name.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#delete-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#delete-a-repository-secret
+//
+//meta:operation DELETE /repos/{owner}/{repo}/dependabot/secrets/{secret_name}
 func (s *DependabotService) DeleteRepoSecret(ctx context.Context, owner, repo, name string) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets/%v", owner, repo, name)
 	return s.deleteSecret(ctx, url)
@@ -184,7 +202,9 @@ func (s *DependabotService) DeleteRepoSecret(ctx context.Context, owner, repo, n
 
 // DeleteOrgSecret deletes a Dependabot secret in an organization using the secret name.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#delete-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#delete-an-organization-secret
+//
+//meta:operation DELETE /orgs/{org}/dependabot/secrets/{secret_name}
 func (s *DependabotService) DeleteOrgSecret(ctx context.Context, org, name string) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v", org, name)
 	return s.deleteSecret(ctx, url)
@@ -192,7 +212,9 @@ func (s *DependabotService) DeleteOrgSecret(ctx context.Context, org, name strin
 
 // ListSelectedReposForOrgSecret lists all repositories that have access to a Dependabot secret.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#list-selected-repositories-for-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#list-selected-repositories-for-an-organization-secret
+//
+//meta:operation GET /orgs/{org}/dependabot/secrets/{secret_name}/repositories
 func (s *DependabotService) ListSelectedReposForOrgSecret(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories", org, name)
 	u, err := addOptions(url, opts)
@@ -219,7 +241,9 @@ type DependabotSecretsSelectedRepoIDs []int64
 
 // SetSelectedReposForOrgSecret sets the repositories that have access to a Dependabot secret.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#set-selected-repositories-for-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#set-selected-repositories-for-an-organization-secret
+//
+//meta:operation PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories
 func (s *DependabotService) SetSelectedReposForOrgSecret(ctx context.Context, org, name string, ids DependabotSecretsSelectedRepoIDs) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories", org, name)
 	type repoIDs struct {
@@ -236,7 +260,9 @@ func (s *DependabotService) SetSelectedReposForOrgSecret(ctx context.Context, or
 
 // AddSelectedRepoToOrgSecret adds a repository to an organization Dependabot secret.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#add-selected-repository-to-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#add-selected-repository-to-an-organization-secret
+//
+//meta:operation PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}
 func (s *DependabotService) AddSelectedRepoToOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories/%v", org, name, *repo.ID)
 	req, err := s.client.NewRequest("PUT", url, nil)
@@ -249,7 +275,9 @@ func (s *DependabotService) AddSelectedRepoToOrgSecret(ctx context.Context, org,
 
 // RemoveSelectedRepoFromOrgSecret removes a repository from an organization Dependabot secret.
 //
-// GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#remove-selected-repository-from-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/dependabot/secrets#remove-selected-repository-from-an-organization-secret
+//
+//meta:operation DELETE /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}
 func (s *DependabotService) RemoveSelectedRepoFromOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories/%v", org, name, *repo.ID)
 	req, err := s.client.NewRequest("DELETE", url, nil)

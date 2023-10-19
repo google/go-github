@@ -10,7 +10,7 @@ import "context"
 // ActivityService handles communication with the activity related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/activity/
+// GitHub API docs: https://docs.github.com/rest/activity/
 type ActivityService service
 
 // FeedLink represents a link to a related resource.
@@ -59,6 +59,8 @@ type FeedLinks struct {
 // since current feed URIs use the older, non revocable auth tokens.
 //
 // GitHub API docs: https://docs.github.com/rest/activity/feeds#get-feeds
+//
+//meta:operation GET /feeds
 func (s *ActivityService) ListFeeds(ctx context.Context) (*Feeds, *Response, error) {
 	req, err := s.client.NewRequest("GET", "feeds", nil)
 	if err != nil {

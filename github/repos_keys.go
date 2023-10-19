@@ -15,6 +15,8 @@ import (
 // ListKeys lists the deploy keys for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys#list-deploy-keys
+//
+//meta:operation GET /repos/{owner}/{repo}/keys
 func (s *RepositoriesService) ListKeys(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
 	u, err := addOptions(u, opts)
@@ -39,6 +41,8 @@ func (s *RepositoriesService) ListKeys(ctx context.Context, owner string, repo s
 // GetKey fetches a single deploy key.
 //
 // GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys#get-a-deploy-key
+//
+//meta:operation GET /repos/{owner}/{repo}/keys/{key_id}
 func (s *RepositoriesService) GetKey(ctx context.Context, owner string, repo string, id int64) (*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys/%v", owner, repo, id)
 
@@ -59,6 +63,8 @@ func (s *RepositoriesService) GetKey(ctx context.Context, owner string, repo str
 // CreateKey adds a deploy key for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys#create-a-deploy-key
+//
+//meta:operation POST /repos/{owner}/{repo}/keys
 func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo string, key *Key) (*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
 
@@ -79,6 +85,8 @@ func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo 
 // DeleteKey deletes a deploy key.
 //
 // GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys#delete-a-deploy-key
+//
+//meta:operation DELETE /repos/{owner}/{repo}/keys/{key_id}
 func (s *RepositoriesService) DeleteKey(ctx context.Context, owner string, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys/%v", owner, repo, id)
 

@@ -3,12 +3,11 @@ package github
 type AService struct{}
 
 // Get gets an A
+//meta:operation GET /a/{non-canonical-id}
 func (s *AService) Get() {}
 
-// MissingFromMetadata isn't mentioned in metadata.yaml
-func (s *AService) MissingFromMetadata() {}
-
 // Undocumented uses an undocumented operation
+//meta:operation GET /undocumented/{undocumented_id}
 func (s *AService) Undocumented() {}
 
 // OutdatedLinks has links that are outdated or wrong
@@ -16,14 +15,17 @@ func (s *AService) Undocumented() {}
 // GitHub API docs: https://docs.github.com/rest/a/a#get-a
 // GitHub API docs: https://example.com
 // Note: Undocumented uses the undocumented GitHub API endpoint "GET /undocumented/{undocumented_id}".
+//
+//meta:operation post a/{a_id}
 func (s *AService) OutdatedLinks() {}
 
-// AcceptableLinks has links that resolve to the same link as the metadata
-//
-// GitHub API docs: https://docs.github.com/en/rest/a/a#update-a
-// GitHub API docs: https://docs.github.com/en/rest/a/a#overridden-get-a
-func (s *AService) AcceptableLinks() {}
+//meta:operation GET /a/{a_id}
+func (s *AService) Uncommented() {}
 
-func (s *AService) Uncommented() {
-	// has no pre-existing comment
-}
+func (s *AService) unexported() {}
+
+func NotAMethod() {}
+
+type internalService struct{}
+
+func (i *internalService) Get() {}

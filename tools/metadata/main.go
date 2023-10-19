@@ -17,45 +17,52 @@ import (
 )
 
 var helpVars = kong.Vars{
-	"update_openapi_help":  `Update metadata.yaml from OpenAPI descriptions in github.com/github/rest-api-description.`,
-	"update_doc_urls_help": `Update documentation urls in the Go source files in the github directory to match the urls in the metadata file.`,
-	"format_help":          `Format metadata.yaml.`,
-	"validate_help":        `Validate that metadata.yaml is consistent with source code.`,
-	"unused_ops_help":      `List operations in metadata.yaml that don't have any associated go methods'.`,
-	"canonize_help":        `Update metadata.yaml to use canonical operation names.`,
-	"working_dir_help":     `Working directory. Should be the root of the go-github repository.`,
-	"filename_help":        `Path to metadata.yaml. Defaults to <working dir>/metadata.yaml.`,
-	"github_dir_help":      `Path to the github package. Defaults to <working dir>/github.`,
-	"openapi_ref_help":     `Git ref to pull OpenAPI descriptions from.`,
-	"output_json_help":     `Output JSON.`,
-	"validate_github_help": `Check that metadata.yaml is consistent with the OpenAPI descriptions in github.com/github/rest-api-description.`,
+	"update_openapi_help": `
+Update openapi_operations.yaml from OpenAPI descriptions in github.com/github/rest-api-description at the given git ref.
+`,
+
+	"update_go_help": `
+Update go source code to be consistent with openapi_operations.yaml.
+ - Adds and updates "// GitHub API docs:" comments for service methods.
+ - Updates "//meta:operation" comments to use canonical operation names.
+ - Updates formatting of "//meta:operation" comments to make sure there isn't a space between the "//" and the "meta".
+ - Formats modified files with the equivalent of "go fmt".
+`,
+
+	"format_help": `Format whitespace in openapi_operations.yaml and sort its operations.`,
+	"unused_help": `List operations in openapi_operations.yaml that aren't used by any service methods.`,
+
+	"working_dir_help": `Working directory. Should be the root of the go-github repository.`,
+	"openapi_ref_help": `Git ref to pull OpenAPI descriptions from.`,
+
+	"openapi_validate_help": `
+Instead of updating, make sure that the operations in openapi_operations.yaml's "openapi_operations" field are
+consistent with the sha listed in "openapi_commit". This is run in CI as a convenience so that reviewers can trust
+changes to openapi_operations.yaml.
+`,
+
+	"output_json_help": `Output JSON.`,
 }
 
 type rootCmd struct {
-	WorkingDir    string           `kong:"short=C,default=.,help=${working_dir_help}"`
-	Filename      string           `kong:"help=${filename_help}"`
-	GithubDir     string           `kong:"help=${github_dir_help}"`
 	UpdateOpenAPI updateOpenAPICmd `kong:"cmd,name=update-openapi,help=${update_openapi_help}"`
-	UpdateDocURLs updateDocURLsCmd `kong:"cmd,name=update-doc-urls,help=${update_doc_urls_help}"`
+	UpdateGo      updateGoCmd      `kong:"cmd,help=${update_go_help}"`
 	Format        formatCmd        `kong:"cmd,help=${format_help}"`
-	Validate      validateCmd      `kong:"cmd,help=${validate_help}"`
-	UnusedOps     unusedOpsCmd     `kong:"cmd,help=${unused_ops_help}"`
-	Canonize      canonizeCmd      `kong:"cmd,help=${canonize_help}"`
+	Unused        unusedCmd        `kong:"cmd,help=${unused_help}"`
+
+	WorkingDir string `kong:"short=C,default=.,help=${working_dir_help}"`
 
 	// for testing
 	GithubURL string `kong:"hidden,default='https://api.github.com'"`
 }
 
-func (c *rootCmd) metadata() (string, *metadata, error) {
-	filename := c.Filename
-	if filename == "" {
-		filename = filepath.Join(c.WorkingDir, "metadata.yaml")
-	}
-	meta, err := loadMetadataFile(filename)
+func (c *rootCmd) opsFile() (string, *operationsFile, error) {
+	filename := filepath.Join(c.WorkingDir, "openapi_operations.yaml")
+	opsFile, err := loadOperationsFile(filename)
 	if err != nil {
 		return "", nil, err
 	}
-	return filename, meta, nil
+	return filename, opsFile, nil
 }
 
 func githubClient(apiURL string) (*github.Client, error) {
@@ -67,133 +74,100 @@ func githubClient(apiURL string) (*github.Client, error) {
 }
 
 type updateOpenAPICmd struct {
-	Ref string `kong:"default=main,help=${openapi_ref_help}"`
+	Ref            string `kong:"default=main,help=${openapi_ref_help}"`
+	ValidateGithub bool   `kong:"name=validate,help=${openapi_validate_help}"`
 }
 
 func (c *updateOpenAPICmd) Run(root *rootCmd) error {
 	ctx := context.Background()
-	filename, meta, err := root.metadata()
+	if c.ValidateGithub && c.Ref != "main" {
+		return fmt.Errorf("--validate and --ref are mutually exclusive")
+	}
+	filename, opsFile, err := root.opsFile()
 	if err != nil {
 		return err
+	}
+	origOps := make([]*operation, len(opsFile.OpenapiOps))
+	copy(origOps, opsFile.OpenapiOps)
+	for i := range origOps {
+		origOps[i] = origOps[i].clone()
 	}
 	client, err := githubClient(root.GithubURL)
 	if err != nil {
 		return err
 	}
-
-	err = meta.updateFromGithub(ctx, client, c.Ref)
+	ref := c.Ref
+	if c.ValidateGithub {
+		ref = opsFile.GitCommit
+		if ref == "" {
+			return fmt.Errorf("openapi_operations.yaml does not have an openapi_commit field")
+		}
+	}
+	err = opsFile.updateFromGithub(ctx, client, ref)
 	if err != nil {
 		return err
 	}
-	return meta.saveFile(filename)
+	if !c.ValidateGithub {
+		return opsFile.saveFile(filename)
+	}
+	if !operationsEqual(origOps, opsFile.OpenapiOps) {
+		return fmt.Errorf("openapi_operations.yaml does not match the OpenAPI descriptions in github.com/github/rest-api-description")
+	}
+	return nil
 }
 
 type formatCmd struct{}
 
 func (c *formatCmd) Run(root *rootCmd) error {
-	filename, meta, err := root.metadata()
+	filename, opsFile, err := root.opsFile()
 	if err != nil {
 		return err
 	}
-	return meta.saveFile(filename)
+	return opsFile.saveFile(filename)
 }
 
-type validateCmd struct {
-	CheckGithub bool `kong:"help=${validate_github_help}"`
-}
+type updateGoCmd struct{}
 
-func (c *validateCmd) Run(k *kong.Context, root *rootCmd) error {
-	ctx := context.Background()
-	githubDir := filepath.Join(root.WorkingDir, "github")
-	filename, meta, err := root.metadata()
+func (c *updateGoCmd) Run(root *rootCmd) error {
+	_, opsFile, err := root.opsFile()
 	if err != nil {
 		return err
 	}
-	issues, err := validateMetadata(githubDir, meta)
-	if err != nil {
-		return err
-	}
-	// don't waste time checking github if there are already issues
-	if c.CheckGithub && len(issues) == 0 {
-		client, err := githubClient(root.GithubURL)
-		if err != nil {
-			return err
-		}
-		msg, err := validateGitCommit(ctx, client, meta)
-		if err != nil {
-			return err
-		}
-		if msg != "" {
-			issues = append(issues, msg)
-		}
-	}
-	if len(issues) == 0 {
-		return nil
-	}
-	for _, issue := range issues {
-		fmt.Fprintln(k.Stderr, issue)
-	}
-	return fmt.Errorf("found %d issues in %s", len(issues), filename)
-}
-
-type updateDocURLsCmd struct{}
-
-func (c *updateDocURLsCmd) Run(root *rootCmd) error {
-	githubDir := filepath.Join(root.WorkingDir, "github")
-	_, meta, err := root.metadata()
-	if err != nil {
-		return err
-	}
-	err = updateDocLinks(meta, githubDir)
+	err = updateDocs(opsFile, filepath.Join(root.WorkingDir, "github"))
 	return err
 }
 
-type unusedOpsCmd struct {
+type unusedCmd struct {
 	JSON bool `kong:"help=${output_json_help}"`
 }
 
-func (c *unusedOpsCmd) Run(root *rootCmd) error {
-	_, meta, err := root.metadata()
+func (c *unusedCmd) Run(root *rootCmd, k *kong.Context) error {
+	_, opsFile, err := root.opsFile()
 	if err != nil {
 		return err
 	}
-	var unused []*operation
-	for _, op := range meta.operations() {
-		goMethods := meta.operationMethods(op.Name)
-		if len(goMethods) == 0 {
-			unused = append(unused, op)
-		}
+	unused, err := unusedOps(opsFile, filepath.Join(root.WorkingDir, "github"))
+	if err != nil {
+		return err
 	}
 	if c.JSON {
-		enc := json.NewEncoder(os.Stdout)
+		enc := json.NewEncoder(k.Stdout)
 		enc.SetIndent("", "  ")
 		return enc.Encode(unused)
 	}
-	fmt.Printf("Found %d unused operations\n", len(unused))
+	fmt.Fprintf(k.Stdout, "Found %d unused operations\n", len(unused))
 	if len(unused) == 0 {
 		return nil
 	}
-	fmt.Println("")
+	fmt.Fprintln(k.Stdout, "")
 	for _, op := range unused {
-		fmt.Println(op.Name)
-		fmt.Printf("doc:     %s\n", op.DocumentationURL)
-		fmt.Println("")
+		fmt.Fprintln(k.Stdout, op.Name)
+		if op.DocumentationURL != "" {
+			fmt.Fprintf(k.Stdout, "doc:     %s\n", op.DocumentationURL)
+		}
+		fmt.Fprintln(k.Stdout, "")
 	}
 	return nil
-}
-
-type canonizeCmd struct{}
-
-func (c *canonizeCmd) Run(root *rootCmd) error {
-	filename, meta, err := root.metadata()
-	if err != nil {
-		return err
-	}
-	err = meta.canonizeMethodOperations()
-	if err != nil {
-		return err
-	}
-	return meta.saveFile(filename)
 }
 
 func main() {

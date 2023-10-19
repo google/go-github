@@ -25,8 +25,11 @@ func (k SSHSigningKey) String() string {
 // ListSSHSigningKeys lists the SSH signing keys for a user. Passing an empty
 // username string will fetch SSH signing keys for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#list-ssh-signing-keys-for-the-authenticated-user
-// GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#list-ssh-signing-keys-for-a-user
+// GitHub API docs: https://docs.github.com/rest/users/ssh-signing-keys#list-ssh-signing-keys-for-a-user
+// GitHub API docs: https://docs.github.com/rest/users/ssh-signing-keys#list-ssh-signing-keys-for-the-authenticated-user
+//
+//meta:operation GET /user/ssh_signing_keys
+//meta:operation GET /users/{username}/ssh_signing_keys
 func (s *UsersService) ListSSHSigningKeys(ctx context.Context, user string, opts *ListOptions) ([]*SSHSigningKey, *Response, error) {
 	var u string
 	if user != "" {
@@ -55,7 +58,9 @@ func (s *UsersService) ListSSHSigningKeys(ctx context.Context, user string, opts
 
 // GetSSHSigningKey fetches a single SSH signing key for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#get-an-ssh-signing-key-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/ssh-signing-keys#get-an-ssh-signing-key-for-the-authenticated-user
+//
+//meta:operation GET /user/ssh_signing_keys/{ssh_signing_key_id}
 func (s *UsersService) GetSSHSigningKey(ctx context.Context, id int64) (*SSHSigningKey, *Response, error) {
 	u := fmt.Sprintf("user/ssh_signing_keys/%v", id)
 
@@ -75,7 +80,9 @@ func (s *UsersService) GetSSHSigningKey(ctx context.Context, id int64) (*SSHSign
 
 // CreateSSHSigningKey adds a SSH signing key for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#create-a-ssh-signing-key-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/ssh-signing-keys#create-a-ssh-signing-key-for-the-authenticated-user
+//
+//meta:operation POST /user/ssh_signing_keys
 func (s *UsersService) CreateSSHSigningKey(ctx context.Context, key *Key) (*SSHSigningKey, *Response, error) {
 	u := "user/ssh_signing_keys"
 
@@ -95,7 +102,9 @@ func (s *UsersService) CreateSSHSigningKey(ctx context.Context, key *Key) (*SSHS
 
 // DeleteKey deletes a SSH signing key for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/users/ssh-signing-keys#delete-an-ssh-signing-key-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/ssh-signing-keys#delete-an-ssh-signing-key-for-the-authenticated-user
+//
+//meta:operation DELETE /user/ssh_signing_keys/{ssh_signing_key_id}
 func (s *UsersService) DeleteSSHSigningKey(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("user/ssh_signing_keys/%v", id)
 

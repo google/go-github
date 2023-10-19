@@ -13,6 +13,8 @@ import (
 // EnableLFS turns the LFS (Large File Storage) feature ON for the selected repo.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/repos/lfs#enable-git-lfs-for-a-repository
+//
+//meta:operation PUT /repos/{owner}/{repo}/lfs
 func (s *RepositoriesService) EnableLFS(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/lfs", owner, repo)
 
@@ -32,6 +34,8 @@ func (s *RepositoriesService) EnableLFS(ctx context.Context, owner, repo string)
 // DisableLFS turns the LFS (Large File Storage) feature OFF for the selected repo.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/repos/lfs#disable-git-lfs-for-a-repository
+//
+//meta:operation DELETE /repos/{owner}/{repo}/lfs
 func (s *RepositoriesService) DisableLFS(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/lfs", owner, repo)
 
