@@ -49,7 +49,7 @@ func TestAPIMeta(t *testing.T) {
 }
 
 func TestRateLimits(t *testing.T) {
-	limits, _, err := client.RateLimits(context.Background())
+	limits, _, err := client.RateLimit.Get(context.Background())
 	if err != nil {
 		t.Fatalf("RateLimits returned error: %v", err)
 	}
