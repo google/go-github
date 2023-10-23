@@ -326,7 +326,7 @@ func ParseWebHook(messageType string, payload []byte) (interface{}, error) {
 	return event.ParsePayload()
 }
 
-// WebhookTypes returns a sorted list of all the known GitHub event type strings
+// MessageTypes returns a sorted list of all the known GitHub event type strings
 // supported by go-github.
 func MessageTypes() []string {
 	types := make([]string, 0, len(eventTypeMapping))

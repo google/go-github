@@ -90,7 +90,7 @@ type SecretScanningAlertUpdateOptions struct {
 	Resolution *string `json:"resolution,omitempty"`
 }
 
-// Lists secret scanning alerts for eligible repositories in an enterprise, from newest to oldest.
+// ListAlertsForEnterprise lists secret scanning alerts for eligible repositories in an enterprise, from newest to oldest.
 //
 // To use this endpoint, you must be a member of the enterprise, and you must use an access token with the repo scope or
 // security_events scope. Alerts are only returned for organizations in the enterprise for which you are an organization owner or a security manager.
@@ -117,7 +117,7 @@ func (s *SecretScanningService) ListAlertsForEnterprise(ctx context.Context, ent
 	return alerts, resp, nil
 }
 
-// Lists secret scanning alerts for eligible repositories in an organization, from newest to oldest.
+// ListAlertsForOrg lists secret scanning alerts for eligible repositories in an organization, from newest to oldest.
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
@@ -144,7 +144,7 @@ func (s *SecretScanningService) ListAlertsForOrg(ctx context.Context, org string
 	return alerts, resp, nil
 }
 
-// Lists secret scanning alerts for a private repository, from newest to oldest.
+// ListAlertsForRepo lists secret scanning alerts for a private repository, from newest to oldest.
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
@@ -171,7 +171,7 @@ func (s *SecretScanningService) ListAlertsForRepo(ctx context.Context, owner, re
 	return alerts, resp, nil
 }
 
-// Gets a single secret scanning alert detected in a private repository.
+// GetAlert gets a single secret scanning alert detected in a private repository.
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
@@ -194,7 +194,7 @@ func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string
 	return alert, resp, nil
 }
 
-// Updates the status of a secret scanning alert in a private repository.
+// UpdateAlert updates the status of a secret scanning alert in a private repository.
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
@@ -217,7 +217,7 @@ func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo str
 	return alert, resp, nil
 }
 
-// Lists all locations for a given secret scanning alert for a private repository.
+// ListLocationsForAlert lists all locations for a given secret scanning alert for a private repository.
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
