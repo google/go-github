@@ -48,7 +48,7 @@ type RulesetRepositoryIDsConditionParameters struct {
 	RepositoryIDs []int64 `json:"repository_ids,omitempty"`
 }
 
-// RulesetCondition represents the conditions object in a ruleset.
+// RulesetConditions represents the conditions object in a ruleset.
 // Set either RepositoryName or RepositoryID, not both.
 type RulesetConditions struct {
 	RefName        *RulesetRefConditionParameters             `json:"ref_name,omitempty"`

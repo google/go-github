@@ -1153,7 +1153,8 @@ type AllowForcePushes struct {
 	Enabled bool `json:"enabled"`
 }
 
-// RequiredConversationResolution, if enabled, requires all comments on the pull request to be resolved before it can be merged to a protected branch.
+// RequiredConversationResolution requires all comments on the pull request to be resolved before it can be
+// merged to a protected branch when enabled.
 type RequiredConversationResolution struct {
 	Enabled bool `json:"enabled"`
 }

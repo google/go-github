@@ -1069,7 +1069,7 @@ type ArchivedAt struct {
 	To   *Timestamp `json:"to,omitempty"`
 }
 
-// ProjectsV2 represents an item belonging to a project.
+// ProjectV2Item represents an item belonging to a project.
 type ProjectV2Item struct {
 	ID            *int64     `json:"id,omitempty"`
 	NodeID        *string    `json:"node_id,omitempty"`

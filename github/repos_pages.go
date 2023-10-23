@@ -286,7 +286,7 @@ func (s *RepositoriesService) RequestPageBuild(ctx context.Context, owner, repo 
 	return build, resp, nil
 }
 
-// GetPagesHealthCheck gets a DNS health check for the CNAME record configured for a repository's GitHub Pages.
+// GetPageHealthCheck gets a DNS health check for the CNAME record configured for a repository's GitHub Pages.
 //
 // GitHub API docs: https://docs.github.com/en/rest/pages#get-a-dns-health-check-for-github-pages
 func (s *RepositoriesService) GetPageHealthCheck(ctx context.Context, owner, repo string) (*PagesHealthCheckResponse, *Response, error) {

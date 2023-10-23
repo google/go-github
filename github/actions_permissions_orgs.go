@@ -145,7 +145,7 @@ func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string,
 	return resp, nil
 }
 
-// RemoveEnabledRepoInOrg removes a single repository from the list of enabled repos for GitHub Actions in an organization.
+// RemoveEnabledReposInOrg removes a single repository from the list of enabled repos for GitHub Actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/permissions#disable-a-selected-repository-for-github-actions-in-an-organization
 func (s *ActionsService) RemoveEnabledReposInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
