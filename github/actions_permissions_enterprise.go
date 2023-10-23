@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// ActionsEnabledOnEnterpriseOrgs represents all the repositories in an enterprise for which Actions is enabled.
+// ActionsEnabledOnEnterpriseRepos represents all the repositories in an enterprise for which Actions is enabled.
 type ActionsEnabledOnEnterpriseRepos struct {
 	TotalCount    int             `json:"total_count"`
 	Organizations []*Organization `json:"organizations"`

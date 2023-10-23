@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// List the packages for an organization.
+// ListPackages lists the packages for an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/packages#list-packages-for-an-organization
 func (s *OrganizationsService) ListPackages(ctx context.Context, org string, opts *PackageListOptions) ([]*Package, *Response, error) {
@@ -34,7 +34,7 @@ func (s *OrganizationsService) ListPackages(ctx context.Context, org string, opt
 	return packages, resp, nil
 }
 
-// Get a package by name from an organization.
+// GetPackage gets a package by name from an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/packages#get-a-package-for-an-organization
 func (s *OrganizationsService) GetPackage(ctx context.Context, org, packageType, packageName string) (*Package, *Response, error) {
@@ -53,7 +53,7 @@ func (s *OrganizationsService) GetPackage(ctx context.Context, org, packageType,
 	return pack, resp, nil
 }
 
-// Delete a package from an organization.
+// DeletePackage deletes a package from an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/packages#delete-a-package-for-an-organization
 func (s *OrganizationsService) DeletePackage(ctx context.Context, org, packageType, packageName string) (*Response, error) {
@@ -66,7 +66,7 @@ func (s *OrganizationsService) DeletePackage(ctx context.Context, org, packageTy
 	return s.client.Do(ctx, req, nil)
 }
 
-// Restore a package to an organization.
+// RestorePackage restores a package to an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/packages#restore-a-package-for-an-organization
 func (s *OrganizationsService) RestorePackage(ctx context.Context, org, packageType, packageName string) (*Response, error) {
@@ -79,7 +79,7 @@ func (s *OrganizationsService) RestorePackage(ctx context.Context, org, packageT
 	return s.client.Do(ctx, req, nil)
 }
 
-// Get all versions of a package in an organization.
+// PackageGetAllVersions gets all versions of a package in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/packages#list-package-versions-for-a-package-owned-by-an-organization
 func (s *OrganizationsService) PackageGetAllVersions(ctx context.Context, org, packageType, packageName string, opts *PackageListOptions) ([]*PackageVersion, *Response, error) {
@@ -103,7 +103,7 @@ func (s *OrganizationsService) PackageGetAllVersions(ctx context.Context, org, p
 	return versions, resp, nil
 }
 
-// Get a specific version of a package in an organization.
+// PackageGetVersion gets a specific version of a package in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/packages#get-a-package-version-for-an-organization
 func (s *OrganizationsService) PackageGetVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*PackageVersion, *Response, error) {
@@ -122,7 +122,7 @@ func (s *OrganizationsService) PackageGetVersion(ctx context.Context, org, packa
 	return version, resp, nil
 }
 
-// Delete a package version from an organization.
+// PackageDeleteVersion deletes a package version from an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/packages#delete-package-version-for-an-organization
 func (s *OrganizationsService) PackageDeleteVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*Response, error) {
@@ -135,7 +135,7 @@ func (s *OrganizationsService) PackageDeleteVersion(ctx context.Context, org, pa
 	return s.client.Do(ctx, req, nil)
 }
 
-// Restore a package version to an organization.
+// PackageRestoreVersion restores a package version to an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/packages#restore-package-version-for-an-organization
 func (s *OrganizationsService) PackageRestoreVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*Response, error) {

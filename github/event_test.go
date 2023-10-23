@@ -23,7 +23,7 @@ func TestPayload_Panic(t *testing.T) {
 	e.Payload()
 }
 
-func TestPayload_NoPanic(t *testing.T) {
+func TestPayload_NoPanic(_ *testing.T) {
 	name := "UserEvent"
 	body := json.RawMessage("{}")
 	e := &Event{Type: &name, RawPayload: &body}

@@ -58,7 +58,7 @@ func (r RateLimits) String() string {
 	return Stringify(r)
 }
 
-// RateLimits returns the rate limits for the current client.
+// Get returns the rate limits for the current client.
 func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, error) {
 	req, err := s.client.NewRequest("GET", "rate_limit", nil)
 	if err != nil {

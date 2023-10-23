@@ -22,6 +22,7 @@ linters-settings:
       # and https://github.com/securego/gosec/issues/1007
       - G602
 issues:
+  exclude-use-default: false
   exclude-rules:
     - linters:
         - dupl
@@ -38,3 +39,8 @@ issues:
     # We need to use sha1 for validating signatures
     - linters: [ gosec ]
       text: 'G505: Blocklisted import crypto/sha1: weak cryptographic primitive'
+
+    # This is adapted from golangci-lint's default exclusions. It disables linting for error checks on
+    # os.RemoveAll and any function ending in "Close".
+    - linters: [ errcheck ]
+      text: Error return value of .(.*Close|os\.Remove(All)?). is not checked

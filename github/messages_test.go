@@ -193,7 +193,7 @@ func TestValidatePayload_NoSecretKey(t *testing.T) {
 // badReader satisfies io.Reader but always returns an error.
 type badReader struct{}
 
-func (b *badReader) Read(p []byte) (int, error) {
+func (b *badReader) Read(_ []byte) (int, error) {
 	return 0, errors.New("bad reader")
 }
 
