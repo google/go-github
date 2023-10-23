@@ -1017,9 +1017,17 @@ type ErrorBlock struct {
 }
 
 func (r *ErrorResponse) Error() string {
-	return fmt.Sprintf("%v %v: %d %v %+v",
-		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
-		r.Response.StatusCode, r.Message, r.Errors)
+	if r.Response != nil && r.Response.Request != nil {
+		return fmt.Sprintf("%v %v: %d %v %+v",
+			r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
+			r.Response.StatusCode, r.Message, r.Errors)
+	}
+
+	if r.Response != nil {
+		return fmt.Sprintf("%d %v %+v", r.Response.StatusCode, r.Message, r.Errors)
+	}
+
+	return fmt.Sprintf("%v %+v", r.Message, r.Errors)
 }
 
 // Is returns whether the provided error equals this error.
