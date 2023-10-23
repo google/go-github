@@ -18,6 +18,8 @@ linters:
 linters-settings:
   gosec:
     excludes:
+      # duplicates errcheck
+      - G104
       # performance issue: see https://github.com/golangci/golangci-lint/issues/4039
       # and https://github.com/securego/gosec/issues/1007
       - G602
@@ -44,3 +46,8 @@ issues:
     # os.RemoveAll and any function ending in "Close".
     - linters: [ errcheck ]
       text: Error return value of .(.*Close|os\.Remove(All)?). is not checked
+
+    # We don't care about file inclusion via variable in examples or internal tools.
+    - linters: [ gosec ]
+      text: 'G304: Potential file inclusion via variable'
+      path: '^(example|update-urls)\/'
