@@ -17,7 +17,7 @@ import (
 // GitHub API docs: https://docs.github.com/en/rest/copilot/
 type CopilotService service
 
-// OrganizationCopilotDetails represents the details of an organization's Copilot for Business supbscription.
+// OrganizationCopilotDetails represents the details of an organization's Copilot for Business subscription.
 type OrganizationCopilotDetails struct {
 	SeatBreakdown         *SeatBreakdown `json:"seat_breakdown"`
 	PublicCodeSuggestions string         `json:"public_code_suggestions"`
@@ -27,22 +27,22 @@ type OrganizationCopilotDetails struct {
 
 // SeatBreakdown represents the breakdown of Copilot for Business seats for the organization.
 type SeatBreakdown struct {
-	Total               int64 `json:"total"`
-	AddedThisCycle      int64 `json:"added_this_cycle"`
-	PendingCancellation int64 `json:"pending_cancellation"`
-	PendingInvitation   int64 `json:"pending_invitation"`
-	ActiveThisCycle     int64 `json:"active_this_cycle"`
-	InactiveThisCycle   int64 `json:"inactive_this_cycle"`
+	Total               int `json:"total"`
+	AddedThisCycle      int `json:"added_this_cycle"`
+	PendingCancellation int `json:"pending_cancellation"`
+	PendingInvitation   int `json:"pending_invitation"`
+	ActiveThisCycle     int `json:"active_this_cycle"`
+	InactiveThisCycle   int `json:"inactive_this_cycle"`
 }
 
 type CopilotSeats struct {
 	TotalSeats int64                `json:"total_seats"`
-	Seats      []CopilotSeatDetails `json:"seats"`
+	Seats      []*CopilotSeatDetails `json:"seats"`
 }
 
 // CopilotSeatDetails represents the details of a Copilot for Business seat.
-// Assignee can either be a User, Team, or Organization.
 type CopilotSeatDetails struct {
+	// Assignee can either be a User, Team, or Organization.
 	Assignee                interface{} `json:"assignee"`
 	AssigningTeam           *Team       `json:"assigning_team,omitempty"`
 	PendingCancellationDate *string     `json:"pending_cancellation_date,omitempty"`
@@ -64,17 +64,17 @@ type SelectedUsers struct {
 
 // SeatAssignments represents the number of seats assigned.
 type SeatAssignments struct {
-	SeatsCreated int64 `json:"seats_created"`
+	SeatsCreated int `json:"seats_created"`
 }
 
 // SeatCancellations represents the number of seats cancelled.
 type SeatCancellations struct {
-	SeatsCancelled int64 `json:"seats_cancelled"`
+	SeatsCancelled int `json:"seats_cancelled"`
 }
 
 func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
-	type Alias CopilotSeatDetails
-	var seatDetail Alias
+	type alias CopilotSeatDetails
+	var seatDetail alias
 
 	if err := json.Unmarshal(data, &seatDetail); err != nil {
 		return err
@@ -121,7 +121,7 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// GetCopilotBilling Gets Copilot for Business seat information and settings for an organization
+// GetCopilotBilling gets Copilot for Business billing information and settings for an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#get-copilot-for-business-seat-information-and-settings-for-an-organization
 func (s *CopilotService) GetCopilotBilling(ctx context.Context, org string) (*OrganizationCopilotDetails, *Response, error) {
@@ -141,7 +141,7 @@ func (s *CopilotService) GetCopilotBilling(ctx context.Context, org string) (*Or
 	return copilotDetails, resp, nil
 }
 
-// ListCopilotSeats Gets Copilot for Business seat assignments for an organization
+// ListCopilotSeats lists Copilot for Business seat assignments for an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#list-all-copilot-for-business-seat-assignments-for-an-organization
 func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string) (*CopilotSeats, *Response, error) {
@@ -161,13 +161,13 @@ func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string) (*Cop
 	return copilotSeats, resp, nil
 }
 
-// AddCopilotTeams Adds teams to the Copilot for Business subscription for an organization
+// AddCopilotTeams adds teams to the Copilot for Business subscription for an organization.
 //
-// https://docs.github.com/en/rest/copilot/copilot-for-business#add-teams-to-the-copilot-for-business-subscription-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#add-teams-to-the-copilot-for-business-subscription-for-an-organization
 func (s *CopilotService) AddCopilotTeams(ctx context.Context, org string, teams SelectedTeams) (*SeatAssignments, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_teams", org)
 
-	req, err := s.client.NewRequest("PUT", u, teams)
+	req, err := s.client.NewRequest("POST", u, teams)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -181,10 +181,9 @@ func (s *CopilotService) AddCopilotTeams(ctx context.Context, org string, teams 
 	return seatAssignments, resp, nil
 }
 
-// RemoveCopilotTeams Removes teams from the Copilot for Business subscription for an organization
+// RemoveCopilotTeams removes teams from the Copilot for Business subscription for an organization.
 //
-// https://docs.github.com/en/rest/copilot/copilot-for-business#remove-teams-from-the-copilot-for-business-subscription-for-an-organization
-
+// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#remove-teams-from-the-copilot-for-business-subscription-for-an-organization
 func (s *CopilotService) RemoveCopilotTeams(ctx context.Context, org string, teams SelectedTeams) (*SeatCancellations, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_teams", org)
 
@@ -204,11 +203,11 @@ func (s *CopilotService) RemoveCopilotTeams(ctx context.Context, org string, tea
 
 // AddCopilotUsers Adds users to the Copilot for Business subscription for an organization
 //
-// https://docs.github.com/en/rest/copilot/copilot-for-business#add-users-to-the-copilot-for-business-subscription-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#add-users-to-the-copilot-for-business-subscription-for-an-organization
 func (s *CopilotService) AddCopilotUsers(ctx context.Context, org string, users SelectedUsers) (*SeatAssignments, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_users", org)
 
-	req, err := s.client.NewRequest("PUT", u, users)
+	req, err := s.client.NewRequest("POST", u, users)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -222,9 +221,9 @@ func (s *CopilotService) AddCopilotUsers(ctx context.Context, org string, users 
 	return seatAssignments, resp, nil
 }
 
-// RemoveCopilotUsers Removes users from the Copilot for Business subscription for an organization
+// RemoveCopilotUsers removes users from the Copilot for Business subscription for an organization.
 //
-// https://docs.github.com/en/rest/copilot/copilot-for-business#remove-users-from-the-copilot-for-business-subscription-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#remove-users-from-the-copilot-for-business-subscription-for-an-organization
 func (s *CopilotService) RemoveCopilotUsers(ctx context.Context, org string, users SelectedUsers) (*SeatCancellations, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_users", org)
 
@@ -242,10 +241,10 @@ func (s *CopilotService) RemoveCopilotUsers(ctx context.Context, org string, use
 	return SeatCancellations, resp, nil
 }
 
-// GetSeatDetails Gets Copilot for Business seat assignment details for a user
+// GetSeatDetails gets Copilot for Business seat assignment details for a user.
 //
-// https://docs.github.com/en/rest/copilot/copilot-for-business#get-copilot-for-business-seat-assignment-details-for-a-user
-func (s *CopilotService) GetSeatDetails(ctx context.Context, org string, user string) (*CopilotSeatDetails, *Response, error) {
+// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#get-copilot-for-business-seat-assignment-details-for-a-user
+func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (*CopilotSeatDetails, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/members/%v/copilot", org, user)
 
 	req, err := s.client.NewRequest("GET", u, nil)
