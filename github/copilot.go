@@ -17,7 +17,7 @@ import (
 // GitHub API docs: https://docs.github.com/en/rest/copilot/
 type CopilotService service
 
-// OrganizationDetails represents the details of an organization's Copilot for Business supbscription.
+// OrganizationCopilotDetails represents the details of an organization's Copilot for Business supbscription.
 type OrganizationCopilotDetails struct {
 	SeatBreakdown         *SeatBreakdown `json:"seat_breakdown"`
 	PublicCodeSuggestions string         `json:"public_code_suggestions"`
@@ -40,7 +40,7 @@ type CopilotSeats struct {
 	Seats      []CopilotSeatDetails `json:"seats"`
 }
 
-// CopilotSeatDetail represents the details of a Copilot for Business seat.
+// CopilotSeatDetails represents the details of a Copilot for Business seat.
 // Assignee can either be a User, Team, or Organization.
 type CopilotSeatDetails struct {
 	Assignee                interface{} `json:"assignee"`
@@ -121,7 +121,7 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Get Copilot for Business seat information and settings for an organization
+// GetCopilotBilling Gets Copilot for Business seat information and settings for an organization
 //
 // GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#get-copilot-for-business-seat-information-and-settings-for-an-organization
 func (s *CopilotService) GetCopilotBilling(ctx context.Context, org string) (*OrganizationCopilotDetails, *Response, error) {
@@ -141,7 +141,7 @@ func (s *CopilotService) GetCopilotBilling(ctx context.Context, org string) (*Or
 	return copilotDetails, resp, nil
 }
 
-// Get Copilot for Business seat assignments for an organization
+// ListCopilotSeats Gets Copilot for Business seat assignments for an organization
 //
 // GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#list-all-copilot-for-business-seat-assignments-for-an-organization
 func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string) (*CopilotSeats, *Response, error) {
@@ -161,7 +161,7 @@ func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string) (*Cop
 	return copilotSeats, resp, nil
 }
 
-// Add teams to the Copilot for Business subscription for an organization
+// AddCopilotTeams Adds teams to the Copilot for Business subscription for an organization
 //
 // https://docs.github.com/en/rest/copilot/copilot-for-business#add-teams-to-the-copilot-for-business-subscription-for-an-organization
 func (s *CopilotService) AddCopilotTeams(ctx context.Context, org string, teams SelectedTeams) (*SeatAssignments, *Response, error) {
@@ -181,7 +181,7 @@ func (s *CopilotService) AddCopilotTeams(ctx context.Context, org string, teams 
 	return seatAssignments, resp, nil
 }
 
-// Remove teams from the Copilot for Business subscription for an organization
+// RemoveCopilotTeams Removes teams from the Copilot for Business subscription for an organization
 //
 // https://docs.github.com/en/rest/copilot/copilot-for-business#remove-teams-from-the-copilot-for-business-subscription-for-an-organization
 
@@ -202,7 +202,7 @@ func (s *CopilotService) RemoveCopilotTeams(ctx context.Context, org string, tea
 	return SeatCancellations, resp, nil
 }
 
-// Add users to the Copilot for Business subscription for an organization
+// AddCopilotUsers Adds users to the Copilot for Business subscription for an organization
 //
 // https://docs.github.com/en/rest/copilot/copilot-for-business#add-users-to-the-copilot-for-business-subscription-for-an-organization
 func (s *CopilotService) AddCopilotUsers(ctx context.Context, org string, users SelectedUsers) (*SeatAssignments, *Response, error) {
@@ -222,7 +222,7 @@ func (s *CopilotService) AddCopilotUsers(ctx context.Context, org string, users 
 	return seatAssignments, resp, nil
 }
 
-// Remove users from the Copilot for Business subscription for an organization
+// RemoveCopilotUsers Removes users from the Copilot for Business subscription for an organization
 //
 // https://docs.github.com/en/rest/copilot/copilot-for-business#remove-users-from-the-copilot-for-business-subscription-for-an-organization
 func (s *CopilotService) RemoveCopilotUsers(ctx context.Context, org string, users SelectedUsers) (*SeatCancellations, *Response, error) {
@@ -242,7 +242,7 @@ func (s *CopilotService) RemoveCopilotUsers(ctx context.Context, org string, use
 	return SeatCancellations, resp, nil
 }
 
-// Get Copilot for Business seat assignment details for a user
+// GetSeatDetails Gets Copilot for Business seat assignment details for a user
 //
 // https://docs.github.com/en/rest/copilot/copilot-for-business#get-copilot-for-business-seat-assignment-details-for-a-user
 func (s *CopilotService) GetSeatDetails(ctx context.Context, org string, user string) (*CopilotSeatDetails, *Response, error) {
