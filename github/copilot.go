@@ -91,7 +91,7 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 	case map[string]interface{}:
 		jsonData, err := json.Marshal(seatDetail.Assignee)
 		if err != nil {
-			panic(err)
+			return err
 		}
 		if v["type"].(string) == "User" {
 			user := &User{}
@@ -112,11 +112,10 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 			}
 			cp.Assignee = organization
 		} else {
-			return fmt.Errorf("unsupported type %s", v["type"].(string))
+			return fmt.Errorf("unsupported assignee type %s", v["type"].(string))
 		}
 	default:
-		// return fmt.Errorf("unable to unmarshal CopilotSeatDetail, Assignee is not a User, Team, or Organization. Assignee details: %v", seatDetail.Assignee)
-		return fmt.Errorf("unsupported type %T", v)
+		return fmt.Errorf("unsupported assignee type %T", v)
 	}
 
 	return nil
