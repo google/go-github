@@ -9,6 +9,78 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+// Test invalid JSON responses, vlaid responses are covered in the other tests
+func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
+	tests := map[string]struct {
+		data    string
+		want    *CopilotSeatDetails
+		wantErr bool
+	}{
+		"Invalid JSON": {
+			data: `{`,
+			want: &CopilotSeatDetails{
+				Assignee: nil,
+			},
+			wantErr: true,
+		},
+		"Invalid Assignee Type": {
+			data: `{
+					"assignee": {
+						"name": "octokittens",
+						"id": 1,
+						"type": "None"
+					}
+				}`,
+			want:    &CopilotSeatDetails{},
+			wantErr: true,
+		},
+		"Invalid User": {
+			data: `{
+					"assignee": {
+						"type": "User",
+					}
+				}`,
+			want:    &CopilotSeatDetails{},
+			wantErr: true,
+		},
+		"Invalid Team": {
+			data: `{
+					"assignee": {
+						"type": "Team",
+					}
+				}`,
+			want:    &CopilotSeatDetails{},
+			wantErr: true,
+		},
+		"Invalid Organization": {
+			data: `{
+					"assignee": {
+						"type": "Organization",
+					}
+				}`,
+			want:    &CopilotSeatDetails{},
+			wantErr: true,
+		},
+	}
+
+	for name, tc := range tests {
+		seatDetails := &CopilotSeatDetails{}
+
+		t.Run(name, func(t *testing.T) {
+			err := seatDetails.UnmarshalJSON([]byte(tc.data))
+			if err == nil && tc.wantErr {
+				t.Errorf("CopilotSeatDetails.UnmarshalJSON returned nil instead of an error")
+			}
+			if err != nil && !tc.wantErr {
+				t.Errorf("CopilotSeatDetails.UnmarshalJSON returned an unexpected error: %v", err)
+			}
+			if !cmp.Equal(tc.want, seatDetails) {
+				t.Errorf("CopilotSeatDetails.UnmarshalJSON expected %+v, got %+v", tc.want, seatDetails)
+			}
+		})
+	}
+}
+
 func TestCopilotService_GetCopilotBilling(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -66,6 +138,7 @@ func TestCopilotService_GetCopilotBilling(t *testing.T) {
 		}
 		return resp, err
 	})
+
 }
 
 func TestCopilotService_ListCopilotSeats(t *testing.T) {
