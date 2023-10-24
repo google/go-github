@@ -36,7 +36,6 @@ func (s *OrganizationsService) GetAllOrganizationRulesets(ctx context.Context, o
 func (s *OrganizationsService) CreateOrganizationRuleset(ctx context.Context, org string, rs *Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets", org)
 
-	rs.normalizeBypassActors()
 	req, err := s.client.NewRequest("POST", u, rs)
 	if err != nil {
 		return nil, nil, err
@@ -77,7 +76,6 @@ func (s *OrganizationsService) GetOrganizationRuleset(ctx context.Context, org s
 func (s *OrganizationsService) UpdateOrganizationRuleset(ctx context.Context, org string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, rulesetID)
 
-	rs.normalizeBypassActors()
 	req, err := s.client.NewRequest("PUT", u, rs)
 	if err != nil {
 		return nil, nil, err

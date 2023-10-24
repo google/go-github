@@ -51,6 +51,21 @@ func TestCopilotService_GetCopilotBilling(t *testing.T) {
 	if !cmp.Equal(got, want) {
 		t.Errorf("Copilot.GetCopilotBilling returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "GetCopilotBilling"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetCopilotBilling(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetCopilotBilling(ctx, "o")
+		if got != nil {
+			t.Errorf("Copilot.GetCopilotBilling returned %+v, want nil", got)
+		}
+		return resp, err
+	})
 }
 
 func TestCopilotService_ListCopilotSeats(t *testing.T) {
@@ -129,6 +144,30 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 							"received_events_url": "https://api.github.com/users/octokitten/received_events",
 							"type": "User",
 							"site_admin": false
+						}
+					},
+					{
+						"created_at": "2021-09-23T18:00:00-06:00",
+						"updated_at": "2021-09-23T15:00:00-06:00",
+						"pending_cancellation_date": "2021-11-01",
+						"last_activity_at": "2021-10-13T00:53:32-06:00",
+						"last_activity_editor": "vscode/1.77.3/copilot/1.86.82",
+						"assignee": {
+							"name": "octokittens",
+							"id": 1,
+							"type": "Team"
+						}
+					},
+					{
+						"created_at": "2021-09-23T18:00:00-06:00",
+						"updated_at": "2021-09-23T15:00:00-06:00",
+						"pending_cancellation_date": "2021-11-01",
+						"last_activity_at": "2021-10-13T00:53:32-06:00",
+						"last_activity_editor": "vscode/1.77.3/copilot/1.86.82",
+						"assignee": {
+							"name": "octocats",
+							"id": 1,
+							"type": "Organization"
 						}
 					}
 				]
@@ -213,11 +252,52 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 				LastActivityAt:          String("2021-10-13T00:53:32-06:00"),
 				LastActivityEditor:      String("vscode/1.77.3/copilot/1.86.82"),
 			},
+			{
+				Assignee: &Team{
+					ID:   Int64(1),
+					Name: String("octokittens"),
+				},
+				AssigningTeam:           nil,
+				CreatedAt:               "2021-09-23T18:00:00-06:00",
+				UpdatedAt:               "2021-09-23T15:00:00-06:00",
+				PendingCancellationDate: String("2021-11-01"),
+				LastActivityAt:          String("2021-10-13T00:53:32-06:00"),
+				LastActivityEditor:      String("vscode/1.77.3/copilot/1.86.82"),
+			},
+			{
+				Assignee: &Organization{
+					ID:   Int64(1),
+					Name: String("octocats"),
+					Type: String("Organization"),
+				},
+				AssigningTeam:           nil,
+				CreatedAt:               "2021-09-23T18:00:00-06:00",
+				UpdatedAt:               "2021-09-23T15:00:00-06:00",
+				PendingCancellationDate: String("2021-11-01"),
+				LastActivityAt:          String("2021-10-13T00:53:32-06:00"),
+				LastActivityEditor:      String("vscode/1.77.3/copilot/1.86.82"),
+			},
 		},
 	}
+
 	if !cmp.Equal(got, want) {
 		t.Errorf("Copilot.ListCopilotSeats returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "ListCopilotSeats"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.ListCopilotSeats(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.ListCopilotSeats(ctx, "")
+		if got != nil {
+			t.Errorf("Copilot.ListCopilotSeats returned %+v, want nil", got)
+		}
+		return resp, err
+	})
 }
 
 func TestCopilotService_AddCopilotTeams(t *testing.T) {
@@ -236,9 +316,25 @@ func TestCopilotService_AddCopilotTeams(t *testing.T) {
 	}
 
 	want := &SeatAssignments{SeatsCreated: 2}
+
 	if !cmp.Equal(got, want) {
 		t.Errorf("Copilot.AddCopilotTeams returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "AddCopilotTeams"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.AddCopilotTeams(ctx, "\n", SelectedTeams{SelectedTeams: []string{"team1", "team2"}})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.AddCopilotTeams(ctx, "o", SelectedTeams{SelectedTeams: []string{"team1", "team2"}})
+		if got != nil {
+			t.Errorf("Copilot.AddCopilotTeams returned %+v, want nil", got)
+		}
+		return resp, err
+	})
 }
 
 func TestCopilotService_RemoveCopilotTeams(t *testing.T) {
@@ -257,9 +353,25 @@ func TestCopilotService_RemoveCopilotTeams(t *testing.T) {
 	}
 
 	want := &SeatCancellations{SeatsCancelled: 2}
+
 	if !cmp.Equal(got, want) {
 		t.Errorf("Copilot.RemoveCopilotTeams returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "RemoveCopilotTeams"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.RemoveCopilotTeams(ctx, "\n", SelectedTeams{SelectedTeams: []string{"team1", "team2"}})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.RemoveCopilotTeams(ctx, "o", SelectedTeams{SelectedTeams: []string{"team1", "team2"}})
+		if got != nil {
+			t.Errorf("Copilot.RemoveCopilotTeams returned %+v, want nil", got)
+		}
+		return resp, err
+	})
 }
 
 func TestCopilotService_AddCopilotUsers(t *testing.T) {
@@ -278,9 +390,25 @@ func TestCopilotService_AddCopilotUsers(t *testing.T) {
 	}
 
 	want := &SeatAssignments{SeatsCreated: 2}
+
 	if !cmp.Equal(got, want) {
 		t.Errorf("Copilot.AddCopilotUsers returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "AddCopilotUsers"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.AddCopilotUsers(ctx, "\n", SelectedUsers{SelectedUsers: []string{"user1", "user2"}})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.AddCopilotUsers(ctx, "o", SelectedUsers{SelectedUsers: []string{"user1", "user2"}})
+		if got != nil {
+			t.Errorf("Copilot.AddCopilotUsers returned %+v, want nil", got)
+		}
+		return resp, err
+	})
 }
 
 func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
@@ -299,9 +427,25 @@ func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
 	}
 
 	want := &SeatCancellations{SeatsCancelled: 2}
+
 	if !cmp.Equal(got, want) {
 		t.Errorf("Copilot.RemoveCopilotUsers returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "RemoveCopilotUsers"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.RemoveCopilotUsers(ctx, "\n", SelectedUsers{SelectedUsers: []string{"user1", "user2"}})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.RemoveCopilotUsers(ctx, "o", SelectedUsers{SelectedUsers: []string{"user1", "user2"}})
+		if got != nil {
+			t.Errorf("Copilot.RemoveCopilotUsers returned %+v, want nil", got)
+		}
+		return resp, err
+	})
 }
 
 func TestCopilotService_GetSeatDetails(t *testing.T) {
@@ -401,7 +545,23 @@ func TestCopilotService_GetSeatDetails(t *testing.T) {
 		LastActivityAt:          String("2021-10-14T00:53:32-06:00"),
 		LastActivityEditor:      String("vscode/1.77.3/copilot/1.86.82"),
 	}
+
 	if !cmp.Equal(got, want) {
 		t.Errorf("Copilot.GetSeatDetails returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "GetSeatDetails"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetSeatDetails(ctx, "\n", "u")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetSeatDetails(ctx, "o", "u")
+		if got != nil {
+			t.Errorf("Copilot.GetSeatDetails returned %+v, want nil", got)
+		}
+		return resp, err
+	})
 }
