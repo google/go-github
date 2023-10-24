@@ -23,6 +23,13 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		"Invalid Assignee Field Type": {
+			data: `{
+					"assignee": "test"
+				}`,
+			want:    &CopilotSeatDetails{},
+			wantErr: true,
+		},
 		"Invalid Assignee Type": {
 			data: `{
 					"assignee": {
@@ -38,6 +45,7 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			data: `{
 					"assignee": {
 						"type": "User",
+						"id": "bad",
 					}
 				}`,
 			want:    &CopilotSeatDetails{},
@@ -47,6 +55,7 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			data: `{
 					"assignee": {
 						"type": "Team",
+						"id": "bad",
 					}
 				}`,
 			want:    &CopilotSeatDetails{},
@@ -56,6 +65,7 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			data: `{
 					"assignee": {
 						"type": "Organization",
+						"id": "bad",
 					}
 				}`,
 			want:    &CopilotSeatDetails{},
@@ -138,7 +148,6 @@ func TestCopilotService_GetCopilotBilling(t *testing.T) {
 		}
 		return resp, err
 	})
-
 }
 
 func TestCopilotService_ListCopilotSeats(t *testing.T) {
