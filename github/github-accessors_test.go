@@ -5290,6 +5290,13 @@ func TestContributorStats_GetTotal(tt *testing.T) {
 	c.GetTotal()
 }
 
+func TestCopilotOrganizationDetails_GetSeatBreakdown(tt *testing.T) {
+	c := &CopilotOrganizationDetails{}
+	c.GetSeatBreakdown()
+	c = nil
+	c.GetSeatBreakdown()
+}
+
 func TestCopilotSeatDetails_GetAssigningTeam(tt *testing.T) {
 	c := &CopilotSeatDetails{}
 	c.GetAssigningTeam()
@@ -14732,13 +14739,6 @@ func TestOrganization_GetWebCommitSignoffRequired(tt *testing.T) {
 	o.GetWebCommitSignoffRequired()
 	o = nil
 	o.GetWebCommitSignoffRequired()
-}
-
-func TestOrganizationCopilotDetails_GetSeatBreakdown(tt *testing.T) {
-	o := &OrganizationCopilotDetails{}
-	o.GetSeatBreakdown()
-	o = nil
-	o.GetSeatBreakdown()
 }
 
 func TestOrganizationCustomRepoRoles_GetTotalCount(tt *testing.T) {

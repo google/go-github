@@ -4486,6 +4486,14 @@ func (c *ContributorStats) GetTotal() int {
 	return *c.Total
 }
 
+// GetSeatBreakdown returns the SeatBreakdown field.
+func (c *CopilotOrganizationDetails) GetSeatBreakdown() *CopilotSeatBreakdown {
+	if c == nil {
+		return nil
+	}
+	return c.SeatBreakdown
+}
+
 // GetAssigningTeam returns the AssigningTeam field.
 func (c *CopilotSeatDetails) GetAssigningTeam() *Team {
 	if c == nil {
@@ -12572,14 +12580,6 @@ func (o *Organization) GetWebCommitSignoffRequired() bool {
 		return false
 	}
 	return *o.WebCommitSignoffRequired
-}
-
-// GetSeatBreakdown returns the SeatBreakdown field.
-func (o *OrganizationCopilotDetails) GetSeatBreakdown() *SeatBreakdown {
-	if o == nil {
-		return nil
-	}
-	return o.SeatBreakdown
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

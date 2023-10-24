@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -16,26 +17,30 @@ import (
 
 // Test invalid JSON responses, vlaid responses are covered in the other tests
 func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
-	tests := map[string]struct {
+	tests := []struct {
+		name    string
 		data    string
 		want    *CopilotSeatDetails
 		wantErr bool
 	}{
-		"Invalid JSON": {
+		{
+			name: "Invalid JSON",
 			data: `{`,
 			want: &CopilotSeatDetails{
 				Assignee: nil,
 			},
 			wantErr: true,
 		},
-		"Invalid Assignee Field Type": {
+		{
+			name: "Invalid Assignee Field Type",
 			data: `{
 					"assignee": "test"
 				}`,
 			want:    &CopilotSeatDetails{},
 			wantErr: true,
 		},
-		"Invalid Assignee Type": {
+		{
+			name: "Invalid Assignee Type",
 			data: `{
 					"assignee": {
 						"name": "octokittens",
@@ -46,7 +51,8 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			want:    &CopilotSeatDetails{},
 			wantErr: true,
 		},
-		"Invalid User": {
+		{
+			name: "Invalid User",
 			data: `{
 					"assignee": {
 						"type": "User",
@@ -56,7 +62,8 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			want:    &CopilotSeatDetails{},
 			wantErr: true,
 		},
-		"Invalid Team": {
+		{
+			name: "Invalid Team",
 			data: `{
 					"assignee": {
 						"type": "Team",
@@ -66,7 +73,8 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			want:    &CopilotSeatDetails{},
 			wantErr: true,
 		},
-		"Invalid Organization": {
+		{
+			name: "Invalid Organization",
 			data: `{
 					"assignee": {
 						"type": "Organization",
@@ -78,11 +86,11 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 		},
 	}
 
-	for name, tc := range tests {
+	for _, tc := range tests {
 		seatDetails := &CopilotSeatDetails{}
 
-		t.Run(name, func(t *testing.T) {
-			err := seatDetails.UnmarshalJSON([]byte(tc.data))
+		t.Run(tc.name, func(t *testing.T) {
+			err := json.Unmarshal([]byte(tc.data), seatDetails)
 			if err == nil && tc.wantErr {
 				t.Errorf("CopilotSeatDetails.UnmarshalJSON returned nil instead of an error")
 			}
@@ -122,8 +130,8 @@ func TestCopilotService_GetCopilotBilling(t *testing.T) {
 		t.Errorf("Copilot.GetCopilotBilling returned error: %v", err)
 	}
 
-	want := &OrganizationCopilotDetails{
-		SeatBreakdown: &SeatBreakdown{
+	want := &CopilotOrganizationDetails{
+		SeatBreakdown: &CopilotSeatBreakdown{
 			Total:               12,
 			AddedThisCycle:      9,
 			PendingInvitation:   0,
@@ -262,14 +270,14 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Copilot.ListCopilotSeats(ctx, "o")
+	got, _, err := client.Copilot.ListCopilotSeats(ctx, "o", nil)
 	if err != nil {
 		t.Errorf("Copilot.ListCopilotSeats returned error: %v", err)
 	}
 
-	want := &CopilotSeats{
+	want := &ListCopilotSeatsResponse{
 		TotalSeats: 2,
-		Seats: []CopilotSeatDetails{
+		Seats: []*CopilotSeatDetails{
 			{
 				Assignee: &User{
 					Login:             String("octocat"),
@@ -374,12 +382,12 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 	const methodName = "ListCopilotSeats"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.ListCopilotSeats(ctx, "\n")
+		_, _, err = client.Copilot.ListCopilotSeats(ctx, "\n", nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.ListCopilotSeats(ctx, "")
+		got, resp, err := client.Copilot.ListCopilotSeats(ctx, "", nil)
 		if got != nil {
 			t.Errorf("Copilot.ListCopilotSeats returned %+v, want nil", got)
 		}
@@ -392,12 +400,12 @@ func TestCopilotService_AddCopilotTeams(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_teams", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
+		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{"seats_created": 2}`)
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Copilot.AddCopilotTeams(ctx, "o", SelectedTeams{SelectedTeams: []string{"team1", "team2"}})
+	got, _, err := client.Copilot.AddCopilotTeams(ctx, "o", []string{"team1", "team2"})
 	if err != nil {
 		t.Errorf("Copilot.AddCopilotTeams returned error: %v", err)
 	}
@@ -411,12 +419,12 @@ func TestCopilotService_AddCopilotTeams(t *testing.T) {
 	const methodName = "AddCopilotTeams"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.AddCopilotTeams(ctx, "\n", SelectedTeams{SelectedTeams: []string{"team1", "team2"}})
+		_, _, err = client.Copilot.AddCopilotTeams(ctx, "\n", []string{"team1", "team2"})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.AddCopilotTeams(ctx, "o", SelectedTeams{SelectedTeams: []string{"team1", "team2"}})
+		got, resp, err := client.Copilot.AddCopilotTeams(ctx, "o", []string{"team1", "team2"})
 		if got != nil {
 			t.Errorf("Copilot.AddCopilotTeams returned %+v, want nil", got)
 		}
@@ -434,7 +442,7 @@ func TestCopilotService_RemoveCopilotTeams(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Copilot.RemoveCopilotTeams(ctx, "o", SelectedTeams{SelectedTeams: []string{"team1", "team2"}})
+	got, _, err := client.Copilot.RemoveCopilotTeams(ctx, "o", []string{"team1", "team2"})
 	if err != nil {
 		t.Errorf("Copilot.RemoveCopilotTeams returned error: %v", err)
 	}
@@ -448,12 +456,12 @@ func TestCopilotService_RemoveCopilotTeams(t *testing.T) {
 	const methodName = "RemoveCopilotTeams"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.RemoveCopilotTeams(ctx, "\n", SelectedTeams{SelectedTeams: []string{"team1", "team2"}})
+		_, _, err = client.Copilot.RemoveCopilotTeams(ctx, "\n", []string{"team1", "team2"})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.RemoveCopilotTeams(ctx, "o", SelectedTeams{SelectedTeams: []string{"team1", "team2"}})
+		got, resp, err := client.Copilot.RemoveCopilotTeams(ctx, "o", []string{"team1", "team2"})
 		if got != nil {
 			t.Errorf("Copilot.RemoveCopilotTeams returned %+v, want nil", got)
 		}
@@ -466,12 +474,12 @@ func TestCopilotService_AddCopilotUsers(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_users", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
+		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{"seats_created": 2}`)
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Copilot.AddCopilotUsers(ctx, "o", SelectedUsers{SelectedUsers: []string{"user1", "user2"}})
+	got, _, err := client.Copilot.AddCopilotUsers(ctx, "o", []string{"team1", "team2"})
 	if err != nil {
 		t.Errorf("Copilot.AddCopilotUsers returned error: %v", err)
 	}
@@ -485,12 +493,12 @@ func TestCopilotService_AddCopilotUsers(t *testing.T) {
 	const methodName = "AddCopilotUsers"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.AddCopilotUsers(ctx, "\n", SelectedUsers{SelectedUsers: []string{"user1", "user2"}})
+		_, _, err = client.Copilot.AddCopilotUsers(ctx, "\n", []string{"team1", "team2"})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.AddCopilotUsers(ctx, "o", SelectedUsers{SelectedUsers: []string{"user1", "user2"}})
+		got, resp, err := client.Copilot.AddCopilotUsers(ctx, "o", []string{"team1", "team2"})
 		if got != nil {
 			t.Errorf("Copilot.AddCopilotUsers returned %+v, want nil", got)
 		}
@@ -508,7 +516,7 @@ func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Copilot.RemoveCopilotUsers(ctx, "o", SelectedUsers{SelectedUsers: []string{"user1", "user2"}})
+	got, _, err := client.Copilot.RemoveCopilotUsers(ctx, "o", []string{"team1", "team2"})
 	if err != nil {
 		t.Errorf("Copilot.RemoveCopilotUsers returned error: %v", err)
 	}
@@ -522,12 +530,12 @@ func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
 	const methodName = "RemoveCopilotUsers"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.RemoveCopilotUsers(ctx, "\n", SelectedUsers{SelectedUsers: []string{"user1", "user2"}})
+		_, _, err = client.Copilot.RemoveCopilotUsers(ctx, "\n", []string{"team1", "team2"})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.RemoveCopilotUsers(ctx, "o", SelectedUsers{SelectedUsers: []string{"user1", "user2"}})
+		got, resp, err := client.Copilot.RemoveCopilotUsers(ctx, "o", []string{"team1", "team2"})
 		if got != nil {
 			t.Errorf("Copilot.RemoveCopilotUsers returned %+v, want nil", got)
 		}
