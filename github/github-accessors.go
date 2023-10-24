@@ -4486,6 +4486,38 @@ func (c *ContributorStats) GetTotal() int {
 	return *c.Total
 }
 
+// GetAssigningTeam returns the AssigningTeam field.
+func (c *CopilotSeatDetails) GetAssigningTeam() *Team {
+	if c == nil {
+		return nil
+	}
+	return c.AssigningTeam
+}
+
+// GetLastActivityAt returns the LastActivityAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetLastActivityAt() string {
+	if c == nil || c.LastActivityAt == nil {
+		return ""
+	}
+	return *c.LastActivityAt
+}
+
+// GetLastActivityEditor returns the LastActivityEditor field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetLastActivityEditor() string {
+	if c == nil || c.LastActivityEditor == nil {
+		return ""
+	}
+	return *c.LastActivityEditor
+}
+
+// GetPendingCancellationDate returns the PendingCancellationDate field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetPendingCancellationDate() string {
+	if c == nil || c.PendingCancellationDate == nil {
+		return ""
+	}
+	return *c.PendingCancellationDate
+}
+
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
 func (c *CreateCheckRunOptions) GetCompletedAt() Timestamp {
 	if c == nil || c.CompletedAt == nil {
@@ -12540,6 +12572,14 @@ func (o *Organization) GetWebCommitSignoffRequired() bool {
 		return false
 	}
 	return *o.WebCommitSignoffRequired
+}
+
+// GetSeatBreakdown returns the SeatBreakdown field.
+func (o *OrganizationCopilotDetails) GetSeatBreakdown() *SeatBreakdown {
+	if o == nil {
+		return nil
+	}
+	return o.SeatBreakdown
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

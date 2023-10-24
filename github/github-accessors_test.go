@@ -5290,6 +5290,43 @@ func TestContributorStats_GetTotal(tt *testing.T) {
 	c.GetTotal()
 }
 
+func TestCopilotSeatDetails_GetAssigningTeam(tt *testing.T) {
+	c := &CopilotSeatDetails{}
+	c.GetAssigningTeam()
+	c = nil
+	c.GetAssigningTeam()
+}
+
+func TestCopilotSeatDetails_GetLastActivityAt(tt *testing.T) {
+	var zeroValue string
+	c := &CopilotSeatDetails{LastActivityAt: &zeroValue}
+	c.GetLastActivityAt()
+	c = &CopilotSeatDetails{}
+	c.GetLastActivityAt()
+	c = nil
+	c.GetLastActivityAt()
+}
+
+func TestCopilotSeatDetails_GetLastActivityEditor(tt *testing.T) {
+	var zeroValue string
+	c := &CopilotSeatDetails{LastActivityEditor: &zeroValue}
+	c.GetLastActivityEditor()
+	c = &CopilotSeatDetails{}
+	c.GetLastActivityEditor()
+	c = nil
+	c.GetLastActivityEditor()
+}
+
+func TestCopilotSeatDetails_GetPendingCancellationDate(tt *testing.T) {
+	var zeroValue string
+	c := &CopilotSeatDetails{PendingCancellationDate: &zeroValue}
+	c.GetPendingCancellationDate()
+	c = &CopilotSeatDetails{}
+	c.GetPendingCancellationDate()
+	c = nil
+	c.GetPendingCancellationDate()
+}
+
 func TestCreateCheckRunOptions_GetCompletedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	c := &CreateCheckRunOptions{CompletedAt: &zeroValue}
@@ -14695,6 +14732,13 @@ func TestOrganization_GetWebCommitSignoffRequired(tt *testing.T) {
 	o.GetWebCommitSignoffRequired()
 	o = nil
 	o.GetWebCommitSignoffRequired()
+}
+
+func TestOrganizationCopilotDetails_GetSeatBreakdown(tt *testing.T) {
+	o := &OrganizationCopilotDetails{}
+	o.GetSeatBreakdown()
+	o = nil
+	o.GetSeatBreakdown()
 }
 
 func TestOrganizationCustomRepoRoles_GetTotalCount(tt *testing.T) {
