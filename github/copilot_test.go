@@ -104,6 +104,86 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 	}
 }
 
+func TestCopilotService_GetSeatDetailsUser(t *testing.T) {
+	data := `{
+				"assignee": {
+					"type": "User",
+					"id": 1
+				}
+			}`
+
+	seatDetails := &CopilotSeatDetails{}
+
+	err := json.Unmarshal([]byte(data), seatDetails)
+	if err != nil {
+		t.Errorf("CopilotSeatDetails.UnmarshalJSON returned an unexpected error: %v", err)
+	}
+
+	want := &User{
+		ID:   Int64(1),
+		Type: String("User"),
+	}
+
+	if got, ok := seatDetails.GetUser(); ok && !cmp.Equal(got, want) {
+		t.Errorf("CopilotSeatDetails.GetTeam returned %+v, want %+v", got, want)
+	} else if !ok {
+		t.Errorf("CopilotSeatDetails.GetUser returned false, expected true")
+	}
+}
+
+func TestCopilotService_GetSeatDetailsTeam(t *testing.T) {
+	data := `{
+				"assignee": {
+					"type": "Team",
+					"id": 1
+				}
+			}`
+
+	seatDetails := &CopilotSeatDetails{}
+
+	err := json.Unmarshal([]byte(data), seatDetails)
+	if err != nil {
+		t.Errorf("CopilotSeatDetails.UnmarshalJSON returned an unexpected error: %v", err)
+	}
+
+	want := &Team{
+		ID: Int64(1),
+	}
+
+	if got, ok := seatDetails.GetTeam(); ok && !cmp.Equal(got, want) {
+		t.Errorf("CopilotSeatDetails.GetTeam returned %+v, want %+v", got, want)
+	} else if !ok {
+		t.Errorf("CopilotSeatDetails.GetTeam returned false, expected true")
+	}
+}
+
+func TestCopilotService_GetSeatDetailsOrganization(t *testing.T) {
+	data := `{
+				"assignee": {
+					"type": "Organization",
+					"id": 1
+				}
+			}`
+
+	seatDetails := &CopilotSeatDetails{}
+
+	err := json.Unmarshal([]byte(data), seatDetails)
+	if err != nil {
+		t.Errorf("CopilotSeatDetails.UnmarshalJSON returned an unexpected error: %v", err)
+	}
+
+	want := &Organization{
+		ID:   Int64(1),
+		Type: String("Organization"),
+	}
+
+	if got, ok := seatDetails.GetOrganization(); ok && !cmp.Equal(got, want) {
+		t.Errorf("CopilotSeatDetails.GetOrganization returned %+v, want %+v", got, want)
+	} else if !ok {
+		t.Errorf("CopilotSeatDetails.GetOrganization returned false, expected true")
+	}
+}
+
 func TestCopilotService_GetCopilotBilling(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
