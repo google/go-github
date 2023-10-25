@@ -761,6 +761,13 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 			SuspendedAt:     &Timestamp{referenceTime},
 			URL:             String("u2"),
 		},
+		ReferencedWorkflows: []*ReferencedWorkflow{
+			{
+				Path: String("rwfp"),
+				SHA:  String("rwfsha"),
+				Ref:  String("rwfref"),
+			},
+		},
 	}
 
 	want := `{
@@ -881,7 +888,14 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 			"created_at": ` + referenceTimeStr + `,
 			"suspended_at": ` + referenceTimeStr + `,
 			"url": "u2"
-		}
+		},
+		"referenced_workflows": [
+			{
+				"path": "rwfp",
+				"sha": "rwfsha",
+				"ref": "rwfref"
+			}
+		]
 	}`
 
 	testJSONMarshal(t, u, want)
