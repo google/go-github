@@ -20521,6 +20521,36 @@ func TestReference_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestReferencedWorkflow_GetPath(tt *testing.T) {
+	var zeroValue string
+	r := &ReferencedWorkflow{Path: &zeroValue}
+	r.GetPath()
+	r = &ReferencedWorkflow{}
+	r.GetPath()
+	r = nil
+	r.GetPath()
+}
+
+func TestReferencedWorkflow_GetRef(tt *testing.T) {
+	var zeroValue string
+	r := &ReferencedWorkflow{Ref: &zeroValue}
+	r.GetRef()
+	r = &ReferencedWorkflow{}
+	r.GetRef()
+	r = nil
+	r.GetRef()
+}
+
+func TestReferencedWorkflow_GetSHA(tt *testing.T) {
+	var zeroValue string
+	r := &ReferencedWorkflow{SHA: &zeroValue}
+	r.GetSHA()
+	r = &ReferencedWorkflow{}
+	r.GetSHA()
+	r = nil
+	r.GetSHA()
+}
+
 func TestRegistrationToken_GetExpiresAt(tt *testing.T) {
 	var zeroValue Timestamp
 	r := &RegistrationToken{ExpiresAt: &zeroValue}

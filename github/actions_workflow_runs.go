@@ -14,39 +14,40 @@ import (
 
 // WorkflowRun represents a repository action workflow run.
 type WorkflowRun struct {
-	ID                 *int64         `json:"id,omitempty"`
-	Name               *string        `json:"name,omitempty"`
-	NodeID             *string        `json:"node_id,omitempty"`
-	HeadBranch         *string        `json:"head_branch,omitempty"`
-	HeadSHA            *string        `json:"head_sha,omitempty"`
-	RunNumber          *int           `json:"run_number,omitempty"`
-	RunAttempt         *int           `json:"run_attempt,omitempty"`
-	Event              *string        `json:"event,omitempty"`
-	DisplayTitle       *string        `json:"display_title,omitempty"`
-	Status             *string        `json:"status,omitempty"`
-	Conclusion         *string        `json:"conclusion,omitempty"`
-	WorkflowID         *int64         `json:"workflow_id,omitempty"`
-	CheckSuiteID       *int64         `json:"check_suite_id,omitempty"`
-	CheckSuiteNodeID   *string        `json:"check_suite_node_id,omitempty"`
-	URL                *string        `json:"url,omitempty"`
-	HTMLURL            *string        `json:"html_url,omitempty"`
-	PullRequests       []*PullRequest `json:"pull_requests,omitempty"`
-	CreatedAt          *Timestamp     `json:"created_at,omitempty"`
-	UpdatedAt          *Timestamp     `json:"updated_at,omitempty"`
-	RunStartedAt       *Timestamp     `json:"run_started_at,omitempty"`
-	JobsURL            *string        `json:"jobs_url,omitempty"`
-	LogsURL            *string        `json:"logs_url,omitempty"`
-	CheckSuiteURL      *string        `json:"check_suite_url,omitempty"`
-	ArtifactsURL       *string        `json:"artifacts_url,omitempty"`
-	CancelURL          *string        `json:"cancel_url,omitempty"`
-	RerunURL           *string        `json:"rerun_url,omitempty"`
-	PreviousAttemptURL *string        `json:"previous_attempt_url,omitempty"`
-	HeadCommit         *HeadCommit    `json:"head_commit,omitempty"`
-	WorkflowURL        *string        `json:"workflow_url,omitempty"`
-	Repository         *Repository    `json:"repository,omitempty"`
-	HeadRepository     *Repository    `json:"head_repository,omitempty"`
-	Actor              *User          `json:"actor,omitempty"`
-	TriggeringActor    *User          `json:"triggering_actor,omitempty"`
+	ID                  *int64                `json:"id,omitempty"`
+	Name                *string               `json:"name,omitempty"`
+	NodeID              *string               `json:"node_id,omitempty"`
+	HeadBranch          *string               `json:"head_branch,omitempty"`
+	HeadSHA             *string               `json:"head_sha,omitempty"`
+	RunNumber           *int                  `json:"run_number,omitempty"`
+	RunAttempt          *int                  `json:"run_attempt,omitempty"`
+	Event               *string               `json:"event,omitempty"`
+	DisplayTitle        *string               `json:"display_title,omitempty"`
+	Status              *string               `json:"status,omitempty"`
+	Conclusion          *string               `json:"conclusion,omitempty"`
+	WorkflowID          *int64                `json:"workflow_id,omitempty"`
+	CheckSuiteID        *int64                `json:"check_suite_id,omitempty"`
+	CheckSuiteNodeID    *string               `json:"check_suite_node_id,omitempty"`
+	URL                 *string               `json:"url,omitempty"`
+	HTMLURL             *string               `json:"html_url,omitempty"`
+	PullRequests        []*PullRequest        `json:"pull_requests,omitempty"`
+	CreatedAt           *Timestamp            `json:"created_at,omitempty"`
+	UpdatedAt           *Timestamp            `json:"updated_at,omitempty"`
+	RunStartedAt        *Timestamp            `json:"run_started_at,omitempty"`
+	JobsURL             *string               `json:"jobs_url,omitempty"`
+	LogsURL             *string               `json:"logs_url,omitempty"`
+	CheckSuiteURL       *string               `json:"check_suite_url,omitempty"`
+	ArtifactsURL        *string               `json:"artifacts_url,omitempty"`
+	CancelURL           *string               `json:"cancel_url,omitempty"`
+	RerunURL            *string               `json:"rerun_url,omitempty"`
+	PreviousAttemptURL  *string               `json:"previous_attempt_url,omitempty"`
+	HeadCommit          *HeadCommit           `json:"head_commit,omitempty"`
+	WorkflowURL         *string               `json:"workflow_url,omitempty"`
+	Repository          *Repository           `json:"repository,omitempty"`
+	HeadRepository      *Repository           `json:"head_repository,omitempty"`
+	Actor               *User                 `json:"actor,omitempty"`
+	TriggeringActor     *User                 `json:"triggering_actor,omitempty"`
+	ReferencedWorkflows []*ReferencedWorkflow `json:"referenced_workflows,omitempty"`
 }
 
 // WorkflowRuns represents a slice of repository action workflow run.
@@ -102,6 +103,12 @@ type PendingDeploymentsRequest struct {
 	// State can be one of: "approved", "rejected".
 	State   string `json:"state"`
 	Comment string `json:"comment"`
+}
+
+type ReferencedWorkflow struct {
+	Path *string `json:"path,omitempty"`
+	SHA  *string `json:"sha,omitempty"`
+	Ref  *string `json:"ref,omitempty"`
 }
 
 func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {

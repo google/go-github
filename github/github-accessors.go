@@ -17710,6 +17710,30 @@ func (r *Reference) GetURL() string {
 	return *r.URL
 }
 
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (r *ReferencedWorkflow) GetPath() string {
+	if r == nil || r.Path == nil {
+		return ""
+	}
+	return *r.Path
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (r *ReferencedWorkflow) GetRef() string {
+	if r == nil || r.Ref == nil {
+		return ""
+	}
+	return *r.Ref
+}
+
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (r *ReferencedWorkflow) GetSHA() string {
+	if r == nil || r.SHA == nil {
+		return ""
+	}
+	return *r.SHA
+}
+
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
 func (r *RegistrationToken) GetExpiresAt() Timestamp {
 	if r == nil || r.ExpiresAt == nil {
