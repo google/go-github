@@ -36,12 +36,10 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			data: `{
 					"assignee": {
 						"name": "octokittens",
-						"id": 1,
+						"id": 1
 					}
 				}`,
-			want: &CopilotSeatDetails{
-				Assignee: nil,
-			},
+			want:    &CopilotSeatDetails{},
 			wantErr: true,
 		},
 		{
@@ -69,7 +67,7 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			data: `{
 					"assignee": {
 						"type": "User",
-						"id": "bad",
+						"id": "bad"
 					}
 				}`,
 			want:    &CopilotSeatDetails{},
@@ -80,7 +78,7 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			data: `{
 					"assignee": {
 						"type": "Team",
-						"id": "bad",
+						"id": "bad"
 					}
 				}`,
 			want:    &CopilotSeatDetails{},
@@ -91,7 +89,7 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			data: `{
 					"assignee": {
 						"type": "Organization",
-						"id": "bad",
+						"id": "bad"
 					}
 				}`,
 			want:    &CopilotSeatDetails{},

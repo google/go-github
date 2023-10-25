@@ -84,6 +84,11 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
+
+		if v["type"] == nil {
+			return fmt.Errorf("assignee type field is not set")
+		}
+
 		if v["type"].(string) == "User" {
 			user := &User{}
 			if err := json.Unmarshal(jsonData, user); err != nil {
