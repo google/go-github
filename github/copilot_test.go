@@ -129,6 +129,27 @@ func TestCopilotService_GetSeatDetailsUser(t *testing.T) {
 	} else if !ok {
 		t.Errorf("CopilotSeatDetails.GetUser returned false, expected true")
 	}
+
+	data = `{
+				"assignee": {
+					"type": "Organization",
+					"id": 1
+				}
+			}`
+
+	bad := &Organization{
+		ID:   Int64(1),
+		Type: String("Organization"),
+	}
+
+	err = json.Unmarshal([]byte(data), seatDetails)
+	if err != nil {
+		t.Errorf("CopilotSeatDetails.UnmarshalJSON returned an unexpected error: %v", err)
+	}
+
+	if got, ok := seatDetails.GetUser(); ok {
+		t.Errorf("CopilotSeatDetails.GetUser returned true, expected false. Returned %v, expected %v", got, bad)
+	}
 }
 
 func TestCopilotService_GetSeatDetailsTeam(t *testing.T) {
@@ -154,6 +175,27 @@ func TestCopilotService_GetSeatDetailsTeam(t *testing.T) {
 		t.Errorf("CopilotSeatDetails.GetTeam returned %+v, want %+v", got, want)
 	} else if !ok {
 		t.Errorf("CopilotSeatDetails.GetTeam returned false, expected true")
+	}
+
+	data = `{
+				"assignee": {
+					"type": "User",
+					"id": 1
+				}
+			}`
+
+	bad := &User{
+		ID:   Int64(1),
+		Type: String("User"),
+	}
+
+	err = json.Unmarshal([]byte(data), seatDetails)
+	if err != nil {
+		t.Errorf("CopilotSeatDetails.UnmarshalJSON returned an unexpected error: %v", err)
+	}
+
+	if got, ok := seatDetails.GetTeam(); ok {
+		t.Errorf("CopilotSeatDetails.GetTeam returned true, expected false. Returned %v, expected %v", got, bad)
 	}
 }
 
@@ -181,6 +223,26 @@ func TestCopilotService_GetSeatDetailsOrganization(t *testing.T) {
 		t.Errorf("CopilotSeatDetails.GetOrganization returned %+v, want %+v", got, want)
 	} else if !ok {
 		t.Errorf("CopilotSeatDetails.GetOrganization returned false, expected true")
+	}
+
+	data = `{
+				"assignee": {
+					"type": "Team",
+					"id": 1
+				}
+			}`
+
+	bad := &Team{
+		ID: Int64(1),
+	}
+
+	err = json.Unmarshal([]byte(data), seatDetails)
+	if err != nil {
+		t.Errorf("CopilotSeatDetails.UnmarshalJSON returned an unexpected error: %v", err)
+	}
+
+	if got, ok := seatDetails.GetOrganization(); ok {
+		t.Errorf("CopilotSeatDetails.GetOrganization returned true, expected false. Returned %v, expected %v", got, bad)
 	}
 }
 
