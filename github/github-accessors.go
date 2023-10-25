@@ -4502,10 +4502,18 @@ func (c *CopilotSeatDetails) GetAssigningTeam() *Team {
 	return c.AssigningTeam
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
 // GetLastActivityAt returns the LastActivityAt field if it's non-nil, zero value otherwise.
-func (c *CopilotSeatDetails) GetLastActivityAt() string {
+func (c *CopilotSeatDetails) GetLastActivityAt() Timestamp {
 	if c == nil || c.LastActivityAt == nil {
-		return ""
+		return Timestamp{}
 	}
 	return *c.LastActivityAt
 }
@@ -4524,6 +4532,14 @@ func (c *CopilotSeatDetails) GetPendingCancellationDate() string {
 		return ""
 	}
 	return *c.PendingCancellationDate
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
 }
 
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.

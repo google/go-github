@@ -5304,8 +5304,18 @@ func TestCopilotSeatDetails_GetAssigningTeam(tt *testing.T) {
 	c.GetAssigningTeam()
 }
 
+func TestCopilotSeatDetails_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CopilotSeatDetails{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CopilotSeatDetails{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
 func TestCopilotSeatDetails_GetLastActivityAt(tt *testing.T) {
-	var zeroValue string
+	var zeroValue Timestamp
 	c := &CopilotSeatDetails{LastActivityAt: &zeroValue}
 	c.GetLastActivityAt()
 	c = &CopilotSeatDetails{}
@@ -5332,6 +5342,16 @@ func TestCopilotSeatDetails_GetPendingCancellationDate(tt *testing.T) {
 	c.GetPendingCancellationDate()
 	c = nil
 	c.GetPendingCancellationDate()
+}
+
+func TestCopilotSeatDetails_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CopilotSeatDetails{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CopilotSeatDetails{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
 }
 
 func TestCreateCheckRunOptions_GetCompletedAt(tt *testing.T) {

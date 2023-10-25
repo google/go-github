@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -29,6 +30,19 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			want: &CopilotSeatDetails{
 				Assignee: nil,
 			},
+			wantErr: true,
+		},
+		{
+			name: "Invalid top level type",
+			data: `{
+					"assignee": {
+						"type": "User",
+						"name": "octokittens",
+						"id": 1
+					},
+					"assigning_team": "this should be an object"
+				}`,
+			want:    &CopilotSeatDetails{},
 			wantErr: true,
 		},
 		{
@@ -56,7 +70,7 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 					"assignee": {
 						"name": "octokittens",
 						"id": 1,
-						"type": "None"
+						"type": []
 					}
 				}`,
 			want:    &CopilotSeatDetails{},
@@ -323,7 +337,7 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 	mux.HandleFunc("/orgs/o/copilot/billing/seats", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
-				"total_seats": 2,
+				"total_seats": 4,
 				"seats": [
 					{
 						"created_at": "2021-08-03T18:00:00-06:00",
@@ -422,6 +436,42 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 			}`)
 	})
 
+	tmp, err := time.Parse(time.RFC3339, "2021-08-03T18:00:00-06:00")
+	if err != nil {
+		panic(err)
+	}
+	createdAt1 := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-09-23T15:00:00-06:00")
+	if err != nil {
+		panic(err)
+	}
+	updatedAt1 := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-10-14T00:53:32-06:00")
+	if err != nil {
+		panic(err)
+	}
+	lastActivityAt1 := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-09-23T18:00:00-06:00")
+	if err != nil {
+		panic(err)
+	}
+	createdAt2 := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-09-23T15:00:00-06:00")
+	if err != nil {
+		panic(err)
+	}
+	updatedAt2 := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-10-13T00:53:32-06:00")
+	if err != nil {
+		panic(err)
+	}
+	lastActivityAt2 := Timestamp{tmp}
+
 	ctx := context.Background()
 	got, _, err := client.Copilot.ListCopilotSeats(ctx, "o", nil)
 	if err != nil {
@@ -429,7 +479,7 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 	}
 
 	want := &ListCopilotSeatsResponse{
-		TotalSeats: 2,
+		TotalSeats: 4,
 		Seats: []*CopilotSeatDetails{
 			{
 				Assignee: &User{
@@ -466,10 +516,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					RepositoriesURL: String("https://api.github.com/teams/1/repos"),
 					Parent:          nil,
 				},
-				CreatedAt:               "2021-08-03T18:00:00-06:00",
-				UpdatedAt:               "2021-09-23T15:00:00-06:00",
+				CreatedAt:               &createdAt1,
+				UpdatedAt:               &updatedAt1,
 				PendingCancellationDate: nil,
-				LastActivityAt:          String("2021-10-14T00:53:32-06:00"),
+				LastActivityAt:          &lastActivityAt1,
 				LastActivityEditor:      String("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
@@ -494,10 +544,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					SiteAdmin:         Bool(false),
 				},
 				AssigningTeam:           nil,
-				CreatedAt:               "2021-09-23T18:00:00-06:00",
-				UpdatedAt:               "2021-09-23T15:00:00-06:00",
+				CreatedAt:               &createdAt2,
+				UpdatedAt:               &updatedAt2,
 				PendingCancellationDate: String("2021-11-01"),
-				LastActivityAt:          String("2021-10-13T00:53:32-06:00"),
+				LastActivityAt:          &lastActivityAt2,
 				LastActivityEditor:      String("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
@@ -506,10 +556,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					Name: String("octokittens"),
 				},
 				AssigningTeam:           nil,
-				CreatedAt:               "2021-09-23T18:00:00-06:00",
-				UpdatedAt:               "2021-09-23T15:00:00-06:00",
+				CreatedAt:               &createdAt2,
+				UpdatedAt:               &updatedAt2,
 				PendingCancellationDate: String("2021-11-01"),
-				LastActivityAt:          String("2021-10-13T00:53:32-06:00"),
+				LastActivityAt:          &lastActivityAt2,
 				LastActivityEditor:      String("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
@@ -519,10 +569,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					Type: String("Organization"),
 				},
 				AssigningTeam:           nil,
-				CreatedAt:               "2021-09-23T18:00:00-06:00",
-				UpdatedAt:               "2021-09-23T15:00:00-06:00",
+				CreatedAt:               &createdAt2,
+				UpdatedAt:               &updatedAt2,
 				PendingCancellationDate: String("2021-11-01"),
-				LastActivityAt:          String("2021-10-13T00:53:32-06:00"),
+				LastActivityAt:          &lastActivityAt2,
 				LastActivityEditor:      String("vscode/1.77.3/copilot/1.86.82"),
 			},
 		},
@@ -746,6 +796,24 @@ func TestCopilotService_GetSeatDetails(t *testing.T) {
 			}`)
 	})
 
+	tmp, err := time.Parse(time.RFC3339, "2021-08-03T18:00:00-06:00")
+	if err != nil {
+		panic(err)
+	}
+	createdAt := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-09-23T15:00:00-06:00")
+	if err != nil {
+		panic(err)
+	}
+	updatedAt := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-10-14T00:53:32-06:00")
+	if err != nil {
+		panic(err)
+	}
+	lastActivityAt := Timestamp{tmp}
+
 	ctx := context.Background()
 	got, _, err := client.Copilot.GetSeatDetails(ctx, "o", "u")
 	if err != nil {
@@ -787,10 +855,10 @@ func TestCopilotService_GetSeatDetails(t *testing.T) {
 			RepositoriesURL: String("https://api.github.com/teams/1/repos"),
 			Parent:          nil,
 		},
-		CreatedAt:               "2021-08-03T18:00:00-06:00",
-		UpdatedAt:               "2021-09-23T15:00:00-06:00",
+		CreatedAt:               &createdAt,
+		UpdatedAt:               &updatedAt,
 		PendingCancellationDate: nil,
-		LastActivityAt:          String("2021-10-14T00:53:32-06:00"),
+		LastActivityAt:          &lastActivityAt,
 		LastActivityEditor:      String("vscode/1.77.3/copilot/1.86.82"),
 	}
 

@@ -47,10 +47,10 @@ type CopilotSeatDetails struct {
 	Assignee                interface{} `json:"assignee"`
 	AssigningTeam           *Team       `json:"assigning_team,omitempty"`
 	PendingCancellationDate *string     `json:"pending_cancellation_date,omitempty"`
-	LastActivityAt          *string     `json:"last_activity_at,omitempty"`
+	LastActivityAt          *Timestamp  `json:"last_activity_at,omitempty"`
 	LastActivityEditor      *string     `json:"last_activity_editor,omitempty"`
-	CreatedAt               string      `json:"created_at"`
-	UpdatedAt               string      `json:"updated_at,omitempty"`
+	CreatedAt               *Timestamp  `json:"created_at"`
+	UpdatedAt               *Timestamp  `json:"updated_at,omitempty"`
 }
 
 // SeatAssignments represents the number of seats assigned.
@@ -89,26 +89,26 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 			return fmt.Errorf("assignee type field is not set")
 		}
 
-		if v["type"].(string) == "User" {
+		if t, ok := v["type"].(string); ok && t == "User" {
 			user := &User{}
 			if err := json.Unmarshal(jsonData, user); err != nil {
 				return err
 			}
 			cp.Assignee = user
-		} else if v["type"].(string) == "Team" {
+		} else if t, ok := v["type"].(string); ok && t == "Team" {
 			team := &Team{}
 			if err := json.Unmarshal(jsonData, team); err != nil {
 				return err
 			}
 			cp.Assignee = team
-		} else if v["type"].(string) == "Organization" {
+		} else if t, ok := v["type"].(string); ok && t == "Organization" {
 			organization := &Organization{}
 			if err := json.Unmarshal(jsonData, organization); err != nil {
 				return err
 			}
 			cp.Assignee = organization
 		} else {
-			return fmt.Errorf("unsupported assignee type %s", v["type"].(string))
+			return fmt.Errorf("unsupported assignee type %v", v["type"])
 		}
 	default:
 		return fmt.Errorf("unsupported assignee type %T", v)
