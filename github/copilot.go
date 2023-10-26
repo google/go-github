@@ -53,6 +53,16 @@ type CopilotSeatDetails struct {
 	UpdatedAt               *Timestamp  `json:"updated_at,omitempty"`
 }
 
+// SelectedTeams represents the teams selected for Copilot for Business.
+type SelectedTeams struct {
+	SelectedTeams []string `json:"selected_teams"`
+}
+
+// SelectedUsers represents the users selected for Copilot for Business.
+type SelectedUsers struct {
+	SelectedUsers []string `json:"selected_users"`
+}
+
 // SeatAssignments represents the number of seats assigned.
 type SeatAssignments struct {
 	SeatsCreated int `json:"seats_created"`
@@ -64,6 +74,7 @@ type SeatCancellations struct {
 }
 
 func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
+	// Using an alias to avoid infinite recursion when calling json.Unmarshal
 	type alias CopilotSeatDetails
 	var seatDetail alias
 
@@ -124,7 +135,10 @@ func (cp *CopilotSeatDetails) GetUser() (*User, bool) { u, ok := cp.Assignee.(*U
 func (cp *CopilotSeatDetails) GetTeam() (*Team, bool) { t, ok := cp.Assignee.(*Team); return t, ok }
 
 // GetOrganization gets the Organization from the CopilotSeatDetails if the assignee is an organization.
-func (cp *CopilotSeatDetails) GetOrganization() (*Organization, bool) { o, ok := cp.Assignee.(*Organization); return o, ok }
+func (cp *CopilotSeatDetails) GetOrganization() (*Organization, bool) {
+	o, ok := cp.Assignee.(*Organization)
+	return o, ok
+}
 
 // GetCopilotBilling gets Copilot for Business billing information and settings for an organization.
 //
@@ -171,7 +185,7 @@ func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string, opts 
 // AddCopilotTeams adds teams to the Copilot for Business subscription for an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#add-teams-to-the-copilot-for-business-subscription-for-an-organization
-func (s *CopilotService) AddCopilotTeams(ctx context.Context, org string, teamNames []string) (*SeatAssignments, *Response, error) {
+func (s *CopilotService) AddCopilotTeams(ctx context.Context, org string, teamNames *SelectedTeams) (*SeatAssignments, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_teams", org)
 
 	req, err := s.client.NewRequest("POST", u, teamNames)
@@ -191,7 +205,7 @@ func (s *CopilotService) AddCopilotTeams(ctx context.Context, org string, teamNa
 // RemoveCopilotTeams removes teams from the Copilot for Business subscription for an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#remove-teams-from-the-copilot-for-business-subscription-for-an-organization
-func (s *CopilotService) RemoveCopilotTeams(ctx context.Context, org string, teamNames []string) (*SeatCancellations, *Response, error) {
+func (s *CopilotService) RemoveCopilotTeams(ctx context.Context, org string, teamNames *SelectedTeams) (*SeatCancellations, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_teams", org)
 
 	req, err := s.client.NewRequest("DELETE", u, teamNames)
@@ -211,10 +225,10 @@ func (s *CopilotService) RemoveCopilotTeams(ctx context.Context, org string, tea
 // AddCopilotUsers adds users to the Copilot for Business subscription for an organization
 //
 // GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#add-users-to-the-copilot-for-business-subscription-for-an-organization
-func (s *CopilotService) AddCopilotUsers(ctx context.Context, org string, userNames []string) (*SeatAssignments, *Response, error) {
+func (s *CopilotService) AddCopilotUsers(ctx context.Context, org string, users *SelectedUsers) (*SeatAssignments, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_users", org)
 
-	req, err := s.client.NewRequest("POST", u, userNames)
+	req, err := s.client.NewRequest("POST", u, users)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -231,10 +245,10 @@ func (s *CopilotService) AddCopilotUsers(ctx context.Context, org string, userNa
 // RemoveCopilotUsers removes users from the Copilot for Business subscription for an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#remove-users-from-the-copilot-for-business-subscription-for-an-organization
-func (s *CopilotService) RemoveCopilotUsers(ctx context.Context, org string, userNames []string) (*SeatCancellations, *Response, error) {
+func (s *CopilotService) RemoveCopilotUsers(ctx context.Context, org string, users *SelectedUsers) (*SeatCancellations, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_users", org)
 
-	req, err := s.client.NewRequest("DELETE", u, userNames)
+	req, err := s.client.NewRequest("DELETE", u, users)
 	if err != nil {
 		return nil, nil, err
 	}
