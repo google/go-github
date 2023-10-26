@@ -118,28 +118,13 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 }
 
 // GetUser gets the User from the CopilotSeatDetails if the assignee is a user.
-func (cp *CopilotSeatDetails) GetUser() (*User, bool) {
-	if user, ok := cp.Assignee.(*User); ok {
-		return user, true
-	}
-	return nil, false
-}
+func (cp *CopilotSeatDetails) GetUser() (*User, bool) { u, ok := cp.Assignee.(*User); return u, ok }
 
 // GetTeam gets the Team from the CopilotSeatDetails if the assignee is a team.
-func (cp *CopilotSeatDetails) GetTeam() (*Team, bool) {
-	if team, ok := cp.Assignee.(*Team); ok {
-		return team, true
-	}
-	return nil, false
-}
+func (cp *CopilotSeatDetails) GetTeam() (*Team, bool) { t, ok := cp.Assignee.(*Team); return t, ok }
 
 // GetOrganization gets the Organization from the CopilotSeatDetails if the assignee is an organization.
-func (cp *CopilotSeatDetails) GetOrganization() (*Organization, bool) {
-	if organization, ok := cp.Assignee.(*Organization); ok {
-		return organization, true
-	}
-	return nil, false
-}
+func (cp *CopilotSeatDetails) GetOrganization() (*Organization, bool) { o, ok := cp.Assignee.(*Organization); return o, ok }
 
 // GetCopilotBilling gets Copilot for Business billing information and settings for an organization.
 //
