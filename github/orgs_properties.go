@@ -60,3 +60,17 @@ func (s *OrganizationsService) GetCustomProperty(ctx context.Context, org, name 
 
 	return customProperty, resp, nil
 }
+
+// RemoveCustomProperty removes a custom property that is defined for the specified organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/orgs/properties#remove-a-custom-property-for-an-organization
+func (s *OrganizationsService) RemoveCustomProperty(ctx context.Context, org, name string) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/properties/schema/%v", org, name)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

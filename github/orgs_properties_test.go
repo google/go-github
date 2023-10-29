@@ -115,3 +115,24 @@ func TestOrganizationsService_GetCustomProperty(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestOrganizationsService_RemoveCustomProperty(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/properties/schema/name", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := context.Background()
+	_, err := client.Organizations.RemoveCustomProperty(ctx, "o", "name")
+	if err != nil {
+		t.Errorf("Organizations.RemoveCustomProperty returned error: %v", err)
+	}
+
+	const methodName = "RemoveCustomProperty"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.RemoveCustomProperty(ctx, "0", "name")
+	})
+}
