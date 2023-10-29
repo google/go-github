@@ -136,3 +136,73 @@ func TestOrganizationsService_RemoveCustomProperty(t *testing.T) {
 		return client.Organizations.RemoveCustomProperty(ctx, "0", "name")
 	})
 }
+
+func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/properties/schema", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+		{
+          "property_name": "name",
+          "value_type": "single_select",
+          "required": true,
+          "default_value": "production",
+          "description": "Prod or dev environment",
+          "allowed_values":[
+            "production",
+            "development"
+          ]
+        },
+        {
+          "property_name": "service",
+          "value_type": "string"
+        },
+        {
+          "property_name": "team",
+          "value_type": "string",
+          "description": "Team owning the repository"
+        }
+        ]`)
+	})
+
+	ctx := context.Background()
+	properties, _, err := client.Organizations.GetAllCustomProperties(ctx, "o")
+	if err != nil {
+		t.Errorf("Organizations.GetAllCustomProperties returned error: %v", err)
+	}
+
+	want := []*CustomProperty{
+		{
+			PropertyName:  String("name"),
+			ValueType:     "single_select",
+			Required:      Bool(true),
+			DefaultValue:  String("production"),
+			Description:   String("Prod or dev environment"),
+			AllowedValues: []string{"production", "development"},
+		},
+		{
+			PropertyName: String("service"),
+			ValueType:    "string",
+		},
+		{
+			PropertyName: String("team"),
+			ValueType:    "string",
+			Description:  String("Team owning the repository"),
+		},
+	}
+	if !cmp.Equal(properties, want) {
+		t.Errorf("Organizations.GetAllCustomProperties returned %+v, want %+v", properties, want)
+	}
+
+	const methodName = "GetAllCustomProperties"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetAllCustomProperties(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}

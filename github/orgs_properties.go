@@ -74,3 +74,23 @@ func (s *OrganizationsService) RemoveCustomProperty(ctx context.Context, org, na
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// GetAllCustomProperties gets all custom properties that is defined for the specified organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/orgs/properties#get-all-custom-properties-for-an-organization
+func (s *OrganizationsService) GetAllCustomProperties(ctx context.Context, org string) ([]*CustomProperty, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/properties/schema", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var customProperties []*CustomProperty
+	resp, err := s.client.Do(ctx, req, &customProperties)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return customProperties, resp, nil
+}
