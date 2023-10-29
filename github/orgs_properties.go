@@ -40,3 +40,23 @@ func (s *OrganizationsService) CreateOrUpdateCustomProperty(ctx context.Context,
 
 	return customProperty, resp, nil
 }
+
+// GetCustomProperty gets a custom property that is defined for the specified organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/orgs/properties#get-a-custom-property-for-an-organization
+func (s *OrganizationsService) GetCustomProperty(ctx context.Context, org, name string) (*CustomProperty, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/properties/schema/%v", org, name)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var customProperty *CustomProperty
+	resp, err := s.client.Do(ctx, req, &customProperty)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return customProperty, resp, nil
+}
