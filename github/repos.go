@@ -1055,7 +1055,7 @@ type RequiredStatusChecks struct {
 	Contexts []string `json:"contexts,omitempty"`
 	// The list of status checks to require in order to merge into this
 	// branch.
-	Checks      []*RequiredStatusCheck `json:"checks"`
+	Checks      []*RequiredStatusCheck `json:"checks,omitempty"`
 	ContextsURL *string                `json:"contexts_url,omitempty"`
 	URL         *string                `json:"url,omitempty"`
 }
