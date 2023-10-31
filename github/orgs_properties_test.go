@@ -206,3 +206,66 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/properties/schema", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testBody(t, r, `{"properties":[{"property_name":"name","value_type":"single_select","required":true},{"property_name":"service","value_type":"string"}]}`+"\n")
+		fmt.Fprint(w, `[
+		{
+          "property_name": "name",
+          "value_type": "single_select",
+          "required": true
+        },
+        {
+          "property_name": "service",
+          "value_type": "string"
+        }
+        ]`)
+	})
+
+	ctx := context.Background()
+	properties, _, err := client.Organizations.CreateOrUpdateCustomProperties(ctx, "o", []*CustomProperty{
+		{
+			PropertyName: String("name"),
+			ValueType:    "single_select",
+			Required:     Bool(true),
+		},
+		{
+			PropertyName: String("service"),
+			ValueType:    "string",
+		},
+	})
+	if err != nil {
+		t.Errorf("Organizations.CreateOrUpdateCustomProperties returned error: %v", err)
+	}
+
+	want := []*CustomProperty{
+		{
+			PropertyName: String("name"),
+			ValueType:    "single_select",
+			Required:     Bool(true),
+		},
+		{
+			PropertyName: String("service"),
+			ValueType:    "string",
+		},
+	}
+
+	if !cmp.Equal(properties, want) {
+		t.Errorf("Organizations.CreateOrUpdateCustomProperties returned %+v, want %+v", properties, want)
+	}
+
+	const methodName = "CreateOrUpdateCustomProperties"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.CreateOrUpdateCustomProperties(ctx, "o", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}

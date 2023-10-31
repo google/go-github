@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// CustomProperty represents the organization custom property object.
+// CustomProperty represents an organization custom property object.
 type CustomProperty struct {
 	PropertyName *string `json:"property_name,omitempty"`
 	// Possible values for ValueType are: string, single_select
@@ -82,6 +82,32 @@ func (s *OrganizationsService) GetAllCustomProperties(ctx context.Context, org s
 	u := fmt.Sprintf("orgs/%v/properties/schema", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var customProperties []*CustomProperty
+	resp, err := s.client.Do(ctx, req, &customProperties)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return customProperties, resp, nil
+}
+
+// CreateOrUpdateCustomProperties creates new or updates existing custom properties that are defined for the specified organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/orgs/properties#create-or-update-custom-properties-for-an-organization
+func (s *OrganizationsService) CreateOrUpdateCustomProperties(ctx context.Context, org string, properties []*CustomProperty) ([]*CustomProperty, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/properties/schema", org)
+
+	params := struct {
+		Properties []*CustomProperty `json:"properties"`
+	}{
+		Properties: properties,
+	}
+
+	req, err := s.client.NewRequest("PATCH", u, params)
 	if err != nil {
 		return nil, nil, err
 	}
