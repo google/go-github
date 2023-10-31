@@ -67,6 +67,17 @@ type DependabotAlert struct {
 	Repository *Repository `json:"repository,omitempty"`
 }
 
+// DependabotAlertState represents the state of a Dependabot alert to update.
+type DependabotAlertState struct {
+	// The state of the Dependabot alert. A dismissed_reason must be provided when setting the state to dismissed.
+	State string `json:"state"`
+	// Required when state is dismissed. A reason for dismissing the alert.
+	// Can be one of: fix_started, inaccurate, no_bandwidth, not_used, tolerable_risk
+	DismissedReason *string `json:"dismissed_reason,omitempty"`
+	// An optional comment associated with dismissing the alert.
+	DismissedComment *string `json:"dismissed_comment,omitempty"`
+}
+
 // ListAlertsOptions specifies the optional parameters to the DependabotService.ListRepoAlerts
 // and DependabotService.ListOrgAlerts methods.
 type ListAlertsOptions struct {
@@ -124,6 +135,25 @@ func (s *DependabotService) ListOrgAlerts(ctx context.Context, org string, opts 
 func (s *DependabotService) GetRepoAlert(ctx context.Context, owner, repo string, number int) (*DependabotAlert, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/alerts/%v", owner, repo, number)
 	req, err := s.client.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	alert := new(DependabotAlert)
+	resp, err := s.client.Do(ctx, req, alert)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return alert, resp, nil
+}
+
+// UpdateAlert updates a Dependabot alert.
+//
+// GitHub API docs: https://docs.github.com/en/rest/dependabot/alerts?apiVersion=2022-11-28#update-a-dependabot-alert
+func (s *DependabotService) UpdateAlert(ctx context.Context, owner, repo string, number int, stateInfo *DependabotAlertState) (*DependabotAlert, *Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/dependabot/alerts/%v", owner, repo, number)
+	req, err := s.client.NewRequest("PATCH", url, stateInfo)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -131,3 +131,49 @@ func TestDependabotService_ListOrgAlerts(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestDependabotService_UpdateAlert(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	state := String("dismissed")
+	dismissedReason := String("no_bandwidth")
+	dismissedComment := String("no time to fix this")
+
+	alertState := &DependabotAlertState{State: *state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
+
+	mux.HandleFunc("/repos/o/r/dependabot/alerts/42", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"number":42,"state":"dismissed","dismissed_reason":"no_bandwidth","dismissed_comment":"no time to fix this"}`)
+	})
+
+	ctx := context.Background()
+	alert, _, err := client.Dependabot.UpdateAlert(ctx, "o", "r", 42, alertState)
+	if err != nil {
+		t.Errorf("Dependabot.UpdateAlert returned error: %v", err)
+	}
+
+	want := &DependabotAlert{
+		Number:           Int(42),
+		State:            String("dismissed"),
+		DismissedReason:  String("no_bandwidth"),
+		DismissedComment: String("no time to fix this"),
+	}
+	if !cmp.Equal(alert, want) {
+		t.Errorf("Dependabot.UpdateAlert returned %+v, want %+v", alert, want)
+	}
+
+	const methodName = "UpdateAlert"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Dependabot.UpdateAlert(ctx, "\n", "\n", 0, alertState)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Dependabot.UpdateAlert(ctx, "o", "r", 42, alertState)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
