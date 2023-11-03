@@ -6244,6 +6244,26 @@ func TestDependabotAlertEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 }
 
+func TestDependabotAlertState_GetDismissedComment(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlertState{DismissedComment: &zeroValue}
+	d.GetDismissedComment()
+	d = &DependabotAlertState{}
+	d.GetDismissedComment()
+	d = nil
+	d.GetDismissedComment()
+}
+
+func TestDependabotAlertState_GetDismissedReason(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlertState{DismissedReason: &zeroValue}
+	d.GetDismissedReason()
+	d = &DependabotAlertState{}
+	d.GetDismissedReason()
+	d = nil
+	d.GetDismissedReason()
+}
+
 func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
 	var zeroValue string
 	d := &DependabotSecurityAdvisory{CVEID: &zeroValue}
