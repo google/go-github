@@ -89,7 +89,8 @@ func (s *MetaService) Get(ctx context.Context) (*APIMeta, *Response, error) {
 	return meta, resp, nil
 }
 
-// APIMeta
+// APIMeta returns information about GitHub.com.
+//
 // Deprecated: Use MetaService.Get instead.
 func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
 	return c.Meta.Get(ctx)
@@ -121,7 +122,9 @@ func (s *MetaService) Octocat(ctx context.Context, message string) (string, *Res
 	return buf.String(), resp, nil
 }
 
-// Octocat
+// Octocat returns an ASCII art octocat with the specified message in a speech
+// bubble. If message is empty, a random zen phrase is used.
+//
 // Deprecated: Use MetaService.Octocat instead.
 func (c *Client) Octocat(ctx context.Context, message string) (string, *Response, error) {
 	return c.Meta.Octocat(ctx, message)
@@ -149,7 +152,8 @@ func (s *MetaService) Zen(ctx context.Context) (string, *Response, error) {
 	return buf.String(), resp, nil
 }
 
-// Zen
+// Zen returns a random line from The Zen of GitHub.
+//
 // Deprecated: Use MetaService.Zen instead.
 func (c *Client) Zen(ctx context.Context) (string, *Response, error) {
 	return c.Meta.Zen(ctx)

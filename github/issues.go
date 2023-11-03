@@ -316,7 +316,7 @@ func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, num
 	return i, resp, nil
 }
 
-// Remove a milestone from an issue.
+// RemoveMilestone removes a milestone from an issue.
 //
 // This is a helper method to explicitly update an issue with a `null` milestone, thereby removing it.
 //

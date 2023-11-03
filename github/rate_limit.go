@@ -58,7 +58,7 @@ func (r RateLimits) String() string {
 	return Stringify(r)
 }
 
-// RateLimits returns the rate limits for the current client.
+// Get returns the rate limits for the current client.
 //
 // GitHub API docs: https://docs.github.com/rest/rate-limit/rate-limit#get-rate-limit-status-for-the-authenticated-user
 //

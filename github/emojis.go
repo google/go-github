@@ -32,7 +32,8 @@ func (s *EmojisService) List(ctx context.Context) (map[string]string, *Response,
 	return emoji, resp, nil
 }
 
-// ListEmojis
+// ListEmojis returns the emojis available to use on GitHub.
+//
 // Deprecated: Use EmojisService.List instead
 func (c *Client) ListEmojis(ctx context.Context) (map[string]string, *Response, error) {
 	return c.Emojis.List(ctx)

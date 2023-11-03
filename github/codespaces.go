@@ -114,7 +114,7 @@ func (s *CodespacesService) ListInRepo(ctx context.Context, owner, repo string, 
 	return codespaces, resp, nil
 }
 
-// ListOptions represents the options for listing codespaces for a user.
+// ListCodespacesOptions represents the options for listing codespaces for a user.
 type ListCodespacesOptions struct {
 	ListOptions
 	RepositoryID int64 `url:"repository_id,omitempty"`

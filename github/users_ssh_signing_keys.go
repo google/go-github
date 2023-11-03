@@ -100,7 +100,7 @@ func (s *UsersService) CreateSSHSigningKey(ctx context.Context, key *Key) (*SSHS
 	return k, resp, nil
 }
 
-// DeleteKey deletes a SSH signing key for the authenticated user.
+// DeleteSSHSigningKey deletes a SSH signing key for the authenticated user.
 //
 // GitHub API docs: https://docs.github.com/rest/users/ssh-signing-keys#delete-an-ssh-signing-key-for-the-authenticated-user
 //

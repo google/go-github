@@ -541,7 +541,7 @@ func (s *ReactionsService) deleteReaction(ctx context.Context, url string) (*Res
 	return s.client.Do(ctx, req, nil)
 }
 
-// Create a reaction to a release.
+// CreateReleaseReaction creates a reaction to a release.
 // Note that a response with a Status: 200 OK means that you already
 // added the reaction type to this release.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
