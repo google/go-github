@@ -1766,7 +1766,6 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 			input := &ProtectionRequest{
 				RequiredStatusChecks: &RequiredStatusChecks{
 					Strict: true,
-					Checks: []*RequiredStatusCheck{},
 				},
 				RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
 					DismissStaleReviews: true,
@@ -1802,8 +1801,7 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 				fmt.Fprintf(w, `{
 					"required_status_checks":{
 						"strict":true,
-						"contexts":[],
-						"checks": []
+						"contexts":[]
 					},
 					"required_pull_request_reviews":{
 						"dismissal_restrictions":{
@@ -1847,7 +1845,6 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 				RequiredStatusChecks: &RequiredStatusChecks{
 					Strict:   true,
 					Contexts: []string{},
-					Checks:   []*RequiredStatusCheck{},
 				},
 				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 					DismissStaleReviews: true,
