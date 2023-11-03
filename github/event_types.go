@@ -18,7 +18,7 @@ type RequestedAction struct {
 // BranchProtectionRuleEvent triggered when a check suite is "created", "edited", or "deleted".
 // The Webhook event name is "branch_protection_rule".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#branch_protection_rule
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#branch_protection_rule
 type BranchProtectionRuleEvent struct {
 	Action       *string               `json:"action,omitempty"`
 	Rule         *BranchProtectionRule `json:"rule,omitempty"`
@@ -32,7 +32,7 @@ type BranchProtectionRuleEvent struct {
 // CheckRunEvent is triggered when a check run is "created", "completed", or "rerequested".
 // The Webhook event name is "check_run".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#check_run
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#check_run
 type CheckRunEvent struct {
 	CheckRun *CheckRun `json:"check_run,omitempty"`
 	// The action performed. Possible values are: "created", "completed", "rerequested" or "requested_action".
@@ -51,7 +51,7 @@ type CheckRunEvent struct {
 // CheckSuiteEvent is triggered when a check suite is "completed", "requested", or "rerequested".
 // The Webhook event name is "check_suite".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#check_suite
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#check_suite
 type CheckSuiteEvent struct {
 	CheckSuite *CheckSuite `json:"check_suite,omitempty"`
 	// The action performed. Possible values are: "completed", "requested" or "rerequested".
@@ -67,7 +67,7 @@ type CheckSuiteEvent struct {
 // CommitCommentEvent is triggered when a commit comment is created.
 // The Webhook event name is "commit_comment".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#commit_comment
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#commit_comment
 type CommitCommentEvent struct {
 	Comment *RepositoryComment `json:"comment,omitempty"`
 
@@ -103,7 +103,7 @@ type ContentReferenceEvent struct {
 // Additionally, webhooks will not receive this event for tags if more
 // than three tags are pushed at once.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/github-event-types#createevent
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/github-event-types#createevent
 type CreateEvent struct {
 	Ref *string `json:"ref,omitempty"`
 	// RefType is the object that was created. Possible values are: "repository", "branch", "tag".
@@ -125,7 +125,7 @@ type CreateEvent struct {
 // Note: webhooks will not receive this event for tags if more than three tags
 // are deleted at once.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/github-event-types#deleteevent
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/github-event-types#deleteevent
 type DeleteEvent struct {
 	Ref *string `json:"ref,omitempty"`
 	// RefType is the object that was deleted. Possible values are: "branch", "tag".
@@ -145,7 +145,7 @@ type DeleteEvent struct {
 // DependabotAlertEvent is triggered when there is activity relating to Dependabot alerts.
 // The Webhook event name is "dependabot_alert".
 //
-// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#dependabot_alert
+// GitHub API docs: https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#dependabot_alert
 type DependabotAlertEvent struct {
 	Action *string          `json:"action,omitempty"`
 	Alert  *DependabotAlert `json:"alert,omitempty"`
@@ -164,7 +164,7 @@ type DependabotAlertEvent struct {
 // DeployKeyEvent is triggered when a deploy key is added or removed from a repository.
 // The Webhook event name is "deploy_key".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#deploy_key
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#deploy_key
 type DeployKeyEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "created" or "deleted".
@@ -190,7 +190,7 @@ type DeployKeyEvent struct {
 //
 // Events of this type are not visible in timelines, they are only used to trigger hooks.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#deployment
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#deployment
 type DeploymentEvent struct {
 	Deployment  *Deployment  `json:"deployment,omitempty"`
 	Repo        *Repository  `json:"repository,omitempty"`
@@ -230,7 +230,7 @@ type DeploymentProtectionRuleEvent struct {
 //
 // Events of this type are not visible in timelines, they are only used to trigger hooks.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#deployment_status
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#deployment_status
 type DeploymentStatusEvent struct {
 	Deployment       *Deployment       `json:"deployment,omitempty"`
 	DeploymentStatus *DeploymentStatus `json:"deployment_status,omitempty"`
@@ -281,7 +281,7 @@ type CommentDiscussion struct {
 // DiscussionEvent represents a webhook event for a discussion.
 // The Webhook event name is "discussion".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#discussion
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#discussion
 type DiscussionEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// created, edited, deleted, pinned, unpinned, locked, unlocked,
@@ -334,7 +334,7 @@ type DiscussionCategory struct {
 // ForkEvent is triggered when a user forks a repository.
 // The Webhook event name is "fork".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#fork
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#fork
 type ForkEvent struct {
 	// Forkee is the created repository.
 	Forkee *Repository `json:"forkee,omitempty"`
@@ -348,7 +348,7 @@ type ForkEvent struct {
 // GitHubAppAuthorizationEvent is triggered when a user's authorization for a
 // GitHub Application is revoked.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#github_app_authorization
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#github_app_authorization
 type GitHubAppAuthorizationEvent struct {
 	// The action performed. Possible value is: "revoked".
 	Action *string `json:"action,omitempty"`
@@ -371,7 +371,7 @@ type Page struct {
 // GollumEvent is triggered when a Wiki page is created or updated.
 // The Webhook event name is "gollum".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#gollum
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#gollum
 type GollumEvent struct {
 	Pages []*Page `json:"pages,omitempty"`
 
@@ -522,7 +522,7 @@ type TeamPermissionsFrom struct {
 // or new permissions have been accepted.
 // The Webhook event name is "installation".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#installation
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#installation
 type InstallationEvent struct {
 	// The action that was performed. Can be either "created", "deleted", "suspend", "unsuspend" or "new_permissions_accepted".
 	Action       *string       `json:"action,omitempty"`
@@ -539,7 +539,7 @@ type InstallationEvent struct {
 // InstallationRepositoriesEvent is triggered when a repository is added or
 // removed from an installation. The Webhook event name is "installation_repositories".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#installation_repositories
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#installation_repositories
 type InstallationRepositoriesEvent struct {
 	// The action that was performed. Can be either "added" or "removed".
 	Action              *string       `json:"action,omitempty"`
@@ -573,7 +573,7 @@ type InstallationChanges struct {
 // InstallationTargetEvent is triggered when there is activity on an installation from a user or organization account.
 // The Webhook event name is "installation_target".
 //
-// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#installation_target
+// GitHub API docs: https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#installation_target
 type InstallationTargetEvent struct {
 	Account      *User                `json:"account,omitempty"`
 	Action       *string              `json:"action,omitempty"`
@@ -590,7 +590,7 @@ type InstallationTargetEvent struct {
 // or pull request.
 // The Webhook event name is "issue_comment".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#issue_comment
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#issue_comment
 type IssueCommentEvent struct {
 	// Action is the action that was performed on the comment.
 	// Possible values are: "created", "edited", "deleted".
@@ -614,7 +614,7 @@ type IssueCommentEvent struct {
 // locked, unlocked, milestoned, or demilestoned.
 // The Webhook event name is "issues".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#issues
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#issues
 type IssuesEvent struct {
 	// Action is the action that was performed. Possible values are: "opened",
 	// "edited", "deleted", "transferred", "pinned", "unpinned", "closed", "reopened",
@@ -640,7 +640,7 @@ type IssuesEvent struct {
 // LabelEvent is triggered when a repository's label is created, edited, or deleted.
 // The Webhook event name is "label"
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#label
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#label
 type LabelEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "created", "edited", "deleted"
@@ -659,7 +659,7 @@ type LabelEvent struct {
 // their GitHub Marketplace plan.
 // Webhook event name "marketplace_purchase".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#marketplace_purchase
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#marketplace_purchase
 type MarketplacePurchaseEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "purchased", "cancelled", "pending_change", "pending_change_cancelled", "changed".
@@ -680,7 +680,7 @@ type MarketplacePurchaseEvent struct {
 // MemberEvent is triggered when a user is added as a collaborator to a repository.
 // The Webhook event name is "member".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#member
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#member
 type MemberEvent struct {
 	// Action is the action that was performed. Possible value is: "added".
 	Action *string `json:"action,omitempty"`
@@ -702,7 +702,7 @@ type MemberEvent struct {
 // Events of this type are not visible in timelines, they are only used to
 // trigger organization webhooks.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#membership
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#membership
 type MembershipEvent struct {
 	// Action is the action that was performed. Possible values are: "added", "removed".
 	Action *string `json:"action,omitempty"`
@@ -734,7 +734,7 @@ type MergeGroup struct {
 // MergeGroupEvent represents activity related to merge groups in a merge queue. The type of activity is specified
 // in the action property of the payload object.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#merge_group
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#merge_group
 type MergeGroupEvent struct {
 	// The action that was performed. Currently, can only be checks_requested.
 	Action *string `json:"action,omitempty"`
@@ -753,7 +753,7 @@ type MergeGroupEvent struct {
 // Therefore, it must be selected for each hook that you'd like to receive meta events for.
 // The Webhook event name is "meta".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#meta
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#meta
 type MetaEvent struct {
 	// Action is the action that was performed. Possible value is: "deleted".
 	Action *string `json:"action,omitempty"`
@@ -774,7 +774,7 @@ type MetaEvent struct {
 // MilestoneEvent is triggered when a milestone is created, closed, opened, edited, or deleted.
 // The Webhook event name is "milestone".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#milestone
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#milestone
 type MilestoneEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "created", "closed", "opened", "edited", "deleted"
@@ -794,7 +794,7 @@ type MilestoneEvent struct {
 // Events of this type are not visible in timelines. These events are only used to trigger organization hooks.
 // Webhook event name is "organization".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#organization
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#organization
 type OrganizationEvent struct {
 	// Action is the action that was performed.
 	// Possible values are: "deleted", "renamed", "member_added", "member_removed", or "member_invited".
@@ -815,7 +815,7 @@ type OrganizationEvent struct {
 // OrgBlockEvent is triggered when an organization blocks or unblocks a user.
 // The Webhook event name is "org_block".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#org_block
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#org_block
 type OrgBlockEvent struct {
 	// Action is the action that was performed.
 	// Can be "blocked" or "unblocked".
@@ -856,7 +856,7 @@ type PackageEvent struct {
 //
 // Events of this type are not visible in timelines, they are only used to trigger hooks.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#page_build
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#page_build
 type PageBuildEvent struct {
 	Build *PagesBuild `json:"build,omitempty"`
 
@@ -876,7 +876,7 @@ type PageBuildEvent struct {
 // belong to a resource owner that requires approval for token access.
 // The webhook event name is "personal_access_token_request".
 //
-// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#personal_access_token_request
+// GitHub API docs: https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#personal_access_token_request
 type PersonalAccessTokenRequestEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "approved", "cancelled", "created" or "denied"
@@ -964,7 +964,7 @@ type PingEvent struct {
 // ProjectEvent is triggered when project is created, modified or deleted.
 // The webhook event name is "project".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#project
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#project
 type ProjectEvent struct {
 	Action  *string        `json:"action,omitempty"`
 	Changes *ProjectChange `json:"changes,omitempty"`
@@ -980,7 +980,7 @@ type ProjectEvent struct {
 // ProjectCardEvent is triggered when a project card is created, updated, moved, converted to an issue, or deleted.
 // The webhook event name is "project_card".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#project_card
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#project_card
 type ProjectCardEvent struct {
 	Action      *string            `json:"action,omitempty"`
 	Changes     *ProjectCardChange `json:"changes,omitempty"`
@@ -997,7 +997,7 @@ type ProjectCardEvent struct {
 // ProjectColumnEvent is triggered when a project column is created, updated, moved, or deleted.
 // The webhook event name is "project_column".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#project_column
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#project_column
 type ProjectColumnEvent struct {
 	Action        *string              `json:"action,omitempty"`
 	Changes       *ProjectColumnChange `json:"changes,omitempty"`
@@ -1014,7 +1014,7 @@ type ProjectColumnEvent struct {
 // ProjectV2Event is triggered when there is activity relating to an organization-level project.
 // The Webhook event name is "projects_v2".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2
 type ProjectV2Event struct {
 	Action     *string     `json:"action,omitempty"`
 	ProjectsV2 *ProjectsV2 `json:"projects_v2,omitempty"`
@@ -1046,7 +1046,7 @@ type ProjectsV2 struct {
 // ProjectV2ItemEvent is triggered when there is activity relating to an item on an organization-level project.
 // The Webhook event name is "projects_v2_item".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2_item
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2_item
 type ProjectV2ItemEvent struct {
 	Action        *string              `json:"action,omitempty"`
 	Changes       *ProjectV2ItemChange `json:"changes,omitempty"`
@@ -1086,7 +1086,7 @@ type ProjectV2Item struct {
 // According to GitHub: "Without a doubt: the best GitHub event."
 // The Webhook event name is "public".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#public
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#public
 type PublicEvent struct {
 	// The following fields are only populated by Webhook events.
 	Repo         *Repository   `json:"repository,omitempty"`
@@ -1103,7 +1103,7 @@ type PublicEvent struct {
 // locked, unlocked, a pull request review is requested, or a review request is removed.
 // The Webhook event name is "pull_request".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/github-event-types#pullrequestevent
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/github-event-types#pullrequestevent
 type PullRequestEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "assigned", "unassigned", "review_requested", "review_request_removed", "labeled", "unlabeled",
@@ -1147,7 +1147,7 @@ type PullRequestEvent struct {
 // request.
 // The Webhook event name is "pull_request_review".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#pull_request_review
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#pull_request_review
 type PullRequestReviewEvent struct {
 	// Action is always "submitted".
 	Action      *string            `json:"action,omitempty"`
@@ -1168,7 +1168,7 @@ type PullRequestReviewEvent struct {
 // portion of the unified diff of a pull request.
 // The Webhook event name is "pull_request_review_comment".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#pull_request_review_comment
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#pull_request_review_comment
 type PullRequestReviewCommentEvent struct {
 	// Action is the action that was performed on the comment.
 	// Possible values are: "created", "edited", "deleted".
@@ -1191,7 +1191,7 @@ type PullRequestReviewCommentEvent struct {
 // review of a pull request is marked resolved or unresolved.
 // The Webhook event name is "pull_request_review_thread".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#pull_request_review_thread
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#pull_request_review_thread
 type PullRequestReviewThreadEvent struct {
 	// Action is the action that was performed on the comment.
 	// Possible values are: "resolved", "unresolved".
@@ -1214,7 +1214,7 @@ type PullRequestReviewThreadEvent struct {
 // locked, unlocked, a pull request review is requested, or a review request is removed.
 // The Webhook event name is "pull_request_target".
 //
-// GitHub API docs: https://docs.github.com/en/actions/events-that-trigger-workflows#pull_request_target
+// GitHub API docs: https://docs.github.com/actions/events-that-trigger-workflows#pull_request_target
 type PullRequestTargetEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "assigned", "unassigned", "labeled", "unlabeled", "opened", "edited", "closed", "reopened",
@@ -1256,7 +1256,7 @@ type PullRequestTargetEvent struct {
 
 // PushEvent represents a git push to a GitHub repository.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#push
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#push
 type PushEvent struct {
 	PushID       *int64        `json:"push_id,omitempty"`
 	Head         *string       `json:"head,omitempty"`
@@ -1364,7 +1364,7 @@ type PushEventRepoOwner struct {
 // edited, deleted, or prereleased.
 // The Webhook event name is "release".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#release
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#release
 type ReleaseEvent struct {
 	// Action is the action that was performed. Possible values are: "published", "unpublished",
 	// "created", "edited", "deleted", or "prereleased".
@@ -1389,7 +1389,7 @@ type ReleaseEvent struct {
 // Events of this type are not visible in timelines, they are only used to
 // trigger organization webhooks.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#repository
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#repository
 type RepositoryEvent struct {
 	// Action is the action that was performed. Possible values are: "created",
 	// "deleted" (organization hooks only), "archived", "unarchived", "edited", "renamed",
@@ -1406,7 +1406,7 @@ type RepositoryEvent struct {
 
 // RepositoryDispatchEvent is triggered when a client sends a POST request to the repository dispatch event endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#repository_dispatch
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#repository_dispatch
 type RepositoryDispatchEvent struct {
 	// Action is the event_type that submitted with the repository dispatch payload. Value can be any string.
 	Action        *string         `json:"action,omitempty"`
@@ -1422,7 +1422,7 @@ type RepositoryDispatchEvent struct {
 
 // RepositoryImportEvent represents the activity related to a repository being imported to GitHub.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#repository_import
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#repository_import
 type RepositoryImportEvent struct {
 	// Status represents the final state of the import. This can be one of "success", "cancelled", or "failure".
 	Status *string       `json:"status,omitempty"`
@@ -1433,7 +1433,7 @@ type RepositoryImportEvent struct {
 
 // RepositoryVulnerabilityAlertEvent is triggered when a security alert is created, dismissed, or resolved.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#repository_vulnerability_alert
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#repository_vulnerability_alert
 type RepositoryVulnerabilityAlertEvent struct {
 	// Action is the action that was performed. Possible values are: "create", "dismiss", "resolve".
 	Action *string `json:"action,omitempty"`
@@ -1474,7 +1474,7 @@ type RepositoryVulnerabilityAlert struct {
 // SecretScanningAlertEvent is triggered when a secret scanning alert occurs in a repository.
 // The Webhook name is secret_scanning_alert.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#secret_scanning_alert
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#secret_scanning_alert
 type SecretScanningAlertEvent struct {
 	// Action is the action that was performed. Possible values are: "created", "resolved", or "reopened".
 	Action *string `json:"action,omitempty"`
@@ -1494,7 +1494,7 @@ type SecretScanningAlertEvent struct {
 // SecurityAndAnalysisEvent is triggered when code security and analysis features
 // are enabled or disabled for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#security_and_analysis
+// GitHub API docs: https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#security_and_analysis
 type SecurityAndAnalysisEvent struct {
 	Changes      *SecurityAndAnalysisChange `json:"changes,omitempty"`
 	Enterprise   *Enterprise                `json:"enterprise,omitempty"`
@@ -1519,7 +1519,7 @@ type SecurityAndAnalysisChangeFrom struct {
 // StarEvent is triggered when a star is added or removed from a repository.
 // The Webhook event name is "star".
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#star
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#star
 type StarEvent struct {
 	// Action is the action that was performed. Possible values are: "created" or "deleted".
 	Action *string `json:"action,omitempty"`
@@ -1540,7 +1540,7 @@ type StarEvent struct {
 // Events of this type are not visible in timelines, they are only used to
 // trigger hooks.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#status
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#status
 type StatusEvent struct {
 	SHA *string `json:"sha,omitempty"`
 	// State is the new state. Possible values are: "pending", "success", "failure", "error".
@@ -1571,7 +1571,7 @@ type StatusEvent struct {
 // Events of this type are not visible in timelines. These events are only used
 // to trigger hooks.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#team
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#team
 type TeamEvent struct {
 	Action  *string     `json:"action,omitempty"`
 	Team    *Team       `json:"team,omitempty"`
@@ -1590,7 +1590,7 @@ type TeamEvent struct {
 // Events of this type are not visible in timelines. These events are only used
 // to trigger hooks.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#team_add
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#team_add
 type TeamAddEvent struct {
 	Team *Team       `json:"team,omitempty"`
 	Repo *Repository `json:"repository,omitempty"`
@@ -1624,7 +1624,7 @@ type UserEvent struct {
 // The event’s actor is the user who starred a repository, and the event’s
 // repository is the repository that was starred.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#watch
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#watch
 type WatchEvent struct {
 	// Action is the action that was performed. Possible value is: "started".
 	Action *string `json:"action,omitempty"`
@@ -1642,7 +1642,7 @@ type WatchEvent struct {
 // WorkflowDispatchEvent is triggered when someone triggers a workflow run on GitHub or
 // sends a POST request to the create a workflow dispatch event endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#workflow_dispatch
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#workflow_dispatch
 type WorkflowDispatchEvent struct {
 	Inputs   json.RawMessage `json:"inputs,omitempty"`
 	Ref      *string         `json:"ref,omitempty"`
@@ -1657,7 +1657,7 @@ type WorkflowDispatchEvent struct {
 
 // WorkflowJobEvent is triggered when a job is queued, started or completed.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_job
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_job
 type WorkflowJobEvent struct {
 	WorkflowJob *WorkflowJob `json:"workflow_job,omitempty"`
 
@@ -1675,7 +1675,7 @@ type WorkflowJobEvent struct {
 
 // WorkflowRunEvent is triggered when a GitHub Actions workflow run is requested or completed.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#workflow_run
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#workflow_run
 type WorkflowRunEvent struct {
 	Action      *string      `json:"action,omitempty"`
 	Workflow    *Workflow    `json:"workflow,omitempty"`
@@ -1690,7 +1690,7 @@ type WorkflowRunEvent struct {
 
 // SecurityAdvisory represents the advisory object in SecurityAdvisoryEvent payload.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
 type SecurityAdvisory struct {
 	CVSS               *AdvisoryCVSS                 `json:"cvss,omitempty"`
 	CWEs               []*AdvisoryCWEs               `json:"cwes,omitempty"`
@@ -1740,8 +1740,8 @@ type AdvisoryVulnerability struct {
 	FirstPatchedVersion    *FirstPatchedVersion  `json:"first_patched_version,omitempty"`
 
 	// PatchedVersions and VulnerableFunctions are used in the following APIs:
-	// - https://docs.github.com/en/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories-for-an-organization
-	// - https://docs.github.com/en/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories
+	// - https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories-for-an-organization
+	// - https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories
 	PatchedVersions     *string  `json:"patched_versions,omitempty"`
 	VulnerableFunctions []string `json:"vulnerable_functions,omitempty"`
 }
@@ -1759,7 +1759,7 @@ type FirstPatchedVersion struct {
 
 // SecurityAdvisoryEvent is triggered when a security-related vulnerability is found in software on GitHub.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
 type SecurityAdvisoryEvent struct {
 	Action           *string           `json:"action,omitempty"`
 	SecurityAdvisory *SecurityAdvisory `json:"security_advisory,omitempty"`
@@ -1774,7 +1774,7 @@ type SecurityAdvisoryEvent struct {
 
 // CodeScanningAlertEvent is triggered when a code scanning finds a potential vulnerability or error in your code.
 //
-// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#code_scanning_alert
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#code_scanning_alert
 type CodeScanningAlertEvent struct {
 	Action *string `json:"action,omitempty"`
 	Alert  *Alert  `json:"alert,omitempty"`
