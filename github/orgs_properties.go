@@ -120,3 +120,49 @@ func (s *OrganizationsService) CreateOrUpdateCustomProperties(ctx context.Contex
 
 	return customProperties, resp, nil
 }
+
+// CreateOrUpdateCustomPropertyValuesForRepos creates new or updates existing custom property values across multiple repositories for the specified organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/orgs/properties#create-or-update-custom-property-values-for-organization-repositories
+func (s *OrganizationsService) CreateOrUpdateCustomPropertyValuesForRepos(ctx context.Context, org string, repoNames []string, properties []*CustomProperty) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/properties/values", org)
+
+	params := struct {
+		RepositoryNames []string          `json:"repository_names"`
+		Properties      []*CustomProperty `json:"properties"`
+	}{
+		RepositoryNames: repoNames,
+		Properties:      properties,
+	}
+
+	req, err := s.client.NewRequest("PATCH", u, params)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// ListCustomPropertyValues creates new or updates existing custom properties that are defined for the specified organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/orgs/properties#list-custom-property-values-for-organization-repositories
+func (s *OrganizationsService) ListCustomPropertyValues(ctx context.Context, org string, opts *ListOptions) ([]*CustomProperty, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/properties/schema", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var customProperties []*CustomProperty
+	resp, err := s.client.Do(ctx, req, &customProperties)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return customProperties, resp, nil
+}

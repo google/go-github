@@ -269,3 +269,25 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestOrganizationsService_CreateOrUpdateCustomPropertyValuesForRepos(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testBody(t, r, `{"repository_names":["repo"],"properties":[{"property_name":"service","value_type":"string"}]}`+"\n")
+	})
+
+	ctx := context.Background()
+	_, err := client.Organizations.CreateOrUpdateCustomPropertyValuesForRepos(ctx, "o", []string{"repo"}, []*CustomProperty{})
+	if err != nil {
+		t.Errorf("Organizations.CreateOrUpdateCustomPropertyValuesForRepos returned error: %v", err)
+	}
+
+	const methodName = "CreateOrUpdateCustomPropertyValuesForRepos"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.CreateOrUpdateCustomPropertyValuesForRepos(ctx, "o", nil, nil)
+	})
+}
