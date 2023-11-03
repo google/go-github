@@ -218,7 +218,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 		"Required workflows params": {
 			data: `{"type":"workflows","parameters":{"workflows":[{"path": ".github/workflows/test.yml", "repository_id": 1}]}}`,
 			want: NewRequiredWorkflowsRule(&RequiredWorkflowsRuleParameters{
-				RequiredWorkflows: []RuleRequiredWorkflow{
+				RequiredWorkflows: []*RuleRequiredWorkflow{
 					{
 						Path:         ".github/workflows/test.yml",
 						RepositoryID: Int64(1),

@@ -101,13 +101,13 @@ type RequiredStatusChecksRuleParameters struct {
 type RuleRequiredWorkflow struct {
 	Path         string `json:"path"`
 	Ref          string `json:"ref,omitempty"`
-	RepositoryID *int64 `json:"repository_id"`
+	RepositoryID *int64 `json:"repository_id,omitempty"`
 	Sha          string `json:"sha,omitempty"`
 }
 
 // RequiredWorkflowsRuleParameters represents the workflows rule parameters.
 type RequiredWorkflowsRuleParameters struct {
-	RequiredWorkflows []RuleRequiredWorkflow `json:"workflows"`
+	RequiredWorkflows []*RuleRequiredWorkflow `json:"workflows"`
 }
 
 // RepositoryRule represents a GitHub Rule.
@@ -352,7 +352,7 @@ func NewTagNamePatternRule(params *RulePatternParameters) (rule *RepositoryRule)
 	}
 }
 
-// NewRequiredStatusChecksRule creates a rule to require which status checks must pass before branches can be merged into a branch rule.
+// NewRequiredWorkflowsRule creates a rule to require which status checks must pass before branches can be merged into a branch rule.
 func NewRequiredWorkflowsRule(params *RequiredWorkflowsRuleParameters) (rule *RepositoryRule) {
 	bytes, _ := json.Marshal(params)
 
