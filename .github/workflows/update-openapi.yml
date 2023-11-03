@@ -1,6 +1,7 @@
 on:
   workflow_dispatch: { }
   push: { }
+name: update-openapi
 jobs:
   update-openapi:
     runs-on: ubuntu-latest
