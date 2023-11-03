@@ -15,6 +15,8 @@ type EmojisService service
 // List returns the emojis available to use on GitHub.
 //
 // GitHub API docs: https://docs.github.com/rest/emojis/emojis#get-emojis
+//
+//meta:operation GET /emojis
 func (s *EmojisService) List(ctx context.Context) (map[string]string, *Response, error) {
 	req, err := s.client.NewRequest("GET", "emojis", nil)
 	if err != nil {

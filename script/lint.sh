@@ -1,5 +1,7 @@
 #!/bin/sh
-#/ script/lint.sh runs linters and validates generated files.
+#/ [ CHECK_GITHUB_OPENAPI=1 ] script/lint.sh runs linters and validates generated files.
+#/ When CHECK_GITHUB is set, it validates that openapi_operations.yaml is consistent with the
+#/ descriptions from github.com/github/rest-api-description.
 
 set -e
 
@@ -9,6 +11,13 @@ CDPATH="" cd -- "$(dirname -- "$0")/.."
 BIN="$(pwd -P)"/bin
 
 mkdir -p "$BIN"
+
+EXIT_CODE=0
+
+fail() {
+  echo "$@"
+  EXIT_CODE=1
+}
 
 # install golangci-lint bin/golangci-lint doesn't exist with the correct version
 if ! "$BIN"/golangci-lint --version 2> /dev/null | grep -q "$GOLANGCI_LINT_VERSION"; then
@@ -28,11 +37,17 @@ for dir in $MOD_DIRS; do
     else
       "$BIN"/golangci-lint run --path-prefix "$dir"
     fi
-  ) || FAILED=1
+  ) || fail "failed linting $dir"
 done
 
-script/generate.sh --check || FAILED=1
-
-if [ -n "$FAILED" ]; then
-  exit 1
+if [ -n "$CHECK_GITHUB_OPENAPI" ]; then
+  echo validating openapi_operations.yaml
+  script/metadata.sh update-openapi --validate || fail "failed validating openapi_operations.yaml"
 fi
+
+echo validating generated files
+script/generate.sh --check || fail "failed validating generated files"
+
+[ -z "$FAILED" ] || exit 1
+
+exit "$EXIT_CODE"

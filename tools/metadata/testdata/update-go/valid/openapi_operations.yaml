@@ -1,0 +1,13 @@
+openapi_commit: b8dafbe912a3be421d21346faa2b29bf15e6f84d
+operations:
+  - name: POST /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#update-a
+openapi_operations:
+  - name: GET /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#get-a
+  - name: GET /undocumented/{undocumented_id}
+operation_overrides:
+  - name: GET /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#overridden-get-a
+  - name: GET /fake/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#overridden-get-a

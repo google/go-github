@@ -64,7 +64,9 @@ func (s *ActionsService) getPublicKey(ctx context.Context, url string) (*PublicK
 
 // GetRepoPublicKey gets a public key that should be used for secret encryption.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-a-repository-public-key
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#get-a-repository-public-key
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/secrets/public-key
 func (s *ActionsService) GetRepoPublicKey(ctx context.Context, owner, repo string) (*PublicKey, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/secrets/public-key", owner, repo)
 	return s.getPublicKey(ctx, url)
@@ -72,7 +74,9 @@ func (s *ActionsService) GetRepoPublicKey(ctx context.Context, owner, repo strin
 
 // GetOrgPublicKey gets a public key that should be used for secret encryption.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-an-organization-public-key
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#get-an-organization-public-key
+//
+//meta:operation GET /orgs/{org}/actions/secrets/public-key
 func (s *ActionsService) GetOrgPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/secrets/public-key", org)
 	return s.getPublicKey(ctx, url)
@@ -80,7 +84,9 @@ func (s *ActionsService) GetOrgPublicKey(ctx context.Context, org string) (*Publ
 
 // GetEnvPublicKey gets a public key that should be used for secret encryption.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-an-environment-public-key
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#get-an-environment-public-key
+//
+//meta:operation GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key
 func (s *ActionsService) GetEnvPublicKey(ctx context.Context, repoID int, env string) (*PublicKey, *Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/secrets/public-key", repoID, env)
 	return s.getPublicKey(ctx, url)
@@ -124,7 +130,9 @@ func (s *ActionsService) listSecrets(ctx context.Context, url string, opts *List
 // ListRepoSecrets lists all secrets available in a repository
 // without revealing their encrypted values.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-repository-secrets
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#list-repository-secrets
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/secrets
 func (s *ActionsService) ListRepoSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/secrets", owner, repo)
 	return s.listSecrets(ctx, url, opts)
@@ -133,7 +141,9 @@ func (s *ActionsService) ListRepoSecrets(ctx context.Context, owner, repo string
 // ListOrgSecrets lists all secrets available in an organization
 // without revealing their encrypted values.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-organization-secrets
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#list-organization-secrets
+//
+//meta:operation GET /orgs/{org}/actions/secrets
 func (s *ActionsService) ListOrgSecrets(ctx context.Context, org string, opts *ListOptions) (*Secrets, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/secrets", org)
 	return s.listSecrets(ctx, url, opts)
@@ -141,7 +151,9 @@ func (s *ActionsService) ListOrgSecrets(ctx context.Context, org string, opts *L
 
 // ListEnvSecrets lists all secrets available in an environment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-environment-secrets
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#list-environment-secrets
+//
+//meta:operation GET /repositories/{repository_id}/environments/{environment_name}/secrets
 func (s *ActionsService) ListEnvSecrets(ctx context.Context, repoID int, env string, opts *ListOptions) (*Secrets, *Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/secrets", repoID, env)
 	return s.listSecrets(ctx, url, opts)
@@ -164,7 +176,9 @@ func (s *ActionsService) getSecret(ctx context.Context, url string) (*Secret, *R
 
 // GetRepoSecret gets a single repository secret without revealing its encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#get-a-repository-secret
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/secrets/{secret_name}
 func (s *ActionsService) GetRepoSecret(ctx context.Context, owner, repo, name string) (*Secret, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, name)
 	return s.getSecret(ctx, url)
@@ -172,7 +186,9 @@ func (s *ActionsService) GetRepoSecret(ctx context.Context, owner, repo, name st
 
 // GetOrgSecret gets a single organization secret without revealing its encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#get-an-organization-secret
+//
+//meta:operation GET /orgs/{org}/actions/secrets/{secret_name}
 func (s *ActionsService) GetOrgSecret(ctx context.Context, org, name string) (*Secret, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/secrets/%v", org, name)
 	return s.getSecret(ctx, url)
@@ -180,7 +196,9 @@ func (s *ActionsService) GetOrgSecret(ctx context.Context, org, name string) (*S
 
 // GetEnvSecret gets a single environment secret without revealing its encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-an-environment-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#get-an-environment-secret
+//
+//meta:operation GET /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}
 func (s *ActionsService) GetEnvSecret(ctx context.Context, repoID int, env, secretName string) (*Secret, *Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, secretName)
 	return s.getSecret(ctx, url)
@@ -213,7 +231,9 @@ func (s *ActionsService) putSecret(ctx context.Context, url string, eSecret *Enc
 
 // CreateOrUpdateRepoSecret creates or updates a repository secret with an encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#create-or-update-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#create-or-update-a-repository-secret
+//
+//meta:operation PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}
 func (s *ActionsService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, eSecret.Name)
 	return s.putSecret(ctx, url, eSecret)
@@ -221,7 +241,9 @@ func (s *ActionsService) CreateOrUpdateRepoSecret(ctx context.Context, owner, re
 
 // CreateOrUpdateOrgSecret creates or updates an organization secret with an encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#create-or-update-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#create-or-update-an-organization-secret
+//
+//meta:operation PUT /orgs/{org}/actions/secrets/{secret_name}
 func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/secrets/%v", org, eSecret.Name)
 	return s.putSecret(ctx, url, eSecret)
@@ -229,7 +251,9 @@ func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org string
 
 // CreateOrUpdateEnvSecret creates or updates a single environment secret with an encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#create-or-update-an-environment-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#create-or-update-an-environment-secret
+//
+//meta:operation PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}
 func (s *ActionsService) CreateOrUpdateEnvSecret(ctx context.Context, repoID int, env string, eSecret *EncryptedSecret) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, eSecret.Name)
 	return s.putSecret(ctx, url, eSecret)
@@ -246,7 +270,9 @@ func (s *ActionsService) deleteSecret(ctx context.Context, url string) (*Respons
 
 // DeleteRepoSecret deletes a secret in a repository using the secret name.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#delete-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#delete-a-repository-secret
+//
+//meta:operation DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}
 func (s *ActionsService) DeleteRepoSecret(ctx context.Context, owner, repo, name string) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, name)
 	return s.deleteSecret(ctx, url)
@@ -254,7 +280,9 @@ func (s *ActionsService) DeleteRepoSecret(ctx context.Context, owner, repo, name
 
 // DeleteOrgSecret deletes a secret in an organization using the secret name.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#delete-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#delete-an-organization-secret
+//
+//meta:operation DELETE /orgs/{org}/actions/secrets/{secret_name}
 func (s *ActionsService) DeleteOrgSecret(ctx context.Context, org, name string) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/secrets/%v", org, name)
 	return s.deleteSecret(ctx, url)
@@ -262,7 +290,9 @@ func (s *ActionsService) DeleteOrgSecret(ctx context.Context, org, name string) 
 
 // DeleteEnvSecret deletes a secret in an environment using the secret name.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#delete-an-environment-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#delete-an-environment-secret
+//
+//meta:operation DELETE /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}
 func (s *ActionsService) DeleteEnvSecret(ctx context.Context, repoID int, env, secretName string) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, secretName)
 	return s.deleteSecret(ctx, url)
@@ -296,7 +326,9 @@ func (s *ActionsService) listSelectedReposForSecret(ctx context.Context, url str
 
 // ListSelectedReposForOrgSecret lists all repositories that have access to a secret.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-selected-repositories-for-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#list-selected-repositories-for-an-organization-secret
+//
+//meta:operation GET /orgs/{org}/actions/secrets/{secret_name}/repositories
 func (s *ActionsService) ListSelectedReposForOrgSecret(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories", org, name)
 	return s.listSelectedReposForSecret(ctx, url, opts)
@@ -317,7 +349,9 @@ func (s *ActionsService) setSelectedReposForSecret(ctx context.Context, url stri
 
 // SetSelectedReposForOrgSecret sets the repositories that have access to a secret.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#set-selected-repositories-for-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#set-selected-repositories-for-an-organization-secret
+//
+//meta:operation PUT /orgs/{org}/actions/secrets/{secret_name}/repositories
 func (s *ActionsService) SetSelectedReposForOrgSecret(ctx context.Context, org, name string, ids SelectedRepoIDs) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories", org, name)
 	return s.setSelectedReposForSecret(ctx, url, ids)
@@ -334,7 +368,9 @@ func (s *ActionsService) addSelectedRepoToSecret(ctx context.Context, url string
 
 // AddSelectedRepoToOrgSecret adds a repository to an organization secret.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#add-selected-repository-to-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#add-selected-repository-to-an-organization-secret
+//
+//meta:operation PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}
 func (s *ActionsService) AddSelectedRepoToOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories/%v", org, name, *repo.ID)
 	return s.addSelectedRepoToSecret(ctx, url)
@@ -351,7 +387,9 @@ func (s *ActionsService) removeSelectedRepoFromSecret(ctx context.Context, url s
 
 // RemoveSelectedRepoFromOrgSecret removes a repository from an organization secret.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#remove-selected-repository-from-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#remove-selected-repository-from-an-organization-secret
+//
+//meta:operation DELETE /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}
 func (s *ActionsService) RemoveSelectedRepoFromOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories/%v", org, name, *repo.ID)
 	return s.removeSelectedRepoFromSecret(ctx, url)

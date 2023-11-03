@@ -12,7 +12,7 @@ import (
 
 // ActionsPermissions represents a policy for repositories and allowed actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions
+// GitHub API docs: https://docs.github.com/rest/actions/permissions
 type ActionsPermissions struct {
 	EnabledRepositories *string `json:"enabled_repositories,omitempty"`
 	AllowedActions      *string `json:"allowed_actions,omitempty"`
@@ -31,7 +31,7 @@ type ActionsEnabledOnOrgRepos struct {
 
 // ActionsAllowed represents selected actions that are allowed.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions
+// GitHub API docs: https://docs.github.com/rest/actions/permissions
 type ActionsAllowed struct {
 	GithubOwnedAllowed *bool    `json:"github_owned_allowed,omitempty"`
 	VerifiedAllowed    *bool    `json:"verified_allowed,omitempty"`
@@ -44,7 +44,9 @@ func (a ActionsAllowed) String() string {
 
 // GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-github-actions-permissions-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-github-actions-permissions-for-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/permissions
 func (s *ActionsService) GetActionsPermissions(ctx context.Context, org string) (*ActionsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
 
@@ -64,7 +66,9 @@ func (s *ActionsService) GetActionsPermissions(ctx context.Context, org string) 
 
 // EditActionsPermissions sets the permissions policy for repositories and allowed actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-github-actions-permissions-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-github-actions-permissions-for-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions
 func (s *ActionsService) EditActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
 	req, err := s.client.NewRequest("PUT", u, actionsPermissions)
@@ -83,7 +87,9 @@ func (s *ActionsService) EditActionsPermissions(ctx context.Context, org string,
 
 // ListEnabledReposInOrg lists the selected repositories that are enabled for GitHub Actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#list-selected-repositories-enabled-for-github-actions-in-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#list-selected-repositories-enabled-for-github-actions-in-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/permissions/repositories
 func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string, opts *ListOptions) (*ActionsEnabledOnOrgRepos, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories", owner)
 	u, err := addOptions(u, opts)
@@ -107,7 +113,9 @@ func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string
 
 // SetEnabledReposInOrg replaces the list of selected repositories that are enabled for GitHub Actions in an organization..
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-selected-repositories-enabled-for-github-actions-in-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-selected-repositories-enabled-for-github-actions-in-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/repositories
 func (s *ActionsService) SetEnabledReposInOrg(ctx context.Context, owner string, repositoryIDs []int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories", owner)
 
@@ -128,7 +136,9 @@ func (s *ActionsService) SetEnabledReposInOrg(ctx context.Context, owner string,
 
 // AddEnabledReposInOrg adds a repository to the list of selected repositories that are enabled for GitHub Actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#enable-a-selected-repository-for-github-actions-in-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#enable-a-selected-repository-for-github-actions-in-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/repositories/{repository_id}
 func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
 
@@ -147,7 +157,9 @@ func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string,
 
 // RemoveEnabledReposInOrg removes a single repository from the list of enabled repos for GitHub Actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#disable-a-selected-repository-for-github-actions-in-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#disable-a-selected-repository-for-github-actions-in-an-organization
+//
+//meta:operation DELETE /orgs/{org}/actions/permissions/repositories/{repository_id}
 func (s *ActionsService) RemoveEnabledReposInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
 
@@ -166,7 +178,9 @@ func (s *ActionsService) RemoveEnabledReposInOrg(ctx context.Context, owner stri
 
 // GetActionsAllowed gets the actions that are allowed in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/permissions/selected-actions
 func (s *ActionsService) GetActionsAllowed(ctx context.Context, org string) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
 
@@ -186,7 +200,9 @@ func (s *ActionsService) GetActionsAllowed(ctx context.Context, org string) (*Ac
 
 // EditActionsAllowed sets the actions that are allowed in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/selected-actions
 func (s *ActionsService) EditActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
 	req, err := s.client.NewRequest("PUT", u, actionsAllowed)

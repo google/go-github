@@ -12,7 +12,7 @@ import (
 
 // ActionsPermissionsRepository represents a policy for repositories and allowed actions in a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions
+// GitHub API docs: https://docs.github.com/rest/actions/permissions
 type ActionsPermissionsRepository struct {
 	Enabled            *bool   `json:"enabled,omitempty"`
 	AllowedActions     *string `json:"allowed_actions,omitempty"`
@@ -25,7 +25,9 @@ func (a ActionsPermissionsRepository) String() string {
 
 // GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-github-actions-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-github-actions-permissions-for-a-repository
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/permissions
 func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner, repo string) (*ActionsPermissionsRepository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -44,7 +46,9 @@ func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner, 
 
 // EditActionsPermissions sets the permissions policy for repositories and allowed actions in a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-github-actions-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-github-actions-permissions-for-a-repository
+//
+//meta:operation PUT /repos/{owner}/{repo}/actions/permissions
 func (s *RepositoriesService) EditActionsPermissions(ctx context.Context, owner, repo string, actionsPermissionsRepository ActionsPermissionsRepository) (*ActionsPermissionsRepository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, actionsPermissionsRepository)

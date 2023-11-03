@@ -12,7 +12,9 @@ import (
 
 // ListProjects lists the projects for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/projects#list-organization-projects
+// GitHub API docs: https://docs.github.com/rest/projects/projects#list-organization-projects
+//
+//meta:operation GET /orgs/{org}/projects
 func (s *OrganizationsService) ListProjects(ctx context.Context, org string, opts *ProjectListOptions) ([]*Project, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projects", org)
 	u, err := addOptions(u, opts)
@@ -39,7 +41,9 @@ func (s *OrganizationsService) ListProjects(ctx context.Context, org string, opt
 
 // CreateProject creates a GitHub Project for the specified organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/projects#create-an-organization-project
+// GitHub API docs: https://docs.github.com/rest/projects/projects#create-an-organization-project
+//
+//meta:operation POST /orgs/{org}/projects
 func (s *OrganizationsService) CreateProject(ctx context.Context, org string, opts *ProjectOptions) (*Project, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projects", org)
 	req, err := s.client.NewRequest("POST", u, opts)

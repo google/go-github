@@ -50,4 +50,4 @@ issues:
     # We don't care about file inclusion via variable in examples or internal tools.
     - linters: [ gosec ]
       text: 'G304: Potential file inclusion via variable'
-      path: '^(example|update-urls)\/'
+      path: '^(example|tools)\/'

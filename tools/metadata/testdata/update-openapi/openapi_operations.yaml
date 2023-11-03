@@ -1,0 +1,4 @@
+operations:
+  - name: GET /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#get-a
+openapi_commit: s

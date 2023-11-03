@@ -8,5 +8,5 @@ package github
 // EnterpriseService provides access to the enterprise related functions
 // in the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/
+// GitHub API docs: https://docs.github.com/rest/enterprise-admin/
 type EnterpriseService service

@@ -72,6 +72,8 @@ type APIMeta struct {
 // endpoint provides information about that installation.
 //
 // GitHub API docs: https://docs.github.com/rest/meta/meta#get-github-meta-information
+//
+//meta:operation GET /meta
 func (s *MetaService) Get(ctx context.Context) (*APIMeta, *Response, error) {
 	req, err := s.client.NewRequest("GET", "meta", nil)
 	if err != nil {
@@ -98,6 +100,8 @@ func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
 // bubble. If message is empty, a random zen phrase is used.
 //
 // GitHub API docs: https://docs.github.com/rest/meta/meta#get-octocat
+//
+//meta:operation GET /octocat
 func (s *MetaService) Octocat(ctx context.Context, message string) (string, *Response, error) {
 	u := "octocat"
 	if message != "" {
@@ -131,6 +135,8 @@ func (c *Client) Octocat(ctx context.Context, message string) (string, *Response
 // See also: http://warpspire.com/posts/taste/
 //
 // GitHub API docs: https://docs.github.com/rest/meta/meta#get-the-zen-of-github
+//
+//meta:operation GET /zen
 func (s *MetaService) Zen(ctx context.Context) (string, *Response, error) {
 	req, err := s.client.NewRequest("GET", "zen", nil)
 	if err != nil {

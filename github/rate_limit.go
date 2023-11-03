@@ -59,6 +59,10 @@ func (r RateLimits) String() string {
 }
 
 // Get returns the rate limits for the current client.
+//
+// GitHub API docs: https://docs.github.com/rest/rate-limit/rate-limit#get-rate-limit-status-for-the-authenticated-user
+//
+//meta:operation GET /rate_limit
 func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, error) {
 	req, err := s.client.NewRequest("GET", "rate_limit", nil)
 	if err != nil {

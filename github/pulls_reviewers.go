@@ -25,7 +25,9 @@ type Reviewers struct {
 
 // RequestReviewers creates a review request for the provided reviewers for the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/review-requests#request-reviewers-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/review-requests#request-reviewers-for-a-pull-request
+//
+//meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers
 func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo string, number int, reviewers ReviewersRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/pulls/%d/requested_reviewers", owner, repo, number)
 	req, err := s.client.NewRequest("POST", u, &reviewers)
@@ -44,7 +46,9 @@ func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo 
 
 // ListReviewers lists reviewers whose reviews have been requested on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/review-requests#list-requested-reviewers-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/review-requests#get-all-requested-reviewers-for-a-pull-request
+//
+//meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers
 func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo string, number int, opts *ListOptions) (*Reviewers, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/requested_reviewers", owner, repo, number)
 	u, err := addOptions(u, opts)
@@ -68,7 +72,9 @@ func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo str
 
 // RemoveReviewers removes the review request for the provided reviewers for the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/review-requests#remove-requested-reviewers-from-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/review-requests#remove-requested-reviewers-from-a-pull-request
+//
+//meta:operation DELETE /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers
 func (s *PullRequestsService) RemoveReviewers(ctx context.Context, owner, repo string, number int, reviewers ReviewersRequest) (*Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/pulls/%d/requested_reviewers", owner, repo, number)
 	req, err := s.client.NewRequest("DELETE", u, &reviewers)

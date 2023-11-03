@@ -25,7 +25,9 @@ func (g GistComment) String() string {
 
 // ListComments lists all comments for a gist.
 //
-// GitHub API docs: https://docs.github.com/en/rest/gists/comments#list-gist-comments
+// GitHub API docs: https://docs.github.com/rest/gists/comments#list-gist-comments
+//
+//meta:operation GET /gists/{gist_id}/comments
 func (s *GistsService) ListComments(ctx context.Context, gistID string, opts *ListOptions) ([]*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments", gistID)
 	u, err := addOptions(u, opts)
@@ -49,7 +51,9 @@ func (s *GistsService) ListComments(ctx context.Context, gistID string, opts *Li
 
 // GetComment retrieves a single comment from a gist.
 //
-// GitHub API docs: https://docs.github.com/en/rest/gists/comments#get-a-gist-comment
+// GitHub API docs: https://docs.github.com/rest/gists/comments#get-a-gist-comment
+//
+//meta:operation GET /gists/{gist_id}/comments/{comment_id}
 func (s *GistsService) GetComment(ctx context.Context, gistID string, commentID int64) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -68,7 +72,9 @@ func (s *GistsService) GetComment(ctx context.Context, gistID string, commentID 
 
 // CreateComment creates a comment for a gist.
 //
-// GitHub API docs: https://docs.github.com/en/rest/gists/comments#create-a-gist-comment
+// GitHub API docs: https://docs.github.com/rest/gists/comments#create-a-gist-comment
+//
+//meta:operation POST /gists/{gist_id}/comments
 func (s *GistsService) CreateComment(ctx context.Context, gistID string, comment *GistComment) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments", gistID)
 	req, err := s.client.NewRequest("POST", u, comment)
@@ -87,7 +93,9 @@ func (s *GistsService) CreateComment(ctx context.Context, gistID string, comment
 
 // EditComment edits an existing gist comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/gists/comments#update-a-gist-comment
+// GitHub API docs: https://docs.github.com/rest/gists/comments#update-a-gist-comment
+//
+//meta:operation PATCH /gists/{gist_id}/comments/{comment_id}
 func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID int64, comment *GistComment) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
 	req, err := s.client.NewRequest("PATCH", u, comment)
@@ -106,7 +114,9 @@ func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID
 
 // DeleteComment deletes a gist comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/gists/comments#delete-a-gist-comment
+// GitHub API docs: https://docs.github.com/rest/gists/comments#delete-a-gist-comment
+//
+//meta:operation DELETE /gists/{gist_id}/comments/{comment_id}
 func (s *GistsService) DeleteComment(ctx context.Context, gistID string, commentID int64) (*Response, error) {
 	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
 	req, err := s.client.NewRequest("DELETE", u, nil)

@@ -5,6 +5,7 @@
 
 //go:generate go run gen-accessors.go
 //go:generate go run gen-stringify-test.go
+//go:generate ../script/metadata.sh update-go
 
 package github
 
@@ -131,10 +132,10 @@ const (
 	// https://developer.github.com/changes/2019-04-11-pulls-branches-for-commit/
 	mediaTypeListPullsOrBranchesForCommitPreview = "application/vnd.github.groot-preview+json"
 
-	// https://docs.github.com/en/rest/previews/#repository-creation-permissions
+	// https://docs.github.com/rest/previews/#repository-creation-permissions
 	mediaTypeMemberAllowedRepoCreationTypePreview = "application/vnd.github.surtur-preview+json"
 
-	// https://docs.github.com/en/rest/previews/#create-and-use-repository-templates
+	// https://docs.github.com/rest/previews/#create-and-use-repository-templates
 	mediaTypeRepositoryTemplatePreview = "application/vnd.github.baptiste-preview+json"
 
 	// https://developer.github.com/changes/2019-10-03-multi-line-comments/
@@ -994,7 +995,7 @@ func compareHTTPResponse(r1, r2 *http.Response) bool {
 /*
 An ErrorResponse reports one or more errors caused by an API request.
 
-GitHub API docs: https://docs.github.com/en/rest/#client-errors
+GitHub API docs: https://docs.github.com/rest/#client-errors
 */
 type ErrorResponse struct {
 	Response *http.Response `json:"-"`       // HTTP response that caused this error
@@ -1004,7 +1005,7 @@ type ErrorResponse struct {
 	Block *ErrorBlock `json:"block,omitempty"`
 	// Most errors will also include a documentation_url field pointing
 	// to some content that might help you resolve the error, see
-	// https://docs.github.com/en/rest/#client-errors
+	// https://docs.github.com/rest/#client-errors
 	DocumentationURL string `json:"documentation_url,omitempty"`
 }
 
@@ -1132,7 +1133,7 @@ func (ae *AcceptedError) Is(target error) bool {
 }
 
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
-// "documentation_url" field value equal to "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#secondary-rate-limits".
+// "documentation_url" field value equal to "https://docs.github.com/rest/overview/resources-in-the-rest-api#secondary-rate-limits".
 type AbuseRateLimitError struct {
 	Response *http.Response // HTTP response that caused this error
 	Message  string         `json:"message"` // error message
@@ -1195,7 +1196,7 @@ GitHub error responses structure are often undocumented and inconsistent.
 Sometimes error is just a simple string (Issue #540).
 In such cases, Message represents an error message as a workaround.
 
-GitHub API docs: https://docs.github.com/en/rest/#client-errors
+GitHub API docs: https://docs.github.com/rest/#client-errors
 */
 type Error struct {
 	Resource string `json:"resource"` // resource on which the error occurred
@@ -1309,7 +1310,7 @@ const (
 // category returns the rate limit category of the endpoint, determined by HTTP method and Request.URL.Path.
 func category(method, path string) rateLimitCategory {
 	switch {
-	// https://docs.github.com/en/rest/rate-limit#about-rate-limits
+	// https://docs.github.com/rest/rate-limit#about-rate-limits
 	default:
 		// NOTE: coreCategory is returned for actionsRunnerRegistrationCategory too,
 		// because no API found for this category.
@@ -1323,17 +1324,17 @@ func category(method, path string) rateLimitCategory {
 		method == http.MethodPost:
 		return integrationManifestCategory
 
-	// https://docs.github.com/en/rest/migrations/source-imports#start-an-import
+	// https://docs.github.com/rest/migrations/source-imports#start-an-import
 	case strings.HasPrefix(path, "/repos/") &&
 		strings.HasSuffix(path, "/import") &&
 		method == http.MethodPut:
 		return sourceImportCategory
 
-	// https://docs.github.com/en/rest/code-scanning#upload-an-analysis-as-sarif-data
+	// https://docs.github.com/rest/code-scanning#upload-an-analysis-as-sarif-data
 	case strings.HasSuffix(path, "/code-scanning/sarifs"):
 		return codeScanningUploadCategory
 
-	// https://docs.github.com/en/enterprise-cloud@latest/rest/scim
+	// https://docs.github.com/enterprise-cloud@latest/rest/scim
 	case strings.HasPrefix(path, "/scim/"):
 		return scimCategory
 	}
@@ -1377,7 +1378,7 @@ that need to use a higher rate limit associated with your OAuth application.
 This will add the client id and secret as a base64-encoded string in the format
 ClientID:ClientSecret and apply it as an "Authorization": "Basic" header.
 
-See https://docs.github.com/en/rest/#unauthenticated-rate-limited-requests for
+See https://docs.github.com/rest/#unauthenticated-rate-limited-requests for
 more information.
 */
 type UnauthenticatedRateLimitedTransport struct {

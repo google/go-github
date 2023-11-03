@@ -54,7 +54,9 @@ type TrafficBreakdownOptions struct {
 
 // ListTrafficReferrers list the top 10 referrers over the last 14 days.
 //
-// GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-top-referral-sources
+// GitHub API docs: https://docs.github.com/rest/metrics/traffic#get-top-referral-sources
+//
+//meta:operation GET /repos/{owner}/{repo}/traffic/popular/referrers
 func (s *RepositoriesService) ListTrafficReferrers(ctx context.Context, owner, repo string) ([]*TrafficReferrer, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/popular/referrers", owner, repo)
 
@@ -74,7 +76,9 @@ func (s *RepositoriesService) ListTrafficReferrers(ctx context.Context, owner, r
 
 // ListTrafficPaths list the top 10 popular content over the last 14 days.
 //
-// GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-top-referral-paths
+// GitHub API docs: https://docs.github.com/rest/metrics/traffic#get-top-referral-paths
+//
+//meta:operation GET /repos/{owner}/{repo}/traffic/popular/paths
 func (s *RepositoriesService) ListTrafficPaths(ctx context.Context, owner, repo string) ([]*TrafficPath, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/popular/paths", owner, repo)
 
@@ -94,7 +98,9 @@ func (s *RepositoriesService) ListTrafficPaths(ctx context.Context, owner, repo 
 
 // ListTrafficViews get total number of views for the last 14 days and breaks it down either per day or week.
 //
-// GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-page-views
+// GitHub API docs: https://docs.github.com/rest/metrics/traffic#get-page-views
+//
+//meta:operation GET /repos/{owner}/{repo}/traffic/views
 func (s *RepositoriesService) ListTrafficViews(ctx context.Context, owner, repo string, opts *TrafficBreakdownOptions) (*TrafficViews, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/views", owner, repo)
 	u, err := addOptions(u, opts)
@@ -118,7 +124,9 @@ func (s *RepositoriesService) ListTrafficViews(ctx context.Context, owner, repo 
 
 // ListTrafficClones get total number of clones for the last 14 days and breaks it down either per day or week for the last 14 days.
 //
-// GitHub API docs: https://docs.github.com/en/rest/metrics/traffic#get-repository-clones
+// GitHub API docs: https://docs.github.com/rest/metrics/traffic#get-repository-clones
+//
+//meta:operation GET /repos/{owner}/{repo}/traffic/clones
 func (s *RepositoriesService) ListTrafficClones(ctx context.Context, owner, repo string, opts *TrafficBreakdownOptions) (*TrafficClones, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/clones", owner, repo)
 	u, err := addOptions(u, opts)

@@ -67,7 +67,9 @@ type startUserMigration struct {
 // StartUserMigration starts the generation of a migration archive.
 // repos is a slice of repository names to migrate.
 //
-// GitHub API docs: https://docs.github.com/en/rest/migrations/users#start-a-user-migration
+// GitHub API docs: https://docs.github.com/rest/migrations/users#start-a-user-migration
+//
+//meta:operation POST /user/migrations
 func (s *MigrationService) StartUserMigration(ctx context.Context, repos []string, opts *UserMigrationOptions) (*UserMigration, *Response, error) {
 	u := "user/migrations"
 
@@ -96,7 +98,9 @@ func (s *MigrationService) StartUserMigration(ctx context.Context, repos []strin
 
 // ListUserMigrations lists the most recent migrations.
 //
-// GitHub API docs: https://docs.github.com/en/rest/migrations/users#list-user-migrations
+// GitHub API docs: https://docs.github.com/rest/migrations/users#list-user-migrations
+//
+//meta:operation GET /user/migrations
 func (s *MigrationService) ListUserMigrations(ctx context.Context, opts *ListOptions) ([]*UserMigration, *Response, error) {
 	u := "user/migrations"
 	u, err := addOptions(u, opts)
@@ -124,7 +128,9 @@ func (s *MigrationService) ListUserMigrations(ctx context.Context, opts *ListOpt
 // UserMigrationStatus gets the status of a specific migration archive.
 // id is the migration ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/migrations/users#get-a-user-migration-status
+// GitHub API docs: https://docs.github.com/rest/migrations/users#get-a-user-migration-status
+//
+//meta:operation GET /user/migrations/{migration_id}
 func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*UserMigration, *Response, error) {
 	u := fmt.Sprintf("user/migrations/%v", id)
 
@@ -148,7 +154,9 @@ func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*
 // UserMigrationArchiveURL gets the URL for a specific migration archive.
 // id is the migration ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/migrations/users#download-a-user-migration-archive
+// GitHub API docs: https://docs.github.com/rest/migrations/users#download-a-user-migration-archive
+//
+//meta:operation GET /user/migrations/{migration_id}/archive
 func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64) (string, error) {
 	url := fmt.Sprintf("user/migrations/%v/archive", id)
 
@@ -182,7 +190,9 @@ func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64
 // DeleteUserMigration will delete a previous migration archive.
 // id is the migration ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/migrations/users#delete-a-user-migration-archive
+// GitHub API docs: https://docs.github.com/rest/migrations/users#delete-a-user-migration-archive
+//
+//meta:operation DELETE /user/migrations/{migration_id}/archive
 func (s *MigrationService) DeleteUserMigration(ctx context.Context, id int64) (*Response, error) {
 	url := fmt.Sprintf("user/migrations/%v/archive", id)
 
@@ -202,7 +212,9 @@ func (s *MigrationService) DeleteUserMigration(ctx context.Context, id int64) (*
 // You should unlock each migrated repository and delete them when the migration
 // is complete and you no longer need the source data.
 //
-// GitHub API docs: https://docs.github.com/en/rest/migrations/users#unlock-a-user-repository
+// GitHub API docs: https://docs.github.com/rest/migrations/users#unlock-a-user-repository
+//
+//meta:operation DELETE /user/migrations/{migration_id}/repos/{repo_name}/lock
 func (s *MigrationService) UnlockUserRepo(ctx context.Context, id int64, repo string) (*Response, error) {
 	url := fmt.Sprintf("user/migrations/%v/repos/%v/lock", id, repo)
 
