@@ -5302,6 +5302,22 @@ func (d *DependabotAlertEvent) GetSender() *User {
 	return d.Sender
 }
 
+// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertState) GetDismissedComment() string {
+	if d == nil || d.DismissedComment == nil {
+		return ""
+	}
+	return *d.DismissedComment
+}
+
+// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertState) GetDismissedReason() string {
+	if d == nil || d.DismissedReason == nil {
+		return ""
+	}
+	return *d.DismissedReason
+}
+
 // GetCVEID returns the CVEID field if it's non-nil, zero value otherwise.
 func (d *DependabotSecurityAdvisory) GetCVEID() string {
 	if d == nil || d.CVEID == nil {
