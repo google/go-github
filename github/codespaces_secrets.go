@@ -16,7 +16,9 @@ import (
 // You must authenticate using an access token with the codespace or codespace:secrets scope to use this endpoint. User must have Codespaces access to use this endpoint
 // GitHub Apps must have read access to the codespaces_user_secrets user permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#list-secrets-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/secrets#list-secrets-for-the-authenticated-user
+//
+//meta:operation GET /user/codespaces/secrets
 func (s *CodespacesService) ListUserSecrets(ctx context.Context, opts *ListOptions) (*Secrets, *Response, error) {
 	u, err := addOptions("user/codespaces/secrets", opts)
 	if err != nil {
@@ -29,7 +31,9 @@ func (s *CodespacesService) ListUserSecrets(ctx context.Context, opts *ListOptio
 //
 // Lists all Codespaces secrets available at the organization-level without revealing their encrypted values. You must authenticate using an access token with the admin:org scope to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#list-organization-secrets
+// GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets#list-organization-secrets
+//
+//meta:operation GET /orgs/{org}/codespaces/secrets
 func (s *CodespacesService) ListOrgSecrets(ctx context.Context, org string, opts *ListOptions) (*Secrets, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets", org)
 	u, err := addOptions(u, opts)
@@ -43,7 +47,9 @@ func (s *CodespacesService) ListOrgSecrets(ctx context.Context, org string, opts
 //
 // Lists all secrets available in a repository without revealing their encrypted values. You must authenticate using an access token with the repo scope to use this endpoint. GitHub Apps must have write access to the codespaces_secrets repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/repository-secrets?apiVersion=2022-11-28#list-repository-secrets
+// GitHub API docs: https://docs.github.com/rest/codespaces/repository-secrets#list-repository-secrets
+//
+//meta:operation GET /repos/{owner}/{repo}/codespaces/secrets
 func (s *CodespacesService) ListRepoSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets", owner, repo)
 	u, err := addOptions(u, opts)
@@ -74,7 +80,9 @@ func (s *CodespacesService) listSecrets(ctx context.Context, url string) (*Secre
 // You must authenticate using an access token with the codespace or codespace:secrets scope to use this endpoint. User must have Codespaces access to use this endpoint.
 // GitHub Apps must have read access to the codespaces_user_secrets user permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#get-public-key-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/secrets#get-public-key-for-the-authenticated-user
+//
+//meta:operation GET /user/codespaces/secrets/public-key
 func (s *CodespacesService) GetUserPublicKey(ctx context.Context) (*PublicKey, *Response, error) {
 	return s.getPublicKey(ctx, "user/codespaces/secrets/public-key")
 }
@@ -83,7 +91,9 @@ func (s *CodespacesService) GetUserPublicKey(ctx context.Context) (*PublicKey, *
 //
 // Gets a public key for an organization, which is required in order to encrypt secrets. You need to encrypt the value of a secret before you can create or update secrets. You must authenticate using an access token with the admin:org scope to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#get-an-organization-public-key
+// GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets#get-an-organization-public-key
+//
+//meta:operation GET /orgs/{org}/codespaces/secrets/public-key
 func (s *CodespacesService) GetOrgPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error) {
 	return s.getPublicKey(ctx, fmt.Sprintf("orgs/%v/codespaces/secrets/public-key", org))
 }
@@ -92,7 +102,9 @@ func (s *CodespacesService) GetOrgPublicKey(ctx context.Context, org string) (*P
 //
 // Gets your public key, which you need to encrypt secrets. You need to encrypt a secret before you can create or update secrets. Anyone with read access to the repository can use this endpoint. If the repository is private you must use an access token with the repo scope. GitHub Apps must have write access to the codespaces_secrets repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/repository-secrets?apiVersion=2022-11-28#get-a-repository-public-key
+// GitHub API docs: https://docs.github.com/rest/codespaces/repository-secrets#get-a-repository-public-key
+//
+//meta:operation GET /repos/{owner}/{repo}/codespaces/secrets/public-key
 func (s *CodespacesService) GetRepoPublicKey(ctx context.Context, owner, repo string) (*PublicKey, *Response, error) {
 	return s.getPublicKey(ctx, fmt.Sprintf("repos/%v/%v/codespaces/secrets/public-key", owner, repo))
 }
@@ -118,7 +130,9 @@ func (s *CodespacesService) getPublicKey(ctx context.Context, url string) (*Publ
 // You must authenticate using an access token with the codespace or codespace:secrets scope to use this endpoint. User must have Codespaces access to use this endpoint.
 // GitHub Apps must have read access to the codespaces_user_secrets user permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#get-a-secret-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/secrets#get-a-secret-for-the-authenticated-user
+//
+//meta:operation GET /user/codespaces/secrets/{secret_name}
 func (s *CodespacesService) GetUserSecret(ctx context.Context, name string) (*Secret, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/secrets/%v", name)
 	return s.getSecret(ctx, u)
@@ -128,7 +142,9 @@ func (s *CodespacesService) GetUserSecret(ctx context.Context, name string) (*Se
 //
 // Gets an organization secret without revealing its encrypted value. You must authenticate using an access token with the admin:org scope to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#get-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets#get-an-organization-secret
+//
+//meta:operation GET /orgs/{org}/codespaces/secrets/{secret_name}
 func (s *CodespacesService) GetOrgSecret(ctx context.Context, org, name string) (*Secret, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v", org, name)
 	return s.getSecret(ctx, u)
@@ -138,7 +154,9 @@ func (s *CodespacesService) GetOrgSecret(ctx context.Context, org, name string) 
 //
 // Gets a single repository secret without revealing its encrypted value. You must authenticate using an access token with the repo scope to use this endpoint. GitHub Apps must have write access to the codespaces_secrets repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/repository-secrets?apiVersion=2022-11-28#get-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/repository-secrets#get-a-repository-secret
+//
+//meta:operation GET /repos/{owner}/{repo}/codespaces/secrets/{secret_name}
 func (s *CodespacesService) GetRepoSecret(ctx context.Context, owner, repo, name string) (*Secret, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets/%v", owner, repo, name)
 	return s.getSecret(ctx, u)
@@ -165,7 +183,9 @@ func (s *CodespacesService) getSecret(ctx context.Context, url string) (*Secret,
 // You must authenticate using an access token with the codespace or codespace:secrets scope to use this endpoint. User must also have Codespaces access to use this endpoint.
 // GitHub Apps must have write access to the codespaces_user_secrets user permission and codespaces_secrets repository permission on all referenced repositories to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#create-or-update-a-secret-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/secrets#create-or-update-a-secret-for-the-authenticated-user
+//
+//meta:operation PUT /user/codespaces/secrets/{secret_name}
 func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, eSecret *EncryptedSecret) (*Response, error) {
 	u := fmt.Sprintf("user/codespaces/secrets/%v", eSecret.Name)
 	return s.createOrUpdateSecret(ctx, u, eSecret)
@@ -175,7 +195,9 @@ func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, eSecre
 //
 // Creates or updates an organization secret with an encrypted value. Encrypt your secret using LibSodium. You must authenticate using an access token with the admin:org scope to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#create-or-update-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets#create-or-update-an-organization-secret
+//
+//meta:operation PUT /orgs/{org}/codespaces/secrets/{secret_name}
 func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v", org, eSecret.Name)
 	return s.createOrUpdateSecret(ctx, u, eSecret)
@@ -185,7 +207,9 @@ func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org str
 //
 // Creates or updates a repository secret with an encrypted value. Encrypt your secret using LibSodium. You must authenticate using an access token with the repo scope to use this endpoint. GitHub Apps must have write access to the codespaces_secrets repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/repository-secrets?apiVersion=2022-11-28#create-or-update-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/repository-secrets#create-or-update-a-repository-secret
+//
+//meta:operation PUT /repos/{owner}/{repo}/codespaces/secrets/{secret_name}
 func (s *CodespacesService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets/%v", owner, repo, eSecret.Name)
 	return s.createOrUpdateSecret(ctx, u, eSecret)
@@ -211,7 +235,9 @@ func (s *CodespacesService) createOrUpdateSecret(ctx context.Context, url string
 // You must authenticate using an access token with the codespace or codespace:secrets scope to use this endpoint. User must have Codespaces access to use this endpoint.
 // GitHub Apps must have write access to the codespaces_user_secrets user permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#delete-a-secret-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/secrets#delete-a-secret-for-the-authenticated-user
+//
+//meta:operation DELETE /user/codespaces/secrets/{secret_name}
 func (s *CodespacesService) DeleteUserSecret(ctx context.Context, name string) (*Response, error) {
 	u := fmt.Sprintf("user/codespaces/secrets/%v", name)
 	return s.deleteSecret(ctx, u)
@@ -221,7 +247,9 @@ func (s *CodespacesService) DeleteUserSecret(ctx context.Context, name string) (
 //
 // Deletes an organization secret using the secret name. You must authenticate using an access token with the admin:org scope to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#delete-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets#delete-an-organization-secret
+//
+//meta:operation DELETE /orgs/{org}/codespaces/secrets/{secret_name}
 func (s *CodespacesService) DeleteOrgSecret(ctx context.Context, org, name string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v", org, name)
 	return s.deleteSecret(ctx, u)
@@ -231,7 +259,9 @@ func (s *CodespacesService) DeleteOrgSecret(ctx context.Context, org, name strin
 //
 // Deletes a secret in a repository using the secret name. You must authenticate using an access token with the repo scope to use this endpoint. GitHub Apps must have write access to the codespaces_secrets repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/repository-secrets?apiVersion=2022-11-28#delete-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/repository-secrets#delete-a-repository-secret
+//
+//meta:operation DELETE /repos/{owner}/{repo}/codespaces/secrets/{secret_name}
 func (s *CodespacesService) DeleteRepoSecret(ctx context.Context, owner, repo, name string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets/%v", owner, repo, name)
 	return s.deleteSecret(ctx, u)
@@ -256,7 +286,9 @@ func (s *CodespacesService) deleteSecret(ctx context.Context, url string) (*Resp
 // You must authenticate using an access token with the codespace or codespace:secrets scope to use this endpoint. User must have Codespaces access to use this endpoint.
 // GitHub Apps must have read access to the codespaces_user_secrets user permission and write access to the codespaces_secrets repository permission on all referenced repositories to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#list-selected-repositories-for-a-user-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/secrets#list-selected-repositories-for-a-user-secret
+//
+//meta:operation GET /user/codespaces/secrets/{secret_name}/repositories
 func (s *CodespacesService) ListSelectedReposForUserSecret(ctx context.Context, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/secrets/%v/repositories", name)
 	u, err := addOptions(u, opts)
@@ -271,7 +303,9 @@ func (s *CodespacesService) ListSelectedReposForUserSecret(ctx context.Context, 
 //
 // Lists all repositories that have been selected when the visibility for repository access to a secret is set to selected. You must authenticate using an access token with the admin:org scope to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#list-selected-repositories-for-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets#list-selected-repositories-for-an-organization-secret
+//
+//meta:operation GET /orgs/{org}/codespaces/secrets/{secret_name}/repositories
 func (s *CodespacesService) ListSelectedReposForOrgSecret(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v/repositories", org, name)
 	u, err := addOptions(u, opts)
@@ -302,7 +336,9 @@ func (s *CodespacesService) listSelectedReposForSecret(ctx context.Context, url 
 // You must authenticate using an access token with the codespace or codespace:secrets scope to use this endpoint. User must have Codespaces access to use this endpoint.
 // GitHub Apps must have write access to the codespaces_user_secrets user permission and write access to the codespaces_secrets repository permission on all referenced repositories to use this endpoint.
 //
-// Github API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#set-selected-repositories-for-a-user-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/secrets#set-selected-repositories-for-a-user-secret
+//
+//meta:operation PUT /user/codespaces/secrets/{secret_name}/repositories
 func (s *CodespacesService) SetSelectedReposForUserSecret(ctx context.Context, name string, ids SelectedRepoIDs) (*Response, error) {
 	u := fmt.Sprintf("user/codespaces/secrets/%v/repositories", name)
 	return s.setSelectedRepoForSecret(ctx, u, ids)
@@ -312,7 +348,9 @@ func (s *CodespacesService) SetSelectedReposForUserSecret(ctx context.Context, n
 //
 // Replaces all repositories for an organization secret when the visibility for repository access is set to selected. The visibility is set when you Create or update an organization secret. You must authenticate using an access token with the admin:org scope to use this endpoint.
 //
-// Github API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#set-selected-repositories-for-a-user-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets#set-selected-repositories-for-an-organization-secret
+//
+//meta:operation PUT /orgs/{org}/codespaces/secrets/{secret_name}/repositories
 func (s *CodespacesService) SetSelectedReposForOrgSecret(ctx context.Context, org, name string, ids SelectedRepoIDs) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v/repositories", org, name)
 	return s.setSelectedRepoForSecret(ctx, u, ids)
@@ -340,7 +378,9 @@ func (s *CodespacesService) setSelectedRepoForSecret(ctx context.Context, url st
 //
 // Adds a repository to the selected repositories for a user's codespace secret. You must authenticate using an access token with the codespace or codespace:secrets scope to use this endpoint. User must have Codespaces access to use this endpoint. GitHub Apps must have write access to the codespaces_user_secrets user permission and write access to the codespaces_secrets repository permission on the referenced repository to use this endpoint.
 //
-// Github API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#add-a-selected-repository-to-a-user-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/secrets#add-a-selected-repository-to-a-user-secret
+//
+//meta:operation PUT /user/codespaces/secrets/{secret_name}/repositories/{repository_id}
 func (s *CodespacesService) AddSelectedRepoToUserSecret(ctx context.Context, name string, repo *Repository) (*Response, error) {
 	u := fmt.Sprintf("user/codespaces/secrets/%v/repositories/%v", name, *repo.ID)
 	return s.addSelectedRepoToSecret(ctx, u)
@@ -350,7 +390,9 @@ func (s *CodespacesService) AddSelectedRepoToUserSecret(ctx context.Context, nam
 //
 // Adds a repository to an organization secret when the visibility for repository access is set to selected. The visibility is set when you Create or update an organization secret. You must authenticate using an access token with the admin:org scope to use this endpoint.
 //
-// Github API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#add-selected-repository-to-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets#add-selected-repository-to-an-organization-secret
+//
+//meta:operation PUT /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}
 func (s *CodespacesService) AddSelectedRepoToOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v/repositories/%v", org, name, *repo.ID)
 	return s.addSelectedRepoToSecret(ctx, u)
@@ -374,7 +416,9 @@ func (s *CodespacesService) addSelectedRepoToSecret(ctx context.Context, url str
 //
 // Removes a repository from the selected repositories for a user's codespace secret. You must authenticate using an access token with the codespace or codespace:secrets scope to use this endpoint. User must have Codespaces access to use this endpoint. GitHub Apps must have write access to the codespaces_user_secrets user permission to use this endpoint.
 //
-// Github API docs: https://docs.github.com/en/rest/codespaces/secrets?apiVersion=2022-11-28#remove-a-selected-repository-from-a-user-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/secrets#remove-a-selected-repository-from-a-user-secret
+//
+//meta:operation DELETE /user/codespaces/secrets/{secret_name}/repositories/{repository_id}
 func (s *CodespacesService) RemoveSelectedRepoFromUserSecret(ctx context.Context, name string, repo *Repository) (*Response, error) {
 	u := fmt.Sprintf("user/codespaces/secrets/%v/repositories/%v", name, *repo.ID)
 	return s.removeSelectedRepoFromSecret(ctx, u)
@@ -384,7 +428,9 @@ func (s *CodespacesService) RemoveSelectedRepoFromUserSecret(ctx context.Context
 //
 // Removes a repository from an organization secret when the visibility for repository access is set to selected. The visibility is set when you Create or update an organization secret. You must authenticate using an access token with the admin:org scope to use this endpoint.
 //
-// Github API docs: https://docs.github.com/en/rest/codespaces/organization-secrets?apiVersion=2022-11-28#remove-selected-repository-from-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets#remove-selected-repository-from-an-organization-secret
+//
+//meta:operation DELETE /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}
 func (s *CodespacesService) RemoveSelectedRepoFromOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v/repositories/%v", org, name, *repo.ID)
 	return s.removeSelectedRepoFromSecret(ctx, u)

@@ -12,7 +12,9 @@ import (
 
 // GetAuditLog gets the audit-log entries for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/audit-log#get-the-audit-log-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#get-the-audit-log-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/audit-log
 func (s *EnterpriseService) GetAuditLog(ctx context.Context, enterprise string, opts *GetAuditLogOptions) ([]*AuditEntry, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log", enterprise)
 	u, err := addOptions(u, opts)

@@ -13,7 +13,9 @@ import (
 // ListAssignees fetches all available assignees (owners and collaborators) to
 // which issues may be assigned.
 //
-// GitHub API docs: https://docs.github.com/en/rest/issues/assignees#list-assignees
+// GitHub API docs: https://docs.github.com/rest/issues/assignees#list-assignees
+//
+//meta:operation GET /repos/{owner}/{repo}/assignees
 func (s *IssuesService) ListAssignees(ctx context.Context, owner, repo string, opts *ListOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/assignees", owner, repo)
 	u, err := addOptions(u, opts)
@@ -37,7 +39,9 @@ func (s *IssuesService) ListAssignees(ctx context.Context, owner, repo string, o
 
 // IsAssignee checks if a user is an assignee for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/issues/assignees#check-if-a-user-can-be-assigned
+// GitHub API docs: https://docs.github.com/rest/issues/assignees#check-if-a-user-can-be-assigned
+//
+//meta:operation GET /repos/{owner}/{repo}/assignees/{assignee}
 func (s *IssuesService) IsAssignee(ctx context.Context, owner, repo, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/assignees/%v", owner, repo, user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -52,7 +56,9 @@ func (s *IssuesService) IsAssignee(ctx context.Context, owner, repo, user string
 
 // AddAssignees adds the provided GitHub users as assignees to the issue.
 //
-// GitHub API docs: https://docs.github.com/en/rest/issues/assignees#add-assignees-to-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/assignees#add-assignees-to-an-issue
+//
+//meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/assignees
 func (s *IssuesService) AddAssignees(ctx context.Context, owner, repo string, number int, assignees []string) (*Issue, *Response, error) {
 	users := &struct {
 		Assignees []string `json:"assignees,omitempty"`
@@ -74,7 +80,9 @@ func (s *IssuesService) AddAssignees(ctx context.Context, owner, repo string, nu
 
 // RemoveAssignees removes the provided GitHub users as assignees from the issue.
 //
-// GitHub API docs: https://docs.github.com/en/rest/issues/assignees#remove-assignees-from-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/assignees#remove-assignees-from-an-issue
+//
+//meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/assignees
 func (s *IssuesService) RemoveAssignees(ctx context.Context, owner, repo string, number int, assignees []string) (*Issue, *Response, error) {
 	users := &struct {
 		Assignees []string `json:"assignees,omitempty"`
