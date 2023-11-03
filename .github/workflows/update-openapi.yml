@@ -1,0 +1,19 @@
+on:
+  workflow_dispatch: { }
+  push: { }
+jobs:
+  update-openapi:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        with:
+          go-version: 1.x
+          cache-dependency-path: "**/go.sum"
+      - name: update
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: script/metadata.sh update-openapi
