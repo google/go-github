@@ -1,0 +1,14 @@
+operations:
+  - name: GET /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#get-a
+openapi_commit: s
+openapi_operations:
+  - name: GET /a/b/{a_id}
+    documentation_url: https://docs.github.com/rest/reference/a
+    openapi_files:
+      - descriptions/ghec/ghec.json
+      - descriptions/ghes-3.10/ghes-3.10.json
+  - name: GET /a/{a_id}
+    documentation_url: https://docs.github.com/rest/reference/a
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json

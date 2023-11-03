@@ -41,7 +41,7 @@ type PolicyOverrideReason struct {
 }
 
 // AuditEntry describes the fields that may be represented by various audit-log "action" entries.
-// For a list of actions see - https://docs.github.com/en/github/setting-up-and-managing-organizations-and-teams/reviewing-the-audit-log-for-your-organization#audit-log-actions
+// For a list of actions see - https://docs.github.com/github/setting-up-and-managing-organizations-and-teams/reviewing-the-audit-log-for-your-organization#audit-log-actions
 type AuditEntry struct {
 	ActorIP                  *string                 `json:"actor_ip,omitempty"`
 	Action                   *string                 `json:"action,omitempty"` // The name of the action that was performed, for example `user.login` or `repo.create`.
@@ -135,7 +135,9 @@ type AuditEntryData struct {
 
 // GetAuditLog gets the audit-log entries for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#get-the-audit-log-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/orgs#get-the-audit-log-for-an-organization
+//
+//meta:operation GET /orgs/{org}/audit-log
 func (s *OrganizationsService) GetAuditLog(ctx context.Context, org string, opts *GetAuditLogOptions) ([]*AuditEntry, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/audit-log", org)
 	u, err := addOptions(u, opts)

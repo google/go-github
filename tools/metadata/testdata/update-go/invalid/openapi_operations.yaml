@@ -1,0 +1,16 @@
+operations:
+  - name: POST /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#update-a
+openapi_operations:
+  - name: GET /ambiguous/{id}
+    documentation_url: https://docs.github.com/rest/ambiguous/
+  - name: GET /ambiguous/{name}
+    documentation_url: https://docs.github.com/rest/ambiguous/
+  - name: GET /undocumented/{undocumented_id}
+  - name: GET /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#get-a
+operation_overrides:
+  - name: GET /a/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#overridden-get-a
+  - name: GET /fake/{a_id}
+    documentation_url: https://docs.github.com/rest/a/a#overridden-get-a

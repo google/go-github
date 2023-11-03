@@ -32,7 +32,9 @@ type DeploymentBranchPolicyRequest struct {
 
 // ListDeploymentBranchPolicies lists the deployment branch policies for an environment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/branch-policies#list-deployment-branch-policies
+// GitHub API docs: https://docs.github.com/rest/deployments/branch-policies#list-deployment-branch-policies
+//
+//meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies
 func (s *RepositoriesService) ListDeploymentBranchPolicies(ctx context.Context, owner, repo, environment string) (*DeploymentBranchPolicyResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies", owner, repo, environment)
 
@@ -52,7 +54,9 @@ func (s *RepositoriesService) ListDeploymentBranchPolicies(ctx context.Context, 
 
 // GetDeploymentBranchPolicy gets a deployment branch policy for an environment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/branch-policies#get-a-deployment-branch-policy
+// GitHub API docs: https://docs.github.com/rest/deployments/branch-policies#get-a-deployment-branch-policy
+//
+//meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}
 func (s *RepositoriesService) GetDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, branchPolicyID int64) (*DeploymentBranchPolicy, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
 
@@ -72,7 +76,9 @@ func (s *RepositoriesService) GetDeploymentBranchPolicy(ctx context.Context, own
 
 // CreateDeploymentBranchPolicy creates a deployment branch policy for an environment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/branch-policies#create-a-deployment-branch-policy
+// GitHub API docs: https://docs.github.com/rest/deployments/branch-policies#create-a-deployment-branch-policy
+//
+//meta:operation POST /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies
 func (s *RepositoriesService) CreateDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, request *DeploymentBranchPolicyRequest) (*DeploymentBranchPolicy, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies", owner, repo, environment)
 
@@ -92,7 +98,9 @@ func (s *RepositoriesService) CreateDeploymentBranchPolicy(ctx context.Context, 
 
 // UpdateDeploymentBranchPolicy updates a deployment branch policy for an environment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/branch-policies#update-a-deployment-branch-policy
+// GitHub API docs: https://docs.github.com/rest/deployments/branch-policies#update-a-deployment-branch-policy
+//
+//meta:operation PUT /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}
 func (s *RepositoriesService) UpdateDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, branchPolicyID int64, request *DeploymentBranchPolicyRequest) (*DeploymentBranchPolicy, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
 
@@ -112,7 +120,9 @@ func (s *RepositoriesService) UpdateDeploymentBranchPolicy(ctx context.Context, 
 
 // DeleteDeploymentBranchPolicy deletes a deployment branch policy for an environment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/branch-policies#delete-a-deployment-branch-policy
+// GitHub API docs: https://docs.github.com/rest/deployments/branch-policies#delete-a-deployment-branch-policy
+//
+//meta:operation DELETE /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}
 func (s *RepositoriesService) DeleteDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, branchPolicyID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
 

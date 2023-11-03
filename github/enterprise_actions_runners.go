@@ -12,7 +12,9 @@ import (
 
 // ListRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-runner-applications-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#list-runner-applications-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/runners/downloads
 func (s *EnterpriseService) ListRunnerApplicationDownloads(ctx context.Context, enterprise string) ([]*RunnerApplicationDownload, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/downloads", enterprise)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -31,7 +33,9 @@ func (s *EnterpriseService) ListRunnerApplicationDownloads(ctx context.Context, 
 
 // GenerateEnterpriseJITConfig generates a just-in-time configuration for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#create-configuration-for-a-just-in-time-runner-for-an-enterprise
+//
+//meta:operation POST /enterprises/{enterprise}/actions/runners/generate-jitconfig
 func (s *EnterpriseService) GenerateEnterpriseJITConfig(ctx context.Context, enterprise string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/generate-jitconfig", enterprise)
 
@@ -51,7 +55,9 @@ func (s *EnterpriseService) GenerateEnterpriseJITConfig(ctx context.Context, ent
 
 // CreateRegistrationToken creates a token that can be used to add a self-hosted runner.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#create-a-registration-token-for-an-enterprise
+//
+//meta:operation POST /enterprises/{enterprise}/actions/runners/registration-token
 func (s *EnterpriseService) CreateRegistrationToken(ctx context.Context, enterprise string) (*RegistrationToken, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/registration-token", enterprise)
 
@@ -71,7 +77,9 @@ func (s *EnterpriseService) CreateRegistrationToken(ctx context.Context, enterpr
 
 // ListRunners lists all the self-hosted runners for a enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/runners
 func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, opts *ListOptions) (*Runners, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners", enterprise)
 	u, err := addOptions(u, opts)
@@ -95,7 +103,9 @@ func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, 
 
 // RemoveRunner forces the removal of a self-hosted runner from an enterprise using the runner id.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-an-enterprise
+//
+//meta:operation DELETE /enterprises/{enterprise}/actions/runners/{runner_id}
 func (s *EnterpriseService) RemoveRunner(ctx context.Context, enterprise string, runnerID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/%v", enterprise, runnerID)
 

@@ -12,7 +12,9 @@ import (
 
 // GetHookConfiguration returns the configuration for the specified organization webhook.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks?apiVersion=2022-11-28#get-a-webhook-configuration-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/webhooks#get-a-webhook-configuration-for-an-organization
+//
+//meta:operation GET /orgs/{org}/hooks/{hook_id}/config
 func (s *OrganizationsService) GetHookConfiguration(ctx context.Context, org string, id int64) (*HookConfig, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/hooks/%v/config", org, id)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -31,7 +33,9 @@ func (s *OrganizationsService) GetHookConfiguration(ctx context.Context, org str
 
 // EditHookConfiguration updates the configuration for the specified organization webhook.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/webhooks?apiVersion=2022-11-28#update-a-webhook-configuration-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/webhooks#update-a-webhook-configuration-for-an-organization
+//
+//meta:operation PATCH /orgs/{org}/hooks/{hook_id}/config
 func (s *OrganizationsService) EditHookConfiguration(ctx context.Context, org string, id int64, config *HookConfig) (*HookConfig, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/hooks/%v/config", org, id)
 	req, err := s.client.NewRequest("PATCH", u, config)
