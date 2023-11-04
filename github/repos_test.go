@@ -81,7 +81,7 @@ func TestRepositoriesService_ListByUser(t *testing.T) {
 
 	const methodName = "ListByUser"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListByUser(ctx, "\n", nil)
+		_, _, err = client.Repositories.ListByUser(ctx, "\n", &RepositoryListByUserOptions{})
 		return err
 	})
 
