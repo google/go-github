@@ -280,7 +280,12 @@ func TestOrganizationsService_CreateOrUpdateCustomPropertyValuesForRepos(t *test
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.CreateOrUpdateCustomPropertyValuesForRepos(ctx, "o", []string{"repo"}, []*CustomProperty{})
+	_, err := client.Organizations.CreateOrUpdateCustomPropertyValuesForRepos(ctx, "o", []string{"repo"}, []*CustomProperty{
+		{
+			PropertyName: String("service"),
+			ValueType:    "string",
+		},
+	})
 	if err != nil {
 		t.Errorf("Organizations.CreateOrUpdateCustomPropertyValuesForRepos returned error: %v", err)
 	}
@@ -289,5 +294,76 @@ func TestOrganizationsService_CreateOrUpdateCustomPropertyValuesForRepos(t *test
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Organizations.CreateOrUpdateCustomPropertyValuesForRepos(ctx, "o", nil, nil)
+	})
+}
+
+func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "1", "per_page": "100"})
+		fmt.Fprint(w, `[{
+		"repository_id": 1296269,
+		"repository_name": "Hello-World",
+		"repository_full_name": "octocat/Hello-World",	
+		"properties": [
+		{
+          "property_name": "environment",
+          "value": "production"
+        },
+        {
+          "property_name": "service",
+          "value": "web"
+        }
+		]
+        }]`)
+	})
+
+	ctx := context.Background()
+	repoPropertyValues, _, err := client.Organizations.ListCustomPropertyValues(ctx, "o", &ListOptions{
+		Page:    1,
+		PerPage: 100,
+	})
+	if err != nil {
+		t.Errorf("Organizations.ListCustomPropertyValues returned error: %v", err)
+	}
+
+	want := []*RepoCustomPropertyValue{
+		{
+			RepositoryID:       1296269,
+			RepositoryName:     "Hello-World",
+			RepositoryFullName: "octocat/Hello-World",
+			Properties: []*CustomPropertyValue{
+				{
+					PropertyName: "environment",
+					Value:        "production",
+				},
+				{
+					PropertyName: "service",
+					Value:        "web",
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(repoPropertyValues, want) {
+		t.Errorf("Organizations.ListCustomPropertyValues returned %+v, want %+v", repoPropertyValues, want)
+	}
+
+	const methodName = "ListCustomPropertyValues"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListCustomPropertyValues(ctx, "\n", &ListOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListCustomPropertyValues(ctx, "o", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
