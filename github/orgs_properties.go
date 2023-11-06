@@ -31,11 +31,11 @@ type RepoCustomPropertyValue struct {
 
 // CustomPropertyValue represents a custom property value.
 type CustomPropertyValue struct {
-	PropertyName string `json:"property_name"`
-	Value        string `json:"value"`
+	PropertyName string  `json:"property_name"`
+	Value        *string `json:"value,omitempty"`
 }
 
-// GetAllCustomProperties gets all custom properties that is defined for the specified organization.
+// GetAllCustomProperties gets all custom properties that are defined for the specified organization.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/properties#get-all-custom-properties-for-an-organization
 //
@@ -112,8 +112,8 @@ func (s *OrganizationsService) GetCustomProperty(ctx context.Context, org, name 
 // GitHub API docs: https://docs.github.com/rest/orgs/properties#create-or-update-a-custom-property-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/properties/schema/{custom_property_name}
-func (s *OrganizationsService) CreateOrUpdateCustomProperty(ctx context.Context, org, name string, property *CustomProperty) (*CustomProperty, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/properties/schema/%v", org, name)
+func (s *OrganizationsService) CreateOrUpdateCustomProperty(ctx context.Context, org, customPropertyName string, property *CustomProperty) (*CustomProperty, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/properties/schema/%v", org, customPropertyName)
 
 	req, err := s.client.NewRequest("PUT", u, property)
 	if err != nil {
@@ -134,8 +134,8 @@ func (s *OrganizationsService) CreateOrUpdateCustomProperty(ctx context.Context,
 // GitHub API docs: https://docs.github.com/rest/orgs/properties#remove-a-custom-property-for-an-organization
 //
 //meta:operation DELETE /orgs/{org}/properties/schema/{custom_property_name}
-func (s *OrganizationsService) RemoveCustomProperty(ctx context.Context, org, name string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/properties/schema/%v", org, name)
+func (s *OrganizationsService) RemoveCustomProperty(ctx context.Context, org, customPropertyName string) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/properties/schema/%v", org, customPropertyName)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

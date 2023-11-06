@@ -5939,6 +5939,16 @@ func TestCustomProperty_GetRequired(tt *testing.T) {
 	c.GetRequired()
 }
 
+func TestCustomPropertyValue_GetValue(tt *testing.T) {
+	var zeroValue string
+	c := &CustomPropertyValue{Value: &zeroValue}
+	c.GetValue()
+	c = &CustomPropertyValue{}
+	c.GetValue()
+	c = nil
+	c.GetValue()
+}
+
 func TestCustomRepoRoles_GetBaseRole(tt *testing.T) {
 	var zeroValue string
 	c := &CustomRepoRoles{BaseRole: &zeroValue}

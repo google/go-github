@@ -311,11 +311,11 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 			Properties: []*CustomPropertyValue{
 				{
 					PropertyName: "environment",
-					Value:        "production",
+					Value:        String("production"),
 				},
 				{
 					PropertyName: "service",
-					Value:        "web",
+					Value:        String("web"),
 				},
 			},
 		},
