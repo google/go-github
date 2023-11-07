@@ -12,6 +12,8 @@ import (
 
 // CustomProperty represents an organization custom property object.
 type CustomProperty struct {
+	// PropertyName is required for most endpoints except when calling CreateOrUpdateCustomProperty;
+	// where this is sent in the path and thus can be omitted.
 	PropertyName *string `json:"property_name,omitempty"`
 	// Possible values for ValueType are: string, single_select
 	ValueType     string   `json:"value_type"`
