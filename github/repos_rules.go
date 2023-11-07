@@ -99,9 +99,9 @@ type RequiredStatusChecksRuleParameters struct {
 
 // RuleRequiredWorkflow represents the Workflow for the RequireWorkflowsRuleParameters object.
 type RuleRequiredWorkflow struct {
-	Path         string `json:"path"`
+	Path         string  `json:"path"`
 	Ref          *string `json:"ref,omitempty"`
-	RepositoryID *int64 `json:"repository_id,omitempty"`
+	RepositoryID *int64  `json:"repository_id,omitempty"`
 	Sha          *string `json:"sha,omitempty"`
 }
 
