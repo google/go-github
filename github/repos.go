@@ -173,33 +173,19 @@ type BranchListOptions struct {
 // RepositoryListOptions specifies the optional parameters to the
 // RepositoriesService.List method.
 type RepositoryListOptions struct {
-	// Visibility of repositories to list. Can be one of all, public, or private.
-	// Default: all
+	// See RepositoryListByAuthenticatedUserOptions.Visibility
 	Visibility string `url:"visibility,omitempty"`
 
-	// List repos of given affiliation[s].
-	// Comma-separated list of values. Can include:
-	// * owner: Repositories that are owned by the authenticated user.
-	// * collaborator: Repositories that the user has been added to as a
-	//   collaborator.
-	// * organization_member: Repositories that the user has access to through
-	//   being a member of an organization. This includes every repository on
-	//   every team that the user is on.
-	// Default: owner,collaborator,organization_member
+	// See RepositoryListByAuthenticatedUserOptions.Affiliation
 	Affiliation string `url:"affiliation,omitempty"`
 
-	// Type of repositories to list.
-	// Can be one of all, owner, public, private, member. Default: all
-	// Will cause a 422 error if used in the same request as visibility or
-	// affiliation.
+	// See RepositoryListByUserOptions.Type or RepositoryListByAuthenticatedUserOptions.Type
 	Type string `url:"type,omitempty"`
 
-	// How to sort the repository list. Can be one of created, updated, pushed,
-	// full_name. Default: full_name
+	// See RepositoryListByUserOptions.Sort or RepositoryListByAuthenticatedUserOptions.Sort
 	Sort string `url:"sort,omitempty"`
 
-	// Direction in which to sort repositories. Can be one of asc or desc.
-	// Default: when using full_name: asc; otherwise desc
+	// See RepositoryListByUserOptions.Direction or RepositoryListByAuthenticatedUserOptions.Direction
 	Direction string `url:"direction,omitempty"`
 
 	ListOptions
@@ -262,8 +248,10 @@ func (d DependabotSecurityUpdates) String() string {
 	return Stringify(d)
 }
 
-// List the repositories for a user. Passing the empty string will list
-// repositories for the authenticated user.
+// List calls either RepositoriesService.ListByUser or RepositoriesService.ListByAuthenticatedUser
+// depending on whether user is empty.
+//
+// Deprecated: Use RepositoriesService.ListByUser or RepositoriesService.ListByAuthenticatedUser instead.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/repos#list-repositories-for-a-user
 // GitHub API docs: https://docs.github.com/rest/repos/repos#list-repositories-for-the-authenticated-user
@@ -271,12 +259,55 @@ func (d DependabotSecurityUpdates) String() string {
 //meta:operation GET /user/repos
 //meta:operation GET /users/{username}/repos
 func (s *RepositoriesService) List(ctx context.Context, user string, opts *RepositoryListOptions) ([]*Repository, *Response, error) {
-	var u string
-	if user != "" {
-		u = fmt.Sprintf("users/%v/repos", user)
-	} else {
-		u = "user/repos"
+	if opts == nil {
+		opts = &RepositoryListOptions{}
 	}
+	if user != "" {
+		return s.ListByUser(ctx, user, &RepositoryListByUserOptions{
+			Type:        opts.Type,
+			Sort:        opts.Sort,
+			Direction:   opts.Direction,
+			ListOptions: opts.ListOptions,
+		})
+	}
+	return s.ListByAuthenticatedUser(ctx, &RepositoryListByAuthenticatedUserOptions{
+		Visibility:  opts.Visibility,
+		Affiliation: opts.Affiliation,
+		Type:        opts.Type,
+		Sort:        opts.Sort,
+		Direction:   opts.Direction,
+		ListOptions: opts.ListOptions,
+	})
+}
+
+// RepositoryListByUserOptions specifies the optional parameters to the
+// RepositoriesService.ListByUser method.
+type RepositoryListByUserOptions struct {
+	// Limit results to repositories of the specified type.
+	// Default: owner
+	// Can be one of: all, owner, member
+	Type string `url:"type,omitempty"`
+
+	// The property to sort the results by.
+	// Default: full_name
+	// Can be one of: created, updated, pushed, full_name
+	Sort string `url:"sort,omitempty"`
+
+	// The order to sort by.
+	// Default: asc when using full_name, otherwise desc.
+	// Can be one of: asc, desc
+	Direction string `url:"direction,omitempty"`
+
+	ListOptions
+}
+
+// ListByUser lists public repositories for the specified user.
+//
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repositories-for-a-user
+//
+//meta:operation GET /users/{username}/repos
+func (s *RepositoriesService) ListByUser(ctx context.Context, user string, opts *RepositoryListByUserOptions) ([]*Repository, *Response, error) {
+	u := fmt.Sprintf("users/%v/repos", user)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -287,9 +318,68 @@ func (s *RepositoriesService) List(ctx context.Context, user string, opts *Repos
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	var repos []*Repository
+	resp, err := s.client.Do(ctx, req, &repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return repos, resp, nil
+}
+
+// RepositoryListByAuthenticatedUserOptions specifies the optional parameters to the
+// RepositoriesService.ListByAuthenticatedUser method.
+type RepositoryListByAuthenticatedUserOptions struct {
+	// Limit results to repositories with the specified visibility.
+	// Default: all
+	// Can be one of: all, public, private
+	Visibility string `url:"visibility,omitempty"`
+
+	// List repos of given affiliation[s].
+	// Comma-separated list of values. Can include:
+	// * owner: Repositories that are owned by the authenticated user.
+	// * collaborator: Repositories that the user has been added to as a
+	//   collaborator.
+	// * organization_member: Repositories that the user has access to through
+	//   being a member of an organization. This includes every repository on
+	//   every team that the user is on.
+	// Default: owner,collaborator,organization_member
+	Affiliation string `url:"affiliation,omitempty"`
+
+	// Limit results to repositories of the specified type. Will cause a 422 error if
+	// used in the same request as visibility or affiliation.
+	// Default: all
+	// Can be one of: all, owner, public, private, member
+	Type string `url:"type,omitempty"`
+
+	// The property to sort the results by.
+	// Default: full_name
+	// Can be one of: created, updated, pushed, full_name
+	Sort string `url:"sort,omitempty"`
+
+	// Direction in which to sort repositories. Can be one of asc or desc.
+	// Default: when using full_name: asc; otherwise desc
+	Direction string `url:"direction,omitempty"`
+
+	ListOptions
+}
+
+// ListByAuthenticatedUser lists repositories for the authenticated user.
+//
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repositories-for-the-authenticated-user
+//
+//meta:operation GET /user/repos
+func (s *RepositoriesService) ListByAuthenticatedUser(ctx context.Context, opts *RepositoryListByAuthenticatedUserOptions) ([]*Repository, *Response, error) {
+	u := "user/repos"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	var repos []*Repository
 	resp, err := s.client.Do(ctx, req, &repos)
