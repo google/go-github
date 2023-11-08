@@ -23678,6 +23678,36 @@ func TestRuleRequiredStatusChecks_GetIntegrationID(tt *testing.T) {
 	r.GetIntegrationID()
 }
 
+func TestRuleRequiredWorkflow_GetRef(tt *testing.T) {
+	var zeroValue string
+	r := &RuleRequiredWorkflow{Ref: &zeroValue}
+	r.GetRef()
+	r = &RuleRequiredWorkflow{}
+	r.GetRef()
+	r = nil
+	r.GetRef()
+}
+
+func TestRuleRequiredWorkflow_GetRepositoryID(tt *testing.T) {
+	var zeroValue int64
+	r := &RuleRequiredWorkflow{RepositoryID: &zeroValue}
+	r.GetRepositoryID()
+	r = &RuleRequiredWorkflow{}
+	r.GetRepositoryID()
+	r = nil
+	r.GetRepositoryID()
+}
+
+func TestRuleRequiredWorkflow_GetSha(tt *testing.T) {
+	var zeroValue string
+	r := &RuleRequiredWorkflow{Sha: &zeroValue}
+	r.GetSha()
+	r = &RuleRequiredWorkflow{}
+	r.GetSha()
+	r = nil
+	r.GetSha()
+}
+
 func TestRuleset_GetConditions(tt *testing.T) {
 	r := &Ruleset{}
 	r.GetConditions()
