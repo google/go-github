@@ -20358,6 +20358,30 @@ func (r *RuleRequiredStatusChecks) GetIntegrationID() int64 {
 	return *r.IntegrationID
 }
 
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (r *RuleRequiredWorkflow) GetRef() string {
+	if r == nil || r.Ref == nil {
+		return ""
+	}
+	return *r.Ref
+}
+
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (r *RuleRequiredWorkflow) GetRepositoryID() int64 {
+	if r == nil || r.RepositoryID == nil {
+		return 0
+	}
+	return *r.RepositoryID
+}
+
+// GetSha returns the Sha field if it's non-nil, zero value otherwise.
+func (r *RuleRequiredWorkflow) GetSha() string {
+	if r == nil || r.Sha == nil {
+		return ""
+	}
+	return *r.Sha
+}
+
 // GetConditions returns the Conditions field.
 func (r *Ruleset) GetConditions() *RulesetConditions {
 	if r == nil {

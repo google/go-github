@@ -97,6 +97,19 @@ type RequiredStatusChecksRuleParameters struct {
 	StrictRequiredStatusChecksPolicy bool                       `json:"strict_required_status_checks_policy"`
 }
 
+// RuleRequiredWorkflow represents the Workflow for the RequireWorkflowsRuleParameters object.
+type RuleRequiredWorkflow struct {
+	Path         string  `json:"path"`
+	Ref          *string `json:"ref,omitempty"`
+	RepositoryID *int64  `json:"repository_id,omitempty"`
+	Sha          *string `json:"sha,omitempty"`
+}
+
+// RequiredWorkflowsRuleParameters represents the workflows rule parameters.
+type RequiredWorkflowsRuleParameters struct {
+	RequiredWorkflows []*RuleRequiredWorkflow `json:"workflows"`
+}
+
 // RepositoryRule represents a GitHub Rule.
 type RepositoryRule struct {
 	Type       string           `json:"type"`
@@ -164,6 +177,16 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "required_status_checks":
 		params := RequiredStatusChecksRuleParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
+
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
+	case "workflows":
+		params := RequiredWorkflowsRuleParameters{}
 		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
 			return err
 		}
@@ -325,6 +348,18 @@ func NewTagNamePatternRule(params *RulePatternParameters) (rule *RepositoryRule)
 
 	return &RepositoryRule{
 		Type:       "tag_name_pattern",
+		Parameters: &rawParams,
+	}
+}
+
+// NewRequiredWorkflowsRule creates a rule to require which status checks must pass before branches can be merged into a branch rule.
+func NewRequiredWorkflowsRule(params *RequiredWorkflowsRuleParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "workflows",
 		Parameters: &rawParams,
 	}
 }
