@@ -5899,6 +5899,56 @@ func TestCredentialAuthorization_GetTokenLastEight(tt *testing.T) {
 	c.GetTokenLastEight()
 }
 
+func TestCustomProperty_GetDefaultValue(tt *testing.T) {
+	var zeroValue string
+	c := &CustomProperty{DefaultValue: &zeroValue}
+	c.GetDefaultValue()
+	c = &CustomProperty{}
+	c.GetDefaultValue()
+	c = nil
+	c.GetDefaultValue()
+}
+
+func TestCustomProperty_GetDescription(tt *testing.T) {
+	var zeroValue string
+	c := &CustomProperty{Description: &zeroValue}
+	c.GetDescription()
+	c = &CustomProperty{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCustomProperty_GetPropertyName(tt *testing.T) {
+	var zeroValue string
+	c := &CustomProperty{PropertyName: &zeroValue}
+	c.GetPropertyName()
+	c = &CustomProperty{}
+	c.GetPropertyName()
+	c = nil
+	c.GetPropertyName()
+}
+
+func TestCustomProperty_GetRequired(tt *testing.T) {
+	var zeroValue bool
+	c := &CustomProperty{Required: &zeroValue}
+	c.GetRequired()
+	c = &CustomProperty{}
+	c.GetRequired()
+	c = nil
+	c.GetRequired()
+}
+
+func TestCustomPropertyValue_GetValue(tt *testing.T) {
+	var zeroValue string
+	c := &CustomPropertyValue{Value: &zeroValue}
+	c.GetValue()
+	c = &CustomPropertyValue{}
+	c.GetValue()
+	c = nil
+	c.GetValue()
+}
+
 func TestCustomRepoRoles_GetBaseRole(tt *testing.T) {
 	var zeroValue string
 	c := &CustomRepoRoles{BaseRole: &zeroValue}

@@ -4990,6 +4990,46 @@ func (c *CredentialAuthorization) GetTokenLastEight() string {
 	return *c.TokenLastEight
 }
 
+// GetDefaultValue returns the DefaultValue field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetDefaultValue() string {
+	if c == nil || c.DefaultValue == nil {
+		return ""
+	}
+	return *c.DefaultValue
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetPropertyName returns the PropertyName field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetPropertyName() string {
+	if c == nil || c.PropertyName == nil {
+		return ""
+	}
+	return *c.PropertyName
+}
+
+// GetRequired returns the Required field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetRequired() bool {
+	if c == nil || c.Required == nil {
+		return false
+	}
+	return *c.Required
+}
+
+// GetValue returns the Value field if it's non-nil, zero value otherwise.
+func (c *CustomPropertyValue) GetValue() string {
+	if c == nil || c.Value == nil {
+		return ""
+	}
+	return *c.Value
+}
+
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
 func (c *CustomRepoRoles) GetBaseRole() string {
 	if c == nil || c.BaseRole == nil {
