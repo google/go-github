@@ -79,7 +79,7 @@ type createHookRequest struct {
 // Note that only a subset of the hook fields are used and hook must
 // not be nil.
 //
-// GitHub API docs: https://docs.github.com/rest/webhooks/repos#create-a-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks#create-a-repository-webhook
 //
 //meta:operation POST /repos/{owner}/{repo}/hooks
 func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string, hook *Hook) (*Hook, *Response, error) {
@@ -108,7 +108,7 @@ func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string
 
 // ListHooks lists all Hooks for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/webhooks/repos#list-repository-webhooks
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks#list-repository-webhooks
 //
 //meta:operation GET /repos/{owner}/{repo}/hooks
 func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Hook, *Response, error) {
@@ -134,7 +134,7 @@ func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string,
 
 // GetHook returns a single specified Hook.
 //
-// GitHub API docs: https://docs.github.com/rest/webhooks/repos#get-a-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks#get-a-repository-webhook
 //
 //meta:operation GET /repos/{owner}/{repo}/hooks/{hook_id}
 func (s *RepositoriesService) GetHook(ctx context.Context, owner, repo string, id int64) (*Hook, *Response, error) {
@@ -154,7 +154,7 @@ func (s *RepositoriesService) GetHook(ctx context.Context, owner, repo string, i
 
 // EditHook updates a specified Hook.
 //
-// GitHub API docs: https://docs.github.com/rest/webhooks/repos#update-a-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks#update-a-repository-webhook
 //
 //meta:operation PATCH /repos/{owner}/{repo}/hooks/{hook_id}
 func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, id int64, hook *Hook) (*Hook, *Response, error) {
@@ -174,7 +174,7 @@ func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, 
 
 // DeleteHook deletes a specified Hook.
 //
-// GitHub API docs: https://docs.github.com/rest/webhooks/repos#delete-a-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks#delete-a-repository-webhook
 //
 //meta:operation DELETE /repos/{owner}/{repo}/hooks/{hook_id}
 func (s *RepositoriesService) DeleteHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
@@ -188,7 +188,7 @@ func (s *RepositoriesService) DeleteHook(ctx context.Context, owner, repo string
 
 // PingHook triggers a 'ping' event to be sent to the Hook.
 //
-// GitHub API docs: https://docs.github.com/rest/webhooks/repos#ping-a-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks#ping-a-repository-webhook
 //
 //meta:operation POST /repos/{owner}/{repo}/hooks/{hook_id}/pings
 func (s *RepositoriesService) PingHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
@@ -202,7 +202,7 @@ func (s *RepositoriesService) PingHook(ctx context.Context, owner, repo string, 
 
 // TestHook triggers a test Hook by github.
 //
-// GitHub API docs: https://docs.github.com/rest/webhooks/repos#test-the-push-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks#test-the-push-repository-webhook
 //
 //meta:operation POST /repos/{owner}/{repo}/hooks/{hook_id}/tests
 func (s *RepositoriesService) TestHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
