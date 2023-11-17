@@ -132,7 +132,9 @@ func (cp *CopilotSeatDetails) GetOrganization() (*Organization, bool) {
 
 // GetCopilotBilling gets Copilot for Business billing information and settings for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#get-copilot-for-business-seat-information-and-settings-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-for-business#get-copilot-for-business-seat-information-and-settings-for-an-organization
+//
+//meta:operation GET /orgs/{org}/copilot/billing
 func (s *CopilotService) GetCopilotBilling(ctx context.Context, org string) (*CopilotOrganizationDetails, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing", org)
 
@@ -154,7 +156,9 @@ func (s *CopilotService) GetCopilotBilling(ctx context.Context, org string) (*Co
 //
 // To paginate through all seats, populate 'Page' with the number of the last page.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#list-all-copilot-for-business-seat-assignments-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-for-business#list-all-copilot-for-business-seat-assignments-for-an-organization
+//
+//meta:operation GET /orgs/{org}/copilot/billing/seats
 func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string, opts *ListOptions) (*ListCopilotSeatsResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/seats", org)
 
@@ -174,7 +178,9 @@ func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string, opts 
 
 // AddCopilotTeams adds teams to the Copilot for Business subscription for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#add-teams-to-the-copilot-for-business-subscription-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-for-business#add-teams-to-the-copilot-for-business-subscription-for-an-organization
+//
+//meta:operation POST /orgs/{org}/copilot/billing/selected_teams
 func (s *CopilotService) AddCopilotTeams(ctx context.Context, org string, teamNames []string) (*SeatAssignments, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_teams", org)
 
@@ -200,7 +206,9 @@ func (s *CopilotService) AddCopilotTeams(ctx context.Context, org string, teamNa
 
 // RemoveCopilotTeams removes teams from the Copilot for Business subscription for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#remove-teams-from-the-copilot-for-business-subscription-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-for-business#remove-teams-from-the-copilot-for-business-subscription-for-an-organization
+//
+//meta:operation DELETE /orgs/{org}/copilot/billing/selected_teams
 func (s *CopilotService) RemoveCopilotTeams(ctx context.Context, org string, teamNames []string) (*SeatCancellations, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_teams", org)
 
@@ -226,7 +234,9 @@ func (s *CopilotService) RemoveCopilotTeams(ctx context.Context, org string, tea
 
 // AddCopilotUsers adds users to the Copilot for Business subscription for an organization
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#add-users-to-the-copilot-for-business-subscription-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-for-business#add-users-to-the-copilot-for-business-subscription-for-an-organization
+//
+//meta:operation POST /orgs/{org}/copilot/billing/selected_users
 func (s *CopilotService) AddCopilotUsers(ctx context.Context, org string, users []string) (*SeatAssignments, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_users", org)
 
@@ -252,7 +262,9 @@ func (s *CopilotService) AddCopilotUsers(ctx context.Context, org string, users 
 
 // RemoveCopilotUsers removes users from the Copilot for Business subscription for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#remove-users-from-the-copilot-for-business-subscription-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-for-business#remove-users-from-the-copilot-for-business-subscription-for-an-organization
+//
+//meta:operation DELETE /orgs/{org}/copilot/billing/selected_users
 func (s *CopilotService) RemoveCopilotUsers(ctx context.Context, org string, users []string) (*SeatCancellations, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_users", org)
 
@@ -278,7 +290,9 @@ func (s *CopilotService) RemoveCopilotUsers(ctx context.Context, org string, use
 
 // GetSeatDetails gets Copilot for Business seat assignment details for a user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-for-business#get-copilot-for-business-seat-assignment-details-for-a-user
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-for-business#get-copilot-for-business-seat-assignment-details-for-a-user
+//
+//meta:operation GET /orgs/{org}/members/{username}/copilot
 func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (*CopilotSeatDetails, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/members/%v/copilot", org, user)
 
