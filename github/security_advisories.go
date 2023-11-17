@@ -47,6 +47,81 @@ type ListRepositorySecurityAdvisoriesOptions struct {
 	State string `url:"state,omitempty"`
 }
 
+// ListGlobalSecurityAdvisoriesOptions specifies the optional parameters to list the global security advisories.
+type ListGlobalSecurityAdvisoriesOptions struct {
+	ListCursorOptions
+
+	// If specified, only advisories with this GHSA (GitHub Security Advisory) identifier will be returned.
+	GHSAID string `url:"ghsa_id,omitempty"`
+
+	// If specified, only advisories of this type will be returned.
+	// By default, a request with no other parameters defined will only return reviewed advisories that are not malware.
+	// Default: reviewed
+	// Can be one of: reviewed, malware, unreviewed
+	Type string `url:"type,omitempty"`
+
+	// If specified, only advisories with this CVE (Common Vulnerabilities and Exposures) identifier will be returned.
+	CVEID string `url:"cve_id,omitempty"`
+
+	// If specified, only advisories for these ecosystems will be returned.
+	// Can be one of: actions, composer, erlang, go, maven, npm, nuget, other, pip, pub, rubygems, rust
+	Ecosystem string `url:"ecosystem,omitempty"`
+
+	// If specified, only advisories with these severities will be returned.
+	// Can be one of: unknown, low, medium, high, critical
+	Severity string `url:"severity,omitempty"`
+
+	// If specified, only advisories with these Common Weakness Enumerations (CWEs) will be returned.
+	// Example: cwes=79,284,22 or cwes[]=79&cwes[]=284&cwes[]=22
+	CWEs []string `url:"cwes,omitempty"`
+
+	// Whether to only return advisories that have been withdrawn.
+	IsWithdrawn bool `url:"is_withdrawn,omitempty"`
+
+	// If specified, only return advisories that affect any of package or package@version.
+	// A maximum of 1000 packages can be specified. If the query parameter causes
+	// the URL to exceed the maximum URL length supported by your client, you must specify fewer packages.
+	// Example: affects=package1,package2@1.0.0,package3@^2.0.0 or affects[]=package1&affects[]=package2@1.0.0
+	Affects string `url:"affects,omitempty"`
+
+	// If specified, only return advisories that were published on a date or date range.
+	Published string `url:"published,omitempty"`
+
+	// If specified, only return advisories that were updated on a date or date range.
+	Updated string `url:"updated,omitempty"`
+
+	// If specified, only show advisories that were updated or published on a date or date range.
+	Modified string `url:"modified,omitempty"`
+}
+
+// GlobalSecurityAdvisory represents the global security advisory object response.
+type GlobalSecurityAdvisory struct {
+	SecurityAdvisory
+	ID                    *int64             `json:"id,omitempty"`
+	RepositoryAdvisoryURL *string            `json:"repository_advisory_url,omitempty"`
+	Type                  *string            `json:"type,omitempty"`
+	SourceCodeLocation    *string            `json:"source_code_location,omitempty"`
+	References            []string           `json:"references,omitempty"`
+	Vulnerabilities       []*Vulnerabilities `json:"vulnerabilities,omitempty"`
+	GitHubReviewedAt      *Timestamp         `json:"github_reviewed_at,omitempty"`
+	NVDPublishedAt        *Timestamp         `json:"nvd_published_at,omitempty"`
+	Credits               []*Credits         `json:"credits,omitempty"`
+}
+
+// Vulnerabilities represents the Vulnerabilities for the global security advisory.
+type Vulnerabilities struct {
+	Package                *VulnerabilityPackage `json:"package,omitempty"`
+	FirstPatchedVersion    *string               `json:"first_patched_version,omitempty"`
+	VulnerableVersionRange *string               `json:"vulnerable_version_range,omitempty"`
+	VulnerableFunctions    []string              `json:"vulnerable_functions,omitempty"`
+}
+
+// Credits represents the credit object for a global security advisory.
+type Credits struct {
+	User *User
+	Type *string `json:"type,omitempty"`
+}
+
 // RequestCVE requests a Common Vulnerabilities and Exposures (CVE) for a repository security advisory.
 // The ghsaID is the GitHub Security Advisory identifier of the advisory.
 //
@@ -123,4 +198,51 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisories(ctx context
 	}
 
 	return advisories, resp, nil
+}
+
+// ListGlobalSecurityAdvisories Lists all global security advisories.
+//
+// GitHub API docs: https://docs.github.com/rest/security-advisories/global-advisories#list-global-security-advisories
+//
+//meta:operation GET /advisories
+func (s *SecurityAdvisoriesService) ListGlobalSecurityAdvisories(ctx context.Context, opt *ListGlobalSecurityAdvisoriesOptions) ([]*GlobalSecurityAdvisory, *Response, error) {
+	url := "advisories"
+	url, err := addOptions(url, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var advisories []*GlobalSecurityAdvisory
+	resp, err := s.client.Do(ctx, req, &advisories)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return advisories, resp, nil
+}
+
+// GetGlobalSecurityAdvisories Gets a global security advisory using its GitHub Security Advisory (GHSA) identifier.
+//
+// GitHub API docs: https://docs.github.com/rest/security-advisories/global-advisories#get-a-global-security-advisory
+//
+//meta:operation GET /advisories/{ghsa_id}
+func (s *SecurityAdvisoriesService) GetGlobalSecurityAdvisories(ctx context.Context, ghsaID string) (*GlobalSecurityAdvisory, *Response, error) {
+	url := fmt.Sprintf("advisories/%s", ghsaID)
+	req, err := s.client.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var advisory *GlobalSecurityAdvisory
+	resp, err := s.client.Do(ctx, req, &advisory)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return advisory, resp, nil
 }

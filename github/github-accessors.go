@@ -4990,6 +4990,22 @@ func (c *CredentialAuthorization) GetTokenLastEight() string {
 	return *c.TokenLastEight
 }
 
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (c *Credits) GetType() string {
+	if c == nil || c.Type == nil {
+		return ""
+	}
+	return *c.Type
+}
+
+// GetUser returns the User field.
+func (c *Credits) GetUser() *User {
+	if c == nil {
+		return nil
+	}
+	return c.User
+}
+
 // GetDefaultValue returns the DefaultValue field if it's non-nil, zero value otherwise.
 func (c *CustomProperty) GetDefaultValue() string {
 	if c == nil || c.DefaultValue == nil {
@@ -7796,6 +7812,54 @@ func (g *GitObject) GetURL() string {
 		return ""
 	}
 	return *g.URL
+}
+
+// GetGitHubReviewedAt returns the GitHubReviewedAt field if it's non-nil, zero value otherwise.
+func (g *GlobalSecurityAdvisory) GetGitHubReviewedAt() Timestamp {
+	if g == nil || g.GitHubReviewedAt == nil {
+		return Timestamp{}
+	}
+	return *g.GitHubReviewedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (g *GlobalSecurityAdvisory) GetID() int64 {
+	if g == nil || g.ID == nil {
+		return 0
+	}
+	return *g.ID
+}
+
+// GetNVDPublishedAt returns the NVDPublishedAt field if it's non-nil, zero value otherwise.
+func (g *GlobalSecurityAdvisory) GetNVDPublishedAt() Timestamp {
+	if g == nil || g.NVDPublishedAt == nil {
+		return Timestamp{}
+	}
+	return *g.NVDPublishedAt
+}
+
+// GetRepositoryAdvisoryURL returns the RepositoryAdvisoryURL field if it's non-nil, zero value otherwise.
+func (g *GlobalSecurityAdvisory) GetRepositoryAdvisoryURL() string {
+	if g == nil || g.RepositoryAdvisoryURL == nil {
+		return ""
+	}
+	return *g.RepositoryAdvisoryURL
+}
+
+// GetSourceCodeLocation returns the SourceCodeLocation field if it's non-nil, zero value otherwise.
+func (g *GlobalSecurityAdvisory) GetSourceCodeLocation() string {
+	if g == nil || g.SourceCodeLocation == nil {
+		return ""
+	}
+	return *g.SourceCodeLocation
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (g *GlobalSecurityAdvisory) GetType() string {
+	if g == nil || g.Type == nil {
+		return ""
+	}
+	return *g.Type
 }
 
 // GetInstallation returns the Installation field.
@@ -24332,6 +24396,30 @@ func (u *UserSuspendOptions) GetReason() string {
 		return ""
 	}
 	return *u.Reason
+}
+
+// GetFirstPatchedVersion returns the FirstPatchedVersion field if it's non-nil, zero value otherwise.
+func (v *Vulnerabilities) GetFirstPatchedVersion() string {
+	if v == nil || v.FirstPatchedVersion == nil {
+		return ""
+	}
+	return *v.FirstPatchedVersion
+}
+
+// GetPackage returns the Package field.
+func (v *Vulnerabilities) GetPackage() *VulnerabilityPackage {
+	if v == nil {
+		return nil
+	}
+	return v.Package
+}
+
+// GetVulnerableVersionRange returns the VulnerableVersionRange field if it's non-nil, zero value otherwise.
+func (v *Vulnerabilities) GetVulnerableVersionRange() string {
+	if v == nil || v.VulnerableVersionRange == nil {
+		return ""
+	}
+	return *v.VulnerableVersionRange
 }
 
 // GetEcosystem returns the Ecosystem field if it's non-nil, zero value otherwise.
