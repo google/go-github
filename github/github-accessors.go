@@ -5046,6 +5046,46 @@ func (c *CredentialAuthorization) GetTokenLastEight() string {
 	return *c.TokenLastEight
 }
 
+// GetDefaultValue returns the DefaultValue field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetDefaultValue() string {
+	if c == nil || c.DefaultValue == nil {
+		return ""
+	}
+	return *c.DefaultValue
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetPropertyName returns the PropertyName field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetPropertyName() string {
+	if c == nil || c.PropertyName == nil {
+		return ""
+	}
+	return *c.PropertyName
+}
+
+// GetRequired returns the Required field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetRequired() bool {
+	if c == nil || c.Required == nil {
+		return false
+	}
+	return *c.Required
+}
+
+// GetValue returns the Value field if it's non-nil, zero value otherwise.
+func (c *CustomPropertyValue) GetValue() string {
+	if c == nil || c.Value == nil {
+		return ""
+	}
+	return *c.Value
+}
+
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
 func (c *CustomRepoRoles) GetBaseRole() string {
 	if c == nil || c.BaseRole == nil {
@@ -5356,6 +5396,22 @@ func (d *DependabotAlertEvent) GetSender() *User {
 		return nil
 	}
 	return d.Sender
+}
+
+// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertState) GetDismissedComment() string {
+	if d == nil || d.DismissedComment == nil {
+		return ""
+	}
+	return *d.DismissedComment
+}
+
+// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
+func (d *DependabotAlertState) GetDismissedReason() string {
+	if d == nil || d.DismissedReason == nil {
+		return ""
+	}
+	return *d.DismissedReason
 }
 
 // GetCVEID returns the CVEID field if it's non-nil, zero value otherwise.
@@ -20396,6 +20452,30 @@ func (r *RuleRequiredStatusChecks) GetIntegrationID() int64 {
 		return 0
 	}
 	return *r.IntegrationID
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (r *RuleRequiredWorkflow) GetRef() string {
+	if r == nil || r.Ref == nil {
+		return ""
+	}
+	return *r.Ref
+}
+
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (r *RuleRequiredWorkflow) GetRepositoryID() int64 {
+	if r == nil || r.RepositoryID == nil {
+		return 0
+	}
+	return *r.RepositoryID
+}
+
+// GetSha returns the Sha field if it's non-nil, zero value otherwise.
+func (r *RuleRequiredWorkflow) GetSha() string {
+	if r == nil || r.Sha == nil {
+		return ""
+	}
+	return *r.Sha
 }
 
 // GetConditions returns the Conditions field.

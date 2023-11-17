@@ -13,7 +13,7 @@ import (
 // GitignoresService provides access to the gitignore related functions in the
 // GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/gitignore/
+// GitHub API docs: https://docs.github.com/rest/gitignore/
 type GitignoresService service
 
 // Gitignore represents a .gitignore file as returned by the GitHub API.
@@ -28,7 +28,9 @@ func (g Gitignore) String() string {
 
 // List all available Gitignore templates.
 //
-// GitHub API docs: https://docs.github.com/en/rest/gitignore/#listing-available-templates
+// GitHub API docs: https://docs.github.com/rest/gitignore/gitignore#get-all-gitignore-templates
+//
+//meta:operation GET /gitignore/templates
 func (s *GitignoresService) List(ctx context.Context) ([]string, *Response, error) {
 	req, err := s.client.NewRequest("GET", "gitignore/templates", nil)
 	if err != nil {
@@ -46,7 +48,9 @@ func (s *GitignoresService) List(ctx context.Context) ([]string, *Response, erro
 
 // Get a Gitignore by name.
 //
-// GitHub API docs: https://docs.github.com/en/rest/gitignore#get-a-gitignore-template
+// GitHub API docs: https://docs.github.com/rest/gitignore/gitignore#get-a-gitignore-template
+//
+//meta:operation GET /gitignore/templates/{name}
 func (s *GitignoresService) Get(ctx context.Context, name string) (*Gitignore, *Response, error) {
 	u := fmt.Sprintf("gitignore/templates/%v", name)
 	req, err := s.client.NewRequest("GET", u, nil)

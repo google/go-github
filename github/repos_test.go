@@ -18,36 +18,30 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
+func TestRepositoriesService_ListByAuthenticatedUser(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Repositories.List(ctx, "", nil)
+	got, _, err := client.Repositories.ListByAuthenticatedUser(ctx, nil)
 	if err != nil {
 		t.Errorf("Repositories.List returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !cmp.Equal(got, want) {
-		t.Errorf("Repositories.List returned %+v, want %+v", got, want)
+		t.Errorf("Repositories.ListByAuthenticatedUser returned %+v, want %+v", got, want)
 	}
 
-	const methodName = "List"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.List(ctx, "\n", &RepositoryListOptions{})
-		return err
-	})
+	const methodName = "ListByAuthenticatedUser"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.List(ctx, "", nil)
+		got, resp, err := client.Repositories.ListByAuthenticatedUser(ctx, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -55,78 +49,84 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_List_specifiedUser(t *testing.T) {
+func TestRepositoriesService_ListByUser(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{
-			"visibility":  "public",
-			"affiliation": "owner,collaborator",
-			"sort":        "created",
-			"direction":   "asc",
-			"page":        "2",
+			"sort":      "created",
+			"direction": "asc",
+			"page":      "2",
 		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &RepositoryListOptions{
-		Visibility:  "public",
-		Affiliation: "owner,collaborator",
+	opt := &RepositoryListByUserOptions{
 		Sort:        "created",
 		Direction:   "asc",
 		ListOptions: ListOptions{Page: 2},
 	}
 	ctx := context.Background()
-	repos, _, err := client.Repositories.List(ctx, "u", opt)
+	repos, _, err := client.Repositories.ListByUser(ctx, "u", opt)
 	if err != nil {
 		t.Errorf("Repositories.List returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
 	if !cmp.Equal(repos, want) {
-		t.Errorf("Repositories.List returned %+v, want %+v", repos, want)
+		t.Errorf("Repositories.ListByUser returned %+v, want %+v", repos, want)
 	}
+
+	const methodName = "ListByUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListByUser(ctx, "\n", &RepositoryListByUserOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListByUser(ctx, "u", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
-func TestRepositoriesService_List_specifiedUser_type(t *testing.T) {
+func TestRepositoriesService_ListByUser_type(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{
 			"type": "owner",
 		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &RepositoryListOptions{
+	opt := &RepositoryListByUserOptions{
 		Type: "owner",
 	}
 	ctx := context.Background()
-	repos, _, err := client.Repositories.List(ctx, "u", opt)
+	repos, _, err := client.Repositories.ListByUser(ctx, "u", opt)
 	if err != nil {
-		t.Errorf("Repositories.List returned error: %v", err)
+		t.Errorf("Repositories.ListByUser returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
 	if !cmp.Equal(repos, want) {
-		t.Errorf("Repositories.List returned %+v, want %+v", repos, want)
+		t.Errorf("Repositories.ListByUser returned %+v, want %+v", repos, want)
 	}
 }
 
-func TestRepositoriesService_List_invalidUser(t *testing.T) {
+func TestRepositoriesService_ListByUser_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
 	ctx := context.Background()
-	_, _, err := client.Repositories.List(ctx, "%", nil)
+	_, _, err := client.Repositories.ListByUser(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -1766,7 +1766,6 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 			input := &ProtectionRequest{
 				RequiredStatusChecks: &RequiredStatusChecks{
 					Strict: true,
-					Checks: []*RequiredStatusCheck{},
 				},
 				RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
 					DismissStaleReviews: true,
@@ -1802,8 +1801,7 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 				fmt.Fprintf(w, `{
 					"required_status_checks":{
 						"strict":true,
-						"contexts":[],
-						"checks": []
+						"contexts":[]
 					},
 					"required_pull_request_reviews":{
 						"dismissal_restrictions":{
@@ -1847,7 +1845,6 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 				RequiredStatusChecks: &RequiredStatusChecks{
 					Strict:   true,
 					Contexts: []string{},
-					Checks:   []*RequiredStatusCheck{},
 				},
 				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 					DismissStaleReviews: true,

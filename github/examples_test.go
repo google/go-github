@@ -49,14 +49,14 @@ func ExampleRepositoriesService_GetReadme() {
 	fmt.Printf("google/go-github README:\n%v\n", content)
 }
 
-func ExampleRepositoriesService_List() {
+func ExampleRepositoriesService_ListByUser() {
 	client := github.NewClient(nil)
 
 	user := "willnorris"
-	opt := &github.RepositoryListOptions{Type: "owner", Sort: "updated", Direction: "desc"}
+	opt := &github.RepositoryListByUserOptions{Type: "owner", Sort: "updated", Direction: "desc"}
 
 	ctx := context.Background()
-	repos, _, err := client.Repositories.List(ctx, user, opt)
+	repos, _, err := client.Repositories.ListByUser(ctx, user, opt)
 	if err != nil {
 		fmt.Println(err)
 	}

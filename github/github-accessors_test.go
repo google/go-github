@@ -5963,6 +5963,56 @@ func TestCredentialAuthorization_GetTokenLastEight(tt *testing.T) {
 	c.GetTokenLastEight()
 }
 
+func TestCustomProperty_GetDefaultValue(tt *testing.T) {
+	var zeroValue string
+	c := &CustomProperty{DefaultValue: &zeroValue}
+	c.GetDefaultValue()
+	c = &CustomProperty{}
+	c.GetDefaultValue()
+	c = nil
+	c.GetDefaultValue()
+}
+
+func TestCustomProperty_GetDescription(tt *testing.T) {
+	var zeroValue string
+	c := &CustomProperty{Description: &zeroValue}
+	c.GetDescription()
+	c = &CustomProperty{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCustomProperty_GetPropertyName(tt *testing.T) {
+	var zeroValue string
+	c := &CustomProperty{PropertyName: &zeroValue}
+	c.GetPropertyName()
+	c = &CustomProperty{}
+	c.GetPropertyName()
+	c = nil
+	c.GetPropertyName()
+}
+
+func TestCustomProperty_GetRequired(tt *testing.T) {
+	var zeroValue bool
+	c := &CustomProperty{Required: &zeroValue}
+	c.GetRequired()
+	c = &CustomProperty{}
+	c.GetRequired()
+	c = nil
+	c.GetRequired()
+}
+
+func TestCustomPropertyValue_GetValue(tt *testing.T) {
+	var zeroValue string
+	c := &CustomPropertyValue{Value: &zeroValue}
+	c.GetValue()
+	c = &CustomPropertyValue{}
+	c.GetValue()
+	c = nil
+	c.GetValue()
+}
+
 func TestCustomRepoRoles_GetBaseRole(tt *testing.T) {
 	var zeroValue string
 	c := &CustomRepoRoles{BaseRole: &zeroValue}
@@ -6306,6 +6356,26 @@ func TestDependabotAlertEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 	d = nil
 	d.GetSender()
+}
+
+func TestDependabotAlertState_GetDismissedComment(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlertState{DismissedComment: &zeroValue}
+	d.GetDismissedComment()
+	d = &DependabotAlertState{}
+	d.GetDismissedComment()
+	d = nil
+	d.GetDismissedComment()
+}
+
+func TestDependabotAlertState_GetDismissedReason(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlertState{DismissedReason: &zeroValue}
+	d.GetDismissedReason()
+	d = &DependabotAlertState{}
+	d.GetDismissedReason()
+	d = nil
+	d.GetDismissedReason()
 }
 
 func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
@@ -23720,6 +23790,36 @@ func TestRuleRequiredStatusChecks_GetIntegrationID(tt *testing.T) {
 	r.GetIntegrationID()
 	r = nil
 	r.GetIntegrationID()
+}
+
+func TestRuleRequiredWorkflow_GetRef(tt *testing.T) {
+	var zeroValue string
+	r := &RuleRequiredWorkflow{Ref: &zeroValue}
+	r.GetRef()
+	r = &RuleRequiredWorkflow{}
+	r.GetRef()
+	r = nil
+	r.GetRef()
+}
+
+func TestRuleRequiredWorkflow_GetRepositoryID(tt *testing.T) {
+	var zeroValue int64
+	r := &RuleRequiredWorkflow{RepositoryID: &zeroValue}
+	r.GetRepositoryID()
+	r = &RuleRequiredWorkflow{}
+	r.GetRepositoryID()
+	r = nil
+	r.GetRepositoryID()
+}
+
+func TestRuleRequiredWorkflow_GetSha(tt *testing.T) {
+	var zeroValue string
+	r := &RuleRequiredWorkflow{Sha: &zeroValue}
+	r.GetSha()
+	r = &RuleRequiredWorkflow{}
+	r.GetSha()
+	r = nil
+	r.GetSha()
 }
 
 func TestRuleset_GetConditions(tt *testing.T) {

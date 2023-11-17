@@ -13,7 +13,7 @@ import (
 // OrganizationsService provides access to the organization related functions
 // in the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/
+// GitHub API docs: https://docs.github.com/rest/orgs/
 type OrganizationsService service
 
 // Organization represents a GitHub organization account.
@@ -148,7 +148,9 @@ type OrganizationsListOptions struct {
 // listing the next set of organizations, use the ID of the last-returned organization
 // as the opts.Since parameter for the next call.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-organizations
+// GitHub API docs: https://docs.github.com/rest/orgs/orgs#list-organizations
+//
+//meta:operation GET /organizations
 func (s *OrganizationsService) ListAll(ctx context.Context, opts *OrganizationsListOptions) ([]*Organization, *Response, error) {
 	u, err := addOptions("organizations", opts)
 	if err != nil {
@@ -171,8 +173,11 @@ func (s *OrganizationsService) ListAll(ctx context.Context, opts *OrganizationsL
 // List the organizations for a user. Passing the empty string will list
 // organizations for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-organizations-for-the-authenticated-user
-// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-organizations-for-a-user
+// GitHub API docs: https://docs.github.com/rest/orgs/orgs#list-organizations-for-a-user
+// GitHub API docs: https://docs.github.com/rest/orgs/orgs#list-organizations-for-the-authenticated-user
+//
+//meta:operation GET /user/orgs
+//meta:operation GET /users/{username}/orgs
 func (s *OrganizationsService) List(ctx context.Context, user string, opts *ListOptions) ([]*Organization, *Response, error) {
 	var u string
 	if user != "" {
@@ -201,7 +206,9 @@ func (s *OrganizationsService) List(ctx context.Context, user string, opts *List
 
 // Get fetches an organization by name.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#get-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/orgs#get-an-organization
+//
+//meta:operation GET /orgs/{org}
 func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v", org)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -223,7 +230,9 @@ func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organizati
 
 // GetByID fetches an organization.
 //
-// Note: GetByID uses the undocumented GitHub API endpoint /organizations/:id.
+// Note: GetByID uses the undocumented GitHub API endpoint "GET /organizations/{organization_id}".
+//
+//meta:operation GET /organizations/{organization_id}
 func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organization, *Response, error) {
 	u := fmt.Sprintf("organizations/%d", id)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -242,7 +251,9 @@ func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organiza
 
 // Edit an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#update-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/orgs#update-an-organization
+//
+//meta:operation PATCH /orgs/{org}
 func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organization) (*Organization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v", name)
 	req, err := s.client.NewRequest("PATCH", u, org)
@@ -264,7 +275,9 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 
 // Delete an organization by name.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#delete-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/orgs#delete-an-organization
+//
+//meta:operation DELETE /orgs/{org}
 func (s *OrganizationsService) Delete(ctx context.Context, org string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v", org)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -277,7 +290,9 @@ func (s *OrganizationsService) Delete(ctx context.Context, org string) (*Respons
 
 // ListInstallations lists installations for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/orgs#list-app-installations-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/orgs#list-app-installations-for-an-organization
+//
+//meta:operation GET /orgs/{org}/installations
 func (s *OrganizationsService) ListInstallations(ctx context.Context, org string, opts *ListOptions) (*OrganizationInstallations, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/installations", org)
 

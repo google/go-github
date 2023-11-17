@@ -100,7 +100,9 @@ func (r PullRequestReviewDismissalRequest) String() string {
 
 // ListReviews lists all reviews on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#list-reviews-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews#list-reviews-for-a-pull-request
+//
+//meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews
 func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
 	u, err := addOptions(u, opts)
@@ -124,7 +126,9 @@ func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo strin
 
 // GetReview fetches the specified pull request review.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#get-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews#get-a-review-for-a-pull-request
+//
+//meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}
 func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
 
@@ -144,7 +148,9 @@ func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string,
 
 // DeletePendingReview deletes the specified pull request pending review.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#delete-a-pending-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews#delete-a-pending-review-for-a-pull-request
+//
+//meta:operation DELETE /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}
 func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
 
@@ -164,7 +170,9 @@ func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, re
 
 // ListReviewComments lists all the comments for the specified review.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#list-comments-for-a-pull-request-review
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews#list-comments-for-a-pull-request-review
+//
+//meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments
 func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, repo string, number int, reviewID int64, opts *ListOptions) ([]*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/comments", owner, repo, number, reviewID)
 	u, err := addOptions(u, opts)
@@ -187,8 +195,6 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 }
 
 // CreateReview creates a new review on the specified pull request.
-//
-// GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#create-a-review-for-a-pull-request
 //
 // In order to use multi-line comments, you must use the "comfort fade" preview.
 // This replaces the use of the "Position" field in comments with 4 new fields:
@@ -223,6 +229,10 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 //	Use this instead.
 //	It is waaaaaay better.
 //	```
+//
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews#create-a-review-for-a-pull-request
+//
+//meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews
 func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
 
@@ -251,7 +261,9 @@ func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo stri
 
 // UpdateReview updates the review summary on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#update-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews#update-a-review-for-a-pull-request
+//
+//meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}
 func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo string, number int, reviewID int64, body string) (*PullRequestReview, *Response, error) {
 	opts := &struct {
 		Body string `json:"body"`
@@ -274,7 +286,9 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 
 // SubmitReview submits a specified review on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#submit-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews#submit-a-review-for-a-pull-request
+//
+//meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events
 func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/events", owner, repo, number, reviewID)
 
@@ -294,7 +308,9 @@ func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo stri
 
 // DismissReview dismisses a specified review on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/rest/pulls/reviews#dismiss-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews#dismiss-a-review-for-a-pull-request
+//
+//meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals
 func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/dismissals", owner, repo, number, reviewID)
 
