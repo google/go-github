@@ -318,7 +318,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T
 	})
 }
 
-func TestGlobalSecurityAdvisories(t *testing.T) {
+func TestListGlobalSecurityAdvisories(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -405,7 +405,7 @@ func TestGlobalSecurityAdvisories(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &ListGlobalSecurityAdvisoriesOptions{CVEID: "CVE-xoxo-1234"}
+	opts := &ListGlobalSecurityAdvisoriesOptions{CVEID: String("CVE-xoxo-1234")}
 
 	advisories, _, err := client.SecurityAdvisories.ListGlobalSecurityAdvisories(ctx, opts)
 	if err != nil {
@@ -465,7 +465,7 @@ func TestGlobalSecurityAdvisories(t *testing.T) {
 			SourceCodeLocation:    String("https://github.com/project/a-package"),
 			GitHubReviewedAt:      &date,
 			NVDPublishedAt:        &date,
-			Credits: []*Credits{
+			Credits: []*Credit{
 				{
 					User: &User{
 						Login:             String("user"),
@@ -647,7 +647,7 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 				VulnerableFunctions:    []string{"a_function"},
 			},
 		},
-		Credits: []*Credits{
+		Credits: []*Credit{
 			{
 				User: &User{
 					Login:             String("user"),
@@ -681,7 +681,7 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 	const methodName = "GetGlobalSecurityAdvisories"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.SecurityAdvisories.GetGlobalSecurityAdvisories(ctx, "\n")
+		_, _, err = client.SecurityAdvisories.GetGlobalSecurityAdvisories(ctx, "CVE-\n-1234")
 		return err
 	})
 

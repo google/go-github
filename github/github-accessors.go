@@ -4991,7 +4991,7 @@ func (c *CredentialAuthorization) GetTokenLastEight() string {
 }
 
 // GetType returns the Type field if it's non-nil, zero value otherwise.
-func (c *Credits) GetType() string {
+func (c *Credit) GetType() string {
 	if c == nil || c.Type == nil {
 		return ""
 	}
@@ -4999,7 +4999,7 @@ func (c *Credits) GetType() string {
 }
 
 // GetUser returns the User field.
-func (c *Credits) GetUser() *User {
+func (c *Credit) GetUser() *User {
 	if c == nil {
 		return nil
 	}
@@ -10828,6 +10828,86 @@ func (l *ListExternalGroupsOptions) GetDisplayName() string {
 		return ""
 	}
 	return *l.DisplayName
+}
+
+// GetAffects returns the Affects field if it's non-nil, zero value otherwise.
+func (l *ListGlobalSecurityAdvisoriesOptions) GetAffects() string {
+	if l == nil || l.Affects == nil {
+		return ""
+	}
+	return *l.Affects
+}
+
+// GetCVEID returns the CVEID field if it's non-nil, zero value otherwise.
+func (l *ListGlobalSecurityAdvisoriesOptions) GetCVEID() string {
+	if l == nil || l.CVEID == nil {
+		return ""
+	}
+	return *l.CVEID
+}
+
+// GetEcosystem returns the Ecosystem field if it's non-nil, zero value otherwise.
+func (l *ListGlobalSecurityAdvisoriesOptions) GetEcosystem() string {
+	if l == nil || l.Ecosystem == nil {
+		return ""
+	}
+	return *l.Ecosystem
+}
+
+// GetGHSAID returns the GHSAID field if it's non-nil, zero value otherwise.
+func (l *ListGlobalSecurityAdvisoriesOptions) GetGHSAID() string {
+	if l == nil || l.GHSAID == nil {
+		return ""
+	}
+	return *l.GHSAID
+}
+
+// GetIsWithdrawn returns the IsWithdrawn field if it's non-nil, zero value otherwise.
+func (l *ListGlobalSecurityAdvisoriesOptions) GetIsWithdrawn() bool {
+	if l == nil || l.IsWithdrawn == nil {
+		return false
+	}
+	return *l.IsWithdrawn
+}
+
+// GetModified returns the Modified field if it's non-nil, zero value otherwise.
+func (l *ListGlobalSecurityAdvisoriesOptions) GetModified() string {
+	if l == nil || l.Modified == nil {
+		return ""
+	}
+	return *l.Modified
+}
+
+// GetPublished returns the Published field if it's non-nil, zero value otherwise.
+func (l *ListGlobalSecurityAdvisoriesOptions) GetPublished() string {
+	if l == nil || l.Published == nil {
+		return ""
+	}
+	return *l.Published
+}
+
+// GetSeverity returns the Severity field if it's non-nil, zero value otherwise.
+func (l *ListGlobalSecurityAdvisoriesOptions) GetSeverity() string {
+	if l == nil || l.Severity == nil {
+		return ""
+	}
+	return *l.Severity
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (l *ListGlobalSecurityAdvisoriesOptions) GetType() string {
+	if l == nil || l.Type == nil {
+		return ""
+	}
+	return *l.Type
+}
+
+// GetUpdated returns the Updated field if it's non-nil, zero value otherwise.
+func (l *ListGlobalSecurityAdvisoriesOptions) GetUpdated() string {
+	if l == nil || l.Updated == nil {
+		return ""
+	}
+	return *l.Updated
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

@@ -5899,18 +5899,18 @@ func TestCredentialAuthorization_GetTokenLastEight(tt *testing.T) {
 	c.GetTokenLastEight()
 }
 
-func TestCredits_GetType(tt *testing.T) {
+func TestCredit_GetType(tt *testing.T) {
 	var zeroValue string
-	c := &Credits{Type: &zeroValue}
+	c := &Credit{Type: &zeroValue}
 	c.GetType()
-	c = &Credits{}
+	c = &Credit{}
 	c.GetType()
 	c = nil
 	c.GetType()
 }
 
-func TestCredits_GetUser(tt *testing.T) {
-	c := &Credits{}
+func TestCredit_GetUser(tt *testing.T) {
+	c := &Credit{}
 	c.GetUser()
 	c = nil
 	c.GetUser()
@@ -12687,6 +12687,106 @@ func TestListExternalGroupsOptions_GetDisplayName(tt *testing.T) {
 	l.GetDisplayName()
 	l = nil
 	l.GetDisplayName()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetAffects(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Affects: &zeroValue}
+	l.GetAffects()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetAffects()
+	l = nil
+	l.GetAffects()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetCVEID(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{CVEID: &zeroValue}
+	l.GetCVEID()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetCVEID()
+	l = nil
+	l.GetCVEID()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetEcosystem(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Ecosystem: &zeroValue}
+	l.GetEcosystem()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetEcosystem()
+	l = nil
+	l.GetEcosystem()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetGHSAID(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{GHSAID: &zeroValue}
+	l.GetGHSAID()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetGHSAID()
+	l = nil
+	l.GetGHSAID()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetIsWithdrawn(tt *testing.T) {
+	var zeroValue bool
+	l := &ListGlobalSecurityAdvisoriesOptions{IsWithdrawn: &zeroValue}
+	l.GetIsWithdrawn()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetIsWithdrawn()
+	l = nil
+	l.GetIsWithdrawn()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetModified(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Modified: &zeroValue}
+	l.GetModified()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetModified()
+	l = nil
+	l.GetModified()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetPublished(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Published: &zeroValue}
+	l.GetPublished()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetPublished()
+	l = nil
+	l.GetPublished()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetSeverity(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Severity: &zeroValue}
+	l.GetSeverity()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetSeverity()
+	l = nil
+	l.GetSeverity()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetType(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Type: &zeroValue}
+	l.GetType()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetType()
+	l = nil
+	l.GetType()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetUpdated(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Updated: &zeroValue}
+	l.GetUpdated()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetUpdated()
+	l = nil
+	l.GetUpdated()
 }
 
 func TestListOrganizations_GetTotalCount(tt *testing.T) {
