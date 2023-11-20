@@ -449,7 +449,7 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 				},
 			},
 			References: []string{"https://nvd.nist.gov/vuln/detail/CVE-xoxo-1234"},
-			Vulnerabilities: []*Vulnerabilities{
+			Vulnerabilities: []*GlobalSecurityVulnerability{
 				{
 					Package: &VulnerabilityPackage{
 						Ecosystem: String("npm"),
@@ -463,7 +463,7 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 			RepositoryAdvisoryURL: String("https://api.github.com/repos/project/a-package/security-advisories/GHSA-xoxo-1234-xoxo"),
 			Type:                  String("reviewed"),
 			SourceCodeLocation:    String("https://github.com/project/a-package"),
-			GitHubReviewedAt:      &date,
+			GithubReviewedAt:      &date,
 			NVDPublishedAt:        &date,
 			Credits: []*Credit{
 				{
@@ -633,10 +633,10 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 		Type:                  String("reviewed"),
 		SourceCodeLocation:    String("https://github.com/project/a-package"),
 		References:            []string{"https://nvd.nist.gov/vuln/detail/CVE-xoxo-1234"},
-		GitHubReviewedAt:      &date,
+		GithubReviewedAt:      &date,
 		NVDPublishedAt:        &date,
 
-		Vulnerabilities: []*Vulnerabilities{
+		Vulnerabilities: []*GlobalSecurityVulnerability{
 			{
 				Package: &VulnerabilityPackage{
 					Ecosystem: String("npm"),

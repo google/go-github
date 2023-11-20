@@ -9159,14 +9159,14 @@ func TestGitObject_GetURL(tt *testing.T) {
 	g.GetURL()
 }
 
-func TestGlobalSecurityAdvisory_GetGitHubReviewedAt(tt *testing.T) {
+func TestGlobalSecurityAdvisory_GetGithubReviewedAt(tt *testing.T) {
 	var zeroValue Timestamp
-	g := &GlobalSecurityAdvisory{GitHubReviewedAt: &zeroValue}
-	g.GetGitHubReviewedAt()
+	g := &GlobalSecurityAdvisory{GithubReviewedAt: &zeroValue}
+	g.GetGithubReviewedAt()
 	g = &GlobalSecurityAdvisory{}
-	g.GetGitHubReviewedAt()
+	g.GetGithubReviewedAt()
 	g = nil
-	g.GetGitHubReviewedAt()
+	g.GetGithubReviewedAt()
 }
 
 func TestGlobalSecurityAdvisory_GetID(tt *testing.T) {
@@ -9217,6 +9217,33 @@ func TestGlobalSecurityAdvisory_GetType(tt *testing.T) {
 	g.GetType()
 	g = nil
 	g.GetType()
+}
+
+func TestGlobalSecurityVulnerability_GetFirstPatchedVersion(tt *testing.T) {
+	var zeroValue string
+	g := &GlobalSecurityVulnerability{FirstPatchedVersion: &zeroValue}
+	g.GetFirstPatchedVersion()
+	g = &GlobalSecurityVulnerability{}
+	g.GetFirstPatchedVersion()
+	g = nil
+	g.GetFirstPatchedVersion()
+}
+
+func TestGlobalSecurityVulnerability_GetPackage(tt *testing.T) {
+	g := &GlobalSecurityVulnerability{}
+	g.GetPackage()
+	g = nil
+	g.GetPackage()
+}
+
+func TestGlobalSecurityVulnerability_GetVulnerableVersionRange(tt *testing.T) {
+	var zeroValue string
+	g := &GlobalSecurityVulnerability{VulnerableVersionRange: &zeroValue}
+	g.GetVulnerableVersionRange()
+	g = &GlobalSecurityVulnerability{}
+	g.GetVulnerableVersionRange()
+	g = nil
+	g.GetVulnerableVersionRange()
 }
 
 func TestGollumEvent_GetInstallation(tt *testing.T) {
@@ -28514,33 +28541,6 @@ func TestUserSuspendOptions_GetReason(tt *testing.T) {
 	u.GetReason()
 	u = nil
 	u.GetReason()
-}
-
-func TestVulnerabilities_GetFirstPatchedVersion(tt *testing.T) {
-	var zeroValue string
-	v := &Vulnerabilities{FirstPatchedVersion: &zeroValue}
-	v.GetFirstPatchedVersion()
-	v = &Vulnerabilities{}
-	v.GetFirstPatchedVersion()
-	v = nil
-	v.GetFirstPatchedVersion()
-}
-
-func TestVulnerabilities_GetPackage(tt *testing.T) {
-	v := &Vulnerabilities{}
-	v.GetPackage()
-	v = nil
-	v.GetPackage()
-}
-
-func TestVulnerabilities_GetVulnerableVersionRange(tt *testing.T) {
-	var zeroValue string
-	v := &Vulnerabilities{VulnerableVersionRange: &zeroValue}
-	v.GetVulnerableVersionRange()
-	v = &Vulnerabilities{}
-	v.GetVulnerableVersionRange()
-	v = nil
-	v.GetVulnerableVersionRange()
 }
 
 func TestVulnerabilityPackage_GetEcosystem(tt *testing.T) {

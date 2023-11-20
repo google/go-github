@@ -7814,12 +7814,12 @@ func (g *GitObject) GetURL() string {
 	return *g.URL
 }
 
-// GetGitHubReviewedAt returns the GitHubReviewedAt field if it's non-nil, zero value otherwise.
-func (g *GlobalSecurityAdvisory) GetGitHubReviewedAt() Timestamp {
-	if g == nil || g.GitHubReviewedAt == nil {
+// GetGithubReviewedAt returns the GithubReviewedAt field if it's non-nil, zero value otherwise.
+func (g *GlobalSecurityAdvisory) GetGithubReviewedAt() Timestamp {
+	if g == nil || g.GithubReviewedAt == nil {
 		return Timestamp{}
 	}
-	return *g.GitHubReviewedAt
+	return *g.GithubReviewedAt
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -7860,6 +7860,30 @@ func (g *GlobalSecurityAdvisory) GetType() string {
 		return ""
 	}
 	return *g.Type
+}
+
+// GetFirstPatchedVersion returns the FirstPatchedVersion field if it's non-nil, zero value otherwise.
+func (g *GlobalSecurityVulnerability) GetFirstPatchedVersion() string {
+	if g == nil || g.FirstPatchedVersion == nil {
+		return ""
+	}
+	return *g.FirstPatchedVersion
+}
+
+// GetPackage returns the Package field.
+func (g *GlobalSecurityVulnerability) GetPackage() *VulnerabilityPackage {
+	if g == nil {
+		return nil
+	}
+	return g.Package
+}
+
+// GetVulnerableVersionRange returns the VulnerableVersionRange field if it's non-nil, zero value otherwise.
+func (g *GlobalSecurityVulnerability) GetVulnerableVersionRange() string {
+	if g == nil || g.VulnerableVersionRange == nil {
+		return ""
+	}
+	return *g.VulnerableVersionRange
 }
 
 // GetInstallation returns the Installation field.
@@ -24476,30 +24500,6 @@ func (u *UserSuspendOptions) GetReason() string {
 		return ""
 	}
 	return *u.Reason
-}
-
-// GetFirstPatchedVersion returns the FirstPatchedVersion field if it's non-nil, zero value otherwise.
-func (v *Vulnerabilities) GetFirstPatchedVersion() string {
-	if v == nil || v.FirstPatchedVersion == nil {
-		return ""
-	}
-	return *v.FirstPatchedVersion
-}
-
-// GetPackage returns the Package field.
-func (v *Vulnerabilities) GetPackage() *VulnerabilityPackage {
-	if v == nil {
-		return nil
-	}
-	return v.Package
-}
-
-// GetVulnerableVersionRange returns the VulnerableVersionRange field if it's non-nil, zero value otherwise.
-func (v *Vulnerabilities) GetVulnerableVersionRange() string {
-	if v == nil || v.VulnerableVersionRange == nil {
-		return ""
-	}
-	return *v.VulnerableVersionRange
 }
 
 // GetEcosystem returns the Ecosystem field if it's non-nil, zero value otherwise.

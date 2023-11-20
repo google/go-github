@@ -97,19 +97,19 @@ type ListGlobalSecurityAdvisoriesOptions struct {
 // GlobalSecurityAdvisory represents the global security advisory object response.
 type GlobalSecurityAdvisory struct {
 	SecurityAdvisory
-	ID                    *int64             `json:"id,omitempty"`
-	RepositoryAdvisoryURL *string            `json:"repository_advisory_url,omitempty"`
-	Type                  *string            `json:"type,omitempty"`
-	SourceCodeLocation    *string            `json:"source_code_location,omitempty"`
-	References            []string           `json:"references,omitempty"`
-	Vulnerabilities       []*Vulnerabilities `json:"vulnerabilities,omitempty"`
-	GitHubReviewedAt      *Timestamp         `json:"github_reviewed_at,omitempty"`
-	NVDPublishedAt        *Timestamp         `json:"nvd_published_at,omitempty"`
-	Credits               []*Credit          `json:"credits,omitempty"`
+	ID                    *int64                         `json:"id,omitempty"`
+	RepositoryAdvisoryURL *string                        `json:"repository_advisory_url,omitempty"`
+	Type                  *string                        `json:"type,omitempty"`
+	SourceCodeLocation    *string                        `json:"source_code_location,omitempty"`
+	References            []string                       `json:"references,omitempty"`
+	Vulnerabilities       []*GlobalSecurityVulnerability `json:"vulnerabilities,omitempty"`
+	GithubReviewedAt      *Timestamp                     `json:"github_reviewed_at,omitempty"`
+	NVDPublishedAt        *Timestamp                     `json:"nvd_published_at,omitempty"`
+	Credits               []*Credit                      `json:"credits,omitempty"`
 }
 
 // Vulnerabilities represents the Vulnerabilities for the global security advisory.
-type Vulnerabilities struct {
+type GlobalSecurityVulnerability struct {
 	Package                *VulnerabilityPackage `json:"package,omitempty"`
 	FirstPatchedVersion    *string               `json:"first_patched_version,omitempty"`
 	VulnerableVersionRange *string               `json:"vulnerable_version_range,omitempty"`
