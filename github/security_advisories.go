@@ -108,7 +108,7 @@ type GlobalSecurityAdvisory struct {
 	Credits               []*Credit                      `json:"credits,omitempty"`
 }
 
-// GlobalSecurityVulnerability represents the Vulnerabilities for the global security advisory.
+// GlobalSecurityVulnerability represents a vulnerabilities for a global security advisory.
 type GlobalSecurityVulnerability struct {
 	Package                *VulnerabilityPackage `json:"package,omitempty"`
 	FirstPatchedVersion    *string               `json:"first_patched_version,omitempty"`
