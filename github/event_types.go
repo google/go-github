@@ -388,11 +388,12 @@ type GollumEvent struct {
 // EditChange represents the changes when an issue, pull request, comment,
 // or repository has been edited.
 type EditChange struct {
-	Title *EditTitle `json:"title,omitempty"`
-	Body  *EditBody  `json:"body,omitempty"`
-	Base  *EditBase  `json:"base,omitempty"`
-	Repo  *EditRepo  `json:"repository,omitempty"`
-	Owner *EditOwner `json:"owner,omitempty"`
+	Title         *EditTitle         `json:"title,omitempty"`
+	Body          *EditBody          `json:"body,omitempty"`
+	Base          *EditBase          `json:"base,omitempty"`
+	Repo          *EditRepo          `json:"repository,omitempty"`
+	Owner         *EditOwner         `json:"owner,omitempty"`
+	DefaultBranch *EditDefaultBranch `json:"default_branch,omitempty"`
 }
 
 // EditTitle represents a pull-request title change.
@@ -439,6 +440,11 @@ type RepoName struct {
 
 // EditSHA represents a sha change of a pull-request.
 type EditSHA struct {
+	From *string `json:"from,omitempty"`
+}
+
+// EditDefaultBranch represents a change of repository's default branch name.
+type EditDefaultBranch struct {
 	From *string `json:"from,omitempty"`
 }
 
