@@ -6678,6 +6678,14 @@ func (e *EditChange) GetBody() *EditBody {
 	return e.Body
 }
 
+// GetDefaultBranch returns the DefaultBranch field.
+func (e *EditChange) GetDefaultBranch() *EditDefaultBranch {
+	if e == nil {
+		return nil
+	}
+	return e.DefaultBranch
+}
+
 // GetOwner returns the Owner field.
 func (e *EditChange) GetOwner() *EditOwner {
 	if e == nil {
@@ -6700,6 +6708,14 @@ func (e *EditChange) GetTitle() *EditTitle {
 		return nil
 	}
 	return e.Title
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (e *EditDefaultBranch) GetFrom() string {
+	if e == nil || e.From == nil {
+		return ""
+	}
+	return *e.From
 }
 
 // GetOwnerInfo returns the OwnerInfo field.
