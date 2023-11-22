@@ -7890,6 +7890,13 @@ func TestEditChange_GetBody(tt *testing.T) {
 	e.GetBody()
 }
 
+func TestEditChange_GetDefaultBranch(tt *testing.T) {
+	e := &EditChange{}
+	e.GetDefaultBranch()
+	e = nil
+	e.GetDefaultBranch()
+}
+
 func TestEditChange_GetOwner(tt *testing.T) {
 	e := &EditChange{}
 	e.GetOwner()
@@ -7909,6 +7916,16 @@ func TestEditChange_GetTitle(tt *testing.T) {
 	e.GetTitle()
 	e = nil
 	e.GetTitle()
+}
+
+func TestEditDefaultBranch_GetFrom(tt *testing.T) {
+	var zeroValue string
+	e := &EditDefaultBranch{From: &zeroValue}
+	e.GetFrom()
+	e = &EditDefaultBranch{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
 }
 
 func TestEditOwner_GetOwnerInfo(tt *testing.T) {
