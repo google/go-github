@@ -6710,7 +6710,7 @@ func (e *EditChange) GetTitle() *EditTitle {
 	return e.Title
 }
 
-// GetFrom returns the From field.
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
 func (e *EditDefaultBranch) GetFrom() string {
 	if e == nil || e.From == nil {
 		return ""
