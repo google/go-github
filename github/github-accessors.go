@@ -6711,11 +6711,11 @@ func (e *EditChange) GetTitle() *EditTitle {
 }
 
 // GetFrom returns the From field.
-func (e *EditDefaultBranch) GetFrom() *string {
-	if e == nil {
-		return nil
+func (e *EditDefaultBranch) GetFrom() string {
+	if e == nil || e.From == nil {
+		return ""
 	}
-	return e.From
+	return *e.From
 }
 
 // GetOwnerInfo returns the OwnerInfo field.
