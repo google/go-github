@@ -54,6 +54,7 @@ type Issue struct {
 	Reactions         *Reactions        `json:"reactions,omitempty"`
 	Assignees         []*User           `json:"assignees,omitempty"`
 	NodeID            *string           `json:"node_id,omitempty"`
+	Draft             *bool             `json:"draft,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://docs.github.com/rest/search/#text-match-metadata
