@@ -1133,7 +1133,7 @@ func (ae *AcceptedError) Is(target error) bool {
 }
 
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
-// "documentation_url" field value equal to "https://docs.github.com/rest/overview/resources-in-the-rest-api#secondary-rate-limits".
+// "documentation_url" field value equal to "https://docs.github.com/rest/overview/rate-limits-for-the-rest-api#about-secondary-rate-limits".
 type AbuseRateLimitError struct {
 	Response *http.Response // HTTP response that caused this error
 	Message  string         `json:"message"` // error message
@@ -1259,7 +1259,8 @@ func CheckResponse(r *http.Response) error {
 		}
 	case r.StatusCode == http.StatusForbidden &&
 		(strings.HasSuffix(errorResponse.DocumentationURL, "#abuse-rate-limits") ||
-			strings.HasSuffix(errorResponse.DocumentationURL, "#secondary-rate-limits")):
+			strings.HasSuffix(errorResponse.DocumentationURL, "#secondary-rate-limits") ||
+			strings.HasSuffix(errorResponse.DocumentationURL, "#about-secondary-rate-limits")):
 		abuseRateLimitError := &AbuseRateLimitError{
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
