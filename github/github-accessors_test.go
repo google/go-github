@@ -11105,6 +11105,16 @@ func TestIssue_GetCreatedAt(tt *testing.T) {
 	i.GetCreatedAt()
 }
 
+func TestIssue_GetDraft(tt *testing.T) {
+	var zeroValue bool
+	i := &Issue{Draft: &zeroValue}
+	i.GetDraft()
+	i = &Issue{}
+	i.GetDraft()
+	i = nil
+	i.GetDraft()
+}
+
 func TestIssue_GetEventsURL(tt *testing.T) {
 	var zeroValue string
 	i := &Issue{EventsURL: &zeroValue}

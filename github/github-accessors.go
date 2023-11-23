@@ -9462,6 +9462,14 @@ func (i *Issue) GetCreatedAt() Timestamp {
 	return *i.CreatedAt
 }
 
+// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
+func (i *Issue) GetDraft() bool {
+	if i == nil || i.Draft == nil {
+		return false
+	}
+	return *i.Draft
+}
+
 // GetEventsURL returns the EventsURL field if it's non-nil, zero value otherwise.
 func (i *Issue) GetEventsURL() string {
 	if i == nil || i.EventsURL == nil {
