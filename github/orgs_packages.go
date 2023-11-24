@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/url"
 )
 
 // ListPackages lists the packages for an organization.
@@ -63,7 +64,7 @@ func (s *OrganizationsService) GetPackage(ctx context.Context, org, packageType,
 //
 //meta:operation DELETE /orgs/{org}/packages/{package_type}/{package_name}
 func (s *OrganizationsService) DeletePackage(ctx context.Context, org, packageType, packageName string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/packages/%v/%v", org, packageType, packageName)
+	u := fmt.Sprintf("orgs/%v/packages/%v/%v", org, packageType, url.PathEscape(packageName))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -78,7 +79,7 @@ func (s *OrganizationsService) DeletePackage(ctx context.Context, org, packageTy
 //
 //meta:operation POST /orgs/{org}/packages/{package_type}/{package_name}/restore
 func (s *OrganizationsService) RestorePackage(ctx context.Context, org, packageType, packageName string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/packages/%v/%v/restore", org, packageType, packageName)
+	u := fmt.Sprintf("orgs/%v/packages/%v/%v/restore", org, packageType, url.PathEscape(packageName))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -93,7 +94,7 @@ func (s *OrganizationsService) RestorePackage(ctx context.Context, org, packageT
 //
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}/versions
 func (s *OrganizationsService) PackageGetAllVersions(ctx context.Context, org, packageType, packageName string, opts *PackageListOptions) ([]*PackageVersion, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/packages/%v/%v/versions", org, packageType, packageName)
+	u := fmt.Sprintf("orgs/%v/packages/%v/%v/versions", org, packageType, url.PathEscape(packageName))
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -119,7 +120,7 @@ func (s *OrganizationsService) PackageGetAllVersions(ctx context.Context, org, p
 //
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}
 func (s *OrganizationsService) PackageGetVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*PackageVersion, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/packages/%v/%v/versions/%v", org, packageType, packageName, packageVersionID)
+	u := fmt.Sprintf("orgs/%v/packages/%v/%v/versions/%v", org, packageType, url.PathEscape(packageName), packageVersionID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -140,7 +141,7 @@ func (s *OrganizationsService) PackageGetVersion(ctx context.Context, org, packa
 //
 //meta:operation DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}
 func (s *OrganizationsService) PackageDeleteVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/packages/%v/%v/versions/%v", org, packageType, packageName, packageVersionID)
+	u := fmt.Sprintf("orgs/%v/packages/%v/%v/versions/%v", org, packageType, url.PathEscape(packageName), packageVersionID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -155,7 +156,7 @@ func (s *OrganizationsService) PackageDeleteVersion(ctx context.Context, org, pa
 //
 //meta:operation POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore
 func (s *OrganizationsService) PackageRestoreVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/packages/%v/%v/versions/%v/restore", org, packageType, packageName, packageVersionID)
+	u := fmt.Sprintf("orgs/%v/packages/%v/%v/versions/%v/restore", org, packageType, url.PathEscape(packageName), packageVersionID)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
