@@ -1259,8 +1259,7 @@ func CheckResponse(r *http.Response) error {
 		}
 	case r.StatusCode == http.StatusForbidden &&
 		(strings.HasSuffix(errorResponse.DocumentationURL, "#abuse-rate-limits") ||
-			strings.HasSuffix(errorResponse.DocumentationURL, "#secondary-rate-limits") ||
-			strings.HasSuffix(errorResponse.DocumentationURL, "#about-secondary-rate-limits")):
+			strings.HasSuffix(errorResponse.DocumentationURL, "secondary-rate-limits")):
 		abuseRateLimitError := &AbuseRateLimitError{
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
