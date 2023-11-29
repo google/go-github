@@ -7,9 +7,11 @@ package github
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -309,6 +311,382 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisories(ctx, "o", "r", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestListGlobalSecurityAdvisories(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/advisories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"cve_id": "CVE-xoxo-1234"})
+
+		fmt.Fprint(w, `[{
+				"id": 1,
+				"ghsa_id": "GHSA-xoxo-1234-xoxo",
+				"cve_id": "CVE-xoxo-1234",
+				"url": "https://api.github.com/advisories/GHSA-xoxo-1234-xoxo",
+				"html_url": "https://github.com/advisories/GHSA-xoxo-1234-xoxo",
+				"repository_advisory_url": "https://api.github.com/repos/project/a-package/security-advisories/GHSA-xoxo-1234-xoxo",
+				"summary": "Heartbleed security advisory",
+				"description": "This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information.",
+				"type": "reviewed",
+				"severity": "high",
+				"source_code_location": "https://github.com/project/a-package",
+				"identifiers": [
+					{
+						"type": "GHSA",
+						"value": "GHSA-xoxo-1234-xoxo"
+					},
+					{
+						"type": "CVE",
+						"value": "CVE-xoxo-1234"
+					}
+				],
+				"references": ["https://nvd.nist.gov/vuln/detail/CVE-xoxo-1234"],
+				"published_at": "1996-06-20T00:00:00Z",
+				"updated_at": "1996-06-20T00:00:00Z",
+				"github_reviewed_at": "1996-06-20T00:00:00Z",
+				"nvd_published_at": "1996-06-20T00:00:00Z",
+				"withdrawn_at": null,
+				"vulnerabilities": [
+					{
+						"package": {
+							"ecosystem": "npm",
+							"name": "a-package"
+						},
+						"first_patched_version": "1.0.3",
+						"vulnerable_version_range": "<=1.0.2",
+						"vulnerable_functions": ["a_function"]
+					}
+				],
+				"cvss": {
+					"vector_string": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H",
+					"score": 7.6
+				},
+				"cwes": [
+					{
+						"cwe_id": "CWE-400",
+						"name": "Uncontrolled Resource Consumption"
+					}
+				],
+				"credits": [
+					{
+						"user": {
+							"login": "user",
+							"id": 1,
+							"node_id": "12=",
+							"avatar_url": "a",
+							"gravatar_id": "",
+							"url": "a",
+							"html_url": "b",
+							"followers_url": "b",
+							"following_url": "c",
+							"gists_url": "d",
+							"starred_url": "e",
+							"subscriptions_url": "f",
+							"organizations_url": "g",
+							"repos_url": "h",
+							"events_url": "i",
+							"received_events_url": "j",
+							"type": "User",
+							"site_admin": false
+						},
+						"type": "analyst"
+					}
+				]
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	opts := &ListGlobalSecurityAdvisoriesOptions{CVEID: String("CVE-xoxo-1234")}
+
+	advisories, _, err := client.SecurityAdvisories.ListGlobalSecurityAdvisories(ctx, opts)
+	if err != nil {
+		t.Errorf("SecurityAdvisories.ListGlobalSecurityAdvisories returned error: %v", err)
+	}
+
+	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
+	want := []*GlobalSecurityAdvisory{
+		{
+			ID: Int64(1),
+			SecurityAdvisory: SecurityAdvisory{
+				GHSAID:      String("GHSA-xoxo-1234-xoxo"),
+				CVEID:       String("CVE-xoxo-1234"),
+				URL:         String("https://api.github.com/advisories/GHSA-xoxo-1234-xoxo"),
+				HTMLURL:     String("https://github.com/advisories/GHSA-xoxo-1234-xoxo"),
+				Severity:    String("high"),
+				Summary:     String("Heartbleed security advisory"),
+				Description: String("This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information."),
+				Identifiers: []*AdvisoryIdentifier{
+					{
+						Type:  String("GHSA"),
+						Value: String("GHSA-xoxo-1234-xoxo"),
+					},
+					{
+						Type:  String("CVE"),
+						Value: String("CVE-xoxo-1234"),
+					},
+				},
+				PublishedAt: &date,
+				UpdatedAt:   &date,
+				WithdrawnAt: nil,
+				CVSS: &AdvisoryCVSS{
+					VectorString: String("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
+					Score:        Float64(7.6),
+				},
+				CWEs: []*AdvisoryCWEs{
+					{
+						CWEID: String("CWE-400"),
+						Name:  String("Uncontrolled Resource Consumption"),
+					},
+				},
+			},
+			References: []string{"https://nvd.nist.gov/vuln/detail/CVE-xoxo-1234"},
+			Vulnerabilities: []*GlobalSecurityVulnerability{
+				{
+					Package: &VulnerabilityPackage{
+						Ecosystem: String("npm"),
+						Name:      String("a-package"),
+					},
+					FirstPatchedVersion:    String("1.0.3"),
+					VulnerableVersionRange: String("<=1.0.2"),
+					VulnerableFunctions:    []string{"a_function"},
+				},
+			},
+			RepositoryAdvisoryURL: String("https://api.github.com/repos/project/a-package/security-advisories/GHSA-xoxo-1234-xoxo"),
+			Type:                  String("reviewed"),
+			SourceCodeLocation:    String("https://github.com/project/a-package"),
+			GithubReviewedAt:      &date,
+			NVDPublishedAt:        &date,
+			Credits: []*Credit{
+				{
+					User: &User{
+						Login:             String("user"),
+						ID:                Int64(1),
+						NodeID:            String("12="),
+						AvatarURL:         String("a"),
+						GravatarID:        String(""),
+						URL:               String("a"),
+						HTMLURL:           String("b"),
+						FollowersURL:      String("b"),
+						FollowingURL:      String("c"),
+						GistsURL:          String("d"),
+						StarredURL:        String("e"),
+						SubscriptionsURL:  String("f"),
+						OrganizationsURL:  String("g"),
+						ReposURL:          String("h"),
+						EventsURL:         String("i"),
+						ReceivedEventsURL: String("j"),
+						Type:              String("User"),
+						SiteAdmin:         Bool(false),
+					},
+					Type: String("analyst"),
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(advisories, want) {
+		t.Errorf("SecurityAdvisories.ListGlobalSecurityAdvisories %+v, want %+v", advisories, want)
+	}
+
+	const methodName = "ListGlobalSecurityAdvisories"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		_, resp, err := client.SecurityAdvisories.ListGlobalSecurityAdvisories(ctx, nil)
+		return resp, err
+	})
+}
+
+func TestGetGlobalSecurityAdvisories(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/advisories/GHSA-xoxo-1234-xoxo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		fmt.Fprint(w, `{
+			"id": 1,
+			"ghsa_id": "GHSA-xoxo-1234-xoxo",
+			"cve_id": "CVE-xoxo-1234",
+			"url": "https://api.github.com/advisories/GHSA-xoxo-1234-xoxo",
+			"html_url": "https://github.com/advisories/GHSA-xoxo-1234-xoxo",
+			"repository_advisory_url": "https://api.github.com/repos/project/a-package/security-advisories/GHSA-xoxo-1234-xoxo",
+			"summary": "Heartbleed security advisory",
+			"description": "This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information.",
+			"type": "reviewed",
+			"severity": "high",
+			"source_code_location": "https://github.com/project/a-package",
+			"identifiers": [
+				{
+					"type": "GHSA",
+					"value": "GHSA-xoxo-1234-xoxo"
+				},
+				{
+					"type": "CVE",
+					"value": "CVE-xoxo-1234"
+				}
+			],
+			"references": ["https://nvd.nist.gov/vuln/detail/CVE-xoxo-1234"],
+			"published_at": "1996-06-20T00:00:00Z",
+			"updated_at": "1996-06-20T00:00:00Z",
+			"github_reviewed_at": "1996-06-20T00:00:00Z",
+			"nvd_published_at": "1996-06-20T00:00:00Z",
+			"withdrawn_at": null,
+			"vulnerabilities": [
+				{
+					"package": {
+						"ecosystem": "npm",
+						"name": "a-package"
+					},
+					"first_patched_version": "1.0.3",
+					"vulnerable_version_range": "<=1.0.2",
+					"vulnerable_functions": ["a_function"]
+				}
+			],
+			"cvss": {
+				"vector_string": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H",
+				"score": 7.6
+			},
+			"cwes": [
+				{
+					"cwe_id": "CWE-400",
+					"name": "Uncontrolled Resource Consumption"
+				}
+			],
+			"credits": [
+				{
+					"user": {
+						"login": "user",
+						"id": 1,
+						"node_id": "12=",
+						"avatar_url": "a",
+						"gravatar_id": "",
+						"url": "a",
+						"html_url": "b",
+						"followers_url": "b",
+						"following_url": "c",
+						"gists_url": "d",
+						"starred_url": "e",
+						"subscriptions_url": "f",
+						"organizations_url": "g",
+						"repos_url": "h",
+						"events_url": "i",
+						"received_events_url": "j",
+						"type": "User",
+						"site_admin": false
+					},
+					"type": "analyst"
+				}
+			]
+		}`)
+	})
+
+	ctx := context.Background()
+	advisory, _, err := client.SecurityAdvisories.GetGlobalSecurityAdvisories(ctx, "GHSA-xoxo-1234-xoxo")
+	if err != nil {
+		t.Errorf("SecurityAdvisories.GetGlobalSecurityAdvisories returned error: %v", err)
+	}
+
+	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
+	want := &GlobalSecurityAdvisory{
+		ID: Int64(1),
+		SecurityAdvisory: SecurityAdvisory{
+			GHSAID:      String("GHSA-xoxo-1234-xoxo"),
+			CVEID:       String("CVE-xoxo-1234"),
+			URL:         String("https://api.github.com/advisories/GHSA-xoxo-1234-xoxo"),
+			HTMLURL:     String("https://github.com/advisories/GHSA-xoxo-1234-xoxo"),
+			Severity:    String("high"),
+			Summary:     String("Heartbleed security advisory"),
+			Description: String("This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information."),
+			Identifiers: []*AdvisoryIdentifier{
+				{
+					Type:  String("GHSA"),
+					Value: String("GHSA-xoxo-1234-xoxo"),
+				},
+				{
+					Type:  String("CVE"),
+					Value: String("CVE-xoxo-1234"),
+				},
+			},
+			PublishedAt: &date,
+			UpdatedAt:   &date,
+			WithdrawnAt: nil,
+			CVSS: &AdvisoryCVSS{
+				VectorString: String("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
+				Score:        Float64(7.6),
+			},
+			CWEs: []*AdvisoryCWEs{
+				{
+					CWEID: String("CWE-400"),
+					Name:  String("Uncontrolled Resource Consumption"),
+				},
+			},
+		},
+		RepositoryAdvisoryURL: String("https://api.github.com/repos/project/a-package/security-advisories/GHSA-xoxo-1234-xoxo"),
+		Type:                  String("reviewed"),
+		SourceCodeLocation:    String("https://github.com/project/a-package"),
+		References:            []string{"https://nvd.nist.gov/vuln/detail/CVE-xoxo-1234"},
+		GithubReviewedAt:      &date,
+		NVDPublishedAt:        &date,
+
+		Vulnerabilities: []*GlobalSecurityVulnerability{
+			{
+				Package: &VulnerabilityPackage{
+					Ecosystem: String("npm"),
+					Name:      String("a-package"),
+				},
+				FirstPatchedVersion:    String("1.0.3"),
+				VulnerableVersionRange: String("<=1.0.2"),
+				VulnerableFunctions:    []string{"a_function"},
+			},
+		},
+		Credits: []*Credit{
+			{
+				User: &User{
+					Login:             String("user"),
+					ID:                Int64(1),
+					NodeID:            String("12="),
+					AvatarURL:         String("a"),
+					GravatarID:        String(""),
+					URL:               String("a"),
+					HTMLURL:           String("b"),
+					FollowersURL:      String("b"),
+					FollowingURL:      String("c"),
+					GistsURL:          String("d"),
+					StarredURL:        String("e"),
+					SubscriptionsURL:  String("f"),
+					OrganizationsURL:  String("g"),
+					ReposURL:          String("h"),
+					EventsURL:         String("i"),
+					ReceivedEventsURL: String("j"),
+					Type:              String("User"),
+					SiteAdmin:         Bool(false),
+				},
+				Type: String("analyst"),
+			},
+		},
+	}
+
+	if !cmp.Equal(advisory, want) {
+		t.Errorf("SecurityAdvisories.GetGlobalSecurityAdvisories %+v, want %+v", advisory, want)
+	}
+
+	const methodName = "GetGlobalSecurityAdvisories"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SecurityAdvisories.GetGlobalSecurityAdvisories(ctx, "CVE-\n-1234")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.SecurityAdvisories.GetGlobalSecurityAdvisories(ctx, "e")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
