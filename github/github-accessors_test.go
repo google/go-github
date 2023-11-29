@@ -5899,6 +5899,23 @@ func TestCredentialAuthorization_GetTokenLastEight(tt *testing.T) {
 	c.GetTokenLastEight()
 }
 
+func TestCredit_GetType(tt *testing.T) {
+	var zeroValue string
+	c := &Credit{Type: &zeroValue}
+	c.GetType()
+	c = &Credit{}
+	c.GetType()
+	c = nil
+	c.GetType()
+}
+
+func TestCredit_GetUser(tt *testing.T) {
+	c := &Credit{}
+	c.GetUser()
+	c = nil
+	c.GetUser()
+}
+
 func TestCustomProperty_GetDefaultValue(tt *testing.T) {
 	var zeroValue string
 	c := &CustomProperty{DefaultValue: &zeroValue}
@@ -9157,6 +9174,93 @@ func TestGitObject_GetURL(tt *testing.T) {
 	g.GetURL()
 	g = nil
 	g.GetURL()
+}
+
+func TestGlobalSecurityAdvisory_GetGithubReviewedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	g := &GlobalSecurityAdvisory{GithubReviewedAt: &zeroValue}
+	g.GetGithubReviewedAt()
+	g = &GlobalSecurityAdvisory{}
+	g.GetGithubReviewedAt()
+	g = nil
+	g.GetGithubReviewedAt()
+}
+
+func TestGlobalSecurityAdvisory_GetID(tt *testing.T) {
+	var zeroValue int64
+	g := &GlobalSecurityAdvisory{ID: &zeroValue}
+	g.GetID()
+	g = &GlobalSecurityAdvisory{}
+	g.GetID()
+	g = nil
+	g.GetID()
+}
+
+func TestGlobalSecurityAdvisory_GetNVDPublishedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	g := &GlobalSecurityAdvisory{NVDPublishedAt: &zeroValue}
+	g.GetNVDPublishedAt()
+	g = &GlobalSecurityAdvisory{}
+	g.GetNVDPublishedAt()
+	g = nil
+	g.GetNVDPublishedAt()
+}
+
+func TestGlobalSecurityAdvisory_GetRepositoryAdvisoryURL(tt *testing.T) {
+	var zeroValue string
+	g := &GlobalSecurityAdvisory{RepositoryAdvisoryURL: &zeroValue}
+	g.GetRepositoryAdvisoryURL()
+	g = &GlobalSecurityAdvisory{}
+	g.GetRepositoryAdvisoryURL()
+	g = nil
+	g.GetRepositoryAdvisoryURL()
+}
+
+func TestGlobalSecurityAdvisory_GetSourceCodeLocation(tt *testing.T) {
+	var zeroValue string
+	g := &GlobalSecurityAdvisory{SourceCodeLocation: &zeroValue}
+	g.GetSourceCodeLocation()
+	g = &GlobalSecurityAdvisory{}
+	g.GetSourceCodeLocation()
+	g = nil
+	g.GetSourceCodeLocation()
+}
+
+func TestGlobalSecurityAdvisory_GetType(tt *testing.T) {
+	var zeroValue string
+	g := &GlobalSecurityAdvisory{Type: &zeroValue}
+	g.GetType()
+	g = &GlobalSecurityAdvisory{}
+	g.GetType()
+	g = nil
+	g.GetType()
+}
+
+func TestGlobalSecurityVulnerability_GetFirstPatchedVersion(tt *testing.T) {
+	var zeroValue string
+	g := &GlobalSecurityVulnerability{FirstPatchedVersion: &zeroValue}
+	g.GetFirstPatchedVersion()
+	g = &GlobalSecurityVulnerability{}
+	g.GetFirstPatchedVersion()
+	g = nil
+	g.GetFirstPatchedVersion()
+}
+
+func TestGlobalSecurityVulnerability_GetPackage(tt *testing.T) {
+	g := &GlobalSecurityVulnerability{}
+	g.GetPackage()
+	g = nil
+	g.GetPackage()
+}
+
+func TestGlobalSecurityVulnerability_GetVulnerableVersionRange(tt *testing.T) {
+	var zeroValue string
+	g := &GlobalSecurityVulnerability{VulnerableVersionRange: &zeroValue}
+	g.GetVulnerableVersionRange()
+	g = &GlobalSecurityVulnerability{}
+	g.GetVulnerableVersionRange()
+	g = nil
+	g.GetVulnerableVersionRange()
 }
 
 func TestGollumEvent_GetInstallation(tt *testing.T) {
@@ -12637,6 +12741,106 @@ func TestListExternalGroupsOptions_GetDisplayName(tt *testing.T) {
 	l.GetDisplayName()
 	l = nil
 	l.GetDisplayName()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetAffects(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Affects: &zeroValue}
+	l.GetAffects()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetAffects()
+	l = nil
+	l.GetAffects()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetCVEID(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{CVEID: &zeroValue}
+	l.GetCVEID()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetCVEID()
+	l = nil
+	l.GetCVEID()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetEcosystem(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Ecosystem: &zeroValue}
+	l.GetEcosystem()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetEcosystem()
+	l = nil
+	l.GetEcosystem()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetGHSAID(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{GHSAID: &zeroValue}
+	l.GetGHSAID()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetGHSAID()
+	l = nil
+	l.GetGHSAID()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetIsWithdrawn(tt *testing.T) {
+	var zeroValue bool
+	l := &ListGlobalSecurityAdvisoriesOptions{IsWithdrawn: &zeroValue}
+	l.GetIsWithdrawn()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetIsWithdrawn()
+	l = nil
+	l.GetIsWithdrawn()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetModified(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Modified: &zeroValue}
+	l.GetModified()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetModified()
+	l = nil
+	l.GetModified()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetPublished(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Published: &zeroValue}
+	l.GetPublished()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetPublished()
+	l = nil
+	l.GetPublished()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetSeverity(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Severity: &zeroValue}
+	l.GetSeverity()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetSeverity()
+	l = nil
+	l.GetSeverity()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetType(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Type: &zeroValue}
+	l.GetType()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetType()
+	l = nil
+	l.GetType()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetUpdated(tt *testing.T) {
+	var zeroValue string
+	l := &ListGlobalSecurityAdvisoriesOptions{Updated: &zeroValue}
+	l.GetUpdated()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetUpdated()
+	l = nil
+	l.GetUpdated()
 }
 
 func TestListOrganizations_GetTotalCount(tt *testing.T) {
