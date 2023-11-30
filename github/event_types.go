@@ -1282,7 +1282,7 @@ type PushEvent struct {
 	Compare      *string              `json:"compare,omitempty"`
 	Repo         *PushEventRepository `json:"repository,omitempty"`
 	HeadCommit   *HeadCommit          `json:"head_commit,omitempty"`
-	Pusher       *User                `json:"pusher,omitempty"`
+	Pusher       *CommitAuthor        `json:"pusher,omitempty"`
 	Sender       *User                `json:"sender,omitempty"`
 	Installation *Installation        `json:"installation,omitempty"`
 

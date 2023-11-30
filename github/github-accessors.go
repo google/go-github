@@ -17399,7 +17399,7 @@ func (p *PushEvent) GetOrganization() *Organization {
 }
 
 // GetPusher returns the Pusher field.
-func (p *PushEvent) GetPusher() *User {
+func (p *PushEvent) GetPusher() *CommitAuthor {
 	if p == nil {
 		return nil
 	}
