@@ -357,9 +357,8 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 		Organization: &Organization{
 			ID: Int64(22),
 		},
-		Pusher: &User{
+		Pusher: &CommitAuthor{
 			Login: String("rd@yahoo.com"),
-			ID:    Int64(112),
 		},
 		Repo: &PushEventRepository{
 			ID:     Int64(321),
@@ -421,8 +420,7 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 			"id" : 22
 		},
 		"pusher":{
-			"login": "rd@yahoo.com",
-			"id": 112
+			"username": "rd@yahoo.com"
 		},
 		"repository":{
 			"id": 321,
