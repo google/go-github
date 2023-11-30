@@ -3777,14 +3777,11 @@ func TestPushEvent_Marshal(t *testing.T) {
 		Compare:      String("a"),
 		Repo:         &PushEventRepository{ID: Int64(1)},
 		HeadCommit:   &HeadCommit{ID: String("id")},
-		Pusher: &User{
-			Login:     String("l"),
-			ID:        Int64(1),
-			NodeID:    String("n"),
-			URL:       String("u"),
-			ReposURL:  String("r"),
-			EventsURL: String("e"),
-			AvatarURL: String("a"),
+		Pusher: &CommitAuthor{
+			Login: String("l"),
+			Date:  &Timestamp{referenceTime},
+			Name:  String("n"),
+			Email: String("e"),
 		},
 		Sender: &User{
 			Login:     String("l"),
@@ -3937,13 +3934,10 @@ func TestPushEvent_Marshal(t *testing.T) {
 			"id": "id"
 		},
 		"pusher": {
-			"login": "l",
-			"id": 1,
-			"node_id": "n",
-			"avatar_url": "a",
-			"url": "u",
-			"events_url": "e",
-			"repos_url": "r"
+			"date": ` + referenceTimeStr + `,
+			"name": "n",
+			"email": "e",
+			"username": "l"
 		},
 		"sender": {
 			"login": "l",
