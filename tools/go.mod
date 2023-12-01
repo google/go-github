@@ -6,7 +6,7 @@ require (
 	github.com/alecthomas/kong v0.8.1
 	github.com/getkin/kin-openapi v0.120.0
 	github.com/google/go-cmp v0.6.0
-	github.com/google/go-github/v56 v56.0.0
+	github.com/google/go-github/v57 v57.0.0
 	golang.org/x/sync v0.5.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -22,3 +22,6 @@ require (
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
 )
+
+// Use version at HEAD, not the latest published.
+replace github.com/google/go-github/v57 => ../
