@@ -41,6 +41,8 @@ func (s *OrganizationsService) ListPackages(ctx context.Context, org string, opt
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages#get-a-package-for-an-organization
 //
+// Note that packageName is escaped for the URL path so that you don't need to.
+//
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}
 func (s *OrganizationsService) GetPackage(ctx context.Context, org, packageType, packageName string) (*Package, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/packages/%v/%v", org, packageType, packageName)
@@ -62,6 +64,8 @@ func (s *OrganizationsService) GetPackage(ctx context.Context, org, packageType,
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages#delete-a-package-for-an-organization
 //
+// Note that packageName is escaped for the URL path so that you don't need to.
+//
 //meta:operation DELETE /orgs/{org}/packages/{package_type}/{package_name}
 func (s *OrganizationsService) DeletePackage(ctx context.Context, org, packageType, packageName string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/packages/%v/%v", org, packageType, url.PathEscape(packageName))
@@ -77,6 +81,8 @@ func (s *OrganizationsService) DeletePackage(ctx context.Context, org, packageTy
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages#restore-a-package-for-an-organization
 //
+// Note that packageName is escaped for the URL path so that you don't need to.
+//
 //meta:operation POST /orgs/{org}/packages/{package_type}/{package_name}/restore
 func (s *OrganizationsService) RestorePackage(ctx context.Context, org, packageType, packageName string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/packages/%v/%v/restore", org, packageType, url.PathEscape(packageName))
@@ -91,6 +97,8 @@ func (s *OrganizationsService) RestorePackage(ctx context.Context, org, packageT
 // PackageGetAllVersions gets all versions of a package in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages#list-package-versions-for-a-package-owned-by-an-organization
+//
+// Note that packageName is escaped for the URL path so that you don't need to.
 //
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}/versions
 func (s *OrganizationsService) PackageGetAllVersions(ctx context.Context, org, packageType, packageName string, opts *PackageListOptions) ([]*PackageVersion, *Response, error) {
@@ -118,6 +126,8 @@ func (s *OrganizationsService) PackageGetAllVersions(ctx context.Context, org, p
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages#get-a-package-version-for-an-organization
 //
+// Note that packageName is escaped for the URL path so that you don't need to.
+//
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}
 func (s *OrganizationsService) PackageGetVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*PackageVersion, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/packages/%v/%v/versions/%v", org, packageType, url.PathEscape(packageName), packageVersionID)
@@ -139,6 +149,8 @@ func (s *OrganizationsService) PackageGetVersion(ctx context.Context, org, packa
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages#delete-package-version-for-an-organization
 //
+// Note that packageName is escaped for the URL path so that you don't need to.
+//
 //meta:operation DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}
 func (s *OrganizationsService) PackageDeleteVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/packages/%v/%v/versions/%v", org, packageType, url.PathEscape(packageName), packageVersionID)
@@ -153,6 +165,8 @@ func (s *OrganizationsService) PackageDeleteVersion(ctx context.Context, org, pa
 // PackageRestoreVersion restores a package version to an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages#restore-package-version-for-an-organization
+//
+// Note that packageName is escaped for the URL path so that you don't need to.
 //
 //meta:operation POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore
 func (s *OrganizationsService) PackageRestoreVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*Response, error) {
