@@ -48,7 +48,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: b164298e5a5db36254a3029219f443f253d79147
+openapi_commit: 6922a6cfe785e1069e93d6e501805cf6e1891076
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -1518,32 +1518,32 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/copilot/billing
-    documentation_url: https://docs.github.com/rest/copilot/copilot-for-business#get-copilot-for-business-seat-information-and-settings-for-an-organization
+    documentation_url: https://docs.github.com/rest/copilot/copilot-business#get-copilot-business-seat-information-and-settings-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/copilot/billing/seats
-    documentation_url: https://docs.github.com/rest/copilot/copilot-for-business#list-all-copilot-for-business-seat-assignments-for-an-organization
+    documentation_url: https://docs.github.com/rest/copilot/copilot-business#list-all-copilot-business-seat-assignments-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: DELETE /orgs/{org}/copilot/billing/selected_teams
-    documentation_url: https://docs.github.com/rest/copilot/copilot-for-business#remove-teams-from-the-copilot-for-business-subscription-for-an-organization
+    documentation_url: https://docs.github.com/rest/copilot/copilot-business#remove-teams-from-the-copilot-business-subscription-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: POST /orgs/{org}/copilot/billing/selected_teams
-    documentation_url: https://docs.github.com/rest/copilot/copilot-for-business#add-teams-to-the-copilot-for-business-subscription-for-an-organization
+    documentation_url: https://docs.github.com/rest/copilot/copilot-business#add-teams-to-the-copilot-business-subscription-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: DELETE /orgs/{org}/copilot/billing/selected_users
-    documentation_url: https://docs.github.com/rest/copilot/copilot-for-business#remove-users-from-the-copilot-for-business-subscription-for-an-organization
+    documentation_url: https://docs.github.com/rest/copilot/copilot-business#remove-users-from-the-copilot-business-subscription-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: POST /orgs/{org}/copilot/billing/selected_users
-    documentation_url: https://docs.github.com/rest/copilot/copilot-for-business#add-users-to-the-copilot-for-business-subscription-for-an-organization
+    documentation_url: https://docs.github.com/rest/copilot/copilot-business#add-users-to-the-copilot-business-subscription-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -1840,7 +1840,7 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/members/{username}/copilot
-    documentation_url: https://docs.github.com/rest/copilot/copilot-for-business#get-copilot-for-business-seat-assignment-details-for-a-user
+    documentation_url: https://docs.github.com/rest/copilot/copilot-business#get-copilot-business-seat-assignment-details-for-a-user
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -1904,6 +1904,76 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.11/ghes-3.11.json
+  - name: GET /orgs/{org}/organization-fine-grained-permissions
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#list-organization-fine-grained-permissions-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/organization-roles
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#get-all-organization-roles-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /orgs/{org}/organization-roles
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#create-a-custom-organization-role
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/organization-roles/teams/{team_slug}
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#remove-all-organization-roles-for-a-team
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#remove-an-organization-role-from-a-team
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#assign-an-organization-role-to-a-team
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/organization-roles/users/{username}
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#remove-all-organization-roles-for-a-user
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/organization-roles/users/{username}/{role_id}
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#remove-an-organization-role-from-a-user
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/organization-roles/users/{username}/{role_id}
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#assign-an-organization-role-to-a-user
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/organization-roles/{role_id}
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#delete-a-custom-organization-role
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/organization-roles/{role_id}
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#get-an-organization-role
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/organization-roles/{role_id}
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#update-a-custom-organization-role
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/organization-roles/{role_id}/teams
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#list-teams-that-are-assigned-to-an-organization-role
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/organization-roles/{role_id}/users
+    documentation_url: https://docs.github.com/rest/orgs/organization-roles#list-users-that-are-assigned-to-an-organization-role
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/outside_collaborators
     documentation_url: https://docs.github.com/rest/orgs/outside-collaborators#list-outside-collaborators-for-an-organization
     openapi_files:
@@ -4930,6 +5000,11 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve
     documentation_url: https://docs.github.com/rest/security-advisories/repository-advisories#request-a-cve-for-a-repository-security-advisory
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks
+    documentation_url: https://docs.github.com/rest/security-advisories/repository-advisories#create-a-temporary-private-fork
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
