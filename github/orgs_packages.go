@@ -45,7 +45,7 @@ func (s *OrganizationsService) ListPackages(ctx context.Context, org string, opt
 //
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}
 func (s *OrganizationsService) GetPackage(ctx context.Context, org, packageType, packageName string) (*Package, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/packages/%v/%v", org, packageType, packageName)
+	u := fmt.Sprintf("orgs/%v/packages/%v/%v", org, packageType, url.PathEscape(packageName))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
