@@ -7,7 +7,7 @@ package github
 
 import (
 	"context"
-	"fmt"
+	"io"
 	"net/http"
 	"testing"
 
@@ -20,7 +20,7 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{
+		io.WriteString(w, `[{
 			"id": 197,
 			"name": "hello_docker",
 			"package_type": "container",
@@ -114,35 +114,36 @@ func TestOrganizationsService_GetPackage(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
+	// don't url escape the package name here since mux will convert it to a slash automatically
+	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
+		io.WriteString(w, `{
 			"id": 197,
-			"name": "hello_docker",
+			"name": "hello/hello_docker",
 			"package_type": "container",
 			"version_count": 1,
 			"visibility": "private",
-			"url": "https://api.github.com/orgs/github/packages/container/hello_docker",
+			"url": "https://api.github.com/orgs/github/packages/container/hello%2Fhello_docker",
 			"created_at": `+referenceTimeStr+`,
 			"updated_at": `+referenceTimeStr+`,
-			"html_url": "https://github.com/orgs/github/packages/container/package/hello_docker"
+			"html_url": "https://github.com/orgs/github/packages/container/package/hello%2Fhello_docker"
 		  }`)
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Organizations.GetPackage(ctx, "o", "container", "hello_docker")
+	packages, _, err := client.Organizations.GetPackage(ctx, "o", "container", "hello/hello_docker")
 	if err != nil {
 		t.Errorf("Organizations.GetPackage returned error: %v", err)
 	}
 
 	want := &Package{
 		ID:           Int64(197),
-		Name:         String("hello_docker"),
+		Name:         String("hello/hello_docker"),
 		PackageType:  String("container"),
 		VersionCount: Int64(1),
 		Visibility:   String("private"),
-		URL:          String("https://api.github.com/orgs/github/packages/container/hello_docker"),
-		HTMLURL:      String("https://github.com/orgs/github/packages/container/package/hello_docker"),
+		URL:          String("https://api.github.com/orgs/github/packages/container/hello%2Fhello_docker"),
+		HTMLURL:      String("https://github.com/orgs/github/packages/container/package/hello%2Fhello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 	}
@@ -169,12 +170,13 @@ func TestOrganizationsService_DeletePackage(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
+	// don't url escape the package name here since mux will convert it to a slash automatically
+	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.DeletePackage(ctx, "o", "container", "hello_docker")
+	_, err := client.Organizations.DeletePackage(ctx, "o", "container", "hello/hello_docker")
 	if err != nil {
 		t.Errorf("Organizations.DeletePackage returned error: %v", err)
 	}
@@ -198,12 +200,13 @@ func TestOrganizationsService_RestorePackage(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/packages/container/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
+	// don't url escape the package name here since mux will convert it to a slash automatically
+	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.RestorePackage(ctx, "o", "container", "hello_docker")
+	_, err := client.Organizations.RestorePackage(ctx, "o", "container", "hello/hello_docker")
 	if err != nil {
 		t.Errorf("Organizations.RestorePackage returned error: %v", err)
 	}
@@ -215,7 +218,7 @@ func TestOrganizationsService_RestorePackage(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Organizations.RestorePackage(ctx, "", "container", "hello_docker")
+		return client.Organizations.RestorePackage(ctx, "", "container", "hello/hello_docker")
 	})
 }
 
@@ -223,18 +226,19 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/packages/container/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
+	// don't url escape the package name here since mux will convert it to a slash automatically
+	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "1", "state": "deleted", "visibility": "internal", "package_type": "container"})
-		fmt.Fprint(w, `[
+		io.WriteString(w, `[
 			{
 			  "id": 45763,
 			  "name": "sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9",
-			  "url": "https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763",
-			  "package_html_url": "https://github.com/users/octocat/packages/container/package/hello_docker",
+			  "url": "https://api.github.com/users/octocat/packages/container/hello%2Fhello_docker/versions/45763",
+			  "package_html_url": "https://github.com/users/octocat/packages/container/package/hello%2Fhello_docker",
 			  "created_at": `+referenceTimeStr+`,
 			  "updated_at": `+referenceTimeStr+`,
-			  "html_url": "https://github.com/users/octocat/packages/container/hello_docker/45763",
+			  "html_url": "https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763",
 			  "metadata": {
 				"package_type": "container",
 				"container": {
@@ -250,7 +254,7 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 	opts := &PackageListOptions{
 		String("internal"), String("container"), String("deleted"), ListOptions{Page: 1, PerPage: 2},
 	}
-	packages, _, err := client.Organizations.PackageGetAllVersions(ctx, "o", "container", "hello_docker", opts)
+	packages, _, err := client.Organizations.PackageGetAllVersions(ctx, "o", "container", "hello/hello_docker", opts)
 	if err != nil {
 		t.Errorf("Organizations.PackageGetAllVersions returned error: %v", err)
 	}
@@ -258,11 +262,11 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 	want := []*PackageVersion{{
 		ID:             Int64(45763),
 		Name:           String("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            String("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
-		PackageHTMLURL: String("https://github.com/users/octocat/packages/container/package/hello_docker"),
+		URL:            String("https://api.github.com/users/octocat/packages/container/hello%2Fhello_docker/versions/45763"),
+		PackageHTMLURL: String("https://github.com/users/octocat/packages/container/package/hello%2Fhello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        String("https://github.com/users/octocat/packages/container/hello_docker/45763"),
+		HTMLURL:        String("https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763"),
 		Metadata: &PackageMetadata{
 			PackageType: String("container"),
 			Container: &PackageContainerMetadata{
@@ -293,17 +297,18 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
+	// don't url escape the package name here since mux will convert it to a slash automatically
+	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `
+		io.WriteString(w, `
 			{
 			  "id": 45763,
 			  "name": "sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9",
-			  "url": "https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763",
-			  "package_html_url": "https://github.com/users/octocat/packages/container/package/hello_docker",
+			  "url": "https://api.github.com/users/octocat/packages/container/hello%2Fhello_docker/versions/45763",
+			  "package_html_url": "https://github.com/users/octocat/packages/container/package/hello%2Fhello_docker",
 			  "created_at": `+referenceTimeStr+`,
 			  "updated_at": `+referenceTimeStr+`,
-			  "html_url": "https://github.com/users/octocat/packages/container/hello_docker/45763",
+			  "html_url": "https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763",
 			  "metadata": {
 				"package_type": "container",
 				"container": {
@@ -316,7 +321,7 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Organizations.PackageGetVersion(ctx, "o", "container", "hello_docker", 45763)
+	packages, _, err := client.Organizations.PackageGetVersion(ctx, "o", "container", "hello/hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Organizations.PackageGetVersion returned error: %v", err)
 	}
@@ -324,11 +329,11 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 	want := &PackageVersion{
 		ID:             Int64(45763),
 		Name:           String("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            String("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
-		PackageHTMLURL: String("https://github.com/users/octocat/packages/container/package/hello_docker"),
+		URL:            String("https://api.github.com/users/octocat/packages/container/hello%2Fhello_docker/versions/45763"),
+		PackageHTMLURL: String("https://github.com/users/octocat/packages/container/package/hello%2Fhello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        String("https://github.com/users/octocat/packages/container/hello_docker/45763"),
+		HTMLURL:        String("https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763"),
 		Metadata: &PackageMetadata{
 			PackageType: String("container"),
 			Container: &PackageContainerMetadata{
@@ -359,12 +364,13 @@ func TestOrganizationsService_PackageDeleteVersion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
+	// don't url escape the package name here since mux will convert it to a slash automatically
+	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.PackageDeleteVersion(ctx, "o", "container", "hello_docker", 45763)
+	_, err := client.Organizations.PackageDeleteVersion(ctx, "o", "container", "hello/hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Organizations.PackageDeleteVersion returned error: %v", err)
 	}
@@ -384,12 +390,13 @@ func TestOrganizationsService_PackageRestoreVersion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/packages/container/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
+	// don't url escape the package name here since mux will convert it to a slash automatically
+	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.PackageRestoreVersion(ctx, "o", "container", "hello_docker", 45763)
+	_, err := client.Organizations.PackageRestoreVersion(ctx, "o", "container", "hello/hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Organizations.PackageRestoreVersion returned error: %v", err)
 	}
