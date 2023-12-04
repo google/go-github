@@ -39,9 +39,9 @@ func (s *OrganizationsService) ListPackages(ctx context.Context, org string, opt
 
 // GetPackage gets a package by name from an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#get-a-package-for-an-organization
-//
 // Note that packageName is escaped for the URL path so that you don't need to.
+//
+// GitHub API docs: https://docs.github.com/rest/packages/packages#get-a-package-for-an-organization
 //
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}
 func (s *OrganizationsService) GetPackage(ctx context.Context, org, packageType, packageName string) (*Package, *Response, error) {
@@ -62,9 +62,9 @@ func (s *OrganizationsService) GetPackage(ctx context.Context, org, packageType,
 
 // DeletePackage deletes a package from an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#delete-a-package-for-an-organization
-//
 // Note that packageName is escaped for the URL path so that you don't need to.
+//
+// GitHub API docs: https://docs.github.com/rest/packages/packages#delete-a-package-for-an-organization
 //
 //meta:operation DELETE /orgs/{org}/packages/{package_type}/{package_name}
 func (s *OrganizationsService) DeletePackage(ctx context.Context, org, packageType, packageName string) (*Response, error) {
@@ -79,9 +79,9 @@ func (s *OrganizationsService) DeletePackage(ctx context.Context, org, packageTy
 
 // RestorePackage restores a package to an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#restore-a-package-for-an-organization
-//
 // Note that packageName is escaped for the URL path so that you don't need to.
+//
+// GitHub API docs: https://docs.github.com/rest/packages/packages#restore-a-package-for-an-organization
 //
 //meta:operation POST /orgs/{org}/packages/{package_type}/{package_name}/restore
 func (s *OrganizationsService) RestorePackage(ctx context.Context, org, packageType, packageName string) (*Response, error) {
@@ -96,9 +96,9 @@ func (s *OrganizationsService) RestorePackage(ctx context.Context, org, packageT
 
 // PackageGetAllVersions gets all versions of a package in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#list-package-versions-for-a-package-owned-by-an-organization
-//
 // Note that packageName is escaped for the URL path so that you don't need to.
+//
+// GitHub API docs: https://docs.github.com/rest/packages/packages#list-package-versions-for-a-package-owned-by-an-organization
 //
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}/versions
 func (s *OrganizationsService) PackageGetAllVersions(ctx context.Context, org, packageType, packageName string, opts *PackageListOptions) ([]*PackageVersion, *Response, error) {
@@ -124,9 +124,9 @@ func (s *OrganizationsService) PackageGetAllVersions(ctx context.Context, org, p
 
 // PackageGetVersion gets a specific version of a package in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#get-a-package-version-for-an-organization
-//
 // Note that packageName is escaped for the URL path so that you don't need to.
+//
+// GitHub API docs: https://docs.github.com/rest/packages/packages#get-a-package-version-for-an-organization
 //
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}
 func (s *OrganizationsService) PackageGetVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*PackageVersion, *Response, error) {
@@ -147,9 +147,9 @@ func (s *OrganizationsService) PackageGetVersion(ctx context.Context, org, packa
 
 // PackageDeleteVersion deletes a package version from an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#delete-package-version-for-an-organization
-//
 // Note that packageName is escaped for the URL path so that you don't need to.
+//
+// GitHub API docs: https://docs.github.com/rest/packages/packages#delete-package-version-for-an-organization
 //
 //meta:operation DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}
 func (s *OrganizationsService) PackageDeleteVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*Response, error) {
@@ -164,9 +164,9 @@ func (s *OrganizationsService) PackageDeleteVersion(ctx context.Context, org, pa
 
 // PackageRestoreVersion restores a package version to an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#restore-package-version-for-an-organization
-//
 // Note that packageName is escaped for the URL path so that you don't need to.
+//
+// GitHub API docs: https://docs.github.com/rest/packages/packages#restore-package-version-for-an-organization
 //
 //meta:operation POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore
 func (s *OrganizationsService) PackageRestoreVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*Response, error) {
