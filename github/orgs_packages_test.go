@@ -20,7 +20,7 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		io.WriteString(w, `[{
+		_, err := io.WriteString(w, `[{
 			"id": 197,
 			"name": "hello_docker",
 			"package_type": "container",
@@ -52,6 +52,9 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 			"html_url": "https://github.com/orgs/github/packages/container/package/hello_docker"
 		  }
 		  ]`)
+		if err != nil {
+			t.Fatal("Failed to write test response: ", err)
+		}
 	})
 
 	ctx := context.Background()
@@ -117,7 +120,7 @@ func TestOrganizationsService_GetPackage(t *testing.T) {
 	// don't url escape the package name here since mux will convert it to a slash automatically
 	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		io.WriteString(w, `{
+		_, err := io.WriteString(w, `{
 			"id": 197,
 			"name": "hello/hello_docker",
 			"package_type": "container",
@@ -128,6 +131,9 @@ func TestOrganizationsService_GetPackage(t *testing.T) {
 			"updated_at": `+referenceTimeStr+`,
 			"html_url": "https://github.com/orgs/github/packages/container/package/hello%2Fhello_docker"
 		  }`)
+		if err != nil {
+			t.Fatal("Failed to write test response: ", err)
+		}
 	})
 
 	ctx := context.Background()
@@ -230,7 +236,7 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "1", "state": "deleted", "visibility": "internal", "package_type": "container"})
-		io.WriteString(w, `[
+		_, err := io.WriteString(w, `[
 			{
 			  "id": 45763,
 			  "name": "sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9",
@@ -248,6 +254,9 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 				}
 			  }
 			}]`)
+		if err != nil {
+			t.Fatal("Failed to write test response: ", err)
+		}
 	})
 
 	ctx := context.Background()
@@ -300,7 +309,7 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 	// don't url escape the package name here since mux will convert it to a slash automatically
 	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		io.WriteString(w, `
+		_, err := io.WriteString(w, `
 			{
 			  "id": 45763,
 			  "name": "sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9",
@@ -318,6 +327,9 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 				}
 			  }
 			}`)
+		if err != nil {
+			t.Fatal("Failed to write test response: ", err)
+		}
 	})
 
 	ctx := context.Background()
