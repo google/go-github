@@ -88,8 +88,6 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.GetAuditLog returned error: %v", err)
 	}
-	//startedAt, _ := time.Parse(time.RFC3339, "2021-03-07T00:33:04.000Z")
-	//completedAt, _ := time.Parse(time.RFC3339, "2021-03-07T00:35:08.000Z")
 	timestamp := time.Unix(0, 1615077308538*1e6)
 
 	want := []*AuditEntry{
