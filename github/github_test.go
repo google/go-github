@@ -275,6 +275,15 @@ func testErrorResponseForStatusCode(t *testing.T, code int) {
 	}
 }
 
+func assertNoDiff(t *testing.T, want, actual interface{}) {
+	t.Helper()
+	diff := cmp.Diff(want, actual)
+	if diff == "" {
+		return
+	}
+	t.Errorf("unexpected diff: %s", diff)
+}
+
 func assertNilError(t *testing.T, err error) {
 	t.Helper()
 	if err != nil {
