@@ -1154,9 +1154,9 @@ func TestDo_rateLimitCategory(t *testing.T) {
 			category: scimCategory,
 		},
 		{
-			method:   http.MethodGet,
-			url:      "repos/google/go-github/dependency-graph/snapshots",
-			category: dependencySnapshotsCategory, // only POST requests are in the dependency graph category
+			method:   http.MethodPost,
+			url:      "/repos/google/go-github/dependency-graph/snapshots",
+			category: dependencySnapshotsCategory,
 		},
 		{
 			method:   http.MethodGet,
