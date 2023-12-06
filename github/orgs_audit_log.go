@@ -69,8 +69,7 @@ type AuditEntry struct {
 func (a *AuditEntry) UnmarshalJSON(data []byte) error {
 	type entryAlias AuditEntry
 	var v entryAlias
-	err := json.Unmarshal(data, &v)
-	if err != nil {
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 
@@ -79,19 +78,16 @@ func (a *AuditEntry) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	definedFields := map[string]interface{}{}
-	err = json.Unmarshal(rawDefinedFields, &definedFields)
-	if err != nil {
+	if err := json.Unmarshal(rawDefinedFields, &definedFields); err != nil {
 		return err
 	}
 
-	err = json.Unmarshal(data, &v.AdditionalFields)
-	if err != nil {
+	if err := json.Unmarshal(data, &v.AdditionalFields); err != nil {
 		return err
 	}
 
 	for key, val := range v.AdditionalFields {
-		_, defined := definedFields[key]
-		if defined || val == nil {
+		if _, ok := definedFields[key]; ok || val == nil {
 			delete(v.AdditionalFields, key)
 		}
 	}
@@ -114,17 +110,15 @@ func (a *AuditEntry) MarshalJSON() ([]byte, error) {
 		return defBytes, err
 	}
 	resMap := map[string]interface{}{}
-	err = json.Unmarshal(defBytes, &resMap)
-	if err != nil {
+	if err := json.Unmarshal(defBytes, &resMap); err != nil {
 		return nil, err
 	}
 	for key, val := range a.AdditionalFields {
 		if val == nil {
 			continue
 		}
-		_, defined := resMap[key]
-		if defined {
-			return nil, fmt.Errorf("unexpected field in AdditionalFields: %s", key)
+		if _, ok := resMap[key]; ok {
+			return nil, fmt.Errorf("unexpected field in AdditionalFields: %v", key)
 		}
 		resMap[key] = val
 	}
