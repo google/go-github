@@ -1,3 +1,8 @@
+// Copyright 2023 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package github
 
 import (
@@ -5,13 +10,13 @@ import (
 	"fmt"
 )
 
-// GetAllCustomPropertyValues gets all custom properties values that are set for a repository.
+// GetAllCustomPropertyValues gets all custom property values that are set for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/custom-properties#get-all-custom-property-values-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/properties/values
-func (s *RepositoriesService) GetAllCustomPropertyValues(ctx context.Context, org string, repo string) ([]*CustomPropertyValue, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/properties/values", org, repo)
+func (s *RepositoriesService) GetAllCustomPropertyValues(ctx context.Context, org, repo string) ([]*CustomPropertyValue, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/properties/values", org, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
