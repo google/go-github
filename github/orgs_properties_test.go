@@ -347,14 +347,14 @@ func TestOrganizationsService_CreateOrUpdateRepoCustomPropertyValues(t *testing.
 
 	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"repository_names":["repo"],"properties":[{"property_name":"service","value_type":"string"}]}`+"\n")
+		testBody(t, r, `{"repository_names":["repo"],"properties":[{"property_name":"service","value":"string"}]}`+"\n")
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.CreateOrUpdateRepoCustomPropertyValues(ctx, "o", []string{"repo"}, []*CustomProperty{
+	_, err := client.Organizations.CreateOrUpdateRepoCustomPropertyValues(ctx, "o", []string{"repo"}, []*CustomPropertyValue{
 		{
-			PropertyName: String("service"),
-			ValueType:    "string",
+			PropertyName: "service",
+			Value:        String("string"),
 		},
 	})
 	if err != nil {

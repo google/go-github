@@ -178,12 +178,12 @@ func (s *OrganizationsService) ListCustomPropertyValues(ctx context.Context, org
 // GitHub API docs: https://docs.github.com/rest/orgs/custom-properties#create-or-update-custom-property-values-for-organization-repositories
 //
 //meta:operation PATCH /orgs/{org}/properties/values
-func (s *OrganizationsService) CreateOrUpdateRepoCustomPropertyValues(ctx context.Context, org string, repoNames []string, properties []*CustomProperty) (*Response, error) {
+func (s *OrganizationsService) CreateOrUpdateRepoCustomPropertyValues(ctx context.Context, org string, repoNames []string, properties []*CustomPropertyValue) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/properties/values", org)
 
 	params := struct {
-		RepositoryNames []string          `json:"repository_names"`
-		Properties      []*CustomProperty `json:"properties"`
+		RepositoryNames []string               `json:"repository_names"`
+		Properties      []*CustomPropertyValue `json:"properties"`
 	}{
 		RepositoryNames: repoNames,
 		Properties:      properties,
