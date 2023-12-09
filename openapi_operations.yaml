@@ -4919,6 +4919,11 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks
+    documentation_url: https://docs.github.com/rest/security-advisories/repository-advisories#create-a-temporary-private-fork
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/stargazers
     documentation_url: https://docs.github.com/rest/activity/starring#list-stargazers
     openapi_files:
