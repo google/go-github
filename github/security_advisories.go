@@ -149,7 +149,7 @@ func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo,
 	return resp, nil
 }
 
-// CreateTemporaryPrivateFork Create a temporary private fork to collaborate on fixing a security vulnerability in your repository.
+// CreateTemporaryPrivateFork creates a temporary private fork to collaborate on fixing a security vulnerability in your repository.
 // The ghsaID is the GitHub Security Advisory identifier of the advisory.
 //
 // GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#create-a-temporary-private-fork
