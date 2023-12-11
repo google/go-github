@@ -21590,6 +21590,14 @@ func (s *SecretScanningPushProtection) GetStatus() string {
 	return *s.Status
 }
 
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (s *SecretScanningValidityChecks) GetStatus() string {
+	if s == nil || s.Status == nil {
+		return ""
+	}
+	return *s.Status
+}
+
 // GetAuthor returns the Author field.
 func (s *SecurityAdvisory) GetAuthor() *User {
 	if s == nil {
@@ -21828,6 +21836,14 @@ func (s *SecurityAndAnalysis) GetSecretScanningPushProtection() *SecretScanningP
 		return nil
 	}
 	return s.SecretScanningPushProtection
+}
+
+// GetSecretScanningValidityChecks returns the SecretScanningValidityChecks field.
+func (s *SecurityAndAnalysis) GetSecretScanningValidityChecks() *SecretScanningValidityChecks {
+	if s == nil {
+		return nil
+	}
+	return s.SecretScanningValidityChecks
 }
 
 // GetFrom returns the From field.

@@ -25149,6 +25149,16 @@ func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
+func TestSecretScanningValidityChecks_GetStatus(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningValidityChecks{Status: &zeroValue}
+	s.GetStatus()
+	s = &SecretScanningValidityChecks{}
+	s.GetStatus()
+	s = nil
+	s.GetStatus()
+}
+
 func TestSecurityAdvisory_GetAuthor(tt *testing.T) {
 	s := &SecurityAdvisory{}
 	s.GetAuthor()
@@ -25402,6 +25412,13 @@ func TestSecurityAndAnalysis_GetSecretScanningPushProtection(tt *testing.T) {
 	s.GetSecretScanningPushProtection()
 	s = nil
 	s.GetSecretScanningPushProtection()
+}
+
+func TestSecurityAndAnalysis_GetSecretScanningValidityChecks(tt *testing.T) {
+	s := &SecurityAndAnalysis{}
+	s.GetSecretScanningValidityChecks()
+	s = nil
+	s.GetSecretScanningValidityChecks()
 }
 
 func TestSecurityAndAnalysisChange_GetFrom(tt *testing.T) {
