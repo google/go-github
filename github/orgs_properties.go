@@ -39,7 +39,7 @@ type CustomPropertyValue struct {
 
 // GetAllCustomProperties gets all custom properties that are defined for the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/properties#get-all-custom-properties-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/custom-properties#get-all-custom-properties-for-an-organization
 //
 //meta:operation GET /orgs/{org}/properties/schema
 func (s *OrganizationsService) GetAllCustomProperties(ctx context.Context, org string) ([]*CustomProperty, *Response, error) {
@@ -61,7 +61,7 @@ func (s *OrganizationsService) GetAllCustomProperties(ctx context.Context, org s
 
 // CreateOrUpdateCustomProperties creates new or updates existing custom properties that are defined for the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/properties#create-or-update-custom-properties-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/custom-properties#create-or-update-custom-properties-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/properties/schema
 func (s *OrganizationsService) CreateOrUpdateCustomProperties(ctx context.Context, org string, properties []*CustomProperty) ([]*CustomProperty, *Response, error) {
@@ -89,7 +89,7 @@ func (s *OrganizationsService) CreateOrUpdateCustomProperties(ctx context.Contex
 
 // GetCustomProperty gets a custom property that is defined for the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/properties#get-a-custom-property-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/custom-properties#get-a-custom-property-for-an-organization
 //
 //meta:operation GET /orgs/{org}/properties/schema/{custom_property_name}
 func (s *OrganizationsService) GetCustomProperty(ctx context.Context, org, name string) (*CustomProperty, *Response, error) {
@@ -111,7 +111,7 @@ func (s *OrganizationsService) GetCustomProperty(ctx context.Context, org, name 
 
 // CreateOrUpdateCustomProperty creates a new or updates an existing custom property that is defined for the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/properties#create-or-update-a-custom-property-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/custom-properties#create-or-update-a-custom-property-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/properties/schema/{custom_property_name}
 func (s *OrganizationsService) CreateOrUpdateCustomProperty(ctx context.Context, org, customPropertyName string, property *CustomProperty) (*CustomProperty, *Response, error) {
@@ -133,7 +133,7 @@ func (s *OrganizationsService) CreateOrUpdateCustomProperty(ctx context.Context,
 
 // RemoveCustomProperty removes a custom property that is defined for the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/properties#remove-a-custom-property-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/custom-properties#remove-a-custom-property-for-an-organization
 //
 //meta:operation DELETE /orgs/{org}/properties/schema/{custom_property_name}
 func (s *OrganizationsService) RemoveCustomProperty(ctx context.Context, org, customPropertyName string) (*Response, error) {
@@ -149,7 +149,7 @@ func (s *OrganizationsService) RemoveCustomProperty(ctx context.Context, org, cu
 
 // ListCustomPropertyValues lists all custom property values for repositories in the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/properties#list-custom-property-values-for-organization-repositories
+// GitHub API docs: https://docs.github.com/rest/orgs/custom-properties#list-custom-property-values-for-organization-repositories
 //
 //meta:operation GET /orgs/{org}/properties/values
 func (s *OrganizationsService) ListCustomPropertyValues(ctx context.Context, org string, opts *ListOptions) ([]*RepoCustomPropertyValue, *Response, error) {
@@ -175,15 +175,15 @@ func (s *OrganizationsService) ListCustomPropertyValues(ctx context.Context, org
 
 // CreateOrUpdateRepoCustomPropertyValues creates new or updates existing custom property values across multiple repositories for the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/properties#create-or-update-custom-property-values-for-organization-repositories
+// GitHub API docs: https://docs.github.com/rest/orgs/custom-properties#create-or-update-custom-property-values-for-organization-repositories
 //
 //meta:operation PATCH /orgs/{org}/properties/values
-func (s *OrganizationsService) CreateOrUpdateRepoCustomPropertyValues(ctx context.Context, org string, repoNames []string, properties []*CustomProperty) (*Response, error) {
+func (s *OrganizationsService) CreateOrUpdateRepoCustomPropertyValues(ctx context.Context, org string, repoNames []string, properties []*CustomPropertyValue) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/properties/values", org)
 
 	params := struct {
-		RepositoryNames []string          `json:"repository_names"`
-		Properties      []*CustomProperty `json:"properties"`
+		RepositoryNames []string               `json:"repository_names"`
+		Properties      []*CustomPropertyValue `json:"properties"`
 	}{
 		RepositoryNames: repoNames,
 		Properties:      properties,
