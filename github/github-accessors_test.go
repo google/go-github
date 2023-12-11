@@ -14928,6 +14928,16 @@ func TestOrganization_GetSecretScanningPushProtectionEnabledForNewRepos(tt *test
 	o.GetSecretScanningPushProtectionEnabledForNewRepos()
 }
 
+func TestOrganization_GetSecretScanningValidityChecksEnabled(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{SecretScanningValidityChecksEnabled: &zeroValue}
+	o.GetSecretScanningValidityChecksEnabled()
+	o = &Organization{}
+	o.GetSecretScanningValidityChecksEnabled()
+	o = nil
+	o.GetSecretScanningValidityChecksEnabled()
+}
+
 func TestOrganization_GetTotalPrivateRepos(tt *testing.T) {
 	var zeroValue int64
 	o := &Organization{TotalPrivateRepos: &zeroValue}

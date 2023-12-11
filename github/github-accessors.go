@@ -12734,6 +12734,14 @@ func (o *Organization) GetSecretScanningPushProtectionEnabledForNewRepos() bool 
 	return *o.SecretScanningPushProtectionEnabledForNewRepos
 }
 
+// GetSecretScanningValidityChecksEnabled returns the SecretScanningValidityChecksEnabled field if it's non-nil, zero value otherwise.
+func (o *Organization) GetSecretScanningValidityChecksEnabled() bool {
+	if o == nil || o.SecretScanningValidityChecksEnabled == nil {
+		return false
+	}
+	return *o.SecretScanningValidityChecksEnabled
+}
+
 // GetTotalPrivateRepos returns the TotalPrivateRepos field if it's non-nil, zero value otherwise.
 func (o *Organization) GetTotalPrivateRepos() int64 {
 	if o == nil || o.TotalPrivateRepos == nil {
