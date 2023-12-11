@@ -6974,6 +6974,14 @@ func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningPushProtectionEnab
 	return *e.SecretScanningPushProtectionEnabledForNewRepositories
 }
 
+// GetSecretScanningValidityChecksEnabled returns the SecretScanningValidityChecksEnabled field if it's non-nil, zero value otherwise.
+func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningValidityChecksEnabled() bool {
+	if e == nil || e.SecretScanningValidityChecksEnabled == nil {
+		return false
+	}
+	return *e.SecretScanningValidityChecksEnabled
+}
+
 // GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
 func (e *Environment) GetCanAdminsBypass() bool {
 	if e == nil || e.CanAdminsBypass == nil {

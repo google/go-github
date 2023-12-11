@@ -8175,6 +8175,16 @@ func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningPushProtectionEnabl
 	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
 }
 
+func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningValidityChecksEnabled(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseSecurityAnalysisSettings{SecretScanningValidityChecksEnabled: &zeroValue}
+	e.GetSecretScanningValidityChecksEnabled()
+	e = &EnterpriseSecurityAnalysisSettings{}
+	e.GetSecretScanningValidityChecksEnabled()
+	e = nil
+	e.GetSecretScanningValidityChecksEnabled()
+}
+
 func TestEnvironment_GetCanAdminsBypass(tt *testing.T) {
 	var zeroValue bool
 	e := &Environment{CanAdminsBypass: &zeroValue}
