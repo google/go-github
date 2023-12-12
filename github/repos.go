@@ -256,10 +256,6 @@ type SecretScanningValidityChecks struct {
 	Status *string `json:"status,omitempty"`
 }
 
-func (s SecretScanningValidityChecks) String() string {
-	return Stringify(s)
-}
-
 // List calls either RepositoriesService.ListByUser or RepositoriesService.ListByAuthenticatedUser
 // depending on whether user is empty.
 //
