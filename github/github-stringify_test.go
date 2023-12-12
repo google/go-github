@@ -1821,16 +1821,6 @@ func TestSecretScanningPushProtection_String(t *testing.T) {
 	}
 }
 
-func TestSecretScanningValidityChecks_String(t *testing.T) {
-	v := SecretScanningValidityChecks{
-		Status: String(""),
-	}
-	want := `github.SecretScanningValidityChecks{Status:""}`
-	if got := v.String(); got != want {
-		t.Errorf("SecretScanningValidityChecks.String = %v, want %v", got, want)
-	}
-}
-
 func TestSecurityAndAnalysis_String(t *testing.T) {
 	v := SecurityAndAnalysis{
 		AdvancedSecurity:             &AdvancedSecurity{},
