@@ -6502,6 +6502,14 @@ func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningPushProtectionEnab
 	return *e.SecretScanningPushProtectionEnabledForNewRepositories
 }
 
+// GetSecretScanningValidityChecksEnabled returns the SecretScanningValidityChecksEnabled field if it's non-nil, zero value otherwise.
+func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningValidityChecksEnabled() bool {
+	if e == nil || e.SecretScanningValidityChecksEnabled == nil {
+		return false
+	}
+	return *e.SecretScanningValidityChecksEnabled
+}
+
 // GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
 func (e *Environment) GetCanAdminsBypass() bool {
 	if e == nil || e.CanAdminsBypass == nil {
@@ -12260,6 +12268,14 @@ func (o *Organization) GetSecretScanningPushProtectionEnabledForNewRepos() bool 
 		return false
 	}
 	return *o.SecretScanningPushProtectionEnabledForNewRepos
+}
+
+// GetSecretScanningValidityChecksEnabled returns the SecretScanningValidityChecksEnabled field if it's non-nil, zero value otherwise.
+func (o *Organization) GetSecretScanningValidityChecksEnabled() bool {
+	if o == nil || o.SecretScanningValidityChecksEnabled == nil {
+		return false
+	}
+	return *o.SecretScanningValidityChecksEnabled
 }
 
 // GetTotalPrivateRepos returns the TotalPrivateRepos field if it's non-nil, zero value otherwise.
@@ -21102,6 +21118,14 @@ func (s *SecretScanningPushProtection) GetStatus() string {
 	return *s.Status
 }
 
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (s *SecretScanningValidityChecks) GetStatus() string {
+	if s == nil || s.Status == nil {
+		return ""
+	}
+	return *s.Status
+}
+
 // GetAuthor returns the Author field.
 func (s *SecurityAdvisory) GetAuthor() *User {
 	if s == nil {
@@ -21340,6 +21364,14 @@ func (s *SecurityAndAnalysis) GetSecretScanningPushProtection() *SecretScanningP
 		return nil
 	}
 	return s.SecretScanningPushProtection
+}
+
+// GetSecretScanningValidityChecks returns the SecretScanningValidityChecks field.
+func (s *SecurityAndAnalysis) GetSecretScanningValidityChecks() *SecretScanningValidityChecks {
+	if s == nil {
+		return nil
+	}
+	return s.SecretScanningValidityChecks
 }
 
 // GetFrom returns the From field.
