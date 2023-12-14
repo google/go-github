@@ -95,6 +95,8 @@ type Organization struct {
 	SecretScanningEnabledForNewRepos *bool `json:"secret_scanning_enabled_for_new_repositories,omitempty"`
 	// SecretScanningPushProtectionEnabledForNewRepos toggles whether secret scanning push protection is enabled on new repositories.
 	SecretScanningPushProtectionEnabledForNewRepos *bool `json:"secret_scanning_push_protection_enabled_for_new_repositories,omitempty"`
+	// SecretScanningValidityChecksEnabled toggles whether secret scanning validity check is enabled.
+	SecretScanningValidityChecksEnabled *bool `json:"secret_scanning_validity_checks_enabled,omitempty"`
 
 	// API URLs
 	URL              *string `json:"url,omitempty"`
