@@ -8239,6 +8239,16 @@ func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningPushProtectionEnabl
 	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
 }
 
+func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningValidityChecksEnabled(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseSecurityAnalysisSettings{SecretScanningValidityChecksEnabled: &zeroValue}
+	e.GetSecretScanningValidityChecksEnabled()
+	e = &EnterpriseSecurityAnalysisSettings{}
+	e.GetSecretScanningValidityChecksEnabled()
+	e = nil
+	e.GetSecretScanningValidityChecksEnabled()
+}
+
 func TestEnvironment_GetCanAdminsBypass(tt *testing.T) {
 	var zeroValue bool
 	e := &Environment{CanAdminsBypass: &zeroValue}
@@ -14990,6 +15000,16 @@ func TestOrganization_GetSecretScanningPushProtectionEnabledForNewRepos(tt *test
 	o.GetSecretScanningPushProtectionEnabledForNewRepos()
 	o = nil
 	o.GetSecretScanningPushProtectionEnabledForNewRepos()
+}
+
+func TestOrganization_GetSecretScanningValidityChecksEnabled(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{SecretScanningValidityChecksEnabled: &zeroValue}
+	o.GetSecretScanningValidityChecksEnabled()
+	o = &Organization{}
+	o.GetSecretScanningValidityChecksEnabled()
+	o = nil
+	o.GetSecretScanningValidityChecksEnabled()
 }
 
 func TestOrganization_GetTotalPrivateRepos(tt *testing.T) {
@@ -25213,6 +25233,16 @@ func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
+func TestSecretScanningValidityChecks_GetStatus(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningValidityChecks{Status: &zeroValue}
+	s.GetStatus()
+	s = &SecretScanningValidityChecks{}
+	s.GetStatus()
+	s = nil
+	s.GetStatus()
+}
+
 func TestSecurityAdvisory_GetAuthor(tt *testing.T) {
 	s := &SecurityAdvisory{}
 	s.GetAuthor()
@@ -25466,6 +25496,13 @@ func TestSecurityAndAnalysis_GetSecretScanningPushProtection(tt *testing.T) {
 	s.GetSecretScanningPushProtection()
 	s = nil
 	s.GetSecretScanningPushProtection()
+}
+
+func TestSecurityAndAnalysis_GetSecretScanningValidityChecks(tt *testing.T) {
+	s := &SecurityAndAnalysis{}
+	s.GetSecretScanningValidityChecks()
+	s = nil
+	s.GetSecretScanningValidityChecks()
 }
 
 func TestSecurityAndAnalysisChange_GetFrom(tt *testing.T) {

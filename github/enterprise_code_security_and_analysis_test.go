@@ -27,7 +27,8 @@ func TestEnterpriseService_GetCodeSecurityAndAnalysis(t *testing.T) {
 		  "advanced_security_enabled_for_new_repositories": true,
 		  "secret_scanning_enabled_for_new_repositories": true,
 		  "secret_scanning_push_protection_enabled_for_new_repositories": true,
-		  "secret_scanning_push_protection_custom_link": "https://github.com/test-org/test-repo/blob/main/README.md"
+		  "secret_scanning_push_protection_custom_link": "https://github.com/test-org/test-repo/blob/main/README.md",
+		  "secret_scanning_validity_checks_enabled": true
 		}`)
 	})
 
@@ -44,6 +45,7 @@ func TestEnterpriseService_GetCodeSecurityAndAnalysis(t *testing.T) {
 		SecretScanningEnabledForNewRepositories:               Bool(true),
 		SecretScanningPushProtectionEnabledForNewRepositories: Bool(true),
 		SecretScanningPushProtectionCustomLink:                String("https://github.com/test-org/test-repo/blob/main/README.md"),
+		SecretScanningValidityChecksEnabled:                   Bool(true),
 	}
 
 	if !cmp.Equal(settings, want) {
@@ -73,6 +75,7 @@ func TestEnterpriseService_UpdateCodeSecurityAndAnalysis(t *testing.T) {
 		SecretScanningEnabledForNewRepositories:               Bool(true),
 		SecretScanningPushProtectionEnabledForNewRepositories: Bool(true),
 		SecretScanningPushProtectionCustomLink:                String("https://github.com/test-org/test-repo/blob/main/README.md"),
+		SecretScanningValidityChecksEnabled:                   Bool(true),
 	}
 
 	mux.HandleFunc("/enterprises/e/code_security_and_analysis", func(w http.ResponseWriter, r *http.Request) {
