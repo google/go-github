@@ -16,6 +16,7 @@ type EnterpriseSecurityAnalysisSettings struct {
 	SecretScanningEnabledForNewRepositories               *bool   `json:"secret_scanning_enabled_for_new_repositories,omitempty"`
 	SecretScanningPushProtectionEnabledForNewRepositories *bool   `json:"secret_scanning_push_protection_enabled_for_new_repositories,omitempty"`
 	SecretScanningPushProtectionCustomLink                *string `json:"secret_scanning_push_protection_custom_link,omitempty"`
+	SecretScanningValidityChecksEnabled                   *bool   `json:"secret_scanning_validity_checks_enabled,omitempty"`
 }
 
 // GetCodeSecurityAndAnalysis gets code security and analysis features for an enterprise.
