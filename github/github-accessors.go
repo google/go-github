@@ -1454,6 +1454,14 @@ func (a *AuditEntry) GetReadOnly() string {
 	return *a.ReadOnly
 }
 
+// GetReferrer returns the Referrer field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetReferrer() string {
+	if a == nil || a.Referrer == nil {
+		return ""
+	}
+	return *a.Referrer
+}
+
 // GetRepo returns the Repo field if it's non-nil, zero value otherwise.
 func (a *AuditEntry) GetRepo() string {
 	if a == nil || a.Repo == nil {
