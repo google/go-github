@@ -1166,6 +1166,185 @@ func (a *AuditEntry) GetOrgID() int64 {
 	return *a.OrgID
 }
 
+<<<<<<< HEAD
+=======
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetPermission() string {
+	if a == nil || a.Permission == nil {
+		return ""
+	}
+	return *a.Permission
+}
+
+// GetPreviousVisibility returns the PreviousVisibility field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetPreviousVisibility() string {
+	if a == nil || a.PreviousVisibility == nil {
+		return ""
+	}
+	return *a.PreviousVisibility
+}
+
+// GetProgrammaticAccessType returns the ProgrammaticAccessType field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetProgrammaticAccessType() string {
+	if a == nil || a.ProgrammaticAccessType == nil {
+		return ""
+	}
+	return *a.ProgrammaticAccessType
+}
+
+// GetPullRequestID returns the PullRequestID field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetPullRequestID() int64 {
+	if a == nil || a.PullRequestID == nil {
+		return 0
+	}
+	return *a.PullRequestID
+}
+
+// GetPullRequestTitle returns the PullRequestTitle field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetPullRequestTitle() string {
+	if a == nil || a.PullRequestTitle == nil {
+		return ""
+	}
+	return *a.PullRequestTitle
+}
+
+// GetPullRequestURL returns the PullRequestURL field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetPullRequestURL() string {
+	if a == nil || a.PullRequestURL == nil {
+		return ""
+	}
+	return *a.PullRequestURL
+}
+
+// GetReadOnly returns the ReadOnly field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetReadOnly() string {
+	if a == nil || a.ReadOnly == nil {
+		return ""
+	}
+	return *a.ReadOnly
+}
+
+// GetReferrer returns the Referrer field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetReferrer() string {
+	if a == nil || a.Referrer == nil {
+		return ""
+	}
+	return *a.Referrer
+}
+
+// GetRepo returns the Repo field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetRepo() string {
+	if a == nil || a.Repo == nil {
+		return ""
+	}
+	return *a.Repo
+}
+
+// GetRepository returns the Repository field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetRepository() string {
+	if a == nil || a.Repository == nil {
+		return ""
+	}
+	return *a.Repository
+}
+
+// GetRepositoryPublic returns the RepositoryPublic field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetRepositoryPublic() bool {
+	if a == nil || a.RepositoryPublic == nil {
+		return false
+	}
+	return *a.RepositoryPublic
+}
+
+// GetRunAttempt returns the RunAttempt field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetRunAttempt() int64 {
+	if a == nil || a.RunAttempt == nil {
+		return 0
+	}
+	return *a.RunAttempt
+}
+
+// GetRunnerGroupID returns the RunnerGroupID field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetRunnerGroupID() int64 {
+	if a == nil || a.RunnerGroupID == nil {
+		return 0
+	}
+	return *a.RunnerGroupID
+}
+
+// GetRunnerGroupName returns the RunnerGroupName field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetRunnerGroupName() string {
+	if a == nil || a.RunnerGroupName == nil {
+		return ""
+	}
+	return *a.RunnerGroupName
+}
+
+// GetRunnerID returns the RunnerID field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetRunnerID() int64 {
+	if a == nil || a.RunnerID == nil {
+		return 0
+	}
+	return *a.RunnerID
+}
+
+// GetRunnerName returns the RunnerName field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetRunnerName() string {
+	if a == nil || a.RunnerName == nil {
+		return ""
+	}
+	return *a.RunnerName
+}
+
+// GetRunNumber returns the RunNumber field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetRunNumber() int64 {
+	if a == nil || a.RunNumber == nil {
+		return 0
+	}
+	return *a.RunNumber
+}
+
+// GetSourceVersion returns the SourceVersion field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetSourceVersion() string {
+	if a == nil || a.SourceVersion == nil {
+		return ""
+	}
+	return *a.SourceVersion
+}
+
+// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetStartedAt() Timestamp {
+	if a == nil || a.StartedAt == nil {
+		return Timestamp{}
+	}
+	return *a.StartedAt
+}
+
+// GetTargetLogin returns the TargetLogin field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetTargetLogin() string {
+	if a == nil || a.TargetLogin == nil {
+		return ""
+	}
+	return *a.TargetLogin
+}
+
+// GetTargetVersion returns the TargetVersion field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetTargetVersion() string {
+	if a == nil || a.TargetVersion == nil {
+		return ""
+	}
+	return *a.TargetVersion
+}
+
+// GetTeam returns the Team field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetTeam() string {
+	if a == nil || a.Team == nil {
+		return ""
+	}
+	return *a.Team
+}
+
+>>>>>>> d47936f (Add Referrer field to AuditEntry (#3032))
 // GetTimestamp returns the Timestamp field if it's non-nil, zero value otherwise.
 func (a *AuditEntry) GetTimestamp() Timestamp {
 	if a == nil || a.Timestamp == nil {
