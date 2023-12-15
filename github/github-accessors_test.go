@@ -1731,6 +1731,16 @@ func TestAuditEntry_GetReadOnly(tt *testing.T) {
 	a.GetReadOnly()
 }
 
+func TestAuditEntry_GetReferrer(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Referrer: &zeroValue}
+	a.GetReferrer()
+	a = &AuditEntry{}
+	a.GetReferrer()
+	a = nil
+	a.GetReferrer()
+}
+
 func TestAuditEntry_GetRepo(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{Repo: &zeroValue}
