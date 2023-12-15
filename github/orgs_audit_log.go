@@ -95,6 +95,7 @@ type AuditEntry struct {
 	PullRequestURL           *string                 `json:"pull_request_url,omitempty"`
 	ReadOnly                 *string                 `json:"read_only,omitempty"`
 	Reasons                  []*PolicyOverrideReason `json:"reasons,omitempty"`
+	Referrer                 *string                 `json:"referrer,omitempty"`
 	Repo                     *string                 `json:"repo,omitempty"`
 	Repository               *string                 `json:"repository,omitempty"`
 	RepositoryPublic         *bool                   `json:"repository_public,omitempty"`
