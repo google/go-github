@@ -56,6 +56,472 @@ func TestSecurityAdvisoriesService_RequestCVE(t *testing.T) {
 	})
 }
 
+func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id/forks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{
+			"id": 1,
+			"node_id": "R_kgDPP3c6pQ",
+			"owner": {
+				"login": "owner",
+				"id": 2,
+				"node_id": "MDQ6VXFGcjYyMjcyMTQw",
+				"avatar_url": "https://avatars.githubusercontent.com/u/111111?v=4",
+				"html_url": "https://github.com/xxxxx",
+				"gravatar_id": "",
+				"type": "User",
+				"site_admin": false,
+				"url": "https://api.github.com/users/owner",
+				"events_url": "https://api.github.com/users/owner/events{/privacy}",
+				"following_url": "https://api.github.com/users/owner/following{/other_user}",
+				"followers_url": "https://api.github.com/users/owner/followers",
+				"gists_url": "https://api.github.com/users/owner/gists{/gist_id}",
+				"organizations_url": "https://api.github.com/users/owner/orgs",
+				"received_events_url": "https://api.github.com/users/owner/received_events",
+				"repos_url": "https://api.github.com/users/owner/repos",
+				"starred_url": "https://api.github.com/users/owner/starred{/owner}{/repo}",
+				"subscriptions_url": "https://api.github.com/users/owner/subscriptions"
+			},
+			"name": "repo-ghsa-xxxx-xxxx-xxxx",
+			"full_name": "owner/repo-ghsa-xxxx-xxxx-xxxx",
+			"default_branch": "master",
+			"created_at": "2023-12-08T17:22:41Z",
+			"pushed_at": "2023-12-03T11:27:08Z",
+			"updated_at": "2023-12-08T17:22:42Z",
+			"html_url": "https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx",
+			"clone_url": "https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git",
+			"git_url": "git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git",
+			"ssh_url": "git@github.com:owner/repo-ghsa-xxxx-xxxx-xxxx.git",
+			"svn_url": "https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx",
+			"fork": false,
+			"forks_count": 0,
+			"network_count": 0,
+			"open_issues_count": 0,
+			"open_issues": 0,
+			"stargazers_count": 0,
+			"subscribers_count": 0,
+			"watchers_count": 0,
+			"watchers": 0,
+			"size": 0,
+			"permissions": {
+				"admin": true,
+				"maintain": true,
+				"pull": true,
+				"push": true,
+				"triage": true
+			},
+			"allow_forking": true,
+			"web_commit_signoff_required": false,
+			"archived": false,
+			"disabled": false,
+			"private": true,
+			"has_issues": false,
+			"has_wiki": false,
+			"has_pages": false,
+			"has_projects": false,
+			"has_downloads": false,
+			"has_discussions": false,
+			"is_template": false,
+			"url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx",
+			"archive_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/{archive_format}{/ref}",
+			"assignees_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/assignees{/user}",
+			"blobs_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/blobs{/sha}",
+			"branches_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/branches{/branch}",
+			"collaborators_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/collaborators{/collaborator}",
+			"comments_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/comments{/number}",
+			"commits_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/commits{/sha}",
+			"compare_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/compare/{base}...{head}",
+			"contents_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contents/{+path}",
+			"contributors_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contributors",
+			"deployments_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/deployments",
+			"downloads_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/downloads",
+			"events_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/events",
+			"forks_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/forks",
+			"git_commits_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/commits{/sha}",
+			"git_refs_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/refs{/sha}",
+			"git_tags_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/tags{/sha}",
+			"hooks_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/hooks",
+			"issue_comment_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/comments{/number}",
+			"issue_events_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/events{/number}",
+			"issues_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues{/number}",
+			"keys_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/keys{/key_id}",
+			"labels_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/labels{/name}",
+			"languages_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/languages",
+			"merges_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/merges",
+			"milestones_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/milestones{/number}",
+			"notifications_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/notifications{?since,all,participating}",
+			"pulls_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/pulls{/number}",
+			"releases_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/releases{/id}",
+			"stargazers_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/stargazers",
+			"statuses_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/statuses/{sha}",
+			"subscribers_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscribers",
+			"subscription_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscription",
+			"tags_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/tags",
+			"teams_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/teams",
+			"visibility": "private"
+		}`)
+	})
+
+	ctx := context.Background()
+	fork, _, err := client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "o", "r", "ghsa_id")
+	if err != nil {
+		t.Errorf("SecurityAdvisoriesService.CreateTemporaryPrivateFork returned error: %v", err)
+	}
+
+	want := &Repository{
+		ID:     Int64(1),
+		NodeID: String("R_kgDPP3c6pQ"),
+		Owner: &User{
+			Login:             String("owner"),
+			ID:                Int64(2),
+			NodeID:            String("MDQ6VXFGcjYyMjcyMTQw"),
+			AvatarURL:         String("https://avatars.githubusercontent.com/u/111111?v=4"),
+			HTMLURL:           String("https://github.com/xxxxx"),
+			GravatarID:        String(""),
+			Type:              String("User"),
+			SiteAdmin:         Bool(false),
+			URL:               String("https://api.github.com/users/owner"),
+			EventsURL:         String("https://api.github.com/users/owner/events{/privacy}"),
+			FollowingURL:      String("https://api.github.com/users/owner/following{/other_user}"),
+			FollowersURL:      String("https://api.github.com/users/owner/followers"),
+			GistsURL:          String("https://api.github.com/users/owner/gists{/gist_id}"),
+			OrganizationsURL:  String("https://api.github.com/users/owner/orgs"),
+			ReceivedEventsURL: String("https://api.github.com/users/owner/received_events"),
+			ReposURL:          String("https://api.github.com/users/owner/repos"),
+			StarredURL:        String("https://api.github.com/users/owner/starred{/owner}{/repo}"),
+			SubscriptionsURL:  String("https://api.github.com/users/owner/subscriptions"),
+		},
+		Name:             String("repo-ghsa-xxxx-xxxx-xxxx"),
+		FullName:         String("owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		DefaultBranch:    String("master"),
+		CreatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 41, 0, time.UTC)},
+		PushedAt:         &Timestamp{time.Date(2023, time.December, 3, 11, 27, 8, 0, time.UTC)},
+		UpdatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 42, 0, time.UTC)},
+		HTMLURL:          String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		CloneURL:         String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		GitURL:           String("git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		SSHURL:           String("git@github.com:owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		SVNURL:           String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		Fork:             Bool(false),
+		ForksCount:       Int(0),
+		NetworkCount:     Int(0),
+		OpenIssuesCount:  Int(0),
+		OpenIssues:       Int(0),
+		StargazersCount:  Int(0),
+		SubscribersCount: Int(0),
+		WatchersCount:    Int(0),
+		Watchers:         Int(0),
+		Size:             Int(0),
+		Permissions: map[string]bool{
+			"admin":    true,
+			"maintain": true,
+			"pull":     true,
+			"push":     true,
+			"triage":   true,
+		},
+		AllowForking:             Bool(true),
+		WebCommitSignoffRequired: Bool(false),
+		Archived:                 Bool(false),
+		Disabled:                 Bool(false),
+		Private:                  Bool(true),
+		HasIssues:                Bool(false),
+		HasWiki:                  Bool(false),
+		HasPages:                 Bool(false),
+		HasProjects:              Bool(false),
+		HasDownloads:             Bool(false),
+		HasDiscussions:           Bool(false),
+		IsTemplate:               Bool(false),
+		URL:                      String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		ArchiveURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/{archive_format}{/ref}"),
+		AssigneesURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/assignees{/user}"),
+		BlobsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/blobs{/sha}"),
+		BranchesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/branches{/branch}"),
+		CollaboratorsURL:         String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/collaborators{/collaborator}"),
+		CommentsURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/comments{/number}"),
+		CommitsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/commits{/sha}"),
+		CompareURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/compare/{base}...{head}"),
+		ContentsURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contents/{+path}"),
+		ContributorsURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contributors"),
+		DeploymentsURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/deployments"),
+		DownloadsURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/downloads"),
+		EventsURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/events"),
+		ForksURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/forks"),
+		GitCommitsURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/commits{/sha}"),
+		GitRefsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/refs{/sha}"),
+		GitTagsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/tags{/sha}"),
+		HooksURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/hooks"),
+		IssueCommentURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/comments{/number}"),
+		IssueEventsURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/events{/number}"),
+		IssuesURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues{/number}"),
+		KeysURL:                  String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/keys{/key_id}"),
+		LabelsURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/labels{/name}"),
+		LanguagesURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/languages"),
+		MergesURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/merges"),
+		MilestonesURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/milestones{/number}"),
+		NotificationsURL:         String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/notifications{?since,all,participating}"),
+		PullsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/pulls{/number}"),
+		ReleasesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/releases{/id}"),
+		StargazersURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/stargazers"),
+		StatusesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/statuses/{sha}"),
+		SubscribersURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscribers"),
+		SubscriptionURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscription"),
+		TagsURL:                  String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/tags"),
+		TeamsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/teams"),
+		Visibility:               String("private"),
+	}
+	if !cmp.Equal(fork, want) {
+		t.Errorf("SecurityAdvisoriesService.CreateTemporaryPrivateFork returned %+v, want %+v", fork, want)
+	}
+
+	const methodName = "CreateTemporaryPrivateFork"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "o", "r", "ghsa_id")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id/forks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		w.WriteHeader(http.StatusAccepted)
+		fmt.Fprint(w, `{
+			"id": 1,
+			"node_id": "R_kgDPP3c6pQ",
+			"owner": {
+				"login": "owner",
+				"id": 2,
+				"node_id": "MDQ6VXFGcjYyMjcyMTQw",
+				"avatar_url": "https://avatars.githubusercontent.com/u/111111?v=4",
+				"html_url": "https://github.com/xxxxx",
+				"gravatar_id": "",
+				"type": "User",
+				"site_admin": false,
+				"url": "https://api.github.com/users/owner",
+				"events_url": "https://api.github.com/users/owner/events{/privacy}",
+				"following_url": "https://api.github.com/users/owner/following{/other_user}",
+				"followers_url": "https://api.github.com/users/owner/followers",
+				"gists_url": "https://api.github.com/users/owner/gists{/gist_id}",
+				"organizations_url": "https://api.github.com/users/owner/orgs",
+				"received_events_url": "https://api.github.com/users/owner/received_events",
+				"repos_url": "https://api.github.com/users/owner/repos",
+				"starred_url": "https://api.github.com/users/owner/starred{/owner}{/repo}",
+				"subscriptions_url": "https://api.github.com/users/owner/subscriptions"
+			},
+			"name": "repo-ghsa-xxxx-xxxx-xxxx",
+			"full_name": "owner/repo-ghsa-xxxx-xxxx-xxxx",
+			"default_branch": "master",
+			"created_at": "2023-12-08T17:22:41Z",
+			"pushed_at": "2023-12-03T11:27:08Z",
+			"updated_at": "2023-12-08T17:22:42Z",
+			"html_url": "https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx",
+			"clone_url": "https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git",
+			"git_url": "git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git",
+			"ssh_url": "git@github.com:owner/repo-ghsa-xxxx-xxxx-xxxx.git",
+			"svn_url": "https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx",
+			"fork": false,
+			"forks_count": 0,
+			"network_count": 0,
+			"open_issues_count": 0,
+			"open_issues": 0,
+			"stargazers_count": 0,
+			"subscribers_count": 0,
+			"watchers_count": 0,
+			"watchers": 0,
+			"size": 0,
+			"permissions": {
+				"admin": true,
+				"maintain": true,
+				"pull": true,
+				"push": true,
+				"triage": true
+			},
+			"allow_forking": true,
+			"web_commit_signoff_required": false,
+			"archived": false,
+			"disabled": false,
+			"private": true,
+			"has_issues": false,
+			"has_wiki": false,
+			"has_pages": false,
+			"has_projects": false,
+			"has_downloads": false,
+			"has_discussions": false,
+			"is_template": false,
+			"url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx",
+			"archive_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/{archive_format}{/ref}",
+			"assignees_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/assignees{/user}",
+			"blobs_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/blobs{/sha}",
+			"branches_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/branches{/branch}",
+			"collaborators_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/collaborators{/collaborator}",
+			"comments_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/comments{/number}",
+			"commits_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/commits{/sha}",
+			"compare_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/compare/{base}...{head}",
+			"contents_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contents/{+path}",
+			"contributors_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contributors",
+			"deployments_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/deployments",
+			"downloads_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/downloads",
+			"events_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/events",
+			"forks_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/forks",
+			"git_commits_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/commits{/sha}",
+			"git_refs_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/refs{/sha}",
+			"git_tags_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/tags{/sha}",
+			"hooks_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/hooks",
+			"issue_comment_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/comments{/number}",
+			"issue_events_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/events{/number}",
+			"issues_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues{/number}",
+			"keys_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/keys{/key_id}",
+			"labels_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/labels{/name}",
+			"languages_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/languages",
+			"merges_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/merges",
+			"milestones_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/milestones{/number}",
+			"notifications_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/notifications{?since,all,participating}",
+			"pulls_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/pulls{/number}",
+			"releases_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/releases{/id}",
+			"stargazers_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/stargazers",
+			"statuses_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/statuses/{sha}",
+			"subscribers_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscribers",
+			"subscription_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscription",
+			"tags_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/tags",
+			"teams_url": "https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/teams",
+			"visibility": "private"
+		}`)
+	})
+
+	ctx := context.Background()
+	fork, _, err := client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "o", "r", "ghsa_id")
+	if _, ok := err.(*AcceptedError); !ok {
+		t.Errorf("SecurityAdvisoriesService.CreateTemporaryPrivateFork returned error: %v (want AcceptedError)", err)
+	}
+
+	want := &Repository{
+		ID:     Int64(1),
+		NodeID: String("R_kgDPP3c6pQ"),
+		Owner: &User{
+			Login:             String("owner"),
+			ID:                Int64(2),
+			NodeID:            String("MDQ6VXFGcjYyMjcyMTQw"),
+			AvatarURL:         String("https://avatars.githubusercontent.com/u/111111?v=4"),
+			HTMLURL:           String("https://github.com/xxxxx"),
+			GravatarID:        String(""),
+			Type:              String("User"),
+			SiteAdmin:         Bool(false),
+			URL:               String("https://api.github.com/users/owner"),
+			EventsURL:         String("https://api.github.com/users/owner/events{/privacy}"),
+			FollowingURL:      String("https://api.github.com/users/owner/following{/other_user}"),
+			FollowersURL:      String("https://api.github.com/users/owner/followers"),
+			GistsURL:          String("https://api.github.com/users/owner/gists{/gist_id}"),
+			OrganizationsURL:  String("https://api.github.com/users/owner/orgs"),
+			ReceivedEventsURL: String("https://api.github.com/users/owner/received_events"),
+			ReposURL:          String("https://api.github.com/users/owner/repos"),
+			StarredURL:        String("https://api.github.com/users/owner/starred{/owner}{/repo}"),
+			SubscriptionsURL:  String("https://api.github.com/users/owner/subscriptions"),
+		},
+		Name:             String("repo-ghsa-xxxx-xxxx-xxxx"),
+		FullName:         String("owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		DefaultBranch:    String("master"),
+		CreatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 41, 0, time.UTC)},
+		PushedAt:         &Timestamp{time.Date(2023, time.December, 3, 11, 27, 8, 0, time.UTC)},
+		UpdatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 42, 0, time.UTC)},
+		HTMLURL:          String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		CloneURL:         String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		GitURL:           String("git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		SSHURL:           String("git@github.com:owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		SVNURL:           String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		Fork:             Bool(false),
+		ForksCount:       Int(0),
+		NetworkCount:     Int(0),
+		OpenIssuesCount:  Int(0),
+		OpenIssues:       Int(0),
+		StargazersCount:  Int(0),
+		SubscribersCount: Int(0),
+		WatchersCount:    Int(0),
+		Watchers:         Int(0),
+		Size:             Int(0),
+		Permissions: map[string]bool{
+			"admin":    true,
+			"maintain": true,
+			"pull":     true,
+			"push":     true,
+			"triage":   true,
+		},
+		AllowForking:             Bool(true),
+		WebCommitSignoffRequired: Bool(false),
+		Archived:                 Bool(false),
+		Disabled:                 Bool(false),
+		Private:                  Bool(true),
+		HasIssues:                Bool(false),
+		HasWiki:                  Bool(false),
+		HasPages:                 Bool(false),
+		HasProjects:              Bool(false),
+		HasDownloads:             Bool(false),
+		HasDiscussions:           Bool(false),
+		IsTemplate:               Bool(false),
+		URL:                      String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		ArchiveURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/{archive_format}{/ref}"),
+		AssigneesURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/assignees{/user}"),
+		BlobsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/blobs{/sha}"),
+		BranchesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/branches{/branch}"),
+		CollaboratorsURL:         String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/collaborators{/collaborator}"),
+		CommentsURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/comments{/number}"),
+		CommitsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/commits{/sha}"),
+		CompareURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/compare/{base}...{head}"),
+		ContentsURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contents/{+path}"),
+		ContributorsURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contributors"),
+		DeploymentsURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/deployments"),
+		DownloadsURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/downloads"),
+		EventsURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/events"),
+		ForksURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/forks"),
+		GitCommitsURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/commits{/sha}"),
+		GitRefsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/refs{/sha}"),
+		GitTagsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/tags{/sha}"),
+		HooksURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/hooks"),
+		IssueCommentURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/comments{/number}"),
+		IssueEventsURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/events{/number}"),
+		IssuesURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues{/number}"),
+		KeysURL:                  String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/keys{/key_id}"),
+		LabelsURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/labels{/name}"),
+		LanguagesURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/languages"),
+		MergesURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/merges"),
+		MilestonesURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/milestones{/number}"),
+		NotificationsURL:         String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/notifications{?since,all,participating}"),
+		PullsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/pulls{/number}"),
+		ReleasesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/releases{/id}"),
+		StargazersURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/stargazers"),
+		StatusesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/statuses/{sha}"),
+		SubscribersURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscribers"),
+		SubscriptionURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscription"),
+		TagsURL:                  String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/tags"),
+		TeamsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/teams"),
+		Visibility:               String("private"),
+	}
+	if !cmp.Equal(fork, want) {
+		t.Errorf("SecurityAdvisoriesService.CreateTemporaryPrivateFork returned %+v, want %+v", fork, want)
+	}
+}
+
+func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
+	_, _, err := client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "%", "r", "ghsa_id")
+	testURLParseError(t, err)
+}
+
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_BadRequest(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -146,8 +612,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *tes
 		assertWrite(t, w, []byte(`[
 			{
 				"ghsa_id": "GHSA-abcd-1234-efgh",
-   				"cve_id": "CVE-2050-00000"
- 			}
+				"cve_id": "CVE-2050-00000"
+			}
 		]`))
 	})
 
@@ -277,8 +743,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T
 		assertWrite(t, w, []byte(`[
 			{
 				"ghsa_id": "GHSA-abcd-1234-efgh",
-   				"cve_id": "CVE-2050-00000"
- 			}
+				"cve_id": "CVE-2050-00000"
+			}
 		]`))
 	})
 
