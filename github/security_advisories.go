@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -146,6 +147,36 @@ func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo,
 	}
 
 	return resp, nil
+}
+
+// CreateTemporaryPrivateFork creates a temporary private fork to collaborate on fixing a security vulnerability in your repository.
+// The ghsaID is the GitHub Security Advisory identifier of the advisory.
+//
+// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#create-a-temporary-private-fork
+//
+//meta:operation POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks
+func (s *SecurityAdvisoriesService) CreateTemporaryPrivateFork(ctx context.Context, owner, repo, ghsaID string) (*Repository, *Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/security-advisories/%v/forks", owner, repo, ghsaID)
+
+	req, err := s.client.NewRequest("POST", url, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	fork := new(Repository)
+	resp, err := s.client.Do(ctx, req, fork)
+	if err != nil {
+		if aerr, ok := err.(*AcceptedError); ok {
+			if err := json.Unmarshal(aerr.Raw, fork); err != nil {
+				return fork, resp, err
+			}
+
+			return fork, resp, err
+		}
+		return nil, resp, err
+	}
+
+	return fork, resp, nil
 }
 
 // ListRepositorySecurityAdvisoriesForOrg lists the repository security advisories for an organization.
