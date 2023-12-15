@@ -52,6 +52,8 @@ type RateLimits struct {
 	CodeScanningUpload        *Rate `json:"code_scanning_upload"`
 	ActionsRunnerRegistration *Rate `json:"actions_runner_registration"`
 	SCIM                      *Rate `json:"scim"`
+	DependencySnapshots       *Rate `json:"dependency_snapshots"`
+	CodeSearch                *Rate `json:"code_search"`
 }
 
 func (r RateLimits) String() string {
@@ -105,6 +107,12 @@ func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, err
 		}
 		if response.Resources.SCIM != nil {
 			s.client.rateLimits[scimCategory] = *response.Resources.SCIM
+		}
+		if response.Resources.DependencySnapshots != nil {
+			s.client.rateLimits[dependencySnapshotsCategory] = *response.Resources.DependencySnapshots
+		}
+		if response.Resources.CodeSearch != nil {
+			s.client.rateLimits[codeSearchCategory] = *response.Resources.CodeSearch
 		}
 		s.client.rateMu.Unlock()
 	}

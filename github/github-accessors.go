@@ -17473,12 +17473,28 @@ func (r *RateLimits) GetCodeScanningUpload() *Rate {
 	return r.CodeScanningUpload
 }
 
+// GetCodeSearch returns the CodeSearch field.
+func (r *RateLimits) GetCodeSearch() *Rate {
+	if r == nil {
+		return nil
+	}
+	return r.CodeSearch
+}
+
 // GetCore returns the Core field.
 func (r *RateLimits) GetCore() *Rate {
 	if r == nil {
 		return nil
 	}
 	return r.Core
+}
+
+// GetDependencySnapshots returns the DependencySnapshots field.
+func (r *RateLimits) GetDependencySnapshots() *Rate {
+	if r == nil {
+		return nil
+	}
+	return r.DependencySnapshots
 }
 
 // GetGraphQL returns the GraphQL field.

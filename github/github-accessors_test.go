@@ -20248,11 +20248,25 @@ func TestRateLimits_GetCodeScanningUpload(tt *testing.T) {
 	r.GetCodeScanningUpload()
 }
 
+func TestRateLimits_GetCodeSearch(tt *testing.T) {
+	r := &RateLimits{}
+	r.GetCodeSearch()
+	r = nil
+	r.GetCodeSearch()
+}
+
 func TestRateLimits_GetCore(tt *testing.T) {
 	r := &RateLimits{}
 	r.GetCore()
 	r = nil
 	r.GetCore()
+}
+
+func TestRateLimits_GetDependencySnapshots(tt *testing.T) {
+	r := &RateLimits{}
+	r.GetDependencySnapshots()
+	r = nil
+	r.GetDependencySnapshots()
 }
 
 func TestRateLimits_GetGraphQL(tt *testing.T) {
