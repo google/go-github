@@ -1305,6 +1305,8 @@ const (
 	codeScanningUploadCategory
 	actionsRunnerRegistrationCategory
 	scimCategory
+	dependencySnapshotsCategory
+	codeSearchCategory
 
 	categories // An array of this length will be able to contain all rate limit categories.
 )
@@ -1317,6 +1319,12 @@ func category(method, path string) rateLimitCategory {
 		// NOTE: coreCategory is returned for actionsRunnerRegistrationCategory too,
 		// because no API found for this category.
 		return coreCategory
+
+	// https://docs.github.com/en/rest/search/search#search-code
+	case strings.HasPrefix(path, "/search/code") &&
+		method == http.MethodGet:
+		return codeSearchCategory
+
 	case strings.HasPrefix(path, "/search/"):
 		return searchCategory
 	case path == "/graphql":
@@ -1339,6 +1347,12 @@ func category(method, path string) rateLimitCategory {
 	// https://docs.github.com/enterprise-cloud@latest/rest/scim
 	case strings.HasPrefix(path, "/scim/"):
 		return scimCategory
+
+	// https://docs.github.com/en/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
+	case strings.HasPrefix(path, "/repos/") &&
+		strings.HasSuffix(path, "/dependency-graph/snapshots") &&
+		method == http.MethodPost:
+		return dependencySnapshotsCategory
 	}
 }
 

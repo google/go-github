@@ -1153,6 +1153,16 @@ func TestDo_rateLimitCategory(t *testing.T) {
 			url:      "/scim/v2/organizations/ORG/Users",
 			category: scimCategory,
 		},
+		{
+			method:   http.MethodPost,
+			url:      "/repos/google/go-github/dependency-graph/snapshots",
+			category: dependencySnapshotsCategory,
+		},
+		{
+			method:   http.MethodGet,
+			url:      "/search/code?q=rate",
+			category: codeSearchCategory,
+		},
 		// missing a check for actionsRunnerRegistrationCategory: API not found
 	}
 
