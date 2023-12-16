@@ -220,6 +220,8 @@ type service struct {
 }
 
 // Client returns the http.Client used by this GitHub client.
+// This should only be used for requests to the GitHub API because
+// request headers will contain an authorization token.
 func (c *Client) Client() *http.Client {
 	c.clientMu.Lock()
 	defer c.clientMu.Unlock()
@@ -315,7 +317,11 @@ func addOptions(s string, opts interface{}) (string, error) {
 // an http.Client that will perform the authentication for you (such as that
 // provided by the golang.org/x/oauth2 library).
 func NewClient(httpClient *http.Client) *Client {
-	c := &Client{client: httpClient}
+	if httpClient == nil {
+		httpClient = &http.Client{}
+	}
+	httpClient2 := *httpClient
+	c := &Client{client: &httpClient2}
 	c.initialize()
 	return c
 }
