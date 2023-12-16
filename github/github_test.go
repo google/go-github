@@ -330,26 +330,45 @@ func TestClient(t *testing.T) {
 
 func TestWithAuthToken(t *testing.T) {
 	token := "gh_test_token"
-	var gotAuthHeaderVals []string
-	wantAuthHeaderVals := []string{"Bearer " + token}
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		gotAuthHeaderVals = r.Header["Authorization"]
-	}))
-	validate := func(c *Client) {
+
+	validate := func(t *testing.T, c *http.Client, token string) {
 		t.Helper()
-		gotAuthHeaderVals = nil
-		_, err := c.Client().Get(srv.URL)
-		if err != nil {
-			t.Fatalf("Get returned unexpected error: %v", err)
+		want := token
+		if want != "" {
+			want = "Bearer " + want
 		}
-		diff := cmp.Diff(wantAuthHeaderVals, gotAuthHeaderVals)
-		if diff != "" {
-			t.Errorf("Authorization header values mismatch (-want +got):\n%s", diff)
+		gotReq := false
+		headerVal := ""
+		srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			gotReq = true
+			headerVal = r.Header.Get("Authorization")
+		}))
+		_, err := c.Get(srv.URL)
+		assertNilError(t, err)
+		if !gotReq {
+			t.Error("request not sent")
+		}
+		if headerVal != want {
+			t.Errorf("Authorization header is %v, want %v", headerVal, want)
 		}
 	}
-	validate(NewClient(nil).WithAuthToken(token))
-	validate(new(Client).WithAuthToken(token))
-	validate(NewTokenClient(context.Background(), token))
+
+	t.Run("zero-value Client", func(t *testing.T) {
+		c := new(Client).WithAuthToken(token)
+		validate(t, c.Client(), token)
+	})
+
+	t.Run("NewClient", func(t *testing.T) {
+		httpClient := &http.Client{}
+		client := NewClient(httpClient).WithAuthToken(token)
+		validate(t, client.Client(), token)
+		// make sure the original client isn't setting auth headers now
+		validate(t, httpClient, "")
+	})
+
+	t.Run("NewTokenClient", func(t *testing.T) {
+		validate(t, NewTokenClient(context.Background(), token).Client(), token)
+	})
 }
 
 func TestWithEnterpriseURLs(t *testing.T) {
