@@ -11,8 +11,6 @@ import (
 	"net/http"
 	"testing"
 	"time"
-
-	"github.com/google/go-cmp/cmp"
 )
 
 func TestEnterpriseService_GetAuditLog(t *testing.T) {
@@ -54,34 +52,31 @@ func TestEnterpriseService_GetAuditLog(t *testing.T) {
 	if err != nil {
 		t.Errorf("Enterprise.GetAuditLog returned error: %v", err)
 	}
-	startedAt, _ := time.Parse(time.RFC3339, "2021-03-07T00:33:04.000Z")
-	completedAt, _ := time.Parse(time.RFC3339, "2021-03-07T00:35:08.000Z")
 	timestamp := time.Unix(0, 1615077308538*1e6)
-
 	want := []*AuditEntry{
 		{
-			Timestamp:     &Timestamp{timestamp},
-			DocumentID:    String("beeZYapIUe-wKg5-beadb33"),
-			Action:        String("workflows.completed_workflow_run"),
-			Actor:         String("testactor"),
-			CompletedAt:   &Timestamp{completedAt},
-			Conclusion:    String("success"),
-			CreatedAt:     &Timestamp{timestamp},
-			Event:         String("schedule"),
-			HeadBranch:    String("master"),
-			HeadSHA:       String("5acdeadbeef64d1a62388e901e5cdc9358644b37"),
-			Name:          String("Code scanning - action"),
-			Org:           String("o"),
-			Repo:          String("o/blue-crayon-1"),
-			StartedAt:     &Timestamp{startedAt},
-			WorkflowID:    Int64(123456),
-			WorkflowRunID: Int64(628312345),
+			Timestamp:  &Timestamp{timestamp},
+			DocumentID: String("beeZYapIUe-wKg5-beadb33"),
+			Action:     String("workflows.completed_workflow_run"),
+			Actor:      String("testactor"),
+			CreatedAt:  &Timestamp{timestamp},
+			Org:        String("o"),
+			AdditionalFields: map[string]interface{}{
+				"completed_at":    "2021-03-07T00:35:08.000Z",
+				"conclusion":      "success",
+				"event":           "schedule",
+				"head_branch":     "master",
+				"head_sha":        "5acdeadbeef64d1a62388e901e5cdc9358644b37",
+				"name":            "Code scanning - action",
+				"repo":            "o/blue-crayon-1",
+				"started_at":      "2021-03-07T00:33:04.000Z",
+				"workflow_id":     float64(123456),
+				"workflow_run_id": float64(628312345),
+			},
 		},
 	}
 
-	if !cmp.Equal(auditEntries, want) {
-		t.Errorf("Enterprise.GetAuditLog return \ngot: %+v,\nwant:%+v", auditEntries, want)
-	}
+	assertNoDiff(t, want, auditEntries)
 
 	const methodName = "GetAuditLog"
 	testBadOptions(t, methodName, func() (err error) {

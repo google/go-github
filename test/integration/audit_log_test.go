@@ -28,6 +28,6 @@ func TestOrganizationAuditLog(t *testing.T) {
 	}
 
 	for _, e := range entries {
-		t.Log(e.GetAction(), e.GetActor(), e.GetTimestamp(), e.GetUser(), e.GetActive())
+		t.Log(e.GetAction(), e.GetActor(), e.GetTimestamp(), e.GetUser())
 	}
 }
