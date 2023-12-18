@@ -22,45 +22,43 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		testMethod(t, r, "GET")
 
 		fmt.Fprint(w, `[
-		{
+	{
+		"@timestamp": 1615077308538,
+		"_document_id": "beeZYapIUe-wKg5-beadb33",
+		"action": "workflows.completed_workflow_run",
+		"active": true,
+		"actor": "testactor",
 		"actor_ip": "10.0.0.1",
 		"actor_location": {
 			"country_code": "US"
 		},
-        "active": true,
-        "workflow_id": 123456,
-        "head_branch": "master",
-        "org": "o",
-        "trigger_id": null,
-        "repo": "o/blue-crayon-1",
-        "created_at": 1615077308538,
+		"cancelled_at": "2021-03-07T00:35:08.000Z",
+		"completed_at": "2021-03-07T00:35:08.000Z",
+		"conclusion": "success",
+		"config": {
+			"content_type": "json",
+			"insecure_ssl": "0",
+			"url": "https://example.com/deadbeef-new-hook"
+		},
+		"created_at": 1615077308538,
+		"event": "schedule",
+		"events": ["code_scanning_alert"],
 		"hashed_token": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-        "head_sha": "5acdeadbeef64d1a62388e901e5cdc9358644b37",
-        "conclusion": "success",
-        "old_permission": "read",
-        "permission": "admin",
-        "actor": "testactor",
-        "completed_at": "2021-03-07T00:35:08.000Z",
-        "@timestamp": 1615077308538,
-        "name": "Code scanning - action",
-        "action": "workflows.completed_workflow_run",
-        "started_at": "2021-03-07T00:33:04.000Z",
-        "event": "schedule",
-        "workflow_run_id": 628312345,
-        "_document_id": "beeZYapIUe-wKg5-beadb33",
-		"run_attempt": 1,
-		"run_number": 1,
-		"token_id": 1,
-		"token_scopes": "gist,repo:read",
+		"head_branch": "master",
+		"head_sha": "5acdeadbeef64d1a62388e901e5cdc9358644b37",
 		"job_workflow_ref": "testorg/testrepo/.github/workflows/testjob.yml@refs/pull/1/merge",
+		"name": "Code scanning - action",
 		"oauth_application_id": 1,
+		"old_permission": "read",
+		"org": "o",
 		"org_id": 1,
-		"pull_request_id": 1,
-		"pull_request_title": "a pr title",
-		"pull_request_url": "https://github.com/testorg/testrepo/pull/1",
 		"overridden_codes": [
 			"review_policy_not_satisfied"
 		],
+		"permission": "admin",
+		"pull_request_id": 1,
+		"pull_request_title": "a pr title",
+		"pull_request_url": "https://github.com/testorg/testrepo/pull/1",
 		"reasons": [
 			{
 				"code": "a code",
@@ -68,14 +66,19 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 			}
 		],
 		"programmatic_access_type": "GitHub App server-to-server token",
+		"referrer": "a referrer",
+		"repo": "o/blue-crayon-1",
+		"run_attempt": 1,
+		"run_number": 1,
+		"started_at": "2021-03-07T00:33:04.000Z",
+		"token_id": 1,
+		"token_scopes": "gist,repo:read",
+		"topic": "cp1-iad.ingest.github.actions.v0.WorkflowUpdate",
+		"trigger_id": null,
 		"user_agent": "a user agent",
-        "config": {
-            "content_type": "json",
-            "insecure_ssl": "0",
-            "url": "https://example.com/deadbeef-new-hook"
-         },
-        "events": ["code_scanning_alert"]
-		}]`)
+		"workflow_id": 123456,
+		"workflow_run_id": 628312345
+	}]`)
 	})
 	ctx := context.Background()
 	getOpts := GetAuditLogOptions{
@@ -108,6 +111,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 			AdditionalFields: map[string]interface{}{
 				"actor_ip":                 "10.0.0.1",
 				"active":                   true,
+				"cancelled_at":             "2021-03-07T00:35:08.000Z",
 				"completed_at":             "2021-03-07T00:35:08.000Z",
 				"conclusion":               "success",
 				"event":                    "schedule",
@@ -127,10 +131,12 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 					"code":    "a code",
 					"message": "a message",
 				}},
+				"referrer":        "a referrer",
 				"repo":            "o/blue-crayon-1",
 				"run_attempt":     float64(1),
 				"run_number":      float64(1),
 				"started_at":      "2021-03-07T00:33:04.000Z",
+				"topic":           "cp1-iad.ingest.github.actions.v0.WorkflowUpdate",
 				"user_agent":      "a user agent",
 				"workflow_id":     float64(123456),
 				"workflow_run_id": float64(628312345),
@@ -241,6 +247,8 @@ func TestAuditEntry_Marshal(t *testing.T) {
 			"active_was":   false,
 			"actor_ip":     "aip",
 			"blocked_user": "bu",
+			"cancelled_at": "2021-03-07T00:35:08.000Z",
+			"completed_at": "2021-03-07T00:35:08.000Z",
 			"conclusion":   "c",
 			"config": map[string]interface{}{
 				"url": "s",
@@ -281,6 +289,7 @@ func TestAuditEntry_Marshal(t *testing.T) {
 					"message": "m",
 				},
 			},
+			"referrer":                "a referrer",
 			"repo":                    "r",
 			"repository":              "repo",
 			"repository_public":       false,
@@ -296,6 +305,7 @@ func TestAuditEntry_Marshal(t *testing.T) {
 			"target_login":            "tl",
 			"target_version":          "tv",
 			"team":                    "t",
+			"topic":                   "cp1-iad.ingest.github.actions.v0.WorkflowUpdate",
 			"transport_protocol":      1,
 			"transport_protocol_name": "tpn",
 			"trigger_id":              1,
@@ -317,6 +327,8 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		},
 		"blocked_user": "bu",
 		"business": "b",
+		"cancelled_at": "2021-03-07T00:35:08.000Z",
+		"completed_at": "2021-03-07T00:35:08.000Z",
 		"conclusion": "c",
 		"config": {
 			"url": "s"
@@ -365,6 +377,7 @@ func TestAuditEntry_Marshal(t *testing.T) {
 			"code": "c",
 			"message": "m"
 		}],
+		"referrer": "a referrer",
 		"read_only": "ro",
 		"repo": "r",
 		"repository": "repo",
@@ -388,6 +401,7 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		"@timestamp": ` + referenceTimeStr + `,
 		"token_id": 1,
 		"token_scopes": "ts",
+		"topic": "cp1-iad.ingest.github.actions.v0.WorkflowUpdate",
 		"transport_protocol_name": "tpn",
 		"transport_protocol": 1,
 		"trigger_id": 1,
