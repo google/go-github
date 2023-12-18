@@ -275,13 +275,11 @@ func testErrorResponseForStatusCode(t *testing.T, code int) {
 	}
 }
 
-func assertNoDiff(t *testing.T, want, actual interface{}) {
+func assertNoDiff(t *testing.T, want, got interface{}) {
 	t.Helper()
-	diff := cmp.Diff(want, actual)
-	if diff == "" {
-		return
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("diff mismatch (-want +got):\n%v", diff)
 	}
-	t.Errorf("unexpected diff: %s", diff)
 }
 
 func assertNilError(t *testing.T, err error) {
