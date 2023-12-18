@@ -275,6 +275,13 @@ func testErrorResponseForStatusCode(t *testing.T, code int) {
 	}
 }
 
+func assertNoDiff(t *testing.T, want, got interface{}) {
+	t.Helper()
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("diff mismatch (-want +got):\n%v", diff)
+	}
+}
+
 func assertNilError(t *testing.T, err error) {
 	t.Helper()
 	if err != nil {
