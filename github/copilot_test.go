@@ -680,7 +680,7 @@ func TestCopilotService_AddCopilotUsers(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"selected_users":["user1","user2"]}`+"\n")
+		testBody(t, r, `{"selected_usernames":["user1","user2"]}`+"\n")
 		fmt.Fprint(w, `{"seats_created": 2}`)
 	})
 
@@ -718,7 +718,7 @@ func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"selected_users":["user1","user2"]}`+"\n")
+		testBody(t, r, `{"selected_usernames":["user1","user2"]}`+"\n")
 		fmt.Fprint(w, `{"seats_cancelled": 2}`)
 	})
 
