@@ -241,9 +241,9 @@ func (s *CopilotService) AddCopilotUsers(ctx context.Context, org string, users 
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_users", org)
 
 	body := struct {
-		SelectedUsers []string `json:"selected_usernames"`
+		SelectedUsernames []string `json:"selected_usernames"`
 	}{
-		SelectedUsers: users,
+		SelectedUsernames: users,
 	}
 
 	req, err := s.client.NewRequest("POST", u, body)
@@ -269,9 +269,9 @@ func (s *CopilotService) RemoveCopilotUsers(ctx context.Context, org string, use
 	u := fmt.Sprintf("orgs/%v/copilot/billing/selected_users", org)
 
 	body := struct {
-		SelectedUsers []string `json:"selected_usernames"`
+		SelectedUsernames []string `json:"selected_usernames"`
 	}{
-		SelectedUsers: users,
+		SelectedUsernames: users,
 	}
 
 	req, err := s.client.NewRequest("DELETE", u, body)
