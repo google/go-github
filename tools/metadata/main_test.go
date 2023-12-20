@@ -66,59 +66,54 @@ GET /undocumented/{undocumented_id}
 func TestUpdateOpenAPI(t *testing.T) {
 	testServer := newTestServer(t, "main", map[string]interface{}{
 		"api.github.com/api.github.com.json": openapi3.T{
-			Paths: openapi3.Paths{
-				"/a/{a_id}": &openapi3.PathItem{
+			Paths: openapi3.NewPaths(
+				openapi3.WithPath("/a/{a_id}", &openapi3.PathItem{
 					Get: &openapi3.Operation{
 						ExternalDocs: &openapi3.ExternalDocs{
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				},
-			},
+				})),
 		},
 		"ghec/ghec.json": openapi3.T{
-			Paths: openapi3.Paths{
-				"/a/b/{a_id}": &openapi3.PathItem{
+			Paths: openapi3.NewPaths(
+				openapi3.WithPath("/a/b/{a_id}", &openapi3.PathItem{
 					Get: &openapi3.Operation{
 						ExternalDocs: &openapi3.ExternalDocs{
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				},
-			},
+				})),
 		},
 		"ghes-3.9/ghes-3.9.json": openapi3.T{
-			Paths: openapi3.Paths{
-				"/a/b/{a_id}": &openapi3.PathItem{
+			Paths: openapi3.NewPaths(
+				openapi3.WithPath("/a/b/{a_id}", &openapi3.PathItem{
 					Get: &openapi3.Operation{
 						ExternalDocs: &openapi3.ExternalDocs{
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				},
-			},
+				})),
 		},
 		"ghes-3.10/ghes-3.10.json": openapi3.T{
-			Paths: openapi3.Paths{
-				"/a/b/{a_id}": &openapi3.PathItem{
+			Paths: openapi3.NewPaths(
+				openapi3.WithPath("/a/b/{a_id}", &openapi3.PathItem{
 					Get: &openapi3.Operation{
 						ExternalDocs: &openapi3.ExternalDocs{
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				},
-			},
+				})),
 		},
 		"ghes-2.22/ghes-2.22.json": openapi3.T{
-			Paths: openapi3.Paths{
-				"/a/b/{a_id}": &openapi3.PathItem{
+			Paths: openapi3.NewPaths(
+				openapi3.WithPath("/a/b/{a_id}", &openapi3.PathItem{
 					Get: &openapi3.Operation{
 						ExternalDocs: &openapi3.ExternalDocs{
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				},
-			},
+				})),
 		},
 	})
 
