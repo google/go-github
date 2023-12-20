@@ -40,7 +40,7 @@ func getOpsFromGithub(ctx context.Context, client *github.Client, gitRef string)
 	}
 	var ops []*operation
 	for _, desc := range descs {
-		for p, pathItem := range desc.description.Paths {
+		for p, pathItem := range desc.description.Paths.Map() {
 			for method, op := range pathItem.Operations() {
 				docURL := ""
 				if op.ExternalDocs != nil {
