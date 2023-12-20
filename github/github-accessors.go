@@ -4014,6 +4014,62 @@ func (c *ContributorStats) GetTotal() int {
 	return *c.Total
 }
 
+// GetSeatBreakdown returns the SeatBreakdown field.
+func (c *CopilotOrganizationDetails) GetSeatBreakdown() *CopilotSeatBreakdown {
+	if c == nil {
+		return nil
+	}
+	return c.SeatBreakdown
+}
+
+// GetAssigningTeam returns the AssigningTeam field.
+func (c *CopilotSeatDetails) GetAssigningTeam() *Team {
+	if c == nil {
+		return nil
+	}
+	return c.AssigningTeam
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetLastActivityAt returns the LastActivityAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetLastActivityAt() Timestamp {
+	if c == nil || c.LastActivityAt == nil {
+		return Timestamp{}
+	}
+	return *c.LastActivityAt
+}
+
+// GetLastActivityEditor returns the LastActivityEditor field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetLastActivityEditor() string {
+	if c == nil || c.LastActivityEditor == nil {
+		return ""
+	}
+	return *c.LastActivityEditor
+}
+
+// GetPendingCancellationDate returns the PendingCancellationDate field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetPendingCancellationDate() string {
+	if c == nil || c.PendingCancellationDate == nil {
+		return ""
+	}
+	return *c.PendingCancellationDate
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
+}
+
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
 func (c *CreateCheckRunOptions) GetCompletedAt() Timestamp {
 	if c == nil || c.CompletedAt == nil {
