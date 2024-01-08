@@ -11096,6 +11096,13 @@ func TestIssueEvent_GetRename(tt *testing.T) {
 	i.GetRename()
 }
 
+func TestIssueEvent_GetRepository(tt *testing.T) {
+	i := &IssueEvent{}
+	i.GetRepository()
+	i = nil
+	i.GetRepository()
+}
+
 func TestIssueEvent_GetRequestedReviewer(tt *testing.T) {
 	i := &IssueEvent{}
 	i.GetRequestedReviewer()
