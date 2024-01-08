@@ -13,7 +13,7 @@ require (
 )
 
 require (
-	github.com/cloudflare/circl v1.3.3 // indirect
+	github.com/cloudflare/circl v1.3.7 // indirect
 	github.com/golang-jwt/jwt/v4 v4.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-github/v41 v41.0.0 // indirect
