@@ -18,6 +18,9 @@ type IssueEvent struct {
 	// The User that generated this event.
 	Actor *User `json:"actor,omitempty"`
 
+	// The action corresponding to the event.
+	Action string `json:"action,omitempty"`
+
 	// Event identifies the actual type of Event that occurred. Possible
 	// values are:
 	//
@@ -74,6 +77,7 @@ type IssueEvent struct {
 	Issue     *Issue     `json:"issue,omitempty"`
 
 	// Only present on certain events; see above.
+	Repository            *Repository      `json:"repository,omitempty"`
 	Assignee              *User            `json:"assignee,omitempty"`
 	Assigner              *User            `json:"assigner,omitempty"`
 	CommitID              *string          `json:"commit_id,omitempty"`
