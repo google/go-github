@@ -9510,6 +9510,14 @@ func (i *IssueEvent) GetRename() *Rename {
 	return i.Rename
 }
 
+// GetRepository returns the Repository field.
+func (i *IssueEvent) GetRepository() *Repository {
+	if i == nil {
+		return nil
+	}
+	return i.Repository
+}
+
 // GetRequestedReviewer returns the RequestedReviewer field.
 func (i *IssueEvent) GetRequestedReviewer() *User {
 	if i == nil {
