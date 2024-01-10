@@ -58,7 +58,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	expectedSarifId := &SarifID{
+	expectedSarifID := &SarifID{
 		ID:  String("testid"),
 		URL: String("https://example.com/testurl"),
 	}
@@ -73,18 +73,18 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 		}
 
 		w.WriteHeader(http.StatusAccepted)
-		respBody, _ := json.Marshal(expectedSarifId)
+		respBody, _ := json.Marshal(expectedSarifID)
 		_, _ = w.Write(respBody)
 	})
 
 	ctx := context.Background()
 	sarifAnalysis := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: String("codeql-cli")}
-	respSarifId, _, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
+	respSarifID, _, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
 	if err != nil {
 		t.Errorf("CodeScanning.UploadSarif returned error: %v", err)
 	}
-	if !cmp.Equal(expectedSarifId, respSarifId) {
-		t.Errorf("Sarif response = %+v, want %+v", respSarifId, expectedSarifId)
+	if !cmp.Equal(expectedSarifID, respSarifID) {
+		t.Errorf("Sarif response = %+v, want %+v", respSarifID, expectedSarifID)
 	}
 
 	const methodName = "UploadSarif"
