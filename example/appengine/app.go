@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/google/go-github/v57/github"
+	"github.com/google/go-github/v58/github"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/log"
 )
