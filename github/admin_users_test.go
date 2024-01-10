@@ -25,7 +25,7 @@ func TestAdminUsers_Create(t *testing.T) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
-		want := &createUserRequest{Login: String("github"), Email: String("email@domain.com")}
+		want := &createUserRequest{Login: String("github"), Email: String("email@domain.com"), Suspended: Bool(false)}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -34,7 +34,7 @@ func TestAdminUsers_Create(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Admin.CreateUser(ctx, "github", "email@domain.com")
+	org, _, err := client.Admin.CreateUser(ctx, "github", "email@domain.com", false)
 	if err != nil {
 		t.Errorf("Admin.CreateUser returned error: %v", err)
 	}
@@ -46,7 +46,7 @@ func TestAdminUsers_Create(t *testing.T) {
 
 	const methodName = "CreateUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Admin.CreateUser(ctx, "github", "email@domain.com")
+		got, resp, err := client.Admin.CreateUser(ctx, "github", "email@domain.com", false)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
