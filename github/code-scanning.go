@@ -7,6 +7,8 @@ package github
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -389,10 +391,20 @@ func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	sarifID := new(SarifID)
-	resp, err := s.client.Do(ctx, req, sarifID)
-	if err != nil {
+	// This will always return an error without unmarshalling the data
+	resp, err := s.client.Do(ctx, req, nil)
+	// Even though there was an error, we still return the response
+	// in case the caller wants to inspect it further.
+	// However, if the error is AcceptedError, decode it below before
+	// returning from this function and closing the response body.
+	var acceptedError *AcceptedError
+	if !errors.As(err, &acceptedError) {
 		return nil, resp, err
+	}
+	sarifID := new(SarifID)
+	decErr := json.Unmarshal(acceptedError.Raw, sarifID)
+	if decErr != nil {
+		return nil, resp, decErr
 	}
 
 	return sarifID, resp, nil
