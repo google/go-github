@@ -80,7 +80,7 @@ func TestStringify(t *testing.T) {
 }
 
 // Directly test the String() methods on various GitHub types. We don't do an
-// exaustive test of all the various field types, since TestStringify() above
+// exhaustive test of all the various field types, since TestStringify() above
 // takes care of that. Rather, we just make sure that Stringify() is being
 // used to build the strings, which we do by verifying that pointers are
 // stringified as their underlying value.

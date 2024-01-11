@@ -18,6 +18,7 @@ func (*AService) Ambiguous() {}
 func (*AService) MissingOperation() {}
 
 // DuplicateOperations has duplicate operations
+//
 //meta:operation GET /a/{a_id}
 //meta:operation POST /a/{a_id}
 //meta:operation GET /a/{a_id}

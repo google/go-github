@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// Dependency reprensents the vulnerable dependency.
+// Dependency represents the vulnerable dependency.
 type Dependency struct {
 	Package      *VulnerabilityPackage `json:"package,omitempty"`
 	ManifestPath *string               `json:"manifest_path,omitempty"`
@@ -23,7 +23,7 @@ type AdvisoryCVSS struct {
 	VectorString *string  `json:"vector_string,omitempty"`
 }
 
-// AdvisoryCWEs reprensent the advisory pertaining to Common Weakness Enumeration.
+// AdvisoryCWEs represent the advisory pertaining to Common Weakness Enumeration.
 type AdvisoryCWEs struct {
 	CWEID *string `json:"cwe_id,omitempty"`
 	Name  *string `json:"name,omitempty"`

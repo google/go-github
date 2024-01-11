@@ -872,7 +872,7 @@ func TestTeamsService_AddTeamRepoByID_noAccess(t *testing.T) {
 	ctx := context.Background()
 	_, err := client.Teams.AddTeamRepoByID(ctx, 1, 1, "owner", "repo", nil)
 	if err == nil {
-		t.Errorf("Expcted error to be returned")
+		t.Errorf("Expected error to be returned")
 	}
 }
 
@@ -888,7 +888,7 @@ func TestTeamsService_AddTeamRepoBySlug_noAccess(t *testing.T) {
 	ctx := context.Background()
 	_, err := client.Teams.AddTeamRepoBySlug(ctx, "org", "slug", "owner", "repo", nil)
 	if err == nil {
-		t.Errorf("Expcted error to be returned")
+		t.Errorf("Expected error to be returned")
 	}
 }
 

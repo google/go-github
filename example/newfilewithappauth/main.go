@@ -29,7 +29,7 @@ func main() {
 
 	itr, err := ghinstallation.NewAppsTransport(http.DefaultTransport, 10, privatePem)
 	if err != nil {
-		log.Fatalf("faild to create app transport: %v\n", err)
+		log.Fatalf("failed to create app transport: %v\n", err)
 	}
 	itr.BaseURL = gitHost
 
@@ -42,7 +42,7 @@ func main() {
 	).WithEnterpriseURLs(gitHost, gitHost)
 
 	if err != nil {
-		log.Fatalf("faild to create git client for app: %v\n", err)
+		log.Fatalf("failed to create git client for app: %v\n", err)
 	}
 
 	installations, _, err := client.Apps.ListInstallations(context.Background(), &github.ListOptions{})
