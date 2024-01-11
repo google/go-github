@@ -3,10 +3,12 @@ package github
 type AService struct{}
 
 // Get gets an A
+//
 //meta:operation GET /a/{non-canonical-id}
 func (s *AService) Get() {}
 
 // Undocumented uses an undocumented operation
+//
 //meta:operation GET /undocumented/{undocumented_id}
 func (s *AService) Undocumented() {}
 

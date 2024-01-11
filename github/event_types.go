@@ -1389,7 +1389,7 @@ type ReleaseEvent struct {
 
 // RepositoryEvent is triggered when a repository is created, archived, unarchived,
 // renamed, edited, transferred, made public, or made private. Organization hooks are
-// also trigerred when a repository is deleted.
+// also triggered when a repository is deleted.
 // The Webhook event name is "repository".
 //
 // Events of this type are not visible in timelines, they are only used to
