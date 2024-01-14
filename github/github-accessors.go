@@ -4590,6 +4590,78 @@ func (c *Credit) GetUser() *User {
 	return c.User
 }
 
+// GetApp returns the App field.
+func (c *CustomDeploymentProtectionRule) GetApp() *CustomDeploymentProtectionRuleApp {
+	if c == nil {
+		return nil
+	}
+	return c.App
+}
+
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (c *CustomDeploymentProtectionRule) GetEnabled() bool {
+	if c == nil || c.Enabled == nil {
+		return false
+	}
+	return *c.Enabled
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CustomDeploymentProtectionRule) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (c *CustomDeploymentProtectionRule) GetNodeID() string {
+	if c == nil || c.NodeID == nil {
+		return ""
+	}
+	return *c.NodeID
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CustomDeploymentProtectionRuleApp) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetIntegrationURL returns the IntegrationURL field if it's non-nil, zero value otherwise.
+func (c *CustomDeploymentProtectionRuleApp) GetIntegrationURL() string {
+	if c == nil || c.IntegrationURL == nil {
+		return ""
+	}
+	return *c.IntegrationURL
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (c *CustomDeploymentProtectionRuleApp) GetNodeID() string {
+	if c == nil || c.NodeID == nil {
+		return ""
+	}
+	return *c.NodeID
+}
+
+// GetSlug returns the Slug field if it's non-nil, zero value otherwise.
+func (c *CustomDeploymentProtectionRuleApp) GetSlug() string {
+	if c == nil || c.Slug == nil {
+		return ""
+	}
+	return *c.Slug
+}
+
+// GetIntegrationID returns the IntegrationID field if it's non-nil, zero value otherwise.
+func (c *CustomDeploymentProtectionRuleRequest) GetIntegrationID() int64 {
+	if c == nil || c.IntegrationID == nil {
+		return 0
+	}
+	return *c.IntegrationID
+}
+
 // GetDefaultValue returns the DefaultValue field if it's non-nil, zero value otherwise.
 func (c *CustomProperty) GetDefaultValue() string {
 	if c == nil || c.DefaultValue == nil {
@@ -10468,6 +10540,22 @@ func (l *ListCollaboratorOptions) GetAffiliation() string {
 		return ""
 	}
 	return *l.Affiliation
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (l *ListCustomDeploymentRuleIntegrationsResponse) GetTotalCount() int {
+	if l == nil || l.TotalCount == nil {
+		return 0
+	}
+	return *l.TotalCount
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (l *ListDeploymentProtectionRuleResponse) GetTotalCount() int {
+	if l == nil || l.TotalCount == nil {
+		return 0
+	}
+	return *l.TotalCount
 }
 
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
