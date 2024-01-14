@@ -1,4 +1,4 @@
-// Copyright 2023 The go-github AUTHORS. All rights reserved.
+// Copyright 2024 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -25,13 +25,13 @@ type CustomDeploymentProtectionRule struct {
 	App     *CustomDeploymentProtectionRuleApp `json:"app,omitempty"`
 }
 
-// ListDeploymentProtectionRuleResponse represents the format of response that comes back when you list deployment protection rules.
+// ListDeploymentProtectionRuleResponse represents the response that comes back when you list deployment protection rules.
 type ListDeploymentProtectionRuleResponse struct {
 	TotalCount      *int                              `json:"total_count,omitempty"`
 	ProtectionRules []*CustomDeploymentProtectionRule `json:"custom_deployment_protection_rules,omitempty"`
 }
 
-// ListCustomDeploymentRuleIntegrationsResponse represents the slightly different format of response that comes back when you list custom deployment rule integrations.
+// ListCustomDeploymentRuleIntegrationsResponse represents the slightly different response that comes back when you list custom deployment rule integrations.
 type ListCustomDeploymentRuleIntegrationsResponse struct {
 	TotalCount *int                                 `json:"total_count,omitempty"`
 	Apps       []*CustomDeploymentProtectionRuleApp `json:"available_custom_deployment_protection_rule_integrations,omitempty"`
@@ -42,7 +42,7 @@ type CustomDeploymentProtectionRuleRequest struct {
 	IntegrationID *int64 `json:"integration_id,omitempty"`
 }
 
-// GetAllDeploymentProtectionRules get all the deployment protection rules for an environment.
+// GetAllDeploymentProtectionRules gets all the deployment protection rules for an environment.
 //
 // GitHub API docs: https://docs.github.com/rest/deployments/protection-rules#get-all-deployment-protection-rules-for-an-environment
 //
