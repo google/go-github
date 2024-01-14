@@ -99,6 +99,14 @@ func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) 
 		_, _, err = client.Repositories.CreateCustomDeploymentProtectionRule(ctx, "\n", "\n", "\n", input)
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CreateCustomDeploymentProtectionRule(ctx, "o", "r", "e", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListCustomDeploymentRuleIntegrations(t *testing.T) {
