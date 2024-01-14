@@ -126,7 +126,7 @@ func TestRepositoriesService_ListCustomDeploymentRuleIntegrations(t *testing.T) 
 
 	want := &ListCustomDeploymentRuleIntegrationsResponse{
 		TotalCount: Int(2),
-		Apps: []*CustomDeploymentProtectionRuleApp{
+		AvailableIntegrations: []*CustomDeploymentProtectionRuleApp{
 			{ID: Int64(1), NodeID: String("GHT58kRlcGxveW1lbnRTdTY!bbcy"), Slug: String("a-custom-app"), IntegrationURL: String("https://api.github.com/apps/a-custom-app")},
 			{ID: Int64(2), NodeID: String("UHVE67RlcGxveW1lbnRTdTY!jfeuy"), Slug: String("another-custom-app"), IntegrationURL: String("https://api.github.com/apps/another-custom-app")},
 		},

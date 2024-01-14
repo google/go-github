@@ -10,6 +10,7 @@ import (
 	"fmt"
 )
 
+// CustomDeploymentProtectionRuleApp represents a single deployment protection rule app for an environment.
 type CustomDeploymentProtectionRuleApp struct {
 	ID             *int64  `json:"id,omitempty"`
 	Slug           *string `json:"slug,omitempty"`
@@ -33,8 +34,8 @@ type ListDeploymentProtectionRuleResponse struct {
 
 // ListCustomDeploymentRuleIntegrationsResponse represents the slightly different response that comes back when you list custom deployment rule integrations.
 type ListCustomDeploymentRuleIntegrationsResponse struct {
-	TotalCount *int                                 `json:"total_count,omitempty"`
-	Apps       []*CustomDeploymentProtectionRuleApp `json:"available_custom_deployment_protection_rule_integrations,omitempty"`
+	TotalCount            *int                                 `json:"total_count,omitempty"`
+	AvailableIntegrations []*CustomDeploymentProtectionRuleApp `json:"available_custom_deployment_protection_rule_integrations,omitempty"`
 }
 
 // CustomDeploymentProtectionRuleRequest represents a deployment protection rule request.
