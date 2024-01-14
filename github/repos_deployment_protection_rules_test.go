@@ -107,7 +107,7 @@ func TestRepositoriesService_ListCustomDeploymentRuleIntegrations(t *testing.T) 
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment_protection_rules/apps", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"total_count": 2}, {"available_custom_deployment_protection_rule_integrations": [{"id": 1, "node_id": "GHT58kRlcGxveW1lbnRTdTY!bbcy", "slug": "a-custom-app", "integration_url": "https://api.github.com/apps/a-custom-app"}, {"id": 2, "node_id": "UHVE67RlcGxveW1lbnRTdTY!jfeuy", "slug": "another-custom-app", "integration_url": "https://api.github.com/apps/another-custom-app"}]}`)
+		fmt.Fprint(w, `{"total_count": 2, "available_custom_deployment_protection_rule_integrations": [{"id": 1, "node_id": "GHT58kRlcGxveW1lbnRTdTY!bbcy", "slug": "a-custom-app", "integration_url": "https://api.github.com/apps/a-custom-app"}, {"id": 2, "node_id": "UHVE67RlcGxveW1lbnRTdTY!jfeuy", "slug": "another-custom-app", "integration_url": "https://api.github.com/apps/another-custom-app"}]}`)
 	})
 
 	ctx := context.Background()
