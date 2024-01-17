@@ -126,7 +126,7 @@ type PullRequestLinks struct {
 	HTMLURL  *string    `json:"html_url,omitempty"`
 	DiffURL  *string    `json:"diff_url,omitempty"`
 	PatchURL *string    `json:"patch_url,omitempty"`
-	MergedAt *Timestamp `json:"merged_at,omitmepty"`
+	MergedAt *Timestamp `json:"merged_at,omitempty"`
 }
 
 // List the issues for the authenticated user. If all is true, list issues
