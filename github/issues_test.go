@@ -499,13 +499,15 @@ func TestPullRequestLinks_Marshal(t *testing.T) {
 		HTMLURL:  String("hurl"),
 		DiffURL:  String("durl"),
 		PatchURL: String("purl"),
+		MergedAt: &Timestamp{referenceTime},
 	}
 
 	want := `{
 		"url": "url",
 		"html_url": "hurl",
 		"diff_url": "durl",
-		"patch_url": "purl"
+		"patch_url": "purl",
+		"merged_at": ` + referenceTimeStr + `
 		}`
 
 	testJSONMarshal(t, u, want)

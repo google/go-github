@@ -122,10 +122,11 @@ type IssueListOptions struct {
 // PullRequestLinks object is added to the Issue object when it's an issue included
 // in the IssueCommentEvent webhook payload, if the webhook is fired by a comment on a PR.
 type PullRequestLinks struct {
-	URL      *string `json:"url,omitempty"`
-	HTMLURL  *string `json:"html_url,omitempty"`
-	DiffURL  *string `json:"diff_url,omitempty"`
-	PatchURL *string `json:"patch_url,omitempty"`
+	URL      *string    `json:"url,omitempty"`
+	HTMLURL  *string    `json:"html_url,omitempty"`
+	DiffURL  *string    `json:"diff_url,omitempty"`
+	PatchURL *string    `json:"patch_url,omitempty"`
+	MergedAt *Timestamp `json:"merged_at,omitempty"`
 }
 
 // List the issues for the authenticated user. If all is true, list issues

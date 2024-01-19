@@ -16262,6 +16262,14 @@ func (p *PullRequestLinks) GetHTMLURL() string {
 	return *p.HTMLURL
 }
 
+// GetMergedAt returns the MergedAt field if it's non-nil, zero value otherwise.
+func (p *PullRequestLinks) GetMergedAt() Timestamp {
+	if p == nil || p.MergedAt == nil {
+		return Timestamp{}
+	}
+	return *p.MergedAt
+}
+
 // GetPatchURL returns the PatchURL field if it's non-nil, zero value otherwise.
 func (p *PullRequestLinks) GetPatchURL() string {
 	if p == nil || p.PatchURL == nil {
