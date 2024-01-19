@@ -18864,6 +18864,16 @@ func TestPullRequestLinks_GetHTMLURL(tt *testing.T) {
 	p.GetHTMLURL()
 }
 
+func TestPullRequestLinks_GetMergedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PullRequestLinks{MergedAt: &zeroValue}
+	p.GetMergedAt()
+	p = &PullRequestLinks{}
+	p.GetMergedAt()
+	p = nil
+	p.GetMergedAt()
+}
+
 func TestPullRequestLinks_GetPatchURL(tt *testing.T) {
 	var zeroValue string
 	p := &PullRequestLinks{PatchURL: &zeroValue}
