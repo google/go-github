@@ -42,7 +42,7 @@ func (a ActionsAllowed) String() string {
 	return Stringify(a)
 }
 
-// DefaultWorkflowPermissionOrganization represents the default permissions for GitHub Actions workflows
+// DefaultWorkflowPermissionOrganization represents the default permissions for GitHub Actions workflows for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions
 type DefaultWorkflowPermissionOrganization struct {
