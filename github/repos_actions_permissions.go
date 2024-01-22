@@ -23,7 +23,7 @@ func (a ActionsPermissionsRepository) String() string {
 	return Stringify(a)
 }
 
-// DefaultWorkflowPermissionRepository represents the default permissions for GitHub Actions workflows
+// DefaultWorkflowPermissionRepository represents the default permissions for GitHub Actions workflows for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions
 type DefaultWorkflowPermissionRepository struct {
