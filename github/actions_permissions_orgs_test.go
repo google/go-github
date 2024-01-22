@@ -334,3 +334,80 @@ func TestActionsPermissions_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
+	})
+
+	ctx := context.Background()
+	org, _, err := client.Actions.GetDefaultWorkflowPermissionsInOrganization(ctx, "o")
+	if err != nil {
+		t.Errorf("Actions.GetDefaultWorkflowPermissionsInOrganization returned error: %v", err)
+	}
+	want := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	if !cmp.Equal(org, want) {
+		t.Errorf("Actions.GetDefaultWorkflowPermissionsInOrganization returned %+v, want %+v", org, want)
+	}
+
+	const methodName = "GetDefaultWorkflowPermissionsInOrganization"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetDefaultWorkflowPermissionsInOrganization(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetDefaultWorkflowPermissionsInOrganization(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_EditDefaultWorkflowPermissionsInOrganization(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	input := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+
+	mux.HandleFunc("/orgs/o/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
+		v := new(DefaultWorkflowPermissionOrganization)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
+	})
+
+	ctx := context.Background()
+	org, _, err := client.Actions.EditDefaultWorkflowPermissionsInOrganization(ctx, "o", *input)
+	if err != nil {
+		t.Errorf("Actions.EditDefaultWorkflowPermissionsInOrganization returned error: %v", err)
+	}
+
+	want := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	if !cmp.Equal(org, want) {
+		t.Errorf("Actions.EditDefaultWorkflowPermissionsInOrganization returned %+v, want %+v", org, want)
+	}
+
+	const methodName = "EditDefaultWorkflowPermissionsInOrganization"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.EditDefaultWorkflowPermissionsInOrganization(ctx, "\n", *input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.EditDefaultWorkflowPermissionsInOrganization(ctx, "o", *input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}

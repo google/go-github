@@ -29,6 +29,14 @@ func (a ActionsPermissionsEnterprise) String() string {
 	return Stringify(a)
 }
 
+// DefaultWorkflowPermissionEnterprise represents the default permissions for GitHub Actions workflows for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions
+type DefaultWorkflowPermissionEnterprise struct {
+	DefaultWorkflowPermissions   *string `json:"default_workflow_permissions,omitempty"`
+	CanApprovePullRequestReviews *bool   `json:"can_approve_pull_request_reviews,omitempty"`
+}
+
 // GetActionsPermissionsInEnterprise gets the GitHub Actions permissions policy for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-github-actions-permissions-for-an-enterprise
@@ -198,6 +206,49 @@ func (s *ActionsService) EditActionsAllowedInEnterprise(ctx context.Context, ent
 	}
 
 	p := new(ActionsAllowed)
+	resp, err := s.client.Do(ctx, req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return p, resp, nil
+}
+
+// GetDefaultWorkflowPermissionsInEnterprise gets the GitHub Actions default workflow permissions for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-default-workflow-permissions-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/permissions/workflow
+func (s *ActionsService) GetDefaultWorkflowPermissionsInEnterprise(ctx context.Context, enterprise string) (*DefaultWorkflowPermissionEnterprise, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/workflow", enterprise)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	permissions := new(DefaultWorkflowPermissionEnterprise)
+	resp, err := s.client.Do(ctx, req, permissions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return permissions, resp, nil
+}
+
+// EditDefaultWorkflowPermissionsInEnterprise sets the GitHub Actions default workflow permissions for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-default-workflow-permissions-for-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/actions/permissions/workflow
+func (s *ActionsService) EditDefaultWorkflowPermissionsInEnterprise(ctx context.Context, enterprise string, permissions DefaultWorkflowPermissionEnterprise) (*DefaultWorkflowPermissionEnterprise, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/workflow", enterprise)
+	req, err := s.client.NewRequest("PUT", u, permissions)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := new(DefaultWorkflowPermissionEnterprise)
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
 		return nil, resp, err
