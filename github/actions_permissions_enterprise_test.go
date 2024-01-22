@@ -296,3 +296,80 @@ func TestActionsService_EditActionsAllowedInEnterprise(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestActionsService_GetDefaultWorkflowPermissionsInEnterprise(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/enterprises/e/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
+	})
+
+	ctx := context.Background()
+	ent, _, err := client.Actions.GetDefaultWorkflowPermissionsInEnterprise(ctx, "e")
+	if err != nil {
+		t.Errorf("Actions.GetDefaultWorkflowPermissionsInEnterprise returned error: %v", err)
+	}
+	want := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	if !cmp.Equal(ent, want) {
+		t.Errorf("Actions.GetDefaultWorkflowPermissionsInEnterprise returned %+v, want %+v", ent, want)
+	}
+
+	const methodName = "GetDefaultWorkflowPermissionsInEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetDefaultWorkflowPermissionsInEnterprise(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetDefaultWorkflowPermissionsInEnterprise(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_EditDefaultWorkflowPermissionsInEnterprise(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	input := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+
+	mux.HandleFunc("/enterprises/e/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
+		v := new(DefaultWorkflowPermissionEnterprise)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
+	})
+
+	ctx := context.Background()
+	ent, _, err := client.Actions.EditDefaultWorkflowPermissionsInEnterprise(ctx, "e", *input)
+	if err != nil {
+		t.Errorf("Actions.EditDefaultWorkflowPermissionsInEnterprise returned error: %v", err)
+	}
+
+	want := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	if !cmp.Equal(ent, want) {
+		t.Errorf("Actions.EditDefaultWorkflowPermissionsInEnterprise returned %+v, want %+v", ent, want)
+	}
+
+	const methodName = "EditDefaultWorkflowPermissionsInEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.EditDefaultWorkflowPermissionsInEnterprise(ctx, "\n", *input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.EditDefaultWorkflowPermissionsInEnterprise(ctx, "e", *input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}

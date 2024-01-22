@@ -42,6 +42,14 @@ func (a ActionsAllowed) String() string {
 	return Stringify(a)
 }
 
+// DefaultWorkflowPermissionOrganization represents the default permissions for GitHub Actions workflows for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions
+type DefaultWorkflowPermissionOrganization struct {
+	DefaultWorkflowPermissions   *string `json:"default_workflow_permissions,omitempty"`
+	CanApprovePullRequestReviews *bool   `json:"can_approve_pull_request_reviews,omitempty"`
+}
+
 // GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#get-github-actions-permissions-for-an-organization
@@ -211,6 +219,49 @@ func (s *ActionsService) EditActionsAllowed(ctx context.Context, org string, act
 	}
 
 	p := new(ActionsAllowed)
+	resp, err := s.client.Do(ctx, req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return p, resp, nil
+}
+
+// GetDefaultWorkflowPermissionsInOrganization gets the GitHub Actions default workflow permissions for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-default-workflow-permissions-for-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/permissions/workflow
+func (s *ActionsService) GetDefaultWorkflowPermissionsInOrganization(ctx context.Context, org string) (*DefaultWorkflowPermissionOrganization, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/workflow", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	permissions := new(DefaultWorkflowPermissionOrganization)
+	resp, err := s.client.Do(ctx, req, permissions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return permissions, resp, nil
+}
+
+// EditDefaultWorkflowPermissionsInOrganization sets the GitHub Actions default workflow permissions for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-default-workflow-permissions-for-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/workflow
+func (s *ActionsService) EditDefaultWorkflowPermissionsInOrganization(ctx context.Context, org string, permissions DefaultWorkflowPermissionOrganization) (*DefaultWorkflowPermissionOrganization, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/workflow", org)
+	req, err := s.client.NewRequest("PUT", u, permissions)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := new(DefaultWorkflowPermissionOrganization)
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
 		return nil, resp, err

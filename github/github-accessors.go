@@ -4686,6 +4686,54 @@ func (d *DefaultSetupConfiguration) GetUpdatedAt() Timestamp {
 	return *d.UpdatedAt
 }
 
+// GetCanApprovePullRequestReviews returns the CanApprovePullRequestReviews field if it's non-nil, zero value otherwise.
+func (d *DefaultWorkflowPermissionEnterprise) GetCanApprovePullRequestReviews() bool {
+	if d == nil || d.CanApprovePullRequestReviews == nil {
+		return false
+	}
+	return *d.CanApprovePullRequestReviews
+}
+
+// GetDefaultWorkflowPermissions returns the DefaultWorkflowPermissions field if it's non-nil, zero value otherwise.
+func (d *DefaultWorkflowPermissionEnterprise) GetDefaultWorkflowPermissions() string {
+	if d == nil || d.DefaultWorkflowPermissions == nil {
+		return ""
+	}
+	return *d.DefaultWorkflowPermissions
+}
+
+// GetCanApprovePullRequestReviews returns the CanApprovePullRequestReviews field if it's non-nil, zero value otherwise.
+func (d *DefaultWorkflowPermissionOrganization) GetCanApprovePullRequestReviews() bool {
+	if d == nil || d.CanApprovePullRequestReviews == nil {
+		return false
+	}
+	return *d.CanApprovePullRequestReviews
+}
+
+// GetDefaultWorkflowPermissions returns the DefaultWorkflowPermissions field if it's non-nil, zero value otherwise.
+func (d *DefaultWorkflowPermissionOrganization) GetDefaultWorkflowPermissions() string {
+	if d == nil || d.DefaultWorkflowPermissions == nil {
+		return ""
+	}
+	return *d.DefaultWorkflowPermissions
+}
+
+// GetCanApprovePullRequestReviews returns the CanApprovePullRequestReviews field if it's non-nil, zero value otherwise.
+func (d *DefaultWorkflowPermissionRepository) GetCanApprovePullRequestReviews() bool {
+	if d == nil || d.CanApprovePullRequestReviews == nil {
+		return false
+	}
+	return *d.CanApprovePullRequestReviews
+}
+
+// GetDefaultWorkflowPermissions returns the DefaultWorkflowPermissions field if it's non-nil, zero value otherwise.
+func (d *DefaultWorkflowPermissionRepository) GetDefaultWorkflowPermissions() string {
+	if d == nil || d.DefaultWorkflowPermissions == nil {
+		return ""
+	}
+	return *d.DefaultWorkflowPermissions
+}
+
 // GetConfirmDeleteURL returns the ConfirmDeleteURL field if it's non-nil, zero value otherwise.
 func (d *DeleteAnalysis) GetConfirmDeleteURL() string {
 	if d == nil || d.ConfirmDeleteURL == nil {
