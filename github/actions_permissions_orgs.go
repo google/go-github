@@ -254,9 +254,9 @@ func (s *ActionsService) GetDefaultWorkflowPermissionsInOrganization(ctx context
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-default-workflow-permissions-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/workflow
-func (s *ActionsService) EditDefaultWorkflowPermissionsInOrganization(ctx context.Context, org string, defaultWorkflowPermissionOrganization DefaultWorkflowPermissionOrganization) (*DefaultWorkflowPermissionOrganization, *Response, error) {
+func (s *ActionsService) EditDefaultWorkflowPermissionsInOrganization(ctx context.Context, org string, permissions DefaultWorkflowPermissionOrganization) (*DefaultWorkflowPermissionOrganization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/workflow", org)
-	req, err := s.client.NewRequest("PUT", u, defaultWorkflowPermissionOrganization)
+	req, err := s.client.NewRequest("PUT", u, permissions)
 	if err != nil {
 		return nil, nil, err
 	}

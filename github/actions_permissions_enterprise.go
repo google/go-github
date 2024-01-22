@@ -241,9 +241,9 @@ func (s *ActionsService) GetDefaultWorkflowPermissionsInEnterprise(ctx context.C
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-default-workflow-permissions-for-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/actions/permissions/workflow
-func (s *ActionsService) EditDefaultWorkflowPermissionsInEnterprise(ctx context.Context, enterprise string, defaultWorkflowPermissionEnterprise DefaultWorkflowPermissionEnterprise) (*DefaultWorkflowPermissionEnterprise, *Response, error) {
+func (s *ActionsService) EditDefaultWorkflowPermissionsInEnterprise(ctx context.Context, enterprise string, permissions DefaultWorkflowPermissionEnterprise) (*DefaultWorkflowPermissionEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/workflow", enterprise)
-	req, err := s.client.NewRequest("PUT", u, defaultWorkflowPermissionEnterprise)
+	req, err := s.client.NewRequest("PUT", u, permissions)
 	if err != nil {
 		return nil, nil, err
 	}

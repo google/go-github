@@ -101,9 +101,9 @@ func (s *RepositoriesService) GetDefaultWorkflowPermissions(ctx context.Context,
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-default-workflow-permissions-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/workflow
-func (s *RepositoriesService) EditDefaultWorkflowPermissions(ctx context.Context, owner, repo string, defaultWorkflowPermissionRepository DefaultWorkflowPermissionRepository) (*DefaultWorkflowPermissionRepository, *Response, error) {
+func (s *RepositoriesService) EditDefaultWorkflowPermissions(ctx context.Context, owner, repo string, permissions DefaultWorkflowPermissionRepository) (*DefaultWorkflowPermissionRepository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/workflow", owner, repo)
-	req, err := s.client.NewRequest("PUT", u, defaultWorkflowPermissionRepository)
+	req, err := s.client.NewRequest("PUT", u, permissions)
 	if err != nil {
 		return nil, nil, err
 	}
