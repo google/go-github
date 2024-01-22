@@ -29,7 +29,7 @@ func (a ActionsPermissionsEnterprise) String() string {
 	return Stringify(a)
 }
 
-// DefaultWorkflowPermissionEnterprise represents the default permissions for GitHub Actions workflows
+// DefaultWorkflowPermissionEnterprise represents the default permissions for GitHub Actions workflows for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions
 type DefaultWorkflowPermissionEnterprise struct {
