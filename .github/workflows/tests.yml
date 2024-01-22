@@ -51,7 +51,7 @@ jobs:
         echo "go-mod-cache=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
 
     - name: Cache go modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ${{ steps.cache-paths.outputs.go-cache }}
