@@ -5519,6 +5519,66 @@ func TestDefaultSetupConfiguration_GetUpdatedAt(tt *testing.T) {
 	d.GetUpdatedAt()
 }
 
+func TestDefaultWorkflowPermissionEnterprise_GetCanApprovePullRequestReviews(tt *testing.T) {
+	var zeroValue bool
+	d := &DefaultWorkflowPermissionEnterprise{CanApprovePullRequestReviews: &zeroValue}
+	d.GetCanApprovePullRequestReviews()
+	d = &DefaultWorkflowPermissionEnterprise{}
+	d.GetCanApprovePullRequestReviews()
+	d = nil
+	d.GetCanApprovePullRequestReviews()
+}
+
+func TestDefaultWorkflowPermissionEnterprise_GetDefaultWorkflowPermissions(tt *testing.T) {
+	var zeroValue string
+	d := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: &zeroValue}
+	d.GetDefaultWorkflowPermissions()
+	d = &DefaultWorkflowPermissionEnterprise{}
+	d.GetDefaultWorkflowPermissions()
+	d = nil
+	d.GetDefaultWorkflowPermissions()
+}
+
+func TestDefaultWorkflowPermissionOrganization_GetCanApprovePullRequestReviews(tt *testing.T) {
+	var zeroValue bool
+	d := &DefaultWorkflowPermissionOrganization{CanApprovePullRequestReviews: &zeroValue}
+	d.GetCanApprovePullRequestReviews()
+	d = &DefaultWorkflowPermissionOrganization{}
+	d.GetCanApprovePullRequestReviews()
+	d = nil
+	d.GetCanApprovePullRequestReviews()
+}
+
+func TestDefaultWorkflowPermissionOrganization_GetDefaultWorkflowPermissions(tt *testing.T) {
+	var zeroValue string
+	d := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: &zeroValue}
+	d.GetDefaultWorkflowPermissions()
+	d = &DefaultWorkflowPermissionOrganization{}
+	d.GetDefaultWorkflowPermissions()
+	d = nil
+	d.GetDefaultWorkflowPermissions()
+}
+
+func TestDefaultWorkflowPermissionRepository_GetCanApprovePullRequestReviews(tt *testing.T) {
+	var zeroValue bool
+	d := &DefaultWorkflowPermissionRepository{CanApprovePullRequestReviews: &zeroValue}
+	d.GetCanApprovePullRequestReviews()
+	d = &DefaultWorkflowPermissionRepository{}
+	d.GetCanApprovePullRequestReviews()
+	d = nil
+	d.GetCanApprovePullRequestReviews()
+}
+
+func TestDefaultWorkflowPermissionRepository_GetDefaultWorkflowPermissions(tt *testing.T) {
+	var zeroValue string
+	d := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: &zeroValue}
+	d.GetDefaultWorkflowPermissions()
+	d = &DefaultWorkflowPermissionRepository{}
+	d.GetDefaultWorkflowPermissions()
+	d = nil
+	d.GetDefaultWorkflowPermissions()
+}
+
 func TestDeleteAnalysis_GetConfirmDeleteURL(tt *testing.T) {
 	var zeroValue string
 	d := &DeleteAnalysis{ConfirmDeleteURL: &zeroValue}

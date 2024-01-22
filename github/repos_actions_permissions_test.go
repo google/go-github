@@ -110,3 +110,81 @@ func TestActionsPermissionsRepository_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRepositoriesService_GetDefaultWorkflowPermissions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
+	})
+
+	ctx := context.Background()
+	org, _, err := client.Repositories.GetDefaultWorkflowPermissions(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("Repositories.GetDefaultWorkflowPermissions returned error: %v", err)
+	}
+	want := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	if !cmp.Equal(org, want) {
+		t.Errorf("Repositories.GetDefaultWorkflowPermissions returned %+v, want %+v", org, want)
+	}
+
+	const methodName = "GetDefaultWorkflowPermissions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetDefaultWorkflowPermissions(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetDefaultWorkflowPermissions(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_EditDefaultWorkflowPermissions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+
+	mux.HandleFunc("/repos/o/r/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
+		v := new(DefaultWorkflowPermissionRepository)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
+	})
+
+	ctx := context.Background()
+	org, _, err := client.Repositories.EditDefaultWorkflowPermissions(ctx, "o", "r", *input)
+	if err != nil {
+		t.Errorf("Repositories.EditDefaultWorkflowPermissions returned error: %v", err)
+	}
+
+	want := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	if !cmp.Equal(org, want) {
+		t.Errorf("Repositories.EditDefaultWorkflowPermissions returned %+v, want %+v", org, want)
+	}
+
+	const methodName = "EditDefaultWorkflowPermissions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.EditDefaultWorkflowPermissions(ctx, "\n", "\n", *input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.EditDefaultWorkflowPermissions(ctx, "o", "r", *input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
