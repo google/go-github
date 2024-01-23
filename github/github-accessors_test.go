@@ -5272,16 +5272,6 @@ func TestCreateUserRequest_GetEmail(tt *testing.T) {
 	c.GetEmail()
 }
 
-func TestCreateUserRequest_GetLogin(tt *testing.T) {
-	var zeroValue string
-	c := &CreateUserRequest{Login: &zeroValue}
-	c.GetLogin()
-	c = &CreateUserRequest{}
-	c.GetLogin()
-	c = nil
-	c.GetLogin()
-}
-
 func TestCreateUserRequest_GetSuspended(tt *testing.T) {
 	var zeroValue bool
 	c := &CreateUserRequest{Suspended: &zeroValue}

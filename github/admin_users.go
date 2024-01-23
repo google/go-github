@@ -13,12 +13,9 @@ import (
 // CreateUserRequest represents the fields sent to the `CreateUser` endpoint.
 // Note that `Login` is a required field.
 type CreateUserRequest struct {
-	Login     *string `json:"login"`
+	Login     string  `json:"login"`
 	Email     *string `json:"email,omitempty"`
 	Suspended *bool   `json:"suspended,omitempty"`
-}
-
-type CreateUserOptions struct {
 }
 
 // CreateUser creates a new user in GitHub Enterprise.
@@ -26,7 +23,7 @@ type CreateUserOptions struct {
 // GitHub API docs: https://docs.github.com/enterprise-server@3.11/rest/enterprise-admin/users#create-a-user
 //
 //meta:operation POST /admin/users
-func (s *AdminService) CreateUser(ctx context.Context, userReq *CreateUserRequest) (*User, *Response, error) {
+func (s *AdminService) CreateUser(ctx context.Context, userReq CreateUserRequest) (*User, *Response, error) {
 	u := "admin/users"
 
 	req, err := s.client.NewRequest("POST", u, userReq)

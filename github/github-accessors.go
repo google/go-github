@@ -4486,14 +4486,6 @@ func (c *CreateUserRequest) GetEmail() string {
 	return *c.Email
 }
 
-// GetLogin returns the Login field if it's non-nil, zero value otherwise.
-func (c *CreateUserRequest) GetLogin() string {
-	if c == nil || c.Login == nil {
-		return ""
-	}
-	return *c.Login
-}
-
 // GetSuspended returns the Suspended field if it's non-nil, zero value otherwise.
 func (c *CreateUserRequest) GetSuspended() bool {
 	if c == nil || c.Suspended == nil {

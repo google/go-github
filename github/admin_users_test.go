@@ -25,7 +25,7 @@ func TestAdminUsers_Create(t *testing.T) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
-		want := &CreateUserRequest{Login: String("github"), Email: String("email@domain.com"), Suspended: Bool(false)}
+		want := &CreateUserRequest{Login: "github", Email: String("email@domain.com"), Suspended: Bool(false)}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -34,8 +34,8 @@ func TestAdminUsers_Create(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Admin.CreateUser(ctx, &CreateUserRequest{
-		Login:     String("github"),
+	org, _, err := client.Admin.CreateUser(ctx, CreateUserRequest{
+		Login:     "github",
 		Email:     String("email@domain.com"),
 		Suspended: Bool(false),
 	})
@@ -50,8 +50,8 @@ func TestAdminUsers_Create(t *testing.T) {
 
 	const methodName = "CreateUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Admin.CreateUser(ctx, &CreateUserRequest{
-			Login:     String("github"),
+		got, resp, err := client.Admin.CreateUser(ctx, CreateUserRequest{
+			Login:     "github",
 			Email:     String("email@domain.com"),
 			Suspended: Bool(false),
 		})
@@ -188,7 +188,7 @@ func TestCreateUserRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CreateUserRequest{}, "{}")
 
 	u := &CreateUserRequest{
-		Login: String("l"),
+		Login: "l",
 		Email: String("e"),
 	}
 
