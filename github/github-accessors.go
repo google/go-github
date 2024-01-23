@@ -4478,6 +4478,30 @@ func (c *CreateUserProjectOptions) GetBody() string {
 	return *c.Body
 }
 
+// GetEmail returns the Email field if it's non-nil, zero value otherwise.
+func (c *CreateUserRequest) GetEmail() string {
+	if c == nil || c.Email == nil {
+		return ""
+	}
+	return *c.Email
+}
+
+// GetLogin returns the Login field if it's non-nil, zero value otherwise.
+func (c *CreateUserRequest) GetLogin() string {
+	if c == nil || c.Login == nil {
+		return ""
+	}
+	return *c.Login
+}
+
+// GetSuspended returns the Suspended field if it's non-nil, zero value otherwise.
+func (c *CreateUserRequest) GetSuspended() bool {
+	if c == nil || c.Suspended == nil {
+		return false
+	}
+	return *c.Suspended
+}
+
 // GetCreated returns the Created field if it's non-nil, zero value otherwise.
 func (c *CreationInfo) GetCreated() Timestamp {
 	if c == nil || c.Created == nil {
