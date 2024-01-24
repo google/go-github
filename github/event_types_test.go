@@ -92,7 +92,7 @@ func TestEditChange_Marshal_Repo(t *testing.T) {
 			},
 		},
 		Topics: &EditTopics{
-			From: &[]string{"topic1", "topic2"},
+			From: []string{"topic1", "topic2"},
 		},
 	}
 

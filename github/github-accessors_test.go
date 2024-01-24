@@ -7475,16 +7475,6 @@ func TestEditTitle_GetFrom(tt *testing.T) {
 	e.GetFrom()
 }
 
-func TestEditTopics_GetFrom(tt *testing.T) {
-	var zeroValue []string
-	e := &EditTopics{From: &zeroValue}
-	e.GetFrom()
-	e = &EditTopics{}
-	e.GetFrom()
-	e = nil
-	e.GetFrom()
-}
-
 func TestEnterprise_GetAvatarURL(tt *testing.T) {
 	var zeroValue string
 	e := &Enterprise{AvatarURL: &zeroValue}

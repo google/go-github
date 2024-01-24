@@ -6414,14 +6414,6 @@ func (e *EditTitle) GetFrom() string {
 	return *e.From
 }
 
-// GetFrom returns the From field if it's non-nil, zero value otherwise.
-func (e *EditTopics) GetFrom() []string {
-	if e == nil || e.From == nil {
-		return nil
-	}
-	return *e.From
-}
-
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (e *Enterprise) GetAvatarURL() string {
 	if e == nil || e.AvatarURL == nil {
