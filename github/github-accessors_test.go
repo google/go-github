@@ -7414,6 +7414,13 @@ func TestEditChange_GetTitle(tt *testing.T) {
 	e.GetTitle()
 }
 
+func TestEditChange_GetTopics(tt *testing.T) {
+	e := &EditChange{}
+	e.GetTopics()
+	e = nil
+	e.GetTopics()
+}
+
 func TestEditDefaultBranch_GetFrom(tt *testing.T) {
 	var zeroValue string
 	e := &EditDefaultBranch{From: &zeroValue}
@@ -7463,6 +7470,16 @@ func TestEditTitle_GetFrom(tt *testing.T) {
 	e := &EditTitle{From: &zeroValue}
 	e.GetFrom()
 	e = &EditTitle{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
+}
+
+func TestEditTopics_GetFrom(tt *testing.T) {
+	var zeroValue []string
+	e := &EditTopics{From: &zeroValue}
+	e.GetFrom()
+	e = &EditTopics{}
 	e.GetFrom()
 	e = nil
 	e.GetFrom()
