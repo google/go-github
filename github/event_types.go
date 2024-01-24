@@ -441,7 +441,7 @@ type RepoName struct {
 
 // EditTopics represents a change of repository topics.
 type EditTopics struct {
-	From *[]string `json:"from,omitempty"`
+	From []string `json:"from,omitempty"`
 }
 
 // EditSHA represents a sha change of a pull-request.
