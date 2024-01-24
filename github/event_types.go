@@ -394,6 +394,7 @@ type EditChange struct {
 	Repo          *EditRepo          `json:"repository,omitempty"`
 	Owner         *EditOwner         `json:"owner,omitempty"`
 	DefaultBranch *EditDefaultBranch `json:"default_branch,omitempty"`
+	Topics        *EditTopics        `json:"topics,omitempty"`
 }
 
 // EditTitle represents a pull-request title change.
@@ -436,6 +437,11 @@ type OwnerInfo struct {
 // RepoName represents a change of repository name.
 type RepoName struct {
 	From *string `json:"from,omitempty"`
+}
+
+// EditTopics represents a change of repository topics.
+type EditTopics struct {
+	From []string `json:"from,omitempty"`
 }
 
 // EditSHA represents a sha change of a pull-request.

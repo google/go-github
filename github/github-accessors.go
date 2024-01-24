@@ -6358,6 +6358,14 @@ func (e *EditChange) GetTitle() *EditTitle {
 	return e.Title
 }
 
+// GetTopics returns the Topics field.
+func (e *EditChange) GetTopics() *EditTopics {
+	if e == nil {
+		return nil
+	}
+	return e.Topics
+}
+
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
 func (e *EditDefaultBranch) GetFrom() string {
 	if e == nil || e.From == nil {

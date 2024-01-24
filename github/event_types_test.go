@@ -91,6 +91,9 @@ func TestEditChange_Marshal_Repo(t *testing.T) {
 				From: String("old-repo-name"),
 			},
 		},
+		Topics: &EditTopics{
+			From: []string{"topic1", "topic2"},
+		},
 	}
 
 	want := `{
@@ -98,6 +101,12 @@ func TestEditChange_Marshal_Repo(t *testing.T) {
 			"name": {
 				"from": "old-repo-name"
 			}
+		},
+		"topics": {
+			"from": [
+				"topic1",
+				"topic2"
+			]
 		}
 	}`
 
