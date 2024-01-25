@@ -59,6 +59,16 @@ func (s *ActionsService) ListRepoVariables(ctx context.Context, owner, repo stri
 	return s.listVariables(ctx, url, opts)
 }
 
+// ListRepoOrgVariables lists all organization variables available in a repository.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/variables#list-repository-organization-variables
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/organization-variables
+func (s *ActionsService) ListRepoOrgVariables(ctx context.Context, owner, repo string, opts *ListOptions) (*ActionsVariables, *Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/actions/organization-variables", owner, repo)
+	return s.listVariables(ctx, url, opts)
+}
+
 // ListOrgVariables lists all variables available in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/variables#list-organization-variables
