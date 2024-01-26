@@ -94,6 +94,32 @@ func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo strin
 	return jobs, resp, nil
 }
 
+// ListWorkflowJobsAttempt lists jobs for a workflow run Attempt.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-jobs#list-jobs-for-a-workflow-run-attempt
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs
+func (s *ActionsService) ListWorkflowJobsAttempt(ctx context.Context, owner, repo string, runID, attemptNumber int64, opts *ListOptions) (*Jobs, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/actions/runs/%v/attempts/%v/jobs", owner, repo, runID, attemptNumber)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	jobs := new(Jobs)
+	resp, err := s.client.Do(ctx, req, &jobs)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return jobs, resp, nil
+}
+
 // GetWorkflowJobByID gets a specific job in a workflow run by ID.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-jobs#get-a-job-for-a-workflow-run

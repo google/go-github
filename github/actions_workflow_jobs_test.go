@@ -89,6 +89,46 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 	}
 }
 
+func TestActionsService_ListWorkflowJobsAttempt(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/29679449/attempts/1/jobs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
+		fmt.Fprint(w, `{"total_count":4,"jobs":[{"id":399444496,"run_id":29679449,"started_at":"2019-01-02T15:04:05Z","completed_at":"2020-01-02T15:04:05Z","run_attempt":2},{"id":399444497,"run_id":29679449,"started_at":"2019-01-02T15:04:05Z","completed_at":"2020-01-02T15:04:05Z","run_attempt":2}]}`)
+	})
+	opts := &ListOptions{Page: 2, PerPage: 2}
+	ctx := context.Background()
+	jobs, _, err := client.Actions.ListWorkflowJobsAttempt(ctx, "o", "r", 29679449, 1, opts)
+	if err != nil {
+		t.Errorf("Actions.ListWorkflowJobsAttempt returned error: %v", err)
+	}
+
+	want := &Jobs{
+		TotalCount: Int(4),
+		Jobs: []*WorkflowJob{
+			{
+				ID:          Int64(399444496),
+				RunID:       Int64(29679449),
+				StartedAt:   &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
+				CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+				RunAttempt:  Int64(2),
+			},
+			{
+				ID:          Int64(399444497),
+				RunID:       Int64(29679449),
+				StartedAt:   &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
+				CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+				RunAttempt:  Int64(2),
+			},
+		},
+	}
+	if !cmp.Equal(jobs, want) {
+		t.Errorf("Actions.ListWorkflowJobsAttempt returned %+v, want %+v", jobs, want)
+	}
+}
+
 func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
