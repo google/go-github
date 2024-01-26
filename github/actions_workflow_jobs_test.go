@@ -127,6 +127,20 @@ func TestActionsService_ListWorkflowJobsAttempt(t *testing.T) {
 	if !cmp.Equal(jobs, want) {
 		t.Errorf("Actions.ListWorkflowJobsAttempt returned %+v, want %+v", jobs, want)
 	}
+
+	const methodName = "ListWorkflowJobsAttempt"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListWorkflowJobsAttempt(ctx, "\n", "\n", 29679449, 1, opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListWorkflowJobsAttempt(ctx, "o", "r", 29679449, 1, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_GetWorkflowJobByID(t *testing.T) {
