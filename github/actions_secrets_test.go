@@ -205,6 +205,49 @@ func TestActionsService_ListRepoSecrets(t *testing.T) {
 	})
 }
 
+func TestActionsService_ListRepoOrgSecrets(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/organization-secrets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
+		fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"},{"name":"B","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}]}`)
+	})
+
+	opts := &ListOptions{Page: 2, PerPage: 2}
+	ctx := context.Background()
+	secrets, _, err := client.Actions.ListRepoOrgSecrets(ctx, "o", "r", opts)
+	if err != nil {
+		t.Errorf("Actions.ListRepoOrgSecrets returned error: %v", err)
+	}
+
+	want := &Secrets{
+		TotalCount: 4,
+		Secrets: []*Secret{
+			{Name: "A", CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{Name: "B", CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+		},
+	}
+	if !cmp.Equal(secrets, want) {
+		t.Errorf("Actions.ListRepoOrgSecrets returned %+v, want %+v", secrets, want)
+	}
+
+	const methodName = "ListRepoOrgSecrets"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListRepoOrgSecrets(ctx, "\n", "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListRepoOrgSecrets(ctx, "o", "r", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestActionsService_GetRepoSecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
