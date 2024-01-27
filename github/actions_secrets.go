@@ -138,6 +138,17 @@ func (s *ActionsService) ListRepoSecrets(ctx context.Context, owner, repo string
 	return s.listSecrets(ctx, url, opts)
 }
 
+// ListRepoOrgSecrets lists all organization secrets available in a repository
+// without revealing their encrypted values.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/secrets#list-repository-organization-secrets
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/organization-secrets
+func (s *ActionsService) ListRepoOrgSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/actions/organization-secrets", owner, repo)
+	return s.listSecrets(ctx, url, opts)
+}
+
 // ListOrgSecrets lists all secrets available in an organization
 // without revealing their encrypted values.
 //
