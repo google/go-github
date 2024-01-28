@@ -450,15 +450,18 @@ func (c *Client) copy() *Client {
 	c.clientMu.Lock()
 	// can't use *c here because that would copy mutexes by value.
 	clone := Client{
-		client:                  c.client,
+		client:                  &http.Client{},
 		UserAgent:               c.UserAgent,
 		BaseURL:                 c.BaseURL,
 		UploadURL:               c.UploadURL,
 		secondaryRateLimitReset: c.secondaryRateLimitReset,
 	}
 	c.clientMu.Unlock()
-	if clone.client == nil {
-		clone.client = &http.Client{}
+	if c.client != nil {
+		clone.client.Transport = c.client.Transport
+		clone.client.CheckRedirect = c.client.CheckRedirect
+		clone.client.Jar = c.client.Jar
+		clone.client.Timeout = c.client.Timeout
 	}
 	c.rateMu.Lock()
 	copy(clone.rateLimits[:], c.rateLimits[:])

@@ -2599,3 +2599,32 @@ func TestParseTokenExpiration(t *testing.T) {
 		}
 	}
 }
+
+func TestClientCopy_leak_transport(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		accessToken := r.Header.Get("Authorization")
+		_, _ = fmt.Fprintf(w, `{"login": "%s"}`, accessToken)
+	}))
+	clientPreconfiguredWithURLs, err := NewClient(nil).WithEnterpriseURLs(srv.URL, srv.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	aliceClient := clientPreconfiguredWithURLs.WithAuthToken("alice")
+	bobClient := clientPreconfiguredWithURLs.WithAuthToken("bob")
+
+	alice, _, err := aliceClient.Users.Get(context.Background(), "")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assertNoDiff(t, "Bearer alice", alice.GetLogin())
+
+	bob, _, err := bobClient.Users.Get(context.Background(), "")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assertNoDiff(t, "Bearer bob", bob.GetLogin())
+}
