@@ -5262,6 +5262,26 @@ func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	c.GetBody()
 }
 
+func TestCreateUserRequest_GetEmail(tt *testing.T) {
+	var zeroValue string
+	c := &CreateUserRequest{Email: &zeroValue}
+	c.GetEmail()
+	c = &CreateUserRequest{}
+	c.GetEmail()
+	c = nil
+	c.GetEmail()
+}
+
+func TestCreateUserRequest_GetSuspended(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateUserRequest{Suspended: &zeroValue}
+	c.GetSuspended()
+	c = &CreateUserRequest{}
+	c.GetSuspended()
+	c = nil
+	c.GetSuspended()
+}
+
 func TestCreationInfo_GetCreated(tt *testing.T) {
 	var zeroValue Timestamp
 	c := &CreationInfo{Created: &zeroValue}

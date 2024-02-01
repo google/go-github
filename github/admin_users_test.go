@@ -21,11 +21,11 @@ func TestAdminUsers_Create(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createUserRequest)
+		v := new(CreateUserRequest)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
-		want := &createUserRequest{Login: String("github"), Email: String("email@domain.com")}
+		want := &CreateUserRequest{Login: "github", Email: String("email@domain.com"), Suspended: Bool(false)}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -34,7 +34,11 @@ func TestAdminUsers_Create(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Admin.CreateUser(ctx, "github", "email@domain.com")
+	org, _, err := client.Admin.CreateUser(ctx, CreateUserRequest{
+		Login:     "github",
+		Email:     String("email@domain.com"),
+		Suspended: Bool(false),
+	})
 	if err != nil {
 		t.Errorf("Admin.CreateUser returned error: %v", err)
 	}
@@ -46,7 +50,11 @@ func TestAdminUsers_Create(t *testing.T) {
 
 	const methodName = "CreateUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Admin.CreateUser(ctx, "github", "email@domain.com")
+		got, resp, err := client.Admin.CreateUser(ctx, CreateUserRequest{
+			Login:     "github",
+			Email:     String("email@domain.com"),
+			Suspended: Bool(false),
+		})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -177,10 +185,10 @@ func TestUserImpersonation_Delete(t *testing.T) {
 }
 
 func TestCreateUserRequest_Marshal(t *testing.T) {
-	testJSONMarshal(t, &createUserRequest{}, "{}")
+	testJSONMarshal(t, &CreateUserRequest{}, "{}")
 
-	u := &createUserRequest{
-		Login: String("l"),
+	u := &CreateUserRequest{
+		Login: "l",
 		Email: String("e"),
 	}
 
