@@ -5399,6 +5399,93 @@ func TestCredit_GetUser(tt *testing.T) {
 	c.GetUser()
 }
 
+func TestCustomDeploymentProtectionRule_GetApp(tt *testing.T) {
+	c := &CustomDeploymentProtectionRule{}
+	c.GetApp()
+	c = nil
+	c.GetApp()
+}
+
+func TestCustomDeploymentProtectionRule_GetEnabled(tt *testing.T) {
+	var zeroValue bool
+	c := &CustomDeploymentProtectionRule{Enabled: &zeroValue}
+	c.GetEnabled()
+	c = &CustomDeploymentProtectionRule{}
+	c.GetEnabled()
+	c = nil
+	c.GetEnabled()
+}
+
+func TestCustomDeploymentProtectionRule_GetID(tt *testing.T) {
+	var zeroValue int64
+	c := &CustomDeploymentProtectionRule{ID: &zeroValue}
+	c.GetID()
+	c = &CustomDeploymentProtectionRule{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCustomDeploymentProtectionRule_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	c := &CustomDeploymentProtectionRule{NodeID: &zeroValue}
+	c.GetNodeID()
+	c = &CustomDeploymentProtectionRule{}
+	c.GetNodeID()
+	c = nil
+	c.GetNodeID()
+}
+
+func TestCustomDeploymentProtectionRuleApp_GetID(tt *testing.T) {
+	var zeroValue int64
+	c := &CustomDeploymentProtectionRuleApp{ID: &zeroValue}
+	c.GetID()
+	c = &CustomDeploymentProtectionRuleApp{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCustomDeploymentProtectionRuleApp_GetIntegrationURL(tt *testing.T) {
+	var zeroValue string
+	c := &CustomDeploymentProtectionRuleApp{IntegrationURL: &zeroValue}
+	c.GetIntegrationURL()
+	c = &CustomDeploymentProtectionRuleApp{}
+	c.GetIntegrationURL()
+	c = nil
+	c.GetIntegrationURL()
+}
+
+func TestCustomDeploymentProtectionRuleApp_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	c := &CustomDeploymentProtectionRuleApp{NodeID: &zeroValue}
+	c.GetNodeID()
+	c = &CustomDeploymentProtectionRuleApp{}
+	c.GetNodeID()
+	c = nil
+	c.GetNodeID()
+}
+
+func TestCustomDeploymentProtectionRuleApp_GetSlug(tt *testing.T) {
+	var zeroValue string
+	c := &CustomDeploymentProtectionRuleApp{Slug: &zeroValue}
+	c.GetSlug()
+	c = &CustomDeploymentProtectionRuleApp{}
+	c.GetSlug()
+	c = nil
+	c.GetSlug()
+}
+
+func TestCustomDeploymentProtectionRuleRequest_GetIntegrationID(tt *testing.T) {
+	var zeroValue int64
+	c := &CustomDeploymentProtectionRuleRequest{IntegrationID: &zeroValue}
+	c.GetIntegrationID()
+	c = &CustomDeploymentProtectionRuleRequest{}
+	c.GetIntegrationID()
+	c = nil
+	c.GetIntegrationID()
+}
+
 func TestCustomProperty_GetDefaultValue(tt *testing.T) {
 	var zeroValue string
 	c := &CustomProperty{DefaultValue: &zeroValue}
@@ -12298,6 +12385,26 @@ func TestListCollaboratorOptions_GetAffiliation(tt *testing.T) {
 	l.GetAffiliation()
 	l = nil
 	l.GetAffiliation()
+}
+
+func TestListCustomDeploymentRuleIntegrationsResponse_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	l := &ListCustomDeploymentRuleIntegrationsResponse{TotalCount: &zeroValue}
+	l.GetTotalCount()
+	l = &ListCustomDeploymentRuleIntegrationsResponse{}
+	l.GetTotalCount()
+	l = nil
+	l.GetTotalCount()
+}
+
+func TestListDeploymentProtectionRuleResponse_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	l := &ListDeploymentProtectionRuleResponse{TotalCount: &zeroValue}
+	l.GetTotalCount()
+	l = &ListDeploymentProtectionRuleResponse{}
+	l.GetTotalCount()
+	l = nil
+	l.GetTotalCount()
 }
 
 func TestListExternalGroupsOptions_GetDisplayName(tt *testing.T) {
