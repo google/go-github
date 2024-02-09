@@ -33,7 +33,7 @@ import (
 	"time"
 
 	"github.com/ProtonMail/go-crypto/openpgp"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v59/github"
 )
 
 var (
