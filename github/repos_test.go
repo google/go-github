@@ -2022,7 +2022,7 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 
 			want := &Protection{
 				RequiredStatusChecks: &RequiredStatusChecks{
-					Strict:   true,
+					Strict: true,
 					Checks: &[]*RequiredStatusCheck{},
 				},
 				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
