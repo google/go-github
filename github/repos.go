@@ -1191,8 +1191,12 @@ type RequiredStatusChecks struct {
 	// Require branches to be up to date before merging. (Required.)
 	Strict bool `json:"strict"`
 	// The list of status checks to require in order to merge into this
-	// branch. An empty slice is valid. (Required.)
-	Checks      []*RequiredStatusCheck `json:"checks"`
+	// branch. An empty slice is valid. (Deprecated. Note: only one of
+	// Contexts/Checks can be populated, but at least one must be populated).
+	Contexts    *[]string               `json:"contexts,omitempty"`
+	// The list of status checks to require in order to merge into this
+	// branch. An empty slice is valid.
+	Checks      *[]*RequiredStatusCheck `json:"checks,omitempty"`
 	ContextsURL *string                `json:"contexts_url,omitempty"`
 	URL         *string                `json:"url,omitempty"`
 }
