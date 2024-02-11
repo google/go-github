@@ -1207,8 +1207,8 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 			want := &Protection{
 				RequiredStatusChecks: &RequiredStatusChecks{
 					Strict:   true,
-					Contexts: []string{"continuous-integration"},
-					Checks: []*RequiredStatusCheck{
+					Contexts: &[]string{"continuous-integration"},
+					Checks: &[]*RequiredStatusCheck{
 						{
 							Context: "continuous-integration",
 						},
@@ -1334,8 +1334,8 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 		want := &Protection{
 			RequiredStatusChecks: &RequiredStatusChecks{
 				Strict:   true,
-				Contexts: []string{"continuous-integration"},
-				Checks: []*RequiredStatusCheck{
+				Contexts: &[]string{"continuous-integration"},
+				Checks: &[]*RequiredStatusCheck{
 					{
 						Context: "continuous-integration",
 					},
@@ -1421,7 +1421,7 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 			input := &ProtectionRequest{
 				RequiredStatusChecks: &RequiredStatusChecks{
 					Strict:   true,
-					Contexts: []string{"continuous-integration"},
+					Contexts: &[]string{"continuous-integration"},
 				},
 				RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
 					DismissStaleReviews: true,
@@ -1517,12 +1517,190 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 			want := &Protection{
 				RequiredStatusChecks: &RequiredStatusChecks{
 					Strict:   true,
-					Contexts: []string{"continuous-integration"},
-					Checks: []*RequiredStatusCheck{
+					Contexts: &[]string{"continuous-integration"},
+					Checks: &[]*RequiredStatusCheck{
 						{
 							Context: "continuous-integration",
 						},
 					},
+				},
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+					DismissStaleReviews: true,
+					DismissalRestrictions: &DismissalRestrictions{
+						Users: []*User{
+							{Login: String("uu"), ID: Int64(3)},
+						},
+						Teams: []*Team{
+							{Slug: String("tt"), ID: Int64(4)},
+						},
+						Apps: []*App{
+							{Slug: String("aa"), ID: Int64(5)},
+						},
+					},
+					RequireCodeOwnerReviews: true,
+					BypassPullRequestAllowances: &BypassPullRequestAllowances{
+						Users: []*User{
+							{Login: String("uuu"), ID: Int64(10)},
+						},
+						Teams: []*Team{
+							{Slug: String("ttt"), ID: Int64(20)},
+						},
+						Apps: []*App{
+							{Slug: String("aaa"), ID: Int64(30)},
+						},
+					},
+				},
+				Restrictions: &BranchRestrictions{
+					Users: []*User{
+						{Login: String("u"), ID: Int64(1)},
+					},
+					Teams: []*Team{
+						{Slug: String("t"), ID: Int64(2)},
+					},
+					Apps: []*App{
+						{Slug: String("a"), ID: Int64(3)},
+					},
+				},
+				BlockCreations: &BlockCreations{
+					Enabled: Bool(true),
+				},
+				LockBranch: &LockBranch{
+					Enabled: Bool(true),
+				},
+				AllowForkSyncing: &AllowForkSyncing{
+					Enabled: Bool(true),
+				},
+			}
+			if !cmp.Equal(protection, want) {
+				t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+			}
+
+			const methodName = "UpdateBranchProtection"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.UpdateBranchProtection(ctx, "\n", "\n", "\n", input)
+				return err
+			})
+
+			testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+				got, resp, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", test.branch, input)
+				if got != nil {
+					t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+				}
+				return resp, err
+			})
+		})
+	}
+}
+
+func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) {
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
+	}
+
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			input := &ProtectionRequest{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Strict:   true,
+					Contexts: &[]string{},
+				},
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
+					DismissStaleReviews: true,
+					DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
+						Users: &[]string{"uu"},
+						Teams: &[]string{"tt"},
+						Apps:  &[]string{"aa"},
+					},
+					BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
+						Users: []string{"uuu"},
+						Teams: []string{"ttt"},
+						Apps:  []string{"aaa"},
+					},
+				},
+				Restrictions: &BranchRestrictionsRequest{
+					Users: []string{"u"},
+					Teams: []string{"t"},
+					Apps:  []string{"a"},
+				},
+				BlockCreations:   Bool(true),
+				LockBranch:       Bool(true),
+				AllowForkSyncing: Bool(true),
+			}
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				v := new(ProtectionRequest)
+				assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+				testMethod(t, r, "PUT")
+				if !cmp.Equal(v, input) {
+					t.Errorf("Request body = %+v, want %+v", v, input)
+				}
+
+				// TODO: remove custom Accept header when this API fully launches
+				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+				fmt.Fprintf(w, `{
+					"required_status_checks":{
+						"strict":true,
+						"contexts":[],
+						"checks": null
+					},
+					"required_pull_request_reviews":{
+						"dismissal_restrictions":{
+							"users":[{
+								"id":3,
+								"login":"uu"
+							}],
+							"teams":[{
+								"id":4,
+								"slug":"tt"
+							}],
+							"apps":[{
+								"id":5,
+								"slug":"aa"
+							}]
+						},
+						"dismiss_stale_reviews":true,
+						"require_code_owner_reviews":true,
+						"bypass_pull_request_allowances": {
+							"users":[{"id":10,"login":"uuu"}],
+							"teams":[{"id":20,"slug":"ttt"}],
+							"apps":[{"id":30,"slug":"aaa"}]
+						}
+					},
+					"restrictions":{
+						"users":[{"id":1,"login":"u"}],
+						"teams":[{"id":2,"slug":"t"}],
+						"apps":[{"id":3,"slug":"a"}]
+					},
+					"block_creations": {
+						"enabled": true
+					},
+					"lock_branch": {
+						"enabled": true
+					},
+					"allow_fork_syncing": {
+						"enabled": true
+					}
+				}`)
+			})
+
+			ctx := context.Background()
+			protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
+			}
+
+			want := &Protection{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Strict:   true,
+					Contexts: &[]string{},
 				},
 				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 					DismissStaleReviews: true,
@@ -1609,7 +1787,7 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 			input := &ProtectionRequest{
 				RequiredStatusChecks: &RequiredStatusChecks{
 					Strict: true,
-					Checks: []*RequiredStatusCheck{
+					Checks: &[]*RequiredStatusCheck{
 						{
 							Context: "continuous-integration",
 						},
@@ -1697,12 +1875,155 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 			want := &Protection{
 				RequiredStatusChecks: &RequiredStatusChecks{
 					Strict:   true,
-					Contexts: []string{"continuous-integration"},
-					Checks: []*RequiredStatusCheck{
+					Contexts: &[]string{"continuous-integration"},
+					Checks: &[]*RequiredStatusCheck{
 						{
 							Context: "continuous-integration",
 						},
 					},
+				},
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+					DismissStaleReviews: true,
+					DismissalRestrictions: &DismissalRestrictions{
+						Users: []*User{
+							{Login: String("uu"), ID: Int64(3)},
+						},
+						Teams: []*Team{
+							{Slug: String("tt"), ID: Int64(4)},
+						},
+						Apps: []*App{
+							{Slug: String("aa"), ID: Int64(5)},
+						},
+					},
+					RequireCodeOwnerReviews: true,
+					BypassPullRequestAllowances: &BypassPullRequestAllowances{
+						Users: []*User{
+							{Login: String("uuu"), ID: Int64(10)},
+						},
+						Teams: []*Team{
+							{Slug: String("ttt"), ID: Int64(20)},
+						},
+						Apps: []*App{
+							{Slug: String("aaa"), ID: Int64(30)},
+						},
+					},
+				},
+				Restrictions: &BranchRestrictions{
+					Users: []*User{
+						{Login: String("u"), ID: Int64(1)},
+					},
+					Teams: []*Team{
+						{Slug: String("t"), ID: Int64(2)},
+					},
+					Apps: []*App{
+						{Slug: String("a"), ID: Int64(3)},
+					},
+				},
+			}
+			if !cmp.Equal(protection, want) {
+				t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+			}
+		})
+	}
+}
+
+func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
+	}
+
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			client, mux, _, teardown := setup()
+			defer teardown()
+
+			input := &ProtectionRequest{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Strict: true,
+					Checks: &[]*RequiredStatusCheck{},
+				},
+				RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
+					DismissStaleReviews: true,
+					DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
+						Users: &[]string{"uu"},
+						Teams: &[]string{"tt"},
+						Apps:  &[]string{"aa"},
+					},
+					BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
+						Users: []string{"uuu"},
+						Teams: []string{"ttt"},
+						Apps:  []string{"aaa"},
+					},
+				},
+				Restrictions: &BranchRestrictionsRequest{
+					Users: []string{"u"},
+					Teams: []string{"t"},
+					Apps:  []string{"a"},
+				},
+			}
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				v := new(ProtectionRequest)
+				assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+				testMethod(t, r, "PUT")
+				if !cmp.Equal(v, input) {
+					t.Errorf("Request body = %+v, want %+v", v, input)
+				}
+
+				// TODO: remove custom Accept header when this API fully launches
+				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+				fmt.Fprintf(w, `{
+					"required_status_checks":{
+						"strict":true,
+						"contexts":null,
+						"checks": []
+					},
+					"required_pull_request_reviews":{
+						"dismissal_restrictions":{
+							"users":[{
+								"id":3,
+								"login":"uu"
+							}],
+							"teams":[{
+								"id":4,
+								"slug":"tt"
+							}],
+							"apps":[{
+								"id":5,
+								"slug":"aa"
+							}]
+						},
+						"dismiss_stale_reviews":true,
+						"require_code_owner_reviews":true,
+						"bypass_pull_request_allowances": {
+							"users":[{"id":10,"login":"uuu"}],
+							"teams":[{"id":20,"slug":"ttt"}],
+							"apps":[{"id":30,"slug":"aaa"}]
+						}
+					},
+					"restrictions":{
+						"users":[{"id":1,"login":"u"}],
+						"teams":[{"id":2,"slug":"t"}],
+						"apps":[{"id":3,"slug":"a"}]
+					}
+				}`)
+			})
+
+			ctx := context.Background()
+			protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", test.branch, input)
+			if err != nil {
+				t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
+			}
+
+			want := &Protection{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Strict: true,
+					Checks: &[]*RequiredStatusCheck{},
 				},
 				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 					DismissStaleReviews: true,
@@ -1844,7 +2165,7 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 			want := &Protection{
 				RequiredStatusChecks: &RequiredStatusChecks{
 					Strict:   true,
-					Contexts: []string{},
+					Contexts: &[]string{},
 				},
 				RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 					DismissStaleReviews: true,
@@ -2082,8 +2403,8 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 
 			want := &RequiredStatusChecks{
 				Strict:   true,
-				Contexts: []string{"x", "y", "z"},
-				Checks: []*RequiredStatusCheck{
+				Contexts: &[]string{"x", "y", "z"},
+				Checks: &[]*RequiredStatusCheck{
 					{
 						Context: "x",
 					},
@@ -2202,8 +2523,8 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 
 			want := &RequiredStatusChecks{
 				Strict:   true,
-				Contexts: []string{"continuous-integration"},
-				Checks: []*RequiredStatusCheck{
+				Contexts: &[]string{"continuous-integration"},
+				Checks: &[]*RequiredStatusCheck{
 					{
 						Context: "continuous-integration",
 					},
@@ -2300,8 +2621,8 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 
 			want := &RequiredStatusChecks{
 				Strict:   true,
-				Contexts: []string{"continuous-integration"},
-				Checks: []*RequiredStatusCheck{
+				Contexts: &[]string{"continuous-integration"},
+				Checks: &[]*RequiredStatusCheck{
 					{
 						Context: "continuous-integration",
 					},

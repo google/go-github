@@ -23517,6 +23517,26 @@ func TestRequiredStatusCheck_GetAppID(tt *testing.T) {
 	r.GetAppID()
 }
 
+func TestRequiredStatusChecks_GetChecks(tt *testing.T) {
+	var zeroValue []*RequiredStatusCheck
+	r := &RequiredStatusChecks{Checks: &zeroValue}
+	r.GetChecks()
+	r = &RequiredStatusChecks{}
+	r.GetChecks()
+	r = nil
+	r.GetChecks()
+}
+
+func TestRequiredStatusChecks_GetContexts(tt *testing.T) {
+	var zeroValue []string
+	r := &RequiredStatusChecks{Contexts: &zeroValue}
+	r.GetContexts()
+	r = &RequiredStatusChecks{}
+	r.GetContexts()
+	r = nil
+	r.GetContexts()
+}
+
 func TestRequiredStatusChecks_GetContextsURL(tt *testing.T) {
 	var zeroValue string
 	r := &RequiredStatusChecks{ContextsURL: &zeroValue}
