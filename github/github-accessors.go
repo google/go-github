@@ -20246,6 +20246,22 @@ func (r *RequiredStatusCheck) GetAppID() int64 {
 	return *r.AppID
 }
 
+// GetChecks returns the Checks field if it's non-nil, zero value otherwise.
+func (r *RequiredStatusChecks) GetChecks() []*RequiredStatusCheck {
+	if r == nil || r.Checks == nil {
+		return nil
+	}
+	return *r.Checks
+}
+
+// GetContexts returns the Contexts field if it's non-nil, zero value otherwise.
+func (r *RequiredStatusChecks) GetContexts() []string {
+	if r == nil || r.Contexts == nil {
+		return nil
+	}
+	return *r.Contexts
+}
+
 // GetContextsURL returns the ContextsURL field if it's non-nil, zero value otherwise.
 func (r *RequiredStatusChecks) GetContextsURL() string {
 	if r == nil || r.ContextsURL == nil {

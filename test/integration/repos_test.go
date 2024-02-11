@@ -103,7 +103,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 	protectionRequest := &github.ProtectionRequest{
 		RequiredStatusChecks: &github.RequiredStatusChecks{
 			Strict:   true,
-			Contexts: []string{"continuous-integration"},
+			Contexts: &[]string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcementRequest{
 			DismissStaleReviews: true,
@@ -126,7 +126,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 	want := &github.Protection{
 		RequiredStatusChecks: &github.RequiredStatusChecks{
 			Strict:   true,
-			Contexts: []string{"continuous-integration"},
+			Contexts: &[]string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcement{
 			DismissStaleReviews:          true,
