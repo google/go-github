@@ -51,9 +51,9 @@ type Hook struct {
 
 	// Only the following fields are used when creating a hook.
 	// Config is required.
-	Config map[string]interface{} `json:"config,omitempty"`
-	Events []string               `json:"events,omitempty"`
-	Active *bool                  `json:"active,omitempty"`
+	Config *HookConfig `json:"config,omitempty"`
+	Events []string    `json:"events,omitempty"`
+	Active *bool       `json:"active,omitempty"`
 }
 
 func (h Hook) String() string {
@@ -67,10 +67,10 @@ func (h Hook) String() string {
 // information.
 type createHookRequest struct {
 	// Config is required.
-	Name   string                 `json:"name"`
-	Config map[string]interface{} `json:"config,omitempty"`
-	Events []string               `json:"events,omitempty"`
-	Active *bool                  `json:"active,omitempty"`
+	Name   string      `json:"name"`
+	Config *HookConfig `json:"config,omitempty"`
+	Events []string    `json:"events,omitempty"`
+	Active *bool       `json:"active,omitempty"`
 }
 
 // CreateHook creates a Hook for the specified repository.

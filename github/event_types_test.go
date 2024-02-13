@@ -7691,6 +7691,7 @@ func TestPingEvent_Marshal(t *testing.T) {
 
 	l := make(map[string]interface{})
 	l["key"] = "value"
+	hookConfig := new(HookConfig)
 
 	u := &PingEvent{
 		Zen:    String("z"),
@@ -7705,7 +7706,7 @@ func TestPingEvent_Marshal(t *testing.T) {
 			TestURL:      String("tu"),
 			PingURL:      String("pu"),
 			LastResponse: l,
-			Config:       l,
+			Config:       hookConfig,
 			Events:       []string{"a"},
 			Active:       Bool(true),
 		},
@@ -12165,6 +12166,9 @@ func TestMetaEvent_Marshal(t *testing.T) {
 
 	v := make(map[string]interface{})
 	v["a"] = "b"
+	hookConfig := &HookConfig{
+		ContentType: String("json"),
+	}
 
 	u := &MetaEvent{
 		Action: String("a"),
@@ -12179,7 +12183,7 @@ func TestMetaEvent_Marshal(t *testing.T) {
 			TestURL:      String("tu"),
 			PingURL:      String("pu"),
 			LastResponse: v,
-			Config:       v,
+			Config:       hookConfig,
 			Events:       []string{"a"},
 			Active:       Bool(true),
 		},
@@ -12201,7 +12205,7 @@ func TestMetaEvent_Marshal(t *testing.T) {
 				"a": "b"
 			},
 			"config": {
-				"a": "b"
+				"content_type": "json"
 			},
 			"events": [
 				"a"

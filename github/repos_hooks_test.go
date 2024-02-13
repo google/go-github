@@ -502,9 +502,7 @@ func TestBranchCreateHookRequest_Marshal(t *testing.T) {
 		Name:   "abc",
 		Events: []string{"1", "2", "3"},
 		Active: Bool(true),
-		Config: map[string]interface{}{
-			"thing": "@123",
-		},
+		Config: &HookConfig{ContentType: String("json")},
 	}
 
 	want := `{
@@ -512,7 +510,7 @@ func TestBranchCreateHookRequest_Marshal(t *testing.T) {
 		"active": true,
 		"events": ["1","2","3"],
 		"config":{
-			"thing": "@123"
+			"content_type": "json"
 		}
 	}`
 
@@ -534,9 +532,7 @@ func TestBranchHook_Marshal(t *testing.T) {
 		LastResponse: map[string]interface{}{
 			"item": "item",
 		},
-		Config: map[string]interface{}{
-			"thing": "@123",
-		},
+		Config: &HookConfig{ContentType: String("json")},
 		Events: []string{"1", "2", "3"},
 		Active: Bool(true),
 	}
@@ -554,7 +550,7 @@ func TestBranchHook_Marshal(t *testing.T) {
 			"item": "item"
 		},
 		"config":{
-			"thing": "@123"
+			"content_type": "json"
 		},
 		"events": ["1","2","3"],
 		"active": true		
