@@ -7894,6 +7894,14 @@ func (h *Hook) GetActive() bool {
 	return *h.Active
 }
 
+// GetConfig returns the Config field.
+func (h *Hook) GetConfig() *HookConfig {
+	if h == nil {
+		return nil
+	}
+	return h.Config
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (h *Hook) GetCreatedAt() Timestamp {
 	if h == nil || h.CreatedAt == nil {
