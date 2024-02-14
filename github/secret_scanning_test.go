@@ -595,3 +595,19 @@ func TestSecretScanningAlertLocationDetails_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SecretScanningAlertUpdateOptions{}, `{}`)
+
+	u := &SecretScanningAlertUpdateOptions{
+		State:      "open",
+		Resolution: String("false_positive"),
+	}
+
+	want := `{
+		"state": "open",
+		"resolution": "false_positive"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
