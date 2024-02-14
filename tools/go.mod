@@ -1,6 +1,8 @@
 module tools
 
-go 1.20
+go 1.21
+
+toolchain go1.22.0
 
 require (
 	github.com/alecthomas/kong v0.8.1
