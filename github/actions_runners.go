@@ -63,8 +63,8 @@ type JITRunnerConfig struct {
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#create-configuration-for-a-just-in-time-runner-for-an-organization
 //
 //meta:operation POST /orgs/{org}/actions/runners/generate-jitconfig
-func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, owner string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/generate-jitconfig", owner)
+func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, org string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners/generate-jitconfig", org)
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
@@ -247,8 +247,8 @@ func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, r
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#list-runner-applications-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/runners/downloads
-func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.Context, owner string) ([]*RunnerApplicationDownload, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/downloads", owner)
+func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.Context, org string) ([]*RunnerApplicationDownload, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners/downloads", org)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -268,8 +268,8 @@ func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#create-a-registration-token-for-an-organization
 //
 //meta:operation POST /orgs/{org}/actions/runners/registration-token
-func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context, owner string) (*RegistrationToken, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/registration-token", owner)
+func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context, org string) (*RegistrationToken, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners/registration-token", org)
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -290,8 +290,8 @@ func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/runners
-func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner string, opts *ListOptions) (*Runners, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners", owner)
+func (s *ActionsService) ListOrganizationRunners(ctx context.Context, org string, opts *ListOptions) (*Runners, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -316,8 +316,8 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner stri
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#get-a-self-hosted-runner-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/runners/{runner_id}
-func (s *ActionsService) GetOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Runner, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
+func (s *ActionsService) GetOrganizationRunner(ctx context.Context, org string, runnerID int64) (*Runner, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners/%v", org, runnerID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -337,8 +337,8 @@ func (s *ActionsService) GetOrganizationRunner(ctx context.Context, owner string
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#create-a-remove-token-for-an-organization
 //
 //meta:operation POST /orgs/{org}/actions/runners/remove-token
-func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, owner string) (*RemoveToken, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/remove-token", owner)
+func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, org string) (*RemoveToken, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners/remove-token", org)
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -359,8 +359,8 @@ func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, owne
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-an-organization
 //
 //meta:operation DELETE /orgs/{org}/actions/runners/{runner_id}
-func (s *ActionsService) RemoveOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
+func (s *ActionsService) RemoveOrganizationRunner(ctx context.Context, org string, runnerID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners/%v", org, runnerID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
