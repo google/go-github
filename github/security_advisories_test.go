@@ -1159,3 +1159,172 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestSecurityAdvisorySubmission_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SecurityAdvisorySubmission{}, `{}`)
+
+	u := &SecurityAdvisorySubmission{
+		Accepted: Bool(true),
+	}
+
+	w := `{
+		"accepted": true
+	}`
+
+	testJSONMarshal(t, u, w)
+}
+
+func TestRepoAdvisoryCredit_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepoAdvisoryCredit{}, `{}`)
+
+	u := &RepoAdvisoryCredit{
+		Login: String("l"),
+		Type:  String("t"),
+	}
+
+	w := `{
+		"login": "l",
+		"type": "t"
+	}`
+
+	testJSONMarshal(t, u, w)
+}
+
+func TestRepoAdvisoryCreditDetailed_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepoAdvisoryCreditDetailed{}, `{}`)
+
+	testDate := &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}
+	u := &RepoAdvisoryCreditDetailed{
+		Type:  String("t"),
+		State: String("s"),
+		User: &User{
+			Name:                    String("u"),
+			Company:                 String("c"),
+			Blog:                    String("b"),
+			Location:                String("l"),
+			Email:                   String("e"),
+			Hireable:                Bool(false),
+			Bio:                     String("bio"),
+			TwitterUsername:         String("tu"),
+			PublicRepos:             Int(1),
+			PublicGists:             Int(1),
+			Followers:               Int(2),
+			Following:               Int(2),
+			CreatedAt:               testDate,
+			UpdatedAt:               testDate,
+			SuspendedAt:             testDate,
+			Type:                    String("type"),
+			SiteAdmin:               Bool(false),
+			TotalPrivateRepos:       Int64(10),
+			OwnedPrivateRepos:       Int64(10),
+			PrivateGists:            Int(10),
+			DiskUsage:               Int(10),
+			Collaborators:           Int(10),
+			TwoFactorAuthentication: Bool(true),
+			Plan: &Plan{
+				Name:          String("p"),
+				Space:         Int(2),
+				Collaborators: Int(2),
+				PrivateRepos:  Int64(2),
+				Seats:         Int(2),
+				FilledSeats:   Int(1),
+			},
+			LdapDn:            String("l"),
+			URL:               String("url"),
+			EventsURL:         String("e"),
+			FollowingURL:      String("f"),
+			FollowersURL:      String("f"),
+			GistsURL:          String("g"),
+			OrganizationsURL:  String("o"),
+			ReceivedEventsURL: String("r"),
+			ReposURL:          String("rep"),
+			StarredURL:        String("star"),
+			SubscriptionsURL:  String("sub"),
+			TextMatches: []*TextMatch{
+				{
+					ObjectURL:  String("u"),
+					ObjectType: String("t"),
+					Property:   String("p"),
+					Fragment:   String("f"),
+					Matches: []*Match{
+						{
+							Text:    String("t"),
+							Indices: []int{1, 2},
+						},
+					},
+				},
+			},
+			Permissions: map[string]bool{"p1": true},
+			RoleName:    String("r"),
+		},
+	}
+
+	w := `{
+		"type": "t",
+		"state": "s",
+		"user": {
+		  "name": "u",
+		  "company": "c",
+		  "blog": "b",
+		  "location": "l",
+		  "email": "e",
+		  "hireable": false,
+		  "bio": "bio",
+		  "twitter_username": "tu",
+		  "public_repos": 1,
+		  "public_gists": 1,
+		  "followers": 2,
+		  "following": 2,
+		  "created_at": "2019-08-10T14:59:22Z",
+		  "updated_at": "2019-08-10T14:59:22Z",
+		  "suspended_at": "2019-08-10T14:59:22Z",
+		  "type": "type",
+		  "site_admin": false,
+		  "total_private_repos": 10,
+		  "owned_private_repos": 10,
+		  "private_gists": 10,
+		  "disk_usage": 10,
+		  "collaborators": 10,
+		  "two_factor_authentication": true,
+		  "plan": {
+			"name": "p",
+			"space": 2,
+			"collaborators": 2,
+			"private_repos": 2,
+			"seats": 2,
+			"filled_seats": 1
+		  },
+		  "ldap_dn": "l",
+		  "url": "url",
+		  "events_url": "e",
+		  "following_url": "f",
+		  "followers_url": "f",
+		  "gists_url": "g",
+		  "organizations_url": "o",
+		  "received_events_url": "r",
+		  "repos_url": "rep",
+		  "starred_url": "star",
+		  "subscriptions_url": "sub",
+		  "text_matches": [
+			{
+			  "object_url": "u",
+			  "object_type": "t",
+			  "property": "p",
+			  "fragment": "f",
+			  "matches": [
+				{
+				  "text": "t",
+				  "indices": [1, 2]
+				}
+			  ]
+			}
+		  ],
+		  "permissions": {
+			"p1": true
+		  },
+		  "role_name": "r"
+		}
+	  }`
+
+	testJSONMarshal(t, u, w)
+}
