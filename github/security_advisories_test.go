@@ -1328,3 +1328,389 @@ func TestRepoAdvisoryCreditDetailed_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, w)
 }
+
+func TestCredit_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Credit{}, `{}`)
+
+	testDate := &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}
+	u := &Credit{
+		Type: String("t"),
+		User: &User{
+			Name:                    String("u"),
+			Company:                 String("c"),
+			Blog:                    String("b"),
+			Location:                String("l"),
+			Email:                   String("e"),
+			Hireable:                Bool(false),
+			Bio:                     String("bio"),
+			TwitterUsername:         String("tu"),
+			PublicRepos:             Int(1),
+			PublicGists:             Int(1),
+			Followers:               Int(2),
+			Following:               Int(2),
+			CreatedAt:               testDate,
+			UpdatedAt:               testDate,
+			SuspendedAt:             testDate,
+			Type:                    String("type"),
+			SiteAdmin:               Bool(false),
+			TotalPrivateRepos:       Int64(10),
+			OwnedPrivateRepos:       Int64(10),
+			PrivateGists:            Int(10),
+			DiskUsage:               Int(10),
+			Collaborators:           Int(10),
+			TwoFactorAuthentication: Bool(true),
+			Plan: &Plan{
+				Name:          String("p"),
+				Space:         Int(2),
+				Collaborators: Int(2),
+				PrivateRepos:  Int64(2),
+				Seats:         Int(2),
+				FilledSeats:   Int(1),
+			},
+			LdapDn:            String("l"),
+			URL:               String("url"),
+			EventsURL:         String("e"),
+			FollowingURL:      String("f"),
+			FollowersURL:      String("f"),
+			GistsURL:          String("g"),
+			OrganizationsURL:  String("o"),
+			ReceivedEventsURL: String("r"),
+			ReposURL:          String("rep"),
+			StarredURL:        String("star"),
+			SubscriptionsURL:  String("sub"),
+			TextMatches: []*TextMatch{
+				{
+					ObjectURL:  String("u"),
+					ObjectType: String("t"),
+					Property:   String("p"),
+					Fragment:   String("f"),
+					Matches: []*Match{
+						{
+							Text:    String("t"),
+							Indices: []int{1, 2},
+						},
+					},
+				},
+			},
+			Permissions: map[string]bool{"p1": true},
+			RoleName:    String("r"),
+		},
+	}
+
+	w := `{
+		"type": "t",
+		"user": {
+			"name": "u",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": false,
+			"bio": "bio",
+			"twitter_username": "tu",
+			"public_repos": 1,
+			"public_gists": 1,
+			"followers": 2,
+			"following": 2,
+			"created_at": "2019-08-10T14:59:22Z",
+			"updated_at": "2019-08-10T14:59:22Z",
+			"suspended_at": "2019-08-10T14:59:22Z",
+			"type": "type",
+			"site_admin": false,
+			"total_private_repos": 10,
+			"owned_private_repos": 10,
+			"private_gists": 10,
+			"disk_usage": 10,
+			"collaborators": 10,
+			"two_factor_authentication": true,
+			"plan": {
+			"name": "p",
+			"space": 2,
+			"collaborators": 2,
+			"private_repos": 2,
+			"seats": 2,
+			"filled_seats": 1
+			},
+			"ldap_dn": "l",
+			"url": "url",
+			"events_url": "e",
+			"following_url": "f",
+			"followers_url": "f",
+			"gists_url": "g",
+			"organizations_url": "o",
+			"received_events_url": "r",
+			"repos_url": "rep",
+			"starred_url": "star",
+			"subscriptions_url": "sub",
+			"text_matches": [
+			{
+				"object_url": "u",
+				"object_type": "t",
+				"property": "p",
+				"fragment": "f",
+				"matches": [
+				{
+					"text": "t",
+					"indices": [1, 2]
+				}
+				]
+			}
+			],
+			"permissions": {
+			"p1": true
+			},
+			"role_name": "r"
+		}
+	}`
+
+	testJSONMarshal(t, u, w)
+}
+
+func TestGlobalSecurityAdvisory_Marshal(t *testing.T) {
+	testJSONMarshal(t, &GlobalSecurityAdvisory{}, `{}`)
+
+	testDate := &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}
+	u := &GlobalSecurityAdvisory{
+		ID:                    Int64(1),
+		RepositoryAdvisoryURL: String("r"),
+		Type:                  String("t"),
+		SourceCodeLocation:    String("s"),
+		References:            []string{"r"},
+		Vulnerabilities: []*GlobalSecurityVulnerability{
+			{
+				Package: &VulnerabilityPackage{
+					Ecosystem: String("npm"),
+					Name:      String("a-package"),
+				},
+				FirstPatchedVersion:    String("1.0.3"),
+				VulnerableVersionRange: String("<=1.0.2"),
+				VulnerableFunctions:    []string{"a_function"},
+			},
+		},
+		GithubReviewedAt: testDate,
+		NVDPublishedAt:   testDate,
+		Credits: []*Credit{
+			{
+				Type: String("t"),
+				User: &User{
+					Name:                    String("u"),
+					Company:                 String("c"),
+					Blog:                    String("b"),
+					Location:                String("l"),
+					Email:                   String("e"),
+					Hireable:                Bool(false),
+					Bio:                     String("bio"),
+					TwitterUsername:         String("tu"),
+					PublicRepos:             Int(1),
+					PublicGists:             Int(1),
+					Followers:               Int(2),
+					Following:               Int(2),
+					CreatedAt:               testDate,
+					UpdatedAt:               testDate,
+					SuspendedAt:             testDate,
+					Type:                    String("type"),
+					SiteAdmin:               Bool(false),
+					TotalPrivateRepos:       Int64(10),
+					OwnedPrivateRepos:       Int64(10),
+					PrivateGists:            Int(10),
+					DiskUsage:               Int(10),
+					Collaborators:           Int(10),
+					TwoFactorAuthentication: Bool(true),
+					Plan: &Plan{
+						Name:          String("p"),
+						Space:         Int(2),
+						Collaborators: Int(2),
+						PrivateRepos:  Int64(2),
+						Seats:         Int(2),
+						FilledSeats:   Int(1),
+					},
+					LdapDn:            String("l"),
+					URL:               String("url"),
+					EventsURL:         String("e"),
+					FollowingURL:      String("f"),
+					FollowersURL:      String("f"),
+					GistsURL:          String("g"),
+					OrganizationsURL:  String("o"),
+					ReceivedEventsURL: String("r"),
+					ReposURL:          String("rep"),
+					StarredURL:        String("star"),
+					SubscriptionsURL:  String("sub"),
+					TextMatches: []*TextMatch{
+						{
+							ObjectURL:  String("u"),
+							ObjectType: String("t"),
+							Property:   String("p"),
+							Fragment:   String("f"),
+							Matches: []*Match{
+								{
+									Text:    String("t"),
+									Indices: []int{1, 2},
+								},
+							},
+						},
+					},
+					Permissions: map[string]bool{"p1": true},
+					RoleName:    String("r"),
+				},
+			},
+		},
+		SecurityAdvisory: SecurityAdvisory{
+			GHSAID:      String("GHSA-xoxo-1234-xoxo"),
+			CVEID:       String("CVE-xoxo-1234"),
+			URL:         String("https://api.github.com/advisories/GHSA-xoxo-1234-xoxo"),
+			HTMLURL:     String("https://github.com/advisories/GHSA-xoxo-1234-xoxo"),
+			Severity:    String("high"),
+			Summary:     String("Heartbleed security advisory"),
+			Description: String("This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information."),
+			Identifiers: []*AdvisoryIdentifier{
+				{
+					Type:  String("GHSA"),
+					Value: String("GHSA-xoxo-1234-xoxo"),
+				},
+				{
+					Type:  String("CVE"),
+					Value: String("CVE-xoxo-1234"),
+				},
+			},
+			PublishedAt: testDate,
+			UpdatedAt:   testDate,
+			WithdrawnAt: nil,
+			CVSS: &AdvisoryCVSS{
+				VectorString: String("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
+				Score:        Float64(7.6),
+			},
+			CWEs: []*AdvisoryCWEs{
+				{
+					CWEID: String("CWE-400"),
+					Name:  String("Uncontrolled Resource Consumption"),
+				},
+			},
+		},
+	}
+
+	w := `{
+		"cvss": {
+		  "score": 7.6,
+		  "vector_string": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"
+		},
+		"cwes": [
+		  {
+			"cwe_id": "CWE-400",
+			"name": "Uncontrolled Resource Consumption"
+		  }
+		],
+		"ghsa_id": "GHSA-xoxo-1234-xoxo",
+		"summary": "Heartbleed security advisory",
+		"description": "This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information.",
+		"severity": "high",
+		"identifiers": [
+		  {
+			"value": "GHSA-xoxo-1234-xoxo",
+			"type": "GHSA"
+		  },
+		  {
+			"value": "CVE-xoxo-1234",
+			"type": "CVE"
+		  }
+		],
+		"published_at": "2019-08-10T14:59:22Z",
+		"updated_at": "2019-08-10T14:59:22Z",
+		"cve_id": "CVE-xoxo-1234",
+		"url": "https://api.github.com/advisories/GHSA-xoxo-1234-xoxo",
+		"html_url": "https://github.com/advisories/GHSA-xoxo-1234-xoxo",
+		"id": 1,
+		"repository_advisory_url": "r",
+		"type": "t",
+		"source_code_location": "s",
+		"references": [
+		  "r"
+		],
+		"vulnerabilities": [
+		  {
+			"package": {
+			  "ecosystem": "npm",
+			  "name": "a-package"
+			},
+			"first_patched_version": "1.0.3",
+			"vulnerable_version_range": "\u003c=1.0.2",
+			"vulnerable_functions": [
+			  "a_function"
+			]
+		  }
+		],
+		"github_reviewed_at": "2019-08-10T14:59:22Z",
+		"nvd_published_at": "2019-08-10T14:59:22Z",
+		"credits": [
+		  {
+			"user": {
+			  "name": "u",
+			  "company": "c",
+			  "blog": "b",
+			  "location": "l",
+			  "email": "e",
+			  "hireable": false,
+			  "bio": "bio",
+			  "twitter_username": "tu",
+			  "public_repos": 1,
+			  "public_gists": 1,
+			  "followers": 2,
+			  "following": 2,
+			  "created_at": "2019-08-10T14:59:22Z",
+			  "updated_at": "2019-08-10T14:59:22Z",
+			  "suspended_at": "2019-08-10T14:59:22Z",
+			  "type": "type",
+			  "site_admin": false,
+			  "total_private_repos": 10,
+			  "owned_private_repos": 10,
+			  "private_gists": 10,
+			  "disk_usage": 10,
+			  "collaborators": 10,
+			  "two_factor_authentication": true,
+			  "plan": {
+				"name": "p",
+				"space": 2,
+				"collaborators": 2,
+				"private_repos": 2,
+				"filled_seats": 1,
+				"seats": 2
+			  },
+			  "ldap_dn": "l",
+			  "url": "url",
+			  "events_url": "e",
+			  "following_url": "f",
+			  "followers_url": "f",
+			  "gists_url": "g",
+			  "organizations_url": "o",
+			  "received_events_url": "r",
+			  "repos_url": "rep",
+			  "starred_url": "star",
+			  "subscriptions_url": "sub",
+			  "text_matches": [
+				{
+				  "object_url": "u",
+				  "object_type": "t",
+				  "property": "p",
+				  "fragment": "f",
+				  "matches": [
+					{
+					  "text": "t",
+					  "indices": [
+						1,
+						2
+					  ]
+					}
+				  ]
+				}
+			  ],
+			  "permissions": {
+				"p1": true
+			  },
+			  "role_name": "r"
+			},
+			"type": "t"
+		  }
+		]
+	}`
+
+	testJSONMarshal(t, u, w)
+}
