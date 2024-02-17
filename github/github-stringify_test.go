@@ -617,10 +617,11 @@ func TestHook_String(t *testing.T) {
 		Name:      String(""),
 		TestURL:   String(""),
 		PingURL:   String(""),
+		Config:    &HookConfig{},
 		Events:    []string{""},
 		Active:    Bool(false),
 	}
-	want := `github.Hook{CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", ID:0, Type:"", Name:"", TestURL:"", PingURL:"", Events:[""], Active:false}`
+	want := `github.Hook{CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", ID:0, Type:"", Name:"", TestURL:"", PingURL:"", Config:github.HookConfig{}, Events:[""], Active:false}`
 	if got := v.String(); got != want {
 		t.Errorf("Hook.String = %v, want %v", got, want)
 	}
