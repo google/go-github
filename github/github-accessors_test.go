@@ -9229,6 +9229,13 @@ func TestHook_GetActive(tt *testing.T) {
 	h.GetActive()
 }
 
+func TestHook_GetConfig(tt *testing.T) {
+	h := &Hook{}
+	h.GetConfig()
+	h = nil
+	h.GetConfig()
+}
+
 func TestHook_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	h := &Hook{CreatedAt: &zeroValue}

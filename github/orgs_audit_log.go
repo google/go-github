@@ -20,16 +20,6 @@ type GetAuditLogOptions struct {
 	ListCursorOptions
 }
 
-// HookConfig describes metadata about a webhook configuration.
-type HookConfig struct {
-	ContentType *string `json:"content_type,omitempty"`
-	InsecureSSL *string `json:"insecure_ssl,omitempty"`
-	URL         *string `json:"url,omitempty"`
-
-	// Secret is returned obfuscated by GitHub, but it can be set for outgoing requests.
-	Secret *string `json:"secret,omitempty"`
-}
-
 // ActorLocation contains information about reported location for an actor.
 type ActorLocation struct {
 	CountryCode *string `json:"country_code,omitempty"`
