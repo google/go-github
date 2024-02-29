@@ -13,7 +13,7 @@ import (
 	"fmt"
 
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
-	"github.com/google/go-github/v59/github"
+	"github.com/google/go-github/v60/github"
 )
 
 func main() {
