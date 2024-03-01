@@ -84,7 +84,7 @@ func TestEnterpriseService_GetAuditLog(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, auditLogCategory, func() (*Response, error) {
 		got, resp, err := client.Enterprise.GetAuditLog(ctx, "o", &GetAuditLogOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)

@@ -20310,6 +20310,13 @@ func TestRateLimits_GetActionsRunnerRegistration(tt *testing.T) {
 	r.GetActionsRunnerRegistration()
 }
 
+func TestRateLimits_GetAuditLog(tt *testing.T) {
+	r := &RateLimits{}
+	r.GetAuditLog()
+	r = nil
+	r.GetAuditLog()
+}
+
 func TestRateLimits_GetCodeScanningUpload(tt *testing.T) {
 	r := &RateLimits{}
 	r.GetCodeScanningUpload()

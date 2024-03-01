@@ -1316,6 +1316,7 @@ const (
 	scimCategory
 	dependencySnapshotsCategory
 	codeSearchCategory
+	auditLogCategory
 
 	categories // An array of this length will be able to contain all rate limit categories.
 )
@@ -1362,6 +1363,10 @@ func category(method, path string) rateLimitCategory {
 		strings.HasSuffix(path, "/dependency-graph/snapshots") &&
 		method == http.MethodPost:
 		return dependencySnapshotsCategory
+
+	// https://docs.github.com/en/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#get-the-audit-log-for-an-organization
+	case strings.HasSuffix(path, "/audit-log"):
+		return auditLogCategory
 	}
 }
 

@@ -1189,6 +1189,11 @@ func TestDo_rateLimitCategory(t *testing.T) {
 			url:      "/search/code?q=rate",
 			category: codeSearchCategory,
 		},
+		{
+			method:   http.MethodGet,
+			url:      "/orgs/google/audit-log",
+			category: auditLogCategory,
+		},
 		// missing a check for actionsRunnerRegistrationCategory: API not found
 	}
 

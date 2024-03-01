@@ -54,6 +54,7 @@ type RateLimits struct {
 	SCIM                      *Rate `json:"scim"`
 	DependencySnapshots       *Rate `json:"dependency_snapshots"`
 	CodeSearch                *Rate `json:"code_search"`
+	AuditLog                  *Rate `json:"audit_log"`
 }
 
 func (r RateLimits) String() string {
@@ -113,6 +114,9 @@ func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, err
 		}
 		if response.Resources.CodeSearch != nil {
 			s.client.rateLimits[codeSearchCategory] = *response.Resources.CodeSearch
+		}
+		if response.Resources.AuditLog != nil {
+			s.client.rateLimits[auditLogCategory] = *response.Resources.AuditLog
 		}
 		s.client.rateMu.Unlock()
 	}

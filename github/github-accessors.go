@@ -17534,6 +17534,14 @@ func (r *RateLimits) GetActionsRunnerRegistration() *Rate {
 	return r.ActionsRunnerRegistration
 }
 
+// GetAuditLog returns the AuditLog field.
+func (r *RateLimits) GetAuditLog() *Rate {
+	if r == nil {
+		return nil
+	}
+	return r.AuditLog
+}
+
 // GetCodeScanningUpload returns the CodeScanningUpload field.
 func (r *RateLimits) GetCodeScanningUpload() *Rate {
 	if r == nil {
