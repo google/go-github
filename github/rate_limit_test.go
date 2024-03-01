@@ -123,51 +123,51 @@ func TestRateLimits(t *testing.T) {
 		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
 	}
 	tests := []struct {
-		category rateLimitCategory
+		category RateLimitCategory
 		rate     *Rate
 	}{
 		{
-			category: coreCategory,
+			category: CoreCategory,
 			rate:     want.Core,
 		},
 		{
-			category: searchCategory,
+			category: SearchCategory,
 			rate:     want.Search,
 		},
 		{
-			category: graphqlCategory,
+			category: GraphqlCategory,
 			rate:     want.GraphQL,
 		},
 		{
-			category: integrationManifestCategory,
+			category: IntegrationManifestCategory,
 			rate:     want.IntegrationManifest,
 		},
 		{
-			category: sourceImportCategory,
+			category: SourceImportCategory,
 			rate:     want.SourceImport,
 		},
 		{
-			category: codeScanningUploadCategory,
+			category: CodeScanningUploadCategory,
 			rate:     want.CodeScanningUpload,
 		},
 		{
-			category: actionsRunnerRegistrationCategory,
+			category: ActionsRunnerRegistrationCategory,
 			rate:     want.ActionsRunnerRegistration,
 		},
 		{
-			category: scimCategory,
+			category: ScimCategory,
 			rate:     want.SCIM,
 		},
 		{
-			category: dependencySnapshotsCategory,
+			category: DependencySnapshotsCategory,
 			rate:     want.DependencySnapshots,
 		},
 		{
-			category: codeSearchCategory,
+			category: CodeSearchCategory,
 			rate:     want.CodeSearch,
 		},
 		{
-			category: auditLogCategory,
+			category: AuditLogCategory,
 			rate:     want.AuditLog,
 		},
 	}
@@ -196,7 +196,7 @@ func TestRateLimits_overQuota(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	client.rateLimits[coreCategory] = Rate{
+	client.rateLimits[CoreCategory] = Rate{
 		Limit:     1,
 		Remaining: 0,
 		Reset:     Timestamp{time.Now().Add(time.Hour).Local()},
@@ -285,51 +285,51 @@ func TestRateLimits_overQuota(t *testing.T) {
 	}
 
 	tests := []struct {
-		category rateLimitCategory
+		category RateLimitCategory
 		rate     *Rate
 	}{
 		{
-			category: coreCategory,
+			category: CoreCategory,
 			rate:     want.Core,
 		},
 		{
-			category: searchCategory,
+			category: SearchCategory,
 			rate:     want.Search,
 		},
 		{
-			category: graphqlCategory,
+			category: GraphqlCategory,
 			rate:     want.GraphQL,
 		},
 		{
-			category: integrationManifestCategory,
+			category: IntegrationManifestCategory,
 			rate:     want.IntegrationManifest,
 		},
 		{
-			category: sourceImportCategory,
+			category: SourceImportCategory,
 			rate:     want.SourceImport,
 		},
 		{
-			category: codeScanningUploadCategory,
+			category: CodeScanningUploadCategory,
 			rate:     want.CodeScanningUpload,
 		},
 		{
-			category: actionsRunnerRegistrationCategory,
+			category: ActionsRunnerRegistrationCategory,
 			rate:     want.ActionsRunnerRegistration,
 		},
 		{
-			category: scimCategory,
+			category: ScimCategory,
 			rate:     want.SCIM,
 		},
 		{
-			category: dependencySnapshotsCategory,
+			category: DependencySnapshotsCategory,
 			rate:     want.DependencySnapshots,
 		},
 		{
-			category: codeSearchCategory,
+			category: CodeSearchCategory,
 			rate:     want.CodeSearch,
 		},
 		{
-			category: auditLogCategory,
+			category: AuditLogCategory,
 			rate:     want.AuditLog,
 		},
 	}
