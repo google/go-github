@@ -28,6 +28,20 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		"With Metadata": {
+			data: `{
+                    "type": "creation",
+					"ruleset_source_type": "Repository",
+					"ruleset_source": "google",
+					"ruleset_id": 1984
+           		   }`,
+			want: &RepositoryRule{
+				RulesetSource:     "google",
+				RulesetSourceType: "Repository",
+				RulesetID:         1984,
+				Type:              "creation",
+			},
+		},
 		"Valid creation": {
 			data: `{"type":"creation"}`,
 			want: NewCreationRule(),
@@ -262,9 +276,15 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[
 			{
+			  "ruleset_id": 42069,
+			  "ruleset_source_type": "Repository",
+			  "ruleset_source": "google",
 			  "type": "creation"
 			},
 			{
+			  "ruleset_id": 42069,
+			  "ruleset_source_type": "Organization",
+			  "ruleset_source": "google",
 			  "type": "update",
 			  "parameters": {
 			    "update_allows_fetch_and_merge": true
@@ -280,9 +300,15 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 	}
 
 	creationRule := NewCreationRule()
+	creationRule.RulesetID = 42069
+	creationRule.RulesetSource = "google"
+	creationRule.RulesetSourceType = "Repository"
 	updateRule := NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
 		UpdateAllowsFetchAndMerge: true,
 	})
+	updateRule.RulesetID = 42069
+	updateRule.RulesetSource = "google"
+	updateRule.RulesetSourceType = "Organization"
 
 	want := []*RepositoryRule{
 		creationRule,

@@ -112,8 +112,11 @@ type RequiredWorkflowsRuleParameters struct {
 
 // RepositoryRule represents a GitHub Rule.
 type RepositoryRule struct {
-	Type       string           `json:"type"`
-	Parameters *json.RawMessage `json:"parameters,omitempty"`
+	Type              string           `json:"type"`
+	Parameters        *json.RawMessage `json:"parameters,omitempty"`
+	RulesetSourceType string           `json:"ruleset_source_type"`
+	RulesetSource     string           `json:"ruleset_source"`
+	RulesetID         int64            `json:"ruleset_id"`
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
@@ -125,6 +128,9 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	r.RulesetID = RepositoryRule.RulesetID
+	r.RulesetSourceType = RepositoryRule.RulesetSourceType
+	r.RulesetSource = RepositoryRule.RulesetSource
 	r.Type = RepositoryRule.Type
 
 	switch RepositoryRule.Type {
