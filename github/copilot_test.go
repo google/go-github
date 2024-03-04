@@ -336,6 +336,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/copilot/billing/seats", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"per_page": "100",
+			"page":     "1",
+		})
 		fmt.Fprint(w, `{
 				"total_seats": 4,
 				"seats": [
@@ -473,7 +477,7 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 	lastActivityAt2 := Timestamp{tmp}
 
 	ctx := context.Background()
-	got, _, err := client.Copilot.ListCopilotSeats(ctx, "o", nil)
+	got, _, err := client.Copilot.ListCopilotSeats(ctx, "o", &ListOptions{Page: 1, PerPage: 100})
 	if err != nil {
 		t.Errorf("Copilot.ListCopilotSeats returned error: %v", err)
 	}
