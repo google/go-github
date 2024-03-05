@@ -477,7 +477,8 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 	lastActivityAt2 := Timestamp{tmp}
 
 	ctx := context.Background()
-	got, _, err := client.Copilot.ListCopilotSeats(ctx, "o", &ListOptions{Page: 1, PerPage: 100})
+	opts := &ListOptions{Page: 1, PerPage: 100}
+	got, _, err := client.Copilot.ListCopilotSeats(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Copilot.ListCopilotSeats returned error: %v", err)
 	}
@@ -589,12 +590,12 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 	const methodName = "ListCopilotSeats"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.ListCopilotSeats(ctx, "\n", nil)
+		_, _, err = client.Copilot.ListCopilotSeats(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.ListCopilotSeats(ctx, "", nil)
+		got, resp, err := client.Copilot.ListCopilotSeats(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("Copilot.ListCopilotSeats returned %+v, want nil", got)
 		}
