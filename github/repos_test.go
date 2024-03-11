@@ -930,7 +930,7 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	for _, test := range tests {
 		mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "GET")
-			fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true}`)
+			fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true, "protection":{"required_status_checks":{"contexts":["c"]}}}`)
 		})
 
 		ctx := context.Background()
@@ -948,6 +948,11 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 				},
 			},
 			Protected: Bool(true),
+			Protection: &Protection{
+				RequiredStatusChecks: &RequiredStatusChecks{
+					Contexts: &[]string{"c"},
+				},
+			},
 		}
 
 		if !cmp.Equal(branch, want) {
@@ -1000,7 +1005,7 @@ func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t 
 	})
 	mux.HandleFunc("/repos/o/r/branches/br", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true}`)
+		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true, "protection":{"required_status_checks":{"contexts":["c"]}}}`)
 	})
 	ctx := context.Background()
 	branch, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", 1)
@@ -1020,6 +1025,11 @@ func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t 
 			},
 		},
 		Protected: Bool(true),
+		Protection: &Protection{
+			RequiredStatusChecks: &RequiredStatusChecks{
+				Contexts: &[]string{"c"},
+			},
+		},
 	}
 	if !cmp.Equal(branch, want) {
 		t.Errorf("Repositories.GetBranch returned %+v, want %+v", branch, want)
