@@ -1881,6 +1881,13 @@ func TestBranch_GetProtected(tt *testing.T) {
 	b.GetProtected()
 }
 
+func TestBranch_GetProtection(tt *testing.T) {
+	b := &Branch{}
+	b.GetProtection()
+	b = nil
+	b.GetProtection()
+}
+
 func TestBranchCommit_GetCommit(tt *testing.T) {
 	b := &BranchCommit{}
 	b.GetCommit()

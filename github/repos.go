@@ -1003,6 +1003,14 @@ type Branch struct {
 	Name      *string           `json:"name,omitempty"`
 	Commit    *RepositoryCommit `json:"commit,omitempty"`
 	Protected *bool             `json:"protected,omitempty"`
+
+	// Protection will always be included in APIs which return the
+	// 'Branch With Protection' schema such as 'Get a branch', but may
+	// not be included in APIs that return the `Short Branch` schema
+	// such as 'List branches'. In such cases, if branch protection is
+	// enabled, Protected will be `true` but this will be nil, and
+	// additional protection details can be obtained by calling GetBranch().
+	Protection *Protection `json:"protection,omitempty"`
 }
 
 // Protection represents a repository branch's protection.
