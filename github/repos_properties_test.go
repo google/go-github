@@ -63,3 +63,32 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepositoriesService_CreateOrUpdateCustomPropertyValues(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	// No Content when custom property values are successfully created or updated, StatusCode: 204 (No Content)
+	mux.HandleFunc("/repos/o/r/properties/values", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	customPropertyValues := []*CustomPropertyNonNullValue{
+		{
+			PropertyName: "environment",
+			Value:        "production",
+		},
+	}
+	_, err := client.Repositories.CreateOrUpdateCustomPropertyValues(ctx, "o", "r", customPropertyValues)
+	if err != nil {
+		t.Errorf("Repositories.CreateOrUpdateCustomPropertyValues returned error: %v", err)
+	}
+
+	const methodName = "CreateOrUpdateCustomPropertyValues"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.CreateOrUpdateCustomPropertyValues(ctx, "o", "r", customPropertyValues)
+	})
+}
