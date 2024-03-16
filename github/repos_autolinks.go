@@ -28,7 +28,7 @@ type Autolink struct {
 // ListAutolinks returns a list of autolinks configured for the given repository.
 // Information about autolinks are only available to repository administrators.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/autolinks#list-all-autolinks-of-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/autolinks#get-all-autolinks-of-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/autolinks
 func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Autolink, *Response, error) {
