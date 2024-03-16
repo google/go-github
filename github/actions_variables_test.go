@@ -576,13 +576,13 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repositories/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"name":"variable","value":"VAR","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
 	})
 
 	ctx := context.Background()
-	variable, _, err := client.Actions.GetEnvVariable(ctx, 1, "e", "variable")
+	variable, _, err := client.Actions.GetEnvVariable(ctx, "usr", "1", "e", "variable")
 	if err != nil {
 		t.Errorf("Actions.GetEnvVariable returned error: %v", err)
 	}
@@ -599,12 +599,12 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 
 	const methodName = "GetEnvVariable"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetEnvVariable(ctx, 0.0, "\n", "\n")
+		_, _, err = client.Actions.GetEnvVariable(ctx, "usr", "0", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetEnvVariable(ctx, 1, "e", "variable")
+		got, resp, err := client.Actions.GetEnvVariable(ctx, "usr", "1", "e", "variable")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

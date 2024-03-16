@@ -128,9 +128,9 @@ func (s *ActionsService) GetOrgVariable(ctx context.Context, org, name string) (
 //
 // GitHub API docs: https://docs.github.com/rest/actions/variables#get-an-environment-variable
 //
-//meta:operation GET /repositories/{repository_id}/environments/{environment_name}/variables/{name}
-func (s *ActionsService) GetEnvVariable(ctx context.Context, repoID int, env, variableName string) (*ActionsVariable, *Response, error) {
-	url := fmt.Sprintf("repositories/%v/environments/%v/variables/%v", repoID, env, variableName)
+//meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}
+func (s *ActionsService) GetEnvVariable(ctx context.Context, org, repo, env, variableName string) (*ActionsVariable, *Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", org, repo, env, variableName)
 	return s.getVariable(ctx, url)
 }
 
