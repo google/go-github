@@ -648,7 +648,7 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repositories/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Content-Type", "application/json")
 		testBody(t, r, `{"name":"variable","value":"VAR"}`+"\n")
@@ -660,19 +660,19 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 		Value: "VAR",
 	}
 	ctx := context.Background()
-	_, err := client.Actions.UpdateEnvVariable(ctx, 1, "e", input)
+	_, err := client.Actions.UpdateEnvVariable(ctx, "usr", "1", "e", input)
 	if err != nil {
 		t.Errorf("Actions.UpdateEnvVariable returned error: %v", err)
 	}
 
 	const methodName = "UpdateEnvVariable"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.UpdateEnvVariable(ctx, 0.0, "\n", input)
+		_, err = client.Actions.UpdateEnvVariable(ctx, "usr", "1", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.UpdateEnvVariable(ctx, 1, "e", input)
+		return client.Actions.UpdateEnvVariable(ctx, "usr", "1", "e", input)
 	})
 }
 

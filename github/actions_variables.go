@@ -204,9 +204,9 @@ func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org string, vari
 //
 // GitHub API docs: https://docs.github.com/rest/actions/variables#update-an-environment-variable
 //
-//meta:operation PATCH /repositories/{repository_id}/environments/{environment_name}/variables/{name}
-func (s *ActionsService) UpdateEnvVariable(ctx context.Context, repoID int, env string, variable *ActionsVariable) (*Response, error) {
-	url := fmt.Sprintf("repositories/%v/environments/%v/variables/%v", repoID, env, variable.Name)
+//meta:operation PATCH /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}
+func (s *ActionsService) UpdateEnvVariable(ctx context.Context, owner, repo, env string, variable *ActionsVariable) (*Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", owner, repo, env, variable.Name)
 	return s.patchVariable(ctx, url, variable)
 }
 
