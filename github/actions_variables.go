@@ -84,8 +84,8 @@ func (s *ActionsService) ListOrgVariables(ctx context.Context, org string, opts 
 // GitHub API docs: https://docs.github.com/rest/actions/variables#list-environment-variables
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/variables
-func (s *ActionsService) ListEnvVariables(ctx context.Context, org, repo, env string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables", org, repo, env)
+func (s *ActionsService) ListEnvVariables(ctx context.Context, owner, repo, env string, opts *ListOptions) (*ActionsVariables, *Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables", owner, repo, env)
 	return s.listVariables(ctx, url, opts)
 }
 
@@ -129,8 +129,8 @@ func (s *ActionsService) GetOrgVariable(ctx context.Context, org, name string) (
 // GitHub API docs: https://docs.github.com/rest/actions/variables#get-an-environment-variable
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}
-func (s *ActionsService) GetEnvVariable(ctx context.Context, org, repo, env, variableName string) (*ActionsVariable, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", org, repo, env, variableName)
+func (s *ActionsService) GetEnvVariable(ctx context.Context, owner, repo, env, variableName string) (*ActionsVariable, *Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", owner, repo, env, variableName)
 	return s.getVariable(ctx, url)
 }
 
@@ -166,9 +166,9 @@ func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, vari
 //
 // GitHub API docs: https://docs.github.com/rest/actions/variables#create-an-environment-variable
 //
-//meta:operation POST /repositories/{repository_id}/environments/{environment_name}/variables
-func (s *ActionsService) CreateEnvVariable(ctx context.Context, repoID int, env string, variable *ActionsVariable) (*Response, error) {
-	url := fmt.Sprintf("repositories/%v/environments/%v/variables", repoID, env)
+//meta:operation POST /repos/{owner}/{repo}/environments/{environment_name}/variables
+func (s *ActionsService) CreateEnvVariable(ctx context.Context, owner, repo, env string, variable *ActionsVariable) (*Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables", owner, repo, env)
 	return s.postVariable(ctx, url, variable)
 }
 

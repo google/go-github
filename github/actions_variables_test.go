@@ -616,7 +616,7 @@ func TestActionsService_CreateEnvVariable(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repositories/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/usr/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
 		testBody(t, r, `{"name":"variable","value":"VAR"}`+"\n")
@@ -628,19 +628,19 @@ func TestActionsService_CreateEnvVariable(t *testing.T) {
 		Value: "VAR",
 	}
 	ctx := context.Background()
-	_, err := client.Actions.CreateEnvVariable(ctx, 1, "e", input)
+	_, err := client.Actions.CreateEnvVariable(ctx, "usr", "1", "e", input)
 	if err != nil {
 		t.Errorf("Actions.CreateEnvVariable returned error: %v", err)
 	}
 
 	const methodName = "CreateEnvVariable"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateEnvVariable(ctx, 0.0, "\n", input)
+		_, err = client.Actions.CreateEnvVariable(ctx, "usr", "0", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.CreateEnvVariable(ctx, 1, "e", input)
+		return client.Actions.CreateEnvVariable(ctx, "usr", "1", "e", input)
 	})
 }
 
