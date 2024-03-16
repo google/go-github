@@ -1574,6 +1574,14 @@ func (b *Branch) GetProtected() bool {
 	return *b.Protected
 }
 
+// GetProtection returns the Protection field.
+func (b *Branch) GetProtection() *Protection {
+	if b == nil {
+		return nil
+	}
+	return b.Protection
+}
+
 // GetCommit returns the Commit field.
 func (b *BranchCommit) GetCommit() *Commit {
 	if b == nil {
