@@ -40,7 +40,7 @@ func (s *RepositoriesService) GetAllCustomPropertyValues(ctx context.Context, ow
 
 // CreateOrUpdateCustomProperties creates new or updates existing custom property values for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/custom-properties#create-or-update-custom-property-values-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/custom-properties#create-or-update-custom-property-values-for-a-repository
 //
 //meta:operation PATCH /repos/{owner}/{repo}/properties/values
 func (s *RepositoriesService) CreateOrUpdateCustomProperties(ctx context.Context, org, repo string, customPropertyValues []*RepoCustomProperty) (*Response, error) {
