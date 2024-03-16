@@ -18,7 +18,7 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/properties/values", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/usr/r/properties/values", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[
 		{
@@ -33,7 +33,7 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	customPropertyValues, _, err := client.Repositories.GetAllCustomPropertyValues(ctx, "o", "r")
+	customPropertyValues, _, err := client.Repositories.GetAllCustomPropertyValues(ctx, "usr", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetAllCustomPropertyValues returned error: %v", err)
 	}
@@ -56,10 +56,38 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
 	const methodName = "GetAllCustomPropertyValues"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetAllCustomPropertyValues(ctx, "o", "r")
+		got, resp, err := client.Repositories.GetAllCustomPropertyValues(ctx, "usr", "r")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
+	})
+}
+
+func TestRepositoriesService_CreateOrUpdateCustomProperties(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/usr/r/properties/values", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	RepoCustomProperty := []*RepoCustomProperty{
+		{
+			PropertyName:  "environment",
+			PropertyValue: "production",
+		},
+	}
+	_, err := client.Repositories.CreateOrUpdateCustomProperties(ctx, "usr", "r", RepoCustomProperty)
+	if err != nil {
+		t.Errorf("Repositories.CreateOrUpdateCustomProperties returned error: %v", err)
+	}
+
+	const methodName = "CreateOrUpdateCustomProperties"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.CreateOrUpdateCustomProperties(ctx, "usr", "r", RepoCustomProperty)
 	})
 }
