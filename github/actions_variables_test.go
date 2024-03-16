@@ -533,7 +533,7 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repositories/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/usr/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprint(w, `{"total_count":4,"variables":[{"name":"A","value":"AA","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"},{"name":"B","value":"BB","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}]}`)
@@ -541,7 +541,7 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := context.Background()
-	variables, _, err := client.Actions.ListEnvVariables(ctx, 1, "e", opts)
+	variables, _, err := client.Actions.ListEnvVariables(ctx, "usr", "1", "e", opts)
 	if err != nil {
 		t.Errorf("Actions.ListEnvVariables returned error: %v", err)
 	}
@@ -559,12 +559,12 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 
 	const methodName = "ListEnvVariables"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListEnvVariables(ctx, 0.0, "\n", opts)
+		_, _, err = client.Actions.ListEnvVariables(ctx, "usr", "0", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListEnvVariables(ctx, 1, "e", opts)
+		got, resp, err := client.Actions.ListEnvVariables(ctx, "usr", "1", "e", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
