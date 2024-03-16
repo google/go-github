@@ -680,24 +680,24 @@ func TestActionsService_DeleteEnvVariable(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repositories/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.DeleteEnvVariable(ctx, 1, "e", "variable")
+	_, err := client.Actions.DeleteEnvVariable(ctx, "usr", "1", "e", "variable")
 	if err != nil {
 		t.Errorf("Actions.DeleteEnvVariable returned error: %v", err)
 	}
 
 	const methodName = "DeleteEnvVariable"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.DeleteEnvVariable(ctx, 0.0, "\n", "\n")
+		_, err = client.Actions.DeleteEnvVariable(ctx, "usr", "0", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.DeleteEnvVariable(ctx, 1, "r", "variable")
+		return client.Actions.DeleteEnvVariable(ctx, "usr", "1", "r", "variable")
 	})
 }
 

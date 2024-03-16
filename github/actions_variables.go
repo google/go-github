@@ -243,9 +243,9 @@ func (s *ActionsService) DeleteOrgVariable(ctx context.Context, org, name string
 //
 // GitHub API docs: https://docs.github.com/rest/actions/variables#delete-an-environment-variable
 //
-//meta:operation DELETE /repositories/{repository_id}/environments/{environment_name}/variables/{name}
-func (s *ActionsService) DeleteEnvVariable(ctx context.Context, repoID int, env, variableName string) (*Response, error) {
-	url := fmt.Sprintf("repositories/%v/environments/%v/variables/%v", repoID, env, variableName)
+//meta:operation DELETE /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}
+func (s *ActionsService) DeleteEnvVariable(ctx context.Context, owner, repo, env, variableName string) (*Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", owner, repo, env, variableName)
 	return s.deleteVariable(ctx, url)
 }
 
