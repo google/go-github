@@ -54,6 +54,7 @@ type RateLimits struct {
 	SCIM                      *Rate `json:"scim"`
 	DependencySnapshots       *Rate `json:"dependency_snapshots"`
 	CodeSearch                *Rate `json:"code_search"`
+	AuditLog                  *Rate `json:"audit_log"`
 }
 
 func (r RateLimits) String() string {
@@ -85,34 +86,37 @@ func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, err
 	if response.Resources != nil {
 		s.client.rateMu.Lock()
 		if response.Resources.Core != nil {
-			s.client.rateLimits[coreCategory] = *response.Resources.Core
+			s.client.rateLimits[CoreCategory] = *response.Resources.Core
 		}
 		if response.Resources.Search != nil {
-			s.client.rateLimits[searchCategory] = *response.Resources.Search
+			s.client.rateLimits[SearchCategory] = *response.Resources.Search
 		}
 		if response.Resources.GraphQL != nil {
-			s.client.rateLimits[graphqlCategory] = *response.Resources.GraphQL
+			s.client.rateLimits[GraphqlCategory] = *response.Resources.GraphQL
 		}
 		if response.Resources.IntegrationManifest != nil {
-			s.client.rateLimits[integrationManifestCategory] = *response.Resources.IntegrationManifest
+			s.client.rateLimits[IntegrationManifestCategory] = *response.Resources.IntegrationManifest
 		}
 		if response.Resources.SourceImport != nil {
-			s.client.rateLimits[sourceImportCategory] = *response.Resources.SourceImport
+			s.client.rateLimits[SourceImportCategory] = *response.Resources.SourceImport
 		}
 		if response.Resources.CodeScanningUpload != nil {
-			s.client.rateLimits[codeScanningUploadCategory] = *response.Resources.CodeScanningUpload
+			s.client.rateLimits[CodeScanningUploadCategory] = *response.Resources.CodeScanningUpload
 		}
 		if response.Resources.ActionsRunnerRegistration != nil {
-			s.client.rateLimits[actionsRunnerRegistrationCategory] = *response.Resources.ActionsRunnerRegistration
+			s.client.rateLimits[ActionsRunnerRegistrationCategory] = *response.Resources.ActionsRunnerRegistration
 		}
 		if response.Resources.SCIM != nil {
-			s.client.rateLimits[scimCategory] = *response.Resources.SCIM
+			s.client.rateLimits[ScimCategory] = *response.Resources.SCIM
 		}
 		if response.Resources.DependencySnapshots != nil {
-			s.client.rateLimits[dependencySnapshotsCategory] = *response.Resources.DependencySnapshots
+			s.client.rateLimits[DependencySnapshotsCategory] = *response.Resources.DependencySnapshots
 		}
 		if response.Resources.CodeSearch != nil {
-			s.client.rateLimits[codeSearchCategory] = *response.Resources.CodeSearch
+			s.client.rateLimits[CodeSearchCategory] = *response.Resources.CodeSearch
+		}
+		if response.Resources.AuditLog != nil {
+			s.client.rateLimits[AuditLogCategory] = *response.Resources.AuditLog
 		}
 		s.client.rateMu.Unlock()
 	}
