@@ -212,11 +212,11 @@ func testBadOptions(t *testing.T, methodName string, f func() error) {
 // Method f should be a regular call that would normally succeed, but
 // should return an error when NewRequest or s.client.Do fails.
 func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client, f func() (*Response, error)) {
-	testNewRequestAndDoFailureCategory(t, methodName, client, coreCategory, f)
+	testNewRequestAndDoFailureCategory(t, methodName, client, CoreCategory, f)
 }
 
 // testNewRequestAndDoFailureCategory works Like testNewRequestAndDoFailure, but allows setting the category
-func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client *Client, category rateLimitCategory, f func() (*Response, error)) {
+func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client *Client, category RateLimitCategory, f func() (*Response, error)) {
 	t.Helper()
 	if methodName == "" {
 		t.Error("testNewRequestAndDoFailure: must supply method methodName")
@@ -1132,68 +1132,73 @@ func TestDo_rateLimitCategory(t *testing.T) {
 	tests := []struct {
 		method   string
 		url      string
-		category rateLimitCategory
+		category RateLimitCategory
 	}{
 		{
 			method:   http.MethodGet,
 			url:      "/",
-			category: coreCategory,
+			category: CoreCategory,
 		},
 		{
 			method:   http.MethodGet,
 			url:      "/search/issues?q=rate",
-			category: searchCategory,
+			category: SearchCategory,
 		},
 		{
 			method:   http.MethodGet,
 			url:      "/graphql",
-			category: graphqlCategory,
+			category: GraphqlCategory,
 		},
 		{
 			method:   http.MethodPost,
 			url:      "/app-manifests/code/conversions",
-			category: integrationManifestCategory,
+			category: IntegrationManifestCategory,
 		},
 		{
 			method:   http.MethodGet,
 			url:      "/app-manifests/code/conversions",
-			category: coreCategory, // only POST requests are in the integration manifest category
+			category: CoreCategory, // only POST requests are in the integration manifest category
 		},
 		{
 			method:   http.MethodPut,
 			url:      "/repos/google/go-github/import",
-			category: sourceImportCategory,
+			category: SourceImportCategory,
 		},
 		{
 			method:   http.MethodGet,
 			url:      "/repos/google/go-github/import",
-			category: coreCategory, // only PUT requests are in the source import category
+			category: CoreCategory, // only PUT requests are in the source import category
 		},
 		{
 			method:   http.MethodPost,
 			url:      "/repos/google/go-github/code-scanning/sarifs",
-			category: codeScanningUploadCategory,
+			category: CodeScanningUploadCategory,
 		},
 		{
 			method:   http.MethodGet,
 			url:      "/scim/v2/organizations/ORG/Users",
-			category: scimCategory,
+			category: ScimCategory,
 		},
 		{
 			method:   http.MethodPost,
 			url:      "/repos/google/go-github/dependency-graph/snapshots",
-			category: dependencySnapshotsCategory,
+			category: DependencySnapshotsCategory,
 		},
 		{
 			method:   http.MethodGet,
 			url:      "/search/code?q=rate",
-			category: codeSearchCategory,
+			category: CodeSearchCategory,
+		},
+		{
+			method:   http.MethodGet,
+			url:      "/orgs/google/audit-log",
+			category: AuditLogCategory,
 		},
 		// missing a check for actionsRunnerRegistrationCategory: API not found
 	}
 
 	for _, tt := range tests {
-		if got, want := category(tt.method, tt.url), tt.category; got != want {
+		if got, want := GetRateLimitCategory(tt.method, tt.url), tt.category; got != want {
 			t.Errorf("expecting category %v, found %v", got, want)
 		}
 	}

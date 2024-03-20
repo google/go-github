@@ -164,7 +164,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, AuditLogCategory, func() (*Response, error) {
 		got, resp, err := client.Organizations.GetAuditLog(ctx, "o", &GetAuditLogOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
