@@ -70,7 +70,7 @@ func TestCreateOrUpdateRepoCustomPropertyValues(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/properties/values", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `'{"properties":[{"property_name":"environment","value":"production"},{"property_name":"service","value":"web"},{"property_name":"team","value":"octocat"}]}'`+"\n")
+		testBody(t, r, `{"properties":[{"property_name":"environment","value":"production"},{"property_name":"service","value":"web"},{"property_name":"team","value":"octocat"}]}`+"\n")
 	})
 
 	ctx := context.Background()
