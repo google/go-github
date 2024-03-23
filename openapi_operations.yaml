@@ -4610,7 +4610,8 @@ openapi_operations:
     documentation_url: https://docs.github.com/en/rest/repos/custom-properties?#create-or-update-custom-property-values-for-a-repository
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json      
+      - descriptions/ghec/ghec.json
+      - descriptions/ghes-3.11/ghes-3.11.json
   - name: GET /repos/{owner}/{repo}/pulls
     documentation_url: https://docs.github.com/rest/pulls/pulls#list-pull-requests
     openapi_files:
