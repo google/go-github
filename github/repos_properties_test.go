@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -65,7 +66,6 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
 		return resp, err
 	})
 }
-
 
 func TestCreateOrUpdateRepoCustomPropertyValues(t *testing.T) {
 	client, mux, _, teardown := setup()
