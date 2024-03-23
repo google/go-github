@@ -4607,7 +4607,7 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: PATCH /repos/{owner}/{repo}/properties/values
-    documentation_url: https://docs.github.com/en/rest/repos/custom-properties?apiVersion=2022-11-28#create-or-update-custom-property-values-for-a-repository
+    documentation_url: https://docs.github.com/en/rest/repos/custom-properties?#create-or-update-custom-property-values-for-a-repository
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json      
