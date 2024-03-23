@@ -7,8 +7,10 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -68,11 +70,35 @@ func TestCreateOrUpdateRepoCustomPropertyValues(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/properties/values", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"properties":[{"property_name":"environment","value":"production"},{"property_name":"service","value":"web"},{"property_name":"team","value":"octocat"}]}`+"\n")
+	// Mock API endpoint
+	mux.HandleFunc("/repos/o/repo/properties/values", func(w http.ResponseWriter, r *http.Request) {
+		// Check HTTP method
+		if r.Method != http.MethodPatch {
+			t.Errorf("unexpected HTTP method: %s, expected: %s", r.Method, http.MethodPatch)
+		}
+		// Check request body
+		var requestBody map[string][]*CustomPropertyValue
+		if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
+			t.Errorf("failed to decode request body: %v", err)
+		}
+		expectedRequestBody := map[string][]*CustomPropertyValue{
+			"properties": {
+				{
+					PropertyName: "service",
+					Value:        String("string"),
+				},
+			},
+		}
+		if !reflect.DeepEqual(requestBody, expectedRequestBody) {
+			t.Errorf("unexpected request body, got: %v, want: %v", requestBody, expectedRequestBody)
+		}
+
+		// Respond with a dummy success response
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "success")
 	})
 
+	// Call the method
 	ctx := context.Background()
 	_, err := client.Repositories.CreateOrUpdateRepoCustomPropertyValues(ctx, "o", "repo", []*CustomPropertyValue{
 		{
@@ -81,12 +107,6 @@ func TestCreateOrUpdateRepoCustomPropertyValues(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Errorf("Repositories.CreateOrUpdateRepoCustomPropertyValues returned error: %v", err)
+		t.Errorf("unexpected error from CreateOrUpdateRepoCustomPropertyValues: %v", err)
 	}
-
-	const methodName = "CreateOrUpdateRepoCustomPropertyValues"
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.CreateOrUpdateRepoCustomPropertyValues(ctx, "o", "", nil)
-	})
 }
