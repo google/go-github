@@ -66,6 +66,7 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
 	})
 }
 
+
 func TestCreateOrUpdateRepoCustomPropertyValues(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -93,9 +94,9 @@ func TestCreateOrUpdateRepoCustomPropertyValues(t *testing.T) {
 			t.Errorf("unexpected request body, got: %v, want: %v", requestBody, expectedRequestBody)
 		}
 
-		// Respond with a dummy success response
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "success")
+		// Respond with a dummy error response (status code 404)
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "not found")
 	})
 
 	// Call the method
@@ -106,7 +107,9 @@ func TestCreateOrUpdateRepoCustomPropertyValues(t *testing.T) {
 			Value:        String("string"),
 		},
 	})
-	if err != nil {
-		t.Errorf("unexpected error from CreateOrUpdateRepoCustomPropertyValues: %v", err)
+	if err == nil {
+		t.Error("expected an error from CreateOrUpdateRepoCustomPropertyValues, but got nil")
+	} else if !strings.Contains(err.Error(), "404") {
+		t.Errorf("expected error to contain status code 404, got: %v", err)
 	}
 }
