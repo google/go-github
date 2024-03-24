@@ -184,7 +184,7 @@ You can use [go-github-ratelimit](https://github.com/gofri/go-github-ratelimit) 
 secondary rate limit sleep-and-retry for you.
 
 Learn more about GitHub secondary rate limiting at
-https://docs.github.com/en/rest/overview/resources-in-the-rest-api#secondary-rate-limits .
+https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits .
 
 ### Accepted Status ###
 
