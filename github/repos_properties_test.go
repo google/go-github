@@ -64,26 +64,30 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
 	})
 }
 
-func TestCreateOrUpdateRepoCustomPropertyValues(t *testing.T) {
+func TestRepositoriesService_CreateOrUpdateCustomProperties(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	// Mock API endpoint
-	mux.HandleFunc("/repos/o/repo/properties/values", func(w http.ResponseWriter, r *http.Request) {
-		// Respond with a dummy error response (status code 500)
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "internal server error")
+	mux.HandleFunc("/repos/usr/r/properties/values", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		w.WriteHeader(http.StatusNoContent)
 	})
 
-	// Call the method
 	ctx := context.Background()
-	_, err := client.Repositories.CreateOrUpdateRepoCustomPropertyValues(ctx, "o", "repo", []*CustomPropertyValue{
+	RepoCustomProperty := []*CustomPropertyValue{
 		{
-			PropertyName: "service",
-			Value:        String("string"),
+			PropertyName: "environment",
+			Value:        String("production"),
 		},
-	})
-	if err == nil {
-		t.Error("expected an error from CreateOrUpdateRepoCustomPropertyValues, but got nil")
 	}
+	_, err := client.Repositories.CreateOrUpdateCustomProperties(ctx, "usr", "r", RepoCustomProperty)
+	if err != nil {
+		t.Errorf("Repositories.CreateOrUpdateCustomProperties returned error: %v", err)
+	}
+
+	const methodName = "CreateOrUpdateCustomProperties"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.CreateOrUpdateCustomProperties(ctx, "usr", "r", RepoCustomProperty)
+	})
 }

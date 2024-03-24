@@ -32,18 +32,18 @@ func (s *RepositoriesService) GetAllCustomPropertyValues(ctx context.Context, or
 	return customPropertyValues, resp, nil
 }
 
-// CreateOrUpdateRepoCustomPropertyValues creates new or updates existing custom property values for a repository.
+// CreateOrUpdateCustomProperties creates new or updates existing custom property values for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/custom-properties#create-or-update-custom-property-values-for-a-repository
 //
 //meta:operation PATCH /repos/{owner}/{repo}/properties/values
-func (s *RepositoriesService) CreateOrUpdateRepoCustomPropertyValues(ctx context.Context, org, repo string, properties []*CustomPropertyValue) (*Response, error) {
+func (s *RepositoriesService) CreateOrUpdateCustomProperties(ctx context.Context, org, repo string, customPropertyValues []*CustomPropertyValue) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/properties/values", org, repo)
 
 	params := struct {
-		Properties []*CustomPropertyValue `json:"properties"`
+		CustomPropertyValues []*CustomPropertyValue `json:"properties"`
 	}{
-		Properties: properties,
+		CustomPropertyValues: customPropertyValues,
 	}
 
 	req, err := s.client.NewRequest("PATCH", u, params)
@@ -51,5 +51,10 @@ func (s *RepositoriesService) CreateOrUpdateRepoCustomPropertyValues(ctx context
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
 }
