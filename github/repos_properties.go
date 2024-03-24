@@ -32,7 +32,7 @@ func (s *RepositoriesService) GetAllCustomPropertyValues(ctx context.Context, or
 	return customPropertyValues, resp, nil
 }
 
-// CreateOrUpdateRepoCustomPropertyValues creates or updates custom property values for a repository.
+// CreateOrUpdateRepoCustomPropertyValues creates new or updates existing custom property values for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/custom-properties#create-or-update-custom-property-values-for-a-repository
 //
