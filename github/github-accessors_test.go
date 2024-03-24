@@ -10177,6 +10177,16 @@ func TestInstallationPermissions_GetOrganizationAdministration(tt *testing.T) {
 	i.GetOrganizationAdministration()
 }
 
+func TestInstallationPermissions_GetOrganizationCustomProperties(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationCustomProperties: &zeroValue}
+	i.GetOrganizationCustomProperties()
+	i = &InstallationPermissions{}
+	i.GetOrganizationCustomProperties()
+	i = nil
+	i.GetOrganizationCustomProperties()
+}
+
 func TestInstallationPermissions_GetOrganizationCustomRoles(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationPermissions{OrganizationCustomRoles: &zeroValue}
