@@ -13985,6 +13985,16 @@ func TestNewTeam_GetLDAPDN(tt *testing.T) {
 	n.GetLDAPDN()
 }
 
+func TestNewTeam_GetNotificationSetting(tt *testing.T) {
+	var zeroValue string
+	n := &NewTeam{NotificationSetting: &zeroValue}
+	n.GetNotificationSetting()
+	n = &NewTeam{}
+	n.GetNotificationSetting()
+	n = nil
+	n.GetNotificationSetting()
+}
+
 func TestNewTeam_GetParentTeamID(tt *testing.T) {
 	var zeroValue int64
 	n := &NewTeam{ParentTeamID: &zeroValue}
