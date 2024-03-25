@@ -11982,6 +11982,14 @@ func (n *NewTeam) GetLDAPDN() string {
 	return *n.LDAPDN
 }
 
+// GetNotificationSetting returns the NotificationSetting field if it's non-nil, zero value otherwise.
+func (n *NewTeam) GetNotificationSetting() string {
+	if n == nil || n.NotificationSetting == nil {
+		return ""
+	}
+	return *n.NotificationSetting
+}
+
 // GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
 func (n *NewTeam) GetParentTeamID() int64 {
 	if n == nil || n.ParentTeamID == nil {
