@@ -584,8 +584,9 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 
 	const methodName = "ListCopilotSeats"
 
+	opts := &ListOptions{Page: 2}
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.ListCopilotSeats(ctx, "\n", nil)
+		_, _, err = client.Copilot.ListCopilotSeats(ctx, "\n", opts)
 		return err
 	})
 
