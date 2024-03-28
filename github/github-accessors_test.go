@@ -10177,6 +10177,16 @@ func TestInstallationPermissions_GetOrganizationAdministration(tt *testing.T) {
 	i.GetOrganizationAdministration()
 }
 
+func TestInstallationPermissions_GetOrganizationCustomProperties(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationCustomProperties: &zeroValue}
+	i.GetOrganizationCustomProperties()
+	i = &InstallationPermissions{}
+	i.GetOrganizationCustomProperties()
+	i = nil
+	i.GetOrganizationCustomProperties()
+}
+
 func TestInstallationPermissions_GetOrganizationCustomRoles(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationPermissions{OrganizationCustomRoles: &zeroValue}
@@ -13973,6 +13983,16 @@ func TestNewTeam_GetLDAPDN(tt *testing.T) {
 	n.GetLDAPDN()
 	n = nil
 	n.GetLDAPDN()
+}
+
+func TestNewTeam_GetNotificationSetting(tt *testing.T) {
+	var zeroValue string
+	n := &NewTeam{NotificationSetting: &zeroValue}
+	n.GetNotificationSetting()
+	n = &NewTeam{}
+	n.GetNotificationSetting()
+	n = nil
+	n.GetNotificationSetting()
 }
 
 func TestNewTeam_GetParentTeamID(tt *testing.T) {

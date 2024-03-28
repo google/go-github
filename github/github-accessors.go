@@ -8686,6 +8686,14 @@ func (i *InstallationPermissions) GetOrganizationAdministration() string {
 	return *i.OrganizationAdministration
 }
 
+// GetOrganizationCustomProperties returns the OrganizationCustomProperties field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationCustomProperties() string {
+	if i == nil || i.OrganizationCustomProperties == nil {
+		return ""
+	}
+	return *i.OrganizationCustomProperties
+}
+
 // GetOrganizationCustomRoles returns the OrganizationCustomRoles field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetOrganizationCustomRoles() string {
 	if i == nil || i.OrganizationCustomRoles == nil {
@@ -11972,6 +11980,14 @@ func (n *NewTeam) GetLDAPDN() string {
 		return ""
 	}
 	return *n.LDAPDN
+}
+
+// GetNotificationSetting returns the NotificationSetting field if it's non-nil, zero value otherwise.
+func (n *NewTeam) GetNotificationSetting() string {
+	if n == nil || n.NotificationSetting == nil {
+		return ""
+	}
+	return *n.NotificationSetting
 }
 
 // GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.

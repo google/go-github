@@ -155,6 +155,9 @@ type NewTeam struct {
 	RepoNames    []string `json:"repo_names,omitempty"`
 	ParentTeamID *int64   `json:"parent_team_id,omitempty"`
 
+	// NotificationSetting can be one of: "notifications_enabled", "notifications_disabled".
+	NotificationSetting *string `json:"notification_setting,omitempty"`
+
 	// Deprecated: Permission is deprecated when creating or editing a team in an org
 	// using the new GitHub permission model. It no longer identifies the
 	// permission a team has on its repos, but only specifies the default
