@@ -41,9 +41,9 @@ func (s *RepositoriesService) CreateOrUpdateCustomProperties(ctx context.Context
 	u := fmt.Sprintf("repos/%v/%v/properties/values", org, repo)
 
 	params := struct {
-		CustomPropertyValues []*CustomPropertyValue `json:"properties"`
+		Properties []*CustomPropertyValue `json:"properties"`
 	}{
-		CustomPropertyValues: customPropertyValues,
+		Properties: customPropertyValues,
 	}
 
 	req, err := s.client.NewRequest("PATCH", u, params)
