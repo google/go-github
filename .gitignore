@@ -1,6 +1,7 @@
 *.sh
 !/script/*.sh
 *.test
+.*.local
 coverage.out
 /bin
 # intellij files
