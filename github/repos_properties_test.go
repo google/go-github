@@ -63,3 +63,31 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepositoriesService_CreateOrUpdateCustomProperties(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/usr/r/properties/values", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	RepoCustomProperty := []*CustomPropertyValue{
+		{
+			PropertyName: "environment",
+			Value:        String("production"),
+		},
+	}
+	_, err := client.Repositories.CreateOrUpdateCustomProperties(ctx, "usr", "r", RepoCustomProperty)
+	if err != nil {
+		t.Errorf("Repositories.CreateOrUpdateCustomProperties returned error: %v", err)
+	}
+
+	const methodName = "CreateOrUpdateCustomProperties"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.CreateOrUpdateCustomProperties(ctx, "usr", "r", RepoCustomProperty)
+	})
+}
