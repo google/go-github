@@ -804,6 +804,7 @@ type requestContext uint8
 
 const (
 	bypassRateLimitCheck requestContext = iota
+	SleepUntilPrimaryRateLimitResetWhenRateLimited
 )
 
 // BareDo sends an API request and lets you handle the api response. If an error
@@ -889,6 +890,13 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 			err = aerr
 		}
 
+		rateLimitError, ok := err.(*RateLimitError)
+		if ok && req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+			time.Sleep(time.Until(rateLimitError.Rate.Reset.Time))
+			// re-send the request
+			return c.BareDo(ctx, req)
+		}
+
 		// Update the secondary rate limit if we hit it.
 		rerr, ok := err.(*AbuseRateLimitError)
 		if ok && rerr.RetryAfter != nil {
@@ -942,6 +950,10 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory Rat
 	rate := c.rateLimits[rateLimitCategory]
 	c.rateMu.Unlock()
 	if !rate.Reset.Time.IsZero() && rate.Remaining == 0 && time.Now().Before(rate.Reset.Time) {
+		if req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+			time.Sleep(time.Until(rate.Reset.Time))
+			return nil
+		}
 		// Create a fake response.
 		resp := &http.Response{
 			Status:     http.StatusText(http.StatusForbidden),
