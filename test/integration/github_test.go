@@ -15,7 +15,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/google/go-github/v60/github"
+	"github.com/google/go-github/v61/github"
 )
 
 var (
