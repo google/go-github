@@ -893,8 +893,8 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 		rateLimitError, ok := err.(*RateLimitError)
 		if ok && req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
 			time.Sleep(time.Until(rateLimitError.Rate.Reset.Time))
-			// re-send the request
-			return c.BareDo(ctx, req)
+			// retry the request once the rate limit has reset
+			return c.BareDo(context.WithValue(req.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, nil), req)
 		}
 
 		// Update the secondary rate limit if we hit it.

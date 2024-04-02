@@ -1422,6 +1422,37 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 	}
 }
 
+func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	reset := time.Now().UTC().Add(time.Second)
+
+	requestCount := 0
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		requestCount++
+		w.Header().Set(headerRateLimit, "60")
+		w.Header().Set(headerRateRemaining, "0")
+		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	_, err := client.Do(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	if got, want := requestCount, 2; got != want {
+		t.Errorf("Expected 2 requests, got %d", got)
+	}
+}
+
 // Ensure a network call is not made when it's known that API rate limit is still exceeded.
 func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 	client, mux, _, teardown := setup()
