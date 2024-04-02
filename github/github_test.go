@@ -1381,6 +1381,78 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 	}
 }
 
+// Ensure *RateLimitError is returned when API rate limit is exceeded.
+func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	reset := time.Now().UTC().Add(time.Second)
+
+	var firstRequest = true
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if firstRequest {
+			firstRequest = false
+			w.Header().Set(headerRateLimit, "60")
+			w.Header().Set(headerRateRemaining, "0")
+			w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
+			w.WriteHeader(http.StatusForbidden)
+			fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+			return
+		}
+		w.Header().Set(headerRateLimit, "5000")
+		w.Header().Set(headerRateRemaining, "5000")
+		w.Header().Set(headerRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, `{}`)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	resp, err := client.Do(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	if err != nil {
+		t.Errorf("Do returned unexpected error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("Response status code = %v, want %v", got, want)
+	}
+}
+
+// Ensure a network call is not made when it's known that API rate limit is still exceeded.
+func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	reset := time.Now().UTC().Add(time.Second)
+	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
+	requestCount := 0
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		requestCount++
+		w.Header().Set(headerRateLimit, "5000")
+		w.Header().Set(headerRateRemaining, "5000")
+		w.Header().Set(headerRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, `{}`)
+	})
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	resp, err := client.Do(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	if err != nil {
+		t.Errorf("Do returned unexpected error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("Response status code = %v, want %v", got, want)
+	}
+	if got, want := requestCount, 1; got != want {
+		t.Errorf("Expected 1 request, got %d", got)
+	}
+}
+
 // Ensure *AbuseRateLimitError is returned when the response indicates that
 // the client has triggered an abuse detection mechanism.
 func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
