@@ -892,8 +892,8 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 
 		rateLimitError, ok := err.(*RateLimitError)
 		if ok && req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
-			time.Sleep(time.Until(rateLimitError.Rate.Reset.Time))
-			// retry the request once the rate limit has reset
+			sleepUntilResetWithBuffer(rateLimitError.Rate.Reset.Time)
+			// retry the request once (and only once) the rate limit has reset
 			return c.BareDo(context.WithValue(req.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, nil), req)
 		}
 
@@ -951,7 +951,7 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory Rat
 	c.rateMu.Unlock()
 	if !rate.Reset.Time.IsZero() && rate.Remaining == 0 && time.Now().Before(rate.Reset.Time) {
 		if req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
-			time.Sleep(time.Until(rate.Reset.Time))
+			sleepUntilResetWithBuffer(rate.Reset.Time)
 			return nil
 		}
 		// Create a fake response.
@@ -1524,6 +1524,11 @@ func formatRateReset(d time.Duration) string {
 		return fmt.Sprintf("[rate limit was reset %v ago]", timeString)
 	}
 	return fmt.Sprintf("[rate reset in %v]", timeString)
+}
+
+func sleepUntilResetWithBuffer(reset time.Time) {
+	buffer := time.Second
+	time.Sleep(time.Until(reset) + buffer)
 }
 
 // When using roundTripWithOptionalFollowRedirect, note that it
