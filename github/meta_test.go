@@ -23,12 +23,16 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		VerifiablePasswordAuthentication: Bool(true),
 		Pages:                            []string{"p"},
 		Importer:                         []string{"i"},
+		GithubEnterpriseImporter:         []string{"gei"},
 		Actions:                          []string{"a"},
 		Dependabot:                       []string{"d"},
 		SSHKeyFingerprints:               map[string]string{"a": "f"},
 		SSHKeys:                          []string{"k"},
 		API:                              []string{"a"},
 		Web:                              []string{"w"},
+		Domains: map[string][]string{
+			"example": {"example.com", "*.example.com"},
+		},
 	}
 	want := `{
 		"hooks":["h"],
@@ -36,12 +40,14 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		"verifiable_password_authentication":true,
 		"pages":["p"],
 		"importer":["i"],
+		"github_enterprise_importer":["gei"],
 		"actions":["a"],
 		"dependabot":["d"],
 		"ssh_key_fingerprints":{"a":"f"},
 		"ssh_keys":["k"],
 		"api":["a"],
-		"web":["w"]
+		"web":["w"],
+		"domains":{"example":["example.com","*.example.com"]}
 	}`
 
 	testJSONMarshal(t, a, want)
@@ -53,7 +59,7 @@ func TestMetaService_Get(t *testing.T) {
 
 	mux.HandleFunc("/meta", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"web":["w"],"api":["a"],"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "actions":["a"], "dependabot":["d"], "verifiable_password_authentication": true}`)
+		fmt.Fprint(w, `{"web":["w"],"api":["a"],"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "github_enterprise_importer": ["gei"], "actions":["a"], "dependabot":["d"], "verifiable_password_authentication": true, "domains":{"example":["example.com","*.example.com"]}}`)
 	})
 
 	ctx := context.Background()
@@ -63,14 +69,18 @@ func TestMetaService_Get(t *testing.T) {
 	}
 
 	want := &APIMeta{
-		Hooks:      []string{"h"},
-		Git:        []string{"g"},
-		Pages:      []string{"p"},
-		Importer:   []string{"i"},
-		Actions:    []string{"a"},
-		Dependabot: []string{"d"},
-		API:        []string{"a"},
-		Web:        []string{"w"},
+		Hooks:                    []string{"h"},
+		Git:                      []string{"g"},
+		Pages:                    []string{"p"},
+		Importer:                 []string{"i"},
+		GithubEnterpriseImporter: []string{"gei"},
+		Actions:                  []string{"a"},
+		Dependabot:               []string{"d"},
+		API:                      []string{"a"},
+		Web:                      []string{"w"},
+		Domains: map[string][]string{
+			"example": {"example.com", "*.example.com"},
+		},
 
 		VerifiablePasswordAuthentication: Bool(true),
 	}
