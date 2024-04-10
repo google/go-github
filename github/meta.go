@@ -17,11 +17,11 @@ type MetaService service
 
 // APIMeta represents metadata about the GitHub API.
 type APIMeta struct {
-	// An Array of IP addresses in CIDR format specifying the addresses
+	// An array of IP addresses in CIDR format specifying the addresses
 	// that incoming service hooks will originate from on GitHub.com.
 	Hooks []string `json:"hooks,omitempty"`
 
-	// An Array of IP addresses in CIDR format specifying the Git servers
+	// An array of IP addresses in CIDR format specifying the Git servers
 	// for GitHub.com.
 	Git []string `json:"git,omitempty"`
 
@@ -40,9 +40,13 @@ type APIMeta struct {
 	// which serve GitHub Pages websites.
 	Pages []string `json:"pages,omitempty"`
 
-	// An Array of IP addresses specifying the addresses that source imports
+	// An array of IP addresses specifying the addresses that source imports
 	// will originate from on GitHub.com.
 	Importer []string `json:"importer,omitempty"`
+
+	// An array of IP addresses specifying the addresses that source imports
+	// will originate from on GitHub Enterprise Cloud.
+	GithubEnterpriseImporter []string `json:"github_enterprise_importer,omitempty"`
 
 	// An array of IP addresses in CIDR format specifying the IP addresses
 	// GitHub Actions will originate from.
@@ -65,6 +69,10 @@ type APIMeta struct {
 	// An array of IP addresses in CIDR format specifying the addresses
 	// which serve GitHub APIs.
 	API []string `json:"api,omitempty"`
+
+	// A map of GitHub services and their associated domains. Note that many
+	// of these domains are represented as wildcards (e.g. "*.github.com").
+	Domains map[string][]string `json:"domains,omitempty"`
 }
 
 // Get returns information about GitHub.com, the service. Or, if you access
