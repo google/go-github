@@ -256,7 +256,7 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 		Name:        String("Updated Name"),
 		Description: String("Updated Description"),
 	}
-	apps, _, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", "8030", opts)
+	apps, _, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", 8030, opts)
 	if err != nil {
 		t.Errorf("Organizations.UpdateCustomRepoRole returned error: %v", err)
 	}
@@ -269,12 +269,12 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 
 	const methodName = "UpdateCustomRepoRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.UpdateCustomRepoRole(ctx, "\no", "8030", nil)
+		_, _, err = client.Organizations.UpdateCustomRepoRole(ctx, "\no", 8030, nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", "8030", nil)
+		got, resp, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", 8030, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -293,7 +293,7 @@ func TestOrganizationsService_DeleteCustomRepoRole(t *testing.T) {
 
 	ctx := context.Background()
 
-	resp, err := client.Organizations.DeleteCustomRepoRole(ctx, "o", "8030")
+	resp, err := client.Organizations.DeleteCustomRepoRole(ctx, "o", 8030)
 	if err != nil {
 		t.Errorf("Organizations.DeleteCustomRepoRole returned error: %v", err)
 	}
@@ -304,7 +304,7 @@ func TestOrganizationsService_DeleteCustomRepoRole(t *testing.T) {
 
 	const methodName = "DeleteCustomRepoRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Organizations.DeleteCustomRepoRole(ctx, "\no", "8030")
+		_, err = client.Organizations.DeleteCustomRepoRole(ctx, "\no", 8030)
 		return err
 	})
 }

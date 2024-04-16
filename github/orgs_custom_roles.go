@@ -200,7 +200,7 @@ func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org str
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#update-a-custom-repository-role
 //
 //meta:operation PATCH /orgs/{org}/custom-repository-roles/{role_id}
-func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org, roleID string, opts *CreateOrUpdateCustomRepoRoleOptions) (*CustomRepoRoles, *Response, error) {
+func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org string, roleID int64, opts *CreateOrUpdateCustomRepoRoleOptions) (*CustomRepoRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
 
 	req, err := s.client.NewRequest("PATCH", u, opts)
@@ -223,7 +223,7 @@ func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org, ro
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#delete-a-custom-repository-role
 //
 //meta:operation DELETE /orgs/{org}/custom-repository-roles/{role_id}
-func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org, roleID string) (*Response, error) {
+func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
