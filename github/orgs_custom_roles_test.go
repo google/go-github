@@ -168,8 +168,9 @@ func TestOrganizationsService_ListTeamsAssignedToOrgRole(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
+	opt := &ListOptions{Page: 2}
 	ctx := context.Background()
-	apps, _, err := client.Organizations.ListTeamsAssignedToOrgRole(ctx, "o", 1729)
+	apps, _, err := client.Organizations.ListTeamsAssignedToOrgRole(ctx, "o", 1729, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListTeamsAssignedToOrgRole returned error: %v", err)
 	}
@@ -181,12 +182,12 @@ func TestOrganizationsService_ListTeamsAssignedToOrgRole(t *testing.T) {
 
 	const methodName = "ListTeamsAssignedToOrgRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.ListTeamsAssignedToOrgRole(ctx, "\no", 1729)
+		_, _, err = client.Organizations.ListTeamsAssignedToOrgRole(ctx, "\no", 1729, opt)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.ListTeamsAssignedToOrgRole(ctx, "o", 1729)
+		got, resp, err := client.Organizations.ListTeamsAssignedToOrgRole(ctx, "o", 1729, opt)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -202,8 +203,9 @@ func TestOrganizationsService_ListUsersAssignedToOrgRole(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
+	opt := &ListOptions{Page: 2}
 	ctx := context.Background()
-	apps, _, err := client.Organizations.ListUsersAssignedToOrgRole(ctx, "o", 1729)
+	apps, _, err := client.Organizations.ListUsersAssignedToOrgRole(ctx, "o", 1729, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListUsersAssignedToOrgRole returned error: %v", err)
 	}
@@ -215,12 +217,12 @@ func TestOrganizationsService_ListUsersAssignedToOrgRole(t *testing.T) {
 
 	const methodName = "ListUsersAssignedToOrgRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.ListUsersAssignedToOrgRole(ctx, "\no", 1729)
+		_, _, err = client.Organizations.ListUsersAssignedToOrgRole(ctx, "\no", 1729, opt)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.ListUsersAssignedToOrgRole(ctx, "o", 1729)
+		got, resp, err := client.Organizations.ListUsersAssignedToOrgRole(ctx, "o", 1729, opt)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
