@@ -106,7 +106,7 @@ func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
 		Name:        String("Updated Name"),
 		Description: String("Updated Description"),
 	}
-	gotRoles, _, err := client.Organizations.UpdateCustomOrgRole(ctx, "o", "8030", opts)
+	gotRoles, _, err := client.Organizations.UpdateCustomOrgRole(ctx, "o", 8030, opts)
 	if err != nil {
 		t.Errorf("Organizations.UpdateCustomOrgRole returned error: %v", err)
 	}
@@ -119,12 +119,12 @@ func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
 
 	const methodName = "UpdateCustomOrgRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.UpdateCustomOrgRole(ctx, "\no", "8030", nil)
+		_, _, err = client.Organizations.UpdateCustomOrgRole(ctx, "\no", 8030, nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateCustomOrgRole(ctx, "o", "8030", nil)
+		got, resp, err := client.Organizations.UpdateCustomOrgRole(ctx, "o", 8030, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -143,7 +143,7 @@ func TestOrganizationsService_DeleteCustomOrgRole(t *testing.T) {
 
 	ctx := context.Background()
 
-	resp, err := client.Organizations.DeleteCustomOrgRole(ctx, "o", "8030")
+	resp, err := client.Organizations.DeleteCustomOrgRole(ctx, "o", 8030)
 	if err != nil {
 		t.Errorf("Organizations.DeleteCustomOrgRole returned error: %v", err)
 	}
@@ -154,8 +154,12 @@ func TestOrganizationsService_DeleteCustomOrgRole(t *testing.T) {
 
 	const methodName = "DeleteCustomOrgRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Organizations.DeleteCustomOrgRole(ctx, "\no", "8030")
+		_, err = client.Organizations.DeleteCustomOrgRole(ctx, "\no", 8030)
 		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.DeleteCustomOrgRole(ctx, "o", 8030)
 	})
 }
 

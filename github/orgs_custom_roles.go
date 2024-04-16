@@ -108,7 +108,7 @@ func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org stri
 // GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#update-a-custom-organization-role
 //
 //meta:operation PATCH /orgs/{org}/organization-roles/{role_id}
-func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org, roleID string, opts *CreateOrUpdateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
+func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, opts *CreateOrUpdateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
 
 	req, err := s.client.NewRequest("PATCH", u, opts)
@@ -131,7 +131,7 @@ func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org, rol
 // GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#delete-a-custom-organization-role
 //
 //meta:operation DELETE /orgs/{org}/organization-roles/{role_id}
-func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org, roleID string) (*Response, error) {
+func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
