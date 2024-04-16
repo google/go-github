@@ -5105,31 +5105,51 @@ func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
 	c.GetRole()
 }
 
-func TestCreateOrUpdateCustomRoleOptions_GetBaseRole(tt *testing.T) {
+func TestCreateOrUpdateCustomRepoRoleOptions_GetBaseRole(tt *testing.T) {
 	var zeroValue string
-	c := &CreateOrUpdateCustomRoleOptions{BaseRole: &zeroValue}
+	c := &CreateOrUpdateCustomRepoRoleOptions{BaseRole: &zeroValue}
 	c.GetBaseRole()
-	c = &CreateOrUpdateCustomRoleOptions{}
+	c = &CreateOrUpdateCustomRepoRoleOptions{}
 	c.GetBaseRole()
 	c = nil
 	c.GetBaseRole()
 }
 
-func TestCreateOrUpdateCustomRoleOptions_GetDescription(tt *testing.T) {
+func TestCreateOrUpdateCustomRepoRoleOptions_GetDescription(tt *testing.T) {
 	var zeroValue string
-	c := &CreateOrUpdateCustomRoleOptions{Description: &zeroValue}
+	c := &CreateOrUpdateCustomRepoRoleOptions{Description: &zeroValue}
 	c.GetDescription()
-	c = &CreateOrUpdateCustomRoleOptions{}
+	c = &CreateOrUpdateCustomRepoRoleOptions{}
 	c.GetDescription()
 	c = nil
 	c.GetDescription()
 }
 
-func TestCreateOrUpdateCustomRoleOptions_GetName(tt *testing.T) {
+func TestCreateOrUpdateCustomRepoRoleOptions_GetName(tt *testing.T) {
 	var zeroValue string
-	c := &CreateOrUpdateCustomRoleOptions{Name: &zeroValue}
+	c := &CreateOrUpdateCustomRepoRoleOptions{Name: &zeroValue}
 	c.GetName()
-	c = &CreateOrUpdateCustomRoleOptions{}
+	c = &CreateOrUpdateCustomRepoRoleOptions{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateOrUpdateOrgRoleOptions_GetDescription(tt *testing.T) {
+	var zeroValue string
+	c := &CreateOrUpdateOrgRoleOptions{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateOrUpdateOrgRoleOptions{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateOrUpdateOrgRoleOptions_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CreateOrUpdateOrgRoleOptions{Name: &zeroValue}
+	c.GetName()
+	c = &CreateOrUpdateOrgRoleOptions{}
 	c.GetName()
 	c = nil
 	c.GetName()
@@ -5511,6 +5531,36 @@ func TestCustomDeploymentProtectionRuleRequest_GetIntegrationID(tt *testing.T) {
 	c.GetIntegrationID()
 	c = nil
 	c.GetIntegrationID()
+}
+
+func TestCustomOrgRoles_GetDescription(tt *testing.T) {
+	var zeroValue string
+	c := &CustomOrgRoles{Description: &zeroValue}
+	c.GetDescription()
+	c = &CustomOrgRoles{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCustomOrgRoles_GetID(tt *testing.T) {
+	var zeroValue int64
+	c := &CustomOrgRoles{ID: &zeroValue}
+	c.GetID()
+	c = &CustomOrgRoles{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCustomOrgRoles_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CustomOrgRoles{Name: &zeroValue}
+	c.GetName()
+	c = &CustomOrgRoles{}
+	c.GetName()
+	c = nil
+	c.GetName()
 }
 
 func TestCustomProperty_GetDefaultValue(tt *testing.T) {
@@ -14741,6 +14791,16 @@ func TestOrganizationCustomRepoRoles_GetTotalCount(tt *testing.T) {
 	o := &OrganizationCustomRepoRoles{TotalCount: &zeroValue}
 	o.GetTotalCount()
 	o = &OrganizationCustomRepoRoles{}
+	o.GetTotalCount()
+	o = nil
+	o.GetTotalCount()
+}
+
+func TestOrganizationCustomRoles_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	o := &OrganizationCustomRoles{TotalCount: &zeroValue}
+	o.GetTotalCount()
+	o = &OrganizationCustomRoles{}
 	o.GetTotalCount()
 	o = nil
 	o.GetTotalCount()
