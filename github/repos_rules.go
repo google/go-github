@@ -110,6 +110,13 @@ type RequiredWorkflowsRuleParameters struct {
 	RequiredWorkflows []*RuleRequiredWorkflow `json:"workflows"`
 }
 
+type RuleMergeQueue struct {
+}
+
+// RequiredWorkflowsRuleParameters represents the workflows rule parameters.
+type MergeQueueRuleParameters struct {
+}
+
 // RepositoryRule represents a GitHub Rule.
 type RepositoryRule struct {
 	Type              string           `json:"type"`
@@ -201,6 +208,16 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		rawParams := json.RawMessage(bytes)
 
 		r.Parameters = &rawParams
+	case "merge_queue":
+		params := MergeQueueRuleParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
+
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
 	default:
 		r.Type = ""
 		r.Parameters = nil
@@ -208,6 +225,18 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	}
 
 	return nil
+}
+
+// NewMergeQueueRule creates a rule to only allow users with bypass permission to create matching refs.
+func NewMergeQueueRule(params *RequiredStatusChecksRuleParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "merge_queue",
+		Parameters: &rawParams,
+	}
 }
 
 // NewCreationRule creates a rule to only allow users with bypass permission to create matching refs.
