@@ -134,7 +134,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	r.Type = RepositoryRule.Type
 
 	switch RepositoryRule.Type {
-	case "creation", "deletion", "required_linear_history", "required_signatures", "non_fast_forward", "merge_queue":
+	case "creation", "deletion", "merge_queue", "non_fast_forward", "required_linear_history", "required_signatures":
 		r.Parameters = nil
 	case "update":
 		if RepositoryRule.Parameters == nil {
@@ -201,7 +201,6 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		rawParams := json.RawMessage(bytes)
 
 		r.Parameters = &rawParams
-
 	default:
 		r.Type = ""
 		r.Parameters = nil
