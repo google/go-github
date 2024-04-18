@@ -892,7 +892,10 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 
 		rateLimitError, ok := err.(*RateLimitError)
 		if ok && req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
-			sleepUntilResetWithBuffer(rateLimitError.Rate.Reset.Time)
+			err := sleepUntilResetWithBuffer(req.Context(), rateLimitError.Rate.Reset.Time)
+			if err != nil {
+				return response, err
+			}
 			// retry the request once when the rate limit has reset
 			return c.BareDo(context.WithValue(req.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, nil), req)
 		}
@@ -950,10 +953,6 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory Rat
 	rate := c.rateLimits[rateLimitCategory]
 	c.rateMu.Unlock()
 	if !rate.Reset.Time.IsZero() && rate.Remaining == 0 && time.Now().Before(rate.Reset.Time) {
-		if req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
-			sleepUntilResetWithBuffer(rate.Reset.Time)
-			return nil
-		}
 		// Create a fake response.
 		resp := &http.Response{
 			Status:     http.StatusText(http.StatusForbidden),
@@ -962,6 +961,19 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory Rat
 			Header:     make(http.Header),
 			Body:       io.NopCloser(strings.NewReader("")),
 		}
+
+		if req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+			err := sleepUntilResetWithBuffer(req.Context(), rate.Reset.Time)
+			if err == nil {
+				return nil
+			}
+			return &RateLimitError{
+				Rate:     rate,
+				Response: resp,
+				Message:  fmt.Sprintf("Context cancelled while waiting for rate limit to reset until %v, not making remote request.", rate.Reset.Time),
+			}
+		}
+
 		return &RateLimitError{
 			Rate:     rate,
 			Response: resp,
@@ -1526,9 +1538,18 @@ func formatRateReset(d time.Duration) string {
 	return fmt.Sprintf("[rate reset in %v]", timeString)
 }
 
-func sleepUntilResetWithBuffer(reset time.Time) {
+func sleepUntilResetWithBuffer(ctx context.Context, reset time.Time) error {
 	buffer := time.Second
-	time.Sleep(time.Until(reset) + buffer)
+	timer := time.NewTimer(time.Until(reset) + buffer)
+	select {
+	case <-ctx.Done():
+		if !timer.Stop() {
+			<-timer.C
+		}
+		return ctx.Err()
+	case <-timer.C:
+	}
+	return nil
 }
 
 // When using roundTripWithOptionalFollowRedirect, note that it

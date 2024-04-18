@@ -1381,7 +1381,7 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 	}
 }
 
-// Ensure *RateLimitError is returned when API rate limit is exceeded.
+// Ensure sleeps until the rate limit is reset when the client is rate limited.
 func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -1422,6 +1422,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 	}
 }
 
+// Ensure tries to sleep until the rate limit is reset when the client is rate limited, but only once.
 func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -1481,6 +1482,72 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 	}
 	if got, want := requestCount, 1; got != want {
 		t.Errorf("Expected 1 request, got %d", got)
+	}
+}
+
+// Ensure sleep is aborted when the context is cancelled.
+func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	// We use a 1 minute reset time to ensure the sleep is not completed.
+	reset := time.Now().UTC().Add(time.Minute)
+	requestCount := 0
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		requestCount++
+		w.Header().Set(headerRateLimit, "60")
+		w.Header().Set(headerRateRemaining, "0")
+		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+	defer cancel()
+	_, err := client.Do(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	if !errors.Is(err, context.DeadlineExceeded) {
+		t.Error("Expected context deadline exceeded error.")
+	}
+	if got, want := requestCount, 1; got != want {
+		t.Errorf("Expected 1 requests, got %d", got)
+	}
+}
+
+// Ensure sleep is aborted when the context is cancelled on initial request.
+func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	reset := time.Now().UTC().Add(time.Minute)
+	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
+	requestCount := 0
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		requestCount++
+		w.Header().Set(headerRateLimit, "5000")
+		w.Header().Set(headerRateRemaining, "5000")
+		w.Header().Set(headerRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, `{}`)
+	})
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+	defer cancel()
+	_, err := client.Do(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	rateLimitError, ok := err.(*RateLimitError)
+	if !ok {
+		t.Fatalf("Expected a *rateLimitError error; got %#v.", err)
+	}
+	if got, wantSuffix := rateLimitError.Message, "Context cancelled while waiting for rate limit to reset until"; !strings.HasPrefix(got, wantSuffix) {
+		t.Errorf("Expected request to be prevented because context cancellation, got: %v.", got)
+	}
+	if got, want := requestCount, 0; got != want {
+		t.Errorf("Expected 1 requests, got %d", got)
 	}
 }
 
