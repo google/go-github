@@ -963,8 +963,7 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory Rat
 		}
 
 		if req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
-			err := sleepUntilResetWithBuffer(req.Context(), rate.Reset.Time)
-			if err == nil {
+			if err := sleepUntilResetWithBuffer(req.Context(), rate.Reset.Time); err == nil {
 				return nil
 			}
 			return &RateLimitError{
