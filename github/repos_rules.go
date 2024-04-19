@@ -210,7 +210,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// NewMergeQueueRule creates a rule to only allow users with bypass permission to create matching refs.
+// NewMergeQueueRule creates a rule to only allow merges via a merge queue.
 func NewMergeQueueRule() (rule *RepositoryRule) {
 	return &RepositoryRule{
 		Type: "merge_queue",
