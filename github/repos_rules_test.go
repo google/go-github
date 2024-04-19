@@ -67,6 +67,13 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 				Parameters: nil,
 			},
 		},
+		"Valid merge_queue": {
+			data: `{"type":"merge_queue"}`,
+			want: &RepositoryRule{
+				Type:       "merge_queue",
+				Parameters: nil,
+			},
+		},
 		"Valid non_fast_forward": {
 			data: `{"type":"non_fast_forward"}`,
 			want: &RepositoryRule{
