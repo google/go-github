@@ -611,7 +611,7 @@ func TestStarEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &StarEvent{}, "{}")
 
 	u := &StarEvent{
-		Action:    String("a"),
+		Action:    StarEventCreated,
 		StarredAt: &Timestamp{referenceTime},
 		Org: &Organization{
 			BillingEmail:                         String("be"),
@@ -652,7 +652,7 @@ func TestStarEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"starred_at": ` + referenceTimeStr + `,
 		"organization": {
 			"name": "n",
@@ -699,7 +699,7 @@ func TestTeamEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &TeamEvent{}, "{}")
 
 	u := &TeamEvent{
-		Action: String("a"),
+		Action: TeamEventCreated,
 		Team: &Team{
 			ID:              Int64(1),
 			NodeID:          String("n"),
@@ -891,7 +891,7 @@ func TestTeamEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"team": {
 			"id": 1,
 			"node_id": "n",
@@ -1093,7 +1093,7 @@ func TestInstallationRepositoriesEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &InstallationRepositoriesEvent{}, "{}")
 
 	u := &InstallationRepositoriesEvent{
-		Action: String("a"),
+		Action: InstallationRepositoriesEventAdded,
 		RepositoriesAdded: []*Repository{
 			{
 				ID:   Int64(1),
@@ -1214,7 +1214,7 @@ func TestInstallationRepositoriesEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "added",
 		"repositories_added": [
 			{
 				"id": 1,
@@ -1354,7 +1354,7 @@ func TestInstallationTargetEvent_Marshal(t *testing.T) {
 			EventsURL: String("e"),
 			AvatarURL: String("l"),
 		},
-		Action: String("a"),
+		Action: InstallationTargetEventRenamed,
 		Changes: &InstallationChanges{
 			Login: &InstallationLoginChange{
 				From: String("p"),
@@ -1517,7 +1517,7 @@ func TestInstallationTargetEvent_Marshal(t *testing.T) {
 			"events_url": "e",
 			"repos_url": "r"
 		},
-		"action": "a",
+		"action": "renamed",
 		"changes": {
 			"login": {
 				"from": "p"
@@ -2043,7 +2043,7 @@ func TestIssueCommentEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &IssueCommentEvent{}, "{}")
 
 	u := &IssueCommentEvent{
-		Action:  String("a"),
+		Action:  IssueCommentEventCreated,
 		Issue:   &Issue{ID: Int64(1)},
 		Comment: &IssueComment{ID: Int64(1)},
 		Changes: &EditChange{
@@ -2194,7 +2194,7 @@ func TestIssueCommentEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"issue": {
 			"id": 1
 		},
@@ -2359,7 +2359,7 @@ func TestIssuesEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &IssuesEvent{}, "{}")
 
 	u := &IssuesEvent{
-		Action: String("a"),
+		Action: IssuesEventAssigned,
 		Issue:  &Issue{ID: Int64(1)},
 		Assignee: &User{
 			Login:     String("l"),
@@ -2497,7 +2497,7 @@ func TestIssuesEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "assigned",
 		"issue": {
 			"id": 1
 		},
@@ -2649,7 +2649,7 @@ func TestLabelEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &LabelEvent{}, "{}")
 
 	u := &LabelEvent{
-		Action: String("a"),
+		Action: LabelEventCreated,
 		Label:  &Label{ID: Int64(1)},
 		Changes: &EditChange{
 			Title: &EditTitle{
@@ -2790,7 +2790,7 @@ func TestLabelEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"label": {
 			"id": 1
 		},
@@ -2943,7 +2943,7 @@ func TestMilestoneEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &MilestoneEvent{}, "{}")
 
 	u := &MilestoneEvent{
-		Action:    String("a"),
+		Action:    MilestoneEventCreated,
 		Milestone: &Milestone{ID: Int64(1)},
 		Changes: &EditChange{
 			Title: &EditTitle{
@@ -3093,7 +3093,7 @@ func TestMilestoneEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"milestone": {
 			"id": 1
 		},
@@ -3485,7 +3485,7 @@ func TestPullRequestReviewEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestReviewEvent{}, "{}")
 
 	u := &PullRequestReviewEvent{
-		Action:      String("a"),
+		Action:      PullRequestReviewEventDismissed,
 		Review:      &PullRequestReview{ID: Int64(1)},
 		PullRequest: &PullRequest{ID: Int64(1)},
 		Repo: &Repository{
@@ -3620,7 +3620,7 @@ func TestPullRequestReviewEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "dismissed",
 		"review": {
 			"id": 1
 		},
@@ -4343,7 +4343,7 @@ func TestMarketplacePurchaseEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &MarketplacePurchaseEvent{}, "{}")
 
 	u := &MarketplacePurchaseEvent{
-		Action:        String("a"),
+		Action:        MarketplacePurchaseEventPurchased,
 		EffectiveDate: &Timestamp{referenceTime},
 		MarketplacePurchase: &MarketplacePurchase{
 			BillingCycle:    String("bc"),
@@ -4496,7 +4496,7 @@ func TestMarketplacePurchaseEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "purchased",
 		"effective_date": ` + referenceTimeStr + `,
 		"marketplace_purchase": {
 			"billing_cycle": "bc",
@@ -4663,7 +4663,7 @@ func TestOrganizationEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &OrganizationEvent{}, "{}")
 
 	u := &OrganizationEvent{
-		Action:     String("a"),
+		Action:     OrganizationEventDeleted,
 		Invitation: &Invitation{ID: Int64(1)},
 		Membership: &Membership{
 			URL:             String("url"),
@@ -4829,7 +4829,7 @@ func TestOrganizationEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "deleted",
 		"invitation": {
 			"id": 1
 		},
@@ -5276,7 +5276,7 @@ func TestCommitCommentEvent_Marshal(t *testing.T) {
 			Path:      String("path"),
 			Position:  Int(1),
 		},
-		Action: String("a"),
+		Action: CommitCommentEventCreated,
 		Repo: &Repository{
 			ID:   Int64(1),
 			URL:  String("s"),
@@ -5420,7 +5420,7 @@ func TestCommitCommentEvent_Marshal(t *testing.T) {
 			"path": "path",
 			"position": 1
 		},
-		"action": "a",
+		"action": "created",
 		"repository": {
 			"id": 1,
 			"name": "n",
@@ -6015,7 +6015,7 @@ func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
 	jsonMsg, _ := json.Marshal(&l)
 
 	u := &DeploymentProtectionRuleEvent{
-		Action:                String("a"),
+		Action:                DeploymentProtectionRuleEventRequested,
 		Environment:           String("e"),
 		DeploymentCallbackURL: String("b"),
 		Deployment: &Deployment{
@@ -6199,7 +6199,7 @@ func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "requested",
 		"environment": "e",
 		"deployment_callback_url": "b",
 		"deployment": {
@@ -7488,7 +7488,7 @@ func TestPackageEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PackageEvent{}, "{}")
 
 	u := &PackageEvent{
-		Action: String("a"),
+		Action: PackageEventPublished,
 		Package: &Package{
 			ID:          Int64(1),
 			Name:        String("n"),
@@ -7547,7 +7547,7 @@ func TestPackageEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "published",
 		"package": {
 			"id": 1,
 			"name": "n",
@@ -7616,7 +7616,7 @@ func TestPersonalAccessTokenRequestEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PersonalAccessTokenRequestEvent{}, "{}")
 
 	event := &PersonalAccessTokenRequestEvent{
-		Action: String("a"),
+		Action: PersonalAccessTokenRequestEventApproved,
 		PersonalAccessTokenRequest: &PersonalAccessTokenRequest{
 			ID:    Int64(1),
 			Owner: &User{Login: String("l")},
@@ -7646,7 +7646,7 @@ func TestPersonalAccessTokenRequestEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "approved",
 		"personal_access_token_request": {
 			"id": 1,
 			"owner": {
@@ -8308,7 +8308,7 @@ func TestRepositoryEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepositoryEvent{}, "{}")
 
 	u := &RepositoryEvent{
-		Action: String("a"),
+		Action: RepositoryEventCreated,
 		Repo: &Repository{
 			ID:   Int64(1),
 			URL:  String("s"),
@@ -8441,7 +8441,7 @@ func TestRepositoryEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"repository": {
 			"id": 1,
 			"name": "n",
@@ -8584,7 +8584,7 @@ func TestReleaseEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ReleaseEvent{}, "{}")
 
 	u := &ReleaseEvent{
-		Action: String("a"),
+		Action: ReleaseEventCreated,
 		Release: &RepositoryRelease{
 			Name:                   String("n"),
 			DiscussionCategoryName: String("dcn"),
@@ -8711,7 +8711,7 @@ func TestReleaseEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"release": {
 			"name": "n",
 			"discussion_category_name": "dcn",
@@ -9096,7 +9096,7 @@ func TestMemberEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &MemberEvent{}, "{}")
 
 	u := &MemberEvent{
-		Action: String("a"),
+		Action: MemberEventAdded,
 		Member: &User{
 			Login:     String("l"),
 			ID:        Int64(1),
@@ -9216,7 +9216,7 @@ func TestMemberEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "added",
 		"member": {
 			"login": "l",
 			"id": 1,
@@ -9346,7 +9346,7 @@ func TestMembershipEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &MembershipEvent{}, "{}")
 
 	u := &MembershipEvent{
-		Action: String("a"),
+		Action: MembershipEventAdded,
 		Scope:  String("s"),
 		Member: &User{
 			Login:     String("l"),
@@ -9523,7 +9523,7 @@ func TestMembershipEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "added",
 		"scope": "s",
 		"member": {
 			"login": "l",
@@ -9710,7 +9710,7 @@ func TestMergeGroupEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &MergeGroupEvent{}, "{}")
 
 	u := &MergeGroupEvent{
-		Action: String("a"),
+		Action: MergeGroupEventDestroyed,
 		MergeGroup: &MergeGroup{
 			HeadSHA:    String("hs"),
 			HeadRef:    String("hr"),
@@ -9850,7 +9850,7 @@ func TestMergeGroupEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "destroyed",
 		"merge_group": {
 			"head_sha": "hs",
 			"head_ref": "hr",
@@ -10002,7 +10002,7 @@ func TestOrgBlockEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &OrgBlockEvent{}, "{}")
 
 	u := &OrgBlockEvent{
-		Action: String("a"),
+		Action: OrgBlockEventBlocked,
 		BlockedUser: &User{
 			Login:     String("l"),
 			ID:        Int64(1),
@@ -10139,7 +10139,7 @@ func TestOrgBlockEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "blocked",
 		"blocked_user": {
 			"login": "l",
 			"id": 1,
@@ -10536,7 +10536,7 @@ func TestWorkflowRunEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WorkflowRunEvent{}, "{}")
 
 	u := &WorkflowRunEvent{
-		Action: String("a"),
+		Action: WorkflowRunEventCompleted,
 		Workflow: &Workflow{
 			ID:        Int64(1),
 			NodeID:    String("nid"),
@@ -10668,7 +10668,7 @@ func TestWorkflowRunEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "completed",
 		"workflow": {
 			"id": 1,
 			"node_id": "nid",
@@ -10902,7 +10902,7 @@ func TestWatchEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WatchEvent{}, "{}")
 
 	u := &WatchEvent{
-		Action: String("a"),
+		Action: WatchEventStarted,
 		Repo: &Repository{
 			ID:   Int64(1),
 			URL:  String("s"),
@@ -11013,7 +11013,7 @@ func TestWatchEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "started",
 		"repository": {
 			"id": 1,
 			"name": "n",
@@ -11144,7 +11144,7 @@ func TestUserEvent_Marshal(t *testing.T) {
 			AvatarURL: String("a"),
 		},
 		// The action performed. Possible values are: "created" or "deleted".
-		Action: String("a"),
+		Action: UserEventCreated,
 		Enterprise: &Enterprise{
 			ID:          Int(1),
 			Slug:        String("s"),
@@ -11178,7 +11178,7 @@ func TestUserEvent_Marshal(t *testing.T) {
 			"events_url": "e",
 			"repos_url": "r"
 		},
-		"action": "a",
+		"action": "created",
 		"enterprise": {
 			"id": 1,
 			"slug": "s",
@@ -11295,7 +11295,7 @@ func TestCheckRunEvent_Marshal(t *testing.T) {
 				},
 			},
 		},
-		Action: String("a"),
+		Action: CheckRunEventActionCreated,
 		Repo: &Repository{
 			ID:   Int64(1),
 			URL:  String("s"),
@@ -11517,7 +11517,7 @@ func TestCheckRunEvent_Marshal(t *testing.T) {
 				}
 			]
 		},
-		"action": "a",
+		"action": "created",
 		"repository": {
 			"id": 1,
 			"name": "n",
@@ -11724,7 +11724,7 @@ func TestCheckSuiteEvent_Marshal(t *testing.T) {
 				SHA: String("s"),
 			},
 		},
-		Action: String("a"),
+		Action: CheckSuiteEventCompleted,
 		Repo: &Repository{
 			ID:   Int64(1),
 			URL:  String("s"),
@@ -11918,7 +11918,7 @@ func TestCheckSuiteEvent_Marshal(t *testing.T) {
 			"sha": "s"
 		}
 		},
-		"action": "a",
+		"action": "completed",
 		"repository": {
 			"id": 1,
 			"name": "n",
@@ -12061,7 +12061,7 @@ func TestDeployKeyEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &DeployKeyEvent{}, "{}")
 
 	u := &DeployKeyEvent{
-		Action: String("a"),
+		Action: DeployKeyEventCreated,
 		Key: &Key{
 			ID:        Int64(1),
 			Key:       String("k"),
@@ -12110,7 +12110,7 @@ func TestDeployKeyEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"key": {
 			"id": 1,
 			"key": "k",
@@ -12171,7 +12171,7 @@ func TestMetaEvent_Marshal(t *testing.T) {
 	}
 
 	u := &MetaEvent{
-		Action: String("a"),
+		Action: MetaEventDeleted,
 		HookID: Int64(1),
 		Hook: &Hook{
 			CreatedAt:    &Timestamp{referenceTime},
@@ -12190,7 +12190,7 @@ func TestMetaEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "deleted",
 		"hook_id": 1,
 		"hook": {
 			"created_at": ` + referenceTimeStr + `,
@@ -12711,7 +12711,7 @@ func TestDependabotAlertEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &DependabotAlertEvent{}, "{}")
 
 	e := &DependabotAlertEvent{
-		Action: String("a"),
+		Action: DependabotAlertEventAutoDismissed,
 		Alert: &DependabotAlert{
 			Number: Int(1),
 			State:  String("s"),
@@ -12936,7 +12936,7 @@ func TestDependabotAlertEvent_Marshal(t *testing.T) {
 		},
 	}
 	want := `{
-		"action": "a",
+		"action": "auto_dismissed",
 		"alert": {
 			"number": 1,
 			"state": "s",
@@ -13412,7 +13412,7 @@ func TestGitHubAppAuthorizationEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GitHubAppAuthorizationEvent{}, "{}")
 
 	u := &GitHubAppAuthorizationEvent{
-		Action: String("a"),
+		Action: GitHubAppAuthorizationEventRevoked,
 		Sender: &User{
 			Login:     String("l"),
 			ID:        Int64(1),
@@ -13425,7 +13425,7 @@ func TestGitHubAppAuthorizationEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "revoked",
 		"sender": {
 			"login": "l",
 			"id": 1,
@@ -13877,7 +13877,7 @@ func TestProjectEvent_Marshal(t *testing.T) {
 
 	u := &ProjectEvent{
 		Project: &Project{ID: Int64(1)},
-		Action:  String("a"),
+		Action:  ProjectEventClosed,
 		Changes: &ProjectChange{
 			Name: &ProjectName{From: String("NameFrom")},
 			Body: &ProjectBody{From: String("BodyFrom")},
@@ -14014,7 +14014,7 @@ func TestProjectEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "closed",
 		"changes": {
 			"name": {
 				"from": "NameFrom"
@@ -14168,7 +14168,7 @@ func TestProjectCardEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectCardEvent{}, "{}")
 
 	u := &ProjectCardEvent{
-		Action: String("a"),
+		Action: ProjectCardEventCreated,
 		Changes: &ProjectCardChange{
 			Note: &ProjectCardNote{From: String("NoteFrom")},
 		},
@@ -14306,7 +14306,7 @@ func TestProjectCardEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"changes": {
 			"note": {
 				"from": "NoteFrom"
@@ -14458,7 +14458,7 @@ func TestProjectColumnEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectColumnEvent{}, "{}")
 
 	u := &ProjectColumnEvent{
-		Action: String("a"),
+		Action: ProjectColumnEventCreated,
 		Changes: &ProjectColumnChange{
 			Name: &ProjectColumnName{From: String("NameFrom")},
 		},
@@ -14596,7 +14596,7 @@ func TestProjectColumnEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"changes": {
 			"name": {
 				"from": "NameFrom"
@@ -14748,7 +14748,7 @@ func TestProjectV2Event_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectV2Event{}, "{}")
 
 	u := &ProjectV2Event{
-		Action: String("a"),
+		Action: ProjectV2EventCreated,
 		ProjectsV2: &ProjectsV2{
 			ID:     Int64(1),
 			NodeID: String("nid"),
@@ -14850,7 +14850,7 @@ func TestProjectV2Event_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"projects_v2": {
 			"id": 1,
 			"node_id": "nid",
@@ -14958,7 +14958,7 @@ func TestProjectV2ItemEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectV2ItemEvent{}, "{}")
 
 	u := &ProjectV2ItemEvent{
-		Action: String("a"),
+		Action: ProjectV2ItemEventCreated,
 		Changes: &ProjectV2ItemChange{
 			ArchivedAt: &ArchivedAt{
 				From: &Timestamp{referenceTime},
@@ -15045,7 +15045,7 @@ func TestProjectV2ItemEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action":  "a",
+		"action":  "created",
 		"changes": {
 			"archived_at": {
 				"from": ` + referenceTimeStr + `,
@@ -15138,7 +15138,7 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestEvent{}, "{}")
 
 	u := &PullRequestEvent{
-		Action: String("a"),
+		Action: PullRequestEventClosed,
 		Assignee: &User{
 			Login:     String("l"),
 			ID:        Int64(1),
@@ -15320,7 +15320,7 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "closed",
 		"assignee": {
 			"login": "l",
 			"id": 1,
@@ -15518,7 +15518,7 @@ func TestPullRequestReviewCommentEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestReviewCommentEvent{}, "{}")
 
 	u := &PullRequestReviewCommentEvent{
-		Action:      String("a"),
+		Action:      PullRequestReviewCommentEventCreated,
 		PullRequest: &PullRequest{ID: Int64(1)},
 		Comment:     &PullRequestComment{ID: Int64(1)},
 		Changes: &EditChange{
@@ -15647,7 +15647,7 @@ func TestPullRequestReviewCommentEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"pull_request": {
 			"id": 1
 		},
@@ -15790,7 +15790,7 @@ func TestPullRequestReviewThreadEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestReviewThreadEvent{}, "{}")
 
 	u := &PullRequestReviewThreadEvent{
-		Action:      String("a"),
+		Action:      PullRequestReviewThreadEventResolved,
 		PullRequest: &PullRequest{ID: Int64(1)},
 		Thread: &PullRequestThread{
 			Comments: []*PullRequestComment{{ID: Int64(1)}, {ID: Int64(2)}},
@@ -15905,7 +15905,7 @@ func TestPullRequestReviewThreadEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "resolved",
 		"pull_request": {
 			"id": 1
 		},
@@ -16039,7 +16039,7 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestTargetEvent{}, "{}")
 
 	u := &PullRequestTargetEvent{
-		Action: String("a"),
+		Action: PullRequestTargetEventOpened,
 		Assignee: &User{
 			Login:     String("l"),
 			ID:        Int64(1),
@@ -16221,7 +16221,7 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "opened",
 		"assignee": {
 			"login": "l",
 			"id": 1,
@@ -16419,7 +16419,7 @@ func TestRepositoryVulnerabilityAlertEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepositoryVulnerabilityAlertEvent{}, "{}")
 
 	u := &RepositoryVulnerabilityAlertEvent{
-		Action: String("a"),
+		Action: RepositoryVulnerabilityAlertEventCreate,
 		Alert: &RepositoryVulnerabilityAlert{
 			ID:                  Int64(1),
 			AffectedRange:       String("ar"),
@@ -16447,7 +16447,7 @@ func TestRepositoryVulnerabilityAlertEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "create",
 		"alert": {
 			"id": 1,
 			"affected_range": "ar",
@@ -16481,7 +16481,7 @@ func TestSecretScanningAlertEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &SecretScanningAlertEvent{}, "{}")
 
 	u := &SecretScanningAlertEvent{
-		Action: String("a"),
+		Action: SecretScanningAlertEventCreated,
 		Alert: &SecretScanningAlert{
 			Number:     Int(1),
 			SecretType: String("t"),
@@ -16641,7 +16641,7 @@ func TestSecretScanningAlertEvent_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"action": "a",
+		"action": "created",
 		"alert": {
 			"number": 1,
 			"secret_type": "t",
@@ -16810,7 +16810,7 @@ func TestSecretScanningAlertEvent_Marshal(t *testing.T) {
 func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &SecurityAdvisoryEvent{}, "{}")
 	u := &SecurityAdvisoryEvent{
-		Action: String("published"),
+		Action: SecurityAdvisoryEventPublished,
 		SecurityAdvisory: &SecurityAdvisory{
 			CVSS: &AdvisoryCVSS{
 				Score:        Float64(1.0),
@@ -17531,7 +17531,7 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CodeScanningAlertEvent{}, "{}")
 
 	u := &CodeScanningAlertEvent{
-		Action: String("reopened"),
+		Action: CodeScanningAlertEventReopened,
 		Alert: &Alert{
 			Number: Int(10),
 			Rule: &Rule{

@@ -2166,10 +2166,7 @@ func TestBranchProtectionRule_GetUpdatedAt(tt *testing.T) {
 }
 
 func TestBranchProtectionRuleEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	b := &BranchProtectionRuleEvent{Action: &zeroValue}
-	b.GetAction()
-	b = &BranchProtectionRuleEvent{}
+	b := &BranchProtectionRuleEvent{}
 	b.GetAction()
 	b = nil
 	b.GetAction()
@@ -2478,16 +2475,6 @@ func TestCheckRunAnnotation_GetTitle(tt *testing.T) {
 	c.GetTitle()
 }
 
-func TestCheckRunEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	c := &CheckRunEvent{Action: &zeroValue}
-	c.GetAction()
-	c = &CheckRunEvent{}
-	c.GetAction()
-	c = nil
-	c.GetAction()
-}
-
 func TestCheckRunEvent_GetCheckRun(tt *testing.T) {
 	c := &CheckRunEvent{}
 	c.GetCheckRun()
@@ -2741,16 +2728,6 @@ func TestCheckSuite_GetURL(tt *testing.T) {
 	c.GetURL()
 }
 
-func TestCheckSuiteEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	c := &CheckSuiteEvent{Action: &zeroValue}
-	c.GetAction()
-	c = &CheckSuiteEvent{}
-	c.GetAction()
-	c = nil
-	c.GetAction()
-}
-
 func TestCheckSuiteEvent_GetCheckSuite(tt *testing.T) {
 	c := &CheckSuiteEvent{}
 	c.GetCheckSuite()
@@ -2982,16 +2959,6 @@ func TestCodeResult_GetSHA(tt *testing.T) {
 	c.GetSHA()
 	c = nil
 	c.GetSHA()
-}
-
-func TestCodeScanningAlertEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	c := &CodeScanningAlertEvent{Action: &zeroValue}
-	c.GetAction()
-	c = &CodeScanningAlertEvent{}
-	c.GetAction()
-	c = nil
-	c.GetAction()
 }
 
 func TestCodeScanningAlertEvent_GetAlert(tt *testing.T) {
@@ -3929,16 +3896,6 @@ func TestCommitAuthor_GetName(tt *testing.T) {
 	c.GetName()
 	c = nil
 	c.GetName()
-}
-
-func TestCommitCommentEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	c := &CommitCommentEvent{Action: &zeroValue}
-	c.GetAction()
-	c = &CommitCommentEvent{}
-	c.GetAction()
-	c = nil
-	c.GetAction()
 }
 
 func TestCommitCommentEvent_GetComment(tt *testing.T) {
@@ -5916,16 +5873,6 @@ func TestDependabotAlert_GetURL(tt *testing.T) {
 	d.GetURL()
 }
 
-func TestDependabotAlertEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	d := &DependabotAlertEvent{Action: &zeroValue}
-	d.GetAction()
-	d = &DependabotAlertEvent{}
-	d.GetAction()
-	d = nil
-	d.GetAction()
-}
-
 func TestDependabotAlertEvent_GetAlert(tt *testing.T) {
 	d := &DependabotAlertEvent{}
 	d.GetAlert()
@@ -6110,16 +6057,6 @@ func TestDependency_GetScope(tt *testing.T) {
 	d.GetScope()
 	d = nil
 	d.GetScope()
-}
-
-func TestDeployKeyEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	d := &DeployKeyEvent{Action: &zeroValue}
-	d.GetAction()
-	d = &DeployKeyEvent{}
-	d.GetAction()
-	d = nil
-	d.GetAction()
 }
 
 func TestDeployKeyEvent_GetInstallation(tt *testing.T) {
@@ -6401,16 +6338,6 @@ func TestDeploymentEvent_GetWorkflowRun(tt *testing.T) {
 	d.GetWorkflowRun()
 	d = nil
 	d.GetWorkflowRun()
-}
-
-func TestDeploymentProtectionRuleEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	d := &DeploymentProtectionRuleEvent{Action: &zeroValue}
-	d.GetAction()
-	d = &DeploymentProtectionRuleEvent{}
-	d.GetAction()
-	d = nil
-	d.GetAction()
 }
 
 func TestDeploymentProtectionRuleEvent_GetDeployment(tt *testing.T) {
@@ -7205,16 +7132,6 @@ func TestDiscussionComment_GetURL(tt *testing.T) {
 	d.GetURL()
 }
 
-func TestDiscussionCommentEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	d := &DiscussionCommentEvent{Action: &zeroValue}
-	d.GetAction()
-	d = &DiscussionCommentEvent{}
-	d.GetAction()
-	d = nil
-	d.GetAction()
-}
-
 func TestDiscussionCommentEvent_GetComment(tt *testing.T) {
 	d := &DiscussionCommentEvent{}
 	d.GetComment()
@@ -7255,16 +7172,6 @@ func TestDiscussionCommentEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 	d = nil
 	d.GetSender()
-}
-
-func TestDiscussionEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	d := &DiscussionEvent{Action: &zeroValue}
-	d.GetAction()
-	d = &DiscussionEvent{}
-	d.GetAction()
-	d = nil
-	d.GetAction()
 }
 
 func TestDiscussionEvent_GetDiscussion(tt *testing.T) {
@@ -8774,16 +8681,6 @@ func TestGistStats_GetTotalGists(tt *testing.T) {
 	g.GetTotalGists()
 	g = nil
 	g.GetTotalGists()
-}
-
-func TestGitHubAppAuthorizationEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	g := &GitHubAppAuthorizationEvent{Action: &zeroValue}
-	g.GetAction()
-	g = &GitHubAppAuthorizationEvent{}
-	g.GetAction()
-	g = nil
-	g.GetAction()
 }
 
 func TestGitHubAppAuthorizationEvent_GetInstallation(tt *testing.T) {
@@ -10417,16 +10314,6 @@ func TestInstallationPermissions_GetWorkflows(tt *testing.T) {
 	i.GetWorkflows()
 }
 
-func TestInstallationRepositoriesEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	i := &InstallationRepositoriesEvent{Action: &zeroValue}
-	i.GetAction()
-	i = &InstallationRepositoriesEvent{}
-	i.GetAction()
-	i = nil
-	i.GetAction()
-}
-
 func TestInstallationRepositoriesEvent_GetInstallation(tt *testing.T) {
 	i := &InstallationRepositoriesEvent{}
 	i.GetInstallation()
@@ -10517,16 +10404,6 @@ func TestInstallationTargetEvent_GetAccount(tt *testing.T) {
 	i.GetAccount()
 	i = nil
 	i.GetAccount()
-}
-
-func TestInstallationTargetEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	i := &InstallationTargetEvent{Action: &zeroValue}
-	i.GetAction()
-	i = &InstallationTargetEvent{}
-	i.GetAction()
-	i = nil
-	i.GetAction()
 }
 
 func TestInstallationTargetEvent_GetChanges(tt *testing.T) {
@@ -11115,16 +10992,6 @@ func TestIssueComment_GetUser(tt *testing.T) {
 	i.GetUser()
 }
 
-func TestIssueCommentEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	i := &IssueCommentEvent{Action: &zeroValue}
-	i.GetAction()
-	i = &IssueCommentEvent{}
-	i.GetAction()
-	i = nil
-	i.GetAction()
-}
-
 func TestIssueCommentEvent_GetChanges(tt *testing.T) {
 	i := &IssueCommentEvent{}
 	i.GetChanges()
@@ -11642,16 +11509,6 @@ func TestIssueRequest_GetTitle(tt *testing.T) {
 	i.GetTitle()
 }
 
-func TestIssuesEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	i := &IssuesEvent{Action: &zeroValue}
-	i.GetAction()
-	i = &IssuesEvent{}
-	i.GetAction()
-	i = nil
-	i.GetAction()
-}
-
 func TestIssuesEvent_GetAssignee(tt *testing.T) {
 	i := &IssuesEvent{}
 	i.GetAssignee()
@@ -11950,16 +11807,6 @@ func TestLabel_GetURL(tt *testing.T) {
 	l.GetURL()
 	l = nil
 	l.GetURL()
-}
-
-func TestLabelEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	l := &LabelEvent{Action: &zeroValue}
-	l.GetAction()
-	l = &LabelEvent{}
-	l.GetAction()
-	l = nil
-	l.GetAction()
 }
 
 func TestLabelEvent_GetChanges(tt *testing.T) {
@@ -13046,16 +12893,6 @@ func TestMarketplacePurchaseAccount_GetURL(tt *testing.T) {
 	m.GetURL()
 }
 
-func TestMarketplacePurchaseEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	m := &MarketplacePurchaseEvent{Action: &zeroValue}
-	m.GetAction()
-	m = &MarketplacePurchaseEvent{}
-	m.GetAction()
-	m = nil
-	m.GetAction()
-}
-
 func TestMarketplacePurchaseEvent_GetEffectiveDate(tt *testing.T) {
 	var zeroValue Timestamp
 	m := &MarketplacePurchaseEvent{EffectiveDate: &zeroValue}
@@ -13109,16 +12946,6 @@ func TestMatch_GetText(tt *testing.T) {
 	m.GetText()
 	m = nil
 	m.GetText()
-}
-
-func TestMemberEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	m := &MemberEvent{Action: &zeroValue}
-	m.GetAction()
-	m = &MemberEvent{}
-	m.GetAction()
-	m = nil
-	m.GetAction()
 }
 
 func TestMemberEvent_GetInstallation(tt *testing.T) {
@@ -13208,16 +13035,6 @@ func TestMembership_GetUser(tt *testing.T) {
 	m.GetUser()
 	m = nil
 	m.GetUser()
-}
-
-func TestMembershipEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	m := &MembershipEvent{Action: &zeroValue}
-	m.GetAction()
-	m = &MembershipEvent{}
-	m.GetAction()
-	m = nil
-	m.GetAction()
 }
 
 func TestMembershipEvent_GetInstallation(tt *testing.T) {
@@ -13312,16 +13129,6 @@ func TestMergeGroup_GetHeadSHA(tt *testing.T) {
 	m.GetHeadSHA()
 }
 
-func TestMergeGroupEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	m := &MergeGroupEvent{Action: &zeroValue}
-	m.GetAction()
-	m = &MergeGroupEvent{}
-	m.GetAction()
-	m = nil
-	m.GetAction()
-}
-
 func TestMergeGroupEvent_GetInstallation(tt *testing.T) {
 	m := &MergeGroupEvent{}
 	m.GetInstallation()
@@ -13365,16 +13172,6 @@ func TestMessage_GetText(tt *testing.T) {
 	m.GetText()
 	m = nil
 	m.GetText()
-}
-
-func TestMetaEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	m := &MetaEvent{Action: &zeroValue}
-	m.GetAction()
-	m = &MetaEvent{}
-	m.GetAction()
-	m = nil
-	m.GetAction()
 }
 
 func TestMetaEvent_GetHook(tt *testing.T) {
@@ -13717,16 +13514,6 @@ func TestMilestone_GetURL(tt *testing.T) {
 	m.GetURL()
 	m = nil
 	m.GetURL()
-}
-
-func TestMilestoneEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	m := &MilestoneEvent{Action: &zeroValue}
-	m.GetAction()
-	m = &MilestoneEvent{}
-	m.GetAction()
-	m = nil
-	m.GetAction()
 }
 
 func TestMilestoneEvent_GetChanges(tt *testing.T) {
@@ -14746,16 +14533,6 @@ func TestOrganizationCustomRepoRoles_GetTotalCount(tt *testing.T) {
 	o.GetTotalCount()
 }
 
-func TestOrganizationEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	o := &OrganizationEvent{Action: &zeroValue}
-	o.GetAction()
-	o = &OrganizationEvent{}
-	o.GetAction()
-	o = nil
-	o.GetAction()
-}
-
 func TestOrganizationEvent_GetInstallation(tt *testing.T) {
 	o := &OrganizationEvent{}
 	o.GetInstallation()
@@ -14799,16 +14576,6 @@ func TestOrganizationInstallations_GetTotalCount(tt *testing.T) {
 	o.GetTotalCount()
 	o = nil
 	o.GetTotalCount()
-}
-
-func TestOrgBlockEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	o := &OrgBlockEvent{Action: &zeroValue}
-	o.GetAction()
-	o = &OrgBlockEvent{}
-	o.GetAction()
-	o = nil
-	o.GetAction()
 }
 
 func TestOrgBlockEvent_GetBlockedUser(tt *testing.T) {
@@ -15116,16 +14883,6 @@ func TestPackage_GetVisibility(tt *testing.T) {
 	p.GetVisibility()
 	p = nil
 	p.GetVisibility()
-}
-
-func TestPackageEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &PackageEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &PackageEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
 }
 
 func TestPackageEvent_GetInstallation(tt *testing.T) {
@@ -16504,16 +16261,6 @@ func TestPersonalAccessTokenRequest_GetTokenLastUsedAt(tt *testing.T) {
 	p.GetTokenLastUsedAt()
 }
 
-func TestPersonalAccessTokenRequestEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &PersonalAccessTokenRequestEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &PersonalAccessTokenRequestEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
-}
-
 func TestPersonalAccessTokenRequestEvent_GetInstallation(tt *testing.T) {
 	p := &PersonalAccessTokenRequestEvent{}
 	p.GetInstallation()
@@ -17074,16 +16821,6 @@ func TestProjectCardChange_GetNote(tt *testing.T) {
 	p.GetNote()
 }
 
-func TestProjectCardEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &ProjectCardEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &ProjectCardEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
-}
-
 func TestProjectCardEvent_GetAfterID(tt *testing.T) {
 	var zeroValue int64
 	p := &ProjectCardEvent{AfterID: &zeroValue}
@@ -17277,16 +17014,6 @@ func TestProjectColumnChange_GetName(tt *testing.T) {
 	p.GetName()
 }
 
-func TestProjectColumnEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &ProjectColumnEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &ProjectColumnEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
-}
-
 func TestProjectColumnEvent_GetAfterID(tt *testing.T) {
 	var zeroValue int64
 	p := &ProjectColumnEvent{AfterID: &zeroValue}
@@ -17347,16 +17074,6 @@ func TestProjectColumnName_GetFrom(tt *testing.T) {
 	p.GetFrom()
 	p = nil
 	p.GetFrom()
-}
-
-func TestProjectEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &ProjectEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &ProjectEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
 }
 
 func TestProjectEvent_GetChanges(tt *testing.T) {
@@ -17609,16 +17326,6 @@ func TestProjectsV2_GetUpdatedAt(tt *testing.T) {
 	p.GetUpdatedAt()
 }
 
-func TestProjectV2Event_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &ProjectV2Event{Action: &zeroValue}
-	p.GetAction()
-	p = &ProjectV2Event{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
-}
-
 func TestProjectV2Event_GetInstallation(tt *testing.T) {
 	p := &ProjectV2Event{}
 	p.GetInstallation()
@@ -17739,16 +17446,6 @@ func TestProjectV2ItemChange_GetArchivedAt(tt *testing.T) {
 	p.GetArchivedAt()
 	p = nil
 	p.GetArchivedAt()
-}
-
-func TestProjectV2ItemEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &ProjectV2ItemEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &ProjectV2ItemEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
 }
 
 func TestProjectV2ItemEvent_GetChanges(tt *testing.T) {
@@ -18955,16 +18652,6 @@ func TestPullRequestComment_GetUser(tt *testing.T) {
 	p.GetUser()
 }
 
-func TestPullRequestEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &PullRequestEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &PullRequestEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
-}
-
 func TestPullRequestEvent_GetAfter(tt *testing.T) {
 	var zeroValue string
 	p := &PullRequestEvent{After: &zeroValue}
@@ -19249,16 +18936,6 @@ func TestPullRequestReview_GetUser(tt *testing.T) {
 	p.GetUser()
 }
 
-func TestPullRequestReviewCommentEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &PullRequestReviewCommentEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &PullRequestReviewCommentEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
-}
-
 func TestPullRequestReviewCommentEvent_GetChanges(tt *testing.T) {
 	p := &PullRequestReviewCommentEvent{}
 	p.GetChanges()
@@ -19316,16 +18993,6 @@ func TestPullRequestReviewDismissalRequest_GetMessage(tt *testing.T) {
 	p.GetMessage()
 	p = nil
 	p.GetMessage()
-}
-
-func TestPullRequestReviewEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &PullRequestReviewEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &PullRequestReviewEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
 }
 
 func TestPullRequestReviewEvent_GetInstallation(tt *testing.T) {
@@ -19502,16 +19169,6 @@ func TestPullRequestReviewsEnforcementUpdate_GetRequireLastPushApproval(tt *test
 	p.GetRequireLastPushApproval()
 }
 
-func TestPullRequestReviewThreadEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &PullRequestReviewThreadEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &PullRequestReviewThreadEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
-}
-
 func TestPullRequestReviewThreadEvent_GetInstallation(tt *testing.T) {
 	p := &PullRequestReviewThreadEvent{}
 	p.GetInstallation()
@@ -19552,16 +19209,6 @@ func TestPullRequestReviewThreadEvent_GetThread(tt *testing.T) {
 	p.GetThread()
 	p = nil
 	p.GetThread()
-}
-
-func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	p := &PullRequestTargetEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &PullRequestTargetEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
 }
 
 func TestPullRequestTargetEvent_GetAfter(tt *testing.T) {
@@ -20756,16 +20403,6 @@ func TestReleaseAsset_GetURL(tt *testing.T) {
 	r.GetURL()
 	r = nil
 	r.GetURL()
-}
-
-func TestReleaseEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	r := &ReleaseEvent{Action: &zeroValue}
-	r.GetAction()
-	r = &ReleaseEvent{}
-	r.GetAction()
-	r = nil
-	r.GetAction()
 }
 
 func TestReleaseEvent_GetInstallation(tt *testing.T) {
@@ -22624,16 +22261,6 @@ func TestRepositoryDispatchEvent_GetSender(tt *testing.T) {
 	r.GetSender()
 }
 
-func TestRepositoryEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	r := &RepositoryEvent{Action: &zeroValue}
-	r.GetAction()
-	r = &RepositoryEvent{}
-	r.GetAction()
-	r = nil
-	r.GetAction()
-}
-
 func TestRepositoryEvent_GetChanges(tt *testing.T) {
 	r := &RepositoryEvent{}
 	r.GetChanges()
@@ -23294,16 +22921,6 @@ func TestRepositoryVulnerabilityAlert_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 	r = nil
 	r.GetSeverity()
-}
-
-func TestRepositoryVulnerabilityAlertEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	r := &RepositoryVulnerabilityAlertEvent{Action: &zeroValue}
-	r.GetAction()
-	r = &RepositoryVulnerabilityAlertEvent{}
-	r.GetAction()
-	r = nil
-	r.GetAction()
 }
 
 func TestRepositoryVulnerabilityAlertEvent_GetAlert(tt *testing.T) {
@@ -24759,16 +24376,6 @@ func TestSecretScanningAlert_GetURL(tt *testing.T) {
 	s.GetURL()
 }
 
-func TestSecretScanningAlertEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	s := &SecretScanningAlertEvent{Action: &zeroValue}
-	s.GetAction()
-	s = &SecretScanningAlertEvent{}
-	s.GetAction()
-	s = nil
-	s.GetAction()
-}
-
 func TestSecretScanningAlertEvent_GetAlert(tt *testing.T) {
 	s := &SecretScanningAlertEvent{}
 	s.GetAlert()
@@ -25111,16 +24718,6 @@ func TestSecurityAdvisory_GetWithdrawnAt(tt *testing.T) {
 	s.GetWithdrawnAt()
 	s = nil
 	s.GetWithdrawnAt()
-}
-
-func TestSecurityAdvisoryEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	s := &SecurityAdvisoryEvent{Action: &zeroValue}
-	s.GetAction()
-	s = &SecurityAdvisoryEvent{}
-	s.GetAction()
-	s = nil
-	s.GetAction()
 }
 
 func TestSecurityAdvisoryEvent_GetEnterprise(tt *testing.T) {
@@ -25498,16 +25095,6 @@ func TestSSHSigningKey_GetTitle(tt *testing.T) {
 	s.GetTitle()
 	s = nil
 	s.GetTitle()
-}
-
-func TestStarEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	s := &StarEvent{Action: &zeroValue}
-	s.GetAction()
-	s = &StarEvent{}
-	s.GetAction()
-	s = nil
-	s.GetAction()
 }
 
 func TestStarEvent_GetInstallation(tt *testing.T) {
@@ -26337,16 +25924,6 @@ func TestTeamDiscussion_GetURL(tt *testing.T) {
 	t.GetURL()
 	t = nil
 	t.GetURL()
-}
-
-func TestTeamEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	t := &TeamEvent{Action: &zeroValue}
-	t.GetAction()
-	t = &TeamEvent{}
-	t.GetAction()
-	t = nil
-	t.GetAction()
 }
 
 func TestTeamEvent_GetChanges(tt *testing.T) {
@@ -28028,16 +27605,6 @@ func TestUserEmail_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 }
 
-func TestUserEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	u := &UserEvent{Action: &zeroValue}
-	u.GetAction()
-	u = &UserEvent{}
-	u.GetAction()
-	u = nil
-	u.GetAction()
-}
-
 func TestUserEvent_GetEnterprise(tt *testing.T) {
 	u := &UserEvent{}
 	u.GetEnterprise()
@@ -28394,16 +27961,6 @@ func TestVulnerabilityPackage_GetName(tt *testing.T) {
 	v.GetName()
 	v = nil
 	v.GetName()
-}
-
-func TestWatchEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	w := &WatchEvent{Action: &zeroValue}
-	w.GetAction()
-	w = &WatchEvent{}
-	w.GetAction()
-	w = nil
-	w.GetAction()
 }
 
 func TestWatchEvent_GetInstallation(tt *testing.T) {
@@ -28862,16 +28419,6 @@ func TestWorkflowJob_GetWorkflowName(tt *testing.T) {
 	w.GetWorkflowName()
 }
 
-func TestWorkflowJobEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	w := &WorkflowJobEvent{Action: &zeroValue}
-	w.GetAction()
-	w = &WorkflowJobEvent{}
-	w.GetAction()
-	w = nil
-	w.GetAction()
-}
-
 func TestWorkflowJobEvent_GetInstallation(tt *testing.T) {
 	w := &WorkflowJobEvent{}
 	w.GetInstallation()
@@ -29240,16 +28787,6 @@ func TestWorkflowRunBill_GetTotalMS(tt *testing.T) {
 	w.GetTotalMS()
 	w = nil
 	w.GetTotalMS()
-}
-
-func TestWorkflowRunEvent_GetAction(tt *testing.T) {
-	var zeroValue string
-	w := &WorkflowRunEvent{Action: &zeroValue}
-	w.GetAction()
-	w = &WorkflowRunEvent{}
-	w.GetAction()
-	w = nil
-	w.GetAction()
 }
 
 func TestWorkflowRunEvent_GetInstallation(tt *testing.T) {

@@ -1806,12 +1806,12 @@ func (b *BranchProtectionRule) GetUpdatedAt() Timestamp {
 	return *b.UpdatedAt
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (b *BranchProtectionRuleEvent) GetAction() string {
-	if b == nil || b.Action == nil {
-		return ""
+// GetAction returns the Action field.
+func (b *BranchProtectionRuleEvent) GetAction() *BranchProtectionRuleEventAction {
+	if b == nil {
+		return nil
 	}
-	return *b.Action
+	return b.Action
 }
 
 // GetChanges returns the Changes field.
@@ -2078,14 +2078,6 @@ func (c *CheckRunAnnotation) GetTitle() string {
 	return *c.Title
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (c *CheckRunEvent) GetAction() string {
-	if c == nil || c.Action == nil {
-		return ""
-	}
-	return *c.Action
-}
-
 // GetCheckRun returns the CheckRun field.
 func (c *CheckRunEvent) GetCheckRun() *CheckRun {
 	if c == nil {
@@ -2310,14 +2302,6 @@ func (c *CheckSuite) GetURL() string {
 	return *c.URL
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (c *CheckSuiteEvent) GetAction() string {
-	if c == nil || c.Action == nil {
-		return ""
-	}
-	return *c.Action
-}
-
 // GetCheckSuite returns the CheckSuite field.
 func (c *CheckSuiteEvent) GetCheckSuite() *CheckSuite {
 	if c == nil {
@@ -2524,14 +2508,6 @@ func (c *CodeResult) GetSHA() string {
 		return ""
 	}
 	return *c.SHA
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (c *CodeScanningAlertEvent) GetAction() string {
-	if c == nil || c.Action == nil {
-		return ""
-	}
-	return *c.Action
 }
 
 // GetAlert returns the Alert field.
@@ -3332,14 +3308,6 @@ func (c *CommitAuthor) GetName() string {
 		return ""
 	}
 	return *c.Name
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (c *CommitCommentEvent) GetAction() string {
-	if c == nil || c.Action == nil {
-		return ""
-	}
-	return *c.Action
 }
 
 // GetComment returns the Comment field.
@@ -5030,14 +4998,6 @@ func (d *DependabotAlert) GetURL() string {
 	return *d.URL
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (d *DependabotAlertEvent) GetAction() string {
-	if d == nil || d.Action == nil {
-		return ""
-	}
-	return *d.Action
-}
-
 // GetAlert returns the Alert field.
 func (d *DependabotAlertEvent) GetAlert() *DependabotAlert {
 	if d == nil {
@@ -5204,14 +5164,6 @@ func (d *Dependency) GetScope() string {
 		return ""
 	}
 	return *d.Scope
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (d *DeployKeyEvent) GetAction() string {
-	if d == nil || d.Action == nil {
-		return ""
-	}
-	return *d.Action
 }
 
 // GetInstallation returns the Installation field.
@@ -5468,14 +5420,6 @@ func (d *DeploymentEvent) GetWorkflowRun() *WorkflowRun {
 		return nil
 	}
 	return d.WorkflowRun
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (d *DeploymentProtectionRuleEvent) GetAction() string {
-	if d == nil || d.Action == nil {
-		return ""
-	}
-	return *d.Action
 }
 
 // GetDeployment returns the Deployment field.
@@ -6150,14 +6094,6 @@ func (d *DiscussionComment) GetURL() string {
 	return *d.URL
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (d *DiscussionCommentEvent) GetAction() string {
-	if d == nil || d.Action == nil {
-		return ""
-	}
-	return *d.Action
-}
-
 // GetComment returns the Comment field.
 func (d *DiscussionCommentEvent) GetComment() *CommentDiscussion {
 	if d == nil {
@@ -6204,14 +6140,6 @@ func (d *DiscussionCommentEvent) GetSender() *User {
 		return nil
 	}
 	return d.Sender
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (d *DiscussionEvent) GetAction() string {
-	if d == nil || d.Action == nil {
-		return ""
-	}
-	return *d.Action
 }
 
 // GetDiscussion returns the Discussion field.
@@ -7508,14 +7436,6 @@ func (g *GistStats) GetTotalGists() int {
 		return 0
 	}
 	return *g.TotalGists
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (g *GitHubAppAuthorizationEvent) GetAction() string {
-	if g == nil || g.Action == nil {
-		return ""
-	}
-	return *g.Action
 }
 
 // GetInstallation returns the Installation field.
@@ -8878,14 +8798,6 @@ func (i *InstallationPermissions) GetWorkflows() string {
 	return *i.Workflows
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (i *InstallationRepositoriesEvent) GetAction() string {
-	if i == nil || i.Action == nil {
-		return ""
-	}
-	return *i.Action
-}
-
 // GetInstallation returns the Installation field.
 func (i *InstallationRepositoriesEvent) GetInstallation() *Installation {
 	if i == nil {
@@ -8972,14 +8884,6 @@ func (i *InstallationTargetEvent) GetAccount() *User {
 		return nil
 	}
 	return i.Account
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (i *InstallationTargetEvent) GetAction() string {
-	if i == nil || i.Action == nil {
-		return ""
-	}
-	return *i.Action
 }
 
 // GetChanges returns the Changes field.
@@ -9494,14 +9398,6 @@ func (i *IssueComment) GetUser() *User {
 	return i.User
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (i *IssueCommentEvent) GetAction() string {
-	if i == nil || i.Action == nil {
-		return ""
-	}
-	return *i.Action
-}
-
 // GetChanges returns the Changes field.
 func (i *IssueCommentEvent) GetChanges() *EditChange {
 	if i == nil {
@@ -9966,14 +9862,6 @@ func (i *IssueRequest) GetTitle() string {
 	return *i.Title
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (i *IssuesEvent) GetAction() string {
-	if i == nil || i.Action == nil {
-		return ""
-	}
-	return *i.Action
-}
-
 // GetAssignee returns the Assignee field.
 func (i *IssuesEvent) GetAssignee() *User {
 	if i == nil {
@@ -10236,14 +10124,6 @@ func (l *Label) GetURL() string {
 		return ""
 	}
 	return *l.URL
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (l *LabelEvent) GetAction() string {
-	if l == nil || l.Action == nil {
-		return ""
-	}
-	return *l.Action
 }
 
 // GetChanges returns the Changes field.
@@ -11142,14 +11022,6 @@ func (m *MarketplacePurchaseAccount) GetURL() string {
 	return *m.URL
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (m *MarketplacePurchaseEvent) GetAction() string {
-	if m == nil || m.Action == nil {
-		return ""
-	}
-	return *m.Action
-}
-
 // GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
 func (m *MarketplacePurchaseEvent) GetEffectiveDate() Timestamp {
 	if m == nil || m.EffectiveDate == nil {
@@ -11204,14 +11076,6 @@ func (m *Match) GetText() string {
 		return ""
 	}
 	return *m.Text
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (m *MemberEvent) GetAction() string {
-	if m == nil || m.Action == nil {
-		return ""
-	}
-	return *m.Action
 }
 
 // GetInstallation returns the Installation field.
@@ -11302,14 +11166,6 @@ func (m *Membership) GetUser() *User {
 	return m.User
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (m *MembershipEvent) GetAction() string {
-	if m == nil || m.Action == nil {
-		return ""
-	}
-	return *m.Action
-}
-
 // GetInstallation returns the Installation field.
 func (m *MembershipEvent) GetInstallation() *Installation {
 	if m == nil {
@@ -11398,14 +11254,6 @@ func (m *MergeGroup) GetHeadSHA() string {
 	return *m.HeadSHA
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (m *MergeGroupEvent) GetAction() string {
-	if m == nil || m.Action == nil {
-		return ""
-	}
-	return *m.Action
-}
-
 // GetInstallation returns the Installation field.
 func (m *MergeGroupEvent) GetInstallation() *Installation {
 	if m == nil {
@@ -11452,14 +11300,6 @@ func (m *Message) GetText() string {
 		return ""
 	}
 	return *m.Text
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (m *MetaEvent) GetAction() string {
-	if m == nil || m.Action == nil {
-		return ""
-	}
-	return *m.Action
 }
 
 // GetHook returns the Hook field.
@@ -11748,14 +11588,6 @@ func (m *Milestone) GetURL() string {
 		return ""
 	}
 	return *m.URL
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (m *MilestoneEvent) GetAction() string {
-	if m == nil || m.Action == nil {
-		return ""
-	}
-	return *m.Action
 }
 
 // GetChanges returns the Changes field.
@@ -12598,14 +12430,6 @@ func (o *OrganizationCustomRepoRoles) GetTotalCount() int {
 	return *o.TotalCount
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (o *OrganizationEvent) GetAction() string {
-	if o == nil || o.Action == nil {
-		return ""
-	}
-	return *o.Action
-}
-
 // GetInstallation returns the Installation field.
 func (o *OrganizationEvent) GetInstallation() *Installation {
 	if o == nil {
@@ -12652,14 +12476,6 @@ func (o *OrganizationInstallations) GetTotalCount() int {
 		return 0
 	}
 	return *o.TotalCount
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (o *OrgBlockEvent) GetAction() string {
-	if o == nil || o.Action == nil {
-		return ""
-	}
-	return *o.Action
 }
 
 // GetBlockedUser returns the BlockedUser field.
@@ -12932,14 +12748,6 @@ func (p *Package) GetVisibility() string {
 		return ""
 	}
 	return *p.Visibility
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *PackageEvent) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
 }
 
 // GetInstallation returns the Installation field.
@@ -14110,14 +13918,6 @@ func (p *PersonalAccessTokenRequest) GetTokenLastUsedAt() Timestamp {
 	return *p.TokenLastUsedAt
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *PersonalAccessTokenRequestEvent) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
-}
-
 // GetInstallation returns the Installation field.
 func (p *PersonalAccessTokenRequestEvent) GetInstallation() *Installation {
 	if p == nil {
@@ -14614,14 +14414,6 @@ func (p *ProjectCardChange) GetNote() *ProjectCardNote {
 	return p.Note
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *ProjectCardEvent) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
-}
-
 // GetAfterID returns the AfterID field if it's non-nil, zero value otherwise.
 func (p *ProjectCardEvent) GetAfterID() int64 {
 	if p == nil || p.AfterID == nil {
@@ -14798,14 +14590,6 @@ func (p *ProjectColumnChange) GetName() *ProjectColumnName {
 	return p.Name
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *ProjectColumnEvent) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
-}
-
 // GetAfterID returns the AfterID field if it's non-nil, zero value otherwise.
 func (p *ProjectColumnEvent) GetAfterID() int64 {
 	if p == nil || p.AfterID == nil {
@@ -14868,14 +14652,6 @@ func (p *ProjectColumnName) GetFrom() string {
 		return ""
 	}
 	return *p.From
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *ProjectEvent) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
 }
 
 // GetChanges returns the Changes field.
@@ -15102,14 +14878,6 @@ func (p *ProjectsV2) GetUpdatedAt() Timestamp {
 	return *p.UpdatedAt
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *ProjectV2Event) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
-}
-
 // GetInstallation returns the Installation field.
 func (p *ProjectV2Event) GetInstallation() *Installation {
 	if p == nil {
@@ -15220,14 +14988,6 @@ func (p *ProjectV2ItemChange) GetArchivedAt() *ArchivedAt {
 		return nil
 	}
 	return p.ArchivedAt
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *ProjectV2ItemEvent) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
 }
 
 // GetChanges returns the Changes field.
@@ -16318,14 +16078,6 @@ func (p *PullRequestComment) GetUser() *User {
 	return p.User
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *PullRequestEvent) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
-}
-
 // GetAfter returns the After field if it's non-nil, zero value otherwise.
 func (p *PullRequestEvent) GetAfter() string {
 	if p == nil || p.After == nil {
@@ -16582,14 +16334,6 @@ func (p *PullRequestReview) GetUser() *User {
 	return p.User
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *PullRequestReviewCommentEvent) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
-}
-
 // GetChanges returns the Changes field.
 func (p *PullRequestReviewCommentEvent) GetChanges() *EditChange {
 	if p == nil {
@@ -16652,14 +16396,6 @@ func (p *PullRequestReviewDismissalRequest) GetMessage() string {
 		return ""
 	}
 	return *p.Message
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *PullRequestReviewEvent) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
 }
 
 // GetInstallation returns the Installation field.
@@ -16830,14 +16566,6 @@ func (p *PullRequestReviewsEnforcementUpdate) GetRequireLastPushApproval() bool 
 	return *p.RequireLastPushApproval
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *PullRequestReviewThreadEvent) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
-}
-
 // GetInstallation returns the Installation field.
 func (p *PullRequestReviewThreadEvent) GetInstallation() *Installation {
 	if p == nil {
@@ -16884,14 +16612,6 @@ func (p *PullRequestReviewThreadEvent) GetThread() *PullRequestThread {
 		return nil
 	}
 	return p.Thread
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (p *PullRequestTargetEvent) GetAction() string {
-	if p == nil || p.Action == nil {
-		return ""
-	}
-	return *p.Action
 }
 
 // GetAfter returns the After field if it's non-nil, zero value otherwise.
@@ -17924,14 +17644,6 @@ func (r *ReleaseAsset) GetURL() string {
 		return ""
 	}
 	return *r.URL
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (r *ReleaseEvent) GetAction() string {
-	if r == nil || r.Action == nil {
-		return ""
-	}
-	return *r.Action
 }
 
 // GetInstallation returns the Installation field.
@@ -19486,14 +19198,6 @@ func (r *RepositoryDispatchEvent) GetSender() *User {
 	return r.Sender
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (r *RepositoryEvent) GetAction() string {
-	if r == nil || r.Action == nil {
-		return ""
-	}
-	return *r.Action
-}
-
 // GetChanges returns the Changes field.
 func (r *RepositoryEvent) GetChanges() *EditChange {
 	if r == nil {
@@ -20060,14 +19764,6 @@ func (r *RepositoryVulnerabilityAlert) GetSeverity() string {
 		return ""
 	}
 	return *r.Severity
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (r *RepositoryVulnerabilityAlertEvent) GetAction() string {
-	if r == nil || r.Action == nil {
-		return ""
-	}
-	return *r.Action
 }
 
 // GetAlert returns the Alert field.
@@ -21278,14 +20974,6 @@ func (s *SecretScanningAlert) GetURL() string {
 	return *s.URL
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlertEvent) GetAction() string {
-	if s == nil || s.Action == nil {
-		return ""
-	}
-	return *s.Action
-}
-
 // GetAlert returns the Alert field.
 func (s *SecretScanningAlertEvent) GetAlert() *SecretScanningAlert {
 	if s == nil {
@@ -21588,14 +21276,6 @@ func (s *SecurityAdvisory) GetWithdrawnAt() Timestamp {
 		return Timestamp{}
 	}
 	return *s.WithdrawnAt
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (s *SecurityAdvisoryEvent) GetAction() string {
-	if s == nil || s.Action == nil {
-		return ""
-	}
-	return *s.Action
 }
 
 // GetEnterprise returns the Enterprise field.
@@ -21948,14 +21628,6 @@ func (s *SSHSigningKey) GetTitle() string {
 		return ""
 	}
 	return *s.Title
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (s *StarEvent) GetAction() string {
-	if s == nil || s.Action == nil {
-		return ""
-	}
-	return *s.Action
 }
 
 // GetInstallation returns the Installation field.
@@ -22684,14 +22356,6 @@ func (t *TeamDiscussion) GetURL() string {
 		return ""
 	}
 	return *t.URL
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (t *TeamEvent) GetAction() string {
-	if t == nil || t.Action == nil {
-		return ""
-	}
-	return *t.Action
 }
 
 // GetChanges returns the Changes field.
@@ -24102,14 +23766,6 @@ func (u *UserEmail) GetVisibility() string {
 	return *u.Visibility
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (u *UserEvent) GetAction() string {
-	if u == nil || u.Action == nil {
-		return ""
-	}
-	return *u.Action
-}
-
 // GetEnterprise returns the Enterprise field.
 func (u *UserEvent) GetEnterprise() *Enterprise {
 	if u == nil {
@@ -24404,14 +24060,6 @@ func (v *VulnerabilityPackage) GetName() string {
 		return ""
 	}
 	return *v.Name
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (w *WatchEvent) GetAction() string {
-	if w == nil || w.Action == nil {
-		return ""
-	}
-	return *w.Action
 }
 
 // GetInstallation returns the Installation field.
@@ -24798,14 +24446,6 @@ func (w *WorkflowJob) GetWorkflowName() string {
 	return *w.WorkflowName
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (w *WorkflowJobEvent) GetAction() string {
-	if w == nil || w.Action == nil {
-		return ""
-	}
-	return *w.Action
-}
-
 // GetInstallation returns the Installation field.
 func (w *WorkflowJobEvent) GetInstallation() *Installation {
 	if w == nil {
@@ -25124,14 +24764,6 @@ func (w *WorkflowRunBill) GetTotalMS() int64 {
 		return 0
 	}
 	return *w.TotalMS
-}
-
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (w *WorkflowRunEvent) GetAction() string {
-	if w == nil || w.Action == nil {
-		return ""
-	}
-	return *w.Action
 }
 
 // GetInstallation returns the Installation field.
