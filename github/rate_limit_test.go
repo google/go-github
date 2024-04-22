@@ -27,8 +27,9 @@ func TestRateLimits_String(t *testing.T) {
 		SCIM:                      &Rate{},
 		DependencySnapshots:       &Rate{},
 		CodeSearch:                &Rate{},
+		AuditLog:                  &Rate{},
 	}
-	want := `github.RateLimits{Core:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, Search:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, GraphQL:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, IntegrationManifest:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, SourceImport:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, CodeScanningUpload:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, ActionsRunnerRegistration:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, SCIM:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, DependencySnapshots:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, CodeSearch:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}}`
+	want := `github.RateLimits{Core:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, Search:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, GraphQL:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, IntegrationManifest:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, SourceImport:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, CodeScanningUpload:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, ActionsRunnerRegistration:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, SCIM:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, DependencySnapshots:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, CodeSearch:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, AuditLog:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}}`
 	if got := v.String(); got != want {
 		t.Errorf("RateLimits.String = %v, want %v", got, want)
 	}
@@ -50,7 +51,8 @@ func TestRateLimits(t *testing.T) {
 			"actions_runner_registration": {"limit":8,"remaining":7,"reset":1372700879},
 			"scim": {"limit":9,"remaining":8,"reset":1372700880},
 			"dependency_snapshots": {"limit":10,"remaining":9,"reset":1372700881},
-			"code_search": {"limit":11,"remaining":10,"reset":1372700882}
+			"code_search": {"limit":11,"remaining":10,"reset":1372700882},
+			"audit_log": {"limit": 12,"remaining":11,"reset":1372700883}
 		}}`)
 	})
 
@@ -111,53 +113,62 @@ func TestRateLimits(t *testing.T) {
 			Remaining: 10,
 			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 2, 0, time.UTC).Local()},
 		},
+		AuditLog: &Rate{
+			Limit:     12,
+			Remaining: 11,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 3, 0, time.UTC).Local()},
+		},
 	}
 	if !cmp.Equal(rate, want) {
 		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
 	}
 	tests := []struct {
-		category rateLimitCategory
+		category RateLimitCategory
 		rate     *Rate
 	}{
 		{
-			category: coreCategory,
+			category: CoreCategory,
 			rate:     want.Core,
 		},
 		{
-			category: searchCategory,
+			category: SearchCategory,
 			rate:     want.Search,
 		},
 		{
-			category: graphqlCategory,
+			category: GraphqlCategory,
 			rate:     want.GraphQL,
 		},
 		{
-			category: integrationManifestCategory,
+			category: IntegrationManifestCategory,
 			rate:     want.IntegrationManifest,
 		},
 		{
-			category: sourceImportCategory,
+			category: SourceImportCategory,
 			rate:     want.SourceImport,
 		},
 		{
-			category: codeScanningUploadCategory,
+			category: CodeScanningUploadCategory,
 			rate:     want.CodeScanningUpload,
 		},
 		{
-			category: actionsRunnerRegistrationCategory,
+			category: ActionsRunnerRegistrationCategory,
 			rate:     want.ActionsRunnerRegistration,
 		},
 		{
-			category: scimCategory,
+			category: ScimCategory,
 			rate:     want.SCIM,
 		},
 		{
-			category: dependencySnapshotsCategory,
+			category: DependencySnapshotsCategory,
 			rate:     want.DependencySnapshots,
 		},
 		{
-			category: codeSearchCategory,
+			category: CodeSearchCategory,
 			rate:     want.CodeSearch,
+		},
+		{
+			category: AuditLogCategory,
+			rate:     want.AuditLog,
 		},
 	}
 
@@ -185,7 +196,7 @@ func TestRateLimits_overQuota(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	client.rateLimits[coreCategory] = Rate{
+	client.rateLimits[CoreCategory] = Rate{
 		Limit:     1,
 		Remaining: 0,
 		Reset:     Timestamp{time.Now().Add(time.Hour).Local()},
@@ -201,7 +212,8 @@ func TestRateLimits_overQuota(t *testing.T) {
 			"actions_runner_registration": {"limit":8,"remaining":7,"reset":1372700879},
 			"scim": {"limit":9,"remaining":8,"reset":1372700880},
 			"dependency_snapshots": {"limit":10,"remaining":9,"reset":1372700881},
-			"code_search": {"limit":11,"remaining":10,"reset":1372700882}
+			"code_search": {"limit":11,"remaining":10,"reset":1372700882},
+			"audit_log": {"limit":12,"remaining":11,"reset":1372700883}
 		}}`)
 	})
 
@@ -262,54 +274,63 @@ func TestRateLimits_overQuota(t *testing.T) {
 			Remaining: 10,
 			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 2, 0, time.UTC).Local()},
 		},
+		AuditLog: &Rate{
+			Limit:     12,
+			Remaining: 11,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 3, 0, time.UTC).Local()},
+		},
 	}
 	if !cmp.Equal(rate, want) {
 		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
 	}
 
 	tests := []struct {
-		category rateLimitCategory
+		category RateLimitCategory
 		rate     *Rate
 	}{
 		{
-			category: coreCategory,
+			category: CoreCategory,
 			rate:     want.Core,
 		},
 		{
-			category: searchCategory,
+			category: SearchCategory,
 			rate:     want.Search,
 		},
 		{
-			category: graphqlCategory,
+			category: GraphqlCategory,
 			rate:     want.GraphQL,
 		},
 		{
-			category: integrationManifestCategory,
+			category: IntegrationManifestCategory,
 			rate:     want.IntegrationManifest,
 		},
 		{
-			category: sourceImportCategory,
+			category: SourceImportCategory,
 			rate:     want.SourceImport,
 		},
 		{
-			category: codeScanningUploadCategory,
+			category: CodeScanningUploadCategory,
 			rate:     want.CodeScanningUpload,
 		},
 		{
-			category: actionsRunnerRegistrationCategory,
+			category: ActionsRunnerRegistrationCategory,
 			rate:     want.ActionsRunnerRegistration,
 		},
 		{
-			category: scimCategory,
+			category: ScimCategory,
 			rate:     want.SCIM,
 		},
 		{
-			category: dependencySnapshotsCategory,
+			category: DependencySnapshotsCategory,
 			rate:     want.DependencySnapshots,
 		},
 		{
-			category: codeSearchCategory,
+			category: CodeSearchCategory,
 			rate:     want.CodeSearch,
+		},
+		{
+			category: AuditLogCategory,
+			rate:     want.AuditLog,
 		},
 	}
 	for _, tt := range tests {
@@ -373,6 +394,11 @@ func TestRateLimits_Marshal(t *testing.T) {
 			Remaining: 1,
 			Reset:     Timestamp{referenceTime},
 		},
+		AuditLog: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
 	}
 
 	want := `{
@@ -422,6 +448,11 @@ func TestRateLimits_Marshal(t *testing.T) {
 			"reset": ` + referenceTimeStr + `
 		},
 		"code_search": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		},
+		"audit_log": {
 			"limit": 1,
 			"remaining": 1,
 			"reset": ` + referenceTimeStr + `

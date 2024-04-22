@@ -962,16 +962,17 @@ func TestMilestoneStats_String(t *testing.T) {
 
 func TestNewTeam_String(t *testing.T) {
 	v := NewTeam{
-		Name:         "",
-		Description:  String(""),
-		Maintainers:  []string{""},
-		RepoNames:    []string{""},
-		ParentTeamID: Int64(0),
-		Permission:   String(""),
-		Privacy:      String(""),
-		LDAPDN:       String(""),
+		Name:                "",
+		Description:         String(""),
+		Maintainers:         []string{""},
+		RepoNames:           []string{""},
+		ParentTeamID:        Int64(0),
+		NotificationSetting: String(""),
+		Permission:          String(""),
+		Privacy:             String(""),
+		LDAPDN:              String(""),
 	}
-	want := `github.NewTeam{Name:"", Description:"", Maintainers:[""], RepoNames:[""], ParentTeamID:0, Permission:"", Privacy:"", LDAPDN:""}`
+	want := `github.NewTeam{Name:"", Description:"", Maintainers:[""], RepoNames:[""], ParentTeamID:0, NotificationSetting:"", Permission:"", Privacy:"", LDAPDN:""}`
 	if got := v.String(); got != want {
 		t.Errorf("NewTeam.String = %v, want %v", got, want)
 	}

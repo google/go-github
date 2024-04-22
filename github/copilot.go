@@ -161,8 +161,12 @@ func (s *CopilotService) GetCopilotBilling(ctx context.Context, org string) (*Co
 //meta:operation GET /orgs/{org}/copilot/billing/seats
 func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string, opts *ListOptions) (*ListCopilotSeatsResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/seats", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
-	req, err := s.client.NewRequest("GET", u, opts)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}

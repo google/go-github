@@ -134,7 +134,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	r.Type = RepositoryRule.Type
 
 	switch RepositoryRule.Type {
-	case "creation", "deletion", "required_linear_history", "required_signatures", "non_fast_forward":
+	case "creation", "deletion", "merge_queue", "non_fast_forward", "required_linear_history", "required_signatures":
 		r.Parameters = nil
 	case "update":
 		if RepositoryRule.Parameters == nil {
@@ -204,10 +204,17 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	default:
 		r.Type = ""
 		r.Parameters = nil
-		return fmt.Errorf("RepositoryRule.Type %T is not yet implemented, unable to unmarshal", RepositoryRule.Type)
+		return fmt.Errorf("RepositoryRule.Type %q is not yet implemented, unable to unmarshal (%#v)", RepositoryRule.Type, RepositoryRule)
 	}
 
 	return nil
+}
+
+// NewMergeQueueRule creates a rule to only allow merges via a merge queue.
+func NewMergeQueueRule() (rule *RepositoryRule) {
+	return &RepositoryRule{
+		Type: "merge_queue",
+	}
 }
 
 // NewCreationRule creates a rule to only allow users with bypass permission to create matching refs.
