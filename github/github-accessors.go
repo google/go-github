@@ -11206,12 +11206,68 @@ func (m *Match) GetText() string {
 	return *m.Text
 }
 
+// GetPermission returns the Permission field.
+func (m *MemberChanges) GetPermission() *MemberChangesPermission {
+	if m == nil {
+		return nil
+	}
+	return m.Permission
+}
+
+// GetRoleName returns the RoleName field.
+func (m *MemberChanges) GetRoleName() *MemberChangesRoleName {
+	if m == nil {
+		return nil
+	}
+	return m.RoleName
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (m *MemberChangesPermission) GetFrom() string {
+	if m == nil || m.From == nil {
+		return ""
+	}
+	return *m.From
+}
+
+// GetTo returns the To field if it's non-nil, zero value otherwise.
+func (m *MemberChangesPermission) GetTo() string {
+	if m == nil || m.To == nil {
+		return ""
+	}
+	return *m.To
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (m *MemberChangesRoleName) GetFrom() string {
+	if m == nil || m.From == nil {
+		return ""
+	}
+	return *m.From
+}
+
+// GetTo returns the To field if it's non-nil, zero value otherwise.
+func (m *MemberChangesRoleName) GetTo() string {
+	if m == nil || m.To == nil {
+		return ""
+	}
+	return *m.To
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (m *MemberEvent) GetAction() string {
 	if m == nil || m.Action == nil {
 		return ""
 	}
 	return *m.Action
+}
+
+// GetChanges returns the Changes field.
+func (m *MemberEvent) GetChanges() *MemberChanges {
+	if m == nil {
+		return nil
+	}
+	return m.Changes
 }
 
 // GetInstallation returns the Installation field.
