@@ -13111,6 +13111,60 @@ func TestMatch_GetText(tt *testing.T) {
 	m.GetText()
 }
 
+func TestMemberChanges_GetPermission(tt *testing.T) {
+	m := &MemberChanges{}
+	m.GetPermission()
+	m = nil
+	m.GetPermission()
+}
+
+func TestMemberChanges_GetRoleName(tt *testing.T) {
+	m := &MemberChanges{}
+	m.GetRoleName()
+	m = nil
+	m.GetRoleName()
+}
+
+func TestMemberChangesPermission_GetFrom(tt *testing.T) {
+	var zeroValue string
+	m := &MemberChangesPermission{From: &zeroValue}
+	m.GetFrom()
+	m = &MemberChangesPermission{}
+	m.GetFrom()
+	m = nil
+	m.GetFrom()
+}
+
+func TestMemberChangesPermission_GetTo(tt *testing.T) {
+	var zeroValue string
+	m := &MemberChangesPermission{To: &zeroValue}
+	m.GetTo()
+	m = &MemberChangesPermission{}
+	m.GetTo()
+	m = nil
+	m.GetTo()
+}
+
+func TestMemberChangesRoleName_GetFrom(tt *testing.T) {
+	var zeroValue string
+	m := &MemberChangesRoleName{From: &zeroValue}
+	m.GetFrom()
+	m = &MemberChangesRoleName{}
+	m.GetFrom()
+	m = nil
+	m.GetFrom()
+}
+
+func TestMemberChangesRoleName_GetTo(tt *testing.T) {
+	var zeroValue string
+	m := &MemberChangesRoleName{To: &zeroValue}
+	m.GetTo()
+	m = &MemberChangesRoleName{}
+	m.GetTo()
+	m = nil
+	m.GetTo()
+}
+
 func TestMemberEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	m := &MemberEvent{Action: &zeroValue}
@@ -13119,6 +13173,13 @@ func TestMemberEvent_GetAction(tt *testing.T) {
 	m.GetAction()
 	m = nil
 	m.GetAction()
+}
+
+func TestMemberEvent_GetChanges(tt *testing.T) {
+	m := &MemberEvent{}
+	m.GetChanges()
+	m = nil
+	m.GetChanges()
 }
 
 func TestMemberEvent_GetInstallation(tt *testing.T) {
