@@ -9106,6 +9106,16 @@ func TestMemberEvent_Marshal(t *testing.T) {
 			EventsURL: String("e"),
 			AvatarURL: String("a"),
 		},
+		Changes: &MemberChanges{
+			Permission: &MemberChangesPermission{
+				From: String("f"),
+				To:   String("t"),
+			},
+			RoleName: &MemberChangesRoleName{
+				From: String("f"),
+				To:   String("t"),
+			},
+		},
 		Repo: &Repository{
 			ID:   Int64(1),
 			URL:  String("s"),
@@ -9225,6 +9235,16 @@ func TestMemberEvent_Marshal(t *testing.T) {
 			"url": "u",
 			"events_url": "e",
 			"repos_url": "r"
+		},
+		"changes": {
+			"permission": {
+				"from": "f",
+				"to": "t"
+			},
+			"role_name": {
+				"from": "f",
+				"to": "t"
+			}
 		},
 		"repository": {
 			"id": 1,
