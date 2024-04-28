@@ -2402,3 +2402,22 @@ func (s *RepositoriesService) DisablePrivateReporting(ctx context.Context, owner
 
 	return resp, nil
 }
+
+// IsPrivateReportingEnabled checks if private vulnerability reporting is enabled
+// for the repository and returns a boolean indicating the status.
+//
+// GitHub API docs: https://docs.github.com/rest/repos/repos#check-if-private-vulnerability-reporting-is-enabled-for-a-repository
+//
+//meta:operation GET /repos/{owner}/{repo}/private-vulnerability-reporting
+func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, owner, repo string) (bool, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/private-vulnerability-reporting", owner, repo)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return false, nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	isPrivateReportingEnabled, err := parseBoolResponse(err)
+	return isPrivateReportingEnabled, resp, err
+}

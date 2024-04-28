@@ -4430,3 +4430,36 @@ func TestRepositoriesService_DisablePrivateReporting(t *testing.T) {
 		return client.Repositories.DisablePrivateReporting(ctx, "owner", "repo")
 	})
 }
+
+func TestRepositoriesService_IsPrivateReportingEnabled(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/owner/repo/private-vulnerability-reporting", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	enabled, _, err := client.Repositories.IsPrivateReportingEnabled(ctx, "owner", "repo")
+	if err != nil {
+		t.Errorf("Repositories.IsPrivateReportingEnabled returned error: %v", err)
+	}
+	if want := true; enabled != want {
+		t.Errorf("Repositories.IsPrivateReportingEnabled returned %+v, want %+v", enabled, want)
+	}
+
+	const methodName = "IsPrivateReportingEnabled"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.IsPrivateReportingEnabled(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.IsPrivateReportingEnabled(ctx, "owner", "repo")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
+}
