@@ -5262,6 +5262,14 @@ func (d *DependencyGraphSnapshotCreationData) GetMessage() string {
 	return *d.Message
 }
 
+// GetResult returns the Result field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotCreationData) GetResult() string {
+	if d == nil || d.Result == nil {
+		return ""
+	}
+	return *d.Result
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (d *DependencyGraphSnapshotDetector) GetName() string {
 	if d == nil || d.Name == nil {
@@ -5340,6 +5348,22 @@ func (d *DependencyGraphSnapshotResolvedDependency) GetPackageURL() string {
 		return ""
 	}
 	return *d.PackageURL
+}
+
+// GetRelationship returns the Relationship field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotResolvedDependency) GetRelationship() string {
+	if d == nil || d.Relationship == nil {
+		return ""
+	}
+	return *d.Relationship
+}
+
+// GetScope returns the Scope field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotResolvedDependency) GetScope() string {
+	if d == nil || d.Scope == nil {
+		return ""
+	}
+	return *d.Scope
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.

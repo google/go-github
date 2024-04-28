@@ -48,20 +48,20 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 				Resolved: map[string]*DependencyGraphSnapshotResolvedDependency{
 					"@actions/core": {
 						PackageURL:   String("pkg:/npm/%40actions/core@1.1.9"),
-						Relationship: "direct",
-						Scope:        "runtime",
+						Relationship: String("direct"),
+						Scope:        String("runtime"),
 						Dependencies: []string{"@actions/http-client"},
 					},
 					"@actions/http-client": {
 						PackageURL:   String("pkg:/npm/%40actions/http-client@1.0.7"),
-						Relationship: "indirect",
-						Scope:        "runtime",
+						Relationship: String("indirect"),
+						Scope:        String("runtime"),
 						Dependencies: []string{"tunnel"},
 					},
 					"tunnel": {
 						PackageURL:   String("pkg:/npm/tunnel@0.0.6"),
-						Relationship: "indirect",
-						Scope:        "runtime",
+						Relationship: String("indirect"),
+						Scope:        String("runtime"),
 					},
 				},
 			},
@@ -77,7 +77,7 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 		ID:        12345,
 		CreatedAt: &Timestamp{time.Date(2022, time.June, 14, 20, 25, 01, 0, time.UTC)},
 		Message:   String("Dependency results for the repo have been successfully updated."),
-		Result:    "SUCCESS",
+		Result:    String("SUCCESS"),
 	}
 	if !cmp.Equal(snapshotCreationData, want) {
 		t.Errorf("DependencyGraph.CreateSnapshot returned %+v, want %+v", snapshotCreationData, want)

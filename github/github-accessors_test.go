@@ -6176,6 +6176,16 @@ func TestDependencyGraphSnapshotCreationData_GetMessage(tt *testing.T) {
 	d.GetMessage()
 }
 
+func TestDependencyGraphSnapshotCreationData_GetResult(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotCreationData{Result: &zeroValue}
+	d.GetResult()
+	d = &DependencyGraphSnapshotCreationData{}
+	d.GetResult()
+	d = nil
+	d.GetResult()
+}
+
 func TestDependencyGraphSnapshotDetector_GetName(tt *testing.T) {
 	var zeroValue string
 	d := &DependencyGraphSnapshotDetector{Name: &zeroValue}
@@ -6271,6 +6281,26 @@ func TestDependencyGraphSnapshotResolvedDependency_GetPackageURL(tt *testing.T) 
 	d.GetPackageURL()
 	d = nil
 	d.GetPackageURL()
+}
+
+func TestDependencyGraphSnapshotResolvedDependency_GetRelationship(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotResolvedDependency{Relationship: &zeroValue}
+	d.GetRelationship()
+	d = &DependencyGraphSnapshotResolvedDependency{}
+	d.GetRelationship()
+	d = nil
+	d.GetRelationship()
+}
+
+func TestDependencyGraphSnapshotResolvedDependency_GetScope(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotResolvedDependency{Scope: &zeroValue}
+	d.GetScope()
+	d = &DependencyGraphSnapshotResolvedDependency{}
+	d.GetScope()
+	d = nil
+	d.GetScope()
 }
 
 func TestDeployKeyEvent_GetAction(tt *testing.T) {
