@@ -360,7 +360,7 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt
 
 // CreateInstallationTokenListRepos creates a new installation token with a list of all repositories in an installation which is not possible with CreateInstallationToken.
 //
-// differs from CreateInstallationToken by taking InstallationTokenListRepoOptions as a parameter which does not omit RepositoryIDs if that field is nil or an empty array.
+// It differs from CreateInstallationToken by taking InstallationTokenListRepoOptions as a parameter which does not omit RepositoryIDs if that field is nil or an empty array.
 //
 // GitHub API docs: https://docs.github.com/rest/apps/apps#create-an-installation-access-token-for-an-app
 //
