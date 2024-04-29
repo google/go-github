@@ -79,15 +79,15 @@ type DependencyGraphSnapshot struct {
 //
 // GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshotCreationData struct {
-	ID        int        `json:"id"`
-	CreatedAt *Timestamp `json:"created_at"`
-	Message   *string    `json:"message"`
+	ID        int64        `json:"id"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	Message   *string    `json:"message,omitempty"`
 	// Represents the snapshot creation result.
 	// Can have the following values:
 	//   - "SUCCESS": indicates that the snapshot was successfully created and the repository's dependencies were updated.
 	//   - "ACCEPTED": indicates that the snapshot was successfully created, but the repository's dependencies were not updated.
 	//   - "INVALID": indicates that the snapshot was malformed.
-	Result *string `json:"result"`
+	Result *string `json:"result,omitempty"`
 }
 
 // CreateSnapshot creates a new snapshot of a repository's dependencies.
