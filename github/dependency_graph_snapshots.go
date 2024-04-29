@@ -79,7 +79,7 @@ type DependencyGraphSnapshot struct {
 //
 // GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshotCreationData struct {
-	ID        int64        `json:"id"`
+	ID        int64      `json:"id"`
 	CreatedAt *Timestamp `json:"created_at,omitempty"`
 	Message   *string    `json:"message,omitempty"`
 	// Represents the snapshot creation result.
