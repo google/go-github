@@ -10608,6 +10608,13 @@ func TestInstallationToken_GetToken(tt *testing.T) {
 	i.GetToken()
 }
 
+func TestInstallationTokenListRepoOptions_GetPermissions(tt *testing.T) {
+	i := &InstallationTokenListRepoOptions{}
+	i.GetPermissions()
+	i = nil
+	i.GetPermissions()
+}
+
 func TestInstallationTokenOptions_GetPermissions(tt *testing.T) {
 	i := &InstallationTokenOptions{}
 	i.GetPermissions()
