@@ -56,6 +56,20 @@ type InstallationTokenOptions struct {
 	Permissions *InstallationPermissions `json:"permissions,omitempty"`
 }
 
+type InstallationTokenListRepoOptions struct {
+	// The IDs of the repositories that the installation token can access.
+	// Providing repository IDs restricts the access of an installation token to specific repositories.
+	RepositoryIDs []int64 `json:"repository_ids"`
+
+	// The names of the repositories that the installation token can access.
+	// Providing repository names restricts the access of an installation token to specific repositories.
+	Repositories []string `json:"repositories,omitempty"`
+
+	// The permissions granted to the access token.
+	// The permissions object includes the permission names and their access type.
+	Permissions *InstallationPermissions `json:"permissions,omitempty"`
+}
+
 // InstallationPermissions lists the repository and organization permissions for an installation.
 //
 // Permission names taken from:
@@ -328,6 +342,30 @@ func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Respon
 //
 //meta:operation POST /app/installations/{installation_id}/access_tokens
 func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opts *InstallationTokenOptions) (*InstallationToken, *Response, error) {
+	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
+
+	req, err := s.client.NewRequest("POST", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	t := new(InstallationToken)
+	resp, err := s.client.Do(ctx, req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return t, resp, nil
+}
+
+// CreateInstallationTokenListRepos creates a new installation token with a list of all repositories in an installation which is not possible with CreateInstallationToken.
+//
+// It differs from CreateInstallationToken by taking InstallationTokenListRepoOptions as a parameter which does not omit RepositoryIDs if that field is nil or an empty array.
+//
+// GitHub API docs: https://docs.github.com/rest/apps/apps#create-an-installation-access-token-for-an-app
+//
+//meta:operation POST /app/installations/{installation_id}/access_tokens
+func (s *AppsService) CreateInstallationTokenListRepos(ctx context.Context, id int64, opts *InstallationTokenListRepoOptions) (*InstallationToken, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
 	req, err := s.client.NewRequest("POST", u, opts)
