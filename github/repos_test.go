@@ -4441,12 +4441,12 @@ func TestRepositoriesService_IsPrivateReportingEnabled(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	enabled, _, err := client.Repositories.IsPrivateReportingEnabled(ctx, "owner", "repo")
+	disabled, _, err := client.Repositories.IsPrivateReportingEnabled(ctx, "owner", "repo")
 	if err != nil {
 		t.Errorf("Repositories.IsPrivateReportingEnabled returned error: %v", err)
 	}
-	if want := true; enabled != want {
-		t.Errorf("Repositories.IsPrivateReportingEnabled returned %+v, want %+v", enabled, want)
+	if want := false; disabled != want {
+		t.Errorf("Repositories.IsPrivateReportingEnabled returned %+v, want %+v", disabled, want)
 	}
 
 	const methodName = "IsPrivateReportingEnabled"

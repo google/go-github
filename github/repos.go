@@ -2403,6 +2403,11 @@ func (s *RepositoriesService) DisablePrivateReporting(ctx context.Context, owner
 	return resp, nil
 }
 
+// CheckPrivateReporting represents whether private vulnerability reporting is enabled.
+type CheckPrivateReporting struct {
+	Enabled bool `json:"enabled,omitempty"`
+}
+
 // IsPrivateReportingEnabled checks if private vulnerability reporting is enabled
 // for the repository and returns a boolean indicating the status.
 //
@@ -2417,7 +2422,15 @@ func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, own
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
-	isPrivateReportingEnabled, err := parseBoolResponse(err)
-	return isPrivateReportingEnabled, resp, err
+	privateReporting := new(CheckPrivateReporting)
+	resp, err := s.client.Do(ctx, req, privateReporting)
+	if privateReporting.Enabled {
+		return true, resp, nil
+	}
+
+	if err, ok := err.(*ErrorResponse); ok && err.Response.StatusCode == http.StatusNotFound {
+		return false, resp, nil
+	}
+
+	return false, resp, err
 }
