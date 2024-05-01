@@ -188,11 +188,14 @@ func TestActionsService_ListRunners(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":2,"runners":[{"id":23,"name":"MBP","os":"macos","status":"online"},{"id":24,"name":"iMac","os":"macos","status":"offline"}]}`)
+		testFormValues(t, r, values{"name": "MBP", "per_page": "2", "page": "2"})
+		fmt.Fprint(w, `{"total_count":1,"runners":[{"id":23,"name":"MBP","os":"macos","status":"online"}]}`)
 	})
 
-	opts := &ListOptions{Page: 2, PerPage: 2}
+	opts := &ListRunnersOptions{
+		Name:        String("MBP"),
+		ListOptions: ListOptions{Page: 2, PerPage: 2},
+	}
 	ctx := context.Background()
 	runners, _, err := client.Actions.ListRunners(ctx, "o", "r", opts)
 	if err != nil {
@@ -200,10 +203,9 @@ func TestActionsService_ListRunners(t *testing.T) {
 	}
 
 	want := &Runners{
-		TotalCount: 2,
+		TotalCount: 1,
 		Runners: []*Runner{
 			{ID: Int64(23), Name: String("MBP"), OS: String("macos"), Status: String("online")},
-			{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
 		},
 	}
 	if !cmp.Equal(runners, want) {
@@ -413,7 +415,9 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":2,"runners":[{"id":23,"name":"MBP","os":"macos","status":"online"},{"id":24,"name":"iMac","os":"macos","status":"offline"}]}`)
 	})
 
-	opts := &ListOptions{Page: 2, PerPage: 2}
+	opts := &ListRunnersOptions{
+		ListOptions: ListOptions{Page: 2, PerPage: 2},
+	}
 	ctx := context.Background()
 	runners, _, err := client.Actions.ListOrganizationRunners(ctx, "o", opts)
 	if err != nil {

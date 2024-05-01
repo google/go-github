@@ -12588,6 +12588,16 @@ func TestListRepositories_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 }
 
+func TestListRunnersOptions_GetName(tt *testing.T) {
+	var zeroValue string
+	l := &ListRunnersOptions{Name: &zeroValue}
+	l.GetName()
+	l = &ListRunnersOptions{}
+	l.GetName()
+	l = nil
+	l.GetName()
+}
+
 func TestListSCIMProvisionedIdentitiesOptions_GetCount(tt *testing.T) {
 	var zeroValue int
 	l := &ListSCIMProvisionedIdentitiesOptions{Count: &zeroValue}
