@@ -151,12 +151,18 @@ type Runners struct {
 	Runners    []*Runner `json:"runners"`
 }
 
+// ListRunnersOptions specifies the optional parameters to the ListRunners and ListOrganizationRunners methods.
+type ListRunnersOptions struct {
+	Name *string `url:"name,omitempty"`
+	ListOptions
+}
+
 // ListRunners lists all the self-hosted runners for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#list-self-hosted-runners-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runners
-func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, opts *ListOptions) (*Runners, *Response, error) {
+func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, opts *ListRunnersOptions) (*Runners, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -290,7 +296,7 @@ func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/runners
-func (s *ActionsService) ListOrganizationRunners(ctx context.Context, org string, opts *ListOptions) (*Runners, *Response, error) {
+func (s *ActionsService) ListOrganizationRunners(ctx context.Context, org string, opts *ListRunnersOptions) (*Runners, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners", org)
 	u, err := addOptions(u, opts)
 	if err != nil {

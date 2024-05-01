@@ -10766,6 +10766,14 @@ func (l *ListRepositories) GetTotalCount() int {
 	return *l.TotalCount
 }
 
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (l *ListRunnersOptions) GetName() string {
+	if l == nil || l.Name == nil {
+		return ""
+	}
+	return *l.Name
+}
+
 // GetCount returns the Count field if it's non-nil, zero value otherwise.
 func (l *ListSCIMProvisionedIdentitiesOptions) GetCount() int {
 	if l == nil || l.Count == nil {
