@@ -182,7 +182,7 @@ if _, ok := err.(*github.AbuseRateLimitError); ok {
 
 Alternatively, you can block until the rate limit is reset by using the `context.WithValue` method:
 
-````go
+```go
 repos, _, err := client.Repositories.List(context.WithValue(ctx, github.SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "", nil)
 ```
 
