@@ -804,6 +804,7 @@ type requestContext uint8
 
 const (
 	bypassRateLimitCheck requestContext = iota
+	SleepUntilPrimaryRateLimitResetWhenRateLimited
 )
 
 // BareDo sends an API request and lets you handle the api response. If an error
@@ -889,6 +890,15 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 			err = aerr
 		}
 
+		rateLimitError, ok := err.(*RateLimitError)
+		if ok && req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+			if err := sleepUntilResetWithBuffer(req.Context(), rateLimitError.Rate.Reset.Time); err != nil {
+				return response, err
+			}
+			// retry the request once when the rate limit has reset
+			return c.BareDo(context.WithValue(req.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, nil), req)
+		}
+
 		// Update the secondary rate limit if we hit it.
 		rerr, ok := err.(*AbuseRateLimitError)
 		if ok && rerr.RetryAfter != nil {
@@ -950,6 +960,18 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory Rat
 			Header:     make(http.Header),
 			Body:       io.NopCloser(strings.NewReader("")),
 		}
+
+		if req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+			if err := sleepUntilResetWithBuffer(req.Context(), rate.Reset.Time); err == nil {
+				return nil
+			}
+			return &RateLimitError{
+				Rate:     rate,
+				Response: resp,
+				Message:  fmt.Sprintf("Context cancelled while waiting for rate limit to reset until %v, not making remote request.", rate.Reset.Time),
+			}
+		}
+
 		return &RateLimitError{
 			Rate:     rate,
 			Response: resp,
@@ -1512,6 +1534,20 @@ func formatRateReset(d time.Duration) string {
 		return fmt.Sprintf("[rate limit was reset %v ago]", timeString)
 	}
 	return fmt.Sprintf("[rate reset in %v]", timeString)
+}
+
+func sleepUntilResetWithBuffer(ctx context.Context, reset time.Time) error {
+	buffer := time.Second
+	timer := time.NewTimer(time.Until(reset) + buffer)
+	select {
+	case <-ctx.Done():
+		if !timer.Stop() {
+			<-timer.C
+		}
+		return ctx.Err()
+	case <-timer.C:
+	}
+	return nil
 }
 
 // When using roundTripWithOptionalFollowRedirect, note that it
