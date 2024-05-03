@@ -2403,8 +2403,8 @@ func (s *RepositoriesService) DisablePrivateReporting(ctx context.Context, owner
 	return resp, nil
 }
 
-// CheckPrivateReporting represents whether private vulnerability reporting is enabled.
-type CheckPrivateReporting struct {
+// checkPrivateReporting represents whether private vulnerability reporting is enabled.
+type checkPrivateReporting struct {
 	Enabled bool `json:"enabled,omitempty"`
 }
 
@@ -2422,7 +2422,7 @@ func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, own
 		return false, nil, err
 	}
 
-	privateReporting := new(CheckPrivateReporting)
+	privateReporting := new(checkPrivateReporting)
 	resp, err := s.client.Do(ctx, req, privateReporting)
 	if privateReporting.Enabled {
 		return true, resp, nil
