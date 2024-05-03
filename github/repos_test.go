@@ -4437,16 +4437,16 @@ func TestRepositoriesService_IsPrivateReportingEnabled(t *testing.T) {
 
 	mux.HandleFunc("/repos/owner/repo/private-vulnerability-reporting", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		w.WriteHeader(http.StatusNoContent)
+		fmt.Fprint(w, `{"enabled": true}`)
 	})
 
 	ctx := context.Background()
-	disabled, _, err := client.Repositories.IsPrivateReportingEnabled(ctx, "owner", "repo")
+	enabled, _, err := client.Repositories.IsPrivateReportingEnabled(ctx, "owner", "repo")
 	if err != nil {
 		t.Errorf("Repositories.IsPrivateReportingEnabled returned error: %v", err)
 	}
-	if want := false; disabled != want {
-		t.Errorf("Repositories.IsPrivateReportingEnabled returned %+v, want %+v", disabled, want)
+	if want := true; enabled != want {
+		t.Errorf("Repositories.IsPrivateReportingEnabled returned %+v, want %+v", enabled, want)
 	}
 
 	const methodName = "IsPrivateReportingEnabled"
