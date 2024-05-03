@@ -2424,12 +2424,8 @@ func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, own
 
 	privateReporting := new(checkPrivateReporting)
 	resp, err := s.client.Do(ctx, req, privateReporting)
-	return privateReporting.Enabled, resp, err
-		return true, resp, nil
-	}
-
-	if err, ok := err.(*ErrorResponse); ok && err.Response.StatusCode == http.StatusNotFound {
-		return false, resp, nil
+	if privateReporting.Enabled {
+		return privateReporting.Enabled, resp, err
 	}
 
 	return false, resp, err
