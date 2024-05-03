@@ -9063,6 +9063,14 @@ func (i *InstallationToken) GetToken() string {
 }
 
 // GetPermissions returns the Permissions field.
+func (i *InstallationTokenListRepoOptions) GetPermissions() *InstallationPermissions {
+	if i == nil {
+		return nil
+	}
+	return i.Permissions
+}
+
+// GetPermissions returns the Permissions field.
 func (i *InstallationTokenOptions) GetPermissions() *InstallationPermissions {
 	if i == nil {
 		return nil

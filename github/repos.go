@@ -2424,7 +2424,7 @@ func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, own
 
 	privateReporting := new(checkPrivateReporting)
 	resp, err := s.client.Do(ctx, req, privateReporting)
-	if privateReporting.Enabled {
+	return privateReporting.Enabled, resp, err
 		return true, resp, nil
 	}
 
