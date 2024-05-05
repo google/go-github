@@ -5206,6 +5206,166 @@ func (d *Dependency) GetScope() string {
 	return *d.Scope
 }
 
+// GetDetector returns the Detector field.
+func (d *DependencyGraphSnapshot) GetDetector() *DependencyGraphSnapshotDetector {
+	if d == nil {
+		return nil
+	}
+	return d.Detector
+}
+
+// GetJob returns the Job field.
+func (d *DependencyGraphSnapshot) GetJob() *DependencyGraphSnapshotJob {
+	if d == nil {
+		return nil
+	}
+	return d.Job
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshot) GetRef() string {
+	if d == nil || d.Ref == nil {
+		return ""
+	}
+	return *d.Ref
+}
+
+// GetScanned returns the Scanned field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshot) GetScanned() Timestamp {
+	if d == nil || d.Scanned == nil {
+		return Timestamp{}
+	}
+	return *d.Scanned
+}
+
+// GetSha returns the Sha field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshot) GetSha() string {
+	if d == nil || d.Sha == nil {
+		return ""
+	}
+	return *d.Sha
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotCreationData) GetCreatedAt() Timestamp {
+	if d == nil || d.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.CreatedAt
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotCreationData) GetMessage() string {
+	if d == nil || d.Message == nil {
+		return ""
+	}
+	return *d.Message
+}
+
+// GetResult returns the Result field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotCreationData) GetResult() string {
+	if d == nil || d.Result == nil {
+		return ""
+	}
+	return *d.Result
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotDetector) GetName() string {
+	if d == nil || d.Name == nil {
+		return ""
+	}
+	return *d.Name
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotDetector) GetURL() string {
+	if d == nil || d.URL == nil {
+		return ""
+	}
+	return *d.URL
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotDetector) GetVersion() string {
+	if d == nil || d.Version == nil {
+		return ""
+	}
+	return *d.Version
+}
+
+// GetCorrelator returns the Correlator field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotJob) GetCorrelator() string {
+	if d == nil || d.Correlator == nil {
+		return ""
+	}
+	return *d.Correlator
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotJob) GetHTMLURL() string {
+	if d == nil || d.HTMLURL == nil {
+		return ""
+	}
+	return *d.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotJob) GetID() string {
+	if d == nil || d.ID == nil {
+		return ""
+	}
+	return *d.ID
+}
+
+// GetFile returns the File field.
+func (d *DependencyGraphSnapshotManifest) GetFile() *DependencyGraphSnapshotManifestFile {
+	if d == nil {
+		return nil
+	}
+	return d.File
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotManifest) GetName() string {
+	if d == nil || d.Name == nil {
+		return ""
+	}
+	return *d.Name
+}
+
+// GetSourceLocation returns the SourceLocation field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotManifestFile) GetSourceLocation() string {
+	if d == nil || d.SourceLocation == nil {
+		return ""
+	}
+	return *d.SourceLocation
+}
+
+// GetPackageURL returns the PackageURL field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotResolvedDependency) GetPackageURL() string {
+	if d == nil || d.PackageURL == nil {
+		return ""
+	}
+	return *d.PackageURL
+}
+
+// GetRelationship returns the Relationship field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotResolvedDependency) GetRelationship() string {
+	if d == nil || d.Relationship == nil {
+		return ""
+	}
+	return *d.Relationship
+}
+
+// GetScope returns the Scope field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshotResolvedDependency) GetScope() string {
+	if d == nil || d.Scope == nil {
+		return ""
+	}
+	return *d.Scope
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (d *DeployKeyEvent) GetAction() string {
 	if d == nil || d.Action == nil {

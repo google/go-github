@@ -6112,6 +6112,197 @@ func TestDependency_GetScope(tt *testing.T) {
 	d.GetScope()
 }
 
+func TestDependencyGraphSnapshot_GetDetector(tt *testing.T) {
+	d := &DependencyGraphSnapshot{}
+	d.GetDetector()
+	d = nil
+	d.GetDetector()
+}
+
+func TestDependencyGraphSnapshot_GetJob(tt *testing.T) {
+	d := &DependencyGraphSnapshot{}
+	d.GetJob()
+	d = nil
+	d.GetJob()
+}
+
+func TestDependencyGraphSnapshot_GetRef(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshot{Ref: &zeroValue}
+	d.GetRef()
+	d = &DependencyGraphSnapshot{}
+	d.GetRef()
+	d = nil
+	d.GetRef()
+}
+
+func TestDependencyGraphSnapshot_GetScanned(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependencyGraphSnapshot{Scanned: &zeroValue}
+	d.GetScanned()
+	d = &DependencyGraphSnapshot{}
+	d.GetScanned()
+	d = nil
+	d.GetScanned()
+}
+
+func TestDependencyGraphSnapshot_GetSha(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshot{Sha: &zeroValue}
+	d.GetSha()
+	d = &DependencyGraphSnapshot{}
+	d.GetSha()
+	d = nil
+	d.GetSha()
+}
+
+func TestDependencyGraphSnapshotCreationData_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependencyGraphSnapshotCreationData{CreatedAt: &zeroValue}
+	d.GetCreatedAt()
+	d = &DependencyGraphSnapshotCreationData{}
+	d.GetCreatedAt()
+	d = nil
+	d.GetCreatedAt()
+}
+
+func TestDependencyGraphSnapshotCreationData_GetMessage(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotCreationData{Message: &zeroValue}
+	d.GetMessage()
+	d = &DependencyGraphSnapshotCreationData{}
+	d.GetMessage()
+	d = nil
+	d.GetMessage()
+}
+
+func TestDependencyGraphSnapshotCreationData_GetResult(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotCreationData{Result: &zeroValue}
+	d.GetResult()
+	d = &DependencyGraphSnapshotCreationData{}
+	d.GetResult()
+	d = nil
+	d.GetResult()
+}
+
+func TestDependencyGraphSnapshotDetector_GetName(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotDetector{Name: &zeroValue}
+	d.GetName()
+	d = &DependencyGraphSnapshotDetector{}
+	d.GetName()
+	d = nil
+	d.GetName()
+}
+
+func TestDependencyGraphSnapshotDetector_GetURL(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotDetector{URL: &zeroValue}
+	d.GetURL()
+	d = &DependencyGraphSnapshotDetector{}
+	d.GetURL()
+	d = nil
+	d.GetURL()
+}
+
+func TestDependencyGraphSnapshotDetector_GetVersion(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotDetector{Version: &zeroValue}
+	d.GetVersion()
+	d = &DependencyGraphSnapshotDetector{}
+	d.GetVersion()
+	d = nil
+	d.GetVersion()
+}
+
+func TestDependencyGraphSnapshotJob_GetCorrelator(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotJob{Correlator: &zeroValue}
+	d.GetCorrelator()
+	d = &DependencyGraphSnapshotJob{}
+	d.GetCorrelator()
+	d = nil
+	d.GetCorrelator()
+}
+
+func TestDependencyGraphSnapshotJob_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotJob{HTMLURL: &zeroValue}
+	d.GetHTMLURL()
+	d = &DependencyGraphSnapshotJob{}
+	d.GetHTMLURL()
+	d = nil
+	d.GetHTMLURL()
+}
+
+func TestDependencyGraphSnapshotJob_GetID(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotJob{ID: &zeroValue}
+	d.GetID()
+	d = &DependencyGraphSnapshotJob{}
+	d.GetID()
+	d = nil
+	d.GetID()
+}
+
+func TestDependencyGraphSnapshotManifest_GetFile(tt *testing.T) {
+	d := &DependencyGraphSnapshotManifest{}
+	d.GetFile()
+	d = nil
+	d.GetFile()
+}
+
+func TestDependencyGraphSnapshotManifest_GetName(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotManifest{Name: &zeroValue}
+	d.GetName()
+	d = &DependencyGraphSnapshotManifest{}
+	d.GetName()
+	d = nil
+	d.GetName()
+}
+
+func TestDependencyGraphSnapshotManifestFile_GetSourceLocation(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotManifestFile{SourceLocation: &zeroValue}
+	d.GetSourceLocation()
+	d = &DependencyGraphSnapshotManifestFile{}
+	d.GetSourceLocation()
+	d = nil
+	d.GetSourceLocation()
+}
+
+func TestDependencyGraphSnapshotResolvedDependency_GetPackageURL(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotResolvedDependency{PackageURL: &zeroValue}
+	d.GetPackageURL()
+	d = &DependencyGraphSnapshotResolvedDependency{}
+	d.GetPackageURL()
+	d = nil
+	d.GetPackageURL()
+}
+
+func TestDependencyGraphSnapshotResolvedDependency_GetRelationship(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotResolvedDependency{Relationship: &zeroValue}
+	d.GetRelationship()
+	d = &DependencyGraphSnapshotResolvedDependency{}
+	d.GetRelationship()
+	d = nil
+	d.GetRelationship()
+}
+
+func TestDependencyGraphSnapshotResolvedDependency_GetScope(tt *testing.T) {
+	var zeroValue string
+	d := &DependencyGraphSnapshotResolvedDependency{Scope: &zeroValue}
+	d.GetScope()
+	d = &DependencyGraphSnapshotResolvedDependency{}
+	d.GetScope()
+	d = nil
+	d.GetScope()
+}
+
 func TestDeployKeyEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	d := &DeployKeyEvent{Action: &zeroValue}
