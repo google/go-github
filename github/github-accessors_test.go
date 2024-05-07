@@ -6886,6 +6886,16 @@ func TestDeploymentStatus_GetURL(tt *testing.T) {
 	d.GetURL()
 }
 
+func TestDeploymentStatusEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentStatusEvent{Action: &zeroValue}
+	d.GetAction()
+	d = &DeploymentStatusEvent{}
+	d.GetAction()
+	d = nil
+	d.GetAction()
+}
+
 func TestDeploymentStatusEvent_GetDeployment(tt *testing.T) {
 	d := &DeploymentStatusEvent{}
 	d.GetDeployment()

@@ -5878,6 +5878,14 @@ func (d *DeploymentStatus) GetURL() string {
 	return *d.URL
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (d *DeploymentStatusEvent) GetAction() string {
+	if d == nil || d.Action == nil {
+		return ""
+	}
+	return *d.Action
+}
+
 // GetDeployment returns the Deployment field.
 func (d *DeploymentStatusEvent) GetDeployment() *Deployment {
 	if d == nil {

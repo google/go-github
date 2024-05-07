@@ -232,6 +232,7 @@ type DeploymentProtectionRuleEvent struct {
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#deployment_status
 type DeploymentStatusEvent struct {
+	Action           *string           `json:"action,omitempty"`
 	Deployment       *Deployment       `json:"deployment,omitempty"`
 	DeploymentStatus *DeploymentStatus `json:"deployment_status,omitempty"`
 	Repo             *Repository       `json:"repository,omitempty"`
