@@ -126,3 +126,57 @@ func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org, ro
 
 	return resp, nil
 }
+
+// ListTeamsAssignedToOrgRole returns all teams assigned to a specific organization role.
+// In order to list teams assigned to an organization role, the authenticated user must be an organization owner.
+//
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#list-teams-that-are-assigned-to-an-organization-role
+//
+//meta:operation GET /orgs/{org}/organization-roles/{role_id}/teams
+func (s *OrganizationsService) ListTeamsAssignedToOrgRole(ctx context.Context, org string, roleID int64, opts *ListOptions) ([]*Team, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/organization-roles/%v/teams", org, roleID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var teams []*Team
+	resp, err := s.client.Do(ctx, req, &teams)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return teams, resp, nil
+}
+
+// ListUsersAssignedToOrgRole returns all users assigned to a specific organization role.
+// In order to list users assigned to an organization role, the authenticated user must be an organization owner.
+//
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#list-users-that-are-assigned-to-an-organization-role
+//
+//meta:operation GET /orgs/{org}/organization-roles/{role_id}/users
+func (s *OrganizationsService) ListUsersAssignedToOrgRole(ctx context.Context, org string, roleID int64, opts *ListOptions) ([]*User, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/organization-roles/%v/users", org, roleID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var users []*User
+	resp, err := s.client.Do(ctx, req, &users)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return users, resp, nil
+}
