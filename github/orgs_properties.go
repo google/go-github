@@ -15,12 +15,19 @@ type CustomProperty struct {
 	// PropertyName is required for most endpoints except when calling CreateOrUpdateCustomProperty;
 	// where this is sent in the path and thus can be omitted.
 	PropertyName *string `json:"property_name,omitempty"`
-	// Possible values for ValueType are: string, single_select
-	ValueType     string   `json:"value_type"`
-	Required      *bool    `json:"required,omitempty"`
-	DefaultValue  *string  `json:"default_value,omitempty"`
-	Description   *string  `json:"description,omitempty"`
+	// The type of the value for the property. Can be one of: string, single_select.
+	ValueType string `json:"value_type"`
+	// Whether the property is required.
+	Required *bool `json:"required,omitempty"`
+	// Default value of the property.
+	DefaultValue *string `json:"default_value,omitempty"`
+	// Short description of the property.
+	Description *string `json:"description,omitempty"`
+	// An ordered list of the allowed values of the property. The property can have up to 200
+	// allowed values.
 	AllowedValues []string `json:"allowed_values,omitempty"`
+	// Who can edit the values of the property. Can be one of: org_actors, org_and_repo_actors, nil (null).
+	ValuesEditableBy *string `json:"values_editable_by,omitempty"`
 }
 
 // RepoCustomPropertyValue represents a repository custom property value.

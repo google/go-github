@@ -30,7 +30,8 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
           "allowed_values":[
             "production",
             "development"
-          ]
+          ],
+          "values_editable_by": "org_actors"
         },
         {
           "property_name": "service",
@@ -52,12 +53,13 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 
 	want := []*CustomProperty{
 		{
-			PropertyName:  String("name"),
-			ValueType:     "single_select",
-			Required:      Bool(true),
-			DefaultValue:  String("production"),
-			Description:   String("Prod or dev environment"),
-			AllowedValues: []string{"production", "development"},
+			PropertyName:     String("name"),
+			ValueType:        "single_select",
+			Required:         Bool(true),
+			DefaultValue:     String("production"),
+			Description:      String("Prod or dev environment"),
+			AllowedValues:    []string{"production", "development"},
+			ValuesEditableBy: String("org_actors"),
 		},
 		{
 			PropertyName: String("service"),
@@ -162,7 +164,8 @@ func TestOrganizationsService_GetCustomProperty(t *testing.T) {
 		"allowed_values":[
 		  "production",
 		  "development"
-		]
+		],
+		"values_editable_by": "org_actors"
 	  }`)
 	})
 
@@ -173,12 +176,13 @@ func TestOrganizationsService_GetCustomProperty(t *testing.T) {
 	}
 
 	want := &CustomProperty{
-		PropertyName:  String("name"),
-		ValueType:     "single_select",
-		Required:      Bool(true),
-		DefaultValue:  String("production"),
-		Description:   String("Prod or dev environment"),
-		AllowedValues: []string{"production", "development"},
+		PropertyName:     String("name"),
+		ValueType:        "single_select",
+		Required:         Bool(true),
+		DefaultValue:     String("production"),
+		Description:      String("Prod or dev environment"),
+		AllowedValues:    []string{"production", "development"},
+		ValuesEditableBy: String("org_actors"),
 	}
 	if !cmp.Equal(property, want) {
 		t.Errorf("Organizations.GetCustomProperty returned %+v, want %+v", property, want)
@@ -210,29 +214,32 @@ func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
 		"allowed_values":[
 		  "production",
 		  "development"
-		]
+		],
+		"values_editable_by": "org_actors"
 	  }`)
 	})
 
 	ctx := context.Background()
 	property, _, err := client.Organizations.CreateOrUpdateCustomProperty(ctx, "o", "name", &CustomProperty{
-		ValueType:     "single_select",
-		Required:      Bool(true),
-		DefaultValue:  String("production"),
-		Description:   String("Prod or dev environment"),
-		AllowedValues: []string{"production", "development"},
+		ValueType:        "single_select",
+		Required:         Bool(true),
+		DefaultValue:     String("production"),
+		Description:      String("Prod or dev environment"),
+		AllowedValues:    []string{"production", "development"},
+		ValuesEditableBy: String("org_actors"),
 	})
 	if err != nil {
 		t.Errorf("Organizations.CreateOrUpdateCustomProperty returned error: %v", err)
 	}
 
 	want := &CustomProperty{
-		PropertyName:  String("name"),
-		ValueType:     "single_select",
-		Required:      Bool(true),
-		DefaultValue:  String("production"),
-		Description:   String("Prod or dev environment"),
-		AllowedValues: []string{"production", "development"},
+		PropertyName:     String("name"),
+		ValueType:        "single_select",
+		Required:         Bool(true),
+		DefaultValue:     String("production"),
+		Description:      String("Prod or dev environment"),
+		AllowedValues:    []string{"production", "development"},
+		ValuesEditableBy: String("org_actors"),
 	}
 	if !cmp.Equal(property, want) {
 		t.Errorf("Organizations.CreateOrUpdateCustomProperty returned %+v, want %+v", property, want)
@@ -280,7 +287,7 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 		fmt.Fprint(w, `[{
 		"repository_id": 1296269,
 		"repository_name": "Hello-World",
-		"repository_full_name": "octocat/Hello-World",	
+		"repository_full_name": "octocat/Hello-World",
 		"properties": [
 		{
           "property_name": "environment",
