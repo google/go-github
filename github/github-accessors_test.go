@@ -5553,6 +5553,16 @@ func TestCustomProperty_GetRequired(tt *testing.T) {
 	c.GetRequired()
 }
 
+func TestCustomProperty_GetValuesEditableBy(tt *testing.T) {
+	var zeroValue string
+	c := &CustomProperty{ValuesEditableBy: &zeroValue}
+	c.GetValuesEditableBy()
+	c = &CustomProperty{}
+	c.GetValuesEditableBy()
+	c = nil
+	c.GetValuesEditableBy()
+}
+
 func TestCustomPropertyValue_GetValue(tt *testing.T) {
 	var zeroValue string
 	c := &CustomPropertyValue{Value: &zeroValue}
