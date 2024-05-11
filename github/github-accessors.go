@@ -4718,6 +4718,14 @@ func (c *CustomProperty) GetRequired() bool {
 	return *c.Required
 }
 
+// GetValuesEditableBy returns the ValuesEditableBy field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetValuesEditableBy() string {
+	if c == nil || c.ValuesEditableBy == nil {
+		return ""
+	}
+	return *c.ValuesEditableBy
+}
+
 // GetValue returns the Value field if it's non-nil, zero value otherwise.
 func (c *CustomPropertyValue) GetValue() string {
 	if c == nil || c.Value == nil {
