@@ -80,7 +80,7 @@ func (s *EnterpriseService) CreateRegistrationToken(ctx context.Context, enterpr
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/runners
-func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, opts *ListOptions) (*Runners, *Response, error) {
+func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, opts *ListRunnersOptions) (*Runners, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
