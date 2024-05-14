@@ -6510,6 +6510,22 @@ func (d *DraftReviewComment) GetBody() string {
 	return *d.Body
 }
 
+// GetCommitID returns the CommitID field if it's non-nil, zero value otherwise.
+func (d *DraftReviewComment) GetCommitID() string {
+	if d == nil || d.CommitID == nil {
+		return ""
+	}
+	return *d.CommitID
+}
+
+// GetInReplyTo returns the InReplyTo field if it's non-nil, zero value otherwise.
+func (d *DraftReviewComment) GetInReplyTo() int64 {
+	if d == nil || d.InReplyTo == nil {
+		return 0
+	}
+	return *d.InReplyTo
+}
+
 // GetLine returns the Line field if it's non-nil, zero value otherwise.
 func (d *DraftReviewComment) GetLine() int {
 	if d == nil || d.Line == nil {
@@ -6556,6 +6572,14 @@ func (d *DraftReviewComment) GetStartSide() string {
 		return ""
 	}
 	return *d.StartSide
+}
+
+// GetSubjectType returns the SubjectType field if it's non-nil, zero value otherwise.
+func (d *DraftReviewComment) GetSubjectType() string {
+	if d == nil || d.SubjectType == nil {
+		return ""
+	}
+	return *d.SubjectType
 }
 
 // GetRef returns the Ref field.
