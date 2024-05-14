@@ -7613,6 +7613,26 @@ func TestDraftReviewComment_GetBody(tt *testing.T) {
 	d.GetBody()
 }
 
+func TestDraftReviewComment_GetCommitID(tt *testing.T) {
+	var zeroValue string
+	d := &DraftReviewComment{CommitID: &zeroValue}
+	d.GetCommitID()
+	d = &DraftReviewComment{}
+	d.GetCommitID()
+	d = nil
+	d.GetCommitID()
+}
+
+func TestDraftReviewComment_GetInReplyTo(tt *testing.T) {
+	var zeroValue int64
+	d := &DraftReviewComment{InReplyTo: &zeroValue}
+	d.GetInReplyTo()
+	d = &DraftReviewComment{}
+	d.GetInReplyTo()
+	d = nil
+	d.GetInReplyTo()
+}
+
 func TestDraftReviewComment_GetLine(tt *testing.T) {
 	var zeroValue int
 	d := &DraftReviewComment{Line: &zeroValue}
@@ -7671,6 +7691,16 @@ func TestDraftReviewComment_GetStartSide(tt *testing.T) {
 	d.GetStartSide()
 	d = nil
 	d.GetStartSide()
+}
+
+func TestDraftReviewComment_GetSubjectType(tt *testing.T) {
+	var zeroValue string
+	d := &DraftReviewComment{SubjectType: &zeroValue}
+	d.GetSubjectType()
+	d = &DraftReviewComment{}
+	d.GetSubjectType()
+	d = nil
+	d.GetSubjectType()
 }
 
 func TestEditBase_GetRef(tt *testing.T) {
