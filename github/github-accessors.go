@@ -4351,7 +4351,7 @@ func (c *CreateOrgInvitationOptions) GetRole() string {
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateCustomRoleOptions) GetBaseRole() string {
+func (c *CreateOrUpdateCustomRepoRoleOptions) GetBaseRole() string {
 	if c == nil || c.BaseRole == nil {
 		return ""
 	}
@@ -4359,7 +4359,7 @@ func (c *CreateOrUpdateCustomRoleOptions) GetBaseRole() string {
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateCustomRoleOptions) GetDescription() string {
+func (c *CreateOrUpdateCustomRepoRoleOptions) GetDescription() string {
 	if c == nil || c.Description == nil {
 		return ""
 	}
@@ -4367,7 +4367,23 @@ func (c *CreateOrUpdateCustomRoleOptions) GetDescription() string {
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateCustomRoleOptions) GetName() string {
+func (c *CreateOrUpdateCustomRepoRoleOptions) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateOrUpdateOrgRoleOptions) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CreateOrUpdateOrgRoleOptions) GetName() string {
 	if c == nil || c.Name == nil {
 		return ""
 	}
@@ -4684,6 +4700,30 @@ func (c *CustomDeploymentProtectionRuleRequest) GetIntegrationID() int64 {
 		return 0
 	}
 	return *c.IntegrationID
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CustomOrgRoles) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CustomOrgRoles) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CustomOrgRoles) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
 }
 
 // GetDefaultValue returns the DefaultValue field if it's non-nil, zero value otherwise.
@@ -12864,6 +12904,14 @@ func (o *Organization) GetWebCommitSignoffRequired() bool {
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (o *OrganizationCustomRepoRoles) GetTotalCount() int {
+	if o == nil || o.TotalCount == nil {
+		return 0
+	}
+	return *o.TotalCount
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (o *OrganizationCustomRoles) GetTotalCount() int {
 	if o == nil || o.TotalCount == nil {
 		return 0
 	}

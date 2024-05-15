@@ -14,6 +14,155 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+func TestOrganizationsService_ListRoles(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/organization-roles", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"total_count": 1, "roles": [{ "id": 1, "name": "Auditor", "permissions": ["read_audit_logs"]}]}`)
+	})
+
+	ctx := context.Background()
+	apps, _, err := client.Organizations.ListRoles(ctx, "o")
+	if err != nil {
+		t.Errorf("Organizations.ListRoles returned error: %v", err)
+	}
+
+	want := &OrganizationCustomRoles{TotalCount: Int(1), CustomRepoRoles: []*CustomOrgRoles{{ID: Int64(1), Name: String("Auditor"), Permissions: []string{"read_audit_logs"}}}}
+	if !cmp.Equal(apps, want) {
+		t.Errorf("Organizations.ListRoles returned %+v, want %+v", apps, want)
+	}
+
+	const methodName = "ListRoles"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListRoles(ctx, "\no")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListRoles(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestOrganizationsService_CreateCustomOrgRole(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/organization-roles", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{"id":8030,"name":"Reader","description":"A role for reading custom org roles","permissions":["read_organization_custom_org_role"]}`)
+	})
+
+	ctx := context.Background()
+
+	opts := &CreateOrUpdateOrgRoleOptions{
+		Name:        String("Reader"),
+		Description: String("A role for reading custom org roles"),
+		Permissions: []string{"read_organization_custom_org_role"},
+	}
+	gotRoles, _, err := client.Organizations.CreateCustomOrgRole(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Organizations.CreateCustomOrgRole returned error: %v", err)
+	}
+
+	want := &CustomOrgRoles{ID: Int64(8030), Name: String("Reader"), Permissions: []string{"read_organization_custom_org_role"}, Description: String("A role for reading custom org roles")}
+
+	if !cmp.Equal(gotRoles, want) {
+		t.Errorf("Organizations.CreateCustomOrgRole returned %+v, want %+v", gotRoles, want)
+	}
+
+	const methodName = "CreateCustomOrgRole"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.CreateCustomOrgRole(ctx, "\no", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.CreateCustomOrgRole(ctx, "o", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/organization-roles/8030", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"id":8030,"name":"Updated Name","description":"Updated Description","permissions":["read_organization_custom_org_role"]}`)
+	})
+
+	ctx := context.Background()
+
+	opts := &CreateOrUpdateOrgRoleOptions{
+		Name:        String("Updated Name"),
+		Description: String("Updated Description"),
+	}
+	gotRoles, _, err := client.Organizations.UpdateCustomOrgRole(ctx, "o", 8030, opts)
+	if err != nil {
+		t.Errorf("Organizations.UpdateCustomOrgRole returned error: %v", err)
+	}
+
+	want := &CustomOrgRoles{ID: Int64(8030), Name: String("Updated Name"), Permissions: []string{"read_organization_custom_org_role"}, Description: String("Updated Description")}
+
+	if !cmp.Equal(gotRoles, want) {
+		t.Errorf("Organizations.UpdateCustomOrgRole returned %+v, want %+v", gotRoles, want)
+	}
+
+	const methodName = "UpdateCustomOrgRole"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.UpdateCustomOrgRole(ctx, "\no", 8030, nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.UpdateCustomOrgRole(ctx, "o", 8030, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestOrganizationsService_DeleteCustomOrgRole(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/organization-roles/8030", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+
+	resp, err := client.Organizations.DeleteCustomOrgRole(ctx, "o", 8030)
+	if err != nil {
+		t.Errorf("Organizations.DeleteCustomOrgRole returned error: %v", err)
+	}
+
+	if !cmp.Equal(resp.StatusCode, 204) {
+		t.Errorf("Organizations.DeleteCustomOrgRole returned  status code %+v, want %+v", resp.StatusCode, "204")
+	}
+
+	const methodName = "DeleteCustomOrgRole"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.DeleteCustomOrgRole(ctx, "\no", 8030)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.DeleteCustomOrgRole(ctx, "o", 8030)
+	})
+}
+
 func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -60,7 +209,7 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 
 	ctx := context.Background()
 
-	opts := &CreateOrUpdateCustomRoleOptions{
+	opts := &CreateOrUpdateCustomRepoRoleOptions{
 		Name:        String("Labeler"),
 		Description: String("A role for issue and PR labelers"),
 		BaseRole:    String("read"),
@@ -103,11 +252,11 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 
 	ctx := context.Background()
 
-	opts := &CreateOrUpdateCustomRoleOptions{
+	opts := &CreateOrUpdateCustomRepoRoleOptions{
 		Name:        String("Updated Name"),
 		Description: String("Updated Description"),
 	}
-	apps, _, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", "8030", opts)
+	apps, _, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", 8030, opts)
 	if err != nil {
 		t.Errorf("Organizations.UpdateCustomRepoRole returned error: %v", err)
 	}
@@ -120,12 +269,12 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 
 	const methodName = "UpdateCustomRepoRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.UpdateCustomRepoRole(ctx, "\no", "8030", nil)
+		_, _, err = client.Organizations.UpdateCustomRepoRole(ctx, "\no", 8030, nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", "8030", nil)
+		got, resp, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", 8030, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -144,7 +293,7 @@ func TestOrganizationsService_DeleteCustomRepoRole(t *testing.T) {
 
 	ctx := context.Background()
 
-	resp, err := client.Organizations.DeleteCustomRepoRole(ctx, "o", "8030")
+	resp, err := client.Organizations.DeleteCustomRepoRole(ctx, "o", 8030)
 	if err != nil {
 		t.Errorf("Organizations.DeleteCustomRepoRole returned error: %v", err)
 	}
@@ -155,7 +304,7 @@ func TestOrganizationsService_DeleteCustomRepoRole(t *testing.T) {
 
 	const methodName = "DeleteCustomRepoRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Organizations.DeleteCustomRepoRole(ctx, "\no", "8030")
+		_, err = client.Organizations.DeleteCustomRepoRole(ctx, "\no", 8030)
 		return err
 	})
 }
