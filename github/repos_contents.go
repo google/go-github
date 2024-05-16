@@ -346,7 +346,7 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusFound {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
 
