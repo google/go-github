@@ -106,11 +106,14 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/actions/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":2,"runners":[{"id":23,"name":"MBP","os":"macos","status":"online"},{"id":24,"name":"iMac","os":"macos","status":"offline"}]}`)
+		testFormValues(t, r, values{"name": "MBP", "per_page": "2", "page": "2"})
+		fmt.Fprint(w, `{"total_count":1,"runners":[{"id":23,"name":"MBP","os":"macos","status":"online"}]}`)
 	})
 
-	opts := &ListOptions{Page: 2, PerPage: 2}
+	opts := &ListRunnersOptions{
+		Name:        String("MBP"),
+		ListOptions: ListOptions{Page: 2, PerPage: 2},
+	}
 	ctx := context.Background()
 	runners, _, err := client.Enterprise.ListRunners(ctx, "e", opts)
 	if err != nil {
@@ -118,10 +121,9 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 	}
 
 	want := &Runners{
-		TotalCount: 2,
+		TotalCount: 1,
 		Runners: []*Runner{
 			{ID: Int64(23), Name: String("MBP"), OS: String("macos"), Status: String("online")},
-			{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
 		},
 	}
 	if !cmp.Equal(runners, want) {
@@ -130,7 +132,7 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 
 	const methodName = "ListRunners"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.ListRunners(ctx, "\n", &ListOptions{})
+		_, _, err = client.Enterprise.ListRunners(ctx, "\n", &ListRunnersOptions{})
 		return err
 	})
 
