@@ -395,6 +395,24 @@ type Ruleset struct {
 	Rules        []*RepositoryRule  `json:"rules,omitempty"`
 }
 
+// RulesetNoBPActr represents a GitHub ruleset object. does not omit BypassActors.
+type RulesetNoBPActr struct {
+	ID   *int64 `json:"id,omitempty"`
+	Name string `json:"name"`
+	// Possible values for Target are branch, tag
+	Target *string `json:"target,omitempty"`
+	// Possible values for SourceType are: Repository, Organization
+	SourceType *string `json:"source_type,omitempty"`
+	Source     string  `json:"source"`
+	// Possible values for Enforcement are: disabled, active, evaluate
+	Enforcement  string             `json:"enforcement"`
+	BypassActors []*BypassActor     `json:"bypass_actors"`
+	NodeID       *string            `json:"node_id,omitempty"`
+	Links        *RulesetLinks      `json:"_links,omitempty"`
+	Conditions   *RulesetConditions `json:"conditions,omitempty"`
+	Rules        []*RepositoryRule  `json:"rules,omitempty"`
+}
+
 // GetRulesForBranch gets all the rules that apply to the specified branch.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/rules#get-rules-for-a-branch
@@ -499,6 +517,30 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 	}
 
 	var ruleset *Ruleset
+	resp, err := s.client.Do(ctx, req, &ruleset)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return ruleset, resp, nil
+}
+
+// UpdateRulesetNoBypassActr updates a ruleset for the specified repository. Accepts RulesetNoBPActr which does not omit ByPassActor
+//
+// this function is necessary as Ruleset struct does not marschall ByPassActor if passed as nil or an empty array
+//
+// GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
+//
+//meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
+func (s *RepositoriesService) UpdateRulesetNoBypassActr(ctx context.Context, owner, repo string, rulesetID int64, rs *RulesetNoBPActr) (*RulesetNoBPActr, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
+
+	req, err := s.client.NewRequest("PUT", u, rs)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var ruleset *RulesetNoBPActr
 	resp, err := s.client.Do(ctx, req, &ruleset)
 	if err != nil {
 		return nil, resp, err

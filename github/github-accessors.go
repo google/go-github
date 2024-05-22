@@ -20870,6 +20870,54 @@ func (r *RulesetLinks) GetSelf() *RulesetLink {
 	return r.Self
 }
 
+// GetConditions returns the Conditions field.
+func (r *RulesetNoBPActr) GetConditions() *RulesetConditions {
+	if r == nil {
+		return nil
+	}
+	return r.Conditions
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RulesetNoBPActr) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetLinks returns the Links field.
+func (r *RulesetNoBPActr) GetLinks() *RulesetLinks {
+	if r == nil {
+		return nil
+	}
+	return r.Links
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *RulesetNoBPActr) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
+// GetSourceType returns the SourceType field if it's non-nil, zero value otherwise.
+func (r *RulesetNoBPActr) GetSourceType() string {
+	if r == nil || r.SourceType == nil {
+		return ""
+	}
+	return *r.SourceType
+}
+
+// GetTarget returns the Target field if it's non-nil, zero value otherwise.
+func (r *RulesetNoBPActr) GetTarget() string {
+	if r == nil || r.Target == nil {
+		return ""
+	}
+	return *r.Target
+}
+
 // GetProtected returns the Protected field if it's non-nil, zero value otherwise.
 func (r *RulesetRepositoryNamesConditionParameters) GetProtected() bool {
 	if r == nil || r.Protected == nil {

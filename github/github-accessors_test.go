@@ -24249,6 +24249,60 @@ func TestRulesetLinks_GetSelf(tt *testing.T) {
 	r.GetSelf()
 }
 
+func TestRulesetNoBPActr_GetConditions(tt *testing.T) {
+	r := &RulesetNoBPActr{}
+	r.GetConditions()
+	r = nil
+	r.GetConditions()
+}
+
+func TestRulesetNoBPActr_GetID(tt *testing.T) {
+	var zeroValue int64
+	r := &RulesetNoBPActr{ID: &zeroValue}
+	r.GetID()
+	r = &RulesetNoBPActr{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRulesetNoBPActr_GetLinks(tt *testing.T) {
+	r := &RulesetNoBPActr{}
+	r.GetLinks()
+	r = nil
+	r.GetLinks()
+}
+
+func TestRulesetNoBPActr_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	r := &RulesetNoBPActr{NodeID: &zeroValue}
+	r.GetNodeID()
+	r = &RulesetNoBPActr{}
+	r.GetNodeID()
+	r = nil
+	r.GetNodeID()
+}
+
+func TestRulesetNoBPActr_GetSourceType(tt *testing.T) {
+	var zeroValue string
+	r := &RulesetNoBPActr{SourceType: &zeroValue}
+	r.GetSourceType()
+	r = &RulesetNoBPActr{}
+	r.GetSourceType()
+	r = nil
+	r.GetSourceType()
+}
+
+func TestRulesetNoBPActr_GetTarget(tt *testing.T) {
+	var zeroValue string
+	r := &RulesetNoBPActr{Target: &zeroValue}
+	r.GetTarget()
+	r = &RulesetNoBPActr{}
+	r.GetTarget()
+	r = nil
+	r.GetTarget()
+}
+
 func TestRulesetRepositoryNamesConditionParameters_GetProtected(tt *testing.T) {
 	var zeroValue bool
 	r := &RulesetRepositoryNamesConditionParameters{Protected: &zeroValue}
