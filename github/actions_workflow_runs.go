@@ -19,6 +19,7 @@ type WorkflowRun struct {
 	NodeID              *string               `json:"node_id,omitempty"`
 	HeadBranch          *string               `json:"head_branch,omitempty"`
 	HeadSHA             *string               `json:"head_sha,omitempty"`
+	Path                *string               `json:"path,omitempty"`
 	RunNumber           *int                  `json:"run_number,omitempty"`
 	RunAttempt          *int                  `json:"run_attempt,omitempty"`
 	Event               *string               `json:"event,omitempty"`

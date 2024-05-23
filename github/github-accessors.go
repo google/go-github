@@ -25326,6 +25326,14 @@ func (w *WorkflowRun) GetNodeID() string {
 	return *w.NodeID
 }
 
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetPath() string {
+	if w == nil || w.Path == nil {
+		return ""
+	}
+	return *w.Path
+}
+
 // GetPreviousAttemptURL returns the PreviousAttemptURL field if it's non-nil, zero value otherwise.
 func (w *WorkflowRun) GetPreviousAttemptURL() string {
 	if w == nil || w.PreviousAttemptURL == nil {
