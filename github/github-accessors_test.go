@@ -24249,60 +24249,6 @@ func TestRulesetLinks_GetSelf(tt *testing.T) {
 	r.GetSelf()
 }
 
-func TestRulesetNoOmitBypassActors_GetConditions(tt *testing.T) {
-	r := &RulesetNoOmitBypassActors{}
-	r.GetConditions()
-	r = nil
-	r.GetConditions()
-}
-
-func TestRulesetNoOmitBypassActors_GetID(tt *testing.T) {
-	var zeroValue int64
-	r := &RulesetNoOmitBypassActors{ID: &zeroValue}
-	r.GetID()
-	r = &RulesetNoOmitBypassActors{}
-	r.GetID()
-	r = nil
-	r.GetID()
-}
-
-func TestRulesetNoOmitBypassActors_GetLinks(tt *testing.T) {
-	r := &RulesetNoOmitBypassActors{}
-	r.GetLinks()
-	r = nil
-	r.GetLinks()
-}
-
-func TestRulesetNoOmitBypassActors_GetNodeID(tt *testing.T) {
-	var zeroValue string
-	r := &RulesetNoOmitBypassActors{NodeID: &zeroValue}
-	r.GetNodeID()
-	r = &RulesetNoOmitBypassActors{}
-	r.GetNodeID()
-	r = nil
-	r.GetNodeID()
-}
-
-func TestRulesetNoOmitBypassActors_GetSourceType(tt *testing.T) {
-	var zeroValue string
-	r := &RulesetNoOmitBypassActors{SourceType: &zeroValue}
-	r.GetSourceType()
-	r = &RulesetNoOmitBypassActors{}
-	r.GetSourceType()
-	r = nil
-	r.GetSourceType()
-}
-
-func TestRulesetNoOmitBypassActors_GetTarget(tt *testing.T) {
-	var zeroValue string
-	r := &RulesetNoOmitBypassActors{Target: &zeroValue}
-	r.GetTarget()
-	r = &RulesetNoOmitBypassActors{}
-	r.GetTarget()
-	r = nil
-	r.GetTarget()
-}
-
 func TestRulesetRepositoryNamesConditionParameters_GetProtected(tt *testing.T) {
 	var zeroValue bool
 	r := &RulesetRepositoryNamesConditionParameters{Protected: &zeroValue}
