@@ -395,8 +395,8 @@ type Ruleset struct {
 	Rules        []*RepositoryRule  `json:"rules,omitempty"`
 }
 
-// RulesetNoBPActr represents a GitHub ruleset object. does not omit BypassActors.
-type RulesetNoBPActr struct {
+// RulesetNoOmitBypassActors represents a GitHub ruleset object. The struct does not omit bypassActors if the field is nil or an empty array is passed.
+type RulesetNoOmitBypassActors struct {
 	ID   *int64 `json:"id,omitempty"`
 	Name string `json:"name"`
 	// Possible values for Target are branch, tag
@@ -525,28 +525,48 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 	return ruleset, resp, nil
 }
 
-// UpdateRulesetNoBypassActr updates a ruleset for the specified repository. Accepts RulesetNoBPActr which does not omit ByPassActor
+// UpdateRulesetNoBypassActor updates a ruleset for the specified repository.
 //
-// this function is necessary as Ruleset struct does not marschall ByPassActor if passed as nil or an empty array
+// This function is necessary as the UpdateRuleset function does not marschall ByPassActor if passed as nil or an empty array.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
 //
 //meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
-func (s *RepositoriesService) UpdateRulesetNoBypassActr(ctx context.Context, owner, repo string, rulesetID int64, rs *RulesetNoBPActr) (*RulesetNoBPActr, *Response, error) {
+func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, owner, repo string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 
-	req, err := s.client.NewRequest("PUT", u, rs)
+	var rsNoBypassActor *RulesetNoOmitBypassActors
+
+	if rs != nil {
+		rsNoBypassActor = &RulesetNoOmitBypassActors{
+			ID:           rs.ID,
+			Name:         rs.Name,
+			Target:       rs.Target,
+			SourceType:   rs.SourceType,
+			Source:       rs.Source,
+			Enforcement:  rs.Enforcement,
+			BypassActors: rs.BypassActors,
+			NodeID:       rs.NodeID,
+			Links:        rs.Links,
+			Conditions:   rs.Conditions,
+			Rules:        rs.Rules,
+		}
+	} else {
+		rsNoBypassActor = &RulesetNoOmitBypassActors{}
+	}
+
+	req, err := s.client.NewRequest("PUT", u, rsNoBypassActor)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var ruleset *RulesetNoBPActr
-	resp, err := s.client.Do(ctx, req, &ruleset)
+	var ruleSet *Ruleset
+	resp, err := s.client.Do(ctx, req, &ruleSet)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return ruleset, resp, nil
+	return ruleSet, resp, nil
 }
 
 // DeleteRuleset deletes a ruleset for the specified repository.

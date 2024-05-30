@@ -20871,7 +20871,7 @@ func (r *RulesetLinks) GetSelf() *RulesetLink {
 }
 
 // GetConditions returns the Conditions field.
-func (r *RulesetNoBPActr) GetConditions() *RulesetConditions {
+func (r *RulesetNoOmitBypassActors) GetConditions() *RulesetConditions {
 	if r == nil {
 		return nil
 	}
@@ -20879,7 +20879,7 @@ func (r *RulesetNoBPActr) GetConditions() *RulesetConditions {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (r *RulesetNoBPActr) GetID() int64 {
+func (r *RulesetNoOmitBypassActors) GetID() int64 {
 	if r == nil || r.ID == nil {
 		return 0
 	}
@@ -20887,7 +20887,7 @@ func (r *RulesetNoBPActr) GetID() int64 {
 }
 
 // GetLinks returns the Links field.
-func (r *RulesetNoBPActr) GetLinks() *RulesetLinks {
+func (r *RulesetNoOmitBypassActors) GetLinks() *RulesetLinks {
 	if r == nil {
 		return nil
 	}
@@ -20895,7 +20895,7 @@ func (r *RulesetNoBPActr) GetLinks() *RulesetLinks {
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
-func (r *RulesetNoBPActr) GetNodeID() string {
+func (r *RulesetNoOmitBypassActors) GetNodeID() string {
 	if r == nil || r.NodeID == nil {
 		return ""
 	}
@@ -20903,7 +20903,7 @@ func (r *RulesetNoBPActr) GetNodeID() string {
 }
 
 // GetSourceType returns the SourceType field if it's non-nil, zero value otherwise.
-func (r *RulesetNoBPActr) GetSourceType() string {
+func (r *RulesetNoOmitBypassActors) GetSourceType() string {
 	if r == nil || r.SourceType == nil {
 		return ""
 	}
@@ -20911,7 +20911,7 @@ func (r *RulesetNoBPActr) GetSourceType() string {
 }
 
 // GetTarget returns the Target field if it's non-nil, zero value otherwise.
-func (r *RulesetNoBPActr) GetTarget() string {
+func (r *RulesetNoOmitBypassActors) GetTarget() string {
 	if r == nil || r.Target == nil {
 		return ""
 	}

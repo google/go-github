@@ -24249,55 +24249,55 @@ func TestRulesetLinks_GetSelf(tt *testing.T) {
 	r.GetSelf()
 }
 
-func TestRulesetNoBPActr_GetConditions(tt *testing.T) {
-	r := &RulesetNoBPActr{}
+func TestRulesetNoOmitBypassActors_GetConditions(tt *testing.T) {
+	r := &RulesetNoOmitBypassActors{}
 	r.GetConditions()
 	r = nil
 	r.GetConditions()
 }
 
-func TestRulesetNoBPActr_GetID(tt *testing.T) {
+func TestRulesetNoOmitBypassActors_GetID(tt *testing.T) {
 	var zeroValue int64
-	r := &RulesetNoBPActr{ID: &zeroValue}
+	r := &RulesetNoOmitBypassActors{ID: &zeroValue}
 	r.GetID()
-	r = &RulesetNoBPActr{}
+	r = &RulesetNoOmitBypassActors{}
 	r.GetID()
 	r = nil
 	r.GetID()
 }
 
-func TestRulesetNoBPActr_GetLinks(tt *testing.T) {
-	r := &RulesetNoBPActr{}
+func TestRulesetNoOmitBypassActors_GetLinks(tt *testing.T) {
+	r := &RulesetNoOmitBypassActors{}
 	r.GetLinks()
 	r = nil
 	r.GetLinks()
 }
 
-func TestRulesetNoBPActr_GetNodeID(tt *testing.T) {
+func TestRulesetNoOmitBypassActors_GetNodeID(tt *testing.T) {
 	var zeroValue string
-	r := &RulesetNoBPActr{NodeID: &zeroValue}
+	r := &RulesetNoOmitBypassActors{NodeID: &zeroValue}
 	r.GetNodeID()
-	r = &RulesetNoBPActr{}
+	r = &RulesetNoOmitBypassActors{}
 	r.GetNodeID()
 	r = nil
 	r.GetNodeID()
 }
 
-func TestRulesetNoBPActr_GetSourceType(tt *testing.T) {
+func TestRulesetNoOmitBypassActors_GetSourceType(tt *testing.T) {
 	var zeroValue string
-	r := &RulesetNoBPActr{SourceType: &zeroValue}
+	r := &RulesetNoOmitBypassActors{SourceType: &zeroValue}
 	r.GetSourceType()
-	r = &RulesetNoBPActr{}
+	r = &RulesetNoOmitBypassActors{}
 	r.GetSourceType()
 	r = nil
 	r.GetSourceType()
 }
 
-func TestRulesetNoBPActr_GetTarget(tt *testing.T) {
+func TestRulesetNoOmitBypassActors_GetTarget(tt *testing.T) {
 	var zeroValue string
-	r := &RulesetNoBPActr{Target: &zeroValue}
+	r := &RulesetNoOmitBypassActors{Target: &zeroValue}
 	r.GetTarget()
-	r = &RulesetNoBPActr{}
+	r = &RulesetNoOmitBypassActors{}
 	r.GetTarget()
 	r = nil
 	r.GetTarget()
