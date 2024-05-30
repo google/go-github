@@ -538,7 +538,7 @@ func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, ow
 	rsNoBypassActor := &rulesetNoOmitBypassActors{}
 
 	if rs != nil {
-		rsNoBypassActor = &RulesetNoOmitBypassActors{
+		rsNoBypassActor = &rulesetNoOmitBypassActors{
 			ID:           rs.ID,
 			Name:         rs.Name,
 			Target:       rs.Target,
