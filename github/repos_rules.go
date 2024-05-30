@@ -535,7 +535,7 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, owner, repo string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 
-	var rsNoBypassActor *RulesetNoOmitBypassActors
+	rsNoBypassActor := &RulesetNoOmitBypassActors{}
 
 	if rs != nil {
 		rsNoBypassActor = &RulesetNoOmitBypassActors{
@@ -551,8 +551,6 @@ func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, ow
 			Conditions:   rs.Conditions,
 			Rules:        rs.Rules,
 		}
-	} else {
-		rsNoBypassActor = &RulesetNoOmitBypassActors{}
 	}
 
 	req, err := s.client.NewRequest("PUT", u, rsNoBypassActor)
