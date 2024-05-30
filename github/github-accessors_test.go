@@ -29531,6 +29531,16 @@ func TestWorkflowRun_GetNodeID(tt *testing.T) {
 	w.GetNodeID()
 }
 
+func TestWorkflowRun_GetPath(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowRun{Path: &zeroValue}
+	w.GetPath()
+	w = &WorkflowRun{}
+	w.GetPath()
+	w = nil
+	w.GetPath()
+}
+
 func TestWorkflowRun_GetPreviousAttemptURL(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowRun{PreviousAttemptURL: &zeroValue}
