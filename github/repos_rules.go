@@ -395,8 +395,8 @@ type Ruleset struct {
 	Rules        []*RepositoryRule  `json:"rules,omitempty"`
 }
 
-// RulesetNoOmitBypassActors represents a GitHub ruleset object. The struct does not omit bypassActors if the field is nil or an empty array is passed.
-type RulesetNoOmitBypassActors struct {
+// rulesetNoOmitBypassActors represents a GitHub ruleset object. The struct does not omit bypassActors if the field is nil or an empty array is passed.
+type rulesetNoOmitBypassActors struct {
 	ID   *int64 `json:"id,omitempty"`
 	Name string `json:"name"`
 	// Possible values for Target are branch, tag
