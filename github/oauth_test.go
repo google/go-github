@@ -115,7 +115,6 @@ func Test_installationTokenSource_Token(t *testing.T) {
 	type fields struct {
 		id   int64
 		src  oauth2.TokenSource
-		apps *AppsService
 		opts *InstallationTokenOptions
 	}
 	tests := []struct {
