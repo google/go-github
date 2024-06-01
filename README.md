@@ -161,13 +161,13 @@ import (
 func main() {
  privateKey := []byte(os.Getenv("GITHUB_APP_PRIVATE_KEY"))
 
- appTokenSource, err := githubauth.NewApplicationTokenSource("app-id", privateKey)
+ appTokenSource, err := githubauth.NewApplicationTokenSource(1112, privateKey)
  if err != nil {
   fmt.Println("Error creating application token source:", err)
   return
  }
 
- installationTokenSource := githubauth.NewInstallationTokenSource(20, appTokenSource)
+ installationTokenSource := githubauth.NewInstallationTokenSource(1113, appTokenSource)
 
  // oauth2.NewClient uses oauth2.ReuseTokenSource to reuse the token until it expires.
  // The token will be automatically refreshed when it expires.
