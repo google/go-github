@@ -1,18 +1,24 @@
 package github
 
 import (
+	"context"
 	"crypto/rsa"
 	"errors"
+	"net/http"
 	"time"
 
 	jwt "github.com/golang-jwt/jwt/v4"
 	"golang.org/x/oauth2"
 )
 
-// DefaultApplicationTokenExpiration is the default expiration time for the GitHub App token.
-// The expiration time of the JWT, after which it can't be used to request an installation token.
-// The time must be no more than 10 minutes into the future.
-const DefaultApplicationTokenExpiration = 10 * time.Minute
+const (
+	// DefaultApplicationTokenExpiration is the default expiration time for the GitHub App token.
+	// The expiration time of the JWT, after which it can't be used to request an installation token.
+	// The time must be no more than 10 minutes into the future.
+	DefaultApplicationTokenExpiration = 10 * time.Minute
+
+	bearerTokenType = "Bearer"
+)
 
 // applicationTokenSource represents a GitHub App token.
 // https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-json-web-token-jwt-for-a-github-app
@@ -85,7 +91,63 @@ func (t *applicationTokenSource) Token() (*oauth2.Token, error) {
 
 	return &oauth2.Token{
 		AccessToken: tokenString,
-		TokenType:   "Bearer",
+		TokenType:   bearerTokenType,
 		Expiry:      expiresAt,
+	}, nil
+}
+
+// InstallationTokenSourceOpt is a functional option for InstallationTokenSource.
+type InstallationTokenSourceOpt func(*installationTokenSource)
+
+// WithInstallationTokenOptions sets the options for the GitHub App installation token.
+func WithInstallationTokenOptions(opts *InstallationTokenOptions) InstallationTokenSourceOpt {
+	return func(i *installationTokenSource) {
+		i.opts = opts
+	}
+}
+
+// InstallationTokenSource represents a GitHub App installation token source.
+type installationTokenSource struct {
+	id   int64
+	src  oauth2.TokenSource
+	apps *AppsService
+	opts *InstallationTokenOptions
+}
+
+// NewInstallationTokenSource creates a new GitHub App installation token source.
+func NewInstallationTokenSource(id int64, src oauth2.TokenSource, opts ...InstallationTokenSourceOpt) oauth2.TokenSource {
+	client := &http.Client{
+		Transport: &oauth2.Transport{
+			Source: src,
+		},
+	}
+
+	i := &installationTokenSource{
+		id:   id,
+		src:  src,
+		apps: NewClient(client).Apps,
+	}
+
+	for _, opt := range opts {
+		opt(i)
+	}
+
+	return i
+}
+
+// Token creates a new GitHub App installation token.
+// The token is used to authenticate as a GitHub App installation.
+func (t *installationTokenSource) Token() (*oauth2.Token, error) {
+	ctx := context.Background()
+
+	token, _, err := t.apps.CreateInstallationToken(ctx, t.id, t.opts)
+	if err != nil {
+		return nil, err
+	}
+
+	return &oauth2.Token{
+		AccessToken: token.GetToken(),
+		TokenType:   bearerTokenType,
+		Expiry:      token.GetExpiresAt().Time,
 	}, nil
 }
