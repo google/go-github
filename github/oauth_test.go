@@ -68,6 +68,14 @@ func Test_applicationTokenSource_Token(t *testing.T) {
 				expiration: 5 * time.Minute,
 			},
 		},
+		{
+			name: "should use default expiration when expiration is greater than DefaultApplicationTokenExpiration",
+			fields: fields{
+				id:         "github-app-id",
+				privateKey: []byte(fakePrivateKey),
+				expiration: 15 * time.Minute,
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
