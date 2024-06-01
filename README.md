@@ -101,8 +101,8 @@ For API methods that require HTTP Basic Authentication, use the
 
 #### As a GitHub App ####
 
-GitHub Apps authentication can be provided by the [ghinstallation](https://github.com/bradleyfalzon/ghinstallation)
-package.
+GitHub Apps authentication can be provided by different pkgs like [ghinstallation](https://github.com/bradleyfalzon/ghinstallation)
+package or [go-githubauth](github.com/jferrl/go-githubauth).
 
 > **Note**: Most endpoints (ex. [`GET /rate_limit`]) require access token authentication
 > while a few others (ex. [`GET /app/hook/deliveries`]) require [JWT] authentication.
@@ -111,6 +111,9 @@ package.
 [`GET /app/hook/deliveries`]: https://docs.github.com/en/rest/apps/webhooks#list-deliveries-for-an-app-webhook
 [JWT]: https://docs.github.com/en/developers/apps/building-github-apps/authenticating-with-github-apps#authenticating-as-a-github-app
 
+`ghinstallation` provides `Transport`, which implements `http.RoundTripper` to provide authentication as an installation for GitHub Apps.
+
+Here is an example of how to authenticate as a GitHub App using the `ghinstallation` package:
 
 ```go
 import (
@@ -135,6 +138,44 @@ func main() {
 	client := github.NewClient(&http.Client{Transport: itr})
 
 	// Use client...
+}
+```
+
+`go-githubauth` implements a set of `oauth2.TokenSource` to be used with `oauth2.Client`. An `oauth2.Client` can be injected into the `github.Client` to authenticate requests.
+
+Other example using `go-githubauth`:
+
+```go
+package main
+
+import (
+ "context"
+ "fmt"
+ "os"
+ "strconv"
+
+ "github.com/google/go-github/v62/github"
+ "github.com/jferrl/go-githubauth"
+ "golang.org/x/oauth2"
+)
+
+func main() {
+ privateKey := []byte(os.Getenv("GITHUB_APP_PRIVATE_KEY"))
+
+ appTokenSource, err := githubauth.NewApplicationTokenSource("app-id", privateKey)
+ if err != nil {
+  fmt.Println("Error creating application token source:", err)
+  return
+ }
+
+ installationTokenSource := githubauth.NewInstallationTokenSource(20, appTokenSource)
+
+ // oauth2.NewClient uses oauth2.ReuseTokenSource to reuse the token until it expires.
+ // The token will be automatically refreshed when it expires.
+ // InstallationTokenSource has the mechanism to refresh the token when it expires.
+ httpClient := oauth2.NewClient(context.Background(), installationTokenSource)
+
+ client := github.NewClient(httpClient)
 }
 ```
 
