@@ -60,10 +60,24 @@ func Test_applicationTokenSource_Token(t *testing.T) {
 				privateKey: []byte(fakePrivateKey),
 			},
 		},
+		{
+			name: "should return a token with custom expiration",
+			fields: fields{
+				id:         "github-app-id",
+				privateKey: []byte(fakePrivateKey),
+				expiration: 5 * time.Minute,
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tr, err := NewApplicationTokenSource(tt.fields.id, tt.fields.privateKey)
+			var opts []ApplicationTokenOpt
+			if tt.fields.expiration != 0 {
+				opts = append(opts, WithApplicationTokenExpiration(tt.fields.expiration))
+			}
+
+			tr, err := NewApplicationTokenSource(tt.fields.id, tt.fields.privateKey, opts...)
+
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewApplicationTokenSource() error = %v, wantErr %v", err, tt.wantErr)
 				return
