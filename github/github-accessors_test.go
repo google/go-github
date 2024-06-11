@@ -10338,6 +10338,16 @@ func TestInstallationPermissions_GetActions(tt *testing.T) {
 	i.GetActions()
 }
 
+func TestInstallationPermissions_GetActionsVariables(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{ActionsVariables: &zeroValue}
+	i.GetActionsVariables()
+	i = &InstallationPermissions{}
+	i.GetActionsVariables()
+	i = nil
+	i.GetActionsVariables()
+}
+
 func TestInstallationPermissions_GetAdministration(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationPermissions{Administration: &zeroValue}
@@ -10466,6 +10476,16 @@ func TestInstallationPermissions_GetOrganizationAdministration(tt *testing.T) {
 	i.GetOrganizationAdministration()
 	i = nil
 	i.GetOrganizationAdministration()
+}
+
+func TestInstallationPermissions_GetOrganizationCustomOrgRoles(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationCustomOrgRoles: &zeroValue}
+	i.GetOrganizationCustomOrgRoles()
+	i = &InstallationPermissions{}
+	i.GetOrganizationCustomOrgRoles()
+	i = nil
+	i.GetOrganizationCustomOrgRoles()
 }
 
 func TestInstallationPermissions_GetOrganizationCustomProperties(tt *testing.T) {

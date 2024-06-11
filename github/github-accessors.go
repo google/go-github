@@ -8822,6 +8822,14 @@ func (i *InstallationPermissions) GetActions() string {
 	return *i.Actions
 }
 
+// GetActionsVariables returns the ActionsVariables field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetActionsVariables() string {
+	if i == nil || i.ActionsVariables == nil {
+		return ""
+	}
+	return *i.ActionsVariables
+}
+
 // GetAdministration returns the Administration field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetAdministration() string {
 	if i == nil || i.Administration == nil {
@@ -8924,6 +8932,14 @@ func (i *InstallationPermissions) GetOrganizationAdministration() string {
 		return ""
 	}
 	return *i.OrganizationAdministration
+}
+
+// GetOrganizationCustomOrgRoles returns the OrganizationCustomOrgRoles field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationCustomOrgRoles() string {
+	if i == nil || i.OrganizationCustomOrgRoles == nil {
+		return ""
+	}
+	return *i.OrganizationCustomOrgRoles
 }
 
 // GetOrganizationCustomProperties returns the OrganizationCustomProperties field if it's non-nil, zero value otherwise.
