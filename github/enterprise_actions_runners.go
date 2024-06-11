@@ -101,6 +101,27 @@ func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, 
 	return runners, resp, nil
 }
 
+// GetRunner gets a specific self-hosted runner configured in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#get-a-self-hosted-runner-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/runners/{runner_id}
+func (s *EnterpriseService) GetRunner(ctx context.Context, enterprise string, runnerID int64) (*Runner, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/runners/%v", enterprise, runnerID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	runner := new(Runner)
+	resp, err := s.client.Do(ctx, req, runner)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return runner, resp, nil
+}
+
 // RemoveRunner forces the removal of a self-hosted runner from an enterprise using the runner id.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-an-enterprise
