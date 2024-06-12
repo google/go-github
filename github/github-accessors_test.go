@@ -23327,6 +23327,16 @@ func TestRepositoryPermissionLevel_GetPermission(tt *testing.T) {
 	r.GetPermission()
 }
 
+func TestRepositoryPermissionLevel_GetRoleName(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryPermissionLevel{RoleName: &zeroValue}
+	r.GetRoleName()
+	r = &RepositoryPermissionLevel{}
+	r.GetRoleName()
+	r = nil
+	r.GetRoleName()
+}
+
 func TestRepositoryPermissionLevel_GetUser(tt *testing.T) {
 	r := &RepositoryPermissionLevel{}
 	r.GetUser()
