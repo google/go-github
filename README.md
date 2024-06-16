@@ -101,7 +101,7 @@ For API methods that require HTTP Basic Authentication, use the
 
 #### As a GitHub App ####
 
-GitHub Apps authentication can be provided by different pkgs like [ghinstallation](https://github.com/bradleyfalzon/ghinstallation) or [go-githubauth](github.com/jferrl/go-githubauth).
+GitHub Apps authentication can be provided by different pkgs like [ghinstallation](https://github.com/bradleyfalzon/ghinstallation) or [go-githubauth](https://github.com/jferrl/go-githubauth).
 
 > **Note**: Most endpoints (ex. [`GET /rate_limit`]) require access token authentication
 > while a few others (ex. [`GET /app/hook/deliveries`]) require [JWT] authentication.
