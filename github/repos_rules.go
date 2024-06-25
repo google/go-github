@@ -48,7 +48,7 @@ type RulesetRepositoryIDsConditionParameters struct {
 	RepositoryIDs []int64 `json:"repository_ids,omitempty"`
 }
 
-// RulesetRepositoryPropertyTargetParameters represents a repository_property name and values to be used for targetting.
+// RulesetRepositoryPropertyTargetParameters represents a repository_property name and values to be used for targeting.
 type RulesetRepositoryPropertyTargetParameters struct {
 	Name   string   `json:"name"`
 	Values []string `json:"property_values"`
