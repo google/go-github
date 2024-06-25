@@ -1142,6 +1142,94 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 	})
 }
 
+func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"id": 26110,
+			"name": "test ruleset",
+			"target": "branch",
+			"source_type": "Organization",
+			"source": "o",
+			"enforcement": "active",
+			"bypass_mode": "none",
+			"node_id": "nid",
+			"_links": {
+			  "self": {
+				"href": "https://api.github.com/orgs/o/rulesets/26110"
+			  }
+			},
+			"conditions": {
+			  "repository_property": {
+				"exclude": [],
+				"include": [
+				  {
+					"name": "testIncludeProp",
+					"source": "custom",
+					"property_values": [
+					  "true"
+					]
+				  }
+				]
+			  }
+			},
+			"rules": [
+			{
+				"type": "creation"
+			}
+			]
+		}`)
+	})
+
+	ctx := context.Background()
+	rulesets, _, err := client.Organizations.GetOrganizationRuleset(ctx, "o", 26110)
+	if err != nil {
+		t.Errorf("Organizations.GetOrganizationRepositoryRuleset returned error: %v", err)
+	}
+
+	want := &Ruleset{
+		ID:          Int64(26110),
+		Name:        "test ruleset",
+		Target:      String("branch"),
+		SourceType:  String("Organization"),
+		Source:      "o",
+		Enforcement: "active",
+		NodeID:      String("nid"),
+		Links: &RulesetLinks{
+			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
+		},
+		Conditions: &RulesetConditions{
+			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
+				Include: []RulesetRepositoryPropertyTargetParameters{
+					{
+						Name:   "testIncludeProp",
+						Values: []string{"true"},
+					},
+				},
+				Exclude: []RulesetRepositoryPropertyTargetParameters{},
+			},
+		},
+		Rules: []*RepositoryRule{
+			NewCreationRule(),
+		},
+	}
+	if !cmp.Equal(rulesets, want) {
+		t.Errorf("Organizations.GetOrganizationRuleset returned %+v, want %+v", rulesets, want)
+	}
+
+	const methodName = "GetOrganizationRuleset"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetOrganizationRuleset(ctx, "o", 26110)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
 func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
