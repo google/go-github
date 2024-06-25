@@ -1345,6 +1345,113 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 	})
 }
 
+func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `{
+			"id": 26110,
+			"name": "test ruleset",
+			"target": "branch",
+			"source_type": "Organization",
+			"source": "o",
+			"enforcement": "active",
+			"bypass_mode": "none",
+			"node_id": "nid",
+			"_links": {
+			  "self": {
+				"href": "https://api.github.com/orgs/o/rulesets/26110"
+			  }
+			},
+			"conditions": {
+			  "repository_property": {
+				"exclude": [],
+				"include": [
+				  {
+					"name": "testIncludeProp",
+					"source": "custom",
+					"property_values": [
+					  "true"
+					]
+				  }
+				]
+			  }
+			  },
+			  "rules": [
+				{
+				  "type": "creation"
+				}
+			  ]
+		}`)
+	})
+
+	ctx := context.Background()
+	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, &Ruleset{
+		Name:        "test ruleset",
+		Target:      String("branch"),
+		Enforcement: "active",
+		Conditions: &RulesetConditions{
+			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
+				Include: []RulesetRepositoryPropertyTargetParameters{
+					{
+						Name:   "testIncludeProp",
+						Values: []string{"true"},
+					},
+				},
+				Exclude: []RulesetRepositoryPropertyTargetParameters{},
+			},
+		},
+		Rules: []*RepositoryRule{
+			NewCreationRule(),
+		},
+	})
+
+	if err != nil {
+		t.Errorf("Organizations.UpdateOrganizationRuleset returned error: %v", err)
+	}
+
+	want := &Ruleset{
+		ID:          Int64(26110),
+		Name:        "test ruleset",
+		Target:      String("branch"),
+		SourceType:  String("Organization"),
+		Source:      "o",
+		Enforcement: "active",
+		NodeID:      String("nid"),
+		Links: &RulesetLinks{
+			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
+		},
+		Conditions: &RulesetConditions{
+			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
+				Include: []RulesetRepositoryPropertyTargetParameters{
+					{
+						Name:   "testIncludeProp",
+						Values: []string{"true"},
+					},
+				},
+				Exclude: []RulesetRepositoryPropertyTargetParameters{},
+			},
+		},
+		Rules: []*RepositoryRule{
+			NewCreationRule(),
+		},
+	}
+	if !cmp.Equal(rulesets, want) {
+		t.Errorf("Organizations.UpdateOrganizationRuleset returned %+v, want %+v", rulesets, want)
+	}
+
+	const methodName = "UpdateOrganizationRuleset"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
 func TestOrganizationsService_DeleteOrganizationRuleset(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
