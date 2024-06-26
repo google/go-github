@@ -20878,6 +20878,14 @@ func (r *RulesetConditions) GetRepositoryName() *RulesetRepositoryNamesCondition
 	return r.RepositoryName
 }
 
+// GetRepositoryProperty returns the RepositoryProperty field.
+func (r *RulesetConditions) GetRepositoryProperty() *RulesetRepositoryPropertyConditionParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryProperty
+}
+
 // GetHRef returns the HRef field if it's non-nil, zero value otherwise.
 func (r *RulesetLink) GetHRef() string {
 	if r == nil || r.HRef == nil {

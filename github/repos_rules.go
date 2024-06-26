@@ -48,12 +48,25 @@ type RulesetRepositoryIDsConditionParameters struct {
 	RepositoryIDs []int64 `json:"repository_ids,omitempty"`
 }
 
+// RulesetRepositoryPropertyTargetParameters represents a repository_property name and values to be used for targeting.
+type RulesetRepositoryPropertyTargetParameters struct {
+	Name   string   `json:"name"`
+	Values []string `json:"property_values"`
+}
+
+// RulesetRepositoryPropertyConditionParameters represents the conditions object for repository_property.
+type RulesetRepositoryPropertyConditionParameters struct {
+	Include []RulesetRepositoryPropertyTargetParameters `json:"include"`
+	Exclude []RulesetRepositoryPropertyTargetParameters `json:"exclude"`
+}
+
 // RulesetConditions represents the conditions object in a ruleset.
-// Set either RepositoryName or RepositoryID, not both.
+// Set either RepositoryName or RepositoryID or RepositoryProperty, not more than one.
 type RulesetConditions struct {
-	RefName        *RulesetRefConditionParameters             `json:"ref_name,omitempty"`
-	RepositoryName *RulesetRepositoryNamesConditionParameters `json:"repository_name,omitempty"`
-	RepositoryID   *RulesetRepositoryIDsConditionParameters   `json:"repository_id,omitempty"`
+	RefName            *RulesetRefConditionParameters                `json:"ref_name,omitempty"`
+	RepositoryName     *RulesetRepositoryNamesConditionParameters    `json:"repository_name,omitempty"`
+	RepositoryID       *RulesetRepositoryIDsConditionParameters      `json:"repository_id,omitempty"`
+	RepositoryProperty *RulesetRepositoryPropertyConditionParameters `json:"repository_property,omitempty"`
 }
 
 // RulePatternParameters represents the rule pattern parameters.

@@ -24262,6 +24262,13 @@ func TestRulesetConditions_GetRepositoryName(tt *testing.T) {
 	r.GetRepositoryName()
 }
 
+func TestRulesetConditions_GetRepositoryProperty(tt *testing.T) {
+	r := &RulesetConditions{}
+	r.GetRepositoryProperty()
+	r = nil
+	r.GetRepositoryProperty()
+}
+
 func TestRulesetLink_GetHRef(tt *testing.T) {
 	var zeroValue string
 	r := &RulesetLink{HRef: &zeroValue}
