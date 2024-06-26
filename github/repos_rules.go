@@ -56,8 +56,8 @@ type RulesetRepositoryPropertyTargetParameters struct {
 
 // RulesetRepositoryPropertyConditionParameters represents the conditions object for repository_property.
 type RulesetRepositoryPropertyConditionParameters struct {
-	Include []RulesetRepositoryPropertyTargetParameters `json:"include,omitempty"`
-	Exclude []RulesetRepositoryPropertyTargetParameters `json:"exclude,omitempty"`
+	Include []RulesetRepositoryPropertyTargetParameters `json:"include"`
+	Exclude []RulesetRepositoryPropertyTargetParameters `json:"exclude"`
 }
 
 // RulesetConditions represents the conditions object in a ruleset.
