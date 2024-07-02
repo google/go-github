@@ -145,6 +145,46 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 	})
 }
 
+func TestEnterpriseService_GetRunner(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/enterprises/e/actions/runners/23", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":23,"name":"MBP","os":"macos","status":"online"}`)
+	})
+
+	ctx := context.Background()
+	runner, _, err := client.Enterprise.GetRunner(ctx, "e", 23)
+	if err != nil {
+		t.Errorf("Enterprise.GetRunner returned error: %v", err)
+	}
+
+	want := &Runner{
+		ID:     Int64(23),
+		Name:   String("MBP"),
+		OS:     String("macos"),
+		Status: String("online"),
+	}
+	if !cmp.Equal(runner, want) {
+		t.Errorf("Enterprise.GetRunner returned %+v, want %+v", runner, want)
+	}
+
+	const methodName = "GetRunner"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.GetRunner(ctx, "\n", 23)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetRunner(ctx, "e", 23)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestEnterpriseService_RemoveRunner(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
