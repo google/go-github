@@ -798,14 +798,10 @@ func (s *TeamsService) RemoveTeamProjectBySlug(ctx context.Context, org, slug st
 
 // ListIDPGroupsOptions specifies the optional parameters to the ListIDPGroupsInOrganization method.
 type ListIDPGroupsOptions struct {
-	// The number of results to include per page.
-	PerPage int `url:"per_page,omitempty"`
-
-	// Page token.
-	Page string `url:"page,omitempty"`
-
 	// Filters the results to return only those that begin with the value specified by this parameter.
 	Query string `url:"q,omitempty"`
+
+	ListCursorOptions
 }
 
 // IDPGroupList represents a list of external identity provider (IDP) groups.

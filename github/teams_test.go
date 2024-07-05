@@ -1308,8 +1308,8 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 	})
 
 	opt := &ListIDPGroupsOptions{
-		Query: "n",
-		Page:  "url-encoded-next-page-token",
+		Query:             "n",
+		ListCursorOptions: ListCursorOptions{Page: "url-encoded-next-page-token"},
 	}
 	ctx := context.Background()
 	groups, _, err := client.Teams.ListIDPGroupsInOrganization(ctx, "o", opt)
