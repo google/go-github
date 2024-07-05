@@ -1302,11 +1302,15 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"page": "url-encoded-next-page-token",
+			"q":    "n",
 		})
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 
-	opt := &ListCursorOptions{Page: "url-encoded-next-page-token"}
+	opt := &ListIDPGroupsOptions{
+		Query: "n",
+		Page:  "url-encoded-next-page-token",
+	}
 	ctx := context.Background()
 	groups, _, err := client.Teams.ListIDPGroupsInOrganization(ctx, "o", opt)
 	if err != nil {
