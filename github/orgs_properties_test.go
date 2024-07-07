@@ -364,6 +364,66 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 	})
 }
 
+func TestOrganizationsService_ListInvalidCustomPropertyValuesTypes(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "1", "per_page": "100"})
+		fmt.Fprint(w, `[{
+		"repository_id": 1296269,
+		"repository_name": "Hello-World",
+		"repository_full_name": "octocat/Hello-World",
+		"properties": [
+		{
+          "property_name": "environment",
+          "value": {
+		 	"invalid": "type" 
+		  }
+		}
+        ]}]`)
+	})
+
+	ctx := context.Background()
+	_, _, err := client.Organizations.ListCustomPropertyValues(ctx, "o", &ListOptions{
+		Page:    1,
+		PerPage: 100,
+	})
+	if err == nil || err.Error() != "unexpected value type: map[string]interface {}" {
+		t.Errorf("Expected unexpected value type error, got %v", err)
+	}
+}
+
+func TestOrganizationsService_ListCustomPropertyValues_NonStringValueInArray(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "1", "per_page": "100"})
+		fmt.Fprint(w, `[{
+		"repository_id": 1296269,
+		"repository_name": "Hello-World",
+		"repository_full_name": "octocat/Hello-World",
+		"properties": [
+		{
+          "property_name": "languages",
+          "value": ["Go", 42]
+		}
+        ]}]`)
+	})
+
+	ctx := context.Background()
+	_, _, err := client.Organizations.ListCustomPropertyValues(ctx, "o", &ListOptions{
+		Page:    1,
+		PerPage: 100,
+	})
+	if err == nil || err.Error() != "non-string value in string array" {
+		t.Errorf("Expected non-string value in string array error, got %v", err)
+	}
+}
+
 func TestOrganizationsService_CreateOrUpdateRepoCustomPropertyValues(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
