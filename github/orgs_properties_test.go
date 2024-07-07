@@ -296,6 +296,14 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
         {
           "property_name": "service",
           "value": "web"
+        },
+        {
+          "property_name": "languages",
+          "value": ["Go", "JavaScript"]
+        },
+        {
+          "property_name": "null_property",
+          "value": null
         }
 		]
         }]`)
@@ -318,11 +326,19 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 			Properties: []*CustomPropertyValue{
 				{
 					PropertyName: "environment",
-					Value:        String("production"),
+					Value:        "production",
 				},
 				{
 					PropertyName: "service",
-					Value:        String("web"),
+					Value:        "web",
+				},
+				{
+					PropertyName: "languages",
+					Value:        []string{"Go", "JavaScript"},
+				},
+				{
+					PropertyName: "null_property",
+					Value:        nil,
 				},
 			},
 		},

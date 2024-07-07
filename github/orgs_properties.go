@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -40,8 +41,42 @@ type RepoCustomPropertyValue struct {
 
 // CustomPropertyValue represents a custom property value.
 type CustomPropertyValue struct {
-	PropertyName string  `json:"property_name"`
-	Value        *string `json:"value,omitempty"`
+	PropertyName string      `json:"property_name"`
+	Value        interface{} `json:"value,omitempty"`
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface.
+// This helps us handle the fact that Value can be either a string, []string, or nil.
+func (cpv *CustomPropertyValue) UnmarshalJSON(data []byte) error {
+	type aliasCustomPropertyValue CustomPropertyValue
+	aux := &struct {
+		*aliasCustomPropertyValue
+	}{
+		aliasCustomPropertyValue: (*aliasCustomPropertyValue)(cpv),
+	}
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	switch v := aux.Value.(type) {
+	case nil:
+		cpv.Value = nil
+	case string:
+		cpv.Value = v
+	case []interface{}:
+		strSlice := make([]string, len(v))
+		for i, item := range v {
+			if str, ok := item.(string); ok {
+				strSlice[i] = str
+			} else {
+				return fmt.Errorf("non-string value in string array")
+			}
+		}
+		cpv.Value = strSlice
+	default:
+		return fmt.Errorf("unexpected value type: %T", v)
+	}
+	return nil
 }
 
 // GetAllCustomProperties gets all custom properties that are defined for the specified organization.
