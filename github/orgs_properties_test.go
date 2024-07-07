@@ -364,63 +364,75 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_ListInvalidCustomPropertyValuesTypes(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"page": "1", "per_page": "100"})
-		fmt.Fprint(w, `[{
-		"repository_id": 1296269,
-		"repository_name": "Hello-World",
-		"repository_full_name": "octocat/Hello-World",
-		"properties": [
-		{
-          "property_name": "environment",
-          "value": {
-		 	"invalid": "type" 
-		  }
-		}
-        ]}]`)
-	})
-
-	ctx := context.Background()
-	_, _, err := client.Organizations.ListCustomPropertyValues(ctx, "o", &ListOptions{
-		Page:    1,
-		PerPage: 100,
-	})
-	if err == nil || err.Error() != "unexpected value type: map[string]interface {}" {
-		t.Errorf("Expected unexpected value type error, got %v", err)
+func TestCustomPropertyValue_UnmarshalJSON(t *testing.T) {
+	tests := map[string]struct {
+		data    string
+		want    *CustomPropertyValue
+		wantErr bool
+	}{
+		"Invalid JSON": {
+			data:    `{`,
+			want:    &CustomPropertyValue{},
+			wantErr: true,
+		},
+		"String value": {
+			data: `{
+				"property_name": "environment",
+				"value": "production"
+			}`,
+			want: &CustomPropertyValue{
+				PropertyName: "environment",
+				Value:        "production",
+			},
+			wantErr: false,
+		},
+		"Array of strings value": {
+			data: `{
+				"property_name": "languages",
+				"value": ["Go", "JavaScript"]
+			}`,
+			want: &CustomPropertyValue{
+				PropertyName: "languages",
+				Value:        []string{"Go", "JavaScript"},
+			},
+			wantErr: false,
+		},
+		"Non-string value in array": {
+			data: `{
+				"property_name": "languages",
+				"value": ["Go", 42]
+			}`,
+			want: &CustomPropertyValue{
+				PropertyName: "languages",
+				Value:        nil,
+			},
+			wantErr: true,
+		},
+		"Unexpected value type": {
+			data: `{
+				"property_name": "environment",
+				"value": {"invalid": "type"}
+			}`,
+			want: &CustomPropertyValue{
+				PropertyName: "environment",
+				Value:        nil,
+			},
+			wantErr: true,
+		},
 	}
-}
 
-func TestOrganizationsService_ListCustomPropertyValues_NonStringValueInArray(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"page": "1", "per_page": "100"})
-		fmt.Fprint(w, `[{
-		"repository_id": 1296269,
-		"repository_name": "Hello-World",
-		"repository_full_name": "octocat/Hello-World",
-		"properties": [
-		{
-          "property_name": "languages",
-          "value": ["Go", 42]
-		}
-        ]}]`)
-	})
-
-	ctx := context.Background()
-	_, _, err := client.Organizations.ListCustomPropertyValues(ctx, "o", &ListOptions{
-		Page:    1,
-		PerPage: 100,
-	})
-	if err == nil || err.Error() != "non-string value in string array" {
-		t.Errorf("Expected non-string value in string array error, got %v", err)
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			cpv := &CustomPropertyValue{}
+			err := cpv.UnmarshalJSON([]byte(tc.data))
+			if (err != nil) != tc.wantErr {
+				t.Errorf("CustomPropertyValue.UnmarshalJSON error = %v, wantErr %v", err, tc.wantErr)
+				return
+			}
+			if !tc.wantErr && !cmp.Equal(tc.want, cpv) {
+				t.Errorf("CustomPropertyValue.UnmarshalJSON expected %+v, got %+v", tc.want, cpv)
+			}
+		})
 	}
 }
 
