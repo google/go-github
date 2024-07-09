@@ -527,7 +527,7 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 
 // UpdateRulesetNoBypassActor updates a ruleset for the specified repository.
 //
-// This function is necessary as the UpdateRuleset function does not marschall ByPassActor if passed as nil or an empty array.
+// This function is necessary as the UpdateRuleset function does not marshal ByPassActor if passed as nil or an empty array.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
 //
