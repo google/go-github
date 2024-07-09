@@ -525,6 +525,58 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	rs := &Ruleset{
+		Name:        "ruleset",
+		Source:      "o/repo",
+		Enforcement: "enabled",
+	}
+
+	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `{
+			"id": 42,
+			"name": "ruleset",
+			"source_type": "Repository",
+			"source": "o/repo",
+			"enforcement": "enabled"
+		}`)
+	})
+
+	ctx := context.Background()
+
+	ruleSet, _, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, rs)
+
+	if err != nil {
+		t.Errorf("Repositories.UpdateRulesetNoBypassActor returned error: %v \n", err)
+	}
+
+	want := &Ruleset{
+		ID:          Int64(42),
+		Name:        "ruleset",
+		SourceType:  String("Repository"),
+		Source:      "o/repo",
+		Enforcement: "enabled",
+	}
+
+	if !cmp.Equal(ruleSet, want) {
+		t.Errorf("Repositories.UpdateRulesetNoBypassActor returned %+v, want %+v", ruleSet, want)
+	}
+
+	const methodName = "UpdateRulesetNoBypassActor"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -556,6 +608,7 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 		Source:      "o/repo",
 		Enforcement: "enabled",
 	}
+
 	if !cmp.Equal(ruleSet, want) {
 		t.Errorf("Repositories.UpdateRuleset returned %+v, want %+v", ruleSet, want)
 	}
