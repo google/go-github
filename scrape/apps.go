@@ -110,11 +110,14 @@ type OAuthApp struct {
 
 // AppManifest represents a GitHub App manifest, used for preconfiguring
 // GitHub App configuration.
+// c.f. https://docs.github.com/en/apps/sharing-github-apps/registering-a-github-app-from-a-manifest
 type AppManifest struct {
 	// The name of the GitHub App.
 	Name *string `json:"name,omitempty"`
 	//Required. The homepage of your GitHub App.
 	URL *string `json:"url,omitempty"`
+	// The full URL(s) of the endpoint(s) to authenticate users via the GitHub App (Max: 10).
+	CallbackURLs []string `json:"callback_urls,omitempty"`
 	// Required. The configuration of the GitHub App's webhook.
 	HookAttributes map[string]string `json:"hook_attributes,omitempty"`
 	// The full URL to redirect to after the person installs the GitHub App.
