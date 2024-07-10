@@ -116,7 +116,7 @@ type AppManifest struct {
 	Name *string `json:"name,omitempty"`
 	//Required. The homepage of your GitHub App.
 	URL *string `json:"url,omitempty"`
-	// The full URL of the endpoint to authenticate users via the GitHub App.
+	// The full URL(s) of the endpoint(s) to authenticate users via the GitHub App (Max: 10).
 	CallbackURLs []string `json:"callback_urls,omitempty"`
 	// Required. The configuration of the GitHub App's webhook.
 	HookAttributes map[string]string `json:"hook_attributes,omitempty"`
