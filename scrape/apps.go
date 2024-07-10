@@ -110,6 +110,7 @@ type OAuthApp struct {
 
 // AppManifest represents a GitHub App manifest, used for preconfiguring
 // GitHub App configuration.
+// c.f. https://docs.github.com/en/apps/sharing-github-apps/registering-a-github-app-from-a-manifest
 type AppManifest struct {
 	// The name of the GitHub App.
 	Name *string `json:"name,omitempty"`
