@@ -250,9 +250,16 @@ func (s *PullRequestsService) GetRaw(ctx context.Context, owner string, repo str
 
 // NewPullRequest represents a new pull request to be created.
 type NewPullRequest struct {
-	Title               *string `json:"title,omitempty"`
-	Head                *string `json:"head,omitempty"`
-	HeadRepo            *string `json:"head_repo,omitempty"`
+	Title *string `json:"title,omitempty"`
+	// The name of the branch where your changes are implemented. For
+	// cross-repository pull requests in the same network, namespace head with
+	// a user like this: username:branch.
+	Head     *string `json:"head,omitempty"`
+	HeadRepo *string `json:"head_repo,omitempty"`
+	// The name of the branch you want the changes pulled into. This should be
+	// an existing branch on the current repository. You cannot submit a pull
+	// request to one repository that requests a merge to a base of another
+	// repository.
 	Base                *string `json:"base,omitempty"`
 	Body                *string `json:"body,omitempty"`
 	Issue               *int    `json:"issue,omitempty"`
