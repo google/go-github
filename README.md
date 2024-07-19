@@ -316,6 +316,25 @@ for {
 }
 ```
 
+#### Iterators (**experimental**)
+
+Go v1.23 introduces the new `iter` package.  
+
+With the `enrichman/gh-iter` package, it is possible to create iterators for `go-github`. The iterator will handle pagination for you, looping through all the available results.
+
+```go
+client := github.NewClient(nil)
+var allRepos []*github.Repository
+
+// create an iterator and start looping through all the results
+repos := ghiter.NewFromFn1(client.Repositories.ListByOrg, "github")
+for repo := range repos.All() {
+	allRepos = append(allRepos, repo)
+}
+```
+
+For complete usage of `enrichman/gh-iter`, see the full [package docs](https://github.com/enrichman/gh-iter).
+
 ### Webhooks ###
 
 `go-github` provides structs for almost all [GitHub webhook events][] as well as functions to validate them and unmarshal JSON payloads from `http.Request` structs.
