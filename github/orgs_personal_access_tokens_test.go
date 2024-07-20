@@ -8,11 +8,127 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
+
+func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/personal-access-tokens", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
+		fmt.Fprint(w, `
+		[
+			{
+				"id": 25381,
+				"owner": {
+					"login": "octocat",
+					"id": 1,
+					"node_id": "MDQ6VXNlcjE=",
+					"avatar_url": "https://github.com/images/error/octocat_happy.gif",
+					"gravatar_id": "",
+					"url": "https://api.github.com/users/octocat",
+					"html_url": "https://github.com/octocat",
+					"followers_url": "https://api.github.com/users/octocat/followers",
+					"following_url": "https://api.github.com/users/octocat/following{/other_user}",
+					"gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+					"starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+					"subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+					"organizations_url": "https://api.github.com/users/octocat/orgs",
+					"repos_url": "https://api.github.com/users/octocat/repos",
+					"events_url": "https://api.github.com/users/octocat/events{/privacy}",
+					"received_events_url": "https://api.github.com/users/octocat/received_events",
+					"type": "User",
+					"site_admin": false
+				},
+				"repository_selection": "all",
+				"repositories_url": "https://api.github.com/organizations/652551/personal-access-tokens/25381/repositories",
+				"permissions": {
+					"organization": {
+						"members": "read"
+					},
+					"repository": {
+						"metadata": "read"
+					}
+				},
+				"access_granted_at": "2023-05-16T08:47:09.000-07:00",
+				"token_expired": false,
+				"token_expires_at": "2023-11-16T08:47:09.000-07:00",
+				"token_last_used_at": null
+			}
+		]`)
+	})
+
+	opts := &ListOptions{Page: 2, PerPage: 2}
+	ctx := context.Background()
+	tokens, resp, err := client.Organizations.ListFineGrainedPersonalAccessTokens(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Organizations.ListFineGrainedPersonalAccessTokens returned error: %v", err)
+	}
+
+	want := []*PersonalAccessToken{
+		{
+			ID: Int64(25381),
+			Owner: &User{
+				Login:             String("octocat"),
+				ID:                Int64(1),
+				NodeID:            String("MDQ6VXNlcjE="),
+				AvatarURL:         String("https://github.com/images/error/octocat_happy.gif"),
+				GravatarID:        String(""),
+				URL:               String("https://api.github.com/users/octocat"),
+				HTMLURL:           String("https://github.com/octocat"),
+				FollowersURL:      String("https://api.github.com/users/octocat/followers"),
+				FollowingURL:      String("https://api.github.com/users/octocat/following{/other_user}"),
+				GistsURL:          String("https://api.github.com/users/octocat/gists{/gist_id}"),
+				StarredURL:        String("https://api.github.com/users/octocat/starred{/owner}{/repo}"),
+				SubscriptionsURL:  String("https://api.github.com/users/octocat/subscriptions"),
+				OrganizationsURL:  String("https://api.github.com/users/octocat/orgs"),
+				ReposURL:          String("https://api.github.com/users/octocat/repos"),
+				EventsURL:         String("https://api.github.com/users/octocat/events{/privacy}"),
+				ReceivedEventsURL: String("https://api.github.com/users/octocat/received_events"),
+				Type:              String("User"),
+				SiteAdmin:         Bool(false),
+			},
+			RepositorySelection: String("all"),
+			RepositoriesURL:     String("https://api.github.com/organizations/652551/personal-access-tokens/25381/repositories"),
+			Permissions: &PersonalAccessTokenPermissions{
+				Org:  map[string]string{"members": "read"},
+				Repo: map[string]string{"metadata": "read"},
+			},
+			AccessGrantedAt: &Timestamp{time.Date(2023, time.May, 16, 8, 47, 9, 0, time.FixedZone("PDT", -7*60*60))},
+			TokenExpired:    Bool(false),
+			TokenExpiresAt:  &Timestamp{time.Date(2023, time.November, 16, 8, 47, 9, 0, time.FixedZone("PDT", -7*60*60))},
+			TokenLastUsedAt: nil,
+		},
+	}
+	if !cmp.Equal(tokens, want) {
+		t.Errorf("Organizations.ListFineGrainedPersonalAccessTokens returned %+v, want %+v", tokens, want)
+	}
+
+	if resp == nil {
+		t.Error("Organizations.ListFineGrainedPersonalAccessTokens returned nil response")
+	}
+
+	const methodName = "ListFineGrainedPersonalAccessTokens"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListFineGrainedPersonalAccessTokens(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListFineGrainedPersonalAccessTokens(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
 
 func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 	client, mux, _, teardown := setup()

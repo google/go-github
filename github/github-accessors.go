@@ -14326,6 +14326,78 @@ func (p *PagesUpdate) GetSource() *PagesSource {
 	return p.Source
 }
 
+// GetAccessGrantedAt returns the AccessGrantedAt field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetAccessGrantedAt() Timestamp {
+	if p == nil || p.AccessGrantedAt == nil {
+		return Timestamp{}
+	}
+	return *p.AccessGrantedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetOwner returns the Owner field.
+func (p *PersonalAccessToken) GetOwner() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Owner
+}
+
+// GetPermissions returns the Permissions field.
+func (p *PersonalAccessToken) GetPermissions() *PersonalAccessTokenPermissions {
+	if p == nil {
+		return nil
+	}
+	return p.Permissions
+}
+
+// GetRepositoriesURL returns the RepositoriesURL field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetRepositoriesURL() string {
+	if p == nil || p.RepositoriesURL == nil {
+		return ""
+	}
+	return *p.RepositoriesURL
+}
+
+// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetRepositorySelection() string {
+	if p == nil || p.RepositorySelection == nil {
+		return ""
+	}
+	return *p.RepositorySelection
+}
+
+// GetTokenExpired returns the TokenExpired field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetTokenExpired() bool {
+	if p == nil || p.TokenExpired == nil {
+		return false
+	}
+	return *p.TokenExpired
+}
+
+// GetTokenExpiresAt returns the TokenExpiresAt field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetTokenExpiresAt() Timestamp {
+	if p == nil || p.TokenExpiresAt == nil {
+		return Timestamp{}
+	}
+	return *p.TokenExpiresAt
+}
+
+// GetTokenLastUsedAt returns the TokenLastUsedAt field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetTokenLastUsedAt() Timestamp {
+	if p == nil || p.TokenLastUsedAt == nil {
+		return Timestamp{}
+	}
+	return *p.TokenLastUsedAt
+}
+
 // GetOrg returns the Org map if it's non-nil, an empty map otherwise.
 func (p *PersonalAccessTokenPermissions) GetOrg() map[string]string {
 	if p == nil || p.Org == nil {
