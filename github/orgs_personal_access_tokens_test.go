@@ -22,19 +22,27 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 
 	mux.HandleFunc("/orgs/o/personal-access-tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		expectedQuery := values{
-			"per_page":  "2",
-			"page":      "2",
-			"sort":      "created_at",
-			"direction": "desc",
-			"owner[]":   "octocat",
+		expectedQuery := map[string][]string{
+			"per_page":  {"2"},
+			"page":      {"2"},
+			"sort":      {"created_at"},
+			"direction": {"desc"},
+			"owner[]":   {"octocat", "octodog", "otherbot"},
 		}
-		for key, expectedValue := range expectedQuery {
-			actualValue := r.URL.Query().Get(key)
-			if actualValue != expectedValue {
-				t.Errorf("Expected query param %s to be %s, got %s", key, expectedValue, actualValue)
+
+		query := r.URL.Query()
+		for key, expectedValues := range expectedQuery {
+			actualValues := query[key]
+			if len(actualValues) != len(expectedValues) {
+				t.Errorf("Expected %d values for query param %s, got %d", len(expectedValues), key, len(actualValues))
+			}
+			for i, expectedValue := range expectedValues {
+				if actualValues[i] != expectedValue {
+					t.Errorf("Expected query param %s to be %s, got %s", key, expectedValue, actualValues[i])
+				}
 			}
 		}
+
 		fmt.Fprint(w, `
 		[
 			{
@@ -81,7 +89,7 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 		ListOptions: ListOptions{Page: 2, PerPage: 2},
 		Sort:        "created_at",
 		Direction:   "desc",
-		Owner:       []string{"octocat"},
+		Owner:       []string{"octocat", "octodog", "otherbot"},
 	}
 	ctx := context.Background()
 	tokens, resp, err := client.Organizations.ListFineGrainedPersonalAccessTokens(ctx, "o", opts)
