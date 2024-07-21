@@ -9,6 +9,8 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PersonalAccessToken represents the minimal representation of an organization programmatic access grant.
@@ -46,20 +48,52 @@ type PersonalAccessToken struct {
 	TokenLastUsedAt *Timestamp `json:"token_last_used_at"`
 }
 
+// ListFineGrainedPATOptions specifies optional parameters to ListFineGrainedPersonalAccessTokens.
+type ListFineGrainedPATOptions struct {
+	// The property by which to sort the results.
+	// Default: created_at
+	// Value: created_at
+	Sort string `url:"sort,omitempty"`
+
+	// The direction to sort the results by.
+	// Default: desc
+	// Value: asc, desc
+	Direction string `url:"direction,omitempty"`
+
+	// A list of owner usernames to use to filter the results.
+	Owner []string `url:"-"`
+
+	// The name of the repository to use to filter the results.
+	Repository string `url:"repository,omitempty"`
+
+	// The permission to use to filter the results.
+	Permission string `url:"permission,omitempty"`
+
+	// Only show fine-grained personal access tokens used before the given time.
+	// This is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
+	LastUsedBefore string `url:"last_used_before,omitempty"`
+
+	// Only show fine-grained personal access tokens used after the given time.
+	// This is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
+	LastUsedAfter string `url:"last_used_after,omitempty"`
+
+	ListOptions
+}
+
 // ListFineGrainedPersonalAccessTokens lists approved fine-grained personal access tokens owned by organization members that can access organization resources.
 // Only GitHub Apps can call this API, using the `Personal access tokens` organization permissions (read).
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/personal-access-tokens#list-fine-grained-personal-access-tokens-with-access-to-organization-resources
 //
 //meta:operation GET /orgs/{org}/personal-access-tokens
-func (s *OrganizationsService) ListFineGrainedPersonalAccessTokens(ctx context.Context, org string, opts *ListOptions) ([]*PersonalAccessToken, *Response, error) {
+func (s *OrganizationsService) ListFineGrainedPersonalAccessTokens(ctx context.Context, org string, opts *ListFineGrainedPATOptions) ([]*PersonalAccessToken, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/personal-access-tokens", org)
-	u, err := addOptions(u, opts)
+	u, err := addListFineGrainedPATOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest(http.MethodGet, u, &opts)
+	req, err := s.client.NewRequest(http.MethodGet, u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -96,4 +130,29 @@ func (s *OrganizationsService) ReviewPersonalAccessTokenRequest(ctx context.Cont
 	}
 
 	return s.client.Do(ctx, req, nil)
+}
+
+// GitHub API expects the owner parameter to be a list of strings in the `owner[]=...` format.
+// This function adds the owner parameter to the URL query string with the correct format if it is set.
+func addListFineGrainedPATOptions(s string, opts *ListFineGrainedPATOptions) (string, error) {
+	u, err := addOptions(s, opts)
+	if err != nil {
+		return s, err
+	}
+
+	if len(opts.Owner) > 0 {
+		ownerVals := make([]string, len(opts.Owner))
+		for i, owner := range opts.Owner {
+			ownerVals[i] = fmt.Sprintf("owner[]=%s", url.QueryEscape(owner))
+		}
+		ownerQuery := strings.Join(ownerVals, "&")
+
+		if strings.Contains(u, "?") {
+			u += "&" + ownerQuery
+		} else {
+			u += "?" + ownerQuery
+		}
+	}
+
+	return u, nil
 }

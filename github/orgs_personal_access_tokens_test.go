@@ -22,7 +22,19 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 
 	mux.HandleFunc("/orgs/o/personal-access-tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"per_page": "2", "page": "2"})
+		expectedQuery := values{
+			"per_page":  "2",
+			"page":      "2",
+			"sort":      "created_at",
+			"direction": "desc",
+			"owner[]":   "octocat",
+		}
+		for key, expectedValue := range expectedQuery {
+			actualValue := r.URL.Query().Get(key)
+			if actualValue != expectedValue {
+				t.Errorf("Expected query param %s to be %s, got %s", key, expectedValue, actualValue)
+			}
+		}
 		fmt.Fprint(w, `
 		[
 			{
@@ -65,7 +77,12 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 		]`)
 	})
 
-	opts := &ListOptions{Page: 2, PerPage: 2}
+	opts := &ListFineGrainedPATOptions{
+		ListOptions: ListOptions{Page: 2, PerPage: 2},
+		Sort:        "created_at",
+		Direction:   "desc",
+		Owner:       []string{"octocat"},
+	}
 	ctx := context.Background()
 	tokens, resp, err := client.Organizations.ListFineGrainedPersonalAccessTokens(ctx, "o", opts)
 	if err != nil {
