@@ -39,7 +39,7 @@ func TestOrganizationsService_ListRoles(t *testing.T) {
 					"email": "e"
 				},
 				"created_at": "2024-07-21T19:33:08Z",
-			    "updated_at": "2024-07-21T19:33:08Z",
+				"updated_at": "2024-07-21T19:33:08Z",
 				"source": "Organization",
 				"base_role": "admin"
 			}
@@ -237,7 +237,7 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 					"email": "e"
 				},
 				"created_at": "2024-07-21T19:33:08Z",
-			    "updated_at": "2024-07-21T19:33:08Z"
+				"updated_at": "2024-07-21T19:33:08Z"
 			}
 		  ]
 		}`)
