@@ -88,6 +88,7 @@ type ListFineGrainedPATOptions struct {
 //meta:operation GET /orgs/{org}/personal-access-tokens
 func (s *OrganizationsService) ListFineGrainedPersonalAccessTokens(ctx context.Context, org string, opts *ListFineGrainedPATOptions) ([]*PersonalAccessToken, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/personal-access-tokens", org)
+	// The `owner` parameter is a special case that uses the `owner[]=...` format and needs a custom function to format it correctly.
 	u, err := addListFineGrainedPATOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -132,8 +133,16 @@ func (s *OrganizationsService) ReviewPersonalAccessTokenRequest(ctx context.Cont
 	return s.client.Do(ctx, req, nil)
 }
 
+// addListFineGrainedPATOptions adds the owner parameter to the URL query string with the correct format if it is set.
+//
 // GitHub API expects the owner parameter to be a list of strings in the `owner[]=...` format.
-// This function adds the owner parameter to the URL query string with the correct format if it is set.
+// For multiple owner values, the owner parameter is repeated in the query string.
+//
+// Example:
+// owner[]=user1&owner[]=user2
+// This will filter the results to only include fine-grained personal access tokens owned by `user1` and `user2`.
+//
+// This function ensures the owner parameter is formatted correctly in the URL query string.
 func addListFineGrainedPATOptions(s string, opts *ListFineGrainedPATOptions) (string, error) {
 	u, err := addOptions(s, opts)
 	if err != nil {
