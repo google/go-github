@@ -4702,6 +4702,22 @@ func (c *CustomDeploymentProtectionRuleRequest) GetIntegrationID() int64 {
 	return *c.IntegrationID
 }
 
+// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+func (c *CustomOrgRoles) GetBaseRole() string {
+	if c == nil || c.BaseRole == nil {
+		return ""
+	}
+	return *c.BaseRole
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CustomOrgRoles) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (c *CustomOrgRoles) GetDescription() string {
 	if c == nil || c.Description == nil {
@@ -4724,6 +4740,30 @@ func (c *CustomOrgRoles) GetName() string {
 		return ""
 	}
 	return *c.Name
+}
+
+// GetOrg returns the Org field.
+func (c *CustomOrgRoles) GetOrg() *Organization {
+	if c == nil {
+		return nil
+	}
+	return c.Org
+}
+
+// GetSource returns the Source field if it's non-nil, zero value otherwise.
+func (c *CustomOrgRoles) GetSource() string {
+	if c == nil || c.Source == nil {
+		return ""
+	}
+	return *c.Source
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CustomOrgRoles) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
 }
 
 // GetDefaultValue returns the DefaultValue field if it's non-nil, zero value otherwise.
@@ -4782,6 +4822,14 @@ func (c *CustomRepoRoles) GetBaseRole() string {
 	return *c.BaseRole
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CustomRepoRoles) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (c *CustomRepoRoles) GetDescription() string {
 	if c == nil || c.Description == nil {
@@ -4804,6 +4852,22 @@ func (c *CustomRepoRoles) GetName() string {
 		return ""
 	}
 	return *c.Name
+}
+
+// GetOrg returns the Org field.
+func (c *CustomRepoRoles) GetOrg() *Organization {
+	if c == nil {
+		return nil
+	}
+	return c.Org
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CustomRepoRoles) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
 }
 
 // GetQuerySuite returns the QuerySuite field if it's non-nil, zero value otherwise.

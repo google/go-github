@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -20,7 +21,30 @@ func TestOrganizationsService_ListRoles(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/organization-roles", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"total_count": 1, "roles": [{ "id": 1, "name": "Auditor", "permissions": ["read_audit_logs"]}]}`)
+		fmt.Fprint(w, `{"total_count": 1, "roles": [
+			{
+				"id": 1,
+				"name": "Auditor",
+				"permissions": ["read_audit_logs"],
+				"organization": {
+					"login": "l",
+					"id": 1,
+					"node_id": "n",
+					"avatar_url": "a",
+					"html_url": "h",
+					"name": "n",
+					"company": "c",
+					"blog": "b",
+					"location": "l",
+					"email": "e"
+				},
+				"created_at": "2024-07-21T19:33:08Z",
+				"updated_at": "2024-07-21T19:33:08Z",
+				"source": "Organization",
+				"base_role": "admin"
+			}
+			]
+		}`)
 	})
 
 	ctx := context.Background()
@@ -29,7 +53,32 @@ func TestOrganizationsService_ListRoles(t *testing.T) {
 		t.Errorf("Organizations.ListRoles returned error: %v", err)
 	}
 
-	want := &OrganizationCustomRoles{TotalCount: Int(1), CustomRepoRoles: []*CustomOrgRoles{{ID: Int64(1), Name: String("Auditor"), Permissions: []string{"read_audit_logs"}}}}
+	want := &OrganizationCustomRoles{
+		TotalCount: Int(1),
+		CustomRepoRoles: []*CustomOrgRoles{
+			{
+				ID:          Int64(1),
+				Name:        String("Auditor"),
+				Permissions: []string{"read_audit_logs"},
+				Org: &Organization{
+					Login:     String("l"),
+					ID:        Int64(1),
+					NodeID:    String("n"),
+					AvatarURL: String("a"),
+					HTMLURL:   String("h"),
+					Name:      String("n"),
+					Company:   String("c"),
+					Blog:      String("b"),
+					Location:  String("l"),
+					Email:     String("e"),
+				},
+				CreatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
+				UpdatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
+				Source:    String("Organization"),
+				BaseRole:  String("admin"),
+			},
+		},
+	}
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListRoles returned %+v, want %+v", apps, want)
 	}
@@ -169,7 +218,29 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/custom-repository-roles", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"total_count": 1, "custom_roles": [{ "id": 1, "name": "Developer", "base_role": "write", "permissions": ["delete_alerts_code_scanning"]}]}`)
+		fmt.Fprint(w, `{"total_count": 1, "custom_roles": [
+			{
+				"id": 1,
+				"name": "Developer",
+				"base_role": "write",
+				"permissions": ["delete_alerts_code_scanning"],
+				"organization": {
+					"login": "l",
+					"id": 1,
+					"node_id": "n",
+					"avatar_url": "a",
+					"html_url": "h",
+					"name": "n",
+					"company": "c",
+					"blog": "b",
+					"location": "l",
+					"email": "e"
+				},
+				"created_at": "2024-07-21T19:33:08Z",
+				"updated_at": "2024-07-21T19:33:08Z"
+			}
+		  ]
+		}`)
 	})
 
 	ctx := context.Background()
@@ -178,7 +249,31 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 		t.Errorf("Organizations.ListCustomRepoRoles returned error: %v", err)
 	}
 
-	want := &OrganizationCustomRepoRoles{TotalCount: Int(1), CustomRepoRoles: []*CustomRepoRoles{{ID: Int64(1), Name: String("Developer"), BaseRole: String("write"), Permissions: []string{"delete_alerts_code_scanning"}}}}
+	want := &OrganizationCustomRepoRoles{
+		TotalCount: Int(1),
+		CustomRepoRoles: []*CustomRepoRoles{
+			{
+				ID:          Int64(1),
+				Name:        String("Developer"),
+				BaseRole:    String("write"),
+				Permissions: []string{"delete_alerts_code_scanning"},
+				Org: &Organization{
+					Login:     String("l"),
+					ID:        Int64(1),
+					NodeID:    String("n"),
+					AvatarURL: String("a"),
+					HTMLURL:   String("h"),
+					Name:      String("n"),
+					Company:   String("c"),
+					Blog:      String("b"),
+					Location:  String("l"),
+					Email:     String("e"),
+				},
+				CreatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
+				UpdatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
+			},
+		},
+	}
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListCustomRepoRoles returned %+v, want %+v", apps, want)
 	}
