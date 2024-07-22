@@ -5533,6 +5533,26 @@ func TestCustomDeploymentProtectionRuleRequest_GetIntegrationID(tt *testing.T) {
 	c.GetIntegrationID()
 }
 
+func TestCustomOrgRoles_GetBaseRole(tt *testing.T) {
+	var zeroValue string
+	c := &CustomOrgRoles{BaseRole: &zeroValue}
+	c.GetBaseRole()
+	c = &CustomOrgRoles{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCustomOrgRoles_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CustomOrgRoles{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CustomOrgRoles{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
 func TestCustomOrgRoles_GetDescription(tt *testing.T) {
 	var zeroValue string
 	c := &CustomOrgRoles{Description: &zeroValue}
@@ -5561,6 +5581,33 @@ func TestCustomOrgRoles_GetName(tt *testing.T) {
 	c.GetName()
 	c = nil
 	c.GetName()
+}
+
+func TestCustomOrgRoles_GetOrg(tt *testing.T) {
+	c := &CustomOrgRoles{}
+	c.GetOrg()
+	c = nil
+	c.GetOrg()
+}
+
+func TestCustomOrgRoles_GetSource(tt *testing.T) {
+	var zeroValue string
+	c := &CustomOrgRoles{Source: &zeroValue}
+	c.GetSource()
+	c = &CustomOrgRoles{}
+	c.GetSource()
+	c = nil
+	c.GetSource()
+}
+
+func TestCustomOrgRoles_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CustomOrgRoles{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CustomOrgRoles{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
 }
 
 func TestCustomProperty_GetDefaultValue(tt *testing.T) {
@@ -5633,6 +5680,16 @@ func TestCustomRepoRoles_GetBaseRole(tt *testing.T) {
 	c.GetBaseRole()
 }
 
+func TestCustomRepoRoles_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CustomRepoRoles{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CustomRepoRoles{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
 func TestCustomRepoRoles_GetDescription(tt *testing.T) {
 	var zeroValue string
 	c := &CustomRepoRoles{Description: &zeroValue}
@@ -5661,6 +5718,23 @@ func TestCustomRepoRoles_GetName(tt *testing.T) {
 	c.GetName()
 	c = nil
 	c.GetName()
+}
+
+func TestCustomRepoRoles_GetOrg(tt *testing.T) {
+	c := &CustomRepoRoles{}
+	c.GetOrg()
+	c = nil
+	c.GetOrg()
+}
+
+func TestCustomRepoRoles_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CustomRepoRoles{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CustomRepoRoles{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
 }
 
 func TestDefaultSetupConfiguration_GetQuerySuite(tt *testing.T) {
