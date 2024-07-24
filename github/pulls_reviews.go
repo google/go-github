@@ -35,12 +35,9 @@ func (p PullRequestReview) String() string {
 
 // DraftReviewComment represents a comment part of the review.
 type DraftReviewComment struct {
-	Path        *string `json:"path,omitempty"`
-	Position    *int    `json:"position,omitempty"`
-	Body        *string `json:"body,omitempty"`
-	CommitID    *string `json:"commit_id,omitempty"`
-	InReplyTo   *int64  `json:"in_reply_to,omitempty"`
-	SubjectType *string `json:"subject_type,omitempty"`
+	Path     *string `json:"path,omitempty"`
+	Position *int    `json:"position,omitempty"`
+	Body     *string `json:"body,omitempty"`
 
 	// The new comfort-fade-preview fields
 	StartSide *string `json:"start_side,omitempty"`
