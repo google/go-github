@@ -28,6 +28,14 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
         {
           "property_name": "service",
           "value": "web"
+        },
+        {
+          "property_name": "languages",
+          "value": ["Go", "JavaScript"]
+        },
+        {
+          "property_name": "null_property",
+          "value": null
         }
 		]`)
 	})
@@ -41,11 +49,19 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
 	want := []*CustomPropertyValue{
 		{
 			PropertyName: "environment",
-			Value:        String("production"),
+			Value:        "production",
 		},
 		{
 			PropertyName: "service",
-			Value:        String("web"),
+			Value:        "web",
+		},
+		{
+			PropertyName: "languages",
+			Value:        []string{"Go", "JavaScript"},
+		},
+		{
+			PropertyName: "null_property",
+			Value:        nil,
 		},
 	}
 
@@ -77,7 +93,7 @@ func TestRepositoriesService_CreateOrUpdateCustomProperties(t *testing.T) {
 	RepoCustomProperty := []*CustomPropertyValue{
 		{
 			PropertyName: "environment",
-			Value:        String("production"),
+			Value:        "production",
 		},
 	}
 	_, err := client.Repositories.CreateOrUpdateCustomProperties(ctx, "usr", "r", RepoCustomProperty)

@@ -4806,14 +4806,6 @@ func (c *CustomProperty) GetValuesEditableBy() string {
 	return *c.ValuesEditableBy
 }
 
-// GetValue returns the Value field if it's non-nil, zero value otherwise.
-func (c *CustomPropertyValue) GetValue() string {
-	if c == nil || c.Value == nil {
-		return ""
-	}
-	return *c.Value
-}
-
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
 func (c *CustomRepoRoles) GetBaseRole() string {
 	if c == nil || c.BaseRole == nil {
