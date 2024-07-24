@@ -796,6 +796,14 @@ func (s *TeamsService) RemoveTeamProjectBySlug(ctx context.Context, org, slug st
 	return s.client.Do(ctx, req, nil)
 }
 
+// ListIDPGroupsOptions specifies the optional parameters to the ListIDPGroupsInOrganization method.
+type ListIDPGroupsOptions struct {
+	// Filters the results to return only those that begin with the value specified by this parameter.
+	Query string `url:"q,omitempty"`
+
+	ListCursorOptions
+}
+
 // IDPGroupList represents a list of external identity provider (IDP) groups.
 type IDPGroupList struct {
 	Groups []*IDPGroup `json:"groups"`
@@ -813,7 +821,7 @@ type IDPGroup struct {
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#list-idp-groups-for-an-organization
 //
 //meta:operation GET /orgs/{org}/team-sync/groups
-func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opts *ListCursorOptions) (*IDPGroupList, *Response, error) {
+func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opts *ListIDPGroupsOptions) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/team-sync/groups", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
