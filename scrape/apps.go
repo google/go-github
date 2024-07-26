@@ -12,6 +12,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -133,12 +134,39 @@ type AppManifest struct {
 	DefaultPermissions *github.InstallationPermissions `json:"default_permissions,omitempty"`
 }
 
+type OwnerType string
+
+const (
+	OwnerTypePersonal     OwnerType = "personal"
+	OwnerTypeOrganization OwnerType = "organizational"
+)
+
+type AppConfig struct {
+	OwnerType OwnerType
+	OrgName   string
+}
+
 // CreateApp creates a new GitHub App with the given manifest configuration.
-func (c *Client) CreateApp(m *AppManifest) (*http.Response, error) {
-	u, err := c.baseURL.Parse("/settings/apps/new")
+// If the account type is "organizational", the path is set to "/organizations/{orgName}/settings/apps/new",
+// where {orgName} is the name of the organization specified in the AppConfig.
+// Otherwise, the path is set to "/settings/apps/new".
+
+func (c *Client) CreateApp(m *AppManifest, accType *AppConfig) (*http.Response, error) {
+
+	path := "/settings/apps/new"
+
+	if accType.OwnerType == "organizational" {
+		path = fmt.Sprintf("/organizations/%s/settings/apps/new", accType.OrgName)
+	}
+
+	fmt.Println(path)
+
+	u, err := c.baseURL.Parse(path)
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println(u)
 
 	body, err := json.Marshal(map[string]*AppManifest{"manifest": m})
 	if err != nil {
