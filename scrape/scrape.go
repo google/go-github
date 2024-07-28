@@ -128,6 +128,7 @@ func (c *Client) Authenticate(username, password, otpseed string) error {
 		values.Set("password", password)
 	}
 	resp, err := fetchAndSubmitForm(c.Client, "https://github.com/login", setPassword)
+
 	if err != nil {
 		return err
 	}

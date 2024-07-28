@@ -142,33 +142,27 @@ const (
 )
 
 type AppConfig struct {
+	// OwnerType specifies the type of GitHub account owner (personal or organizational).
 	OwnerType OwnerType
-	OrgName   string
+	// OrgName is the name of the organization if the OwnerType is organizational.
+	OrgName string
 }
 
 // CreateApp creates a new GitHub App with the given manifest configuration.
-// If the account type is "organizational", the path is set to "/organizations/{orgName}/settings/apps/new",
-// where {orgName} is the name of the organization specified in the AppConfig.
-// Otherwise, the path is set to "/settings/apps/new".
-
 func (c *Client) CreateApp(m *AppManifest, accType *AppConfig) (*http.Response, error) {
-
 	path := "/settings/apps/new"
 
 	if accType.OwnerType == "organizational" {
 		path = fmt.Sprintf("/organizations/%s/settings/apps/new", accType.OrgName)
 	}
 
-	fmt.Println(path)
-
 	u, err := c.baseURL.Parse(path)
 	if err != nil {
 		return nil, err
 	}
 
-	fmt.Println(u)
-
 	body, err := json.Marshal(map[string]*AppManifest{"manifest": m})
+
 	if err != nil {
 		return nil, err
 	}
