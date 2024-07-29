@@ -11,3 +11,4 @@ coverage:
     project:
       default:
         target: auto  # auto compares coverage to the previous base commit
+        removed_code_behavior: fully_covered_patch
