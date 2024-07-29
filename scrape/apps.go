@@ -149,7 +149,7 @@ type AppConfig struct {
 }
 
 func (c *Client) CreateApp(m *AppManifest, ac *AppConfig) (*http.Response, error) {
-	path := "/settings/apps/new"
+	url := "/settings/apps/new"
 
 	if ac.OwnerType == "organizational" {
 		path = fmt.Sprintf("/organizations/%s/settings/apps/new", ac.OrgName)
