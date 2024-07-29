@@ -152,7 +152,7 @@ func (c *Client) CreateApp(m *AppManifest, ac *AppConfig) (*http.Response, error
 	url := "/settings/apps/new"
 
 	if ac.OwnerType == "organizational" {
-		path = fmt.Sprintf("/organizations/%s/settings/apps/new", ac.OrgName)
+		path = fmt.Sprintf("/organizations/%v/settings/apps/new", ac.OrgName)
 	}
 
 	u, err := c.baseURL.Parse(path)
