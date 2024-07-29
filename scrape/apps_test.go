@@ -97,9 +97,7 @@ func Test_CreateApp(t *testing.T) {
 		HookAttributes: map[string]string{
 			"url": "https://example.com/hook",
 		},
-	}, &AppConfig{
-		OwnerType: OwnerTypePersonal,
-	}); err != nil {
+	}, ""); err != nil {
 		t.Fatalf("CreateApp: %v", err)
 	}
 }
@@ -118,10 +116,7 @@ func Test_CreateAppWithOrg(t *testing.T) {
 		HookAttributes: map[string]string{
 			"url": "https://example.com/hook",
 		},
-	}, &AppConfig{
-		OwnerType: OwnerTypeOrganization,
-		OrgName:   "example",
-	}); err != nil {
+	}, "example"); err != nil {
 		t.Fatalf("CreateAppWithOrg: %v", err)
 	}
 }

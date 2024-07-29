@@ -134,28 +134,16 @@ type AppManifest struct {
 	DefaultPermissions *github.InstallationPermissions `json:"default_permissions,omitempty"`
 }
 
-type OwnerType string
-
-const (
-	OwnerTypePersonal     OwnerType = "personal"
-	OwnerTypeOrganization OwnerType = "organizational"
-)
-
-type AppConfig struct {
-	// OwnerType specifies the type of GitHub account owner (personal or organizational).
-	OwnerType OwnerType
-	// OrgName is the name of the organization if the OwnerType is organizational.
-	OrgName string
-}
-
-func (c *Client) CreateApp(m *AppManifest, ac *AppConfig) (*http.Response, error) {
+// CreateApp creates a new GitHub App with the given manifest configuration.
+// orgName is optional, and if provided, the App will be created within the specified organization.
+func (c *Client) CreateApp(m *AppManifest, orgName string) (*http.Response, error) {
 	url := "/settings/apps/new"
 
-	if ac.OwnerType == "organizational" {
-		path = fmt.Sprintf("/organizations/%v/settings/apps/new", ac.OrgName)
+	if orgName != "" {
+		url = fmt.Sprintf("/organizations/%v/settings/apps/new", orgName)
 	}
 
-	u, err := c.baseURL.Parse(path)
+	u, err := c.baseURL.Parse(url)
 	if err != nil {
 		return nil, err
 	}
