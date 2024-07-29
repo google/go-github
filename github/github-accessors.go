@@ -6606,22 +6606,6 @@ func (d *DraftReviewComment) GetBody() string {
 	return *d.Body
 }
 
-// GetCommitID returns the CommitID field if it's non-nil, zero value otherwise.
-func (d *DraftReviewComment) GetCommitID() string {
-	if d == nil || d.CommitID == nil {
-		return ""
-	}
-	return *d.CommitID
-}
-
-// GetInReplyTo returns the InReplyTo field if it's non-nil, zero value otherwise.
-func (d *DraftReviewComment) GetInReplyTo() int64 {
-	if d == nil || d.InReplyTo == nil {
-		return 0
-	}
-	return *d.InReplyTo
-}
-
 // GetLine returns the Line field if it's non-nil, zero value otherwise.
 func (d *DraftReviewComment) GetLine() int {
 	if d == nil || d.Line == nil {
@@ -6668,14 +6652,6 @@ func (d *DraftReviewComment) GetStartSide() string {
 		return ""
 	}
 	return *d.StartSide
-}
-
-// GetSubjectType returns the SubjectType field if it's non-nil, zero value otherwise.
-func (d *DraftReviewComment) GetSubjectType() string {
-	if d == nil || d.SubjectType == nil {
-		return ""
-	}
-	return *d.SubjectType
 }
 
 // GetRef returns the Ref field.
@@ -14380,6 +14356,78 @@ func (p *PagesUpdate) GetSource() *PagesSource {
 		return nil
 	}
 	return p.Source
+}
+
+// GetAccessGrantedAt returns the AccessGrantedAt field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetAccessGrantedAt() Timestamp {
+	if p == nil || p.AccessGrantedAt == nil {
+		return Timestamp{}
+	}
+	return *p.AccessGrantedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetOwner returns the Owner field.
+func (p *PersonalAccessToken) GetOwner() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Owner
+}
+
+// GetPermissions returns the Permissions field.
+func (p *PersonalAccessToken) GetPermissions() *PersonalAccessTokenPermissions {
+	if p == nil {
+		return nil
+	}
+	return p.Permissions
+}
+
+// GetRepositoriesURL returns the RepositoriesURL field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetRepositoriesURL() string {
+	if p == nil || p.RepositoriesURL == nil {
+		return ""
+	}
+	return *p.RepositoriesURL
+}
+
+// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetRepositorySelection() string {
+	if p == nil || p.RepositorySelection == nil {
+		return ""
+	}
+	return *p.RepositorySelection
+}
+
+// GetTokenExpired returns the TokenExpired field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetTokenExpired() bool {
+	if p == nil || p.TokenExpired == nil {
+		return false
+	}
+	return *p.TokenExpired
+}
+
+// GetTokenExpiresAt returns the TokenExpiresAt field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetTokenExpiresAt() Timestamp {
+	if p == nil || p.TokenExpiresAt == nil {
+		return Timestamp{}
+	}
+	return *p.TokenExpiresAt
+}
+
+// GetTokenLastUsedAt returns the TokenLastUsedAt field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetTokenLastUsedAt() Timestamp {
+	if p == nil || p.TokenLastUsedAt == nil {
+		return Timestamp{}
+	}
+	return *p.TokenLastUsedAt
 }
 
 // GetOrg returns the Org map if it's non-nil, an empty map otherwise.

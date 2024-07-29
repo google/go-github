@@ -7727,26 +7727,6 @@ func TestDraftReviewComment_GetBody(tt *testing.T) {
 	d.GetBody()
 }
 
-func TestDraftReviewComment_GetCommitID(tt *testing.T) {
-	var zeroValue string
-	d := &DraftReviewComment{CommitID: &zeroValue}
-	d.GetCommitID()
-	d = &DraftReviewComment{}
-	d.GetCommitID()
-	d = nil
-	d.GetCommitID()
-}
-
-func TestDraftReviewComment_GetInReplyTo(tt *testing.T) {
-	var zeroValue int64
-	d := &DraftReviewComment{InReplyTo: &zeroValue}
-	d.GetInReplyTo()
-	d = &DraftReviewComment{}
-	d.GetInReplyTo()
-	d = nil
-	d.GetInReplyTo()
-}
-
 func TestDraftReviewComment_GetLine(tt *testing.T) {
 	var zeroValue int
 	d := &DraftReviewComment{Line: &zeroValue}
@@ -7805,16 +7785,6 @@ func TestDraftReviewComment_GetStartSide(tt *testing.T) {
 	d.GetStartSide()
 	d = nil
 	d.GetStartSide()
-}
-
-func TestDraftReviewComment_GetSubjectType(tt *testing.T) {
-	var zeroValue string
-	d := &DraftReviewComment{SubjectType: &zeroValue}
-	d.GetSubjectType()
-	d = &DraftReviewComment{}
-	d.GetSubjectType()
-	d = nil
-	d.GetSubjectType()
 }
 
 func TestEditBase_GetRef(tt *testing.T) {
@@ -16830,6 +16800,90 @@ func TestPagesUpdate_GetSource(tt *testing.T) {
 	p.GetSource()
 	p = nil
 	p.GetSource()
+}
+
+func TestPersonalAccessToken_GetAccessGrantedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessToken{AccessGrantedAt: &zeroValue}
+	p.GetAccessGrantedAt()
+	p = &PersonalAccessToken{}
+	p.GetAccessGrantedAt()
+	p = nil
+	p.GetAccessGrantedAt()
+}
+
+func TestPersonalAccessToken_GetID(tt *testing.T) {
+	var zeroValue int64
+	p := &PersonalAccessToken{ID: &zeroValue}
+	p.GetID()
+	p = &PersonalAccessToken{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPersonalAccessToken_GetOwner(tt *testing.T) {
+	p := &PersonalAccessToken{}
+	p.GetOwner()
+	p = nil
+	p.GetOwner()
+}
+
+func TestPersonalAccessToken_GetPermissions(tt *testing.T) {
+	p := &PersonalAccessToken{}
+	p.GetPermissions()
+	p = nil
+	p.GetPermissions()
+}
+
+func TestPersonalAccessToken_GetRepositoriesURL(tt *testing.T) {
+	var zeroValue string
+	p := &PersonalAccessToken{RepositoriesURL: &zeroValue}
+	p.GetRepositoriesURL()
+	p = &PersonalAccessToken{}
+	p.GetRepositoriesURL()
+	p = nil
+	p.GetRepositoriesURL()
+}
+
+func TestPersonalAccessToken_GetRepositorySelection(tt *testing.T) {
+	var zeroValue string
+	p := &PersonalAccessToken{RepositorySelection: &zeroValue}
+	p.GetRepositorySelection()
+	p = &PersonalAccessToken{}
+	p.GetRepositorySelection()
+	p = nil
+	p.GetRepositorySelection()
+}
+
+func TestPersonalAccessToken_GetTokenExpired(tt *testing.T) {
+	var zeroValue bool
+	p := &PersonalAccessToken{TokenExpired: &zeroValue}
+	p.GetTokenExpired()
+	p = &PersonalAccessToken{}
+	p.GetTokenExpired()
+	p = nil
+	p.GetTokenExpired()
+}
+
+func TestPersonalAccessToken_GetTokenExpiresAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessToken{TokenExpiresAt: &zeroValue}
+	p.GetTokenExpiresAt()
+	p = &PersonalAccessToken{}
+	p.GetTokenExpiresAt()
+	p = nil
+	p.GetTokenExpiresAt()
+}
+
+func TestPersonalAccessToken_GetTokenLastUsedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessToken{TokenLastUsedAt: &zeroValue}
+	p.GetTokenLastUsedAt()
+	p = &PersonalAccessToken{}
+	p.GetTokenLastUsedAt()
+	p = nil
+	p.GetTokenLastUsedAt()
 }
 
 func TestPersonalAccessTokenPermissions_GetOrg(tt *testing.T) {
