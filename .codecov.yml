@@ -5,3 +5,9 @@ ignore:
   - "scrape"
   # ignore tools
   - "tools"
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto  # auto compares coverage to the previous base commit
