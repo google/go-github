@@ -148,12 +148,11 @@ type AppConfig struct {
 	OrgName string
 }
 
-// CreateApp creates a new GitHub App with the given manifest configuration.
-func (c *Client) CreateApp(m *AppManifest, appConfig *AppConfig) (*http.Response, error) {
+func (c *Client) CreateApp(m *AppManifest, ac *AppConfig) (*http.Response, error) {
 	path := "/settings/apps/new"
 
-	if appConfig.OwnerType == "organizational" {
-		path = fmt.Sprintf("/organizations/%s/settings/apps/new", appConfig.OrgName)
+	if ac.OwnerType == "organizational" {
+		path = fmt.Sprintf("/organizations/%s/settings/apps/new", ac.OrgName)
 	}
 
 	u, err := c.baseURL.Parse(path)
