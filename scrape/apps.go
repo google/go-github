@@ -12,6 +12,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -134,8 +135,15 @@ type AppManifest struct {
 }
 
 // CreateApp creates a new GitHub App with the given manifest configuration.
-func (c *Client) CreateApp(m *AppManifest) (*http.Response, error) {
-	u, err := c.baseURL.Parse("/settings/apps/new")
+// orgName is optional, and if provided, the App will be created within the specified organization.
+func (c *Client) CreateApp(m *AppManifest, orgName string) (*http.Response, error) {
+	url := "/settings/apps/new"
+
+	if orgName != "" {
+		url = fmt.Sprintf("/organizations/%v/settings/apps/new", orgName)
+	}
+
+	u, err := c.baseURL.Parse(url)
 	if err != nil {
 		return nil, err
 	}
