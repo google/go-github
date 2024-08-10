@@ -20520,16 +20520,6 @@ func TestPushEventRepository_GetCreatedAt(tt *testing.T) {
 	p.GetCreatedAt()
 }
 
-func TestPushEventRepository_GetCustomProperties(tt *testing.T) {
-	zeroValue := map[string]interface{}{}
-	p := &PushEventRepository{CustomProperties: zeroValue}
-	p.GetCustomProperties()
-	p = &PushEventRepository{}
-	p.GetCustomProperties()
-	p = nil
-	p.GetCustomProperties()
-}
-
 func TestPushEventRepository_GetDefaultBranch(tt *testing.T) {
 	var zeroValue string
 	p := &PushEventRepository{DefaultBranch: &zeroValue}
@@ -21889,16 +21879,6 @@ func TestRepository_GetCreatedAt(tt *testing.T) {
 	r.GetCreatedAt()
 	r = nil
 	r.GetCreatedAt()
-}
-
-func TestRepository_GetCustomProperties(tt *testing.T) {
-	zeroValue := map[string]interface{}{}
-	r := &Repository{CustomProperties: zeroValue}
-	r.GetCustomProperties()
-	r = &Repository{}
-	r.GetCustomProperties()
-	r = nil
-	r.GetCustomProperties()
 }
 
 func TestRepository_GetDefaultBranch(tt *testing.T) {
