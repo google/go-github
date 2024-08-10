@@ -17727,9 +17727,9 @@ func (p *PushEventRepository) GetCreatedAt() Timestamp {
 }
 
 // GetCustomProperties returns the CustomProperties map if it's non-nil, an empty map otherwise.
-func (p *PushEventRepository) GetCustomProperties() map[string]string {
+func (p *PushEventRepository) GetCustomProperties() map[string]interface{} {
 	if p == nil || p.CustomProperties == nil {
-		return map[string]string{}
+		return map[string]interface{}{}
 	}
 	return p.CustomProperties
 }
@@ -18879,9 +18879,9 @@ func (r *Repository) GetCreatedAt() Timestamp {
 }
 
 // GetCustomProperties returns the CustomProperties map if it's non-nil, an empty map otherwise.
-func (r *Repository) GetCustomProperties() map[string]string {
+func (r *Repository) GetCustomProperties() map[string]interface{} {
 	if r == nil || r.CustomProperties == nil {
-		return map[string]string{}
+		return map[string]interface{}{}
 	}
 	return r.CustomProperties
 }

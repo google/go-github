@@ -20521,7 +20521,7 @@ func TestPushEventRepository_GetCreatedAt(tt *testing.T) {
 }
 
 func TestPushEventRepository_GetCustomProperties(tt *testing.T) {
-	zeroValue := map[string]string{}
+	zeroValue := map[string]interface{}{}
 	p := &PushEventRepository{CustomProperties: zeroValue}
 	p.GetCustomProperties()
 	p = &PushEventRepository{}
@@ -21892,7 +21892,7 @@ func TestRepository_GetCreatedAt(tt *testing.T) {
 }
 
 func TestRepository_GetCustomProperties(tt *testing.T) {
-	zeroValue := map[string]string{}
+	zeroValue := map[string]interface{}{}
 	r := &Repository{CustomProperties: zeroValue}
 	r.GetCustomProperties()
 	r = &Repository{}
