@@ -78,6 +78,7 @@ type InstallationTokenListRepoOptions struct {
 //	https://docs.github.com/rest/apps#create-an-installation-access-token-for-an-app
 type InstallationPermissions struct {
 	Actions                       *string `json:"actions,omitempty"`
+	ActionsVariables              *string `json:"actions_variables,omitempty"`
 	Administration                *string `json:"administration,omitempty"`
 	Blocking                      *string `json:"blocking,omitempty"`
 	Checks                        *string `json:"checks,omitempty"`
@@ -93,6 +94,7 @@ type InstallationPermissions struct {
 	OrganizationAdministration    *string `json:"organization_administration,omitempty"`
 	OrganizationCustomProperties  *string `json:"organization_custom_properties,omitempty"`
 	OrganizationCustomRoles       *string `json:"organization_custom_roles,omitempty"`
+	OrganizationCustomOrgRoles    *string `json:"organization_custom_org_roles,omitempty"`
 	OrganizationHooks             *string `json:"organization_hooks,omitempty"`
 	OrganizationPackages          *string `json:"organization_packages,omitempty"`
 	OrganizationPlan              *string `json:"organization_plan,omitempty"`

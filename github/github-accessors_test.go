@@ -5533,6 +5533,26 @@ func TestCustomDeploymentProtectionRuleRequest_GetIntegrationID(tt *testing.T) {
 	c.GetIntegrationID()
 }
 
+func TestCustomOrgRoles_GetBaseRole(tt *testing.T) {
+	var zeroValue string
+	c := &CustomOrgRoles{BaseRole: &zeroValue}
+	c.GetBaseRole()
+	c = &CustomOrgRoles{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCustomOrgRoles_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CustomOrgRoles{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CustomOrgRoles{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
 func TestCustomOrgRoles_GetDescription(tt *testing.T) {
 	var zeroValue string
 	c := &CustomOrgRoles{Description: &zeroValue}
@@ -5561,6 +5581,33 @@ func TestCustomOrgRoles_GetName(tt *testing.T) {
 	c.GetName()
 	c = nil
 	c.GetName()
+}
+
+func TestCustomOrgRoles_GetOrg(tt *testing.T) {
+	c := &CustomOrgRoles{}
+	c.GetOrg()
+	c = nil
+	c.GetOrg()
+}
+
+func TestCustomOrgRoles_GetSource(tt *testing.T) {
+	var zeroValue string
+	c := &CustomOrgRoles{Source: &zeroValue}
+	c.GetSource()
+	c = &CustomOrgRoles{}
+	c.GetSource()
+	c = nil
+	c.GetSource()
+}
+
+func TestCustomOrgRoles_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CustomOrgRoles{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CustomOrgRoles{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
 }
 
 func TestCustomProperty_GetDefaultValue(tt *testing.T) {
@@ -5613,16 +5660,6 @@ func TestCustomProperty_GetValuesEditableBy(tt *testing.T) {
 	c.GetValuesEditableBy()
 }
 
-func TestCustomPropertyValue_GetValue(tt *testing.T) {
-	var zeroValue string
-	c := &CustomPropertyValue{Value: &zeroValue}
-	c.GetValue()
-	c = &CustomPropertyValue{}
-	c.GetValue()
-	c = nil
-	c.GetValue()
-}
-
 func TestCustomRepoRoles_GetBaseRole(tt *testing.T) {
 	var zeroValue string
 	c := &CustomRepoRoles{BaseRole: &zeroValue}
@@ -5631,6 +5668,16 @@ func TestCustomRepoRoles_GetBaseRole(tt *testing.T) {
 	c.GetBaseRole()
 	c = nil
 	c.GetBaseRole()
+}
+
+func TestCustomRepoRoles_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CustomRepoRoles{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CustomRepoRoles{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
 }
 
 func TestCustomRepoRoles_GetDescription(tt *testing.T) {
@@ -5661,6 +5708,23 @@ func TestCustomRepoRoles_GetName(tt *testing.T) {
 	c.GetName()
 	c = nil
 	c.GetName()
+}
+
+func TestCustomRepoRoles_GetOrg(tt *testing.T) {
+	c := &CustomRepoRoles{}
+	c.GetOrg()
+	c = nil
+	c.GetOrg()
+}
+
+func TestCustomRepoRoles_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CustomRepoRoles{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CustomRepoRoles{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
 }
 
 func TestDefaultSetupConfiguration_GetQuerySuite(tt *testing.T) {
@@ -7663,26 +7727,6 @@ func TestDraftReviewComment_GetBody(tt *testing.T) {
 	d.GetBody()
 }
 
-func TestDraftReviewComment_GetCommitID(tt *testing.T) {
-	var zeroValue string
-	d := &DraftReviewComment{CommitID: &zeroValue}
-	d.GetCommitID()
-	d = &DraftReviewComment{}
-	d.GetCommitID()
-	d = nil
-	d.GetCommitID()
-}
-
-func TestDraftReviewComment_GetInReplyTo(tt *testing.T) {
-	var zeroValue int64
-	d := &DraftReviewComment{InReplyTo: &zeroValue}
-	d.GetInReplyTo()
-	d = &DraftReviewComment{}
-	d.GetInReplyTo()
-	d = nil
-	d.GetInReplyTo()
-}
-
 func TestDraftReviewComment_GetLine(tt *testing.T) {
 	var zeroValue int
 	d := &DraftReviewComment{Line: &zeroValue}
@@ -7741,16 +7785,6 @@ func TestDraftReviewComment_GetStartSide(tt *testing.T) {
 	d.GetStartSide()
 	d = nil
 	d.GetStartSide()
-}
-
-func TestDraftReviewComment_GetSubjectType(tt *testing.T) {
-	var zeroValue string
-	d := &DraftReviewComment{SubjectType: &zeroValue}
-	d.GetSubjectType()
-	d = &DraftReviewComment{}
-	d.GetSubjectType()
-	d = nil
-	d.GetSubjectType()
 }
 
 func TestEditBase_GetRef(tt *testing.T) {
@@ -10338,6 +10372,16 @@ func TestInstallationPermissions_GetActions(tt *testing.T) {
 	i.GetActions()
 }
 
+func TestInstallationPermissions_GetActionsVariables(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{ActionsVariables: &zeroValue}
+	i.GetActionsVariables()
+	i = &InstallationPermissions{}
+	i.GetActionsVariables()
+	i = nil
+	i.GetActionsVariables()
+}
+
 func TestInstallationPermissions_GetAdministration(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationPermissions{Administration: &zeroValue}
@@ -10466,6 +10510,16 @@ func TestInstallationPermissions_GetOrganizationAdministration(tt *testing.T) {
 	i.GetOrganizationAdministration()
 	i = nil
 	i.GetOrganizationAdministration()
+}
+
+func TestInstallationPermissions_GetOrganizationCustomOrgRoles(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationCustomOrgRoles: &zeroValue}
+	i.GetOrganizationCustomOrgRoles()
+	i = &InstallationPermissions{}
+	i.GetOrganizationCustomOrgRoles()
+	i = nil
+	i.GetOrganizationCustomOrgRoles()
 }
 
 func TestInstallationPermissions_GetOrganizationCustomProperties(tt *testing.T) {
@@ -16748,6 +16802,90 @@ func TestPagesUpdate_GetSource(tt *testing.T) {
 	p.GetSource()
 }
 
+func TestPersonalAccessToken_GetAccessGrantedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessToken{AccessGrantedAt: &zeroValue}
+	p.GetAccessGrantedAt()
+	p = &PersonalAccessToken{}
+	p.GetAccessGrantedAt()
+	p = nil
+	p.GetAccessGrantedAt()
+}
+
+func TestPersonalAccessToken_GetID(tt *testing.T) {
+	var zeroValue int64
+	p := &PersonalAccessToken{ID: &zeroValue}
+	p.GetID()
+	p = &PersonalAccessToken{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPersonalAccessToken_GetOwner(tt *testing.T) {
+	p := &PersonalAccessToken{}
+	p.GetOwner()
+	p = nil
+	p.GetOwner()
+}
+
+func TestPersonalAccessToken_GetPermissions(tt *testing.T) {
+	p := &PersonalAccessToken{}
+	p.GetPermissions()
+	p = nil
+	p.GetPermissions()
+}
+
+func TestPersonalAccessToken_GetRepositoriesURL(tt *testing.T) {
+	var zeroValue string
+	p := &PersonalAccessToken{RepositoriesURL: &zeroValue}
+	p.GetRepositoriesURL()
+	p = &PersonalAccessToken{}
+	p.GetRepositoriesURL()
+	p = nil
+	p.GetRepositoriesURL()
+}
+
+func TestPersonalAccessToken_GetRepositorySelection(tt *testing.T) {
+	var zeroValue string
+	p := &PersonalAccessToken{RepositorySelection: &zeroValue}
+	p.GetRepositorySelection()
+	p = &PersonalAccessToken{}
+	p.GetRepositorySelection()
+	p = nil
+	p.GetRepositorySelection()
+}
+
+func TestPersonalAccessToken_GetTokenExpired(tt *testing.T) {
+	var zeroValue bool
+	p := &PersonalAccessToken{TokenExpired: &zeroValue}
+	p.GetTokenExpired()
+	p = &PersonalAccessToken{}
+	p.GetTokenExpired()
+	p = nil
+	p.GetTokenExpired()
+}
+
+func TestPersonalAccessToken_GetTokenExpiresAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessToken{TokenExpiresAt: &zeroValue}
+	p.GetTokenExpiresAt()
+	p = &PersonalAccessToken{}
+	p.GetTokenExpiresAt()
+	p = nil
+	p.GetTokenExpiresAt()
+}
+
+func TestPersonalAccessToken_GetTokenLastUsedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PersonalAccessToken{TokenLastUsedAt: &zeroValue}
+	p.GetTokenLastUsedAt()
+	p = &PersonalAccessToken{}
+	p.GetTokenLastUsedAt()
+	p = nil
+	p.GetTokenLastUsedAt()
+}
+
 func TestPersonalAccessTokenPermissions_GetOrg(tt *testing.T) {
 	zeroValue := map[string]string{}
 	p := &PersonalAccessTokenPermissions{Org: zeroValue}
@@ -20382,16 +20520,6 @@ func TestPushEventRepository_GetCreatedAt(tt *testing.T) {
 	p.GetCreatedAt()
 }
 
-func TestPushEventRepository_GetCustomProperties(tt *testing.T) {
-	zeroValue := map[string]string{}
-	p := &PushEventRepository{CustomProperties: zeroValue}
-	p.GetCustomProperties()
-	p = &PushEventRepository{}
-	p.GetCustomProperties()
-	p = nil
-	p.GetCustomProperties()
-}
-
 func TestPushEventRepository_GetDefaultBranch(tt *testing.T) {
 	var zeroValue string
 	p := &PushEventRepository{DefaultBranch: &zeroValue}
@@ -21751,16 +21879,6 @@ func TestRepository_GetCreatedAt(tt *testing.T) {
 	r.GetCreatedAt()
 	r = nil
 	r.GetCreatedAt()
-}
-
-func TestRepository_GetCustomProperties(tt *testing.T) {
-	zeroValue := map[string]string{}
-	r := &Repository{CustomProperties: zeroValue}
-	r.GetCustomProperties()
-	r = &Repository{}
-	r.GetCustomProperties()
-	r = nil
-	r.GetCustomProperties()
 }
 
 func TestRepository_GetDefaultBranch(tt *testing.T) {
@@ -23307,6 +23425,16 @@ func TestRepositoryPermissionLevel_GetPermission(tt *testing.T) {
 	r.GetPermission()
 }
 
+func TestRepositoryPermissionLevel_GetRoleName(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryPermissionLevel{RoleName: &zeroValue}
+	r.GetRoleName()
+	r = &RepositoryPermissionLevel{}
+	r.GetRoleName()
+	r = nil
+	r.GetRoleName()
+}
+
 func TestRepositoryPermissionLevel_GetUser(tt *testing.T) {
 	r := &RepositoryPermissionLevel{}
 	r.GetUser()
@@ -24230,6 +24358,13 @@ func TestRulesetConditions_GetRepositoryName(tt *testing.T) {
 	r.GetRepositoryName()
 	r = nil
 	r.GetRepositoryName()
+}
+
+func TestRulesetConditions_GetRepositoryProperty(tt *testing.T) {
+	r := &RulesetConditions{}
+	r.GetRepositoryProperty()
+	r = nil
+	r.GetRepositoryProperty()
 }
 
 func TestRulesetLink_GetHRef(tt *testing.T) {

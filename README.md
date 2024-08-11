@@ -1,7 +1,7 @@
 # go-github #
 
 [![go-github release (latest SemVer)](https://img.shields.io/github/v/release/google/go-github?sort=semver)](https://github.com/google/go-github/releases)
-[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v62/github)
+[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v63/github)
 [![Test Status](https://github.com/google/go-github/workflows/tests/badge.svg)](https://github.com/google/go-github/actions?query=workflow%3Atests)
 [![Test Coverage](https://codecov.io/gh/google/go-github/branch/master/graph/badge.svg)](https://codecov.io/gh/google/go-github)
 [![Discuss at go-github@googlegroups.com](https://img.shields.io/badge/discuss-go--github%40googlegroups.com-blue.svg)](https://groups.google.com/group/go-github)
@@ -24,7 +24,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 go-github is compatible with modern Go releases in module mode, with Go installed:
 
 ```bash
-go get github.com/google/go-github/v62
+go get github.com/google/go-github/v63
 ```
 
 will resolve and add the package to the current development module, along with its dependencies.
@@ -32,7 +32,7 @@ will resolve and add the package to the current development module, along with i
 Alternatively the same can be achieved if you use import in a package:
 
 ```go
-import "github.com/google/go-github/v62/github"
+import "github.com/google/go-github/v63/github"
 ```
 
 and run `go get` without parameters.
@@ -40,13 +40,13 @@ and run `go get` without parameters.
 Finally, to use the top-of-trunk version of this repo, use the following command:
 
 ```bash
-go get github.com/google/go-github/v62@master
+go get github.com/google/go-github/v63@master
 ```
 
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v62/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+import "github.com/google/go-github/v63/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 import "github.com/google/go-github/github" // with go modules disabled
 ```
 
@@ -101,8 +101,7 @@ For API methods that require HTTP Basic Authentication, use the
 
 #### As a GitHub App ####
 
-GitHub Apps authentication can be provided by the [ghinstallation](https://github.com/bradleyfalzon/ghinstallation)
-package.
+GitHub Apps authentication can be provided by different pkgs like [ghinstallation](https://github.com/bradleyfalzon/ghinstallation) or [go-githubauth](https://github.com/jferrl/go-githubauth).
 
 > **Note**: Most endpoints (ex. [`GET /rate_limit`]) require access token authentication
 > while a few others (ex. [`GET /app/hook/deliveries`]) require [JWT] authentication.
@@ -111,13 +110,16 @@ package.
 [`GET /app/hook/deliveries`]: https://docs.github.com/en/rest/apps/webhooks#list-deliveries-for-an-app-webhook
 [JWT]: https://docs.github.com/en/developers/apps/building-github-apps/authenticating-with-github-apps#authenticating-as-a-github-app
 
+`ghinstallation` provides `Transport`, which implements `http.RoundTripper` to provide authentication as an installation for GitHub Apps.
+
+Here is an example of how to authenticate as a GitHub App using the `ghinstallation` package:
 
 ```go
 import (
 	"net/http"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v62/github"
+	"github.com/google/go-github/v63/github"
 )
 
 func main() {
@@ -135,6 +137,44 @@ func main() {
 	client := github.NewClient(&http.Client{Transport: itr})
 
 	// Use client...
+}
+```
+
+`go-githubauth` implements a set of `oauth2.TokenSource` to be used with `oauth2.Client`. An `oauth2.Client` can be injected into the `github.Client` to authenticate requests.
+
+Other example using `go-githubauth`:
+
+```go
+package main
+
+import (
+ "context"
+ "fmt"
+ "os"
+ "strconv"
+
+ "github.com/google/go-github/v63/github"
+ "github.com/jferrl/go-githubauth"
+ "golang.org/x/oauth2"
+)
+
+func main() {
+ privateKey := []byte(os.Getenv("GITHUB_APP_PRIVATE_KEY"))
+
+ appTokenSource, err := githubauth.NewApplicationTokenSource(1112, privateKey)
+ if err != nil {
+  fmt.Println("Error creating application token source:", err)
+  return
+ }
+
+ installationTokenSource := githubauth.NewInstallationTokenSource(1113, appTokenSource)
+
+ // oauth2.NewClient uses oauth2.ReuseTokenSource to reuse the token until it expires.
+ // The token will be automatically refreshed when it expires.
+ // InstallationTokenSource has the mechanism to refresh the token when it expires.
+ httpClient := oauth2.NewClient(context.Background(), installationTokenSource)
+
+ client := github.NewClient(httpClient)
 }
 ```
 
@@ -276,6 +316,25 @@ for {
 }
 ```
 
+#### Iterators (**experimental**)
+
+Go v1.23 introduces the new `iter` package.  
+
+With the `enrichman/gh-iter` package, it is possible to create iterators for `go-github`. The iterator will handle pagination for you, looping through all the available results.
+
+```go
+client := github.NewClient(nil)
+var allRepos []*github.Repository
+
+// create an iterator and start looping through all the results
+repos := ghiter.NewFromFn1(client.Repositories.ListByOrg, "github")
+for repo := range repos.All() {
+	allRepos = append(allRepos, repo)
+}
+```
+
+For complete usage of `enrichman/gh-iter`, see the full [package docs](https://github.com/enrichman/gh-iter).
+
 ### Webhooks ###
 
 `go-github` provides structs for almost all [GitHub webhook events][] as well as functions to validate them and unmarshal JSON payloads from `http.Request` structs.
@@ -302,7 +361,7 @@ For complete usage of go-github, see the full [package docs][].
 
 [GitHub API v3]: https://docs.github.com/en/rest
 [personal access token]: https://github.com/blog/1509-personal-api-tokens
-[package docs]: https://pkg.go.dev/github.com/google/go-github/v62/github
+[package docs]: https://pkg.go.dev/github.com/google/go-github/v63/github
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4
 [GitHub webhook events]: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads
@@ -375,6 +434,7 @@ Versions prior to 48.2.0 are not listed.
 
 | go-github Version | GitHub v3 API Version |
 | ----------------- | --------------------- |
+| 63.0.0            | 2022-11-28            |
 | 62.0.0            | 2022-11-28            |
 | 61.0.0            | 2022-11-28            |
 | 60.0.0            | 2022-11-28            |

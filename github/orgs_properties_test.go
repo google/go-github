@@ -296,6 +296,14 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
         {
           "property_name": "service",
           "value": "web"
+        },
+        {
+          "property_name": "languages",
+          "value": ["Go", "JavaScript"]
+        },
+        {
+          "property_name": "null_property",
+          "value": null
         }
 		]
         }]`)
@@ -318,11 +326,19 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 			Properties: []*CustomPropertyValue{
 				{
 					PropertyName: "environment",
-					Value:        String("production"),
+					Value:        "production",
 				},
 				{
 					PropertyName: "service",
-					Value:        String("web"),
+					Value:        "web",
+				},
+				{
+					PropertyName: "languages",
+					Value:        []string{"Go", "JavaScript"},
+				},
+				{
+					PropertyName: "null_property",
+					Value:        nil,
 				},
 			},
 		},
@@ -346,6 +362,78 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestCustomPropertyValue_UnmarshalJSON(t *testing.T) {
+	tests := map[string]struct {
+		data    string
+		want    *CustomPropertyValue
+		wantErr bool
+	}{
+		"Invalid JSON": {
+			data:    `{`,
+			want:    &CustomPropertyValue{},
+			wantErr: true,
+		},
+		"String value": {
+			data: `{
+				"property_name": "environment",
+				"value": "production"
+			}`,
+			want: &CustomPropertyValue{
+				PropertyName: "environment",
+				Value:        "production",
+			},
+			wantErr: false,
+		},
+		"Array of strings value": {
+			data: `{
+				"property_name": "languages",
+				"value": ["Go", "JavaScript"]
+			}`,
+			want: &CustomPropertyValue{
+				PropertyName: "languages",
+				Value:        []string{"Go", "JavaScript"},
+			},
+			wantErr: false,
+		},
+		"Non-string value in array": {
+			data: `{
+				"property_name": "languages",
+				"value": ["Go", 42]
+			}`,
+			want: &CustomPropertyValue{
+				PropertyName: "languages",
+				Value:        nil,
+			},
+			wantErr: true,
+		},
+		"Unexpected value type": {
+			data: `{
+				"property_name": "environment",
+				"value": {"invalid": "type"}
+			}`,
+			want: &CustomPropertyValue{
+				PropertyName: "environment",
+				Value:        nil,
+			},
+			wantErr: true,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			cpv := &CustomPropertyValue{}
+			err := cpv.UnmarshalJSON([]byte(tc.data))
+			if (err != nil) != tc.wantErr {
+				t.Errorf("CustomPropertyValue.UnmarshalJSON error = %v, wantErr %v", err, tc.wantErr)
+				return
+			}
+			if !tc.wantErr && !cmp.Equal(tc.want, cpv) {
+				t.Errorf("CustomPropertyValue.UnmarshalJSON expected %+v, got %+v", tc.want, cpv)
+			}
+		})
+	}
 }
 
 func TestOrganizationsService_CreateOrUpdateRepoCustomPropertyValues(t *testing.T) {

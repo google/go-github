@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v61/github"
+	"github.com/google/go-github/v63/github"
 )
 
 func Test_AppRestrictionsEnabled(t *testing.T) {
@@ -97,7 +97,26 @@ func Test_CreateApp(t *testing.T) {
 		HookAttributes: map[string]string{
 			"url": "https://example.com/hook",
 		},
-	}); err != nil {
+	}, ""); err != nil {
 		t.Fatalf("CreateApp: %v", err)
+	}
+}
+
+func Test_CreateAppWithOrg(t *testing.T) {
+	client, mux, cleanup := setup()
+
+	defer cleanup()
+
+	mux.HandleFunc("/organizations/example/apps/settings/new", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusCreated)
+	})
+
+	if _, err := client.CreateApp(&AppManifest{
+		URL: github.String("https://example.com"),
+		HookAttributes: map[string]string{
+			"url": "https://example.com/hook",
+		},
+	}, "example"); err != nil {
+		t.Fatalf("CreateAppWithOrg: %v", err)
 	}
 }
