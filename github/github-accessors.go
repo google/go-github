@@ -17726,14 +17726,6 @@ func (p *PushEventRepository) GetCreatedAt() Timestamp {
 	return *p.CreatedAt
 }
 
-// GetCustomProperties returns the CustomProperties map if it's non-nil, an empty map otherwise.
-func (p *PushEventRepository) GetCustomProperties() map[string]string {
-	if p == nil || p.CustomProperties == nil {
-		return map[string]string{}
-	}
-	return p.CustomProperties
-}
-
 // GetDefaultBranch returns the DefaultBranch field if it's non-nil, zero value otherwise.
 func (p *PushEventRepository) GetDefaultBranch() string {
 	if p == nil || p.DefaultBranch == nil {
@@ -18876,14 +18868,6 @@ func (r *Repository) GetCreatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *r.CreatedAt
-}
-
-// GetCustomProperties returns the CustomProperties map if it's non-nil, an empty map otherwise.
-func (r *Repository) GetCustomProperties() map[string]string {
-	if r == nil || r.CustomProperties == nil {
-		return map[string]string{}
-	}
-	return r.CustomProperties
 }
 
 // GetDefaultBranch returns the DefaultBranch field if it's non-nil, zero value otherwise.
