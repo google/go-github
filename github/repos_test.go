@@ -14,6 +14,7 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -4462,4 +4463,50 @@ func TestRepositoriesService_IsPrivateReportingEnabled(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestRepository_UnmarshalJSON(t *testing.T) {
+	var testCases = map[string]struct {
+		data           []byte
+		wantRepository Repository
+		wantErr        bool
+	}{
+		"Empty": {
+			data:           []byte("{}"),
+			wantRepository: Repository{},
+			wantErr:        false,
+		},
+		"Invalid JSON": {
+			data:           []byte("{"),
+			wantRepository: Repository{},
+			wantErr:        true,
+		},
+		"Partial project": {
+			data:           []byte(`{"id":10270722,"name":"go-github","private":false,"owner":{"login":"google"},"created_at":"2013-05-24T16:42:58Z","license":{},"topics":["github"],"permissions":{"pull":true},"custom_properties":{},"organization":{"login":"google"}}`),
+			wantRepository: Repository{ID: Int64(10270722), Name: String("go-github"), Private: Bool(false), Owner: &User{Login: String("google")}, CreatedAt: &Timestamp{time.Date(2013, 5, 24, 16, 42, 58, 0, time.UTC)}, License: &License{}, Topics: []string{"github"}, Permissions: map[string]bool{"pull": true}, CustomProperties: map[string]interface{}{}, Organization: &Organization{Login: String("google")}},
+			wantErr:        false,
+		},
+		"With custom properties": {
+			data:           []byte(`{"custom_properties":{"boolean":"false","text":"a","single-select":"a","multi-select":["a","b","c"]}}`),
+			wantRepository: Repository{CustomProperties: map[string]interface{}{"boolean": "false", "text": "a", "single-select": "a", "multi-select": []interface{}{"a", "b", "c"}}},
+			wantErr:        false,
+		},
+	}
+
+	for name, tt := range testCases {
+		tt := tt
+		t.Run(name, func(t *testing.T) {
+			pk := Repository{}
+			err := json.Unmarshal(tt.data, &pk)
+			if err == nil && tt.wantErr {
+				t.Errorf("Repository.UnmarshalJSON returned nil instead of an error")
+			}
+			if err != nil && !tt.wantErr {
+				t.Errorf("Repository.UnmarshalJSON returned an unexpected error: %+v", err)
+			}
+			if !cmp.Equal(tt.wantRepository, pk) {
+				t.Errorf("Repository.UnmarshalJSON expected repository %+v, got %+v", tt.wantRepository, pk)
+			}
+		})
+	}
 }
