@@ -79,7 +79,7 @@ type RulePatternParameters struct {
 	Pattern  string `json:"pattern"`
 }
 
-// RuleFileParameters represents a list of file paths
+// RuleFileParameters represents a list of file paths.
 type RuleFileParameters struct {
 	RestrictedFilePaths *[]string `json:"restricted_file_paths"`
 }
@@ -415,8 +415,6 @@ func NewFilePathRestrictionRule(params *RuleFileParameters) (rule *RepositoryRul
 		Parameters: &rawParams,
 	}
 }
-
-// BypassActor represents a bypass actor object.
 
 // Ruleset represents a GitHub ruleset object.
 type Ruleset struct {
