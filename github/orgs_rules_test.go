@@ -20,6 +20,7 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprint(w, `[{
 			"id": 26110,
 			"name": "test ruleset",
@@ -38,7 +39,7 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.GetAllOrganizationRulesets(ctx, "o")
+	rulesets, _, err := client.Organizations.GetAllOrganizationRulesets(ctx, "o", &ListOptions{Page: 2, PerPage: 2})
 	if err != nil {
 		t.Errorf("Organizations.GetAllOrganizationRulesets returned error: %v", err)
 	}
@@ -62,7 +63,7 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 	const methodName = "GetAllOrganizationRulesets"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetAllOrganizationRulesets(ctx, "o")
+		got, resp, err := client.Organizations.GetAllOrganizationRulesets(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
