@@ -431,8 +431,13 @@ type rulesetNoOmitBypassActors struct {
 // GitHub API docs: https://docs.github.com/rest/repos/rules#get-rules-for-a-branch
 //
 //meta:operation GET /repos/{owner}/{repo}/rules/branches/{branch}
-func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo, branch string) ([]*RepositoryRule, *Response, error) {
+func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo, branch string, opts *ListOptions) ([]*RepositoryRule, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rules/branches/%v", owner, repo, branch)
+
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -454,8 +459,13 @@ func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo
 // GitHub API docs: https://docs.github.com/rest/repos/rules#get-all-repository-rulesets
 //
 //meta:operation GET /repos/{owner}/{repo}/rulesets
-func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo string, includesParents bool) ([]*Ruleset, *Response, error) {
+func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo string, includesParents bool, opts *ListOptions) ([]*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets?includes_parents=%v", owner, repo, includesParents)
+
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
