@@ -241,7 +241,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
+			NewMergeQueueRule(nil),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -328,7 +328,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
+			NewMergeQueueRule(nil),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -572,7 +572,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
+			NewMergeQueueRule(nil),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -664,7 +664,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
+			NewMergeQueueRule(nil),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -893,7 +893,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
+			NewMergeQueueRule(nil),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -978,7 +978,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
+			NewMergeQueueRule(nil),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},

@@ -74,6 +74,29 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 				Parameters: nil,
 			},
 		},
+		"Valid merge_queue with params": {
+			data: `{
+				"type":"merge_queue",
+				"parameters":{
+					"check_response_timeout_minutes": 35,
+					"grouping_strategy": "HEADGREEN",
+					"max_entries_to_build": 8,
+					"max_entries_to_merge": 4,
+					"merge_method": "SQUASH",
+					"min_entries_to_merge": 2,
+					"min_entries_to_merge_wait_minutes": 13
+				}
+			}`,
+			want: NewMergeQueueRule(&MergeQueueRuleParameters{
+				CheckResponseTimeoutMinutes:  35,
+				GroupingStrategy:             "HEADGREEN",
+				MaxEntriesToBuild:            8,
+				MaxEntriesToMerge:            4,
+				MergeMethod:                  "SQUASH",
+				MinEntriesToMerge:            2,
+				MinEntriesToMergeWaitMinutes: 13,
+			}),
+		},
 		"Valid non_fast_forward": {
 			data: `{"type":"non_fast_forward"}`,
 			want: &RepositoryRule{
