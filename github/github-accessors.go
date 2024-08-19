@@ -20846,6 +20846,14 @@ func (r *Rule) GetSeverity() string {
 	return *r.Severity
 }
 
+// GetRestrictedFilePaths returns the RestrictedFilePaths field if it's non-nil, zero value otherwise.
+func (r *RuleFileParameters) GetRestrictedFilePaths() []string {
+	if r == nil || r.RestrictedFilePaths == nil {
+		return nil
+	}
+	return *r.RestrictedFilePaths
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (r *RulePatternParameters) GetName() string {
 	if r == nil || r.Name == nil {

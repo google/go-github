@@ -24225,6 +24225,16 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 }
 
+func TestRuleFileParameters_GetRestrictedFilePaths(tt *testing.T) {
+	var zeroValue []string
+	r := &RuleFileParameters{RestrictedFilePaths: &zeroValue}
+	r.GetRestrictedFilePaths()
+	r = &RuleFileParameters{}
+	r.GetRestrictedFilePaths()
+	r = nil
+	r.GetRestrictedFilePaths()
+}
+
 func TestRulePatternParameters_GetName(tt *testing.T) {
 	var zeroValue string
 	r := &RulePatternParameters{Name: &zeroValue}

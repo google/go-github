@@ -79,6 +79,11 @@ type RulePatternParameters struct {
 	Pattern  string `json:"pattern"`
 }
 
+// RuleFileParameters represents a list of file paths.
+type RuleFileParameters struct {
+	RestrictedFilePaths *[]string `json:"restricted_file_paths"`
+}
+
 // UpdateAllowsFetchAndMergeRuleParameters represents the update rule parameters.
 type UpdateAllowsFetchAndMergeRuleParameters struct {
 	UpdateAllowsFetchAndMerge bool `json:"update_allows_fetch_and_merge"`
@@ -210,6 +215,15 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 			return err
 		}
 
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
+	case "file_path_restriction":
+		params := RuleFileParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
 		bytes, _ := json.Marshal(params)
 		rawParams := json.RawMessage(bytes)
 
@@ -386,6 +400,18 @@ func NewRequiredWorkflowsRule(params *RequiredWorkflowsRuleParameters) (rule *Re
 
 	return &RepositoryRule{
 		Type:       "workflows",
+		Parameters: &rawParams,
+	}
+}
+
+// NewFilePathRestrictionRule creates a rule to restrict file paths from being pushed to.
+func NewFilePathRestrictionRule(params *RuleFileParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "file_path_restriction",
 		Parameters: &rawParams,
 	}
 }
