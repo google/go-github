@@ -53,7 +53,7 @@ type CustomRepoRoles struct {
 type CreateOrUpdateOrgRoleOptions struct {
 	Name        *string  `json:"name,omitempty"`
 	Description *string  `json:"description,omitempty"`
-	Permissions []string `json:"permissions,omitempty"`
+	Permissions []string `json:"permissions"`
 }
 
 // CreateOrUpdateCustomRepoRoleOptions represents options required to create or update a custom repository role.
@@ -61,7 +61,7 @@ type CreateOrUpdateCustomRepoRoleOptions struct {
 	Name        *string  `json:"name,omitempty"`
 	Description *string  `json:"description,omitempty"`
 	BaseRole    *string  `json:"base_role,omitempty"`
-	Permissions []string `json:"permissions,omitempty"`
+	Permissions []string `json:"permissions"`
 }
 
 // ListRoles lists the custom roles available in this organization.
