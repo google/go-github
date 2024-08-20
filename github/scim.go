@@ -111,13 +111,12 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 //
 //meta:operation POST /scim/v2/organizations/{org}/Users
 func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, opts *SCIMUserAttributes) (*SCIMUserAttributes, *Response, error) {
-
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
 
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
-	}	
+	}
 
 	user := new(SCIMUserAttributes)
 	resp, err := s.client.Do(ctx, req, user)
