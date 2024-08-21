@@ -10562,6 +10562,26 @@ func TestInstallationPermissions_GetOrganizationPackages(tt *testing.T) {
 	i.GetOrganizationPackages()
 }
 
+func TestInstallationPermissions_GetOrganizationPersonalAccessTokenRequests(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationPersonalAccessTokenRequests: &zeroValue}
+	i.GetOrganizationPersonalAccessTokenRequests()
+	i = &InstallationPermissions{}
+	i.GetOrganizationPersonalAccessTokenRequests()
+	i = nil
+	i.GetOrganizationPersonalAccessTokenRequests()
+}
+
+func TestInstallationPermissions_GetOrganizationPersonalAccessTokens(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationPersonalAccessTokens: &zeroValue}
+	i.GetOrganizationPersonalAccessTokens()
+	i = &InstallationPermissions{}
+	i.GetOrganizationPersonalAccessTokens()
+	i = nil
+	i.GetOrganizationPersonalAccessTokens()
+}
+
 func TestInstallationPermissions_GetOrganizationPlan(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationPermissions{OrganizationPlan: &zeroValue}
