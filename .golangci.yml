@@ -23,6 +23,8 @@ linters-settings:
       # performance issue: see https://github.com/golangci/golangci-lint/issues/4039
       # and https://github.com/securego/gosec/issues/1007
       - G602
+      # int(os.Stdin.Fd())
+      - G115
 issues:
   exclude-use-default: false
   exclude-rules:
@@ -43,9 +45,9 @@ issues:
       text: 'G505: Blocklisted import crypto/sha1: weak cryptographic primitive'
 
     # This is adapted from golangci-lint's default exclusions. It disables linting for error checks on
-    # os.RemoveAll and any function ending in "Close".
+    # os.RemoveAll, fmt.Fprint*, fmt.Scanf, and any function ending in "Close".
     - linters: [ errcheck ]
-      text: Error return value of .(.*Close|os\.Remove(All)?). is not checked
+      text: Error return value of .(.*Close|fmt\.Fprint.*|fmt\.Scanf|os\.Remove(All)?). is not checked
 
     # We don't care about file inclusion via variable in examples or internal tools.
     - linters: [ gosec ]
