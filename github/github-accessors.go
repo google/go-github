@@ -9006,6 +9006,22 @@ func (i *InstallationPermissions) GetOrganizationPackages() string {
 	return *i.OrganizationPackages
 }
 
+// GetOrganizationPersonalAccessTokenRequests returns the OrganizationPersonalAccessTokenRequests field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationPersonalAccessTokenRequests() string {
+	if i == nil || i.OrganizationPersonalAccessTokenRequests == nil {
+		return ""
+	}
+	return *i.OrganizationPersonalAccessTokenRequests
+}
+
+// GetOrganizationPersonalAccessTokens returns the OrganizationPersonalAccessTokens field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationPersonalAccessTokens() string {
+	if i == nil || i.OrganizationPersonalAccessTokens == nil {
+		return ""
+	}
+	return *i.OrganizationPersonalAccessTokens
+}
+
 // GetOrganizationPlan returns the OrganizationPlan field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetOrganizationPlan() string {
 	if i == nil || i.OrganizationPlan == nil {
