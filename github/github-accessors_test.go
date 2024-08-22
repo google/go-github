@@ -765,6 +765,13 @@ func TestAnalysesListOptions_GetSarifID(tt *testing.T) {
 	a.GetSarifID()
 }
 
+func TestAPIMeta_GetDomains(tt *testing.T) {
+	a := &APIMeta{}
+	a.GetDomains()
+	a = nil
+	a.GetDomains()
+}
+
 func TestAPIMeta_GetSSHKeyFingerprints(tt *testing.T) {
 	zeroValue := map[string]string{}
 	a := &APIMeta{SSHKeyFingerprints: zeroValue}
@@ -783,6 +790,13 @@ func TestAPIMeta_GetVerifiablePasswordAuthentication(tt *testing.T) {
 	a.GetVerifiablePasswordAuthentication()
 	a = nil
 	a.GetVerifiablePasswordAuthentication()
+}
+
+func TestAPIMetaDomains_GetArtifactAttestations(tt *testing.T) {
+	a := &APIMetaDomains{}
+	a.GetArtifactAttestations()
+	a = nil
+	a.GetArtifactAttestations()
 }
 
 func TestApp_GetCreatedAt(tt *testing.T) {

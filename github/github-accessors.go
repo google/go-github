@@ -662,6 +662,14 @@ func (a *AnalysesListOptions) GetSarifID() string {
 	return *a.SarifID
 }
 
+// GetDomains returns the Domains field.
+func (a *APIMeta) GetDomains() *APIMetaDomains {
+	if a == nil {
+		return nil
+	}
+	return a.Domains
+}
+
 // GetSSHKeyFingerprints returns the SSHKeyFingerprints map if it's non-nil, an empty map otherwise.
 func (a *APIMeta) GetSSHKeyFingerprints() map[string]string {
 	if a == nil || a.SSHKeyFingerprints == nil {
@@ -676,6 +684,14 @@ func (a *APIMeta) GetVerifiablePasswordAuthentication() bool {
 		return false
 	}
 	return *a.VerifiablePasswordAuthentication
+}
+
+// GetArtifactAttestations returns the ArtifactAttestations field.
+func (a *APIMetaDomains) GetArtifactAttestations() *APIMetaArtifactAttestations {
+	if a == nil {
+		return nil
+	}
+	return a.ArtifactAttestations
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
