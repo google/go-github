@@ -111,6 +111,7 @@ type RuleRequiredStatusChecks struct {
 
 // RequiredStatusChecksRuleParameters represents the required_status_checks rule parameters.
 type RequiredStatusChecksRuleParameters struct {
+	DoNotEnforceOnCreate             bool                       `json:"do_not_enforce_on_create"`
 	RequiredStatusChecks             []RuleRequiredStatusChecks `json:"required_status_checks"`
 	StrictRequiredStatusChecksPolicy bool                       `json:"strict_required_status_checks_policy"`
 }
