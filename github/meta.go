@@ -70,9 +70,25 @@ type APIMeta struct {
 	// which serve GitHub APIs.
 	API []string `json:"api,omitempty"`
 
-	// A map of GitHub services and their associated domains. Note that many
-	// of these domains are represented as wildcards (e.g. "*.github.com").
-	Domains map[string][]string `json:"domains,omitempty"`
+	// GitHub services and their associated domains. Note that many of these domains
+	// are represented as wildcards (e.g. "*.github.com").
+	Domains *APIMetaDomains `json:"domains,omitempty"`
+}
+
+// APIMetaDomains represents the domains associated with GitHub services.
+type APIMetaDomains struct {
+	Website              []string                     `json:"website,omitempty"`
+	Codespaces           []string                     `json:"codespaces,omitempty"`
+	Copilot              []string                     `json:"copilot,omitempty"`
+	Packages             []string                     `json:"packages,omitempty"`
+	Actions              []string                     `json:"actions,omitempty"`
+	ArtifactAttestations *APIMetaArtifactAttestations `json:"artifact_attestations,omitempty"`
+}
+
+// APIMetaArtifactAttestations represents the artifact attestation services domains.
+type APIMetaArtifactAttestations struct {
+	TrustDomain string   `json:"trust_domain,omitempty"`
+	Services    []string `json:"services,omitempty"`
 }
 
 // Get returns information about GitHub.com, the service. Or, if you access

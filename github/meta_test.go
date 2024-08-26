@@ -30,8 +30,23 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		SSHKeys:                          []string{"k"},
 		API:                              []string{"a"},
 		Web:                              []string{"w"},
-		Domains: map[string][]string{
-			"example": {"example.com", "*.example.com"},
+		Domains: &APIMetaDomains{
+			Website: []string{
+				"*.github.com",
+				"*.github.dev",
+				"*.github.io",
+				"*.githubassets.com",
+				"*.githubusercontent.com",
+			},
+			ArtifactAttestations: &APIMetaArtifactAttestations{
+				TrustDomain: "",
+				Services: []string{
+					"*.actions.githubusercontent.com",
+					"tuf-repo.github.com",
+					"fulcio.githubapp.com",
+					"timestamp.githubapp.com",
+				},
+			},
 		},
 	}
 	want := `{
@@ -47,7 +62,7 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		"ssh_keys":["k"],
 		"api":["a"],
 		"web":["w"],
-		"domains":{"example":["example.com","*.example.com"]}
+		"domains":{"website":["*.github.com","*.github.dev","*.github.io","*.githubassets.com","*.githubusercontent.com"],"artifact_attestations":{"trust_domain":"","services":["*.actions.githubusercontent.com","tuf-repo.github.com","fulcio.githubapp.com","timestamp.githubapp.com"]}}
 	}`
 
 	testJSONMarshal(t, a, want)
@@ -59,7 +74,7 @@ func TestMetaService_Get(t *testing.T) {
 
 	mux.HandleFunc("/meta", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"web":["w"],"api":["a"],"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "github_enterprise_importer": ["gei"], "actions":["a"], "dependabot":["d"], "verifiable_password_authentication": true, "domains":{"example":["example.com","*.example.com"]}}`)
+		fmt.Fprint(w, `{"web":["w"],"api":["a"],"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "github_enterprise_importer": ["gei"], "actions":["a"], "dependabot":["d"], "verifiable_password_authentication": true, "domains":{"website":["*.github.com","*.github.dev","*.github.io","*.githubassets.com","*.githubusercontent.com"],"artifact_attestations":{"trust_domain":"","services":["*.actions.githubusercontent.com","tuf-repo.github.com","fulcio.githubapp.com","timestamp.githubapp.com"]}}}`)
 	})
 
 	ctx := context.Background()
@@ -78,8 +93,23 @@ func TestMetaService_Get(t *testing.T) {
 		Dependabot:               []string{"d"},
 		API:                      []string{"a"},
 		Web:                      []string{"w"},
-		Domains: map[string][]string{
-			"example": {"example.com", "*.example.com"},
+		Domains: &APIMetaDomains{
+			Website: []string{
+				"*.github.com",
+				"*.github.dev",
+				"*.github.io",
+				"*.githubassets.com",
+				"*.githubusercontent.com",
+			},
+			ArtifactAttestations: &APIMetaArtifactAttestations{
+				TrustDomain: "",
+				Services: []string{
+					"*.actions.githubusercontent.com",
+					"tuf-repo.github.com",
+					"fulcio.githubapp.com",
+					"timestamp.githubapp.com",
+				},
+			},
 		},
 
 		VerifiablePasswordAuthentication: Bool(true),
