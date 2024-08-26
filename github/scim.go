@@ -110,19 +110,21 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim#provision-and-invite-a-scim-user
 //
 //meta:operation POST /scim/v2/organizations/{org}/Users
-func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, opts *SCIMUserAttributes) (*Response, error) {
+func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, opts *SCIMUserAttributes) (*SCIMUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
-	u, err := addOptions(u, opts)
+
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	user := new(SCIMUserAttributes)
+	resp, err := s.client.Do(ctx, req, user)
 	if err != nil {
-		return nil, err
+		return nil, resp, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return user, resp, nil
 }
 
 // GetSCIMProvisioningInfoForUser returns SCIM provisioning information for a user.
