@@ -67,6 +67,7 @@ type Authorization struct {
 	UpdatedAt      *Timestamp        `json:"updated_at,omitempty"`
 	CreatedAt      *Timestamp        `json:"created_at,omitempty"`
 	Fingerprint    *string           `json:"fingerprint,omitempty"`
+	ExpiresAt      *Timestamp        `json:"expires_at,omitempty"`
 
 	// User is only populated by the Check and Reset methods.
 	User *User `json:"user,omitempty"`
