@@ -52,6 +52,7 @@ type RulesetRepositoryIDsConditionParameters struct {
 type RulesetRepositoryPropertyTargetParameters struct {
 	Name   string   `json:"name"`
 	Values []string `json:"property_values"`
+	Source string   `json:"source"`
 }
 
 // RulesetRepositoryPropertyConditionParameters represents the conditions object for repository_property.
@@ -77,6 +78,11 @@ type RulePatternParameters struct {
 	// Possible values for Operator are: starts_with, ends_with, contains, regex
 	Operator string `json:"operator"`
 	Pattern  string `json:"pattern"`
+}
+
+// RuleFileParameters represents a list of file paths.
+type RuleFileParameters struct {
+	RestrictedFilePaths *[]string `json:"restricted_file_paths"`
 }
 
 // UpdateAllowsFetchAndMergeRuleParameters represents the update rule parameters.
@@ -119,6 +125,7 @@ type MergeQueueRuleParameters struct {
 
 // RequiredStatusChecksRuleParameters represents the required_status_checks rule parameters.
 type RequiredStatusChecksRuleParameters struct {
+	DoNotEnforceOnCreate             bool                       `json:"do_not_enforce_on_create"`
 	RequiredStatusChecks             []RuleRequiredStatusChecks `json:"required_status_checks"`
 	StrictRequiredStatusChecksPolicy bool                       `json:"strict_required_status_checks_policy"`
 }
@@ -236,6 +243,15 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 			return err
 		}
 
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
+	case "file_path_restriction":
+		params := RuleFileParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
 		bytes, _ := json.Marshal(params)
 		rawParams := json.RawMessage(bytes)
 
@@ -422,6 +438,18 @@ func NewRequiredWorkflowsRule(params *RequiredWorkflowsRuleParameters) (rule *Re
 
 	return &RepositoryRule{
 		Type:       "workflows",
+		Parameters: &rawParams,
+	}
+}
+
+// NewFilePathRestrictionRule creates a rule to restrict file paths from being pushed to.
+func NewFilePathRestrictionRule(params *RuleFileParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "file_path_restriction",
 		Parameters: &rawParams,
 	}
 }

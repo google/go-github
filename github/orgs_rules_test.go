@@ -547,12 +547,14 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
+						Source: "custom",
 						Values: []string{"true"},
 					},
 				},
 				Exclude: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testExcludeProp",
+						Source: "custom",
 						Values: []string{"false"},
 					},
 				},
@@ -638,12 +640,14 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
+						Source: "custom",
 						Values: []string{"true"},
 					},
 				},
 				Exclude: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testExcludeProp",
+						Source: "custom",
 						Values: []string{"false"},
 					},
 				},
@@ -1191,6 +1195,7 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
+						Source: "custom",
 						Values: []string{"true"},
 					},
 				},
@@ -1382,6 +1387,7 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
+						Source: "custom",
 						Values: []string{"true"},
 					},
 				},
@@ -1413,6 +1419,7 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
+						Source: "custom",
 						Values: []string{"true"},
 					},
 				},
