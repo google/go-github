@@ -182,6 +182,20 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		"Valid file_path_restriction params": {
+			data: `{"type":"file_path_restriction","parameters":{"restricted_file_paths":["/a/file"]}}`,
+			want: NewFilePathRestrictionRule(&RuleFileParameters{
+				RestrictedFilePaths: &[]string{"/a/file"},
+			}),
+		},
+		"Invalid file_path_restriction params": {
+			data: `{"type":"file_path_restriction","parameters":{"restricted_file_paths":true}}`,
+			want: &RepositoryRule{
+				Type:       "file_path_restriction",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
 		"Valid pull_request params": {
 			data: `{
 				"type":"pull_request",
@@ -210,8 +224,9 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 			wantErr: true,
 		},
 		"Valid required_status_checks params": {
-			data: `{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test","integration_id":1}],"strict_required_status_checks_policy":true}}`,
+			data: `{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test","integration_id":1}],"strict_required_status_checks_policy":true,"do_not_enforce_on_create":true}}`,
 			want: NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
+				DoNotEnforceOnCreate: true,
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
 					{
 						Context:       "test",

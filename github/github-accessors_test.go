@@ -765,6 +765,13 @@ func TestAnalysesListOptions_GetSarifID(tt *testing.T) {
 	a.GetSarifID()
 }
 
+func TestAPIMeta_GetDomains(tt *testing.T) {
+	a := &APIMeta{}
+	a.GetDomains()
+	a = nil
+	a.GetDomains()
+}
+
 func TestAPIMeta_GetSSHKeyFingerprints(tt *testing.T) {
 	zeroValue := map[string]string{}
 	a := &APIMeta{SSHKeyFingerprints: zeroValue}
@@ -783,6 +790,13 @@ func TestAPIMeta_GetVerifiablePasswordAuthentication(tt *testing.T) {
 	a.GetVerifiablePasswordAuthentication()
 	a = nil
 	a.GetVerifiablePasswordAuthentication()
+}
+
+func TestAPIMetaDomains_GetArtifactAttestations(tt *testing.T) {
+	a := &APIMetaDomains{}
+	a.GetArtifactAttestations()
+	a = nil
+	a.GetArtifactAttestations()
 }
 
 func TestApp_GetCreatedAt(tt *testing.T) {
@@ -10560,6 +10574,26 @@ func TestInstallationPermissions_GetOrganizationPackages(tt *testing.T) {
 	i.GetOrganizationPackages()
 	i = nil
 	i.GetOrganizationPackages()
+}
+
+func TestInstallationPermissions_GetOrganizationPersonalAccessTokenRequests(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationPersonalAccessTokenRequests: &zeroValue}
+	i.GetOrganizationPersonalAccessTokenRequests()
+	i = &InstallationPermissions{}
+	i.GetOrganizationPersonalAccessTokenRequests()
+	i = nil
+	i.GetOrganizationPersonalAccessTokenRequests()
+}
+
+func TestInstallationPermissions_GetOrganizationPersonalAccessTokens(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationPersonalAccessTokens: &zeroValue}
+	i.GetOrganizationPersonalAccessTokens()
+	i = &InstallationPermissions{}
+	i.GetOrganizationPersonalAccessTokens()
+	i = nil
+	i.GetOrganizationPersonalAccessTokens()
 }
 
 func TestInstallationPermissions_GetOrganizationPlan(tt *testing.T) {
@@ -24223,6 +24257,16 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 	r = nil
 	r.GetSeverity()
+}
+
+func TestRuleFileParameters_GetRestrictedFilePaths(tt *testing.T) {
+	var zeroValue []string
+	r := &RuleFileParameters{RestrictedFilePaths: &zeroValue}
+	r.GetRestrictedFilePaths()
+	r = &RuleFileParameters{}
+	r.GetRestrictedFilePaths()
+	r = nil
+	r.GetRestrictedFilePaths()
 }
 
 func TestRulePatternParameters_GetName(tt *testing.T) {

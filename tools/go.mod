@@ -8,7 +8,7 @@ require (
 	github.com/alecthomas/kong v0.9.0
 	github.com/getkin/kin-openapi v0.127.0
 	github.com/google/go-cmp v0.6.0
-	github.com/google/go-github/v63 v63.0.0
+	github.com/google/go-github/v64 v64.0.0
 	golang.org/x/sync v0.8.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -25,4 +25,4 @@ require (
 )
 
 // Use version at HEAD, not the latest published.
-replace github.com/google/go-github/v63 => ../
+replace github.com/google/go-github/v64 => ../

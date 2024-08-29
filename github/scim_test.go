@@ -127,7 +127,8 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, `{"id":"1234567890","userName":"userName"}`)
 	})
 
 	ctx := context.Background()
@@ -143,19 +144,31 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 			},
 		},
 	}
-	_, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", opts)
+	user, _, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("SCIM.ListSCIMProvisionedIdentities returned error: %v", err)
+		t.Errorf("SCIM.ProvisionAndInviteSCIMUser returned error: %v", err)
+	}
+
+	want := &SCIMUserAttributes{
+		ID:       String("1234567890"),
+		UserName: "userName",
+	}
+	if !cmp.Equal(user, want) {
+		t.Errorf("SCIM.ProvisionAndInviteSCIMUser returned %+v, want %+v", user, want)
 	}
 
 	const methodName = "ProvisionAndInviteSCIMUser"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.SCIM.ProvisionAndInviteSCIMUser(ctx, "\n", opts)
+		_, _, err = client.SCIM.ProvisionAndInviteSCIMUser(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", opts)
+		got, resp, err := client.SCIM.ProvisionAndInviteSCIMUser(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
