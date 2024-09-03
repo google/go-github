@@ -139,7 +139,7 @@ type RuleRequiredCodeScanningTools struct {
 
 // RequiredCodeScanningRuleParameters represents the code_scanning rule parameters.
 type RequiredCodeScanningRuleParameters struct {
-	RequiredCodeScanningTools []RuleRequiredCodeScanningTools `json:"code_scanning_tools"`
+	RequiredCodeScanningTools []*RuleRequiredCodeScanningTools `json:"code_scanning_tools"`
 }
 
 // RepositoryRule represents a GitHub Rule.
