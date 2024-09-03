@@ -129,6 +129,13 @@ type PendingDeploymentEnvironment struct {
 	HTMLURL *string `json:"html_url,omitempty"`
 }
 
+// ReviewCustomDeploymentProtectionRuleRequest specifies the parameters to ReviewCustomDeploymentProtectionRule.
+type ReviewCustomDeploymentProtectionRuleRequest struct {
+	EnvironmentName string `json:"environment_name"`
+	State           string `json:"state"`
+	Comment         string `json:"comment"`
+}
+
 func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u, err := addOptions(endpoint, opts)
 	if err != nil {
@@ -447,4 +454,21 @@ func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo str
 	}
 
 	return deployments, resp, nil
+}
+
+// ReviewCustomDeploymentProtectionRule approve or reject custom deployment protection rules provided by a GitHub App for a workflow run
+//
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#review-custom-deployment-protection-rules-for-a-workflow-run
+//
+//meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/deployment_protection_rule
+func (s *ActionsService) ReviewCustomDeploymentProtectionRule(ctx context.Context, owner, repo string, runID int64, request *ReviewCustomDeploymentProtectionRuleRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/deployment_protection_rule", owner, repo, runID)
+
+	req, err := s.client.NewRequest("POST", u, request)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	return resp, err
 }

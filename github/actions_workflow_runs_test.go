@@ -629,6 +629,54 @@ func TestPendingDeployment_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestActionsService_ReviewCustomDeploymentProtectionRule(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/9444496/deployment_protection_rule", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	request := ReviewCustomDeploymentProtectionRuleRequest{
+		EnvironmentName: "production",
+		State:           "approved",
+		Comment:         "Approve deployment",
+	}
+
+	ctx := context.Background()
+	if _, err := client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, &request); err != nil {
+		t.Errorf("ReviewCustomDeploymentProtectionRule returned error: %v", err)
+	}
+
+	const methodName = "ReviewCustomDeploymentProtectionRule"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "\n", "\n", 9444496, &request)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, &request)
+	})
+}
+
+func TestReviewCustomDeploymentProtectionRuleRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ReviewCustomDeploymentProtectionRuleRequest{}, "{}")
+
+	r := &ReviewCustomDeploymentProtectionRuleRequest{
+		EnvironmentName: "e",
+		State:           "rejected",
+		Comment:         "c",
+	}
+	want := `{
+		"environment_name": "e",
+		"state": "rejected",
+		"comment": "c"
+	}`
+	testJSONMarshal(t, r, want)
+}
+
 func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
