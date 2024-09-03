@@ -121,6 +121,7 @@ type PendingDeployment struct {
 	Reviewers             []*RequiredReviewer           `json:"reviewers,omitempty"`
 }
 
+// PendingDeploymentEnvironment represents pending deployment environment properties.
 type PendingDeploymentEnvironment struct {
 	ID      *int64  `json:"id,omitempty"`
 	NodeID  *string `json:"node_id,omitempty"`
@@ -456,7 +457,7 @@ func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo str
 	return deployments, resp, nil
 }
 
-// ReviewCustomDeploymentProtectionRule approve or reject custom deployment protection rules provided by a GitHub App for a workflow run
+// ReviewCustomDeploymentProtectionRule approves or rejects custom deployment protection rules provided by a GitHub App for a workflow run.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#review-custom-deployment-protection-rules-for-a-workflow-run
 //
