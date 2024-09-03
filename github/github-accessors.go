@@ -5886,6 +5886,110 @@ func (d *DeploymentRequest) GetTransientEnvironment() bool {
 	return *d.TransientEnvironment
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (d *DeploymentReviewEvent) GetAction() string {
+	if d == nil || d.Action == nil {
+		return ""
+	}
+	return *d.Action
+}
+
+// GetApprover returns the Approver field.
+func (d *DeploymentReviewEvent) GetApprover() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Approver
+}
+
+// GetComment returns the Comment field if it's non-nil, zero value otherwise.
+func (d *DeploymentReviewEvent) GetComment() string {
+	if d == nil || d.Comment == nil {
+		return ""
+	}
+	return *d.Comment
+}
+
+// GetEnterprise returns the Enterprise field.
+func (d *DeploymentReviewEvent) GetEnterprise() *Enterprise {
+	if d == nil {
+		return nil
+	}
+	return d.Enterprise
+}
+
+// GetEnvironment returns the Environment field if it's non-nil, zero value otherwise.
+func (d *DeploymentReviewEvent) GetEnvironment() string {
+	if d == nil || d.Environment == nil {
+		return ""
+	}
+	return *d.Environment
+}
+
+// GetInstallation returns the Installation field.
+func (d *DeploymentReviewEvent) GetInstallation() *Installation {
+	if d == nil {
+		return nil
+	}
+	return d.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (d *DeploymentReviewEvent) GetOrganization() *Organization {
+	if d == nil {
+		return nil
+	}
+	return d.Organization
+}
+
+// GetRepo returns the Repo field.
+func (d *DeploymentReviewEvent) GetRepo() *Repository {
+	if d == nil {
+		return nil
+	}
+	return d.Repo
+}
+
+// GetRequester returns the Requester field.
+func (d *DeploymentReviewEvent) GetRequester() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Requester
+}
+
+// GetSender returns the Sender field.
+func (d *DeploymentReviewEvent) GetSender() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Sender
+}
+
+// GetSince returns the Since field if it's non-nil, zero value otherwise.
+func (d *DeploymentReviewEvent) GetSince() string {
+	if d == nil || d.Since == nil {
+		return ""
+	}
+	return *d.Since
+}
+
+// GetWorkflowJobRun returns the WorkflowJobRun field.
+func (d *DeploymentReviewEvent) GetWorkflowJobRun() *WorkflowJobRun {
+	if d == nil {
+		return nil
+	}
+	return d.WorkflowJobRun
+}
+
+// GetWorkflowRun returns the WorkflowRun field.
+func (d *DeploymentReviewEvent) GetWorkflowRun() *WorkflowRun {
+	if d == nil {
+		return nil
+	}
+	return d.WorkflowRun
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (d *DeploymentStatus) GetCreatedAt() Timestamp {
 	if d == nil || d.CreatedAt == nil {
@@ -14388,6 +14492,78 @@ func (p *PagesUpdate) GetSource() *PagesSource {
 		return nil
 	}
 	return p.Source
+}
+
+// GetCurrentUserCanApprove returns the CurrentUserCanApprove field if it's non-nil, zero value otherwise.
+func (p *PendingDeployment) GetCurrentUserCanApprove() bool {
+	if p == nil || p.CurrentUserCanApprove == nil {
+		return false
+	}
+	return *p.CurrentUserCanApprove
+}
+
+// GetEnvironment returns the Environment field.
+func (p *PendingDeployment) GetEnvironment() *PendingDeploymentEnvironment {
+	if p == nil {
+		return nil
+	}
+	return p.Environment
+}
+
+// GetWaitTimer returns the WaitTimer field if it's non-nil, zero value otherwise.
+func (p *PendingDeployment) GetWaitTimer() int64 {
+	if p == nil || p.WaitTimer == nil {
+		return 0
+	}
+	return *p.WaitTimer
+}
+
+// GetWaitTimerStartedAt returns the WaitTimerStartedAt field if it's non-nil, zero value otherwise.
+func (p *PendingDeployment) GetWaitTimerStartedAt() Timestamp {
+	if p == nil || p.WaitTimerStartedAt == nil {
+		return Timestamp{}
+	}
+	return *p.WaitTimerStartedAt
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (p *PendingDeploymentEnvironment) GetHTMLURL() string {
+	if p == nil || p.HTMLURL == nil {
+		return ""
+	}
+	return *p.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PendingDeploymentEnvironment) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *PendingDeploymentEnvironment) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *PendingDeploymentEnvironment) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *PendingDeploymentEnvironment) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
 }
 
 // GetAccessGrantedAt returns the AccessGrantedAt field if it's non-nil, zero value otherwise.
@@ -25324,6 +25500,70 @@ func (w *WorkflowJobEvent) GetWorkflowJob() *WorkflowJob {
 		return nil
 	}
 	return w.WorkflowJob
+}
+
+// GetConclusion returns the Conclusion field if it's non-nil, zero value otherwise.
+func (w *WorkflowJobRun) GetConclusion() string {
+	if w == nil || w.Conclusion == nil {
+		return ""
+	}
+	return *w.Conclusion
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (w *WorkflowJobRun) GetCreatedAt() Timestamp {
+	if w == nil || w.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *w.CreatedAt
+}
+
+// GetEnvironment returns the Environment field if it's non-nil, zero value otherwise.
+func (w *WorkflowJobRun) GetEnvironment() string {
+	if w == nil || w.Environment == nil {
+		return ""
+	}
+	return *w.Environment
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowJobRun) GetHTMLURL() string {
+	if w == nil || w.HTMLURL == nil {
+		return ""
+	}
+	return *w.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (w *WorkflowJobRun) GetID() int64 {
+	if w == nil || w.ID == nil {
+		return 0
+	}
+	return *w.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (w *WorkflowJobRun) GetName() string {
+	if w == nil || w.Name == nil {
+		return ""
+	}
+	return *w.Name
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (w *WorkflowJobRun) GetStatus() string {
+	if w == nil || w.Status == nil {
+		return ""
+	}
+	return *w.Status
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (w *WorkflowJobRun) GetUpdatedAt() Timestamp {
+	if w == nil || w.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *w.UpdatedAt
 }
 
 // GetActor returns the Actor field.
