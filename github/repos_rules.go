@@ -130,6 +130,18 @@ type RequiredWorkflowsRuleParameters struct {
 	RequiredWorkflows []*RuleRequiredWorkflow `json:"workflows"`
 }
 
+// RuleRequiredCodeScanningTools represents the RequiredCodeScanningTools for the RequiredCodeScanningParameters object.
+type RuleRequiredCodeScanningTools struct {
+	AlertsThreshold         string `json:"alerts_threshold"`
+	SecurityAlertsThreshold string `json:"security_alerts_threshold"`
+	Tool                    string `json:"tool"`
+}
+
+// RequiredCodeScanningRuleParameters represents the code_scanning rule parameters.
+type RequiredCodeScanningRuleParameters struct {
+	RequiredCodeScanningTools []RuleRequiredCodeScanningTools `json:"code_scanning_tools"`
+}
+
 // RepositoryRule represents a GitHub Rule.
 type RepositoryRule struct {
 	Type              string           `json:"type"`
@@ -223,6 +235,15 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "file_path_restriction":
 		params := RuleFileParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
+	case "code_scanning":
+		params := RequiredCodeScanningRuleParameters{}
 		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
 			return err
 		}
@@ -402,6 +423,18 @@ func NewRequiredWorkflowsRule(params *RequiredWorkflowsRuleParameters) (rule *Re
 
 	return &RepositoryRule{
 		Type:       "workflows",
+		Parameters: &rawParams,
+	}
+}
+
+// NewRequiredCodeScanningRule creates a rule to require which tools must provide code scanning results before the reference is updated.
+func NewRequiredCodeScanningRule(params *RequiredCodeScanningRuleParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "code_scanning",
 		Parameters: &rawParams,
 	}
 }
