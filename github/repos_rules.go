@@ -110,6 +110,19 @@ type RuleRequiredStatusChecks struct {
 	IntegrationID *int64 `json:"integration_id,omitempty"`
 }
 
+// MergeQueueRuleParameters represents the merge_queue rule parameters.
+type MergeQueueRuleParameters struct {
+	CheckResponseTimeoutMinutes int `json:"check_response_timeout_minutes"`
+	// Possible values for GroupingStrategy are: ALLGREEN, HEADGREEN
+	GroupingStrategy  string `json:"grouping_strategy"`
+	MaxEntriesToBuild int    `json:"max_entries_to_build"`
+	MaxEntriesToMerge int    `json:"max_entries_to_merge"`
+	// Possible values for MergeMethod are: MERGE, SQUASH, REBASE
+	MergeMethod                  string `json:"merge_method"`
+	MinEntriesToMerge            int    `json:"min_entries_to_merge"`
+	MinEntriesToMergeWaitMinutes int    `json:"min_entries_to_merge_wait_minutes"`
+}
+
 // RequiredStatusChecksRuleParameters represents the required_status_checks rule parameters.
 type RequiredStatusChecksRuleParameters struct {
 	DoNotEnforceOnCreate             bool                       `json:"do_not_enforce_on_create"`
@@ -154,7 +167,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	r.Type = RepositoryRule.Type
 
 	switch RepositoryRule.Type {
-	case "creation", "deletion", "merge_queue", "non_fast_forward", "required_linear_history", "required_signatures":
+	case "creation", "deletion", "non_fast_forward", "required_linear_history", "required_signatures":
 		r.Parameters = nil
 	case "update":
 		if RepositoryRule.Parameters == nil {
@@ -170,7 +183,20 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		rawParams := json.RawMessage(bytes)
 
 		r.Parameters = &rawParams
+	case "merge_queue":
+		if RepositoryRule.Parameters == nil {
+			r.Parameters = nil
+			return nil
+		}
+		params := MergeQueueRuleParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
 
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
 	case "required_deployments":
 		params := RequiredDeploymentEnvironmentsRuleParameters{}
 		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
@@ -240,7 +266,17 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 }
 
 // NewMergeQueueRule creates a rule to only allow merges via a merge queue.
-func NewMergeQueueRule() (rule *RepositoryRule) {
+func NewMergeQueueRule(params *MergeQueueRuleParameters) (rule *RepositoryRule) {
+	if params != nil {
+		bytes, _ := json.Marshal(params)
+
+		rawParams := json.RawMessage(bytes)
+
+		return &RepositoryRule{
+			Type:       "merge_queue",
+			Parameters: &rawParams,
+		}
+	}
 	return &RepositoryRule{
 		Type: "merge_queue",
 	}
