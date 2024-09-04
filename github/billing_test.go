@@ -463,9 +463,9 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 	}
 
 	want := &ActiveCommitters{
-		TotalAdvancedSecurityCommitters: 2,
-		TotalCount: 2,
-		MaximumAdvancedSecurityCommitters: 3,
+		TotalAdvancedSecurityCommitters:     2,
+		TotalCount:                          2,
+		MaximumAdvancedSecurityCommitters:   3,
 		PurchasedAdvancedSecurityCommitters: 4,
 		Repositories: []*RepositoryActiveCommitters{
 			{
