@@ -124,9 +124,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				"type": "deletion"
 			  },
 			  {
-				"type": "merge_queue"
-			  },
-			  {
 				"type": "required_linear_history"
 			  },
 			  {
@@ -253,7 +250,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -349,7 +345,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -480,9 +475,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				"type": "deletion"
 			  },
 			  {
-				"type": "merge_queue"
-			  },
-			  {
 				"type": "required_linear_history"
 			  },
 			  {
@@ -616,7 +608,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -719,7 +710,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -842,9 +832,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				"type": "deletion"
 			  },
 			  {
-				"type": "merge_queue"
-			  },
-			  {
 				"type": "required_linear_history"
 			  },
 			  {
@@ -969,7 +956,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -1063,7 +1049,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
