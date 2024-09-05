@@ -293,7 +293,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 			},
 			wantErr: true,
 		},
-		"Required workflows params": {
+		"Valid Required workflows params": {
 			data: `{"type":"workflows","parameters":{"workflows":[{"path": ".github/workflows/test.yml", "repository_id": 1}]}}`,
 			want: NewRequiredWorkflowsRule(&RequiredWorkflowsRuleParameters{
 				RequiredWorkflows: []*RuleRequiredWorkflow{
@@ -304,7 +304,15 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 				},
 			}),
 		},
-		"Required code_scanning params": {
+		"Invalid Required workflows params": {
+			data: `{"type":"workflows","parameters":{"workflows":[{"path": ".github/workflows/test.yml", "repository_id": "test"}]}}`,
+			want: &RepositoryRule{
+				Type:       "workflows",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
+		"Valid Required code_scanning params": {
 			data: `{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool": "CodeQL", "security_alerts_threshold": "high_or_higher", "alerts_threshold": "errors"}]}}`,
 			want: NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
 				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTools{
@@ -315,6 +323,14 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 					},
 				},
 			}),
+		},
+		"Invalid Required code_scanning params": {
+			data: `{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool": 1}]}}`,
+			want: &RepositoryRule{
+				Type:       "code_scanning",
+				Parameters: nil,
+			},
+			wantErr: true,
 		},
 		"Invalid type": {
 			data: `{"type":"unknown"}`,
