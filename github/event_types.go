@@ -1821,3 +1821,27 @@ type CodeScanningAlertEvent struct {
 
 	Installation *Installation `json:"installation,omitempty"`
 }
+
+// SponsorshipEvent represents a sponsorship event in GitHub.
+//
+// GitHub API docs: https://docs.github.com/en/rest/overview/github-event-types?apiVersion=2022-11-28#sponsorshipevent
+type SponsorshipEvent struct {
+	Action        *string             `json:"action,omitempty"`
+	EffectiveDate *string             `json:"effective_date,omitempty"`
+	Changes       *SponsorshipChanges `json:"changes,omitempty"`
+	Repository    *Repository         `json:"repository,omitempty"`
+	Organization  *Organization       `json:"organization,omitempty"`
+	Sender        *User               `json:"sender,omitempty"`
+	Installation  *Installation       `json:"installation,omitempty"`
+}
+
+// SponsorshipChanges represents changes made to the sponsorship.
+type SponsorshipChanges struct {
+	Tier         *SponsorshipTier `json:"tier,omitempty"`
+	PrivacyLevel *string          `json:"privacy_level,omitempty"`
+}
+
+// SponsorshipTier represents the tier information of a sponsorship.
+type SponsorshipTier struct {
+	From *string `json:"from,omitempty"`
+}
