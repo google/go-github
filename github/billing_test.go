@@ -436,10 +436,14 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
   "total_advanced_security_committers": 2,
+  "total_count": 2,
+  "maximum_advanced_security_committers": 3,
+  "purchased_advanced_security_committers": 4,
   "repositories": [
     {
       "name": "octocat-org/Hello-World",
       "advanced_security_committers": 2,
+      
       "advanced_security_committers_breakdown": [
         {
           "user_login": "octokitten",
@@ -459,7 +463,10 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 	}
 
 	want := &ActiveCommitters{
-		TotalAdvancedSecurityCommitters: 2,
+		TotalAdvancedSecurityCommitters:     2,
+		TotalCount:                          2,
+		MaximumAdvancedSecurityCommitters:   3,
+		PurchasedAdvancedSecurityCommitters: 4,
 		Repositories: []*RepositoryActiveCommitters{
 			{
 				Name:                       String("octocat-org/Hello-World"),
