@@ -477,6 +477,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "status",
 		},
 		{
+			payload:     &SponsorshipEvent{},
+			messageType: "sponsors",
+		},
+		{
 			payload:     &TeamEvent{},
 			messageType: "team",
 		},
