@@ -465,24 +465,20 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "security_advisory",
 		},
 		{
-			payload:     &SecretScanningAlertEvent{},
-			messageType: "secret_scanning_alert",
-		},
-		{
-			payload:     &SecurityAdvisoryEvent{},
-			messageType: "security_advisory",
-		},
-		{
 			payload:     &SecurityAndAnalysisEvent{},
 			messageType: "security_and_analysis",
 		},
 		{
 			payload:     &SponsorshipEvent{},
-			messageType: "sponsors",
+			messageType: "sponsorship",
 		},
 		{
 			payload:     &StarEvent{},
 			messageType: "star",
+		},
+		{
+			payload:     &StatusEvent{},
+			messageType: "status",
 		},
 		{
 			payload:     &TeamEvent{},
