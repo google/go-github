@@ -102,6 +102,7 @@ var (
 		"secret_scanning_alert":          &SecretScanningAlertEvent{},
 		"security_advisory":              &SecurityAdvisoryEvent{},
 		"security_and_analysis":          &SecurityAndAnalysisEvent{},
+		"sponsorship":                    &SponsorshipEvent{},
 		"star":                           &StarEvent{},
 		"status":                         &StatusEvent{},
 		"team":                           &TeamEvent{},

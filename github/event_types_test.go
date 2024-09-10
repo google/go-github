@@ -17885,3 +17885,97 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestSponsorshipEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SponsorshipEvent{}, "{}")
+
+	u := &SponsorshipEvent{
+		Action:        String("created"),
+		EffectiveDate: String("2023-01-01T00:00:00Z"),
+		Changes: &SponsorshipChanges{
+			Tier: &SponsorshipTier{
+				From: String("basic"),
+			},
+			PrivacyLevel: String("public"),
+		},
+		Repository: &Repository{
+			ID:     Int64(12345),
+			NodeID: String("MDEwOlJlcG9zaXRvcnkxMjM0NQ=="),
+			Name:   String("example-repo"),
+		},
+		Organization: &Organization{
+			Login: String("example-org"),
+			ID:    Int64(67890),
+		},
+		Sender: &User{
+			Login: String("example-user"),
+			ID:    Int64(1111),
+		},
+		Installation: &Installation{
+			ID: Int64(2222),
+		},
+	}
+
+	want := `{
+		"action": "created",
+		"effective_date": "2023-01-01T00:00:00Z",
+		"changes": {
+			"tier": {
+				"from": "basic"
+			},
+			"privacy_level": "public"
+		},
+		"repository": {
+			"id": 12345,
+			"node_id": "MDEwOlJlcG9zaXRvcnkxMjM0NQ==",
+			"name": "example-repo"
+		},
+		"organization": {
+			"login": "example-org",
+			"id": 67890
+		},
+		"sender": {
+			"login": "example-user",
+			"id": 1111
+		},
+		"installation": {
+			"id": 2222
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSponsorshipChanges_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SponsorshipChanges{}, "{}")
+
+	u := &SponsorshipChanges{
+		Tier: &SponsorshipTier{
+			From: String("premium"),
+		},
+		PrivacyLevel: String("private"),
+	}
+
+	want := `{
+		"tier": {
+			"from": "premium"
+		},
+		"privacy_level": "private"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSponsorshipTier_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SponsorshipTier{}, "{}")
+
+	u := &SponsorshipTier{
+		From: String("gold"),
+	}
+
+	want := `{
+		"from": "gold"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
