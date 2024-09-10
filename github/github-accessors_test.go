@@ -26018,6 +26018,88 @@ func TestSourceImportAuthor_GetURL(tt *testing.T) {
 	s.GetURL()
 }
 
+func TestSponsorshipChanges_GetPrivacyLevel(tt *testing.T) {
+	var zeroValue string
+	s := &SponsorshipChanges{PrivacyLevel: &zeroValue}
+	s.GetPrivacyLevel()
+	s = &SponsorshipChanges{}
+	s.GetPrivacyLevel()
+	s = nil
+	s.GetPrivacyLevel()
+}
+
+func TestSponsorshipChanges_GetTier(tt *testing.T) {
+	s := &SponsorshipChanges{}
+	s.GetTier()
+	s = nil
+	s.GetTier()
+}
+
+func TestSponsorshipEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	s := &SponsorshipEvent{Action: &zeroValue}
+	s.GetAction()
+	s = &SponsorshipEvent{}
+	s.GetAction()
+	s = nil
+	s.GetAction()
+}
+
+func TestSponsorshipEvent_GetChanges(tt *testing.T) {
+	s := &SponsorshipEvent{}
+	s.GetChanges()
+	s = nil
+	s.GetChanges()
+}
+
+func TestSponsorshipEvent_GetEffectiveDate(tt *testing.T) {
+	var zeroValue string
+	s := &SponsorshipEvent{EffectiveDate: &zeroValue}
+	s.GetEffectiveDate()
+	s = &SponsorshipEvent{}
+	s.GetEffectiveDate()
+	s = nil
+	s.GetEffectiveDate()
+}
+
+func TestSponsorshipEvent_GetInstallation(tt *testing.T) {
+	s := &SponsorshipEvent{}
+	s.GetInstallation()
+	s = nil
+	s.GetInstallation()
+}
+
+func TestSponsorshipEvent_GetOrganization(tt *testing.T) {
+	s := &SponsorshipEvent{}
+	s.GetOrganization()
+	s = nil
+	s.GetOrganization()
+}
+
+func TestSponsorshipEvent_GetRepository(tt *testing.T) {
+	s := &SponsorshipEvent{}
+	s.GetRepository()
+	s = nil
+	s.GetRepository()
+}
+
+func TestSponsorshipEvent_GetSender(tt *testing.T) {
+	s := &SponsorshipEvent{}
+	s.GetSender()
+	s = nil
+	s.GetSender()
+}
+
+func TestSponsorshipTier_GetFrom(tt *testing.T) {
+	var zeroValue string
+	s := &SponsorshipTier{From: &zeroValue}
+	s.GetFrom()
+	s = &SponsorshipTier{}
+	s.GetFrom()
+	s = nil
+	s.GetFrom()
+}
+
 func TestSSHSigningKey_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	s := &SSHSigningKey{CreatedAt: &zeroValue}
