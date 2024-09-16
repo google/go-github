@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v65/github"
 )
 
 func Test_AppRestrictionsEnabled(t *testing.T) {
