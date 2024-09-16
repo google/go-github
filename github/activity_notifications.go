@@ -184,7 +184,7 @@ func (s *ActivityService) MarkThreadRead(ctx context.Context, id string) (*Respo
 // GitHub API docs: https://docs.github.com/rest/activity/notifications#mark-a-thread-as-done
 //
 //meta:operation DELETE /notifications/threads/{thread_id}
-func (s *ActivityService) MarkThreadDone(ctx context.Context, id string) (*Response, error) {
+func (s *ActivityService) MarkThreadDone(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("notifications/threads/%v", id)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
