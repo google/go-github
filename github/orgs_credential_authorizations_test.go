@@ -34,7 +34,10 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 		]`)
 	})
 
-	opts := &ListOptions{Page: 2, PerPage: 2}
+	opts := &CredentialAuthorizationsListOptions{
+		ListOptions: ListOptions{Page: 2, PerPage: 2},
+	}
+
 	ctx := context.Background()
 	creds, _, err := client.Organizations.ListCredentialAuthorizations(ctx, "o", opts)
 	if err != nil {
