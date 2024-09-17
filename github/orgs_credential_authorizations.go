@@ -57,7 +57,7 @@ type CredentialAuthorization struct {
 
 // CredentialAuthorizationsListOptions adds the Login option as supported by the
 // list SAML SSO authorizations for organizations endpoint alongside paging options
-// such as Page and PerPage
+// such as Page and PerPage.
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/orgs#list-saml-sso-authorizations-for-an-organization
 type CredentialAuthorizationsListOptions struct {
 	ListOptions
