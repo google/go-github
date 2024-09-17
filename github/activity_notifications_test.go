@@ -208,6 +208,32 @@ func TestActivityService_MarkThreadRead(t *testing.T) {
 	})
 }
 
+func TestActivityService_MarkThreadDone(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/notifications/threads/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusResetContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Activity.MarkThreadDone(ctx, 1)
+	if err != nil {
+		t.Errorf("Activity.MarkThreadDone returned error: %v", err)
+	}
+
+	const methodName = "MarkThreadDone"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Activity.MarkThreadDone(ctx, 0)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Activity.MarkThreadDone(ctx, 1)
+	})
+}
+
 func TestActivityService_GetThreadSubscription(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
