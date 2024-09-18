@@ -21,7 +21,7 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/credential-authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		testFormValues(t, r, values{"per_page": "2", "page": "2"})
+		testFormValues(t, r, values{"per_page": "2", "page": "2", "login": "l"})
 		fmt.Fprint(w, `[
 			{
 				"login": "l",
@@ -36,6 +36,7 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 
 	opts := &CredentialAuthorizationsListOptions{
 		ListOptions: ListOptions{Page: 2, PerPage: 2},
+		Login:       "l",
 	}
 
 	ctx := context.Background()
