@@ -55,13 +55,23 @@ type CredentialAuthorization struct {
 	AuthorizedCredentialExpiresAt *Timestamp `json:"authorized_credential_expires_at,omitempty"`
 }
 
+// CredentialAuthorizationsListOptions adds the Login option as supported by the
+// list SAML SSO authorizations for organizations endpoint alongside paging options
+// such as Page and PerPage.
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/orgs#list-saml-sso-authorizations-for-an-organization
+type CredentialAuthorizationsListOptions struct {
+	ListOptions
+	// For credentials authorizations for an organization, limit the list of authorizations to a specific login (aka github username)
+	Login string `url:"login,omitempty"`
+}
+
 // ListCredentialAuthorizations lists credentials authorized through SAML SSO
 // for a given organization. Only available with GitHub Enterprise Cloud.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/orgs#list-saml-sso-authorizations-for-an-organization
 //
 //meta:operation GET /orgs/{org}/credential-authorizations
-func (s *OrganizationsService) ListCredentialAuthorizations(ctx context.Context, org string, opts *ListOptions) ([]*CredentialAuthorization, *Response, error) {
+func (s *OrganizationsService) ListCredentialAuthorizations(ctx context.Context, org string, opts *CredentialAuthorizationsListOptions) ([]*CredentialAuthorization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/credential-authorizations", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
