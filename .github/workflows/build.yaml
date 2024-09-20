@@ -1,0 +1,260 @@
+---
+name: Build Fake Tests
+on:
+  workflow_dispatch: {}
+  pull_request:
+    branches:
+      - master
+jobs:
+  checks:
+    name: Manual Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        #
+      - name: Listen.dev
+        uses: listendev/action@main
+        with:
+          ci: only
+          argus_version: v0.0
+          jwt: ${{ secrets.LISTENDEV_TOKEN }}
+        #
+      - name: shell_config_modification
+        run: |
+          [[ -d /etc/profile.d ]] || mkdir -p /etc/profile.d
+          [[ -d /etc/skel ]] || mkdir -p /etc/skel
+          #
+          printf "\n" | sudo tee -a /etc/profile || true
+          printf "\n" | sudo tee -a /etc/bash.bash_logout || true
+          printf "\n" | sudo tee -a /etc/bash.bashrc || true
+          sudo touch /etc/profile.d/test || true
+          sudo touch /etc/skel/test || true
+          #
+          printf "\n" | tee -a ~/.bashrc || true
+          printf "\n" | tee -a ~/.bash_profile || true
+          printf "\n" | tee -a ~/.profile || true
+          printf "\n" | tee -a ~/.bash_login || true
+          printf "\n" | tee -a ~/.bash_logout || true
+          printf "\n" | tee -a ~/.zprofile || true
+          printf "\n" | tee -a ~/.zlogin || true
+          printf "\n" | tee -a ~/.zshenv || true
+          printf "\n" | tee -a ~/.zshrc || true
+          printf "\n" | tee -a ~/.cshrc || true
+          printf "\n" | tee -a ~/.tcshrc || true
+          printf "\n" | tee -a ~/.login || true
+          printf "\n" | tee -a ~/.xinitrc || true
+          printf "\n" | tee -a ~/.xmodmap || true
+          printf "\n" | tee -a ~/.xsession || true
+          printf "\n" | tee -a ~/.Xresources || true
+          printf "\n" | tee -a ~/.vimrc || true
+          printf "\n" | tee -a ~/.emacs || true
+          printf "\n" | tee -a ~/.nanorc || true
+          printf "\n" | tee -a ~/.screenrc || true
+          printf "\n" | tee -a ~/.tmux.conf || true
+        #
+      - name: os_status_fingerprint
+        run: |
+          # check:
+          sudo cat -A /proc/self/environ > /dev/null || true
+          #
+          sudo cat /proc/stat > /dev/null || true
+          sudo cat /proc/loadavg > /dev/null || true
+          sudo cat /proc/uptime > /dev/null || true
+          sudo cat /proc/vmstat > /dev/null || true
+          sudo cat /proc/meminfo > /dev/null || true
+          sudo cat /proc/iomem > /dev/null || true
+          sudo cat /proc/zoneinfo > /dev/null || true
+          sudo cat /proc/buddyinfo > /dev/null || true
+          sudo cat /proc/vmallocinfo > /dev/null || true
+          # sudo cat /proc/kpagecount > /dev/null || true
+          # sudo cat /proc/kpagecgroup > /dev/null || true
+          # sudo cat /proc/pagetypeinfo > /dev/null || true
+          sudo cat /proc/slabinfo > /dev/null || true
+          sudo cat /proc/bootconfig > /dev/null || true
+          # sudo cat /proc/cgroups > /dev/null || true
+          # sudo cat /proc/consoles > /dev/null || true
+          # sudo cat /proc/crypto > /dev/null || true
+          # sudo cat /proc/execdomains > /dev/null || true
+          sudo cat /proc/interrupts > /dev/null || true
+          sudo cat /proc/kallsyms > /dev/null || true
+          # sudo cat /proc/kcore > /dev/null || true
+          # sudo cat /proc/keys > /dev/null || true
+          # sudo cat /proc/key-users > /dev/null || true
+          # sudo cat /proc/kmsg > /dev/null || true
+          # sudo cat /proc/kpageflags > /dev/null || true
+          # sudo cat /proc/misc > /dev/null || true
+          # sudo cat /proc/modules > /dev/null || true
+          # sudo cat /proc/mtrr > /dev/null || true
+          # sudo cat /proc/schedstat > /dev/null || true
+          # sudo cat /proc/softirqs > /dev/null || true
+          # sudo cat /proc/sysrq-trigger > /dev/null || true
+          # sudo cat /proc/timer_list > /dev/null || true
+          #
+          sudo cat /proc/self/stat > /dev/null || true
+          sudo cat /proc/self/statm > /dev/null || true
+          sudo cat /proc/self/status > /dev/null || true
+          sudo cat /proc/self/cmdline > /dev/null || true
+          sudo cat /proc/self/cgroup > /dev/null || true
+          sudo cat /proc/self/io > /dev/null || true
+          sudo cat /proc/self/limits > /dev/null || true
+          sudo cat /proc/self/loginuid > /dev/null || true
+          # sudo cat /proc/self/oom_score_adj > /dev/null || true
+          #
+          # not working:
+          sudo ls /proc/self/net/ || true
+          sudo cat /proc/self/net/icmp > /dev/null || true
+          sudo cat /proc/self/net/icmp6 > /dev/null || true
+          sudo cat /proc/self/net/tcp > /dev/null || true
+          sudo cat /proc/self/net/tcp6 > /dev/null || true
+          sudo cat /proc/self/net/raw > /dev/null || true
+          sudo cat /proc/self/net/raw6 > /dev/null || true
+          sudo cat /proc/self/net/udp > /dev/null || true
+          sudo cat /proc/self/net/udp6 > /dev/null || true
+          sudo cat /proc/self/net/udplite > /dev/null || true
+          sudo cat /proc/self/net/udplite6 > /dev/null || true
+          sudo cat /proc/self/net/sockstat > /dev/null || true
+          sudo cat /proc/self/net/sockstat6 > /dev/null || true
+          sudo cat /proc/self/net/route > /dev/null || true
+          # sudo cat /proc/self/net/nf_conntrack > /dev/null || true
+          sudo cat /proc/self/net/unix > /dev/null || true
+          #
+          sudo cat /proc/sys/kernel/cap_last_cap > /dev/null || true
+        #
+      - name: capabilities_modification
+        run: |
+          printf "\n" | sudo tee -a /etc/security/capability.conf || true
+      - name: sudoers_modification
+        run: |
+          sudo cat /etc/sudoers > /dev/null || true
+          sudo touch /etc/sudoers.d/sudoers_test || true
+      - name: filesystem_fingerprint
+        run: |
+          sudo cat /etc/fstab > /dev/null || true
+          sudo cat /proc/diskstats > /dev/null || true
+          sudo cat /proc/filesystems > /dev/null || true
+          sudo cat /proc/mdstat > /dev/null || true
+          sudo cat /proc/mounts > /dev/null || true
+          sudo cat /proc/partitions > /dev/null || true
+          sudo cat /proc/swaps > /dev/null || true
+          sudo cat /proc/mounts > /dev/null || true
+          sudo cat /proc/self/mountinfo > /dev/null || true
+      - name: core_pattern_access
+        run: |
+          sudo cat /proc/sys/kernel/core_pattern > /dev/null || true
+      - name: machine_fingerprint
+        run: |
+          sudo cat /proc/ioports > /dev/null || true
+          # not working
+          sudo cat /sys/class/dmi/id/board_vendor > /dev/null || true
+          # not working
+          sudo cat /sys/class/net/lo/operstate > /dev/null || true
+      - name: package_repo_config_modification
+        run: |
+          sudo cat /etc/apt/sources.list > /dev/null || true
+          sudo touch /etc/apt/sources.list.d/test || true
+      - name: cpu_fingerprint
+        run: |
+          sudo cat /proc/cpuinfo || true
+          sudo cat /proc/self/cpuset || true
+      - name: sysrq_access
+        run: |
+          # /proc/sys/kernel/sysrq
+          # /proc/sysrq-trigger
+      - name: credentials_files_access
+        run: |
+          mkdir -p ~/.ngrok2
+          mkdir -p ~/docker
+          mkdir -p ~/.shodan
+          mkdir -p ~/.s3ql
+          #
+          printf "\n" | tee -a ~/.git-credentials || true
+          printf "\n" | tee -a ~/.key4.db || true
+          printf "\n" | tee -a ~/.npmrc || true
+          printf "\n" | tee -a ~/.logins.json || true
+          printf "\n" | tee -a ~/.s3backer_passwd || true
+          printf "\n" | tee -a ~/s3proxy.conf || true
+          printf "\n" | tee -a ~/.passwd-s3fs || true
+          printf "\n" | tee -a ~/notebook_cookie_secret || true
+          printf "\n" | tee -a ~/.ngrok2/ngrok.yml || true
+          printf "\n" | tee -a ~/.ngrok2/ngrok.yaml || true
+          printf "\n" | tee -a ~/docker/config.json || true
+          printf "\n" | tee -a ~/docker/ca.pem || true
+          printf "\n" | tee -a ~/.shodan/api_key || true
+          printf "\n" | tee -a ~/.s3ql/authinfo2 || true
+      - name: unprivileged_bpf_config_access
+        run: |
+          sudo cat /proc/sys/kernel/unprivileged_bpf_disabled || true
+      - name: java_debug_wire_proto_load
+        run: |
+          # libjdwp.so
+      - name: java_libinstrument_load
+        run: |
+          # libinstrument.so
+      - name: code_modification_through_procfs
+        run: |
+          sudo tail -1024 /proc/self/mem > /dev/null || true
+      - name: pam_config_modification
+        run: |
+          mkdir -p /etc/pam.d
+          printf "\n" | sudo tee -a /etc/pam.d/su || true
+      - name: ssl_certificate_access
+        run: |
+          sudo cat /etc/ssl/openssl.cnf > /dev/null || true
+          sudo touch /etc/ca-certificates/README > /dev/null || true
+      - name: os_fingerprint
+        run: |
+          sudo cat /proc/cmdline > /dev/null || true
+          # sudo cat /proc/config.gz > /dev/null || true
+          sudo cat /proc/devices > /dev/null || true
+          sudo cat /proc/meminfo > /dev/null || true
+          sudo cat /proc/sys/kernel/osrelease > /dev/null || true
+          sudo cat /proc/version > /dev/null || true
+          sudo cat /proc/zoneinfo > /dev/null || true
+      - name: Network 01
+        run: |
+          ping -c 5 -w 5 1.1.1.1 > /dev/null 2>&1 || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.reddit.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.tumblr.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.pinterest.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.snapchat.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.tumblr.com || true
+          ping -c 5 -w 5 www.google.com > /dev/null 2>&1 || true
+          ping -c 5 -w 5 www.uol.com.br > /dev/null 2>&1 || true
+        #
+      - name: Network 02
+        uses: ./.github/actions/test
+        #
+      - name: Network 03
+        run: |
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.pinterest.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.etsy.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.skype.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.snapchat.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.whatsapp.com || true
+        #
+      - name: Network 04
+        uses: rafaeldtinoco/list-github-env@v0.4
+        #
+      - name: Network 05
+        run: |
+          ping -c 5 -w 5 www.google.com > /dev/null 2>&1 || true
+          ping -c 5 -w 5 www.google.com > /dev/null 2>&1 || true
+          ping -c 5 -w 5 8.8.4.4 > /dev/null 2>&1 || true
+          ping -c 5 -w 5 8.8.8.8 > /dev/null 2>&1 || true
+        #
+      - name: Network 06
+        run: |
+          ping -c 5 -w 5 1.1.1.1 > /dev/null 2>&1 || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.etsy.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.google.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.linkedin.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.facebook.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.twitter.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.instagram.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.whatsapp.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.netflix.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.amazon.com || true
+          curl -s --connect-timeout 5 -m 5 -o /dev/null https://www.ebay.com || true
+          ping -c 5 -w 5 8.8.4.4 > /dev/null 2>&1 || true
+          ping -c 5 -w 5 8.8.8.8 > /dev/null 2>&1 || true
