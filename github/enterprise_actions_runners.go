@@ -137,3 +137,4 @@ func (s *EnterpriseService) RemoveRunner(ctx context.Context, enterprise string,
 
 	return s.client.Do(ctx, req, nil)
 }
+
