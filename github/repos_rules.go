@@ -458,7 +458,7 @@ func NewFilePathRestrictionRule(params *RuleFileParameters) (rule *RepositoryRul
 type Ruleset struct {
 	ID   *int64 `json:"id,omitempty"`
 	Name string `json:"name"`
-	// Possible values for Target are branch, tag
+	// Possible values for Target are branch, tag, push
 	Target *string `json:"target,omitempty"`
 	// Possible values for SourceType are: Repository, Organization
 	SourceType *string `json:"source_type,omitempty"`
