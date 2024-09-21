@@ -33,7 +33,7 @@ for dir in $MOD_DIRS; do
     cd "$dir"
     # github actions output when running in an action
     if [ -n "$GITHUB_ACTIONS" ]; then
-      "$BIN"/golangci-lint run --path-prefix "$dir" --out-format github-actions
+      "$BIN"/golangci-lint run --path-prefix "$dir" --out-format colored-line-number
     else
       "$BIN"/golangci-lint run --path-prefix "$dir"
     fi
