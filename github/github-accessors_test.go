@@ -2708,14 +2708,14 @@ func TestCheckSuite_GetID(tt *testing.T) {
 	c.GetID()
 }
 
-func TestCheckSuite_GetLatstCheckRunsCount(tt *testing.T) {
+func TestCheckSuite_GetLatestCheckRunsCount(tt *testing.T) {
 	var zeroValue int64
-	c := &CheckSuite{LatstCheckRunsCount: &zeroValue}
-	c.GetLatstCheckRunsCount()
+	c := &CheckSuite{LatestCheckRunsCount: &zeroValue}
+	c.GetLatestCheckRunsCount()
 	c = &CheckSuite{}
-	c.GetLatstCheckRunsCount()
+	c.GetLatestCheckRunsCount()
 	c = nil
-	c.GetLatstCheckRunsCount()
+	c.GetLatestCheckRunsCount()
 }
 
 func TestCheckSuite_GetNodeID(tt *testing.T) {

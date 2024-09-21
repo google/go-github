@@ -2286,12 +2286,12 @@ func (c *CheckSuite) GetID() int64 {
 	return *c.ID
 }
 
-// GetLatstCheckRunsCount returns the LatstCheckRunsCount field if it's non-nil, zero value otherwise.
-func (c *CheckSuite) GetLatstCheckRunsCount() int64 {
-	if c == nil || c.LatstCheckRunsCount == nil {
+// GetLatestCheckRunsCount returns the LatestCheckRunsCount field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetLatestCheckRunsCount() int64 {
+	if c == nil || c.LatestCheckRunsCount == nil {
 		return 0
 	}
-	return *c.LatstCheckRunsCount
+	return *c.LatestCheckRunsCount
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
