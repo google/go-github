@@ -2286,6 +2286,14 @@ func (c *CheckSuite) GetID() int64 {
 	return *c.ID
 }
 
+// GetLatestCheckRunsCount returns the LatestCheckRunsCount field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetLatestCheckRunsCount() int64 {
+	if c == nil || c.LatestCheckRunsCount == nil {
+		return 0
+	}
+	return *c.LatestCheckRunsCount
+}
+
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
 func (c *CheckSuite) GetNodeID() string {
 	if c == nil || c.NodeID == nil {
@@ -2300,6 +2308,22 @@ func (c *CheckSuite) GetRepository() *Repository {
 		return nil
 	}
 	return c.Repository
+}
+
+// GetRerequstable returns the Rerequstable field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetRerequstable() bool {
+	if c == nil || c.Rerequstable == nil {
+		return false
+	}
+	return *c.Rerequstable
+}
+
+// GetRunsRerequstable returns the RunsRerequstable field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetRunsRerequstable() bool {
+	if c == nil || c.RunsRerequstable == nil {
+		return false
+	}
+	return *c.RunsRerequstable
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
