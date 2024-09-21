@@ -888,6 +888,9 @@ func Test_CheckSuiteMarshal(t *testing.T) {
 		HeadCommit: &Commit{
 			SHA: String("s"),
 		},
+		LatestCheckRunsCount: Int64(1),
+		Rerequstable:         Bool(true),
+		RunsRerequstable:     Bool(true),
 	}
 
 	w := fmt.Sprintf(`{
@@ -949,7 +952,10 @@ func Test_CheckSuiteMarshal(t *testing.T) {
 		],
 		"head_commit": {
 			"sha": "s"
-		}
+		},
+		"latest_check_runs_count": 1,
+		"rerequestable": true,
+		"runs_rerequestable": true
 		}`, ts, ts)
 
 	testJSONMarshal(t, &c, w)
