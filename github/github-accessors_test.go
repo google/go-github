@@ -2708,6 +2708,16 @@ func TestCheckSuite_GetID(tt *testing.T) {
 	c.GetID()
 }
 
+func TestCheckSuite_GetLatstCheckRunsCount(tt *testing.T) {
+	var zeroValue int64
+	c := &CheckSuite{LatstCheckRunsCount: &zeroValue}
+	c.GetLatstCheckRunsCount()
+	c = &CheckSuite{}
+	c.GetLatstCheckRunsCount()
+	c = nil
+	c.GetLatstCheckRunsCount()
+}
+
 func TestCheckSuite_GetNodeID(tt *testing.T) {
 	var zeroValue string
 	c := &CheckSuite{NodeID: &zeroValue}
@@ -2723,6 +2733,26 @@ func TestCheckSuite_GetRepository(tt *testing.T) {
 	c.GetRepository()
 	c = nil
 	c.GetRepository()
+}
+
+func TestCheckSuite_GetRerequstable(tt *testing.T) {
+	var zeroValue bool
+	c := &CheckSuite{Rerequstable: &zeroValue}
+	c.GetRerequstable()
+	c = &CheckSuite{}
+	c.GetRerequstable()
+	c = nil
+	c.GetRerequstable()
+}
+
+func TestCheckSuite_GetRunsRerequstable(tt *testing.T) {
+	var zeroValue bool
+	c := &CheckSuite{RunsRerequstable: &zeroValue}
+	c.GetRunsRerequstable()
+	c = &CheckSuite{}
+	c.GetRunsRerequstable()
+	c = nil
+	c.GetRunsRerequstable()
 }
 
 func TestCheckSuite_GetStatus(tt *testing.T) {

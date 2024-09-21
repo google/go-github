@@ -182,22 +182,25 @@ func TestCheckRun_String(t *testing.T) {
 
 func TestCheckSuite_String(t *testing.T) {
 	v := CheckSuite{
-		ID:         Int64(0),
-		NodeID:     String(""),
-		HeadBranch: String(""),
-		HeadSHA:    String(""),
-		URL:        String(""),
-		BeforeSHA:  String(""),
-		AfterSHA:   String(""),
-		Status:     String(""),
-		Conclusion: String(""),
-		CreatedAt:  &Timestamp{},
-		UpdatedAt:  &Timestamp{},
-		App:        &App{},
-		Repository: &Repository{},
-		HeadCommit: &Commit{},
+		ID:                  Int64(0),
+		NodeID:              String(""),
+		HeadBranch:          String(""),
+		HeadSHA:             String(""),
+		URL:                 String(""),
+		BeforeSHA:           String(""),
+		AfterSHA:            String(""),
+		Status:              String(""),
+		Conclusion:          String(""),
+		CreatedAt:           &Timestamp{},
+		UpdatedAt:           &Timestamp{},
+		App:                 &App{},
+		Repository:          &Repository{},
+		HeadCommit:          &Commit{},
+		LatstCheckRunsCount: Int64(0),
+		Rerequstable:        Bool(false),
+		RunsRerequstable:    Bool(false),
 	}
-	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}}`
+	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}, LatstCheckRunsCount:0, Rerequstable:false, RunsRerequstable:false}`
 	if got := v.String(); got != want {
 		t.Errorf("CheckSuite.String = %v, want %v", got, want)
 	}
