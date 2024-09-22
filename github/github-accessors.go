@@ -4414,6 +4414,14 @@ func (c *CreateOrUpdateCustomRepoRoleOptions) GetName() string {
 	return *c.Name
 }
 
+// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+func (c *CreateOrUpdateOrgRoleOptions) GetBaseRole() string {
+	if c == nil || c.BaseRole == nil {
+		return ""
+	}
+	return *c.BaseRole
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (c *CreateOrUpdateOrgRoleOptions) GetDescription() string {
 	if c == nil || c.Description == nil {
