@@ -110,8 +110,8 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 			"name": "all_repo_read",
 			"description": "Grants read access to all repositories in the organization.",
 			"permissions": [],
-			"created_at": ` + referenceTimeStr + `,
-			"updated_at": ` + referenceTimeStr + `,
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`,
 			"source": "Predefined",
 			"base_role": "read"
 		}`)
@@ -129,10 +129,10 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 		Name:        String("all_repo_read"),
 		Description: String("Grants read access to all repositories in the organization."),
 		Permissions: []string{},
-		CreatedAt:          &Timestamp{referenceTime},
-		UpdatedAt:          &Timestamp{referenceTime},
-		Source: String("Predefined"),
-		BaseRole: String("read"),
+		CreatedAt:   &Timestamp{referenceTime},
+		UpdatedAt:   &Timestamp{referenceTime},
+		Source:      String("Predefined"),
+		BaseRole:    String("read"),
 	}
 
 	if !cmp.Equal(gotBuiltInRole, wantBuiltInRole) {
@@ -151,8 +151,8 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 				"read_organization_custom_repo_role",
 				"write_organization_custom_org_role"
 			],
-			"created_at": ` + referenceTimeStr + `,
-			"updated_at": ` + referenceTimeStr + `,
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`,
 			"source": "Organization",
 			"base_role": null
 			}`)
@@ -172,10 +172,10 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 			"read_organization_custom_repo_role",
 			"write_organization_custom_org_role",
 		},
-		CreatedAt:          &Timestamp{referenceTime},
-		UpdatedAt:          &Timestamp{referenceTime},
-		Source: String("Organization"),
-		BaseRole: nil,
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+		Source:    String("Organization"),
+		BaseRole:  nil,
 	}
 
 	if !cmp.Equal(gotCustomRole, wantCustomRole) {
