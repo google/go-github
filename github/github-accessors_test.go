@@ -5179,6 +5179,16 @@ func TestCreateOrUpdateCustomRepoRoleOptions_GetName(tt *testing.T) {
 	c.GetName()
 }
 
+func TestCreateOrUpdateOrgRoleOptions_GetBaseRole(tt *testing.T) {
+	var zeroValue string
+	c := &CreateOrUpdateOrgRoleOptions{BaseRole: &zeroValue}
+	c.GetBaseRole()
+	c = &CreateOrUpdateOrgRoleOptions{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
 func TestCreateOrUpdateOrgRoleOptions_GetDescription(tt *testing.T) {
 	var zeroValue string
 	c := &CreateOrUpdateOrgRoleOptions{Description: &zeroValue}
