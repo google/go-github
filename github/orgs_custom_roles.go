@@ -162,7 +162,7 @@ func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org stri
 // GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#assign-an-organization-role-to-a-team
 //
 //meta:operation PUT /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}
-func (s *OrganizationsService) AssignOrgRoleToTeam(ctx context.Context, org string, teamSlug string, roleID int64) (*Response, error) {
+func (s *OrganizationsService) AssignOrgRoleToTeam(ctx context.Context, org, teamSlug string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/teams/%v/%v", org, teamSlug, roleID)
 
 	req, err := s.client.NewRequest("PUT", u, nil)
