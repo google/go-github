@@ -178,13 +178,13 @@ func (s *OrganizationsService) AssignOrgRoleToTeam(ctx context.Context, org, tea
 	return resp, nil
 }
 
-// RemoveOrgRoleFromTeam removes an existing organization role assignment to a team in this organization.
+// RemoveOrgRoleFromTeam removes an existing organization role assignment from a team in this organization.
 // In order to remove organization role assignments in an organization, the authenticated user must be an organization owner.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#remove-an-organization-role-from-a-team
 //
 //meta:operation DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}
-func (s *OrganizationsService) RemoveOrgRoleFromTeam(ctx context.Context, org string, teamSlug string, roleID int64) (*Response, error) {
+func (s *OrganizationsService) RemoveOrgRoleFromTeam(ctx context.Context, org, teamSlug string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/teams/%v/%v", org, teamSlug, roleID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -206,7 +206,7 @@ func (s *OrganizationsService) RemoveOrgRoleFromTeam(ctx context.Context, org st
 // GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#assign-an-organization-role-to-a-user
 //
 //meta:operation PUT /orgs/{org}/organization-roles/users/{username}/{role_id}
-func (s *OrganizationsService) AssignOrgRoleToUser(ctx context.Context, org string, username string, roleID int64) (*Response, error) {
+func (s *OrganizationsService) AssignOrgRoleToUser(ctx context.Context, org, username string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/users/%v/%v", org, username, roleID)
 
 	req, err := s.client.NewRequest("PUT", u, nil)
@@ -222,13 +222,13 @@ func (s *OrganizationsService) AssignOrgRoleToUser(ctx context.Context, org stri
 	return resp, nil
 }
 
-// RemoveOrgRoleFromUser removes an existing organization role assignment to a user in this organization.
+// RemoveOrgRoleFromUser removes an existing organization role assignment from a user in this organization.
 // In order to remove organization role assignments in an organization, the authenticated user must be an organization owner.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#remove-an-organization-role-from-a-user
 //
 //meta:operation DELETE /orgs/{org}/organization-roles/users/{username}/{role_id}
-func (s *OrganizationsService) RemoveOrgRoleFromUser(ctx context.Context, org string, username string, roleID int64) (*Response, error) {
+func (s *OrganizationsService) RemoveOrgRoleFromUser(ctx context.Context, org, username string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/users/%v/%v", org, username, roleID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
