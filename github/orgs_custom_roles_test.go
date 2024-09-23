@@ -98,6 +98,105 @@ func TestOrganizationsService_ListRoles(t *testing.T) {
 	})
 }
 
+func TestOrganizationsService_GetOrgRole(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	// Test built-in org role
+	mux.HandleFunc("/orgs/o/organization-roles/8132", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"id": 8132,
+			"name": "all_repo_read",
+			"description": "Grants read access to all repositories in the organization.",
+			"permissions": [],
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`,
+			"source": "Predefined",
+			"base_role": "read"
+		}`)
+	})
+
+	ctx := context.Background()
+
+	gotBuiltInRole, _, err := client.Organizations.GetOrgRole(ctx, "o", 8132)
+	if err != nil {
+		t.Errorf("Organizations.GetOrgRole returned error: %v", err)
+	}
+
+	wantBuiltInRole := &CustomOrgRoles{
+		ID:          Int64(8132),
+		Name:        String("all_repo_read"),
+		Description: String("Grants read access to all repositories in the organization."),
+		Permissions: []string{},
+		CreatedAt:   &Timestamp{referenceTime},
+		UpdatedAt:   &Timestamp{referenceTime},
+		Source:      String("Predefined"),
+		BaseRole:    String("read"),
+	}
+
+	if !cmp.Equal(gotBuiltInRole, wantBuiltInRole) {
+		t.Errorf("Organizations.GetOrgRole returned %+v, want %+v", gotBuiltInRole, wantBuiltInRole)
+	}
+
+	// Test custom org role
+	mux.HandleFunc("/orgs/o/organization-roles/123456", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"id": 123456,
+			"name": "test-role",
+			"description": "test-role",
+			"permissions": [
+				"read_organization_custom_org_role",
+				"read_organization_custom_repo_role",
+				"write_organization_custom_org_role"
+			],
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`,
+			"source": "Organization",
+			"base_role": null
+			}`)
+	})
+
+	gotCustomRole, _, err := client.Organizations.GetOrgRole(ctx, "o", 123456)
+	if err != nil {
+		t.Errorf("Organizations.GetOrgRole returned error: %v", err)
+	}
+
+	wantCustomRole := &CustomOrgRoles{
+		ID:          Int64(123456),
+		Name:        String("test-role"),
+		Description: String("test-role"),
+		Permissions: []string{
+			"read_organization_custom_org_role",
+			"read_organization_custom_repo_role",
+			"write_organization_custom_org_role",
+		},
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+		Source:    String("Organization"),
+		BaseRole:  nil,
+	}
+
+	if !cmp.Equal(gotCustomRole, wantCustomRole) {
+		t.Errorf("Organizations.GetOrgRole returned %+v, want %+v", gotCustomRole, wantCustomRole)
+	}
+
+	const methodName = "GetOrgRole"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetOrgRole(ctx, "\no", -8132)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetOrgRole(ctx, "o", 8132)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestOrganizationsService_CreateCustomOrgRole(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
