@@ -311,6 +311,122 @@ func TestOrganizationsService_DeleteCustomOrgRole(t *testing.T) {
 	})
 }
 
+func TestOrganizationsService_AssignOrgRoleToTeam(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/organization-roles/teams/t/8030", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Organizations.AssignOrgRoleToTeam(ctx, "o", "t", 8030)
+	if err != nil {
+		t.Errorf("Organization.AssignOrgRoleToTeam return error: %v", err)
+	}
+	if !cmp.Equal(resp.StatusCode, http.StatusNoContent) {
+		t.Errorf("Organizations.AssignOrgRoleToTeam returned status code %+v, want %+v", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "AssignOrgRoleToTeam"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.AssignOrgRoleToTeam(ctx, "\no", "\nt", -8030)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.AssignOrgRoleToTeam(ctx, "o", "t", 8030)
+	})
+}
+
+func TestOrganizationsService_RemoveOrgRoleFromTeam(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/organization-roles/teams/t/8030", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Organizations.RemoveOrgRoleFromTeam(ctx, "o", "t", 8030)
+	if err != nil {
+		t.Errorf("Organization.RemoveOrgRoleFromTeam return error: %v", err)
+	}
+	if !cmp.Equal(resp.StatusCode, http.StatusNoContent) {
+		t.Errorf("Organizations.RemoveOrgRoleFromTeam returned status code %+v, want %+v", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "RemoveOrgRoleFromTeam"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.RemoveOrgRoleFromTeam(ctx, "\no", "\nt", -8030)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.RemoveOrgRoleFromTeam(ctx, "o", "t", 8030)
+	})
+}
+
+func TestOrganizationsService_AssignOrgRoleToUser(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/organization-roles/users/t/8030", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Organizations.AssignOrgRoleToUser(ctx, "o", "t", 8030)
+	if err != nil {
+		t.Errorf("Organization.AssignOrgRoleToUser return error: %v", err)
+	}
+	if !cmp.Equal(resp.StatusCode, http.StatusNoContent) {
+		t.Errorf("Organizations.AssignOrgRoleToUser returned status code %+v, want %+v", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "AssignOrgRoleToUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.AssignOrgRoleToUser(ctx, "\no", "\nt", -8030)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.AssignOrgRoleToUser(ctx, "o", "t", 8030)
+	})
+}
+
+func TestOrganizationsService_RemoveOrgRoleFromUser(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/organization-roles/users/t/8030", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Organizations.RemoveOrgRoleFromUser(ctx, "o", "t", 8030)
+	if err != nil {
+		t.Errorf("Organization.RemoveOrgRoleFromUser return error: %v", err)
+	}
+	if !cmp.Equal(resp.StatusCode, http.StatusNoContent) {
+		t.Errorf("Organizations.RemoveOrgRoleFromUser returned status code %+v, want %+v", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "RemoveOrgRoleFromUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.RemoveOrgRoleFromUser(ctx, "\no", "\nt", -8030)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.RemoveOrgRoleFromUser(ctx, "o", "t", 8030)
+	})
+}
+
 func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
