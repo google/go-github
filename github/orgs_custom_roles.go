@@ -88,6 +88,29 @@ func (s *OrganizationsService) ListRoles(ctx context.Context, org string) (*Orga
 	return customRepoRoles, resp, nil
 }
 
+// GetOrgRole gets an organization role in this organization.
+// In order to get organization roles in an organization, the authenticated user must be an organization owner, or have access via an organization role.
+//
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#get-an-organization-role
+//
+//meta:operation GET /orgs/{org}/organization-roles/{role_id}
+func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleID int64) (*CustomOrgRoles, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	resultingRole := new(CustomOrgRoles)
+	resp, err := s.client.Do(ctx, req, resultingRole)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return resultingRole, resp, err
+}
+
 // CreateCustomOrgRole creates a custom role in this organization.
 // In order to create custom roles in an organization, the authenticated user must be an organization owner.
 //
