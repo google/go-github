@@ -20,9 +20,6 @@ linters-settings:
     excludes:
       # duplicates errcheck
       - G104
-      # performance issue: see https://github.com/golangci/golangci-lint/issues/4039
-      # and https://github.com/securego/gosec/issues/1007
-      - G602
       # int(os.Stdin.Fd())
       - G115
 issues:
