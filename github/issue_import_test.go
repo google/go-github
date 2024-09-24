@@ -74,7 +74,7 @@ func TestIssueImportService_Create(t *testing.T) {
 	})
 }
 
-func TestIssueImportService_Create_defered(t *testing.T) {
+func TestIssueImportService_Create_deferred(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 

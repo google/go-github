@@ -86,11 +86,11 @@ func (s *UsersService) DeleteEmails(ctx context.Context, emails []string) (*Resp
 func (s *UsersService) SetEmailVisibility(ctx context.Context, visibility string) ([]*UserEmail, *Response, error) {
 	u := "user/email/visibility"
 
-	updateVisiblilityReq := &UserEmail{
+	updateVisibilityReq := &UserEmail{
 		Visibility: &visibility,
 	}
 
-	req, err := s.client.NewRequest("PATCH", u, updateVisiblilityReq)
+	req, err := s.client.NewRequest("PATCH", u, updateVisibilityReq)
 	if err != nil {
 		return nil, nil, err
 	}
