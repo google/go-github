@@ -544,7 +544,7 @@ func TestAppsService_CreateInstallationTokenListReposWithNoOptions(t *testing.T)
 	})
 }
 
-func TestAppsService_CreateAttachement(t *testing.T) {
+func TestAppsService_CreateAttachment(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
