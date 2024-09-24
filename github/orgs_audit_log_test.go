@@ -15,8 +15,7 @@ import (
 )
 
 func TestOrganizationService_GetAuditLog(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/audit-log", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

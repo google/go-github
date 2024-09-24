@@ -333,8 +333,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rules/branches/branch", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -394,8 +393,7 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRulesForBranchEmptyUpdateRule(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rules/branches/branch", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -433,8 +431,7 @@ func TestRepositoriesService_GetRulesForBranchEmptyUpdateRule(t *testing.T) {
 }
 
 func TestRepositoriesService_GetAllRulesets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -494,8 +491,7 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateRuleset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -540,8 +536,7 @@ func TestRepositoriesService_CreateRuleset(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRuleset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -583,8 +578,7 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	rs := &Ruleset{
 		Name:        "ruleset",
@@ -635,8 +629,7 @@ func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateRuleset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -682,8 +675,7 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteRuleset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

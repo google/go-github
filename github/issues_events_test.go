@@ -15,8 +15,7 @@ import (
 )
 
 func TestIssuesService_ListIssueEvents(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/events", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -56,8 +55,7 @@ func TestIssuesService_ListIssueEvents(t *testing.T) {
 }
 
 func TestIssuesService_ListRepositoryEvents(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/events", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -96,8 +94,7 @@ func TestIssuesService_ListRepositoryEvents(t *testing.T) {
 }
 
 func TestIssuesService_GetEvent(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/events/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

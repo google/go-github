@@ -10,8 +10,7 @@ import (
 )
 
 func TestAdminService_GetAdminStats(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprise/stats/all", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

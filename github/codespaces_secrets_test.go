@@ -77,8 +77,7 @@ func TestCodespacesService_ListSecrets(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -175,8 +174,7 @@ func TestCodespacesService_GetSecret(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -273,8 +271,7 @@ func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -358,8 +355,7 @@ func TestCodespacesService_DeleteSecret(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -442,8 +438,7 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -519,8 +514,7 @@ func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -604,8 +598,7 @@ func TestCodespacesService_SetSelectedReposForSecret(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -670,8 +663,7 @@ func TestCodespacesService_AddSelectedReposForSecret(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -736,8 +728,7 @@ func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -762,8 +753,7 @@ func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
 }
 
 // func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
-// 	client, mux, _, teardown := setup()
-// 	defer teardown()
+// 	client, mux, _ := setup()
 
 // 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 // 		testMethod(t, r, "GET")

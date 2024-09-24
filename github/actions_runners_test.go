@@ -17,8 +17,7 @@ import (
 )
 
 func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners/downloads", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -58,8 +57,7 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 }
 
 func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
 
@@ -102,8 +100,7 @@ func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
 }
 
 func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
 
@@ -146,8 +143,7 @@ func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
 }
 
 func TestActionsService_CreateRegistrationToken(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners/registration-token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -183,8 +179,7 @@ func TestActionsService_CreateRegistrationToken(t *testing.T) {
 }
 
 func TestActionsService_ListRunners(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -228,8 +223,7 @@ func TestActionsService_ListRunners(t *testing.T) {
 }
 
 func TestActionsService_GetRunner(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners/23", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -268,8 +262,7 @@ func TestActionsService_GetRunner(t *testing.T) {
 }
 
 func TestActionsService_CreateRemoveToken(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners/remove-token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -303,8 +296,7 @@ func TestActionsService_CreateRemoveToken(t *testing.T) {
 }
 
 func TestActionsService_RemoveRunner(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -328,8 +320,7 @@ func TestActionsService_RemoveRunner(t *testing.T) {
 }
 
 func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners/downloads", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -369,8 +360,7 @@ func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T)
 }
 
 func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners/registration-token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -406,8 +396,7 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 }
 
 func TestActionsService_ListOrganizationRunners(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -451,8 +440,7 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 }
 
 func TestActionsService_GetOrganizationRunner(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners/23", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -491,8 +479,7 @@ func TestActionsService_GetOrganizationRunner(t *testing.T) {
 }
 
 func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners/remove-token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -526,8 +513,7 @@ func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
 }
 
 func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

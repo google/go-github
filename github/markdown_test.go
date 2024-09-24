@@ -16,8 +16,7 @@ import (
 )
 
 func TestMarkdownService_Markdown(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &markdownRenderRequest{
 		Text:    String("# text #"),

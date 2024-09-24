@@ -16,8 +16,7 @@ import (
 )
 
 func TestActivityService_ListWatchers(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/subscribers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -55,8 +54,7 @@ func TestActivityService_ListWatchers(t *testing.T) {
 }
 
 func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/subscriptions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -93,8 +91,7 @@ func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
 }
 
 func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/subscriptions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -117,8 +114,7 @@ func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 }
 
 func TestActivityService_GetRepositorySubscription_true(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -152,8 +148,7 @@ func TestActivityService_GetRepositorySubscription_true(t *testing.T) {
 }
 
 func TestActivityService_GetRepositorySubscription_false(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -173,8 +168,7 @@ func TestActivityService_GetRepositorySubscription_false(t *testing.T) {
 }
 
 func TestActivityService_GetRepositorySubscription_error(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -189,8 +183,7 @@ func TestActivityService_GetRepositorySubscription_error(t *testing.T) {
 }
 
 func TestActivityService_SetRepositorySubscription(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Subscription{Subscribed: Bool(true)}
 
@@ -233,8 +226,7 @@ func TestActivityService_SetRepositorySubscription(t *testing.T) {
 }
 
 func TestActivityService_DeleteRepositorySubscription(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

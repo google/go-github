@@ -16,8 +16,7 @@ import (
 )
 
 func TestEnterpriseService_GetCodeSecurityAndAnalysis(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/code_security_and_analysis", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -67,8 +66,7 @@ func TestEnterpriseService_GetCodeSecurityAndAnalysis(t *testing.T) {
 }
 
 func TestEnterpriseService_UpdateCodeSecurityAndAnalysis(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &EnterpriseSecurityAnalysisSettings{
 		AdvancedSecurityEnabledForNewRepositories:             Bool(true),
@@ -108,8 +106,7 @@ func TestEnterpriseService_UpdateCodeSecurityAndAnalysis(t *testing.T) {
 }
 
 func TestEnterpriseService_EnableAdvancedSecurity(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/advanced_security/enable_all", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

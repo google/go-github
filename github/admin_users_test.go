@@ -17,8 +17,7 @@ import (
 )
 
 func TestAdminUsers_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
 		v := new(CreateUserRequest)
@@ -63,8 +62,7 @@ func TestAdminUsers_Create(t *testing.T) {
 }
 
 func TestAdminUsers_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/github", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -88,8 +86,7 @@ func TestAdminUsers_Delete(t *testing.T) {
 }
 
 func TestUserImpersonation_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -160,8 +157,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 }
 
 func TestUserImpersonation_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

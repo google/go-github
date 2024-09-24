@@ -145,8 +145,7 @@ func TestUser_Marshal(t *testing.T) {
 }
 
 func TestUsersService_Get_authenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -180,8 +179,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_Get_specifiedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -201,8 +199,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_Get_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Users.Get(ctx, "%")
@@ -210,8 +207,7 @@ func TestUsersService_Get_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_GetByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -245,8 +241,7 @@ func TestUsersService_GetByID(t *testing.T) {
 }
 
 func TestUsersService_Edit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &User{Name: String("n")}
 
@@ -284,8 +279,7 @@ func TestUsersService_Edit(t *testing.T) {
 }
 
 func TestUsersService_GetHovercard(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/hovercard", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -321,8 +315,7 @@ func TestUsersService_GetHovercard(t *testing.T) {
 }
 
 func TestUsersService_ListAll(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -353,8 +346,7 @@ func TestUsersService_ListAll(t *testing.T) {
 }
 
 func TestUsersService_ListInvitations(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/repository_invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -383,8 +375,7 @@ func TestUsersService_ListInvitations(t *testing.T) {
 }
 
 func TestUsersService_ListInvitations_withOptions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/repository_invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -402,8 +393,7 @@ func TestUsersService_ListInvitations_withOptions(t *testing.T) {
 }
 
 func TestUsersService_AcceptInvitation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/repository_invitations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -427,8 +417,7 @@ func TestUsersService_AcceptInvitation(t *testing.T) {
 }
 
 func TestUsersService_DeclineInvitation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/repository_invitations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

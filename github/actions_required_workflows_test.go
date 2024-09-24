@@ -16,8 +16,8 @@ import (
 )
 
 func TestActionsService_ListOrgRequiredWorkflows(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
@@ -80,8 +80,8 @@ func TestActionsService_ListOrgRequiredWorkflows(t *testing.T) {
 }
 
 func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
@@ -145,8 +145,8 @@ func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_GetRequiredWorkflowByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
@@ -195,8 +195,8 @@ func TestActionsService_GetRequiredWorkflowByID(t *testing.T) {
 }
 
 func TestActionsService_UpdateRequiredWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Content-Type", "application/json")
@@ -262,8 +262,8 @@ func TestActionsService_UpdateRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_DeleteRequiredWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
@@ -287,8 +287,8 @@ func TestActionsService_DeleteRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_ListRequiredWorkflowSelectedRepos(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
@@ -333,8 +333,8 @@ func TestActionsService_ListRequiredWorkflowSelectedRepos(t *testing.T) {
 }
 
 func TestActionsService_SetRequiredWorkflowSelectedRepos(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
@@ -360,8 +360,8 @@ func TestActionsService_SetRequiredWorkflowSelectedRepos(t *testing.T) {
 }
 
 func TestActionsService_AddRepoToRequiredWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories/32", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		w.WriteHeader(http.StatusNoContent)
@@ -385,8 +385,8 @@ func TestActionsService_AddRepoToRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_RemoveRepoFromRequiredWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories/32", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
@@ -410,8 +410,8 @@ func TestActionsService_RemoveRepoFromRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_ListRepoRequiredWorkflows(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/actions/required_workflows", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})

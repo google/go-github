@@ -16,8 +16,7 @@ import (
 )
 
 func TestOrganizationsService_ListRoles(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -99,8 +98,7 @@ func TestOrganizationsService_ListRoles(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrgRole(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	// Test built-in org role
 	mux.HandleFunc("/orgs/o/organization-roles/8132", func(w http.ResponseWriter, r *http.Request) {
@@ -198,8 +196,7 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateCustomOrgRole(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -240,8 +237,7 @@ func TestOrganizationsService_CreateCustomOrgRole(t *testing.T) {
 }
 
 func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/8030", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -281,8 +277,7 @@ func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
 }
 
 func TestOrganizationsService_DeleteCustomOrgRole(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/8030", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -312,8 +307,7 @@ func TestOrganizationsService_DeleteCustomOrgRole(t *testing.T) {
 }
 
 func TestOrganizationsService_AssignOrgRoleToTeam(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/teams/t/8030", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -341,8 +335,7 @@ func TestOrganizationsService_AssignOrgRoleToTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveOrgRoleFromTeam(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/teams/t/8030", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -370,8 +363,7 @@ func TestOrganizationsService_RemoveOrgRoleFromTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_AssignOrgRoleToUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/users/t/8030", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -399,8 +391,7 @@ func TestOrganizationsService_AssignOrgRoleToUser(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveOrgRoleFromUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/users/t/8030", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -428,8 +419,7 @@ func TestOrganizationsService_RemoveOrgRoleFromUser(t *testing.T) {
 }
 
 func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/custom-repository-roles", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -509,8 +499,7 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/custom-repository-roles", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -552,8 +541,7 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 }
 
 func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/custom-repository-roles/8030", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -593,8 +581,7 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 }
 
 func TestOrganizationsService_DeleteCustomRepoRole(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/custom-repository-roles/8030", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -620,8 +607,7 @@ func TestOrganizationsService_DeleteCustomRepoRole(t *testing.T) {
 }
 
 func TestOrganizationsService_ListTeamsAssignedToOrgRole(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/1729/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -655,8 +641,7 @@ func TestOrganizationsService_ListTeamsAssignedToOrgRole(t *testing.T) {
 }
 
 func TestOrganizationsService_ListUsersAssignedToOrgRole(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/1729/users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

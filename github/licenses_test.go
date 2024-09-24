@@ -109,8 +109,7 @@ func TestLicense_Marshal(t *testing.T) {
 }
 
 func TestLicensesService_List(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/licenses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -145,8 +144,7 @@ func TestLicensesService_List(t *testing.T) {
 }
 
 func TestLicensesService_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/licenses/mit", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -180,8 +178,7 @@ func TestLicensesService_Get(t *testing.T) {
 }
 
 func TestLicensesService_Get_invalidTemplate(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Licenses.Get(ctx, "%")

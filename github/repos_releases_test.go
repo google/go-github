@@ -20,8 +20,7 @@ import (
 )
 
 func TestRepositoriesService_ListReleases(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -56,8 +55,7 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 }
 
 func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/generate-notes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -97,8 +95,7 @@ func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -132,8 +129,7 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_GetLatestRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/latest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -167,8 +163,7 @@ func TestRepositoriesService_GetLatestRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/tags/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -202,8 +197,7 @@ func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &RepositoryRelease{
 		Name:                   String("v1.0"),
@@ -267,8 +261,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_EditRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &RepositoryRelease{
 		Name:                   String("n"),
@@ -330,8 +323,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -355,8 +347,7 @@ func TestRepositoriesService_DeleteRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -391,8 +382,7 @@ func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
 }
 
 func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -425,8 +415,7 @@ func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -458,8 +447,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -479,8 +467,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -513,8 +500,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -543,8 +529,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -570,8 +555,7 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 }
 
 func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &ReleaseAsset{Name: String("n")}
 
@@ -612,8 +596,7 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -692,8 +675,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		},
 	}
 
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	for key, test := range uploadTests {
 		releaseEndpoint := fmt.Sprintf("/repos/o/r/releases/%d/assets", key)

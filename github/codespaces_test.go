@@ -16,8 +16,7 @@ import (
 )
 
 func TestCodespacesService_ListInRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/owner/repo/codespaces", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -101,8 +100,7 @@ func TestCodespacesService_ListInRepo(t *testing.T) {
 }
 
 func TestCodespacesService_List(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/codespaces", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -144,8 +142,8 @@ func TestCodespacesService_List(t *testing.T) {
 }
 
 func TestCodespacesService_CreateInRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/owner/repo/codespaces", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
@@ -190,8 +188,8 @@ func TestCodespacesService_CreateInRepo(t *testing.T) {
 }
 
 func TestCodespacesService_Start(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/user/codespaces/codespace_1/start", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{"id":1, "repository": {"id": 1296269}}`)
@@ -228,8 +226,8 @@ func TestCodespacesService_Start(t *testing.T) {
 }
 
 func TestCodespacesService_Stop(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/user/codespaces/codespace_1/stop", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{"id":1, "repository": {"id": 1296269}}`)
@@ -266,8 +264,7 @@ func TestCodespacesService_Stop(t *testing.T) {
 }
 
 func TestCodespacesService_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/codespaces/codespace_1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

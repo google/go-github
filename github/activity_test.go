@@ -14,8 +14,7 @@ import (
 )
 
 func TestActivityService_List(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/feeds", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

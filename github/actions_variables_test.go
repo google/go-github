@@ -16,8 +16,7 @@ import (
 )
 
 func TestActionsService_ListRepoVariables(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -59,8 +58,7 @@ func TestActionsService_ListRepoVariables(t *testing.T) {
 }
 
 func TestActionsService_ListRepoOrgVariables(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/organization-variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -102,8 +100,7 @@ func TestActionsService_ListRepoOrgVariables(t *testing.T) {
 }
 
 func TestActionsService_GetRepoVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -142,8 +139,7 @@ func TestActionsService_GetRepoVariable(t *testing.T) {
 }
 
 func TestActionsService_CreateRepoVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -174,8 +170,7 @@ func TestActionsService_CreateRepoVariable(t *testing.T) {
 }
 
 func TestActionsService_UpdateRepoVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -206,8 +201,7 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 }
 
 func TestActionsService_DeleteRepoVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -231,8 +225,7 @@ func TestActionsService_DeleteRepoVariable(t *testing.T) {
 }
 
 func TestActionsService_ListOrgVariables(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -275,8 +268,7 @@ func TestActionsService_ListOrgVariables(t *testing.T) {
 }
 
 func TestActionsService_GetOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -317,8 +309,7 @@ func TestActionsService_GetOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_CreateOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -351,8 +342,7 @@ func TestActionsService_CreateOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_UpdateOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -385,8 +375,7 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -426,8 +415,7 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_SetSelectedReposForOrgSVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -453,8 +441,7 @@ func TestActionsService_SetSelectedReposForOrgSVariable(t *testing.T) {
 }
 
 func TestActionsService_AddSelectedRepoToOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -479,8 +466,7 @@ func TestActionsService_AddSelectedRepoToOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_RemoveSelectedRepoFromOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -505,8 +491,7 @@ func TestActionsService_RemoveSelectedRepoFromOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_DeleteOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -530,8 +515,7 @@ func TestActionsService_DeleteOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_ListEnvVariables(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/usr/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -573,8 +557,7 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 }
 
 func TestActionsService_GetEnvVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -613,8 +596,7 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 }
 
 func TestActionsService_CreateEnvVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/usr/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -645,8 +627,7 @@ func TestActionsService_CreateEnvVariable(t *testing.T) {
 }
 
 func TestActionsService_UpdateEnvVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -677,8 +658,7 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 }
 
 func TestActionsService_DeleteEnvVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

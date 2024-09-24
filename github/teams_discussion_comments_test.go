@@ -35,8 +35,7 @@ func tdcEndpointBySlug(org, slug, discussionNumber, commentNumber string) string
 }
 
 func TestTeamsService_ListComments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	handleFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -176,8 +175,7 @@ func TestTeamsService_ListComments(t *testing.T) {
 }
 
 func TestTeamsService_GetComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -240,8 +238,7 @@ func TestTeamsService_GetComment(t *testing.T) {
 }
 
 func TestTeamsService_CreateComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := DiscussionComment{Body: String("c")}
 
@@ -313,8 +310,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 }
 
 func TestTeamsService_EditComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := DiscussionComment{Body: String("e")}
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
@@ -385,8 +381,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 }
 
 func TestTeamsService_DeleteComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

@@ -18,8 +18,7 @@ import (
 )
 
 func TestRepositoriesService_ListCommits(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	// given
 	mux.HandleFunc("/repos/o/r/commits", func(w http.ResponseWriter, r *http.Request) {
@@ -69,8 +68,7 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -160,8 +158,7 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommitRaw_diff(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	const rawStr = "@@diff content"
 
@@ -197,8 +194,7 @@ func TestRepositoriesService_GetCommitRaw_diff(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommitRaw_patch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	const rawStr = "@@patch content"
 
@@ -220,8 +216,7 @@ func TestRepositoriesService_GetCommitRaw_patch(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommitRaw_invalid(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.GetCommitRaw(ctx, "o", "r", "s", RawOptions{100})
@@ -234,8 +229,8 @@ func TestRepositoriesService_GetCommitRaw_invalid(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	const sha1 = "01234abcde"
 
 	mux.HandleFunc("/repos/o/r/commits/master", func(w http.ResponseWriter, r *http.Request) {
@@ -290,8 +285,8 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 }
 
 func TestRepositoriesService_NonAlphabetCharacter_GetCommitSHA1(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	const sha1 = "01234abcde"
 
 	mux.HandleFunc("/repos/o/r/commits/master%20hash", func(w http.ResponseWriter, r *http.Request) {
@@ -330,8 +325,8 @@ func TestRepositoriesService_NonAlphabetCharacter_GetCommitSHA1(t *testing.T) {
 }
 
 func TestRepositoriesService_TrailingPercent_GetCommitSHA1(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	const sha1 = "01234abcde"
 
 	mux.HandleFunc("/repos/o/r/commits/comm%", func(w http.ResponseWriter, r *http.Request) {
@@ -380,7 +375,7 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 	}
 
 	for _, sample := range testCases {
-		client, mux, _, teardown := setup()
+		client, mux, _ := setup(t)
 
 		base := sample.base
 		head := sample.head
@@ -499,8 +494,6 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 			}
 			return resp, err
 		})
-
-		teardown()
 	}
 }
 
@@ -515,7 +508,7 @@ func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
 	}
 
 	for _, sample := range testCases {
-		client, mux, _, teardown := setup()
+		client, mux, _ := setup(t)
 
 		base := sample.base
 		head := sample.head
@@ -551,8 +544,6 @@ func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
 			}
 			return resp, err
 		})
-
-		teardown()
 	}
 }
 
@@ -567,7 +558,7 @@ func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
 	}
 
 	for _, sample := range testCases {
-		client, mux, _, teardown := setup()
+		client, mux, _ := setup(t)
 
 		base := sample.base
 		head := sample.head
@@ -589,8 +580,6 @@ func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
 		if got != want {
 			t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
 		}
-
-		teardown()
 	}
 }
 
@@ -607,7 +596,7 @@ func TestRepositoriesService_CompareCommitsRaw_invalid(t *testing.T) {
 	}
 
 	for _, sample := range testCases {
-		client, _, _, teardown := setup()
+		client, _, _ := setup(t)
 		_, _, err := client.Repositories.CompareCommitsRaw(ctx, "o", "r", sample.base, sample.head, RawOptions{100})
 		if err == nil {
 			t.Fatal("Repositories.GetCommitRaw should return error")
@@ -615,13 +604,11 @@ func TestRepositoriesService_CompareCommitsRaw_invalid(t *testing.T) {
 		if !strings.Contains(err.Error(), "unsupported raw type") {
 			t.Error("Repositories.GetCommitRaw should return unsupported raw type error")
 		}
-		teardown()
 	}
 }
 
 func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/s/branches-where-head", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

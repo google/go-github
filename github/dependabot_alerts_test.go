@@ -15,8 +15,7 @@ import (
 )
 
 func TestDependabotService_ListRepoAlerts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -55,8 +54,7 @@ func TestDependabotService_ListRepoAlerts(t *testing.T) {
 }
 
 func TestDependabotService_GetRepoAlert(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/alerts/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -93,8 +91,7 @@ func TestDependabotService_GetRepoAlert(t *testing.T) {
 }
 
 func TestDependabotService_ListOrgAlerts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -133,8 +130,7 @@ func TestDependabotService_ListOrgAlerts(t *testing.T) {
 }
 
 func TestDependabotService_UpdateAlert(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	state := String("dismissed")
 	dismissedReason := String("no_bandwidth")

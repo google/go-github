@@ -15,8 +15,7 @@ import (
 )
 
 func TestMarketplaceService_ListPlans(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/marketplace_listing/plans", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -51,8 +50,7 @@ func TestMarketplaceService_ListPlans(t *testing.T) {
 }
 
 func TestMarketplaceService_Stubbed_ListPlans(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/marketplace_listing/stubbed/plans", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -74,8 +72,7 @@ func TestMarketplaceService_Stubbed_ListPlans(t *testing.T) {
 }
 
 func TestMarketplaceService_ListPlanAccountsForPlan(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/marketplace_listing/plans/1/accounts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -106,8 +103,7 @@ func TestMarketplaceService_ListPlanAccountsForPlan(t *testing.T) {
 }
 
 func TestMarketplaceService_Stubbed_ListPlanAccountsForPlan(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/marketplace_listing/stubbed/plans/1/accounts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -129,8 +125,7 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForPlan(t *testing.T) {
 }
 
 func TestMarketplaceService_GetPlanAccountForAccount(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/marketplace_listing/accounts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -160,8 +155,7 @@ func TestMarketplaceService_GetPlanAccountForAccount(t *testing.T) {
 }
 
 func TestMarketplaceService_Stubbed_GetPlanAccountForAccount(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/marketplace_listing/stubbed/accounts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -182,8 +176,7 @@ func TestMarketplaceService_Stubbed_GetPlanAccountForAccount(t *testing.T) {
 }
 
 func TestMarketplaceService_ListMarketplacePurchasesForUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/marketplace_purchases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -214,8 +207,7 @@ func TestMarketplaceService_ListMarketplacePurchasesForUser(t *testing.T) {
 }
 
 func TestMarketplaceService_Stubbed_ListMarketplacePurchasesForUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/marketplace_purchases/stubbed", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

@@ -16,8 +16,7 @@ import (
 )
 
 func TestAppsService_ListRepos(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{
 		mediaTypeTopicsPreview,
@@ -57,8 +56,7 @@ func TestAppsService_ListRepos(t *testing.T) {
 }
 
 func TestAppsService_ListUserRepos(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{
 		mediaTypeTopicsPreview,
@@ -103,8 +101,7 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 }
 
 func TestAppsService_AddRepository(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -133,8 +130,7 @@ func TestAppsService_AddRepository(t *testing.T) {
 }
 
 func TestAppsService_RemoveRepository(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -154,8 +150,7 @@ func TestAppsService_RemoveRepository(t *testing.T) {
 }
 
 func TestAppsService_RevokeInstallationToken(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/installation/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

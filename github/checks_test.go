@@ -16,8 +16,7 @@ import (
 )
 
 func TestChecksService_GetCheckRun(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -66,8 +65,7 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 }
 
 func TestChecksService_GetCheckSuite(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -115,8 +113,7 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 }
 
 func TestChecksService_CreateCheckRun(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -182,8 +179,7 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 }
 
 func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1/annotations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -196,7 +192,7 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		                           "start_line": 2,
 		                           "end_line": 2,
 		                           "start_column": 1,
-		                           "end_column": 5,									
+		                           "end_column": 5,
 		                           "annotation_level": "warning",
 		                           "message": "Check your spelling for 'banaas'.",
                                            "title": "Spell check",
@@ -242,8 +238,7 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 }
 
 func TestChecksService_UpdateCheckRun(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -251,7 +246,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 		fmt.Fprint(w, `{
 			"id": 1,
                         "name":"testUpdateCheckRun",
-			"status": "completed",            
+			"status": "completed",
 			"conclusion": "neutral",
 			"started_at": "2018-05-04T01:14:52Z",
 			"completed_at": "2018-05-04T01:14:52Z",
@@ -308,8 +303,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 }
 
 func TestChecksService_ListCheckRunsForRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/master/check-runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -380,8 +374,7 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 }
 
 func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/1/check-runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -447,8 +440,7 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 }
 
 func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/master/check-suites", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -513,8 +505,7 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 }
 
 func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/preferences", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -560,8 +551,7 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 }
 
 func TestChecksService_CreateCheckSuite(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -616,8 +606,7 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 }
 
 func TestChecksService_ReRequestCheckSuite(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/1/rerequest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -1726,8 +1715,7 @@ func TestCheckSuitePreferenceResults_Marshal(t *testing.T) {
 }
 
 func TestChecksService_ReRequestCheckRun(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1/rerequest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

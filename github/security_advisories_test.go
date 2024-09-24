@@ -17,8 +17,7 @@ import (
 )
 
 func TestSecurityAdvisoriesService_RequestCVE(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id_ok/cve", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -57,8 +56,7 @@ func TestSecurityAdvisoriesService_RequestCVE(t *testing.T) {
 }
 
 func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -292,8 +290,7 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
 }
 
 func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -514,8 +511,7 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testin
 }
 
 func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "%", "r", "ghsa_id")
@@ -523,8 +519,7 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_invalidOwner(t *te
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_BadRequest(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -546,8 +541,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_BadReq
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_NotFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -576,8 +570,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_NotFou
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_UnmarshalError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -602,8 +595,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_Unmars
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -654,8 +646,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *tes
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_BadRequest(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -677,8 +668,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_BadRequest(t
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_NotFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -707,8 +697,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_NotFound(t *
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_UnmarshalError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -733,8 +722,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_UnmarshalErr
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -785,8 +773,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T
 }
 
 func TestListGlobalSecurityAdvisories(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -971,8 +958,7 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 }
 
 func TestGetGlobalSecurityAdvisories(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/advisories/GHSA-xoxo-1234-xoxo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

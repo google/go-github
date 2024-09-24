@@ -34,7 +34,8 @@ const (
 // setup sets up a test HTTP server along with a github.Client that is
 // configured to talk to that test server. Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
-func setup() (client *Client, mux *http.ServeMux, serverURL string, teardown func()) {
+func setup(t *testing.T) (client *Client, mux *http.ServeMux, serverURL string) {
+	t.Helper()
 	// mux is the HTTP request multiplexer used with the test server.
 	mux = http.NewServeMux()
 
@@ -63,7 +64,9 @@ func setup() (client *Client, mux *http.ServeMux, serverURL string, teardown fun
 	client.BaseURL = url
 	client.UploadURL = url
 
-	return client, mux, server.URL, server.Close
+	t.Cleanup(server.Close)
+
+	return client, mux, server.URL
 }
 
 // openTestFile creates a new file with the given name and content for testing.
@@ -252,8 +255,7 @@ func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client 
 // Test that all error response types contain the status code.
 func testErrorResponseForStatusCode(t *testing.T, code int) {
 	t.Helper()
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -998,8 +1000,7 @@ func TestResponse_populateSinceValues_invalid(t *testing.T) {
 }
 
 func TestDo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	type foo struct {
 		A string
@@ -1023,8 +1024,7 @@ func TestDo(t *testing.T) {
 }
 
 func TestDo_nilContext(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	req, _ := client.NewRequest("GET", ".", nil)
 	_, err := client.Do(nil, req, nil)
@@ -1035,8 +1035,7 @@ func TestDo_nilContext(t *testing.T) {
 }
 
 func TestDo_httpError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Bad Request", 400)
@@ -1058,8 +1057,7 @@ func TestDo_httpError(t *testing.T) {
 // function. A redirect loop is pretty unlikely to occur within the GitHub
 // API, but does allow us to exercise the right code path.
 func TestDo_redirectLoop(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, baseURLPath, http.StatusFound)
@@ -1101,8 +1099,7 @@ func TestDo_sanitizeURL(t *testing.T) {
 }
 
 func TestDo_rateLimit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set(headerRateLimit, "60")
@@ -1206,8 +1203,7 @@ func TestDo_rateLimitCategory(t *testing.T) {
 
 // ensure rate limit is still parsed, even for error responses
 func TestDo_rateLimit_errorResponse(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set(headerRateLimit, "60")
@@ -1239,8 +1235,7 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 
 // Ensure *RateLimitError is returned when API rate limit is exceeded.
 func TestDo_rateLimit_rateLimitError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set(headerRateLimit, "60")
@@ -1279,8 +1274,7 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 
 // Ensure a network call is not made when it's known that API rate limit is still exceeded.
 func TestDo_rateLimit_noNetworkCall(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Minute).Round(time.Second) // Rate reset is a minute from now, with 1 second precision.
 
@@ -1337,8 +1331,7 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 
 // Ignore rate limit headers if the response was served from cache.
 func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Minute).Round(time.Second) // Rate reset is a minute from now, with 1 second precision.
 
@@ -1383,8 +1376,7 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 
 // Ensure sleeps until the rate limit is reset when the client is rate limited.
 func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Second)
 
@@ -1424,8 +1416,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 
 // Ensure tries to sleep until the rate limit is reset when the client is rate limited, but only once.
 func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Second)
 
@@ -1456,8 +1447,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 
 // Ensure a network call is not made when it's known that API rate limit is still exceeded.
 func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Second)
 	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
@@ -1487,8 +1477,7 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 
 // Ensure sleep is aborted when the context is cancelled.
 func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	// We use a 1 minute reset time to ensure the sleep is not completed.
 	reset := time.Now().UTC().Add(time.Minute)
@@ -1520,8 +1509,7 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 
 // Ensure sleep is aborted when the context is cancelled on initial request.
 func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Minute)
 	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
@@ -1554,8 +1542,7 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 // Ensure *AbuseRateLimitError is returned when the response indicates that
 // the client has triggered an abuse detection mechanism.
 func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1587,8 +1574,7 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 // Ensure *AbuseRateLimitError is returned when the response indicates that
 // the client has triggered an abuse detection mechanism on GitHub Enterprise.
 func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1621,8 +1607,7 @@ func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 
 // Ensure *AbuseRateLimitError.RetryAfter is parsed correctly for the Retry-After header.
 func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1674,8 +1659,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 
 // Ensure *AbuseRateLimitError.RetryAfter is parsed correctly for the x-ratelimit-reset header.
 func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	// x-ratelimit-reset value of 123 seconds into the future.
 	blockUntil := time.Now().Add(time.Duration(123) * time.Second).Unix()
@@ -1731,8 +1715,7 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 }
 
 func TestDo_noContent(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
@@ -2350,8 +2333,7 @@ func TestSetCredentialsAsHeaders(t *testing.T) {
 }
 
 func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	clientID, clientSecret := "id", "secret"
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -2421,8 +2403,7 @@ func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
 }
 
 func TestBasicAuthTransport(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	username, password, otp := "u", "p", "123456"
 
@@ -2585,8 +2566,7 @@ func TestAddOptions_QueryValues(t *testing.T) {
 }
 
 func TestBareDo_returnsOpenBody(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	expectedBody := "Hello from the other side !"
 

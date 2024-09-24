@@ -17,8 +17,7 @@ import (
 )
 
 func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/personal-access-tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -156,8 +155,7 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 }
 
 func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := ReviewPersonalAccessTokenRequestOptions{
 		Action: "a",
