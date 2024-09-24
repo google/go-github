@@ -26,8 +26,8 @@ func tdcEndpointByID(orgID, teamID, discussionNumber, commentNumber string) stri
 }
 
 // "Team Discussion Comments" endpoint, when using a team slug.
-func tdcEndpointBySlug(org, slug, dicsuccionsNumber, commentNumber string) string {
-	out := fmt.Sprintf("/orgs/%v/teams/%v/discussions/%v/comments", org, slug, dicsuccionsNumber)
+func tdcEndpointBySlug(org, slug, discussionNumber, commentNumber string) string {
+	out := fmt.Sprintf("/orgs/%v/teams/%v/discussions/%v/comments", org, slug, discussionNumber)
 	if commentNumber != "" {
 		return fmt.Sprintf("%v/%v", out, commentNumber)
 	}

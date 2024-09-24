@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// DiscussionComment represents a GitHub dicussion in a team.
+// DiscussionComment represents a GitHub discussion in a team.
 type DiscussionComment struct {
 	Author        *User      `json:"author,omitempty"`
 	Body          *string    `json:"body,omitempty"`
@@ -145,8 +145,8 @@ func (s *TeamsService) GetCommentBySlug(ctx context.Context, org, slug string, d
 // GitHub API docs: https://docs.github.com/rest/teams/discussion-comments#create-a-discussion-comment
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments
-func (s *TeamsService) CreateCommentByID(ctx context.Context, orgID, teamID int64, discsusionNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments", orgID, teamID, discsusionNumber)
+func (s *TeamsService) CreateCommentByID(ctx context.Context, orgID, teamID int64, discussionNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error) {
+	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments", orgID, teamID, discussionNumber)
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
 		return nil, nil, err

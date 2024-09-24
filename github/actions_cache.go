@@ -173,7 +173,7 @@ func (s *ActionsService) GetCacheUsageForRepo(ctx context.Context, owner, repo s
 // refreshed approximately every 5 minutes, so values returned from this endpoint may take at least 5 minutes to get updated.
 //
 // Permissions: You must authenticate using an access token with the read:org scope to use this endpoint.
-// GitHub Apps must have the organization_admistration:read permission to use this endpoint.
+// GitHub Apps must have the organization_administration:read permission to use this endpoint.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/cache#list-repositories-with-github-actions-cache-usage-for-an-organization
 //
@@ -203,7 +203,7 @@ func (s *ActionsService) ListCacheUsageByRepoForOrg(ctx context.Context, org str
 // 5 minutes, so values returned from this endpoint may take at least 5 minutes to get updated.
 //
 // Permissions: You must authenticate using an access token with the read:org scope to use this endpoint.
-// GitHub Apps must have the organization_admistration:read permission to use this endpoint.
+// GitHub Apps must have the organization_administration:read permission to use this endpoint.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/cache#get-github-actions-cache-usage-for-an-organization
 //

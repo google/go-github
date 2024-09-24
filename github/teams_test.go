@@ -1700,7 +1700,7 @@ func TestTeams_Marshal(t *testing.T) {
 			"members_count": 1,
 			"repos_count": 1
 		},
-		"ldap_dn": "l"	
+		"ldap_dn": "l"
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -1740,13 +1740,13 @@ func TestIDPGroup_Marshal(t *testing.T) {
 	u := &IDPGroup{
 		GroupID:          String("abc1"),
 		GroupName:        String("test group"),
-		GroupDescription: String("test group descripation"),
+		GroupDescription: String("test group description"),
 	}
 
 	want := `{
 		"group_id": "abc1",
 		"group_name": "test group",
-		"group_description":"test group descripation"
+		"group_description":"test group description"
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -2186,12 +2186,12 @@ func TestIDPGroupList_Marshal(t *testing.T) {
 			{
 				GroupID:          String("abc1"),
 				GroupName:        String("test group"),
-				GroupDescription: String("test group descripation"),
+				GroupDescription: String("test group description"),
 			},
 			{
 				GroupID:          String("abc2"),
 				GroupName:        String("test group2"),
-				GroupDescription: String("test group descripation2"),
+				GroupDescription: String("test group description2"),
 			},
 		},
 	}
@@ -2201,12 +2201,12 @@ func TestIDPGroupList_Marshal(t *testing.T) {
 			{
 				"group_id": "abc1",
 				"group_name": "test group",
-				"group_description": "test group descripation"
+				"group_description": "test group description"
 			},
 			{
 				"group_id": "abc2",
 				"group_name": "test group2",
-				"group_description": "test group descripation2"
+				"group_description": "test group description2"
 			}
 		]
 	}`

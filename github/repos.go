@@ -1363,7 +1363,7 @@ type BypassPullRequestAllowancesRequest struct {
 
 // DismissalRestrictions specifies which users and teams can dismiss pull request reviews.
 type DismissalRestrictions struct {
-	// The list of users who can dimiss pull request reviews.
+	// The list of users who can dismiss pull request reviews.
 	Users []*User `json:"users"`
 	// The list of teams which can dismiss pull request reviews.
 	Teams []*Team `json:"teams"`
@@ -1372,7 +1372,7 @@ type DismissalRestrictions struct {
 }
 
 // DismissalRestrictionsRequest represents the request to create/edit the
-// restriction to allows only specific users, teams or apps to dimiss pull request reviews. It is
+// restriction to allows only specific users, teams or apps to dismiss pull request reviews. It is
 // separate from DismissalRestrictions above because the request structure is
 // different from the response structure.
 // Note: Both Users and Teams must be nil, or both must be non-nil.

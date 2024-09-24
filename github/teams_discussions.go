@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// TeamDiscussion represents a GitHub dicussion in a team.
+// TeamDiscussion represents a GitHub discussion in a team.
 type TeamDiscussion struct {
 	Author        *User      `json:"author,omitempty"`
 	Body          *string    `json:"body,omitempty"`
