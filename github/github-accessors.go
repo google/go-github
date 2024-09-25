@@ -20910,6 +20910,14 @@ func (r *Rule) GetSeverity() string {
 	return *r.Severity
 }
 
+// GetRestrictedFileExtensions returns the RestrictedFileExtensions field if it's non-nil, zero value otherwise.
+func (r *RuleFileExtensionRestrictionParameters) GetRestrictedFileExtensions() []string {
+	if r == nil || r.RestrictedFileExtensions == nil {
+		return nil
+	}
+	return *r.RestrictedFileExtensions
+}
+
 // GetRestrictedFilePaths returns the RestrictedFilePaths field if it's non-nil, zero value otherwise.
 func (r *RuleFileParameters) GetRestrictedFilePaths() []string {
 	if r == nil || r.RestrictedFilePaths == nil {

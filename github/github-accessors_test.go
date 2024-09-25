@@ -24299,6 +24299,16 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 }
 
+func TestRuleFileExtensionRestrictionParameters_GetRestrictedFileExtensions(tt *testing.T) {
+	var zeroValue []string
+	r := &RuleFileExtensionRestrictionParameters{RestrictedFileExtensions: &zeroValue}
+	r.GetRestrictedFileExtensions()
+	r = &RuleFileExtensionRestrictionParameters{}
+	r.GetRestrictedFileExtensions()
+	r = nil
+	r.GetRestrictedFileExtensions()
+}
+
 func TestRuleFileParameters_GetRestrictedFilePaths(tt *testing.T) {
 	var zeroValue []string
 	r := &RuleFileParameters{RestrictedFilePaths: &zeroValue}
