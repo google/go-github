@@ -267,7 +267,7 @@ func TestActionsService_GetArtifact_notFound(t *testing.T) {
 	}
 }
 
-func TestActionsSerivice_DownloadArtifact(t *testing.T) {
+func TestActionsService_DownloadArtifact(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 

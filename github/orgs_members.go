@@ -409,7 +409,7 @@ func (s *OrganizationsService) ListOrgInvitationTeams(ctx context.Context, org, 
 	return orgInvitationTeams, resp, nil
 }
 
-// ListFailedOrgInvitations returns a list of failed inviatations.
+// ListFailedOrgInvitations returns a list of failed invitations.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/members#list-failed-organization-invitations
 //
