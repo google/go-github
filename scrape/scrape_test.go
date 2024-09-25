@@ -20,6 +20,8 @@ func setup(t *testing.T) (client *Client, mux *http.ServeMux) {
 	client = NewClient(nil)
 	client.baseURL, _ = url.Parse(server.URL + "/")
 
+	t.Cleanup(server.Close)
+
 	return client, mux
 }
 
