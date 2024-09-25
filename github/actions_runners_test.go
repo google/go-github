@@ -536,7 +536,7 @@ func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
 	ctx := context.Background()
 	_, err := client.Actions.RemoveOrganizationRunner(ctx, "o", 21)
 	if err != nil {
-		t.Errorf("Actions.RemoveOganizationRunner returned error: %v", err)
+		t.Errorf("Actions.RemoveOrganizationRunner returned error: %v", err)
 	}
 
 	const methodName = "RemoveOrganizationRunner"
