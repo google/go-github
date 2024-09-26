@@ -554,6 +554,112 @@ func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
 	})
 }
 
+func TestPendingDeployment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PendingDeployment{}, "{}")
+
+	u := &PendingDeployment{
+		Environment: &PendingDeploymentEnvironment{
+			ID:      Int64(1),
+			NodeID:  String("nid"),
+			Name:    String("n"),
+			URL:     String("u"),
+			HTMLURL: String("hu"),
+		},
+		WaitTimer:             Int64(100),
+		WaitTimerStartedAt:    &Timestamp{referenceTime},
+		CurrentUserCanApprove: Bool(false),
+		Reviewers: []*RequiredReviewer{
+			{
+				Type: String("User"),
+				Reviewer: &User{
+					Login: String("l"),
+				},
+			},
+			{
+				Type: String("Team"),
+				Reviewer: &Team{
+					Name: String("n"),
+				},
+			},
+		},
+	}
+	want := `{
+		"environment": {
+			"id": 1,
+			"node_id": "nid",
+			"name": "n",
+			"url": "u",
+			"html_url": "hu"
+		},
+		"wait_timer": 100,
+		"wait_timer_started_at": ` + referenceTimeStr + `,
+		"current_user_can_approve": false,
+		"reviewers": [
+			{
+				"type": "User",
+				"reviewer": {
+					"login": "l"
+				}
+			},
+			{
+				"type": "Team",
+				"reviewer": {
+					"name": "n"
+				}
+			}
+		]
+	}`
+	testJSONMarshal(t, u, want)
+}
+
+func TestActionsService_ReviewCustomDeploymentProtectionRule(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/9444496/deployment_protection_rule", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	request := ReviewCustomDeploymentProtectionRuleRequest{
+		EnvironmentName: "production",
+		State:           "approved",
+		Comment:         "Approve deployment",
+	}
+
+	ctx := context.Background()
+	if _, err := client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, &request); err != nil {
+		t.Errorf("ReviewCustomDeploymentProtectionRule returned error: %v", err)
+	}
+
+	const methodName = "ReviewCustomDeploymentProtectionRule"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "\n", "\n", 9444496, &request)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, &request)
+	})
+}
+
+func TestReviewCustomDeploymentProtectionRuleRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ReviewCustomDeploymentProtectionRuleRequest{}, "{}")
+
+	r := &ReviewCustomDeploymentProtectionRuleRequest{
+		EnvironmentName: "e",
+		State:           "rejected",
+		Comment:         "c",
+	}
+	want := `{
+		"environment_name": "e",
+		"state": "rejected",
+		"comment": "c"
+	}`
+	testJSONMarshal(t, r, want)
+}
+
 func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 	client, mux, _ := setup(t)
 
@@ -1273,6 +1379,124 @@ func TestActionService_PendingDeployments(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Actions.PendingDeployments(ctx, "o", "r", 399444496, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionService_GetPendingDeployments(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+				"environment": {
+					"id": 1,
+					"node_id": "nid",
+					"name": "n",
+					"url": "u",
+					"html_url": "hu"
+				},
+				"wait_timer": 0,
+				"wait_timer_started_at": `+referenceTimeStr+`,
+				"current_user_can_approve": false,
+				"reviewers": []
+			},
+			{
+				"environment": {
+					"id": 2,
+					"node_id": "nid",
+					"name": "n",
+					"url": "u",
+					"html_url": "hu"
+				},
+				"wait_timer": 13,
+				"wait_timer_started_at": `+referenceTimeStr+`,
+				"current_user_can_approve": true,
+				"reviewers": [
+					{
+						"type": "User",
+						"reviewer": {
+							"login": "l"
+						}
+					},
+					{
+						"type": "Team",
+						"reviewer": {
+							"name": "t",
+							"slug": "s"
+						}
+					}
+				]
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	deployments, _, err := client.Actions.GetPendingDeployments(ctx, "o", "r", 399444496)
+	if err != nil {
+		t.Errorf("Actions.GetPendingDeployments returned error: %v", err)
+	}
+
+	want := []*PendingDeployment{
+		{
+			Environment: &PendingDeploymentEnvironment{
+				ID:      Int64(1),
+				NodeID:  String("nid"),
+				Name:    String("n"),
+				URL:     String("u"),
+				HTMLURL: String("hu"),
+			},
+			WaitTimer:             Int64(0),
+			WaitTimerStartedAt:    &Timestamp{referenceTime},
+			CurrentUserCanApprove: Bool(false),
+			Reviewers:             []*RequiredReviewer{},
+		},
+		{
+			Environment: &PendingDeploymentEnvironment{
+				ID:      Int64(2),
+				NodeID:  String("nid"),
+				Name:    String("n"),
+				URL:     String("u"),
+				HTMLURL: String("hu"),
+			},
+			WaitTimer:             Int64(13),
+			WaitTimerStartedAt:    &Timestamp{referenceTime},
+			CurrentUserCanApprove: Bool(true),
+			Reviewers: []*RequiredReviewer{
+				{
+					Type: String("User"),
+					Reviewer: &User{
+						Login: String("l"),
+					},
+				},
+				{
+					Type: String("Team"),
+					Reviewer: &Team{
+						Name: String("t"),
+						Slug: String("s"),
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(deployments, want) {
+		t.Errorf("Actions.GetPendingDeployments returned %+v, want %+v", deployments, want)
+	}
+
+	const methodName = "GetPendingDeployments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetPendingDeployments(ctx, "\n", "\n", 399444496)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetPendingDeployments(ctx, "o", "r", 399444496)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

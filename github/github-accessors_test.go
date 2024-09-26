@@ -6927,6 +6927,109 @@ func TestDeploymentRequest_GetTransientEnvironment(tt *testing.T) {
 	d.GetTransientEnvironment()
 }
 
+func TestDeploymentReviewEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentReviewEvent{Action: &zeroValue}
+	d.GetAction()
+	d = &DeploymentReviewEvent{}
+	d.GetAction()
+	d = nil
+	d.GetAction()
+}
+
+func TestDeploymentReviewEvent_GetApprover(tt *testing.T) {
+	d := &DeploymentReviewEvent{}
+	d.GetApprover()
+	d = nil
+	d.GetApprover()
+}
+
+func TestDeploymentReviewEvent_GetComment(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentReviewEvent{Comment: &zeroValue}
+	d.GetComment()
+	d = &DeploymentReviewEvent{}
+	d.GetComment()
+	d = nil
+	d.GetComment()
+}
+
+func TestDeploymentReviewEvent_GetEnterprise(tt *testing.T) {
+	d := &DeploymentReviewEvent{}
+	d.GetEnterprise()
+	d = nil
+	d.GetEnterprise()
+}
+
+func TestDeploymentReviewEvent_GetEnvironment(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentReviewEvent{Environment: &zeroValue}
+	d.GetEnvironment()
+	d = &DeploymentReviewEvent{}
+	d.GetEnvironment()
+	d = nil
+	d.GetEnvironment()
+}
+
+func TestDeploymentReviewEvent_GetInstallation(tt *testing.T) {
+	d := &DeploymentReviewEvent{}
+	d.GetInstallation()
+	d = nil
+	d.GetInstallation()
+}
+
+func TestDeploymentReviewEvent_GetOrganization(tt *testing.T) {
+	d := &DeploymentReviewEvent{}
+	d.GetOrganization()
+	d = nil
+	d.GetOrganization()
+}
+
+func TestDeploymentReviewEvent_GetRepo(tt *testing.T) {
+	d := &DeploymentReviewEvent{}
+	d.GetRepo()
+	d = nil
+	d.GetRepo()
+}
+
+func TestDeploymentReviewEvent_GetRequester(tt *testing.T) {
+	d := &DeploymentReviewEvent{}
+	d.GetRequester()
+	d = nil
+	d.GetRequester()
+}
+
+func TestDeploymentReviewEvent_GetSender(tt *testing.T) {
+	d := &DeploymentReviewEvent{}
+	d.GetSender()
+	d = nil
+	d.GetSender()
+}
+
+func TestDeploymentReviewEvent_GetSince(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentReviewEvent{Since: &zeroValue}
+	d.GetSince()
+	d = &DeploymentReviewEvent{}
+	d.GetSince()
+	d = nil
+	d.GetSince()
+}
+
+func TestDeploymentReviewEvent_GetWorkflowJobRun(tt *testing.T) {
+	d := &DeploymentReviewEvent{}
+	d.GetWorkflowJobRun()
+	d = nil
+	d.GetWorkflowJobRun()
+}
+
+func TestDeploymentReviewEvent_GetWorkflowRun(tt *testing.T) {
+	d := &DeploymentReviewEvent{}
+	d.GetWorkflowRun()
+	d = nil
+	d.GetWorkflowRun()
+}
+
 func TestDeploymentStatus_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	d := &DeploymentStatus{CreatedAt: &zeroValue}
@@ -16874,6 +16977,93 @@ func TestPagesUpdate_GetSource(tt *testing.T) {
 	p.GetSource()
 	p = nil
 	p.GetSource()
+}
+
+func TestPendingDeployment_GetCurrentUserCanApprove(tt *testing.T) {
+	var zeroValue bool
+	p := &PendingDeployment{CurrentUserCanApprove: &zeroValue}
+	p.GetCurrentUserCanApprove()
+	p = &PendingDeployment{}
+	p.GetCurrentUserCanApprove()
+	p = nil
+	p.GetCurrentUserCanApprove()
+}
+
+func TestPendingDeployment_GetEnvironment(tt *testing.T) {
+	p := &PendingDeployment{}
+	p.GetEnvironment()
+	p = nil
+	p.GetEnvironment()
+}
+
+func TestPendingDeployment_GetWaitTimer(tt *testing.T) {
+	var zeroValue int64
+	p := &PendingDeployment{WaitTimer: &zeroValue}
+	p.GetWaitTimer()
+	p = &PendingDeployment{}
+	p.GetWaitTimer()
+	p = nil
+	p.GetWaitTimer()
+}
+
+func TestPendingDeployment_GetWaitTimerStartedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	p := &PendingDeployment{WaitTimerStartedAt: &zeroValue}
+	p.GetWaitTimerStartedAt()
+	p = &PendingDeployment{}
+	p.GetWaitTimerStartedAt()
+	p = nil
+	p.GetWaitTimerStartedAt()
+}
+
+func TestPendingDeploymentEnvironment_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	p := &PendingDeploymentEnvironment{HTMLURL: &zeroValue}
+	p.GetHTMLURL()
+	p = &PendingDeploymentEnvironment{}
+	p.GetHTMLURL()
+	p = nil
+	p.GetHTMLURL()
+}
+
+func TestPendingDeploymentEnvironment_GetID(tt *testing.T) {
+	var zeroValue int64
+	p := &PendingDeploymentEnvironment{ID: &zeroValue}
+	p.GetID()
+	p = &PendingDeploymentEnvironment{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPendingDeploymentEnvironment_GetName(tt *testing.T) {
+	var zeroValue string
+	p := &PendingDeploymentEnvironment{Name: &zeroValue}
+	p.GetName()
+	p = &PendingDeploymentEnvironment{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
+func TestPendingDeploymentEnvironment_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	p := &PendingDeploymentEnvironment{NodeID: &zeroValue}
+	p.GetNodeID()
+	p = &PendingDeploymentEnvironment{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestPendingDeploymentEnvironment_GetURL(tt *testing.T) {
+	var zeroValue string
+	p := &PendingDeploymentEnvironment{URL: &zeroValue}
+	p.GetURL()
+	p = &PendingDeploymentEnvironment{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
 }
 
 func TestPersonalAccessToken_GetAccessGrantedAt(tt *testing.T) {
@@ -29585,6 +29775,86 @@ func TestWorkflowJobEvent_GetWorkflowJob(tt *testing.T) {
 	w.GetWorkflowJob()
 	w = nil
 	w.GetWorkflowJob()
+}
+
+func TestWorkflowJobRun_GetConclusion(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJobRun{Conclusion: &zeroValue}
+	w.GetConclusion()
+	w = &WorkflowJobRun{}
+	w.GetConclusion()
+	w = nil
+	w.GetConclusion()
+}
+
+func TestWorkflowJobRun_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	w := &WorkflowJobRun{CreatedAt: &zeroValue}
+	w.GetCreatedAt()
+	w = &WorkflowJobRun{}
+	w.GetCreatedAt()
+	w = nil
+	w.GetCreatedAt()
+}
+
+func TestWorkflowJobRun_GetEnvironment(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJobRun{Environment: &zeroValue}
+	w.GetEnvironment()
+	w = &WorkflowJobRun{}
+	w.GetEnvironment()
+	w = nil
+	w.GetEnvironment()
+}
+
+func TestWorkflowJobRun_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJobRun{HTMLURL: &zeroValue}
+	w.GetHTMLURL()
+	w = &WorkflowJobRun{}
+	w.GetHTMLURL()
+	w = nil
+	w.GetHTMLURL()
+}
+
+func TestWorkflowJobRun_GetID(tt *testing.T) {
+	var zeroValue int64
+	w := &WorkflowJobRun{ID: &zeroValue}
+	w.GetID()
+	w = &WorkflowJobRun{}
+	w.GetID()
+	w = nil
+	w.GetID()
+}
+
+func TestWorkflowJobRun_GetName(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJobRun{Name: &zeroValue}
+	w.GetName()
+	w = &WorkflowJobRun{}
+	w.GetName()
+	w = nil
+	w.GetName()
+}
+
+func TestWorkflowJobRun_GetStatus(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJobRun{Status: &zeroValue}
+	w.GetStatus()
+	w = &WorkflowJobRun{}
+	w.GetStatus()
+	w = nil
+	w.GetStatus()
+}
+
+func TestWorkflowJobRun_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	w := &WorkflowJobRun{UpdatedAt: &zeroValue}
+	w.GetUpdatedAt()
+	w = &WorkflowJobRun{}
+	w.GetUpdatedAt()
+	w = nil
+	w.GetUpdatedAt()
 }
 
 func TestWorkflowRun_GetActor(tt *testing.T) {
