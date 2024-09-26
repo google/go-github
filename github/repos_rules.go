@@ -92,12 +92,12 @@ type RuleMaxFilePathLengthParameters struct {
 
 // RuleFileExtensionRestrictionParameters represents the file_extension_restriction rule parameters.
 type RuleFileExtensionRestrictionParameters struct {
-	RestrictedFileExtensions *[]string `json:"restricted_file_extensions"`
+	RestrictedFileExtensions []string `json:"restricted_file_extensions"`
 }
 
 // RuleMaxFileSizeParameters represents the max_file_size rule parameters.
 type RuleMaxFileSizeParameters struct {
-	MaxFileSize int `json:"max_file_size"`
+	MaxFileSize int64 `json:"max_file_size"`
 }
 
 // UpdateAllowsFetchAndMergeRuleParameters represents the update rule parameters.

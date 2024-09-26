@@ -329,7 +329,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 		"Valid file_extension_restriction params": {
 			data: `{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe"]}}`,
 			want: NewFileExtensionRestrictionRule(&RuleFileExtensionRestrictionParameters{
-				RestrictedFileExtensions: &[]string{".exe"},
+				RestrictedFileExtensions: []string{".exe"},
 			}),
 		},
 		"Invalid file_extension_restriction params": {
@@ -647,7 +647,7 @@ func TestRepositoriesService_CreateRulesetWithPushRules(t *testing.T) {
 				MaxFilePathLength: 255,
 			}),
 			NewFileExtensionRestrictionRule(&RuleFileExtensionRestrictionParameters{
-				RestrictedFileExtensions: &[]string{".exe"},
+				RestrictedFileExtensions: []string{".exe"},
 			}),
 			NewMaxFileSizeRule(&RuleMaxFileSizeParameters{
 				MaxFileSize: 1024,
