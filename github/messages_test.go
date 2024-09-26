@@ -301,6 +301,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "deployment_protection_rule",
 		},
 		{
+			payload:     &DeploymentReviewEvent{},
+			messageType: "deployment_review",
+		},
+		{
 			payload:     &DeploymentStatusEvent{},
 			messageType: "deployment_status",
 		},

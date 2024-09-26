@@ -225,6 +225,46 @@ type DeploymentProtectionRuleEvent struct {
 	Installation          *Installation  `json:"installation,omitempty"`
 }
 
+// DeploymentReviewEvent represents a deployment review event.
+// The Webhook event name is "deployment_review".
+//
+// GitHub API docs: https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads?#deployment_review
+type DeploymentReviewEvent struct {
+	// The action performed. Possible values are: "requested", "approved", or "rejected".
+	Action *string `json:"action,omitempty"`
+
+	// The following will be populated only if requested.
+	Requester   *User   `json:"requester,omitempty"`
+	Environment *string `json:"environment,omitempty"`
+
+	// The following will be populated only if approved or rejected.
+	Approver        *User             `json:"approver,omitempty"`
+	Comment         *string           `json:"comment,omitempty"`
+	WorkflowJobRuns []*WorkflowJobRun `json:"workflow_job_runs,omitempty"`
+
+	Enterprise     *Enterprise         `json:"enterprise,omitempty"`
+	Installation   *Installation       `json:"installation,omitempty"`
+	Organization   *Organization       `json:"organization,omitempty"`
+	Repo           *Repository         `json:"repository,omitempty"`
+	Reviewers      []*RequiredReviewer `json:"reviewers,omitempty"`
+	Sender         *User               `json:"sender,omitempty"`
+	Since          *string             `json:"since,omitempty"`
+	WorkflowJobRun *WorkflowJobRun     `json:"workflow_job_run,omitempty"`
+	WorkflowRun    *WorkflowRun        `json:"workflow_run,omitempty"`
+}
+
+// WorkflowJobRun represents a workflow_job_run in a GitHub DeploymentReviewEvent.
+type WorkflowJobRun struct {
+	Conclusion  *string    `json:"conclusion,omitempty"`
+	CreatedAt   *Timestamp `json:"created_at,omitempty"`
+	Environment *string    `json:"environment,omitempty"`
+	HTMLURL     *string    `json:"html_url,omitempty"`
+	ID          *int64     `json:"id,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	Status      *string    `json:"status,omitempty"`
+	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
+}
+
 // DeploymentStatusEvent represents a deployment status.
 // The Webhook event name is "deployment_status".
 //

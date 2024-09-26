@@ -57,6 +57,7 @@ var (
 		"dependabot_alert":               &DependabotAlertEvent{},
 		"deploy_key":                     &DeployKeyEvent{},
 		"deployment":                     &DeploymentEvent{},
+		"deployment_review":              &DeploymentReviewEvent{},
 		"deployment_status":              &DeploymentStatusEvent{},
 		"deployment_protection_rule":     &DeploymentProtectionRuleEvent{},
 		"discussion":                     &DiscussionEvent{},
