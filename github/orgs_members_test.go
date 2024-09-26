@@ -272,6 +272,32 @@ func TestOrganizationsService_RemoveMember(t *testing.T) {
 	})
 }
 
+func TestOrganizationsService_CancelInvite(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/invitations/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Organizations.CancelInvite(ctx, "o", 1)
+	if err != nil {
+		t.Errorf("Organizations.CancelInvite returned error: %v", err)
+	}
+
+	const methodName = "CancelInvite"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.CancelInvite(ctx, "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.CancelInvite(ctx, "o", 1)
+	})
+}
+
 func TestOrganizationsService_RemoveMember_invalidOrg(t *testing.T) {
 	client, _, _ := setup(t)
 
