@@ -43,80 +43,156 @@ const (
 	DeliveryIDHeader = "X-Github-Delivery"
 )
 
+type EventTyper interface {
+	EventType() EventType
+}
+
+// EventType corresponds to the  X-GitHub-Event: header for Webhooks events and payloads
+type EventType string
+
+const (
+	EventTypeBranchProtectionRule         EventType = "branch_protection_rule"
+	EventTypeCheckRun                     EventType = "check_run"
+	EventTypeCheckSuite                   EventType = "check_suite"
+	EventTypeCodeScanningAlert            EventType = "code_scanning_alert"
+	EventTypeCommitComment                EventType = "commit_comment"
+	EventTypeContentReference             EventType = "content_reference"
+	EventTypeCreate                       EventType = "create"
+	EventTypeDelete                       EventType = "delete"
+	EventTypeDependabotAlert              EventType = "dependabot_alert"
+	EventTypeDeployKey                    EventType = "deploy_key"
+	EventTypeDeployment                   EventType = "deployment"
+	EventTypeDeploymentProtectionRule     EventType = "deployment_protection_rule"
+	EventTypeDeploymentStatus             EventType = "deployment_status"
+	EventTypeDiscussion                   EventType = "discussion"
+	EventTypeDiscussionComment            EventType = "discussion_comment"
+	EventTypeFork                         EventType = "fork"
+	EventTypeGitHubAppAuthorization       EventType = "github_app_authorization"
+	EventTypeGollum                       EventType = "gollum"
+	EventTypeInstallation                 EventType = "installation"
+	EventTypeInstallationRepositories     EventType = "installation_repositories"
+	EventTypeInstallationTarget           EventType = "installation_target"
+	EventTypeIssueComment                 EventType = "issue_comment"
+	EventTypeIssues                       EventType = "issues"
+	EventTypeLabel                        EventType = "label"
+	EventTypeMarketplacePurchase          EventType = "marketplace_purchase"
+	EventTypeMember                       EventType = "member"
+	EventTypeMembership                   EventType = "membership"
+	EventTypeMergeGroup                   EventType = "merge_group"
+	EventTypeMeta                         EventType = "meta"
+	EventTypeMilestone                    EventType = "milestone"
+	EventTypeOrgBlock                     EventType = "org_block"
+	EventTypeOrganization                 EventType = "organization"
+	EventTypePackage                      EventType = "package"
+	EventTypePageBuild                    EventType = "page_build"
+	EventTypePersonalAccessTokenRequest   EventType = "personal_access_token_request"
+	EventTypePing                         EventType = "ping"
+	EventTypeProject                      EventType = "project"
+	EventTypeProjectCard                  EventType = "project_card"
+	EventTypeProjectColumn                EventType = "project_column"
+	EventTypeProjectV2                    EventType = "projects_v2"
+	EventTypeProjectV2Item                EventType = "projects_v2_item"
+	EventTypePublic                       EventType = "public"
+	EventTypePullRequest                  EventType = "pull_request"
+	EventTypePullRequestReview            EventType = "pull_request_review"
+	EventTypePullRequestReviewComment     EventType = "pull_request_review_comment"
+	EventTypePullRequestReviewThread      EventType = "pull_request_review_thread"
+	EventTypePullRequestTarget            EventType = "pull_request_target"
+	EventTypePush                         EventType = "push"
+	EventTypeRelease                      EventType = "release"
+	EventTypeRepository                   EventType = "repository"
+	EventTypeRepositoryDispatch           EventType = "repository_dispatch"
+	EventTypeRepositoryImport             EventType = "repository_import"
+	EventTypeRepositoryVulnerabilityAlert EventType = "repository_vulnerability_alert"
+	EventTypeSecretScanningAlert          EventType = "secret_scanning_alert"
+	EventTypeSecurityAdvisory             EventType = "security_advisory"
+	EventTypeSecurityAndAnalysis          EventType = "security_and_analysis"
+	EventTypeSponsorship                  EventType = "sponsorship"
+	EventTypeStar                         EventType = "star"
+	EventTypeStatus                       EventType = "status"
+	EventTypeTeam                         EventType = "team"
+	EventTypeTeamAdd                      EventType = "team_add"
+	EventTypeUser                         EventType = "user"
+	EventTypeWatch                        EventType = "watch"
+	EventTypeWorkflowDispatch             EventType = "workflow_dispatch"
+	EventTypeWorkflowJob                  EventType = "workflow_job"
+	EventTypeWorkflowRun                  EventType = "workflow_run"
+)
+
 var (
 	// eventTypeMapping maps webhooks types to their corresponding go-github struct types.
-	eventTypeMapping = map[string]interface{}{
-		"branch_protection_rule":         &BranchProtectionRuleEvent{},
-		"check_run":                      &CheckRunEvent{},
-		"check_suite":                    &CheckSuiteEvent{},
-		"code_scanning_alert":            &CodeScanningAlertEvent{},
-		"commit_comment":                 &CommitCommentEvent{},
-		"content_reference":              &ContentReferenceEvent{},
-		"create":                         &CreateEvent{},
-		"delete":                         &DeleteEvent{},
-		"dependabot_alert":               &DependabotAlertEvent{},
-		"deploy_key":                     &DeployKeyEvent{},
-		"deployment":                     &DeploymentEvent{},
-		"deployment_status":              &DeploymentStatusEvent{},
-		"deployment_protection_rule":     &DeploymentProtectionRuleEvent{},
-		"discussion":                     &DiscussionEvent{},
-		"discussion_comment":             &DiscussionCommentEvent{},
-		"fork":                           &ForkEvent{},
-		"github_app_authorization":       &GitHubAppAuthorizationEvent{},
-		"gollum":                         &GollumEvent{},
-		"installation":                   &InstallationEvent{},
-		"installation_repositories":      &InstallationRepositoriesEvent{},
-		"installation_target":            &InstallationTargetEvent{},
-		"issue_comment":                  &IssueCommentEvent{},
-		"issues":                         &IssuesEvent{},
-		"label":                          &LabelEvent{},
-		"marketplace_purchase":           &MarketplacePurchaseEvent{},
-		"member":                         &MemberEvent{},
-		"membership":                     &MembershipEvent{},
-		"merge_group":                    &MergeGroupEvent{},
-		"meta":                           &MetaEvent{},
-		"milestone":                      &MilestoneEvent{},
-		"organization":                   &OrganizationEvent{},
-		"org_block":                      &OrgBlockEvent{},
-		"package":                        &PackageEvent{},
-		"page_build":                     &PageBuildEvent{},
-		"personal_access_token_request":  &PersonalAccessTokenRequestEvent{},
-		"ping":                           &PingEvent{},
-		"project":                        &ProjectEvent{},
-		"project_card":                   &ProjectCardEvent{},
-		"project_column":                 &ProjectColumnEvent{},
-		"projects_v2":                    &ProjectV2Event{},
-		"projects_v2_item":               &ProjectV2ItemEvent{},
-		"public":                         &PublicEvent{},
-		"pull_request":                   &PullRequestEvent{},
-		"pull_request_review":            &PullRequestReviewEvent{},
-		"pull_request_review_comment":    &PullRequestReviewCommentEvent{},
-		"pull_request_review_thread":     &PullRequestReviewThreadEvent{},
-		"pull_request_target":            &PullRequestTargetEvent{},
-		"push":                           &PushEvent{},
-		"repository":                     &RepositoryEvent{},
-		"repository_dispatch":            &RepositoryDispatchEvent{},
-		"repository_import":              &RepositoryImportEvent{},
-		"repository_vulnerability_alert": &RepositoryVulnerabilityAlertEvent{},
-		"release":                        &ReleaseEvent{},
-		"secret_scanning_alert":          &SecretScanningAlertEvent{},
-		"security_advisory":              &SecurityAdvisoryEvent{},
-		"security_and_analysis":          &SecurityAndAnalysisEvent{},
-		"sponsorship":                    &SponsorshipEvent{},
-		"star":                           &StarEvent{},
-		"status":                         &StatusEvent{},
-		"team":                           &TeamEvent{},
-		"team_add":                       &TeamAddEvent{},
-		"user":                           &UserEvent{},
-		"watch":                          &WatchEvent{},
-		"workflow_dispatch":              &WorkflowDispatchEvent{},
-		"workflow_job":                   &WorkflowJobEvent{},
-		"workflow_run":                   &WorkflowRunEvent{},
+	eventTypeMapping = map[EventType]interface{}{
+		EventTypeBranchProtectionRule:         &BranchProtectionRuleEvent{},
+		EventTypeCheckRun:                     &CheckRunEvent{},
+		EventTypeCheckSuite:                   &CheckSuiteEvent{},
+		EventTypeCodeScanningAlert:            &CodeScanningAlertEvent{},
+		EventTypeCommitComment:                &CommitCommentEvent{},
+		EventTypeContentReference:             &ContentReferenceEvent{},
+		EventTypeCreate:                       &CreateEvent{},
+		EventTypeDelete:                       &DeleteEvent{},
+		EventTypeDependabotAlert:              &DependabotAlertEvent{},
+		EventTypeDeployKey:                    &DeployKeyEvent{},
+		EventTypeDeployment:                   &DeploymentEvent{},
+		EventTypeDeploymentStatus:             &DeploymentStatusEvent{},
+		EventTypeDeploymentProtectionRule:     &DeploymentProtectionRuleEvent{},
+		EventTypeDiscussion:                   &DiscussionEvent{},
+		EventTypeDiscussionComment:            &DiscussionCommentEvent{},
+		EventTypeFork:                         &ForkEvent{},
+		EventTypeGitHubAppAuthorization:       &GitHubAppAuthorizationEvent{},
+		EventTypeGollum:                       &GollumEvent{},
+		EventTypeInstallation:                 &InstallationEvent{},
+		EventTypeInstallationRepositories:     &InstallationRepositoriesEvent{},
+		EventTypeInstallationTarget:           &InstallationTargetEvent{},
+		EventTypeIssueComment:                 &IssueCommentEvent{},
+		EventTypeIssues:                       &IssuesEvent{},
+		EventTypeLabel:                        &LabelEvent{},
+		EventTypeMarketplacePurchase:          &MarketplacePurchaseEvent{},
+		EventTypeMember:                       &MemberEvent{},
+		EventTypeMembership:                   &MembershipEvent{},
+		EventTypeMergeGroup:                   &MergeGroupEvent{},
+		EventTypeMeta:                         &MetaEvent{},
+		EventTypeMilestone:                    &MilestoneEvent{},
+		EventTypeOrganization:                 &OrganizationEvent{},
+		EventTypeOrgBlock:                     &OrgBlockEvent{},
+		EventTypePackage:                      &PackageEvent{},
+		EventTypePageBuild:                    &PageBuildEvent{},
+		EventTypePersonalAccessTokenRequest:   &PersonalAccessTokenRequestEvent{},
+		EventTypePing:                         &PingEvent{},
+		EventTypeProject:                      &ProjectEvent{},
+		EventTypeProjectCard:                  &ProjectCardEvent{},
+		EventTypeProjectColumn:                &ProjectColumnEvent{},
+		EventTypeProjectV2:                    &ProjectV2Event{},
+		EventTypeProjectV2Item:                &ProjectV2ItemEvent{},
+		EventTypePublic:                       &PublicEvent{},
+		EventTypePullRequest:                  &PullRequestEvent{},
+		EventTypePullRequestReview:            &PullRequestReviewEvent{},
+		EventTypePullRequestReviewComment:     &PullRequestReviewCommentEvent{},
+		EventTypePullRequestReviewThread:      &PullRequestReviewThreadEvent{},
+		EventTypePullRequestTarget:            &PullRequestTargetEvent{},
+		EventTypePush:                         &PushEvent{},
+		EventTypeRepository:                   &RepositoryEvent{},
+		EventTypeRepositoryDispatch:           &RepositoryDispatchEvent{},
+		EventTypeRepositoryImport:             &RepositoryImportEvent{},
+		EventTypeRepositoryVulnerabilityAlert: &RepositoryVulnerabilityAlertEvent{},
+		EventTypeRelease:                      &ReleaseEvent{},
+		EventTypeSecretScanningAlert:          &SecretScanningAlertEvent{},
+		EventTypeSecurityAdvisory:             &SecurityAdvisoryEvent{},
+		EventTypeSecurityAndAnalysis:          &SecurityAndAnalysisEvent{},
+		EventTypeSponsorship:                  &SponsorshipEvent{},
+		EventTypeStar:                         &StarEvent{},
+		EventTypeStatus:                       &StatusEvent{},
+		EventTypeTeam:                         &TeamEvent{},
+		EventTypeTeamAdd:                      &TeamAddEvent{},
+		EventTypeUser:                         &UserEvent{},
+		EventTypeWatch:                        &WatchEvent{},
+		EventTypeWorkflowDispatch:             &WorkflowDispatchEvent{},
+		EventTypeWorkflowJob:                  &WorkflowJobEvent{},
+		EventTypeWorkflowRun:                  &WorkflowRunEvent{},
 	}
 	// forward mapping of event types to the string names of the structs
-	messageToTypeName = make(map[string]string, len(eventTypeMapping))
+	messageToTypeName = make(map[EventType]string, len(eventTypeMapping))
 	// Inverse map of the above
-	typeToMessageMapping = make(map[string]string, len(eventTypeMapping))
+	typeToMessageMapping = make(map[string]EventType, len(eventTypeMapping))
 )
 
 func init() {
@@ -315,7 +391,7 @@ func DeliveryID(r *http.Request) string {
 //	  }
 //	}
 func ParseWebHook(messageType string, payload []byte) (interface{}, error) {
-	eventType, ok := messageToTypeName[messageType]
+	eventType, ok := messageToTypeName[EventType(messageType)]
 	if !ok {
 		return nil, fmt.Errorf("unknown X-Github-Event in message: %v", messageType)
 	}
@@ -332,7 +408,7 @@ func ParseWebHook(messageType string, payload []byte) (interface{}, error) {
 func MessageTypes() []string {
 	types := make([]string, 0, len(eventTypeMapping))
 	for t := range eventTypeMapping {
-		types = append(types, t)
+		types = append(types, string(t))
 	}
 	sort.Strings(types)
 	return types
@@ -341,7 +417,7 @@ func MessageTypes() []string {
 // EventForType returns an empty struct matching the specified GitHub event type.
 // If messageType does not match any known event types, it returns nil.
 func EventForType(messageType string) interface{} {
-	prototype := eventTypeMapping[messageType]
+	prototype := eventTypeMapping[EventType(messageType)]
 	if prototype == nil {
 		return nil
 	}

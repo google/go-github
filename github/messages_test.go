@@ -535,7 +535,7 @@ func TestParseWebHook(t *testing.T) {
 
 func TestAllMessageTypesMapped(t *testing.T) {
 	for _, mt := range MessageTypes() {
-		if obj := EventForType(mt); obj == nil {
+		if obj := EventForType(EventType(mt)); obj == nil {
 			t.Errorf("messageMap missing message type %q", mt)
 		}
 	}
