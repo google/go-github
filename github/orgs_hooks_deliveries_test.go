@@ -15,8 +15,7 @@ import (
 )
 
 func TestOrganizationsService_ListHookDeliveries(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/hooks/1/deliveries", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -53,8 +52,7 @@ func TestOrganizationsService_ListHookDeliveries(t *testing.T) {
 }
 
 func TestOrganizationsService_ListHookDeliveries_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Organizations.ListHookDeliveries(ctx, "%", 1, nil)
@@ -62,8 +60,7 @@ func TestOrganizationsService_ListHookDeliveries_invalidOwner(t *testing.T) {
 }
 
 func TestOrganizationsService_GetHookDelivery(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/hooks/1/deliveries/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -97,8 +94,7 @@ func TestOrganizationsService_GetHookDelivery(t *testing.T) {
 }
 
 func TestOrganizationsService_GetHookDelivery_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Organizations.GetHookDelivery(ctx, "%", 1, 1)
@@ -106,8 +102,7 @@ func TestOrganizationsService_GetHookDelivery_invalidOwner(t *testing.T) {
 }
 
 func TestOrganizationsService_RedeliverHookDelivery(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/hooks/1/deliveries/1/attempts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -141,8 +136,7 @@ func TestOrganizationsService_RedeliverHookDelivery(t *testing.T) {
 }
 
 func TestOrganizationsService_RedeliverHookDelivery_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Organizations.RedeliverHookDelivery(ctx, "%", 1, 1)

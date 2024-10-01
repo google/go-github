@@ -15,8 +15,7 @@ import (
 )
 
 func TestRepositoriesService_ListForks(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -59,8 +58,7 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 }
 
 func TestRepositoriesService_ListForks_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListForks(ctx, "%", "r", nil)
@@ -68,8 +66,7 @@ func TestRepositoriesService_ListForks_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFork(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -105,8 +102,7 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -130,8 +126,7 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.CreateFork(ctx, "%", "r", nil)

@@ -18,8 +18,7 @@ import (
 )
 
 func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/29679449/runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -61,8 +60,7 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 }
 
 func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/29679449/runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -104,8 +102,7 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -145,8 +142,7 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/attempts/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -189,8 +185,7 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -218,8 +213,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -234,8 +228,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_dontFol
 }
 
 func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followRedirects(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	client, mux, serverURL := setup(t)
 
 	// Mock a redirect link, which leads to an archive link
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -272,8 +265,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followR
 }
 
 func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/3434/rerun", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -301,8 +293,7 @@ func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
 }
 
 func TestActionsService_RerunFailedJobsByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/3434/rerun-failed-jobs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -330,8 +321,7 @@ func TestActionsService_RerunFailedJobsByID(t *testing.T) {
 }
 
 func TestActionsService_RerunJobByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/jobs/3434/rerun", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -359,8 +349,7 @@ func TestActionsService_RerunJobByID(t *testing.T) {
 }
 
 func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/3434/cancel", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -388,8 +377,7 @@ func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -417,8 +405,7 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -433,8 +420,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedi
 }
 
 func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirects(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	client, mux, serverURL := setup(t)
 
 	// Mock a redirect link, which leads to an archive link
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -471,8 +457,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 }
 
 func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -520,8 +505,7 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 }
 
 func TestActionService_DeleteWorkflowRun(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -546,8 +530,7 @@ func TestActionService_DeleteWorkflowRun(t *testing.T) {
 }
 
 func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -630,8 +613,7 @@ func TestPendingDeployment_Marshal(t *testing.T) {
 }
 
 func TestActionsService_ReviewCustomDeploymentProtectionRule(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/9444496/deployment_protection_rule", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -678,8 +660,7 @@ func TestReviewCustomDeploymentProtectionRuleRequest_Marshal(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/timing", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1362,8 +1343,7 @@ func TestWorkflowRunUsage_Marshal(t *testing.T) {
 }
 
 func TestActionService_PendingDeployments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &PendingDeploymentsRequest{EnvironmentIDs: []int64{3, 4}, State: "approved", Comment: ""}
 
@@ -1406,8 +1386,7 @@ func TestActionService_PendingDeployments(t *testing.T) {
 }
 
 func TestActionService_GetPendingDeployments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

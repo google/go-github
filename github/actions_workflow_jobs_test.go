@@ -18,8 +18,7 @@ import (
 )
 
 func TestActionsService_ListWorkflowJobs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/jobs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -61,8 +60,7 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 }
 
 func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/jobs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -90,8 +88,7 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 }
 
 func TestActionsService_ListWorkflowJobsAttempt(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/attempts/1/jobs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -144,8 +141,7 @@ func TestActionsService_ListWorkflowJobsAttempt(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowJobByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/jobs/399444496", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -183,8 +179,7 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -221,8 +216,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -237,8 +231,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedi
 }
 
 func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirects(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	client, mux, serverURL := setup(t)
 
 	// Mock a redirect link, which leads to an archive link
 	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {

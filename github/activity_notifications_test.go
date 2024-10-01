@@ -17,8 +17,7 @@ import (
 )
 
 func TestActivityService_ListNotification(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -60,8 +59,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 }
 
 func TestActivityService_ListRepositoryNotifications(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -95,8 +93,7 @@ func TestActivityService_ListRepositoryNotifications(t *testing.T) {
 }
 
 func TestActivityService_MarkNotificationsRead(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -119,8 +116,7 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 }
 
 func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -148,8 +144,7 @@ func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
 }
 
 func TestActivityService_GetThread(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications/threads/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -183,8 +178,7 @@ func TestActivityService_GetThread(t *testing.T) {
 }
 
 func TestActivityService_MarkThreadRead(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications/threads/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -209,8 +203,7 @@ func TestActivityService_MarkThreadRead(t *testing.T) {
 }
 
 func TestActivityService_MarkThreadDone(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications/threads/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -235,8 +228,7 @@ func TestActivityService_MarkThreadDone(t *testing.T) {
 }
 
 func TestActivityService_GetThreadSubscription(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications/threads/1/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -270,8 +262,7 @@ func TestActivityService_GetThreadSubscription(t *testing.T) {
 }
 
 func TestActivityService_SetThreadSubscription(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Subscription{Subscribed: Bool(true)}
 
@@ -314,8 +305,7 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 }
 
 func TestActivityService_DeleteThreadSubscription(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications/threads/1/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

@@ -15,8 +15,7 @@ import (
 )
 
 func TestUsersService_Authenticated_ListPackages(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -71,8 +70,7 @@ func TestUsersService_Authenticated_ListPackages(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_ListPackages(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -127,8 +125,7 @@ func TestUsersService_specifiedUser_ListPackages(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_GetPackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -182,8 +179,7 @@ func TestUsersService_specifiedUser_GetPackage(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_GetPackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -237,8 +233,7 @@ func TestUsersService_Authenticated_GetPackage(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_DeletePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -262,8 +257,7 @@ func TestUsersService_Authenticated_DeletePackage(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_DeletePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -287,8 +281,7 @@ func TestUsersService_specifiedUser_DeletePackage(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_RestorePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -312,8 +305,7 @@ func TestUsersService_Authenticated_RestorePackage(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_RestorePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -337,8 +329,7 @@ func TestUsersService_specifiedUser_RestorePackage(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -406,8 +397,7 @@ func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -475,8 +465,7 @@ func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_PackageGetVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -541,8 +530,7 @@ func TestUsersService_Authenticated_PackageGetVersion(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_PackageGetVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -607,8 +595,7 @@ func TestUsersService_specifiedUser_PackageGetVersion(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_PackageDeleteVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -632,8 +619,7 @@ func TestUsersService_Authenticated_PackageDeleteVersion(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_PackageDeleteVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -657,8 +643,7 @@ func TestUsersService_specifiedUser_PackageDeleteVersion(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_PackageRestoreVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -682,8 +667,7 @@ func TestUsersService_Authenticated_PackageRestoreVersion(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_PackageRestoreVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

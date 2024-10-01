@@ -17,8 +17,7 @@ import (
 )
 
 func TestGitService_GetRef_singleRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/ref/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -74,8 +73,7 @@ func TestGitService_GetRef_singleRef(t *testing.T) {
 }
 
 func TestGitService_GetRef_noRefs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -110,8 +108,7 @@ func TestGitService_GetRef_noRefs(t *testing.T) {
 }
 
 func TestGitService_ListMatchingRefs_singleRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/matching-refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -172,8 +169,7 @@ func TestGitService_ListMatchingRefs_singleRef(t *testing.T) {
 }
 
 func TestGitService_ListMatchingRefs_multipleRefs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/matching-refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -237,8 +233,7 @@ func TestGitService_ListMatchingRefs_multipleRefs(t *testing.T) {
 }
 
 func TestGitService_ListMatchingRefs_noRefs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/matching-refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -272,8 +267,7 @@ func TestGitService_ListMatchingRefs_noRefs(t *testing.T) {
 }
 
 func TestGitService_ListMatchingRefs_allRefs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/matching-refs/", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -346,8 +340,7 @@ func TestGitService_ListMatchingRefs_allRefs(t *testing.T) {
 }
 
 func TestGitService_ListMatchingRefs_options(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/matching-refs/t", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -383,8 +376,7 @@ func TestGitService_ListMatchingRefs_options(t *testing.T) {
 }
 
 func TestGitService_CreateRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	args := &createRefRequest{
 		Ref: String("refs/heads/b"),
@@ -472,8 +464,7 @@ func TestGitService_CreateRef(t *testing.T) {
 }
 
 func TestGitService_UpdateRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	args := &updateRefRequest{
 		SHA:   String("aa218f56b14c9653891f9e74264a383fa43fefbd"),
@@ -553,8 +544,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 }
 
 func TestGitService_DeleteRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -583,8 +573,7 @@ func TestGitService_DeleteRef(t *testing.T) {
 }
 
 func TestGitService_GetRef_pathEscape(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/ref/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -625,8 +614,7 @@ func TestGitService_GetRef_pathEscape(t *testing.T) {
 }
 
 func TestGitService_UpdateRef_pathEscape(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	args := &updateRefRequest{
 		SHA:   String("aa218f56b14c9653891f9e74264a383fa43fefbd"),

@@ -15,8 +15,7 @@ import (
 )
 
 func TestAuthorizationsService_Check(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -52,8 +51,7 @@ func TestAuthorizationsService_Check(t *testing.T) {
 }
 
 func TestAuthorizationsService_Reset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -89,8 +87,7 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 }
 
 func TestAuthorizationsService_Revoke(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -117,8 +114,7 @@ func TestAuthorizationsService_Revoke(t *testing.T) {
 }
 
 func TestDeleteGrant(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/grant", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -144,8 +140,7 @@ func TestDeleteGrant(t *testing.T) {
 }
 
 func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -180,8 +175,7 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 }
 
 func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

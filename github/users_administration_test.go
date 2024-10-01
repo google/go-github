@@ -15,8 +15,7 @@ import (
 )
 
 func TestUsersService_PromoteSiteAdmin(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/site_admin", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -41,8 +40,7 @@ func TestUsersService_PromoteSiteAdmin(t *testing.T) {
 }
 
 func TestUsersService_DemoteSiteAdmin(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/site_admin", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -67,8 +65,7 @@ func TestUsersService_DemoteSiteAdmin(t *testing.T) {
 }
 
 func TestUsersService_Suspend(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -93,8 +90,7 @@ func TestUsersService_Suspend(t *testing.T) {
 }
 
 func TestUsersServiceReason_Suspend(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &UserSuspendOptions{Reason: String("test")}
 
@@ -118,8 +114,7 @@ func TestUsersServiceReason_Suspend(t *testing.T) {
 }
 
 func TestUsersService_Unsuspend(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

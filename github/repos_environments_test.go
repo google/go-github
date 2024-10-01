@@ -100,8 +100,7 @@ func TestCreateUpdateEnvironment_MarshalJSON(t *testing.T) {
 }
 
 func TestRepositoriesService_ListEnvironments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -140,8 +139,7 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 }
 
 func TestRepositoriesService_GetEnvironment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -175,8 +173,7 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateEnvironment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &CreateUpdateEnvironment{
 		WaitTimer: Int(30),
@@ -221,8 +218,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &CreateUpdateEnvironment{}
 	callCount := 0
@@ -257,8 +253,7 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 }
 
 func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &CreateUpdateEnvironment{
 		DeploymentBranchPolicy: &BranchPolicy{
@@ -325,8 +320,7 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteEnvironment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

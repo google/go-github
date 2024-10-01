@@ -12,8 +12,7 @@ import (
 )
 
 func TestRepositoriesService_EnableLFS(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/lfs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -38,8 +37,7 @@ func TestRepositoriesService_EnableLFS(t *testing.T) {
 }
 
 func TestRepositoriesService_DisableLFS(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/lfs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

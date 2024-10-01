@@ -17,8 +17,7 @@ import (
 )
 
 func TestRepositoriesService_ListHookDeliveries(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1/deliveries", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -55,8 +54,7 @@ func TestRepositoriesService_ListHookDeliveries(t *testing.T) {
 }
 
 func TestRepositoriesService_ListHookDeliveries_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListHookDeliveries(ctx, "%", "%", 1, nil)
@@ -64,8 +62,7 @@ func TestRepositoriesService_ListHookDeliveries_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetHookDelivery(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1/deliveries/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -99,8 +96,7 @@ func TestRepositoriesService_GetHookDelivery(t *testing.T) {
 }
 
 func TestRepositoriesService_GetHookDelivery_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.GetHookDelivery(ctx, "%", "%", 1, 1)
@@ -108,8 +104,7 @@ func TestRepositoriesService_GetHookDelivery_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_RedeliverHookDelivery(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1/deliveries/1/attempts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

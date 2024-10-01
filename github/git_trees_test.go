@@ -37,8 +37,7 @@ func TestMarshalJSON_withNilContentAndSHA(t *testing.T) {
 }
 
 func TestGitService_GetTree(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/trees/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -84,8 +83,7 @@ func TestGitService_GetTree(t *testing.T) {
 }
 
 func TestGitService_GetTree_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Git.GetTree(ctx, "%", "%", "%", false)
@@ -93,8 +91,7 @@ func TestGitService_GetTree_invalidOwner(t *testing.T) {
 }
 
 func TestGitService_CreateTree(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := []*TreeEntry{
 		{
@@ -172,8 +169,7 @@ func TestGitService_CreateTree(t *testing.T) {
 }
 
 func TestGitService_CreateTree_Content(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := []*TreeEntry{
 		{
@@ -253,8 +249,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 }
 
 func TestGitService_CreateTree_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := []*TreeEntry{
 		{
@@ -333,8 +328,7 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 }
 
 func TestGitService_CreateTree_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Git.CreateTree(ctx, "%", "%", "", nil)

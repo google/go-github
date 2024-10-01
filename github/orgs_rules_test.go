@@ -15,8 +15,7 @@ import (
 )
 
 func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -71,8 +70,7 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -391,8 +389,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 	})
 }
 func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -726,8 +723,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 	})
 }
 func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -1036,8 +1032,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1132,8 +1127,7 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1221,8 +1215,7 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 	})
 }
 func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -1336,8 +1329,7 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 }
 
 func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -1445,8 +1437,7 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 	})
 }
 func TestOrganizationsService_DeleteOrganizationRuleset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
