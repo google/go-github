@@ -85,6 +85,21 @@ type RuleFileParameters struct {
 	RestrictedFilePaths *[]string `json:"restricted_file_paths"`
 }
 
+// RuleMaxFilePathLengthParameters represents the max_file_path_length rule parameters.
+type RuleMaxFilePathLengthParameters struct {
+	MaxFilePathLength int `json:"max_file_path_length"`
+}
+
+// RuleFileExtensionRestrictionParameters represents the file_extension_restriction rule parameters.
+type RuleFileExtensionRestrictionParameters struct {
+	RestrictedFileExtensions []string `json:"restricted_file_extensions"`
+}
+
+// RuleMaxFileSizeParameters represents the max_file_size rule parameters.
+type RuleMaxFileSizeParameters struct {
+	MaxFileSize int64 `json:"max_file_size"`
+}
+
 // UpdateAllowsFetchAndMergeRuleParameters represents the update rule parameters.
 type UpdateAllowsFetchAndMergeRuleParameters struct {
 	UpdateAllowsFetchAndMerge bool `json:"update_allows_fetch_and_merge"`
@@ -249,6 +264,33 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "file_path_restriction":
 		params := RuleFileParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
+	case "max_file_path_length":
+		params := RuleMaxFilePathLengthParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
+	case "file_extension_restriction":
+		params := RuleFileExtensionRestrictionParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
+	case "max_file_size":
+		params := RuleMaxFileSizeParameters{}
 		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
 			return err
 		}
@@ -450,6 +492,42 @@ func NewFilePathRestrictionRule(params *RuleFileParameters) (rule *RepositoryRul
 
 	return &RepositoryRule{
 		Type:       "file_path_restriction",
+		Parameters: &rawParams,
+	}
+}
+
+// NewMaxFilePathLengthRule creates a rule to restrict file paths longer than the limit from being pushed.
+func NewMaxFilePathLengthRule(params *RuleMaxFilePathLengthParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "max_file_path_length",
+		Parameters: &rawParams,
+	}
+}
+
+// NewFileExtensionRestrictionRule creates a rule to restrict file extensions from being pushed to a commit.
+func NewFileExtensionRestrictionRule(params *RuleFileExtensionRestrictionParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "file_extension_restriction",
+		Parameters: &rawParams,
+	}
+}
+
+// NewMaxFileSizeRule creates a rule to restrict file sizes from being pushed to a commit.
+func NewMaxFileSizeRule(params *RuleMaxFileSizeParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "max_file_size",
 		Parameters: &rawParams,
 	}
 }
