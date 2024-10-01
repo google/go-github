@@ -430,7 +430,6 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
     {
       "name": "octocat-org/Hello-World",
       "advanced_security_committers": 2,
-
       "advanced_security_committers_breakdown": [
         {
           "user_login": "octokitten",
