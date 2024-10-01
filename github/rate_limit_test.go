@@ -36,8 +36,7 @@ func TestRateLimits_String(t *testing.T) {
 }
 
 func TestRateLimits(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -180,8 +179,7 @@ func TestRateLimits(t *testing.T) {
 }
 
 func TestRateLimits_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -193,8 +191,7 @@ func TestRateLimits_coverage(t *testing.T) {
 }
 
 func TestRateLimits_overQuota(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	client.rateLimits[CoreCategory] = Rate{
 		Limit:     1,

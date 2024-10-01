@@ -17,8 +17,7 @@ import (
 )
 
 func TestRepositoriesService_ListDeployments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/deployments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -54,8 +53,7 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 }
 
 func TestRepositoriesService_GetDeployment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/deployments/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -90,8 +88,7 @@ func TestRepositoriesService_GetDeployment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateDeployment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &DeploymentRequest{Ref: String("1111"), Task: String("deploy"), TransientEnvironment: Bool(true)}
 
@@ -136,8 +133,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteDeployment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/deployments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -173,8 +169,7 @@ func TestRepositoriesService_DeleteDeployment(t *testing.T) {
 }
 
 func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
@@ -212,8 +207,7 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 }
 
 func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 	mux.HandleFunc("/repos/o/r/deployments/3/statuses/4", func(w http.ResponseWriter, r *http.Request) {
@@ -249,8 +243,7 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &DeploymentStatusRequest{State: String("inactive"), Description: String("deploy"), AutoInactive: Bool(false)}
 

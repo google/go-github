@@ -16,8 +16,7 @@ import (
 )
 
 func TestTeamsService__ListTeamMembersByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -53,8 +52,7 @@ func TestTeamsService__ListTeamMembersByID(t *testing.T) {
 }
 
 func TestTeamsService__ListTeamMembersByID_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -91,8 +89,7 @@ func TestTeamsService__ListTeamMembersByID_notFound(t *testing.T) {
 }
 
 func TestTeamsService__ListTeamMembersBySlug(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -128,8 +125,7 @@ func TestTeamsService__ListTeamMembersBySlug(t *testing.T) {
 }
 
 func TestTeamsService__ListTeamMembersBySlug_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -166,8 +162,7 @@ func TestTeamsService__ListTeamMembersBySlug_notFound(t *testing.T) {
 }
 
 func TestTeamsService__ListTeamMembersBySlug_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Teams.ListTeamMembersBySlug(ctx, "%", "s", nil)
@@ -175,8 +170,7 @@ func TestTeamsService__ListTeamMembersBySlug_invalidOrg(t *testing.T) {
 }
 
 func TestTeamsService__GetTeamMembershipByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -210,8 +204,7 @@ func TestTeamsService__GetTeamMembershipByID(t *testing.T) {
 }
 
 func TestTeamsService__GetTeamMembershipByID_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -246,8 +239,7 @@ func TestTeamsService__GetTeamMembershipByID_notFound(t *testing.T) {
 }
 
 func TestTeamsService__GetTeamMembershipBySlug(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -281,8 +273,7 @@ func TestTeamsService__GetTeamMembershipBySlug(t *testing.T) {
 }
 
 func TestTeamsService__GetTeamMembershipBySlug_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -317,8 +308,7 @@ func TestTeamsService__GetTeamMembershipBySlug_notFound(t *testing.T) {
 }
 
 func TestTeamsService__GetTeamMembershipBySlug_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Teams.GetTeamMembershipBySlug(ctx, "%s", "s", "u")
@@ -326,8 +316,7 @@ func TestTeamsService__GetTeamMembershipBySlug_invalidOrg(t *testing.T) {
 }
 
 func TestTeamsService__AddTeamMembershipByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
 
@@ -370,8 +359,7 @@ func TestTeamsService__AddTeamMembershipByID(t *testing.T) {
 }
 
 func TestTeamsService__AddTeamMembershipByID_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
 
@@ -415,8 +403,7 @@ func TestTeamsService__AddTeamMembershipByID_notFound(t *testing.T) {
 }
 
 func TestTeamsService__AddTeamMembershipBySlug(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
 
@@ -459,8 +446,7 @@ func TestTeamsService__AddTeamMembershipBySlug(t *testing.T) {
 }
 
 func TestTeamsService__AddTeamMembershipBySlug_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
 
@@ -504,8 +490,7 @@ func TestTeamsService__AddTeamMembershipBySlug_notFound(t *testing.T) {
 }
 
 func TestTeamsService__AddTeamMembershipBySlug_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Teams.AddTeamMembershipBySlug(ctx, "%", "s", "u", nil)
@@ -513,8 +498,7 @@ func TestTeamsService__AddTeamMembershipBySlug_invalidOrg(t *testing.T) {
 }
 
 func TestTeamsService__RemoveTeamMembershipByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -539,8 +523,7 @@ func TestTeamsService__RemoveTeamMembershipByID(t *testing.T) {
 }
 
 func TestTeamsService__RemoveTeamMembershipByID_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -568,8 +551,7 @@ func TestTeamsService__RemoveTeamMembershipByID_notFound(t *testing.T) {
 }
 
 func TestTeamsService__RemoveTeamMembershipBySlug(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -594,8 +576,7 @@ func TestTeamsService__RemoveTeamMembershipBySlug(t *testing.T) {
 }
 
 func TestTeamsService__RemoveTeamMembershipBySlug_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -623,8 +604,7 @@ func TestTeamsService__RemoveTeamMembershipBySlug_notFound(t *testing.T) {
 }
 
 func TestTeamsService__RemoveTeamMembershipBySlug_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Teams.RemoveTeamMembershipBySlug(ctx, "%", "s", "u")
@@ -632,8 +612,7 @@ func TestTeamsService__RemoveTeamMembershipBySlug_invalidOrg(t *testing.T) {
 }
 
 func TestTeamsService__ListPendingTeamInvitationsByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -669,8 +648,7 @@ func TestTeamsService__ListPendingTeamInvitationsByID(t *testing.T) {
 }
 
 func TestTeamsService__ListPendingTeamInvitationsByID_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -707,8 +685,7 @@ func TestTeamsService__ListPendingTeamInvitationsByID_notFound(t *testing.T) {
 }
 
 func TestTeamsService__ListPendingTeamInvitationsBySlug(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -744,8 +721,7 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug(t *testing.T) {
 }
 
 func TestTeamsService__ListPendingTeamInvitationsBySlug_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -782,8 +758,7 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug_notFound(t *testing.T) {
 }
 
 func TestTeamsService__ListPendingTeamInvitationsBySlug_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Teams.ListPendingTeamInvitationsBySlug(ctx, "%", "s", nil)

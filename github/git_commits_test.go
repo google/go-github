@@ -137,8 +137,7 @@ func TestCommit_Marshal(t *testing.T) {
 }
 
 func TestGitService_GetCommit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/commits/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -172,8 +171,7 @@ func TestGitService_GetCommit(t *testing.T) {
 }
 
 func TestGitService_GetCommit_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Git.GetCommit(ctx, "%", "%", "%")
@@ -181,8 +179,7 @@ func TestGitService_GetCommit_invalidOwner(t *testing.T) {
 }
 
 func TestGitService_CreateCommit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Commit{
 		Message: String("Commit Message."),
@@ -234,8 +231,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 }
 
 func TestGitService_CreateSignedCommit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	signature := "----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"
 
@@ -293,8 +289,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 }
 
 func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	input := &Commit{}
 
@@ -307,8 +302,7 @@ func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
 }
 
 func TestGitService_CreateCommitWithNilCommit(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Git.CreateCommit(ctx, "o", "r", nil, nil)
@@ -318,8 +312,8 @@ func TestGitService_CreateCommitWithNilCommit(t *testing.T) {
 }
 
 func TestGitService_CreateCommit_WithSigner(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	signature := "my voice is my password"
 	date := time.Date(2017, time.May, 4, 0, 3, 43, 0, time.FixedZone("CEST", 2*3600))
 	author := CommitAuthor{
@@ -507,8 +501,7 @@ Commit Message.`
 }
 
 func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Git.CreateCommit(ctx, "%", "%", &Commit{}, nil)

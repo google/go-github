@@ -272,8 +272,7 @@ func TestCopilotService_GetSeatDetailsOrganization(t *testing.T) {
 }
 
 func TestCopilotService_GetCopilotBilling(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -331,8 +330,7 @@ func TestCopilotService_GetCopilotBilling(t *testing.T) {
 }
 
 func TestCopilotService_ListCopilotSeats(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing/seats", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -604,8 +602,7 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 }
 
 func TestCopilotService_AddCopilotTeams(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -642,8 +639,7 @@ func TestCopilotService_AddCopilotTeams(t *testing.T) {
 }
 
 func TestCopilotService_RemoveCopilotTeams(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -680,8 +676,7 @@ func TestCopilotService_RemoveCopilotTeams(t *testing.T) {
 }
 
 func TestCopilotService_AddCopilotUsers(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -718,8 +713,7 @@ func TestCopilotService_AddCopilotUsers(t *testing.T) {
 }
 
 func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -756,8 +750,7 @@ func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
 }
 
 func TestCopilotService_GetSeatDetails(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/members/u/copilot", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

@@ -16,8 +16,7 @@ import (
 )
 
 func TestActionsService_GetActionsPermissions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -50,8 +49,7 @@ func TestActionsService_GetActionsPermissions(t *testing.T) {
 }
 
 func TestActionsService_EditActionsPermissions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &ActionsPermissions{EnabledRepositories: String("all"), AllowedActions: String("selected")}
 
@@ -94,8 +92,7 @@ func TestActionsService_EditActionsPermissions(t *testing.T) {
 }
 
 func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -138,8 +135,7 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 }
 
 func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -167,8 +163,7 @@ func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
 }
 
 func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -194,8 +189,7 @@ func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
 }
 
 func TestActionsService_RemoveEnabledReposInOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -221,8 +215,7 @@ func TestActionsService_RemoveEnabledReposInOrg(t *testing.T) {
 }
 
 func TestActionsService_GetActionsAllowed(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -255,8 +248,8 @@ func TestActionsService_GetActionsAllowed(t *testing.T) {
 }
 
 func TestActionsService_EditActionsAllowed(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	input := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
@@ -336,8 +329,7 @@ func TestActionsPermissions_Marshal(t *testing.T) {
 }
 
 func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -370,8 +362,8 @@ func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T
 }
 
 func TestActionsService_EditDefaultWorkflowPermissionsInOrganization(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
+
 	input := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {

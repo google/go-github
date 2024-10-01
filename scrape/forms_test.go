@@ -83,8 +83,7 @@ func Test_ParseForms(t *testing.T) {
 }
 
 func Test_FetchAndSumbitForm(t *testing.T) {
-	client, mux, cleanup := setup()
-	defer cleanup()
+	client, mux := setup(t)
 	var submitted bool
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

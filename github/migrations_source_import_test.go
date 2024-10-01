@@ -16,8 +16,7 @@ import (
 )
 
 func TestMigrationService_StartImport(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Import{
 		VCS:         String("git"),
@@ -65,8 +64,7 @@ func TestMigrationService_StartImport(t *testing.T) {
 }
 
 func TestMigrationService_ImportProgress(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -99,8 +97,7 @@ func TestMigrationService_ImportProgress(t *testing.T) {
 }
 
 func TestMigrationService_UpdateImport(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Import{
 		VCS:         String("git"),
@@ -148,8 +145,7 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 }
 
 func TestMigrationService_CommitAuthors(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/import/authors", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -185,8 +181,7 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 }
 
 func TestMigrationService_MapCommitAuthor(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &SourceImportAuthor{Name: String("n"), Email: String("e")}
 
@@ -228,8 +223,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 }
 
 func TestMigrationService_SetLFSPreference(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Import{UseLFS: String("opt_in")}
 
@@ -272,8 +266,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 }
 
 func TestMigrationService_LargeFiles(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/import/large_files", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -309,8 +302,7 @@ func TestMigrationService_LargeFiles(t *testing.T) {
 }
 
 func TestMigrationService_CancelImport(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

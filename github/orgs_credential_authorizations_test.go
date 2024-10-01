@@ -16,8 +16,7 @@ import (
 )
 
 func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/credential-authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -73,8 +72,7 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveCredentialAuthorization(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/credential-authorizations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)

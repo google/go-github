@@ -72,8 +72,7 @@ func TestGistComments_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 func TestGistsService_ListComments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -109,8 +108,7 @@ func TestGistsService_ListComments(t *testing.T) {
 }
 
 func TestGistsService_ListComments_invalidID(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Gists.ListComments(ctx, "%", nil)
@@ -118,8 +116,7 @@ func TestGistsService_ListComments_invalidID(t *testing.T) {
 }
 
 func TestGistsService_GetComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -153,8 +150,7 @@ func TestGistsService_GetComment(t *testing.T) {
 }
 
 func TestGistsService_GetComment_invalidID(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Gists.GetComment(ctx, "%", 1)
@@ -162,8 +158,7 @@ func TestGistsService_GetComment_invalidID(t *testing.T) {
 }
 
 func TestGistsService_CreateComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &GistComment{ID: Int64(1), Body: String("b")}
 
@@ -206,8 +201,7 @@ func TestGistsService_CreateComment(t *testing.T) {
 }
 
 func TestGistsService_CreateComment_invalidID(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Gists.CreateComment(ctx, "%", nil)
@@ -215,8 +209,7 @@ func TestGistsService_CreateComment_invalidID(t *testing.T) {
 }
 
 func TestGistsService_EditComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &GistComment{ID: Int64(1), Body: String("b")}
 
@@ -259,8 +252,7 @@ func TestGistsService_EditComment(t *testing.T) {
 }
 
 func TestGistsService_EditComment_invalidID(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Gists.EditComment(ctx, "%", 1, nil)
@@ -268,8 +260,7 @@ func TestGistsService_EditComment_invalidID(t *testing.T) {
 }
 
 func TestGistsService_DeleteComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -293,8 +284,7 @@ func TestGistsService_DeleteComment(t *testing.T) {
 }
 
 func TestGistsService_DeleteComment_invalidID(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Gists.DeleteComment(ctx, "%", 1)

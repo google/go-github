@@ -20,8 +20,7 @@ import (
 )
 
 func TestRepositoriesService_ListByAuthenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -51,8 +50,7 @@ func TestRepositoriesService_ListByAuthenticatedUser(t *testing.T) {
 }
 
 func TestRepositoriesService_ListByUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -96,8 +94,7 @@ func TestRepositoriesService_ListByUser(t *testing.T) {
 }
 
 func TestRepositoriesService_ListByUser_type(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -123,8 +120,7 @@ func TestRepositoriesService_ListByUser_type(t *testing.T) {
 }
 
 func TestRepositoriesService_ListByUser_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListByUser(ctx, "%", nil)
@@ -132,8 +128,7 @@ func TestRepositoriesService_ListByUser_invalidUser(t *testing.T) {
 }
 
 func TestRepositoriesService_ListByOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
@@ -177,8 +172,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 }
 
 func TestRepositoriesService_ListByOrg_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListByOrg(ctx, "%", nil)
@@ -186,8 +180,7 @@ func TestRepositoriesService_ListByOrg_invalidOrg(t *testing.T) {
 }
 
 func TestRepositoriesService_ListAll(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -220,8 +213,7 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 }
 
 func TestRepositoriesService_Create_user(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Repository{
 		Name:     String("n"),
@@ -270,8 +262,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 }
 
 func TestRepositoriesService_Create_org(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Repository{
 		Name:     String("n"),
@@ -306,8 +297,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	templateRepoReq := &TemplateRepoRequest{
 		Name: String("n"),
@@ -354,8 +344,7 @@ func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
 }
 
 func TestRepositoriesService_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview, mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -391,8 +380,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -440,8 +428,7 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 }
 
 func TestRepositoriesService_GetByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -470,8 +457,7 @@ func TestRepositoriesService_GetByID(t *testing.T) {
 }
 
 func TestRepositoriesService_Edit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	i := true
 	input := &Repository{HasIssues: &i}
@@ -516,8 +502,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 }
 
 func TestRepositoriesService_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -541,8 +526,7 @@ func TestRepositoriesService_Delete(t *testing.T) {
 }
 
 func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.Get(ctx, "%", "r")
@@ -550,8 +534,7 @@ func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_Edit_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.Edit(ctx, "%", "r", nil)
@@ -559,8 +542,7 @@ func TestRepositoriesService_Edit_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetVulnerabilityAlerts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -595,8 +577,7 @@ func TestRepositoriesService_GetVulnerabilityAlerts(t *testing.T) {
 }
 
 func TestRepositoriesService_EnableVulnerabilityAlerts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -622,8 +603,7 @@ func TestRepositoriesService_EnableVulnerabilityAlerts(t *testing.T) {
 }
 
 func TestRepositoriesService_DisableVulnerabilityAlerts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -649,8 +629,7 @@ func TestRepositoriesService_DisableVulnerabilityAlerts(t *testing.T) {
 }
 
 func TestRepositoriesService_EnableAutomatedSecurityFixes(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -665,8 +644,7 @@ func TestRepositoriesService_EnableAutomatedSecurityFixes(t *testing.T) {
 }
 
 func TestRepositoriesService_GetAutomatedSecurityFixes(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -702,8 +680,7 @@ func TestRepositoriesService_GetAutomatedSecurityFixes(t *testing.T) {
 }
 
 func TestRepositoriesService_DisableAutomatedSecurityFixes(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -718,8 +695,7 @@ func TestRepositoriesService_DisableAutomatedSecurityFixes(t *testing.T) {
 }
 
 func TestRepositoriesService_ListContributors(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/contributors", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -758,8 +734,7 @@ func TestRepositoriesService_ListContributors(t *testing.T) {
 }
 
 func TestRepositoriesService_ListLanguages(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/languages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -793,8 +768,7 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTeams(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -830,8 +804,7 @@ func TestRepositoriesService_ListTeams(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTags(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/tags", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -877,8 +850,7 @@ func TestRepositoriesService_ListTags(t *testing.T) {
 }
 
 func TestRepositoriesService_ListBranches(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/branches", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -917,8 +889,7 @@ func TestRepositoriesService_ListBranches(t *testing.T) {
 }
 
 func TestRepositoriesService_GetBranch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	tests := []struct {
 		branch  string
@@ -979,8 +950,7 @@ func TestRepositoriesService_GetBranch_BadJSONResponse(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -996,8 +966,7 @@ func TestRepositoriesService_GetBranch_BadJSONResponse(t *testing.T) {
 }
 
 func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	client, mux, serverURL := setup(t)
 
 	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1048,8 +1017,7 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -1089,8 +1057,7 @@ func TestRepositoriesService_RenameBranch(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			renameBranchReq := "nn"
 
@@ -1147,8 +1114,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -1292,8 +1258,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 }
 
 func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	tests := []struct {
 		branch               string
@@ -1388,8 +1353,7 @@ func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -1426,8 +1390,7 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
 				RequiredStatusChecks: &RequiredStatusChecks{
@@ -1614,8 +1577,7 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
 				RequiredStatusChecks: &RequiredStatusChecks{
@@ -1792,8 +1754,7 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
 				RequiredStatusChecks: &RequiredStatusChecks{
@@ -1949,8 +1910,7 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
 				RequiredStatusChecks: &RequiredStatusChecks{
@@ -2092,8 +2052,7 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
 				RequiredStatusChecks: &RequiredStatusChecks{
@@ -2234,8 +2193,7 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
 				RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
@@ -2288,8 +2246,7 @@ func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "DELETE")
@@ -2316,8 +2273,7 @@ func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
 }
 
 func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListLanguages(ctx, "%", "%")
@@ -2325,8 +2281,7 @@ func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_License(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/license", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -2381,8 +2336,7 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -2459,8 +2413,7 @@ func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testi
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -2497,8 +2450,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			input := &RequiredStatusChecksRequest{
 				Strict:   Bool(true),
@@ -2573,8 +2525,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			appID := int64(123)
 			noAppID := int64(-1)
@@ -2664,8 +2615,7 @@ func TestRepositoriesService_RemoveRequiredStatusChecks(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "DELETE")
@@ -2703,8 +2653,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -2750,8 +2699,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -2788,8 +2736,7 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -2862,8 +2809,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			input := &PullRequestReviewsEnforcementUpdate{
 				DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
@@ -2949,8 +2895,7 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PATCH")
@@ -3004,8 +2949,7 @@ func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "DELETE")
@@ -3042,8 +2986,7 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -3093,8 +3036,7 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "POST")
@@ -3143,8 +3085,7 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "DELETE")
@@ -3181,8 +3122,7 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -3233,8 +3173,7 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "POST")
@@ -3285,8 +3224,7 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "DELETE")
@@ -3361,8 +3299,7 @@ func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctio
 }
 
 func TestRepositoriesService_ListAllTopics(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -3397,8 +3334,7 @@ func TestRepositoriesService_ListAllTopics(t *testing.T) {
 }
 
 func TestRepositoriesService_ListAllTopics_emptyTopics(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -3419,8 +3355,7 @@ func TestRepositoriesService_ListAllTopics_emptyTopics(t *testing.T) {
 }
 
 func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -3455,8 +3390,7 @@ func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
 }
 
 func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -3478,8 +3412,7 @@ func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
 }
 
 func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -3511,8 +3444,7 @@ func TestRepositoriesService_ListAppRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -3552,8 +3484,7 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PUT")
@@ -3602,8 +3533,7 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "POST")
@@ -3652,8 +3582,7 @@ func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "DELETE")
@@ -3698,8 +3627,7 @@ func TestRepositoriesService_ListTeamRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -3739,8 +3667,7 @@ func TestRepositoriesService_ReplaceTeamRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PUT")
@@ -3789,8 +3716,7 @@ func TestRepositoriesService_AddTeamRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "POST")
@@ -3839,8 +3765,7 @@ func TestRepositoriesService_RemoveTeamRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "DELETE")
@@ -3885,8 +3810,7 @@ func TestRepositoriesService_ListUserRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -3926,8 +3850,7 @@ func TestRepositoriesService_ReplaceUserRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PUT")
@@ -3976,8 +3899,7 @@ func TestRepositoriesService_AddUserRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "POST")
@@ -4026,8 +3948,7 @@ func TestRepositoriesService_RemoveUserRestrictions(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.branch, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "DELETE")
@@ -4062,8 +3983,7 @@ func TestRepositoriesService_RemoveUserRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_Transfer(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := TransferRequest{NewOwner: "a", NewName: String("b"), TeamID: []int64{123}}
 
@@ -4106,8 +4026,7 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 }
 
 func TestRepositoriesService_Dispatch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	var input DispatchRequestOptions
 
@@ -4381,8 +4300,7 @@ func TestRepositoryTag_Marshal(t *testing.T) {
 }
 
 func TestRepositoriesService_EnablePrivateReporting(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/owner/repo/private-vulnerability-reporting", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -4407,8 +4325,7 @@ func TestRepositoriesService_EnablePrivateReporting(t *testing.T) {
 }
 
 func TestRepositoriesService_DisablePrivateReporting(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/owner/repo/private-vulnerability-reporting", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -4433,8 +4350,7 @@ func TestRepositoriesService_DisablePrivateReporting(t *testing.T) {
 }
 
 func TestRepositoriesService_IsPrivateReportingEnabled(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/owner/repo/private-vulnerability-reporting", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

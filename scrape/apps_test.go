@@ -29,8 +29,7 @@ func Test_AppRestrictionsEnabled(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.description, func(t *testing.T) {
-			client, mux, cleanup := setup()
-			defer cleanup()
+			client, mux := setup(t)
 
 			mux.HandleFunc("/organizations/o/settings/oauth_application_policy", func(w http.ResponseWriter, r *http.Request) {
 				copyTestFile(t, w, tt.testFile)
@@ -48,8 +47,7 @@ func Test_AppRestrictionsEnabled(t *testing.T) {
 }
 
 func Test_ListOAuthApps(t *testing.T) {
-	client, mux, cleanup := setup()
-	defer cleanup()
+	client, mux := setup(t)
 
 	mux.HandleFunc("/organizations/e/settings/oauth_application_policy", func(w http.ResponseWriter, r *http.Request) {
 		copyTestFile(t, w, "access-restrictions-enabled.html")
@@ -85,8 +83,7 @@ func Test_ListOAuthApps(t *testing.T) {
 }
 
 func Test_CreateApp(t *testing.T) {
-	client, mux, cleanup := setup()
-	defer cleanup()
+	client, mux := setup(t)
 
 	mux.HandleFunc("/apps/settings/new", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusCreated)
@@ -103,9 +100,7 @@ func Test_CreateApp(t *testing.T) {
 }
 
 func Test_CreateAppWithOrg(t *testing.T) {
-	client, mux, cleanup := setup()
-
-	defer cleanup()
+	client, mux := setup(t)
 
 	mux.HandleFunc("/organizations/example/apps/settings/new", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusCreated)

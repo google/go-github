@@ -15,8 +15,7 @@ import (
 )
 
 func TestActionsService_GetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -50,8 +49,7 @@ func TestActionsService_GetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 }
 
 func TestActionsService_GetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -85,8 +83,7 @@ func TestActionsService_GetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 }
 
 func TestActionsService_SetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -117,8 +114,7 @@ func TestActionsService_SetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 }
 
 func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -150,8 +146,7 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 }
 
 func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")

@@ -15,8 +15,7 @@ import (
 )
 
 func TestUsersService_ListFollowers_authenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/followers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -52,8 +51,7 @@ func TestUsersService_ListFollowers_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowers_specifiedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/followers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -87,8 +85,7 @@ func TestUsersService_ListFollowers_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowers_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Users.ListFollowers(ctx, "%", nil)
@@ -96,8 +93,7 @@ func TestUsersService_ListFollowers_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/following", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -133,8 +129,7 @@ func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/following", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -168,8 +163,7 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowing_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Users.ListFollowing(ctx, "%", nil)
@@ -177,8 +171,7 @@ func TestUsersService_ListFollowing_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_IsFollowing_authenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/following/t", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -210,8 +203,7 @@ func TestUsersService_IsFollowing_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_IsFollowing_specifiedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/following/t", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -243,8 +235,7 @@ func TestUsersService_IsFollowing_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_IsFollowing_false(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/following/t", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -276,8 +267,7 @@ func TestUsersService_IsFollowing_false(t *testing.T) {
 }
 
 func TestUsersService_IsFollowing_error(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/following/t", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -309,8 +299,7 @@ func TestUsersService_IsFollowing_error(t *testing.T) {
 }
 
 func TestUsersService_IsFollowing_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Users.IsFollowing(ctx, "%", "%")
@@ -318,8 +307,7 @@ func TestUsersService_IsFollowing_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_Follow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/following/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -343,8 +331,7 @@ func TestUsersService_Follow(t *testing.T) {
 }
 
 func TestUsersService_Follow_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Users.Follow(ctx, "%")
@@ -352,8 +339,7 @@ func TestUsersService_Follow_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_Unfollow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/following/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -377,8 +363,7 @@ func TestUsersService_Unfollow(t *testing.T) {
 }
 
 func TestUsersService_Unfollow_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Users.Unfollow(ctx, "%")

@@ -16,8 +16,7 @@ import (
 )
 
 func TestSearchService_Repositories(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -50,8 +49,7 @@ func TestSearchService_Repositories(t *testing.T) {
 }
 
 func TestSearchService_Repositories_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -63,8 +61,7 @@ func TestSearchService_Repositories_coverage(t *testing.T) {
 }
 
 func TestSearchService_RepositoriesTextMatch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -142,8 +139,7 @@ func TestSearchService_RepositoriesTextMatch(t *testing.T) {
 }
 
 func TestSearchService_Topics(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -174,8 +170,7 @@ func TestSearchService_Topics(t *testing.T) {
 }
 
 func TestSearchService_Topics_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -187,8 +182,7 @@ func TestSearchService_Topics_coverage(t *testing.T) {
 }
 
 func TestSearchService_Commits(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -219,8 +213,7 @@ func TestSearchService_Commits(t *testing.T) {
 }
 
 func TestSearchService_Commits_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -232,8 +225,7 @@ func TestSearchService_Commits_coverage(t *testing.T) {
 }
 
 func TestSearchService_Issues(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -266,8 +258,7 @@ func TestSearchService_Issues(t *testing.T) {
 }
 
 func TestSearchService_Issues_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -279,8 +270,7 @@ func TestSearchService_Issues_coverage(t *testing.T) {
 }
 
 func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	const q = "gopher is:issue label:bug language:c++ pushed:>=2018-01-01 stars:>=200"
 
@@ -317,8 +307,7 @@ func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
 }
 
 func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	const q = "gopher is:issue label:bug language:c++ pushed:>=2018-01-01 stars:>=200"
 
@@ -356,8 +345,7 @@ func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
 }
 
 func TestSearchService_Users(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -390,8 +378,7 @@ func TestSearchService_Users(t *testing.T) {
 }
 
 func TestSearchService_Users_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -403,8 +390,7 @@ func TestSearchService_Users_coverage(t *testing.T) {
 }
 
 func TestSearchService_Code(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -437,8 +423,7 @@ func TestSearchService_Code(t *testing.T) {
 }
 
 func TestSearchService_Code_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -450,8 +435,7 @@ func TestSearchService_Code_coverage(t *testing.T) {
 }
 
 func TestSearchService_CodeTextMatch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -512,8 +496,7 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 }
 
 func TestSearchService_Labels(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -550,8 +533,7 @@ func TestSearchService_Labels(t *testing.T) {
 }
 
 func TestSearchService_Labels_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -759,7 +741,7 @@ func TestSearchOptions_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{	
+	want := `{
 		"sort": "author-date",
 		"order": "asc",
 		"page": 1,

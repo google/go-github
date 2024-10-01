@@ -18,8 +18,7 @@ import (
 )
 
 func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Pages{
 		BuildType: String("legacy"),
@@ -72,8 +71,7 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 }
 
 func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Pages{
 		BuildType: String("workflow"),
@@ -122,8 +120,7 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
 		CNAME:     String("www.my-domain.com"),
@@ -162,8 +159,7 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
 		CNAME:     String("www.my-domain.com"),
@@ -201,8 +197,7 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
 		Source: &PagesSource{Branch: String("gh-pages")},
@@ -230,8 +225,7 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 }
 
 func TestRepositoriesService_DisablePages(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -256,8 +250,7 @@ func TestRepositoriesService_DisablePages(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPagesInfo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -291,8 +284,7 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 }
 
 func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -326,8 +318,7 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 }
 
 func TestRepositoriesService_ListPagesBuilds_withOptions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -345,8 +336,7 @@ func TestRepositoriesService_ListPagesBuilds_withOptions(t *testing.T) {
 }
 
 func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds/latest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -380,8 +370,7 @@ func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPageBuild(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -415,8 +404,7 @@ func TestRepositoriesService_GetPageBuild(t *testing.T) {
 }
 
 func TestRepositoriesService_RequestPageBuild(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -450,8 +438,7 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPageHealthCheck(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/health", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

@@ -16,8 +16,7 @@ import (
 )
 
 func TestAdminOrgs_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Organization{
 		Login: String("github"),
@@ -58,8 +57,7 @@ func TestAdminOrgs_Create(t *testing.T) {
 }
 
 func TestAdminOrgs_Rename(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &Organization{
 		Login: String("o"),
@@ -100,8 +98,7 @@ func TestAdminOrgs_Rename(t *testing.T) {
 }
 
 func TestAdminOrgs_RenameByName(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/organizations/o", func(w http.ResponseWriter, r *http.Request) {
 		v := new(renameOrgRequest)

@@ -16,8 +16,7 @@ import (
 )
 
 func TestRepositoriesService_Merge(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &RepositoryMergeRequest{
 		Base:          String("b"),
@@ -82,8 +81,7 @@ func TestRepositoryMergeRequest_Marshal(t *testing.T) {
 }
 
 func TestRepositoriesService_MergeUpstream(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &RepoMergeUpstreamRequest{
 		Branch: String("b"),

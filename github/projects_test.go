@@ -85,8 +85,7 @@ func TestProject_Marshal(t *testing.T) {
 }
 
 func TestProjectsService_UpdateProject(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &ProjectOptions{
 		Name:    String("Project Name"),
@@ -137,8 +136,7 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 }
 
 func TestProjectsService_GetProject(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -173,8 +171,7 @@ func TestProjectsService_GetProject(t *testing.T) {
 }
 
 func TestProjectsService_DeleteProject(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -199,8 +196,7 @@ func TestProjectsService_DeleteProject(t *testing.T) {
 }
 
 func TestProjectsService_ListProjectColumns(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/projects/1/columns", func(w http.ResponseWriter, r *http.Request) {
@@ -238,8 +234,7 @@ func TestProjectsService_ListProjectColumns(t *testing.T) {
 }
 
 func TestProjectsService_GetProjectColumn(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -274,8 +269,7 @@ func TestProjectsService_GetProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_CreateProjectColumn(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &ProjectColumnOptions{Name: "Column Name"}
 
@@ -319,8 +313,7 @@ func TestProjectsService_CreateProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_UpdateProjectColumn(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &ProjectColumnOptions{Name: "Column Name"}
 
@@ -364,8 +357,7 @@ func TestProjectsService_UpdateProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_DeleteProjectColumn(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -390,8 +382,7 @@ func TestProjectsService_DeleteProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_MoveProjectColumn(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &ProjectColumnMoveOptions{Position: "after:12345"}
 
@@ -424,8 +415,7 @@ func TestProjectsService_MoveProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_ListProjectCards(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/columns/1/cards", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -466,8 +456,7 @@ func TestProjectsService_ListProjectCards(t *testing.T) {
 }
 
 func TestProjectsService_GetProjectCard(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -502,8 +491,7 @@ func TestProjectsService_GetProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_CreateProjectCard(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &ProjectCardOptions{
 		ContentID:   12345,
@@ -550,8 +538,7 @@ func TestProjectsService_CreateProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_UpdateProjectCard(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &ProjectCardOptions{
 		ContentID:   12345,
@@ -598,8 +585,7 @@ func TestProjectsService_UpdateProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_DeleteProjectCard(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -624,8 +610,7 @@ func TestProjectsService_DeleteProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_MoveProjectCard(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &ProjectCardMoveOptions{Position: "after:12345"}
 
@@ -658,8 +643,7 @@ func TestProjectsService_MoveProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_AddProjectCollaborator(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	opt := &ProjectCollaboratorOptions{
 		Permission: String("admin"),
@@ -696,8 +680,7 @@ func TestProjectsService_AddProjectCollaborator(t *testing.T) {
 }
 
 func TestProjectsService_AddCollaborator_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Projects.AddProjectCollaborator(ctx, 1, "%", nil)
@@ -705,8 +688,7 @@ func TestProjectsService_AddCollaborator_invalidUser(t *testing.T) {
 }
 
 func TestProjectsService_RemoveCollaborator(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -732,8 +714,7 @@ func TestProjectsService_RemoveCollaborator(t *testing.T) {
 }
 
 func TestProjectsService_RemoveCollaborator_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Projects.RemoveProjectCollaborator(ctx, 1, "%")
@@ -741,8 +722,7 @@ func TestProjectsService_RemoveCollaborator_invalidUser(t *testing.T) {
 }
 
 func TestProjectsService_ListCollaborators(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1/collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -781,8 +761,7 @@ func TestProjectsService_ListCollaborators(t *testing.T) {
 }
 
 func TestProjectsService_ListCollaborators_withAffiliation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1/collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -808,8 +787,7 @@ func TestProjectsService_ListCollaborators_withAffiliation(t *testing.T) {
 }
 
 func TestProjectsService_ReviewProjectCollaboratorPermission(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1/collaborators/u/permission", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

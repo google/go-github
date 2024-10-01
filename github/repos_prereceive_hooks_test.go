@@ -16,8 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListPreReceiveHooks(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -55,8 +54,7 @@ func TestRepositoriesService_ListPreReceiveHooks(t *testing.T) {
 }
 
 func TestRepositoriesService_ListPreReceiveHooks_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListPreReceiveHooks(ctx, "%", "%", nil)
@@ -64,8 +62,7 @@ func TestRepositoriesService_ListPreReceiveHooks_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPreReceiveHook(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -100,8 +97,7 @@ func TestRepositoriesService_GetPreReceiveHook(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPreReceiveHook_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.GetPreReceiveHook(ctx, "%", "%", 1)
@@ -109,8 +105,7 @@ func TestRepositoriesService_GetPreReceiveHook_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdatePreReceiveHook(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &PreReceiveHook{}
 
@@ -153,8 +148,7 @@ func TestRepositoriesService_UpdatePreReceiveHook(t *testing.T) {
 }
 
 func TestRepositoriesService_PreReceiveHook_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.UpdatePreReceiveHook(ctx, "%", "%", 1, nil)
@@ -162,8 +156,7 @@ func TestRepositoriesService_PreReceiveHook_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_DeletePreReceiveHook(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -187,8 +180,7 @@ func TestRepositoriesService_DeletePreReceiveHook(t *testing.T) {
 }
 
 func TestRepositoriesService_DeletePreReceiveHook_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Repositories.DeletePreReceiveHook(ctx, "%", "%", 1)

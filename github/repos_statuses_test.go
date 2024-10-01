@@ -16,8 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListStatuses(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/r/statuses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -53,8 +52,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 }
 
 func TestRepositoriesService_ListStatuses_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListStatuses(ctx, "%", "r", "r", nil)
@@ -62,8 +60,7 @@ func TestRepositoriesService_ListStatuses_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateStatus(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	input := &RepoStatus{State: String("s"), TargetURL: String("t"), Description: String("d")}
 
@@ -105,8 +102,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.CreateStatus(ctx, "%", "r", "r", nil)
@@ -114,8 +110,7 @@ func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/r/status", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

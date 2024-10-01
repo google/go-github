@@ -16,8 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListTagProtection(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/tags/protection", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -52,8 +51,7 @@ func TestRepositoriesService_ListTagProtection(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTagProtection_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListTagProtection(ctx, "%", "r")
@@ -61,8 +59,7 @@ func TestRepositoriesService_ListTagProtection_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateTagProtection(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	pattern := "tag*"
 
@@ -106,8 +103,7 @@ func TestRepositoriesService_CreateTagProtection(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteTagProtection(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/tags/protection/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
