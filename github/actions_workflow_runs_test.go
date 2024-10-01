@@ -613,8 +613,7 @@ func TestPendingDeployment_Marshal(t *testing.T) {
 }
 
 func TestActionsService_ReviewCustomDeploymentProtectionRule(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/9444496/deployment_protection_rule", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -1387,8 +1386,7 @@ func TestActionService_PendingDeployments(t *testing.T) {
 }
 
 func TestActionService_GetPendingDeployments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

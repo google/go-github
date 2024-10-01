@@ -273,8 +273,7 @@ func TestOrganizationsService_RemoveMember(t *testing.T) {
 }
 
 func TestOrganizationsService_CancelInvite(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/invitations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
