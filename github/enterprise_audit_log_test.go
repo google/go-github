@@ -14,6 +14,7 @@ import (
 )
 
 func TestEnterpriseService_GetAuditLog(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/audit-log", func(w http.ResponseWriter, r *http.Request) {

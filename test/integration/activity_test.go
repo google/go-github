@@ -21,6 +21,7 @@ const (
 )
 
 func TestActivity_Starring(t *testing.T) {
+	t.Parallel()
 	stargazers, _, err := client.Activity.ListStargazers(context.Background(), owner, repo, nil)
 	if err != nil {
 		t.Fatalf("Activity.ListStargazers returned error: %v", err)
@@ -111,6 +112,7 @@ func createSubscription(t *testing.T) {
 }
 
 func TestActivity_Watching(t *testing.T) {
+	t.Parallel()
 	watchers, _, err := client.Activity.ListWatchers(context.Background(), owner, repo, nil)
 	if err != nil {
 		t.Fatalf("Activity.ListWatchers returned error: %v", err)

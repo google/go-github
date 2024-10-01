@@ -12,6 +12,7 @@ import (
 )
 
 func Test_ParseForms(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		description string
 		html        string
@@ -83,6 +84,7 @@ func Test_ParseForms(t *testing.T) {
 }
 
 func Test_FetchAndSumbitForm(t *testing.T) {
+	t.Parallel()
 	client, mux := setup(t)
 	var submitted bool
 

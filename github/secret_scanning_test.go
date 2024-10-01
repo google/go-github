@@ -17,6 +17,7 @@ import (
 )
 
 func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
@@ -91,6 +92,7 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 }
 
 func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
@@ -155,6 +157,7 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 }
 
 func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
@@ -221,6 +224,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 }
 
 func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
@@ -285,6 +289,7 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 }
 
 func TestSecretScanningService_GetAlert(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
@@ -345,6 +350,7 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 }
 
 func TestSecretScanningService_UpdateAlert(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
@@ -415,6 +421,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 }
 
 func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1/locations", func(w http.ResponseWriter, r *http.Request) {
@@ -480,6 +487,7 @@ func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
 }
 
 func TestSecretScanningAlert_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlert{}, `{}`)
 
 	u := &SecretScanningAlert{
@@ -524,6 +532,7 @@ func TestSecretScanningAlert_Marshal(t *testing.T) {
 }
 
 func TestSecretScanningAlertLocation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlertLocation{}, `{}`)
 
 	u := &SecretScanningAlertLocation{
@@ -560,6 +569,7 @@ func TestSecretScanningAlertLocation_Marshal(t *testing.T) {
 }
 
 func TestSecretScanningAlertLocationDetails_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlertLocationDetails{}, `{}`)
 
 	u := &SecretScanningAlertLocationDetails{
@@ -590,6 +600,7 @@ func TestSecretScanningAlertLocationDetails_Marshal(t *testing.T) {
 }
 
 func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlertUpdateOptions{}, `{}`)
 
 	u := &SecretScanningAlertUpdateOptions{

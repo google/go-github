@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoryService_GetActionsAllowed(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +50,7 @@ func TestRepositoryService_GetActionsAllowed(t *testing.T) {
 }
 
 func TestRepositoriesService_EditActionsAllowed(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}

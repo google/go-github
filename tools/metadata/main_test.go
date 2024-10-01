@@ -27,6 +27,7 @@ import (
 )
 
 func TestUpdateGo(t *testing.T) {
+	t.Parallel()
 	t.Run("valid", func(t *testing.T) {
 		res := runTest(t, "testdata/update-go/valid", "update-go")
 		res.assertOutput("", "")
@@ -49,6 +50,7 @@ duplicate operation: GET /a/{a_id}
 }
 
 func TestUnused(t *testing.T) {
+	t.Parallel()
 	res := runTest(t, "testdata/unused", "unused")
 	res.assertOutput(`
 Found 3 unused operations
@@ -64,6 +66,7 @@ GET /undocumented/{undocumented_id}
 }
 
 func TestUpdateOpenAPI(t *testing.T) {
+	// t.Parallel() - cannot use when helper calls t.Setenv
 	testServer := newTestServer(t, "main", map[string]interface{}{
 		"api.github.com/api.github.com.json": openapi3.T{
 			Paths: openapi3.NewPaths(
@@ -124,6 +127,7 @@ func TestUpdateOpenAPI(t *testing.T) {
 }
 
 func TestFormat(t *testing.T) {
+	t.Parallel()
 	res := runTest(t, "testdata/format", "format")
 	res.assertOutput("", "")
 	res.assertNoErr()

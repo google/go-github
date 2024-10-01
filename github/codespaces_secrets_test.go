@@ -16,6 +16,7 @@ import (
 )
 
 func TestCodespacesService_ListSecrets(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -117,6 +118,7 @@ func TestCodespacesService_ListSecrets(t *testing.T) {
 }
 
 func TestCodespacesService_GetSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -208,6 +210,7 @@ func TestCodespacesService_GetSecret(t *testing.T) {
 }
 
 func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -301,6 +304,7 @@ func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
 }
 
 func TestCodespacesService_DeleteSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -380,6 +384,7 @@ func TestCodespacesService_DeleteSecret(t *testing.T) {
 }
 
 func TestCodespacesService_GetPublicKey(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -472,6 +477,7 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 }
 
 func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -554,6 +560,7 @@ func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
 }
 
 func TestCodespacesService_SetSelectedReposForSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -623,6 +630,7 @@ func TestCodespacesService_SetSelectedReposForSecret(t *testing.T) {
 }
 
 func TestCodespacesService_AddSelectedReposForSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -688,6 +696,7 @@ func TestCodespacesService_AddSelectedReposForSecret(t *testing.T) {
 }
 
 func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)

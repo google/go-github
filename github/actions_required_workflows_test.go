@@ -16,6 +16,7 @@ import (
 )
 
 func TestActionsService_ListOrgRequiredWorkflows(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/required_workflows", func(w http.ResponseWriter, r *http.Request) {
@@ -80,6 +81,7 @@ func TestActionsService_ListOrgRequiredWorkflows(t *testing.T) {
 }
 
 func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/required_workflows", func(w http.ResponseWriter, r *http.Request) {
@@ -145,6 +147,7 @@ func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_GetRequiredWorkflowByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345", func(w http.ResponseWriter, r *http.Request) {
@@ -195,6 +198,7 @@ func TestActionsService_GetRequiredWorkflowByID(t *testing.T) {
 }
 
 func TestActionsService_UpdateRequiredWorkflow(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345", func(w http.ResponseWriter, r *http.Request) {
@@ -262,6 +266,7 @@ func TestActionsService_UpdateRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_DeleteRequiredWorkflow(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345", func(w http.ResponseWriter, r *http.Request) {
@@ -287,6 +292,7 @@ func TestActionsService_DeleteRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_ListRequiredWorkflowSelectedRepos(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -333,6 +339,7 @@ func TestActionsService_ListRequiredWorkflowSelectedRepos(t *testing.T) {
 }
 
 func TestActionsService_SetRequiredWorkflowSelectedRepos(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -360,6 +367,7 @@ func TestActionsService_SetRequiredWorkflowSelectedRepos(t *testing.T) {
 }
 
 func TestActionsService_AddRepoToRequiredWorkflow(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories/32", func(w http.ResponseWriter, r *http.Request) {
@@ -385,6 +393,7 @@ func TestActionsService_AddRepoToRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_RemoveRepoFromRequiredWorkflow(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories/32", func(w http.ResponseWriter, r *http.Request) {
@@ -410,6 +419,7 @@ func TestActionsService_RemoveRepoFromRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_ListRepoRequiredWorkflows(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/required_workflows", func(w http.ResponseWriter, r *http.Request) {

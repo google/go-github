@@ -9,6 +9,7 @@ import (
 )
 
 func Test_AppRestrictionsEnabled(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		description string
 		testFile    string
@@ -47,6 +48,7 @@ func Test_AppRestrictionsEnabled(t *testing.T) {
 }
 
 func Test_ListOAuthApps(t *testing.T) {
+	t.Parallel()
 	client, mux := setup(t)
 
 	mux.HandleFunc("/organizations/e/settings/oauth_application_policy", func(w http.ResponseWriter, r *http.Request) {
@@ -83,6 +85,7 @@ func Test_ListOAuthApps(t *testing.T) {
 }
 
 func Test_CreateApp(t *testing.T) {
+	t.Parallel()
 	client, mux := setup(t)
 
 	mux.HandleFunc("/apps/settings/new", func(w http.ResponseWriter, r *http.Request) {
@@ -100,6 +103,7 @@ func Test_CreateApp(t *testing.T) {
 }
 
 func Test_CreateAppWithOrg(t *testing.T) {
+	t.Parallel()
 	client, mux := setup(t)
 
 	mux.HandleFunc("/organizations/example/apps/settings/new", func(w http.ResponseWriter, r *http.Request) {

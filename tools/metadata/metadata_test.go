@@ -10,6 +10,7 @@ import (
 )
 
 func Test_normalizedOpName(t *testing.T) {
+	t.Parallel()
 	for _, td := range []struct {
 		name string
 		want string

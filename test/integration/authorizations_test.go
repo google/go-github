@@ -27,6 +27,7 @@ const InvalidTokenValue = "iamnotacroken"
 // TestAuthorizationsAppOperations tests the application/token related operations, such
 // as creating, testing, resetting and revoking application OAuth tokens.
 func TestAuthorizationsAppOperations(t *testing.T) {
+	t.Parallel()
 	appAuthenticatedClient := getOAuthAppClient(t)
 
 	// We know these vars are set because getOAuthAppClient would have

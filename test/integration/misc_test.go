@@ -15,6 +15,7 @@ import (
 )
 
 func TestEmojis(t *testing.T) {
+	t.Parallel()
 	emoji, _, err := client.Emojis.List(context.Background())
 	if err != nil {
 		t.Fatalf("List returned error: %v", err)
@@ -30,6 +31,7 @@ func TestEmojis(t *testing.T) {
 }
 
 func TestAPIMeta(t *testing.T) {
+	t.Parallel()
 	meta, _, err := client.Meta.Get(context.Background())
 	if err != nil {
 		t.Fatalf("Get returned error: %v", err)
@@ -49,6 +51,7 @@ func TestAPIMeta(t *testing.T) {
 }
 
 func TestRateLimits(t *testing.T) {
+	t.Parallel()
 	limits, _, err := client.RateLimit.Get(context.Background())
 	if err != nil {
 		t.Fatalf("RateLimits returned error: %v", err)

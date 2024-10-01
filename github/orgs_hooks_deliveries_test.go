@@ -15,6 +15,7 @@ import (
 )
 
 func TestOrganizationsService_ListHookDeliveries(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/hooks/1/deliveries", func(w http.ResponseWriter, r *http.Request) {
@@ -52,6 +53,7 @@ func TestOrganizationsService_ListHookDeliveries(t *testing.T) {
 }
 
 func TestOrganizationsService_ListHookDeliveries_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -60,6 +62,7 @@ func TestOrganizationsService_ListHookDeliveries_invalidOwner(t *testing.T) {
 }
 
 func TestOrganizationsService_GetHookDelivery(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/hooks/1/deliveries/1", func(w http.ResponseWriter, r *http.Request) {
@@ -94,6 +97,7 @@ func TestOrganizationsService_GetHookDelivery(t *testing.T) {
 }
 
 func TestOrganizationsService_GetHookDelivery_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -102,6 +106,7 @@ func TestOrganizationsService_GetHookDelivery_invalidOwner(t *testing.T) {
 }
 
 func TestOrganizationsService_RedeliverHookDelivery(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/hooks/1/deliveries/1/attempts", func(w http.ResponseWriter, r *http.Request) {
@@ -136,6 +141,7 @@ func TestOrganizationsService_RedeliverHookDelivery(t *testing.T) {
 }
 
 func TestOrganizationsService_RedeliverHookDelivery_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()

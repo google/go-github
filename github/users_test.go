@@ -16,6 +16,7 @@ import (
 )
 
 func TestUser_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &User{}, "{}")
 
 	u := &User{
@@ -145,6 +146,7 @@ func TestUser_Marshal(t *testing.T) {
 }
 
 func TestUsersService_Get_authenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
@@ -179,6 +181,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_Get_specifiedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u", func(w http.ResponseWriter, r *http.Request) {
@@ -199,6 +202,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_Get_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -207,6 +211,7 @@ func TestUsersService_Get_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_GetByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/1", func(w http.ResponseWriter, r *http.Request) {
@@ -241,6 +246,7 @@ func TestUsersService_GetByID(t *testing.T) {
 }
 
 func TestUsersService_Edit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &User{Name: String("n")}
@@ -279,6 +285,7 @@ func TestUsersService_Edit(t *testing.T) {
 }
 
 func TestUsersService_GetHovercard(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/hovercard", func(w http.ResponseWriter, r *http.Request) {
@@ -315,6 +322,7 @@ func TestUsersService_GetHovercard(t *testing.T) {
 }
 
 func TestUsersService_ListAll(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
@@ -346,6 +354,7 @@ func TestUsersService_ListAll(t *testing.T) {
 }
 
 func TestUsersService_ListInvitations(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/repository_invitations", func(w http.ResponseWriter, r *http.Request) {
@@ -375,6 +384,7 @@ func TestUsersService_ListInvitations(t *testing.T) {
 }
 
 func TestUsersService_ListInvitations_withOptions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/repository_invitations", func(w http.ResponseWriter, r *http.Request) {
@@ -393,6 +403,7 @@ func TestUsersService_ListInvitations_withOptions(t *testing.T) {
 }
 
 func TestUsersService_AcceptInvitation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/repository_invitations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -417,6 +428,7 @@ func TestUsersService_AcceptInvitation(t *testing.T) {
 }
 
 func TestUsersService_DeclineInvitation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/repository_invitations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -441,6 +453,7 @@ func TestUsersService_DeclineInvitation(t *testing.T) {
 }
 
 func TestUserContext_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UserContext{}, "{}")
 
 	u := &UserContext{
@@ -457,6 +470,7 @@ func TestUserContext_Marshal(t *testing.T) {
 }
 
 func TestHovercard_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Hovercard{}, "{}")
 
 	h := &Hovercard{
@@ -481,6 +495,7 @@ func TestHovercard_Marshal(t *testing.T) {
 }
 
 func TestUserListOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UserListOptions{}, "{}")
 
 	u := &UserListOptions{
@@ -501,6 +516,7 @@ func TestUserListOptions_Marshal(t *testing.T) {
 }
 
 func TestHovercardOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &HovercardOptions{}, "{}")
 
 	u := &HovercardOptions{

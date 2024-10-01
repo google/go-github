@@ -17,6 +17,7 @@ import (
 // Note: Org must be part of an enterprise
 // Test requires auth - set env var GITHUB_AUTH_TOKEN
 func TestOrganizationAuditLog(t *testing.T) {
+	t.Parallel()
 	org := "example_org"
 	entries, _, err := client.Organizations.GetAuditLog(context.Background(), org, nil)
 	if err != nil {

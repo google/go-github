@@ -15,6 +15,7 @@ import (
 )
 
 func TestAPIMeta_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &APIMeta{}, "{}")
 
 	a := &APIMeta{
@@ -69,6 +70,7 @@ func TestAPIMeta_Marshal(t *testing.T) {
 }
 
 func TestMetaService_Get(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/meta", func(w http.ResponseWriter, r *http.Request) {
@@ -128,6 +130,7 @@ func TestMetaService_Get(t *testing.T) {
 }
 
 func TestMetaService_Octocat(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := "input"
@@ -161,6 +164,7 @@ func TestMetaService_Octocat(t *testing.T) {
 }
 
 func TestMetaService_Zen(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	output := "sample text"

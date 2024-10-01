@@ -15,6 +15,7 @@ import (
 )
 
 func TestRepositoriesService_ListForks(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
@@ -58,6 +59,7 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 }
 
 func TestRepositoriesService_ListForks_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -66,6 +68,7 @@ func TestRepositoriesService_ListForks_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFork(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
@@ -102,6 +105,7 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
@@ -126,6 +130,7 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()

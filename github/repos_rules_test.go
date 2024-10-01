@@ -15,6 +15,7 @@ import (
 )
 
 func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		data    string
 		want    *RepositoryRule
@@ -375,6 +376,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rules/branches/branch", func(w http.ResponseWriter, r *http.Request) {
@@ -435,6 +437,7 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRulesForBranchEmptyUpdateRule(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rules/branches/branch", func(w http.ResponseWriter, r *http.Request) {
@@ -473,6 +476,7 @@ func TestRepositoriesService_GetRulesForBranchEmptyUpdateRule(t *testing.T) {
 }
 
 func TestRepositoriesService_GetAllRulesets(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rulesets", func(w http.ResponseWriter, r *http.Request) {
@@ -533,6 +537,7 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateRuleset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rulesets", func(w http.ResponseWriter, r *http.Request) {
@@ -578,6 +583,7 @@ func TestRepositoriesService_CreateRuleset(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateRulesetWithPushRules(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rulesets", func(w http.ResponseWriter, r *http.Request) {
@@ -665,6 +671,7 @@ func TestRepositoriesService_CreateRulesetWithPushRules(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRuleset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
@@ -707,6 +714,7 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	rs := &Ruleset{
@@ -758,6 +766,7 @@ func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateRuleset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
@@ -804,6 +813,7 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteRuleset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
