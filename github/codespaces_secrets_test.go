@@ -753,7 +753,7 @@ func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
 }
 
 // func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
-// 	client, mux, _ := setup()
+// 	client, mux, _ := setup(t)
 
 // 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 // 		testMethod(t, r, "GET")
