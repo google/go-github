@@ -15,7 +15,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"os"
-	"path"
+	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
@@ -71,29 +71,23 @@ func setup(t *testing.T) (client *Client, mux *http.ServeMux, serverURL string) 
 
 // openTestFile creates a new file with the given name and content for testing.
 // In order to ensure the exact file name, this function will create a new temp
-// directory, and create the file in that directory. It is the caller's
-// responsibility to remove the directory and its contents when no longer needed.
-func openTestFile(name, content string) (file *os.File, dir string, err error) {
-	dir, err = os.MkdirTemp("", "go-github")
+// directory, and create the file in that directory. The file is automatically
+// cleaned up after the test.
+func openTestFile(t *testing.T, name, content string) *os.File {
+	t.Helper()
+	fname := filepath.Join(t.TempDir(), name)
+	err := os.WriteFile(fname, []byte(content), 0600)
 	if err != nil {
-		return nil, dir, err
+		t.Fatal(err)
+	}
+	file, err := os.Open(fname)
+	if err != nil {
+		t.Fatal(err)
 	}
 
-	file, err = os.OpenFile(path.Join(dir, name), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
-	if err != nil {
-		return nil, dir, err
-	}
+	t.Cleanup(func() { file.Close() })
 
-	fmt.Fprint(file, content)
-
-	// close and re-open the file to keep file.Stat() happy
-	file.Close()
-	file, err = os.Open(file.Name())
-	if err != nil {
-		return nil, dir, err
-	}
-
-	return file, dir, err
+	return file
 }
 
 func testMethod(t *testing.T, r *http.Request, want string) {
