@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 	"testing"
 
@@ -707,11 +706,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 			fmt.Fprintf(w, `{"id":1}`)
 		})
 
-		file, dir, err := openTestFile(test.fileName, "Upload me !\n")
-		if err != nil {
-			t.Fatalf("Unable to create temp file: %v", err)
-		}
-		defer os.RemoveAll(dir)
+		file := openTestFile(t, test.fileName, "Upload me !\n")
 
 		ctx := context.Background()
 		asset, _, err := client.Repositories.UploadReleaseAsset(ctx, "o", "r", int64(key), test.uploadOpts, file)
