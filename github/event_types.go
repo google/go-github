@@ -1505,6 +1505,20 @@ type RepositoryImportEvent struct {
 	Sender *User         `json:"sender,omitempty"`
 }
 
+// RepositoryRuleSetEvent event occurs when there is activity relating to repository rulesets
+//
+// GitHub API docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#repository_ruleset
+type RepositoryRuleSetEvent struct {
+	Action            *string                         `json:"action,omitempty"`
+	Enterprise        *Enterprise                     `json:"enterprise,omitempty"`
+	Installation      *Installation                   `json:"installation,omitempty"`
+	Organization      *Organization                   `json:"organization,omitempty"`
+	Repository        *Repository                     `json:"repository,omitempty"`
+	RepositoryRuleSet RepositoryRuleSet               `json:"repository_ruleset"`
+	Changes           *RepositoryRuleSetEditedChanges `json:"changes,omitempty"`
+	Sender            *User                           `json:"sender"`
+}
+
 // RepositoryVulnerabilityAlertEvent is triggered when a security alert is created, dismissed, or resolved.
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#repository_vulnerability_alert
