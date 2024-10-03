@@ -21,12 +21,11 @@ import (
 
 func main() {
 	fmt.Print("GitHub Token: ")
-	byteToken, _ := term.ReadPassword(int(os.Stdin.Fd()))
+	token, _ := term.ReadPassword(int(os.Stdin.Fd()))
 	println()
-	token := string(byteToken)
 
 	ctx := context.Background()
-	client := github.NewClient(nil).WithAuthToken(token)
+	client := github.NewClient(nil).WithAuthToken(string(token))
 
 	user, resp, err := client.Users.Get(ctx, "")
 	if err != nil {
