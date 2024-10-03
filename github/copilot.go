@@ -63,6 +63,29 @@ type SeatCancellations struct {
 	SeatsCancelled int `json:"seats_cancelled"`
 }
 
+type CopilotUsageBreakdown struct {
+	Language         string `json:"language"`
+	Editor           string `json:"editor"`
+	SuggestionsCount int    `json:"suggestions_count"`
+	AcceptancesCount int    `json:"acceptances_count"`
+	LinesSuggested   int    `json:"lines_suggested"`
+	LinesAccepted    int    `json:"lines_accepted"`
+	ActiveUsers      int    `json:"active_users"`
+}
+
+type CopilotUsageSummary struct {
+	Day                   string                  `json:"day"`
+	TotalSuggestionsCount int                     `json:"total_suggestions_count"`
+	TotalAcceptancesCount int                     `json:"total_acceptances_count"`
+	TotalLinesSuggested   int                     `json:"total_lines_suggested"`
+	TotalLinesAccepted    int                     `json:"total_lines_accepted"`
+	TotalActiveUsers      int                     `json:"total_active_users"`
+	TotalChatAcceptances  int                     `json:"total_chat_acceptances"`
+	TotalChatTurns        int                     `json:"total_chat_turns"`
+	TotalActiveChatUsers  int                     `json:"total_active_chat_users"`
+	Breakdown             []CopilotUsageBreakdown `json:"breakdown"`
+}
+
 func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 	// Using an alias to avoid infinite recursion when calling json.Unmarshal
 	type alias CopilotSeatDetails
@@ -312,4 +335,26 @@ func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (
 	}
 
 	return seatDetails, resp, nil
+}
+
+// GetOrganizationUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE across an organization
+//
+// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-organization-members
+//
+//meta:operation GET /orgs/{org}/copilot/usage
+func (s *CopilotService) GetOrganizationUsage(ctx context.Context, org string) ([]*CopilotUsageSummary, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/usage", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var usage []*CopilotUsageSummary
+	resp, err := s.client.Do(ctx, req, &usage)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return usage, resp, nil
 }
