@@ -31,7 +31,7 @@ The services of a client divide the API into logical chunks and correspond to
 the structure of the GitHub API documentation at
 https://docs.github.com/rest .
 
-NOTE: Using the https://godoc.org/context package, one can easily
+NOTE: Using the https://pkg.go.dev/context package, one can easily
 pass cancelation signals and deadlines to various services of the client for
 handling a request. In case there is no context available, then context.Background()
 can be used as a starting point.
