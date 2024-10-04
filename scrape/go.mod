@@ -1,8 +1,6 @@
 module github.com/google/go-github/scrape
 
-go 1.21
-
-toolchain go1.22.0
+go 1.22.0
 
 require (
 	github.com/PuerkitoBio/goquery v1.9.2

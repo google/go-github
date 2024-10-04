@@ -1,8 +1,6 @@
 module newreposecretwithlibsodium
 
-go 1.21
-
-toolchain go1.22.0
+go 1.22.0
 
 require (
 	github.com/GoKillers/libsodium-go v0.0.0-20171022220152-dd733721c3cb
