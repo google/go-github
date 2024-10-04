@@ -9,7 +9,7 @@
 
 go-github is a Go client library for accessing the [GitHub API v3][].
 
-Currently, **go-github requires Go version 1.21 or greater**.  go-github tracks
+Currently, **go-github requires Go version 1.13 or greater**.  go-github tracks
 [Go's version support policy][support-policy].  We do our best not to break
 older versions of Go if we don't have to, but due to tooling constraints, we
 don't always test older versions.
@@ -205,7 +205,8 @@ if _, ok := err.(*github.RateLimitError); ok {
 }
 ```
 
-Learn more about GitHub rate limiting in the ["REST API endpoints for rate limits"](https://docs.github.com/en/rest/rate-limit).
+Learn more about GitHub rate limiting in
+["REST API endpoints for rate limits"](https://docs.github.com/en/rest/rate-limit).
 
 In addition to these rate limits, GitHub imposes a secondary rate limit on all API clients.
 This rate limit prevents clients from making too many concurrent requests.
@@ -228,7 +229,7 @@ repos, _, err := client.Repositories.List(context.WithValue(ctx, github.SleepUnt
 You can use [gofri/go-github-ratelimit](https://github.com/gofri/go-github-ratelimit) to handle
 secondary rate limit sleep-and-retry for you.
 
-Learn more about GitHub secondary rate limiting in the
+Learn more about GitHub secondary rate limiting in
 ["About secondary rate limits"](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits).
 
 ### Accepted Status ###
@@ -264,7 +265,7 @@ import "github.com/gregjones/httpcache"
     ).WithAuthToken(os.Getenv("GITHUB_TOKEN"))
 ```
 
-Learn more about GitHub conditional requests in the
+Learn more about GitHub conditional requests in
 ["Use conditional requests if appropriate"](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api?apiVersion=2022-11-28#use-conditional-requests-if-appropriate).
 
 ### Creating and Updating Resources ###
