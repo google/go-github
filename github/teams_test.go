@@ -277,7 +277,7 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", Privacy: String("closed")}
+	input := NewTeam{Name: "n", NotificationSetting: String("notifications_enabled"), Privacy: String("closed")}
 	var body string
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
@@ -308,7 +308,7 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 		t.Errorf("Teams.EditTeamByID returned %+v, want %+v", team, want)
 	}
 
-	if want := `{"name":"n","parent_team_id":null,"privacy":"closed"}` + "\n"; body != want {
+	if want := `{"name":"n","parent_team_id":null,"notification_setting":"notifications_enabled","privacy":"closed"}` + "\n"; body != want {
 		t.Errorf("Teams.EditTeamByID body = %+v, want %+v", body, want)
 	}
 }
@@ -359,7 +359,7 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", Privacy: String("closed")}
+	input := NewTeam{Name: "n", NotificationSetting: String("notifications_disabled"), Privacy: String("closed")}
 	var body string
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
@@ -390,7 +390,7 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 		t.Errorf("Teams.EditTeam returned %+v, want %+v", team, want)
 	}
 
-	if want := `{"name":"n","parent_team_id":null,"privacy":"closed"}` + "\n"; body != want {
+	if want := `{"name":"n","parent_team_id":null,"notification_setting":"notifications_disabled","privacy":"closed"}` + "\n"; body != want {
 		t.Errorf("Teams.EditTeam body = %+v, want %+v", body, want)
 	}
 }
