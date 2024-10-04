@@ -1514,7 +1514,7 @@ type RepositoryRuleSetEvent struct {
 	Installation      *Installation                   `json:"installation,omitempty"`
 	Organization      *Organization                   `json:"organization,omitempty"`
 	Repository        *Repository                     `json:"repository,omitempty"`
-	RepositoryRuleSet *RepositoryRuleSet               `json:"repository_ruleset"`
+	RepositoryRuleSet *RepositoryRuleSet              `json:"repository_ruleset"`
 	Changes           *RepositoryRuleSetEditedChanges `json:"changes,omitempty"`
 	Sender            *User                           `json:"sender"`
 }

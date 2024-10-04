@@ -20606,6 +20606,550 @@ func (r *RepositoryRule) GetParameters() json.RawMessage {
 	return *r.Parameters
 }
 
+// GetConditions returns the Conditions field if it's non-nil, zero value otherwise.
+func (r *RepositoryRuleSet) GetConditions() json.RawMessage {
+	if r == nil || r.Conditions == nil {
+		return json.RawMessage{}
+	}
+	return *r.Conditions
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (r *RepositoryRuleSet) GetCreatedAt() Timestamp {
+	if r == nil || r.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *r.CreatedAt
+}
+
+// GetCurrentUserCanBypass returns the CurrentUserCanBypass field if it's non-nil, zero value otherwise.
+func (r *RepositoryRuleSet) GetCurrentUserCanBypass() string {
+	if r == nil || r.CurrentUserCanBypass == nil {
+		return ""
+	}
+	return *r.CurrentUserCanBypass
+}
+
+// GetLinks returns the Links field.
+func (r *RepositoryRuleSet) GetLinks() *RepositoryRuleSetLink {
+	if r == nil {
+		return nil
+	}
+	return r.Links
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *RepositoryRuleSet) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
+// GetSourceType returns the SourceType field if it's non-nil, zero value otherwise.
+func (r *RepositoryRuleSet) GetSourceType() string {
+	if r == nil || r.SourceType == nil {
+		return ""
+	}
+	return *r.SourceType
+}
+
+// GetTarget returns the Target field if it's non-nil, zero value otherwise.
+func (r *RepositoryRuleSet) GetTarget() string {
+	if r == nil || r.Target == nil {
+		return ""
+	}
+	return *r.Target
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (r *RepositoryRuleSet) GetUpdatedAt() Timestamp {
+	if r == nil || r.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *r.UpdatedAt
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetCodeScanningRule) GetParameters() *RuleCodeScanningParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
+// GetConditions returns the Conditions field.
+func (r *RepositoryRuleSetEditedChanges) GetConditions() *RepositoryRuleSetEditedConditions {
+	if r == nil {
+		return nil
+	}
+	return r.Conditions
+}
+
+// GetEnforcement returns the Enforcement field.
+func (r *RepositoryRuleSetEditedChanges) GetEnforcement() *RepositoryRuleSetEditedSource {
+	if r == nil {
+		return nil
+	}
+	return r.Enforcement
+}
+
+// GetName returns the Name field.
+func (r *RepositoryRuleSetEditedChanges) GetName() *RepositoryRuleSetEditedSource {
+	if r == nil {
+		return nil
+	}
+	return r.Name
+}
+
+// GetRules returns the Rules field.
+func (r *RepositoryRuleSetEditedChanges) GetRules() *RepositoryRuleSetEditedRules {
+	if r == nil {
+		return nil
+	}
+	return r.Rules
+}
+
+// GetConfiguration returns the Configuration field.
+func (r *RepositoryRuleSetEditedRuleChanges) GetConfiguration() *RepositoryRuleSetEditedSources {
+	if r == nil {
+		return nil
+	}
+	return r.Configuration
+}
+
+// GetPattern returns the Pattern field.
+func (r *RepositoryRuleSetEditedRuleChanges) GetPattern() *RepositoryRuleSetEditedSources {
+	if r == nil {
+		return nil
+	}
+	return r.Pattern
+}
+
+// GetRuleType returns the RuleType field.
+func (r *RepositoryRuleSetEditedRuleChanges) GetRuleType() *RepositoryRuleSetEditedSources {
+	if r == nil {
+		return nil
+	}
+	return r.RuleType
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (r *RepositoryRuleSetEditedSource) GetFrom() string {
+	if r == nil || r.From == nil {
+		return ""
+	}
+	return *r.From
+}
+
+// GetChanges returns the Changes field.
+func (r *RepositoryRuleSetEditedUpdatedConditions) GetChanges() *RepositoryRuleSetUpdatedConditionsEdited {
+	if r == nil {
+		return nil
+	}
+	return r.Changes
+}
+
+// GetCondition returns the Condition field.
+func (r *RepositoryRuleSetEditedUpdatedConditions) GetCondition() *RepositoryRuleSetRefCondition {
+	if r == nil {
+		return nil
+	}
+	return r.Condition
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (r *RepositoryRuleSetEvent) GetAction() string {
+	if r == nil || r.Action == nil {
+		return ""
+	}
+	return *r.Action
+}
+
+// GetChanges returns the Changes field.
+func (r *RepositoryRuleSetEvent) GetChanges() *RepositoryRuleSetEditedChanges {
+	if r == nil {
+		return nil
+	}
+	return r.Changes
+}
+
+// GetEnterprise returns the Enterprise field.
+func (r *RepositoryRuleSetEvent) GetEnterprise() *Enterprise {
+	if r == nil {
+		return nil
+	}
+	return r.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (r *RepositoryRuleSetEvent) GetInstallation() *Installation {
+	if r == nil {
+		return nil
+	}
+	return r.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (r *RepositoryRuleSetEvent) GetOrganization() *Organization {
+	if r == nil {
+		return nil
+	}
+	return r.Organization
+}
+
+// GetRepository returns the Repository field.
+func (r *RepositoryRuleSetEvent) GetRepository() *Repository {
+	if r == nil {
+		return nil
+	}
+	return r.Repository
+}
+
+// GetRepositoryRuleSet returns the RepositoryRuleSet field.
+func (r *RepositoryRuleSetEvent) GetRepositoryRuleSet() *RepositoryRuleSet {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryRuleSet
+}
+
+// GetSender returns the Sender field.
+func (r *RepositoryRuleSetEvent) GetSender() *User {
+	if r == nil {
+		return nil
+	}
+	return r.Sender
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetFileExtensionRestrictionRule) GetParameters() *RuleFileExtensionRestrictionParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetFilePathRestrictionRule) GetParameters() *RuleFileParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
+// GetHTML returns the HTML field.
+func (r *RepositoryRuleSetLink) GetHTML() *RulesetLink {
+	if r == nil {
+		return nil
+	}
+	return r.HTML
+}
+
+// GetSelf returns the Self field.
+func (r *RepositoryRuleSetLink) GetSelf() *RulesetLink {
+	if r == nil {
+		return nil
+	}
+	return r.Self
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetMaxFilePathLengthRule) GetParameters() *RuleMaxFilePathLengthParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetMaxFileSizeRule) GetParameters() *RuleMaxFileSizeParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetMergeQueueRule) GetParameters() *MergeQueueRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetPatternRule) GetParameters() *RulePatternParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetPullRequestRule) GetParameters() *PullRequestRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
+// GetRefName returns the RefName field.
+func (r *RepositoryRuleSetRefCondition) GetRefName() *RulesetRefConditionParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RefName
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetRequireDeploymentsRule) GetParameters() *RequiredDeploymentEnvironmentsRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetRequiredStatusChecksRule) GetParameters() *RequiredStatusChecksRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
+// GetBranchNamePattern returns the BranchNamePattern field.
+func (r *RepositoryRuleSetRule) GetBranchNamePattern() *RepositoryRuleSetPatternRule {
+	if r == nil {
+		return nil
+	}
+	return r.BranchNamePattern
+}
+
+// GetCodeScanning returns the CodeScanning field.
+func (r *RepositoryRuleSetRule) GetCodeScanning() *RepositoryRuleSetCodeScanningRule {
+	if r == nil {
+		return nil
+	}
+	return r.CodeScanning
+}
+
+// GetCommitAuthorEmailPattern returns the CommitAuthorEmailPattern field.
+func (r *RepositoryRuleSetRule) GetCommitAuthorEmailPattern() *RepositoryRuleSetPatternRule {
+	if r == nil {
+		return nil
+	}
+	return r.CommitAuthorEmailPattern
+}
+
+// GetCommitMessagePattern returns the CommitMessagePattern field.
+func (r *RepositoryRuleSetRule) GetCommitMessagePattern() *RepositoryRuleSetPatternRule {
+	if r == nil {
+		return nil
+	}
+	return r.CommitMessagePattern
+}
+
+// GetCommitterEmailPattern returns the CommitterEmailPattern field.
+func (r *RepositoryRuleSetRule) GetCommitterEmailPattern() *RepositoryRuleSetPatternRule {
+	if r == nil {
+		return nil
+	}
+	return r.CommitterEmailPattern
+}
+
+// GetCreation returns the Creation field.
+func (r *RepositoryRuleSetRule) GetCreation() *RepositoryRuleSetRuleType {
+	if r == nil {
+		return nil
+	}
+	return r.Creation
+}
+
+// GetDeletion returns the Deletion field.
+func (r *RepositoryRuleSetRule) GetDeletion() *RepositoryRuleSetRuleType {
+	if r == nil {
+		return nil
+	}
+	return r.Deletion
+}
+
+// GetFileExtensionRestriction returns the FileExtensionRestriction field.
+func (r *RepositoryRuleSetRule) GetFileExtensionRestriction() *RepositoryRuleSetFileExtensionRestrictionRule {
+	if r == nil {
+		return nil
+	}
+	return r.FileExtensionRestriction
+}
+
+// GetFilePathRestriction returns the FilePathRestriction field.
+func (r *RepositoryRuleSetRule) GetFilePathRestriction() *RepositoryRuleSetFilePathRestrictionRule {
+	if r == nil {
+		return nil
+	}
+	return r.FilePathRestriction
+}
+
+// GetMaxFilePathLength returns the MaxFilePathLength field.
+func (r *RepositoryRuleSetRule) GetMaxFilePathLength() *RepositoryRuleSetMaxFilePathLengthRule {
+	if r == nil {
+		return nil
+	}
+	return r.MaxFilePathLength
+}
+
+// GetMaxFileSize returns the MaxFileSize field.
+func (r *RepositoryRuleSetRule) GetMaxFileSize() *RepositoryRuleSetMaxFileSizeRule {
+	if r == nil {
+		return nil
+	}
+	return r.MaxFileSize
+}
+
+// GetMergeQueue returns the MergeQueue field.
+func (r *RepositoryRuleSetRule) GetMergeQueue() *RepositoryRuleSetMergeQueueRule {
+	if r == nil {
+		return nil
+	}
+	return r.MergeQueue
+}
+
+// GetNonFastForward returns the NonFastForward field.
+func (r *RepositoryRuleSetRule) GetNonFastForward() *RepositoryRuleSetRuleType {
+	if r == nil {
+		return nil
+	}
+	return r.NonFastForward
+}
+
+// GetPullRequest returns the PullRequest field.
+func (r *RepositoryRuleSetRule) GetPullRequest() *RepositoryRuleSetPullRequestRule {
+	if r == nil {
+		return nil
+	}
+	return r.PullRequest
+}
+
+// GetRequireDeployments returns the RequireDeployments field.
+func (r *RepositoryRuleSetRule) GetRequireDeployments() *RepositoryRuleSetRequireDeploymentsRule {
+	if r == nil {
+		return nil
+	}
+	return r.RequireDeployments
+}
+
+// GetRequiredSignatures returns the RequiredSignatures field.
+func (r *RepositoryRuleSetRule) GetRequiredSignatures() *RepositoryRuleSetRuleType {
+	if r == nil {
+		return nil
+	}
+	return r.RequiredSignatures
+}
+
+// GetRequiredStatusChecks returns the RequiredStatusChecks field.
+func (r *RepositoryRuleSetRule) GetRequiredStatusChecks() *RepositoryRuleSetRequiredStatusChecksRule {
+	if r == nil {
+		return nil
+	}
+	return r.RequiredStatusChecks
+}
+
+// GetRequireLinearHistory returns the RequireLinearHistory field.
+func (r *RepositoryRuleSetRule) GetRequireLinearHistory() *RepositoryRuleSetRuleType {
+	if r == nil {
+		return nil
+	}
+	return r.RequireLinearHistory
+}
+
+// GetTagNamePattern returns the TagNamePattern field.
+func (r *RepositoryRuleSetRule) GetTagNamePattern() *RepositoryRuleSetPatternRule {
+	if r == nil {
+		return nil
+	}
+	return r.TagNamePattern
+}
+
+// GetUpdate returns the Update field.
+func (r *RepositoryRuleSetRule) GetUpdate() *RepositoryRuleSetUpdateRule {
+	if r == nil {
+		return nil
+	}
+	return r.Update
+}
+
+// GetWorkflows returns the Workflows field.
+func (r *RepositoryRuleSetRule) GetWorkflows() *RepositoryRuleSetWorkflowsRule {
+	if r == nil {
+		return nil
+	}
+	return r.Workflows
+}
+
+// GetConditionType returns the ConditionType field.
+func (r *RepositoryRuleSetUpdatedConditionsEdited) GetConditionType() *RepositoryRuleSetEditedSource {
+	if r == nil {
+		return nil
+	}
+	return r.ConditionType
+}
+
+// GetExclude returns the Exclude field.
+func (r *RepositoryRuleSetUpdatedConditionsEdited) GetExclude() *RepositoryRuleSetEditedSources {
+	if r == nil {
+		return nil
+	}
+	return r.Exclude
+}
+
+// GetInclude returns the Include field.
+func (r *RepositoryRuleSetUpdatedConditionsEdited) GetInclude() *RepositoryRuleSetEditedSources {
+	if r == nil {
+		return nil
+	}
+	return r.Include
+}
+
+// GetTarget returns the Target field.
+func (r *RepositoryRuleSetUpdatedConditionsEdited) GetTarget() *RepositoryRuleSetEditedSource {
+	if r == nil {
+		return nil
+	}
+	return r.Target
+}
+
+// GetChanges returns the Changes field.
+func (r *RepositoryRuleSetUpdatedRules) GetChanges() *RepositoryRuleSetEditedRuleChanges {
+	if r == nil {
+		return nil
+	}
+	return r.Changes
+}
+
+// GetRule returns the Rule field.
+func (r *RepositoryRuleSetUpdatedRules) GetRule() *RepositoryRuleSetRule {
+	if r == nil {
+		return nil
+	}
+	return r.Rule
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetUpdateRule) GetParameters() *UpdateAllowsFetchAndMergeRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
+// GetParameters returns the Parameters field.
+func (r *RepositoryRuleSetWorkflowsRule) GetParameters() *RequiredWorkflowsRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.Parameters
+}
+
 // GetCommit returns the Commit field.
 func (r *RepositoryTag) GetCommit() *Commit {
 	if r == nil {
@@ -21004,6 +21548,14 @@ func (r *RequiredStatusChecksRequest) GetStrict() bool {
 		return false
 	}
 	return *r.Strict
+}
+
+// GetDoNotEnforceOnCreate returns the DoNotEnforceOnCreate field if it's non-nil, zero value otherwise.
+func (r *RequiredStatusChecksRuleParameters) GetDoNotEnforceOnCreate() bool {
+	if r == nil || r.DoNotEnforceOnCreate == nil {
+		return false
+	}
+	return *r.DoNotEnforceOnCreate
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

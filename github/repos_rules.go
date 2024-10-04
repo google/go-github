@@ -267,7 +267,7 @@ type RepositoryRuleSetRule struct {
 }
 type RepositoryRuleSetLink struct {
 	Self *RulesetLink `json:"self,omitempty"`
-	Html *RulesetLink `json:"html,omitempty"`
+	HTML *RulesetLink `json:"html,omitempty"`
 }
 
 type RepositoryRuleSetRuleType struct {
@@ -281,21 +281,27 @@ type RepositoryRuleSetUpdateRule struct {
 }
 
 type RepositoryRuleSetMergeQueueRule struct {
+	//Value for Type: "merge_queue"
 	Type       string                    `json:"type"`
 	Parameters *MergeQueueRuleParameters `json:"parameters,omitempty"`
 }
 
 type RepositoryRuleSetRequireDeploymentsRule struct {
+	//Value for Type: "required_deployments"
 	Type       string                                        `json:"type"`
 	Parameters *RequiredDeploymentEnvironmentsRuleParameters `json:"parameters,omitempty"`
 }
 
 type RepositoryRuleSetPullRequestRule struct {
+	//Value for Type: "pull_request"
+
 	Type       string                     `json:"type"`
 	Parameters *PullRequestRuleParameters `json:"parameters,omitempty"`
 }
 
 type RepositoryRuleSetRequiredStatusChecksRule struct {
+	//Value for Type: "required_status_checks"
+
 	Type       string                              `json:"type"`
 	Parameters *RequiredStatusChecksRuleParameters `json:"parameters,omitempty"`
 }
@@ -306,31 +312,38 @@ type RepositoryRuleSetPatternRule struct {
 }
 
 type RepositoryRuleSetFilePathRestrictionRule struct {
+	//Value for Type: "file_path_restriction"
 	Type       string              `json:"type"`
 	Parameters *RuleFileParameters `json:"parameters,omitempty"`
 }
 
 type RepositoryRuleSetMaxFilePathLengthRule struct {
+	//Value for Type: "max_file_path_length"
+
 	Type       string                           `json:"type"`
 	Parameters *RuleMaxFilePathLengthParameters `json:"parameters,omitempty"`
 }
 
 type RepositoryRuleSetFileExtensionRestrictionRule struct {
+	//Value for Type: "file_extension_restriction"
 	Type       string                                  `json:"type"`
 	Parameters *RuleFileExtensionRestrictionParameters `json:"parameters,omitempty"`
 }
 
 type RepositoryRuleSetMaxFileSizeRule struct {
+	//Value for Type: "max_file_size"
 	Type       string                     `json:"type"`
 	Parameters *RuleMaxFileSizeParameters `json:"parameters,omitempty"`
 }
 
 type RepositoryRuleSetWorkflowsRule struct {
+	//Value for Type: "workflows"
 	Type       string                           `json:"type"`
 	Parameters *RequiredWorkflowsRuleParameters `json:"parameters,omitempty"`
 }
 
 type RepositoryRuleSetCodeScanningRule struct {
+	//Value for Type:"code_scanning"
 	Type       string                      `json:"type"`
 	Parameters *RuleCodeScanningParameters `json:"parameters,omitempty"`
 }
