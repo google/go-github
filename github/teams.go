@@ -225,7 +225,6 @@ func copyNewTeamWithoutParent(team *NewTeam) *newTeamNoParent {
 		Description:         team.Description,
 		Maintainers:         team.Maintainers,
 		RepoNames:           team.RepoNames,
-		ParentTeamID:        nil,
 		NotificationSetting: team.NotificationSetting,
 		Privacy:             team.Privacy,
 		LDAPDN:              team.LDAPDN,
