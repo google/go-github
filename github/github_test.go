@@ -352,11 +352,13 @@ func TestWithAuthToken(t *testing.T) {
 	}
 
 	t.Run("zero-value Client", func(t *testing.T) {
+		t.Parallel()
 		c := new(Client).WithAuthToken(token)
 		validate(t, c.Client(), token)
 	})
 
 	t.Run("NewClient", func(t *testing.T) {
+		t.Parallel()
 		httpClient := &http.Client{}
 		client := NewClient(httpClient).WithAuthToken(token)
 		validate(t, client.Client(), token)
@@ -365,6 +367,7 @@ func TestWithAuthToken(t *testing.T) {
 	})
 
 	t.Run("NewTokenClient", func(t *testing.T) {
+		t.Parallel()
 		validate(t, NewTokenClient(context.Background(), token).Client(), token)
 	})
 }
@@ -462,7 +465,9 @@ func TestWithEnterpriseURLs(t *testing.T) {
 			wantUploadURL: "https://cloud-api.custom-upload-url/api/uploads/",
 		},
 	} {
+		test := test
 		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 			validate := func(c *Client, err error) {
 				t.Helper()
 				if test.wantErr != "" {
@@ -1902,7 +1907,9 @@ func TestCompareHttpResponse(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			v := compareHTTPResponse(tc.h1, tc.h2)
 			if tc.expected != v {
 				t.Errorf("Expected %t, got %t for (%#v, %#v)", tc.expected, v, tc.h1, tc.h2)
@@ -2059,7 +2066,9 @@ func TestErrorResponse_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", err, tc.otherError)
 			}
@@ -2127,7 +2136,9 @@ func TestRateLimitError_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != tc.err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", tc.err, tc.otherError)
 			}
@@ -2212,7 +2223,9 @@ func TestAbuseRateLimitError_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != tc.err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", tc.err, tc.otherError)
 			}
@@ -2242,7 +2255,9 @@ func TestAcceptedError_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", err, tc.otherError)
 			}

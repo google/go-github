@@ -70,7 +70,9 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 	}
 
 	for name, test := range testCases {
+		test := test
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			rule := []*RequiredReviewer{}
 			err := json.Unmarshal(test.data, &rule)
 			if err != nil && !test.wantError {

@@ -113,9 +113,11 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 	}
 
 	for _, tc := range tests {
+		tc := tc
 		seatDetails := &CopilotSeatDetails{}
 
 		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
 			err := json.Unmarshal([]byte(tc.data), seatDetails)
 			if err == nil && tc.wantErr {
 				t.Errorf("CopilotSeatDetails.UnmarshalJSON returned nil instead of an error")

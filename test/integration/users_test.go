@@ -18,7 +18,6 @@ import (
 )
 
 func TestUsers_Get(t *testing.T) {
-	t.Parallel()
 	// list all users
 	users, _, err := client.Users.ListAll(context.Background(), nil)
 	if err != nil {
@@ -49,7 +48,6 @@ func TestUsers_Get(t *testing.T) {
 }
 
 func TestUsers_Update(t *testing.T) {
-	t.Parallel()
 	if !checkAuth("TestUsers_Get") {
 		return
 	}
@@ -97,7 +95,6 @@ func TestUsers_Update(t *testing.T) {
 }
 
 func TestUsers_Emails(t *testing.T) {
-	t.Parallel()
 	if !checkAuth("TestUsers_Emails") {
 		return
 	}
@@ -164,7 +161,6 @@ EmailLoop:
 }
 
 func TestUsers_Keys(t *testing.T) {
-	t.Parallel()
 	keys, _, err := client.Users.ListKeys(context.Background(), "willnorris", nil)
 	if err != nil {
 		t.Fatalf("Users.ListKeys('willnorris') returned error: %v", err)

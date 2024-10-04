@@ -29,7 +29,9 @@ func Test_AppRestrictionsEnabled(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.description, func(t *testing.T) {
+			t.Parallel()
 			client, mux := setup(t)
 
 			mux.HandleFunc("/organizations/o/settings/oauth_application_policy", func(w http.ResponseWriter, r *http.Request) {

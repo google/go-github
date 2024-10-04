@@ -330,7 +330,9 @@ func TestPullRequestReviewRequest_isComfortFadePreview(t *testing.T) {
 	}}
 
 	for _, tc := range tests {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
 			gotBool, gotErr := tc.review.isComfortFadePreview()
 			if tc.wantErr != nil {
 				if gotErr != tc.wantErr {

@@ -78,6 +78,7 @@ func TestPublicKey_UnmarshalJSON(t *testing.T) {
 	for name, tt := range testCases {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			pk := PublicKey{}
 			err := json.Unmarshal(tt.data, &pk)
 			if err == nil && tt.wantErr {

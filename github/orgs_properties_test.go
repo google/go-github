@@ -423,7 +423,9 @@ func TestCustomPropertyValue_UnmarshalJSON(t *testing.T) {
 	}
 
 	for name, tc := range tests {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			cpv := &CustomPropertyValue{}
 			err := cpv.UnmarshalJSON([]byte(tc.data))
 			if (err != nil) != tc.wantErr {

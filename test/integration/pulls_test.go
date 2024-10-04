@@ -14,7 +14,6 @@ import (
 )
 
 func TestPullRequests_ListCommits(t *testing.T) {
-	t.Parallel()
 	commits, _, err := client.PullRequests.ListCommits(context.Background(), "google", "go-github", 2, nil)
 	if err != nil {
 		t.Fatalf("PullRequests.ListCommits() returned error: %v", err)

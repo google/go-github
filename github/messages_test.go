@@ -215,7 +215,9 @@ func TestValidatePayload_BadRequestBody(t *testing.T) {
 	}
 
 	for i, tt := range tests {
+		tt := tt
 		t.Run(fmt.Sprintf("test #%v", i), func(t *testing.T) {
+			t.Parallel()
 			req := &http.Request{
 				Header: http.Header{"Content-Type": []string{tt.contentType}},
 				Body:   &badReader{},

@@ -384,7 +384,9 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 	}
 
 	for i, sample := range testCases {
+		sample := sample
 		t.Run(fmt.Sprintf("case #%v", i+1), func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			base := sample.base
@@ -520,7 +522,9 @@ func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
 	}
 
 	for i, sample := range testCases {
+		sample := sample
 		t.Run(fmt.Sprintf("case #%v", i+1), func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			base := sample.base
@@ -573,7 +577,9 @@ func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
 	}
 
 	for i, sample := range testCases {
+		sample := sample
 		t.Run(fmt.Sprintf("case #%v", i+1), func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			base := sample.base
@@ -614,7 +620,9 @@ func TestRepositoriesService_CompareCommitsRaw_invalid(t *testing.T) {
 	}
 
 	for i, sample := range testCases {
+		sample := sample
 		t.Run(fmt.Sprintf("case #%v", i+1), func(t *testing.T) {
+			t.Parallel()
 			client, _, _ := setup(t)
 			_, _, err := client.Repositories.CompareCommitsRaw(ctx, "o", "r", sample.base, sample.head, RawOptions{100})
 			if err == nil {

@@ -14,7 +14,6 @@ import (
 )
 
 func TestIssueEvents(t *testing.T) {
-	t.Parallel()
 	events, _, err := client.Issues.ListRepositoryEvents(context.Background(), "google", "go-github", nil)
 	if err != nil {
 		t.Fatalf("Issues.ListRepositoryEvents returned error: %v", err)

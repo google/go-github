@@ -29,6 +29,7 @@ import (
 func TestUpdateGo(t *testing.T) {
 	t.Parallel()
 	t.Run("valid", func(t *testing.T) {
+		t.Parallel()
 		res := runTest(t, "testdata/update-go/valid", "update-go")
 		res.assertOutput("", "")
 		res.assertNoErr()
@@ -36,6 +37,7 @@ func TestUpdateGo(t *testing.T) {
 	})
 
 	t.Run("invalid", func(t *testing.T) {
+		t.Parallel()
 		res := runTest(t, "testdata/update-go/invalid", "update-go")
 		res.assertOutput("", "")
 		res.assertErr(`
@@ -65,7 +67,7 @@ GET /undocumented/{undocumented_id}
 `, "")
 }
 
-func TestUpdateOpenAPI(t *testing.T) {
+func TestUpdateOpenAPI(t *testing.T) { //nolint:paralleltest
 	// t.Parallel() - cannot use when helper calls t.Setenv
 	testServer := newTestServer(t, "main", map[string]interface{}{
 		"api.github.com/api.github.com.json": openapi3.T{

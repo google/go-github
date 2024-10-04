@@ -19,7 +19,6 @@ import (
 )
 
 func TestRepositories_CRUD(t *testing.T) {
-	t.Parallel()
 	if !checkAuth("TestRepositories_CRUD") {
 		return
 	}
@@ -55,7 +54,6 @@ func TestRepositories_CRUD(t *testing.T) {
 }
 
 func TestRepositories_BranchesTags(t *testing.T) {
-	t.Parallel()
 	// branches
 	branches, _, err := client.Repositories.ListBranches(context.Background(), "git", "git", nil)
 	if err != nil {
@@ -83,7 +81,6 @@ func TestRepositories_BranchesTags(t *testing.T) {
 }
 
 func TestRepositories_EditBranches(t *testing.T) {
-	t.Parallel()
 	if !checkAuth("TestRepositories_EditBranches") {
 		return
 	}
@@ -161,7 +158,6 @@ func TestRepositories_EditBranches(t *testing.T) {
 }
 
 func TestRepositories_ListByAuthenticatedUser(t *testing.T) {
-	t.Parallel()
 	if !checkAuth("TestRepositories_ListByAuthenticatedUser") {
 		return
 	}
@@ -173,7 +169,6 @@ func TestRepositories_ListByAuthenticatedUser(t *testing.T) {
 }
 
 func TestRepositories_ListByUser(t *testing.T) {
-	t.Parallel()
 	_, _, err := client.Repositories.ListByUser(context.Background(), "google", nil)
 	if err != nil {
 		t.Fatalf("Repositories.ListByUser('google') returned error: %v", err)
@@ -192,7 +187,6 @@ func TestRepositories_ListByUser(t *testing.T) {
 }
 
 func TestRepositories_DownloadReleaseAsset(t *testing.T) {
-	t.Parallel()
 	if !checkAuth("TestRepositories_DownloadReleaseAsset") {
 		return
 	}
@@ -209,7 +203,6 @@ func TestRepositories_DownloadReleaseAsset(t *testing.T) {
 }
 
 func TestRepositories_Autolinks(t *testing.T) {
-	t.Parallel()
 	if !checkAuth("TestRepositories_Autolinks") {
 		return
 	}

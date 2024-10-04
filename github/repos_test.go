@@ -979,7 +979,9 @@ func TestRepositoriesService_GetBranch_BadJSONResponse(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -1048,7 +1050,9 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -1089,7 +1093,9 @@ func TestRepositoriesService_RenameBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			renameBranchReq := "nn"
@@ -1147,7 +1153,9 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -1388,7 +1396,9 @@ func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -1426,7 +1436,9 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -1614,7 +1626,9 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -1792,7 +1806,9 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -1949,7 +1965,9 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -2092,7 +2110,9 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -2234,7 +2254,9 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -2288,7 +2310,9 @@ func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2381,7 +2405,9 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2459,7 +2485,9 @@ func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testi
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2497,7 +2525,9 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &RequiredStatusChecksRequest{
@@ -2573,7 +2603,9 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			appID := int64(123)
@@ -2664,7 +2696,9 @@ func TestRepositoriesService_RemoveRequiredStatusChecks(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2703,7 +2737,9 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2750,7 +2786,9 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2788,7 +2826,9 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2862,7 +2902,9 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &PullRequestReviewsEnforcementUpdate{
@@ -2949,7 +2991,9 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3004,7 +3048,9 @@ func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3042,7 +3088,9 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3093,7 +3141,9 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3143,7 +3193,9 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3181,7 +3233,9 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3233,7 +3287,9 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3285,7 +3341,9 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3512,7 +3570,9 @@ func TestRepositoriesService_ListAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3553,7 +3613,9 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3603,7 +3665,9 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3653,7 +3717,9 @@ func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3699,7 +3765,9 @@ func TestRepositoriesService_ListTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3740,7 +3808,9 @@ func TestRepositoriesService_ReplaceTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3790,7 +3860,9 @@ func TestRepositoriesService_AddTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3840,7 +3912,9 @@ func TestRepositoriesService_RemoveTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3886,7 +3960,9 @@ func TestRepositoriesService_ListUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3927,7 +4003,9 @@ func TestRepositoriesService_ReplaceUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3977,7 +4055,9 @@ func TestRepositoriesService_AddUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -4027,7 +4107,9 @@ func TestRepositoriesService_RemoveUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -4508,6 +4590,7 @@ func TestRepository_UnmarshalJSON(t *testing.T) {
 	for name, tt := range testCases {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			pk := Repository{}
 			err := json.Unmarshal(tt.data, &pk)
 			if err == nil && tt.wantErr {

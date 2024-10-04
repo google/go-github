@@ -358,9 +358,11 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 	}
 
 	for name, tc := range tests {
+		tc := tc
 		rule := &RepositoryRule{}
 
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			err := rule.UnmarshalJSON([]byte(tc.data))
 			if err == nil && tc.wantErr {
 				t.Errorf("RepositoryRule.UnmarshalJSON returned nil instead of an error")
