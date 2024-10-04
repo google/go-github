@@ -168,60 +168,60 @@ type RepositoryRule struct {
 	RulesetID         int64            `json:"ruleset_id"`
 }
 
-type RepositoryRuleSetEditedChanges struct {
-	Name        *RepositoryRuleSetEditedSource     `json:"name,omitempty"`
-	Enforcement *RepositoryRuleSetEditedSource     `json:"enforcement,omitempty"`
-	Conditions  *RepositoryRuleSetEditedConditions `json:"conditions,omitempty"`
-	Rules       *RepositoryRuleSetEditedRules      `json:"rules,omitempty"`
+type RepositoryRulesetEditedChanges struct {
+	Name        *RepositoryRulesetEditedSource     `json:"name,omitempty"`
+	Enforcement *RepositoryRulesetEditedSource     `json:"enforcement,omitempty"`
+	Conditions  *RepositoryRulesetEditedConditions `json:"conditions,omitempty"`
+	Rules       *RepositoryRulesetEditedRules      `json:"rules,omitempty"`
 }
 
-type RepositoryRuleSetEditedSource struct {
+type RepositoryRulesetEditedSource struct {
 	From *string `json:"from,omitempty"`
 }
 
-type RepositoryRuleSetEditedSources struct {
+type RepositoryRulesetEditedSources struct {
 	From []*string `json:"from,omitempty"`
 }
 
-type RepositoryRuleSetEditedConditions struct {
-	Added   []*RepositoryRuleSetRefCondition            `json:"added,omitempty"`
-	Deleted []*RepositoryRuleSetRefCondition            `json:"deleted,omitempty"`
-	Updated []*RepositoryRuleSetEditedUpdatedConditions `json:"updated,omitempty"`
+type RepositoryRulesetEditedConditions struct {
+	Added   []*RepositoryRulesetRefCondition            `json:"added,omitempty"`
+	Deleted []*RepositoryRulesetRefCondition            `json:"deleted,omitempty"`
+	Updated []*RepositoryRulesetEditedUpdatedConditions `json:"updated,omitempty"`
 }
 
-type RepositoryRuleSetEditedRules struct {
-	Added   []*RepositoryRuleSetRule         `json:"added,omitempty"`
-	Deleted []*RepositoryRuleSetRule         `json:"deleted,omitempty"`
-	Updated []*RepositoryRuleSetUpdatedRules `json:"updated,omitempty"`
+type RepositoryRulesetEditedRules struct {
+	Added   []*RepositoryRulesetRule         `json:"added,omitempty"`
+	Deleted []*RepositoryRulesetRule         `json:"deleted,omitempty"`
+	Updated []*RepositoryRulesetUpdatedRules `json:"updated,omitempty"`
 }
 
-type RepositoryRuleSetRefCondition struct {
+type RepositoryRulesetRefCondition struct {
 	RefName *RulesetRefConditionParameters `json:"ref_name,omitempty"`
 }
 
-type RepositoryRuleSetEditedUpdatedConditions struct {
-	Condition *RepositoryRuleSetRefCondition            `json:"condition,omitempty"`
-	Changes   *RepositoryRuleSetUpdatedConditionsEdited `json:"changes,omitempty"`
+type RepositoryRulesetEditedUpdatedConditions struct {
+	Condition *RepositoryRulesetRefCondition            `json:"condition,omitempty"`
+	Changes   *RepositoryRulesetUpdatedConditionsEdited `json:"changes,omitempty"`
 }
 
-type RepositoryRuleSetUpdatedConditionsEdited struct {
-	ConditionType *RepositoryRuleSetEditedSource  `json:"condition_type,omitempty"`
-	Target        *RepositoryRuleSetEditedSource  `json:"target,omitempty"`
-	Include       *RepositoryRuleSetEditedSources `json:"include,omitempty"`
-	Exclude       *RepositoryRuleSetEditedSources `json:"exclude,omitempty"`
+type RepositoryRulesetUpdatedConditionsEdited struct {
+	ConditionType *RepositoryRulesetEditedSource  `json:"condition_type,omitempty"`
+	Target        *RepositoryRulesetEditedSource  `json:"target,omitempty"`
+	Include       *RepositoryRulesetEditedSources `json:"include,omitempty"`
+	Exclude       *RepositoryRulesetEditedSources `json:"exclude,omitempty"`
 }
 
-type RepositoryRuleSetUpdatedRules struct {
-	Rule    *RepositoryRuleSetRule              `json:"rule,omitempty"`
-	Changes *RepositoryRuleSetEditedRuleChanges `json:"changes,omitempty"`
+type RepositoryRulesetUpdatedRules struct {
+	Rule    *RepositoryRulesetRule              `json:"rule,omitempty"`
+	Changes *RepositoryRulesetEditedRuleChanges `json:"changes,omitempty"`
 }
 
-type RepositoryRuleSetEditedRuleChanges struct {
-	Configuration *RepositoryRuleSetEditedSources `json:"configuration,omitempty"`
-	RuleType      *RepositoryRuleSetEditedSources `json:"rule_type,omitempty"`
-	Pattern       *RepositoryRuleSetEditedSources `json:"pattern,omitempty"`
+type RepositoryRulesetEditedRuleChanges struct {
+	Configuration *RepositoryRulesetEditedSources `json:"configuration,omitempty"`
+	RuleType      *RepositoryRulesetEditedSources `json:"rule_type,omitempty"`
+	Pattern       *RepositoryRulesetEditedSources `json:"pattern,omitempty"`
 }
-type RepositoryRuleSet struct {
+type RepositoryRuleset struct {
 	ID   int64  `json:"id"`
 	Name string `json:"name"`
 	//Possible values for target: "branch", "tag", "push"
@@ -235,114 +235,114 @@ type RepositoryRuleSet struct {
 	// Possible values for current user can bypass: "always", "pull_requests_only", "never"
 	CurrentUserCanBypass *string                  `json:"current_user_can_bypass,omitempty"`
 	NodeID               *string                  `json:"node_id,omitempty"`
-	Links                *RepositoryRuleSetLink   `json:"_links,omitempty"`
+	Links                *RepositoryRulesetLink   `json:"_links,omitempty"`
 	Conditions           *json.RawMessage         `json:"conditions,omitempty"`
-	Rules                []*RepositoryRuleSetRule `json:"rules,omitempty"`
+	Rules                []*RepositoryRulesetRule `json:"rules,omitempty"`
 	CreatedAt            *Timestamp               `json:"created_at,omitempty"`
 	UpdatedAt            *Timestamp               `json:"updated_at,omitempty"`
 }
 
-type RepositoryRuleSetRule struct {
-	Creation                 *RepositoryRuleSetRuleType                     `json:"creation,omitempty"`
-	Update                   *RepositoryRuleSetUpdateRule                   `json:"update,omitempty"`
-	Deletion                 *RepositoryRuleSetRuleType                     `json:"deletion,omitempty"`
-	RequireLinearHistory     *RepositoryRuleSetRuleType                     `json:"required_linear_history,omitempty"`
-	MergeQueue               *RepositoryRuleSetMergeQueueRule               `json:"merge_queue,omitempty"`
-	RequireDeployments       *RepositoryRuleSetRequireDeploymentsRule       `json:"required_deployments,omitempty"`
-	RequiredSignatures       *RepositoryRuleSetRuleType                     `json:"required_signatures,omitempty"`
-	PullRequest              *RepositoryRuleSetPullRequestRule              `json:"pull_request,omitempty"`
-	RequiredStatusChecks     *RepositoryRuleSetRequiredStatusChecksRule     `json:"required_status_checks,omitempty"`
-	NonFastForward           *RepositoryRuleSetRuleType                     `json:"non_fast_forward,omitempty"`
-	CommitMessagePattern     *RepositoryRuleSetPatternRule                  `json:"commit_message_pattern,omitempty"`
-	CommitAuthorEmailPattern *RepositoryRuleSetPatternRule                  `json:"commit_author_email_pattern,omitempty"`
-	CommitterEmailPattern    *RepositoryRuleSetPatternRule                  `json:"committer_email_pattern,omitempty"`
-	BranchNamePattern        *RepositoryRuleSetPatternRule                  `json:"branch_name_pattern,omitempty"`
-	TagNamePattern           *RepositoryRuleSetPatternRule                  `json:"tag_name_pattern,omitempty"`
-	FilePathRestriction      *RepositoryRuleSetFilePathRestrictionRule      `json:"file_path_restriction,omitempty"`
-	MaxFilePathLength        *RepositoryRuleSetMaxFilePathLengthRule        `json:"max_file_path_length,omitempty"`
-	FileExtensionRestriction *RepositoryRuleSetFileExtensionRestrictionRule `json:"file_extension_restriction,omitempty"`
-	MaxFileSize              *RepositoryRuleSetMaxFileSizeRule              `json:"max_file_size,omitempty"`
-	Workflows                *RepositoryRuleSetWorkflowsRule                `json:"workflows,omitempty"`
-	CodeScanning             *RepositoryRuleSetCodeScanningRule             `json:"code_scanning,omitempty"`
+type RepositoryRulesetRule struct {
+	Creation                 *RepositoryRulesetRuleType                     `json:"creation,omitempty"`
+	Update                   *RepositoryRulesetUpdateRule                   `json:"update,omitempty"`
+	Deletion                 *RepositoryRulesetRuleType                     `json:"deletion,omitempty"`
+	RequireLinearHistory     *RepositoryRulesetRuleType                     `json:"required_linear_history,omitempty"`
+	MergeQueue               *RepositoryRulesetMergeQueueRule               `json:"merge_queue,omitempty"`
+	RequireDeployments       *RepositoryRulesetRequireDeploymentsRule       `json:"required_deployments,omitempty"`
+	RequiredSignatures       *RepositoryRulesetRuleType                     `json:"required_signatures,omitempty"`
+	PullRequest              *RepositoryRulesetPullRequestRule              `json:"pull_request,omitempty"`
+	RequiredStatusChecks     *RepositoryRulesetRequiredStatusChecksRule     `json:"required_status_checks,omitempty"`
+	NonFastForward           *RepositoryRulesetRuleType                     `json:"non_fast_forward,omitempty"`
+	CommitMessagePattern     *RepositoryRulesetPatternRule                  `json:"commit_message_pattern,omitempty"`
+	CommitAuthorEmailPattern *RepositoryRulesetPatternRule                  `json:"commit_author_email_pattern,omitempty"`
+	CommitterEmailPattern    *RepositoryRulesetPatternRule                  `json:"committer_email_pattern,omitempty"`
+	BranchNamePattern        *RepositoryRulesetPatternRule                  `json:"branch_name_pattern,omitempty"`
+	TagNamePattern           *RepositoryRulesetPatternRule                  `json:"tag_name_pattern,omitempty"`
+	FilePathRestriction      *RepositoryRulesetFilePathRestrictionRule      `json:"file_path_restriction,omitempty"`
+	MaxFilePathLength        *RepositoryRulesetMaxFilePathLengthRule        `json:"max_file_path_length,omitempty"`
+	FileExtensionRestriction *RepositoryRulesetFileExtensionRestrictionRule `json:"file_extension_restriction,omitempty"`
+	MaxFileSize              *RepositoryRulesetMaxFileSizeRule              `json:"max_file_size,omitempty"`
+	Workflows                *RepositoryRulesetWorkflowsRule                `json:"workflows,omitempty"`
+	CodeScanning             *RepositoryRulesetCodeScanningRule             `json:"code_scanning,omitempty"`
 }
-type RepositoryRuleSetLink struct {
+type RepositoryRulesetLink struct {
 	Self *RulesetLink `json:"self,omitempty"`
 	HTML *RulesetLink `json:"html,omitempty"`
 }
 
-type RepositoryRuleSetRuleType struct {
+type RepositoryRulesetRuleType struct {
 	Type string `json:"type"`
 }
 
-type RepositoryRuleSetUpdateRule struct {
+type RepositoryRulesetUpdateRule struct {
 	//Value for Type: "update"
 	Type       string                                   `json:"type"`
 	Parameters *UpdateAllowsFetchAndMergeRuleParameters `json:"parameters,omitempty"`
 }
 
-type RepositoryRuleSetMergeQueueRule struct {
+type RepositoryRulesetMergeQueueRule struct {
 	//Value for Type: "merge_queue"
 	Type       string                    `json:"type"`
 	Parameters *MergeQueueRuleParameters `json:"parameters,omitempty"`
 }
 
-type RepositoryRuleSetRequireDeploymentsRule struct {
+type RepositoryRulesetRequireDeploymentsRule struct {
 	//Value for Type: "required_deployments"
 	Type       string                                        `json:"type"`
 	Parameters *RequiredDeploymentEnvironmentsRuleParameters `json:"parameters,omitempty"`
 }
 
-type RepositoryRuleSetPullRequestRule struct {
+type RepositoryRulesetPullRequestRule struct {
 	//Value for Type: "pull_request"
 
 	Type       string                     `json:"type"`
 	Parameters *PullRequestRuleParameters `json:"parameters,omitempty"`
 }
 
-type RepositoryRuleSetRequiredStatusChecksRule struct {
+type RepositoryRulesetRequiredStatusChecksRule struct {
 	//Value for Type: "required_status_checks"
 
 	Type       string                              `json:"type"`
 	Parameters *RequiredStatusChecksRuleParameters `json:"parameters,omitempty"`
 }
 
-type RepositoryRuleSetPatternRule struct {
+type RepositoryRulesetPatternRule struct {
 	Type       string                 `json:"type"`
 	Parameters *RulePatternParameters `json:"parameters,omitempty"`
 }
 
-type RepositoryRuleSetFilePathRestrictionRule struct {
+type RepositoryRulesetFilePathRestrictionRule struct {
 	//Value for Type: "file_path_restriction"
 	Type       string              `json:"type"`
 	Parameters *RuleFileParameters `json:"parameters,omitempty"`
 }
 
-type RepositoryRuleSetMaxFilePathLengthRule struct {
+type RepositoryRulesetMaxFilePathLengthRule struct {
 	//Value for Type: "max_file_path_length"
 
 	Type       string                           `json:"type"`
 	Parameters *RuleMaxFilePathLengthParameters `json:"parameters,omitempty"`
 }
 
-type RepositoryRuleSetFileExtensionRestrictionRule struct {
+type RepositoryRulesetFileExtensionRestrictionRule struct {
 	//Value for Type: "file_extension_restriction"
 	Type       string                                  `json:"type"`
 	Parameters *RuleFileExtensionRestrictionParameters `json:"parameters,omitempty"`
 }
 
-type RepositoryRuleSetMaxFileSizeRule struct {
+type RepositoryRulesetMaxFileSizeRule struct {
 	//Value for Type: "max_file_size"
 	Type       string                     `json:"type"`
 	Parameters *RuleMaxFileSizeParameters `json:"parameters,omitempty"`
 }
 
-type RepositoryRuleSetWorkflowsRule struct {
+type RepositoryRulesetWorkflowsRule struct {
 	//Value for Type: "workflows"
 	Type       string                           `json:"type"`
 	Parameters *RequiredWorkflowsRuleParameters `json:"parameters,omitempty"`
 }
 
-type RepositoryRuleSetCodeScanningRule struct {
+type RepositoryRulesetCodeScanningRule struct {
 	//Value for Type:"code_scanning"
 	Type       string                      `json:"type"`
 	Parameters *RuleCodeScanningParameters `json:"parameters,omitempty"`

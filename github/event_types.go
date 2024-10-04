@@ -1505,17 +1505,17 @@ type RepositoryImportEvent struct {
 	Sender *User         `json:"sender,omitempty"`
 }
 
-// RepositoryRuleSetEvent event occurs when there is activity relating to repository rulesets
-//
+// RepositoryRulesetEvent triggers whenever there is a change to the repository's ruleset configuration. 
+// This can include updates to protection rules, required status checks, code owners, or other related configurations.
 // GitHub API docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#repository_ruleset
-type RepositoryRuleSetEvent struct {
+type RepositoryRulesetEvent struct {
 	Action            *string                         `json:"action,omitempty"`
 	Enterprise        *Enterprise                     `json:"enterprise,omitempty"`
 	Installation      *Installation                   `json:"installation,omitempty"`
 	Organization      *Organization                   `json:"organization,omitempty"`
 	Repository        *Repository                     `json:"repository,omitempty"`
-	RepositoryRuleSet *RepositoryRuleSet              `json:"repository_ruleset"`
-	Changes           *RepositoryRuleSetEditedChanges `json:"changes,omitempty"`
+	RepositoryRuleset *RepositoryRuleset              `json:"repository_ruleset"`
+	Changes           *RepositoryRulesetEditedChanges `json:"changes,omitempty"`
 	Sender            *User                           `json:"sender"`
 }
 

@@ -98,7 +98,7 @@ var (
 		"repository":                     &RepositoryEvent{},
 		"repository_dispatch":            &RepositoryDispatchEvent{},
 		"repository_import":              &RepositoryImportEvent{},
-		"repository_ruleset":             &RepositoryRuleSetEvent{},
+		"repository_ruleset":             &RepositoryRulesetEvent{},
 		"repository_vulnerability_alert": &RepositoryVulnerabilityAlertEvent{},
 		"release":                        &ReleaseEvent{},
 		"secret_scanning_alert":          &SecretScanningAlertEvent{},

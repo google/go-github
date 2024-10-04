@@ -457,7 +457,7 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "repository",
 		},
 		{
-			payload:     &RepositoryRuleSetEvent{},
+			payload:     &RepositoryRulesetEvent{},
 			messageType: "repository_ruleset",
 		},
 		{

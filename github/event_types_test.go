@@ -9448,15 +9448,15 @@ func TestReleaseEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
-	testJSONMarshal(t, &RepositoryRuleSetEvent{}, "{}")
+func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryRulesetEvent{}, "{}")
 
 	l := make(map[string]interface{})
 	l["key"] = "value"
 
 	jsonMsg, _ := json.Marshal(&l)
 
-	u := &RepositoryRuleSetEvent{
+	u := &RepositoryRulesetEvent{
 		Action: String("a"),
 		Enterprise: &Enterprise{
 			ID:          Int(1),
@@ -9590,7 +9590,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 			URL:  String("u"),
 			Name: String("n"),
 		},
-		RepositoryRuleSet: &RepositoryRuleSet{
+		RepositoryRuleset: &RepositoryRuleset{
 			ID:          1,
 			Name:        "n",
 			Target:      String("branch"),
@@ -9606,7 +9606,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 			},
 			CurrentUserCanBypass: String("always"),
 			NodeID:               String("n"),
-			Links: &RepositoryRuleSetLink{
+			Links: &RepositoryRulesetLink{
 				Self: &RulesetLink{
 					HRef: String("href"),
 				},
@@ -9615,24 +9615,24 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 				},
 			},
 			Conditions: (*json.RawMessage)(&jsonMsg),
-			Rules: []*RepositoryRuleSetRule{
+			Rules: []*RepositoryRulesetRule{
 				{
-					Creation: &RepositoryRuleSetRuleType{
+					Creation: &RepositoryRulesetRuleType{
 						Type: "creation",
 					},
-					Update: &RepositoryRuleSetUpdateRule{
+					Update: &RepositoryRulesetUpdateRule{
 						Type: "update",
 						Parameters: &UpdateAllowsFetchAndMergeRuleParameters{
 							UpdateAllowsFetchAndMerge: true,
 						},
 					},
-					Deletion: &RepositoryRuleSetRuleType{
+					Deletion: &RepositoryRulesetRuleType{
 						Type: "deletion",
 					},
-					RequireLinearHistory: &RepositoryRuleSetRuleType{
+					RequireLinearHistory: &RepositoryRulesetRuleType{
 						Type: "require_linear_history",
 					},
-					MergeQueue: &RepositoryRuleSetMergeQueueRule{
+					MergeQueue: &RepositoryRulesetMergeQueueRule{
 						Type: "merge_queue",
 						Parameters: &MergeQueueRuleParameters{
 							CheckResponseTimeoutMinutes:  35,
@@ -9644,16 +9644,16 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 							MinEntriesToMergeWaitMinutes: 13,
 						},
 					},
-					RequireDeployments: &RepositoryRuleSetRequireDeploymentsRule{
+					RequireDeployments: &RepositoryRulesetRequireDeploymentsRule{
 						Type: "required_deployments",
 						Parameters: &RequiredDeploymentEnvironmentsRuleParameters{
 							RequiredDeploymentEnvironments: []string{"test"},
 						},
 					},
-					RequiredSignatures: &RepositoryRuleSetRuleType{
+					RequiredSignatures: &RepositoryRulesetRuleType{
 						Type: "required_signatures",
 					},
-					PullRequest: &RepositoryRuleSetPullRequestRule{
+					PullRequest: &RepositoryRulesetPullRequestRule{
 						Type: "pull_request",
 						Parameters: &PullRequestRuleParameters{
 							RequireCodeOwnerReview:         true,
@@ -9663,7 +9663,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 							DismissStaleReviewsOnPush:      true,
 						},
 					},
-					RequiredStatusChecks: &RepositoryRuleSetRequiredStatusChecksRule{
+					RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
 						Type: "required_status_checks",
 						Parameters: &RequiredStatusChecksRuleParameters{
 							RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -9675,10 +9675,10 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 							StrictRequiredStatusChecksPolicy: true,
 						},
 					},
-					NonFastForward: &RepositoryRuleSetRuleType{
+					NonFastForward: &RepositoryRulesetRuleType{
 						Type: "non_fast_forward",
 					},
-					CommitMessagePattern: &RepositoryRuleSetPatternRule{
+					CommitMessagePattern: &RepositoryRulesetPatternRule{
 						Type: "commit_message_pattern",
 						Parameters: &RulePatternParameters{
 							Name:     String("avoid test commits"),
@@ -9687,14 +9687,14 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 							Pattern:  "[test]",
 						},
 					},
-					CommitAuthorEmailPattern: &RepositoryRuleSetPatternRule{
+					CommitAuthorEmailPattern: &RepositoryRulesetPatternRule{
 						Type: "commit_author_email_pattern",
 						Parameters: &RulePatternParameters{
 							Operator: "contains",
 							Pattern:  "github",
 						},
 					},
-					CommitterEmailPattern: &RepositoryRuleSetPatternRule{
+					CommitterEmailPattern: &RepositoryRulesetPatternRule{
 						Type: "committer_email_pattern",
 						Parameters: &RulePatternParameters{
 							Name:     String("avoid commit emails"),
@@ -9703,7 +9703,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 							Pattern:  "abc",
 						},
 					},
-					BranchNamePattern: &RepositoryRuleSetPatternRule{
+					BranchNamePattern: &RepositoryRulesetPatternRule{
 						Type: "branch_name_pattern",
 						Parameters: &RulePatternParameters{
 							Name:     String("avoid branch names"),
@@ -9712,7 +9712,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 							Pattern:  "github$",
 						},
 					},
-					TagNamePattern: &RepositoryRuleSetPatternRule{
+					TagNamePattern: &RepositoryRulesetPatternRule{
 						Type: "tag_name_pattern",
 						Parameters: &RulePatternParameters{
 							Name:     String("avoid tag names"),
@@ -9721,31 +9721,31 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 							Pattern:  "github",
 						},
 					},
-					FilePathRestriction: &RepositoryRuleSetFilePathRestrictionRule{
+					FilePathRestriction: &RepositoryRulesetFilePathRestrictionRule{
 						Type: "file_path_restriction",
 						Parameters: &RuleFileParameters{
 							RestrictedFilePaths: &[]string{"/a/file"},
 						},
 					},
-					MaxFilePathLength: &RepositoryRuleSetMaxFilePathLengthRule{
+					MaxFilePathLength: &RepositoryRulesetMaxFilePathLengthRule{
 						Type: "max_file_path_length",
 						Parameters: &RuleMaxFilePathLengthParameters{
 							MaxFilePathLength: 255,
 						},
 					},
-					FileExtensionRestriction: &RepositoryRuleSetFileExtensionRestrictionRule{
+					FileExtensionRestriction: &RepositoryRulesetFileExtensionRestrictionRule{
 						Type: "file_extension_restriction",
 						Parameters: &RuleFileExtensionRestrictionParameters{
 							RestrictedFileExtensions: []string{".exe"},
 						},
 					},
-					MaxFileSize: &RepositoryRuleSetMaxFileSizeRule{
+					MaxFileSize: &RepositoryRulesetMaxFileSizeRule{
 						Type: "max_file_size",
 						Parameters: &RuleMaxFileSizeParameters{
 							MaxFileSize: 1024,
 						},
 					},
-					Workflows: &RepositoryRuleSetWorkflowsRule{
+					Workflows: &RepositoryRulesetWorkflowsRule{
 						Type: "workflows",
 						Parameters: &RequiredWorkflowsRuleParameters{
 							RequiredWorkflows: []*RuleRequiredWorkflow{
@@ -9756,7 +9756,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 							},
 						},
 					},
-					CodeScanning: &RepositoryRuleSetCodeScanningRule{
+					CodeScanning: &RepositoryRulesetCodeScanningRule{
 						Type: "code_scanning",
 						Parameters: &RuleCodeScanningParameters{
 							CodeScanningTools: []CodeScanningTool{{
@@ -9771,15 +9771,15 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 			CreatedAt: &Timestamp{referenceTime},
 			UpdatedAt: &Timestamp{referenceTime},
 		},
-		Changes: &RepositoryRuleSetEditedChanges{
-			Name: &RepositoryRuleSetEditedSource{
+		Changes: &RepositoryRulesetEditedChanges{
+			Name: &RepositoryRulesetEditedSource{
 				From: String("f"),
 			},
-			Enforcement: &RepositoryRuleSetEditedSource{
+			Enforcement: &RepositoryRulesetEditedSource{
 				From: String("e"),
 			},
-			Conditions: &RepositoryRuleSetEditedConditions{
-				Added: []*RepositoryRuleSetRefCondition{
+			Conditions: &RepositoryRulesetEditedConditions{
+				Added: []*RepositoryRulesetRefCondition{
 					{
 						RefName: &RulesetRefConditionParameters{
 							Include: []string{"refs/heads/main", "refs/heads/master"},
@@ -9787,7 +9787,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 						},
 					},
 				},
-				Deleted: []*RepositoryRuleSetRefCondition{
+				Deleted: []*RepositoryRulesetRefCondition{
 					{
 						RefName: &RulesetRefConditionParameters{
 							Include: []string{"refs/heads/main", "refs/heads/master"},
@@ -9795,51 +9795,51 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 						},
 					},
 				},
-				Updated: []*RepositoryRuleSetEditedUpdatedConditions{
+				Updated: []*RepositoryRulesetEditedUpdatedConditions{
 					{
-						Condition: &RepositoryRuleSetRefCondition{
+						Condition: &RepositoryRulesetRefCondition{
 							RefName: &RulesetRefConditionParameters{
 								Include: []string{"refs/heads/main", "refs/heads/master"},
 								Exclude: []string{"refs/heads/dev*"},
 							},
 						},
-						Changes: &RepositoryRuleSetUpdatedConditionsEdited{
-							ConditionType: &RepositoryRuleSetEditedSource{
+						Changes: &RepositoryRulesetUpdatedConditionsEdited{
+							ConditionType: &RepositoryRulesetEditedSource{
 								From: String("c"),
 							},
-							Target: &RepositoryRuleSetEditedSource{
+							Target: &RepositoryRulesetEditedSource{
 								From: String("t"),
 							},
-							Include: &RepositoryRuleSetEditedSources{
+							Include: &RepositoryRulesetEditedSources{
 								From: []*string{String("from")},
 							},
-							Exclude: &RepositoryRuleSetEditedSources{
+							Exclude: &RepositoryRulesetEditedSources{
 								From: []*string{String("to")},
 							},
 						},
 					},
 				},
 			},
-			Rules: &RepositoryRuleSetEditedRules{
-				Added: []*RepositoryRuleSetRule{
+			Rules: &RepositoryRulesetEditedRules{
+				Added: []*RepositoryRulesetRule{
 					//Creating just one object with all the possible rules for testing
 					{
-						Creation: &RepositoryRuleSetRuleType{
+						Creation: &RepositoryRulesetRuleType{
 							Type: "creation",
 						},
-						Update: &RepositoryRuleSetUpdateRule{
+						Update: &RepositoryRulesetUpdateRule{
 							Type: "update",
 							Parameters: &UpdateAllowsFetchAndMergeRuleParameters{
 								UpdateAllowsFetchAndMerge: true,
 							},
 						},
-						Deletion: &RepositoryRuleSetRuleType{
+						Deletion: &RepositoryRulesetRuleType{
 							Type: "deletion",
 						},
-						RequireLinearHistory: &RepositoryRuleSetRuleType{
+						RequireLinearHistory: &RepositoryRulesetRuleType{
 							Type: "require_linear_history",
 						},
-						MergeQueue: &RepositoryRuleSetMergeQueueRule{
+						MergeQueue: &RepositoryRulesetMergeQueueRule{
 							Type: "merge_queue",
 							Parameters: &MergeQueueRuleParameters{
 								CheckResponseTimeoutMinutes:  35,
@@ -9851,16 +9851,16 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								MinEntriesToMergeWaitMinutes: 13,
 							},
 						},
-						RequireDeployments: &RepositoryRuleSetRequireDeploymentsRule{
+						RequireDeployments: &RepositoryRulesetRequireDeploymentsRule{
 							Type: "required_deployments",
 							Parameters: &RequiredDeploymentEnvironmentsRuleParameters{
 								RequiredDeploymentEnvironments: []string{"test"},
 							},
 						},
-						RequiredSignatures: &RepositoryRuleSetRuleType{
+						RequiredSignatures: &RepositoryRulesetRuleType{
 							Type: "required_signatures",
 						},
-						PullRequest: &RepositoryRuleSetPullRequestRule{
+						PullRequest: &RepositoryRulesetPullRequestRule{
 							Type: "pull_request",
 							Parameters: &PullRequestRuleParameters{
 								RequireCodeOwnerReview:         true,
@@ -9870,7 +9870,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								DismissStaleReviewsOnPush:      true,
 							},
 						},
-						RequiredStatusChecks: &RepositoryRuleSetRequiredStatusChecksRule{
+						RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
 							Type: "required_status_checks",
 							Parameters: &RequiredStatusChecksRuleParameters{
 								RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -9882,10 +9882,10 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								StrictRequiredStatusChecksPolicy: true,
 							},
 						},
-						NonFastForward: &RepositoryRuleSetRuleType{
+						NonFastForward: &RepositoryRulesetRuleType{
 							Type: "non_fast_forward",
 						},
-						CommitMessagePattern: &RepositoryRuleSetPatternRule{
+						CommitMessagePattern: &RepositoryRulesetPatternRule{
 							Type: "commit_message_pattern",
 							Parameters: &RulePatternParameters{
 								Name:     String("avoid test commits"),
@@ -9894,14 +9894,14 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								Pattern:  "[test]",
 							},
 						},
-						CommitAuthorEmailPattern: &RepositoryRuleSetPatternRule{
+						CommitAuthorEmailPattern: &RepositoryRulesetPatternRule{
 							Type: "commit_author_email_pattern",
 							Parameters: &RulePatternParameters{
 								Operator: "contains",
 								Pattern:  "github",
 							},
 						},
-						CommitterEmailPattern: &RepositoryRuleSetPatternRule{
+						CommitterEmailPattern: &RepositoryRulesetPatternRule{
 							Type: "committer_email_pattern",
 							Parameters: &RulePatternParameters{
 								Name:     String("avoid commit emails"),
@@ -9910,7 +9910,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								Pattern:  "abc",
 							},
 						},
-						BranchNamePattern: &RepositoryRuleSetPatternRule{
+						BranchNamePattern: &RepositoryRulesetPatternRule{
 							Type: "branch_name_pattern",
 							Parameters: &RulePatternParameters{
 								Name:     String("avoid branch names"),
@@ -9919,7 +9919,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								Pattern:  "github$",
 							},
 						},
-						TagNamePattern: &RepositoryRuleSetPatternRule{
+						TagNamePattern: &RepositoryRulesetPatternRule{
 							Type: "tag_name_pattern",
 							Parameters: &RulePatternParameters{
 								Name:     String("avoid tag names"),
@@ -9928,31 +9928,31 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								Pattern:  "github",
 							},
 						},
-						FilePathRestriction: &RepositoryRuleSetFilePathRestrictionRule{
+						FilePathRestriction: &RepositoryRulesetFilePathRestrictionRule{
 							Type: "file_path_restriction",
 							Parameters: &RuleFileParameters{
 								RestrictedFilePaths: &[]string{"/a/file"},
 							},
 						},
-						MaxFilePathLength: &RepositoryRuleSetMaxFilePathLengthRule{
+						MaxFilePathLength: &RepositoryRulesetMaxFilePathLengthRule{
 							Type: "max_file_path_length",
 							Parameters: &RuleMaxFilePathLengthParameters{
 								MaxFilePathLength: 255,
 							},
 						},
-						FileExtensionRestriction: &RepositoryRuleSetFileExtensionRestrictionRule{
+						FileExtensionRestriction: &RepositoryRulesetFileExtensionRestrictionRule{
 							Type: "file_extension_restriction",
 							Parameters: &RuleFileExtensionRestrictionParameters{
 								RestrictedFileExtensions: []string{".exe"},
 							},
 						},
-						MaxFileSize: &RepositoryRuleSetMaxFileSizeRule{
+						MaxFileSize: &RepositoryRulesetMaxFileSizeRule{
 							Type: "max_file_size",
 							Parameters: &RuleMaxFileSizeParameters{
 								MaxFileSize: 1024,
 							},
 						},
-						Workflows: &RepositoryRuleSetWorkflowsRule{
+						Workflows: &RepositoryRulesetWorkflowsRule{
 							Type: "workflows",
 							Parameters: &RequiredWorkflowsRuleParameters{
 								RequiredWorkflows: []*RuleRequiredWorkflow{
@@ -9963,7 +9963,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								},
 							},
 						},
-						CodeScanning: &RepositoryRuleSetCodeScanningRule{
+						CodeScanning: &RepositoryRulesetCodeScanningRule{
 							Type: "code_scanning",
 							Parameters: &RuleCodeScanningParameters{
 								CodeScanningTools: []CodeScanningTool{{
@@ -9975,25 +9975,25 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 						},
 					},
 				},
-				Deleted: []*RepositoryRuleSetRule{
+				Deleted: []*RepositoryRulesetRule{
 					//Creating just one object with all the possible rules for testing
 					{
-						Creation: &RepositoryRuleSetRuleType{
+						Creation: &RepositoryRulesetRuleType{
 							Type: "creation",
 						},
-						Update: &RepositoryRuleSetUpdateRule{
+						Update: &RepositoryRulesetUpdateRule{
 							Type: "update",
 							Parameters: &UpdateAllowsFetchAndMergeRuleParameters{
 								UpdateAllowsFetchAndMerge: true,
 							},
 						},
-						Deletion: &RepositoryRuleSetRuleType{
+						Deletion: &RepositoryRulesetRuleType{
 							Type: "deletion",
 						},
-						RequireLinearHistory: &RepositoryRuleSetRuleType{
+						RequireLinearHistory: &RepositoryRulesetRuleType{
 							Type: "require_linear_history",
 						},
-						MergeQueue: &RepositoryRuleSetMergeQueueRule{
+						MergeQueue: &RepositoryRulesetMergeQueueRule{
 							Type: "merge_queue",
 							Parameters: &MergeQueueRuleParameters{
 								CheckResponseTimeoutMinutes:  35,
@@ -10005,16 +10005,16 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								MinEntriesToMergeWaitMinutes: 13,
 							},
 						},
-						RequireDeployments: &RepositoryRuleSetRequireDeploymentsRule{
+						RequireDeployments: &RepositoryRulesetRequireDeploymentsRule{
 							Type: "required_deployments",
 							Parameters: &RequiredDeploymentEnvironmentsRuleParameters{
 								RequiredDeploymentEnvironments: []string{"test"},
 							},
 						},
-						RequiredSignatures: &RepositoryRuleSetRuleType{
+						RequiredSignatures: &RepositoryRulesetRuleType{
 							Type: "required_signatures",
 						},
-						PullRequest: &RepositoryRuleSetPullRequestRule{
+						PullRequest: &RepositoryRulesetPullRequestRule{
 							Type: "pull_request",
 							Parameters: &PullRequestRuleParameters{
 								RequireCodeOwnerReview:         true,
@@ -10024,7 +10024,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								DismissStaleReviewsOnPush:      true,
 							},
 						},
-						RequiredStatusChecks: &RepositoryRuleSetRequiredStatusChecksRule{
+						RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
 							Type: "required_status_checks",
 							Parameters: &RequiredStatusChecksRuleParameters{
 								RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -10036,10 +10036,10 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								StrictRequiredStatusChecksPolicy: true,
 							},
 						},
-						NonFastForward: &RepositoryRuleSetRuleType{
+						NonFastForward: &RepositoryRulesetRuleType{
 							Type: "non_fast_forward",
 						},
-						CommitMessagePattern: &RepositoryRuleSetPatternRule{
+						CommitMessagePattern: &RepositoryRulesetPatternRule{
 							Type: "commit_message_pattern",
 							Parameters: &RulePatternParameters{
 								Name:     String("avoid test commits"),
@@ -10048,14 +10048,14 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								Pattern:  "[test]",
 							},
 						},
-						CommitAuthorEmailPattern: &RepositoryRuleSetPatternRule{
+						CommitAuthorEmailPattern: &RepositoryRulesetPatternRule{
 							Type: "commit_author_email_pattern",
 							Parameters: &RulePatternParameters{
 								Operator: "contains",
 								Pattern:  "github",
 							},
 						},
-						CommitterEmailPattern: &RepositoryRuleSetPatternRule{
+						CommitterEmailPattern: &RepositoryRulesetPatternRule{
 							Type: "committer_email_pattern",
 							Parameters: &RulePatternParameters{
 								Name:     String("avoid commit emails"),
@@ -10064,7 +10064,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								Pattern:  "abc",
 							},
 						},
-						BranchNamePattern: &RepositoryRuleSetPatternRule{
+						BranchNamePattern: &RepositoryRulesetPatternRule{
 							Type: "branch_name_pattern",
 							Parameters: &RulePatternParameters{
 								Name:     String("avoid branch names"),
@@ -10073,7 +10073,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								Pattern:  "github$",
 							},
 						},
-						TagNamePattern: &RepositoryRuleSetPatternRule{
+						TagNamePattern: &RepositoryRulesetPatternRule{
 							Type: "tag_name_pattern",
 							Parameters: &RulePatternParameters{
 								Name:     String("avoid tag names"),
@@ -10082,31 +10082,31 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								Pattern:  "github",
 							},
 						},
-						FilePathRestriction: &RepositoryRuleSetFilePathRestrictionRule{
+						FilePathRestriction: &RepositoryRulesetFilePathRestrictionRule{
 							Type: "file_path_restriction",
 							Parameters: &RuleFileParameters{
 								RestrictedFilePaths: &[]string{"/a/file"},
 							},
 						},
-						MaxFilePathLength: &RepositoryRuleSetMaxFilePathLengthRule{
+						MaxFilePathLength: &RepositoryRulesetMaxFilePathLengthRule{
 							Type: "max_file_path_length",
 							Parameters: &RuleMaxFilePathLengthParameters{
 								MaxFilePathLength: 255,
 							},
 						},
-						FileExtensionRestriction: &RepositoryRuleSetFileExtensionRestrictionRule{
+						FileExtensionRestriction: &RepositoryRulesetFileExtensionRestrictionRule{
 							Type: "file_extension_restriction",
 							Parameters: &RuleFileExtensionRestrictionParameters{
 								RestrictedFileExtensions: []string{".exe"},
 							},
 						},
-						MaxFileSize: &RepositoryRuleSetMaxFileSizeRule{
+						MaxFileSize: &RepositoryRulesetMaxFileSizeRule{
 							Type: "max_file_size",
 							Parameters: &RuleMaxFileSizeParameters{
 								MaxFileSize: 1024,
 							},
 						},
-						Workflows: &RepositoryRuleSetWorkflowsRule{
+						Workflows: &RepositoryRulesetWorkflowsRule{
 							Type: "workflows",
 							Parameters: &RequiredWorkflowsRuleParameters{
 								RequiredWorkflows: []*RuleRequiredWorkflow{
@@ -10117,7 +10117,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								},
 							},
 						},
-						CodeScanning: &RepositoryRuleSetCodeScanningRule{
+						CodeScanning: &RepositoryRulesetCodeScanningRule{
 							Type: "code_scanning",
 							Parameters: &RuleCodeScanningParameters{
 								CodeScanningTools: []CodeScanningTool{{
@@ -10129,25 +10129,25 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 						},
 					},
 				},
-				Updated: []*RepositoryRuleSetUpdatedRules{
+				Updated: []*RepositoryRulesetUpdatedRules{
 					{
-						Rule: &RepositoryRuleSetRule{
-							Creation: &RepositoryRuleSetRuleType{
+						Rule: &RepositoryRulesetRule{
+							Creation: &RepositoryRulesetRuleType{
 								Type: "creation",
 							},
-							Update: &RepositoryRuleSetUpdateRule{
+							Update: &RepositoryRulesetUpdateRule{
 								Type: "update",
 								Parameters: &UpdateAllowsFetchAndMergeRuleParameters{
 									UpdateAllowsFetchAndMerge: true,
 								},
 							},
-							Deletion: &RepositoryRuleSetRuleType{
+							Deletion: &RepositoryRulesetRuleType{
 								Type: "deletion",
 							},
-							RequireLinearHistory: &RepositoryRuleSetRuleType{
+							RequireLinearHistory: &RepositoryRulesetRuleType{
 								Type: "require_linear_history",
 							},
-							MergeQueue: &RepositoryRuleSetMergeQueueRule{
+							MergeQueue: &RepositoryRulesetMergeQueueRule{
 								Type: "merge_queue",
 								Parameters: &MergeQueueRuleParameters{
 									CheckResponseTimeoutMinutes:  35,
@@ -10159,16 +10159,16 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 									MinEntriesToMergeWaitMinutes: 13,
 								},
 							},
-							RequireDeployments: &RepositoryRuleSetRequireDeploymentsRule{
+							RequireDeployments: &RepositoryRulesetRequireDeploymentsRule{
 								Type: "required_deployments",
 								Parameters: &RequiredDeploymentEnvironmentsRuleParameters{
 									RequiredDeploymentEnvironments: []string{"test"},
 								},
 							},
-							RequiredSignatures: &RepositoryRuleSetRuleType{
+							RequiredSignatures: &RepositoryRulesetRuleType{
 								Type: "required_signatures",
 							},
-							PullRequest: &RepositoryRuleSetPullRequestRule{
+							PullRequest: &RepositoryRulesetPullRequestRule{
 								Type: "pull_request",
 								Parameters: &PullRequestRuleParameters{
 									RequireCodeOwnerReview:         true,
@@ -10178,7 +10178,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 									DismissStaleReviewsOnPush:      true,
 								},
 							},
-							RequiredStatusChecks: &RepositoryRuleSetRequiredStatusChecksRule{
+							RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
 								Type: "required_status_checks",
 								Parameters: &RequiredStatusChecksRuleParameters{
 									RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -10190,10 +10190,10 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 									StrictRequiredStatusChecksPolicy: true,
 								},
 							},
-							NonFastForward: &RepositoryRuleSetRuleType{
+							NonFastForward: &RepositoryRulesetRuleType{
 								Type: "non_fast_forward",
 							},
-							CommitMessagePattern: &RepositoryRuleSetPatternRule{
+							CommitMessagePattern: &RepositoryRulesetPatternRule{
 								Type: "commit_message_pattern",
 								Parameters: &RulePatternParameters{
 									Name:     String("avoid test commits"),
@@ -10202,14 +10202,14 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 									Pattern:  "[test]",
 								},
 							},
-							CommitAuthorEmailPattern: &RepositoryRuleSetPatternRule{
+							CommitAuthorEmailPattern: &RepositoryRulesetPatternRule{
 								Type: "commit_author_email_pattern",
 								Parameters: &RulePatternParameters{
 									Operator: "contains",
 									Pattern:  "github",
 								},
 							},
-							CommitterEmailPattern: &RepositoryRuleSetPatternRule{
+							CommitterEmailPattern: &RepositoryRulesetPatternRule{
 								Type: "committer_email_pattern",
 								Parameters: &RulePatternParameters{
 									Name:     String("avoid commit emails"),
@@ -10218,7 +10218,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 									Pattern:  "abc",
 								},
 							},
-							BranchNamePattern: &RepositoryRuleSetPatternRule{
+							BranchNamePattern: &RepositoryRulesetPatternRule{
 								Type: "branch_name_pattern",
 								Parameters: &RulePatternParameters{
 									Name:     String("avoid branch names"),
@@ -10227,7 +10227,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 									Pattern:  "github$",
 								},
 							},
-							TagNamePattern: &RepositoryRuleSetPatternRule{
+							TagNamePattern: &RepositoryRulesetPatternRule{
 								Type: "tag_name_pattern",
 								Parameters: &RulePatternParameters{
 									Name:     String("avoid tag names"),
@@ -10236,31 +10236,31 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 									Pattern:  "github",
 								},
 							},
-							FilePathRestriction: &RepositoryRuleSetFilePathRestrictionRule{
+							FilePathRestriction: &RepositoryRulesetFilePathRestrictionRule{
 								Type: "file_path_restriction",
 								Parameters: &RuleFileParameters{
 									RestrictedFilePaths: &[]string{"/a/file"},
 								},
 							},
-							MaxFilePathLength: &RepositoryRuleSetMaxFilePathLengthRule{
+							MaxFilePathLength: &RepositoryRulesetMaxFilePathLengthRule{
 								Type: "max_file_path_length",
 								Parameters: &RuleMaxFilePathLengthParameters{
 									MaxFilePathLength: 255,
 								},
 							},
-							FileExtensionRestriction: &RepositoryRuleSetFileExtensionRestrictionRule{
+							FileExtensionRestriction: &RepositoryRulesetFileExtensionRestrictionRule{
 								Type: "file_extension_restriction",
 								Parameters: &RuleFileExtensionRestrictionParameters{
 									RestrictedFileExtensions: []string{".exe"},
 								},
 							},
-							MaxFileSize: &RepositoryRuleSetMaxFileSizeRule{
+							MaxFileSize: &RepositoryRulesetMaxFileSizeRule{
 								Type: "max_file_size",
 								Parameters: &RuleMaxFileSizeParameters{
 									MaxFileSize: 1024,
 								},
 							},
-							Workflows: &RepositoryRuleSetWorkflowsRule{
+							Workflows: &RepositoryRulesetWorkflowsRule{
 								Type: "workflows",
 								Parameters: &RequiredWorkflowsRuleParameters{
 									RequiredWorkflows: []*RuleRequiredWorkflow{
@@ -10271,7 +10271,7 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 									},
 								},
 							},
-							CodeScanning: &RepositoryRuleSetCodeScanningRule{
+							CodeScanning: &RepositoryRulesetCodeScanningRule{
 								Type: "code_scanning",
 								Parameters: &RuleCodeScanningParameters{
 									CodeScanningTools: []CodeScanningTool{{
@@ -10282,14 +10282,14 @@ func TestRepositoryRuleSetEvent_Marshal(t *testing.T) {
 								},
 							},
 						},
-						Changes: &RepositoryRuleSetEditedRuleChanges{
-							Configuration: &RepositoryRuleSetEditedSources{
+						Changes: &RepositoryRulesetEditedRuleChanges{
+							Configuration: &RepositoryRulesetEditedSources{
 								From: []*string{String("from")},
 							},
-							RuleType: &RepositoryRuleSetEditedSources{
+							RuleType: &RepositoryRulesetEditedSources{
 								From: []*string{String("from")},
 							},
-							Pattern: &RepositoryRuleSetEditedSources{
+							Pattern: &RepositoryRulesetEditedSources{
 								From: []*string{String("from")},
 							},
 						},
