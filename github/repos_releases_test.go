@@ -19,6 +19,7 @@ import (
 )
 
 func TestRepositoriesService_ListReleases(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +55,7 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 }
 
 func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/generate-notes", func(w http.ResponseWriter, r *http.Request) {
@@ -94,6 +96,7 @@ func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRelease(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
@@ -128,6 +131,7 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_GetLatestRelease(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/latest", func(w http.ResponseWriter, r *http.Request) {
@@ -162,6 +166,7 @@ func TestRepositoriesService_GetLatestRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/tags/foo", func(w http.ResponseWriter, r *http.Request) {
@@ -196,6 +201,7 @@ func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateRelease(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &RepositoryRelease{
@@ -260,6 +266,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_EditRelease(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &RepositoryRelease{
@@ -322,6 +329,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteRelease(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
@@ -346,6 +354,7 @@ func TestRepositoriesService_DeleteRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
@@ -381,6 +390,7 @@ func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
 }
 
 func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -414,6 +424,7 @@ func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -446,6 +457,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -466,6 +478,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -499,6 +512,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -528,6 +542,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -554,6 +569,7 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 }
 
 func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ReleaseAsset{Name: String("n")}
@@ -595,6 +611,7 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -619,6 +636,7 @@ func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
+	t.Parallel()
 	var (
 		defaultUploadOptions     = &UploadOptions{Name: "n"}
 		defaultExpectedFormValue = values{"name": "n"}
@@ -709,6 +727,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &repositoryReleaseRequest{}, "{}")
 
 	u := &repositoryReleaseRequest{
@@ -737,6 +756,7 @@ func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
 }
 
 func TestReleaseAsset_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ReleaseAsset{}, "{}")
 
 	u := &ReleaseAsset{
@@ -777,6 +797,7 @@ func TestReleaseAsset_Marshal(t *testing.T) {
 }
 
 func TestRepositoryRelease_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryRelease{}, "{}")
 
 	u := &RepositoryRelease{
@@ -835,6 +856,7 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 }
 
 func TestGenerateNotesOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GenerateNotesOptions{}, "{}")
 
 	u := &GenerateNotesOptions{

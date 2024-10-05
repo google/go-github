@@ -17,6 +17,7 @@ import (
 )
 
 func TestMarshalJSON_withNilContentAndSHA(t *testing.T) {
+	t.Parallel()
 	te := &TreeEntry{
 		Path: String("path"),
 		Mode: String("mode"),
@@ -37,6 +38,7 @@ func TestMarshalJSON_withNilContentAndSHA(t *testing.T) {
 }
 
 func TestGitService_GetTree(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/trees/s", func(w http.ResponseWriter, r *http.Request) {
@@ -83,6 +85,7 @@ func TestGitService_GetTree(t *testing.T) {
 }
 
 func TestGitService_GetTree_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -91,6 +94,7 @@ func TestGitService_GetTree_invalidOwner(t *testing.T) {
 }
 
 func TestGitService_CreateTree(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := []*TreeEntry{
@@ -169,6 +173,7 @@ func TestGitService_CreateTree(t *testing.T) {
 }
 
 func TestGitService_CreateTree_Content(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := []*TreeEntry{
@@ -249,6 +254,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 }
 
 func TestGitService_CreateTree_Delete(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := []*TreeEntry{
@@ -328,6 +334,7 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 }
 
 func TestGitService_CreateTree_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -336,6 +343,7 @@ func TestGitService_CreateTree_invalidOwner(t *testing.T) {
 }
 
 func TestTree_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Tree{}, "{}")
 
 	u := &Tree{
@@ -374,6 +382,7 @@ func TestTree_Marshal(t *testing.T) {
 }
 
 func TestTreeEntry_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TreeEntry{}, "{}")
 
 	u := &TreeEntry{
@@ -400,6 +409,7 @@ func TestTreeEntry_Marshal(t *testing.T) {
 }
 
 func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &treeEntryWithFileDelete{}, "{}")
 
 	u := &treeEntryWithFileDelete{
@@ -426,6 +436,7 @@ func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
 }
 
 func TestCreateTree_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &createTree{}, "{}")
 
 	u := &createTree{

@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_CreateHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Hook{CreatedAt: &Timestamp{referenceTime}}
@@ -60,6 +61,7 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 }
 
 func TestRepositoriesService_ListHooks(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
@@ -97,6 +99,7 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 }
 
 func TestRepositoriesService_ListHooks_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -105,14 +108,17 @@ func TestRepositoriesService_ListHooks_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_ListHooks_403_code_no_rate_limit(t *testing.T) {
+	t.Parallel()
 	testErrorResponseForStatusCode(t, http.StatusForbidden)
 }
 
 func TestRepositoriesService_ListHooks_404_code(t *testing.T) {
+	t.Parallel()
 	testErrorResponseForStatusCode(t, http.StatusNotFound)
 }
 
 func TestRepositoriesService_GetHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1", func(w http.ResponseWriter, r *http.Request) {
@@ -147,6 +153,7 @@ func TestRepositoriesService_GetHook(t *testing.T) {
 }
 
 func TestRepositoriesService_GetHook_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -155,6 +162,7 @@ func TestRepositoriesService_GetHook_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_EditHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Hook{}
@@ -198,6 +206,7 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 }
 
 func TestRepositoriesService_EditHook_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -206,6 +215,7 @@ func TestRepositoriesService_EditHook_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1", func(w http.ResponseWriter, r *http.Request) {
@@ -230,6 +240,7 @@ func TestRepositoriesService_DeleteHook(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteHook_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -238,6 +249,7 @@ func TestRepositoriesService_DeleteHook_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_PingHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1/pings", func(w http.ResponseWriter, r *http.Request) {
@@ -262,6 +274,7 @@ func TestRepositoriesService_PingHook(t *testing.T) {
 }
 
 func TestRepositoriesService_TestHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1/tests", func(w http.ResponseWriter, r *http.Request) {
@@ -286,6 +299,7 @@ func TestRepositoriesService_TestHook(t *testing.T) {
 }
 
 func TestRepositoriesService_TestHook_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -294,6 +308,7 @@ func TestRepositoriesService_TestHook_invalidOwner(t *testing.T) {
 }
 
 func TestBranchWebHookPayload_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WebHookPayload{}, "{}")
 
 	v := &WebHookPayload{
@@ -424,6 +439,7 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 }
 
 func TestBranchWebHookAuthor_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WebHookAuthor{}, "{}")
 
 	v := &WebHookAuthor{
@@ -442,6 +458,7 @@ func TestBranchWebHookAuthor_Marshal(t *testing.T) {
 }
 
 func TestBranchWebHookCommit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WebHookCommit{}, "{}")
 
 	v := &WebHookCommit{
@@ -484,6 +501,7 @@ func TestBranchWebHookCommit_Marshal(t *testing.T) {
 }
 
 func TestBranchCreateHookRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &createHookRequest{}, "{}")
 
 	v := &createHookRequest{
@@ -506,6 +524,7 @@ func TestBranchCreateHookRequest_Marshal(t *testing.T) {
 }
 
 func TestBranchHook_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Hook{}, "{}")
 
 	v := &Hook{
@@ -548,6 +567,7 @@ func TestBranchHook_Marshal(t *testing.T) {
 }
 
 func TestRepositoriesService_Subscribe(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/hub", func(w http.ResponseWriter, r *http.Request) {
@@ -580,6 +600,7 @@ func TestRepositoriesService_Subscribe(t *testing.T) {
 }
 
 func TestRepositoriesService_Unsubscribe(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/hub", func(w http.ResponseWriter, r *http.Request) {

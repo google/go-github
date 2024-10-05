@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListPreReceiveHooks(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks", func(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +55,7 @@ func TestRepositoriesService_ListPreReceiveHooks(t *testing.T) {
 }
 
 func TestRepositoriesService_ListPreReceiveHooks_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -62,6 +64,7 @@ func TestRepositoriesService_ListPreReceiveHooks_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPreReceiveHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks/1", func(w http.ResponseWriter, r *http.Request) {
@@ -97,6 +100,7 @@ func TestRepositoriesService_GetPreReceiveHook(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPreReceiveHook_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -105,6 +109,7 @@ func TestRepositoriesService_GetPreReceiveHook_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdatePreReceiveHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &PreReceiveHook{}
@@ -148,6 +153,7 @@ func TestRepositoriesService_UpdatePreReceiveHook(t *testing.T) {
 }
 
 func TestRepositoriesService_PreReceiveHook_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -156,6 +162,7 @@ func TestRepositoriesService_PreReceiveHook_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_DeletePreReceiveHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks/1", func(w http.ResponseWriter, r *http.Request) {
@@ -180,6 +187,7 @@ func TestRepositoriesService_DeletePreReceiveHook(t *testing.T) {
 }
 
 func TestRepositoriesService_DeletePreReceiveHook_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -188,6 +196,7 @@ func TestRepositoriesService_DeletePreReceiveHook_invalidOwner(t *testing.T) {
 }
 
 func TestPreReceiveHook_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PreReceiveHook{}, "{}")
 
 	u := &PreReceiveHook{

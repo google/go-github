@@ -16,6 +16,7 @@ import (
 )
 
 func TestActionsService_GetActionsPermissions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +50,7 @@ func TestActionsService_GetActionsPermissions(t *testing.T) {
 }
 
 func TestActionsService_EditActionsPermissions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ActionsPermissions{EnabledRepositories: String("all"), AllowedActions: String("selected")}
@@ -92,6 +94,7 @@ func TestActionsService_EditActionsPermissions(t *testing.T) {
 }
 
 func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -135,6 +138,7 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 }
 
 func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -163,6 +167,7 @@ func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
 }
 
 func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
@@ -189,6 +194,7 @@ func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
 }
 
 func TestActionsService_RemoveEnabledReposInOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
@@ -215,6 +221,7 @@ func TestActionsService_RemoveEnabledReposInOrg(t *testing.T) {
 }
 
 func TestActionsService_GetActionsAllowed(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
@@ -248,6 +255,7 @@ func TestActionsService_GetActionsAllowed(t *testing.T) {
 }
 
 func TestActionsService_EditActionsAllowed(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
@@ -291,6 +299,7 @@ func TestActionsService_EditActionsAllowed(t *testing.T) {
 }
 
 func TestActionsAllowed_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ActionsAllowed{}, "{}")
 
 	u := &ActionsAllowed{
@@ -311,6 +320,7 @@ func TestActionsAllowed_Marshal(t *testing.T) {
 }
 
 func TestActionsPermissions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ActionsPermissions{}, "{}")
 
 	u := &ActionsPermissions{
@@ -329,6 +339,7 @@ func TestActionsPermissions_Marshal(t *testing.T) {
 }
 
 func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
@@ -362,6 +373,7 @@ func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T
 }
 
 func TestActionsService_EditDefaultWorkflowPermissionsInOrganization(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}

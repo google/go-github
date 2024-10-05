@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_GetHookConfiguration(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1/config", func(w http.ResponseWriter, r *http.Request) {
@@ -55,6 +56,7 @@ func TestRepositoriesService_GetHookConfiguration(t *testing.T) {
 }
 
 func TestRepositoriesService_GetHookConfiguration_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -63,6 +65,7 @@ func TestRepositoriesService_GetHookConfiguration_invalidOrg(t *testing.T) {
 }
 
 func TestRepositoriesService_EditHookConfiguration(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &HookConfig{}
@@ -111,6 +114,7 @@ func TestRepositoriesService_EditHookConfiguration(t *testing.T) {
 }
 
 func TestRepositoriesService_EditHookConfiguration_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()

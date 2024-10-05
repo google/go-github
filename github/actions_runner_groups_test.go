@@ -15,6 +15,7 @@ import (
 )
 
 func TestActionsService_ListOrganizationRunnerGroups(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
@@ -58,6 +59,7 @@ func TestActionsService_ListOrganizationRunnerGroups(t *testing.T) {
 }
 
 func TestActionsService_ListOrganizationRunnerGroupsVisibleToRepo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
@@ -101,6 +103,7 @@ func TestActionsService_ListOrganizationRunnerGroupsVisibleToRepo(t *testing.T) 
 }
 
 func TestActionsService_GetOrganizationRunnerGroup(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
@@ -147,6 +150,7 @@ func TestActionsService_GetOrganizationRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_DeleteOrganizationRunnerGroup(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
@@ -171,6 +175,7 @@ func TestActionsService_DeleteOrganizationRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
@@ -224,6 +229,7 @@ func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
@@ -277,6 +283,7 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_ListRepositoryAccessRunnerGroup(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -318,6 +325,7 @@ func TestActionsService_ListRepositoryAccessRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_SetRepositoryAccessRunnerGroup(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -349,6 +357,7 @@ func TestActionsService_SetRepositoryAccessRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_AddRepositoryAccessRunnerGroup(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories/42", func(w http.ResponseWriter, r *http.Request) {
@@ -373,6 +382,7 @@ func TestActionsService_AddRepositoryAccessRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_RemoveRepositoryAccessRunnerGroup(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories/42", func(w http.ResponseWriter, r *http.Request) {
@@ -397,6 +407,7 @@ func TestActionsService_RemoveRepositoryAccessRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_ListRunnerGroupRunners(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
@@ -439,6 +450,7 @@ func TestActionsService_ListRunnerGroupRunners(t *testing.T) {
 }
 
 func TestActionsService_SetRunnerGroupRunners(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
@@ -470,6 +482,7 @@ func TestActionsService_SetRunnerGroupRunners(t *testing.T) {
 }
 
 func TestActionsService_AddRunnerGroupRunners(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
@@ -494,6 +507,7 @@ func TestActionsService_AddRunnerGroupRunners(t *testing.T) {
 }
 
 func TestActionsService_RemoveRunnerGroupRunners(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
@@ -518,6 +532,7 @@ func TestActionsService_RemoveRunnerGroupRunners(t *testing.T) {
 }
 
 func TestRunnerGroup_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RunnerGroup{}, "{}")
 
 	u := &RunnerGroup{
@@ -550,6 +565,7 @@ func TestRunnerGroup_Marshal(t *testing.T) {
 }
 
 func TestRunnerGroups_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RunnerGroups{}, "{}")
 
 	u := &RunnerGroups{
@@ -590,6 +606,7 @@ func TestRunnerGroups_Marshal(t *testing.T) {
 }
 
 func TestCreateRunnerGroupRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateRunnerGroupRequest{}, "{}")
 
 	u := &CreateRunnerGroupRequest{
@@ -616,6 +633,7 @@ func TestCreateRunnerGroupRequest_Marshal(t *testing.T) {
 }
 
 func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UpdateRunnerGroupRequest{}, "{}")
 
 	u := &UpdateRunnerGroupRequest{
@@ -638,6 +656,7 @@ func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
 }
 
 func TestSetRepoAccessRunnerGroupRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SetRepoAccessRunnerGroupRequest{}, "{}")
 
 	u := &SetRepoAccessRunnerGroupRequest{
@@ -652,6 +671,7 @@ func TestSetRepoAccessRunnerGroupRequest_Marshal(t *testing.T) {
 }
 
 func TestSetRunnerGroupRunnersRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SetRunnerGroupRunnersRequest{}, "{}")
 
 	u := &SetRunnerGroupRunnersRequest{

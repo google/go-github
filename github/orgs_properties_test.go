@@ -15,6 +15,7 @@ import (
 )
 
 func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/schema", func(w http.ResponseWriter, r *http.Request) {
@@ -86,6 +87,7 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/schema", func(w http.ResponseWriter, r *http.Request) {
@@ -148,6 +150,7 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 }
 
 func TestOrganizationsService_GetCustomProperty(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/schema/name", func(w http.ResponseWriter, r *http.Request) {
@@ -197,6 +200,7 @@ func TestOrganizationsService_GetCustomProperty(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/schema/name", func(w http.ResponseWriter, r *http.Request) {
@@ -253,6 +257,7 @@ func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveCustomProperty(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/schema/name", func(w http.ResponseWriter, r *http.Request) {
@@ -273,6 +278,7 @@ func TestOrganizationsService_RemoveCustomProperty(t *testing.T) {
 }
 
 func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
@@ -359,6 +365,7 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 }
 
 func TestCustomPropertyValue_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		data    string
 		want    *CustomPropertyValue
@@ -416,7 +423,9 @@ func TestCustomPropertyValue_UnmarshalJSON(t *testing.T) {
 	}
 
 	for name, tc := range tests {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			cpv := &CustomPropertyValue{}
 			err := cpv.UnmarshalJSON([]byte(tc.data))
 			if (err != nil) != tc.wantErr {
@@ -431,6 +440,7 @@ func TestCustomPropertyValue_UnmarshalJSON(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateOrUpdateRepoCustomPropertyValues(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {

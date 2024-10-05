@@ -17,6 +17,7 @@ import (
 )
 
 func TestTeamsService_ListDiscussionsByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/discussions", func(w http.ResponseWriter, r *http.Request) {
@@ -131,6 +132,7 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 }
 
 func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions", func(w http.ResponseWriter, r *http.Request) {
@@ -245,6 +247,7 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 }
 
 func TestTeamsService_GetDiscussionByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
@@ -279,6 +282,7 @@ func TestTeamsService_GetDiscussionByID(t *testing.T) {
 }
 
 func TestTeamsService_GetDiscussionBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions/3", func(w http.ResponseWriter, r *http.Request) {
@@ -313,6 +317,7 @@ func TestTeamsService_GetDiscussionBySlug(t *testing.T) {
 }
 
 func TestTeamsService_CreateDiscussionByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := TeamDiscussion{Title: String("c_t"), Body: String("c_b")}
@@ -356,6 +361,7 @@ func TestTeamsService_CreateDiscussionByID(t *testing.T) {
 }
 
 func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := TeamDiscussion{Title: String("c_t"), Body: String("c_b")}
@@ -399,6 +405,7 @@ func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
 }
 
 func TestTeamsService_EditDiscussionByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := TeamDiscussion{Title: String("e_t"), Body: String("e_b")}
@@ -442,6 +449,7 @@ func TestTeamsService_EditDiscussionByID(t *testing.T) {
 }
 
 func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := TeamDiscussion{Title: String("e_t"), Body: String("e_b")}
@@ -485,6 +493,7 @@ func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
 }
 
 func TestTeamsService_DeleteDiscussionByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
@@ -509,6 +518,7 @@ func TestTeamsService_DeleteDiscussionByID(t *testing.T) {
 }
 
 func TestTeamsService_DeleteDiscussionBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions/3", func(w http.ResponseWriter, r *http.Request) {
@@ -533,6 +543,7 @@ func TestTeamsService_DeleteDiscussionBySlug(t *testing.T) {
 }
 
 func TestTeamDiscussion_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamDiscussion{}, "{}")
 
 	u := &TeamDiscussion{

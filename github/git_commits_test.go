@@ -38,6 +38,7 @@ func uncalledSigner(t *testing.T) MessageSignerFunc {
 }
 
 func TestCommit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Commit{}, "{}")
 
 	u := &Commit{
@@ -137,6 +138,7 @@ func TestCommit_Marshal(t *testing.T) {
 }
 
 func TestGitService_GetCommit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/commits/s", func(w http.ResponseWriter, r *http.Request) {
@@ -171,6 +173,7 @@ func TestGitService_GetCommit(t *testing.T) {
 }
 
 func TestGitService_GetCommit_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -179,6 +182,7 @@ func TestGitService_GetCommit_invalidOwner(t *testing.T) {
 }
 
 func TestGitService_CreateCommit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Commit{
@@ -231,6 +235,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 }
 
 func TestGitService_CreateSignedCommit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	signature := "----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"
@@ -289,6 +294,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 }
 
 func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	input := &Commit{}
@@ -302,6 +308,7 @@ func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
 }
 
 func TestGitService_CreateCommitWithNilCommit(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -312,6 +319,7 @@ func TestGitService_CreateCommitWithNilCommit(t *testing.T) {
 }
 
 func TestGitService_CreateCommit_WithSigner(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	signature := "my voice is my password"
@@ -362,6 +370,7 @@ Commit Message.`
 }
 
 func TestGitService_createSignature_nilSigner(t *testing.T) {
+	t.Parallel()
 	a := &createCommit{
 		Message: String("Commit Message."),
 		Tree:    String("t"),
@@ -376,6 +385,7 @@ func TestGitService_createSignature_nilSigner(t *testing.T) {
 }
 
 func TestGitService_createSignature_nilCommit(t *testing.T) {
+	t.Parallel()
 	_, err := createSignature(uncalledSigner(t), nil)
 
 	if err == nil {
@@ -384,6 +394,7 @@ func TestGitService_createSignature_nilCommit(t *testing.T) {
 }
 
 func TestGitService_createSignature_signerError(t *testing.T) {
+	t.Parallel()
 	a := &createCommit{
 		Message: String("Commit Message."),
 		Tree:    String("t"),
@@ -400,6 +411,7 @@ func TestGitService_createSignature_signerError(t *testing.T) {
 }
 
 func TestGitService_createSignatureMessage_nilCommit(t *testing.T) {
+	t.Parallel()
 	_, err := createSignatureMessage(nil)
 	if err == nil {
 		t.Errorf("Expected error to be returned due to nil key")
@@ -407,6 +419,7 @@ func TestGitService_createSignatureMessage_nilCommit(t *testing.T) {
 }
 
 func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
+	t.Parallel()
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
 	_, err := createSignatureMessage(&createCommit{
@@ -424,6 +437,7 @@ func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
 }
 
 func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
+	t.Parallel()
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 	emptyString := ""
 	_, err := createSignatureMessage(&createCommit{
@@ -441,6 +455,7 @@ func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
 }
 
 func TestGitService_createSignatureMessage_nilAuthor(t *testing.T) {
+	t.Parallel()
 	_, err := createSignatureMessage(&createCommit{
 		Message: String("Commit Message."),
 		Parents: []string{"p"},
@@ -452,6 +467,7 @@ func TestGitService_createSignatureMessage_nilAuthor(t *testing.T) {
 }
 
 func TestGitService_createSignatureMessage_withoutTree(t *testing.T) {
+	t.Parallel()
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
 	msg, _ := createSignatureMessage(&createCommit{
@@ -474,6 +490,7 @@ Commit Message.`
 }
 
 func TestGitService_createSignatureMessage_withoutCommitter(t *testing.T) {
+	t.Parallel()
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
 	msg, _ := createSignatureMessage(&createCommit{
@@ -501,6 +518,7 @@ Commit Message.`
 }
 
 func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -509,6 +527,7 @@ func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
 }
 
 func TestSignatureVerification_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SignatureVerification{}, "{}")
 
 	u := &SignatureVerification{
@@ -529,6 +548,7 @@ func TestSignatureVerification_Marshal(t *testing.T) {
 }
 
 func TestCommitAuthor_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommitAuthor{}, "{}")
 
 	u := &CommitAuthor{
@@ -549,6 +569,7 @@ func TestCommitAuthor_Marshal(t *testing.T) {
 }
 
 func TestCreateCommit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &createCommit{}, "{}")
 
 	u := &createCommit{

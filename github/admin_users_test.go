@@ -17,6 +17,7 @@ import (
 )
 
 func TestAdminUsers_Create(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
@@ -62,6 +63,7 @@ func TestAdminUsers_Create(t *testing.T) {
 }
 
 func TestAdminUsers_Delete(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/github", func(w http.ResponseWriter, r *http.Request) {
@@ -86,6 +88,7 @@ func TestAdminUsers_Delete(t *testing.T) {
 }
 
 func TestUserImpersonation_Create(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
@@ -157,6 +160,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 }
 
 func TestUserImpersonation_Delete(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
@@ -181,6 +185,7 @@ func TestUserImpersonation_Delete(t *testing.T) {
 }
 
 func TestCreateUserRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateUserRequest{}, "{}")
 
 	u := &CreateUserRequest{
@@ -197,6 +202,7 @@ func TestCreateUserRequest_Marshal(t *testing.T) {
 }
 
 func TestImpersonateUserOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ImpersonateUserOptions{}, "{}")
 
 	u := &ImpersonateUserOptions{
@@ -213,6 +219,7 @@ func TestImpersonateUserOptions_Marshal(t *testing.T) {
 }
 
 func TestOAuthAPP_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &OAuthAPP{}, "{}")
 
 	u := &OAuthAPP{
@@ -231,6 +238,7 @@ func TestOAuthAPP_Marshal(t *testing.T) {
 }
 
 func TestUserAuthorization_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UserAuthorization{}, "{}")
 
 	u := &UserAuthorization{

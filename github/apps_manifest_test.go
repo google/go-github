@@ -26,6 +26,7 @@ const (
 )
 
 func TestGetConfig(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app-manifests/code/conversions", func(w http.ResponseWriter, r *http.Request) {
@@ -67,6 +68,7 @@ func TestGetConfig(t *testing.T) {
 }
 
 func TestAppConfig_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AppConfig{}, "{}")
 
 	u := &AppConfig{

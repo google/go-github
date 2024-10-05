@@ -17,6 +17,7 @@ import (
 )
 
 func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners/downloads", func(w http.ResponseWriter, r *http.Request) {
@@ -57,6 +58,7 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 }
 
 func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
@@ -100,6 +102,7 @@ func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
 }
 
 func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
@@ -143,6 +146,7 @@ func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
 }
 
 func TestActionsService_CreateRegistrationToken(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners/registration-token", func(w http.ResponseWriter, r *http.Request) {
@@ -179,6 +183,7 @@ func TestActionsService_CreateRegistrationToken(t *testing.T) {
 }
 
 func TestActionsService_ListRunners(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners", func(w http.ResponseWriter, r *http.Request) {
@@ -223,6 +228,7 @@ func TestActionsService_ListRunners(t *testing.T) {
 }
 
 func TestActionsService_GetRunner(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners/23", func(w http.ResponseWriter, r *http.Request) {
@@ -262,6 +268,7 @@ func TestActionsService_GetRunner(t *testing.T) {
 }
 
 func TestActionsService_CreateRemoveToken(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners/remove-token", func(w http.ResponseWriter, r *http.Request) {
@@ -296,6 +303,7 @@ func TestActionsService_CreateRemoveToken(t *testing.T) {
 }
 
 func TestActionsService_RemoveRunner(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runners/21", func(w http.ResponseWriter, r *http.Request) {
@@ -320,6 +328,7 @@ func TestActionsService_RemoveRunner(t *testing.T) {
 }
 
 func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners/downloads", func(w http.ResponseWriter, r *http.Request) {
@@ -360,6 +369,7 @@ func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T)
 }
 
 func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners/registration-token", func(w http.ResponseWriter, r *http.Request) {
@@ -396,6 +406,7 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 }
 
 func TestActionsService_ListOrganizationRunners(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners", func(w http.ResponseWriter, r *http.Request) {
@@ -440,6 +451,7 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 }
 
 func TestActionsService_GetOrganizationRunner(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners/23", func(w http.ResponseWriter, r *http.Request) {
@@ -479,6 +491,7 @@ func TestActionsService_GetOrganizationRunner(t *testing.T) {
 }
 
 func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners/remove-token", func(w http.ResponseWriter, r *http.Request) {
@@ -513,6 +526,7 @@ func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
 }
 
 func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runners/21", func(w http.ResponseWriter, r *http.Request) {
@@ -537,6 +551,7 @@ func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
 }
 
 func TestRunnerApplicationDownload_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RunnerApplicationDownload{}, "{}")
 
 	u := &RunnerApplicationDownload{
@@ -561,6 +576,7 @@ func TestRunnerApplicationDownload_Marshal(t *testing.T) {
 }
 
 func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ActionsEnabledOnOrgRepos{}, "{}")
 
 	u := &ActionsEnabledOnOrgRepos{
@@ -589,6 +605,7 @@ func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
 }
 
 func TestRegistrationToken_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RegistrationToken{}, "{}")
 
 	u := &RegistrationToken{
@@ -605,6 +622,7 @@ func TestRegistrationToken_Marshal(t *testing.T) {
 }
 
 func TestRunnerLabels_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RunnerLabels{}, "{}")
 
 	u := &RunnerLabels{
@@ -623,6 +641,7 @@ func TestRunnerLabels_Marshal(t *testing.T) {
 }
 
 func TestRunner_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Runner{}, "{}")
 
 	u := &Runner{
@@ -659,6 +678,7 @@ func TestRunner_Marshal(t *testing.T) {
 }
 
 func TestRunners_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Runners{}, "{}")
 
 	u := &Runners{
@@ -705,6 +725,7 @@ func TestRunners_Marshal(t *testing.T) {
 }
 
 func TestRemoveToken_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RemoveToken{}, "{}")
 
 	u := &RemoveToken{

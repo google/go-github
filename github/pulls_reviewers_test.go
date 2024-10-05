@@ -15,6 +15,7 @@ import (
 )
 
 func TestReviewersRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ReviewersRequest{}, "{}")
 
 	u := &ReviewersRequest{
@@ -37,6 +38,7 @@ func TestReviewersRequest_Marshal(t *testing.T) {
 }
 
 func TestReviewers_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Reviewers{}, "{}")
 
 	u := &Reviewers{
@@ -119,6 +121,7 @@ func TestReviewers_Marshal(t *testing.T) {
 }
 
 func TestRequestReviewers(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
@@ -149,6 +152,7 @@ func TestRequestReviewers(t *testing.T) {
 }
 
 func TestRemoveReviewers(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
@@ -169,6 +173,7 @@ func TestRemoveReviewers(t *testing.T) {
 }
 
 func TestListReviewers(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
@@ -211,6 +216,7 @@ func TestListReviewers(t *testing.T) {
 }
 
 func TestListReviewers_withOptions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {

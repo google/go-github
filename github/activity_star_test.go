@@ -17,6 +17,7 @@ import (
 )
 
 func TestActivityService_ListStargazers(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/stargazers", func(w http.ResponseWriter, r *http.Request) {
@@ -56,6 +57,7 @@ func TestActivityService_ListStargazers(t *testing.T) {
 }
 
 func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/starred", func(w http.ResponseWriter, r *http.Request) {
@@ -91,6 +93,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 }
 
 func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/starred", func(w http.ResponseWriter, r *http.Request) {
@@ -132,6 +135,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 }
 
 func TestActivityService_ListStarred_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -140,6 +144,7 @@ func TestActivityService_ListStarred_invalidUser(t *testing.T) {
 }
 
 func TestActivityService_IsStarred_hasStar(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -172,6 +177,7 @@ func TestActivityService_IsStarred_hasStar(t *testing.T) {
 }
 
 func TestActivityService_IsStarred_noStar(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -204,6 +210,7 @@ func TestActivityService_IsStarred_noStar(t *testing.T) {
 }
 
 func TestActivityService_IsStarred_invalidID(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -212,6 +219,7 @@ func TestActivityService_IsStarred_invalidID(t *testing.T) {
 }
 
 func TestActivityService_Star(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -236,6 +244,7 @@ func TestActivityService_Star(t *testing.T) {
 }
 
 func TestActivityService_Star_invalidID(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -244,6 +253,7 @@ func TestActivityService_Star_invalidID(t *testing.T) {
 }
 
 func TestActivityService_Unstar(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -268,6 +278,7 @@ func TestActivityService_Unstar(t *testing.T) {
 }
 
 func TestActivityService_Unstar_invalidID(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -276,6 +287,7 @@ func TestActivityService_Unstar_invalidID(t *testing.T) {
 }
 
 func TestStarredRepository_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &StarredRepository{}, "{}")
 
 	u := &StarredRepository{
@@ -300,6 +312,7 @@ func TestStarredRepository_Marshal(t *testing.T) {
 }
 
 func TestStargazer_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Stargazer{}, "{}")
 
 	u := &Stargazer{

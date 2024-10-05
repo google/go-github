@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListProjects(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/projects", func(w http.ResponseWriter, r *http.Request) {
@@ -53,6 +54,7 @@ func TestRepositoriesService_ListProjects(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateProject(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ProjectOptions{Name: String("Project Name"), Body: String("Project body.")}

@@ -17,6 +17,7 @@ import (
 )
 
 func TestGitService_GetBlob(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/blobs/s", func(w http.ResponseWriter, r *http.Request) {
@@ -59,6 +60,7 @@ func TestGitService_GetBlob(t *testing.T) {
 }
 
 func TestGitService_GetBlob_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -67,6 +69,7 @@ func TestGitService_GetBlob_invalidOwner(t *testing.T) {
 }
 
 func TestGitService_GetBlobRaw(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/blobs/s", func(w http.ResponseWriter, r *http.Request) {
@@ -103,6 +106,7 @@ func TestGitService_GetBlobRaw(t *testing.T) {
 }
 
 func TestGitService_CreateBlob(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Blob{
@@ -159,6 +163,7 @@ func TestGitService_CreateBlob(t *testing.T) {
 }
 
 func TestGitService_CreateBlob_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -167,6 +172,7 @@ func TestGitService_CreateBlob_invalidOwner(t *testing.T) {
 }
 
 func TestBlob_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Blob{}, "{}")
 
 	u := &Blob{

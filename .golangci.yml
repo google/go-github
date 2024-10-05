@@ -11,7 +11,9 @@ linters:
     - gosec
     - misspell
     - nakedret
+    - paralleltest
     - stylecheck
+    - tparallel
     - unconvert
     - unparam
     - whitespace
@@ -50,3 +52,7 @@ issues:
     - linters: [ gosec ]
       text: 'G304: Potential file inclusion via variable'
       path: '^(example|tools)\/'
+
+    # We don't run parallel integration tests
+    - linters: [ paralleltest, tparallel ]
+      path: '^test/integration'

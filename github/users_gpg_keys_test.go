@@ -16,6 +16,7 @@ import (
 )
 
 func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/gpg_keys", func(w http.ResponseWriter, r *http.Request) {
@@ -52,6 +53,7 @@ func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/gpg_keys", func(w http.ResponseWriter, r *http.Request) {
@@ -72,6 +74,7 @@ func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListGPGKeys_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -80,6 +83,7 @@ func TestUsersService_ListGPGKeys_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_GetGPGKey(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/gpg_keys/1", func(w http.ResponseWriter, r *http.Request) {
@@ -114,6 +118,7 @@ func TestUsersService_GetGPGKey(t *testing.T) {
 }
 
 func TestUsersService_CreateGPGKey(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := `
@@ -161,6 +166,7 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 }
 
 func TestUsersService_DeleteGPGKey(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/gpg_keys/1", func(w http.ResponseWriter, r *http.Request) {
@@ -185,6 +191,7 @@ func TestUsersService_DeleteGPGKey(t *testing.T) {
 }
 
 func TestGPGEmail_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GPGEmail{}, "{}")
 
 	u := &GPGEmail{
@@ -201,6 +208,7 @@ func TestGPGEmail_Marshal(t *testing.T) {
 }
 
 func TestGPGKey_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GPGKey{}, "{}")
 
 	ti := &Timestamp{}

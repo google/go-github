@@ -17,6 +17,7 @@ import (
 )
 
 func TestGist_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Gist{}, "{}")
 
 	createdAt := time.Date(2010, time.February, 10, 10, 10, 0, 0, time.UTC)
@@ -106,6 +107,7 @@ func TestGist_Marshal(t *testing.T) {
 }
 
 func TestGistCommit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GistCommit{}, "{}")
 
 	u := &GistCommit{
@@ -170,6 +172,7 @@ func TestGistCommit_Marshal(t *testing.T) {
 }
 
 func TestGistFork_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GistFork{}, "{}")
 
 	u := &GistFork{
@@ -226,6 +229,7 @@ func TestGistFork_Marshal(t *testing.T) {
 }
 
 func TestGistsService_List_specifiedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	since := "2013-01-01T00:00:00Z"
@@ -266,6 +270,7 @@ func TestGistsService_List_specifiedUser(t *testing.T) {
 }
 
 func TestGistsService_List_authenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists", func(w http.ResponseWriter, r *http.Request) {
@@ -300,6 +305,7 @@ func TestGistsService_List_authenticatedUser(t *testing.T) {
 }
 
 func TestGistsService_List_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -308,6 +314,7 @@ func TestGistsService_List_invalidUser(t *testing.T) {
 }
 
 func TestGistsService_ListAll(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	since := "2013-01-01T00:00:00Z"
@@ -343,6 +350,7 @@ func TestGistsService_ListAll(t *testing.T) {
 }
 
 func TestGistsService_ListStarred(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	since := "2013-01-01T00:00:00Z"
@@ -378,6 +386,7 @@ func TestGistsService_ListStarred(t *testing.T) {
 }
 
 func TestGistsService_Get(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1", func(w http.ResponseWriter, r *http.Request) {
@@ -412,6 +421,7 @@ func TestGistsService_Get(t *testing.T) {
 }
 
 func TestGistsService_Get_invalidID(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -420,6 +430,7 @@ func TestGistsService_Get_invalidID(t *testing.T) {
 }
 
 func TestGistsService_GetRevision(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/s", func(w http.ResponseWriter, r *http.Request) {
@@ -454,6 +465,7 @@ func TestGistsService_GetRevision(t *testing.T) {
 }
 
 func TestGistsService_GetRevision_invalidID(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -462,6 +474,7 @@ func TestGistsService_GetRevision_invalidID(t *testing.T) {
 }
 
 func TestGistsService_Create(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Gist{
@@ -524,6 +537,7 @@ func TestGistsService_Create(t *testing.T) {
 }
 
 func TestGistsService_Edit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Gist{
@@ -594,6 +608,7 @@ func TestGistsService_Edit(t *testing.T) {
 }
 
 func TestGistsService_Edit_invalidID(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -602,6 +617,7 @@ func TestGistsService_Edit_invalidID(t *testing.T) {
 }
 
 func TestGistsService_ListCommits(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/commits", func(w http.ResponseWriter, r *http.Request) {
@@ -663,6 +679,7 @@ func TestGistsService_ListCommits(t *testing.T) {
 }
 
 func TestGistsService_ListCommits_withOptions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/commits", func(w http.ResponseWriter, r *http.Request) {
@@ -695,6 +712,7 @@ func TestGistsService_ListCommits_withOptions(t *testing.T) {
 }
 
 func TestGistsService_ListCommits_invalidID(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -703,6 +721,7 @@ func TestGistsService_ListCommits_invalidID(t *testing.T) {
 }
 
 func TestGistsService_Delete(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1", func(w http.ResponseWriter, r *http.Request) {
@@ -727,6 +746,7 @@ func TestGistsService_Delete(t *testing.T) {
 }
 
 func TestGistsService_Delete_invalidID(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -735,6 +755,7 @@ func TestGistsService_Delete_invalidID(t *testing.T) {
 }
 
 func TestGistsService_Star(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/star", func(w http.ResponseWriter, r *http.Request) {
@@ -759,6 +780,7 @@ func TestGistsService_Star(t *testing.T) {
 }
 
 func TestGistsService_Star_invalidID(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -767,6 +789,7 @@ func TestGistsService_Star_invalidID(t *testing.T) {
 }
 
 func TestGistsService_Unstar(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/star", func(w http.ResponseWriter, r *http.Request) {
@@ -791,6 +814,7 @@ func TestGistsService_Unstar(t *testing.T) {
 }
 
 func TestGistsService_Unstar_invalidID(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -799,6 +823,7 @@ func TestGistsService_Unstar_invalidID(t *testing.T) {
 }
 
 func TestGistsService_IsStarred_hasStar(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/star", func(w http.ResponseWriter, r *http.Request) {
@@ -831,6 +856,7 @@ func TestGistsService_IsStarred_hasStar(t *testing.T) {
 }
 
 func TestGistsService_IsStarred_noStar(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/star", func(w http.ResponseWriter, r *http.Request) {
@@ -863,6 +889,7 @@ func TestGistsService_IsStarred_noStar(t *testing.T) {
 }
 
 func TestGistsService_IsStarred_invalidID(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -871,6 +898,7 @@ func TestGistsService_IsStarred_invalidID(t *testing.T) {
 }
 
 func TestGistsService_Fork(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/forks", func(w http.ResponseWriter, r *http.Request) {
@@ -905,6 +933,7 @@ func TestGistsService_Fork(t *testing.T) {
 }
 
 func TestGistsService_ListForks(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/forks", func(w http.ResponseWriter, r *http.Request) {
@@ -955,6 +984,7 @@ func TestGistsService_ListForks(t *testing.T) {
 }
 
 func TestGistsService_ListForks_withOptions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gists/1/forks", func(w http.ResponseWriter, r *http.Request) {
@@ -992,6 +1022,7 @@ func TestGistsService_ListForks_withOptions(t *testing.T) {
 }
 
 func TestGistFile_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GistFile{}, "{}")
 
 	u := &GistFile{

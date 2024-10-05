@@ -20,6 +20,7 @@ import (
 )
 
 func TestRepositoriesService_ListByAuthenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
@@ -50,6 +51,7 @@ func TestRepositoriesService_ListByAuthenticatedUser(t *testing.T) {
 }
 
 func TestRepositoriesService_ListByUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
@@ -94,6 +96,7 @@ func TestRepositoriesService_ListByUser(t *testing.T) {
 }
 
 func TestRepositoriesService_ListByUser_type(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
@@ -120,6 +123,7 @@ func TestRepositoriesService_ListByUser_type(t *testing.T) {
 }
 
 func TestRepositoriesService_ListByUser_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -128,6 +132,7 @@ func TestRepositoriesService_ListByUser_invalidUser(t *testing.T) {
 }
 
 func TestRepositoriesService_ListByOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
@@ -172,6 +177,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 }
 
 func TestRepositoriesService_ListByOrg_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -180,6 +186,7 @@ func TestRepositoriesService_ListByOrg_invalidOrg(t *testing.T) {
 }
 
 func TestRepositoriesService_ListAll(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -213,6 +220,7 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 }
 
 func TestRepositoriesService_Create_user(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Repository{
@@ -262,6 +270,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 }
 
 func TestRepositoriesService_Create_org(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Repository{
@@ -297,6 +306,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	templateRepoReq := &TemplateRepoRequest{
@@ -344,6 +354,7 @@ func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
 }
 
 func TestRepositoriesService_Get(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview, mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
@@ -380,6 +391,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -428,6 +440,7 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 }
 
 func TestRepositoriesService_GetByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1", func(w http.ResponseWriter, r *http.Request) {
@@ -457,6 +470,7 @@ func TestRepositoriesService_GetByID(t *testing.T) {
 }
 
 func TestRepositoriesService_Edit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	i := true
@@ -502,6 +516,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 }
 
 func TestRepositoriesService_Delete(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -526,6 +541,7 @@ func TestRepositoriesService_Delete(t *testing.T) {
 }
 
 func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -534,6 +550,7 @@ func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_Edit_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -542,6 +559,7 @@ func TestRepositoriesService_Edit_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetVulnerabilityAlerts(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
@@ -577,6 +595,7 @@ func TestRepositoriesService_GetVulnerabilityAlerts(t *testing.T) {
 }
 
 func TestRepositoriesService_EnableVulnerabilityAlerts(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
@@ -603,6 +622,7 @@ func TestRepositoriesService_EnableVulnerabilityAlerts(t *testing.T) {
 }
 
 func TestRepositoriesService_DisableVulnerabilityAlerts(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
@@ -629,6 +649,7 @@ func TestRepositoriesService_DisableVulnerabilityAlerts(t *testing.T) {
 }
 
 func TestRepositoriesService_EnableAutomatedSecurityFixes(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
@@ -644,6 +665,7 @@ func TestRepositoriesService_EnableAutomatedSecurityFixes(t *testing.T) {
 }
 
 func TestRepositoriesService_GetAutomatedSecurityFixes(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
@@ -680,6 +702,7 @@ func TestRepositoriesService_GetAutomatedSecurityFixes(t *testing.T) {
 }
 
 func TestRepositoriesService_DisableAutomatedSecurityFixes(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
@@ -695,6 +718,7 @@ func TestRepositoriesService_DisableAutomatedSecurityFixes(t *testing.T) {
 }
 
 func TestRepositoriesService_ListContributors(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/contributors", func(w http.ResponseWriter, r *http.Request) {
@@ -734,6 +758,7 @@ func TestRepositoriesService_ListContributors(t *testing.T) {
 }
 
 func TestRepositoriesService_ListLanguages(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/languages", func(w http.ResponseWriter, r *http.Request) {
@@ -768,6 +793,7 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTeams(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/teams", func(w http.ResponseWriter, r *http.Request) {
@@ -804,6 +830,7 @@ func TestRepositoriesService_ListTeams(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTags(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/tags", func(w http.ResponseWriter, r *http.Request) {
@@ -850,6 +877,7 @@ func TestRepositoriesService_ListTags(t *testing.T) {
 }
 
 func TestRepositoriesService_ListBranches(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/branches", func(w http.ResponseWriter, r *http.Request) {
@@ -889,6 +917,7 @@ func TestRepositoriesService_ListBranches(t *testing.T) {
 }
 
 func TestRepositoriesService_GetBranch(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	tests := []struct {
@@ -940,6 +969,7 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 }
 
 func TestRepositoriesService_GetBranch_BadJSONResponse(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -949,7 +979,9 @@ func TestRepositoriesService_GetBranch_BadJSONResponse(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -966,6 +998,7 @@ func TestRepositoriesService_GetBranch_BadJSONResponse(t *testing.T) {
 }
 
 func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t *testing.T) {
+	t.Parallel()
 	client, mux, serverURL := setup(t)
 
 	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
@@ -1007,6 +1040,7 @@ func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t 
 }
 
 func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -1016,7 +1050,9 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -1047,6 +1083,7 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 }
 
 func TestRepositoriesService_RenameBranch(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -1056,7 +1093,9 @@ func TestRepositoriesService_RenameBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			renameBranchReq := "nn"
@@ -1103,6 +1142,7 @@ func TestRepositoriesService_RenameBranch(t *testing.T) {
 }
 
 func TestRepositoriesService_GetBranchProtection(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch               string
 		urlPath              string
@@ -1113,7 +1153,9 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -1258,6 +1300,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 }
 
 func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	tests := []struct {
@@ -1343,6 +1386,7 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 }
 
 func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -1352,7 +1396,9 @@ func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -1380,6 +1426,7 @@ func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T
 }
 
 func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -1389,7 +1436,9 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -1567,6 +1616,7 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -1576,7 +1626,9 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -1744,6 +1796,7 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 }
 
 func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -1753,7 +1806,9 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -1900,6 +1955,7 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -1909,7 +1965,9 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -2042,6 +2100,7 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2051,7 +2110,9 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -2183,6 +2244,7 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 }
 
 func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2192,7 +2254,9 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &ProtectionRequest{
@@ -2236,6 +2300,7 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 }
 
 func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2245,7 +2310,9 @@ func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2273,6 +2340,7 @@ func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
 }
 
 func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -2281,6 +2349,7 @@ func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_License(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/license", func(w http.ResponseWriter, r *http.Request) {
@@ -2326,6 +2395,7 @@ func TestRepositoriesService_License(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2335,7 +2405,9 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2403,6 +2475,7 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2412,7 +2485,9 @@ func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testi
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2440,6 +2515,7 @@ func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testi
 }
 
 func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2449,7 +2525,9 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &RequiredStatusChecksRequest{
@@ -2515,6 +2593,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2524,7 +2603,9 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			appID := int64(123)
@@ -2605,6 +2686,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 }
 
 func TestRepositoriesService_RemoveRequiredStatusChecks(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2614,7 +2696,9 @@ func TestRepositoriesService_RemoveRequiredStatusChecks(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2643,6 +2727,7 @@ func TestRepositoriesService_RemoveRequiredStatusChecks(t *testing.T) {
 }
 
 func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2652,7 +2737,9 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2689,6 +2776,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 }
 
 func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2698,7 +2786,9 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2726,6 +2816,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected
 }
 
 func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2735,7 +2826,9 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2799,6 +2892,7 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2808,7 +2902,9 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			input := &PullRequestReviewsEnforcementUpdate{
@@ -2885,6 +2981,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 }
 
 func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2894,7 +2991,9 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2939,6 +3038,7 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2948,7 +3048,9 @@ func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -2976,6 +3078,7 @@ func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
 }
 
 func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -2985,7 +3088,9 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3026,6 +3131,7 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 }
 
 func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3035,7 +3141,9 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3075,6 +3183,7 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 }
 
 func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3084,7 +3193,9 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3112,6 +3223,7 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 }
 
 func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3121,7 +3233,9 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3163,6 +3277,7 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 }
 
 func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3172,7 +3287,9 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3214,6 +3331,7 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 }
 
 func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3223,7 +3341,9 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3252,6 +3372,7 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 }
 
 func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctions(t *testing.T) {
+	t.Parallel()
 	req := PullRequestReviewsEnforcementRequest{}
 
 	got, err := json.Marshal(req)
@@ -3299,6 +3420,7 @@ func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctio
 }
 
 func TestRepositoriesService_ListAllTopics(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
@@ -3334,6 +3456,7 @@ func TestRepositoriesService_ListAllTopics(t *testing.T) {
 }
 
 func TestRepositoriesService_ListAllTopics_emptyTopics(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
@@ -3355,6 +3478,7 @@ func TestRepositoriesService_ListAllTopics_emptyTopics(t *testing.T) {
 }
 
 func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
@@ -3390,6 +3514,7 @@ func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
 }
 
 func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
@@ -3412,6 +3537,7 @@ func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
 }
 
 func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
@@ -3434,6 +3560,7 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 }
 
 func TestRepositoriesService_ListAppRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3443,7 +3570,9 @@ func TestRepositoriesService_ListAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3474,6 +3603,7 @@ func TestRepositoriesService_ListAppRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3483,7 +3613,9 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3523,6 +3655,7 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3532,7 +3665,9 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3572,6 +3707,7 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3581,7 +3717,9 @@ func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3617,6 +3755,7 @@ func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTeamRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3626,7 +3765,9 @@ func TestRepositoriesService_ListTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3657,6 +3798,7 @@ func TestRepositoriesService_ListTeamRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_ReplaceTeamRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3666,7 +3808,9 @@ func TestRepositoriesService_ReplaceTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3706,6 +3850,7 @@ func TestRepositoriesService_ReplaceTeamRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_AddTeamRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3715,7 +3860,9 @@ func TestRepositoriesService_AddTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3755,6 +3902,7 @@ func TestRepositoriesService_AddTeamRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_RemoveTeamRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3764,7 +3912,9 @@ func TestRepositoriesService_RemoveTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3800,6 +3950,7 @@ func TestRepositoriesService_RemoveTeamRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_ListUserRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3809,7 +3960,9 @@ func TestRepositoriesService_ListUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3840,6 +3993,7 @@ func TestRepositoriesService_ListUserRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_ReplaceUserRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3849,7 +4003,9 @@ func TestRepositoriesService_ReplaceUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3889,6 +4045,7 @@ func TestRepositoriesService_ReplaceUserRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_AddUserRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3898,7 +4055,9 @@ func TestRepositoriesService_AddUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3938,6 +4097,7 @@ func TestRepositoriesService_AddUserRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_RemoveUserRestrictions(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		branch  string
 		urlPath string
@@ -3947,7 +4107,9 @@ func TestRepositoriesService_RemoveUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -3983,6 +4145,7 @@ func TestRepositoriesService_RemoveUserRestrictions(t *testing.T) {
 }
 
 func TestRepositoriesService_Transfer(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := TransferRequest{NewOwner: "a", NewName: String("b"), TeamID: []int64{123}}
@@ -4026,6 +4189,7 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 }
 
 func TestRepositoriesService_Dispatch(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	var input DispatchRequestOptions
@@ -4103,6 +4267,7 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 }
 
 func TestAdvancedSecurity_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AdvancedSecurity{}, "{}")
 
 	u := &AdvancedSecurity{
@@ -4117,6 +4282,7 @@ func TestAdvancedSecurity_Marshal(t *testing.T) {
 }
 
 func TestAuthorizedActorsOnly_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AuthorizedActorsOnly{}, "{}")
 
 	u := &AuthorizedActorsOnly{
@@ -4131,6 +4297,7 @@ func TestAuthorizedActorsOnly_Marshal(t *testing.T) {
 }
 
 func TestDispatchRequestOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DispatchRequestOptions{}, "{}")
 
 	cp := json.RawMessage(`{"testKey":"testValue"}`)
@@ -4150,6 +4317,7 @@ func TestDispatchRequestOptions_Marshal(t *testing.T) {
 }
 
 func TestTransferRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TransferRequest{}, "{}")
 
 	u := &TransferRequest{
@@ -4168,6 +4336,7 @@ func TestTransferRequest_Marshal(t *testing.T) {
 }
 
 func TestSignaturesProtectedBranch_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SignaturesProtectedBranch{}, "{}")
 
 	u := &SignaturesProtectedBranch{
@@ -4196,6 +4365,7 @@ func TestSignaturesProtectedBranch_Marshal(t *testing.T) {
 }
 
 func TestDismissalRestrictionsRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DismissalRestrictionsRequest{}, "{}")
 
 	u := &DismissalRestrictionsRequest{
@@ -4214,6 +4384,7 @@ func TestDismissalRestrictionsRequest_Marshal(t *testing.T) {
 }
 
 func TestAdminEnforcement_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AdminEnforcement{}, "{}")
 
 	u := &AdminEnforcement{
@@ -4230,6 +4401,7 @@ func TestAdminEnforcement_Marshal(t *testing.T) {
 }
 
 func TestPullRequestReviewsEnforcementUpdate_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestReviewsEnforcementUpdate{}, "{}")
 
 	u := &PullRequestReviewsEnforcementUpdate{
@@ -4258,6 +4430,7 @@ func TestPullRequestReviewsEnforcementUpdate_Marshal(t *testing.T) {
 }
 
 func TestRequiredStatusCheck_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RequiredStatusCheck{}, "{}")
 
 	u := &RequiredStatusCheck{
@@ -4274,6 +4447,7 @@ func TestRequiredStatusCheck_Marshal(t *testing.T) {
 }
 
 func TestRepositoryTag_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryTag{}, "{}")
 
 	u := &RepositoryTag{
@@ -4300,6 +4474,7 @@ func TestRepositoryTag_Marshal(t *testing.T) {
 }
 
 func TestRepositoriesService_EnablePrivateReporting(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/owner/repo/private-vulnerability-reporting", func(w http.ResponseWriter, r *http.Request) {
@@ -4325,6 +4500,7 @@ func TestRepositoriesService_EnablePrivateReporting(t *testing.T) {
 }
 
 func TestRepositoriesService_DisablePrivateReporting(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/owner/repo/private-vulnerability-reporting", func(w http.ResponseWriter, r *http.Request) {
@@ -4350,6 +4526,7 @@ func TestRepositoriesService_DisablePrivateReporting(t *testing.T) {
 }
 
 func TestRepositoriesService_IsPrivateReportingEnabled(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/owner/repo/private-vulnerability-reporting", func(w http.ResponseWriter, r *http.Request) {
@@ -4382,6 +4559,7 @@ func TestRepositoriesService_IsPrivateReportingEnabled(t *testing.T) {
 }
 
 func TestRepository_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
 	var testCases = map[string]struct {
 		data           []byte
 		wantRepository Repository
@@ -4412,6 +4590,7 @@ func TestRepository_UnmarshalJSON(t *testing.T) {
 	for name, tt := range testCases {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			pk := Repository{}
 			err := json.Unmarshal(tt.data, &pk)
 			if err == nil && tt.wantErr {

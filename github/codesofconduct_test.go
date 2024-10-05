@@ -15,6 +15,7 @@ import (
 )
 
 func TestCodesOfConductService_List(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/codes_of_conduct", func(w http.ResponseWriter, r *http.Request) {
@@ -52,6 +53,7 @@ func TestCodesOfConductService_List(t *testing.T) {
 }
 
 func TestCodesOfConductService_Get(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/codes_of_conduct/k", func(w http.ResponseWriter, r *http.Request) {
@@ -95,6 +97,7 @@ func TestCodesOfConductService_Get(t *testing.T) {
 }
 
 func TestCodeOfConduct_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CodeOfConduct{}, "{}")
 
 	a := &CodeOfConduct{

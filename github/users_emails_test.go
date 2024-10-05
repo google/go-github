@@ -16,6 +16,7 @@ import (
 )
 
 func TestUsersService_ListEmails(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
@@ -51,6 +52,7 @@ func TestUsersService_ListEmails(t *testing.T) {
 }
 
 func TestUsersService_AddEmails(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := []string{"new@example.com"}
@@ -92,6 +94,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 }
 
 func TestUsersService_DeleteEmails(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := []string{"user@example.com"}
@@ -119,6 +122,7 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 }
 
 func TestUserEmail_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UserEmail{}, "{}")
 
 	u := &UserEmail{
@@ -139,6 +143,7 @@ func TestUserEmail_Marshal(t *testing.T) {
 }
 
 func TestUsersService_SetEmailVisibility(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &UserEmail{Visibility: String("private")}

@@ -16,6 +16,7 @@ import (
 )
 
 func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/custom-repository-roles", func(w http.ResponseWriter, r *http.Request) {
@@ -96,6 +97,7 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/custom-repository-roles", func(w http.ResponseWriter, r *http.Request) {
@@ -138,6 +140,7 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 }
 
 func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/custom-repository-roles/8030", func(w http.ResponseWriter, r *http.Request) {
@@ -178,6 +181,7 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 }
 
 func TestOrganizationsService_DeleteCustomRepoRole(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/custom-repository-roles/8030", func(w http.ResponseWriter, r *http.Request) {

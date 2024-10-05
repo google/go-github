@@ -16,6 +16,7 @@ import (
 )
 
 func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/keys", func(w http.ResponseWriter, r *http.Request) {
@@ -52,6 +53,7 @@ func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/keys", func(w http.ResponseWriter, r *http.Request) {
@@ -72,6 +74,7 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListKeys_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -80,6 +83,7 @@ func TestUsersService_ListKeys_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_GetKey(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/keys/1", func(w http.ResponseWriter, r *http.Request) {
@@ -114,6 +118,7 @@ func TestUsersService_GetKey(t *testing.T) {
 }
 
 func TestUsersService_CreateKey(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Key{Key: String("k"), Title: String("t")}
@@ -152,6 +157,7 @@ func TestUsersService_CreateKey(t *testing.T) {
 }
 
 func TestUsersService_DeleteKey(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/keys/1", func(w http.ResponseWriter, r *http.Request) {
@@ -176,6 +182,7 @@ func TestUsersService_DeleteKey(t *testing.T) {
 }
 
 func TestKey_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Key{}, "{}")
 
 	u := &Key{

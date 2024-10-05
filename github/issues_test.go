@@ -17,6 +17,7 @@ import (
 )
 
 func TestIssuesService_List_all(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -62,6 +63,7 @@ func TestIssuesService_List_all(t *testing.T) {
 }
 
 func TestIssuesService_List_owned(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -83,6 +85,7 @@ func TestIssuesService_List_owned(t *testing.T) {
 }
 
 func TestIssuesService_ListByOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -118,6 +121,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 }
 
 func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -126,6 +130,7 @@ func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
 }
 
 func TestIssuesService_ListByOrg_badOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -134,6 +139,7 @@ func TestIssuesService_ListByOrg_badOrg(t *testing.T) {
 }
 
 func TestIssuesService_ListByRepo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -185,6 +191,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 }
 
 func TestIssuesService_ListByRepo_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -193,6 +200,7 @@ func TestIssuesService_ListByRepo_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Get(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
@@ -236,6 +244,7 @@ func TestIssuesService_Get(t *testing.T) {
 }
 
 func TestIssuesService_Get_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -244,6 +253,7 @@ func TestIssuesService_Get_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Create(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &IssueRequest{
@@ -292,6 +302,7 @@ func TestIssuesService_Create(t *testing.T) {
 }
 
 func TestIssuesService_Create_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -300,6 +311,7 @@ func TestIssuesService_Create_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Edit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &IssueRequest{Title: String("t")}
@@ -343,6 +355,7 @@ func TestIssuesService_Edit(t *testing.T) {
 }
 
 func TestIssuesService_RemoveMilestone(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
@@ -377,6 +390,7 @@ func TestIssuesService_RemoveMilestone(t *testing.T) {
 }
 
 func TestIssuesService_Edit_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -385,6 +399,7 @@ func TestIssuesService_Edit_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Lock(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
@@ -410,6 +425,7 @@ func TestIssuesService_Lock(t *testing.T) {
 }
 
 func TestIssuesService_LockWithReason(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
@@ -426,6 +442,7 @@ func TestIssuesService_LockWithReason(t *testing.T) {
 }
 
 func TestIssuesService_Unlock(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
@@ -451,6 +468,7 @@ func TestIssuesService_Unlock(t *testing.T) {
 }
 
 func TestIsPullRequest(t *testing.T) {
+	t.Parallel()
 	i := new(Issue)
 	if i.IsPullRequest() == true {
 		t.Errorf("expected i.IsPullRequest (%v) to return false, got true", i)
@@ -462,6 +480,7 @@ func TestIsPullRequest(t *testing.T) {
 }
 
 func TestLockIssueOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &LockIssueOptions{}, "{}")
 
 	u := &LockIssueOptions{
@@ -476,6 +495,7 @@ func TestLockIssueOptions_Marshal(t *testing.T) {
 }
 
 func TestPullRequestLinks_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestLinks{}, "{}")
 
 	u := &PullRequestLinks{
@@ -498,6 +518,7 @@ func TestPullRequestLinks_Marshal(t *testing.T) {
 }
 
 func TestIssueRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &IssueRequest{}, "{}")
 
 	u := &IssueRequest{
@@ -528,6 +549,7 @@ func TestIssueRequest_Marshal(t *testing.T) {
 }
 
 func TestIssue_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Issue{}, "{}")
 
 	u := &Issue{

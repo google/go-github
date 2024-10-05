@@ -16,6 +16,7 @@ import (
 )
 
 func TestPullRequestsService_ListReviews(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
@@ -57,6 +58,7 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviews_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -65,6 +67,7 @@ func TestPullRequestsService_ListReviews_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_GetReview(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
@@ -99,6 +102,7 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 }
 
 func TestPullRequestsService_GetReview_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -107,6 +111,7 @@ func TestPullRequestsService_GetReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_DeletePendingReview(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
@@ -141,6 +146,7 @@ func TestPullRequestsService_DeletePendingReview(t *testing.T) {
 }
 
 func TestPullRequestsService_DeletePendingReview_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -149,6 +155,7 @@ func TestPullRequestsService_DeletePendingReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviewComments(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -186,6 +193,7 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -218,6 +226,7 @@ func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
 }
 
 func TestPullRequestReviewRequest_isComfortFadePreview(t *testing.T) {
+	t.Parallel()
 	path := "path/to/file.go"
 	body := "this is a comment body"
 	left, right := "LEFT", "RIGHT"
@@ -321,7 +330,9 @@ func TestPullRequestReviewRequest_isComfortFadePreview(t *testing.T) {
 	}}
 
 	for _, tc := range tests {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
 			gotBool, gotErr := tc.review.isComfortFadePreview()
 			if tc.wantErr != nil {
 				if gotErr != tc.wantErr {
@@ -337,6 +348,7 @@ func TestPullRequestReviewRequest_isComfortFadePreview(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviewComments_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -345,6 +357,7 @@ func TestPullRequestsService_ListReviewComments_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateReview(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &PullRequestReviewRequest{
@@ -392,6 +405,7 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateReview_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -400,6 +414,7 @@ func TestPullRequestsService_CreateReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateReview_badReview(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -428,6 +443,7 @@ func TestPullRequestsService_CreateReview_badReview(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateReview_addHeader(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	path := "path/to/file.go"
@@ -474,6 +490,7 @@ func TestPullRequestsService_CreateReview_addHeader(t *testing.T) {
 }
 
 func TestPullRequestsService_UpdateReview(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
@@ -508,6 +525,7 @@ func TestPullRequestsService_UpdateReview(t *testing.T) {
 }
 
 func TestPullRequestsService_SubmitReview(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &PullRequestReviewRequest{
@@ -554,6 +572,7 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 }
 
 func TestPullRequestsService_SubmitReview_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -562,6 +581,7 @@ func TestPullRequestsService_SubmitReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_DismissReview(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &PullRequestReviewDismissalRequest{Message: String("m")}
@@ -605,6 +625,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 }
 
 func TestPullRequestsService_DismissReview_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -613,6 +634,7 @@ func TestPullRequestsService_DismissReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestReviewDismissalRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestReviewDismissalRequest{}, "{}")
 
 	u := &PullRequestReviewDismissalRequest{
@@ -627,6 +649,7 @@ func TestPullRequestReviewDismissalRequest_Marshal(t *testing.T) {
 }
 
 func TestDraftReviewComment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DraftReviewComment{}, "{}")
 
 	u := &DraftReviewComment{
@@ -653,6 +676,7 @@ func TestDraftReviewComment_Marshal(t *testing.T) {
 }
 
 func TestPullRequestReviewRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestReviewRequest{}, "{}")
 
 	u := &PullRequestReviewRequest{
@@ -695,6 +719,7 @@ func TestPullRequestReviewRequest_Marshal(t *testing.T) {
 }
 
 func TestPullRequestReview_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestReview{}, "{}")
 
 	u := &PullRequestReview{

@@ -17,6 +17,7 @@ import (
 )
 
 func TestCodeScanningService_Alert_ID(t *testing.T) {
+	t.Parallel()
 	// Test: nil Alert ID == 0
 	var a *Alert
 	id := a.ID()
@@ -55,6 +56,7 @@ func TestCodeScanningService_Alert_ID(t *testing.T) {
 }
 
 func TestCodeScanningService_UploadSarif(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	expectedSarifID := &SarifID{
@@ -99,6 +101,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 }
 
 func TestCodeScanningService_GetSARIF(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/sarifs/abc", func(w http.ResponseWriter, r *http.Request) {
@@ -139,6 +142,7 @@ func TestCodeScanningService_GetSARIF(t *testing.T) {
 }
 
 func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
@@ -342,6 +346,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 }
 
 func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
@@ -467,6 +472,7 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 }
 
 func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
@@ -660,6 +666,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 }
 
 func TestCodeScanningService_UpdateAlert(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts/88", func(w http.ResponseWriter, r *http.Request) {
@@ -777,6 +784,7 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 }
 
 func TestCodeScanningService_ListAlertInstances(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts/88/instances", func(w http.ResponseWriter, r *http.Request) {
@@ -855,6 +863,7 @@ func TestCodeScanningService_ListAlertInstances(t *testing.T) {
 }
 
 func TestCodeScanningService_GetAlert(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts/88", func(w http.ResponseWriter, r *http.Request) {
@@ -966,6 +975,7 @@ func TestCodeScanningService_GetAlert(t *testing.T) {
 }
 
 func TestAlert_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Alert{}, "{}")
 
 	u := &Alert{
@@ -1022,6 +1032,7 @@ func TestAlert_Marshal(t *testing.T) {
 }
 
 func TestLocation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Location{}, "{}")
 
 	u := &Location{
@@ -1044,6 +1055,7 @@ func TestLocation_Marshal(t *testing.T) {
 }
 
 func TestRule_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Rule{}, "{}")
 
 	u := &Rule{
@@ -1072,6 +1084,7 @@ func TestRule_Marshal(t *testing.T) {
 }
 
 func TestTool_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Tool{}, "{}")
 
 	u := &Tool{
@@ -1090,6 +1103,7 @@ func TestTool_Marshal(t *testing.T) {
 }
 
 func TestMessage_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Message{}, "{}")
 
 	u := &Message{
@@ -1104,6 +1118,7 @@ func TestMessage_Marshal(t *testing.T) {
 }
 
 func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/analyses", func(w http.ResponseWriter, r *http.Request) {
@@ -1227,6 +1242,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 }
 
 func TestCodeScanningService_GetAnalysis(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/analyses/3602840", func(w http.ResponseWriter, r *http.Request) {
@@ -1302,6 +1318,7 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 }
 
 func TestCodeScanningService_DeleteAnalysis(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/analyses/40", func(w http.ResponseWriter, r *http.Request) {
@@ -1342,6 +1359,7 @@ func TestCodeScanningService_DeleteAnalysis(t *testing.T) {
 }
 
 func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/codeql/databases", func(w http.ResponseWriter, r *http.Request) {
@@ -1440,6 +1458,7 @@ func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
 }
 
 func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/codeql/databases/lang", func(w http.ResponseWriter, r *http.Request) {
@@ -1534,6 +1553,7 @@ func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
 }
 
 func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/default-setup", func(w http.ResponseWriter, r *http.Request) {
@@ -1586,6 +1606,7 @@ func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
 }
 
 func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/default-setup", func(w http.ResponseWriter, r *http.Request) {

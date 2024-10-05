@@ -17,6 +17,7 @@ import (
 )
 
 func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/personal-access-tokens", func(w http.ResponseWriter, r *http.Request) {
@@ -155,6 +156,7 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 }
 
 func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := ReviewPersonalAccessTokenRequestOptions{
@@ -196,6 +198,7 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 }
 
 func TestReviewPersonalAccessTokenRequestOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ReviewPersonalAccessTokenRequestOptions{}, "{}")
 
 	u := &ReviewPersonalAccessTokenRequestOptions{

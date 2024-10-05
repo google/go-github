@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/traffic/popular/referrers", func(w http.ResponseWriter, r *http.Request) {
@@ -57,6 +58,7 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/traffic/popular/paths", func(w http.ResponseWriter, r *http.Request) {
@@ -100,6 +102,7 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTrafficViews(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/traffic/views", func(w http.ResponseWriter, r *http.Request) {
@@ -149,6 +152,7 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTrafficClones(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/traffic/clones", func(w http.ResponseWriter, r *http.Request) {
@@ -198,6 +202,7 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 }
 
 func TestTrafficReferrer_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficReferrer{}, "{}")
 
 	u := &TrafficReferrer{
@@ -216,6 +221,7 @@ func TestTrafficReferrer_Marshal(t *testing.T) {
 }
 
 func TestTrafficViews_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficViews{}, "{}")
 
 	u := &TrafficViews{
@@ -242,6 +248,7 @@ func TestTrafficViews_Marshal(t *testing.T) {
 }
 
 func TestTrafficClones_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficClones{}, "{}")
 
 	u := &TrafficClones{
@@ -268,6 +275,7 @@ func TestTrafficClones_Marshal(t *testing.T) {
 }
 
 func TestTrafficPath_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficPath{}, "{}")
 
 	u := &TrafficPath{
@@ -288,6 +296,7 @@ func TestTrafficPath_Marshal(t *testing.T) {
 }
 
 func TestTrafficData_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficData{}, "{}")
 
 	u := &TrafficData{
@@ -306,6 +315,7 @@ func TestTrafficData_Marshal(t *testing.T) {
 }
 
 func TestTrafficBreakdownOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficBreakdownOptions{}, "{}")
 
 	u := &TrafficBreakdownOptions{

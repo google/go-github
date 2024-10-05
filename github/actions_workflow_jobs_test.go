@@ -18,6 +18,7 @@ import (
 )
 
 func TestActionsService_ListWorkflowJobs(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/jobs", func(w http.ResponseWriter, r *http.Request) {
@@ -60,6 +61,7 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 }
 
 func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/jobs", func(w http.ResponseWriter, r *http.Request) {
@@ -88,6 +90,7 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 }
 
 func TestActionsService_ListWorkflowJobsAttempt(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/attempts/1/jobs", func(w http.ResponseWriter, r *http.Request) {
@@ -141,6 +144,7 @@ func TestActionsService_ListWorkflowJobsAttempt(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowJobByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/jobs/399444496", func(w http.ResponseWriter, r *http.Request) {
@@ -179,6 +183,7 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -216,6 +221,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -231,6 +237,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedi
 }
 
 func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirects(t *testing.T) {
+	t.Parallel()
 	client, mux, serverURL := setup(t)
 
 	// Mock a redirect link, which leads to an archive link
@@ -262,6 +269,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirect
 }
 
 func TestTaskStep_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TaskStep{}, "{}")
 
 	u := &TaskStep{
@@ -286,6 +294,7 @@ func TestTaskStep_Marshal(t *testing.T) {
 }
 
 func TestWorkflowJob_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowJob{}, "{}")
 
 	u := &WorkflowJob{
@@ -348,6 +357,7 @@ func TestWorkflowJob_Marshal(t *testing.T) {
 }
 
 func TestJobs_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Jobs{}, "{}")
 
 	u := &Jobs{

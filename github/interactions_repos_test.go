@@ -16,6 +16,7 @@ import (
 )
 
 func TestInteractionsService_GetRestrictionsForRepo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
@@ -51,6 +52,7 @@ func TestInteractionsService_GetRestrictionsForRepo(t *testing.T) {
 }
 
 func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &InteractionRestriction{Limit: String("existing_users")}
@@ -94,6 +96,7 @@ func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
 }
 
 func TestInteractionsService_RemoveRestrictionsFromRepo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/interaction-limits", func(w http.ResponseWriter, r *http.Request) {

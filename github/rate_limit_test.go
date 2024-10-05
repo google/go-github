@@ -16,6 +16,7 @@ import (
 )
 
 func TestRateLimits_String(t *testing.T) {
+	t.Parallel()
 	v := RateLimits{
 		Core:                      &Rate{},
 		Search:                    &Rate{},
@@ -36,6 +37,7 @@ func TestRateLimits_String(t *testing.T) {
 }
 
 func TestRateLimits(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
@@ -179,6 +181,7 @@ func TestRateLimits(t *testing.T) {
 }
 
 func TestRateLimits_coverage(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -191,6 +194,7 @@ func TestRateLimits_coverage(t *testing.T) {
 }
 
 func TestRateLimits_overQuota(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	client.rateLimits[CoreCategory] = Rate{
@@ -338,6 +342,7 @@ func TestRateLimits_overQuota(t *testing.T) {
 }
 
 func TestRateLimits_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RateLimits{}, "{}")
 
 	u := &RateLimits{
@@ -460,6 +465,7 @@ func TestRateLimits_Marshal(t *testing.T) {
 }
 
 func TestRate_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Rate{}, "{}")
 
 	u := &Rate{

@@ -17,6 +17,7 @@ import (
 )
 
 func TestProject_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Project{}, "{}")
 
 	u := &Project{
@@ -85,6 +86,7 @@ func TestProject_Marshal(t *testing.T) {
 }
 
 func TestProjectsService_UpdateProject(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ProjectOptions{
@@ -136,6 +138,7 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 }
 
 func TestProjectsService_GetProject(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
@@ -171,6 +174,7 @@ func TestProjectsService_GetProject(t *testing.T) {
 }
 
 func TestProjectsService_DeleteProject(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
@@ -196,6 +200,7 @@ func TestProjectsService_DeleteProject(t *testing.T) {
 }
 
 func TestProjectsService_ListProjectColumns(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
@@ -234,6 +239,7 @@ func TestProjectsService_ListProjectColumns(t *testing.T) {
 }
 
 func TestProjectsService_GetProjectColumn(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
@@ -269,6 +275,7 @@ func TestProjectsService_GetProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_CreateProjectColumn(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ProjectColumnOptions{Name: "Column Name"}
@@ -313,6 +320,7 @@ func TestProjectsService_CreateProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_UpdateProjectColumn(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ProjectColumnOptions{Name: "Column Name"}
@@ -357,6 +365,7 @@ func TestProjectsService_UpdateProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_DeleteProjectColumn(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
@@ -382,6 +391,7 @@ func TestProjectsService_DeleteProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_MoveProjectColumn(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ProjectColumnMoveOptions{Position: "after:12345"}
@@ -415,6 +425,7 @@ func TestProjectsService_MoveProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_ListProjectCards(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/columns/1/cards", func(w http.ResponseWriter, r *http.Request) {
@@ -456,6 +467,7 @@ func TestProjectsService_ListProjectCards(t *testing.T) {
 }
 
 func TestProjectsService_GetProjectCard(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
@@ -491,6 +503,7 @@ func TestProjectsService_GetProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_CreateProjectCard(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ProjectCardOptions{
@@ -538,6 +551,7 @@ func TestProjectsService_CreateProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_UpdateProjectCard(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ProjectCardOptions{
@@ -585,6 +599,7 @@ func TestProjectsService_UpdateProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_DeleteProjectCard(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
@@ -610,6 +625,7 @@ func TestProjectsService_DeleteProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_MoveProjectCard(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ProjectCardMoveOptions{Position: "after:12345"}
@@ -643,6 +659,7 @@ func TestProjectsService_MoveProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_AddProjectCollaborator(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	opt := &ProjectCollaboratorOptions{
@@ -680,6 +697,7 @@ func TestProjectsService_AddProjectCollaborator(t *testing.T) {
 }
 
 func TestProjectsService_AddCollaborator_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -688,6 +706,7 @@ func TestProjectsService_AddCollaborator_invalidUser(t *testing.T) {
 }
 
 func TestProjectsService_RemoveCollaborator(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
@@ -714,6 +733,7 @@ func TestProjectsService_RemoveCollaborator(t *testing.T) {
 }
 
 func TestProjectsService_RemoveCollaborator_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -722,6 +742,7 @@ func TestProjectsService_RemoveCollaborator_invalidUser(t *testing.T) {
 }
 
 func TestProjectsService_ListCollaborators(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1/collaborators", func(w http.ResponseWriter, r *http.Request) {
@@ -761,6 +782,7 @@ func TestProjectsService_ListCollaborators(t *testing.T) {
 }
 
 func TestProjectsService_ListCollaborators_withAffiliation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1/collaborators", func(w http.ResponseWriter, r *http.Request) {
@@ -787,6 +809,7 @@ func TestProjectsService_ListCollaborators_withAffiliation(t *testing.T) {
 }
 
 func TestProjectsService_ReviewProjectCollaboratorPermission(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/projects/1/collaborators/u/permission", func(w http.ResponseWriter, r *http.Request) {
@@ -828,6 +851,7 @@ func TestProjectsService_ReviewProjectCollaboratorPermission(t *testing.T) {
 }
 
 func TestProjectOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectOptions{}, "{}")
 
 	u := &ProjectOptions{
@@ -850,6 +874,7 @@ func TestProjectOptions_Marshal(t *testing.T) {
 }
 
 func TestProjectColumn_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectColumn{}, "{}")
 
 	u := &ProjectColumn{
@@ -878,6 +903,7 @@ func TestProjectColumn_Marshal(t *testing.T) {
 }
 
 func TestProjectColumnOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectColumnOptions{}, "{}")
 
 	u := &ProjectColumnOptions{
@@ -892,6 +918,7 @@ func TestProjectColumnOptions_Marshal(t *testing.T) {
 }
 
 func TestProjectColumnMoveOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectColumnMoveOptions{}, "{}")
 
 	u := &ProjectColumnMoveOptions{
@@ -906,6 +933,7 @@ func TestProjectColumnMoveOptions_Marshal(t *testing.T) {
 }
 
 func TestProjectCard_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectCard{}, "{}")
 
 	u := &ProjectCard{
@@ -986,6 +1014,7 @@ func TestProjectCard_Marshal(t *testing.T) {
 }
 
 func TestProjectCardOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectCardOptions{}, "{}")
 
 	u := &ProjectCardOptions{
@@ -1006,6 +1035,7 @@ func TestProjectCardOptions_Marshal(t *testing.T) {
 }
 
 func TestProjectCardMoveOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectCardMoveOptions{}, "{}")
 
 	u := &ProjectCardMoveOptions{
@@ -1022,6 +1052,7 @@ func TestProjectCardMoveOptions_Marshal(t *testing.T) {
 }
 
 func TestProjectCollaboratorOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectCollaboratorOptions{}, "{}")
 
 	u := &ProjectCollaboratorOptions{
@@ -1036,6 +1067,7 @@ func TestProjectCollaboratorOptions_Marshal(t *testing.T) {
 }
 
 func TestProjectPermissionLevel_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectPermissionLevel{}, "{}")
 
 	u := &ProjectPermissionLevel{

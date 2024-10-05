@@ -16,6 +16,7 @@ import (
 )
 
 func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/credential-authorizations", func(w http.ResponseWriter, r *http.Request) {
@@ -72,6 +73,7 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveCredentialAuthorization(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/credential-authorizations/1", func(w http.ResponseWriter, r *http.Request) {

@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_GetActionsAccessLevel(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/access", func(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +50,7 @@ func TestRepositoriesService_GetActionsAccessLevel(t *testing.T) {
 }
 
 func TestRepositoriesService_EditActionsAccessLevel(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &RepositoryActionsAccessLevel{AccessLevel: String("organization")}
@@ -82,6 +84,7 @@ func TestRepositoriesService_EditActionsAccessLevel(t *testing.T) {
 }
 
 func TestRepositoryActionsAccessLevel_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ActionsPermissions{}, "{}")
 
 	u := &RepositoryActionsAccessLevel{

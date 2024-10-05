@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListAutolinks(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
@@ -58,6 +59,7 @@ func TestRepositoriesService_ListAutolinks(t *testing.T) {
 }
 
 func TestRepositoriesService_AddAutolink(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	opt := &AutolinkOptions{
@@ -112,6 +114,7 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 }
 
 func TestRepositoriesService_GetAutolink(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/autolinks/1", func(w http.ResponseWriter, r *http.Request) {
@@ -141,6 +144,7 @@ func TestRepositoriesService_GetAutolink(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteAutolink(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/autolinks/1", func(w http.ResponseWriter, r *http.Request) {
@@ -161,6 +165,7 @@ func TestRepositoriesService_DeleteAutolink(t *testing.T) {
 }
 
 func TestAutolinkOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AutolinkOptions{}, "{}")
 
 	r := &AutolinkOptions{
@@ -179,6 +184,7 @@ func TestAutolinkOptions_Marshal(t *testing.T) {
 }
 
 func TestAutolink_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Autolink{}, "{}")
 
 	r := &Autolink{

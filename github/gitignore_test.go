@@ -15,6 +15,7 @@ import (
 )
 
 func TestGitignoresService_List(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gitignore/templates", func(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +45,7 @@ func TestGitignoresService_List(t *testing.T) {
 }
 
 func TestGitignoresService_Get(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gitignore/templates/name", func(w http.ResponseWriter, r *http.Request) {
@@ -78,6 +80,7 @@ func TestGitignoresService_Get(t *testing.T) {
 }
 
 func TestGitignoresService_Get_invalidTemplate(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -86,6 +89,7 @@ func TestGitignoresService_Get_invalidTemplate(t *testing.T) {
 }
 
 func TestGitignore_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Gitignore{}, "{}")
 
 	u := &Gitignore{

@@ -17,6 +17,7 @@ import (
 )
 
 func TestGitService_GetRef_singleRef(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/ref/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -73,6 +74,7 @@ func TestGitService_GetRef_singleRef(t *testing.T) {
 }
 
 func TestGitService_GetRef_noRefs(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -108,6 +110,7 @@ func TestGitService_GetRef_noRefs(t *testing.T) {
 }
 
 func TestGitService_ListMatchingRefs_singleRef(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/matching-refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -169,6 +172,7 @@ func TestGitService_ListMatchingRefs_singleRef(t *testing.T) {
 }
 
 func TestGitService_ListMatchingRefs_multipleRefs(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/matching-refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -233,6 +237,7 @@ func TestGitService_ListMatchingRefs_multipleRefs(t *testing.T) {
 }
 
 func TestGitService_ListMatchingRefs_noRefs(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/matching-refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -267,6 +272,7 @@ func TestGitService_ListMatchingRefs_noRefs(t *testing.T) {
 }
 
 func TestGitService_ListMatchingRefs_allRefs(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/matching-refs/", func(w http.ResponseWriter, r *http.Request) {
@@ -340,6 +346,7 @@ func TestGitService_ListMatchingRefs_allRefs(t *testing.T) {
 }
 
 func TestGitService_ListMatchingRefs_options(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/matching-refs/t", func(w http.ResponseWriter, r *http.Request) {
@@ -376,6 +383,7 @@ func TestGitService_ListMatchingRefs_options(t *testing.T) {
 }
 
 func TestGitService_CreateRef(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	args := &createRefRequest{
@@ -464,6 +472,7 @@ func TestGitService_CreateRef(t *testing.T) {
 }
 
 func TestGitService_UpdateRef(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	args := &updateRefRequest{
@@ -544,6 +553,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 }
 
 func TestGitService_DeleteRef(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -573,6 +583,7 @@ func TestGitService_DeleteRef(t *testing.T) {
 }
 
 func TestGitService_GetRef_pathEscape(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/ref/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -614,6 +625,7 @@ func TestGitService_GetRef_pathEscape(t *testing.T) {
 }
 
 func TestGitService_UpdateRef_pathEscape(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	args := &updateRefRequest{
@@ -665,6 +677,7 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 }
 
 func TestReference_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Reference{}, "{}")
 
 	u := &Reference{
@@ -693,6 +706,7 @@ func TestReference_Marshal(t *testing.T) {
 }
 
 func TestGitObject_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GitObject{}, "{}")
 
 	u := &GitObject{
@@ -711,6 +725,7 @@ func TestGitObject_Marshal(t *testing.T) {
 }
 
 func TestCreateRefRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &createRefRequest{}, "{}")
 
 	u := &createRefRequest{
@@ -727,6 +742,7 @@ func TestCreateRefRequest_Marshal(t *testing.T) {
 }
 
 func TestUpdateRefRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &updateRefRequest{}, "{}")
 
 	u := &updateRefRequest{

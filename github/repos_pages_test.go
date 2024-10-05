@@ -18,6 +18,7 @@ import (
 )
 
 func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Pages{
@@ -71,6 +72,7 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 }
 
 func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Pages{
@@ -120,6 +122,7 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
@@ -159,6 +162,7 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
@@ -197,6 +201,7 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
@@ -225,6 +230,7 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 }
 
 func TestRepositoriesService_DisablePages(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -250,6 +256,7 @@ func TestRepositoriesService_DisablePages(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPagesInfo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -284,6 +291,7 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 }
 
 func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
@@ -318,6 +326,7 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 }
 
 func TestRepositoriesService_ListPagesBuilds_withOptions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
@@ -336,6 +345,7 @@ func TestRepositoriesService_ListPagesBuilds_withOptions(t *testing.T) {
 }
 
 func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds/latest", func(w http.ResponseWriter, r *http.Request) {
@@ -370,6 +380,7 @@ func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPageBuild(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds/1", func(w http.ResponseWriter, r *http.Request) {
@@ -404,6 +415,7 @@ func TestRepositoriesService_GetPageBuild(t *testing.T) {
 }
 
 func TestRepositoriesService_RequestPageBuild(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
@@ -438,6 +450,7 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPageHealthCheck(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/health", func(w http.ResponseWriter, r *http.Request) {
@@ -485,6 +498,7 @@ func TestRepositoriesService_GetPageHealthCheck(t *testing.T) {
 }
 
 func TestPagesSource_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PagesSource{}, "{}")
 
 	u := &PagesSource{
@@ -501,6 +515,7 @@ func TestPagesSource_Marshal(t *testing.T) {
 }
 
 func TestPagesError_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PagesError{}, "{}")
 
 	u := &PagesError{
@@ -515,6 +530,7 @@ func TestPagesError_Marshal(t *testing.T) {
 }
 
 func TestPagesUpdate_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PagesUpdate{}, "{}")
 
 	u := &PagesUpdate{
@@ -531,6 +547,7 @@ func TestPagesUpdate_Marshal(t *testing.T) {
 }
 
 func TestPages_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Pages{}, "{}")
 
 	u := &Pages{
@@ -561,6 +578,7 @@ func TestPages_Marshal(t *testing.T) {
 }
 
 func TestPagesBuild_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PagesBuild{}, "{}")
 
 	u := &PagesBuild{
@@ -595,6 +613,7 @@ func TestPagesBuild_Marshal(t *testing.T) {
 }
 
 func TestPagesHealthCheckResponse_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PagesHealthCheckResponse{}, "{}")
 
 	u := &PagesHealthCheckResponse{
@@ -679,6 +698,7 @@ func TestPagesHealthCheckResponse_Marshal(t *testing.T) {
 }
 
 func TestCreatePagesRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &createPagesRequest{}, "{}")
 
 	u := &createPagesRequest{

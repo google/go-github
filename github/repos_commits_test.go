@@ -18,6 +18,7 @@ import (
 )
 
 func TestRepositoriesService_ListCommits(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	// given
@@ -68,6 +69,7 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/s", func(w http.ResponseWriter, r *http.Request) {
@@ -158,6 +160,7 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommitRaw_diff(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	const rawStr = "@@diff content"
@@ -194,6 +197,7 @@ func TestRepositoriesService_GetCommitRaw_diff(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommitRaw_patch(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	const rawStr = "@@patch content"
@@ -216,6 +220,7 @@ func TestRepositoriesService_GetCommitRaw_patch(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommitRaw_invalid(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -229,6 +234,7 @@ func TestRepositoriesService_GetCommitRaw_invalid(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	const sha1 = "01234abcde"
@@ -285,6 +291,7 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 }
 
 func TestRepositoriesService_NonAlphabetCharacter_GetCommitSHA1(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	const sha1 = "01234abcde"
@@ -325,6 +332,7 @@ func TestRepositoriesService_NonAlphabetCharacter_GetCommitSHA1(t *testing.T) {
 }
 
 func TestRepositoriesService_TrailingPercent_GetCommitSHA1(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	const sha1 = "01234abcde"
@@ -365,6 +373,7 @@ func TestRepositoriesService_TrailingPercent_GetCommitSHA1(t *testing.T) {
 }
 
 func TestRepositoriesService_CompareCommits(t *testing.T) {
+	t.Parallel()
 	testCases := []struct {
 		base string
 		head string
@@ -375,7 +384,9 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 	}
 
 	for i, sample := range testCases {
+		sample := sample
 		t.Run(fmt.Sprintf("case #%v", i+1), func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			base := sample.base
@@ -500,6 +511,7 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 }
 
 func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
+	t.Parallel()
 	testCases := []struct {
 		base string
 		head string
@@ -510,7 +522,9 @@ func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
 	}
 
 	for i, sample := range testCases {
+		sample := sample
 		t.Run(fmt.Sprintf("case #%v", i+1), func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			base := sample.base
@@ -552,6 +566,7 @@ func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
 }
 
 func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
+	t.Parallel()
 	testCases := []struct {
 		base string
 		head string
@@ -562,7 +577,9 @@ func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
 	}
 
 	for i, sample := range testCases {
+		sample := sample
 		t.Run(fmt.Sprintf("case #%v", i+1), func(t *testing.T) {
+			t.Parallel()
 			client, mux, _ := setup(t)
 
 			base := sample.base
@@ -590,6 +607,7 @@ func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
 }
 
 func TestRepositoriesService_CompareCommitsRaw_invalid(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 
 	testCases := []struct {
@@ -602,7 +620,9 @@ func TestRepositoriesService_CompareCommitsRaw_invalid(t *testing.T) {
 	}
 
 	for i, sample := range testCases {
+		sample := sample
 		t.Run(fmt.Sprintf("case #%v", i+1), func(t *testing.T) {
+			t.Parallel()
 			client, _, _ := setup(t)
 			_, _, err := client.Repositories.CompareCommitsRaw(ctx, "o", "r", sample.base, sample.head, RawOptions{100})
 			if err == nil {
@@ -616,6 +636,7 @@ func TestRepositoriesService_CompareCommitsRaw_invalid(t *testing.T) {
 }
 
 func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/s/branches-where-head", func(w http.ResponseWriter, r *http.Request) {
@@ -659,6 +680,7 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 }
 
 func TestBranchCommit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &BranchCommit{}, "{}")
 
 	r := &BranchCommit{
@@ -766,6 +788,7 @@ func TestBranchCommit_Marshal(t *testing.T) {
 }
 
 func TestCommitsComparison_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommitsComparison{}, "{}")
 
 	r := &CommitsComparison{
@@ -824,6 +847,7 @@ func TestCommitsComparison_Marshal(t *testing.T) {
 }
 
 func TestCommitFile_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommitFile{}, "{}")
 
 	r := &CommitFile{
@@ -858,6 +882,7 @@ func TestCommitFile_Marshal(t *testing.T) {
 }
 
 func TestCommitStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommitStats{}, "{}")
 
 	r := &CommitStats{
@@ -876,6 +901,7 @@ func TestCommitStats_Marshal(t *testing.T) {
 }
 
 func TestRepositoryCommit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryCommit{}, "{}")
 
 	r := &RepositoryCommit{

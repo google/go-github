@@ -16,6 +16,7 @@ import (
 )
 
 func TestChecksService_GetCheckRun(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1", func(w http.ResponseWriter, r *http.Request) {
@@ -65,6 +66,7 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 }
 
 func TestChecksService_GetCheckSuite(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/1", func(w http.ResponseWriter, r *http.Request) {
@@ -113,6 +115,7 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 }
 
 func TestChecksService_CreateCheckRun(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs", func(w http.ResponseWriter, r *http.Request) {
@@ -179,6 +182,7 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 }
 
 func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1/annotations", func(w http.ResponseWriter, r *http.Request) {
@@ -238,6 +242,7 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 }
 
 func TestChecksService_UpdateCheckRun(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1", func(w http.ResponseWriter, r *http.Request) {
@@ -303,6 +308,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 }
 
 func TestChecksService_ListCheckRunsForRef(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/master/check-runs", func(w http.ResponseWriter, r *http.Request) {
@@ -374,6 +380,7 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 }
 
 func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/1/check-runs", func(w http.ResponseWriter, r *http.Request) {
@@ -440,6 +447,7 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 }
 
 func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/master/check-suites", func(w http.ResponseWriter, r *http.Request) {
@@ -505,6 +513,7 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 }
 
 func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/preferences", func(w http.ResponseWriter, r *http.Request) {
@@ -551,6 +560,7 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 }
 
 func TestChecksService_CreateCheckSuite(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites", func(w http.ResponseWriter, r *http.Request) {
@@ -606,6 +616,7 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 }
 
 func TestChecksService_ReRequestCheckSuite(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/1/rerequest", func(w http.ResponseWriter, r *http.Request) {
@@ -630,6 +641,7 @@ func TestChecksService_ReRequestCheckSuite(t *testing.T) {
 }
 
 func Test_CheckRunMarshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckRun{}, "{}")
 
 	now := time.Now()
@@ -812,6 +824,7 @@ func Test_CheckRunMarshal(t *testing.T) {
 }
 
 func Test_CheckSuiteMarshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckSuite{}, "{}")
 
 	now := time.Now()
@@ -951,6 +964,7 @@ func Test_CheckSuiteMarshal(t *testing.T) {
 }
 
 func TestCheckRunAnnotation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckRunAnnotation{}, "{}")
 
 	u := &CheckRunAnnotation{
@@ -981,6 +995,7 @@ func TestCheckRunAnnotation_Marshal(t *testing.T) {
 }
 
 func TestCheckRunImage_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckRunImage{}, "{}")
 
 	u := &CheckRunImage{
@@ -999,6 +1014,7 @@ func TestCheckRunImage_Marshal(t *testing.T) {
 }
 
 func TestCheckRunAction_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckRunAction{}, "{}")
 
 	u := &CheckRunAction{
@@ -1017,6 +1033,7 @@ func TestCheckRunAction_Marshal(t *testing.T) {
 }
 
 func TestAutoTriggerCheck_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AutoTriggerCheck{}, "{}")
 
 	u := &AutoTriggerCheck{
@@ -1033,6 +1050,7 @@ func TestAutoTriggerCheck_Marshal(t *testing.T) {
 }
 
 func TestCreateCheckSuiteOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateCheckSuiteOptions{}, "{}")
 
 	u := &CreateCheckSuiteOptions{
@@ -1049,6 +1067,7 @@ func TestCreateCheckSuiteOptions_Marshal(t *testing.T) {
 }
 
 func TestCheckRunOutput_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckRunOutput{}, "{}")
 
 	u := &CheckRunOutput{
@@ -1111,6 +1130,7 @@ func TestCheckRunOutput_Marshal(t *testing.T) {
 }
 
 func TestCreateCheckRunOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateCheckRunOptions{}, "{}")
 
 	u := &CreateCheckRunOptions{
@@ -1207,6 +1227,7 @@ func TestCreateCheckRunOptions_Marshal(t *testing.T) {
 }
 
 func TestUpdateCheckRunOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UpdateCheckRunOptions{}, "{}")
 
 	u := &UpdateCheckRunOptions{
@@ -1299,6 +1320,7 @@ func TestUpdateCheckRunOptions_Marshal(t *testing.T) {
 }
 
 func TestListCheckRunsResults_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ListCheckRunsResults{}, "{}")
 
 	l := &ListCheckRunsResults{
@@ -1489,6 +1511,7 @@ func TestListCheckRunsResults_Marshal(t *testing.T) {
 }
 
 func TestListCheckSuiteResults_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ListCheckSuiteResults{}, "{}")
 
 	l := &ListCheckSuiteResults{
@@ -1629,6 +1652,7 @@ func TestListCheckSuiteResults_Marshal(t *testing.T) {
 }
 
 func TestCheckSuitePreferenceOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckSuitePreferenceOptions{}, "{}")
 
 	u := &CheckSuitePreferenceOptions{
@@ -1653,6 +1677,7 @@ func TestCheckSuitePreferenceOptions_Marshal(t *testing.T) {
 }
 
 func TestPreferenceList_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PreferenceList{}, "{}")
 
 	u := &PreferenceList{
@@ -1677,6 +1702,7 @@ func TestPreferenceList_Marshal(t *testing.T) {
 }
 
 func TestCheckSuitePreferenceResults_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckSuitePreferenceResults{}, "{}")
 
 	u := &CheckSuitePreferenceResults{
@@ -1715,6 +1741,7 @@ func TestCheckSuitePreferenceResults_Marshal(t *testing.T) {
 }
 
 func TestChecksService_ReRequestCheckRun(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1/rerequest", func(w http.ResponseWriter, r *http.Request) {

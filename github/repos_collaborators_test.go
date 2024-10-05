@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListCollaborators(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +55,7 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
@@ -93,6 +95,7 @@ func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCollaborators_withPermission(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
@@ -132,6 +135,7 @@ func TestRepositoriesService_ListCollaborators_withPermission(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCollaborators_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -140,6 +144,7 @@ func TestRepositoriesService_ListCollaborators_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_IsCollaborator_True(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
@@ -173,6 +178,7 @@ func TestRepositoriesService_IsCollaborator_True(t *testing.T) {
 }
 
 func TestRepositoriesService_IsCollaborator_False(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
@@ -206,6 +212,7 @@ func TestRepositoriesService_IsCollaborator_False(t *testing.T) {
 }
 
 func TestRepositoriesService_IsCollaborator_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -214,6 +221,7 @@ func TestRepositoriesService_IsCollaborator_invalidUser(t *testing.T) {
 }
 
 func TestRepositoryService_GetPermissionLevel(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/collaborators/u/permission", func(w http.ResponseWriter, r *http.Request) {
@@ -254,6 +262,7 @@ func TestRepositoryService_GetPermissionLevel(t *testing.T) {
 }
 
 func TestRepositoriesService_AddCollaborator(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	opt := &RepositoryAddCollaboratorOptions{Permission: "admin"}
@@ -310,6 +319,7 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 }
 
 func TestRepositoriesService_AddCollaborator_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -318,6 +328,7 @@ func TestRepositoriesService_AddCollaborator_invalidUser(t *testing.T) {
 }
 
 func TestRepositoriesService_RemoveCollaborator(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
@@ -343,6 +354,7 @@ func TestRepositoriesService_RemoveCollaborator(t *testing.T) {
 }
 
 func TestRepositoriesService_RemoveCollaborator_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -351,6 +363,7 @@ func TestRepositoriesService_RemoveCollaborator_invalidUser(t *testing.T) {
 }
 
 func TestRepositoryAddCollaboratorOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryAddCollaboratorOptions{}, "{}")
 
 	r := &RepositoryAddCollaboratorOptions{
@@ -365,6 +378,7 @@ func TestRepositoryAddCollaboratorOptions_Marshal(t *testing.T) {
 }
 
 func TestRepositoryPermissionLevel_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryPermissionLevel{}, "{}")
 
 	r := &RepositoryPermissionLevel{
@@ -419,6 +433,7 @@ func TestRepositoryPermissionLevel_Marshal(t *testing.T) {
 }
 
 func TestCollaboratorInvitation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CollaboratorInvitation{}, "{}")
 
 	r := &CollaboratorInvitation{

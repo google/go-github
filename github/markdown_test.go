@@ -16,6 +16,7 @@ import (
 )
 
 func TestMarkdownService_Markdown(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &markdownRenderRequest{
@@ -61,6 +62,7 @@ func TestMarkdownService_Markdown(t *testing.T) {
 }
 
 func TestMarkdownRenderRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &markdownRenderRequest{}, "{}")
 
 	a := &markdownRenderRequest{
