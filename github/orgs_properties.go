@@ -41,7 +41,7 @@ type RepoCustomPropertyValue struct {
 // CustomPropertyValue represents a custom property value.
 type CustomPropertyValue struct {
 	PropertyName string  `json:"property_name"`
-	Value        *string `json:"value,omitempty"`
+	Value        *string `json:"value"`
 }
 
 // GetAllCustomProperties gets all custom properties that are defined for the specified organization.
