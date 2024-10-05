@@ -16,6 +16,7 @@ import (
 )
 
 func TestDependencyGraphService_GetSBOM(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/owner/repo/dependency-graph/sbom", func(w http.ResponseWriter, r *http.Request) {

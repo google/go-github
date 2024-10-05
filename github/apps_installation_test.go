@@ -16,6 +16,7 @@ import (
 )
 
 func TestAppsService_ListRepos(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{
@@ -56,6 +57,7 @@ func TestAppsService_ListRepos(t *testing.T) {
 }
 
 func TestAppsService_ListUserRepos(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{
@@ -101,6 +103,7 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 }
 
 func TestAppsService_AddRepository(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
@@ -130,6 +133,7 @@ func TestAppsService_AddRepository(t *testing.T) {
 }
 
 func TestAppsService_RemoveRepository(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
@@ -150,6 +154,7 @@ func TestAppsService_RemoveRepository(t *testing.T) {
 }
 
 func TestAppsService_RevokeInstallationToken(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/installation/token", func(w http.ResponseWriter, r *http.Request) {
@@ -170,6 +175,7 @@ func TestAppsService_RevokeInstallationToken(t *testing.T) {
 }
 
 func TestListRepositories_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ListRepositories{}, "{}")
 
 	u := &ListRepositories{

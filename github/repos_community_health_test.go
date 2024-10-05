@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/community/profile", func(w http.ResponseWriter, r *http.Request) {
@@ -133,6 +134,7 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 }
 
 func TestMetric_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Metric{}, "{}")
 
 	r := &Metric{
@@ -157,6 +159,7 @@ func TestMetric_Marshal(t *testing.T) {
 }
 
 func TestCommunityHealthFiles_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommunityHealthFiles{}, "{}")
 
 	r := &CommunityHealthFiles{
@@ -257,6 +260,7 @@ func TestCommunityHealthFiles_Marshal(t *testing.T) {
 }
 
 func TestCommunityHealthMetrics_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommunityHealthMetrics{}, "{}")
 
 	r := &CommunityHealthMetrics{

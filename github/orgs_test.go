@@ -16,6 +16,7 @@ import (
 )
 
 func TestOrganization_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Organization{}, "{}")
 
 	o := &Organization{
@@ -68,6 +69,7 @@ func TestOrganization_Marshal(t *testing.T) {
 }
 
 func TestOrganizationsService_ListAll(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	since := int64(1342004)
@@ -100,6 +102,7 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 }
 
 func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/orgs", func(w http.ResponseWriter, r *http.Request) {
@@ -134,6 +137,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_List_specifiedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/orgs", func(w http.ResponseWriter, r *http.Request) {
@@ -170,6 +174,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_List_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -178,6 +183,7 @@ func TestOrganizationsService_List_invalidUser(t *testing.T) {
 }
 
 func TestOrganizationsService_Get(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
@@ -213,6 +219,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 }
 
 func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -221,6 +228,7 @@ func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_GetByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -255,6 +263,7 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 }
 
 func TestOrganizationsService_Edit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Organization{Login: String("l")}
@@ -299,6 +308,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 }
 
 func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -307,6 +317,7 @@ func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_Delete(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
@@ -331,6 +342,7 @@ func TestOrganizationsService_Delete(t *testing.T) {
 }
 
 func TestOrganizationsService_ListInstallations(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/installations", func(w http.ResponseWriter, r *http.Request) {
@@ -365,6 +377,7 @@ func TestOrganizationsService_ListInstallations(t *testing.T) {
 }
 
 func TestOrganizationsService_ListInstallations_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -373,6 +386,7 @@ func TestOrganizationsService_ListInstallations_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/installations", func(w http.ResponseWriter, r *http.Request) {
@@ -414,6 +428,7 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 }
 
 func TestOrganizationInstallations_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &OrganizationInstallations{}, "{}")
 
 	o := &OrganizationInstallations{
@@ -433,6 +448,7 @@ func TestOrganizationInstallations_Marshal(t *testing.T) {
 }
 
 func TestPlan_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Plan{}, "{}")
 
 	o := &Plan{

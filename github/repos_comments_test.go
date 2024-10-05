@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListComments(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -53,6 +54,7 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 }
 
 func TestRepositoriesService_ListComments_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -61,6 +63,7 @@ func TestRepositoriesService_ListComments_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCommitComments(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/s/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -98,6 +101,7 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCommitComments_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -106,6 +110,7 @@ func TestRepositoriesService_ListCommitComments_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateComment(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &RepositoryComment{Body: String("b")}
@@ -149,6 +154,7 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateComment_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -157,6 +163,7 @@ func TestRepositoriesService_CreateComment_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetComment(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
@@ -192,6 +199,7 @@ func TestRepositoriesService_GetComment(t *testing.T) {
 }
 
 func TestRepositoriesService_GetComment_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -200,6 +208,7 @@ func TestRepositoriesService_GetComment_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateComment(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &RepositoryComment{Body: String("b")}
@@ -243,6 +252,7 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateComment_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -251,6 +261,7 @@ func TestRepositoriesService_UpdateComment_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteComment(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
@@ -275,6 +286,7 @@ func TestRepositoriesService_DeleteComment(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteComment_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -283,6 +295,7 @@ func TestRepositoriesService_DeleteComment_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoryComment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryComment{}, "{}")
 
 	r := &RepositoryComment{

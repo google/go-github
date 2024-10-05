@@ -16,6 +16,7 @@ import (
 )
 
 func TestDependabotService_GetRepoPublicKey(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
@@ -50,6 +51,7 @@ func TestDependabotService_GetRepoPublicKey(t *testing.T) {
 }
 
 func TestDependabotService_GetRepoPublicKeyNumeric(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
@@ -84,6 +86,7 @@ func TestDependabotService_GetRepoPublicKeyNumeric(t *testing.T) {
 }
 
 func TestDependabotService_ListRepoSecrets(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets", func(w http.ResponseWriter, r *http.Request) {
@@ -126,6 +129,7 @@ func TestDependabotService_ListRepoSecrets(t *testing.T) {
 }
 
 func TestDependabotService_GetRepoSecret(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
@@ -164,6 +168,7 @@ func TestDependabotService_GetRepoSecret(t *testing.T) {
 }
 
 func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
@@ -196,6 +201,7 @@ func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
 }
 
 func TestDependabotService_DeleteRepoSecret(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
@@ -220,6 +226,7 @@ func TestDependabotService_DeleteRepoSecret(t *testing.T) {
 }
 
 func TestDependabotService_GetOrgPublicKey(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
@@ -254,6 +261,7 @@ func TestDependabotService_GetOrgPublicKey(t *testing.T) {
 }
 
 func TestDependabotService_ListOrgSecrets(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets", func(w http.ResponseWriter, r *http.Request) {
@@ -297,6 +305,7 @@ func TestDependabotService_ListOrgSecrets(t *testing.T) {
 }
 
 func TestDependabotService_GetOrgSecret(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
@@ -337,6 +346,7 @@ func TestDependabotService_GetOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
@@ -371,6 +381,7 @@ func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_ListSelectedReposForOrgSecret(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -411,6 +422,7 @@ func TestDependabotService_ListSelectedReposForOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_SetSelectedReposForOrgSecret(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -437,6 +449,7 @@ func TestDependabotService_SetSelectedReposForOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_AddSelectedRepoToOrgSecret(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
@@ -462,6 +475,7 @@ func TestDependabotService_AddSelectedRepoToOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
@@ -487,6 +501,7 @@ func TestDependabotService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_DeleteOrgSecret(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {

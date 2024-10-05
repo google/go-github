@@ -17,6 +17,7 @@ import (
 )
 
 func TestActivityService_ListNotification(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
@@ -59,6 +60,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 }
 
 func TestActivityService_ListRepositoryNotifications(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
@@ -93,6 +95,7 @@ func TestActivityService_ListRepositoryNotifications(t *testing.T) {
 }
 
 func TestActivityService_MarkNotificationsRead(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
@@ -116,6 +119,7 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 }
 
 func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
@@ -144,6 +148,7 @@ func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
 }
 
 func TestActivityService_GetThread(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications/threads/1", func(w http.ResponseWriter, r *http.Request) {
@@ -178,6 +183,7 @@ func TestActivityService_GetThread(t *testing.T) {
 }
 
 func TestActivityService_MarkThreadRead(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications/threads/1", func(w http.ResponseWriter, r *http.Request) {
@@ -203,6 +209,7 @@ func TestActivityService_MarkThreadRead(t *testing.T) {
 }
 
 func TestActivityService_MarkThreadDone(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications/threads/1", func(w http.ResponseWriter, r *http.Request) {
@@ -228,6 +235,7 @@ func TestActivityService_MarkThreadDone(t *testing.T) {
 }
 
 func TestActivityService_GetThreadSubscription(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications/threads/1/subscription", func(w http.ResponseWriter, r *http.Request) {
@@ -262,6 +270,7 @@ func TestActivityService_GetThreadSubscription(t *testing.T) {
 }
 
 func TestActivityService_SetThreadSubscription(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Subscription{Subscribed: Bool(true)}
@@ -305,6 +314,7 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 }
 
 func TestActivityService_DeleteThreadSubscription(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/notifications/threads/1/subscription", func(w http.ResponseWriter, r *http.Request) {
@@ -330,6 +340,7 @@ func TestActivityService_DeleteThreadSubscription(t *testing.T) {
 }
 
 func TestNotification_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Notification{}, "{}")
 
 	u := &Notification{
@@ -376,6 +387,7 @@ func TestNotification_Marshal(t *testing.T) {
 }
 
 func TestNotificationSubject_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &NotificationSubject{}, "{}")
 
 	u := &NotificationSubject{
@@ -396,6 +408,7 @@ func TestNotificationSubject_Marshal(t *testing.T) {
 }
 
 func TestMarkReadOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &markReadOptions{}, "{}")
 
 	u := &markReadOptions{

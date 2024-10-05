@@ -16,6 +16,7 @@ import (
 )
 
 func TestOrganizationsService_ListRoles(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles", func(w http.ResponseWriter, r *http.Request) {
@@ -98,6 +99,7 @@ func TestOrganizationsService_ListRoles(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrgRole(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	// Test built-in org role
@@ -196,6 +198,7 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateCustomOrgRole(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles", func(w http.ResponseWriter, r *http.Request) {
@@ -237,6 +240,7 @@ func TestOrganizationsService_CreateCustomOrgRole(t *testing.T) {
 }
 
 func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/8030", func(w http.ResponseWriter, r *http.Request) {
@@ -277,6 +281,7 @@ func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
 }
 
 func TestOrganizationsService_DeleteCustomOrgRole(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/8030", func(w http.ResponseWriter, r *http.Request) {
@@ -307,6 +312,7 @@ func TestOrganizationsService_DeleteCustomOrgRole(t *testing.T) {
 }
 
 func TestOrganizationsService_AssignOrgRoleToTeam(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/teams/t/8030", func(w http.ResponseWriter, r *http.Request) {
@@ -335,6 +341,7 @@ func TestOrganizationsService_AssignOrgRoleToTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveOrgRoleFromTeam(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/teams/t/8030", func(w http.ResponseWriter, r *http.Request) {
@@ -363,6 +370,7 @@ func TestOrganizationsService_RemoveOrgRoleFromTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_AssignOrgRoleToUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/users/t/8030", func(w http.ResponseWriter, r *http.Request) {
@@ -391,6 +399,7 @@ func TestOrganizationsService_AssignOrgRoleToUser(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveOrgRoleFromUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/users/t/8030", func(w http.ResponseWriter, r *http.Request) {
@@ -419,6 +428,7 @@ func TestOrganizationsService_RemoveOrgRoleFromUser(t *testing.T) {
 }
 
 func TestOrganizationsService_ListTeamsAssignedToOrgRole(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/1729/teams", func(w http.ResponseWriter, r *http.Request) {
@@ -453,6 +463,7 @@ func TestOrganizationsService_ListTeamsAssignedToOrgRole(t *testing.T) {
 }
 
 func TestOrganizationsService_ListUsersAssignedToOrgRole(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/organization-roles/1729/users", func(w http.ResponseWriter, r *http.Request) {

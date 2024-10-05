@@ -15,6 +15,7 @@ import (
 )
 
 func TestUsersService_ListFollowers_authenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/followers", func(w http.ResponseWriter, r *http.Request) {
@@ -51,6 +52,7 @@ func TestUsersService_ListFollowers_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowers_specifiedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/followers", func(w http.ResponseWriter, r *http.Request) {
@@ -85,6 +87,7 @@ func TestUsersService_ListFollowers_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowers_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -93,6 +96,7 @@ func TestUsersService_ListFollowers_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/following", func(w http.ResponseWriter, r *http.Request) {
@@ -129,6 +133,7 @@ func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/following", func(w http.ResponseWriter, r *http.Request) {
@@ -163,6 +168,7 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowing_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -171,6 +177,7 @@ func TestUsersService_ListFollowing_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_IsFollowing_authenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/following/t", func(w http.ResponseWriter, r *http.Request) {
@@ -203,6 +210,7 @@ func TestUsersService_IsFollowing_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_IsFollowing_specifiedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/following/t", func(w http.ResponseWriter, r *http.Request) {
@@ -235,6 +243,7 @@ func TestUsersService_IsFollowing_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_IsFollowing_false(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/following/t", func(w http.ResponseWriter, r *http.Request) {
@@ -267,6 +276,7 @@ func TestUsersService_IsFollowing_false(t *testing.T) {
 }
 
 func TestUsersService_IsFollowing_error(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/following/t", func(w http.ResponseWriter, r *http.Request) {
@@ -299,6 +309,7 @@ func TestUsersService_IsFollowing_error(t *testing.T) {
 }
 
 func TestUsersService_IsFollowing_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -307,6 +318,7 @@ func TestUsersService_IsFollowing_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_Follow(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/following/u", func(w http.ResponseWriter, r *http.Request) {
@@ -331,6 +343,7 @@ func TestUsersService_Follow(t *testing.T) {
 }
 
 func TestUsersService_Follow_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -339,6 +352,7 @@ func TestUsersService_Follow_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_Unfollow(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/following/u", func(w http.ResponseWriter, r *http.Request) {
@@ -363,6 +377,7 @@ func TestUsersService_Unfollow(t *testing.T) {
 }
 
 func TestUsersService_Unfollow_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()

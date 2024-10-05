@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +50,7 @@ func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
 }
 
 func TestRepositoriesService_EditActionsPermissions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ActionsPermissionsRepository{Enabled: Bool(true), AllowedActions: String("selected")}
@@ -92,6 +94,7 @@ func TestRepositoriesService_EditActionsPermissions(t *testing.T) {
 }
 
 func TestActionsPermissionsRepository_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ActionsPermissions{}, "{}")
 
 	u := &ActionsPermissionsRepository{
@@ -110,6 +113,7 @@ func TestActionsPermissionsRepository_Marshal(t *testing.T) {
 }
 
 func TestRepositoriesService_GetDefaultWorkflowPermissions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
@@ -143,6 +147,7 @@ func TestRepositoriesService_GetDefaultWorkflowPermissions(t *testing.T) {
 }
 
 func TestRepositoriesService_EditDefaultWorkflowPermissions(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}

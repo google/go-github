@@ -11,6 +11,7 @@ import (
 )
 
 func TestPullRequestThread_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestThread{}, "{}")
 
 	createdAt := Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}

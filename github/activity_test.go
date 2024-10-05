@@ -14,6 +14,7 @@ import (
 )
 
 func TestActivityService_List(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/feeds", func(w http.ResponseWriter, r *http.Request) {
@@ -131,6 +132,7 @@ var wantFeeds = &Feeds{
 }
 
 func TestFeedLink_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &FeedLink{}, "{}")
 
 	u := &FeedLink{
@@ -147,6 +149,7 @@ func TestFeedLink_Marshal(t *testing.T) {
 }
 
 func TestFeeds_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Feeds{}, "{}")
 
 	u := &Feeds{
@@ -237,6 +240,7 @@ func TestFeeds_Marshal(t *testing.T) {
 }
 
 func TestFeedLinks_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &FeedLinks{}, "{}")
 
 	u := &FeedLinks{

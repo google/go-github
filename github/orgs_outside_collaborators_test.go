@@ -15,6 +15,7 @@ import (
 )
 
 func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/outside_collaborators", func(w http.ResponseWriter, r *http.Request) {
@@ -57,6 +58,7 @@ func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
 }
 
 func TestOrganizationsService_ListOutsideCollaborators_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -65,6 +67,7 @@ func TestOrganizationsService_ListOutsideCollaborators_invalidOrg(t *testing.T) 
 }
 
 func TestOrganizationsService_RemoveOutsideCollaborator(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -90,6 +93,7 @@ func TestOrganizationsService_RemoveOutsideCollaborator(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveOutsideCollaborator_NonMember(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -108,6 +112,7 @@ func TestOrganizationsService_RemoveOutsideCollaborator_NonMember(t *testing.T) 
 }
 
 func TestOrganizationsService_RemoveOutsideCollaborator_Member(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -126,6 +131,7 @@ func TestOrganizationsService_RemoveOutsideCollaborator_Member(t *testing.T) {
 }
 
 func TestOrganizationsService_ConvertMemberToOutsideCollaborator(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -151,6 +157,7 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator(t *testing.T) {
 }
 
 func TestOrganizationsService_ConvertMemberToOutsideCollaborator_NonMemberOrLastOwner(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {

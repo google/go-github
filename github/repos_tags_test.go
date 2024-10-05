@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListTagProtection(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/tags/protection", func(w http.ResponseWriter, r *http.Request) {
@@ -51,6 +52,7 @@ func TestRepositoriesService_ListTagProtection(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTagProtection_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -59,6 +61,7 @@ func TestRepositoriesService_ListTagProtection_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateTagProtection(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	pattern := "tag*"
@@ -103,6 +106,7 @@ func TestRepositoriesService_CreateTagProtection(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteTagProtection(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/tags/protection/1", func(w http.ResponseWriter, r *http.Request) {
@@ -128,6 +132,7 @@ func TestRepositoriesService_DeleteTagProtection(t *testing.T) {
 }
 
 func TestTagProtection_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TagProtection{}, "{}")
 
 	u := &TagProtection{
