@@ -42,7 +42,7 @@ type RepoCustomPropertyValue struct {
 // CustomPropertyValue represents a custom property value.
 type CustomPropertyValue struct {
 	PropertyName string      `json:"property_name"`
-	Value        interface{} `json:"value,omitempty"`
+	Value        interface{} `json:"value"`
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
