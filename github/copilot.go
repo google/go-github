@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // CopilotService provides access to the Copilot-related functions
@@ -63,6 +64,13 @@ type SeatCancellations struct {
 	SeatsCancelled int `json:"seats_cancelled"`
 }
 
+type CopilotUsageSummaryListOptions struct {
+	Since time.Time `url:"since,omitempty"`
+	Until time.Time `url:"until,omitempty"`
+
+	ListOptions
+}
+
 type CopilotUsageBreakdown struct {
 	Language         string `json:"language"`
 	Editor           string `json:"editor"`
@@ -74,16 +82,16 @@ type CopilotUsageBreakdown struct {
 }
 
 type CopilotUsageSummary struct {
-	Day                   string                  `json:"day"`
-	TotalSuggestionsCount int                     `json:"total_suggestions_count"`
-	TotalAcceptancesCount int                     `json:"total_acceptances_count"`
-	TotalLinesSuggested   int                     `json:"total_lines_suggested"`
-	TotalLinesAccepted    int                     `json:"total_lines_accepted"`
-	TotalActiveUsers      int                     `json:"total_active_users"`
-	TotalChatAcceptances  int                     `json:"total_chat_acceptances"`
-	TotalChatTurns        int                     `json:"total_chat_turns"`
-	TotalActiveChatUsers  int                     `json:"total_active_chat_users"`
-	Breakdown             []CopilotUsageBreakdown `json:"breakdown"`
+	Day                   string                   `json:"day"`
+	TotalSuggestionsCount int                      `json:"total_suggestions_count"`
+	TotalAcceptancesCount int                      `json:"total_acceptances_count"`
+	TotalLinesSuggested   int                      `json:"total_lines_suggested"`
+	TotalLinesAccepted    int                      `json:"total_lines_accepted"`
+	TotalActiveUsers      int                      `json:"total_active_users"`
+	TotalChatAcceptances  int                      `json:"total_chat_acceptances"`
+	TotalChatTurns        int                      `json:"total_chat_turns"`
+	TotalActiveChatUsers  int                      `json:"total_active_chat_users"`
+	Breakdown             []*CopilotUsageBreakdown `json:"breakdown"`
 }
 
 func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
@@ -342,8 +350,12 @@ func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (
 // GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-organization-members
 //
 //meta:operation GET /orgs/{org}/copilot/usage
-func (s *CopilotService) GetOrganizationUsage(ctx context.Context, org string) ([]*CopilotUsageSummary, *Response, error) {
+func (s *CopilotService) GetOrganizationUsage(ctx context.Context, org string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/usage", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
