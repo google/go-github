@@ -16,8 +16,8 @@ import (
 )
 
 func TestRepositoriesService_ListAutolinks(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -59,8 +59,8 @@ func TestRepositoriesService_ListAutolinks(t *testing.T) {
 }
 
 func TestRepositoriesService_AddAutolink(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	opt := &AutolinkOptions{
 		KeyPrefix:      String("TICKET-"),
@@ -114,8 +114,8 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 }
 
 func TestRepositoriesService_GetAutolink(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/autolinks/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -144,8 +144,8 @@ func TestRepositoriesService_GetAutolink(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteAutolink(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/autolinks/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -165,6 +165,7 @@ func TestRepositoriesService_DeleteAutolink(t *testing.T) {
 }
 
 func TestAutolinkOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AutolinkOptions{}, "{}")
 
 	r := &AutolinkOptions{
@@ -183,6 +184,7 @@ func TestAutolinkOptions_Marshal(t *testing.T) {
 }
 
 func TestAutolink_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Autolink{}, "{}")
 
 	r := &Autolink{

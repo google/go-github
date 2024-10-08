@@ -16,8 +16,8 @@ import (
 )
 
 func TestInteractionsService_GetRestrictionsForRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -52,8 +52,8 @@ func TestInteractionsService_GetRestrictionsForRepo(t *testing.T) {
 }
 
 func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &InteractionRestriction{Limit: String("existing_users")}
 
@@ -96,8 +96,8 @@ func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
 }
 
 func TestInteractionsService_RemoveRestrictionsFromRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

@@ -206,13 +206,14 @@ func (s *TeamsService) CreateTeam(ctx context.Context, org string, team NewTeam)
 // "parent_team_id" field will be null. It is for internal use
 // only and should not be exported.
 type newTeamNoParent struct {
-	Name         string   `json:"name"`
-	Description  *string  `json:"description,omitempty"`
-	Maintainers  []string `json:"maintainers,omitempty"`
-	RepoNames    []string `json:"repo_names,omitempty"`
-	ParentTeamID *int64   `json:"parent_team_id"` // This will be "null"
-	Privacy      *string  `json:"privacy,omitempty"`
-	LDAPDN       *string  `json:"ldap_dn,omitempty"`
+	Name                string   `json:"name"`
+	Description         *string  `json:"description,omitempty"`
+	Maintainers         []string `json:"maintainers,omitempty"`
+	RepoNames           []string `json:"repo_names,omitempty"`
+	ParentTeamID        *int64   `json:"parent_team_id"` // This will be "null"
+	NotificationSetting *string  `json:"notification_setting,omitempty"`
+	Privacy             *string  `json:"privacy,omitempty"`
+	LDAPDN              *string  `json:"ldap_dn,omitempty"`
 }
 
 // copyNewTeamWithoutParent is used to set the "parent_team_id"
@@ -220,12 +221,13 @@ type newTeamNoParent struct {
 // It is for internal use only and should not be exported.
 func copyNewTeamWithoutParent(team *NewTeam) *newTeamNoParent {
 	return &newTeamNoParent{
-		Name:        team.Name,
-		Description: team.Description,
-		Maintainers: team.Maintainers,
-		RepoNames:   team.RepoNames,
-		Privacy:     team.Privacy,
-		LDAPDN:      team.LDAPDN,
+		Name:                team.Name,
+		Description:         team.Description,
+		Maintainers:         team.Maintainers,
+		RepoNames:           team.RepoNames,
+		NotificationSetting: team.NotificationSetting,
+		Privacy:             team.Privacy,
+		LDAPDN:              team.LDAPDN,
 	}
 }
 

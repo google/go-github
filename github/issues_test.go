@@ -17,8 +17,8 @@ import (
 )
 
 func TestIssuesService_List_all(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -63,8 +63,8 @@ func TestIssuesService_List_all(t *testing.T) {
 }
 
 func TestIssuesService_List_owned(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -85,8 +85,8 @@ func TestIssuesService_List_owned(t *testing.T) {
 }
 
 func TestIssuesService_ListByOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -121,8 +121,8 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 }
 
 func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.ListByOrg(ctx, "%", nil)
@@ -130,8 +130,8 @@ func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
 }
 
 func TestIssuesService_ListByOrg_badOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.ListByOrg(ctx, "\n", nil)
@@ -139,8 +139,8 @@ func TestIssuesService_ListByOrg_badOrg(t *testing.T) {
 }
 
 func TestIssuesService_ListByRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -191,8 +191,8 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 }
 
 func TestIssuesService_ListByRepo_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.ListByRepo(ctx, "%", "r", nil)
@@ -200,8 +200,8 @@ func TestIssuesService_ListByRepo_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -244,8 +244,8 @@ func TestIssuesService_Get(t *testing.T) {
 }
 
 func TestIssuesService_Get_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.Get(ctx, "%", "r", 1)
@@ -253,8 +253,8 @@ func TestIssuesService_Get_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &IssueRequest{
 		Title:    String("t"),
@@ -302,8 +302,8 @@ func TestIssuesService_Create(t *testing.T) {
 }
 
 func TestIssuesService_Create_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.Create(ctx, "%", "r", nil)
@@ -311,8 +311,8 @@ func TestIssuesService_Create_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Edit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &IssueRequest{Title: String("t")}
 
@@ -355,8 +355,9 @@ func TestIssuesService_Edit(t *testing.T) {
 }
 
 func TestIssuesService_RemoveMilestone(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"number":1}`)
@@ -389,8 +390,8 @@ func TestIssuesService_RemoveMilestone(t *testing.T) {
 }
 
 func TestIssuesService_Edit_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.Edit(ctx, "%", "r", 1, nil)
@@ -398,8 +399,8 @@ func TestIssuesService_Edit_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Lock(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -424,8 +425,8 @@ func TestIssuesService_Lock(t *testing.T) {
 }
 
 func TestIssuesService_LockWithReason(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -441,8 +442,8 @@ func TestIssuesService_LockWithReason(t *testing.T) {
 }
 
 func TestIssuesService_Unlock(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -467,6 +468,7 @@ func TestIssuesService_Unlock(t *testing.T) {
 }
 
 func TestIsPullRequest(t *testing.T) {
+	t.Parallel()
 	i := new(Issue)
 	if i.IsPullRequest() == true {
 		t.Errorf("expected i.IsPullRequest (%v) to return false, got true", i)
@@ -478,6 +480,7 @@ func TestIsPullRequest(t *testing.T) {
 }
 
 func TestLockIssueOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &LockIssueOptions{}, "{}")
 
 	u := &LockIssueOptions{
@@ -492,6 +495,7 @@ func TestLockIssueOptions_Marshal(t *testing.T) {
 }
 
 func TestPullRequestLinks_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestLinks{}, "{}")
 
 	u := &PullRequestLinks{
@@ -514,6 +518,7 @@ func TestPullRequestLinks_Marshal(t *testing.T) {
 }
 
 func TestIssueRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &IssueRequest{}, "{}")
 
 	u := &IssueRequest{
@@ -544,6 +549,7 @@ func TestIssueRequest_Marshal(t *testing.T) {
 }
 
 func TestIssue_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Issue{}, "{}")
 
 	u := &Issue{

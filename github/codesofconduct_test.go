@@ -15,8 +15,8 @@ import (
 )
 
 func TestCodesOfConductService_List(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/codes_of_conduct", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -53,8 +53,8 @@ func TestCodesOfConductService_List(t *testing.T) {
 }
 
 func TestCodesOfConductService_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/codes_of_conduct/k", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -97,6 +97,7 @@ func TestCodesOfConductService_Get(t *testing.T) {
 }
 
 func TestCodeOfConduct_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CodeOfConduct{}, "{}")
 
 	a := &CodeOfConduct{

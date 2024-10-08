@@ -15,8 +15,8 @@ import (
 )
 
 func TestAppsService_ListHookDeliveries(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/hook/deliveries", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -49,8 +49,8 @@ func TestAppsService_ListHookDeliveries(t *testing.T) {
 }
 
 func TestAppsService_GetHookDelivery(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/hook/deliveries/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -84,8 +84,8 @@ func TestAppsService_GetHookDelivery(t *testing.T) {
 }
 
 func TestAppsService_RedeliverHookDelivery(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/hook/deliveries/1/attempts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

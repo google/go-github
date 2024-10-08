@@ -26,8 +26,8 @@ func tdcEndpointByID(orgID, teamID, discussionNumber, commentNumber string) stri
 }
 
 // "Team Discussion Comments" endpoint, when using a team slug.
-func tdcEndpointBySlug(org, slug, dicsuccionsNumber, commentNumber string) string {
-	out := fmt.Sprintf("/orgs/%v/teams/%v/discussions/%v/comments", org, slug, dicsuccionsNumber)
+func tdcEndpointBySlug(org, slug, discussionNumber, commentNumber string) string {
+	out := fmt.Sprintf("/orgs/%v/teams/%v/discussions/%v/comments", org, slug, discussionNumber)
 	if commentNumber != "" {
 		return fmt.Sprintf("%v/%v", out, commentNumber)
 	}
@@ -35,8 +35,8 @@ func tdcEndpointBySlug(org, slug, dicsuccionsNumber, commentNumber string) strin
 }
 
 func TestTeamsService_ListComments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	handleFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -176,8 +176,8 @@ func TestTeamsService_ListComments(t *testing.T) {
 }
 
 func TestTeamsService_GetComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -240,8 +240,8 @@ func TestTeamsService_GetComment(t *testing.T) {
 }
 
 func TestTeamsService_CreateComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := DiscussionComment{Body: String("c")}
 
@@ -313,8 +313,8 @@ func TestTeamsService_CreateComment(t *testing.T) {
 }
 
 func TestTeamsService_EditComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := DiscussionComment{Body: String("e")}
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
@@ -385,8 +385,8 @@ func TestTeamsService_EditComment(t *testing.T) {
 }
 
 func TestTeamsService_DeleteComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -433,6 +433,7 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 }
 
 func TestDiscussionComment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DiscussionComment{}, "{}")
 
 	u := &DiscussionComment{

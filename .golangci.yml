@@ -11,7 +11,9 @@ linters:
     - gosec
     - misspell
     - nakedret
+    - paralleltest
     - stylecheck
+    - tparallel
     - unconvert
     - unparam
     - whitespace
@@ -20,9 +22,6 @@ linters-settings:
     excludes:
       # duplicates errcheck
       - G104
-      # performance issue: see https://github.com/golangci/golangci-lint/issues/4039
-      # and https://github.com/securego/gosec/issues/1007
-      - G602
       # int(os.Stdin.Fd())
       - G115
 issues:
@@ -53,3 +52,7 @@ issues:
     - linters: [ gosec ]
       text: 'G304: Potential file inclusion via variable'
       path: '^(example|tools)\/'
+
+    # We don't run parallel integration tests
+    - linters: [ paralleltest, tparallel ]
+      path: '^test/integration'

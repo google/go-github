@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	Version = "v64.0.0"
+	Version = "v66.0.0"
 
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
@@ -774,7 +774,7 @@ func parseSecondaryRate(r *http.Response) *time.Duration {
 
 	// According to GitHub support, endpoints might return x-ratelimit-reset instead,
 	// as an integer which represents the number of seconds since epoch UTC,
-	// represting the time to resume making requests.
+	// representing the time to resume making requests.
 	if v := r.Header.Get(headerRateReset); v != "" {
 		secondsSinceEpoch, _ := strconv.ParseInt(v, 10, 64) // Error handling is noop.
 		retryAfter := time.Until(time.Unix(secondsSinceEpoch, 0))

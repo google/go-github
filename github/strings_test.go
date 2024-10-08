@@ -12,6 +12,7 @@ import (
 )
 
 func TestStringify(t *testing.T) {
+	t.Parallel()
 	var nilPointer *string
 
 	var tests = []struct {
@@ -85,6 +86,7 @@ func TestStringify(t *testing.T) {
 // used to build the strings, which we do by verifying that pointers are
 // stringified as their underlying value.
 func TestString(t *testing.T) {
+	t.Parallel()
 	var tests = []struct {
 		in  interface{}
 		out string

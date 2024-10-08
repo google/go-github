@@ -29,39 +29,12 @@ type CustomOrgRoles struct {
 	BaseRole    *string       `json:"base_role,omitempty"`
 }
 
-// OrganizationCustomRepoRoles represents custom repository roles available in specified organization.
-type OrganizationCustomRepoRoles struct {
-	TotalCount      *int               `json:"total_count,omitempty"`
-	CustomRepoRoles []*CustomRepoRoles `json:"custom_roles,omitempty"`
-}
-
-// CustomRepoRoles represents custom repository roles for an organization.
-// See https://docs.github.com/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization
-// for more information.
-type CustomRepoRoles struct {
-	ID          *int64        `json:"id,omitempty"`
-	Name        *string       `json:"name,omitempty"`
-	Description *string       `json:"description,omitempty"`
-	BaseRole    *string       `json:"base_role,omitempty"`
-	Permissions []string      `json:"permissions,omitempty"`
-	Org         *Organization `json:"organization,omitempty"`
-	CreatedAt   *Timestamp    `json:"created_at,omitempty"`
-	UpdatedAt   *Timestamp    `json:"updated_at,omitempty"`
-}
-
 // CreateOrUpdateOrgRoleOptions represents options required to create or update a custom organization role.
 type CreateOrUpdateOrgRoleOptions struct {
 	Name        *string  `json:"name,omitempty"`
 	Description *string  `json:"description,omitempty"`
 	Permissions []string `json:"permissions"`
-}
-
-// CreateOrUpdateCustomRepoRoleOptions represents options required to create or update a custom repository role.
-type CreateOrUpdateCustomRepoRoleOptions struct {
-	Name        *string  `json:"name,omitempty"`
-	Description *string  `json:"description,omitempty"`
 	BaseRole    *string  `json:"base_role,omitempty"`
-	Permissions []string `json:"permissions"`
 }
 
 // ListRoles lists the custom roles available in this organization.
@@ -85,6 +58,29 @@ func (s *OrganizationsService) ListRoles(ctx context.Context, org string) (*Orga
 	}
 
 	return customRepoRoles, resp, nil
+}
+
+// GetOrgRole gets an organization role in this organization.
+// In order to get organization roles in an organization, the authenticated user must be an organization owner, or have access via an organization role.
+//
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#get-an-organization-role
+//
+//meta:operation GET /orgs/{org}/organization-roles/{role_id}
+func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleID int64) (*CustomOrgRoles, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	resultingRole := new(CustomOrgRoles)
+	resp, err := s.client.Do(ctx, req, resultingRole)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return resultingRole, resp, err
 }
 
 // CreateCustomOrgRole creates a custom role in this organization.
@@ -156,91 +152,87 @@ func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org stri
 	return resp, nil
 }
 
-// ListCustomRepoRoles lists the custom repository roles available in this organization.
-// In order to see custom repository roles in an organization, the authenticated user must be an organization owner.
+// AssignOrgRoleToTeam assigns an existing organization role to a team in this organization.
+// In order to assign organization roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#list-custom-repository-roles-in-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#assign-an-organization-role-to-a-team
 //
-//meta:operation GET /orgs/{org}/custom-repository-roles
-func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org string) (*OrganizationCustomRepoRoles, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom-repository-roles", org)
+//meta:operation PUT /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}
+func (s *OrganizationsService) AssignOrgRoleToTeam(ctx context.Context, org, teamSlug string, roleID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/organization-roles/teams/%v/%v", org, teamSlug, roleID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	customRepoRoles := new(OrganizationCustomRepoRoles)
-	resp, err := s.client.Do(ctx, req, customRepoRoles)
+	resp, err := s.client.Do(ctx, req, nil)
 	if err != nil {
-		return nil, resp, err
+		return resp, err
 	}
 
-	return customRepoRoles, resp, nil
+	return resp, nil
 }
 
-// CreateCustomRepoRole creates a custom repository role in this organization.
-// In order to create custom repository roles in an organization, the authenticated user must be an organization owner.
+// RemoveOrgRoleFromTeam removes an existing organization role assignment from a team in this organization.
+// In order to remove organization role assignments in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#create-a-custom-repository-role
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#remove-an-organization-role-from-a-team
 //
-//meta:operation POST /orgs/{org}/custom-repository-roles
-func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org string, opts *CreateOrUpdateCustomRepoRoleOptions) (*CustomRepoRoles, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom-repository-roles", org)
-
-	req, err := s.client.NewRequest("POST", u, opts)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	resultingRole := new(CustomRepoRoles)
-	resp, err := s.client.Do(ctx, req, resultingRole)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return resultingRole, resp, err
-}
-
-// UpdateCustomRepoRole updates a custom repository role in this organization.
-// In order to update custom repository roles in an organization, the authenticated user must be an organization owner.
-//
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#update-a-custom-repository-role
-//
-//meta:operation PATCH /orgs/{org}/custom-repository-roles/{role_id}
-func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org string, roleID int64, opts *CreateOrUpdateCustomRepoRoleOptions) (*CustomRepoRoles, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
-
-	req, err := s.client.NewRequest("PATCH", u, opts)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	resultingRole := new(CustomRepoRoles)
-	resp, err := s.client.Do(ctx, req, resultingRole)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return resultingRole, resp, err
-}
-
-// DeleteCustomRepoRole deletes an existing custom repository role in this organization.
-// In order to delete custom repository roles in an organization, the authenticated user must be an organization owner.
-//
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#delete-a-custom-repository-role
-//
-//meta:operation DELETE /orgs/{org}/custom-repository-roles/{role_id}
-func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org string, roleID int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
+//meta:operation DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}
+func (s *OrganizationsService) RemoveOrgRoleFromTeam(ctx context.Context, org, teamSlug string, roleID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/organization-roles/teams/%v/%v", org, teamSlug, roleID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resultingRole := new(CustomRepoRoles)
-	resp, err := s.client.Do(ctx, req, resultingRole)
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
+// AssignOrgRoleToUser assigns an existing organization role to a user in this organization.
+// In order to assign organization roles in an organization, the authenticated user must be an organization owner.
+//
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#assign-an-organization-role-to-a-user
+//
+//meta:operation PUT /orgs/{org}/organization-roles/users/{username}/{role_id}
+func (s *OrganizationsService) AssignOrgRoleToUser(ctx context.Context, org, username string, roleID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/organization-roles/users/%v/%v", org, username, roleID)
+
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
+// RemoveOrgRoleFromUser removes an existing organization role assignment from a user in this organization.
+// In order to remove organization role assignments in an organization, the authenticated user must be an organization owner.
+//
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#remove-an-organization-role-from-a-user
+//
+//meta:operation DELETE /orgs/{org}/organization-roles/users/{username}/{role_id}
+func (s *OrganizationsService) RemoveOrgRoleFromUser(ctx context.Context, org, username string, roleID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/organization-roles/users/%v/%v", org, username, roleID)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
 	if err != nil {
 		return resp, err
 	}

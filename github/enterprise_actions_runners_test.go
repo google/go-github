@@ -17,8 +17,8 @@ import (
 )
 
 func TestEnterpriseService_GenerateEnterpriseJITConfig(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
 
@@ -64,8 +64,8 @@ func TestEnterpriseService_GenerateEnterpriseJITConfig(t *testing.T) {
 }
 
 func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/runners/registration-token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -101,8 +101,8 @@ func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
 }
 
 func TestEnterpriseService_ListRunners(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -146,8 +146,8 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 }
 
 func TestEnterpriseService_GetRunner(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/runners/23", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -186,8 +186,8 @@ func TestEnterpriseService_GetRunner(t *testing.T) {
 }
 
 func TestEnterpriseService_RemoveRunner(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runners/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -211,8 +211,8 @@ func TestEnterpriseService_RemoveRunner(t *testing.T) {
 }
 
 func TestEnterpriseService_ListRunnerApplicationDownloads(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runners/downloads", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

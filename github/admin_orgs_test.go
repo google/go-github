@@ -16,8 +16,8 @@ import (
 )
 
 func TestAdminOrgs_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &Organization{
 		Login: String("github"),
@@ -58,8 +58,8 @@ func TestAdminOrgs_Create(t *testing.T) {
 }
 
 func TestAdminOrgs_Rename(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &Organization{
 		Login: String("o"),
@@ -100,8 +100,8 @@ func TestAdminOrgs_Rename(t *testing.T) {
 }
 
 func TestAdminOrgs_RenameByName(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/organizations/o", func(w http.ResponseWriter, r *http.Request) {
 		v := new(renameOrgRequest)
@@ -143,6 +143,7 @@ func TestAdminOrgs_RenameByName(t *testing.T) {
 }
 
 func TestCreateOrgRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &createOrgRequest{}, "{}")
 
 	u := &createOrgRequest{
@@ -159,6 +160,7 @@ func TestCreateOrgRequest_Marshal(t *testing.T) {
 }
 
 func TestRenameOrgRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &renameOrgRequest{}, "{}")
 
 	u := &renameOrgRequest{
@@ -173,6 +175,7 @@ func TestRenameOrgRequest_Marshal(t *testing.T) {
 }
 
 func TestRenameOrgResponse_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &renameOrgRequest{}, "{}")
 
 	u := &RenameOrgResponse{

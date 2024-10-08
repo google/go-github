@@ -16,6 +16,7 @@ import (
 func Float64(v float64) *float64 { return &v }
 
 func TestActionsAllowed_String(t *testing.T) {
+	t.Parallel()
 	v := ActionsAllowed{
 		GithubOwnedAllowed: Bool(false),
 		VerifiedAllowed:    Bool(false),
@@ -28,6 +29,7 @@ func TestActionsAllowed_String(t *testing.T) {
 }
 
 func TestActionsPermissions_String(t *testing.T) {
+	t.Parallel()
 	v := ActionsPermissions{
 		EnabledRepositories: String(""),
 		AllowedActions:      String(""),
@@ -40,6 +42,7 @@ func TestActionsPermissions_String(t *testing.T) {
 }
 
 func TestActionsPermissionsEnterprise_String(t *testing.T) {
+	t.Parallel()
 	v := ActionsPermissionsEnterprise{
 		EnabledOrganizations: String(""),
 		AllowedActions:       String(""),
@@ -52,6 +55,7 @@ func TestActionsPermissionsEnterprise_String(t *testing.T) {
 }
 
 func TestActionsPermissionsRepository_String(t *testing.T) {
+	t.Parallel()
 	v := ActionsPermissionsRepository{
 		Enabled:            Bool(false),
 		AllowedActions:     String(""),
@@ -64,6 +68,7 @@ func TestActionsPermissionsRepository_String(t *testing.T) {
 }
 
 func TestAdminStats_String(t *testing.T) {
+	t.Parallel()
 	v := AdminStats{
 		Issues:     &IssueStats{},
 		Hooks:      &HookStats{},
@@ -83,6 +88,7 @@ func TestAdminStats_String(t *testing.T) {
 }
 
 func TestAdvancedSecurity_String(t *testing.T) {
+	t.Parallel()
 	v := AdvancedSecurity{
 		Status: String(""),
 	}
@@ -93,6 +99,7 @@ func TestAdvancedSecurity_String(t *testing.T) {
 }
 
 func TestAuthorization_String(t *testing.T) {
+	t.Parallel()
 	v := Authorization{
 		ID:             Int64(0),
 		URL:            String(""),
@@ -115,6 +122,7 @@ func TestAuthorization_String(t *testing.T) {
 }
 
 func TestAuthorizationApp_String(t *testing.T) {
+	t.Parallel()
 	v := AuthorizationApp{
 		URL:      String(""),
 		Name:     String(""),
@@ -127,6 +135,7 @@ func TestAuthorizationApp_String(t *testing.T) {
 }
 
 func TestAuthorizationRequest_String(t *testing.T) {
+	t.Parallel()
 	v := AuthorizationRequest{
 		Scopes:       []Scope{ScopeNone},
 		Note:         String(""),
@@ -142,6 +151,7 @@ func TestAuthorizationRequest_String(t *testing.T) {
 }
 
 func TestAuthorizationUpdateRequest_String(t *testing.T) {
+	t.Parallel()
 	v := AuthorizationUpdateRequest{
 		Scopes:       []string{""},
 		AddScopes:    []string{""},
@@ -157,6 +167,7 @@ func TestAuthorizationUpdateRequest_String(t *testing.T) {
 }
 
 func TestCheckRun_String(t *testing.T) {
+	t.Parallel()
 	v := CheckRun{
 		ID:          Int64(0),
 		NodeID:      String(""),
@@ -181,29 +192,34 @@ func TestCheckRun_String(t *testing.T) {
 }
 
 func TestCheckSuite_String(t *testing.T) {
+	t.Parallel()
 	v := CheckSuite{
-		ID:         Int64(0),
-		NodeID:     String(""),
-		HeadBranch: String(""),
-		HeadSHA:    String(""),
-		URL:        String(""),
-		BeforeSHA:  String(""),
-		AfterSHA:   String(""),
-		Status:     String(""),
-		Conclusion: String(""),
-		CreatedAt:  &Timestamp{},
-		UpdatedAt:  &Timestamp{},
-		App:        &App{},
-		Repository: &Repository{},
-		HeadCommit: &Commit{},
+		ID:                   Int64(0),
+		NodeID:               String(""),
+		HeadBranch:           String(""),
+		HeadSHA:              String(""),
+		URL:                  String(""),
+		BeforeSHA:            String(""),
+		AfterSHA:             String(""),
+		Status:               String(""),
+		Conclusion:           String(""),
+		CreatedAt:            &Timestamp{},
+		UpdatedAt:            &Timestamp{},
+		App:                  &App{},
+		Repository:           &Repository{},
+		HeadCommit:           &Commit{},
+		LatestCheckRunsCount: Int64(0),
+		Rerequstable:         Bool(false),
+		RunsRerequstable:     Bool(false),
 	}
-	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}}`
+	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}, LatestCheckRunsCount:0, Rerequstable:false, RunsRerequstable:false}`
 	if got := v.String(); got != want {
 		t.Errorf("CheckSuite.String = %v, want %v", got, want)
 	}
 }
 
 func TestCodeOfConduct_String(t *testing.T) {
+	t.Parallel()
 	v := CodeOfConduct{
 		Name: String(""),
 		Key:  String(""),
@@ -217,6 +233,7 @@ func TestCodeOfConduct_String(t *testing.T) {
 }
 
 func TestCodeResult_String(t *testing.T) {
+	t.Parallel()
 	v := CodeResult{
 		Name:       String(""),
 		Path:       String(""),
@@ -231,6 +248,7 @@ func TestCodeResult_String(t *testing.T) {
 }
 
 func TestCombinedStatus_String(t *testing.T) {
+	t.Parallel()
 	v := CombinedStatus{
 		State:         String(""),
 		Name:          String(""),
@@ -246,6 +264,7 @@ func TestCombinedStatus_String(t *testing.T) {
 }
 
 func TestCommentStats_String(t *testing.T) {
+	t.Parallel()
 	v := CommentStats{
 		TotalCommitComments:      Int(0),
 		TotalGistComments:        Int(0),
@@ -259,6 +278,7 @@ func TestCommentStats_String(t *testing.T) {
 }
 
 func TestCommit_String(t *testing.T) {
+	t.Parallel()
 	v := Commit{
 		SHA:          String(""),
 		Author:       &CommitAuthor{},
@@ -279,6 +299,7 @@ func TestCommit_String(t *testing.T) {
 }
 
 func TestCommitAuthor_String(t *testing.T) {
+	t.Parallel()
 	v := CommitAuthor{
 		Date:  &Timestamp{},
 		Name:  String(""),
@@ -292,6 +313,7 @@ func TestCommitAuthor_String(t *testing.T) {
 }
 
 func TestCommitFile_String(t *testing.T) {
+	t.Parallel()
 	v := CommitFile{
 		SHA:              String(""),
 		Filename:         String(""),
@@ -312,6 +334,7 @@ func TestCommitFile_String(t *testing.T) {
 }
 
 func TestCommitStats_String(t *testing.T) {
+	t.Parallel()
 	v := CommitStats{
 		Additions: Int(0),
 		Deletions: Int(0),
@@ -324,6 +347,7 @@ func TestCommitStats_String(t *testing.T) {
 }
 
 func TestCommitsComparison_String(t *testing.T) {
+	t.Parallel()
 	v := CommitsComparison{
 		BaseCommit:      &RepositoryCommit{},
 		MergeBaseCommit: &RepositoryCommit{},
@@ -344,6 +368,7 @@ func TestCommitsComparison_String(t *testing.T) {
 }
 
 func TestContributorStats_String(t *testing.T) {
+	t.Parallel()
 	v := ContributorStats{
 		Author: &Contributor{},
 		Total:  Int(0),
@@ -355,6 +380,7 @@ func TestContributorStats_String(t *testing.T) {
 }
 
 func TestDependabotSecurityUpdates_String(t *testing.T) {
+	t.Parallel()
 	v := DependabotSecurityUpdates{
 		Status: String(""),
 	}
@@ -365,6 +391,7 @@ func TestDependabotSecurityUpdates_String(t *testing.T) {
 }
 
 func TestDiscussionComment_String(t *testing.T) {
+	t.Parallel()
 	v := DiscussionComment{
 		Author:        &User{},
 		Body:          String(""),
@@ -387,6 +414,7 @@ func TestDiscussionComment_String(t *testing.T) {
 }
 
 func TestDraftReviewComment_String(t *testing.T) {
+	t.Parallel()
 	v := DraftReviewComment{
 		Path:      String(""),
 		Position:  Int(0),
@@ -403,6 +431,7 @@ func TestDraftReviewComment_String(t *testing.T) {
 }
 
 func TestEnterprise_String(t *testing.T) {
+	t.Parallel()
 	v := Enterprise{
 		ID:          Int(0),
 		Slug:        String(""),
@@ -422,6 +451,7 @@ func TestEnterprise_String(t *testing.T) {
 }
 
 func TestEvent_String(t *testing.T) {
+	t.Parallel()
 	v := Event{
 		Type:      String(""),
 		Public:    Bool(false),
@@ -438,6 +468,7 @@ func TestEvent_String(t *testing.T) {
 }
 
 func TestGPGKey_String(t *testing.T) {
+	t.Parallel()
 	v := GPGKey{
 		ID:                Int64(0),
 		PrimaryKeyID:      Int64(0),
@@ -458,6 +489,7 @@ func TestGPGKey_String(t *testing.T) {
 }
 
 func TestGist_String(t *testing.T) {
+	t.Parallel()
 	v := Gist{
 		ID:          String(""),
 		Description: String(""),
@@ -478,6 +510,7 @@ func TestGist_String(t *testing.T) {
 }
 
 func TestGistComment_String(t *testing.T) {
+	t.Parallel()
 	v := GistComment{
 		ID:        Int64(0),
 		URL:       String(""),
@@ -492,6 +525,7 @@ func TestGistComment_String(t *testing.T) {
 }
 
 func TestGistCommit_String(t *testing.T) {
+	t.Parallel()
 	v := GistCommit{
 		URL:          String(""),
 		Version:      String(""),
@@ -507,6 +541,7 @@ func TestGistCommit_String(t *testing.T) {
 }
 
 func TestGistFile_String(t *testing.T) {
+	t.Parallel()
 	v := GistFile{
 		Size:     Int(0),
 		Filename: String(""),
@@ -522,6 +557,7 @@ func TestGistFile_String(t *testing.T) {
 }
 
 func TestGistFork_String(t *testing.T) {
+	t.Parallel()
 	v := GistFork{
 		URL:       String(""),
 		User:      &User{},
@@ -537,6 +573,7 @@ func TestGistFork_String(t *testing.T) {
 }
 
 func TestGistStats_String(t *testing.T) {
+	t.Parallel()
 	v := GistStats{
 		TotalGists:   Int(0),
 		PrivateGists: Int(0),
@@ -549,6 +586,7 @@ func TestGistStats_String(t *testing.T) {
 }
 
 func TestGitObject_String(t *testing.T) {
+	t.Parallel()
 	v := GitObject{
 		Type: String(""),
 		SHA:  String(""),
@@ -561,6 +599,7 @@ func TestGitObject_String(t *testing.T) {
 }
 
 func TestGitignore_String(t *testing.T) {
+	t.Parallel()
 	v := Gitignore{
 		Name:   String(""),
 		Source: String(""),
@@ -572,6 +611,7 @@ func TestGitignore_String(t *testing.T) {
 }
 
 func TestGrant_String(t *testing.T) {
+	t.Parallel()
 	v := Grant{
 		ID:        Int64(0),
 		URL:       String(""),
@@ -587,6 +627,7 @@ func TestGrant_String(t *testing.T) {
 }
 
 func TestHeadCommit_String(t *testing.T) {
+	t.Parallel()
 	v := HeadCommit{
 		Message:   String(""),
 		Author:    &CommitAuthor{},
@@ -608,6 +649,7 @@ func TestHeadCommit_String(t *testing.T) {
 }
 
 func TestHook_String(t *testing.T) {
+	t.Parallel()
 	v := Hook{
 		CreatedAt: &Timestamp{},
 		UpdatedAt: &Timestamp{},
@@ -628,6 +670,7 @@ func TestHook_String(t *testing.T) {
 }
 
 func TestHookDelivery_String(t *testing.T) {
+	t.Parallel()
 	v := HookDelivery{
 		ID:             Int64(0),
 		GUID:           String(""),
@@ -650,6 +693,7 @@ func TestHookDelivery_String(t *testing.T) {
 }
 
 func TestHookStats_String(t *testing.T) {
+	t.Parallel()
 	v := HookStats{
 		TotalHooks:    Int(0),
 		ActiveHooks:   Int(0),
@@ -662,6 +706,7 @@ func TestHookStats_String(t *testing.T) {
 }
 
 func TestImport_String(t *testing.T) {
+	t.Parallel()
 	v := Import{
 		VCSURL:          String(""),
 		VCS:             String(""),
@@ -693,6 +738,7 @@ func TestImport_String(t *testing.T) {
 }
 
 func TestInstallation_String(t *testing.T) {
+	t.Parallel()
 	v := Installation{
 		ID:                     Int64(0),
 		NodeID:                 String(""),
@@ -722,6 +768,7 @@ func TestInstallation_String(t *testing.T) {
 }
 
 func TestInvitation_String(t *testing.T) {
+	t.Parallel()
 	v := Invitation{
 		ID:                Int64(0),
 		NodeID:            String(""),
@@ -742,6 +789,7 @@ func TestInvitation_String(t *testing.T) {
 }
 
 func TestIssue_String(t *testing.T) {
+	t.Parallel()
 	v := Issue{
 		ID:                Int64(0),
 		Number:            Int(0),
@@ -779,6 +827,7 @@ func TestIssue_String(t *testing.T) {
 }
 
 func TestIssueComment_String(t *testing.T) {
+	t.Parallel()
 	v := IssueComment{
 		ID:                Int64(0),
 		NodeID:            String(""),
@@ -799,6 +848,7 @@ func TestIssueComment_String(t *testing.T) {
 }
 
 func TestIssueStats_String(t *testing.T) {
+	t.Parallel()
 	v := IssueStats{
 		TotalIssues:  Int(0),
 		OpenIssues:   Int(0),
@@ -811,6 +861,7 @@ func TestIssueStats_String(t *testing.T) {
 }
 
 func TestKey_String(t *testing.T) {
+	t.Parallel()
 	v := Key{
 		ID:        Int64(0),
 		Key:       String(""),
@@ -829,6 +880,7 @@ func TestKey_String(t *testing.T) {
 }
 
 func TestLabel_String(t *testing.T) {
+	t.Parallel()
 	v := Label{
 		ID:          Int64(0),
 		URL:         String(""),
@@ -845,6 +897,7 @@ func TestLabel_String(t *testing.T) {
 }
 
 func TestLabelResult_String(t *testing.T) {
+	t.Parallel()
 	v := LabelResult{
 		ID:          Int64(0),
 		URL:         String(""),
@@ -861,6 +914,7 @@ func TestLabelResult_String(t *testing.T) {
 }
 
 func TestLargeFile_String(t *testing.T) {
+	t.Parallel()
 	v := LargeFile{
 		RefName: String(""),
 		Path:    String(""),
@@ -874,6 +928,7 @@ func TestLargeFile_String(t *testing.T) {
 }
 
 func TestLicense_String(t *testing.T) {
+	t.Parallel()
 	v := License{
 		Key:            String(""),
 		Name:           String(""),
@@ -892,6 +947,7 @@ func TestLicense_String(t *testing.T) {
 }
 
 func TestMembership_String(t *testing.T) {
+	t.Parallel()
 	v := Membership{
 		URL:             String(""),
 		State:           String(""),
@@ -907,6 +963,7 @@ func TestMembership_String(t *testing.T) {
 }
 
 func TestMigration_String(t *testing.T) {
+	t.Parallel()
 	v := Migration{
 		ID:                 Int64(0),
 		GUID:               String(""),
@@ -924,6 +981,7 @@ func TestMigration_String(t *testing.T) {
 }
 
 func TestMilestone_String(t *testing.T) {
+	t.Parallel()
 	v := Milestone{
 		URL:          String(""),
 		HTMLURL:      String(""),
@@ -949,6 +1007,7 @@ func TestMilestone_String(t *testing.T) {
 }
 
 func TestMilestoneStats_String(t *testing.T) {
+	t.Parallel()
 	v := MilestoneStats{
 		TotalMilestones:  Int(0),
 		OpenMilestones:   Int(0),
@@ -961,6 +1020,7 @@ func TestMilestoneStats_String(t *testing.T) {
 }
 
 func TestNewTeam_String(t *testing.T) {
+	t.Parallel()
 	v := NewTeam{
 		Name:                "",
 		Description:         String(""),
@@ -979,6 +1039,7 @@ func TestNewTeam_String(t *testing.T) {
 }
 
 func TestOAuthAPP_String(t *testing.T) {
+	t.Parallel()
 	v := OAuthAPP{
 		URL:      String(""),
 		Name:     String(""),
@@ -991,6 +1052,7 @@ func TestOAuthAPP_String(t *testing.T) {
 }
 
 func TestOrgStats_String(t *testing.T) {
+	t.Parallel()
 	v := OrgStats{
 		TotalOrgs:        Int(0),
 		DisabledOrgs:     Int(0),
@@ -1004,6 +1066,7 @@ func TestOrgStats_String(t *testing.T) {
 }
 
 func TestOrganization_String(t *testing.T) {
+	t.Parallel()
 	v := Organization{
 		Login:                                String(""),
 		ID:                                   Int64(0),
@@ -1069,6 +1132,7 @@ func TestOrganization_String(t *testing.T) {
 }
 
 func TestPackage_String(t *testing.T) {
+	t.Parallel()
 	v := Package{
 		ID:             Int64(0),
 		Name:           String(""),
@@ -1091,6 +1155,7 @@ func TestPackage_String(t *testing.T) {
 }
 
 func TestPackageContainerMetadata_String(t *testing.T) {
+	t.Parallel()
 	v := PackageContainerMetadata{
 		Tags: []string{""},
 	}
@@ -1101,6 +1166,7 @@ func TestPackageContainerMetadata_String(t *testing.T) {
 }
 
 func TestPackageFile_String(t *testing.T) {
+	t.Parallel()
 	v := PackageFile{
 		DownloadURL: String(""),
 		ID:          Int64(0),
@@ -1122,6 +1188,7 @@ func TestPackageFile_String(t *testing.T) {
 }
 
 func TestPackageMetadata_String(t *testing.T) {
+	t.Parallel()
 	v := PackageMetadata{
 		PackageType: String(""),
 		Container:   &PackageContainerMetadata{},
@@ -1133,6 +1200,7 @@ func TestPackageMetadata_String(t *testing.T) {
 }
 
 func TestPackageRegistry_String(t *testing.T) {
+	t.Parallel()
 	v := PackageRegistry{
 		AboutURL: String(""),
 		Name:     String(""),
@@ -1147,6 +1215,7 @@ func TestPackageRegistry_String(t *testing.T) {
 }
 
 func TestPackageRelease_String(t *testing.T) {
+	t.Parallel()
 	v := PackageRelease{
 		URL:             String(""),
 		HTMLURL:         String(""),
@@ -1167,6 +1236,7 @@ func TestPackageRelease_String(t *testing.T) {
 }
 
 func TestPackageVersion_String(t *testing.T) {
+	t.Parallel()
 	v := PackageVersion{
 		ID:                  Int64(0),
 		Version:             String(""),
@@ -1197,6 +1267,7 @@ func TestPackageVersion_String(t *testing.T) {
 }
 
 func TestPageStats_String(t *testing.T) {
+	t.Parallel()
 	v := PageStats{
 		TotalPages: Int(0),
 	}
@@ -1207,6 +1278,7 @@ func TestPageStats_String(t *testing.T) {
 }
 
 func TestPlan_String(t *testing.T) {
+	t.Parallel()
 	v := Plan{
 		Name:          String(""),
 		Space:         Int(0),
@@ -1222,6 +1294,7 @@ func TestPlan_String(t *testing.T) {
 }
 
 func TestPreReceiveHook_String(t *testing.T) {
+	t.Parallel()
 	v := PreReceiveHook{
 		ID:          Int64(0),
 		Name:        String(""),
@@ -1235,6 +1308,7 @@ func TestPreReceiveHook_String(t *testing.T) {
 }
 
 func TestProject_String(t *testing.T) {
+	t.Parallel()
 	v := Project{
 		ID:                     Int64(0),
 		URL:                    String(""),
@@ -1259,6 +1333,7 @@ func TestProject_String(t *testing.T) {
 }
 
 func TestPullRequest_String(t *testing.T) {
+	t.Parallel()
 	v := PullRequest{
 		ID:                  Int64(0),
 		Number:              Int(0),
@@ -1312,6 +1387,7 @@ func TestPullRequest_String(t *testing.T) {
 }
 
 func TestPullRequestComment_String(t *testing.T) {
+	t.Parallel()
 	v := PullRequestComment{
 		ID:                  Int64(0),
 		NodeID:              String(""),
@@ -1347,6 +1423,7 @@ func TestPullRequestComment_String(t *testing.T) {
 }
 
 func TestPullRequestReview_String(t *testing.T) {
+	t.Parallel()
 	v := PullRequestReview{
 		ID:                Int64(0),
 		NodeID:            String(""),
@@ -1366,6 +1443,7 @@ func TestPullRequestReview_String(t *testing.T) {
 }
 
 func TestPullRequestReviewDismissalRequest_String(t *testing.T) {
+	t.Parallel()
 	v := PullRequestReviewDismissalRequest{
 		Message: String(""),
 	}
@@ -1376,6 +1454,7 @@ func TestPullRequestReviewDismissalRequest_String(t *testing.T) {
 }
 
 func TestPullRequestReviewRequest_String(t *testing.T) {
+	t.Parallel()
 	v := PullRequestReviewRequest{
 		NodeID:   String(""),
 		CommitID: String(""),
@@ -1389,6 +1468,7 @@ func TestPullRequestReviewRequest_String(t *testing.T) {
 }
 
 func TestPullRequestThread_String(t *testing.T) {
+	t.Parallel()
 	v := PullRequestThread{
 		ID:     Int64(0),
 		NodeID: String(""),
@@ -1400,6 +1480,7 @@ func TestPullRequestThread_String(t *testing.T) {
 }
 
 func TestPullStats_String(t *testing.T) {
+	t.Parallel()
 	v := PullStats{
 		TotalPulls:      Int(0),
 		MergedPulls:     Int(0),
@@ -1413,6 +1494,7 @@ func TestPullStats_String(t *testing.T) {
 }
 
 func TestPushEvent_String(t *testing.T) {
+	t.Parallel()
 	v := PushEvent{
 		PushID:       Int64(0),
 		Head:         String(""),
@@ -1441,6 +1523,7 @@ func TestPushEvent_String(t *testing.T) {
 }
 
 func TestRate_String(t *testing.T) {
+	t.Parallel()
 	v := Rate{
 		Limit:     0,
 		Remaining: 0,
@@ -1453,6 +1536,7 @@ func TestRate_String(t *testing.T) {
 }
 
 func TestReaction_String(t *testing.T) {
+	t.Parallel()
 	v := Reaction{
 		ID:      Int64(0),
 		User:    &User{},
@@ -1466,6 +1550,7 @@ func TestReaction_String(t *testing.T) {
 }
 
 func TestReference_String(t *testing.T) {
+	t.Parallel()
 	v := Reference{
 		Ref:    String(""),
 		URL:    String(""),
@@ -1479,6 +1564,7 @@ func TestReference_String(t *testing.T) {
 }
 
 func TestReleaseAsset_String(t *testing.T) {
+	t.Parallel()
 	v := ReleaseAsset{
 		ID:                 Int64(0),
 		URL:                String(""),
@@ -1501,6 +1587,7 @@ func TestReleaseAsset_String(t *testing.T) {
 }
 
 func TestRename_String(t *testing.T) {
+	t.Parallel()
 	v := Rename{
 		From: String(""),
 		To:   String(""),
@@ -1512,6 +1599,7 @@ func TestRename_String(t *testing.T) {
 }
 
 func TestRepoStats_String(t *testing.T) {
+	t.Parallel()
 	v := RepoStats{
 		TotalRepos:  Int(0),
 		RootRepos:   Int(0),
@@ -1527,6 +1615,7 @@ func TestRepoStats_String(t *testing.T) {
 }
 
 func TestRepoStatus_String(t *testing.T) {
+	t.Parallel()
 	v := RepoStatus{
 		ID:          Int64(0),
 		NodeID:      String(""),
@@ -1547,6 +1636,7 @@ func TestRepoStatus_String(t *testing.T) {
 }
 
 func TestRepository_String(t *testing.T) {
+	t.Parallel()
 	v := Repository{
 		ID:                        Int64(0),
 		NodeID:                    String(""),
@@ -1659,6 +1749,7 @@ func TestRepository_String(t *testing.T) {
 }
 
 func TestRepositoryComment_String(t *testing.T) {
+	t.Parallel()
 	v := RepositoryComment{
 		HTMLURL:   String(""),
 		URL:       String(""),
@@ -1680,6 +1771,7 @@ func TestRepositoryComment_String(t *testing.T) {
 }
 
 func TestRepositoryCommit_String(t *testing.T) {
+	t.Parallel()
 	v := RepositoryCommit{
 		NodeID:      String(""),
 		SHA:         String(""),
@@ -1698,6 +1790,7 @@ func TestRepositoryCommit_String(t *testing.T) {
 }
 
 func TestRepositoryContent_String(t *testing.T) {
+	t.Parallel()
 	v := RepositoryContent{
 		Type:            String(""),
 		Target:          String(""),
@@ -1720,6 +1813,7 @@ func TestRepositoryContent_String(t *testing.T) {
 }
 
 func TestRepositoryLicense_String(t *testing.T) {
+	t.Parallel()
 	v := RepositoryLicense{
 		Name:        String(""),
 		Path:        String(""),
@@ -1741,6 +1835,7 @@ func TestRepositoryLicense_String(t *testing.T) {
 }
 
 func TestRepositoryParticipation_String(t *testing.T) {
+	t.Parallel()
 	v := RepositoryParticipation{
 		All:   []int{0},
 		Owner: []int{0},
@@ -1752,6 +1847,7 @@ func TestRepositoryParticipation_String(t *testing.T) {
 }
 
 func TestRepositoryRelease_String(t *testing.T) {
+	t.Parallel()
 	v := RepositoryRelease{
 		TagName:                String(""),
 		TargetCommitish:        String(""),
@@ -1781,6 +1877,7 @@ func TestRepositoryRelease_String(t *testing.T) {
 }
 
 func TestSBOM_String(t *testing.T) {
+	t.Parallel()
 	v := SBOM{
 		SBOM: &SBOMInfo{},
 	}
@@ -1791,6 +1888,7 @@ func TestSBOM_String(t *testing.T) {
 }
 
 func TestSSHSigningKey_String(t *testing.T) {
+	t.Parallel()
 	v := SSHSigningKey{
 		ID:        Int64(0),
 		Key:       String(""),
@@ -1804,6 +1902,7 @@ func TestSSHSigningKey_String(t *testing.T) {
 }
 
 func TestSecretScanning_String(t *testing.T) {
+	t.Parallel()
 	v := SecretScanning{
 		Status: String(""),
 	}
@@ -1814,6 +1913,7 @@ func TestSecretScanning_String(t *testing.T) {
 }
 
 func TestSecretScanningPushProtection_String(t *testing.T) {
+	t.Parallel()
 	v := SecretScanningPushProtection{
 		Status: String(""),
 	}
@@ -1824,6 +1924,7 @@ func TestSecretScanningPushProtection_String(t *testing.T) {
 }
 
 func TestSecurityAndAnalysis_String(t *testing.T) {
+	t.Parallel()
 	v := SecurityAndAnalysis{
 		AdvancedSecurity:             &AdvancedSecurity{},
 		SecretScanning:               &SecretScanning{},
@@ -1838,6 +1939,7 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 }
 
 func TestSourceImportAuthor_String(t *testing.T) {
+	t.Parallel()
 	v := SourceImportAuthor{
 		ID:         Int64(0),
 		RemoteID:   String(""),
@@ -1854,6 +1956,7 @@ func TestSourceImportAuthor_String(t *testing.T) {
 }
 
 func TestTeam_String(t *testing.T) {
+	t.Parallel()
 	v := Team{
 		ID:              Int64(0),
 		NodeID:          String(""),
@@ -1879,6 +1982,7 @@ func TestTeam_String(t *testing.T) {
 }
 
 func TestTeamDiscussion_String(t *testing.T) {
+	t.Parallel()
 	v := TeamDiscussion{
 		Author:        &User{},
 		Body:          String(""),
@@ -1906,6 +2010,7 @@ func TestTeamDiscussion_String(t *testing.T) {
 }
 
 func TestTeamLDAPMapping_String(t *testing.T) {
+	t.Parallel()
 	v := TeamLDAPMapping{
 		ID:              Int64(0),
 		LDAPDN:          String(""),
@@ -1925,6 +2030,7 @@ func TestTeamLDAPMapping_String(t *testing.T) {
 }
 
 func TestTextMatch_String(t *testing.T) {
+	t.Parallel()
 	v := TextMatch{
 		ObjectURL:  String(""),
 		ObjectType: String(""),
@@ -1938,6 +2044,7 @@ func TestTextMatch_String(t *testing.T) {
 }
 
 func TestTree_String(t *testing.T) {
+	t.Parallel()
 	v := Tree{
 		SHA:       String(""),
 		Truncated: Bool(false),
@@ -1949,6 +2056,7 @@ func TestTree_String(t *testing.T) {
 }
 
 func TestTreeEntry_String(t *testing.T) {
+	t.Parallel()
 	v := TreeEntry{
 		SHA:     String(""),
 		Path:    String(""),
@@ -1965,6 +2073,7 @@ func TestTreeEntry_String(t *testing.T) {
 }
 
 func TestUser_String(t *testing.T) {
+	t.Parallel()
 	v := User{
 		Login:                   String(""),
 		ID:                      Int64(0),
@@ -2016,6 +2125,7 @@ func TestUser_String(t *testing.T) {
 }
 
 func TestUserLDAPMapping_String(t *testing.T) {
+	t.Parallel()
 	v := UserLDAPMapping{
 		ID:                Int64(0),
 		LDAPDN:            String(""),
@@ -2042,6 +2152,7 @@ func TestUserLDAPMapping_String(t *testing.T) {
 }
 
 func TestUserMigration_String(t *testing.T) {
+	t.Parallel()
 	v := UserMigration{
 		ID:                 Int64(0),
 		GUID:               String(""),
@@ -2059,6 +2170,7 @@ func TestUserMigration_String(t *testing.T) {
 }
 
 func TestUserStats_String(t *testing.T) {
+	t.Parallel()
 	v := UserStats{
 		TotalUsers:     Int(0),
 		AdminUsers:     Int(0),
@@ -2071,6 +2183,7 @@ func TestUserStats_String(t *testing.T) {
 }
 
 func TestWeeklyCommitActivity_String(t *testing.T) {
+	t.Parallel()
 	v := WeeklyCommitActivity{
 		Days:  []int{0},
 		Total: Int(0),
@@ -2083,6 +2196,7 @@ func TestWeeklyCommitActivity_String(t *testing.T) {
 }
 
 func TestWeeklyStats_String(t *testing.T) {
+	t.Parallel()
 	v := WeeklyStats{
 		Week:      &Timestamp{},
 		Additions: Int(0),

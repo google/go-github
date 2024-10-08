@@ -12,6 +12,7 @@ import (
 )
 
 func Test_ParseForms(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		description string
 		html        string
@@ -70,7 +71,9 @@ func Test_ParseForms(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.description, func(t *testing.T) {
+			t.Parallel()
 			node, err := html.Parse(strings.NewReader(tt.html))
 			if err != nil {
 				t.Errorf("error parsing html: %v", err)
@@ -83,8 +86,8 @@ func Test_ParseForms(t *testing.T) {
 }
 
 func Test_FetchAndSumbitForm(t *testing.T) {
-	client, mux, cleanup := setup()
-	defer cleanup()
+	t.Parallel()
+	client, mux := setup(t)
 	var submitted bool
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

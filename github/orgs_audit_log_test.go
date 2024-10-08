@@ -15,8 +15,8 @@ import (
 )
 
 func TestOrganizationService_GetAuditLog(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/audit-log", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -174,6 +174,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 }
 
 func TestGetAuditLogOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GetAuditLogOptions{}, "{}")
 
 	u := &GetAuditLogOptions{
@@ -202,6 +203,7 @@ func TestGetAuditLogOptions_Marshal(t *testing.T) {
 }
 
 func TestHookConfig_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &HookConfig{}, "{}")
 
 	u := &HookConfig{
@@ -220,6 +222,7 @@ func TestHookConfig_Marshal(t *testing.T) {
 }
 
 func TestAuditEntry_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AuditEntry{}, "{}")
 
 	u := &AuditEntry{

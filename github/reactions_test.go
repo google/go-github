@@ -15,6 +15,7 @@ import (
 )
 
 func TestReaction_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Reaction{}, "{}")
 
 	r := &Reaction{
@@ -34,6 +35,7 @@ func TestReaction_Marshal(t *testing.T) {
 }
 
 func TestReactions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Reactions{}, "{}")
 
 	r := &Reactions{
@@ -58,7 +60,7 @@ func TestReactions_Marshal(t *testing.T) {
 		"heart": 1,
 		"hooray": 1,
 		"rocket": 1,
-		"eyes": 1,		
+		"eyes": 1,
 		"url": "u"
 	}`
 
@@ -66,8 +68,8 @@ func TestReactions_Marshal(t *testing.T) {
 }
 
 func TestReactionsService_ListCommentReactions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -104,8 +106,8 @@ func TestReactionsService_ListCommentReactions(t *testing.T) {
 }
 
 func TestReactionsService_CreateCommentReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -141,8 +143,8 @@ func TestReactionsService_CreateCommentReaction(t *testing.T) {
 }
 
 func TestReactionsService_ListIssueReactions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -164,8 +166,8 @@ func TestReactionsService_ListIssueReactions(t *testing.T) {
 }
 
 func TestReactionsService_ListIssueReactions_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -185,8 +187,8 @@ func TestReactionsService_ListIssueReactions_coverage(t *testing.T) {
 }
 
 func TestReactionsService_CreateIssueReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -222,8 +224,8 @@ func TestReactionsService_CreateIssueReaction(t *testing.T) {
 }
 
 func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -245,8 +247,8 @@ func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
 }
 
 func TestReactionsService_ListIssueCommentReactions_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -266,8 +268,8 @@ func TestReactionsService_ListIssueCommentReactions_coverage(t *testing.T) {
 }
 
 func TestReactionsService_CreateIssueCommentReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -303,8 +305,8 @@ func TestReactionsService_CreateIssueCommentReaction(t *testing.T) {
 }
 
 func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -326,8 +328,8 @@ func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
 }
 
 func TestReactionsService_ListPullRequestCommentReactions_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -347,8 +349,8 @@ func TestReactionsService_ListPullRequestCommentReactions_coverage(t *testing.T)
 }
 
 func TestReactionsService_CreatePullRequestCommentReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -384,8 +386,8 @@ func TestReactionsService_CreatePullRequestCommentReaction(t *testing.T) {
 }
 
 func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/teams/1/discussions/2/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -407,8 +409,8 @@ func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
 }
 
 func TestReactionsService_ListTeamDiscussionReactions_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -428,8 +430,8 @@ func TestReactionsService_ListTeamDiscussionReactions_coverage(t *testing.T) {
 }
 
 func TestReactionsService_CreateTeamDiscussionReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/teams/1/discussions/2/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -465,8 +467,8 @@ func TestReactionsService_CreateTeamDiscussionReaction(t *testing.T) {
 }
 
 func TestReactionService_ListTeamDiscussionCommentReactions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/teams/1/discussions/2/comments/3/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -488,8 +490,8 @@ func TestReactionService_ListTeamDiscussionCommentReactions(t *testing.T) {
 }
 
 func TestReactionService_ListTeamDiscussionCommentReactions_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -509,8 +511,8 @@ func TestReactionService_ListTeamDiscussionCommentReactions_coverage(t *testing.
 }
 
 func TestReactionService_CreateTeamDiscussionCommentReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/teams/1/discussions/2/comments/3/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -546,8 +548,8 @@ func TestReactionService_CreateTeamDiscussionCommentReaction(t *testing.T) {
 }
 
 func TestReactionsService_DeleteCommitCommentReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/comments/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -573,8 +575,8 @@ func TestReactionsService_DeleteCommitCommentReaction(t *testing.T) {
 }
 
 func TestReactionsService_DeleteCommitCommentReactionByRepoID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1/comments/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -600,8 +602,8 @@ func TestReactionsService_DeleteCommitCommentReactionByRepoID(t *testing.T) {
 }
 
 func TestReactionsService_DeleteIssueReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -627,8 +629,8 @@ func TestReactionsService_DeleteIssueReaction(t *testing.T) {
 }
 
 func TestReactionsService_DeleteIssueReactionByRepoID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1/issues/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -654,8 +656,8 @@ func TestReactionsService_DeleteIssueReactionByRepoID(t *testing.T) {
 }
 
 func TestReactionsService_DeleteIssueCommentReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/comments/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -681,8 +683,8 @@ func TestReactionsService_DeleteIssueCommentReaction(t *testing.T) {
 }
 
 func TestReactionsService_DeleteIssueCommentReactionByRepoID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1/issues/comments/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -708,8 +710,8 @@ func TestReactionsService_DeleteIssueCommentReactionByRepoID(t *testing.T) {
 }
 
 func TestReactionsService_DeletePullRequestCommentReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -735,8 +737,8 @@ func TestReactionsService_DeletePullRequestCommentReaction(t *testing.T) {
 }
 
 func TestReactionsService_DeletePullRequestCommentReactionByRepoID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1/pulls/comments/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -762,8 +764,8 @@ func TestReactionsService_DeletePullRequestCommentReactionByRepoID(t *testing.T)
 }
 
 func TestReactionsService_DeleteTeamDiscussionReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -789,8 +791,8 @@ func TestReactionsService_DeleteTeamDiscussionReaction(t *testing.T) {
 }
 
 func TestReactionsService_DeleteTeamDiscussionReactionByTeamIDAndOrgID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/discussions/3/reactions/4", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -816,8 +818,8 @@ func TestReactionsService_DeleteTeamDiscussionReactionByTeamIDAndOrgID(t *testin
 }
 
 func TestReactionsService_DeleteTeamDiscussionCommentReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions/1/comments/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -843,8 +845,8 @@ func TestReactionsService_DeleteTeamDiscussionCommentReaction(t *testing.T) {
 }
 
 func TestReactionsService_DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/discussions/3/comments/4/reactions/5", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -870,8 +872,8 @@ func TestReactionsService_DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(t 
 }
 
 func TestReactionService_CreateReleaseReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

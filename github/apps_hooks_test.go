@@ -15,8 +15,8 @@ import (
 )
 
 func TestAppsService_GetHookConfig(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/hook/config", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -55,8 +55,8 @@ func TestAppsService_GetHookConfig(t *testing.T) {
 }
 
 func TestAppsService_UpdateHookConfig(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &HookConfig{
 		ContentType: String("json"),

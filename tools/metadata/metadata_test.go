@@ -10,6 +10,7 @@ import (
 )
 
 func Test_normalizedOpName(t *testing.T) {
+	t.Parallel()
 	for _, td := range []struct {
 		name string
 		want string
@@ -18,7 +19,9 @@ func Test_normalizedOpName(t *testing.T) {
 		{name: "get /foo/{id}", want: "GET /foo/*"},
 		{name: "get foo", want: "GET /foo"},
 	} {
+		td := td
 		t.Run(td.name, func(t *testing.T) {
+			t.Parallel()
 			got := normalizedOpName(td.name)
 			if got != td.want {
 				t.Errorf("normalizedOpName() = %v, want %v", got, td.want)

@@ -16,8 +16,8 @@ import (
 )
 
 func TestUsersService_ListSSHSigningKeys_authenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/ssh_signing_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -53,8 +53,8 @@ func TestUsersService_ListSSHSigningKeys_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_ListSSHSigningKeys_specifiedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/ssh_signing_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -74,8 +74,8 @@ func TestUsersService_ListSSHSigningKeys_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListSSHSigningKeys_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Users.ListSSHSigningKeys(ctx, "%", nil)
@@ -83,8 +83,8 @@ func TestUsersService_ListSSHSigningKeys_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_GetSSHSigningKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/ssh_signing_keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -118,8 +118,8 @@ func TestUsersService_GetSSHSigningKey(t *testing.T) {
 }
 
 func TestUsersService_CreateSSHSigningKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &Key{Key: String("k"), Title: String("t")}
 
@@ -157,8 +157,8 @@ func TestUsersService_CreateSSHSigningKey(t *testing.T) {
 }
 
 func TestUsersService_DeleteSSHSigningKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/ssh_signing_keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -182,6 +182,7 @@ func TestUsersService_DeleteSSHSigningKey(t *testing.T) {
 }
 
 func TestSSHSigningKey_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SSHSigningKey{}, "{}")
 
 	u := &Key{

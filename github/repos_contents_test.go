@@ -18,6 +18,7 @@ import (
 )
 
 func TestRepositoryContent_GetContent(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		encoding, content *string // input encoding and content
 		want              string  // desired output
@@ -88,8 +89,9 @@ func stringOrNil(s *string) string {
 }
 
 func TestRepositoriesService_GetReadme(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/readme", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
@@ -126,8 +128,9 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, serverURL := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{
@@ -177,8 +180,9 @@ func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadContents_FailedResponse(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, serverURL := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{
@@ -215,8 +219,9 @@ func TestRepositoriesService_DownloadContents_FailedResponse(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{
@@ -237,8 +242,9 @@ func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[]`)
@@ -256,8 +262,9 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadContentsWithMeta_Success(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, serverURL := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{
@@ -318,8 +325,9 @@ func TestRepositoriesService_DownloadContentsWithMeta_Success(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadContentsWithMeta_FailedResponse(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, serverURL := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{
@@ -364,8 +372,9 @@ func TestRepositoriesService_DownloadContentsWithMeta_FailedResponse(t *testing.
 }
 
 func TestRepositoriesService_DownloadContentsWithMeta_NoDownloadURL(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{
@@ -386,8 +395,9 @@ func TestRepositoriesService_DownloadContentsWithMeta_NoDownloadURL(t *testing.T
 }
 
 func TestRepositoriesService_DownloadContentsWithMeta_NoFile(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[]`)
@@ -405,8 +415,9 @@ func TestRepositoriesService_DownloadContentsWithMeta_NoFile(t *testing.T) {
 }
 
 func TestRepositoriesService_GetContents_File(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/p", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
@@ -443,8 +454,9 @@ func TestRepositoriesService_GetContents_File(t *testing.T) {
 }
 
 func TestRepositoriesService_GetContents_FilenameNeedsEscape(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/p#?%/中.go", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{}`)
@@ -457,8 +469,9 @@ func TestRepositoriesService_GetContents_FilenameNeedsEscape(t *testing.T) {
 }
 
 func TestRepositoriesService_GetContents_DirectoryWithSpaces(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/some directory/file.go", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{}`)
@@ -471,8 +484,9 @@ func TestRepositoriesService_GetContents_DirectoryWithSpaces(t *testing.T) {
 }
 
 func TestRepositoriesService_GetContents_PathWithParent(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/some/../directory/file.go", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{}`)
@@ -485,8 +499,9 @@ func TestRepositoriesService_GetContents_PathWithParent(t *testing.T) {
 }
 
 func TestRepositoriesService_GetContents_DirectoryWithPlusChars(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/some directory+name/file.go", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{}`)
@@ -499,8 +514,9 @@ func TestRepositoriesService_GetContents_DirectoryWithPlusChars(t *testing.T) {
 }
 
 func TestRepositoriesService_GetContents_Directory(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/p", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{
@@ -528,8 +544,9 @@ func TestRepositoriesService_GetContents_Directory(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFile(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/p", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		fmt.Fprint(w, `{
@@ -581,8 +598,9 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateFile(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/p", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		fmt.Fprint(w, `{
@@ -636,8 +654,9 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteFile(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/p", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		fmt.Fprint(w, `{
@@ -687,8 +706,9 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 }
 
 func TestRepositoriesService_GetArchiveLink(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/tarball/yo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
@@ -723,8 +743,9 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 }
 
 func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
@@ -737,8 +758,9 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRed
 }
 
 func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirects(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, serverURL := setup(t)
+
 	// Mock a redirect link, which leads to an archive link
 	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -764,8 +786,9 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 }
 
 func TestRepositoriesService_GetContents_NoTrailingSlashInDirectoryApiPath(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/contents/.github", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		query := r.URL.Query()
@@ -784,6 +807,7 @@ func TestRepositoriesService_GetContents_NoTrailingSlashInDirectoryApiPath(t *te
 }
 
 func TestRepositoryContent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryContent{}, "{}")
 
 	r := &RepositoryContent{
@@ -822,6 +846,7 @@ func TestRepositoryContent_Marshal(t *testing.T) {
 }
 
 func TestRepositoryContentResponse_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryContentResponse{}, "{}")
 
 	r := &RepositoryContentResponse{
@@ -955,6 +980,7 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 }
 
 func TestRepositoryContentFileOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryContentFileOptions{}, "{}")
 
 	r := &RepositoryContentFileOptions{

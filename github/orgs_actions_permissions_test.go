@@ -16,8 +16,8 @@ import (
 )
 
 func TestOrganizationsService_GetActionsPermissions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -50,8 +50,8 @@ func TestOrganizationsService_GetActionsPermissions(t *testing.T) {
 }
 
 func TestOrganizationsService_EditActionsPermissions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &ActionsPermissions{EnabledRepositories: String("all"), AllowedActions: String("selected")}
 

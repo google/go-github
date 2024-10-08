@@ -18,8 +18,8 @@ import (
 )
 
 func TestPullRequestsService_List(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -62,8 +62,8 @@ func TestPullRequestsService_List(t *testing.T) {
 }
 
 func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/sha/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -102,8 +102,8 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 }
 
 func TestPullRequestsService_List_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.List(ctx, "%", "r", nil)
@@ -111,8 +111,8 @@ func TestPullRequestsService_List_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -146,8 +146,8 @@ func TestPullRequestsService_Get(t *testing.T) {
 }
 
 func TestPullRequestsService_GetRaw_diff(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	const rawStr = "@@diff content"
 
@@ -183,8 +183,8 @@ func TestPullRequestsService_GetRaw_diff(t *testing.T) {
 }
 
 func TestPullRequestsService_GetRaw_patch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	const rawStr = "@@patch content"
 
@@ -206,8 +206,8 @@ func TestPullRequestsService_GetRaw_patch(t *testing.T) {
 }
 
 func TestPullRequestsService_GetRaw_invalid(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.GetRaw(ctx, "o", "r", 1, RawOptions{100})
@@ -220,8 +220,8 @@ func TestPullRequestsService_GetRaw_invalid(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_links(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -274,8 +274,8 @@ func TestPullRequestsService_Get_links(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_headAndBase(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -305,8 +305,8 @@ func TestPullRequestsService_Get_headAndBase(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_urlFields(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -345,8 +345,8 @@ func TestPullRequestsService_Get_urlFields(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.Get(ctx, "%", "r", 1)
@@ -354,8 +354,8 @@ func TestPullRequestsService_Get_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &NewPullRequest{Title: String("t")}
 
@@ -398,8 +398,8 @@ func TestPullRequestsService_Create(t *testing.T) {
 }
 
 func TestPullRequestsService_Create_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.Create(ctx, "%", "r", nil)
@@ -407,8 +407,8 @@ func TestPullRequestsService_Create_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_UpdateBranch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/update-branch", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -455,8 +455,8 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 }
 
 func TestPullRequestsService_Edit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	tests := []struct {
 		input        *PullRequest
@@ -516,8 +516,8 @@ func TestPullRequestsService_Edit(t *testing.T) {
 }
 
 func TestPullRequestsService_Edit_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.Edit(ctx, "%", "r", 1, &PullRequest{})
@@ -525,8 +525,8 @@ func TestPullRequestsService_Edit_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_ListCommits(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -597,8 +597,8 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 }
 
 func TestPullRequestsService_ListFiles(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/files", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -674,8 +674,8 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 }
 
 func TestPullRequestsService_IsMerged(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -709,8 +709,8 @@ func TestPullRequestsService_IsMerged(t *testing.T) {
 }
 
 func TestPullRequestsService_Merge(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -755,8 +755,8 @@ func TestPullRequestsService_Merge(t *testing.T) {
 
 // Test that different merge options produce expected PUT requests. See issue https://github.com/google/go-github/issues/500.
 func TestPullRequestsService_Merge_options(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	tests := []struct {
 		options  *PullRequestOptions
@@ -810,8 +810,9 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 }
 
 func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	madeRequest := false
 	expectedBody := ""
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
@@ -839,6 +840,7 @@ func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
 }
 
 func TestPullRequestMergeRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &pullRequestMergeRequest{}, "{}")
 
 	u := &pullRequestMergeRequest{
@@ -859,6 +861,7 @@ func TestPullRequestMergeRequest_Marshal(t *testing.T) {
 }
 
 func TestPullRequestMergeResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestMergeResult{}, "{}")
 
 	u := &PullRequestMergeResult{
@@ -877,6 +880,7 @@ func TestPullRequestMergeResult_Marshal(t *testing.T) {
 }
 
 func TestPullRequestUpdate_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &pullRequestUpdate{}, "{}")
 
 	u := &pullRequestUpdate{
@@ -899,6 +903,7 @@ func TestPullRequestUpdate_Marshal(t *testing.T) {
 }
 
 func TestPullRequestBranchUpdateResponse_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestBranchUpdateResponse{}, "{}")
 
 	u := &PullRequestBranchUpdateResponse{
@@ -915,6 +920,7 @@ func TestPullRequestBranchUpdateResponse_Marshal(t *testing.T) {
 }
 
 func TestPullRequestBranchUpdateOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestBranchUpdateOptions{}, "{}")
 
 	u := &PullRequestBranchUpdateOptions{
@@ -929,6 +935,7 @@ func TestPullRequestBranchUpdateOptions_Marshal(t *testing.T) {
 }
 
 func TestNewPullRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &NewPullRequest{}, "{}")
 
 	u := &NewPullRequest{
@@ -957,6 +964,7 @@ func TestNewPullRequest_Marshal(t *testing.T) {
 }
 
 func TestPullRequestBranch_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestBranch{}, "{}")
 
 	u := &PullRequestBranch{
@@ -1019,6 +1027,7 @@ func TestPullRequestBranch_Marshal(t *testing.T) {
 }
 
 func TestPRLink_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PRLink{}, "{}")
 
 	u := &PRLink{
@@ -1033,6 +1042,7 @@ func TestPRLink_Marshal(t *testing.T) {
 }
 
 func TestPRLinks_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PRLinks{}, "{}")
 
 	u := &PRLinks{
@@ -1093,6 +1103,7 @@ func TestPRLinks_Marshal(t *testing.T) {
 }
 
 func TestPullRequestAutoMerge_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestAutoMerge{}, "{}")
 
 	u := &PullRequestAutoMerge{
@@ -1151,6 +1162,7 @@ func TestPullRequestAutoMerge_Marshal(t *testing.T) {
 }
 
 func TestPullRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequest{}, "{}")
 
 	u := &PullRequest{

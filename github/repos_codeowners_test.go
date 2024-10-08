@@ -15,8 +15,8 @@ import (
 )
 
 func TestRepositoriesService_GetCodeownersErrors_noRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/codeowners/errors", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -76,8 +76,8 @@ func TestRepositoriesService_GetCodeownersErrors_noRef(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCodeownersErrors_specificRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/codeowners/errors", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -139,6 +139,7 @@ func TestRepositoriesService_GetCodeownersErrors_specificRef(t *testing.T) {
 }
 
 func TestCodeownersErrors_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CodeownersErrors{}, "{}")
 
 	u := &CodeownersErrors{

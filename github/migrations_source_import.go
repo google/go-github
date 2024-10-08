@@ -76,7 +76,7 @@ type Import struct {
 	//         Contact GitHub support for more information.
 	//     detection_needs_auth - the importer requires authentication for
 	//         the originating repository to continue detection. Make an
-	//         UpdatImport request, and include VCSUsername and
+	//         UpdateImport request, and include VCSUsername and
 	//         VCSPassword.
 	//     detection_found_nothing - the importer didn't recognize any
 	//         source control at the URL.

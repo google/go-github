@@ -16,8 +16,8 @@ import (
 )
 
 func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -53,8 +53,8 @@ func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -74,8 +74,8 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListKeys_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Users.ListKeys(ctx, "%", nil)
@@ -83,8 +83,8 @@ func TestUsersService_ListKeys_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_GetKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -118,8 +118,8 @@ func TestUsersService_GetKey(t *testing.T) {
 }
 
 func TestUsersService_CreateKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &Key{Key: String("k"), Title: String("t")}
 
@@ -157,8 +157,8 @@ func TestUsersService_CreateKey(t *testing.T) {
 }
 
 func TestUsersService_DeleteKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -182,6 +182,7 @@ func TestUsersService_DeleteKey(t *testing.T) {
 }
 
 func TestKey_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Key{}, "{}")
 
 	u := &Key{

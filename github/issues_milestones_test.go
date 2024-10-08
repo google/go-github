@@ -16,8 +16,8 @@ import (
 )
 
 func TestIssuesService_ListMilestones(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/milestones", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -58,8 +58,8 @@ func TestIssuesService_ListMilestones(t *testing.T) {
 }
 
 func TestIssuesService_ListMilestones_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.ListMilestones(ctx, "%", "r", nil)
@@ -67,8 +67,8 @@ func TestIssuesService_ListMilestones_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_GetMilestone(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -102,8 +102,8 @@ func TestIssuesService_GetMilestone(t *testing.T) {
 }
 
 func TestIssuesService_GetMilestone_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.GetMilestone(ctx, "%", "r", 1)
@@ -111,8 +111,8 @@ func TestIssuesService_GetMilestone_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_CreateMilestone(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &Milestone{Title: String("t")}
 
@@ -155,8 +155,8 @@ func TestIssuesService_CreateMilestone(t *testing.T) {
 }
 
 func TestIssuesService_CreateMilestone_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.CreateMilestone(ctx, "%", "r", nil)
@@ -164,8 +164,8 @@ func TestIssuesService_CreateMilestone_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_EditMilestone(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &Milestone{Title: String("t")}
 
@@ -208,8 +208,8 @@ func TestIssuesService_EditMilestone(t *testing.T) {
 }
 
 func TestIssuesService_EditMilestone_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.EditMilestone(ctx, "%", "r", 1, nil)
@@ -217,8 +217,8 @@ func TestIssuesService_EditMilestone_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_DeleteMilestone(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -242,8 +242,8 @@ func TestIssuesService_DeleteMilestone(t *testing.T) {
 }
 
 func TestIssuesService_DeleteMilestone_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Issues.DeleteMilestone(ctx, "%", "r", 1)
@@ -251,6 +251,7 @@ func TestIssuesService_DeleteMilestone_invalidOwner(t *testing.T) {
 }
 
 func TestMilestone_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Milestone{}, "{}")
 
 	u := &Milestone{
