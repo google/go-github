@@ -21150,6 +21150,14 @@ func (r *Ruleset) GetConditions() *RulesetConditions {
 	return r.Conditions
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetCreatedAt() Timestamp {
+	if r == nil || r.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *r.CreatedAt
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (r *Ruleset) GetID() int64 {
 	if r == nil || r.ID == nil {
@@ -21188,6 +21196,14 @@ func (r *Ruleset) GetTarget() string {
 		return ""
 	}
 	return *r.Target
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetUpdatedAt() Timestamp {
+	if r == nil || r.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *r.UpdatedAt
 }
 
 // GetRefName returns the RefName field.

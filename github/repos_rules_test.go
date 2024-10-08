@@ -489,14 +489,18 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 			  "name": "ruleset",
 			  "source_type": "Repository",
 			  "source": "o/repo",
-			  "enforcement": "enabled"
+			  "enforcement": "enabled",
+			  "created_at": `+referenceTimeStr+`,
+			  "updated_at": `+referenceTimeStr+`
 			},
 			{
 			  "id": 314,
 			  "name": "Another ruleset",
 			  "source_type": "Repository",
 			  "source": "o/repo",
-			  "enforcement": "enabled"
+			  "enforcement": "enabled",
+			  "created_at": `+referenceTimeStr+`,
+			  "updated_at": `+referenceTimeStr+`
 			}
 		]`)
 	})
@@ -514,6 +518,8 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 			SourceType:  String("Repository"),
 			Source:      "o/repo",
 			Enforcement: "enabled",
+			CreatedAt:   &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
 		},
 		{
 			ID:          Int64(314),
@@ -521,6 +527,8 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 			SourceType:  String("Repository"),
 			Source:      "o/repo",
 			Enforcement: "enabled",
+			CreatedAt:   &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
 		},
 	}
 	if !cmp.Equal(ruleSet, want) {
@@ -683,7 +691,9 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 			"name": "ruleset",
 			"source_type": "Organization",
 			"source": "o",
-			"enforcement": "enabled"
+			"enforcement": "enabled",
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -699,6 +709,8 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 		SourceType:  String("Organization"),
 		Source:      "o",
 		Enforcement: "enabled",
+		CreatedAt:   &Timestamp{referenceTime},
+		UpdatedAt:   &Timestamp{referenceTime},
 	}
 	if !cmp.Equal(ruleSet, want) {
 		t.Errorf("Repositories.GetRuleset returned %+v, want %+v", ruleSet, want)

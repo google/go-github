@@ -27208,6 +27208,17 @@ func TestRuleset_GetConditions(tt *testing.T) {
 	r.GetConditions()
 }
 
+func TestRuleset_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	r := &Ruleset{CreatedAt: &zeroValue}
+	r.GetCreatedAt()
+	r = &Ruleset{}
+	r.GetCreatedAt()
+	r = nil
+	r.GetCreatedAt()
+}
+
 func TestRuleset_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -27258,6 +27269,17 @@ func TestRuleset_GetTarget(tt *testing.T) {
 	r.GetTarget()
 	r = nil
 	r.GetTarget()
+}
+
+func TestRuleset_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	r := &Ruleset{UpdatedAt: &zeroValue}
+	r.GetUpdatedAt()
+	r = &Ruleset{}
+	r.GetUpdatedAt()
+	r = nil
+	r.GetUpdatedAt()
 }
 
 func TestRulesetConditions_GetRefName(tt *testing.T) {
