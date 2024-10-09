@@ -11,6 +11,7 @@ import (
 )
 
 func TestEditChange_Marshal_TitleChange(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EditChange{}, "{}")
 
 	u := &EditChange{
@@ -31,6 +32,7 @@ func TestEditChange_Marshal_TitleChange(t *testing.T) {
 }
 
 func TestEditChange_Marshal_BodyChange(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EditChange{}, "{}")
 
 	u := &EditChange{
@@ -51,6 +53,7 @@ func TestEditChange_Marshal_BodyChange(t *testing.T) {
 }
 
 func TestEditChange_Marshal_BaseChange(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EditChange{}, "{}")
 
 	Base := EditBase{
@@ -83,6 +86,7 @@ func TestEditChange_Marshal_BaseChange(t *testing.T) {
 }
 
 func TestEditChange_Marshal_Repo(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EditChange{}, "{}")
 
 	u := &EditChange{
@@ -114,6 +118,7 @@ func TestEditChange_Marshal_Repo(t *testing.T) {
 }
 
 func TestEditChange_Marshal_TransferFromUser(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EditChange{}, "{}")
 
 	u := &EditChange{
@@ -152,6 +157,7 @@ func TestEditChange_Marshal_TransferFromUser(t *testing.T) {
 }
 
 func TestEditChange_Marshal_TransferFromOrg(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EditChange{}, "{}")
 
 	u := &EditChange{
@@ -190,6 +196,7 @@ func TestEditChange_Marshal_TransferFromOrg(t *testing.T) {
 }
 
 func TestProjectChange_Marshal_NameChange(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectChange{}, "{}")
 
 	u := &ProjectChange{
@@ -207,6 +214,7 @@ func TestProjectChange_Marshal_NameChange(t *testing.T) {
 }
 
 func TestProjectChange_Marshal_BodyChange(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectChange{}, "{}")
 
 	u := &ProjectChange{
@@ -224,6 +232,7 @@ func TestProjectChange_Marshal_BodyChange(t *testing.T) {
 }
 
 func TestProjectCardChange_Marshal_NoteChange(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectCardChange{}, "{}")
 
 	u := &ProjectCardChange{
@@ -240,6 +249,7 @@ func TestProjectCardChange_Marshal_NoteChange(t *testing.T) {
 }
 
 func TestProjectColumnChange_Marshal_NameChange(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectColumnChange{}, "{}")
 
 	u := &ProjectColumnChange{
@@ -256,6 +266,7 @@ func TestProjectColumnChange_Marshal_NameChange(t *testing.T) {
 }
 
 func TestTeamAddEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamAddEvent{}, "{}")
 
 	u := &TeamAddEvent{
@@ -608,6 +619,7 @@ func TestTeamAddEvent_Marshal(t *testing.T) {
 }
 
 func TestStarEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &StarEvent{}, "{}")
 
 	u := &StarEvent{
@@ -696,6 +708,7 @@ func TestStarEvent_Marshal(t *testing.T) {
 }
 
 func TestTeamEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamEvent{}, "{}")
 
 	u := &TeamEvent{
@@ -1090,6 +1103,7 @@ func TestTeamEvent_Marshal(t *testing.T) {
 }
 
 func TestInstallationRepositoriesEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &InstallationRepositoriesEvent{}, "{}")
 
 	u := &InstallationRepositoriesEvent{
@@ -1342,6 +1356,7 @@ func TestInstallationRepositoriesEvent_Marshal(t *testing.T) {
 }
 
 func TestInstallationTargetEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &InstallationTargetEvent{}, "{}")
 
 	u := &InstallationTargetEvent{
@@ -1678,6 +1693,7 @@ func TestInstallationTargetEvent_Marshal(t *testing.T) {
 }
 
 func TestEditTitle_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EditTitle{}, "{}")
 
 	u := &EditTitle{
@@ -1692,6 +1708,7 @@ func TestEditTitle_Marshal(t *testing.T) {
 }
 
 func TestEditBody_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EditBody{}, "{}")
 
 	u := &EditBody{
@@ -1706,6 +1723,7 @@ func TestEditBody_Marshal(t *testing.T) {
 }
 
 func TestEditBase_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EditBase{}, "{}")
 
 	u := &EditBase{
@@ -1730,6 +1748,7 @@ func TestEditBase_Marshal(t *testing.T) {
 }
 
 func TestEditRef_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EditRef{}, "{}")
 
 	u := &EditRef{
@@ -1744,6 +1763,7 @@ func TestEditRef_Marshal(t *testing.T) {
 }
 
 func TestEditSHA_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EditSHA{}, "{}")
 
 	u := &EditSHA{
@@ -1758,6 +1778,7 @@ func TestEditSHA_Marshal(t *testing.T) {
 }
 
 func TestProjectName_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectName{}, "{}")
 
 	u := &ProjectName{
@@ -1772,6 +1793,7 @@ func TestProjectName_Marshal(t *testing.T) {
 }
 
 func TestProjectBody_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectBody{}, "{}")
 
 	u := &ProjectBody{
@@ -1786,6 +1808,7 @@ func TestProjectBody_Marshal(t *testing.T) {
 }
 
 func TestProjectCardNote_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectCardNote{}, "{}")
 
 	u := &ProjectCardNote{
@@ -1800,6 +1823,7 @@ func TestProjectCardNote_Marshal(t *testing.T) {
 }
 
 func TestProjectColumnName_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectColumnName{}, "{}")
 
 	u := &ProjectColumnName{
@@ -1814,6 +1838,7 @@ func TestProjectColumnName_Marshal(t *testing.T) {
 }
 
 func TestTeamDescription_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamDescription{}, "{}")
 
 	u := &TeamDescription{
@@ -1828,6 +1853,7 @@ func TestTeamDescription_Marshal(t *testing.T) {
 }
 
 func TestTeamName_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamName{}, "{}")
 
 	u := &TeamName{
@@ -1842,6 +1868,7 @@ func TestTeamName_Marshal(t *testing.T) {
 }
 
 func TestTeamPrivacy_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamPrivacy{}, "{}")
 
 	u := &TeamPrivacy{
@@ -1856,6 +1883,7 @@ func TestTeamPrivacy_Marshal(t *testing.T) {
 }
 
 func TestTeamRepository_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamRepository{}, "{}")
 
 	u := &TeamRepository{
@@ -1882,6 +1910,7 @@ func TestTeamRepository_Marshal(t *testing.T) {
 }
 
 func TestTeamPermissions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamPermissions{}, "{}")
 
 	u := &TeamPermissions{
@@ -1904,6 +1933,7 @@ func TestTeamPermissions_Marshal(t *testing.T) {
 }
 
 func TestTeamPermissionsFrom_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamPermissionsFrom{}, "{}")
 
 	u := &TeamPermissionsFrom{
@@ -1922,6 +1952,7 @@ func TestTeamPermissionsFrom_Marshal(t *testing.T) {
 }
 
 func TestRepositoryVulnerabilityAlert_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryVulnerabilityAlert{}, "{}")
 
 	u := &RepositoryVulnerabilityAlert{
@@ -1968,6 +1999,7 @@ func TestRepositoryVulnerabilityAlert_Marshal(t *testing.T) {
 }
 
 func TestPage_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Page{}, "{}")
 
 	u := &Page{
@@ -1992,6 +2024,7 @@ func TestPage_Marshal(t *testing.T) {
 }
 
 func TestTeamChange_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamChange{}, "{}")
 
 	u := &TeamChange{
@@ -2040,6 +2073,7 @@ func TestTeamChange_Marshal(t *testing.T) {
 }
 
 func TestIssueCommentEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &IssueCommentEvent{}, "{}")
 
 	u := &IssueCommentEvent{
@@ -2356,6 +2390,7 @@ func TestIssueCommentEvent_Marshal(t *testing.T) {
 }
 
 func TestIssuesEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &IssuesEvent{}, "{}")
 
 	u := &IssuesEvent{
@@ -2646,6 +2681,7 @@ func TestIssuesEvent_Marshal(t *testing.T) {
 }
 
 func TestLabelEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &LabelEvent{}, "{}")
 
 	u := &LabelEvent{
@@ -2940,6 +2976,7 @@ func TestLabelEvent_Marshal(t *testing.T) {
 }
 
 func TestMilestoneEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &MilestoneEvent{}, "{}")
 
 	u := &MilestoneEvent{
@@ -3252,6 +3289,7 @@ func TestMilestoneEvent_Marshal(t *testing.T) {
 }
 
 func TestPublicEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PublicEvent{}, "{}")
 
 	u := &PublicEvent{
@@ -3482,6 +3520,7 @@ func TestPublicEvent_Marshal(t *testing.T) {
 }
 
 func TestPullRequestReviewEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestReviewEvent{}, "{}")
 
 	u := &PullRequestReviewEvent{
@@ -3766,6 +3805,7 @@ func TestPullRequestReviewEvent_Marshal(t *testing.T) {
 }
 
 func TestPushEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PushEvent{}, "{}")
 
 	u := &PushEvent{
@@ -4082,6 +4122,7 @@ func TestPushEvent_Marshal(t *testing.T) {
 }
 
 func TestStatusEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &StatusEvent{}, "{}")
 
 	u := &StatusEvent{
@@ -4340,6 +4381,7 @@ func TestStatusEvent_Marshal(t *testing.T) {
 }
 
 func TestMarketplacePurchaseEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &MarketplacePurchaseEvent{}, "{}")
 
 	u := &MarketplacePurchaseEvent{
@@ -4660,6 +4702,7 @@ func TestMarketplacePurchaseEvent_Marshal(t *testing.T) {
 }
 
 func TestOrganizationEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &OrganizationEvent{}, "{}")
 
 	u := &OrganizationEvent{
@@ -5004,6 +5047,7 @@ func TestOrganizationEvent_Marshal(t *testing.T) {
 }
 
 func TestPageBuildEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PageBuildEvent{}, "{}")
 
 	u := &PageBuildEvent{
@@ -5240,6 +5284,7 @@ func TestPageBuildEvent_Marshal(t *testing.T) {
 }
 
 func TestCommitCommentEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommitCommentEvent{}, "{}")
 
 	u := &CommitCommentEvent{
@@ -5538,6 +5583,7 @@ func TestCommitCommentEvent_Marshal(t *testing.T) {
 }
 
 func TestDeploymentEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DeploymentEvent{}, "{}")
 
 	l := make(map[string]interface{})
@@ -6007,6 +6053,7 @@ func TestDeploymentEvent_Marshal(t *testing.T) {
 }
 
 func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DeploymentProtectionRuleEvent{}, "{}")
 
 	l := make(map[string]interface{})
@@ -6392,6 +6439,7 @@ func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
 }
 
 func TestDeploymentReviewEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DeploymentReviewEvent{}, "{}")
 
 	u := &DeploymentReviewEvent{
@@ -6990,6 +7038,7 @@ func TestDeploymentReviewEvent_Marshal(t *testing.T) {
 }
 
 func TestDeploymentStatusEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DeploymentStatusEvent{}, "{}")
 
 	l := make(map[string]interface{})
@@ -7323,6 +7372,7 @@ func TestDeploymentStatusEvent_Marshal(t *testing.T) {
 }
 
 func TestDiscussionCommentEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DiscussionCommentEvent{}, "{}")
 
 	u := &DiscussionCommentEvent{
@@ -7737,6 +7787,7 @@ func TestDiscussionCommentEvent_Marshal(t *testing.T) {
 }
 
 func TestDiscussionEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DiscussionEvent{}, "{}")
 
 	u := &DiscussionEvent{
@@ -8083,6 +8134,7 @@ func TestDiscussionEvent_Marshal(t *testing.T) {
 }
 
 func TestPackageEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PackageEvent{}, "{}")
 
 	u := &PackageEvent{
@@ -8211,6 +8263,7 @@ func TestPackageEvent_Marshal(t *testing.T) {
 }
 
 func TestPersonalAccessTokenRequestEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PersonalAccessTokenRequestEvent{}, "{}")
 
 	event := &PersonalAccessTokenRequestEvent{
@@ -8285,6 +8338,7 @@ func TestPersonalAccessTokenRequestEvent_Marshal(t *testing.T) {
 }
 
 func TestPingEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PingEvent{}, "{}")
 
 	l := make(map[string]interface{})
@@ -8529,6 +8583,7 @@ func TestPingEvent_Marshal(t *testing.T) {
 }
 
 func TestRepositoryDispatchEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryDispatchEvent{}, "{}")
 
 	l := make(map[string]interface{})
@@ -8817,6 +8872,7 @@ func TestRepositoryDispatchEvent_Marshal(t *testing.T) {
 }
 
 func TestRepositoryImportEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryImportEvent{}, "{}")
 
 	u := &RepositoryImportEvent{
@@ -8903,6 +8959,7 @@ func TestRepositoryImportEvent_Marshal(t *testing.T) {
 }
 
 func TestRepositoryEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryEvent{}, "{}")
 
 	u := &RepositoryEvent{
@@ -9179,6 +9236,7 @@ func TestRepositoryEvent_Marshal(t *testing.T) {
 }
 
 func TestReleaseEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ReleaseEvent{}, "{}")
 
 	u := &ReleaseEvent{
@@ -9449,6 +9507,7 @@ func TestReleaseEvent_Marshal(t *testing.T) {
 }
 
 func TestContentReferenceEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ContentReferenceEvent{}, "{}")
 
 	u := &ContentReferenceEvent{
@@ -9691,6 +9750,7 @@ func TestContentReferenceEvent_Marshal(t *testing.T) {
 }
 
 func TestMemberEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &MemberEvent{}, "{}")
 
 	u := &MemberEvent{
@@ -9961,6 +10021,7 @@ func TestMemberEvent_Marshal(t *testing.T) {
 }
 
 func TestMembershipEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &MembershipEvent{}, "{}")
 
 	u := &MembershipEvent{
@@ -10325,6 +10386,7 @@ func TestMembershipEvent_Marshal(t *testing.T) {
 }
 
 func TestMergeGroupEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &MergeGroupEvent{}, "{}")
 
 	u := &MergeGroupEvent{
@@ -10617,6 +10679,7 @@ func TestMergeGroupEvent_Marshal(t *testing.T) {
 }
 
 func TestOrgBlockEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &OrgBlockEvent{}, "{}")
 
 	u := &OrgBlockEvent{
@@ -10901,6 +10964,7 @@ func TestOrgBlockEvent_Marshal(t *testing.T) {
 }
 
 func TestGollumEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GollumEvent{}, "{}")
 
 	u := &GollumEvent{
@@ -11151,6 +11215,7 @@ func TestGollumEvent_Marshal(t *testing.T) {
 }
 
 func TestWorkflowRunEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowRunEvent{}, "{}")
 
 	u := &WorkflowRunEvent{
@@ -11421,6 +11486,7 @@ func TestWorkflowRunEvent_Marshal(t *testing.T) {
 }
 
 func TestWorkflowDispatchEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowDispatchEvent{}, "{}")
 
 	i := make(map[string]interface{})
@@ -11517,6 +11583,7 @@ func TestWorkflowDispatchEvent_Marshal(t *testing.T) {
 }
 
 func TestWatchEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WatchEvent{}, "{}")
 
 	u := &WatchEvent{
@@ -11749,6 +11816,7 @@ func TestWatchEvent_Marshal(t *testing.T) {
 }
 
 func TestUserEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UserEvent{}, "{}")
 
 	u := &UserEvent{
@@ -11824,6 +11892,7 @@ func TestUserEvent_Marshal(t *testing.T) {
 }
 
 func TestCheckRunEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckRunEvent{}, "{}")
 
 	r := &CheckRunEvent{
@@ -12278,6 +12347,7 @@ func TestCheckRunEvent_Marshal(t *testing.T) {
 }
 
 func TestCheckSuiteEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckSuiteEvent{}, "{}")
 
 	r := &CheckSuiteEvent{
@@ -12676,6 +12746,7 @@ func TestCheckSuiteEvent_Marshal(t *testing.T) {
 }
 
 func TestDeployKeyEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DeployKeyEvent{}, "{}")
 
 	u := &DeployKeyEvent{
@@ -12780,6 +12851,7 @@ func TestDeployKeyEvent_Marshal(t *testing.T) {
 }
 
 func TestMetaEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &MetaEvent{}, "{}")
 
 	v := make(map[string]interface{})
@@ -12836,6 +12908,7 @@ func TestMetaEvent_Marshal(t *testing.T) {
 }
 
 func TestRequestedAction_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RequestedAction{}, "{}")
 
 	r := &RequestedAction{
@@ -12850,6 +12923,7 @@ func TestRequestedAction_Marshal(t *testing.T) {
 }
 
 func TestCreateEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateEvent{}, "{}")
 
 	r := &CreateEvent{
@@ -13090,6 +13164,7 @@ func TestCreateEvent_Marshal(t *testing.T) {
 }
 
 func TestDeleteEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DeleteEvent{}, "{}")
 
 	r := &DeleteEvent{
@@ -13326,6 +13401,7 @@ func TestDeleteEvent_Marshal(t *testing.T) {
 }
 
 func TestDependabotAlertEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DependabotAlertEvent{}, "{}")
 
 	e := &DependabotAlertEvent{
@@ -13787,6 +13863,7 @@ func TestDependabotAlertEvent_Marshal(t *testing.T) {
 }
 
 func TestForkEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ForkEvent{}, "{}")
 
 	u := &ForkEvent{
@@ -14027,6 +14104,7 @@ func TestForkEvent_Marshal(t *testing.T) {
 }
 
 func TestGitHubAppAuthorizationEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GitHubAppAuthorizationEvent{}, "{}")
 
 	u := &GitHubAppAuthorizationEvent{
@@ -14059,6 +14137,7 @@ func TestGitHubAppAuthorizationEvent_Marshal(t *testing.T) {
 }
 
 func TestInstallationEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &InstallationEvent{}, "{}")
 
 	u := &InstallationEvent{
@@ -14295,6 +14374,7 @@ func TestInstallationEvent_Marshal(t *testing.T) {
 }
 
 func TestHeadCommit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &HeadCommit{}, "{}")
 
 	u := &HeadCommit{
@@ -14357,6 +14437,7 @@ func TestHeadCommit_Marshal(t *testing.T) {
 }
 
 func TestPushEventRepository_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PushEventRepository{}, "{}")
 
 	u := &PushEventRepository{
@@ -14475,6 +14556,7 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 }
 
 func TestPushEventRepoOwner_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PushEventRepoOwner{}, "{}")
 
 	u := &PushEventRepoOwner{
@@ -14491,6 +14573,7 @@ func TestPushEventRepoOwner_Marshal(t *testing.T) {
 }
 
 func TestProjectEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectEvent{}, "{}")
 
 	u := &ProjectEvent{
@@ -14783,6 +14866,7 @@ func TestProjectEvent_Marshal(t *testing.T) {
 }
 
 func TestProjectCardEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectCardEvent{}, "{}")
 
 	u := &ProjectCardEvent{
@@ -15073,6 +15157,7 @@ func TestProjectCardEvent_Marshal(t *testing.T) {
 }
 
 func TestProjectColumnEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectColumnEvent{}, "{}")
 
 	u := &ProjectColumnEvent{
@@ -15363,6 +15448,7 @@ func TestProjectColumnEvent_Marshal(t *testing.T) {
 }
 
 func TestProjectV2Event_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectV2Event{}, "{}")
 
 	u := &ProjectV2Event{
@@ -15573,6 +15659,7 @@ func TestProjectV2Event_Marshal(t *testing.T) {
 }
 
 func TestProjectV2ItemEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ProjectV2ItemEvent{}, "{}")
 
 	u := &ProjectV2ItemEvent{
@@ -15753,6 +15840,7 @@ func TestProjectV2ItemEvent_Marshal(t *testing.T) {
 }
 
 func TestPullRequestEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestEvent{}, "{}")
 
 	u := &PullRequestEvent{
@@ -16133,6 +16221,7 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 }
 
 func TestPullRequestReviewCommentEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestReviewCommentEvent{}, "{}")
 
 	u := &PullRequestReviewCommentEvent{
@@ -16405,6 +16494,7 @@ func TestPullRequestReviewCommentEvent_Marshal(t *testing.T) {
 }
 
 func TestPullRequestReviewThreadEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestReviewThreadEvent{}, "{}")
 
 	u := &PullRequestReviewThreadEvent{
@@ -16654,6 +16744,7 @@ func TestPullRequestReviewThreadEvent_Marshal(t *testing.T) {
 }
 
 func TestPullRequestTargetEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestTargetEvent{}, "{}")
 
 	u := &PullRequestTargetEvent{
@@ -17034,6 +17125,7 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 }
 
 func TestRepositoryVulnerabilityAlertEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryVulnerabilityAlertEvent{}, "{}")
 
 	u := &RepositoryVulnerabilityAlertEvent{
@@ -17096,6 +17188,7 @@ func TestRepositoryVulnerabilityAlertEvent_Marshal(t *testing.T) {
 }
 
 func TestSecretScanningAlertEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlertEvent{}, "{}")
 
 	u := &SecretScanningAlertEvent{
@@ -17426,6 +17519,7 @@ func TestSecretScanningAlertEvent_Marshal(t *testing.T) {
 }
 
 func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecurityAdvisoryEvent{}, "{}")
 	u := &SecurityAdvisoryEvent{
 		Action: String("published"),
@@ -17811,6 +17905,7 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 }
 
 func TestSecurityAndAnalysisEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecurityAndAnalysisEvent{}, "{}")
 
 	u := &SecurityAndAnalysisEvent{
@@ -18146,6 +18241,7 @@ func TestSecurityAndAnalysisEvent_Marshal(t *testing.T) {
 }
 
 func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CodeScanningAlertEvent{}, "{}")
 
 	u := &CodeScanningAlertEvent{
@@ -18485,6 +18581,7 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 }
 
 func TestSponsorshipEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SponsorshipEvent{}, "{}")
 
 	u := &SponsorshipEvent{
@@ -18545,6 +18642,7 @@ func TestSponsorshipEvent_Marshal(t *testing.T) {
 }
 
 func TestSponsorshipChanges_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SponsorshipChanges{}, "{}")
 
 	u := &SponsorshipChanges{
@@ -18565,6 +18663,7 @@ func TestSponsorshipChanges_Marshal(t *testing.T) {
 }
 
 func TestSponsorshipTier_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SponsorshipTier{}, "{}")
 
 	u := &SponsorshipTier{

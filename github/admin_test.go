@@ -16,6 +16,7 @@ import (
 )
 
 func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &UserLDAPMapping{
@@ -63,6 +64,7 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 }
 
 func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &TeamLDAPMapping{
@@ -110,6 +112,7 @@ func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
 }
 
 func TestAdminService_TeamLDAPMapping_String(t *testing.T) {
+	t.Parallel()
 	v := &TeamLDAPMapping{
 		ID:              Int64(1),
 		LDAPDN:          String("a"),
@@ -130,6 +133,7 @@ func TestAdminService_TeamLDAPMapping_String(t *testing.T) {
 }
 
 func TestAdminService_UserLDAPMapping_String(t *testing.T) {
+	t.Parallel()
 	v := &UserLDAPMapping{
 		ID:                Int64(1),
 		LDAPDN:            String("a"),
@@ -157,6 +161,7 @@ func TestAdminService_UserLDAPMapping_String(t *testing.T) {
 }
 
 func TestTeamLDAPMapping_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamLDAPMapping{}, "{}")
 
 	u := &TeamLDAPMapping{
@@ -189,6 +194,7 @@ func TestTeamLDAPMapping_Marshal(t *testing.T) {
 }
 
 func TestUserLDAPMapping_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UserLDAPMapping{}, "{}")
 
 	u := &UserLDAPMapping{
@@ -235,6 +241,7 @@ func TestUserLDAPMapping_Marshal(t *testing.T) {
 }
 
 func TestEnterprise_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Enterprise{}, "{}")
 
 	u := &Enterprise{

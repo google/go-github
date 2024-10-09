@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListContributorsStats(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/stats/contributors", func(w http.ResponseWriter, r *http.Request) {
@@ -86,6 +87,7 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCommitActivity(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/stats/commit_activity", func(w http.ResponseWriter, r *http.Request) {
@@ -136,6 +138,7 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/stats/code_frequency", func(w http.ResponseWriter, r *http.Request) {
@@ -176,6 +179,7 @@ func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
 }
 
 func TestRepositoriesService_Participation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/stats/participation", func(w http.ResponseWriter, r *http.Request) {
@@ -240,6 +244,7 @@ func TestRepositoriesService_Participation(t *testing.T) {
 }
 
 func TestRepositoriesService_ListPunchCard(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/stats/punch_card", func(w http.ResponseWriter, r *http.Request) {
@@ -284,6 +289,7 @@ func TestRepositoriesService_ListPunchCard(t *testing.T) {
 }
 
 func TestRepositoriesService_AcceptedError(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/stats/contributors", func(w http.ResponseWriter, r *http.Request) {
@@ -323,6 +329,7 @@ func TestRepositoriesService_AcceptedError(t *testing.T) {
 }
 
 func TestRepositoryParticipation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryParticipation{}, "{}")
 
 	u := &RepositoryParticipation{
@@ -339,6 +346,7 @@ func TestRepositoryParticipation_Marshal(t *testing.T) {
 }
 
 func TestWeeklyCommitActivity_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WeeklyCommitActivity{}, "{}")
 
 	u := &WeeklyCommitActivity{
@@ -359,6 +367,7 @@ func TestWeeklyCommitActivity_Marshal(t *testing.T) {
 }
 
 func TestWeeklyStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WeeklyStats{}, "{}")
 
 	u := &WeeklyStats{
@@ -379,6 +388,7 @@ func TestWeeklyStats_Marshal(t *testing.T) {
 }
 
 func TestContributorStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ContributorStats{}, "{}")
 
 	u := &ContributorStats{

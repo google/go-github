@@ -16,6 +16,7 @@ import (
 )
 
 func TestOrganizationsService_ListHooks(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/hooks", func(w http.ResponseWriter, r *http.Request) {
@@ -53,6 +54,7 @@ func TestOrganizationsService_ListHooks(t *testing.T) {
 }
 
 func TestOrganizationsService_ListHooks_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -61,6 +63,7 @@ func TestOrganizationsService_ListHooks_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Hook{CreatedAt: &Timestamp{referenceTime}}
@@ -105,6 +108,7 @@ func TestOrganizationsService_CreateHook(t *testing.T) {
 }
 
 func TestOrganizationsService_GetHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/hooks/1", func(w http.ResponseWriter, r *http.Request) {
@@ -139,6 +143,7 @@ func TestOrganizationsService_GetHook(t *testing.T) {
 }
 
 func TestOrganizationsService_GetHook_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -147,6 +152,7 @@ func TestOrganizationsService_GetHook_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_EditHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Hook{}
@@ -190,6 +196,7 @@ func TestOrganizationsService_EditHook(t *testing.T) {
 }
 
 func TestOrganizationsService_EditHook_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -198,6 +205,7 @@ func TestOrganizationsService_EditHook_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_PingHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/hooks/1/pings", func(w http.ResponseWriter, r *http.Request) {
@@ -222,6 +230,7 @@ func TestOrganizationsService_PingHook(t *testing.T) {
 }
 
 func TestOrganizationsService_DeleteHook(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/hooks/1", func(w http.ResponseWriter, r *http.Request) {
@@ -246,6 +255,7 @@ func TestOrganizationsService_DeleteHook(t *testing.T) {
 }
 
 func TestOrganizationsService_DeleteHook_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()

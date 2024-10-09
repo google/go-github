@@ -15,6 +15,7 @@ import (
 )
 
 func TestRepositoriesService_ListInvitations(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/invitations", func(w http.ResponseWriter, r *http.Request) {
@@ -51,6 +52,7 @@ func TestRepositoriesService_ListInvitations(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteInvitation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/invitations/2", func(w http.ResponseWriter, r *http.Request) {
@@ -76,6 +78,7 @@ func TestRepositoriesService_DeleteInvitation(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateInvitation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/invitations/2", func(w http.ResponseWriter, r *http.Request) {
@@ -110,6 +113,7 @@ func TestRepositoriesService_UpdateInvitation(t *testing.T) {
 }
 
 func TestRepositoryInvitation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryInvitation{}, "{}")
 
 	r := &RepositoryInvitation{

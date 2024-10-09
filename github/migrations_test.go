@@ -16,6 +16,7 @@ import (
 )
 
 func TestMigrationService_StartMigration(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/migrations", func(w http.ResponseWriter, r *http.Request) {
@@ -55,6 +56,7 @@ func TestMigrationService_StartMigration(t *testing.T) {
 }
 
 func TestMigrationService_ListMigrations(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/migrations", func(w http.ResponseWriter, r *http.Request) {
@@ -90,6 +92,7 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 }
 
 func TestMigrationService_MigrationStatus(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/migrations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -125,6 +128,7 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 }
 
 func TestMigrationService_MigrationArchiveURL(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
@@ -157,6 +161,7 @@ func TestMigrationService_MigrationArchiveURL(t *testing.T) {
 }
 
 func TestMigrationService_DeleteMigration(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
@@ -183,6 +188,7 @@ func TestMigrationService_DeleteMigration(t *testing.T) {
 }
 
 func TestMigrationService_UnlockRepo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/migrations/1/repos/r/lock", func(w http.ResponseWriter, r *http.Request) {
@@ -247,6 +253,7 @@ var wantMigration = &Migration{
 }
 
 func TestMigration_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Migration{}, "{}")
 
 	u := &Migration{
@@ -281,6 +288,7 @@ func TestMigration_Marshal(t *testing.T) {
 }
 
 func TestStartMigration_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &startMigration{}, "{}")
 
 	u := &startMigration{

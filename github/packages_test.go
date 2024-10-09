@@ -8,6 +8,7 @@ package github
 import "testing"
 
 func TestPackageRegistry_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PackageRegistry{}, "{}")
 
 	o := &PackageRegistry{
@@ -29,6 +30,7 @@ func TestPackageRegistry_Marshal(t *testing.T) {
 }
 
 func TestPackageFile_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PackageFile{}, "{}")
 
 	o := &PackageFile{
@@ -103,6 +105,7 @@ func TestPackageFile_Marshal(t *testing.T) {
 }
 
 func TestPackageRelease_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PackageRelease{}, "{}")
 
 	o := &PackageRelease{
@@ -175,6 +178,7 @@ func TestPackageRelease_Marshal(t *testing.T) {
 }
 
 func TestPackageVersion_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PackageVersion{}, "{}")
 
 	o := &PackageVersion{
@@ -391,6 +395,7 @@ func TestPackageVersion_Marshal(t *testing.T) {
 }
 
 func TestPackage_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Package{}, "{}")
 
 	o := &Package{

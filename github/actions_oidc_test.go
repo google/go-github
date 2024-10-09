@@ -15,6 +15,7 @@ import (
 )
 
 func TestActionsService_GetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +50,7 @@ func TestActionsService_GetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 }
 
 func TestActionsService_GetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
@@ -83,6 +85,7 @@ func TestActionsService_GetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 }
 
 func TestActionsService_SetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
@@ -114,6 +117,7 @@ func TestActionsService_SetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 }
 
 func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
@@ -146,6 +150,7 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 }
 
 func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
@@ -176,6 +181,7 @@ func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing
 }
 
 func TestOIDCSubjectClaimCustomTemplate_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &OIDCSubjectClaimCustomTemplate{}, "{}")
 
 	u := &OIDCSubjectClaimCustomTemplate{

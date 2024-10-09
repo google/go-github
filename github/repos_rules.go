@@ -548,6 +548,8 @@ type Ruleset struct {
 	Links        *RulesetLinks      `json:"_links,omitempty"`
 	Conditions   *RulesetConditions `json:"conditions,omitempty"`
 	Rules        []*RepositoryRule  `json:"rules,omitempty"`
+	UpdatedAt    *Timestamp         `json:"updated_at,omitempty"`
+	CreatedAt    *Timestamp         `json:"created_at,omitempty"`
 }
 
 // rulesetNoOmitBypassActors represents a GitHub ruleset object. The struct does not omit bypassActors if the field is nil or an empty array is passed.

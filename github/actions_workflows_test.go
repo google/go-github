@@ -17,6 +17,7 @@ import (
 )
 
 func TestActionsService_ListWorkflows(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows", func(w http.ResponseWriter, r *http.Request) {
@@ -59,6 +60,7 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844", func(w http.ResponseWriter, r *http.Request) {
@@ -97,6 +99,7 @@ func TestActionsService_GetWorkflowByID(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowByFileName(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml", func(w http.ResponseWriter, r *http.Request) {
@@ -135,6 +138,7 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowUsageByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/timing", func(w http.ResponseWriter, r *http.Request) {
@@ -181,6 +185,7 @@ func TestActionsService_GetWorkflowUsageByID(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/timing", func(w http.ResponseWriter, r *http.Request) {
@@ -227,6 +232,7 @@ func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
 }
 
 func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	event := CreateWorkflowDispatchEventRequest{
@@ -270,6 +276,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 }
 
 func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	event := CreateWorkflowDispatchEventRequest{
@@ -313,6 +320,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 }
 
 func TestActionsService_EnableWorkflowByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/enable", func(w http.ResponseWriter, r *http.Request) {
@@ -347,6 +355,7 @@ func TestActionsService_EnableWorkflowByID(t *testing.T) {
 }
 
 func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/enable", func(w http.ResponseWriter, r *http.Request) {
@@ -381,6 +390,7 @@ func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
 }
 
 func TestActionsService_DisableWorkflowByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/disable", func(w http.ResponseWriter, r *http.Request) {
@@ -415,6 +425,7 @@ func TestActionsService_DisableWorkflowByID(t *testing.T) {
 }
 
 func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/disable", func(w http.ResponseWriter, r *http.Request) {
@@ -449,6 +460,7 @@ func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
 }
 
 func TestWorkflow_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Workflow{}, "{}")
 
 	u := &Workflow{
@@ -481,6 +493,7 @@ func TestWorkflow_Marshal(t *testing.T) {
 }
 
 func TestWorkflows_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Workflows{}, "{}")
 
 	u := &Workflows{
@@ -521,6 +534,7 @@ func TestWorkflows_Marshal(t *testing.T) {
 }
 
 func TestWorkflowBill_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowBill{}, "{}")
 
 	u := &WorkflowBill{
@@ -535,6 +549,7 @@ func TestWorkflowBill_Marshal(t *testing.T) {
 }
 
 func TestWorkflowBillMap_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowBillMap{}, "{}")
 
 	u := &WorkflowBillMap{
@@ -565,6 +580,7 @@ func TestWorkflowBillMap_Marshal(t *testing.T) {
 }
 
 func TestWorkflowUsage_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowUsage{}, "{}")
 
 	u := &WorkflowUsage{
@@ -599,6 +615,7 @@ func TestWorkflowUsage_Marshal(t *testing.T) {
 }
 
 func TestCreateWorkflowDispatchEventRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateWorkflowDispatchEventRequest{}, "{}")
 
 	inputs := make(map[string]interface{}, 0)

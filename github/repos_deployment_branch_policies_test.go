@@ -14,6 +14,7 @@ import (
 )
 
 func TestRepositoriesService_ListDeploymentBranchPolicies(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies", func(w http.ResponseWriter, r *http.Request) {
@@ -48,6 +49,7 @@ func TestRepositoriesService_ListDeploymentBranchPolicies(t *testing.T) {
 }
 
 func TestRepositoriesService_GetDeploymentBranchPolicy(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies/1", func(w http.ResponseWriter, r *http.Request) {
@@ -76,6 +78,7 @@ func TestRepositoriesService_GetDeploymentBranchPolicy(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateDeploymentBranchPolicy(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies", func(w http.ResponseWriter, r *http.Request) {
@@ -105,6 +108,7 @@ func TestRepositoriesService_CreateDeploymentBranchPolicy(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateDeploymentBranchPolicy(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies/1", func(w http.ResponseWriter, r *http.Request) {
@@ -134,6 +138,7 @@ func TestRepositoriesService_UpdateDeploymentBranchPolicy(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteDeploymentBranchPolicy(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies/1", func(w http.ResponseWriter, r *http.Request) {

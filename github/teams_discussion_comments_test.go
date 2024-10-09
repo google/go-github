@@ -35,6 +35,7 @@ func tdcEndpointBySlug(org, slug, discussionNumber, commentNumber string) string
 }
 
 func TestTeamsService_ListComments(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	handleFunc := func(w http.ResponseWriter, r *http.Request) {
@@ -175,6 +176,7 @@ func TestTeamsService_ListComments(t *testing.T) {
 }
 
 func TestTeamsService_GetComment(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
@@ -238,6 +240,7 @@ func TestTeamsService_GetComment(t *testing.T) {
 }
 
 func TestTeamsService_CreateComment(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := DiscussionComment{Body: String("c")}
@@ -310,6 +313,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 }
 
 func TestTeamsService_EditComment(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := DiscussionComment{Body: String("e")}
@@ -381,6 +385,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 }
 
 func TestTeamsService_DeleteComment(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
@@ -428,6 +433,7 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 }
 
 func TestDiscussionComment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DiscussionComment{}, "{}")
 
 	u := &DiscussionComment{

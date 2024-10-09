@@ -15,6 +15,7 @@ import (
 )
 
 func TestAppsService_GetHookConfig(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/hook/config", func(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +55,7 @@ func TestAppsService_GetHookConfig(t *testing.T) {
 }
 
 func TestAppsService_UpdateHookConfig(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &HookConfig{

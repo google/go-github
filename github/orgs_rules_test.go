@@ -15,6 +15,7 @@ import (
 )
 
 func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
@@ -70,6 +71,7 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
@@ -388,7 +390,9 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 		return resp, err
 	})
 }
+
 func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
@@ -722,7 +726,9 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 		return resp, err
 	})
 }
+
 func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
@@ -1032,6 +1038,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
@@ -1127,6 +1134,7 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
@@ -1214,7 +1222,9 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 		return resp, err
 	})
 }
+
 func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
@@ -1329,6 +1339,7 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 }
 
 func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
@@ -1436,7 +1447,9 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 		return resp, err
 	})
 }
+
 func TestOrganizationsService_DeleteOrganizationRuleset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {

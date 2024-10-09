@@ -12,13 +12,13 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
 
 func TestTeamsService_ListTeams(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
@@ -55,6 +55,7 @@ func TestTeamsService_ListTeams(t *testing.T) {
 }
 
 func TestTeamsService_ListTeams_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -63,6 +64,7 @@ func TestTeamsService_ListTeams_invalidOrg(t *testing.T) {
 }
 
 func TestTeamsService_GetTeamByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
@@ -97,6 +99,7 @@ func TestTeamsService_GetTeamByID(t *testing.T) {
 }
 
 func TestTeamsService_GetTeamByID_notFound(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2", func(w http.ResponseWriter, r *http.Request) {
@@ -118,6 +121,7 @@ func TestTeamsService_GetTeamByID_notFound(t *testing.T) {
 }
 
 func TestTeamsService_GetTeamBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
@@ -152,6 +156,7 @@ func TestTeamsService_GetTeamBySlug(t *testing.T) {
 }
 
 func TestTeamsService_GetTeamBySlug_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -160,6 +165,7 @@ func TestTeamsService_GetTeamBySlug_invalidOrg(t *testing.T) {
 }
 
 func TestTeamsService_GetTeamBySlug_notFound(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
@@ -181,6 +187,7 @@ func TestTeamsService_GetTeamBySlug_notFound(t *testing.T) {
 }
 
 func TestTeamsService_CreateTeam(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := NewTeam{Name: "n", Privacy: String("closed"), RepoNames: []string{"r"}}
@@ -224,6 +231,7 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 }
 
 func TestTeamsService_CreateTeam_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -232,6 +240,7 @@ func TestTeamsService_CreateTeam_invalidOrg(t *testing.T) {
 }
 
 func TestTeamsService_EditTeamByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := NewTeam{Name: "n", Privacy: String("closed")}
@@ -275,9 +284,10 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 }
 
 func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", Privacy: String("closed")}
+	input := NewTeam{Name: "n", NotificationSetting: String("notifications_enabled"), Privacy: String("closed")}
 	var body string
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
@@ -308,12 +318,13 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 		t.Errorf("Teams.EditTeamByID returned %+v, want %+v", team, want)
 	}
 
-	if want := `{"name":"n","parent_team_id":null,"privacy":"closed"}` + "\n"; body != want {
+	if want := `{"name":"n","parent_team_id":null,"notification_setting":"notifications_enabled","privacy":"closed"}` + "\n"; body != want {
 		t.Errorf("Teams.EditTeamByID body = %+v, want %+v", body, want)
 	}
 }
 
 func TestTeamsService_EditTeamBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := NewTeam{Name: "n", Privacy: String("closed")}
@@ -357,9 +368,10 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 }
 
 func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", Privacy: String("closed")}
+	input := NewTeam{Name: "n", NotificationSetting: String("notifications_disabled"), Privacy: String("closed")}
 	var body string
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
@@ -390,12 +402,13 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 		t.Errorf("Teams.EditTeam returned %+v, want %+v", team, want)
 	}
 
-	if want := `{"name":"n","parent_team_id":null,"privacy":"closed"}` + "\n"; body != want {
+	if want := `{"name":"n","parent_team_id":null,"notification_setting":"notifications_disabled","privacy":"closed"}` + "\n"; body != want {
 		t.Errorf("Teams.EditTeam body = %+v, want %+v", body, want)
 	}
 }
 
 func TestTeamsService_DeleteTeamByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
@@ -420,6 +433,7 @@ func TestTeamsService_DeleteTeamByID(t *testing.T) {
 }
 
 func TestTeamsService_DeleteTeamBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
@@ -444,6 +458,7 @@ func TestTeamsService_DeleteTeamBySlug(t *testing.T) {
 }
 
 func TestTeamsService_ListChildTeamsByParentID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/2/teams", func(w http.ResponseWriter, r *http.Request) {
@@ -480,6 +495,7 @@ func TestTeamsService_ListChildTeamsByParentID(t *testing.T) {
 }
 
 func TestTeamsService_ListChildTeamsByParentSlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/teams", func(w http.ResponseWriter, r *http.Request) {
@@ -516,12 +532,12 @@ func TestTeamsService_ListChildTeamsByParentSlug(t *testing.T) {
 }
 
 func TestTeamsService_ListTeamReposByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/1/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		wantAcceptHeaders := []string{mediaTypeTopicsPreview}
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -554,12 +570,12 @@ func TestTeamsService_ListTeamReposByID(t *testing.T) {
 }
 
 func TestTeamsService_ListTeamReposBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/s/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		wantAcceptHeaders := []string{mediaTypeTopicsPreview}
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -592,12 +608,12 @@ func TestTeamsService_ListTeamReposBySlug(t *testing.T) {
 }
 
 func TestTeamsService_IsTeamRepoByID_true(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		wantAcceptHeaders := []string{mediaTypeOrgPermissionRepo}
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeOrgPermissionRepo)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -628,12 +644,12 @@ func TestTeamsService_IsTeamRepoByID_true(t *testing.T) {
 }
 
 func TestTeamsService_IsTeamRepoBySlug_true(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		wantAcceptHeaders := []string{mediaTypeOrgPermissionRepo}
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeOrgPermissionRepo)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -664,6 +680,7 @@ func TestTeamsService_IsTeamRepoBySlug_true(t *testing.T) {
 }
 
 func TestTeamsService_IsTeamRepoByID_false(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
@@ -685,6 +702,7 @@ func TestTeamsService_IsTeamRepoByID_false(t *testing.T) {
 }
 
 func TestTeamsService_IsTeamRepoBySlug_false(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -706,6 +724,7 @@ func TestTeamsService_IsTeamRepoBySlug_false(t *testing.T) {
 }
 
 func TestTeamsService_IsTeamRepoByID_error(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
@@ -727,6 +746,7 @@ func TestTeamsService_IsTeamRepoByID_error(t *testing.T) {
 }
 
 func TestTeamsService_IsTeamRepoBySlug_error(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
@@ -748,6 +768,7 @@ func TestTeamsService_IsTeamRepoBySlug_error(t *testing.T) {
 }
 
 func TestTeamsService_IsTeamRepoByID_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -756,6 +777,7 @@ func TestTeamsService_IsTeamRepoByID_invalidOwner(t *testing.T) {
 }
 
 func TestTeamsService_IsTeamRepoBySlug_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -764,6 +786,7 @@ func TestTeamsService_IsTeamRepoBySlug_invalidOwner(t *testing.T) {
 }
 
 func TestTeamsService_AddTeamRepoByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
@@ -798,6 +821,7 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 }
 
 func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
@@ -832,6 +856,7 @@ func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 }
 
 func TestTeamsService_AddTeamRepoByID_noAccess(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
@@ -847,6 +872,7 @@ func TestTeamsService_AddTeamRepoByID_noAccess(t *testing.T) {
 }
 
 func TestTeamsService_AddTeamRepoBySlug_noAccess(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -862,6 +888,7 @@ func TestTeamsService_AddTeamRepoBySlug_noAccess(t *testing.T) {
 }
 
 func TestTeamsService_AddTeamRepoByID_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -870,6 +897,7 @@ func TestTeamsService_AddTeamRepoByID_invalidOwner(t *testing.T) {
 }
 
 func TestTeamsService_AddTeamRepoBySlug_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -878,6 +906,7 @@ func TestTeamsService_AddTeamRepoBySlug_invalidOwner(t *testing.T) {
 }
 
 func TestTeamsService_RemoveTeamRepoByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
@@ -903,6 +932,7 @@ func TestTeamsService_RemoveTeamRepoByID(t *testing.T) {
 }
 
 func TestTeamsService_RemoveTeamRepoBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
@@ -928,6 +958,7 @@ func TestTeamsService_RemoveTeamRepoBySlug(t *testing.T) {
 }
 
 func TestTeamsService_RemoveTeamRepoByID_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -936,6 +967,7 @@ func TestTeamsService_RemoveTeamRepoByID_invalidOwner(t *testing.T) {
 }
 
 func TestTeamsService_RemoveTeamRepoBySlug_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -944,6 +976,7 @@ func TestTeamsService_RemoveTeamRepoBySlug_invalidOwner(t *testing.T) {
 }
 
 func TestTeamsService_ListUserTeams(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/teams", func(w http.ResponseWriter, r *http.Request) {
@@ -975,12 +1008,12 @@ func TestTeamsService_ListUserTeams(t *testing.T) {
 }
 
 func TestTeamsService_ListProjectsByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/organizations/1/team/1/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -1011,12 +1044,12 @@ func TestTeamsService_ListProjectsByID(t *testing.T) {
 }
 
 func TestTeamsService_ListProjectsBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/orgs/o/teams/s/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -1047,12 +1080,12 @@ func TestTeamsService_ListProjectsBySlug(t *testing.T) {
 }
 
 func TestTeamsService_ReviewProjectsByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/organizations/1/team/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -1083,12 +1116,12 @@ func TestTeamsService_ReviewProjectsByID(t *testing.T) {
 }
 
 func TestTeamsService_ReviewProjectsBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -1119,16 +1152,16 @@ func TestTeamsService_ReviewProjectsBySlug(t *testing.T) {
 }
 
 func TestTeamsService_AddTeamProjectByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	opt := &TeamProjectOptions{
 		Permission: String("admin"),
 	}
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/organizations/1/team/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &TeamProjectOptions{}
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
@@ -1157,16 +1190,16 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 }
 
 func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	opt := &TeamProjectOptions{
 		Permission: String("admin"),
 	}
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &TeamProjectOptions{}
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
@@ -1195,12 +1228,12 @@ func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 }
 
 func TestTeamsService_RemoveTeamProjectByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/organizations/1/team/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -1222,12 +1255,12 @@ func TestTeamsService_RemoveTeamProjectByID(t *testing.T) {
 }
 
 func TestTeamsService_RemoveTeamProjectBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -1249,6 +1282,7 @@ func TestTeamsService_RemoveTeamProjectBySlug(t *testing.T) {
 }
 
 func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/team-sync/groups", func(w http.ResponseWriter, r *http.Request) {
@@ -1299,6 +1333,7 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 }
 
 func TestTeamsService_ListIDPGroupsForTeamByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
@@ -1341,6 +1376,7 @@ func TestTeamsService_ListIDPGroupsForTeamByID(t *testing.T) {
 }
 
 func TestTeamsService_ListIDPGroupsForTeamBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/slug/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
@@ -1383,6 +1419,7 @@ func TestTeamsService_ListIDPGroupsForTeamBySlug(t *testing.T) {
 }
 
 func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
@@ -1435,6 +1472,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID(t *testing.T) {
 }
 
 func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/slug/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
@@ -1486,6 +1524,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug(t *testing.T) {
 	})
 }
 func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID_empty(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1/team/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
@@ -1512,6 +1551,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID_empty(t *testing.T) 
 }
 
 func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug_empty(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/slug/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
@@ -1538,6 +1578,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug_empty(t *testing.T
 }
 
 func TestNewTeam_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &NewTeam{}, "{}")
 
 	u := &NewTeam{
@@ -1568,6 +1609,7 @@ func TestNewTeam_Marshal(t *testing.T) {
 }
 
 func TestTeams_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Team{}, "{}")
 
 	u := &Team{
@@ -1654,6 +1696,7 @@ func TestTeams_Marshal(t *testing.T) {
 }
 
 func TestInvitation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Invitation{}, "{}")
 
 	u := &Invitation{
@@ -1682,6 +1725,7 @@ func TestInvitation_Marshal(t *testing.T) {
 }
 
 func TestIDPGroup_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &IDPGroup{}, "{}")
 
 	u := &IDPGroup{
@@ -1700,6 +1744,7 @@ func TestIDPGroup_Marshal(t *testing.T) {
 }
 
 func TestTeamsService_GetExternalGroup(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/external-group/123", func(w http.ResponseWriter, r *http.Request) {
@@ -1790,6 +1835,7 @@ func TestTeamsService_GetExternalGroup(t *testing.T) {
 }
 
 func TestTeamsService_GetExternalGroup_notFound(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/external-group/123", func(w http.ResponseWriter, r *http.Request) {
@@ -1811,6 +1857,7 @@ func TestTeamsService_GetExternalGroup_notFound(t *testing.T) {
 }
 
 func TestTeamsService_ListExternalGroups(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/external-groups", func(w http.ResponseWriter, r *http.Request) {
@@ -1864,6 +1911,7 @@ func TestTeamsService_ListExternalGroups(t *testing.T) {
 }
 
 func TestTeamsService_ListExternalGroups_notFound(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/external-groups", func(w http.ResponseWriter, r *http.Request) {
@@ -1885,6 +1933,7 @@ func TestTeamsService_ListExternalGroups_notFound(t *testing.T) {
 }
 
 func TestTeamsService_ListExternalGroupsForTeamBySlug(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/t/external-groups", func(w http.ResponseWriter, r *http.Request) {
@@ -1935,6 +1984,7 @@ func TestTeamsService_ListExternalGroupsForTeamBySlug(t *testing.T) {
 }
 
 func TestTeamsService_ListExternalGroupsForTeamBySlug_notFound(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/t/external-groups", func(w http.ResponseWriter, r *http.Request) {
@@ -1956,6 +2006,7 @@ func TestTeamsService_ListExternalGroupsForTeamBySlug_notFound(t *testing.T) {
 }
 
 func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/t/external-groups", func(w http.ResponseWriter, r *http.Request) {
@@ -2049,6 +2100,7 @@ func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
 }
 
 func TestTeamsService_UpdateConnectedExternalGroup_notFound(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/t/external-groups", func(w http.ResponseWriter, r *http.Request) {
@@ -2073,6 +2125,7 @@ func TestTeamsService_UpdateConnectedExternalGroup_notFound(t *testing.T) {
 }
 
 func TestTeamsService_RemoveConnectedExternalGroup(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/t/external-groups", func(w http.ResponseWriter, r *http.Request) {
@@ -2098,6 +2151,7 @@ func TestTeamsService_RemoveConnectedExternalGroup(t *testing.T) {
 }
 
 func TestTeamsService_RemoveConnectedExternalGroup_notFound(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/teams/t/external-groups", func(w http.ResponseWriter, r *http.Request) {
@@ -2116,6 +2170,7 @@ func TestTeamsService_RemoveConnectedExternalGroup_notFound(t *testing.T) {
 }
 
 func TestIDPGroupList_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &IDPGroupList{}, "{}")
 
 	u := &IDPGroupList{
@@ -2152,6 +2207,7 @@ func TestIDPGroupList_Marshal(t *testing.T) {
 }
 
 func TestExternalGroupMember_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ExternalGroupMember{}, "{}")
 
 	u := &ExternalGroupMember{
@@ -2172,6 +2228,7 @@ func TestExternalGroupMember_Marshal(t *testing.T) {
 }
 
 func TestExternalGroup_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ExternalGroup{}, "{}")
 
 	u := &ExternalGroup{
@@ -2226,6 +2283,7 @@ func TestExternalGroup_Marshal(t *testing.T) {
 }
 
 func TestExternalGroupTeam_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ExternalGroupTeam{}, "{}")
 
 	u := &ExternalGroupTeam{
@@ -2242,6 +2300,7 @@ func TestExternalGroupTeam_Marshal(t *testing.T) {
 }
 
 func TestListExternalGroupsOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ListExternalGroupsOptions{}, "{}")
 
 	u := &ListExternalGroupsOptions{
@@ -2262,6 +2321,7 @@ func TestListExternalGroupsOptions_Marshal(t *testing.T) {
 }
 
 func TestTeamAddTeamRepoOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TeamAddTeamRepoOptions{}, "{}")
 
 	u := &TeamAddTeamRepoOptions{

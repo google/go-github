@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListStatuses(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/r/statuses", func(w http.ResponseWriter, r *http.Request) {
@@ -52,6 +53,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 }
 
 func TestRepositoriesService_ListStatuses_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -60,6 +62,7 @@ func TestRepositoriesService_ListStatuses_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateStatus(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &RepoStatus{State: String("s"), TargetURL: String("t"), Description: String("d")}
@@ -102,6 +105,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -110,6 +114,7 @@ func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/r/status", func(w http.ResponseWriter, r *http.Request) {
@@ -146,6 +151,7 @@ func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
 }
 
 func TestRepoStatus_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepoStatus{}, "{}")
 
 	u := &RepoStatus{
@@ -182,6 +188,7 @@ func TestRepoStatus_Marshal(t *testing.T) {
 }
 
 func TestCombinedStatus_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CombinedStatus{}, "{}")
 
 	u := &CombinedStatus{
