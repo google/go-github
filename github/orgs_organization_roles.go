@@ -86,7 +86,7 @@ func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleI
 // CreateCustomOrgRole creates a custom role in this organization.
 // In order to create custom roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#create-a-custom-organization-role
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#create-a-custom-organization-role
 //
 //meta:operation POST /orgs/{org}/organization-roles
 func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org string, opts *CreateOrUpdateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
@@ -109,7 +109,7 @@ func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org stri
 // UpdateCustomOrgRole updates a custom role in this organization.
 // In order to update custom roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#update-a-custom-organization-role
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#update-a-custom-organization-role
 //
 //meta:operation PATCH /orgs/{org}/organization-roles/{role_id}
 func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, opts *CreateOrUpdateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
@@ -132,7 +132,7 @@ func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org stri
 // DeleteCustomOrgRole deletes an existing custom role in this organization.
 // In order to delete custom roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#delete-a-custom-organization-role
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#delete-a-custom-organization-role
 //
 //meta:operation DELETE /orgs/{org}/organization-roles/{role_id}
 func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org string, roleID int64) (*Response, error) {

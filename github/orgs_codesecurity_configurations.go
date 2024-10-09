@@ -55,7 +55,7 @@ type RepositoryCodeSecurityConfiguration struct {
 
 // GetCodeSecurityConfigurations gets code security configurations for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#get-code-security-configurations-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-code-security-configurations-for-an-organization
 //
 //meta:operation GET /orgs/{org}/code-security/configurations
 func (s *OrganizationsService) GetCodeSecurityConfigurations(ctx context.Context, org string) ([]*CodeSecurityConfiguration, *Response, error) {
@@ -76,7 +76,7 @@ func (s *OrganizationsService) GetCodeSecurityConfigurations(ctx context.Context
 
 // CreateCodeSecurityConfiguration creates a code security configuration for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#create-a-code-security-configuration
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations#create-a-code-security-configuration
 //
 //meta:operation POST /orgs/{org}/code-security/configurations
 func (s *OrganizationsService) CreateCodeSecurityConfiguration(ctx context.Context, org string, c *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
@@ -97,7 +97,7 @@ func (s *OrganizationsService) CreateCodeSecurityConfiguration(ctx context.Conte
 
 // GetDefaultCodeSecurityConfigurations gets default code security configurations for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#get-default-code-security-configurations
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-default-code-security-configurations
 //
 //meta:operation GET /orgs/{org}/code-security/configurations/defaults
 func (s *OrganizationsService) GetDefaultCodeSecurityConfigurations(ctx context.Context, org string) ([]*CodeSecurityConfiguration, *Response, error) {
@@ -118,9 +118,9 @@ func (s *OrganizationsService) GetDefaultCodeSecurityConfigurations(ctx context.
 
 // DetachCodeSecurityConfigurationsFromRepositories detaches code security configuration from an organization's repositories.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#detach-configurations-from-repositories
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations#detach-configurations-from-repositories
 //
-//meta:operation POST /orgs/{org}/code-security/configurations/detach
+//meta:operation DELETE /orgs/{org}/code-security/configurations/detach
 func (s *OrganizationsService) DetachCodeSecurityConfigurationsFromRepositories(ctx context.Context, org string, repoIDs []int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/detach", org)
 	type selectedRepoIDs struct {
@@ -139,7 +139,7 @@ func (s *OrganizationsService) DetachCodeSecurityConfigurationsFromRepositories(
 
 // GetCodeSecurityConfiguration gets a code security configuration available in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#get-a-code-security-configuration
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-a-code-security-configuration
 //
 //meta:operation GET /orgs/{org}/code-security/configurations/{configuration_id}
 func (s *OrganizationsService) GetCodeSecurityConfiguration(ctx context.Context, org string, id int64) (*CodeSecurityConfiguration, *Response, error) {
@@ -160,7 +160,7 @@ func (s *OrganizationsService) GetCodeSecurityConfiguration(ctx context.Context,
 
 // UpdateCodeSecurityConfiguration updates a code security configuration for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#update-a-code-security-configuration
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations#update-a-code-security-configuration
 //
 //meta:operation PATCH /orgs/{org}/code-security/configurations/{configuration_id}
 func (s *OrganizationsService) UpdateCodeSecurityConfiguration(ctx context.Context, org string, id int64, c *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
@@ -181,7 +181,7 @@ func (s *OrganizationsService) UpdateCodeSecurityConfiguration(ctx context.Conte
 
 // DeleteCodeSecurityConfiguration deletes a code security configuration for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#delete-a-code-security-configuration
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations#delete-a-code-security-configuration
 //
 //meta:operation DELETE /orgs/{org}/code-security/configurations/{configuration_id}
 func (s *OrganizationsService) DeleteCodeSecurityConfiguration(ctx context.Context, org string, id int64) (*Response, error) {
@@ -200,7 +200,7 @@ func (s *OrganizationsService) DeleteCodeSecurityConfiguration(ctx context.Conte
 
 // AttachCodeSecurityConfigurationsToRepositories attaches code security configurations to repositories for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#attach-a-configuration-to-repositories
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations#attach-a-configuration-to-repositories
 //
 //meta:operation POST /orgs/{org}/code-security/configurations/{configuration_id}/attach
 func (s *OrganizationsService) AttachCodeSecurityConfigurationsToRepositories(ctx context.Context, org string, id int64, scope string, repoIDs []int64) (*Response, error) {
@@ -222,7 +222,7 @@ func (s *OrganizationsService) AttachCodeSecurityConfigurationsToRepositories(ct
 
 // SetDefaultCodeSecurityConfiguration sets a code security configuration as the default for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#set-a-code-security-configuration-as-a-default-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations#set-a-code-security-configuration-as-a-default-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/code-security/configurations/{configuration_id}/defaults
 func (s *OrganizationsService) SetDefaultCodeSecurityConfiguration(ctx context.Context, org string, id int64, newReposParam string) (*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
@@ -244,7 +244,7 @@ func (s *OrganizationsService) SetDefaultCodeSecurityConfiguration(ctx context.C
 
 // GetRepositoriesForCodeSecurityConfiguration gets repositories associated with a code security configuration.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#get-repositories-associated-with-a-code-security-configuration
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-repositories-associated-with-a-code-security-configuration
 //
 //meta:operation GET /orgs/{org}/code-security/configurations/{configuration_id}/repositories
 func (s *OrganizationsService) GetRepositoriesForCodeSecurityConfiguration(ctx context.Context, org string, id int64) ([]*Repository, *Response, error) {
@@ -265,7 +265,7 @@ func (s *OrganizationsService) GetRepositoriesForCodeSecurityConfiguration(ctx c
 
 // GetCodeSecurityConfigurationForRepository gets code security configuration that manages a repository's code security settings.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#get-the-code-security-configuration-associated-with-a-repository
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-the-code-security-configuration-associated-with-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/code-security-configuration
 func (s *OrganizationsService) GetCodeSecurityConfigurationForRepository(ctx context.Context, org, repo string) (*RepositoryCodeSecurityConfiguration, *Response, error) {
