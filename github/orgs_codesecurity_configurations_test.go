@@ -1,3 +1,8 @@
+// Copyright 2024 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package github
 
 import (
@@ -268,9 +273,7 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 				}
 		}`)
 		w.WriteHeader(http.StatusOK)
-
 	})
-
 	got, resp, err := client.Organizations.SetDefaultCodeSecurityConfiguration(context.Background(), "o", 1, "all")
 	if err != nil {
 		t.Errorf("Organizations.SetDefaultCodeSecurityConfiguration returned error: %v", err)

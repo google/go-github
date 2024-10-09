@@ -1,3 +1,8 @@
+// Copyright 2024 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package github
 
 import (
@@ -8,7 +13,7 @@ import (
 
 // DependencyGraphAutosubmitActionOptions represents the options for the DependencyGraphAutosubmitAction.
 type DependencyGraphAutosubmitActionOptions struct {
-	LabeledRunners bool `json:"labeled_runners,omitempty"`
+	LabeledRunners *bool `json:"labeled_runners,omitempty"`
 }
 
 // CodeSecurityConfiguration represents a code security configuration.
@@ -111,7 +116,7 @@ func (s *OrganizationsService) GetDefaultCodeSecurityConfigurations(ctx context.
 	return configurations, resp, nil
 }
 
-// DetachCodeSecurityConfigurationsToRepositories detaches code security configuration from an organization's repositories.
+// DetachCodeSecurityConfigurationsFromRepositories detaches code security configuration from an organization's repositories.
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#detach-configurations-from-repositories
 //
@@ -263,7 +268,7 @@ func (s *OrganizationsService) GetRepositoriesForCodeSecurityConfiguration(ctx c
 // GitHub API docs: https://docs.github.com/en/rest/code-security/configurations#get-the-code-security-configuration-associated-with-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/code-security-configuration
-func (s *OrganizationsService) GetCodeSecurityConfigurationForRepository(ctx context.Context, org string, repo string) (*RepositoryCodeSecurityConfiguration, *Response, error) {
+func (s *OrganizationsService) GetCodeSecurityConfigurationForRepository(ctx context.Context, org, repo string) (*RepositoryCodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-security-configuration", org, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
