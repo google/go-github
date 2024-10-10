@@ -898,6 +898,7 @@ func TestCopilotService_GetSeatDetails(t *testing.T) {
 }
 
 func TestCopilotService_GetOrganisationUsage(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/usage", func(w http.ResponseWriter, r *http.Request) {

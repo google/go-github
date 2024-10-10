@@ -64,13 +64,15 @@ type SeatCancellations struct {
 	SeatsCancelled int `json:"seats_cancelled"`
 }
 
+// CopilotUsageSummaryListOptions represents the optional parameters to the CopilotService.GetOrganizationUsage method.
 type CopilotUsageSummaryListOptions struct {
-	Since time.Time `url:"since,omitempty"`
-	Until time.Time `url:"until,omitempty"`
+	Since *time.Time `url:"since,omitempty"`
+	Until *time.Time `url:"until,omitempty"`
 
 	ListOptions
 }
 
+// CopilotUsageBreakdown represents the breakdown of Copilot usage for a specific language and editor.
 type CopilotUsageBreakdown struct {
 	Language         string `json:"language"`
 	Editor           string `json:"editor"`
@@ -81,6 +83,7 @@ type CopilotUsageBreakdown struct {
 	ActiveUsers      int    `json:"active_users"`
 }
 
+// CopilotUsageSummary represents the daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE across an organization.
 type CopilotUsageSummary struct {
 	Day                   string                   `json:"day"`
 	TotalSuggestionsCount int                      `json:"total_suggestions_count"`
@@ -345,7 +348,7 @@ func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (
 	return seatDetails, resp, nil
 }
 
-// GetOrganizationUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE across an organization
+// GetOrganizationUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE across an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-organization-members
 //
