@@ -30,7 +30,6 @@ operations:
     documentation_url: https://gist.github.com/jonmagic/5282384165e0f86ef105#import-status-request
   - name: GET /repositories/{repository_id}
   - name: GET /repositories/{repository_id}/installation
-  - name: GET /user/{account_id}
 operation_overrides:
   - name: GET /meta
     documentation_url: https://docs.github.com/rest/meta/meta#get-github-meta-information

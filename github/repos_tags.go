@@ -22,7 +22,8 @@ type tagProtectionRequest struct {
 	Pattern string `json:"pattern"`
 }
 
-// ListTagProtection lists tag protection of the specified repository.
+// Deprecated: ListTagProtection lists tag protection of the specified repository.
+// Deprecation notice: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules#get-all-repository-rulesets
 //
 // GitHub API docs: https://docs.github.com/rest/repos/tags#deprecated---list-tag-protection-states-for-a-repository
 //
@@ -44,7 +45,8 @@ func (s *RepositoriesService) ListTagProtection(ctx context.Context, owner, repo
 	return tagProtections, resp, nil
 }
 
-// CreateTagProtection creates the tag protection of the specified repository.
+// Deprecated: CreateTagProtection creates the tag protection of the specified repository.
+// Deprecation notice: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules#create-a-repository-ruleset
 //
 // GitHub API docs: https://docs.github.com/rest/repos/tags#deprecated---create-a-tag-protection-state-for-a-repository
 //
@@ -66,7 +68,8 @@ func (s *RepositoriesService) CreateTagProtection(ctx context.Context, owner, re
 	return tagProtection, resp, nil
 }
 
-// DeleteTagProtection deletes a tag protection from the specified repository.
+// Deprecated: DeleteTagProtection deletes a tag protection from the specified repository.
+// Deprecation notice: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules#delete-a-repository-ruleset
 //
 // GitHub API docs: https://docs.github.com/rest/repos/tags#deprecated---delete-a-tag-protection-state-for-a-repository
 //
