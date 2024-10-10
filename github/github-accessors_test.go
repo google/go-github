@@ -26498,6 +26498,509 @@ func TestRepositoryRule_GetParameters(tt *testing.T) {
 	r.GetParameters()
 }
 
+func TestRepositoryRuleset_GetConditions(tt *testing.T) {
+	var zeroValue json.RawMessage
+	r := &RepositoryRuleset{Conditions: &zeroValue}
+	r.GetConditions()
+	r = &RepositoryRuleset{}
+	r.GetConditions()
+	r = nil
+	r.GetConditions()
+}
+
+func TestRepositoryRuleset_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	r := &RepositoryRuleset{CreatedAt: &zeroValue}
+	r.GetCreatedAt()
+	r = &RepositoryRuleset{}
+	r.GetCreatedAt()
+	r = nil
+	r.GetCreatedAt()
+}
+
+func TestRepositoryRuleset_GetCurrentUserCanBypass(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryRuleset{CurrentUserCanBypass: &zeroValue}
+	r.GetCurrentUserCanBypass()
+	r = &RepositoryRuleset{}
+	r.GetCurrentUserCanBypass()
+	r = nil
+	r.GetCurrentUserCanBypass()
+}
+
+func TestRepositoryRuleset_GetLinks(tt *testing.T) {
+	r := &RepositoryRuleset{}
+	r.GetLinks()
+	r = nil
+	r.GetLinks()
+}
+
+func TestRepositoryRuleset_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryRuleset{NodeID: &zeroValue}
+	r.GetNodeID()
+	r = &RepositoryRuleset{}
+	r.GetNodeID()
+	r = nil
+	r.GetNodeID()
+}
+
+func TestRepositoryRuleset_GetSourceType(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryRuleset{SourceType: &zeroValue}
+	r.GetSourceType()
+	r = &RepositoryRuleset{}
+	r.GetSourceType()
+	r = nil
+	r.GetSourceType()
+}
+
+func TestRepositoryRuleset_GetTarget(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryRuleset{Target: &zeroValue}
+	r.GetTarget()
+	r = &RepositoryRuleset{}
+	r.GetTarget()
+	r = nil
+	r.GetTarget()
+}
+
+func TestRepositoryRuleset_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	r := &RepositoryRuleset{UpdatedAt: &zeroValue}
+	r.GetUpdatedAt()
+	r = &RepositoryRuleset{}
+	r.GetUpdatedAt()
+	r = nil
+	r.GetUpdatedAt()
+}
+
+func TestRepositoryRulesetCodeScanningRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetCodeScanningRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRulesetEditedChanges_GetConditions(tt *testing.T) {
+	r := &RepositoryRulesetEditedChanges{}
+	r.GetConditions()
+	r = nil
+	r.GetConditions()
+}
+
+func TestRepositoryRulesetEditedChanges_GetEnforcement(tt *testing.T) {
+	r := &RepositoryRulesetEditedChanges{}
+	r.GetEnforcement()
+	r = nil
+	r.GetEnforcement()
+}
+
+func TestRepositoryRulesetEditedChanges_GetName(tt *testing.T) {
+	r := &RepositoryRulesetEditedChanges{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRepositoryRulesetEditedChanges_GetRules(tt *testing.T) {
+	r := &RepositoryRulesetEditedChanges{}
+	r.GetRules()
+	r = nil
+	r.GetRules()
+}
+
+func TestRepositoryRulesetEditedRuleChanges_GetConfiguration(tt *testing.T) {
+	r := &RepositoryRulesetEditedRuleChanges{}
+	r.GetConfiguration()
+	r = nil
+	r.GetConfiguration()
+}
+
+func TestRepositoryRulesetEditedRuleChanges_GetPattern(tt *testing.T) {
+	r := &RepositoryRulesetEditedRuleChanges{}
+	r.GetPattern()
+	r = nil
+	r.GetPattern()
+}
+
+func TestRepositoryRulesetEditedRuleChanges_GetRuleType(tt *testing.T) {
+	r := &RepositoryRulesetEditedRuleChanges{}
+	r.GetRuleType()
+	r = nil
+	r.GetRuleType()
+}
+
+func TestRepositoryRulesetEditedSource_GetFrom(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryRulesetEditedSource{From: &zeroValue}
+	r.GetFrom()
+	r = &RepositoryRulesetEditedSource{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
+}
+
+func TestRepositoryRulesetEditedUpdatedConditions_GetChanges(tt *testing.T) {
+	r := &RepositoryRulesetEditedUpdatedConditions{}
+	r.GetChanges()
+	r = nil
+	r.GetChanges()
+}
+
+func TestRepositoryRulesetEditedUpdatedConditions_GetCondition(tt *testing.T) {
+	r := &RepositoryRulesetEditedUpdatedConditions{}
+	r.GetCondition()
+	r = nil
+	r.GetCondition()
+}
+
+func TestRepositoryRulesetEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryRulesetEvent{Action: &zeroValue}
+	r.GetAction()
+	r = &RepositoryRulesetEvent{}
+	r.GetAction()
+	r = nil
+	r.GetAction()
+}
+
+func TestRepositoryRulesetEvent_GetChanges(tt *testing.T) {
+	r := &RepositoryRulesetEvent{}
+	r.GetChanges()
+	r = nil
+	r.GetChanges()
+}
+
+func TestRepositoryRulesetEvent_GetEnterprise(tt *testing.T) {
+	r := &RepositoryRulesetEvent{}
+	r.GetEnterprise()
+	r = nil
+	r.GetEnterprise()
+}
+
+func TestRepositoryRulesetEvent_GetInstallation(tt *testing.T) {
+	r := &RepositoryRulesetEvent{}
+	r.GetInstallation()
+	r = nil
+	r.GetInstallation()
+}
+
+func TestRepositoryRulesetEvent_GetOrganization(tt *testing.T) {
+	r := &RepositoryRulesetEvent{}
+	r.GetOrganization()
+	r = nil
+	r.GetOrganization()
+}
+
+func TestRepositoryRulesetEvent_GetRepository(tt *testing.T) {
+	r := &RepositoryRulesetEvent{}
+	r.GetRepository()
+	r = nil
+	r.GetRepository()
+}
+
+func TestRepositoryRulesetEvent_GetRepositoryRuleset(tt *testing.T) {
+	r := &RepositoryRulesetEvent{}
+	r.GetRepositoryRuleset()
+	r = nil
+	r.GetRepositoryRuleset()
+}
+
+func TestRepositoryRulesetEvent_GetSender(tt *testing.T) {
+	r := &RepositoryRulesetEvent{}
+	r.GetSender()
+	r = nil
+	r.GetSender()
+}
+
+func TestRepositoryRulesetFileExtensionRestrictionRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetFileExtensionRestrictionRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRulesetFilePathRestrictionRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetFilePathRestrictionRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRulesetLink_GetHTML(tt *testing.T) {
+	r := &RepositoryRulesetLink{}
+	r.GetHTML()
+	r = nil
+	r.GetHTML()
+}
+
+func TestRepositoryRulesetLink_GetSelf(tt *testing.T) {
+	r := &RepositoryRulesetLink{}
+	r.GetSelf()
+	r = nil
+	r.GetSelf()
+}
+
+func TestRepositoryRulesetMaxFilePathLengthRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetMaxFilePathLengthRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRulesetMaxFileSizeRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetMaxFileSizeRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRulesetMergeQueueRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetMergeQueueRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRulesetPatternRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetPatternRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRulesetPullRequestRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetPullRequestRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRulesetRefCondition_GetRefName(tt *testing.T) {
+	r := &RepositoryRulesetRefCondition{}
+	r.GetRefName()
+	r = nil
+	r.GetRefName()
+}
+
+func TestRepositoryRulesetRequireDeploymentsRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetRequireDeploymentsRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRulesetRequiredStatusChecksRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetRequiredStatusChecksRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRulesetRule_GetBranchNamePattern(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetBranchNamePattern()
+	r = nil
+	r.GetBranchNamePattern()
+}
+
+func TestRepositoryRulesetRule_GetCodeScanning(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetCodeScanning()
+	r = nil
+	r.GetCodeScanning()
+}
+
+func TestRepositoryRulesetRule_GetCommitAuthorEmailPattern(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetCommitAuthorEmailPattern()
+	r = nil
+	r.GetCommitAuthorEmailPattern()
+}
+
+func TestRepositoryRulesetRule_GetCommitMessagePattern(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetCommitMessagePattern()
+	r = nil
+	r.GetCommitMessagePattern()
+}
+
+func TestRepositoryRulesetRule_GetCommitterEmailPattern(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetCommitterEmailPattern()
+	r = nil
+	r.GetCommitterEmailPattern()
+}
+
+func TestRepositoryRulesetRule_GetCreation(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetCreation()
+	r = nil
+	r.GetCreation()
+}
+
+func TestRepositoryRulesetRule_GetDeletion(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetDeletion()
+	r = nil
+	r.GetDeletion()
+}
+
+func TestRepositoryRulesetRule_GetFileExtensionRestriction(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetFileExtensionRestriction()
+	r = nil
+	r.GetFileExtensionRestriction()
+}
+
+func TestRepositoryRulesetRule_GetFilePathRestriction(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetFilePathRestriction()
+	r = nil
+	r.GetFilePathRestriction()
+}
+
+func TestRepositoryRulesetRule_GetMaxFilePathLength(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetMaxFilePathLength()
+	r = nil
+	r.GetMaxFilePathLength()
+}
+
+func TestRepositoryRulesetRule_GetMaxFileSize(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetMaxFileSize()
+	r = nil
+	r.GetMaxFileSize()
+}
+
+func TestRepositoryRulesetRule_GetMergeQueue(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetMergeQueue()
+	r = nil
+	r.GetMergeQueue()
+}
+
+func TestRepositoryRulesetRule_GetNonFastForward(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetNonFastForward()
+	r = nil
+	r.GetNonFastForward()
+}
+
+func TestRepositoryRulesetRule_GetPullRequest(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetPullRequest()
+	r = nil
+	r.GetPullRequest()
+}
+
+func TestRepositoryRulesetRule_GetRequireDeployments(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetRequireDeployments()
+	r = nil
+	r.GetRequireDeployments()
+}
+
+func TestRepositoryRulesetRule_GetRequiredSignatures(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetRequiredSignatures()
+	r = nil
+	r.GetRequiredSignatures()
+}
+
+func TestRepositoryRulesetRule_GetRequiredStatusChecks(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetRequiredStatusChecks()
+	r = nil
+	r.GetRequiredStatusChecks()
+}
+
+func TestRepositoryRulesetRule_GetRequireLinearHistory(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetRequireLinearHistory()
+	r = nil
+	r.GetRequireLinearHistory()
+}
+
+func TestRepositoryRulesetRule_GetTagNamePattern(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetTagNamePattern()
+	r = nil
+	r.GetTagNamePattern()
+}
+
+func TestRepositoryRulesetRule_GetUpdate(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetUpdate()
+	r = nil
+	r.GetUpdate()
+}
+
+func TestRepositoryRulesetRule_GetWorkflows(tt *testing.T) {
+	r := &RepositoryRulesetRule{}
+	r.GetWorkflows()
+	r = nil
+	r.GetWorkflows()
+}
+
+func TestRepositoryRulesetUpdatedConditionsEdited_GetConditionType(tt *testing.T) {
+	r := &RepositoryRulesetUpdatedConditionsEdited{}
+	r.GetConditionType()
+	r = nil
+	r.GetConditionType()
+}
+
+func TestRepositoryRulesetUpdatedConditionsEdited_GetExclude(tt *testing.T) {
+	r := &RepositoryRulesetUpdatedConditionsEdited{}
+	r.GetExclude()
+	r = nil
+	r.GetExclude()
+}
+
+func TestRepositoryRulesetUpdatedConditionsEdited_GetInclude(tt *testing.T) {
+	r := &RepositoryRulesetUpdatedConditionsEdited{}
+	r.GetInclude()
+	r = nil
+	r.GetInclude()
+}
+
+func TestRepositoryRulesetUpdatedConditionsEdited_GetTarget(tt *testing.T) {
+	r := &RepositoryRulesetUpdatedConditionsEdited{}
+	r.GetTarget()
+	r = nil
+	r.GetTarget()
+}
+
+func TestRepositoryRulesetUpdatedRules_GetChanges(tt *testing.T) {
+	r := &RepositoryRulesetUpdatedRules{}
+	r.GetChanges()
+	r = nil
+	r.GetChanges()
+}
+
+func TestRepositoryRulesetUpdatedRules_GetRule(tt *testing.T) {
+	r := &RepositoryRulesetUpdatedRules{}
+	r.GetRule()
+	r = nil
+	r.GetRule()
+}
+
+func TestRepositoryRulesetUpdateRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetUpdateRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRulesetWorkflowsRule_GetParameters(tt *testing.T) {
+	r := &RepositoryRulesetWorkflowsRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
 func TestRepositoryTag_GetCommit(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryTag{}
@@ -27022,6 +27525,16 @@ func TestRequiredStatusChecksRequest_GetStrict(tt *testing.T) {
 	r.GetStrict()
 	r = nil
 	r.GetStrict()
+}
+
+func TestRequiredStatusChecksRuleParameters_GetDoNotEnforceOnCreate(tt *testing.T) {
+	var zeroValue bool
+	r := &RequiredStatusChecksRuleParameters{DoNotEnforceOnCreate: &zeroValue}
+	r.GetDoNotEnforceOnCreate()
+	r = &RequiredStatusChecksRuleParameters{}
+	r.GetDoNotEnforceOnCreate()
+	r = nil
+	r.GetDoNotEnforceOnCreate()
 }
 
 func TestRequiredWorkflowSelectedRepos_GetTotalCount(tt *testing.T) {
