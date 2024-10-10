@@ -24,7 +24,7 @@ type tagProtectionRequest struct {
 
 // ListTagProtection lists tag protection of the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/tags#deprecated---list-tag-protection-states-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/tags#list-tag-protection-states-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/tags/protection
 func (s *RepositoriesService) ListTagProtection(ctx context.Context, owner, repo string) ([]*TagProtection, *Response, error) {
@@ -46,7 +46,7 @@ func (s *RepositoriesService) ListTagProtection(ctx context.Context, owner, repo
 
 // CreateTagProtection creates the tag protection of the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/tags#deprecated---create-a-tag-protection-state-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/tags#create-a-tag-protection-state-for-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/tags/protection
 func (s *RepositoriesService) CreateTagProtection(ctx context.Context, owner, repo, pattern string) (*TagProtection, *Response, error) {
@@ -68,7 +68,7 @@ func (s *RepositoriesService) CreateTagProtection(ctx context.Context, owner, re
 
 // DeleteTagProtection deletes a tag protection from the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/tags#deprecated---delete-a-tag-protection-state-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/tags#delete-a-tag-protection-state-for-a-repository
 //
 //meta:operation DELETE /repos/{owner}/{repo}/tags/protection/{tag_protection_id}
 func (s *RepositoriesService) DeleteTagProtection(ctx context.Context, owner, repo string, tagProtectionID int64) (*Response, error) {
