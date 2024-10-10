@@ -4110,12 +4110,36 @@ func (c *CopilotSeatDetails) GetPendingCancellationDate() string {
 	return *c.PendingCancellationDate
 }
 
+// GetPlanType returns the PlanType field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetPlanType() string {
+	if c == nil || c.PlanType == nil {
+		return ""
+	}
+	return *c.PlanType
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
 	if c == nil || c.UpdatedAt == nil {
 		return Timestamp{}
 	}
 	return *c.UpdatedAt
+}
+
+// GetSince returns the Since field if it's non-nil, zero value otherwise.
+func (c *CopilotUsageSummaryListOptions) GetSince() time.Time {
+	if c == nil || c.Since == nil {
+		return time.Time{}
+	}
+	return *c.Since
+}
+
+// GetUntil returns the Until field if it's non-nil, zero value otherwise.
+func (c *CopilotUsageSummaryListOptions) GetUntil() time.Time {
+	if c == nil || c.Until == nil {
+		return time.Time{}
+	}
+	return *c.Until
 }
 
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
