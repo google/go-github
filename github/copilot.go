@@ -77,23 +77,23 @@ type CopilotUsageSummaryListOptions struct {
 type CopilotUsageBreakdown struct {
 	Language         string `json:"language"`
 	Editor           string `json:"editor"`
-	SuggestionsCount int    `json:"suggestions_count"`
-	AcceptancesCount int    `json:"acceptances_count"`
-	LinesSuggested   int    `json:"lines_suggested"`
-	LinesAccepted    int    `json:"lines_accepted"`
+	SuggestionsCount int64  `json:"suggestions_count"`
+	AcceptancesCount int64  `json:"acceptances_count"`
+	LinesSuggested   int64  `json:"lines_suggested"`
+	LinesAccepted    int64  `json:"lines_accepted"`
 	ActiveUsers      int    `json:"active_users"`
 }
 
 // CopilotUsageSummary represents the daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE across an organization.
 type CopilotUsageSummary struct {
 	Day                   string                   `json:"day"`
-	TotalSuggestionsCount int                      `json:"total_suggestions_count"`
-	TotalAcceptancesCount int                      `json:"total_acceptances_count"`
-	TotalLinesSuggested   int                      `json:"total_lines_suggested"`
-	TotalLinesAccepted    int                      `json:"total_lines_accepted"`
-	TotalActiveUsers      int                      `json:"total_active_users"`
-	TotalChatAcceptances  int                      `json:"total_chat_acceptances"`
-	TotalChatTurns        int                      `json:"total_chat_turns"`
+	TotalSuggestionsCount int64                    `json:"total_suggestions_count"`
+	TotalAcceptancesCount int64                    `json:"total_acceptances_count"`
+	TotalLinesSuggested   int64                    `json:"total_lines_suggested"`
+	TotalLinesAccepted    int64                    `json:"total_lines_accepted"`
+	TotalActiveUsers      int64                    `json:"total_active_users"`
+	TotalChatAcceptances  int64                    `json:"total_chat_acceptances"`
+	TotalChatTurns        int64                    `json:"total_chat_turns"`
 	TotalActiveChatUsers  int                      `json:"total_active_chat_users"`
 	Breakdown             []*CopilotUsageBreakdown `json:"breakdown"`
 }
@@ -435,7 +435,7 @@ func (s *CopilotService) GetEnterpriseUsage(ctx context.Context, enterprise stri
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-an-enterprise-team
 //
 //meta:operation GET /enterprises/{enterprise}/team/{team_slug}/copilot/usage
-func (s *CopilotService) GetEnterpriseTeamUsage(ctx context.Context, enterprise string, team string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
+func (s *CopilotService) GetEnterpriseTeamUsage(ctx context.Context, enterprise, team string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/team/%v/copilot/usage", enterprise, team)
 	u, err := addOptions(u, opts)
 	if err != nil {
