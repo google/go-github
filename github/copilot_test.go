@@ -1097,3 +1097,204 @@ func TestCopilotService_GetOrganisationUsage(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestCopilotService_GetEnterpriseUsage(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+				"day": "2023-10-15",
+				"total_suggestions_count": 5000,
+				"total_acceptances_count": 3000,
+				"total_lines_suggested": 7000,
+				"total_lines_accepted": 3500,
+				"total_active_users": 15,
+				"total_chat_acceptances": 45,
+				"total_chat_turns": 350,
+				"total_active_chat_users": 8,
+				"breakdown": [
+				  {
+					"language": "python",
+					"editor": "vscode",
+					"suggestions_count": 3000,
+					"acceptances_count": 2000,
+					"lines_suggested": 3000,
+					"lines_accepted": 1500,
+					"active_users": 5
+				  },
+				  {
+					"language": "python",
+					"editor": "jetbrains",
+					"suggestions_count": 1000,
+					"acceptances_count": 500,
+					"lines_suggested": 2000,
+					"lines_accepted": 1000,
+					"active_users": 5
+				  },
+				  {
+					"language": "javascript",
+					"editor": "vscode",
+					"suggestions_count": 1000,
+					"acceptances_count": 500,
+					"lines_suggested": 2000,
+					"lines_accepted": 1000,
+					"active_users": 5
+				  }
+				]
+			},
+			{
+				"day": "2023-10-16",
+				"total_suggestions_count": 5200,
+				"total_acceptances_count": 5100,
+				"total_lines_suggested": 5300,
+				"total_lines_accepted": 5000,
+				"total_active_users": 15,
+				"total_chat_acceptances": 57,
+				"total_chat_turns": 455,
+				"total_active_chat_users": 12,
+				"breakdown": [
+					{
+						"language": "python",
+						"editor": "vscode",
+						"suggestions_count": 3100,
+						"acceptances_count": 3000,
+						"lines_suggested": 3200,
+						"lines_accepted": 3100,
+						"active_users": 5
+					},
+					{
+						"language": "python",
+						"editor": "jetbrains",
+						"suggestions_count": 1100,
+						"acceptances_count": 1000,
+						"lines_suggested": 1200,
+						"lines_accepted": 1100,
+						"active_users": 5
+					},
+					{
+						"language": "javascript",
+						"editor": "vscode",
+						"suggestions_count": 1000,
+						"acceptances_count": 900,
+						"lines_suggested": 1100,
+						"lines_accepted": 1000,
+						"active_users": 5
+					}
+				]
+			}
+		]`)
+	})
+
+	summaryOne := time.Date(2023, time.October, 15, 0, 0, 0, 0, time.UTC)
+	summaryTwoDate := time.Date(2023, time.October, 16, 0, 0, 0, 0, time.UTC)
+	ctx := context.Background()
+	got, _, err := client.Copilot.GetEnterpriseUsage(ctx, "e", &CopilotUsageSummaryListOptions{})
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseUsage returned error: %v", err)
+	}
+
+	want := []*CopilotUsageSummary{
+		{
+			Day:                   summaryOne.Format("2006-01-02"),
+			TotalSuggestionsCount: 5000,
+			TotalAcceptancesCount: 3000,
+			TotalLinesSuggested:   7000,
+			TotalLinesAccepted:    3500,
+			TotalActiveUsers:      15,
+			TotalChatAcceptances:  45,
+			TotalChatTurns:        350,
+			TotalActiveChatUsers:  8,
+			Breakdown: []*CopilotUsageBreakdown{
+				{
+					Language:         "python",
+					Editor:           "vscode",
+					SuggestionsCount: 3000,
+					AcceptancesCount: 2000,
+					LinesSuggested:   3000,
+					LinesAccepted:    1500,
+					ActiveUsers:      5,
+				},
+				{
+					Language:         "python",
+					Editor:           "jetbrains",
+					SuggestionsCount: 1000,
+					AcceptancesCount: 500,
+					LinesSuggested:   2000,
+					LinesAccepted:    1000,
+					ActiveUsers:      5,
+				},
+				{
+					Language:         "javascript",
+					Editor:           "vscode",
+					SuggestionsCount: 1000,
+					AcceptancesCount: 500,
+					LinesSuggested:   2000,
+					LinesAccepted:    1000,
+					ActiveUsers:      5,
+				},
+			},
+		},
+		{
+			Day:                   summaryTwoDate.Format("2006-01-02"),
+			TotalSuggestionsCount: 5200,
+			TotalAcceptancesCount: 5100,
+			TotalLinesSuggested:   5300,
+			TotalLinesAccepted:    5000,
+			TotalActiveUsers:      15,
+			TotalChatAcceptances:  57,
+			TotalChatTurns:        455,
+			TotalActiveChatUsers:  12,
+			Breakdown: []*CopilotUsageBreakdown{
+				{
+					Language:         "python",
+					Editor:           "vscode",
+					SuggestionsCount: 3100,
+					AcceptancesCount: 3000,
+					LinesSuggested:   3200,
+					LinesAccepted:    3100,
+					ActiveUsers:      5,
+				},
+				{
+					Language:         "python",
+					Editor:           "jetbrains",
+					SuggestionsCount: 1100,
+					AcceptancesCount: 1000,
+					LinesSuggested:   1200,
+					LinesAccepted:    1100,
+					ActiveUsers:      5,
+				},
+				{
+					Language:         "javascript",
+					Editor:           "vscode",
+					SuggestionsCount: 1000,
+					AcceptancesCount: 900,
+					LinesSuggested:   1100,
+					LinesAccepted:    1000,
+					ActiveUsers:      5,
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseUsage returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseUsage"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseUsage(ctx, "\n", &CopilotUsageSummaryListOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseUsage(ctx, "e", &CopilotUsageSummaryListOptions{})
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseUsage returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}

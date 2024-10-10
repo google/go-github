@@ -373,3 +373,29 @@ func (s *CopilotService) GetOrganizationUsage(ctx context.Context, org string, o
 
 	return usage, resp, nil
 }
+
+// GetEnterpriseUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE across an enterprise.
+//
+// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-enterprise-members
+//
+//meta:operation GET /enterprises/{enterprise}/copilot/usage
+func (s *CopilotService) GetEnterpriseUsage(ctx context.Context, enterprise string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/copilot/usage", enterprise)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var usage []*CopilotUsageSummary
+	resp, err := s.client.Do(ctx, req, &usage)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return usage, resp, nil
+}
