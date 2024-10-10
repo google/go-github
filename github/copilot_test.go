@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"testing"
 	"time"
@@ -604,6 +605,235 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 		got, resp, err := client.Copilot.ListCopilotSeats(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("Copilot.ListCopilotSeats returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_ListCopilotEnterpriseSeats(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/billing/seats", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"per_page": "100",
+			"page":     "1",
+		})
+		fmt.Fprint(w, `{
+			"total_seats": 2,
+			"seats": [
+				{
+					"created_at": "2021-08-03T18:00:00-06:00",
+					"updated_at": "2021-09-23T15:00:00-06:00",
+					"pending_cancellation_date": null,
+					"last_activity_at": "2021-10-14T00:53:32-06:00",
+					"last_activity_editor": "vscode/1.77.3/copilot/1.86.82",
+					"plan_type": "business",
+					"assignee": {
+						"login": "octocat",
+						"id": 1,
+						"node_id": "MDQ6VXNlcjE=",
+						"avatar_url": "https://github.com/images/error/octocat_happy.gif",
+						"gravatar_id": "",
+						"url": "https://api.github.com/users/octocat",
+						"html_url": "https://github.com/octocat",
+						"followers_url": "https://api.github.com/users/octocat/followers",
+						"following_url": "https://api.github.com/users/octocat/following{/other_user}",
+						"gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+						"starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+						"subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+						"organizations_url": "https://api.github.com/users/octocat/orgs",
+						"repos_url": "https://api.github.com/users/octocat/repos",
+						"events_url": "https://api.github.com/users/octocat/events{/privacy}",
+						"received_events_url": "https://api.github.com/users/octocat/received_events",
+						"type": "User",
+						"site_admin": false
+					},
+					"assigning_team": {
+						"id": 1,
+						"node_id": "MDQ6VGVhbTE=",
+						"url": "https://api.github.com/teams/1",
+						"html_url": "https://github.com/orgs/github/teams/justice-league",
+						"name": "Justice League",
+						"slug": "justice-league",
+						"description": "A great team.",
+						"privacy": "closed",
+						"notification_setting": "notifications_enabled",
+						"permission": "admin",
+						"members_url": "https://api.github.com/teams/1/members{/member}",
+						"repositories_url": "https://api.github.com/teams/1/repos",
+						"parent": null
+					}
+				},
+				{
+					"created_at": "2021-09-23T18:00:00-06:00",
+					"updated_at": "2021-09-23T15:00:00-06:00",
+					"pending_cancellation_date": "2021-11-01",
+					"last_activity_at": "2021-10-13T00:53:32-06:00",
+					"last_activity_editor": "vscode/1.77.3/copilot/1.86.82",
+					"assignee": {
+						"login": "octokitten",
+						"id": 1,
+						"node_id": "MDQ76VNlcjE=",
+						"avatar_url": "https://github.com/images/error/octokitten_happy.gif",
+						"gravatar_id": "",
+						"url": "https://api.github.com/users/octokitten",
+						"html_url": "https://github.com/octokitten",
+						"followers_url": "https://api.github.com/users/octokitten/followers",
+						"following_url": "https://api.github.com/users/octokitten/following{/other_user}",
+						"gists_url": "https://api.github.com/users/octokitten/gists{/gist_id}",
+						"starred_url": "https://api.github.com/users/octokitten/starred{/owner}{/repo}",
+						"subscriptions_url": "https://api.github.com/users/octokitten/subscriptions",
+						"organizations_url": "https://api.github.com/users/octokitten/orgs",
+						"repos_url": "https://api.github.com/users/octokitten/repos",
+						"events_url": "https://api.github.com/users/octokitten/events{/privacy}",
+						"received_events_url": "https://api.github.com/users/octokitten/received_events",
+						"type": "User",
+						"site_admin": false
+					}
+				}
+			]
+		}`)
+	})
+
+	tmp, err := time.Parse(time.RFC3339, "2021-08-03T18:00:00-06:00")
+	if err != nil {
+		panic(err)
+	}
+	createdAt1 := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-09-23T15:00:00-06:00")
+	if err != nil {
+		panic(err)
+	}
+	updatedAt1 := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-10-14T00:53:32-06:00")
+	if err != nil {
+		panic(err)
+	}
+	lastActivityAt1 := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-09-23T18:00:00-06:00")
+	if err != nil {
+		panic(err)
+	}
+	createdAt2 := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-09-23T15:00:00-06:00")
+	if err != nil {
+		panic(err)
+	}
+	updatedAt2 := Timestamp{tmp}
+
+	tmp, err = time.Parse(time.RFC3339, "2021-10-13T00:53:32-06:00")
+	if err != nil {
+		panic(err)
+	}
+	lastActivityAt2 := Timestamp{tmp}
+
+	ctx := context.Background()
+	opts := &ListOptions{Page: 1, PerPage: 100}
+	got, _, err := client.Copilot.ListCopilotEnterpriseSeats(ctx, "e", opts)
+	if err != nil {
+		t.Errorf("Copilot.ListCopilotEnterpriseSeats returned error: %v", err)
+	}
+
+	want := &ListCopilotSeatsResponse{
+		TotalSeats: 2,
+		Seats: []*CopilotSeatDetails{
+			{
+				Assignee: &User{
+					Login:             String("octocat"),
+					ID:                Int64(1),
+					NodeID:            String("MDQ6VXNlcjE="),
+					AvatarURL:         String("https://github.com/images/error/octocat_happy.gif"),
+					GravatarID:        String(""),
+					URL:               String("https://api.github.com/users/octocat"),
+					HTMLURL:           String("https://github.com/octocat"),
+					FollowersURL:      String("https://api.github.com/users/octocat/followers"),
+					FollowingURL:      String("https://api.github.com/users/octocat/following{/other_user}"),
+					GistsURL:          String("https://api.github.com/users/octocat/gists{/gist_id}"),
+					StarredURL:        String("https://api.github.com/users/octocat/starred{/owner}{/repo}"),
+					SubscriptionsURL:  String("https://api.github.com/users/octocat/subscriptions"),
+					OrganizationsURL:  String("https://api.github.com/users/octocat/orgs"),
+					ReposURL:          String("https://api.github.com/users/octocat/repos"),
+					EventsURL:         String("https://api.github.com/users/octocat/events{/privacy}"),
+					ReceivedEventsURL: String("https://api.github.com/users/octocat/received_events"),
+					Type:              String("User"),
+					SiteAdmin:         Bool(false),
+				},
+				AssigningTeam: &Team{
+					ID:              Int64(1),
+					NodeID:          String("MDQ6VGVhbTE="),
+					URL:             String("https://api.github.com/teams/1"),
+					HTMLURL:         String("https://github.com/orgs/github/teams/justice-league"),
+					Name:            String("Justice League"),
+					Slug:            String("justice-league"),
+					Description:     String("A great team."),
+					Privacy:         String("closed"),
+					Permission:      String("admin"),
+					MembersURL:      String("https://api.github.com/teams/1/members{/member}"),
+					RepositoriesURL: String("https://api.github.com/teams/1/repos"),
+					Parent:          nil,
+				},
+				CreatedAt:               &createdAt1,
+				UpdatedAt:               &updatedAt1,
+				PendingCancellationDate: nil,
+				LastActivityAt:          &lastActivityAt1,
+				LastActivityEditor:      String("vscode/1.77.3/copilot/1.86.82"),
+				PlanType:                String("business"),
+			},
+			{
+				Assignee: &User{
+					Login:             String("octokitten"),
+					ID:                Int64(1),
+					NodeID:            String("MDQ76VNlcjE="),
+					AvatarURL:         String("https://github.com/images/error/octokitten_happy.gif"),
+					GravatarID:        String(""),
+					URL:               String("https://api.github.com/users/octokitten"),
+					HTMLURL:           String("https://github.com/octokitten"),
+					FollowersURL:      String("https://api.github.com/users/octokitten/followers"),
+					FollowingURL:      String("https://api.github.com/users/octokitten/following{/other_user}"),
+					GistsURL:          String("https://api.github.com/users/octokitten/gists{/gist_id}"),
+					StarredURL:        String("https://api.github.com/users/octokitten/starred{/owner}{/repo}"),
+					SubscriptionsURL:  String("https://api.github.com/users/octokitten/subscriptions"),
+					OrganizationsURL:  String("https://api.github.com/users/octokitten/orgs"),
+					ReposURL:          String("https://api.github.com/users/octokitten/repos"),
+					EventsURL:         String("https://api.github.com/users/octokitten/events{/privacy}"),
+					ReceivedEventsURL: String("https://api.github.com/users/octokitten/received_events"),
+					Type:              String("User"),
+					SiteAdmin:         Bool(false),
+				},
+				AssigningTeam:           nil,
+				CreatedAt:               &createdAt2,
+				UpdatedAt:               &updatedAt2,
+				PendingCancellationDate: String("2021-11-01"),
+				LastActivityAt:          &lastActivityAt2,
+				LastActivityEditor:      String("vscode/1.77.3/copilot/1.86.82"),
+				PlanType:                nil,
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		log.Printf("got: %+v", got.Seats[1])
+		log.Printf("want: %+v", want.Seats[1])
+		t.Errorf("Copilot.ListCopilotEnterpriseSeats returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "ListCopilotEnterpriseSeats"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.ListCopilotEnterpriseSeats(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.ListCopilotEnterpriseSeats(ctx, "e", opts)
+		if got != nil {
+			t.Errorf("Copilot.ListCopilotEnterpriseSeats returned %+v, want nil", got)
 		}
 		return resp, err
 	})

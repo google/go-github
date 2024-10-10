@@ -52,6 +52,7 @@ type CopilotSeatDetails struct {
 	LastActivityEditor      *string     `json:"last_activity_editor,omitempty"`
 	CreatedAt               *Timestamp  `json:"created_at"`
 	UpdatedAt               *Timestamp  `json:"updated_at,omitempty"`
+	PlanType                *string     `json:"plan_type,omitempty"`
 }
 
 // SeatAssignments represents the number of seats assigned.
@@ -112,6 +113,7 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 	cp.LastActivityEditor = seatDetail.LastActivityEditor
 	cp.CreatedAt = seatDetail.CreatedAt
 	cp.UpdatedAt = seatDetail.UpdatedAt
+	cp.PlanType = seatDetail.PlanType
 
 	switch v := seatDetail.Assignee.(type) {
 	case map[string]interface{}:
@@ -195,6 +197,34 @@ func (s *CopilotService) GetCopilotBilling(ctx context.Context, org string) (*Co
 //meta:operation GET /orgs/{org}/copilot/billing/seats
 func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string, opts *ListOptions) (*ListCopilotSeatsResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/seats", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var copilotSeats *ListCopilotSeatsResponse
+	resp, err := s.client.Do(ctx, req, &copilotSeats)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return copilotSeats, resp, nil
+}
+
+// ListCopilotEnterpriseSeats lists Copilot for Business seat assignments for an enterprise.
+//
+// To paginate through all seats, populate 'Page' with the number of the last page.
+//
+// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-user-management?apiVersion=2022-11-28#list-all-copilot-seat-assignments-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/copilot/billing/seats
+func (s *CopilotService) ListCopilotEnterpriseSeats(ctx context.Context, enterprise string, opts *ListOptions) (*ListCopilotSeatsResponse, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/copilot/billing/seats", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
