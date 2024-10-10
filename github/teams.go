@@ -9,7 +9,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"strings"
 )
 
 // TeamsService provides access to the team-related functions
@@ -206,13 +205,14 @@ func (s *TeamsService) CreateTeam(ctx context.Context, org string, team NewTeam)
 // "parent_team_id" field will be null. It is for internal use
 // only and should not be exported.
 type newTeamNoParent struct {
-	Name         string   `json:"name"`
-	Description  *string  `json:"description,omitempty"`
-	Maintainers  []string `json:"maintainers,omitempty"`
-	RepoNames    []string `json:"repo_names,omitempty"`
-	ParentTeamID *int64   `json:"parent_team_id"` // This will be "null"
-	Privacy      *string  `json:"privacy,omitempty"`
-	LDAPDN       *string  `json:"ldap_dn,omitempty"`
+	Name                string   `json:"name"`
+	Description         *string  `json:"description,omitempty"`
+	Maintainers         []string `json:"maintainers,omitempty"`
+	RepoNames           []string `json:"repo_names,omitempty"`
+	ParentTeamID        *int64   `json:"parent_team_id"` // This will be "null"
+	NotificationSetting *string  `json:"notification_setting,omitempty"`
+	Privacy             *string  `json:"privacy,omitempty"`
+	LDAPDN              *string  `json:"ldap_dn,omitempty"`
 }
 
 // copyNewTeamWithoutParent is used to set the "parent_team_id"
@@ -220,12 +220,13 @@ type newTeamNoParent struct {
 // It is for internal use only and should not be exported.
 func copyNewTeamWithoutParent(team *NewTeam) *newTeamNoParent {
 	return &newTeamNoParent{
-		Name:        team.Name,
-		Description: team.Description,
-		Maintainers: team.Maintainers,
-		RepoNames:   team.RepoNames,
-		Privacy:     team.Privacy,
-		LDAPDN:      team.LDAPDN,
+		Name:                team.Name,
+		Description:         team.Description,
+		Maintainers:         team.Maintainers,
+		RepoNames:           team.RepoNames,
+		NotificationSetting: team.NotificationSetting,
+		Privacy:             team.Privacy,
+		LDAPDN:              team.LDAPDN,
 	}
 }
 
@@ -387,8 +388,7 @@ func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int6
 	}
 
 	// TODO: remove custom Accept header when topics API fully launches.
-	headers := []string{mediaTypeTopicsPreview}
-	req.Header.Set("Accept", strings.Join(headers, ", "))
+	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
 	var repos []*Repository
 	resp, err := s.client.Do(ctx, req, &repos)
@@ -417,8 +417,7 @@ func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string
 	}
 
 	// TODO: remove custom Accept header when topics API fully launches.
-	headers := []string{mediaTypeTopicsPreview}
-	req.Header.Set("Accept", strings.Join(headers, ", "))
+	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
 	var repos []*Repository
 	resp, err := s.client.Do(ctx, req, &repos)
@@ -443,8 +442,7 @@ func (s *TeamsService) IsTeamRepoByID(ctx context.Context, orgID, teamID int64, 
 		return nil, nil, err
 	}
 
-	headers := []string{mediaTypeOrgPermissionRepo}
-	req.Header.Set("Accept", strings.Join(headers, ", "))
+	req.Header.Set("Accept", mediaTypeOrgPermissionRepo)
 
 	repository := new(Repository)
 	resp, err := s.client.Do(ctx, req, repository)
@@ -469,8 +467,7 @@ func (s *TeamsService) IsTeamRepoBySlug(ctx context.Context, org, slug, owner, r
 		return nil, nil, err
 	}
 
-	headers := []string{mediaTypeOrgPermissionRepo}
-	req.Header.Set("Accept", strings.Join(headers, ", "))
+	req.Header.Set("Accept", mediaTypeOrgPermissionRepo)
 
 	repository := new(Repository)
 	resp, err := s.client.Do(ctx, req, repository)
@@ -604,8 +601,7 @@ func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID i
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeProjectsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	var projects []*Project
 	resp, err := s.client.Do(ctx, req, &projects)
@@ -630,8 +626,7 @@ func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug str
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeProjectsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	var projects []*Project
 	resp, err := s.client.Do(ctx, req, &projects)
@@ -656,8 +651,7 @@ func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeProjectsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	projects := &Project{}
 	resp, err := s.client.Do(ctx, req, &projects)
@@ -682,8 +676,7 @@ func (s *TeamsService) ReviewTeamProjectsBySlug(ctx context.Context, org, slug s
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeProjectsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	projects := &Project{}
 	resp, err := s.client.Do(ctx, req, &projects)
@@ -721,8 +714,7 @@ func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, pr
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeProjectsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -742,8 +734,7 @@ func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug strin
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeProjectsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -766,8 +757,7 @@ func (s *TeamsService) RemoveTeamProjectByID(ctx context.Context, orgID, teamID,
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeProjectsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -790,8 +780,7 @@ func (s *TeamsService) RemoveTeamProjectBySlug(ctx context.Context, org, slug st
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeProjectsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }

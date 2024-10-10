@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_Merge(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &RepositoryMergeRequest{
@@ -63,6 +64,7 @@ func TestRepositoriesService_Merge(t *testing.T) {
 }
 
 func TestRepositoryMergeRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryMergeRequest{}, "{}")
 
 	u := &RepositoryMergeRequest{
@@ -81,6 +83,7 @@ func TestRepositoryMergeRequest_Marshal(t *testing.T) {
 }
 
 func TestRepositoriesService_MergeUpstream(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &RepoMergeUpstreamRequest{
@@ -126,6 +129,7 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 }
 
 func TestRepoMergeUpstreamResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepoMergeUpstreamResult{}, "{}")
 
 	u := &RepoMergeUpstreamResult{

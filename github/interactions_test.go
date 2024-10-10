@@ -8,6 +8,7 @@ package github
 import "testing"
 
 func TestInteractionRestriction_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &InteractionRestriction{}, "{}")
 
 	u := &InteractionRestriction{

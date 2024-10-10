@@ -15,6 +15,7 @@ import (
 )
 
 func TestEmojisService_List(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/emojis", func(w http.ResponseWriter, r *http.Request) {

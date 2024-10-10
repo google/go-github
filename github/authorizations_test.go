@@ -15,6 +15,7 @@ import (
 )
 
 func TestAuthorizationsService_Check(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
@@ -51,6 +52,7 @@ func TestAuthorizationsService_Check(t *testing.T) {
 }
 
 func TestAuthorizationsService_Reset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
@@ -87,6 +89,7 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 }
 
 func TestAuthorizationsService_Revoke(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
@@ -114,6 +117,7 @@ func TestAuthorizationsService_Revoke(t *testing.T) {
 }
 
 func TestDeleteGrant(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/grant", func(w http.ResponseWriter, r *http.Request) {
@@ -140,6 +144,7 @@ func TestDeleteGrant(t *testing.T) {
 }
 
 func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
@@ -175,6 +180,7 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 }
 
 func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
@@ -199,6 +205,7 @@ func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
 }
 
 func TestAuthorizationUpdateRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AuthorizationUpdateRequest{}, "{}")
 
 	u := &AuthorizationUpdateRequest{
@@ -223,6 +230,7 @@ func TestAuthorizationUpdateRequest_Marshal(t *testing.T) {
 }
 
 func TestAuthorizationRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AuthorizationRequest{}, "{}")
 
 	u := &AuthorizationRequest{
@@ -247,6 +255,7 @@ func TestAuthorizationRequest_Marshal(t *testing.T) {
 }
 
 func TestAuthorizationApp_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AuthorizationApp{}, "{}")
 
 	u := &AuthorizationApp{
@@ -265,6 +274,7 @@ func TestAuthorizationApp_Marshal(t *testing.T) {
 }
 
 func TestGrant_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Grant{}, "{}")
 
 	u := &Grant{
@@ -297,6 +307,7 @@ func TestGrant_Marshal(t *testing.T) {
 }
 
 func TestAuthorization_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Authorization{}, "{}")
 
 	u := &Authorization{

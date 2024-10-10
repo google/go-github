@@ -11,6 +11,7 @@ import (
 )
 
 func TestPayload_Panic(t *testing.T) {
+	t.Parallel()
 	defer func() {
 		if r := recover(); r == nil {
 			t.Errorf("Payload did not panic but should have")
@@ -24,6 +25,7 @@ func TestPayload_Panic(t *testing.T) {
 }
 
 func TestPayload_NoPanic(t *testing.T) {
+	t.Parallel()
 	name := "UserEvent"
 	body := json.RawMessage("{}")
 	e := &Event{Type: &name, RawPayload: &body}
@@ -31,6 +33,7 @@ func TestPayload_NoPanic(t *testing.T) {
 }
 
 func TestEmptyEvent_NoPanic(t *testing.T) {
+	t.Parallel()
 	e := &Event{}
 	if _, err := e.ParsePayload(); err == nil {
 		t.Error("ParsePayload unexpectedly succeeded on empty event")
@@ -43,6 +46,7 @@ func TestEmptyEvent_NoPanic(t *testing.T) {
 }
 
 func TestEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Event{}, "{}")
 
 	l := make(map[string]interface{})

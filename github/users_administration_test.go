@@ -15,6 +15,7 @@ import (
 )
 
 func TestUsersService_PromoteSiteAdmin(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/site_admin", func(w http.ResponseWriter, r *http.Request) {
@@ -40,6 +41,7 @@ func TestUsersService_PromoteSiteAdmin(t *testing.T) {
 }
 
 func TestUsersService_DemoteSiteAdmin(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/site_admin", func(w http.ResponseWriter, r *http.Request) {
@@ -65,6 +67,7 @@ func TestUsersService_DemoteSiteAdmin(t *testing.T) {
 }
 
 func TestUsersService_Suspend(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {
@@ -90,6 +93,7 @@ func TestUsersService_Suspend(t *testing.T) {
 }
 
 func TestUsersServiceReason_Suspend(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &UserSuspendOptions{Reason: String("test")}
@@ -114,6 +118,7 @@ func TestUsersServiceReason_Suspend(t *testing.T) {
 }
 
 func TestUsersService_Unsuspend(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {
@@ -139,6 +144,7 @@ func TestUsersService_Unsuspend(t *testing.T) {
 }
 
 func TestUserSuspendOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UserSuspendOptions{}, "{}")
 
 	u := &UserSuspendOptions{

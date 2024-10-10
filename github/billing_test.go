@@ -15,6 +15,7 @@ import (
 )
 
 func TestBillingService_GetActionsBillingOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/settings/billing/actions", func(w http.ResponseWriter, r *http.Request) {
@@ -67,6 +68,7 @@ func TestBillingService_GetActionsBillingOrg(t *testing.T) {
 }
 
 func TestBillingService_GetActionsBillingOrg_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -75,6 +77,7 @@ func TestBillingService_GetActionsBillingOrg_invalidOrg(t *testing.T) {
 }
 
 func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/settings/billing/packages", func(w http.ResponseWriter, r *http.Request) {
@@ -117,6 +120,7 @@ func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
 }
 
 func TestBillingService_GetPackagesBillingOrg_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -125,6 +129,7 @@ func TestBillingService_GetPackagesBillingOrg_invalidOrg(t *testing.T) {
 }
 
 func TestBillingService_GetStorageBillingOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/settings/billing/shared-storage", func(w http.ResponseWriter, r *http.Request) {
@@ -167,6 +172,7 @@ func TestBillingService_GetStorageBillingOrg(t *testing.T) {
 }
 
 func TestBillingService_GetStorageBillingOrg_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -175,6 +181,7 @@ func TestBillingService_GetStorageBillingOrg_invalidOrg(t *testing.T) {
 }
 
 func TestBillingService_GetActionsBillingUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/settings/billing/actions", func(w http.ResponseWriter, r *http.Request) {
@@ -227,6 +234,7 @@ func TestBillingService_GetActionsBillingUser(t *testing.T) {
 }
 
 func TestBillingService_GetActionsBillingUser_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -235,6 +243,7 @@ func TestBillingService_GetActionsBillingUser_invalidUser(t *testing.T) {
 }
 
 func TestBillingService_GetPackagesBillingUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/settings/billing/packages", func(w http.ResponseWriter, r *http.Request) {
@@ -277,6 +286,7 @@ func TestBillingService_GetPackagesBillingUser(t *testing.T) {
 }
 
 func TestBillingService_GetPackagesBillingUser_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -285,6 +295,7 @@ func TestBillingService_GetPackagesBillingUser_invalidUser(t *testing.T) {
 }
 
 func TestBillingService_GetStorageBillingUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/settings/billing/shared-storage", func(w http.ResponseWriter, r *http.Request) {
@@ -327,6 +338,7 @@ func TestBillingService_GetStorageBillingUser(t *testing.T) {
 }
 
 func TestBillingService_GetStorageBillingUser_invalidUser(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -335,6 +347,7 @@ func TestBillingService_GetStorageBillingUser_invalidUser(t *testing.T) {
 }
 
 func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &MinutesUsedBreakdown{}, "{}")
 
 	u := &MinutesUsedBreakdown{
@@ -353,6 +366,7 @@ func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
 }
 
 func TestActionBilling_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &MinutesUsedBreakdown{}, "{}")
 
 	u := &ActionBilling{
@@ -381,6 +395,7 @@ func TestActionBilling_Marshal(t *testing.T) {
 }
 
 func TestPackageBilling_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PackageBilling{}, "{}")
 
 	u := &PackageBilling{
@@ -399,6 +414,7 @@ func TestPackageBilling_Marshal(t *testing.T) {
 }
 
 func TestStorageBilling_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &StorageBilling{}, "{}")
 
 	u := &StorageBilling{
@@ -417,6 +433,7 @@ func TestStorageBilling_Marshal(t *testing.T) {
 }
 
 func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/settings/billing/advanced-security", func(w http.ResponseWriter, r *http.Request) {
@@ -486,6 +503,7 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 }
 
 func TestBillingService_GetAdvancedSecurityActiveCommittersOrg_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()

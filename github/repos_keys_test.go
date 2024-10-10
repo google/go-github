@@ -16,6 +16,7 @@ import (
 )
 
 func TestRepositoriesService_ListKeys(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/keys", func(w http.ResponseWriter, r *http.Request) {
@@ -52,6 +53,7 @@ func TestRepositoriesService_ListKeys(t *testing.T) {
 }
 
 func TestRepositoriesService_ListKeys_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -60,6 +62,7 @@ func TestRepositoriesService_ListKeys_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetKey(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/keys/1", func(w http.ResponseWriter, r *http.Request) {
@@ -94,6 +97,7 @@ func TestRepositoriesService_GetKey(t *testing.T) {
 }
 
 func TestRepositoriesService_GetKey_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -102,6 +106,7 @@ func TestRepositoriesService_GetKey_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateKey(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Key{Key: String("k"), Title: String("t")}
@@ -145,6 +150,7 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateKey_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -153,6 +159,7 @@ func TestRepositoriesService_CreateKey_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteKey(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/keys/1", func(w http.ResponseWriter, r *http.Request) {
@@ -177,6 +184,7 @@ func TestRepositoriesService_DeleteKey(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteKey_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()

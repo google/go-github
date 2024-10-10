@@ -16,8 +16,9 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-// Test invalid JSON responses, vlaid responses are covered in the other tests
+// Test invalid JSON responses, valid responses are covered in the other tests
 func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name    string
 		data    string
@@ -112,9 +113,11 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 	}
 
 	for _, tc := range tests {
+		tc := tc
 		seatDetails := &CopilotSeatDetails{}
 
 		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
 			err := json.Unmarshal([]byte(tc.data), seatDetails)
 			if err == nil && tc.wantErr {
 				t.Errorf("CopilotSeatDetails.UnmarshalJSON returned nil instead of an error")
@@ -130,6 +133,7 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 }
 
 func TestCopilotService_GetSeatDetailsUser(t *testing.T) {
+	t.Parallel()
 	data := `{
 				"assignee": {
 					"type": "User",
@@ -178,6 +182,7 @@ func TestCopilotService_GetSeatDetailsUser(t *testing.T) {
 }
 
 func TestCopilotService_GetSeatDetailsTeam(t *testing.T) {
+	t.Parallel()
 	data := `{
 				"assignee": {
 					"type": "Team",
@@ -225,6 +230,7 @@ func TestCopilotService_GetSeatDetailsTeam(t *testing.T) {
 }
 
 func TestCopilotService_GetSeatDetailsOrganization(t *testing.T) {
+	t.Parallel()
 	data := `{
 				"assignee": {
 					"type": "Organization",
@@ -272,6 +278,7 @@ func TestCopilotService_GetSeatDetailsOrganization(t *testing.T) {
 }
 
 func TestCopilotService_GetCopilotBilling(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing", func(w http.ResponseWriter, r *http.Request) {
@@ -330,6 +337,7 @@ func TestCopilotService_GetCopilotBilling(t *testing.T) {
 }
 
 func TestCopilotService_ListCopilotSeats(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing/seats", func(w http.ResponseWriter, r *http.Request) {
@@ -602,6 +610,7 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 }
 
 func TestCopilotService_AddCopilotTeams(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_teams", func(w http.ResponseWriter, r *http.Request) {
@@ -639,6 +648,7 @@ func TestCopilotService_AddCopilotTeams(t *testing.T) {
 }
 
 func TestCopilotService_RemoveCopilotTeams(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_teams", func(w http.ResponseWriter, r *http.Request) {
@@ -676,6 +686,7 @@ func TestCopilotService_RemoveCopilotTeams(t *testing.T) {
 }
 
 func TestCopilotService_AddCopilotUsers(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_users", func(w http.ResponseWriter, r *http.Request) {
@@ -713,6 +724,7 @@ func TestCopilotService_AddCopilotUsers(t *testing.T) {
 }
 
 func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_users", func(w http.ResponseWriter, r *http.Request) {
@@ -750,6 +762,7 @@ func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
 }
 
 func TestCopilotService_GetSeatDetails(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/members/u/copilot", func(w http.ResponseWriter, r *http.Request) {
