@@ -23,6 +23,7 @@ type RepositoryInvitation struct {
 	CreatedAt   *Timestamp `json:"created_at,omitempty"`
 	URL         *string    `json:"url,omitempty"`
 	HTMLURL     *string    `json:"html_url,omitempty"`
+	Expired     *bool      `json:"expired,omitempty"`
 }
 
 // ListInvitations lists all currently-open repository invitations.

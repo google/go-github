@@ -25999,6 +25999,17 @@ func TestRepositoryInvitation_GetCreatedAt(tt *testing.T) {
 	r.GetCreatedAt()
 }
 
+func TestRepositoryInvitation_GetExpired(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepositoryInvitation{Expired: &zeroValue}
+	r.GetExpired()
+	r = &RepositoryInvitation{}
+	r.GetExpired()
+	r = nil
+	r.GetExpired()
+}
+
 func TestRepositoryInvitation_GetHTMLURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

@@ -20238,6 +20238,14 @@ func (r *RepositoryInvitation) GetCreatedAt() Timestamp {
 	return *r.CreatedAt
 }
 
+// GetExpired returns the Expired field if it's non-nil, zero value otherwise.
+func (r *RepositoryInvitation) GetExpired() bool {
+	if r == nil || r.Expired == nil {
+		return false
+	}
+	return *r.Expired
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (r *RepositoryInvitation) GetHTMLURL() string {
 	if r == nil || r.HTMLURL == nil {
