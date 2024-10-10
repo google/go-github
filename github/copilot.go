@@ -220,7 +220,7 @@ func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string, opts 
 //
 // To paginate through all seats, populate 'Page' with the number of the last page.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-user-management?apiVersion=2022-11-28#list-all-copilot-seat-assignments-for-an-enterprise
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-user-management#list-all-copilot-seat-assignments-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/billing/seats
 func (s *CopilotService) ListCopilotEnterpriseSeats(ctx context.Context, enterprise string, opts *ListOptions) (*ListCopilotSeatsResponse, *Response, error) {
@@ -380,7 +380,7 @@ func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (
 
 // GetOrganizationUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE across an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-organization-members
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-organization-members
 //
 //meta:operation GET /orgs/{org}/copilot/usage
 func (s *CopilotService) GetOrganizationUsage(ctx context.Context, org string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
@@ -406,7 +406,7 @@ func (s *CopilotService) GetOrganizationUsage(ctx context.Context, org string, o
 
 // GetEnterpriseUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE across an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-enterprise-members
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-enterprise-members
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/usage
 func (s *CopilotService) GetEnterpriseUsage(ctx context.Context, enterprise string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
@@ -432,7 +432,7 @@ func (s *CopilotService) GetEnterpriseUsage(ctx context.Context, enterprise stri
 
 // GetEnterpriseTeamUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE for a team in the enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-an-enterprise-team
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-an-enterprise-team
 //
 //meta:operation GET /enterprises/{enterprise}/team/{team_slug}/copilot/usage
 func (s *CopilotService) GetEnterpriseTeamUsage(ctx context.Context, enterprise string, team string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
@@ -458,7 +458,7 @@ func (s *CopilotService) GetEnterpriseTeamUsage(ctx context.Context, enterprise 
 
 // GetOrganizationTeamUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE for a team in the organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-a-team
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-a-team
 //
 //meta:operation GET /orgs/{org}/team/{team_slug}/copilot/usage
 func (s *CopilotService) GetOrganizationTeamUsage(ctx context.Context, org string, team string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
