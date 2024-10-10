@@ -461,7 +461,7 @@ func (s *CopilotService) GetEnterpriseTeamUsage(ctx context.Context, enterprise,
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-a-team
 //
 //meta:operation GET /orgs/{org}/team/{team_slug}/copilot/usage
-func (s *CopilotService) GetOrganizationTeamUsage(ctx context.Context, org string, team string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
+func (s *CopilotService) GetOrganizationTeamUsage(ctx context.Context, org, team string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/team/%v/copilot/usage", org, team)
 	u, err := addOptions(u, opts)
 	if err != nil {
