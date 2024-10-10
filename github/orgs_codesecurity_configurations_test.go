@@ -17,6 +17,7 @@ import (
 
 func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
+	ctx := context.Background()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +35,7 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 		}]`)
 	})
 
-	configurations, _, err := client.Organizations.GetCodeSecurityConfigurations(context.Background(), "o")
+	configurations, _, err := client.Organizations.GetCodeSecurityConfigurations(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.GetOrganizationCodeSecurityConfigurations returned error: %v", err)
 	}
@@ -46,11 +47,24 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 	if !reflect.DeepEqual(configurations, want) {
 		t.Errorf("Organizations.GetCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
 	}
+	const methodName = "GetCodeSecurityConfigurations"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetCodeSecurityConfigurations(ctx, "\n")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetCodeSecurityConfigurations(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	ctx := context.Background()
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -61,7 +75,7 @@ func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
 		}`)
 	})
 
-	configuration, _, err := client.Organizations.GetCodeSecurityConfiguration(context.Background(), "o", 1)
+	configuration, _, err := client.Organizations.GetCodeSecurityConfiguration(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.GetCodeSecurityConfiguration returned error: %v", err)
 	}
@@ -70,11 +84,26 @@ func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
 	if !reflect.DeepEqual(configuration, want) {
 		t.Errorf("Organizations.GetCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
+
+	const methodName = "GetCodeSecurityConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetCodeSecurityConfiguration(ctx, "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetCodeSecurityConfiguration(ctx, "o", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	ctx := context.Background()
 
 	input := &CodeSecurityConfiguration{
 		Name:                     String("config1"),
@@ -99,7 +128,7 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 		}`)
 	})
 
-	configuration, _, err := client.Organizations.CreateCodeSecurityConfiguration(context.Background(), "o", input)
+	configuration, _, err := client.Organizations.CreateCodeSecurityConfiguration(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Organizations.CreateCodeSecurityConfiguration returned error: %v", err)
 	}
@@ -108,11 +137,26 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 	if !reflect.DeepEqual(configuration, want) {
 		t.Errorf("Organizations.CreateCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
+
+	const methodName = "CreateCodeSecurityConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.CreateCodeSecurityConfiguration(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.CreateCodeSecurityConfiguration(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	ctx := context.Background()
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/defaults", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -129,7 +173,7 @@ func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T)
 		}]`)
 	})
 
-	configurations, _, err := client.Organizations.GetDefaultCodeSecurityConfigurations(context.Background(), "o")
+	configurations, _, err := client.Organizations.GetDefaultCodeSecurityConfigurations(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.GetDefaultCodeSecurityConfigurations returned error: %v", err)
 	}
@@ -141,18 +185,33 @@ func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T)
 	if !reflect.DeepEqual(configurations, want) {
 		t.Errorf("Organizations.GetDefaultCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
 	}
+
+	const methodName = "GetDefaultCodeSecurityConfigurations"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetDefaultCodeSecurityConfigurations(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetDefaultCodeSecurityConfigurations(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_DetachCodeSecurityConfigurationsFromRepositories(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	ctx := context.Background()
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/detach", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	resp, err := client.Organizations.DetachCodeSecurityConfigurationsFromRepositories(context.Background(), "o", []int64{1})
+	resp, err := client.Organizations.DetachCodeSecurityConfigurationsFromRepositories(ctx, "o", []int64{1})
 	if err != nil {
 		t.Errorf("Organizations.DetachCodeSecurityConfigurationsFromRepositories returned error: %v", err)
 	}
@@ -161,10 +220,22 @@ func TestOrganizationsService_DetachCodeSecurityConfigurationsFromRepositories(t
 	if resp.StatusCode != want {
 		t.Errorf("Organizations.DetachCodeSecurityConfigurationsFromRepositories returned status %d, want %d", resp.StatusCode, want)
 	}
+
+	const methodName = "DetachCodeSecurityConfigurationsFromRepositories"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.DetachCodeSecurityConfigurationsFromRepositories(ctx, "\n", []int64{1})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		resp, err := client.Organizations.DetachCodeSecurityConfigurationsFromRepositories(ctx, "o", []int64{1})
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
+	ctx := context.Background()
 	client, mux, _ := setup(t)
 
 	input := &CodeSecurityConfiguration{
@@ -190,7 +261,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 		}`)
 	})
 
-	configuration, _, err := client.Organizations.UpdateCodeSecurityConfiguration(context.Background(), "o", 1, input)
+	configuration, _, err := client.Organizations.UpdateCodeSecurityConfiguration(ctx, "o", 1, input)
 	if err != nil {
 		t.Errorf("Organizations.UpdateCodeSecurityConfiguration returned error: %v", err)
 	}
@@ -199,10 +270,25 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	if !reflect.DeepEqual(configuration, want) {
 		t.Errorf("Organizations.UpdateCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
+
+	const methodName = "UpdateCodeSecurityConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.UpdateCodeSecurityConfiguration(ctx, "\n", -1, input)
+		return
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.UpdateCodeSecurityConfiguration(ctx, "o", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_DeleteCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
+	ctx := context.Background()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -210,7 +296,7 @@ func TestOrganizationsService_DeleteCodeSecurityConfiguration(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	resp, err := client.Organizations.DeleteCodeSecurityConfiguration(context.Background(), "o", 1)
+	resp, err := client.Organizations.DeleteCodeSecurityConfiguration(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.DeleteCodeSecurityConfiguration returned error: %v", err)
 	}
@@ -219,10 +305,22 @@ func TestOrganizationsService_DeleteCodeSecurityConfiguration(t *testing.T) {
 	if resp.StatusCode != want {
 		t.Errorf("Organizations.DeleteCodeSecurityConfiguration returned status %d, want %d", resp.StatusCode, want)
 	}
+
+	const methodName = "DeleteCodeSecurityConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.DeleteCodeSecurityConfiguration(ctx, "\n", -1)
+		return
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		resp, err := client.Organizations.DeleteCodeSecurityConfiguration(ctx, "o", 1)
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *testing.T) {
 	t.Parallel()
+	ctx := context.Background()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/attach", func(w http.ResponseWriter, r *http.Request) {
@@ -245,7 +343,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 		w.WriteHeader(http.StatusAccepted)
 	})
 
-	resp, err := client.Organizations.AttachCodeSecurityConfigurationsToRepositories(context.Background(), "o", int64(1), "selected", []int64{5, 20})
+	resp, err := client.Organizations.AttachCodeSecurityConfigurationsToRepositories(ctx, "o", int64(1), "selected", []int64{5, 20})
 	if err != nil {
 		t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories returned error: %v", err)
 	}
@@ -254,10 +352,22 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 	if resp.StatusCode != want {
 		t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories returned status %d, want %d", resp.StatusCode, want)
 	}
+
+	const methodName = "AttachCodeSecurityConfigurationsToRepositories"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.AttachCodeSecurityConfigurationsToRepositories(ctx, "\n", -1, "", nil)
+		return
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		resp, err := client.Organizations.AttachCodeSecurityConfigurationsToRepositories(ctx, "o", 1, "selected", []int64{5, 20})
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
+	ctx := context.Background()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/defaults", func(w http.ResponseWriter, r *http.Request) {
@@ -274,7 +384,7 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 		}`)
 		w.WriteHeader(http.StatusOK)
 	})
-	got, resp, err := client.Organizations.SetDefaultCodeSecurityConfiguration(context.Background(), "o", 1, "all")
+	got, resp, err := client.Organizations.SetDefaultCodeSecurityConfiguration(ctx, "o", 1, "all")
 	if err != nil {
 		t.Errorf("Organizations.SetDefaultCodeSecurityConfiguration returned error: %v", err)
 	}
@@ -291,10 +401,25 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Organizations.SetDefaultCodeSecurityConfiguration returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "SetDefaultCodeSecurityConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.SetDefaultCodeSecurityConfiguration(ctx, "\n", -1, "")
+		return
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.SetDefaultCodeSecurityConfiguration(ctx, "o", 1, "all")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_GetRepositoriesForCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
+	ctx := context.Background()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -310,7 +435,7 @@ func TestOrganizationsService_GetRepositoriesForCodeSecurityConfiguration(t *tes
 		}]`)
 	})
 
-	repositories, _, err := client.Organizations.GetRepositoriesForCodeSecurityConfiguration(context.Background(), "o", 1)
+	repositories, _, err := client.Organizations.GetRepositoriesForCodeSecurityConfiguration(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.GetRepositoriesForCodeSecurityConfiguration returned error: %v", err)
 	}
@@ -322,10 +447,25 @@ func TestOrganizationsService_GetRepositoriesForCodeSecurityConfiguration(t *tes
 	if !reflect.DeepEqual(repositories, want) {
 		t.Errorf("Organizations.GetRepositoriesForCodeSecurityConfiguration returned %+v, want %+v", repositories, want)
 	}
+
+	const methodName = "GetRepositoriesForCodeSecurityConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetRepositoriesForCodeSecurityConfiguration(ctx, "\n", -1)
+		return
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetRepositoriesForCodeSecurityConfiguration(ctx, "o", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testing.T) {
 	t.Parallel()
+	ctx := context.Background()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo8/code-security-configuration", func(w http.ResponseWriter, r *http.Request) {
@@ -341,7 +481,7 @@ func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testi
 		w.WriteHeader(http.StatusOK)
 	})
 
-	rc, _, err := client.Organizations.GetCodeSecurityConfigurationForRepository(context.Background(), "o", "repo8")
+	rc, _, err := client.Organizations.GetCodeSecurityConfigurationForRepository(ctx, "o", "repo8")
 	if err != nil {
 		t.Errorf("Organizations.GetCodeSecurityConfigurationForRepository returned error: %v", err)
 	}
@@ -353,4 +493,18 @@ func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testi
 	if !reflect.DeepEqual(rc, want) {
 		t.Errorf("Organizations.GetCodeSecurityConfigurationForRepository returned %+v, want %+v", rc, want)
 	}
+
+	const methodName = "GetCodeSecurityConfigurationForRepository"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetCodeSecurityConfigurationForRepository(ctx, "\n", "\n")
+		return
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetCodeSecurityConfigurationForRepository(ctx, "o", "repo8")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
