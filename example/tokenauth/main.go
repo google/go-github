@@ -22,7 +22,7 @@ import (
 func main() {
 	fmt.Print("GitHub Token: ")
 	token, _ := term.ReadPassword(int(os.Stdin.Fd()))
-	println()
+	fmt.Println()
 
 	ctx := context.Background()
 	client := github.NewClient(nil).WithAuthToken(string(token))
