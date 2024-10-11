@@ -60,3 +60,7 @@ issues:
     # We don't run parallel integration tests
     - linters: [ paralleltest, tparallel ]
       path: '^test/integration'
+
+    # Because fmt.Sprint(reset.Unix())) is more readable than strconv.FormatInt(reset.Unix(), 10).
+    - linters: [ perfsprint]
+      text: 'fmt.Sprint.* can be replaced with faster strconv.FormatInt'
