@@ -129,7 +129,7 @@ type CreateCommitOptions struct {
 //meta:operation POST /repos/{owner}/{repo}/git/commits
 func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string, commit *Commit, opts *CreateCommitOptions) (*Commit, *Response, error) {
 	if commit == nil {
-		return nil, nil, fmt.Errorf("commit must be provided")
+		return nil, nil, errors.New("commit must be provided")
 	}
 	if opts == nil {
 		opts = &CreateCommitOptions{}
