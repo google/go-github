@@ -50,7 +50,7 @@ func (s *CodesOfConductService) List(ctx context.Context) ([]*CodeOfConduct, *Re
 
 // ListCodesOfConduct returns all codes of conduct.
 //
-// Deprecated: Use CodesOfConductService.List instead
+// Deprecated: Use CodesOfConductService.List instead.
 func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Response, error) {
 	return c.CodesOfConduct.List(ctx)
 }
@@ -81,7 +81,7 @@ func (s *CodesOfConductService) Get(ctx context.Context, key string) (*CodeOfCon
 
 // GetCodeOfConduct returns an individual code of conduct.
 //
-// Deprecated: Use CodesOfConductService.Get instead
+// Deprecated: Use CodesOfConductService.Get instead.
 func (c *Client) GetCodeOfConduct(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {
 	return c.CodesOfConduct.Get(ctx, key)
 }

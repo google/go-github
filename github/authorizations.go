@@ -15,7 +15,7 @@ import (
 // GitHub API docs: https://docs.github.com/rest/oauth/#scopes
 type Scope string
 
-// This is the set of scopes for GitHub API V3
+// This is the set of scopes for GitHub API V3.
 const (
 	ScopeNone           Scope = "(no scope)" // REVISIT: is this actually returned, or just a documentation artifact?
 	ScopeUser           Scope = "user"
