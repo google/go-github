@@ -11,6 +11,7 @@ linters:
     - gosec
     - misspell
     - nakedret
+    - perfsprint
     - paralleltest
     - stylecheck
     - tparallel
@@ -24,6 +25,9 @@ linters-settings:
       - G104
       # int(os.Stdin.Fd())
       - G115
+  perfsprint:
+    errorf: true
+    strconcat: false
 issues:
   exclude-use-default: false
   exclude-rules:

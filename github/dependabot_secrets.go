@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"strconv"
 )
 
 func (s *DependabotService) getPublicKey(ctx context.Context, url string) (*PublicKey, *Response, error) {
@@ -162,7 +163,7 @@ func (s *DependabotService) CreateOrUpdateRepoSecret(ctx context.Context, owner,
 func (s *DependabotService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *DependabotEncryptedSecret) (*Response, error) {
 	repoIDs := make([]string, len(eSecret.SelectedRepositoryIDs))
 	for i, secret := range eSecret.SelectedRepositoryIDs {
-		repoIDs[i] = fmt.Sprintf("%v", secret)
+		repoIDs[i] = strconv.FormatInt(secret, 10)
 	}
 	params := struct {
 		*DependabotEncryptedSecret

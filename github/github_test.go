@@ -1318,7 +1318,7 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	mux.HandleFunc("/first", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set(headerRateLimit, "60")
 		w.Header().Set(headerRateRemaining, "0")
-		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(headerRateReset, strconv.FormatInt(reset.Unix(), 10))
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
@@ -1378,7 +1378,7 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 		w.Header().Set("X-From-Cache", "1")
 		w.Header().Set(headerRateLimit, "60")
 		w.Header().Set(headerRateRemaining, "0")
-		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(headerRateReset, strconv.FormatInt(reset.Unix(), 10))
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
@@ -1425,7 +1425,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 			firstRequest = false
 			w.Header().Set(headerRateLimit, "60")
 			w.Header().Set(headerRateRemaining, "0")
-			w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+			w.Header().Set(headerRateReset, strconv.FormatInt(reset.Unix(), 10))
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			w.WriteHeader(http.StatusForbidden)
 			fmt.Fprintln(w, `{
@@ -1436,7 +1436,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 		}
 		w.Header().Set(headerRateLimit, "5000")
 		w.Header().Set(headerRateRemaining, "5000")
-		w.Header().Set(headerRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(headerRateReset, strconv.FormatInt(reset.Add(time.Hour).Unix(), 10))
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
@@ -1465,7 +1465,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 		requestCount++
 		w.Header().Set(headerRateLimit, "60")
 		w.Header().Set(headerRateRemaining, "0")
-		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(headerRateReset, strconv.FormatInt(reset.Unix(), 10))
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
@@ -1497,7 +1497,7 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 		requestCount++
 		w.Header().Set(headerRateLimit, "5000")
 		w.Header().Set(headerRateRemaining, "5000")
-		w.Header().Set(headerRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(headerRateReset, strconv.FormatInt(reset.Add(time.Hour).Unix(), 10))
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
@@ -1528,7 +1528,7 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 		requestCount++
 		w.Header().Set(headerRateLimit, "60")
 		w.Header().Set(headerRateRemaining, "0")
-		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(headerRateReset, strconv.FormatInt(reset.Unix(), 10))
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
@@ -1561,7 +1561,7 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 		requestCount++
 		w.Header().Set(headerRateLimit, "5000")
 		w.Header().Set(headerRateRemaining, "5000")
-		w.Header().Set(headerRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(headerRateReset, strconv.FormatInt(reset.Add(time.Hour).Unix(), 10))
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
