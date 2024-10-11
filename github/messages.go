@@ -114,9 +114,9 @@ var (
 		"workflow_job":                   &WorkflowJobEvent{},
 		"workflow_run":                   &WorkflowRunEvent{},
 	}
-	// forward mapping of event types to the string names of the structs
+	// Forward mapping of event types to the string names of the structs.
 	messageToTypeName = make(map[string]string, len(eventTypeMapping))
-	// Inverse map of the above
+	// Inverse map of the above.
 	typeToMessageMapping = make(map[string]string, len(eventTypeMapping))
 )
 

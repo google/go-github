@@ -212,7 +212,7 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	testNewRequestAndDoFailureCategory(t, methodName, client, CoreCategory, f)
 }
 
-// testNewRequestAndDoFailureCategory works Like testNewRequestAndDoFailure, but allows setting the category
+// testNewRequestAndDoFailureCategory works Like testNewRequestAndDoFailure, but allows setting the category.
 func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client *Client, category RateLimitCategory, f func() (*Response, error)) {
 	t.Helper()
 	if methodName == "" {
@@ -1235,7 +1235,7 @@ func TestDo_rateLimitCategory(t *testing.T) {
 	}
 }
 
-// ensure rate limit is still parsed, even for error responses
+// Ensure rate limit is still parsed, even for error responses.
 func TestDo_rateLimit_errorResponse(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -2265,7 +2265,7 @@ func TestAcceptedError_Is(t *testing.T) {
 	}
 }
 
-// ensure that we properly handle API errors that do not contain a response body
+// Ensure that we properly handle API errors that do not contain a response body.
 func TestCheckResponse_noBody(t *testing.T) {
 	t.Parallel()
 	res := &http.Response{

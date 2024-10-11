@@ -738,7 +738,7 @@ func (s *RepositoriesService) Delete(ctx context.Context, owner, repo string) (*
 	return s.client.Do(ctx, req, nil)
 }
 
-// Contributor represents a repository contributor
+// Contributor represents a repository contributor.
 type Contributor struct {
 	Login             *string `json:"login,omitempty"`
 	ID                *int64  `json:"id,omitempty"`
@@ -998,7 +998,7 @@ func (s *RepositoriesService) ListTags(ctx context.Context, owner string, repo s
 	return tags, resp, nil
 }
 
-// Branch represents a repository branch
+// Branch represents a repository branch.
 type Branch struct {
 	Name      *string           `json:"name,omitempty"`
 	Commit    *RepositoryCommit `json:"commit,omitempty"`

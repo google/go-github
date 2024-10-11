@@ -1595,7 +1595,7 @@ func Int64(v int64) *int64 { return &v }
 // to store v and returns a pointer to it.
 func String(v string) *string { return &v }
 
-// roundTripperFunc creates a RoundTripper (transport)
+// roundTripperFunc creates a RoundTripper (transport).
 type roundTripperFunc func(*http.Request) (*http.Response, error)
 
 func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {

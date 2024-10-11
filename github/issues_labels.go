@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// Label represents a GitHub label on an Issue
+// Label represents a GitHub label on an Issue.
 type Label struct {
 	ID          *int64  `json:"id,omitempty"`
 	URL         *string `json:"url,omitempty"`

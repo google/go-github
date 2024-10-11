@@ -126,7 +126,7 @@ func TestOrganizationsService_IsMember(t *testing.T) {
 	})
 }
 
-// ensure that a 404 response is interpreted as "false" and not an error
+// Ensure that a 404 response is interpreted as "false" and not an error.
 func TestOrganizationsService_IsMember_notMember(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -146,8 +146,8 @@ func TestOrganizationsService_IsMember_notMember(t *testing.T) {
 	}
 }
 
-// ensure that a 400 response is interpreted as an actual error, and not simply
-// as "false" like the above case of a 404
+// Ensure that a 400 response is interpreted as an actual error, and not simply
+// as "false" like the above case of a 404.
 func TestOrganizationsService_IsMember_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -209,7 +209,7 @@ func TestOrganizationsService_IsPublicMember(t *testing.T) {
 	})
 }
 
-// ensure that a 404 response is interpreted as "false" and not an error
+// Ensure that a 404 response is interpreted as "false" and not an error.
 func TestOrganizationsService_IsPublicMember_notMember(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -229,8 +229,8 @@ func TestOrganizationsService_IsPublicMember_notMember(t *testing.T) {
 	}
 }
 
-// ensure that a 400 response is interpreted as an actual error, and not simply
-// as "false" like the above case of a 404
+// Ensure that a 400 response is interpreted as an actual error, and not simply
+// as "false" like the above case of a 404.
 func TestOrganizationsService_IsPublicMember_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

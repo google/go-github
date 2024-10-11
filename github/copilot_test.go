@@ -16,7 +16,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-// Test invalid JSON responses, valid responses are covered in the other tests
+// Test invalid JSON responses, valid responses are covered in the other tests.
 func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 	t.Parallel()
 	tests := []struct {

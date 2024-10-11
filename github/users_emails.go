@@ -7,7 +7,7 @@ package github
 
 import "context"
 
-// UserEmail represents user's email address
+// UserEmail represents user's email address.
 type UserEmail struct {
 	Email      *string `json:"email,omitempty"`
 	Primary    *bool   `json:"primary,omitempty"`

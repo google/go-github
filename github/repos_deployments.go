@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-// Deployment represents a deployment in a repo
+// Deployment represents a deployment in a repo.
 type Deployment struct {
 	URL           *string         `json:"url,omitempty"`
 	ID            *int64          `json:"id,omitempty"`
@@ -30,7 +30,7 @@ type Deployment struct {
 	NodeID        *string         `json:"node_id,omitempty"`
 }
 
-// DeploymentRequest represents a deployment request
+// DeploymentRequest represents a deployment request.
 type DeploymentRequest struct {
 	Ref                   *string     `json:"ref,omitempty"`
 	Task                  *string     `json:"task,omitempty"`
@@ -171,7 +171,7 @@ type DeploymentStatus struct {
 	URL            *string    `json:"url,omitempty"`
 }
 
-// DeploymentStatusRequest represents a deployment request
+// DeploymentStatusRequest represents a deployment request.
 type DeploymentStatusRequest struct {
 	State          *string `json:"state,omitempty"`
 	LogURL         *string `json:"log_url,omitempty"`
