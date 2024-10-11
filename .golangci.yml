@@ -11,6 +11,7 @@ linters:
     - gosec
     - misspell
     - nakedret
+    - perfsprint
     - paralleltest
     - stylecheck
     - tparallel
@@ -24,6 +25,9 @@ linters-settings:
       - G104
       # int(os.Stdin.Fd())
       - G115
+  perfsprint:
+    errorf: true
+    strconcat: false
 issues:
   exclude-use-default: false
   exclude-rules:
@@ -56,3 +60,7 @@ issues:
     # We don't run parallel integration tests
     - linters: [ paralleltest, tparallel ]
       path: '^test/integration'
+
+    # Because fmt.Sprint(reset.Unix())) is more readable than strconv.FormatInt(reset.Unix(), 10).
+    - linters: [ perfsprint]
+      text: 'fmt.Sprint.* can be replaced with faster strconv.FormatInt'
