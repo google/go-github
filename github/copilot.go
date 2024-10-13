@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 )
@@ -123,7 +124,7 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 		}
 
 		if v["type"] == nil {
-			return fmt.Errorf("assignee type field is not set")
+			return errors.New("assignee type field is not set")
 		}
 
 		if t, ok := v["type"].(string); ok && t == "User" {

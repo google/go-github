@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -402,7 +403,7 @@ func TestGitService_createSignature_signerError(t *testing.T) {
 		Author:  &CommitAuthor{Name: String("go-github")},
 	}
 
-	signer := mockSigner(t, "", fmt.Errorf("signer error"), "")
+	signer := mockSigner(t, "", errors.New("signer error"), "")
 	_, err := createSignature(signer, a)
 
 	if err == nil {
