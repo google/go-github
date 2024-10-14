@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -27,9 +28,9 @@ func setup(t *testing.T) (client *Client, mux *http.ServeMux) {
 
 func copyTestFile(t *testing.T, w io.Writer, filename string) {
 	t.Helper()
-	f, err := os.Open("testdata/" + filename)
+	f, err := os.Open(filepath.Join("testdata", filename))
 	if err != nil {
-		t.Errorf("unable to open test file: %v", err)
+		t.Fatalf("unable to open test file: %v", err)
 	}
 	_, err = io.Copy(w, f)
 	if err != nil {
