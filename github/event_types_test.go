@@ -9614,7 +9614,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 					HRef: String("href"),
 				},
 			},
-			Conditions: (*json.RawMessage)(&jsonMsg),
+			Conditions: json.RawMessage(jsonMsg),
 			Rules: []*RepositoryRulesetRule{
 				{
 					Creation: &RepositoryRulesetRuleType{
@@ -9811,10 +9811,10 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 								From: String("t"),
 							},
 							Include: &RepositoryRulesetEditedSources{
-								From: []*string{String("from")},
+								From: []string{"from"},
 							},
 							Exclude: &RepositoryRulesetEditedSources{
-								From: []*string{String("to")},
+								From: []string{"to"},
 							},
 						},
 					},
@@ -10284,13 +10284,13 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 						},
 						Changes: &RepositoryRulesetEditedRuleChanges{
 							Configuration: &RepositoryRulesetEditedSources{
-								From: []*string{String("from")},
+								From: []string{"from"},
 							},
 							RuleType: &RepositoryRulesetEditedSources{
-								From: []*string{String("from")},
+								From: []string{"from"},
 							},
 							Pattern: &RepositoryRulesetEditedSources{
-								From: []*string{String("from")},
+								From: []string{"from"},
 							},
 						},
 					},

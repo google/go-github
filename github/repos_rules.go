@@ -183,7 +183,7 @@ type RepositoryRulesetEditedSource struct {
 
 // RepositoryRulesetEditedSources represents multiple source changes for the ruleset.
 type RepositoryRulesetEditedSources struct {
-	From []*string `json:"from,omitempty"`
+	From []string `json:"from,omitempty"`
 }
 
 // RepositoryRulesetEditedConditions holds changes to conditions in a ruleset.
@@ -248,7 +248,7 @@ type RepositoryRuleset struct {
 	CurrentUserCanBypass *string                  `json:"current_user_can_bypass,omitempty"`
 	NodeID               *string                  `json:"node_id,omitempty"`
 	Links                *RepositoryRulesetLink   `json:"_links,omitempty"`
-	Conditions           *json.RawMessage         `json:"conditions,omitempty"`
+	Conditions           json.RawMessage          `json:"conditions,omitempty"`
 	Rules                []*RepositoryRulesetRule `json:"rules,omitempty"`
 	CreatedAt            *Timestamp               `json:"created_at,omitempty"`
 	UpdatedAt            *Timestamp               `json:"updated_at,omitempty"`
@@ -279,7 +279,7 @@ type RepositoryRulesetRule struct {
 	CodeScanning             *RepositoryRulesetCodeScanningRule             `json:"code_scanning,omitempty"`
 }
 
-// RepositoryRulesetLink represents Links assosiated with a repository's rulesets. These links are used to provide more information about the ruleset
+// RepositoryRulesetLink represents Links associated with a repository's rulesets. These links are used to provide more information about the ruleset
 type RepositoryRulesetLink struct {
 	Self *RulesetLink `json:"self,omitempty"`
 	HTML *RulesetLink `json:"html,omitempty"`
@@ -378,7 +378,7 @@ type RepositoryRulesetCodeScanningRule struct {
 
 // RuleCodeScanningParameters defines parameters for code scanning rules.
 type RuleCodeScanningParameters struct {
-	CodeScanningTools []CodeScanningTool `json:"code_scanning_tools"`
+	CodeScanningTools []CodeScanningTool `json:"code_scanning_tools,omitempty"`
 }
 
 // CodeScanningTool defines a specific tool used for code scanning.

@@ -23913,16 +23913,6 @@ func TestRepositoryRule_GetParameters(tt *testing.T) {
 	r.GetParameters()
 }
 
-func TestRepositoryRuleset_GetConditions(tt *testing.T) {
-	var zeroValue json.RawMessage
-	r := &RepositoryRuleset{Conditions: &zeroValue}
-	r.GetConditions()
-	r = &RepositoryRuleset{}
-	r.GetConditions()
-	r = nil
-	r.GetConditions()
-}
-
 func TestRepositoryRuleset_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	r := &RepositoryRuleset{CreatedAt: &zeroValue}

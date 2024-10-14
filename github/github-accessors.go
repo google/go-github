@@ -20606,14 +20606,6 @@ func (r *RepositoryRule) GetParameters() json.RawMessage {
 	return *r.Parameters
 }
 
-// GetConditions returns the Conditions field if it's non-nil, zero value otherwise.
-func (r *RepositoryRuleset) GetConditions() json.RawMessage {
-	if r == nil || r.Conditions == nil {
-		return json.RawMessage{}
-	}
-	return *r.Conditions
-}
-
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (r *RepositoryRuleset) GetCreatedAt() Timestamp {
 	if r == nil || r.CreatedAt == nil {
