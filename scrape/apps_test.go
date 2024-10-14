@@ -40,7 +40,7 @@ func Test_AppRestrictionsEnabled(t *testing.T) {
 
 			got, err := client.AppRestrictionsEnabled("o")
 			if err != nil {
-				t.Errorf("AppRestrictionsEnabled returned err: %v", err)
+				t.Fatalf("AppRestrictionsEnabled returned err: %v", err)
 			}
 			if want := tt.want; got != want {
 				t.Errorf("AppRestrictionsEnabled returned %t, want %t", got, want)
@@ -59,7 +59,7 @@ func Test_ListOAuthApps(t *testing.T) {
 
 	got, err := client.ListOAuthApps("e")
 	if err != nil {
-		t.Errorf("ListOAuthApps(e) returned err: %v", err)
+		t.Fatalf("ListOAuthApps(e) returned err: %v", err)
 	}
 	want := []OAuthApp{
 		{
