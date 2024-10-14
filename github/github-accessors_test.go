@@ -5573,6 +5573,17 @@ func TestCopilotSeatDetails_GetPendingCancellationDate(tt *testing.T) {
 	c.GetPendingCancellationDate()
 }
 
+func TestCopilotSeatDetails_GetPlanType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSeatDetails{PlanType: &zeroValue}
+	c.GetPlanType()
+	c = &CopilotSeatDetails{}
+	c.GetPlanType()
+	c = nil
+	c.GetPlanType()
+}
+
 func TestCopilotSeatDetails_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -5582,6 +5593,28 @@ func TestCopilotSeatDetails_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 	c = nil
 	c.GetUpdatedAt()
+}
+
+func TestCopilotUsageSummaryListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue time.Time
+	c := &CopilotUsageSummaryListOptions{Since: &zeroValue}
+	c.GetSince()
+	c = &CopilotUsageSummaryListOptions{}
+	c.GetSince()
+	c = nil
+	c.GetSince()
+}
+
+func TestCopilotUsageSummaryListOptions_GetUntil(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue time.Time
+	c := &CopilotUsageSummaryListOptions{Until: &zeroValue}
+	c.GetUntil()
+	c = &CopilotUsageSummaryListOptions{}
+	c.GetUntil()
+	c = nil
+	c.GetUntil()
 }
 
 func TestCreateCheckRunOptions_GetCompletedAt(tt *testing.T) {
