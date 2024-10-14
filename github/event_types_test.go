@@ -9759,7 +9759,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 					CodeScanning: &RepositoryRulesetCodeScanningRule{
 						Type: "code_scanning",
 						Parameters: &RuleCodeScanningParameters{
-							CodeScanningTools: []CodeScanningTool{{
+							CodeScanningTools: []*CodeScanningTool{{
 								AlertsThreshold:         "alert",
 								SecurityAlertsThreshold: "security",
 								Tool:                    "tool",
@@ -9966,7 +9966,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 						CodeScanning: &RepositoryRulesetCodeScanningRule{
 							Type: "code_scanning",
 							Parameters: &RuleCodeScanningParameters{
-								CodeScanningTools: []CodeScanningTool{{
+								CodeScanningTools: []*CodeScanningTool{{
 									AlertsThreshold:         "alert",
 									SecurityAlertsThreshold: "security",
 									Tool:                    "tool",
@@ -10120,7 +10120,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 						CodeScanning: &RepositoryRulesetCodeScanningRule{
 							Type: "code_scanning",
 							Parameters: &RuleCodeScanningParameters{
-								CodeScanningTools: []CodeScanningTool{{
+								CodeScanningTools: []*CodeScanningTool{{
 									AlertsThreshold:         "alert",
 									SecurityAlertsThreshold: "security",
 									Tool:                    "tool",
@@ -10274,7 +10274,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 							CodeScanning: &RepositoryRulesetCodeScanningRule{
 								Type: "code_scanning",
 								Parameters: &RuleCodeScanningParameters{
-									CodeScanningTools: []CodeScanningTool{{
+									CodeScanningTools: []*CodeScanningTool{{
 										AlertsThreshold:         "alert",
 										SecurityAlertsThreshold: "security",
 										Tool:                    "tool",

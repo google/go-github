@@ -378,7 +378,7 @@ type RepositoryRulesetCodeScanningRule struct {
 
 // RuleCodeScanningParameters defines parameters for code scanning rules.
 type RuleCodeScanningParameters struct {
-	CodeScanningTools []CodeScanningTool `json:"code_scanning_tools,omitempty"`
+	CodeScanningTools []*CodeScanningTool `json:"code_scanning_tools,omitempty"`
 }
 
 // CodeScanningTool defines a specific tool used for code scanning.
