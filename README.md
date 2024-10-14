@@ -9,7 +9,8 @@
 
 go-github is a Go client library for accessing the [GitHub API v3][].
 
-Currently, **go-github tests against Go version 1.22 and greater**.  go-github tracks
+**go-github requires Go version 1.17 and greater** and
+the library is tested against Go version 1.22 and greater.  go-github tracks
 [Go's version support policy][support-policy].  We do our best not to break
 older versions of Go if we don't have to, but due to tooling constraints, we
 don't always test older versions.
