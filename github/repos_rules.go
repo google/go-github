@@ -168,6 +168,7 @@ type RepositoryRule struct {
 	RulesetID         int64            `json:"ruleset_id"`
 }
 
+// RepositoryRulesetEditedChanges represents  the changes made to a repository ruleset
 type RepositoryRulesetEditedChanges struct {
 	Name        *RepositoryRulesetEditedSource     `json:"name,omitempty"`
 	Enforcement *RepositoryRulesetEditedSource     `json:"enforcement,omitempty"`
@@ -175,35 +176,42 @@ type RepositoryRulesetEditedChanges struct {
 	Rules       *RepositoryRulesetEditedRules      `json:"rules,omitempty"`
 }
 
+// RepositoryRulesetEditedSource represents a source change for the ruleset.
 type RepositoryRulesetEditedSource struct {
 	From *string `json:"from,omitempty"`
 }
 
+// RepositoryRulesetEditedSources represents multiple source changes for the ruleset.
 type RepositoryRulesetEditedSources struct {
 	From []*string `json:"from,omitempty"`
 }
 
+// RepositoryRulesetEditedConditions holds changes to conditions in a ruleset.
 type RepositoryRulesetEditedConditions struct {
 	Added   []*RepositoryRulesetRefCondition            `json:"added,omitempty"`
 	Deleted []*RepositoryRulesetRefCondition            `json:"deleted,omitempty"`
 	Updated []*RepositoryRulesetEditedUpdatedConditions `json:"updated,omitempty"`
 }
 
+// RepositoryRulesetEditedRules holds changes to rules in a ruleset.
 type RepositoryRulesetEditedRules struct {
 	Added   []*RepositoryRulesetRule         `json:"added,omitempty"`
 	Deleted []*RepositoryRulesetRule         `json:"deleted,omitempty"`
 	Updated []*RepositoryRulesetUpdatedRules `json:"updated,omitempty"`
 }
 
+// RepositoryRulesetRefCondition represents a reference condition for the ruleset.
 type RepositoryRulesetRefCondition struct {
 	RefName *RulesetRefConditionParameters `json:"ref_name,omitempty"`
 }
 
+// RepositoryRulesetEditedUpdatedConditions holds updates to conditions in a ruleset.
 type RepositoryRulesetEditedUpdatedConditions struct {
 	Condition *RepositoryRulesetRefCondition            `json:"condition,omitempty"`
 	Changes   *RepositoryRulesetUpdatedConditionsEdited `json:"changes,omitempty"`
 }
 
+// RepositoryRulesetUpdatedConditionsEdited holds the edited updates to conditions in a ruleset.
 type RepositoryRulesetUpdatedConditionsEdited struct {
 	ConditionType *RepositoryRulesetEditedSource  `json:"condition_type,omitempty"`
 	Target        *RepositoryRulesetEditedSource  `json:"target,omitempty"`
@@ -211,16 +219,20 @@ type RepositoryRulesetUpdatedConditionsEdited struct {
 	Exclude       *RepositoryRulesetEditedSources `json:"exclude,omitempty"`
 }
 
+// RepositoryRulesetUpdatedRules holds updates to rules in a ruleset.
 type RepositoryRulesetUpdatedRules struct {
 	Rule    *RepositoryRulesetRule              `json:"rule,omitempty"`
 	Changes *RepositoryRulesetEditedRuleChanges `json:"changes,omitempty"`
 }
 
+// RepositoryRulesetEditedRuleChanges holds changes made to a rule in a ruleset.
 type RepositoryRulesetEditedRuleChanges struct {
 	Configuration *RepositoryRulesetEditedSources `json:"configuration,omitempty"`
 	RuleType      *RepositoryRulesetEditedSources `json:"rule_type,omitempty"`
 	Pattern       *RepositoryRulesetEditedSources `json:"pattern,omitempty"`
 }
+
+// RepositoryRuleset represents the structure of a ruleset associated with a GitHub repository.
 type RepositoryRuleset struct {
 	ID   int64  `json:"id"`
 	Name string `json:"name"`
@@ -242,6 +254,7 @@ type RepositoryRuleset struct {
 	UpdatedAt            *Timestamp               `json:"updated_at,omitempty"`
 }
 
+// RepositoryRulesetRule represents indivisual rules which are present in a repository's ruleset
 type RepositoryRulesetRule struct {
 	Creation                 *RepositoryRulesetRuleType                     `json:"creation,omitempty"`
 	Update                   *RepositoryRulesetUpdateRule                   `json:"update,omitempty"`
@@ -265,33 +278,40 @@ type RepositoryRulesetRule struct {
 	Workflows                *RepositoryRulesetWorkflowsRule                `json:"workflows,omitempty"`
 	CodeScanning             *RepositoryRulesetCodeScanningRule             `json:"code_scanning,omitempty"`
 }
+
+// RepositoryRulesetLink represents Links assosiated with a repository's rulesets. These links are used to provide more information about the ruleset
 type RepositoryRulesetLink struct {
 	Self *RulesetLink `json:"self,omitempty"`
 	HTML *RulesetLink `json:"html,omitempty"`
 }
 
+// RepositoryRulesetRuleType represents the type of a ruleset rule.
 type RepositoryRulesetRuleType struct {
 	Type string `json:"type"`
 }
 
+// RepositoryRulesetUpdateRule defines an update rule for the repository.
 type RepositoryRulesetUpdateRule struct {
 	//Value for Type: "update"
 	Type       string                                   `json:"type"`
 	Parameters *UpdateAllowsFetchAndMergeRuleParameters `json:"parameters,omitempty"`
 }
 
+// RepositoryRulesetMergeQueueRule defines a merge queue rule for the repository.
 type RepositoryRulesetMergeQueueRule struct {
 	//Value for Type: "merge_queue"
 	Type       string                    `json:"type"`
 	Parameters *MergeQueueRuleParameters `json:"parameters,omitempty"`
 }
 
+// RepositoryRulesetRequireDeploymentsRule defines a rule for required deployments.
 type RepositoryRulesetRequireDeploymentsRule struct {
 	//Value for Type: "required_deployments"
 	Type       string                                        `json:"type"`
 	Parameters *RequiredDeploymentEnvironmentsRuleParameters `json:"parameters,omitempty"`
 }
 
+// RepositoryRulesetPullRequestRule defines a rule for pull requests.
 type RepositoryRulesetPullRequestRule struct {
 	//Value for Type: "pull_request"
 
@@ -299,6 +319,7 @@ type RepositoryRulesetPullRequestRule struct {
 	Parameters *PullRequestRuleParameters `json:"parameters,omitempty"`
 }
 
+// RepositoryRulesetRequiredStatusChecksRule defines a rule for required status checks.
 type RepositoryRulesetRequiredStatusChecksRule struct {
 	//Value for Type: "required_status_checks"
 
@@ -306,17 +327,20 @@ type RepositoryRulesetRequiredStatusChecksRule struct {
 	Parameters *RequiredStatusChecksRuleParameters `json:"parameters,omitempty"`
 }
 
+// RepositoryRulesetPatternRule defines a pattern rule for the repository.
 type RepositoryRulesetPatternRule struct {
 	Type       string                 `json:"type"`
 	Parameters *RulePatternParameters `json:"parameters,omitempty"`
 }
 
+// RepositoryRulesetFilePathRestrictionRule defines a file path restriction rule for the repository.
 type RepositoryRulesetFilePathRestrictionRule struct {
 	//Value for Type: "file_path_restriction"
 	Type       string              `json:"type"`
 	Parameters *RuleFileParameters `json:"parameters,omitempty"`
 }
 
+// RepositoryRulesetMaxFilePathLengthRule defines a maximum file path length rule for the repository.
 type RepositoryRulesetMaxFilePathLengthRule struct {
 	//Value for Type: "max_file_path_length"
 
@@ -324,34 +348,40 @@ type RepositoryRulesetMaxFilePathLengthRule struct {
 	Parameters *RuleMaxFilePathLengthParameters `json:"parameters,omitempty"`
 }
 
+// RepositoryRulesetFileExtensionRestrictionRule defines a file extension restriction rule for the repository.
 type RepositoryRulesetFileExtensionRestrictionRule struct {
 	//Value for Type: "file_extension_restriction"
 	Type       string                                  `json:"type"`
 	Parameters *RuleFileExtensionRestrictionParameters `json:"parameters,omitempty"`
 }
 
+// RepositoryRulesetMaxFileSizeRule defines a maximum file size rule for the repository.
 type RepositoryRulesetMaxFileSizeRule struct {
 	//Value for Type: "max_file_size"
 	Type       string                     `json:"type"`
 	Parameters *RuleMaxFileSizeParameters `json:"parameters,omitempty"`
 }
 
+// RepositoryRulesetWorkflowsRule defines a workflow rule for the repository.
 type RepositoryRulesetWorkflowsRule struct {
 	//Value for Type: "workflows"
 	Type       string                           `json:"type"`
 	Parameters *RequiredWorkflowsRuleParameters `json:"parameters,omitempty"`
 }
 
+// RepositoryRulesetCodeScanningRule defines a code scanning rule for the repository.
 type RepositoryRulesetCodeScanningRule struct {
 	//Value for Type:"code_scanning"
 	Type       string                      `json:"type"`
 	Parameters *RuleCodeScanningParameters `json:"parameters,omitempty"`
 }
 
+// RuleCodeScanningParameters defines parameters for code scanning rules.
 type RuleCodeScanningParameters struct {
 	CodeScanningTools []CodeScanningTool `json:"code_scanning_tools"`
 }
 
+// CodeScanningTool defines a specific tool used for code scanning.
 type CodeScanningTool struct {
 	AlertsThreshold         string `json:"alerts_threshold"`
 	SecurityAlertsThreshold string `json:"security_alerts_threshold"`

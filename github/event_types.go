@@ -1505,7 +1505,7 @@ type RepositoryImportEvent struct {
 	Sender *User         `json:"sender,omitempty"`
 }
 
-// RepositoryRulesetEvent triggers whenever there is a change to the repository's ruleset configuration. 
+// RepositoryRulesetEvent triggers whenever there is a change to the repository's ruleset configuration.
 // This can include updates to protection rules, required status checks, code owners, or other related configurations.
 // GitHub API docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#repository_ruleset
 type RepositoryRulesetEvent struct {
