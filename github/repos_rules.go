@@ -306,7 +306,7 @@ type RepositoryRulesetMergeQueueRule struct {
 
 // RepositoryRulesetRequireDeploymentsRule defines a rule for required deployments.
 type RepositoryRulesetRequireDeploymentsRule struct {
-	//Type can be one of: "required_deployments".
+	// Type can be one of: "required_deployments".
 	Type       string                                        `json:"type"`
 	Parameters *RequiredDeploymentEnvironmentsRuleParameters `json:"parameters,omitempty"`
 }
