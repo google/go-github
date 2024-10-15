@@ -238,7 +238,7 @@ type RepositoryRuleset struct {
 	Name string `json:"name"`
 	// Possible values for target: "branch", "tag", "push"
 	Target *string `json:"target,omitempty"`
-	//Possible values for source type: "Repository", "Organization"
+	// Possible values for source type: "Repository", "Organization"
 	SourceType *string `json:"source_type,omitempty"`
 	Source     string  `json:"source"`
 	// Possible values for enforcement: "disabled", "active", "evaluate"
