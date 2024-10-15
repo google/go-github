@@ -9507,6 +9507,7 @@ func TestReleaseEvent_Marshal(t *testing.T) {
 }
 
 func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryRulesetEvent{}, "{}")
 
 	l := make(map[string]interface{})
