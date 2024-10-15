@@ -16,6 +16,7 @@ import (
 )
 
 func TestMigrationService_StartImport(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Import{
@@ -64,6 +65,7 @@ func TestMigrationService_StartImport(t *testing.T) {
 }
 
 func TestMigrationService_ImportProgress(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
@@ -97,6 +99,7 @@ func TestMigrationService_ImportProgress(t *testing.T) {
 }
 
 func TestMigrationService_UpdateImport(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Import{
@@ -145,6 +148,7 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 }
 
 func TestMigrationService_CommitAuthors(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/import/authors", func(w http.ResponseWriter, r *http.Request) {
@@ -181,6 +185,7 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 }
 
 func TestMigrationService_MapCommitAuthor(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &SourceImportAuthor{Name: String("n"), Email: String("e")}
@@ -223,6 +228,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 }
 
 func TestMigrationService_SetLFSPreference(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Import{UseLFS: String("opt_in")}
@@ -266,6 +272,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 }
 
 func TestMigrationService_LargeFiles(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/import/large_files", func(w http.ResponseWriter, r *http.Request) {
@@ -302,6 +309,7 @@ func TestMigrationService_LargeFiles(t *testing.T) {
 }
 
 func TestMigrationService_CancelImport(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
@@ -327,6 +335,7 @@ func TestMigrationService_CancelImport(t *testing.T) {
 }
 
 func TestLargeFile_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &LargeFile{}, "{}")
 
 	u := &LargeFile{
@@ -347,6 +356,7 @@ func TestLargeFile_Marshal(t *testing.T) {
 }
 
 func TestSourceImportAuthor_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SourceImportAuthor{}, "{}")
 
 	u := &SourceImportAuthor{
@@ -373,6 +383,7 @@ func TestSourceImportAuthor_Marshal(t *testing.T) {
 }
 
 func TestImport_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Import{}, "{}")
 
 	u := &Import{

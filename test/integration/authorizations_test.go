@@ -4,7 +4,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build integration
-// +build integration
 
 package integration
 
@@ -15,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-github/v65/github"
+	"github.com/google/go-github/v66/github"
 )
 
 const msgEnvMissing = "Skipping test because the required environment variable (%v) is not present."

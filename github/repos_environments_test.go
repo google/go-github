@@ -16,6 +16,7 @@ import (
 )
 
 func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
 	var testCases = map[string]struct {
 		data      []byte
 		wantRule  []*RequiredReviewer
@@ -69,7 +70,9 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 	}
 
 	for name, test := range testCases {
+		test := test
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			rule := []*RequiredReviewer{}
 			err := json.Unmarshal(test.data, &rule)
 			if err != nil && !test.wantError {
@@ -86,6 +89,7 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 }
 
 func TestCreateUpdateEnvironment_MarshalJSON(t *testing.T) {
+	t.Parallel()
 	cu := &CreateUpdateEnvironment{}
 
 	got, err := cu.MarshalJSON()
@@ -100,6 +104,7 @@ func TestCreateUpdateEnvironment_MarshalJSON(t *testing.T) {
 }
 
 func TestRepositoriesService_ListEnvironments(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments", func(w http.ResponseWriter, r *http.Request) {
@@ -139,6 +144,7 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 }
 
 func TestRepositoriesService_GetEnvironment(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
@@ -173,6 +179,7 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateEnvironment(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &CreateUpdateEnvironment{
@@ -218,6 +225,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &CreateUpdateEnvironment{}
@@ -253,6 +261,7 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 }
 
 func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &CreateUpdateEnvironment{
@@ -320,6 +329,7 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteEnvironment(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
@@ -344,6 +354,7 @@ func TestRepositoriesService_DeleteEnvironment(t *testing.T) {
 }
 
 func TestRepoEnvironment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EnvResponse{}, "{}")
 
 	repoEnv := &EnvResponse{
@@ -432,6 +443,7 @@ func TestRepoEnvironment_Marshal(t *testing.T) {
 }
 
 func TestEnvReviewers_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EnvReviewers{}, "{}")
 
 	repoEnv := &EnvReviewers{
@@ -448,6 +460,7 @@ func TestEnvReviewers_Marshal(t *testing.T) {
 }
 
 func TestEnvironment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Environment{}, "{}")
 
 	repoEnv := &Environment{
@@ -526,6 +539,7 @@ func TestEnvironment_Marshal(t *testing.T) {
 }
 
 func TestBranchPolicy_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &BranchPolicy{}, "{}")
 
 	bp := &BranchPolicy{

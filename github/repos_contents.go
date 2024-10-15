@@ -62,7 +62,7 @@ type RepositoryContentFileOptions struct {
 }
 
 // RepositoryContentGetOptions represents an optional ref parameter, which can be a SHA,
-// branch, or tag
+// branch, or tag.
 type RepositoryContentGetOptions struct {
 	Ref string `url:"ref,omitempty"`
 }

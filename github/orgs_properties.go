@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -42,7 +43,7 @@ type RepoCustomPropertyValue struct {
 // CustomPropertyValue represents a custom property value.
 type CustomPropertyValue struct {
 	PropertyName string      `json:"property_name"`
-	Value        interface{} `json:"value,omitempty"`
+	Value        interface{} `json:"value"`
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
@@ -69,7 +70,7 @@ func (cpv *CustomPropertyValue) UnmarshalJSON(data []byte) error {
 			if str, ok := item.(string); ok {
 				strSlice[i] = str
 			} else {
-				return fmt.Errorf("non-string value in string array")
+				return errors.New("non-string value in string array")
 			}
 		}
 		cpv.Value = strSlice

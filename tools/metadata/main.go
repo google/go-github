@@ -10,12 +10,13 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 
 	"github.com/alecthomas/kong"
-	"github.com/google/go-github/v65/github"
+	"github.com/google/go-github/v66/github"
 )
 
 var helpVars = kong.Vars{
@@ -70,7 +71,7 @@ func (c *rootCmd) opsFile() (string, *operationsFile, error) {
 func githubClient(apiURL string) (*github.Client, error) {
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
-		return nil, fmt.Errorf("GITHUB_TOKEN environment variable must be set to a GitHub personal access token with the public_repo scope")
+		return nil, errors.New("GITHUB_TOKEN environment variable must be set to a GitHub personal access token with the public_repo scope")
 	}
 	return github.NewClient(nil).WithAuthToken(token).WithEnterpriseURLs(apiURL, "")
 }
@@ -83,7 +84,7 @@ type updateOpenAPICmd struct {
 func (c *updateOpenAPICmd) Run(root *rootCmd) error {
 	ctx := context.Background()
 	if c.ValidateGithub && c.Ref != "main" {
-		return fmt.Errorf("--validate and --ref are mutually exclusive")
+		return errors.New("--validate and --ref are mutually exclusive")
 	}
 	filename, opsFile, err := root.opsFile()
 	if err != nil {
@@ -102,7 +103,7 @@ func (c *updateOpenAPICmd) Run(root *rootCmd) error {
 	if c.ValidateGithub {
 		ref = opsFile.GitCommit
 		if ref == "" {
-			return fmt.Errorf("openapi_operations.yaml does not have an openapi_commit field")
+			return errors.New("openapi_operations.yaml does not have an openapi_commit field")
 		}
 	}
 	err = opsFile.updateFromGithub(ctx, client, ref)
@@ -113,7 +114,7 @@ func (c *updateOpenAPICmd) Run(root *rootCmd) error {
 		return opsFile.saveFile(filename)
 	}
 	if !operationsEqual(origOps, opsFile.OpenapiOps) {
-		return fmt.Errorf("openapi_operations.yaml does not match the OpenAPI descriptions in github.com/github/rest-api-description")
+		return errors.New("openapi_operations.yaml does not match the OpenAPI descriptions in github.com/github/rest-api-description")
 	}
 	return nil
 }

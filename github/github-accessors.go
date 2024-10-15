@@ -2662,6 +2662,190 @@ func (c *CodeSearchResult) GetTotal() int {
 	return *c.Total
 }
 
+// GetAdvancedSecurity returns the AdvancedSecurity field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetAdvancedSecurity() string {
+	if c == nil || c.AdvancedSecurity == nil {
+		return ""
+	}
+	return *c.AdvancedSecurity
+}
+
+// GetCodeScanningDefaultSetup returns the CodeScanningDefaultSetup field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetCodeScanningDefaultSetup() string {
+	if c == nil || c.CodeScanningDefaultSetup == nil {
+		return ""
+	}
+	return *c.CodeScanningDefaultSetup
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetDependabotAlerts returns the DependabotAlerts field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetDependabotAlerts() string {
+	if c == nil || c.DependabotAlerts == nil {
+		return ""
+	}
+	return *c.DependabotAlerts
+}
+
+// GetDependabotSecurityUpdates returns the DependabotSecurityUpdates field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetDependabotSecurityUpdates() string {
+	if c == nil || c.DependabotSecurityUpdates == nil {
+		return ""
+	}
+	return *c.DependabotSecurityUpdates
+}
+
+// GetDependencyGraph returns the DependencyGraph field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetDependencyGraph() string {
+	if c == nil || c.DependencyGraph == nil {
+		return ""
+	}
+	return *c.DependencyGraph
+}
+
+// GetDependencyGraphAutosubmitAction returns the DependencyGraphAutosubmitAction field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetDependencyGraphAutosubmitAction() string {
+	if c == nil || c.DependencyGraphAutosubmitAction == nil {
+		return ""
+	}
+	return *c.DependencyGraphAutosubmitAction
+}
+
+// GetDependencyGraphAutosubmitActionOptions returns the DependencyGraphAutosubmitActionOptions field.
+func (c *CodeSecurityConfiguration) GetDependencyGraphAutosubmitActionOptions() *DependencyGraphAutosubmitActionOptions {
+	if c == nil {
+		return nil
+	}
+	return c.DependencyGraphAutosubmitActionOptions
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetEnforcement returns the Enforcement field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetEnforcement() string {
+	if c == nil || c.Enforcement == nil {
+		return ""
+	}
+	return *c.Enforcement
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetHTMLURL() string {
+	if c == nil || c.HTMLURL == nil {
+		return ""
+	}
+	return *c.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetPrivateVulnerabilityReporting returns the PrivateVulnerabilityReporting field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetPrivateVulnerabilityReporting() string {
+	if c == nil || c.PrivateVulnerabilityReporting == nil {
+		return ""
+	}
+	return *c.PrivateVulnerabilityReporting
+}
+
+// GetSecretScanning returns the SecretScanning field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretScanning() string {
+	if c == nil || c.SecretScanning == nil {
+		return ""
+	}
+	return *c.SecretScanning
+}
+
+// GetSecretScanningNonProviderPatterns returns the SecretScanningNonProviderPatterns field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretScanningNonProviderPatterns() string {
+	if c == nil || c.SecretScanningNonProviderPatterns == nil {
+		return ""
+	}
+	return *c.SecretScanningNonProviderPatterns
+}
+
+// GetSecretScanningPushProtection returns the SecretScanningPushProtection field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretScanningPushProtection() string {
+	if c == nil || c.SecretScanningPushProtection == nil {
+		return ""
+	}
+	return *c.SecretScanningPushProtection
+}
+
+// GetSecretScanningValidityChecks returns the SecretScanningValidityChecks field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretScanningValidityChecks() string {
+	if c == nil || c.SecretScanningValidityChecks == nil {
+		return ""
+	}
+	return *c.SecretScanningValidityChecks
+}
+
+// GetTargetType returns the TargetType field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetTargetType() string {
+	if c == nil || c.TargetType == nil {
+		return ""
+	}
+	return *c.TargetType
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
+// GetConfiguration returns the Configuration field.
+func (c *CodeSecurityConfigurationWithDefaultForNewRepos) GetConfiguration() *CodeSecurityConfiguration {
+	if c == nil {
+		return nil
+	}
+	return c.Configuration
+}
+
+// GetDefaultForNewRepos returns the DefaultForNewRepos field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfigurationWithDefaultForNewRepos) GetDefaultForNewRepos() string {
+	if c == nil || c.DefaultForNewRepos == nil {
+		return ""
+	}
+	return *c.DefaultForNewRepos
+}
+
 // GetBillableOwner returns the BillableOwner field.
 func (c *Codespace) GetBillableOwner() *User {
 	if c == nil {
@@ -4110,12 +4294,36 @@ func (c *CopilotSeatDetails) GetPendingCancellationDate() string {
 	return *c.PendingCancellationDate
 }
 
+// GetPlanType returns the PlanType field if it's non-nil, zero value otherwise.
+func (c *CopilotSeatDetails) GetPlanType() string {
+	if c == nil || c.PlanType == nil {
+		return ""
+	}
+	return *c.PlanType
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
 	if c == nil || c.UpdatedAt == nil {
 		return Timestamp{}
 	}
 	return *c.UpdatedAt
+}
+
+// GetSince returns the Since field if it's non-nil, zero value otherwise.
+func (c *CopilotUsageSummaryListOptions) GetSince() time.Time {
+	if c == nil || c.Since == nil {
+		return time.Time{}
+	}
+	return *c.Since
+}
+
+// GetUntil returns the Until field if it's non-nil, zero value otherwise.
+func (c *CopilotUsageSummaryListOptions) GetUntil() time.Time {
+	if c == nil || c.Until == nil {
+		return time.Time{}
+	}
+	return *c.Until
 }
 
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
@@ -5356,6 +5564,14 @@ func (d *Dependency) GetScope() string {
 		return ""
 	}
 	return *d.Scope
+}
+
+// GetLabeledRunners returns the LabeledRunners field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphAutosubmitActionOptions) GetLabeledRunners() bool {
+	if d == nil || d.LabeledRunners == nil {
+		return false
+	}
+	return *d.LabeledRunners
 }
 
 // GetDetector returns the Detector field.
@@ -19790,6 +20006,22 @@ func (r *RepositoryActiveCommitters) GetName() string {
 	return *r.Name
 }
 
+// GetConfiguration returns the Configuration field.
+func (r *RepositoryCodeSecurityConfiguration) GetConfiguration() *CodeSecurityConfiguration {
+	if r == nil {
+		return nil
+	}
+	return r.Configuration
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (r *RepositoryCodeSecurityConfiguration) GetState() string {
+	if r == nil || r.State == nil {
+		return ""
+	}
+	return *r.State
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (r *RepositoryComment) GetBody() string {
 	if r == nil || r.Body == nil {
@@ -20236,6 +20468,14 @@ func (r *RepositoryInvitation) GetCreatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *r.CreatedAt
+}
+
+// GetExpired returns the Expired field if it's non-nil, zero value otherwise.
+func (r *RepositoryInvitation) GetExpired() bool {
+	if r == nil || r.Expired == nil {
+		return false
+	}
+	return *r.Expired
 }
 
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
@@ -21694,6 +21934,14 @@ func (r *Ruleset) GetConditions() *RulesetConditions {
 	return r.Conditions
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetCreatedAt() Timestamp {
+	if r == nil || r.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *r.CreatedAt
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (r *Ruleset) GetID() int64 {
 	if r == nil || r.ID == nil {
@@ -21732,6 +21980,14 @@ func (r *Ruleset) GetTarget() string {
 		return ""
 	}
 	return *r.Target
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (r *Ruleset) GetUpdatedAt() Timestamp {
+	if r == nil || r.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *r.UpdatedAt
 }
 
 // GetRefName returns the RefName field.

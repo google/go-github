@@ -17,6 +17,7 @@ import (
 )
 
 func TestOrganizationsService_ListMembers(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/members", func(w http.ResponseWriter, r *http.Request) {
@@ -62,6 +63,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 }
 
 func TestOrganizationsService_ListMembers_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -70,6 +72,7 @@ func TestOrganizationsService_ListMembers_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_ListMembers_public(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/public_members", func(w http.ResponseWriter, r *http.Request) {
@@ -91,6 +94,7 @@ func TestOrganizationsService_ListMembers_public(t *testing.T) {
 }
 
 func TestOrganizationsService_IsMember(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -122,8 +126,9 @@ func TestOrganizationsService_IsMember(t *testing.T) {
 	})
 }
 
-// ensure that a 404 response is interpreted as "false" and not an error
+// Ensure that a 404 response is interpreted as "false" and not an error.
 func TestOrganizationsService_IsMember_notMember(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -141,9 +146,10 @@ func TestOrganizationsService_IsMember_notMember(t *testing.T) {
 	}
 }
 
-// ensure that a 400 response is interpreted as an actual error, and not simply
-// as "false" like the above case of a 404
+// Ensure that a 400 response is interpreted as an actual error, and not simply
+// as "false" like the above case of a 404.
 func TestOrganizationsService_IsMember_error(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -162,6 +168,7 @@ func TestOrganizationsService_IsMember_error(t *testing.T) {
 }
 
 func TestOrganizationsService_IsMember_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -170,6 +177,7 @@ func TestOrganizationsService_IsMember_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_IsPublicMember(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -201,8 +209,9 @@ func TestOrganizationsService_IsPublicMember(t *testing.T) {
 	})
 }
 
-// ensure that a 404 response is interpreted as "false" and not an error
+// Ensure that a 404 response is interpreted as "false" and not an error.
 func TestOrganizationsService_IsPublicMember_notMember(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -220,9 +229,10 @@ func TestOrganizationsService_IsPublicMember_notMember(t *testing.T) {
 	}
 }
 
-// ensure that a 400 response is interpreted as an actual error, and not simply
-// as "false" like the above case of a 404
+// Ensure that a 400 response is interpreted as an actual error, and not simply
+// as "false" like the above case of a 404.
 func TestOrganizationsService_IsPublicMember_error(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -241,6 +251,7 @@ func TestOrganizationsService_IsPublicMember_error(t *testing.T) {
 }
 
 func TestOrganizationsService_IsPublicMember_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -249,6 +260,7 @@ func TestOrganizationsService_IsPublicMember_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveMember(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -273,6 +285,7 @@ func TestOrganizationsService_RemoveMember(t *testing.T) {
 }
 
 func TestOrganizationsService_CancelInvite(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/invitations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -298,6 +311,7 @@ func TestOrganizationsService_CancelInvite(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveMember_invalidOrg(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -306,6 +320,7 @@ func TestOrganizationsService_RemoveMember_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_PublicizeMembership(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -330,6 +345,7 @@ func TestOrganizationsService_PublicizeMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_ConcealMembership(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -354,6 +370,7 @@ func TestOrganizationsService_ConcealMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_ListOrgMemberships(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/memberships/orgs", func(w http.ResponseWriter, r *http.Request) {
@@ -391,6 +408,7 @@ func TestOrganizationsService_ListOrgMemberships(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrgMembership_AuthenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/memberships/orgs/o", func(w http.ResponseWriter, r *http.Request) {
@@ -425,6 +443,7 @@ func TestOrganizationsService_GetOrgMembership_AuthenticatedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrgMembership_SpecifiedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/memberships/u", func(w http.ResponseWriter, r *http.Request) {
@@ -445,6 +464,7 @@ func TestOrganizationsService_GetOrgMembership_SpecifiedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Membership{State: String("active")}
@@ -488,6 +508,7 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 }
 
 func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &Membership{State: String("active")}
@@ -517,6 +538,7 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveOrgMembership(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/memberships/u", func(w http.ResponseWriter, r *http.Request) {
@@ -542,6 +564,7 @@ func TestOrganizationsService_RemoveOrgMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/invitations", func(w http.ResponseWriter, r *http.Request) {
@@ -637,6 +660,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &CreateOrgInvitationOptions{
@@ -687,6 +711,7 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 }
 
 func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/invitations/22/teams", func(w http.ResponseWriter, r *http.Request) {
@@ -748,6 +773,7 @@ func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
 }
 
 func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/failed_invitations", func(w http.ResponseWriter, r *http.Request) {
@@ -852,6 +878,7 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 }
 
 func TestMembership_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Membership{}, "{}")
 
 	u := &Membership{
@@ -934,6 +961,7 @@ func TestMembership_Marshal(t *testing.T) {
 }
 
 func TestCreateOrgInvitationOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateOrgInvitationOptions{}, "{}")
 
 	u := &CreateOrgInvitationOptions{

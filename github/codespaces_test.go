@@ -16,6 +16,7 @@ import (
 )
 
 func TestCodespacesService_ListInRepo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/owner/repo/codespaces", func(w http.ResponseWriter, r *http.Request) {
@@ -100,6 +101,7 @@ func TestCodespacesService_ListInRepo(t *testing.T) {
 }
 
 func TestCodespacesService_List(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/codespaces", func(w http.ResponseWriter, r *http.Request) {
@@ -142,6 +144,7 @@ func TestCodespacesService_List(t *testing.T) {
 }
 
 func TestCodespacesService_CreateInRepo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/owner/repo/codespaces", func(w http.ResponseWriter, r *http.Request) {
@@ -188,6 +191,7 @@ func TestCodespacesService_CreateInRepo(t *testing.T) {
 }
 
 func TestCodespacesService_Start(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/codespaces/codespace_1/start", func(w http.ResponseWriter, r *http.Request) {
@@ -226,6 +230,7 @@ func TestCodespacesService_Start(t *testing.T) {
 }
 
 func TestCodespacesService_Stop(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/codespaces/codespace_1/stop", func(w http.ResponseWriter, r *http.Request) {
@@ -264,6 +269,7 @@ func TestCodespacesService_Stop(t *testing.T) {
 }
 
 func TestCodespacesService_Delete(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/codespaces/codespace_1", func(w http.ResponseWriter, r *http.Request) {

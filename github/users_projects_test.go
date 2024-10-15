@@ -16,6 +16,7 @@ import (
 )
 
 func TestUsersService_ListProjects(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/projects", func(w http.ResponseWriter, r *http.Request) {
@@ -53,6 +54,7 @@ func TestUsersService_ListProjects(t *testing.T) {
 }
 
 func TestUsersService_CreateProject(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &CreateUserProjectOptions{Name: "Project Name", Body: String("Project body.")}
@@ -92,6 +94,7 @@ func TestUsersService_CreateProject(t *testing.T) {
 }
 
 func TestCreateUserProjectOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateUserProjectOptions{}, `{}`)
 
 	c := CreateUserProjectOptions{

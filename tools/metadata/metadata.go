@@ -24,7 +24,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/google/go-github/v65/github"
+	"github.com/google/go-github/v66/github"
 	"gopkg.in/yaml.v3"
 )
 
@@ -102,7 +102,7 @@ func normalizedOpName(name string) string {
 	return strings.TrimSpace(verb + " " + normalizeOpPath(u))
 }
 
-// matches something like "GET /some/path"
+// matches something like "GET /some/path".
 var opNameRe = regexp.MustCompile(`(?i)(\S+)(?:\s+(\S.*))?`)
 
 func parseOpName(id string) (verb, url string) {

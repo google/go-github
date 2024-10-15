@@ -212,7 +212,7 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	testNewRequestAndDoFailureCategory(t, methodName, client, CoreCategory, f)
 }
 
-// testNewRequestAndDoFailureCategory works Like testNewRequestAndDoFailure, but allows setting the category
+// testNewRequestAndDoFailureCategory works Like testNewRequestAndDoFailure, but allows setting the category.
 func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client *Client, category RateLimitCategory, f func() (*Response, error)) {
 	t.Helper()
 	if methodName == "" {
@@ -292,6 +292,7 @@ func assertWrite(t *testing.T, w io.Writer, data []byte) {
 }
 
 func TestNewClient(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 
 	if got, want := c.BaseURL.String(), defaultBaseURL; got != want {
@@ -308,6 +309,7 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestNewClientWithEnvProxy(t *testing.T) {
+	t.Parallel()
 	client := NewClientWithEnvProxy()
 	if got, want := client.BaseURL.String(), defaultBaseURL; got != want {
 		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
@@ -315,6 +317,7 @@ func TestNewClientWithEnvProxy(t *testing.T) {
 }
 
 func TestClient(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	c2 := c.Client()
 	if c.client == c2 {
@@ -323,6 +326,7 @@ func TestClient(t *testing.T) {
 }
 
 func TestWithAuthToken(t *testing.T) {
+	t.Parallel()
 	token := "gh_test_token"
 
 	validate := func(t *testing.T, c *http.Client, token string) {
@@ -348,11 +352,13 @@ func TestWithAuthToken(t *testing.T) {
 	}
 
 	t.Run("zero-value Client", func(t *testing.T) {
+		t.Parallel()
 		c := new(Client).WithAuthToken(token)
 		validate(t, c.Client(), token)
 	})
 
 	t.Run("NewClient", func(t *testing.T) {
+		t.Parallel()
 		httpClient := &http.Client{}
 		client := NewClient(httpClient).WithAuthToken(token)
 		validate(t, client.Client(), token)
@@ -361,11 +367,13 @@ func TestWithAuthToken(t *testing.T) {
 	})
 
 	t.Run("NewTokenClient", func(t *testing.T) {
+		t.Parallel()
 		validate(t, NewTokenClient(context.Background(), token).Client(), token)
 	})
 }
 
 func TestWithEnterpriseURLs(t *testing.T) {
+	t.Parallel()
 	for _, test := range []struct {
 		name          string
 		baseURL       string
@@ -457,7 +465,9 @@ func TestWithEnterpriseURLs(t *testing.T) {
 			wantUploadURL: "https://cloud-api.custom-upload-url/api/uploads/",
 		},
 	} {
+		test := test
 		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 			validate := func(c *Client, err error) {
 				t.Helper()
 				if test.wantErr != "" {
@@ -485,12 +495,14 @@ func TestWithEnterpriseURLs(t *testing.T) {
 
 // Ensure that length of Client.rateLimits is the same as number of fields in RateLimits struct.
 func TestClient_rateLimits(t *testing.T) {
+	t.Parallel()
 	if got, want := len(Client{}.rateLimits), reflect.TypeOf(RateLimits{}).NumField(); got != want {
 		t.Errorf("len(Client{}.rateLimits) is %v, want %v", got, want)
 	}
 }
 
 func TestNewRequest(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 
 	inURL, outURL := "/foo", defaultBaseURL+"foo"
@@ -532,6 +544,7 @@ func TestNewRequest(t *testing.T) {
 }
 
 func TestNewRequest_invalidJSON(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 
 	type T struct {
@@ -548,12 +561,14 @@ func TestNewRequest_invalidJSON(t *testing.T) {
 }
 
 func TestNewRequest_badURL(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	_, err := c.NewRequest("GET", ":", nil)
 	testURLParseError(t, err)
 }
 
 func TestNewRequest_badMethod(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	if _, err := c.NewRequest("BOGUS\nMETHOD", ".", nil); err == nil {
 		t.Fatal("NewRequest returned nil; expected error")
@@ -563,6 +578,7 @@ func TestNewRequest_badMethod(t *testing.T) {
 // ensure that no User-Agent header is set if the client's UserAgent is empty.
 // This caused a problem with Google's internal http client.
 func TestNewRequest_emptyUserAgent(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	c.UserAgent = ""
 	req, err := c.NewRequest("GET", ".", nil)
@@ -581,6 +597,7 @@ func TestNewRequest_emptyUserAgent(t *testing.T) {
 // certain cases, intermediate systems may treat these differently resulting in
 // subtle errors.
 func TestNewRequest_emptyBody(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	req, err := c.NewRequest("GET", ".", nil)
 	if err != nil {
@@ -592,6 +609,7 @@ func TestNewRequest_emptyBody(t *testing.T) {
 }
 
 func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		rawurl    string
 		wantError bool
@@ -615,6 +633,7 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 }
 
 func TestNewFormRequest(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 
 	inURL, outURL := "/foo", defaultBaseURL+"foo"
@@ -652,12 +671,14 @@ func TestNewFormRequest(t *testing.T) {
 }
 
 func TestNewFormRequest_badURL(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	_, err := c.NewFormRequest(":", nil)
 	testURLParseError(t, err)
 }
 
 func TestNewFormRequest_emptyUserAgent(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	c.UserAgent = ""
 	req, err := c.NewFormRequest(".", nil)
@@ -670,6 +691,7 @@ func TestNewFormRequest_emptyUserAgent(t *testing.T) {
 }
 
 func TestNewFormRequest_emptyBody(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	req, err := c.NewFormRequest(".", nil)
 	if err != nil {
@@ -681,6 +703,7 @@ func TestNewFormRequest_emptyBody(t *testing.T) {
 }
 
 func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		rawURL    string
 		wantError bool
@@ -704,6 +727,7 @@ func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
 }
 
 func TestNewUploadRequest_WithVersion(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	req, _ := c.NewUploadRequest("https://example.com/", nil, 0, "")
 
@@ -720,6 +744,7 @@ func TestNewUploadRequest_WithVersion(t *testing.T) {
 }
 
 func TestNewUploadRequest_badURL(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	_, err := c.NewUploadRequest(":", nil, 0, "")
 	testURLParseError(t, err)
@@ -732,6 +757,7 @@ func TestNewUploadRequest_badURL(t *testing.T) {
 }
 
 func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		rawurl    string
 		wantError bool
@@ -755,6 +781,7 @@ func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
 }
 
 func TestResponse_populatePageValues(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?page=1>; rel="first",` +
@@ -784,6 +811,7 @@ func TestResponse_populatePageValues(t *testing.T) {
 }
 
 func TestResponse_populateSinceValues(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?since=1>; rel="first",` +
@@ -813,6 +841,7 @@ func TestResponse_populateSinceValues(t *testing.T) {
 }
 
 func TestResponse_SinceWithPage(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=1>; rel="first",` +
@@ -842,6 +871,7 @@ func TestResponse_SinceWithPage(t *testing.T) {
 }
 
 func TestResponse_cursorPagination(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Status": {"200 OK"},
@@ -882,6 +912,7 @@ func TestResponse_cursorPagination(t *testing.T) {
 }
 
 func TestResponse_beforeAfterPagination(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?after=a1b2c3&before=>; rel="next",` +
@@ -916,6 +947,7 @@ func TestResponse_beforeAfterPagination(t *testing.T) {
 }
 
 func TestResponse_populatePageValues_invalid(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?page=1>,` +
@@ -955,6 +987,7 @@ func TestResponse_populatePageValues_invalid(t *testing.T) {
 }
 
 func TestResponse_populateSinceValues_invalid(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?since=1>,` +
@@ -994,6 +1027,7 @@ func TestResponse_populateSinceValues_invalid(t *testing.T) {
 }
 
 func TestDo(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	type foo struct {
@@ -1018,6 +1052,7 @@ func TestDo(t *testing.T) {
 }
 
 func TestDo_nilContext(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	req, _ := client.NewRequest("GET", ".", nil)
@@ -1029,6 +1064,7 @@ func TestDo_nilContext(t *testing.T) {
 }
 
 func TestDo_httpError(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -1051,6 +1087,7 @@ func TestDo_httpError(t *testing.T) {
 // function. A redirect loop is pretty unlikely to occur within the GitHub
 // API, but does allow us to exercise the right code path.
 func TestDo_redirectLoop(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -1072,6 +1109,7 @@ func TestDo_redirectLoop(t *testing.T) {
 // Test that an error caused by the internal http client's Do() function
 // does not leak the client secret.
 func TestDo_sanitizeURL(t *testing.T) {
+	t.Parallel()
 	tp := &UnauthenticatedRateLimitedTransport{
 		ClientID:     "id",
 		ClientSecret: "secret",
@@ -1093,6 +1131,7 @@ func TestDo_sanitizeURL(t *testing.T) {
 }
 
 func TestDo_rateLimit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -1120,6 +1159,7 @@ func TestDo_rateLimit(t *testing.T) {
 }
 
 func TestDo_rateLimitCategory(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		method   string
 		url      string
@@ -1195,8 +1235,9 @@ func TestDo_rateLimitCategory(t *testing.T) {
 	}
 }
 
-// ensure rate limit is still parsed, even for error responses
+// Ensure rate limit is still parsed, even for error responses.
 func TestDo_rateLimit_errorResponse(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -1229,6 +1270,7 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 
 // Ensure *RateLimitError is returned when API rate limit is exceeded.
 func TestDo_rateLimit_rateLimitError(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -1268,6 +1310,7 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 
 // Ensure a network call is not made when it's known that API rate limit is still exceeded.
 func TestDo_rateLimit_noNetworkCall(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Minute).Round(time.Second) // Rate reset is a minute from now, with 1 second precision.
@@ -1325,6 +1368,7 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 
 // Ignore rate limit headers if the response was served from cache.
 func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Minute).Round(time.Second) // Rate reset is a minute from now, with 1 second precision.
@@ -1370,6 +1414,7 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 
 // Ensure sleeps until the rate limit is reset when the client is rate limited.
 func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Second)
@@ -1410,6 +1455,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 
 // Ensure tries to sleep until the rate limit is reset when the client is rate limited, but only once.
 func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Second)
@@ -1441,6 +1487,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 
 // Ensure a network call is not made when it's known that API rate limit is still exceeded.
 func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Second)
@@ -1471,6 +1518,7 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 
 // Ensure sleep is aborted when the context is cancelled.
 func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	// We use a 1 minute reset time to ensure the sleep is not completed.
@@ -1503,6 +1551,7 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 
 // Ensure sleep is aborted when the context is cancelled on initial request.
 func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Minute)
@@ -1536,6 +1585,7 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 // Ensure *AbuseRateLimitError is returned when the response indicates that
 // the client has triggered an abuse detection mechanism.
 func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -1568,6 +1618,7 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 // Ensure *AbuseRateLimitError is returned when the response indicates that
 // the client has triggered an abuse detection mechanism on GitHub Enterprise.
 func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -1601,6 +1652,7 @@ func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 
 // Ensure *AbuseRateLimitError.RetryAfter is parsed correctly for the Retry-After header.
 func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -1653,6 +1705,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 
 // Ensure *AbuseRateLimitError.RetryAfter is parsed correctly for the x-ratelimit-reset header.
 func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	// x-ratelimit-reset value of 123 seconds into the future.
@@ -1709,6 +1762,7 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 }
 
 func TestDo_noContent(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -1726,6 +1780,7 @@ func TestDo_noContent(t *testing.T) {
 }
 
 func TestSanitizeURL(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		in, want string
 	}{
@@ -1745,6 +1800,7 @@ func TestSanitizeURL(t *testing.T) {
 }
 
 func TestCheckResponse(t *testing.T) {
+	t.Parallel()
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusBadRequest,
@@ -1773,6 +1829,7 @@ func TestCheckResponse(t *testing.T) {
 }
 
 func TestCheckResponse_RateLimit(t *testing.T) {
+	t.Parallel()
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusForbidden,
@@ -1801,6 +1858,7 @@ func TestCheckResponse_RateLimit(t *testing.T) {
 }
 
 func TestCheckResponse_AbuseRateLimit(t *testing.T) {
+	t.Parallel()
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusForbidden,
@@ -1823,6 +1881,7 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 }
 
 func TestCompareHttpResponse(t *testing.T) {
+	t.Parallel()
 	testcases := map[string]struct {
 		h1       *http.Response
 		h2       *http.Response
@@ -1848,7 +1907,9 @@ func TestCompareHttpResponse(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			v := compareHTTPResponse(tc.h1, tc.h2)
 			if tc.expected != v {
 				t.Errorf("Expected %t, got %t for (%#v, %#v)", tc.expected, v, tc.h1, tc.h2)
@@ -1858,6 +1919,7 @@ func TestCompareHttpResponse(t *testing.T) {
 }
 
 func TestErrorResponse_Is(t *testing.T) {
+	t.Parallel()
 	err := &ErrorResponse{
 		Response: &http.Response{},
 		Message:  "m",
@@ -2004,7 +2066,9 @@ func TestErrorResponse_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", err, tc.otherError)
 			}
@@ -2013,6 +2077,7 @@ func TestErrorResponse_Is(t *testing.T) {
 }
 
 func TestRateLimitError_Is(t *testing.T) {
+	t.Parallel()
 	err := &RateLimitError{
 		Response: &http.Response{},
 		Message:  "Github",
@@ -2071,7 +2136,9 @@ func TestRateLimitError_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != tc.err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", tc.err, tc.otherError)
 			}
@@ -2080,6 +2147,7 @@ func TestRateLimitError_Is(t *testing.T) {
 }
 
 func TestAbuseRateLimitError_Is(t *testing.T) {
+	t.Parallel()
 	t1 := 1 * time.Second
 	t2 := 2 * time.Second
 	err := &AbuseRateLimitError{
@@ -2155,7 +2223,9 @@ func TestAbuseRateLimitError_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != tc.err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", tc.err, tc.otherError)
 			}
@@ -2164,6 +2234,7 @@ func TestAbuseRateLimitError_Is(t *testing.T) {
 }
 
 func TestAcceptedError_Is(t *testing.T) {
+	t.Parallel()
 	err := &AcceptedError{Raw: []byte("Github")}
 	testcases := map[string]struct {
 		wantSame   bool
@@ -2184,7 +2255,9 @@ func TestAcceptedError_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", err, tc.otherError)
 			}
@@ -2192,8 +2265,9 @@ func TestAcceptedError_Is(t *testing.T) {
 	}
 }
 
-// ensure that we properly handle API errors that do not contain a response body
+// Ensure that we properly handle API errors that do not contain a response body.
 func TestCheckResponse_noBody(t *testing.T) {
+	t.Parallel()
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusBadRequest,
@@ -2214,6 +2288,7 @@ func TestCheckResponse_noBody(t *testing.T) {
 }
 
 func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
+	t.Parallel()
 	httpBody := `{"message":"m", "errors": ["error 1"]}`
 	res := &http.Response{
 		Request:    &http.Request{},
@@ -2244,6 +2319,7 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 }
 
 func TestParseBooleanResponse_true(t *testing.T) {
+	t.Parallel()
 	result, err := parseBoolResponse(nil)
 	if err != nil {
 		t.Errorf("parseBoolResponse returned error: %+v", err)
@@ -2255,6 +2331,7 @@ func TestParseBooleanResponse_true(t *testing.T) {
 }
 
 func TestParseBooleanResponse_false(t *testing.T) {
+	t.Parallel()
 	v := &ErrorResponse{Response: &http.Response{StatusCode: http.StatusNotFound}}
 	result, err := parseBoolResponse(v)
 	if err != nil {
@@ -2267,6 +2344,7 @@ func TestParseBooleanResponse_false(t *testing.T) {
 }
 
 func TestParseBooleanResponse_error(t *testing.T) {
+	t.Parallel()
 	v := &ErrorResponse{Response: &http.Response{StatusCode: http.StatusBadRequest}}
 	result, err := parseBoolResponse(v)
 
@@ -2280,6 +2358,7 @@ func TestParseBooleanResponse_error(t *testing.T) {
 }
 
 func TestErrorResponse_Error(t *testing.T) {
+	t.Parallel()
 	res := &http.Response{Request: &http.Request{}}
 	err := ErrorResponse{Message: "m", Response: res}
 	if err.Error() == "" {
@@ -2301,6 +2380,7 @@ func TestErrorResponse_Error(t *testing.T) {
 }
 
 func TestError_Error(t *testing.T) {
+	t.Parallel()
 	err := Error{}
 	if err.Error() == "" {
 		t.Errorf("Expected non-empty Error.Error()")
@@ -2308,6 +2388,7 @@ func TestError_Error(t *testing.T) {
 }
 
 func TestSetCredentialsAsHeaders(t *testing.T) {
+	t.Parallel()
 	req := new(http.Request)
 	id, secret := "id", "secret"
 	modifiedRequest := setCredentialsAsHeaders(req, id, secret)
@@ -2327,6 +2408,7 @@ func TestSetCredentialsAsHeaders(t *testing.T) {
 }
 
 func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	clientID, clientSecret := "id", "secret"
@@ -2356,6 +2438,7 @@ func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 }
 
 func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
+	t.Parallel()
 	// missing ClientID
 	tp := &UnauthenticatedRateLimitedTransport{
 		ClientSecret: "secret",
@@ -2376,6 +2459,7 @@ func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
 }
 
 func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
+	t.Parallel()
 	// default transport
 	tp := &UnauthenticatedRateLimitedTransport{
 		ClientID:     "id",
@@ -2397,6 +2481,7 @@ func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
 }
 
 func TestBasicAuthTransport(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	username, password, otp := "u", "p", "123456"
@@ -2431,6 +2516,7 @@ func TestBasicAuthTransport(t *testing.T) {
 }
 
 func TestBasicAuthTransport_transport(t *testing.T) {
+	t.Parallel()
 	// default transport
 	tp := &BasicAuthTransport{}
 	if tp.transport() != http.DefaultTransport {
@@ -2447,6 +2533,7 @@ func TestBasicAuthTransport_transport(t *testing.T) {
 }
 
 func TestFormatRateReset(t *testing.T) {
+	t.Parallel()
 	d := 120*time.Minute + 12*time.Second
 	got := formatRateReset(d)
 	want := "[rate reset in 120m12s]"
@@ -2484,6 +2571,7 @@ func TestFormatRateReset(t *testing.T) {
 }
 
 func TestNestedStructAccessorNoPanic(t *testing.T) {
+	t.Parallel()
 	issue := &Issue{User: nil}
 	got := issue.GetUser().GetPlan().GetName()
 	want := ""
@@ -2493,6 +2581,7 @@ func TestNestedStructAccessorNoPanic(t *testing.T) {
 }
 
 func TestTwoFactorAuthError(t *testing.T) {
+	t.Parallel()
 	u, err := url.Parse("https://example.com")
 	if err != nil {
 		t.Fatal(err)
@@ -2511,6 +2600,7 @@ func TestTwoFactorAuthError(t *testing.T) {
 }
 
 func TestRateLimitError(t *testing.T) {
+	t.Parallel()
 	u, err := url.Parse("https://example.com")
 	if err != nil {
 		t.Fatal(err)
@@ -2529,6 +2619,7 @@ func TestRateLimitError(t *testing.T) {
 }
 
 func TestAcceptedError(t *testing.T) {
+	t.Parallel()
 	a := &AcceptedError{}
 	if got, want := a.Error(), "try again later"; !strings.Contains(got, want) {
 		t.Errorf("AcceptedError = %q, want %q", got, want)
@@ -2536,6 +2627,7 @@ func TestAcceptedError(t *testing.T) {
 }
 
 func TestAbuseRateLimitError(t *testing.T) {
+	t.Parallel()
 	u, err := url.Parse("https://example.com")
 	if err != nil {
 		t.Fatal(err)
@@ -2554,12 +2646,14 @@ func TestAbuseRateLimitError(t *testing.T) {
 }
 
 func TestAddOptions_QueryValues(t *testing.T) {
+	t.Parallel()
 	if _, err := addOptions("yo", ""); err == nil {
 		t.Error("addOptions err = nil, want error")
 	}
 }
 
 func TestBareDo_returnsOpenBody(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	expectedBody := "Hello from the other side !"
@@ -2593,6 +2687,7 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 }
 
 func TestErrorResponse_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ErrorResponse{}, "{}")
 
 	u := &ErrorResponse{
@@ -2633,6 +2728,7 @@ func TestErrorResponse_Marshal(t *testing.T) {
 }
 
 func TestErrorBlock_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ErrorBlock{}, "{}")
 
 	u := &ErrorBlock{
@@ -2649,6 +2745,7 @@ func TestErrorBlock_Marshal(t *testing.T) {
 }
 
 func TestRateLimitError_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RateLimitError{}, "{}")
 
 	u := &RateLimitError{
@@ -2673,6 +2770,7 @@ func TestRateLimitError_Marshal(t *testing.T) {
 }
 
 func TestAbuseRateLimitError_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AbuseRateLimitError{}, "{}")
 
 	u := &AbuseRateLimitError{
@@ -2687,6 +2785,7 @@ func TestAbuseRateLimitError_Marshal(t *testing.T) {
 }
 
 func TestError_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Error{}, "{}")
 
 	u := &Error{
@@ -2707,6 +2806,7 @@ func TestError_Marshal(t *testing.T) {
 }
 
 func TestParseTokenExpiration(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		header string
 		want   Timestamp
@@ -2750,6 +2850,7 @@ func TestParseTokenExpiration(t *testing.T) {
 }
 
 func TestClientCopy_leak_transport(t *testing.T) {
+	t.Parallel()
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		accessToken := r.Header.Get("Authorization")

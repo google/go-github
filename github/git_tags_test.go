@@ -16,6 +16,7 @@ import (
 )
 
 func TestGitService_GetTag(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/tags/s", func(w http.ResponseWriter, r *http.Request) {
@@ -50,6 +51,7 @@ func TestGitService_GetTag(t *testing.T) {
 }
 
 func TestGitService_CreateTag(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &createTagRequest{Tag: String("t"), Object: String("s")}
@@ -97,6 +99,7 @@ func TestGitService_CreateTag(t *testing.T) {
 }
 
 func TestTag_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Tag{}, "{}")
 
 	u := &Tag{
@@ -153,6 +156,7 @@ func TestTag_Marshal(t *testing.T) {
 }
 
 func TestCreateTagRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &createTagRequest{}, "{}")
 
 	u := &createTagRequest{

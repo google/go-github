@@ -16,6 +16,7 @@ import (
 )
 
 func TestSearchService_Repositories(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +50,7 @@ func TestSearchService_Repositories(t *testing.T) {
 }
 
 func TestSearchService_Repositories_coverage(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -61,6 +63,7 @@ func TestSearchService_Repositories_coverage(t *testing.T) {
 }
 
 func TestSearchService_RepositoriesTextMatch(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -139,6 +142,7 @@ func TestSearchService_RepositoriesTextMatch(t *testing.T) {
 }
 
 func TestSearchService_Topics(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/topics", func(w http.ResponseWriter, r *http.Request) {
@@ -170,6 +174,7 @@ func TestSearchService_Topics(t *testing.T) {
 }
 
 func TestSearchService_Topics_coverage(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -182,6 +187,7 @@ func TestSearchService_Topics_coverage(t *testing.T) {
 }
 
 func TestSearchService_Commits(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/commits", func(w http.ResponseWriter, r *http.Request) {
@@ -213,6 +219,7 @@ func TestSearchService_Commits(t *testing.T) {
 }
 
 func TestSearchService_Commits_coverage(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -225,6 +232,7 @@ func TestSearchService_Commits_coverage(t *testing.T) {
 }
 
 func TestSearchService_Issues(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -258,6 +266,7 @@ func TestSearchService_Issues(t *testing.T) {
 }
 
 func TestSearchService_Issues_coverage(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -270,6 +279,7 @@ func TestSearchService_Issues_coverage(t *testing.T) {
 }
 
 func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	const q = "gopher is:issue label:bug language:c++ pushed:>=2018-01-01 stars:>=200"
@@ -307,6 +317,7 @@ func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
 }
 
 func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	const q = "gopher is:issue label:bug language:c++ pushed:>=2018-01-01 stars:>=200"
@@ -345,6 +356,7 @@ func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
 }
 
 func TestSearchService_Users(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/users", func(w http.ResponseWriter, r *http.Request) {
@@ -378,6 +390,7 @@ func TestSearchService_Users(t *testing.T) {
 }
 
 func TestSearchService_Users_coverage(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -390,6 +403,7 @@ func TestSearchService_Users_coverage(t *testing.T) {
 }
 
 func TestSearchService_Code(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
@@ -423,6 +437,7 @@ func TestSearchService_Code(t *testing.T) {
 }
 
 func TestSearchService_Code_coverage(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -435,6 +450,7 @@ func TestSearchService_Code_coverage(t *testing.T) {
 }
 
 func TestSearchService_CodeTextMatch(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
@@ -496,6 +512,7 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 }
 
 func TestSearchService_Labels(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/labels", func(w http.ResponseWriter, r *http.Request) {
@@ -533,6 +550,7 @@ func TestSearchService_Labels(t *testing.T) {
 }
 
 func TestSearchService_Labels_coverage(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -545,6 +563,7 @@ func TestSearchService_Labels_coverage(t *testing.T) {
 }
 
 func TestMatch_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Match{}, "{}")
 
 	u := &Match{
@@ -561,6 +580,7 @@ func TestMatch_Marshal(t *testing.T) {
 }
 
 func TestTextMatch_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TextMatch{}, "{}")
 
 	u := &TextMatch{
@@ -591,6 +611,7 @@ func TestTextMatch_Marshal(t *testing.T) {
 }
 
 func TestTopicResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TopicResult{}, "{}")
 
 	u := &TopicResult{
@@ -621,6 +642,7 @@ func TestTopicResult_Marshal(t *testing.T) {
 }
 
 func TestRepositoriesSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoriesSearchResult{}, "{}")
 
 	u := &RepositoriesSearchResult{
@@ -639,6 +661,7 @@ func TestRepositoriesSearchResult_Marshal(t *testing.T) {
 }
 
 func TestCommitsSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommitsSearchResult{}, "{}")
 
 	c := &CommitsSearchResult{
@@ -659,6 +682,7 @@ func TestCommitsSearchResult_Marshal(t *testing.T) {
 }
 
 func TestTopicsSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TopicsSearchResult{}, "{}")
 
 	u := &TopicsSearchResult{
@@ -703,6 +727,7 @@ func TestTopicsSearchResult_Marshal(t *testing.T) {
 }
 
 func TestLabelResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &LabelResult{}, "{}")
 
 	u := &LabelResult{
@@ -729,6 +754,7 @@ func TestLabelResult_Marshal(t *testing.T) {
 }
 
 func TestSearchOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SearchOptions{}, "{}")
 
 	u := &SearchOptions{
@@ -752,6 +778,7 @@ func TestSearchOptions_Marshal(t *testing.T) {
 }
 
 func TestIssuesSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &IssuesSearchResult{}, "{}")
 
 	u := &IssuesSearchResult{
@@ -860,6 +887,7 @@ func TestIssuesSearchResult_Marshal(t *testing.T) {
 }
 
 func TestLabelsSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &LabelsSearchResult{}, "{}")
 
 	u := &LabelsSearchResult{
@@ -898,6 +926,7 @@ func TestLabelsSearchResult_Marshal(t *testing.T) {
 }
 
 func TestCommitResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommitResult{}, "{}")
 
 	c := &CommitResult{
@@ -937,6 +966,7 @@ func TestCommitResult_Marshal(t *testing.T) {
 }
 
 func TestUsersSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UsersSearchResult{}, "{}")
 
 	u := &UsersSearchResult{
@@ -973,6 +1003,7 @@ func TestUsersSearchResult_Marshal(t *testing.T) {
 }
 
 func TestCodeSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CodeSearchResult{}, "{}")
 
 	u := &CodeSearchResult{

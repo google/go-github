@@ -32,12 +32,13 @@ import (
 	"context"
 	crypto_rand "crypto/rand"
 	"encoding/base64"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 
-	"github.com/google/go-github/v65/github"
+	"github.com/google/go-github/v66/github"
 	"golang.org/x/crypto/nacl/box"
 )
 
@@ -77,7 +78,7 @@ func main() {
 func getSecretName() (string, error) {
 	secretName := flag.Arg(0)
 	if secretName == "" {
-		return "", fmt.Errorf("missing argument secret name")
+		return "", errors.New("missing argument secret name")
 	}
 	return secretName, nil
 }
@@ -154,8 +155,7 @@ func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName string, 
 
 	var boxKey [32]byte
 	copy(boxKey[:], decodedPublicKey)
-	secretBytes := []byte(secretValue)
-	encryptedBytes, err := box.SealAnonymous([]byte{}, secretBytes, &boxKey, crypto_rand.Reader)
+	encryptedBytes, err := box.SealAnonymous([]byte{}, []byte(secretValue), &boxKey, crypto_rand.Reader)
 	if err != nil {
 		return nil, fmt.Errorf("box.SealAnonymous failed with error %w", err)
 	}

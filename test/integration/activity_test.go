@@ -4,7 +4,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build integration
-// +build integration
 
 package integration
 
@@ -12,7 +11,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/go-github/v65/github"
+	"github.com/google/go-github/v66/github"
 )
 
 const (

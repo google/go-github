@@ -17,6 +17,7 @@ import (
 )
 
 func TestSecurityAdvisoriesService_RequestCVE(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id_ok/cve", func(w http.ResponseWriter, r *http.Request) {
@@ -56,6 +57,7 @@ func TestSecurityAdvisoriesService_RequestCVE(t *testing.T) {
 }
 
 func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id/forks", func(w http.ResponseWriter, r *http.Request) {
@@ -290,6 +292,7 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
 }
 
 func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id/forks", func(w http.ResponseWriter, r *http.Request) {
@@ -511,6 +514,7 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testin
 }
 
 func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_invalidOwner(t *testing.T) {
+	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
@@ -519,6 +523,7 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_invalidOwner(t *te
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_BadRequest(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
@@ -541,6 +546,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_BadReq
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_NotFound(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
@@ -570,6 +576,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_NotFou
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_UnmarshalError(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
@@ -595,6 +602,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_Unmars
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
@@ -646,6 +654,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *tes
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_BadRequest(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
@@ -668,6 +677,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_BadRequest(t
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_NotFound(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
@@ -697,6 +707,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_NotFound(t *
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_UnmarshalError(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
@@ -722,6 +733,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_UnmarshalErr
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
@@ -773,6 +785,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T
 }
 
 func TestListGlobalSecurityAdvisories(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/advisories", func(w http.ResponseWriter, r *http.Request) {
@@ -958,6 +971,7 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 }
 
 func TestGetGlobalSecurityAdvisories(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/advisories/GHSA-xoxo-1234-xoxo", func(w http.ResponseWriter, r *http.Request) {
@@ -1147,6 +1161,7 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 }
 
 func TestSecurityAdvisorySubmission_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecurityAdvisorySubmission{}, `{}`)
 
 	u := &SecurityAdvisorySubmission{
@@ -1161,6 +1176,7 @@ func TestSecurityAdvisorySubmission_Marshal(t *testing.T) {
 }
 
 func TestRepoAdvisoryCredit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepoAdvisoryCredit{}, `{}`)
 
 	u := &RepoAdvisoryCredit{
@@ -1177,6 +1193,7 @@ func TestRepoAdvisoryCredit_Marshal(t *testing.T) {
 }
 
 func TestRepoAdvisoryCreditDetailed_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepoAdvisoryCreditDetailed{}, `{}`)
 
 	testDate := &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}
@@ -1316,6 +1333,7 @@ func TestRepoAdvisoryCreditDetailed_Marshal(t *testing.T) {
 }
 
 func TestCredit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Credit{}, `{}`)
 
 	testDate := &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}
@@ -1453,6 +1471,7 @@ func TestCredit_Marshal(t *testing.T) {
 }
 
 func TestGlobalSecurityAdvisory_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GlobalSecurityAdvisory{}, `{}`)
 
 	testDate := &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}
