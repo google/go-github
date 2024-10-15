@@ -304,8 +304,8 @@ type RepositoryRulesetMergeQueueRule struct {
 	Parameters *MergeQueueRuleParameters `json:"parameters,omitempty"`
 }
 
-// RepositoryRulesetRequireDeploymentsRule defines a rule for required deployments.
-type RepositoryRulesetRequireDeploymentsRule struct {
+// RepositoryRulesetRequiredDeploymentsRule defines a rule for required deployments.
+type RepositoryRulesetRequiredDeploymentsRule struct {
 	// Type can be one of: "required_deployments".
 	Type       string                                        `json:"type"`
 	Parameters *RequiredDeploymentEnvironmentsRuleParameters `json:"parameters,omitempty"`
