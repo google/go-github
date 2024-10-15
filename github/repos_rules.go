@@ -292,7 +292,7 @@ type RepositoryRulesetRuleType struct {
 
 // RepositoryRulesetUpdateRule defines an update rule for the repository.
 type RepositoryRulesetUpdateRule struct {
-	//Type can be one of: "update".
+	// Type can be one of: "update".
 	Type       string                                   `json:"type"`
 	Parameters *UpdateAllowsFetchAndMergeRuleParameters `json:"parameters,omitempty"`
 }
