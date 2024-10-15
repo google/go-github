@@ -259,7 +259,7 @@ type RepositoryRulesetRule struct {
 	Creation                 *RepositoryRulesetRuleType                     `json:"creation,omitempty"`
 	Update                   *RepositoryRulesetUpdateRule                   `json:"update,omitempty"`
 	Deletion                 *RepositoryRulesetRuleType                     `json:"deletion,omitempty"`
-	RequireLinearHistory     *RepositoryRulesetRuleType                     `json:"required_linear_history,omitempty"`
+	RequiredLinearHistory    *RepositoryRulesetRuleType                     `json:"required_linear_history,omitempty"`
 	MergeQueue               *RepositoryRulesetMergeQueueRule               `json:"merge_queue,omitempty"`
 	RequireDeployments       *RepositoryRulesetRequireDeploymentsRule       `json:"required_deployments,omitempty"`
 	RequiredSignatures       *RepositoryRulesetRuleType                     `json:"required_signatures,omitempty"`
