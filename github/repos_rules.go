@@ -236,7 +236,7 @@ type RepositoryRulesetEditedRuleChanges struct {
 type RepositoryRuleset struct {
 	ID   int64  `json:"id"`
 	Name string `json:"name"`
-	//Possible values for target: "branch", "tag", "push"
+	// Possible values for target: "branch", "tag", "push"
 	Target *string `json:"target,omitempty"`
 	//Possible values for source type: "Repository", "Organization"
 	SourceType *string `json:"source_type,omitempty"`
