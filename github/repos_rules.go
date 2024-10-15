@@ -168,7 +168,7 @@ type RepositoryRule struct {
 	RulesetID         int64            `json:"ruleset_id"`
 }
 
-// RepositoryRulesetEditedChanges represents  the changes made to a repository ruleset
+// RepositoryRulesetEditedChanges represents  the changes made to a repository ruleset.
 type RepositoryRulesetEditedChanges struct {
 	Name        *RepositoryRulesetEditedSource     `json:"name,omitempty"`
 	Enforcement *RepositoryRulesetEditedSource     `json:"enforcement,omitempty"`
@@ -254,7 +254,7 @@ type RepositoryRuleset struct {
 	UpdatedAt            *Timestamp               `json:"updated_at,omitempty"`
 }
 
-// RepositoryRulesetRule represents indivisual rules which are present in a repository's ruleset
+// RepositoryRulesetRule represents indivisual rules which are present in a repository's ruleset.
 type RepositoryRulesetRule struct {
 	Creation                 *RepositoryRulesetRuleType                     `json:"creation,omitempty"`
 	Update                   *RepositoryRulesetUpdateRule                   `json:"update,omitempty"`
@@ -279,7 +279,7 @@ type RepositoryRulesetRule struct {
 	CodeScanning             *RepositoryRulesetCodeScanningRule             `json:"code_scanning,omitempty"`
 }
 
-// RepositoryRulesetLink represents Links associated with a repository's rulesets. These links are used to provide more information about the ruleset
+// RepositoryRulesetLink represents Links associated with a repository's rulesets. These links are used to provide more information about the ruleset.
 type RepositoryRulesetLink struct {
 	Self *RulesetLink `json:"self,omitempty"`
 	HTML *RulesetLink `json:"html,omitempty"`
