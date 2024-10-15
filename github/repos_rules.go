@@ -342,7 +342,7 @@ type RepositoryRulesetFilePathRestrictionRule struct {
 
 // RepositoryRulesetMaxFilePathLengthRule defines a maximum file path length rule for the repository.
 type RepositoryRulesetMaxFilePathLengthRule struct {
-	//Type can be one of: "max_file_path_length".
+	// Type can be one of: "max_file_path_length".
 
 	Type       string                           `json:"type"`
 	Parameters *RuleMaxFilePathLengthParameters `json:"parameters,omitempty"`
