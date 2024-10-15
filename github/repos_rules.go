@@ -357,7 +357,7 @@ type RepositoryRulesetFileExtensionRestrictionRule struct {
 
 // RepositoryRulesetMaxFileSizeRule defines a maximum file size rule for the repository.
 type RepositoryRulesetMaxFileSizeRule struct {
-	//Type can be one of: "max_file_size".
+	// Type can be one of: "max_file_size".
 	Type       string                     `json:"type"`
 	Parameters *RuleMaxFileSizeParameters `json:"parameters,omitempty"`
 }
