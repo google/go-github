@@ -371,7 +371,7 @@ type RepositoryRulesetWorkflowsRule struct {
 
 // RepositoryRulesetCodeScanningRule defines a code scanning rule for the repository.
 type RepositoryRulesetCodeScanningRule struct {
-	//Type can be one of:"code_scanning".
+	// Type can be one of:"code_scanning".
 	Type       string                      `json:"type"`
 	Parameters *RuleCodeScanningParameters `json:"parameters,omitempty"`
 }
