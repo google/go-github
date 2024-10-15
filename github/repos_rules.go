@@ -254,7 +254,7 @@ type RepositoryRuleset struct {
 	UpdatedAt            *Timestamp               `json:"updated_at,omitempty"`
 }
 
-// RepositoryRulesetRule represents indivisual rules which are present in a repository's ruleset.
+// RepositoryRulesetRule represents individual rules which are present in a repository's ruleset.
 type RepositoryRulesetRule struct {
 	Creation                 *RepositoryRulesetRuleType                     `json:"creation,omitempty"`
 	Update                   *RepositoryRulesetUpdateRule                   `json:"update,omitempty"`
