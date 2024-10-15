@@ -299,7 +299,7 @@ type RepositoryRulesetUpdateRule struct {
 
 // RepositoryRulesetMergeQueueRule defines a merge queue rule for the repository.
 type RepositoryRulesetMergeQueueRule struct {
-	//Type can be one of: "merge_queue".
+	// Type can be one of: "merge_queue".
 	Type       string                    `json:"type"`
 	Parameters *MergeQueueRuleParameters `json:"parameters,omitempty"`
 }
