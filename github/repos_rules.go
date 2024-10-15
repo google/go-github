@@ -261,7 +261,7 @@ type RepositoryRulesetRule struct {
 	Deletion                 *RepositoryRulesetRuleType                     `json:"deletion,omitempty"`
 	RequiredLinearHistory    *RepositoryRulesetRuleType                     `json:"required_linear_history,omitempty"`
 	MergeQueue               *RepositoryRulesetMergeQueueRule               `json:"merge_queue,omitempty"`
-	RequiredDeployments      *RepositoryRulesetRequiredDeploymentsRule       `json:"required_deployments,omitempty"`
+	RequiredDeployments      *RepositoryRulesetRequiredDeploymentsRule      `json:"required_deployments,omitempty"`
 	RequiredSignatures       *RepositoryRulesetRuleType                     `json:"required_signatures,omitempty"`
 	PullRequest              *RepositoryRulesetPullRequestRule              `json:"pull_request,omitempty"`
 	RequiredStatusChecks     *RepositoryRulesetRequiredStatusChecksRule     `json:"required_status_checks,omitempty"`
