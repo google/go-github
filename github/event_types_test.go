@@ -9910,7 +9910,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 								MinEntriesToMergeWaitMinutes: 13,
 							},
 						},
-						RequireDeployments: &RepositoryRulesetRequireDeploymentsRule{
+						RequiredDeployments: &RepositoryRulesetRequiredDeploymentsRule{
 							Type: "required_deployments",
 							Parameters: &RequiredDeploymentEnvironmentsRuleParameters{
 								RequiredDeploymentEnvironments: []string{"test"},
