@@ -321,7 +321,7 @@ type RepositoryRulesetPullRequestRule struct {
 
 // RepositoryRulesetRequiredStatusChecksRule defines a rule for required status checks.
 type RepositoryRulesetRequiredStatusChecksRule struct {
-	//Type can be one of: "required_status_checks".
+	// Type can be one of: "required_status_checks".
 
 	Type       string                              `json:"type"`
 	Parameters *RequiredStatusChecksRuleParameters `json:"parameters,omitempty"`
