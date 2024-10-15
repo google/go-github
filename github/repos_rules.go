@@ -350,7 +350,7 @@ type RepositoryRulesetMaxFilePathLengthRule struct {
 
 // RepositoryRulesetFileExtensionRestrictionRule defines a file extension restriction rule for the repository.
 type RepositoryRulesetFileExtensionRestrictionRule struct {
-	//Type can be one of: "file_extension_restriction".
+	// Type can be one of: "file_extension_restriction".
 	Type       string                                  `json:"type"`
 	Parameters *RuleFileExtensionRestrictionParameters `json:"parameters,omitempty"`
 }
