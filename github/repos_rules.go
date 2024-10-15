@@ -292,28 +292,28 @@ type RepositoryRulesetRuleType struct {
 
 // RepositoryRulesetUpdateRule defines an update rule for the repository.
 type RepositoryRulesetUpdateRule struct {
-	//Value for Type: "update"
+	//Type can be one of: "update".
 	Type       string                                   `json:"type"`
 	Parameters *UpdateAllowsFetchAndMergeRuleParameters `json:"parameters,omitempty"`
 }
 
 // RepositoryRulesetMergeQueueRule defines a merge queue rule for the repository.
 type RepositoryRulesetMergeQueueRule struct {
-	//Value for Type: "merge_queue"
+	//Type can be one of: "merge_queue".
 	Type       string                    `json:"type"`
 	Parameters *MergeQueueRuleParameters `json:"parameters,omitempty"`
 }
 
 // RepositoryRulesetRequireDeploymentsRule defines a rule for required deployments.
 type RepositoryRulesetRequireDeploymentsRule struct {
-	//Value for Type: "required_deployments"
+	//Type can be one of: "required_deployments".
 	Type       string                                        `json:"type"`
 	Parameters *RequiredDeploymentEnvironmentsRuleParameters `json:"parameters,omitempty"`
 }
 
 // RepositoryRulesetPullRequestRule defines a rule for pull requests.
 type RepositoryRulesetPullRequestRule struct {
-	//Value for Type: "pull_request"
+	//Type can be one of: "pull_request".
 
 	Type       string                     `json:"type"`
 	Parameters *PullRequestRuleParameters `json:"parameters,omitempty"`
@@ -321,7 +321,7 @@ type RepositoryRulesetPullRequestRule struct {
 
 // RepositoryRulesetRequiredStatusChecksRule defines a rule for required status checks.
 type RepositoryRulesetRequiredStatusChecksRule struct {
-	//Value for Type: "required_status_checks"
+	//Type can be one of: "required_status_checks".
 
 	Type       string                              `json:"type"`
 	Parameters *RequiredStatusChecksRuleParameters `json:"parameters,omitempty"`
@@ -335,14 +335,14 @@ type RepositoryRulesetPatternRule struct {
 
 // RepositoryRulesetFilePathRestrictionRule defines a file path restriction rule for the repository.
 type RepositoryRulesetFilePathRestrictionRule struct {
-	//Value for Type: "file_path_restriction"
+	//Type can be one of: "file_path_restriction".
 	Type       string              `json:"type"`
 	Parameters *RuleFileParameters `json:"parameters,omitempty"`
 }
 
 // RepositoryRulesetMaxFilePathLengthRule defines a maximum file path length rule for the repository.
 type RepositoryRulesetMaxFilePathLengthRule struct {
-	//Value for Type: "max_file_path_length"
+	//Type can be one of: "max_file_path_length".
 
 	Type       string                           `json:"type"`
 	Parameters *RuleMaxFilePathLengthParameters `json:"parameters,omitempty"`
@@ -350,28 +350,28 @@ type RepositoryRulesetMaxFilePathLengthRule struct {
 
 // RepositoryRulesetFileExtensionRestrictionRule defines a file extension restriction rule for the repository.
 type RepositoryRulesetFileExtensionRestrictionRule struct {
-	//Value for Type: "file_extension_restriction"
+	//Type can be one of: "file_extension_restriction".
 	Type       string                                  `json:"type"`
 	Parameters *RuleFileExtensionRestrictionParameters `json:"parameters,omitempty"`
 }
 
 // RepositoryRulesetMaxFileSizeRule defines a maximum file size rule for the repository.
 type RepositoryRulesetMaxFileSizeRule struct {
-	//Value for Type: "max_file_size"
+	//Type can be one of: "max_file_size".
 	Type       string                     `json:"type"`
 	Parameters *RuleMaxFileSizeParameters `json:"parameters,omitempty"`
 }
 
 // RepositoryRulesetWorkflowsRule defines a workflow rule for the repository.
 type RepositoryRulesetWorkflowsRule struct {
-	//Value for Type: "workflows"
+	//Type can be one of: "workflows".
 	Type       string                           `json:"type"`
 	Parameters *RequiredWorkflowsRuleParameters `json:"parameters,omitempty"`
 }
 
 // RepositoryRulesetCodeScanningRule defines a code scanning rule for the repository.
 type RepositoryRulesetCodeScanningRule struct {
-	//Value for Type:"code_scanning"
+	//Type can be one of:"code_scanning".
 	Type       string                      `json:"type"`
 	Parameters *RuleCodeScanningParameters `json:"parameters,omitempty"`
 }

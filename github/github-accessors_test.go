@@ -26809,6 +26809,7 @@ func TestRepositoryRule_GetParameters(tt *testing.T) {
 }
 
 func TestRepositoryRuleset_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
 	var zeroValue Timestamp
 	r := &RepositoryRuleset{CreatedAt: &zeroValue}
 	r.GetCreatedAt()
@@ -26819,6 +26820,7 @@ func TestRepositoryRuleset_GetCreatedAt(tt *testing.T) {
 }
 
 func TestRepositoryRuleset_GetCurrentUserCanBypass(tt *testing.T) {
+	tt.Parallel()
 	var zeroValue string
 	r := &RepositoryRuleset{CurrentUserCanBypass: &zeroValue}
 	r.GetCurrentUserCanBypass()
@@ -26829,6 +26831,7 @@ func TestRepositoryRuleset_GetCurrentUserCanBypass(tt *testing.T) {
 }
 
 func TestRepositoryRuleset_GetLinks(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRuleset{}
 	r.GetLinks()
 	r = nil
@@ -26836,6 +26839,7 @@ func TestRepositoryRuleset_GetLinks(tt *testing.T) {
 }
 
 func TestRepositoryRuleset_GetNodeID(tt *testing.T) {
+	tt.Parallel()
 	var zeroValue string
 	r := &RepositoryRuleset{NodeID: &zeroValue}
 	r.GetNodeID()
@@ -26846,6 +26850,7 @@ func TestRepositoryRuleset_GetNodeID(tt *testing.T) {
 }
 
 func TestRepositoryRuleset_GetSourceType(tt *testing.T) {
+	tt.Parallel()
 	var zeroValue string
 	r := &RepositoryRuleset{SourceType: &zeroValue}
 	r.GetSourceType()
@@ -26856,6 +26861,7 @@ func TestRepositoryRuleset_GetSourceType(tt *testing.T) {
 }
 
 func TestRepositoryRuleset_GetTarget(tt *testing.T) {
+	tt.Parallel()
 	var zeroValue string
 	r := &RepositoryRuleset{Target: &zeroValue}
 	r.GetTarget()
@@ -26866,6 +26872,7 @@ func TestRepositoryRuleset_GetTarget(tt *testing.T) {
 }
 
 func TestRepositoryRuleset_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
 	var zeroValue Timestamp
 	r := &RepositoryRuleset{UpdatedAt: &zeroValue}
 	r.GetUpdatedAt()
@@ -26876,6 +26883,7 @@ func TestRepositoryRuleset_GetUpdatedAt(tt *testing.T) {
 }
 
 func TestRepositoryRulesetCodeScanningRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetCodeScanningRule{}
 	r.GetParameters()
 	r = nil
@@ -26883,6 +26891,7 @@ func TestRepositoryRulesetCodeScanningRule_GetParameters(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEditedChanges_GetConditions(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEditedChanges{}
 	r.GetConditions()
 	r = nil
@@ -26890,6 +26899,7 @@ func TestRepositoryRulesetEditedChanges_GetConditions(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEditedChanges_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEditedChanges{}
 	r.GetEnforcement()
 	r = nil
@@ -26897,6 +26907,7 @@ func TestRepositoryRulesetEditedChanges_GetEnforcement(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEditedChanges_GetName(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEditedChanges{}
 	r.GetName()
 	r = nil
@@ -26904,6 +26915,7 @@ func TestRepositoryRulesetEditedChanges_GetName(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEditedChanges_GetRules(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEditedChanges{}
 	r.GetRules()
 	r = nil
@@ -26911,6 +26923,7 @@ func TestRepositoryRulesetEditedChanges_GetRules(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEditedRuleChanges_GetConfiguration(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEditedRuleChanges{}
 	r.GetConfiguration()
 	r = nil
@@ -26918,6 +26931,7 @@ func TestRepositoryRulesetEditedRuleChanges_GetConfiguration(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEditedRuleChanges_GetPattern(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEditedRuleChanges{}
 	r.GetPattern()
 	r = nil
@@ -26925,6 +26939,7 @@ func TestRepositoryRulesetEditedRuleChanges_GetPattern(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEditedRuleChanges_GetRuleType(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEditedRuleChanges{}
 	r.GetRuleType()
 	r = nil
@@ -26932,6 +26947,7 @@ func TestRepositoryRulesetEditedRuleChanges_GetRuleType(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEditedSource_GetFrom(tt *testing.T) {
+	tt.Parallel()
 	var zeroValue string
 	r := &RepositoryRulesetEditedSource{From: &zeroValue}
 	r.GetFrom()
@@ -26942,6 +26958,7 @@ func TestRepositoryRulesetEditedSource_GetFrom(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEditedUpdatedConditions_GetChanges(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEditedUpdatedConditions{}
 	r.GetChanges()
 	r = nil
@@ -26949,6 +26966,7 @@ func TestRepositoryRulesetEditedUpdatedConditions_GetChanges(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEditedUpdatedConditions_GetCondition(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEditedUpdatedConditions{}
 	r.GetCondition()
 	r = nil
@@ -26956,6 +26974,7 @@ func TestRepositoryRulesetEditedUpdatedConditions_GetCondition(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEvent_GetAction(tt *testing.T) {
+	tt.Parallel()
 	var zeroValue string
 	r := &RepositoryRulesetEvent{Action: &zeroValue}
 	r.GetAction()
@@ -26966,6 +26985,7 @@ func TestRepositoryRulesetEvent_GetAction(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEvent_GetChanges(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEvent{}
 	r.GetChanges()
 	r = nil
@@ -26973,6 +26993,7 @@ func TestRepositoryRulesetEvent_GetChanges(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEvent_GetEnterprise(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEvent{}
 	r.GetEnterprise()
 	r = nil
@@ -26980,6 +27001,7 @@ func TestRepositoryRulesetEvent_GetEnterprise(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEvent_GetInstallation(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEvent{}
 	r.GetInstallation()
 	r = nil
@@ -26987,6 +27009,7 @@ func TestRepositoryRulesetEvent_GetInstallation(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEvent_GetOrganization(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEvent{}
 	r.GetOrganization()
 	r = nil
@@ -26994,6 +27017,7 @@ func TestRepositoryRulesetEvent_GetOrganization(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEvent_GetRepository(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEvent{}
 	r.GetRepository()
 	r = nil
@@ -27001,6 +27025,7 @@ func TestRepositoryRulesetEvent_GetRepository(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEvent_GetRepositoryRuleset(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEvent{}
 	r.GetRepositoryRuleset()
 	r = nil
@@ -27008,6 +27033,7 @@ func TestRepositoryRulesetEvent_GetRepositoryRuleset(tt *testing.T) {
 }
 
 func TestRepositoryRulesetEvent_GetSender(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetEvent{}
 	r.GetSender()
 	r = nil
@@ -27015,6 +27041,7 @@ func TestRepositoryRulesetEvent_GetSender(tt *testing.T) {
 }
 
 func TestRepositoryRulesetFileExtensionRestrictionRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetFileExtensionRestrictionRule{}
 	r.GetParameters()
 	r = nil
@@ -27022,6 +27049,7 @@ func TestRepositoryRulesetFileExtensionRestrictionRule_GetParameters(tt *testing
 }
 
 func TestRepositoryRulesetFilePathRestrictionRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetFilePathRestrictionRule{}
 	r.GetParameters()
 	r = nil
@@ -27029,6 +27057,7 @@ func TestRepositoryRulesetFilePathRestrictionRule_GetParameters(tt *testing.T) {
 }
 
 func TestRepositoryRulesetLink_GetHTML(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetLink{}
 	r.GetHTML()
 	r = nil
@@ -27036,6 +27065,7 @@ func TestRepositoryRulesetLink_GetHTML(tt *testing.T) {
 }
 
 func TestRepositoryRulesetLink_GetSelf(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetLink{}
 	r.GetSelf()
 	r = nil
@@ -27043,6 +27073,7 @@ func TestRepositoryRulesetLink_GetSelf(tt *testing.T) {
 }
 
 func TestRepositoryRulesetMaxFilePathLengthRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetMaxFilePathLengthRule{}
 	r.GetParameters()
 	r = nil
@@ -27050,6 +27081,7 @@ func TestRepositoryRulesetMaxFilePathLengthRule_GetParameters(tt *testing.T) {
 }
 
 func TestRepositoryRulesetMaxFileSizeRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetMaxFileSizeRule{}
 	r.GetParameters()
 	r = nil
@@ -27057,6 +27089,7 @@ func TestRepositoryRulesetMaxFileSizeRule_GetParameters(tt *testing.T) {
 }
 
 func TestRepositoryRulesetMergeQueueRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetMergeQueueRule{}
 	r.GetParameters()
 	r = nil
@@ -27064,6 +27097,7 @@ func TestRepositoryRulesetMergeQueueRule_GetParameters(tt *testing.T) {
 }
 
 func TestRepositoryRulesetPatternRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetPatternRule{}
 	r.GetParameters()
 	r = nil
@@ -27071,6 +27105,7 @@ func TestRepositoryRulesetPatternRule_GetParameters(tt *testing.T) {
 }
 
 func TestRepositoryRulesetPullRequestRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetPullRequestRule{}
 	r.GetParameters()
 	r = nil
@@ -27078,6 +27113,7 @@ func TestRepositoryRulesetPullRequestRule_GetParameters(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRefCondition_GetRefName(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRefCondition{}
 	r.GetRefName()
 	r = nil
@@ -27085,6 +27121,7 @@ func TestRepositoryRulesetRefCondition_GetRefName(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRequireDeploymentsRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRequireDeploymentsRule{}
 	r.GetParameters()
 	r = nil
@@ -27092,6 +27129,7 @@ func TestRepositoryRulesetRequireDeploymentsRule_GetParameters(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRequiredStatusChecksRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRequiredStatusChecksRule{}
 	r.GetParameters()
 	r = nil
@@ -27099,6 +27137,7 @@ func TestRepositoryRulesetRequiredStatusChecksRule_GetParameters(tt *testing.T) 
 }
 
 func TestRepositoryRulesetRule_GetBranchNamePattern(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetBranchNamePattern()
 	r = nil
@@ -27106,6 +27145,7 @@ func TestRepositoryRulesetRule_GetBranchNamePattern(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetCodeScanning(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetCodeScanning()
 	r = nil
@@ -27113,6 +27153,7 @@ func TestRepositoryRulesetRule_GetCodeScanning(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetCommitAuthorEmailPattern(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetCommitAuthorEmailPattern()
 	r = nil
@@ -27120,6 +27161,7 @@ func TestRepositoryRulesetRule_GetCommitAuthorEmailPattern(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetCommitMessagePattern(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetCommitMessagePattern()
 	r = nil
@@ -27127,6 +27169,7 @@ func TestRepositoryRulesetRule_GetCommitMessagePattern(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetCommitterEmailPattern(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetCommitterEmailPattern()
 	r = nil
@@ -27134,6 +27177,7 @@ func TestRepositoryRulesetRule_GetCommitterEmailPattern(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetCreation(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetCreation()
 	r = nil
@@ -27141,6 +27185,7 @@ func TestRepositoryRulesetRule_GetCreation(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetDeletion(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetDeletion()
 	r = nil
@@ -27148,6 +27193,7 @@ func TestRepositoryRulesetRule_GetDeletion(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetFileExtensionRestriction(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetFileExtensionRestriction()
 	r = nil
@@ -27155,6 +27201,7 @@ func TestRepositoryRulesetRule_GetFileExtensionRestriction(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetFilePathRestriction(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetFilePathRestriction()
 	r = nil
@@ -27162,6 +27209,7 @@ func TestRepositoryRulesetRule_GetFilePathRestriction(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetMaxFilePathLength(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetMaxFilePathLength()
 	r = nil
@@ -27169,6 +27217,7 @@ func TestRepositoryRulesetRule_GetMaxFilePathLength(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetMaxFileSize(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetMaxFileSize()
 	r = nil
@@ -27176,6 +27225,7 @@ func TestRepositoryRulesetRule_GetMaxFileSize(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetMergeQueue(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetMergeQueue()
 	r = nil
@@ -27183,6 +27233,7 @@ func TestRepositoryRulesetRule_GetMergeQueue(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetNonFastForward(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetNonFastForward()
 	r = nil
@@ -27190,6 +27241,7 @@ func TestRepositoryRulesetRule_GetNonFastForward(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetPullRequest(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetPullRequest()
 	r = nil
@@ -27197,6 +27249,7 @@ func TestRepositoryRulesetRule_GetPullRequest(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetRequireDeployments(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetRequireDeployments()
 	r = nil
@@ -27204,6 +27257,7 @@ func TestRepositoryRulesetRule_GetRequireDeployments(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetRequiredSignatures(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetRequiredSignatures()
 	r = nil
@@ -27211,6 +27265,7 @@ func TestRepositoryRulesetRule_GetRequiredSignatures(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetRequiredStatusChecks(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetRequiredStatusChecks()
 	r = nil
@@ -27218,6 +27273,7 @@ func TestRepositoryRulesetRule_GetRequiredStatusChecks(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetRequireLinearHistory(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetRequireLinearHistory()
 	r = nil
@@ -27225,6 +27281,7 @@ func TestRepositoryRulesetRule_GetRequireLinearHistory(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetTagNamePattern(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetTagNamePattern()
 	r = nil
@@ -27232,6 +27289,7 @@ func TestRepositoryRulesetRule_GetTagNamePattern(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetUpdate(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetUpdate()
 	r = nil
@@ -27239,6 +27297,7 @@ func TestRepositoryRulesetRule_GetUpdate(tt *testing.T) {
 }
 
 func TestRepositoryRulesetRule_GetWorkflows(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetRule{}
 	r.GetWorkflows()
 	r = nil
@@ -27246,6 +27305,7 @@ func TestRepositoryRulesetRule_GetWorkflows(tt *testing.T) {
 }
 
 func TestRepositoryRulesetUpdatedConditionsEdited_GetConditionType(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetUpdatedConditionsEdited{}
 	r.GetConditionType()
 	r = nil
@@ -27253,6 +27313,7 @@ func TestRepositoryRulesetUpdatedConditionsEdited_GetConditionType(tt *testing.T
 }
 
 func TestRepositoryRulesetUpdatedConditionsEdited_GetExclude(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetUpdatedConditionsEdited{}
 	r.GetExclude()
 	r = nil
@@ -27260,6 +27321,7 @@ func TestRepositoryRulesetUpdatedConditionsEdited_GetExclude(tt *testing.T) {
 }
 
 func TestRepositoryRulesetUpdatedConditionsEdited_GetInclude(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetUpdatedConditionsEdited{}
 	r.GetInclude()
 	r = nil
@@ -27267,6 +27329,7 @@ func TestRepositoryRulesetUpdatedConditionsEdited_GetInclude(tt *testing.T) {
 }
 
 func TestRepositoryRulesetUpdatedConditionsEdited_GetTarget(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetUpdatedConditionsEdited{}
 	r.GetTarget()
 	r = nil
@@ -27274,6 +27337,7 @@ func TestRepositoryRulesetUpdatedConditionsEdited_GetTarget(tt *testing.T) {
 }
 
 func TestRepositoryRulesetUpdatedRules_GetChanges(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetUpdatedRules{}
 	r.GetChanges()
 	r = nil
@@ -27281,6 +27345,7 @@ func TestRepositoryRulesetUpdatedRules_GetChanges(tt *testing.T) {
 }
 
 func TestRepositoryRulesetUpdatedRules_GetRule(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetUpdatedRules{}
 	r.GetRule()
 	r = nil
@@ -27288,6 +27353,7 @@ func TestRepositoryRulesetUpdatedRules_GetRule(tt *testing.T) {
 }
 
 func TestRepositoryRulesetUpdateRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetUpdateRule{}
 	r.GetParameters()
 	r = nil
@@ -27295,6 +27361,7 @@ func TestRepositoryRulesetUpdateRule_GetParameters(tt *testing.T) {
 }
 
 func TestRepositoryRulesetWorkflowsRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
 	r := &RepositoryRulesetWorkflowsRule{}
 	r.GetParameters()
 	r = nil
@@ -27828,6 +27895,7 @@ func TestRequiredStatusChecksRequest_GetStrict(tt *testing.T) {
 }
 
 func TestRequiredStatusChecksRuleParameters_GetDoNotEnforceOnCreate(tt *testing.T) {
+	tt.Parallel()
 	var zeroValue bool
 	r := &RequiredStatusChecksRuleParameters{DoNotEnforceOnCreate: &zeroValue}
 	r.GetDoNotEnforceOnCreate()
