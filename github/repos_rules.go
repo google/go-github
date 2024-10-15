@@ -313,7 +313,7 @@ type RepositoryRulesetRequireDeploymentsRule struct {
 
 // RepositoryRulesetPullRequestRule defines a rule for pull requests.
 type RepositoryRulesetPullRequestRule struct {
-	//Type can be one of: "pull_request".
+	// Type can be one of: "pull_request".
 
 	Type       string                     `json:"type"`
 	Parameters *PullRequestRuleParameters `json:"parameters,omitempty"`
