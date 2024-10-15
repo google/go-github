@@ -335,7 +335,7 @@ type RepositoryRulesetPatternRule struct {
 
 // RepositoryRulesetFilePathRestrictionRule defines a file path restriction rule for the repository.
 type RepositoryRulesetFilePathRestrictionRule struct {
-	//Type can be one of: "file_path_restriction".
+	// Type can be one of: "file_path_restriction".
 	Type       string              `json:"type"`
 	Parameters *RuleFileParameters `json:"parameters,omitempty"`
 }
