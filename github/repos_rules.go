@@ -364,7 +364,7 @@ type RepositoryRulesetMaxFileSizeRule struct {
 
 // RepositoryRulesetWorkflowsRule defines a workflow rule for the repository.
 type RepositoryRulesetWorkflowsRule struct {
-	//Type can be one of: "workflows".
+	// Type can be one of: "workflows".
 	Type       string                           `json:"type"`
 	Parameters *RequiredWorkflowsRuleParameters `json:"parameters,omitempty"`
 }
