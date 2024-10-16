@@ -10547,7 +10547,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
                   "type": "deletion"
                 },
                 "required_linear_history": {
-                  "type": "require_linear_history"
+                  "type": "required_linear_history"
                 },
                 "merge_queue": {
                   "type": "merge_queue",
