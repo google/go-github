@@ -269,7 +269,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 		"Valid required_status_checks params": {
 			data: `{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test","integration_id":1}],"strict_required_status_checks_policy":true,"do_not_enforce_on_create":true}}`,
 			want: NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
-				DoNotEnforceOnCreate: true,
+				DoNotEnforceOnCreate: Bool(true),
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
 					{
 						Context:       "test",
