@@ -21135,7 +21135,7 @@ func (r *RepositoryRulesetRefCondition) GetRefName() *RulesetRefConditionParamet
 }
 
 // GetParameters returns the Parameters field.
-func (r *RepositoryRulesetRequireDeploymentsRule) GetParameters() *RequiredDeploymentEnvironmentsRuleParameters {
+func (r *RepositoryRulesetRequiredDeploymentsRule) GetParameters() *RequiredDeploymentEnvironmentsRuleParameters {
 	if r == nil {
 		return nil
 	}
@@ -21262,12 +21262,20 @@ func (r *RepositoryRulesetRule) GetPullRequest() *RepositoryRulesetPullRequestRu
 	return r.PullRequest
 }
 
-// GetRequireDeployments returns the RequireDeployments field.
-func (r *RepositoryRulesetRule) GetRequireDeployments() *RepositoryRulesetRequireDeploymentsRule {
+// GetRequiredDeployments returns the RequiredDeployments field.
+func (r *RepositoryRulesetRule) GetRequiredDeployments() *RepositoryRulesetRequiredDeploymentsRule {
 	if r == nil {
 		return nil
 	}
-	return r.RequireDeployments
+	return r.RequiredDeployments
+}
+
+// GetRequiredLinearHistory returns the RequiredLinearHistory field.
+func (r *RepositoryRulesetRule) GetRequiredLinearHistory() *RepositoryRulesetRuleType {
+	if r == nil {
+		return nil
+	}
+	return r.RequiredLinearHistory
 }
 
 // GetRequiredSignatures returns the RequiredSignatures field.
@@ -21284,14 +21292,6 @@ func (r *RepositoryRulesetRule) GetRequiredStatusChecks() *RepositoryRulesetRequ
 		return nil
 	}
 	return r.RequiredStatusChecks
-}
-
-// GetRequireLinearHistory returns the RequireLinearHistory field.
-func (r *RepositoryRulesetRule) GetRequireLinearHistory() *RepositoryRulesetRuleType {
-	if r == nil {
-		return nil
-	}
-	return r.RequireLinearHistory
 }
 
 // GetTagNamePattern returns the TagNamePattern field.

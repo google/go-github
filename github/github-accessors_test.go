@@ -27120,9 +27120,9 @@ func TestRepositoryRulesetRefCondition_GetRefName(tt *testing.T) {
 	r.GetRefName()
 }
 
-func TestRepositoryRulesetRequireDeploymentsRule_GetParameters(tt *testing.T) {
+func TestRepositoryRulesetRequiredDeploymentsRule_GetParameters(tt *testing.T) {
 	tt.Parallel()
-	r := &RepositoryRulesetRequireDeploymentsRule{}
+	r := &RepositoryRulesetRequiredDeploymentsRule{}
 	r.GetParameters()
 	r = nil
 	r.GetParameters()
@@ -27248,12 +27248,20 @@ func TestRepositoryRulesetRule_GetPullRequest(tt *testing.T) {
 	r.GetPullRequest()
 }
 
-func TestRepositoryRulesetRule_GetRequireDeployments(tt *testing.T) {
+func TestRepositoryRulesetRule_GetRequiredDeployments(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryRulesetRule{}
-	r.GetRequireDeployments()
+	r.GetRequiredDeployments()
 	r = nil
-	r.GetRequireDeployments()
+	r.GetRequiredDeployments()
+}
+
+func TestRepositoryRulesetRule_GetRequiredLinearHistory(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRule{}
+	r.GetRequiredLinearHistory()
+	r = nil
+	r.GetRequiredLinearHistory()
 }
 
 func TestRepositoryRulesetRule_GetRequiredSignatures(tt *testing.T) {
@@ -27270,14 +27278,6 @@ func TestRepositoryRulesetRule_GetRequiredStatusChecks(tt *testing.T) {
 	r.GetRequiredStatusChecks()
 	r = nil
 	r.GetRequiredStatusChecks()
-}
-
-func TestRepositoryRulesetRule_GetRequireLinearHistory(tt *testing.T) {
-	tt.Parallel()
-	r := &RepositoryRulesetRule{}
-	r.GetRequireLinearHistory()
-	r = nil
-	r.GetRequireLinearHistory()
 }
 
 func TestRepositoryRulesetRule_GetTagNamePattern(tt *testing.T) {

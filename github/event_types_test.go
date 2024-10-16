@@ -10203,8 +10203,8 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 							Deletion: &RepositoryRulesetRuleType{
 								Type: "deletion",
 							},
-							RequireLinearHistory: &RepositoryRulesetRuleType{
-								Type: "require_linear_history",
+							RequiredLinearHistory: &RepositoryRulesetRuleType{
+								Type: "required_linear_history",
 							},
 							MergeQueue: &RepositoryRulesetMergeQueueRule{
 								Type: "merge_queue",
