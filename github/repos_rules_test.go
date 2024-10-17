@@ -269,7 +269,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 		"Valid required_status_checks params": {
 			data: `{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test","integration_id":1}],"strict_required_status_checks_policy":true,"do_not_enforce_on_create":true}}`,
 			want: NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
-				DoNotEnforceOnCreate: true,
+				DoNotEnforceOnCreate: Bool(true),
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
 					{
 						Context:       "test",
@@ -517,14 +517,18 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 			  "name": "ruleset",
 			  "source_type": "Repository",
 			  "source": "o/repo",
-			  "enforcement": "enabled"
+			  "enforcement": "enabled",
+			  "created_at": `+referenceTimeStr+`,
+			  "updated_at": `+referenceTimeStr+`
 			},
 			{
 			  "id": 314,
 			  "name": "Another ruleset",
 			  "source_type": "Repository",
 			  "source": "o/repo",
-			  "enforcement": "enabled"
+			  "enforcement": "enabled",
+			  "created_at": `+referenceTimeStr+`,
+			  "updated_at": `+referenceTimeStr+`
 			}
 		]`)
 	})
@@ -542,6 +546,8 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 			SourceType:  String("Repository"),
 			Source:      "o/repo",
 			Enforcement: "enabled",
+			CreatedAt:   &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
 		},
 		{
 			ID:          Int64(314),
@@ -549,6 +555,8 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 			SourceType:  String("Repository"),
 			Source:      "o/repo",
 			Enforcement: "enabled",
+			CreatedAt:   &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
 		},
 	}
 	if !cmp.Equal(ruleSet, want) {
@@ -711,7 +719,9 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 			"name": "ruleset",
 			"source_type": "Organization",
 			"source": "o",
-			"enforcement": "enabled"
+			"enforcement": "enabled",
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -727,6 +737,8 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 		SourceType:  String("Organization"),
 		Source:      "o",
 		Enforcement: "enabled",
+		CreatedAt:   &Timestamp{referenceTime},
+		UpdatedAt:   &Timestamp{referenceTime},
 	}
 	if !cmp.Equal(ruleSet, want) {
 		t.Errorf("Repositories.GetRuleset returned %+v, want %+v", ruleSet, want)

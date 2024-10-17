@@ -92,11 +92,11 @@ func intFromLastPathSegment(s string) int {
 type OAuthAppReviewState int
 
 const (
-	// OAuthAppRequested indicates access has been requested, but not reviewed
+	// OAuthAppRequested indicates access has been requested, but not reviewed.
 	OAuthAppRequested OAuthAppReviewState = iota + 1
-	// OAuthAppApproved indicates access has been approved
+	// OAuthAppApproved indicates access has been approved.
 	OAuthAppApproved
-	// OAuthAppDenied indicates access has been denied
+	// OAuthAppDenied indicates access has been denied.
 	OAuthAppDenied
 )
 

@@ -98,6 +98,7 @@ var (
 		"repository":                     &RepositoryEvent{},
 		"repository_dispatch":            &RepositoryDispatchEvent{},
 		"repository_import":              &RepositoryImportEvent{},
+		"repository_ruleset":             &RepositoryRulesetEvent{},
 		"repository_vulnerability_alert": &RepositoryVulnerabilityAlertEvent{},
 		"release":                        &ReleaseEvent{},
 		"secret_scanning_alert":          &SecretScanningAlertEvent{},
@@ -114,9 +115,9 @@ var (
 		"workflow_job":                   &WorkflowJobEvent{},
 		"workflow_run":                   &WorkflowRunEvent{},
 	}
-	// forward mapping of event types to the string names of the structs
+	// Forward mapping of event types to the string names of the structs.
 	messageToTypeName = make(map[string]string, len(eventTypeMapping))
-	// Inverse map of the above
+	// Inverse map of the above.
 	typeToMessageMapping = make(map[string]string, len(eventTypeMapping))
 )
 

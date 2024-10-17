@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -203,10 +202,9 @@ func TestProjectsService_ListProjectColumns(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/projects/1/columns", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})

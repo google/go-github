@@ -4,7 +4,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build integration
-// +build integration
 
 package integration
 
@@ -29,7 +28,7 @@ var (
 func init() {
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 	if token == "" {
-		print("!!! No OAuth token. Some tests won't run. !!!\n\n")
+		fmt.Print("!!! No OAuth token. Some tests won't run. !!!\n\n")
 		client = github.NewClient(nil)
 	} else {
 		client = github.NewClient(nil).WithAuthToken(token)

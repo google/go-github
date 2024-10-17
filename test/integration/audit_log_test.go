@@ -4,7 +4,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build integration
-// +build integration
 
 package integration
 
@@ -13,9 +12,9 @@ import (
 	"testing"
 )
 
-// TestOrganizationAuditLog test that the client can read an org's audit log
-// Note: Org must be part of an enterprise
-// Test requires auth - set env var GITHUB_AUTH_TOKEN
+// TestOrganizationAuditLog test that the client can read an org's audit log.
+// Note: Org must be part of an enterprise.
+// Test requires auth - set env var GITHUB_AUTH_TOKEN.
 func TestOrganizationAuditLog(t *testing.T) {
 	org := "example_org"
 	entries, _, err := client.Organizations.GetAuditLog(context.Background(), org, nil)
