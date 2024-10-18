@@ -753,8 +753,7 @@ type MemberChanges struct {
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#member
 type MemberEvent struct {
-	// Action is the action that was performed. Possible values are:
-	//"added", "edited", "removed".
+	// Action is the action that was performed. Possible values are: "added", "edited", "removed".
 	Action  *string        `json:"action,omitempty"`
 	Member  *User          `json:"member,omitempty"`
 	Changes *MemberChanges `json:"changes,omitempty"`

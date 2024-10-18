@@ -2365,14 +2365,14 @@ func TestErrorResponse_Error(t *testing.T) {
 		t.Errorf("Expected non-empty ErrorResponse.Error()")
 	}
 
-	//dont panic if request is nil
+	// dont panic if request is nil
 	res = &http.Response{}
 	err = ErrorResponse{Message: "m", Response: res}
 	if err.Error() == "" {
 		t.Errorf("Expected non-empty ErrorResponse.Error()")
 	}
 
-	//dont panic if response is nil
+	// dont panic if response is nil
 	err = ErrorResponse{Message: "m"}
 	if err.Error() == "" {
 		t.Errorf("Expected non-empty ErrorResponse.Error()")

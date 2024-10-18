@@ -9881,7 +9881,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 			},
 			Rules: &RepositoryRulesetEditedRules{
 				Added: []*RepositoryRulesetRule{
-					//Creating just one object with all the possible rules for testing
+					// Creating just one object with all the possible rules for testing
 					{
 						Creation: &RepositoryRulesetRuleType{
 							Type: "creation",
@@ -10035,7 +10035,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 					},
 				},
 				Deleted: []*RepositoryRulesetRule{
-					//Creating just one object with all the possible rules for testing
+					// Creating just one object with all the possible rules for testing
 					{
 						Creation: &RepositoryRulesetRuleType{
 							Type: "creation",

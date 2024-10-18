@@ -49,7 +49,6 @@ func main() {
 		url string
 		typ interface{}
 	}{
-		//{"rate_limit", &github.RateLimits{}},
 		{"users/octocat", &github.User{}},
 		{"user", &github.User{}},
 		{"users/willnorris/keys", &[]github.Key{}},
