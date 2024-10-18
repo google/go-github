@@ -33,7 +33,7 @@ func main() {
 	}
 	itr.BaseURL = gitHost
 
-	//create git client with app transport
+	// create git client with app transport
 	client, err := github.NewClient(
 		&http.Client{
 			Transport: itr,
@@ -50,8 +50,8 @@ func main() {
 		log.Fatalf("failed to list installations: %v\n", err)
 	}
 
-	//capture our installationId for our app
-	//we need this for the access token
+	// capture our installationId for our app
+	// we need this for the access token
 	var installID int64
 	for _, val := range installations {
 		installID = val.GetID()
