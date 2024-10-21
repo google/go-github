@@ -14527,6 +14527,17 @@ func TestListAlertsOptions_GetState(tt *testing.T) {
 	l.GetState()
 }
 
+func TestListArtifactsOptions_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListArtifactsOptions{Name: &zeroValue}
+	l.GetName()
+	l = &ListArtifactsOptions{}
+	l.GetName()
+	l = nil
+	l.GetName()
+}
+
 func TestListCheckRunsOptions_GetAppID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
