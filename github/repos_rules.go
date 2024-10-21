@@ -159,8 +159,8 @@ type RequiredWorkflowsRuleParameters struct {
 	RequiredWorkflows    []*RuleRequiredWorkflow `json:"workflows"`
 }
 
-// RuleRequiredCodeScanningTools represents the RequiredCodeScanningTools for the RequiredCodeScanningParameters object.
-type RuleRequiredCodeScanningTools struct {
+// RuleRequiredCodeScanningTool represents the RequiredCodeScanningTools for the RequiredCodeScanningParameters object.
+type RuleRequiredCodeScanningTool struct {
 	AlertsThreshold         string `json:"alerts_threshold"`
 	SecurityAlertsThreshold string `json:"security_alerts_threshold"`
 	Tool                    string `json:"tool"`
@@ -168,7 +168,7 @@ type RuleRequiredCodeScanningTools struct {
 
 // RequiredCodeScanningRuleParameters represents the code_scanning rule parameters.
 type RequiredCodeScanningRuleParameters struct {
-	RequiredCodeScanningTools []*RuleRequiredCodeScanningTools `json:"code_scanning_tools"`
+	RequiredCodeScanningTools []*RuleRequiredCodeScanningTool `json:"code_scanning_tools"`
 }
 
 // RepositoryRule represents a GitHub Rule.
