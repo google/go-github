@@ -11238,6 +11238,14 @@ func (l *ListAlertsOptions) GetState() string {
 	return *l.State
 }
 
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (l *ListArtifactsOptions) GetName() string {
+	if l == nil || l.Name == nil {
+		return ""
+	}
+	return *l.Name
+}
+
 // GetAppID returns the AppID field if it's non-nil, zero value otherwise.
 func (l *ListCheckRunsOptions) GetAppID() int64 {
 	if l == nil || l.AppID == nil {

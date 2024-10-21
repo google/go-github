@@ -22,7 +22,7 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"page": "2"})
+		testFormValues(t, r, values{"page": "2", "name": "TheArtifact"})
 		fmt.Fprint(w,
 			`{
 				"total_count":1,
@@ -31,7 +31,10 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 		)
 	})
 
-	opts := &ListOptions{Page: 2}
+	opts := &ListArtifactsOptions{
+		Name:        String("TheArtifact"),
+		ListOptions: ListOptions{Page: 2},
+	}
 	ctx := context.Background()
 	artifacts, _, err := client.Actions.ListArtifacts(ctx, "o", "r", opts)
 	if err != nil {
