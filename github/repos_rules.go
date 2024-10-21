@@ -159,7 +159,7 @@ type RequiredWorkflowsRuleParameters struct {
 	RequiredWorkflows    []*RuleRequiredWorkflow `json:"workflows"`
 }
 
-// RuleRequiredCodeScanningTool represents the RequiredCodeScanningTools for the RequiredCodeScanningParameters object.
+// RuleRequiredCodeScanningTool represents a single required code-scanning tool for the RequiredCodeScanningParameters object.
 type RuleRequiredCodeScanningTool struct {
 	AlertsThreshold         string `json:"alerts_threshold"`
 	SecurityAlertsThreshold string `json:"security_alerts_threshold"`
