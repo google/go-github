@@ -316,7 +316,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 		"Valid Required code_scanning params": {
 			data: `{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool": "CodeQL", "security_alerts_threshold": "high_or_higher", "alerts_threshold": "errors"}]}}`,
 			want: NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
-				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTools{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
 					{
 						Tool:                    "CodeQL",
 						SecurityAlertsThreshold: "high_or_higher",

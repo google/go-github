@@ -301,7 +301,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				Pattern:  "github",
 			}),
 			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
-				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTools{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
 					{
 						Tool:                    "CodeQL",
 						SecurityAlertsThreshold: "high_or_higher",
@@ -396,7 +396,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				Pattern:  "github",
 			}),
 			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
-				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTools{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
 					{
 						Tool:                    "CodeQL",
 						SecurityAlertsThreshold: "high_or_higher",
@@ -660,7 +660,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Pattern:  "github",
 			}),
 			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
-				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTools{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
 					{
 						Tool:                    "CodeQL",
 						SecurityAlertsThreshold: "high_or_higher",
@@ -762,7 +762,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Pattern:  "github",
 			}),
 			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
-				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTools{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
 					{
 						Tool:                    "CodeQL",
 						SecurityAlertsThreshold: "high_or_higher",
@@ -1009,7 +1009,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				Pattern:  "github",
 			}),
 			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
-				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTools{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
 					{
 						Tool:                    "CodeQL",
 						SecurityAlertsThreshold: "high_or_higher",
@@ -1102,7 +1102,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				Pattern:  "github",
 			}),
 			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
-				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTools{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
 					{
 						Tool:                    "CodeQL",
 						SecurityAlertsThreshold: "high_or_higher",
