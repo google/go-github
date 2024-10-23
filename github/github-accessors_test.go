@@ -2163,6 +2163,57 @@ func TestBranchPolicy_GetProtectedBranches(tt *testing.T) {
 	b.GetProtectedBranches()
 }
 
+func TestBranchProtectionConfigurationEvent_GetAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &BranchProtectionConfigurationEvent{Action: &zeroValue}
+	b.GetAction()
+	b = &BranchProtectionConfigurationEvent{}
+	b.GetAction()
+	b = nil
+	b.GetAction()
+}
+
+func TestBranchProtectionConfigurationEvent_GetEnterprise(tt *testing.T) {
+	tt.Parallel()
+	b := &BranchProtectionConfigurationEvent{}
+	b.GetEnterprise()
+	b = nil
+	b.GetEnterprise()
+}
+
+func TestBranchProtectionConfigurationEvent_GetInstallation(tt *testing.T) {
+	tt.Parallel()
+	b := &BranchProtectionConfigurationEvent{}
+	b.GetInstallation()
+	b = nil
+	b.GetInstallation()
+}
+
+func TestBranchProtectionConfigurationEvent_GetOrg(tt *testing.T) {
+	tt.Parallel()
+	b := &BranchProtectionConfigurationEvent{}
+	b.GetOrg()
+	b = nil
+	b.GetOrg()
+}
+
+func TestBranchProtectionConfigurationEvent_GetRepo(tt *testing.T) {
+	tt.Parallel()
+	b := &BranchProtectionConfigurationEvent{}
+	b.GetRepo()
+	b = nil
+	b.GetRepo()
+}
+
+func TestBranchProtectionConfigurationEvent_GetSender(tt *testing.T) {
+	tt.Parallel()
+	b := &BranchProtectionConfigurationEvent{}
+	b.GetSender()
+	b = nil
+	b.GetSender()
+}
+
 func TestBranchProtectionRule_GetAdminEnforced(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -29391,6 +29442,65 @@ func TestSecretScanningAlertLocationDetails_GetStartline(tt *testing.T) {
 	s.GetStartline()
 	s = nil
 	s.GetStartline()
+}
+
+func TestSecretScanningAlertLocationEvent_GetAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlertLocationEvent{Action: &zeroValue}
+	s.GetAction()
+	s = &SecretScanningAlertLocationEvent{}
+	s.GetAction()
+	s = nil
+	s.GetAction()
+}
+
+func TestSecretScanningAlertLocationEvent_GetAlert(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertLocationEvent{}
+	s.GetAlert()
+	s = nil
+	s.GetAlert()
+}
+
+func TestSecretScanningAlertLocationEvent_GetInstallation(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertLocationEvent{}
+	s.GetInstallation()
+	s = nil
+	s.GetInstallation()
+}
+
+func TestSecretScanningAlertLocationEvent_GetLocation(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertLocationEvent{}
+	s.GetLocation()
+	s = nil
+	s.GetLocation()
+}
+
+func TestSecretScanningAlertLocationEvent_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertLocationEvent{}
+	s.GetOrganization()
+	s = nil
+	s.GetOrganization()
+}
+
+func TestSecretScanningAlertLocationEvent_GetRepo(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertLocationEvent{}
+	s.GetRepo()
+	s = nil
+	s.GetRepo()
+}
+
+func TestSecretScanningAlertLocationEvent_GetSender(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertLocationEvent{}
+	s.GetSender()
+	s = nil
+	s.GetSender()
 }
 
 func TestSecretScanningAlertUpdateOptions_GetResolution(tt *testing.T) {
