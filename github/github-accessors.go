@@ -1078,6 +1078,22 @@ func (a *Attachment) GetTitle() string {
 	return *a.Title
 }
 
+// GetBundle returns the Bundle field if it's non-nil, zero value otherwise.
+func (a *Attestation) GetBundle() json.RawMessage {
+	if a == nil || a.Bundle == nil {
+		return json.RawMessage{}
+	}
+	return *a.Bundle
+}
+
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (a *Attestation) GetRepositoryID() int {
+	if a == nil || a.RepositoryID == nil {
+		return 0
+	}
+	return *a.RepositoryID
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (a *AuditEntry) GetAction() string {
 	if a == nil || a.Action == nil {

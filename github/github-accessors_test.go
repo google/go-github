@@ -1400,6 +1400,28 @@ func TestAttachment_GetTitle(tt *testing.T) {
 	a.GetTitle()
 }
 
+func TestAttestation_GetBundle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue json.RawMessage
+	a := &Attestation{Bundle: &zeroValue}
+	a.GetBundle()
+	a = &Attestation{}
+	a.GetBundle()
+	a = nil
+	a.GetBundle()
+}
+
+func TestAttestation_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &Attestation{RepositoryID: &zeroValue}
+	a.GetRepositoryID()
+	a = &Attestation{}
+	a.GetRepositoryID()
+	a = nil
+	a.GetRepositoryID()
+}
+
 func TestAuditEntry_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
