@@ -14,7 +14,7 @@ type Attestation struct {
 	// Refer to the sigstore bundle specification for more info:
 	// https://github.com/sigstore/protobuf-specs/blob/main/protos/sigstore_bundle.proto
 	Bundle       *json.RawMessage `json:"bundle"`
-	RepositoryID *int             `json:"repository_id"`
+	RepositoryID *int64             `json:"repository_id"`
 }
 
 type AttestationsResponse struct {
