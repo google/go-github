@@ -753,8 +753,7 @@ type MemberChanges struct {
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#member
 type MemberEvent struct {
-	// Action is the action that was performed. Possible values are:
-	//"added", "edited", "removed".
+	// Action is the action that was performed. Possible values are: "added", "edited", "removed".
 	Action  *string        `json:"action,omitempty"`
 	Member  *User          `json:"member,omitempty"`
 	Changes *MemberChanges `json:"changes,omitempty"`
@@ -1503,6 +1502,22 @@ type RepositoryImportEvent struct {
 	Repo   *Repository   `json:"repository,omitempty"`
 	Org    *Organization `json:"organization,omitempty"`
 	Sender *User         `json:"sender,omitempty"`
+}
+
+// RepositoryRulesetEvent triggers whenever there is a change to the repository's ruleset configuration.
+//
+// This can include updates to protection rules, required status checks, code owners, or other related configurations.
+//
+// GitHub API docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#repository_ruleset
+type RepositoryRulesetEvent struct {
+	Action            *string                         `json:"action,omitempty"`
+	Enterprise        *Enterprise                     `json:"enterprise,omitempty"`
+	Installation      *Installation                   `json:"installation,omitempty"`
+	Organization      *Organization                   `json:"organization,omitempty"`
+	Repository        *Repository                     `json:"repository,omitempty"`
+	RepositoryRuleset *RepositoryRuleset              `json:"repository_ruleset"`
+	Changes           *RepositoryRulesetEditedChanges `json:"changes,omitempty"`
+	Sender            *User                           `json:"sender"`
 }
 
 // RepositoryVulnerabilityAlertEvent is triggered when a security alert is created, dismissed, or resolved.

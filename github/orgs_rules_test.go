@@ -202,6 +202,18 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				  "operator": "contains",
 				  "pattern": "github"
 				}
+			  },
+			  {
+			    "type": "code_scanning",
+			    "parameters": {
+				  "code_scanning_tools": [
+				    {
+					  "tool": "CodeQL",
+					  "security_alerts_threshold": "high_or_higher",
+					  "alerts_threshold": "errors"
+				    }
+				  ]
+			    }
 			  }
 			]
 		  }`)
@@ -288,6 +300,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				Operator: "contains",
 				Pattern:  "github",
 			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
 		},
 	})
 	if err != nil {
@@ -373,6 +394,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				Negate:   Bool(true),
 				Operator: "contains",
 				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
 			}),
 		},
 	}
@@ -523,6 +553,18 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				  "operator": "contains",
 				  "pattern": "github"
 				}
+			  },
+			  {
+			    "type": "code_scanning",
+			    "parameters": {
+				  "code_scanning_tools": [
+				    {
+					  "tool": "CodeQL",
+					  "security_alerts_threshold": "high_or_higher",
+					  "alerts_threshold": "errors"
+				    }
+				  ]
+			    }
 			  }
 			]
 		  }`)
@@ -615,6 +657,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Operator: "contains",
 				Pattern:  "github",
 			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
 		},
 	})
 	if err != nil {
@@ -706,6 +757,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Negate:   Bool(true),
 				Operator: "contains",
 				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
 			}),
 		},
 	}
@@ -849,6 +909,18 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				  "operator": "contains",
 				  "pattern": "github"
 				}
+			  },
+			  {
+			    "type": "code_scanning",
+			    "parameters": {
+				  "code_scanning_tools": [
+				    {
+					  "tool": "CodeQL",
+					  "security_alerts_threshold": "high_or_higher",
+					  "alerts_threshold": "errors"
+				    }
+				  ]
+			    }
 			  }
 			]
 		  }`)
@@ -933,6 +1005,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				Operator: "contains",
 				Pattern:  "github",
 			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
 		},
 	})
 	if err != nil {
@@ -1016,6 +1097,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				Negate:   Bool(true),
 				Operator: "contains",
 				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
 			}),
 		},
 	}

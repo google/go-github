@@ -6,6 +6,7 @@ linters:
   enable:
     - dogsled
     - dupl
+    - gocritic
     - godot
     - gofmt
     - goimports
@@ -20,6 +21,10 @@ linters:
     - unparam
     - whitespace
 linters-settings:
+  gocritic:
+    disable-all: true
+    enabled-checks:
+      - commentFormatting
   gosec:
     excludes:
       # duplicates errcheck

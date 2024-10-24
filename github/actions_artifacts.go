@@ -50,12 +50,22 @@ type ArtifactList struct {
 	Artifacts  []*Artifact `json:"artifacts,omitempty"`
 }
 
+// ListArtifactsOptions specifies the optional parameters to the
+// ActionsService.ListArtifacts method.
+type ListArtifactsOptions struct {
+	// Name represents the name field of an artifact.
+	// When specified, only artifacts with this name will be returned.
+	Name *string `url:"name,omitempty"`
+
+	ListOptions
+}
+
 // ListArtifacts lists all artifacts that belong to a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/artifacts#list-artifacts-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/artifacts
-func (s *ActionsService) ListArtifacts(ctx context.Context, owner, repo string, opts *ListOptions) (*ArtifactList, *Response, error) {
+func (s *ActionsService) ListArtifacts(ctx context.Context, owner, repo string, opts *ListArtifactsOptions) (*ArtifactList, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {

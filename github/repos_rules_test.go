@@ -269,7 +269,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 		"Valid required_status_checks params": {
 			data: `{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test","integration_id":1}],"strict_required_status_checks_policy":true,"do_not_enforce_on_create":true}}`,
 			want: NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
-				DoNotEnforceOnCreate: true,
+				DoNotEnforceOnCreate: Bool(true),
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
 					{
 						Context:       "test",
@@ -294,7 +294,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 			},
 			wantErr: true,
 		},
-		"Required workflows params": {
+		"Valid Required workflows params": {
 			data: `{"type":"workflows","parameters":{"workflows":[{"path": ".github/workflows/test.yml", "repository_id": 1}]}}`,
 			want: NewRequiredWorkflowsRule(&RequiredWorkflowsRuleParameters{
 				RequiredWorkflows: []*RuleRequiredWorkflow{
@@ -304,6 +304,34 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 					},
 				},
 			}),
+		},
+		"Invalid Required workflows params": {
+			data: `{"type":"workflows","parameters":{"workflows":[{"path": ".github/workflows/test.yml", "repository_id": "test"}]}}`,
+			want: &RepositoryRule{
+				Type:       "workflows",
+				Parameters: nil,
+			},
+			wantErr: true,
+		},
+		"Valid Required code_scanning params": {
+			data: `{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool": "CodeQL", "security_alerts_threshold": "high_or_higher", "alerts_threshold": "errors"}]}}`,
+			want: NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
+		},
+		"Invalid Required code_scanning params": {
+			data: `{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool": 1}]}}`,
+			want: &RepositoryRule{
+				Type:       "code_scanning",
+				Parameters: nil,
+			},
+			wantErr: true,
 		},
 		"Invalid type": {
 			data: `{"type":"unknown"}`,
