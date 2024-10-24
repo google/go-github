@@ -767,7 +767,7 @@ func parseSecondaryRate(r *http.Response) *time.Duration {
 	// an integer which represents the number of seconds that one should
 	// wait before resuming making requests.
 	if v := r.Header.Get(headerRetryAfter); v != "" {
-		retryAfterSeconds, _ := strconv.ParseInt(v, 10, 64) // Error handling is noop.
+		retryAfterSeconds, _ := strconv.Atoi(v) // Error handling is noop.
 		retryAfter := time.Duration(retryAfterSeconds) * time.Second
 		return &retryAfter
 	}
