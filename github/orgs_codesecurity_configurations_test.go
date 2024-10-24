@@ -382,7 +382,6 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 					"code_scanning_default_setup": "enabled"
 				}
 		}`)
-		w.WriteHeader(http.StatusOK)
 	})
 	got, resp, err := client.Organizations.SetDefaultCodeSecurityConfiguration(ctx, "o", 1, "all")
 	if err != nil {
@@ -478,7 +477,6 @@ func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testi
 				"code_scanning_default_setup": "enabled"
 			}
 		}`)
-		w.WriteHeader(http.StatusOK)
 	})
 
 	rc, _, err := client.Organizations.GetCodeSecurityConfigurationForRepository(ctx, "o", "repo8")

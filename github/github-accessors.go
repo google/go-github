@@ -1646,6 +1646,54 @@ func (b *BranchPolicy) GetProtectedBranches() bool {
 	return *b.ProtectedBranches
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionConfigurationEvent) GetAction() string {
+	if b == nil || b.Action == nil {
+		return ""
+	}
+	return *b.Action
+}
+
+// GetEnterprise returns the Enterprise field.
+func (b *BranchProtectionConfigurationEvent) GetEnterprise() *Enterprise {
+	if b == nil {
+		return nil
+	}
+	return b.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (b *BranchProtectionConfigurationEvent) GetInstallation() *Installation {
+	if b == nil {
+		return nil
+	}
+	return b.Installation
+}
+
+// GetOrg returns the Org field.
+func (b *BranchProtectionConfigurationEvent) GetOrg() *Organization {
+	if b == nil {
+		return nil
+	}
+	return b.Org
+}
+
+// GetRepo returns the Repo field.
+func (b *BranchProtectionConfigurationEvent) GetRepo() *Repository {
+	if b == nil {
+		return nil
+	}
+	return b.Repo
+}
+
+// GetSender returns the Sender field.
+func (b *BranchProtectionConfigurationEvent) GetSender() *User {
+	if b == nil {
+		return nil
+	}
+	return b.Sender
+}
+
 // GetAdminEnforced returns the AdminEnforced field if it's non-nil, zero value otherwise.
 func (b *BranchProtectionRule) GetAdminEnforced() bool {
 	if b == nil || b.AdminEnforced == nil {
@@ -22916,6 +22964,62 @@ func (s *SecretScanningAlertLocationDetails) GetStartline() int {
 		return 0
 	}
 	return *s.Startline
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlertLocationEvent) GetAction() string {
+	if s == nil || s.Action == nil {
+		return ""
+	}
+	return *s.Action
+}
+
+// GetAlert returns the Alert field.
+func (s *SecretScanningAlertLocationEvent) GetAlert() *SecretScanningAlert {
+	if s == nil {
+		return nil
+	}
+	return s.Alert
+}
+
+// GetInstallation returns the Installation field.
+func (s *SecretScanningAlertLocationEvent) GetInstallation() *Installation {
+	if s == nil {
+		return nil
+	}
+	return s.Installation
+}
+
+// GetLocation returns the Location field.
+func (s *SecretScanningAlertLocationEvent) GetLocation() *SecretScanningAlertLocation {
+	if s == nil {
+		return nil
+	}
+	return s.Location
+}
+
+// GetOrganization returns the Organization field.
+func (s *SecretScanningAlertLocationEvent) GetOrganization() *Organization {
+	if s == nil {
+		return nil
+	}
+	return s.Organization
+}
+
+// GetRepo returns the Repo field.
+func (s *SecretScanningAlertLocationEvent) GetRepo() *Repository {
+	if s == nil {
+		return nil
+	}
+	return s.Repo
+}
+
+// GetSender returns the Sender field.
+func (s *SecretScanningAlertLocationEvent) GetSender() *User {
+	if s == nil {
+		return nil
+	}
+	return s.Sender
 }
 
 // GetResolution returns the Resolution field if it's non-nil, zero value otherwise.
