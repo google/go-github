@@ -55,4 +55,18 @@ func TestRepositoriesService_ListAttestations(t *testing.T) {
 	if !cmp.Equal(attestations, want) {
 		t.Errorf("Repositories.ListAttestations = %+v, want %+v", attestations, want)
 	}
+	const methodName = "ListAttestations"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListAttestations(ctx, "\n", "\n", "\n", &ListOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListAttestations(ctx, "o", "r", "digest", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
