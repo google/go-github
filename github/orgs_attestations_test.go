@@ -55,4 +55,18 @@ func TestOrganizationsService_ListAttestations(t *testing.T) {
 	if !cmp.Equal(attestations, want) {
 		t.Errorf("Organizations.ListAttestations = %+v, want %+v", attestations, want)
 	}
+	const methodName = "ListAttestations"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListAttestations(ctx, "\n", "\n", &ListOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListAttestations(ctx, "o", "digest", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
