@@ -2,12 +2,11 @@
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
-//
+
 // This is a simple example of how to verify an artifact
 // attestations hosted on GitHub using the sigstore-go library.
 // This is a very barebones example drawn from the sigstore-go
 // library's examples and should not be used in production.
-
 package main
 
 import (
