@@ -1087,7 +1087,7 @@ func (a *Attestation) GetBundle() json.RawMessage {
 }
 
 // GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
-func (a *Attestation) GetRepositoryID() int {
+func (a *Attestation) GetRepositoryID() int64 {
 	if a == nil || a.RepositoryID == nil {
 		return 0
 	}

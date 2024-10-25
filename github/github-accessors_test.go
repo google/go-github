@@ -1413,7 +1413,7 @@ func TestAttestation_GetBundle(tt *testing.T) {
 
 func TestAttestation_GetRepositoryID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
+	var zeroValue int64
 	a := &Attestation{RepositoryID: &zeroValue}
 	a.GetRepositoryID()
 	a = &Attestation{}
