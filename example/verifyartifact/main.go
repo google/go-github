@@ -27,36 +27,68 @@ import (
 
 var (
 	owner                   = flag.String("owner", "cli", "GitHub organization or user to scope attestation lookup by")
-	artifactDigest          = flag.String("artifact-digest", "2ce2e480e3c3f7ca0af83418d3ebaeedacee135dbac94bd946d7d84edabcdb64", "digest of the artifact")
+	// You can use a utility like openssl or sha256sum to 
+	// compute the digest.
+	artifactDigest          = flag.String("artifact-digest", "", "The digest of the artifact")
+	// The algorithm used to compute the digest of the artifact.
+	// Note that the GitHub API only currently support querying 
+	// by sha256 digest.
 	artifactDigestAlgorithm = flag.String("artifact-digest-algorithm", "sha256", "The algorithm used to compute the digest of the artifact")
+	// Attestations produced by GitHub Actions use ID token 
+	// issued by GitHub.
 	expectedIssuer          = flag.String("expected-issuer", "https://token.actions.githubusercontent.com", "Issuer of the OIDC token")
+	// Subject Alternative Name is set to the calling workflow file.
+	// This value will vary from repository to repository.
 	expectedSAN             = flag.String("expected-san", "https://github.com/cli/cli/.github/workflows/deployment.yml@refs/heads/trunk", "The expected Subject Alternative Name (SAN) of the certificate used to sign the attestation")
+	// Attestations produced by GitHub Actions use the public
+	// good trust root maintained by Sigstore.
+	// A copy is included in this repo for convenience.
+	//
+	// https://github.com/sigstore/root-signing/raw/refs/heads/main/targets/trusted_root.json
 	trustedRootJSONPath     = flag.String("trusted-root-json-path", "verifyartifact/trusted-root-public-good.json", "Path to the trusted root JSON file")
 )
 
+func usage() {
+	fmt.Fprintln(os.Stderr, "This is an example of how to verify the provenance of an artifact using GitHub Attestations and the sigstore-go library.\n")
+	fmt.Fprintf(os.Stderr, "Usage: %s [flags]\n", os.Args[0])
+	flag.PrintDefaults()
+	fmt.Fprintf(os.Stderr, `
+Example verifying a GitHub CLI artifact:
+ %s -owner cli \
+	-artifact-digest 2ce2e480e3c3f7ca0af83418d3ebaeedacee135dbac94bd946d7d84edabcdb64 \
+	-expected-san https://github.com/cli/cli/.github/workflows/deployment.yml@refs/heads/trunk
+
+See https://github.com/cli/cli/attestations/2543768 for a summary of the attestation.
+`, os.Args[0])
+}
+
 func main() {
 	flag.Parse()
+	if *artifactDigest == "" {
+		fmt.Fprintln(os.Stderr, "artifact-digest is required.\n")
+		usage()
+		os.Exit(1)
+	}
+
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 
 	if token == "" {
-		log.Fatal("Unauthorized: No token present")
+		log.Fatal("Unauthorized: No token present. Please set the GITHUB_AUTH_TOKEN environment variable to a valid token with `attestations:read` permission.")
 	}
 
 	ctx := context.Background()
 	client := github.NewClient(nil).WithAuthToken(token)
 
 	// Fetch attestations from the GitHub API.
-	// The API doesn't differentiate between users and orgs,
+	// The attestations API doesn't differentiate between users and orgs,
 	// so we can use the OrganizationsService to fetch attestations for both.
-	//
-	// Note: The GitHub API only seems to support querying by sha256 digest.
 	attestations, _, err := client.Organizations.ListAttestations(ctx, *owner, fmt.Sprintf("%v:%v", *artifactDigestAlgorithm, *artifactDigest), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	if len(attestations.Attestations) == 0 {
-		log.Fatal("No attestations found")
+		log.Fatal("No attestations found.")
 	}
 
 	sev, err := getSignedEntityVerifier()
