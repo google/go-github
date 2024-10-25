@@ -104,7 +104,7 @@ func main() {
 
 	var b *bundle.Bundle
 	for _, attestation := range attestations.Attestations {
-		if err := json.Unmarshal(*attestation.Bundle, &b); err != nil {
+		if err := json.Unmarshal(attestation.Bundle, &b); err != nil {
 			log.Fatal(err)
 		}
 
