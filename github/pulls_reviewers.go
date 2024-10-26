@@ -92,7 +92,7 @@ func (s *PullRequestsService) RemoveReviewers(ctx context.Context, owner, repo s
 	}
 
 	if removeRequest.Reviewers == nil {
-		// Github accepts the empty list, but rejects null. Removing `omitempty` is not enough - we also have to promote nil to [].
+		// GitHub accepts the empty list, but rejects null. Removing `omitempty` is not enough - we also have to promote nil to [].
 		removeRequest.Reviewers = []string{}
 	}
 
