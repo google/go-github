@@ -43,10 +43,6 @@ const (
 	DeliveryIDHeader = "X-Github-Delivery"
 )
 
-type EventTyper interface {
-	EventType() EventType
-}
-
 // EventType corresponds to the  X-GitHub-Event: header for Webhooks events and payloads
 type EventType string
 
