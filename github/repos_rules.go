@@ -52,7 +52,7 @@ type RulesetRepositoryIDsConditionParameters struct {
 type RulesetRepositoryPropertyTargetParameters struct {
 	Name   string   `json:"name"`
 	Values []string `json:"property_values"`
-	Source string   `json:"source"`
+	Source *string  `json:"source,omitempty"`
 }
 
 // RulesetRepositoryPropertyConditionParameters represents the conditions object for repository_property.
