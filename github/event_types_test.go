@@ -265,6 +265,61 @@ func TestProjectColumnChange_Marshal_NameChange(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestBranchProtectionConfigurationEvent_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &BranchProtectionConfigurationEvent{}, "{}")
+	u := &BranchProtectionConfigurationEvent{
+		Action: String("enabled"),
+		Repo: &Repository{
+			ID:     Int64(12345),
+			NodeID: String("MDEwOlJlcG9zaXRvcnkxMjM0NQ=="),
+			Name:   String("example-repo"),
+		},
+		Org: &Organization{
+			Login: String("example-org"),
+			ID:    Int64(67890),
+		},
+		Sender: &User{
+			Login: String("example-user"),
+			ID:    Int64(1111),
+		},
+		Installation: &Installation{
+			ID: Int64(2222),
+		},
+		Enterprise: &Enterprise{
+			ID:   Int(3333),
+			Slug: String("example-enterprise"),
+			Name: String("Example Enterprise"),
+		},
+	}
+
+	want := `{
+		"action": "enabled",
+		"repository": {
+			"id": 12345,
+			"node_id": "MDEwOlJlcG9zaXRvcnkxMjM0NQ==",
+			"name": "example-repo"
+		},
+		"organization": {
+			"login": "example-org",
+			"id": 67890
+		},
+		"sender": {
+			"login": "example-user",
+			"id": 1111
+		},
+		"installation": {
+			"id": 2222
+		},
+		"enterprise": {
+			"id": 3333,
+			"slug": "example-enterprise",
+			"name": "Example Enterprise"
+		}
+	}`
+	testJSONMarshal(t, u, want)
+}
+
 func TestTeamAddEvent_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &TeamAddEvent{}, "{}")
@@ -19289,6 +19344,98 @@ func TestSecretScanningAlertEvent_Marshal(t *testing.T) {
 				"url": "u"
 			},
 			"suspended_at": ` + referenceTimeStr + `
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSecretScanningAlertLocationEvent_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &SecretScanningAlertLocationEvent{}, "{}")
+	u := &SecretScanningAlertLocationEvent{
+		Action: String("created"),
+		Alert: &SecretScanningAlert{
+			Number:     Int(10),
+			CreatedAt:  &Timestamp{referenceTime},
+			UpdatedAt:  &Timestamp{referenceTime},
+			URL:        String("a"),
+			HTMLURL:    String("a"),
+			SecretType: String("mailchimp_api_key"),
+		},
+		Location: &SecretScanningAlertLocation{
+			Type: String("blob"),
+			Details: &SecretScanningAlertLocationDetails{
+				Path:        String("path/to/file"),
+				Startline:   Int(10),
+				EndLine:     Int(20),
+				StartColumn: Int(1),
+				EndColumn:   Int(2),
+				BlobSHA:     String("d6e4c75c141dbacecc279b721b8bsomeSHA"),
+				BlobURL:     String("a"),
+				CommitSHA:   String("d6e4c75c141dbacecc279b721b8bsomeSHA"),
+				CommitURL:   String("a"),
+			},
+		},
+		Repo: &Repository{
+			ID:     Int64(12345),
+			NodeID: String("MDEwOlJlcG9zaXRvcnkxMjM0NQ=="),
+			Name:   String("example-repo"),
+		},
+		Organization: &Organization{
+			Login: String("example-org"),
+			ID:    Int64(67890),
+		},
+		Sender: &User{
+			Login: String("example-user"),
+			ID:    Int64(1111),
+		},
+		Installation: &Installation{
+			ID: Int64(2222),
+		},
+	}
+
+	want := `{
+		"action": "created",
+		"alert": {
+			"number": 10,
+			"created_at": ` + referenceTimeStr + `,
+			"updated_at": ` + referenceTimeStr + `,
+			"url": "a",
+			"html_url": "a",
+			"secret_type": "mailchimp_api_key"
+		},
+		"location": {
+
+			"type": "blob",
+			"details": {
+				"path": "path/to/file",
+				"start_line": 10,
+				"end_line": 20,
+				"start_column": 1,
+				"end_column": 2,
+				"blob_sha": "d6e4c75c141dbacecc279b721b8bsomeSHA",
+				"blob_url": "a",
+				"commit_sha": "d6e4c75c141dbacecc279b721b8bsomeSHA",
+				"commit_url": "a"
+			}
+		},
+		"repository": {
+
+			"id": 12345,
+			"node_id": "MDEwOlJlcG9zaXRvcnkxMjM0NQ==",
+			"name": "example-repo"
+		},
+		"organization": {
+		"login": "example-org",
+		"id": 67890
+		},
+		"sender": {
+			"login": "example-user",
+			"id": 1111
+		},
+		"installation": {
+			"id": 2222
 		}
 	}`
 

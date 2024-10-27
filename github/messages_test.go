@@ -265,6 +265,10 @@ func TestParseWebHook(t *testing.T) {
 		messageType string
 	}{
 		{
+			payload:     &BranchProtectionConfigurationEvent{},
+			messageType: "branch_protection_configuration",
+		},
+		{
 			payload:     &BranchProtectionRuleEvent{},
 			messageType: "branch_protection_rule",
 		},
@@ -479,6 +483,10 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &SecretScanningAlertEvent{},
 			messageType: "secret_scanning_alert",
+		},
+		{
+			payload:     &SecretScanningAlertLocationEvent{},
+			messageType: "secret_scanning_alert_location",
 		},
 		{
 			payload:     &SecurityAdvisoryEvent{},
