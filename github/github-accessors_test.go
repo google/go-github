@@ -28298,6 +28298,17 @@ func TestRulesetRepositoryNamesConditionParameters_GetProtected(tt *testing.T) {
 	r.GetProtected()
 }
 
+func TestRulesetRepositoryPropertyTargetParameters_GetSource(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RulesetRepositoryPropertyTargetParameters{Source: &zeroValue}
+	r.GetSource()
+	r = &RulesetRepositoryPropertyTargetParameters{}
+	r.GetSource()
+	r = nil
+	r.GetSource()
+}
+
 func TestRunner_GetBusy(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool

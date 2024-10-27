@@ -22102,6 +22102,14 @@ func (r *RulesetRepositoryNamesConditionParameters) GetProtected() bool {
 	return *r.Protected
 }
 
+// GetSource returns the Source field if it's non-nil, zero value otherwise.
+func (r *RulesetRepositoryPropertyTargetParameters) GetSource() string {
+	if r == nil || r.Source == nil {
+		return ""
+	}
+	return *r.Source
+}
+
 // GetBusy returns the Busy field if it's non-nil, zero value otherwise.
 func (r *Runner) GetBusy() bool {
 	if r == nil || r.Busy == nil {
