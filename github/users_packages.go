@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/url"
 )
 
 // ListPackages lists the packages for a user. Passing the empty string for "user" will
@@ -55,9 +56,9 @@ func (s *UsersService) ListPackages(ctx context.Context, user string, opts *Pack
 func (s *UsersService) GetPackage(ctx context.Context, user, packageType, packageName string) (*Package, *Response, error) {
 	var u string
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v", user, packageType, packageName)
+		u = fmt.Sprintf("users/%v/packages/%v/%v", user, packageType, url.PathEscape(packageName))
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v", packageType, packageName)
+		u = fmt.Sprintf("user/packages/%v/%v", packageType, url.PathEscape(packageName))
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -85,9 +86,9 @@ func (s *UsersService) GetPackage(ctx context.Context, user, packageType, packag
 func (s *UsersService) DeletePackage(ctx context.Context, user, packageType, packageName string) (*Response, error) {
 	var u string
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v", user, packageType, packageName)
+		u = fmt.Sprintf("users/%v/packages/%v/%v", user, packageType, url.PathEscape(packageName))
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v", packageType, packageName)
+		u = fmt.Sprintf("user/packages/%v/%v", packageType, url.PathEscape(packageName))
 	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -109,9 +110,9 @@ func (s *UsersService) DeletePackage(ctx context.Context, user, packageType, pac
 func (s *UsersService) RestorePackage(ctx context.Context, user, packageType, packageName string) (*Response, error) {
 	var u string
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v/restore", user, packageType, packageName)
+		u = fmt.Sprintf("users/%v/packages/%v/%v/restore", user, packageType, url.PathEscape(packageName))
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v/restore", packageType, packageName)
+		u = fmt.Sprintf("user/packages/%v/%v/restore", packageType, url.PathEscape(packageName))
 	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
@@ -133,9 +134,9 @@ func (s *UsersService) RestorePackage(ctx context.Context, user, packageType, pa
 func (s *UsersService) PackageGetAllVersions(ctx context.Context, user, packageType, packageName string, opts *PackageListOptions) ([]*PackageVersion, *Response, error) {
 	var u string
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v/versions", user, packageType, packageName)
+		u = fmt.Sprintf("users/%v/packages/%v/%v/versions", user, packageType, url.PathEscape(packageName))
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v/versions", packageType, packageName)
+		u = fmt.Sprintf("user/packages/%v/%v/versions", packageType, url.PathEscape(packageName))
 	}
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -167,9 +168,9 @@ func (s *UsersService) PackageGetAllVersions(ctx context.Context, user, packageT
 func (s *UsersService) PackageGetVersion(ctx context.Context, user, packageType, packageName string, packageVersionID int64) (*PackageVersion, *Response, error) {
 	var u string
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v", user, packageType, packageName, packageVersionID)
+		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v", user, packageType, url.PathEscape(packageName), packageVersionID)
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v/versions/%v", packageType, packageName, packageVersionID)
+		u = fmt.Sprintf("user/packages/%v/%v/versions/%v", packageType, url.PathEscape(packageName), packageVersionID)
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -197,9 +198,9 @@ func (s *UsersService) PackageGetVersion(ctx context.Context, user, packageType,
 func (s *UsersService) PackageDeleteVersion(ctx context.Context, user, packageType, packageName string, packageVersionID int64) (*Response, error) {
 	var u string
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v", user, packageType, packageName, packageVersionID)
+		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v", user, packageType, url.PathEscape(packageName), packageVersionID)
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v/versions/%v", packageType, packageName, packageVersionID)
+		u = fmt.Sprintf("user/packages/%v/%v/versions/%v", packageType, url.PathEscape(packageName), packageVersionID)
 	}
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -221,9 +222,9 @@ func (s *UsersService) PackageDeleteVersion(ctx context.Context, user, packageTy
 func (s *UsersService) PackageRestoreVersion(ctx context.Context, user, packageType, packageName string, packageVersionID int64) (*Response, error) {
 	var u string
 	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v/restore", user, packageType, packageName, packageVersionID)
+		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v/restore", user, packageType, url.PathEscape(packageName), packageVersionID)
 	} else {
-		u = fmt.Sprintf("user/packages/%v/%v/versions/%v/restore", packageType, packageName, packageVersionID)
+		u = fmt.Sprintf("user/packages/%v/%v/versions/%v/restore", packageType, url.PathEscape(packageName), packageVersionID)
 	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
