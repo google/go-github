@@ -15,18 +15,17 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v66/github"
 	"golang.org/x/term"
 )
 
 func main() {
 	fmt.Print("GitHub Token: ")
-	byteToken, _ := term.ReadPassword(int(os.Stdin.Fd()))
-	println()
-	token := string(byteToken)
+	token, _ := term.ReadPassword(int(os.Stdin.Fd()))
+	fmt.Println()
 
 	ctx := context.Background()
-	client := github.NewClient(nil).WithAuthToken(token)
+	client := github.NewClient(nil).WithAuthToken(string(token))
 
 	user, resp, err := client.Users.Get(ctx, "")
 	if err != nil {

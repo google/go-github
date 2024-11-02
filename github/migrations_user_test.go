@@ -16,8 +16,8 @@ import (
 )
 
 func TestMigrationService_StartUserMigration(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/migrations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -54,8 +54,8 @@ func TestMigrationService_StartUserMigration(t *testing.T) {
 }
 
 func TestMigrationService_ListUserMigrations(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/migrations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -87,8 +87,8 @@ func TestMigrationService_ListUserMigrations(t *testing.T) {
 }
 
 func TestMigrationService_UserMigrationStatus(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/migrations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -120,8 +120,8 @@ func TestMigrationService_UserMigrationStatus(t *testing.T) {
 }
 
 func TestMigrationService_UserMigrationArchiveURL(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -149,8 +149,8 @@ func TestMigrationService_UserMigrationArchiveURL(t *testing.T) {
 }
 
 func TestMigrationService_DeleteUserMigration(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -181,8 +181,8 @@ func TestMigrationService_DeleteUserMigration(t *testing.T) {
 }
 
 func TestMigrationService_UnlockUserRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/migrations/1/repos/r/lock", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -251,6 +251,7 @@ var wantUserMigration = &UserMigration{
 }
 
 func TestUserMigration_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UserMigration{}, "{}")
 
 	u := &UserMigration{
@@ -285,6 +286,7 @@ func TestUserMigration_Marshal(t *testing.T) {
 }
 
 func TestStartUserMigration_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &startUserMigration{}, "{}")
 
 	u := &startUserMigration{

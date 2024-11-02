@@ -15,8 +15,8 @@ import (
 )
 
 func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/properties/values", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -81,8 +81,8 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateOrUpdateCustomProperties(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/usr/r/properties/values", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")

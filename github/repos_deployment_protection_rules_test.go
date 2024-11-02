@@ -17,8 +17,8 @@ import (
 )
 
 func TestRepositoriesService_GetAllDeploymentProtectionRules(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment_protection_rules", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -53,8 +53,8 @@ func TestRepositoriesService_GetAllDeploymentProtectionRules(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &CustomDeploymentProtectionRuleRequest{
 		IntegrationID: Int64(5),
@@ -110,8 +110,8 @@ func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) 
 }
 
 func TestRepositoriesService_ListCustomDeploymentRuleIntegrations(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment_protection_rules/apps", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -146,8 +146,8 @@ func TestRepositoriesService_ListCustomDeploymentRuleIntegrations(t *testing.T) 
 }
 
 func TestRepositoriesService_GetCustomDeploymentProtectionRule(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment_protection_rules/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -187,8 +187,8 @@ func TestRepositoriesService_GetCustomDeploymentProtectionRule(t *testing.T) {
 }
 
 func TestRepositoriesService_DisableCustomDeploymentProtectionRule(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment_protection_rules/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

@@ -15,8 +15,8 @@ import (
 )
 
 func TestActionsService_ListCaches(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/caches", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -57,8 +57,8 @@ func TestActionsService_ListCaches(t *testing.T) {
 }
 
 func TestActionsService_ListCaches_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.ListCaches(ctx, "%", "r", nil)
@@ -66,8 +66,8 @@ func TestActionsService_ListCaches_invalidOwner(t *testing.T) {
 }
 
 func TestActionsService_ListCaches_invalidRepo(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.ListCaches(ctx, "o", "%", nil)
@@ -75,8 +75,8 @@ func TestActionsService_ListCaches_invalidRepo(t *testing.T) {
 }
 
 func TestActionsService_ListCaches_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/caches", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -97,8 +97,8 @@ func TestActionsService_ListCaches_notFound(t *testing.T) {
 }
 
 func TestActionsService_DeleteCachesByKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/caches", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -123,8 +123,8 @@ func TestActionsService_DeleteCachesByKey(t *testing.T) {
 }
 
 func TestActionsService_DeleteCachesByKey_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Actions.DeleteCachesByKey(ctx, "%", "r", "1", String("main"))
@@ -132,16 +132,16 @@ func TestActionsService_DeleteCachesByKey_invalidOwner(t *testing.T) {
 }
 
 func TestActionsService_DeleteCachesByKey_invalidRepo(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Actions.DeleteCachesByKey(ctx, "o", "%", "1", String("main"))
 	testURLParseError(t, err)
 }
 func TestActionsService_DeleteCachesByKey_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -159,8 +159,8 @@ func TestActionsService_DeleteCachesByKey_notFound(t *testing.T) {
 }
 
 func TestActionsService_DeleteCachesByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/caches/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -184,8 +184,8 @@ func TestActionsService_DeleteCachesByID(t *testing.T) {
 }
 
 func TestActionsService_DeleteCachesByID_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Actions.DeleteCachesByID(ctx, "%", "r", 1)
@@ -193,8 +193,8 @@ func TestActionsService_DeleteCachesByID_invalidOwner(t *testing.T) {
 }
 
 func TestActionsService_DeleteCachesByID_invalidRepo(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Actions.DeleteCachesByID(ctx, "o", "%", 1)
@@ -202,8 +202,8 @@ func TestActionsService_DeleteCachesByID_invalidRepo(t *testing.T) {
 }
 
 func TestActionsService_DeleteCachesByID_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("repos/o/r/actions/caches/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -221,8 +221,8 @@ func TestActionsService_DeleteCachesByID_notFound(t *testing.T) {
 }
 
 func TestActionsService_GetCacheUsageForRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/cache/usage", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -262,8 +262,8 @@ func TestActionsService_GetCacheUsageForRepo(t *testing.T) {
 }
 
 func TestActionsService_GetCacheUsageForRepo_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.GetCacheUsageForRepo(ctx, "%", "r")
@@ -271,8 +271,8 @@ func TestActionsService_GetCacheUsageForRepo_invalidOwner(t *testing.T) {
 }
 
 func TestActionsService_GetCacheUsageForRepo_invalidRepo(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.GetCacheUsageForRepo(ctx, "o", "%")
@@ -280,8 +280,8 @@ func TestActionsService_GetCacheUsageForRepo_invalidRepo(t *testing.T) {
 }
 
 func TestActionsService_GetCacheUsageForRepo_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/cache/usage", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -302,8 +302,8 @@ func TestActionsService_GetCacheUsageForRepo_notFound(t *testing.T) {
 }
 
 func TestActionsService_ListCacheUsageByRepoForOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/cache/usage-by-repository", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -344,8 +344,8 @@ func TestActionsService_ListCacheUsageByRepoForOrg(t *testing.T) {
 }
 
 func TestActionsService_ListCacheUsageByRepoForOrg_invalidOrganization(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.ListCacheUsageByRepoForOrg(ctx, "%", nil)
@@ -353,8 +353,8 @@ func TestActionsService_ListCacheUsageByRepoForOrg_invalidOrganization(t *testin
 }
 
 func TestActionsService_ListCacheUsageByRepoForOrg_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/cache/usage-by-repository", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -375,8 +375,8 @@ func TestActionsService_ListCacheUsageByRepoForOrg_notFound(t *testing.T) {
 }
 
 func TestActionsService_GetCacheUsageForOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/cache/usage", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -415,8 +415,8 @@ func TestActionsService_GetCacheUsageForOrg(t *testing.T) {
 }
 
 func TestActionsService_GetCacheUsageForOrg_invalidOrganization(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.GetTotalCacheUsageForOrg(ctx, "%")
@@ -424,8 +424,8 @@ func TestActionsService_GetCacheUsageForOrg_invalidOrganization(t *testing.T) {
 }
 
 func TestActionsService_GetCacheUsageForOrg_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/cache/usage", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -446,8 +446,8 @@ func TestActionsService_GetCacheUsageForOrg_notFound(t *testing.T) {
 }
 
 func TestActionsService_GetCacheUsageForEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/cache/usage", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -486,8 +486,8 @@ func TestActionsService_GetCacheUsageForEnterprise(t *testing.T) {
 }
 
 func TestActionsService_GetCacheUsageForEnterprise_invalidEnterprise(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.GetTotalCacheUsageForEnterprise(ctx, "%")
@@ -495,8 +495,8 @@ func TestActionsService_GetCacheUsageForEnterprise_invalidEnterprise(t *testing.
 }
 
 func TestActionsService_GetCacheUsageForEnterprise_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/cache/usage", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -517,6 +517,7 @@ func TestActionsService_GetCacheUsageForEnterprise_notFound(t *testing.T) {
 }
 
 func TestActionsCache_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ActionsCache{}, "{}")
 
 	u := &ActionsCache{
@@ -543,6 +544,7 @@ func TestActionsCache_Marshal(t *testing.T) {
 }
 
 func TestActionsCacheList_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ActionsCacheList{}, "{}")
 
 	u := &ActionsCacheList{
@@ -587,6 +589,7 @@ func TestActionsCacheList_Marshal(t *testing.T) {
 }
 
 func TestActionsCacheUsage_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ActionsCacheUsage{}, "{}")
 
 	u := &ActionsCacheUsage{
@@ -605,6 +608,7 @@ func TestActionsCacheUsage_Marshal(t *testing.T) {
 }
 
 func TestActionsCacheUsageList_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ActionsCacheUsageList{}, "{}")
 
 	u := &ActionsCacheUsageList{
@@ -631,6 +635,7 @@ func TestActionsCacheUsageList_Marshal(t *testing.T) {
 }
 
 func TestTotalCacheUsage_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TotalCacheUsage{}, "{}")
 
 	u := &TotalCacheUsage{

@@ -178,6 +178,23 @@ func (s *ActivityService) MarkThreadRead(ctx context.Context, id string) (*Respo
 	return s.client.Do(ctx, req, nil)
 }
 
+// MarkThreadDone marks the specified thread as done.
+// Marking a thread as "done" is equivalent to marking a notification in your notification inbox on GitHub as done.
+//
+// GitHub API docs: https://docs.github.com/rest/activity/notifications#mark-a-thread-as-done
+//
+//meta:operation DELETE /notifications/threads/{thread_id}
+func (s *ActivityService) MarkThreadDone(ctx context.Context, id int64) (*Response, error) {
+	u := fmt.Sprintf("notifications/threads/%v", id)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
 // GetThreadSubscription checks to see if the authenticated user is subscribed
 // to a thread.
 //

@@ -21,7 +21,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v66/github"
 	"golang.org/x/term"
 )
 
@@ -31,12 +31,11 @@ func main() {
 	username, _ := r.ReadString('\n')
 
 	fmt.Print("GitHub Password: ")
-	bytePassword, _ := term.ReadPassword(int(os.Stdin.Fd()))
-	password := string(bytePassword)
+	password, _ := term.ReadPassword(int(os.Stdin.Fd()))
 
 	tp := github.BasicAuthTransport{
 		Username: strings.TrimSpace(username),
-		Password: strings.TrimSpace(password),
+		Password: strings.TrimSpace(string(password)),
 	}
 
 	client := github.NewClient(tp.Client())

@@ -18,6 +18,7 @@ import (
 )
 
 func TestPullComments_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestComment{}, "{}")
 
 	createdAt := Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}
@@ -134,8 +135,8 @@ func TestPullComments_Marshal(t *testing.T) {
 }
 
 func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
 	mux.HandleFunc("/repos/o/r/pulls/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -183,8 +184,8 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 }
 
 func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -206,8 +207,8 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 }
 
 func TestPullRequestsService_ListComments_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.ListComments(ctx, "%", "r", 1, nil)
@@ -215,8 +216,8 @@ func TestPullRequestsService_ListComments_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_GetComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
@@ -252,8 +253,8 @@ func TestPullRequestsService_GetComment(t *testing.T) {
 }
 
 func TestPullRequestsService_GetComment_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.GetComment(ctx, "%", "r", 1)
@@ -261,8 +262,8 @@ func TestPullRequestsService_GetComment_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &PullRequestComment{Body: String("b")}
 
@@ -308,8 +309,8 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateComment_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.CreateComment(ctx, "%", "r", 1, nil)
@@ -317,8 +318,8 @@ func TestPullRequestsService_CreateComment_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &PullRequestComment{Body: String("b")}
 
@@ -361,8 +362,8 @@ func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
 }
 
 func TestPullRequestsService_EditComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &PullRequestComment{Body: String("b")}
 
@@ -405,8 +406,8 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 }
 
 func TestPullRequestsService_EditComment_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.EditComment(ctx, "%", "r", 1, nil)
@@ -414,8 +415,8 @@ func TestPullRequestsService_EditComment_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_DeleteComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -439,8 +440,8 @@ func TestPullRequestsService_DeleteComment(t *testing.T) {
 }
 
 func TestPullRequestsService_DeleteComment_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.PullRequests.DeleteComment(ctx, "%", "r", 1)

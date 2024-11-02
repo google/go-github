@@ -16,8 +16,8 @@ import (
 )
 
 func TestRepositoriesService_GetHookConfiguration(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1/config", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -56,8 +56,8 @@ func TestRepositoriesService_GetHookConfiguration(t *testing.T) {
 }
 
 func TestRepositoriesService_GetHookConfiguration_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.GetHookConfiguration(ctx, "%", "%", 1)
@@ -65,8 +65,8 @@ func TestRepositoriesService_GetHookConfiguration_invalidOrg(t *testing.T) {
 }
 
 func TestRepositoriesService_EditHookConfiguration(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &HookConfig{}
 
@@ -114,8 +114,8 @@ func TestRepositoriesService_EditHookConfiguration(t *testing.T) {
 }
 
 func TestRepositoriesService_EditHookConfiguration_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.EditHookConfiguration(ctx, "%", "%", 1, nil)

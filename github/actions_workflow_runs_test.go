@@ -18,8 +18,8 @@ import (
 )
 
 func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/29679449/runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -61,8 +61,8 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 }
 
 func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/29679449/runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -104,8 +104,8 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -145,8 +145,8 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/attempts/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -189,8 +189,8 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -218,8 +218,8 @@ func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -234,8 +234,8 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_dontFol
 }
 
 func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followRedirects(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, serverURL := setup(t)
 
 	// Mock a redirect link, which leads to an archive link
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -272,8 +272,8 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followR
 }
 
 func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/3434/rerun", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -301,8 +301,8 @@ func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
 }
 
 func TestActionsService_RerunFailedJobsByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/3434/rerun-failed-jobs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -330,8 +330,8 @@ func TestActionsService_RerunFailedJobsByID(t *testing.T) {
 }
 
 func TestActionsService_RerunJobByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/jobs/3434/rerun", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -359,8 +359,8 @@ func TestActionsService_RerunJobByID(t *testing.T) {
 }
 
 func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/3434/cancel", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -388,8 +388,8 @@ func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -417,8 +417,8 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -433,8 +433,8 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedi
 }
 
 func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirects(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, serverURL := setup(t)
 
 	// Mock a redirect link, which leads to an archive link
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -471,8 +471,8 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 }
 
 func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -520,8 +520,8 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 }
 
 func TestActionService_DeleteWorkflowRun(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -546,8 +546,8 @@ func TestActionService_DeleteWorkflowRun(t *testing.T) {
 }
 
 func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -571,9 +571,117 @@ func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
 	})
 }
 
+func TestPendingDeployment_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &PendingDeployment{}, "{}")
+
+	u := &PendingDeployment{
+		Environment: &PendingDeploymentEnvironment{
+			ID:      Int64(1),
+			NodeID:  String("nid"),
+			Name:    String("n"),
+			URL:     String("u"),
+			HTMLURL: String("hu"),
+		},
+		WaitTimer:             Int64(100),
+		WaitTimerStartedAt:    &Timestamp{referenceTime},
+		CurrentUserCanApprove: Bool(false),
+		Reviewers: []*RequiredReviewer{
+			{
+				Type: String("User"),
+				Reviewer: &User{
+					Login: String("l"),
+				},
+			},
+			{
+				Type: String("Team"),
+				Reviewer: &Team{
+					Name: String("n"),
+				},
+			},
+		},
+	}
+	want := `{
+		"environment": {
+			"id": 1,
+			"node_id": "nid",
+			"name": "n",
+			"url": "u",
+			"html_url": "hu"
+		},
+		"wait_timer": 100,
+		"wait_timer_started_at": ` + referenceTimeStr + `,
+		"current_user_can_approve": false,
+		"reviewers": [
+			{
+				"type": "User",
+				"reviewer": {
+					"login": "l"
+				}
+			},
+			{
+				"type": "Team",
+				"reviewer": {
+					"name": "n"
+				}
+			}
+		]
+	}`
+	testJSONMarshal(t, u, want)
+}
+
+func TestActionsService_ReviewCustomDeploymentProtectionRule(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/actions/runs/9444496/deployment_protection_rule", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	request := ReviewCustomDeploymentProtectionRuleRequest{
+		EnvironmentName: "production",
+		State:           "approved",
+		Comment:         "Approve deployment",
+	}
+
+	ctx := context.Background()
+	if _, err := client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, &request); err != nil {
+		t.Errorf("ReviewCustomDeploymentProtectionRule returned error: %v", err)
+	}
+
+	const methodName = "ReviewCustomDeploymentProtectionRule"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "\n", "\n", 9444496, &request)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, &request)
+	})
+}
+
+func TestReviewCustomDeploymentProtectionRuleRequest_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ReviewCustomDeploymentProtectionRuleRequest{}, "{}")
+
+	r := &ReviewCustomDeploymentProtectionRuleRequest{
+		EnvironmentName: "e",
+		State:           "rejected",
+		Comment:         "c",
+	}
+	want := `{
+		"environment_name": "e",
+		"state": "rejected",
+		"comment": "c"
+	}`
+	testJSONMarshal(t, r, want)
+}
+
 func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/timing", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -640,6 +748,7 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 }
 
 func TestWorkflowRun_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowRun{}, "{}")
 
 	u := &WorkflowRun{
@@ -904,6 +1013,7 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 }
 
 func TestWorkflowRuns_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowRuns{}, "{}")
 
 	u := &WorkflowRuns{
@@ -1162,6 +1272,7 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 }
 
 func TestWorkflowRunBill_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowRunBill{}, "{}")
 
 	u := &WorkflowRunBill{
@@ -1178,6 +1289,7 @@ func TestWorkflowRunBill_Marshal(t *testing.T) {
 }
 
 func TestWorkflowRunBillMap_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowRunBillMap{}, "{}")
 
 	u := &WorkflowRunBillMap{
@@ -1214,6 +1326,7 @@ func TestWorkflowRunBillMap_Marshal(t *testing.T) {
 }
 
 func TestWorkflowRunUsage_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowRunUsage{}, "{}")
 
 	u := &WorkflowRunUsage{
@@ -1256,8 +1369,8 @@ func TestWorkflowRunUsage_Marshal(t *testing.T) {
 }
 
 func TestActionService_PendingDeployments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &PendingDeploymentsRequest{EnvironmentIDs: []int64{3, 4}, State: "approved", Comment: ""}
 
@@ -1292,6 +1405,124 @@ func TestActionService_PendingDeployments(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Actions.PendingDeployments(ctx, "o", "r", 399444496, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionService_GetPendingDeployments(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+				"environment": {
+					"id": 1,
+					"node_id": "nid",
+					"name": "n",
+					"url": "u",
+					"html_url": "hu"
+				},
+				"wait_timer": 0,
+				"wait_timer_started_at": `+referenceTimeStr+`,
+				"current_user_can_approve": false,
+				"reviewers": []
+			},
+			{
+				"environment": {
+					"id": 2,
+					"node_id": "nid",
+					"name": "n",
+					"url": "u",
+					"html_url": "hu"
+				},
+				"wait_timer": 13,
+				"wait_timer_started_at": `+referenceTimeStr+`,
+				"current_user_can_approve": true,
+				"reviewers": [
+					{
+						"type": "User",
+						"reviewer": {
+							"login": "l"
+						}
+					},
+					{
+						"type": "Team",
+						"reviewer": {
+							"name": "t",
+							"slug": "s"
+						}
+					}
+				]
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	deployments, _, err := client.Actions.GetPendingDeployments(ctx, "o", "r", 399444496)
+	if err != nil {
+		t.Errorf("Actions.GetPendingDeployments returned error: %v", err)
+	}
+
+	want := []*PendingDeployment{
+		{
+			Environment: &PendingDeploymentEnvironment{
+				ID:      Int64(1),
+				NodeID:  String("nid"),
+				Name:    String("n"),
+				URL:     String("u"),
+				HTMLURL: String("hu"),
+			},
+			WaitTimer:             Int64(0),
+			WaitTimerStartedAt:    &Timestamp{referenceTime},
+			CurrentUserCanApprove: Bool(false),
+			Reviewers:             []*RequiredReviewer{},
+		},
+		{
+			Environment: &PendingDeploymentEnvironment{
+				ID:      Int64(2),
+				NodeID:  String("nid"),
+				Name:    String("n"),
+				URL:     String("u"),
+				HTMLURL: String("hu"),
+			},
+			WaitTimer:             Int64(13),
+			WaitTimerStartedAt:    &Timestamp{referenceTime},
+			CurrentUserCanApprove: Bool(true),
+			Reviewers: []*RequiredReviewer{
+				{
+					Type: String("User"),
+					Reviewer: &User{
+						Login: String("l"),
+					},
+				},
+				{
+					Type: String("Team"),
+					Reviewer: &Team{
+						Name: String("t"),
+						Slug: String("s"),
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(deployments, want) {
+		t.Errorf("Actions.GetPendingDeployments returned %+v, want %+v", deployments, want)
+	}
+
+	const methodName = "GetPendingDeployments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetPendingDeployments(ctx, "\n", "\n", 399444496)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetPendingDeployments(ctx, "o", "r", 399444496)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

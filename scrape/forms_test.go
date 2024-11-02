@@ -12,6 +12,7 @@ import (
 )
 
 func Test_ParseForms(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		description string
 		html        string
@@ -70,10 +71,12 @@ func Test_ParseForms(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.description, func(t *testing.T) {
+			t.Parallel()
 			node, err := html.Parse(strings.NewReader(tt.html))
 			if err != nil {
-				t.Errorf("error parsing html: %v", err)
+				t.Fatalf("error parsing html: %v", err)
 			}
 			if got, want := parseForms(node), tt.forms; !cmp.Equal(got, want) {
 				t.Errorf("parseForms(%q) returned %+v, want %+v", tt.html, got, want)
@@ -83,8 +86,8 @@ func Test_ParseForms(t *testing.T) {
 }
 
 func Test_FetchAndSumbitForm(t *testing.T) {
-	client, mux, cleanup := setup()
-	defer cleanup()
+	t.Parallel()
+	client, mux := setup(t)
 	var submitted bool
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -96,7 +99,7 @@ func Test_FetchAndSumbitForm(t *testing.T) {
 	mux.HandleFunc("/submit", func(w http.ResponseWriter, r *http.Request) {
 		err := r.ParseForm()
 		if err != nil {
-			t.Errorf("error parsing form: %v", err)
+			t.Fatalf("error parsing form: %v", err)
 		}
 		want := url.Values{"hidden": {"h"}, "name": {"n"}}
 		if got := r.Form; !cmp.Equal(got, want) {
@@ -108,7 +111,7 @@ func Test_FetchAndSumbitForm(t *testing.T) {
 	setValues := func(values url.Values) { values.Set("name", "n") }
 	_, err := fetchAndSubmitForm(client.Client, client.baseURL.String()+"/", setValues)
 	if err != nil {
-		t.Errorf("fetchAndSubmitForm returned err: %v", err)
+		t.Fatalf("fetchAndSubmitForm returned err: %v", err)
 	}
 	if !submitted {
 		t.Error("form was never submitted")

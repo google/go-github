@@ -112,6 +112,31 @@ type ReferencedWorkflow struct {
 	Ref  *string `json:"ref,omitempty"`
 }
 
+// PendingDeployment represents the pending_deployments response.
+type PendingDeployment struct {
+	Environment           *PendingDeploymentEnvironment `json:"environment,omitempty"`
+	WaitTimer             *int64                        `json:"wait_timer,omitempty"`
+	WaitTimerStartedAt    *Timestamp                    `json:"wait_timer_started_at,omitempty"`
+	CurrentUserCanApprove *bool                         `json:"current_user_can_approve,omitempty"`
+	Reviewers             []*RequiredReviewer           `json:"reviewers,omitempty"`
+}
+
+// PendingDeploymentEnvironment represents pending deployment environment properties.
+type PendingDeploymentEnvironment struct {
+	ID      *int64  `json:"id,omitempty"`
+	NodeID  *string `json:"node_id,omitempty"`
+	Name    *string `json:"name,omitempty"`
+	URL     *string `json:"url,omitempty"`
+	HTMLURL *string `json:"html_url,omitempty"`
+}
+
+// ReviewCustomDeploymentProtectionRuleRequest specifies the parameters to ReviewCustomDeploymentProtectionRule.
+type ReviewCustomDeploymentProtectionRuleRequest struct {
+	EnvironmentName string `json:"environment_name"`
+	State           string `json:"state"`
+	Comment         string `json:"comment"`
+}
+
 func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u, err := addOptions(endpoint, opts)
 	if err != nil {
@@ -388,6 +413,28 @@ func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, rep
 	return workflowRunUsage, resp, nil
 }
 
+// GetPendingDeployments get all deployment environments for a workflow run that are waiting for protection rules to pass.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-pending-deployments-for-a-workflow-run
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments
+func (s *ActionsService) GetPendingDeployments(ctx context.Context, owner, repo string, runID int64) ([]*PendingDeployment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/pending_deployments", owner, repo, runID)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var deployments []*PendingDeployment
+	resp, err := s.client.Do(ctx, req, &deployments)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return deployments, resp, nil
+}
+
 // PendingDeployments approve or reject pending deployments that are waiting on approval by a required reviewer.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#review-pending-deployments-for-a-workflow-run
@@ -408,4 +455,21 @@ func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo str
 	}
 
 	return deployments, resp, nil
+}
+
+// ReviewCustomDeploymentProtectionRule approves or rejects custom deployment protection rules provided by a GitHub App for a workflow run.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#review-custom-deployment-protection-rules-for-a-workflow-run
+//
+//meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/deployment_protection_rule
+func (s *ActionsService) ReviewCustomDeploymentProtectionRule(ctx context.Context, owner, repo string, runID int64, request *ReviewCustomDeploymentProtectionRuleRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/deployment_protection_rule", owner, repo, runID)
+
+	req, err := s.client.NewRequest("POST", u, request)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	return resp, err
 }

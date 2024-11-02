@@ -29,6 +29,19 @@ type BranchProtectionRuleEvent struct {
 	Installation *Installation         `json:"installation,omitempty"`
 }
 
+// BranchProtectionConfigurationEvent is triggered when there is a change to branch protection configurations for a repository.
+// The Webhook event name is "branch_protection_configuration".
+//
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#branch_protection_configuration
+type BranchProtectionConfigurationEvent struct {
+	Action       *string       `json:"action,omitempty"`
+	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+}
+
 // CheckRunEvent is triggered when a check run is "created", "completed", or "rerequested".
 // The Webhook event name is "check_run".
 //
@@ -223,6 +236,46 @@ type DeploymentProtectionRuleEvent struct {
 	PullRequests          []*PullRequest `json:"pull_requests,omitempty"`
 	Sender                *User          `json:"sender,omitempty"`
 	Installation          *Installation  `json:"installation,omitempty"`
+}
+
+// DeploymentReviewEvent represents a deployment review event.
+// The Webhook event name is "deployment_review".
+//
+// GitHub API docs: https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads?#deployment_review
+type DeploymentReviewEvent struct {
+	// The action performed. Possible values are: "requested", "approved", or "rejected".
+	Action *string `json:"action,omitempty"`
+
+	// The following will be populated only if requested.
+	Requester   *User   `json:"requester,omitempty"`
+	Environment *string `json:"environment,omitempty"`
+
+	// The following will be populated only if approved or rejected.
+	Approver        *User             `json:"approver,omitempty"`
+	Comment         *string           `json:"comment,omitempty"`
+	WorkflowJobRuns []*WorkflowJobRun `json:"workflow_job_runs,omitempty"`
+
+	Enterprise     *Enterprise         `json:"enterprise,omitempty"`
+	Installation   *Installation       `json:"installation,omitempty"`
+	Organization   *Organization       `json:"organization,omitempty"`
+	Repo           *Repository         `json:"repository,omitempty"`
+	Reviewers      []*RequiredReviewer `json:"reviewers,omitempty"`
+	Sender         *User               `json:"sender,omitempty"`
+	Since          *string             `json:"since,omitempty"`
+	WorkflowJobRun *WorkflowJobRun     `json:"workflow_job_run,omitempty"`
+	WorkflowRun    *WorkflowRun        `json:"workflow_run,omitempty"`
+}
+
+// WorkflowJobRun represents a workflow_job_run in a GitHub DeploymentReviewEvent.
+type WorkflowJobRun struct {
+	Conclusion  *string    `json:"conclusion,omitempty"`
+	CreatedAt   *Timestamp `json:"created_at,omitempty"`
+	Environment *string    `json:"environment,omitempty"`
+	HTMLURL     *string    `json:"html_url,omitempty"`
+	ID          *int64     `json:"id,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	Status      *string    `json:"status,omitempty"`
+	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
 }
 
 // DeploymentStatusEvent represents a deployment status.
@@ -713,8 +766,7 @@ type MemberChanges struct {
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#member
 type MemberEvent struct {
-	// Action is the action that was performed. Possible values are:
-	//"added", "edited", "removed".
+	// Action is the action that was performed. Possible values are: "added", "edited", "removed".
 	Action  *string        `json:"action,omitempty"`
 	Member  *User          `json:"member,omitempty"`
 	Changes *MemberChanges `json:"changes,omitempty"`
@@ -1465,6 +1517,22 @@ type RepositoryImportEvent struct {
 	Sender *User         `json:"sender,omitempty"`
 }
 
+// RepositoryRulesetEvent triggers whenever there is a change to the repository's ruleset configuration.
+//
+// This can include updates to protection rules, required status checks, code owners, or other related configurations.
+//
+// GitHub API docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#repository_ruleset
+type RepositoryRulesetEvent struct {
+	Action            *string                         `json:"action,omitempty"`
+	Enterprise        *Enterprise                     `json:"enterprise,omitempty"`
+	Installation      *Installation                   `json:"installation,omitempty"`
+	Organization      *Organization                   `json:"organization,omitempty"`
+	Repository        *Repository                     `json:"repository,omitempty"`
+	RepositoryRuleset *RepositoryRuleset              `json:"repository_ruleset"`
+	Changes           *RepositoryRulesetEditedChanges `json:"changes,omitempty"`
+	Sender            *User                           `json:"sender"`
+}
+
 // RepositoryVulnerabilityAlertEvent is triggered when a security alert is created, dismissed, or resolved.
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#repository_vulnerability_alert
@@ -1523,6 +1591,20 @@ type SecretScanningAlertEvent struct {
 	Organization *Organization `json:"organization,omitempty"`
 	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+}
+
+// SecretScanningAlertLocationEvent is triggered when there is activity relating to the locations of a secret in a secret scanning alert.
+// The Webhook event name is "secret_scanning_alert_location".
+//
+// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#secret_scanning_alert_location
+type SecretScanningAlertLocationEvent struct {
+	Action       *string                      `json:"action,omitempty"`
+	Alert        *SecretScanningAlert         `json:"alert,omitempty"`
+	Installation *Installation                `json:"installation,omitempty"`
+	Location     *SecretScanningAlertLocation `json:"location,omitempty"`
+	Organization *Organization                `json:"organization,omitempty"`
+	Repo         *Repository                  `json:"repository,omitempty"`
+	Sender       *User                        `json:"sender,omitempty"`
 }
 
 // SecurityAndAnalysisEvent is triggered when code security and analysis features
@@ -1820,4 +1902,28 @@ type CodeScanningAlertEvent struct {
 	Sender    *User         `json:"sender,omitempty"`
 
 	Installation *Installation `json:"installation,omitempty"`
+}
+
+// SponsorshipEvent represents a sponsorship event in GitHub.
+//
+// GitHub API docs: https://docs.github.com/en/rest/overview/github-event-types?apiVersion=2022-11-28#sponsorshipevent
+type SponsorshipEvent struct {
+	Action        *string             `json:"action,omitempty"`
+	EffectiveDate *string             `json:"effective_date,omitempty"`
+	Changes       *SponsorshipChanges `json:"changes,omitempty"`
+	Repository    *Repository         `json:"repository,omitempty"`
+	Organization  *Organization       `json:"organization,omitempty"`
+	Sender        *User               `json:"sender,omitempty"`
+	Installation  *Installation       `json:"installation,omitempty"`
+}
+
+// SponsorshipChanges represents changes made to the sponsorship.
+type SponsorshipChanges struct {
+	Tier         *SponsorshipTier `json:"tier,omitempty"`
+	PrivacyLevel *string          `json:"privacy_level,omitempty"`
+}
+
+// SponsorshipTier represents the tier information of a sponsorship.
+type SponsorshipTier struct {
+	From *string `json:"from,omitempty"`
 }

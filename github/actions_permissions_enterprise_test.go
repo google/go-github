@@ -16,8 +16,8 @@ import (
 )
 
 func TestActionsService_GetActionsPermissionsInEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -50,8 +50,8 @@ func TestActionsService_GetActionsPermissionsInEnterprise(t *testing.T) {
 }
 
 func TestActionsService_EditActionsPermissionsInEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &ActionsPermissionsEnterprise{EnabledOrganizations: String("all"), AllowedActions: String("selected")}
 
@@ -94,8 +94,8 @@ func TestActionsService_EditActionsPermissionsInEnterprise(t *testing.T) {
 }
 
 func TestActionsService_ListEnabledOrgsInEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -138,8 +138,8 @@ func TestActionsService_ListEnabledOrgsInEnterprise(t *testing.T) {
 }
 
 func TestActionsService_SetEnabledOrgsInEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -167,8 +167,8 @@ func TestActionsService_SetEnabledOrgsInEnterprise(t *testing.T) {
 }
 
 func TestActionsService_AddEnabledOrgInEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/organizations/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -194,8 +194,8 @@ func TestActionsService_AddEnabledOrgInEnterprise(t *testing.T) {
 }
 
 func TestActionsService_RemoveEnabledOrgInEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/organizations/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -221,8 +221,8 @@ func TestActionsService_RemoveEnabledOrgInEnterprise(t *testing.T) {
 }
 
 func TestActionsService_GetActionsAllowedInEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -255,8 +255,9 @@ func TestActionsService_GetActionsAllowedInEnterprise(t *testing.T) {
 }
 
 func TestActionsService_EditActionsAllowedInEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	input := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
@@ -298,8 +299,8 @@ func TestActionsService_EditActionsAllowedInEnterprise(t *testing.T) {
 }
 
 func TestActionsService_GetDefaultWorkflowPermissionsInEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -332,8 +333,9 @@ func TestActionsService_GetDefaultWorkflowPermissionsInEnterprise(t *testing.T) 
 }
 
 func TestActionsService_EditDefaultWorkflowPermissionsInEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	input := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {

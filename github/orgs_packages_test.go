@@ -15,8 +15,8 @@ import (
 )
 
 func TestOrganizationsService_ListPackages(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -114,8 +114,8 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 }
 
 func TestOrganizationsService_GetPackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
 	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker", func(w http.ResponseWriter, r *http.Request) {
@@ -173,8 +173,8 @@ func TestOrganizationsService_GetPackage(t *testing.T) {
 }
 
 func TestOrganizationsService_DeletePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
 	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker", func(w http.ResponseWriter, r *http.Request) {
@@ -203,8 +203,8 @@ func TestOrganizationsService_DeletePackage(t *testing.T) {
 }
 
 func TestOrganizationsService_RestorePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
 	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
@@ -229,8 +229,8 @@ func TestOrganizationsService_RestorePackage(t *testing.T) {
 }
 
 func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
 	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
@@ -303,8 +303,8 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 }
 
 func TestOrganizationsService_PackageGetVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
 	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
@@ -373,8 +373,8 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 }
 
 func TestOrganizationsService_PackageDeleteVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
 	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
@@ -399,8 +399,8 @@ func TestOrganizationsService_PackageDeleteVersion(t *testing.T) {
 }
 
 func TestOrganizationsService_PackageRestoreVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
 	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {

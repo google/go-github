@@ -15,8 +15,8 @@ import (
 )
 
 func TestActionsService_ListOrganizationRunnerGroups(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -59,8 +59,8 @@ func TestActionsService_ListOrganizationRunnerGroups(t *testing.T) {
 }
 
 func TestActionsService_ListOrganizationRunnerGroupsVisibleToRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -103,8 +103,8 @@ func TestActionsService_ListOrganizationRunnerGroupsVisibleToRepo(t *testing.T) 
 }
 
 func TestActionsService_GetOrganizationRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -150,8 +150,8 @@ func TestActionsService_GetOrganizationRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_DeleteOrganizationRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -175,8 +175,8 @@ func TestActionsService_DeleteOrganizationRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -229,8 +229,8 @@ func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -283,8 +283,8 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_ListRepositoryAccessRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -325,8 +325,8 @@ func TestActionsService_ListRepositoryAccessRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_SetRepositoryAccessRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -357,8 +357,8 @@ func TestActionsService_SetRepositoryAccessRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_AddRepositoryAccessRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -382,8 +382,8 @@ func TestActionsService_AddRepositoryAccessRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_RemoveRepositoryAccessRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -407,8 +407,8 @@ func TestActionsService_RemoveRepositoryAccessRunnerGroup(t *testing.T) {
 }
 
 func TestActionsService_ListRunnerGroupRunners(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -450,8 +450,8 @@ func TestActionsService_ListRunnerGroupRunners(t *testing.T) {
 }
 
 func TestActionsService_SetRunnerGroupRunners(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -482,8 +482,8 @@ func TestActionsService_SetRunnerGroupRunners(t *testing.T) {
 }
 
 func TestActionsService_AddRunnerGroupRunners(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -507,8 +507,8 @@ func TestActionsService_AddRunnerGroupRunners(t *testing.T) {
 }
 
 func TestActionsService_RemoveRunnerGroupRunners(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -532,6 +532,7 @@ func TestActionsService_RemoveRunnerGroupRunners(t *testing.T) {
 }
 
 func TestRunnerGroup_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RunnerGroup{}, "{}")
 
 	u := &RunnerGroup{
@@ -564,6 +565,7 @@ func TestRunnerGroup_Marshal(t *testing.T) {
 }
 
 func TestRunnerGroups_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RunnerGroups{}, "{}")
 
 	u := &RunnerGroups{
@@ -597,13 +599,14 @@ func TestRunnerGroups_Marshal(t *testing.T) {
 			"allows_public_repositories": true,
 			"restricted_to_workflows": false,
 			"selected_workflows": []
-		}]		
+		}]
 	}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestCreateRunnerGroupRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateRunnerGroupRequest{}, "{}")
 
 	u := &CreateRunnerGroupRequest{
@@ -630,6 +633,7 @@ func TestCreateRunnerGroupRequest_Marshal(t *testing.T) {
 }
 
 func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UpdateRunnerGroupRequest{}, "{}")
 
 	u := &UpdateRunnerGroupRequest{
@@ -652,6 +656,7 @@ func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
 }
 
 func TestSetRepoAccessRunnerGroupRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SetRepoAccessRunnerGroupRequest{}, "{}")
 
 	u := &SetRepoAccessRunnerGroupRequest{
@@ -666,6 +671,7 @@ func TestSetRepoAccessRunnerGroupRequest_Marshal(t *testing.T) {
 }
 
 func TestSetRunnerGroupRunnersRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SetRunnerGroupRunnersRequest{}, "{}")
 
 	u := &SetRunnerGroupRunnersRequest{

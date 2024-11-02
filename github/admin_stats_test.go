@@ -10,8 +10,8 @@ import (
 )
 
 func TestAdminService_GetAdminStats(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprise/stats/all", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -97,6 +97,7 @@ func TestAdminService_GetAdminStats(t *testing.T) {
 }
 
 func TestAdminService_Stringify(t *testing.T) {
+	t.Parallel()
 	want := "github.AdminStats{Issues:github.IssueStats{TotalIssues:179, OpenIssues:83, ClosedIssues:96}, Hooks:github.HookStats{TotalHooks:27, ActiveHooks:23, InactiveHooks:4}, Milestones:github.MilestoneStats{TotalMilestones:7, OpenMilestones:6, ClosedMilestones:1}, Orgs:github.OrgStats{TotalOrgs:33, DisabledOrgs:0, TotalTeams:60, TotalTeamMembers:314}, Comments:github.CommentStats{TotalCommitComments:6, TotalGistComments:28, TotalIssueComments:366, TotalPullRequestComments:30}, Pages:github.PageStats{TotalPages:36}, Users:github.UserStats{TotalUsers:254, AdminUsers:45, SuspendedUsers:21}, Gists:github.GistStats{TotalGists:178, PrivateGists:151, PublicGists:25}, Pulls:github.PullStats{TotalPulls:86, MergedPulls:60, MergablePulls:21, UnmergablePulls:3}, Repos:github.RepoStats{TotalRepos:212, RootRepos:194, ForkRepos:18, OrgRepos:51, TotalPushes:3082, TotalWikis:15}}"
 	if got := testAdminStats.String(); got != want {
 		t.Errorf("testAdminStats.String = %q, want %q", got, want)
@@ -211,6 +212,7 @@ var testAdminStats = &AdminStats{
 }
 
 func TestIssueStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &IssueStats{}, "{}")
 
 	u := &IssueStats{
@@ -229,6 +231,7 @@ func TestIssueStats_Marshal(t *testing.T) {
 }
 
 func TestHookStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &HookStats{}, "{}")
 
 	u := &HookStats{
@@ -247,6 +250,7 @@ func TestHookStats_Marshal(t *testing.T) {
 }
 
 func TestMilestoneStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &MilestoneStats{}, "{}")
 
 	u := &MilestoneStats{
@@ -265,6 +269,7 @@ func TestMilestoneStats_Marshal(t *testing.T) {
 }
 
 func TestOrgStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &OrgStats{}, "{}")
 
 	u := &OrgStats{
@@ -285,6 +290,7 @@ func TestOrgStats_Marshal(t *testing.T) {
 }
 
 func TestCommentStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommentStats{}, "{}")
 
 	u := &CommentStats{
@@ -305,6 +311,7 @@ func TestCommentStats_Marshal(t *testing.T) {
 }
 
 func TestPageStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PageStats{}, "{}")
 
 	u := &PageStats{
@@ -319,6 +326,7 @@ func TestPageStats_Marshal(t *testing.T) {
 }
 
 func TestUserStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UserStats{}, "{}")
 
 	u := &UserStats{
@@ -337,6 +345,7 @@ func TestUserStats_Marshal(t *testing.T) {
 }
 
 func TestGistStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GistStats{}, "{}")
 
 	u := &GistStats{
@@ -355,6 +364,7 @@ func TestGistStats_Marshal(t *testing.T) {
 }
 
 func TestPullStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullStats{}, "{}")
 
 	u := &PullStats{
@@ -375,6 +385,7 @@ func TestPullStats_Marshal(t *testing.T) {
 }
 
 func TestRepoStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepoStats{}, "{}")
 
 	u := &RepoStats{
@@ -399,6 +410,7 @@ func TestRepoStats_Marshal(t *testing.T) {
 }
 
 func TestAdminStats_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AdminStats{}, "{}")
 
 	u := &AdminStats{

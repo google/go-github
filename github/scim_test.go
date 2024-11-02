@@ -16,8 +16,8 @@ import (
 )
 
 func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -122,8 +122,8 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 }
 
 func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -173,8 +173,8 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 }
 
 func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -266,8 +266,8 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 }
 
 func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -304,8 +304,8 @@ func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
 }
 
 func TestSCIMService_UpdateAttributeForSCIMUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -331,8 +331,8 @@ func TestSCIMService_UpdateAttributeForSCIMUser(t *testing.T) {
 }
 
 func TestSCIMService_DeleteSCIMUserFromOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -357,6 +357,7 @@ func TestSCIMService_DeleteSCIMUserFromOrg(t *testing.T) {
 }
 
 func TestSCIMUserAttributes_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SCIMUserAttributes{}, `{
 		"userName":"","name":{"givenName":"","familyName":""},"emails":null
 	}`)
@@ -405,6 +406,7 @@ func TestSCIMUserAttributes_Marshal(t *testing.T) {
 }
 
 func TestUpdateAttributeForSCIMUserOperations_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UpdateAttributeForSCIMUserOperations{}, `{}`)
 
 	u := &UpdateAttributeForSCIMUserOperations{
@@ -421,6 +423,7 @@ func TestUpdateAttributeForSCIMUserOperations_Marshal(t *testing.T) {
 }
 
 func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UpdateAttributeForSCIMUserOptions{}, `{}`)
 
 	u := &UpdateAttributeForSCIMUserOptions{
@@ -443,6 +446,7 @@ func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 }
 
 func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{
 		"StartIndex": null,
 		"Count": null,
@@ -476,6 +480,7 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 }
 
 func TestSCIMUserName_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SCIMUserName{}, `{
 		"givenName":"","familyName":""
 	}`)
@@ -489,12 +494,13 @@ func TestSCIMUserName_Marshal(t *testing.T) {
 	want := `{
 			"givenName": "Name1",
 			"familyName": "Fname",
-			"formatted": "formatted name"	
+			"formatted": "formatted name"
 	}`
 	testJSONMarshal(t, u, want)
 }
 
 func TestSCIMMeta_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SCIMMeta{}, `{}`)
 
 	u := &SCIMMeta{
@@ -511,6 +517,7 @@ func TestSCIMMeta_Marshal(t *testing.T) {
 }
 
 func TestSCIMProvisionedIdentities_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SCIMProvisionedIdentities{}, `{}`)
 
 	u := &SCIMProvisionedIdentities{

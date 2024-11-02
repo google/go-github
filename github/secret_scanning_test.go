@@ -17,8 +17,8 @@ import (
 )
 
 func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -92,8 +92,8 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 }
 
 func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -157,8 +157,8 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 }
 
 func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -224,8 +224,8 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 }
 
 func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -289,8 +289,8 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 }
 
 func TestSecretScanningService_GetAlert(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -350,8 +350,8 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 }
 
 func TestSecretScanningService_UpdateAlert(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -421,8 +421,8 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 }
 
 func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1/locations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -487,6 +487,7 @@ func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
 }
 
 func TestSecretScanningAlert_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlert{}, `{}`)
 
 	u := &SecretScanningAlert{
@@ -531,6 +532,7 @@ func TestSecretScanningAlert_Marshal(t *testing.T) {
 }
 
 func TestSecretScanningAlertLocation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlertLocation{}, `{}`)
 
 	u := &SecretScanningAlertLocation{
@@ -560,13 +562,14 @@ func TestSecretScanningAlertLocation_Marshal(t *testing.T) {
 			"blob_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b",
 			"commit_sha": "test_sha",
 			"commit_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"
-		} 
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestSecretScanningAlertLocationDetails_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlertLocationDetails{}, `{}`)
 
 	u := &SecretScanningAlertLocationDetails{
@@ -590,13 +593,14 @@ func TestSecretScanningAlertLocationDetails_Marshal(t *testing.T) {
 		"blob_sha": "test_sha",
 		"blob_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b",
 		"commit_sha": "test_sha",
-		"commit_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"	
+		"commit_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"
 	}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlertUpdateOptions{}, `{}`)
 
 	u := &SecretScanningAlertUpdateOptions{

@@ -15,8 +15,8 @@ import (
 )
 
 func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -71,8 +71,8 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -124,9 +124,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				"type": "deletion"
 			  },
 			  {
-				"type": "merge_queue"
-			  },
-			  {
 				"type": "required_linear_history"
 			  },
 			  {
@@ -205,6 +202,18 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				  "operator": "contains",
 				  "pattern": "github"
 				}
+			  },
+			  {
+			    "type": "code_scanning",
+			    "parameters": {
+				  "code_scanning_tools": [
+				    {
+					  "tool": "CodeQL",
+					  "security_alerts_threshold": "high_or_higher",
+					  "alerts_threshold": "errors"
+				    }
+				  ]
+			    }
 			  }
 			]
 		  }`)
@@ -241,7 +250,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -291,6 +299,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				Negate:   Bool(true),
 				Operator: "contains",
 				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
 			}),
 		},
 	})
@@ -328,7 +345,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -379,6 +395,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				Operator: "contains",
 				Pattern:  "github",
 			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
 		},
 	}
 	if !cmp.Equal(ruleset, want) {
@@ -395,9 +420,10 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 		return resp, err
 	})
 }
+
 func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -428,7 +454,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				"exclude": [
 					{
 						"name": "testExcludeProp",
-						"source": "custom",
 						"property_values": [
 							"false"
 						]
@@ -448,9 +473,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 			  },
 			  {
 				"type": "deletion"
-			  },
-			  {
-				"type": "merge_queue"
 			  },
 			  {
 				"type": "required_linear_history"
@@ -531,6 +553,18 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				  "operator": "contains",
 				  "pattern": "github"
 				}
+			  },
+			  {
+			    "type": "code_scanning",
+			    "parameters": {
+				  "code_scanning_tools": [
+				    {
+					  "tool": "CodeQL",
+					  "security_alerts_threshold": "high_or_higher",
+					  "alerts_threshold": "errors"
+				    }
+				  ]
+			    }
 			  }
 			]
 		  }`)
@@ -555,14 +589,13 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
-						Source: "custom",
+						Source: String("custom"),
 						Values: []string{"true"},
 					},
 				},
 				Exclude: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testExcludeProp",
-						Source: "custom",
 						Values: []string{"false"},
 					},
 				},
@@ -574,7 +607,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -624,6 +656,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Negate:   Bool(true),
 				Operator: "contains",
 				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
 			}),
 		},
 	})
@@ -649,14 +690,13 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
-						Source: "custom",
+						Source: String("custom"),
 						Values: []string{"true"},
 					},
 				},
 				Exclude: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testExcludeProp",
-						Source: "custom",
 						Values: []string{"false"},
 					},
 				},
@@ -668,7 +708,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -719,6 +758,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Operator: "contains",
 				Pattern:  "github",
 			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
 		},
 	}
 	if !cmp.Equal(ruleset, want) {
@@ -735,9 +783,10 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 		return resp, err
 	})
 }
+
 func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -782,9 +831,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				"type": "deletion"
 			  },
 			  {
-				"type": "merge_queue"
-			  },
-			  {
 				"type": "required_linear_history"
 			  },
 			  {
@@ -863,6 +909,18 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				  "operator": "contains",
 				  "pattern": "github"
 				}
+			  },
+			  {
+			    "type": "code_scanning",
+			    "parameters": {
+				  "code_scanning_tools": [
+				    {
+					  "tool": "CodeQL",
+					  "security_alerts_threshold": "high_or_higher",
+					  "alerts_threshold": "errors"
+				    }
+				  ]
+			    }
 			  }
 			]
 		  }`)
@@ -897,7 +955,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -947,6 +1004,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				Negate:   Bool(true),
 				Operator: "contains",
 				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
 			}),
 		},
 	})
@@ -982,7 +1048,6 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				UpdateAllowsFetchAndMerge: true,
 			}),
 			NewDeletionRule(),
-			NewMergeQueueRule(),
 			NewRequiredLinearHistoryRule(),
 			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
 				RequiredDeploymentEnvironments: []string{"test"},
@@ -1033,6 +1098,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				Operator: "contains",
 				Pattern:  "github",
 			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
 		},
 	}
 	if !cmp.Equal(ruleset, want) {
@@ -1051,8 +1125,8 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1147,8 +1221,8 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1210,7 +1284,7 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
-						Source: "custom",
+						Source: String("custom"),
 						Values: []string{"true"},
 					},
 				},
@@ -1235,9 +1309,10 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 		return resp, err
 	})
 }
+
 func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -1351,8 +1426,8 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 }
 
 func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -1402,7 +1477,7 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
-						Source: "custom",
+						Source: String("custom"),
 						Values: []string{"true"},
 					},
 				},
@@ -1434,7 +1509,7 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
-						Source: "custom",
+						Source: String("custom"),
 						Values: []string{"true"},
 					},
 				},
@@ -1459,9 +1534,10 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 		return resp, err
 	})
 }
+
 func TestOrganizationsService_DeleteOrganizationRuleset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

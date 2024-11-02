@@ -5,10 +5,11 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v66/github"
 )
 
 func Test_AppRestrictionsEnabled(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		description string
 		testFile    string
@@ -28,9 +29,10 @@ func Test_AppRestrictionsEnabled(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.description, func(t *testing.T) {
-			client, mux, cleanup := setup()
-			defer cleanup()
+			t.Parallel()
+			client, mux := setup(t)
 
 			mux.HandleFunc("/organizations/o/settings/oauth_application_policy", func(w http.ResponseWriter, r *http.Request) {
 				copyTestFile(t, w, tt.testFile)
@@ -38,7 +40,7 @@ func Test_AppRestrictionsEnabled(t *testing.T) {
 
 			got, err := client.AppRestrictionsEnabled("o")
 			if err != nil {
-				t.Errorf("AppRestrictionsEnabled returned err: %v", err)
+				t.Fatalf("AppRestrictionsEnabled returned err: %v", err)
 			}
 			if want := tt.want; got != want {
 				t.Errorf("AppRestrictionsEnabled returned %t, want %t", got, want)
@@ -48,8 +50,8 @@ func Test_AppRestrictionsEnabled(t *testing.T) {
 }
 
 func Test_ListOAuthApps(t *testing.T) {
-	client, mux, cleanup := setup()
-	defer cleanup()
+	t.Parallel()
+	client, mux := setup(t)
 
 	mux.HandleFunc("/organizations/e/settings/oauth_application_policy", func(w http.ResponseWriter, r *http.Request) {
 		copyTestFile(t, w, "access-restrictions-enabled.html")
@@ -57,7 +59,7 @@ func Test_ListOAuthApps(t *testing.T) {
 
 	got, err := client.ListOAuthApps("e")
 	if err != nil {
-		t.Errorf("ListOAuthApps(e) returned err: %v", err)
+		t.Fatalf("ListOAuthApps(e) returned err: %v", err)
 	}
 	want := []OAuthApp{
 		{
@@ -85,8 +87,8 @@ func Test_ListOAuthApps(t *testing.T) {
 }
 
 func Test_CreateApp(t *testing.T) {
-	client, mux, cleanup := setup()
-	defer cleanup()
+	t.Parallel()
+	client, mux := setup(t)
 
 	mux.HandleFunc("/apps/settings/new", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusCreated)
@@ -103,9 +105,8 @@ func Test_CreateApp(t *testing.T) {
 }
 
 func Test_CreateAppWithOrg(t *testing.T) {
-	client, mux, cleanup := setup()
-
-	defer cleanup()
+	t.Parallel()
+	client, mux := setup(t)
 
 	mux.HandleFunc("/organizations/example/apps/settings/new", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusCreated)

@@ -17,6 +17,7 @@ import (
 )
 
 func TestPublicKey_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
 	var testCases = map[string]struct {
 		data          []byte
 		wantPublicKey PublicKey
@@ -77,6 +78,7 @@ func TestPublicKey_UnmarshalJSON(t *testing.T) {
 	for name, tt := range testCases {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			pk := PublicKey{}
 			err := json.Unmarshal(tt.data, &pk)
 			if err == nil && tt.wantErr {
@@ -93,8 +95,8 @@ func TestPublicKey_UnmarshalJSON(t *testing.T) {
 }
 
 func TestActionsService_GetRepoPublicKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -128,8 +130,8 @@ func TestActionsService_GetRepoPublicKey(t *testing.T) {
 }
 
 func TestActionsService_GetRepoPublicKeyNumeric(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -163,8 +165,8 @@ func TestActionsService_GetRepoPublicKeyNumeric(t *testing.T) {
 }
 
 func TestActionsService_ListRepoSecrets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/secrets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -206,8 +208,8 @@ func TestActionsService_ListRepoSecrets(t *testing.T) {
 }
 
 func TestActionsService_ListRepoOrgSecrets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/organization-secrets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -249,8 +251,8 @@ func TestActionsService_ListRepoOrgSecrets(t *testing.T) {
 }
 
 func TestActionsService_GetRepoSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -288,8 +290,8 @@ func TestActionsService_GetRepoSecret(t *testing.T) {
 }
 
 func TestActionsService_CreateOrUpdateRepoSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -321,8 +323,8 @@ func TestActionsService_CreateOrUpdateRepoSecret(t *testing.T) {
 }
 
 func TestActionsService_DeleteRepoSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -346,8 +348,8 @@ func TestActionsService_DeleteRepoSecret(t *testing.T) {
 }
 
 func TestActionsService_GetOrgPublicKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -381,8 +383,8 @@ func TestActionsService_GetOrgPublicKey(t *testing.T) {
 }
 
 func TestActionsService_ListOrgSecrets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/secrets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -425,8 +427,8 @@ func TestActionsService_ListOrgSecrets(t *testing.T) {
 }
 
 func TestActionsService_GetOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -466,8 +468,8 @@ func TestActionsService_GetOrgSecret(t *testing.T) {
 }
 
 func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -501,8 +503,8 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 }
 
 func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -542,8 +544,8 @@ func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
 }
 
 func TestActionsService_SetSelectedReposForOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -569,8 +571,8 @@ func TestActionsService_SetSelectedReposForOrgSecret(t *testing.T) {
 }
 
 func TestActionsService_AddSelectedRepoToOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -595,8 +597,8 @@ func TestActionsService_AddSelectedRepoToOrgSecret(t *testing.T) {
 }
 
 func TestActionsService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -621,8 +623,8 @@ func TestActionsService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 }
 
 func TestActionsService_DeleteOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -646,8 +648,9 @@ func TestActionsService_DeleteOrgSecret(t *testing.T) {
 }
 
 func TestActionsService_GetEnvPublicKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repositories/1/environments/e/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
@@ -680,8 +683,8 @@ func TestActionsService_GetEnvPublicKey(t *testing.T) {
 }
 
 func TestActionsService_GetEnvPublicKeyNumeric(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1/environments/e/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -715,8 +718,8 @@ func TestActionsService_GetEnvPublicKeyNumeric(t *testing.T) {
 }
 
 func TestActionsService_ListEnvSecrets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1/environments/e/secrets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -758,8 +761,8 @@ func TestActionsService_ListEnvSecrets(t *testing.T) {
 }
 
 func TestActionsService_GetEnvSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -797,8 +800,8 @@ func TestActionsService_GetEnvSecret(t *testing.T) {
 }
 
 func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -830,8 +833,8 @@ func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
 }
 
 func TestActionsService_DeleteEnvSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -855,6 +858,7 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 }
 
 func TestPublicKey_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PublicKey{}, "{}")
 
 	u := &PublicKey{
@@ -871,6 +875,7 @@ func TestPublicKey_Marshal(t *testing.T) {
 }
 
 func TestSecret_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Secret{}, "{}")
 
 	u := &Secret{
@@ -893,6 +898,7 @@ func TestSecret_Marshal(t *testing.T) {
 }
 
 func TestSecrets_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Secrets{}, "{}")
 
 	u := &Secrets{
@@ -924,6 +930,7 @@ func TestSecrets_Marshal(t *testing.T) {
 }
 
 func TestEncryptedSecret_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EncryptedSecret{}, "{}")
 
 	u := &EncryptedSecret{
@@ -945,6 +952,7 @@ func TestEncryptedSecret_Marshal(t *testing.T) {
 }
 
 func TestSelectedReposList_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SelectedReposList{}, "{}")
 
 	u := &SelectedReposList{

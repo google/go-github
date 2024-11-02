@@ -738,7 +738,7 @@ func (s *RepositoriesService) Delete(ctx context.Context, owner, repo string) (*
 	return s.client.Do(ctx, req, nil)
 }
 
-// Contributor represents a repository contributor
+// Contributor represents a repository contributor.
 type Contributor struct {
 	Login             *string `json:"login,omitempty"`
 	ID                *int64  `json:"id,omitempty"`
@@ -998,7 +998,7 @@ func (s *RepositoriesService) ListTags(ctx context.Context, owner string, repo s
 	return tags, resp, nil
 }
 
-// Branch represents a repository branch
+// Branch represents a repository branch.
 type Branch struct {
 	Name      *string           `json:"name,omitempty"`
 	Commit    *RepositoryCommit `json:"commit,omitempty"`
@@ -1363,7 +1363,7 @@ type BypassPullRequestAllowancesRequest struct {
 
 // DismissalRestrictions specifies which users and teams can dismiss pull request reviews.
 type DismissalRestrictions struct {
-	// The list of users who can dimiss pull request reviews.
+	// The list of users who can dismiss pull request reviews.
 	Users []*User `json:"users"`
 	// The list of teams which can dismiss pull request reviews.
 	Teams []*Team `json:"teams"`
@@ -1372,7 +1372,7 @@ type DismissalRestrictions struct {
 }
 
 // DismissalRestrictionsRequest represents the request to create/edit the
-// restriction to allows only specific users, teams or apps to dimiss pull request reviews. It is
+// restriction to allows only specific users, teams or apps to dismiss pull request reviews. It is
 // separate from DismissalRestrictions above because the request structure is
 // different from the response structure.
 // Note: Both Users and Teams must be nil, or both must be non-nil.

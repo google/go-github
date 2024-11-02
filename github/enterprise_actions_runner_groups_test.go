@@ -15,8 +15,8 @@ import (
 )
 
 func TestEnterpriseService_ListRunnerGroups(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -59,8 +59,8 @@ func TestEnterpriseService_ListRunnerGroups(t *testing.T) {
 }
 
 func TestEnterpriseService_ListRunnerGroupsVisibleToOrganization(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -103,8 +103,8 @@ func TestEnterpriseService_ListRunnerGroupsVisibleToOrganization(t *testing.T) {
 }
 
 func TestEnterpriseService_GetRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -150,8 +150,8 @@ func TestEnterpriseService_GetRunnerGroup(t *testing.T) {
 }
 
 func TestEnterpriseService_DeleteRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -175,8 +175,8 @@ func TestEnterpriseService_DeleteRunnerGroup(t *testing.T) {
 }
 
 func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -229,8 +229,8 @@ func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
 }
 
 func TestEnterpriseService_UpdateRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -283,8 +283,8 @@ func TestEnterpriseService_UpdateRunnerGroup(t *testing.T) {
 }
 
 func TestEnterpriseService_ListOrganizationAccessRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -325,8 +325,8 @@ func TestEnterpriseService_ListOrganizationAccessRunnerGroup(t *testing.T) {
 }
 
 func TestEnterpriseService_SetOrganizationAccessRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -357,8 +357,8 @@ func TestEnterpriseService_SetOrganizationAccessRunnerGroup(t *testing.T) {
 }
 
 func TestEnterpriseService_AddOrganizationAccessRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -382,8 +382,8 @@ func TestEnterpriseService_AddOrganizationAccessRunnerGroup(t *testing.T) {
 }
 
 func TestEnterpriseService_RemoveOrganizationAccessRunnerGroup(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -407,8 +407,8 @@ func TestEnterpriseService_RemoveOrganizationAccessRunnerGroup(t *testing.T) {
 }
 
 func TestEnterpriseService_ListEnterpriseRunnerGroupRunners(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -450,8 +450,8 @@ func TestEnterpriseService_ListEnterpriseRunnerGroupRunners(t *testing.T) {
 }
 
 func TestEnterpriseService_SetEnterpriseRunnerGroupRunners(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -482,8 +482,8 @@ func TestEnterpriseService_SetEnterpriseRunnerGroupRunners(t *testing.T) {
 }
 
 func TestEnterpriseService_AddEnterpriseRunnerGroupRunners(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -507,8 +507,8 @@ func TestEnterpriseService_AddEnterpriseRunnerGroupRunners(t *testing.T) {
 }
 
 func TestEnterpriseService_RemoveEnterpriseRunnerGroupRunners(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -532,6 +532,7 @@ func TestEnterpriseService_RemoveEnterpriseRunnerGroupRunners(t *testing.T) {
 }
 
 func TestEnterpriseRunnerGroup_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EnterpriseRunnerGroup{}, "{}")
 
 	u := &EnterpriseRunnerGroup{
@@ -564,6 +565,7 @@ func TestEnterpriseRunnerGroup_Marshal(t *testing.T) {
 }
 
 func TestEnterpriseRunnerGroups_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EnterpriseRunnerGroups{}, "{}")
 
 	u := &EnterpriseRunnerGroups{
@@ -597,13 +599,14 @@ func TestEnterpriseRunnerGroups_Marshal(t *testing.T) {
 			"allows_public_repositories": true,
 			"restricted_to_workflows": false,
 			"selected_workflows": []
-		}]		
+		}]
 	}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestCreateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateEnterpriseRunnerGroupRequest{}, "{}")
 
 	u := &CreateEnterpriseRunnerGroupRequest{
@@ -630,6 +633,7 @@ func TestCreateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
 }
 
 func TestUpdateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UpdateEnterpriseRunnerGroupRequest{}, "{}")
 
 	u := &UpdateEnterpriseRunnerGroupRequest{
@@ -652,6 +656,7 @@ func TestUpdateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
 }
 
 func TestSetOrgAccessRunnerGroupRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SetOrgAccessRunnerGroupRequest{}, "{}")
 
 	u := &SetOrgAccessRunnerGroupRequest{

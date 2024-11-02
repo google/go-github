@@ -4,7 +4,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build ignore
-// +build ignore
 
 // gen-stringify-test generates test methods to test the String methods.
 //
@@ -404,6 +403,7 @@ import (
 func Float64(v float64) *float64 { return &v }
 {{range $key, $value := .StructFields}}
 func Test{{ $key }}_String(t *testing.T) {
+  t.Parallel()
   v := {{ $key }}{ {{range .}}{{if .NamedStruct}}
     {{ .FieldName }}: &{{ .FieldType }}{},{{else}}
     {{ .FieldName }}: {{.ZeroValue}},{{end}}{{end}}

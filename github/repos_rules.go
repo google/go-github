@@ -52,7 +52,7 @@ type RulesetRepositoryIDsConditionParameters struct {
 type RulesetRepositoryPropertyTargetParameters struct {
 	Name   string   `json:"name"`
 	Values []string `json:"property_values"`
-	Source string   `json:"source"`
+	Source *string  `json:"source,omitempty"`
 }
 
 // RulesetRepositoryPropertyConditionParameters represents the conditions object for repository_property.
@@ -85,6 +85,21 @@ type RuleFileParameters struct {
 	RestrictedFilePaths *[]string `json:"restricted_file_paths"`
 }
 
+// RuleMaxFilePathLengthParameters represents the max_file_path_length rule parameters.
+type RuleMaxFilePathLengthParameters struct {
+	MaxFilePathLength int `json:"max_file_path_length"`
+}
+
+// RuleFileExtensionRestrictionParameters represents the file_extension_restriction rule parameters.
+type RuleFileExtensionRestrictionParameters struct {
+	RestrictedFileExtensions []string `json:"restricted_file_extensions"`
+}
+
+// RuleMaxFileSizeParameters represents the max_file_size rule parameters.
+type RuleMaxFileSizeParameters struct {
+	MaxFileSize int64 `json:"max_file_size"`
+}
+
 // UpdateAllowsFetchAndMergeRuleParameters represents the update rule parameters.
 type UpdateAllowsFetchAndMergeRuleParameters struct {
 	UpdateAllowsFetchAndMerge bool `json:"update_allows_fetch_and_merge"`
@@ -110,9 +125,22 @@ type RuleRequiredStatusChecks struct {
 	IntegrationID *int64 `json:"integration_id,omitempty"`
 }
 
+// MergeQueueRuleParameters represents the merge_queue rule parameters.
+type MergeQueueRuleParameters struct {
+	CheckResponseTimeoutMinutes int `json:"check_response_timeout_minutes"`
+	// Possible values for GroupingStrategy are: ALLGREEN, HEADGREEN
+	GroupingStrategy  string `json:"grouping_strategy"`
+	MaxEntriesToBuild int    `json:"max_entries_to_build"`
+	MaxEntriesToMerge int    `json:"max_entries_to_merge"`
+	// Possible values for MergeMethod are: MERGE, SQUASH, REBASE
+	MergeMethod                  string `json:"merge_method"`
+	MinEntriesToMerge            int    `json:"min_entries_to_merge"`
+	MinEntriesToMergeWaitMinutes int    `json:"min_entries_to_merge_wait_minutes"`
+}
+
 // RequiredStatusChecksRuleParameters represents the required_status_checks rule parameters.
 type RequiredStatusChecksRuleParameters struct {
-	DoNotEnforceOnCreate             bool                       `json:"do_not_enforce_on_create"`
+	DoNotEnforceOnCreate             *bool                      `json:"do_not_enforce_on_create,omitempty"`
 	RequiredStatusChecks             []RuleRequiredStatusChecks `json:"required_status_checks"`
 	StrictRequiredStatusChecksPolicy bool                       `json:"strict_required_status_checks_policy"`
 }
@@ -127,7 +155,20 @@ type RuleRequiredWorkflow struct {
 
 // RequiredWorkflowsRuleParameters represents the workflows rule parameters.
 type RequiredWorkflowsRuleParameters struct {
-	RequiredWorkflows []*RuleRequiredWorkflow `json:"workflows"`
+	DoNotEnforceOnCreate bool                    `json:"do_not_enforce_on_create,omitempty"`
+	RequiredWorkflows    []*RuleRequiredWorkflow `json:"workflows"`
+}
+
+// RuleRequiredCodeScanningTool represents a single required code-scanning tool for the RequiredCodeScanningParameters object.
+type RuleRequiredCodeScanningTool struct {
+	AlertsThreshold         string `json:"alerts_threshold"`
+	SecurityAlertsThreshold string `json:"security_alerts_threshold"`
+	Tool                    string `json:"tool"`
+}
+
+// RequiredCodeScanningRuleParameters represents the code_scanning rule parameters.
+type RequiredCodeScanningRuleParameters struct {
+	RequiredCodeScanningTools []*RuleRequiredCodeScanningTool `json:"code_scanning_tools"`
 }
 
 // RepositoryRule represents a GitHub Rule.
@@ -137,6 +178,226 @@ type RepositoryRule struct {
 	RulesetSourceType string           `json:"ruleset_source_type"`
 	RulesetSource     string           `json:"ruleset_source"`
 	RulesetID         int64            `json:"ruleset_id"`
+}
+
+// RepositoryRulesetEditedChanges represents  the changes made to a repository ruleset.
+type RepositoryRulesetEditedChanges struct {
+	Name        *RepositoryRulesetEditedSource     `json:"name,omitempty"`
+	Enforcement *RepositoryRulesetEditedSource     `json:"enforcement,omitempty"`
+	Conditions  *RepositoryRulesetEditedConditions `json:"conditions,omitempty"`
+	Rules       *RepositoryRulesetEditedRules      `json:"rules,omitempty"`
+}
+
+// RepositoryRulesetEditedSource represents a source change for the ruleset.
+type RepositoryRulesetEditedSource struct {
+	From *string `json:"from,omitempty"`
+}
+
+// RepositoryRulesetEditedSources represents multiple source changes for the ruleset.
+type RepositoryRulesetEditedSources struct {
+	From []string `json:"from,omitempty"`
+}
+
+// RepositoryRulesetEditedConditions holds changes to conditions in a ruleset.
+type RepositoryRulesetEditedConditions struct {
+	Added   []*RepositoryRulesetRefCondition            `json:"added,omitempty"`
+	Deleted []*RepositoryRulesetRefCondition            `json:"deleted,omitempty"`
+	Updated []*RepositoryRulesetEditedUpdatedConditions `json:"updated,omitempty"`
+}
+
+// RepositoryRulesetEditedRules holds changes to rules in a ruleset.
+type RepositoryRulesetEditedRules struct {
+	Added   []*RepositoryRulesetRule         `json:"added,omitempty"`
+	Deleted []*RepositoryRulesetRule         `json:"deleted,omitempty"`
+	Updated []*RepositoryRulesetUpdatedRules `json:"updated,omitempty"`
+}
+
+// RepositoryRulesetRefCondition represents a reference condition for the ruleset.
+type RepositoryRulesetRefCondition struct {
+	RefName *RulesetRefConditionParameters `json:"ref_name,omitempty"`
+}
+
+// RepositoryRulesetEditedUpdatedConditions holds updates to conditions in a ruleset.
+type RepositoryRulesetEditedUpdatedConditions struct {
+	Condition *RepositoryRulesetRefCondition            `json:"condition,omitempty"`
+	Changes   *RepositoryRulesetUpdatedConditionsEdited `json:"changes,omitempty"`
+}
+
+// RepositoryRulesetUpdatedConditionsEdited holds the edited updates to conditions in a ruleset.
+type RepositoryRulesetUpdatedConditionsEdited struct {
+	ConditionType *RepositoryRulesetEditedSource  `json:"condition_type,omitempty"`
+	Target        *RepositoryRulesetEditedSource  `json:"target,omitempty"`
+	Include       *RepositoryRulesetEditedSources `json:"include,omitempty"`
+	Exclude       *RepositoryRulesetEditedSources `json:"exclude,omitempty"`
+}
+
+// RepositoryRulesetUpdatedRules holds updates to rules in a ruleset.
+type RepositoryRulesetUpdatedRules struct {
+	Rule    *RepositoryRulesetRule              `json:"rule,omitempty"`
+	Changes *RepositoryRulesetEditedRuleChanges `json:"changes,omitempty"`
+}
+
+// RepositoryRulesetEditedRuleChanges holds changes made to a rule in a ruleset.
+type RepositoryRulesetEditedRuleChanges struct {
+	Configuration *RepositoryRulesetEditedSources `json:"configuration,omitempty"`
+	RuleType      *RepositoryRulesetEditedSources `json:"rule_type,omitempty"`
+	Pattern       *RepositoryRulesetEditedSources `json:"pattern,omitempty"`
+}
+
+// RepositoryRuleset represents the structure of a ruleset associated with a GitHub repository.
+type RepositoryRuleset struct {
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
+	// Possible values for target: "branch", "tag", "push"
+	Target *string `json:"target,omitempty"`
+	// Possible values for source type: "Repository", "Organization"
+	SourceType *string `json:"source_type,omitempty"`
+	Source     string  `json:"source"`
+	// Possible values for enforcement: "disabled", "active", "evaluate"
+	Enforcement  string         `json:"enforcement"`
+	BypassActors []*BypassActor `json:"bypass_actors,omitempty"`
+	// Possible values for current user can bypass: "always", "pull_requests_only", "never"
+	CurrentUserCanBypass *string                  `json:"current_user_can_bypass,omitempty"`
+	NodeID               *string                  `json:"node_id,omitempty"`
+	Links                *RepositoryRulesetLink   `json:"_links,omitempty"`
+	Conditions           json.RawMessage          `json:"conditions,omitempty"`
+	Rules                []*RepositoryRulesetRule `json:"rules,omitempty"`
+	CreatedAt            *Timestamp               `json:"created_at,omitempty"`
+	UpdatedAt            *Timestamp               `json:"updated_at,omitempty"`
+}
+
+// RepositoryRulesetRule represents individual rules which are present in a repository's ruleset.
+type RepositoryRulesetRule struct {
+	Creation                 *RepositoryRulesetRuleType                     `json:"creation,omitempty"`
+	Update                   *RepositoryRulesetUpdateRule                   `json:"update,omitempty"`
+	Deletion                 *RepositoryRulesetRuleType                     `json:"deletion,omitempty"`
+	RequiredLinearHistory    *RepositoryRulesetRuleType                     `json:"required_linear_history,omitempty"`
+	MergeQueue               *RepositoryRulesetMergeQueueRule               `json:"merge_queue,omitempty"`
+	RequiredDeployments      *RepositoryRulesetRequiredDeploymentsRule      `json:"required_deployments,omitempty"`
+	RequiredSignatures       *RepositoryRulesetRuleType                     `json:"required_signatures,omitempty"`
+	PullRequest              *RepositoryRulesetPullRequestRule              `json:"pull_request,omitempty"`
+	RequiredStatusChecks     *RepositoryRulesetRequiredStatusChecksRule     `json:"required_status_checks,omitempty"`
+	NonFastForward           *RepositoryRulesetRuleType                     `json:"non_fast_forward,omitempty"`
+	CommitMessagePattern     *RepositoryRulesetPatternRule                  `json:"commit_message_pattern,omitempty"`
+	CommitAuthorEmailPattern *RepositoryRulesetPatternRule                  `json:"commit_author_email_pattern,omitempty"`
+	CommitterEmailPattern    *RepositoryRulesetPatternRule                  `json:"committer_email_pattern,omitempty"`
+	BranchNamePattern        *RepositoryRulesetPatternRule                  `json:"branch_name_pattern,omitempty"`
+	TagNamePattern           *RepositoryRulesetPatternRule                  `json:"tag_name_pattern,omitempty"`
+	FilePathRestriction      *RepositoryRulesetFilePathRestrictionRule      `json:"file_path_restriction,omitempty"`
+	MaxFilePathLength        *RepositoryRulesetMaxFilePathLengthRule        `json:"max_file_path_length,omitempty"`
+	FileExtensionRestriction *RepositoryRulesetFileExtensionRestrictionRule `json:"file_extension_restriction,omitempty"`
+	MaxFileSize              *RepositoryRulesetMaxFileSizeRule              `json:"max_file_size,omitempty"`
+	Workflows                *RepositoryRulesetWorkflowsRule                `json:"workflows,omitempty"`
+	CodeScanning             *RepositoryRulesetCodeScanningRule             `json:"code_scanning,omitempty"`
+}
+
+// RepositoryRulesetLink represents Links associated with a repository's rulesets. These links are used to provide more information about the ruleset.
+type RepositoryRulesetLink struct {
+	Self *RulesetLink `json:"self,omitempty"`
+	HTML *RulesetLink `json:"html,omitempty"`
+}
+
+// RepositoryRulesetRuleType represents the type of a ruleset rule.
+type RepositoryRulesetRuleType struct {
+	Type string `json:"type"`
+}
+
+// RepositoryRulesetUpdateRule defines an update rule for the repository.
+type RepositoryRulesetUpdateRule struct {
+	// Type can be one of: "update".
+	Type       string                                   `json:"type"`
+	Parameters *UpdateAllowsFetchAndMergeRuleParameters `json:"parameters,omitempty"`
+}
+
+// RepositoryRulesetMergeQueueRule defines a merge queue rule for the repository.
+type RepositoryRulesetMergeQueueRule struct {
+	// Type can be one of: "merge_queue".
+	Type       string                    `json:"type"`
+	Parameters *MergeQueueRuleParameters `json:"parameters,omitempty"`
+}
+
+// RepositoryRulesetRequiredDeploymentsRule defines a rule for required deployments.
+type RepositoryRulesetRequiredDeploymentsRule struct {
+	// Type can be one of: "required_deployments".
+	Type       string                                        `json:"type"`
+	Parameters *RequiredDeploymentEnvironmentsRuleParameters `json:"parameters,omitempty"`
+}
+
+// RepositoryRulesetPullRequestRule defines a rule for pull requests.
+type RepositoryRulesetPullRequestRule struct {
+	// Type can be one of: "pull_request".
+
+	Type       string                     `json:"type"`
+	Parameters *PullRequestRuleParameters `json:"parameters,omitempty"`
+}
+
+// RepositoryRulesetRequiredStatusChecksRule defines a rule for required status checks.
+type RepositoryRulesetRequiredStatusChecksRule struct {
+	// Type can be one of: "required_status_checks".
+
+	Type       string                              `json:"type"`
+	Parameters *RequiredStatusChecksRuleParameters `json:"parameters,omitempty"`
+}
+
+// RepositoryRulesetPatternRule defines a pattern rule for the repository.
+type RepositoryRulesetPatternRule struct {
+	Type       string                 `json:"type"`
+	Parameters *RulePatternParameters `json:"parameters,omitempty"`
+}
+
+// RepositoryRulesetFilePathRestrictionRule defines a file path restriction rule for the repository.
+type RepositoryRulesetFilePathRestrictionRule struct {
+	// Type can be one of: "file_path_restriction".
+	Type       string              `json:"type"`
+	Parameters *RuleFileParameters `json:"parameters,omitempty"`
+}
+
+// RepositoryRulesetMaxFilePathLengthRule defines a maximum file path length rule for the repository.
+type RepositoryRulesetMaxFilePathLengthRule struct {
+	// Type can be one of: "max_file_path_length".
+
+	Type       string                           `json:"type"`
+	Parameters *RuleMaxFilePathLengthParameters `json:"parameters,omitempty"`
+}
+
+// RepositoryRulesetFileExtensionRestrictionRule defines a file extension restriction rule for the repository.
+type RepositoryRulesetFileExtensionRestrictionRule struct {
+	// Type can be one of: "file_extension_restriction".
+	Type       string                                  `json:"type"`
+	Parameters *RuleFileExtensionRestrictionParameters `json:"parameters,omitempty"`
+}
+
+// RepositoryRulesetMaxFileSizeRule defines a maximum file size rule for the repository.
+type RepositoryRulesetMaxFileSizeRule struct {
+	// Type can be one of: "max_file_size".
+	Type       string                     `json:"type"`
+	Parameters *RuleMaxFileSizeParameters `json:"parameters,omitempty"`
+}
+
+// RepositoryRulesetWorkflowsRule defines a workflow rule for the repository.
+type RepositoryRulesetWorkflowsRule struct {
+	// Type can be one of: "workflows".
+	Type       string                           `json:"type"`
+	Parameters *RequiredWorkflowsRuleParameters `json:"parameters,omitempty"`
+}
+
+// RepositoryRulesetCodeScanningRule defines a code scanning rule for the repository.
+type RepositoryRulesetCodeScanningRule struct {
+	// Type can be one of: "code_scanning".
+	Type       string                      `json:"type"`
+	Parameters *RuleCodeScanningParameters `json:"parameters,omitempty"`
+}
+
+// RuleCodeScanningParameters defines parameters for code scanning rules.
+type RuleCodeScanningParameters struct {
+	CodeScanningTools []*CodeScanningTool `json:"code_scanning_tools,omitempty"`
+}
+
+// CodeScanningTool defines a specific tool used for code scanning.
+type CodeScanningTool struct {
+	AlertsThreshold         string `json:"alerts_threshold"`
+	SecurityAlertsThreshold string `json:"security_alerts_threshold"`
+	Tool                    string `json:"tool"`
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
@@ -154,7 +415,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	r.Type = RepositoryRule.Type
 
 	switch RepositoryRule.Type {
-	case "creation", "deletion", "merge_queue", "non_fast_forward", "required_linear_history", "required_signatures":
+	case "creation", "deletion", "non_fast_forward", "required_linear_history", "required_signatures":
 		r.Parameters = nil
 	case "update":
 		if RepositoryRule.Parameters == nil {
@@ -170,7 +431,20 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		rawParams := json.RawMessage(bytes)
 
 		r.Parameters = &rawParams
+	case "merge_queue":
+		if RepositoryRule.Parameters == nil {
+			r.Parameters = nil
+			return nil
+		}
+		params := MergeQueueRuleParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
 
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
 	case "required_deployments":
 		params := RequiredDeploymentEnvironmentsRuleParameters{}
 		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
@@ -230,6 +504,42 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		rawParams := json.RawMessage(bytes)
 
 		r.Parameters = &rawParams
+	case "code_scanning":
+		params := RequiredCodeScanningRuleParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
+	case "max_file_path_length":
+		params := RuleMaxFilePathLengthParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
+	case "file_extension_restriction":
+		params := RuleFileExtensionRestrictionParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
+	case "max_file_size":
+		params := RuleMaxFileSizeParameters{}
+		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+			return err
+		}
+		bytes, _ := json.Marshal(params)
+		rawParams := json.RawMessage(bytes)
+
+		r.Parameters = &rawParams
 	default:
 		r.Type = ""
 		r.Parameters = nil
@@ -240,7 +550,17 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 }
 
 // NewMergeQueueRule creates a rule to only allow merges via a merge queue.
-func NewMergeQueueRule() (rule *RepositoryRule) {
+func NewMergeQueueRule(params *MergeQueueRuleParameters) (rule *RepositoryRule) {
+	if params != nil {
+		bytes, _ := json.Marshal(params)
+
+		rawParams := json.RawMessage(bytes)
+
+		return &RepositoryRule{
+			Type:       "merge_queue",
+			Parameters: &rawParams,
+		}
+	}
 	return &RepositoryRule{
 		Type: "merge_queue",
 	}
@@ -406,6 +726,18 @@ func NewRequiredWorkflowsRule(params *RequiredWorkflowsRuleParameters) (rule *Re
 	}
 }
 
+// NewRequiredCodeScanningRule creates a rule to require which tools must provide code scanning results before the reference is updated.
+func NewRequiredCodeScanningRule(params *RequiredCodeScanningRuleParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "code_scanning",
+		Parameters: &rawParams,
+	}
+}
+
 // NewFilePathRestrictionRule creates a rule to restrict file paths from being pushed to.
 func NewFilePathRestrictionRule(params *RuleFileParameters) (rule *RepositoryRule) {
 	bytes, _ := json.Marshal(params)
@@ -418,11 +750,47 @@ func NewFilePathRestrictionRule(params *RuleFileParameters) (rule *RepositoryRul
 	}
 }
 
+// NewMaxFilePathLengthRule creates a rule to restrict file paths longer than the limit from being pushed.
+func NewMaxFilePathLengthRule(params *RuleMaxFilePathLengthParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "max_file_path_length",
+		Parameters: &rawParams,
+	}
+}
+
+// NewFileExtensionRestrictionRule creates a rule to restrict file extensions from being pushed to a commit.
+func NewFileExtensionRestrictionRule(params *RuleFileExtensionRestrictionParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "file_extension_restriction",
+		Parameters: &rawParams,
+	}
+}
+
+// NewMaxFileSizeRule creates a rule to restrict file sizes from being pushed to a commit.
+func NewMaxFileSizeRule(params *RuleMaxFileSizeParameters) (rule *RepositoryRule) {
+	bytes, _ := json.Marshal(params)
+
+	rawParams := json.RawMessage(bytes)
+
+	return &RepositoryRule{
+		Type:       "max_file_size",
+		Parameters: &rawParams,
+	}
+}
+
 // Ruleset represents a GitHub ruleset object.
 type Ruleset struct {
 	ID   *int64 `json:"id,omitempty"`
 	Name string `json:"name"`
-	// Possible values for Target are branch, tag
+	// Possible values for Target are branch, tag, push
 	Target *string `json:"target,omitempty"`
 	// Possible values for SourceType are: Repository, Organization
 	SourceType *string `json:"source_type,omitempty"`
@@ -434,6 +802,8 @@ type Ruleset struct {
 	Links        *RulesetLinks      `json:"_links,omitempty"`
 	Conditions   *RulesetConditions `json:"conditions,omitempty"`
 	Rules        []*RepositoryRule  `json:"rules,omitempty"`
+	UpdatedAt    *Timestamp         `json:"updated_at,omitempty"`
+	CreatedAt    *Timestamp         `json:"created_at,omitempty"`
 }
 
 // rulesetNoOmitBypassActors represents a GitHub ruleset object. The struct does not omit bypassActors if the field is nil or an empty array is passed.

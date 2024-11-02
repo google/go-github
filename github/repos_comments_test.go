@@ -16,8 +16,8 @@ import (
 )
 
 func TestRepositoriesService_ListComments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -54,8 +54,8 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 }
 
 func TestRepositoriesService_ListComments_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListComments(ctx, "%", "%", nil)
@@ -63,8 +63,8 @@ func TestRepositoriesService_ListComments_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCommitComments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/s/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -101,8 +101,8 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCommitComments_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListCommitComments(ctx, "%", "%", "%", nil)
@@ -110,8 +110,8 @@ func TestRepositoriesService_ListCommitComments_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &RepositoryComment{Body: String("b")}
 
@@ -154,8 +154,8 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateComment_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.CreateComment(ctx, "%", "%", "%", nil)
@@ -163,8 +163,8 @@ func TestRepositoriesService_CreateComment_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -199,8 +199,8 @@ func TestRepositoriesService_GetComment(t *testing.T) {
 }
 
 func TestRepositoriesService_GetComment_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.GetComment(ctx, "%", "%", 1)
@@ -208,8 +208,8 @@ func TestRepositoriesService_GetComment_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &RepositoryComment{Body: String("b")}
 
@@ -252,8 +252,8 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateComment_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.UpdateComment(ctx, "%", "%", 1, nil)
@@ -261,8 +261,8 @@ func TestRepositoriesService_UpdateComment_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -286,8 +286,8 @@ func TestRepositoriesService_DeleteComment(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteComment_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Repositories.DeleteComment(ctx, "%", "%", 1)
@@ -295,6 +295,7 @@ func TestRepositoriesService_DeleteComment_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoryComment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryComment{}, "{}")
 
 	r := &RepositoryComment{

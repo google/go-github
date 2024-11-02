@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 	"testing"
 
@@ -20,8 +19,8 @@ import (
 )
 
 func TestRepositoriesService_ListReleases(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -56,8 +55,8 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 }
 
 func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/generate-notes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -97,8 +96,8 @@ func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -132,8 +131,8 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_GetLatestRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/latest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -167,8 +166,8 @@ func TestRepositoriesService_GetLatestRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/tags/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -202,8 +201,8 @@ func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &RepositoryRelease{
 		Name:                   String("v1.0"),
@@ -267,8 +266,8 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_EditRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &RepositoryRelease{
 		Name:                   String("n"),
@@ -330,8 +329,8 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -355,8 +354,8 @@ func TestRepositoriesService_DeleteRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -391,8 +390,8 @@ func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
 }
 
 func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -425,8 +424,8 @@ func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -458,8 +457,8 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -479,8 +478,8 @@ func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -513,8 +512,8 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -543,8 +542,8 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -570,8 +569,8 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 }
 
 func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &ReleaseAsset{Name: String("n")}
 
@@ -612,8 +611,8 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -637,6 +636,7 @@ func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
+	t.Parallel()
 	var (
 		defaultUploadOptions     = &UploadOptions{Name: "n"}
 		defaultExpectedFormValue = values{"name": "n"}
@@ -692,8 +692,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		},
 	}
 
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	for key, test := range uploadTests {
 		releaseEndpoint := fmt.Sprintf("/repos/o/r/releases/%d/assets", key)
@@ -707,11 +706,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 			fmt.Fprintf(w, `{"id":1}`)
 		})
 
-		file, dir, err := openTestFile(test.fileName, "Upload me !\n")
-		if err != nil {
-			t.Fatalf("Unable to create temp file: %v", err)
-		}
-		defer os.RemoveAll(dir)
+		file := openTestFile(t, test.fileName, "Upload me !\n")
 
 		ctx := context.Background()
 		asset, _, err := client.Repositories.UploadReleaseAsset(ctx, "o", "r", int64(key), test.uploadOpts, file)
@@ -732,6 +727,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &repositoryReleaseRequest{}, "{}")
 
 	u := &repositoryReleaseRequest{
@@ -760,6 +756,7 @@ func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
 }
 
 func TestReleaseAsset_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ReleaseAsset{}, "{}")
 
 	u := &ReleaseAsset{
@@ -800,6 +797,7 @@ func TestReleaseAsset_Marshal(t *testing.T) {
 }
 
 func TestRepositoryRelease_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryRelease{}, "{}")
 
 	u := &RepositoryRelease{
@@ -858,6 +856,7 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 }
 
 func TestGenerateNotesOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GenerateNotesOptions{}, "{}")
 
 	u := &GenerateNotesOptions{

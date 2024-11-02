@@ -4,7 +4,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build ignore
-// +build ignore
 
 // gen-accessors generates accessor methods for structs with pointer fields.
 //
@@ -418,6 +417,7 @@ import (
 {{range .Getters}}
 {{if .NamedStruct}}
 func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
+  tt.Parallel()
   {{.ReceiverVar}} := &{{.ReceiverType}}{}
   {{.ReceiverVar}}.Get{{.FieldName}}()
   {{.ReceiverVar}} = nil
@@ -425,6 +425,7 @@ func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
 }
 {{else if or .MapType .ArrayType}}
 func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
+  tt.Parallel()
   zeroValue := {{.FieldType}}{}
   {{.ReceiverVar}} := &{{.ReceiverType}}{ {{.FieldName}}: zeroValue }
   {{.ReceiverVar}}.Get{{.FieldName}}()
@@ -435,6 +436,7 @@ func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
 }
 {{else}}
 func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
+  tt.Parallel()
   var zeroValue {{.FieldType}}
   {{.ReceiverVar}} := &{{.ReceiverType}}{ {{.FieldName}}: &zeroValue }
   {{.ReceiverVar}}.Get{{.FieldName}}()

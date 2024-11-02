@@ -6,25 +6,34 @@ linters:
   enable:
     - dogsled
     - dupl
+    - gocritic
+    - godot
     - gofmt
     - goimports
     - gosec
     - misspell
     - nakedret
+    - perfsprint
+    - paralleltest
     - stylecheck
+    - tparallel
     - unconvert
     - unparam
     - whitespace
 linters-settings:
+  gocritic:
+    disable-all: true
+    enabled-checks:
+      - commentFormatting
   gosec:
     excludes:
       # duplicates errcheck
       - G104
-      # performance issue: see https://github.com/golangci/golangci-lint/issues/4039
-      # and https://github.com/securego/gosec/issues/1007
-      - G602
       # int(os.Stdin.Fd())
       - G115
+  perfsprint:
+    errorf: true
+    strconcat: false
 issues:
   exclude-use-default: false
   exclude-rules:
@@ -53,3 +62,11 @@ issues:
     - linters: [ gosec ]
       text: 'G304: Potential file inclusion via variable'
       path: '^(example|tools)\/'
+
+    # We don't run parallel integration tests
+    - linters: [ paralleltest, tparallel ]
+      path: '^test/integration'
+
+    # Because fmt.Sprint(reset.Unix())) is more readable than strconv.FormatInt(reset.Unix(), 10).
+    - linters: [ perfsprint]
+      text: 'fmt.Sprint.* can be replaced with faster strconv.FormatInt'

@@ -17,8 +17,8 @@ import (
 )
 
 func TestAppsService_Get_authenticatedApp(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -52,8 +52,8 @@ func TestAppsService_Get_authenticatedApp(t *testing.T) {
 }
 
 func TestAppsService_Get_specifiedApp(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/apps/a", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -73,8 +73,8 @@ func TestAppsService_Get_specifiedApp(t *testing.T) {
 }
 
 func TestAppsService_ListInstallationRequests(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/installation-requests", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -120,8 +120,8 @@ func TestAppsService_ListInstallationRequests(t *testing.T) {
 }
 
 func TestAppsService_ListInstallations(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/installations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -254,8 +254,8 @@ func TestAppsService_ListInstallations(t *testing.T) {
 }
 
 func TestAppsService_GetInstallation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/installations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -289,8 +289,8 @@ func TestAppsService_GetInstallation(t *testing.T) {
 }
 
 func TestAppsService_ListUserInstallations(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/installations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -324,8 +324,8 @@ func TestAppsService_ListUserInstallations(t *testing.T) {
 }
 
 func TestAppsService_SuspendInstallation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/installations/1/suspended", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -350,8 +350,8 @@ func TestAppsService_SuspendInstallation(t *testing.T) {
 }
 
 func TestAppsService_UnsuspendInstallation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/installations/1/suspended", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -376,8 +376,8 @@ func TestAppsService_UnsuspendInstallation(t *testing.T) {
 }
 
 func TestAppsService_DeleteInstallation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/installations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -402,8 +402,8 @@ func TestAppsService_DeleteInstallation(t *testing.T) {
 }
 
 func TestAppsService_CreateInstallationToken(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -437,8 +437,8 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 }
 
 func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	installationTokenOptions := &InstallationTokenOptions{
 		RepositoryIDs: []int64{1234},
@@ -474,8 +474,8 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 }
 
 func TestAppsService_CreateInstallationTokenListReposWithOptions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	installationTokenListRepoOptions := &InstallationTokenListRepoOptions{
 		Repositories: []string{"foo"},
@@ -510,8 +510,8 @@ func TestAppsService_CreateInstallationTokenListReposWithOptions(t *testing.T) {
 }
 
 func TestAppsService_CreateInstallationTokenListReposWithNoOptions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -544,9 +544,9 @@ func TestAppsService_CreateInstallationTokenListReposWithNoOptions(t *testing.T)
 	})
 }
 
-func TestAppsService_CreateAttachement(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+func TestAppsService_CreateAttachment(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/content_references/11/attachments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -583,8 +583,8 @@ func TestAppsService_CreateAttachement(t *testing.T) {
 }
 
 func TestAppsService_FindOrganizationInstallation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/installation", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -618,8 +618,8 @@ func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 }
 
 func TestAppsService_FindRepositoryInstallation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/installation", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -653,8 +653,8 @@ func TestAppsService_FindRepositoryInstallation(t *testing.T) {
 }
 
 func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repositories/1/installation", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -688,8 +688,8 @@ func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
 }
 
 func TestAppsService_FindUserInstallation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/installation", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -723,6 +723,7 @@ func TestAppsService_FindUserInstallation(t *testing.T) {
 }
 
 func TestContentReference_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ContentReference{}, "{}")
 
 	u := &ContentReference{
@@ -741,6 +742,7 @@ func TestContentReference_Marshal(t *testing.T) {
 }
 
 func TestAttachment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Attachment{}, "{}")
 
 	u := &Attachment{
@@ -759,6 +761,7 @@ func TestAttachment_Marshal(t *testing.T) {
 }
 
 func TestInstallationPermissions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &InstallationPermissions{}, "{}")
 
 	u := &InstallationPermissions{
@@ -837,6 +840,7 @@ func TestInstallationPermissions_Marshal(t *testing.T) {
 }
 
 func TestInstallation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Installation{}, "{}")
 
 	u := &Installation{
@@ -1039,6 +1043,7 @@ func TestInstallation_Marshal(t *testing.T) {
 }
 
 func TestInstallationTokenOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &InstallationTokenOptions{}, "{}")
 
 	u := &InstallationTokenOptions{
@@ -1125,6 +1130,7 @@ func TestInstallationTokenOptions_Marshal(t *testing.T) {
 }
 
 func TestInstallationToken_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &InstallationToken{}, "{}")
 
 	u := &InstallationToken{
@@ -1227,6 +1233,7 @@ func TestInstallationToken_Marshal(t *testing.T) {
 }
 
 func TestApp_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &App{}, "{}")
 
 	u := &App{

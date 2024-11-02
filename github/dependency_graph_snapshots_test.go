@@ -16,8 +16,8 @@ import (
 )
 
 func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependency-graph/snapshots", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

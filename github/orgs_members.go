@@ -151,6 +151,20 @@ func (s *OrganizationsService) RemoveMember(ctx context.Context, org, user strin
 	return s.client.Do(ctx, req, nil)
 }
 
+// CancelInvite cancels an organization invitation.
+//
+// GitHub API docs: https://docs.github.com/rest/orgs/members#cancel-an-organization-invitation
+//
+//meta:operation DELETE /orgs/{org}/invitations/{invitation_id}
+func (s *OrganizationsService) CancelInvite(ctx context.Context, org string, invitationID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/invitations/%v", org, invitationID)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	return s.client.Do(ctx, req, nil)
+}
+
 // PublicizeMembership publicizes a user's membership in an organization. (A
 // user cannot publicize the membership for another user.)
 //
@@ -395,7 +409,7 @@ func (s *OrganizationsService) ListOrgInvitationTeams(ctx context.Context, org, 
 	return orgInvitationTeams, resp, nil
 }
 
-// ListFailedOrgInvitations returns a list of failed inviatations.
+// ListFailedOrgInvitations returns a list of failed invitations.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/members#list-failed-organization-invitations
 //

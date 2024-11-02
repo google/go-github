@@ -18,7 +18,7 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v66/github"
 )
 
 // AppRestrictionsEnabled returns whether the specified organization has
@@ -92,11 +92,11 @@ func intFromLastPathSegment(s string) int {
 type OAuthAppReviewState int
 
 const (
-	// OAuthAppRequested indicates access has been requested, but not reviewed
+	// OAuthAppRequested indicates access has been requested, but not reviewed.
 	OAuthAppRequested OAuthAppReviewState = iota + 1
-	// OAuthAppApproved indicates access has been approved
+	// OAuthAppApproved indicates access has been approved.
 	OAuthAppApproved
-	// OAuthAppDenied indicates access has been denied
+	// OAuthAppDenied indicates access has been denied.
 	OAuthAppDenied
 )
 
@@ -115,7 +115,7 @@ type OAuthApp struct {
 type AppManifest struct {
 	// The name of the GitHub App.
 	Name *string `json:"name,omitempty"`
-	//Required. The homepage of your GitHub App.
+	// Required. The homepage of your GitHub App.
 	URL *string `json:"url,omitempty"`
 	// The full URL(s) of the endpoint(s) to authenticate users via the GitHub App (Max: 10).
 	CallbackURLs []string `json:"callback_urls,omitempty"`

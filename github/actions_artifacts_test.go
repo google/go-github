@@ -17,12 +17,12 @@ import (
 )
 
 func TestActionsService_ListArtifacts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"page": "2"})
+		testFormValues(t, r, values{"page": "2", "name": "TheArtifact"})
 		fmt.Fprint(w,
 			`{
 				"total_count":1,
@@ -31,7 +31,10 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 		)
 	})
 
-	opts := &ListOptions{Page: 2}
+	opts := &ListArtifactsOptions{
+		Name:        String("TheArtifact"),
+		ListOptions: ListOptions{Page: 2},
+	}
 	ctx := context.Background()
 	artifacts, _, err := client.Actions.ListArtifacts(ctx, "o", "r", opts)
 	if err != nil {
@@ -59,8 +62,8 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 }
 
 func TestActionsService_ListArtifacts_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.ListArtifacts(ctx, "%", "r", nil)
@@ -68,8 +71,8 @@ func TestActionsService_ListArtifacts_invalidOwner(t *testing.T) {
 }
 
 func TestActionsService_ListArtifacts_invalidRepo(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.ListArtifacts(ctx, "o", "%", nil)
@@ -77,8 +80,8 @@ func TestActionsService_ListArtifacts_invalidRepo(t *testing.T) {
 }
 
 func TestActionsService_ListArtifacts_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -99,8 +102,8 @@ func TestActionsService_ListArtifacts_notFound(t *testing.T) {
 }
 
 func TestActionsService_ListWorkflowRunArtifacts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/1/artifacts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -141,8 +144,8 @@ func TestActionsService_ListWorkflowRunArtifacts(t *testing.T) {
 }
 
 func TestActionsService_ListWorkflowRunArtifacts_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.ListWorkflowRunArtifacts(ctx, "%", "r", 1, nil)
@@ -150,8 +153,8 @@ func TestActionsService_ListWorkflowRunArtifacts_invalidOwner(t *testing.T) {
 }
 
 func TestActionsService_ListWorkflowRunArtifacts_invalidRepo(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.ListWorkflowRunArtifacts(ctx, "o", "%", 1, nil)
@@ -159,8 +162,8 @@ func TestActionsService_ListWorkflowRunArtifacts_invalidRepo(t *testing.T) {
 }
 
 func TestActionsService_ListWorkflowRunArtifacts_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/runs/1/artifacts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -181,8 +184,8 @@ func TestActionsService_ListWorkflowRunArtifacts_notFound(t *testing.T) {
 }
 
 func TestActionsService_GetArtifact(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -228,8 +231,8 @@ func TestActionsService_GetArtifact(t *testing.T) {
 }
 
 func TestActionsService_GetArtifact_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.GetArtifact(ctx, "%", "r", 1)
@@ -237,8 +240,8 @@ func TestActionsService_GetArtifact_invalidOwner(t *testing.T) {
 }
 
 func TestActionsService_GetArtifact_invalidRepo(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.GetArtifact(ctx, "o", "%", 1)
@@ -246,8 +249,8 @@ func TestActionsService_GetArtifact_invalidRepo(t *testing.T) {
 }
 
 func TestActionsService_GetArtifact_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -267,9 +270,9 @@ func TestActionsService_GetArtifact_notFound(t *testing.T) {
 	}
 }
 
-func TestActionsSerivice_DownloadArtifact(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+func TestActionsService_DownloadArtifact(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -307,8 +310,8 @@ func TestActionsSerivice_DownloadArtifact(t *testing.T) {
 }
 
 func TestActionsService_DownloadArtifact_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.DownloadArtifact(ctx, "%", "r", 1, 1)
@@ -316,8 +319,8 @@ func TestActionsService_DownloadArtifact_invalidOwner(t *testing.T) {
 }
 
 func TestActionsService_DownloadArtifact_invalidRepo(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Actions.DownloadArtifact(ctx, "o", "%", 1, 1)
@@ -325,8 +328,8 @@ func TestActionsService_DownloadArtifact_invalidRepo(t *testing.T) {
 }
 
 func TestActionsService_DownloadArtifact_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -341,8 +344,8 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_dontFollowRedire
 }
 
 func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(t *testing.T) {
-	client, mux, serverURL, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, serverURL := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -369,8 +372,8 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 }
 
 func TestActionsService_DeleteArtifact(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -394,8 +397,8 @@ func TestActionsService_DeleteArtifact(t *testing.T) {
 }
 
 func TestActionsService_DeleteArtifact_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Actions.DeleteArtifact(ctx, "%", "r", 1)
@@ -403,8 +406,8 @@ func TestActionsService_DeleteArtifact_invalidOwner(t *testing.T) {
 }
 
 func TestActionsService_DeleteArtifact_invalidRepo(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Actions.DeleteArtifact(ctx, "o", "%", 1)
@@ -412,8 +415,8 @@ func TestActionsService_DeleteArtifact_invalidRepo(t *testing.T) {
 }
 
 func TestActionsService_DeleteArtifact_notFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -431,6 +434,7 @@ func TestActionsService_DeleteArtifact_notFound(t *testing.T) {
 }
 
 func TestArtifact_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Artifact{}, "{}")
 
 	u := &Artifact{
@@ -477,6 +481,7 @@ func TestArtifact_Marshal(t *testing.T) {
 }
 
 func TestArtifactList_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ArtifactList{}, "{}")
 
 	u := &ArtifactList{

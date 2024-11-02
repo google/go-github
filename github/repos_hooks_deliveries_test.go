@@ -17,8 +17,8 @@ import (
 )
 
 func TestRepositoriesService_ListHookDeliveries(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1/deliveries", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -55,8 +55,8 @@ func TestRepositoriesService_ListHookDeliveries(t *testing.T) {
 }
 
 func TestRepositoriesService_ListHookDeliveries_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListHookDeliveries(ctx, "%", "%", 1, nil)
@@ -64,8 +64,8 @@ func TestRepositoriesService_ListHookDeliveries_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetHookDelivery(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1/deliveries/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -99,8 +99,8 @@ func TestRepositoriesService_GetHookDelivery(t *testing.T) {
 }
 
 func TestRepositoriesService_GetHookDelivery_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.GetHookDelivery(ctx, "%", "%", 1, 1)
@@ -108,8 +108,8 @@ func TestRepositoriesService_GetHookDelivery_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_RedeliverHookDelivery(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks/1/deliveries/1/attempts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -206,8 +206,11 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 }
 
 func TestHookDelivery_ParsePayload(t *testing.T) {
+	t.Parallel()
 	for evt, obj := range hookDeliveryPayloadTypeToStruct {
+		evt, obj := evt, obj
 		t.Run(evt, func(t *testing.T) {
+			t.Parallel()
 			bs, err := json.Marshal(obj)
 			if err != nil {
 				t.Fatal(err)
@@ -235,6 +238,7 @@ func TestHookDelivery_ParsePayload(t *testing.T) {
 }
 
 func TestHookDelivery_ParsePayload_invalidEvent(t *testing.T) {
+	t.Parallel()
 	p := json.RawMessage(nil)
 
 	d := &HookDelivery{
@@ -251,6 +255,7 @@ func TestHookDelivery_ParsePayload_invalidEvent(t *testing.T) {
 }
 
 func TestHookDelivery_ParsePayload_invalidPayload(t *testing.T) {
+	t.Parallel()
 	p := json.RawMessage([]byte(`{"check_run":{"id":"invalid"}}`))
 
 	d := &HookDelivery{
@@ -267,6 +272,7 @@ func TestHookDelivery_ParsePayload_invalidPayload(t *testing.T) {
 }
 
 func TestHookRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &HookRequest{}, "{}")
 
 	header := make(map[string]string)
@@ -292,6 +298,7 @@ func TestHookRequest_Marshal(t *testing.T) {
 }
 
 func TestHookResponse_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &HookResponse{}, "{}")
 
 	header := make(map[string]string)
@@ -317,6 +324,7 @@ func TestHookResponse_Marshal(t *testing.T) {
 }
 
 func TestHookDelivery_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &HookDelivery{}, "{}")
 
 	header := make(map[string]string)

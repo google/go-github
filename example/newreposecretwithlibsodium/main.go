@@ -36,7 +36,7 @@ import (
 	"os"
 
 	sodium "github.com/GoKillers/libsodium-go/cryptobox"
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v66/github"
 )
 
 var (
@@ -142,8 +142,7 @@ func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName string, 
 		return nil, fmt.Errorf("base64.StdEncoding.DecodeString was unable to decode public key: %v", err)
 	}
 
-	secretBytes := []byte(secretValue)
-	encryptedBytes, exit := sodium.CryptoBoxSeal(secretBytes, decodedPublicKey)
+	encryptedBytes, exit := sodium.CryptoBoxSeal([]byte(secretValue), decodedPublicKey)
 	if exit != 0 {
 		return nil, errors.New("sodium.CryptoBoxSeal exited with non zero exit code")
 	}

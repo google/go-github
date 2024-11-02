@@ -1,4 +1,4 @@
-[![GoDoc](https://godoc.org/github.com/google/go-github/scrape?status.svg)](https://godoc.org/github.com/google/go-github/scrape)
+[![Go Reference](https://pkg.go.dev/badge/github.com/google/go-github/scrape.svg)](https://pkg.go.dev/github.com/google/go-github/scrape)
 
 The scrape package provides an experimental client for accessing additional
 GitHub data via screen scraping.  It is designed to be a client of last resort
