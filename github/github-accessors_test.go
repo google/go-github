@@ -29433,6 +29433,17 @@ func TestSecretScanningAlertLocationDetails_GetPath(tt *testing.T) {
 	s.GetPath()
 }
 
+func TestSecretScanningAlertLocationDetails_GetPullRequestCommentURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlertLocationDetails{PullRequestCommentURL: &zeroValue}
+	s.GetPullRequestCommentURL()
+	s = &SecretScanningAlertLocationDetails{}
+	s.GetPullRequestCommentURL()
+	s = nil
+	s.GetPullRequestCommentURL()
+}
+
 func TestSecretScanningAlertLocationDetails_GetStartColumn(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
