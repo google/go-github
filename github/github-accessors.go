@@ -22958,6 +22958,14 @@ func (s *SecretScanningAlertLocationDetails) GetPath() string {
 	return *s.Path
 }
 
+// GetPullRequestCommentURL returns the PullRequestCommentURL field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlertLocationDetails) GetPullRequestCommentURL() string {
+	if s == nil || s.PullRequestCommentURL == nil {
+		return ""
+	}
+	return *s.PullRequestCommentURL
+}
+
 // GetStartColumn returns the StartColumn field if it's non-nil, zero value otherwise.
 func (s *SecretScanningAlertLocationDetails) GetStartColumn() int {
 	if s == nil || s.StartColumn == nil {
