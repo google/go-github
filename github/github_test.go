@@ -1153,8 +1153,8 @@ func TestDo_rateLimit(t *testing.T) {
 		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
 	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if resp.Rate.Reset.UTC() != reset {
-		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, reset)
+	if !resp.Rate.Reset.UTC().Equal(reset) {
+		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset.UTC(), reset)
 	}
 }
 
@@ -1263,7 +1263,7 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
 	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if resp.Rate.Reset.UTC() != reset {
+	if !resp.Rate.Reset.UTC().Equal(reset) {
 		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, reset)
 	}
 }
@@ -1303,7 +1303,7 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 		t.Errorf("rateLimitErr rate remaining = %v, want %v", got, want)
 	}
 	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if rateLimitErr.Rate.Reset.UTC() != reset {
+	if !rateLimitErr.Rate.Reset.UTC().Equal(reset) {
 		t.Errorf("rateLimitErr rate reset = %v, want %v", rateLimitErr.Rate.Reset.UTC(), reset)
 	}
 }
@@ -1361,7 +1361,7 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	if got, want := rateLimitErr.Rate.Remaining, 0; got != want {
 		t.Errorf("rateLimitErr rate remaining = %v, want %v", got, want)
 	}
-	if rateLimitErr.Rate.Reset.UTC() != reset {
+	if !rateLimitErr.Rate.Reset.UTC().Equal(reset) {
 		t.Errorf("rateLimitErr rate reset = %v, want %v", rateLimitErr.Rate.Reset.UTC(), reset)
 	}
 }

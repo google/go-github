@@ -15,6 +15,7 @@ linters:
     - nakedret
     - perfsprint
     - paralleltest
+    - revive
     - stylecheck
     - tparallel
     - unconvert
@@ -34,6 +35,36 @@ linters-settings:
   perfsprint:
     errorf: true
     strconcat: false
+  revive:
+    rules:
+      - name: blank-imports
+      - name: bool-literal-in-expr
+      - name: context-as-argument
+      - name: context-keys-type
+      - name: dot-imports
+      - name: early-return
+      - name: empty-block
+      - name: error-naming
+      - name: error-return
+      - name: error-strings
+      - name: errorf
+      - name: filename-format
+        arguments:
+          - "^[_a-z][_a-z0-9]*.go$"
+      - name: increment-decrement
+      - name: indent-error-flow
+      - name: package-comments
+      - name: range
+      - name: receiver-naming
+      - name: redefines-builtin-id
+      - name: superfluous-else
+      - name: time-equal
+      - name: time-naming
+      - name: unexported-naming
+      - name: unexported-return
+      - name: unreachable-code
+      - name: var-declaration
+      - name: var-naming
 issues:
   exclude-use-default: false
   exclude-rules:

@@ -327,7 +327,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 		testMethod(t, r, "POST")
 		type request struct {
 			Scope                 string  `json:"scope"`
-			SelectedRepositoryIDS []int64 `json:"selected_repository_ids,omitempty"`
+			SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
 		}
 		v := new(request)
 		err := json.NewDecoder(r.Body).Decode(v)
@@ -337,8 +337,8 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 		if v.Scope != "selected" {
 			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body scope = %s, want selected", v.Scope)
 		}
-		if !reflect.DeepEqual(v.SelectedRepositoryIDS, []int64{5, 20}) {
-			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body selected_repository_ids = %+v, want %+v", v.SelectedRepositoryIDS, []int64{5, 20})
+		if !reflect.DeepEqual(v.SelectedRepositoryIDs, []int64{5, 20}) {
+			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body selected_repository_ids = %+v, want %+v", v.SelectedRepositoryIDs, []int64{5, 20})
 		}
 		w.WriteHeader(http.StatusAccepted)
 	})
