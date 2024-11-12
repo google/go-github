@@ -404,26 +404,26 @@ type CodeScanningTool struct {
 // This helps us handle the fact that RepositoryRule parameter field can be of numerous types.
 func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	type rule RepositoryRule
-	var RepositoryRule rule
-	if err := json.Unmarshal(data, &RepositoryRule); err != nil {
+	var repositoryRule rule
+	if err := json.Unmarshal(data, &repositoryRule); err != nil {
 		return err
 	}
 
-	r.RulesetID = RepositoryRule.RulesetID
-	r.RulesetSourceType = RepositoryRule.RulesetSourceType
-	r.RulesetSource = RepositoryRule.RulesetSource
-	r.Type = RepositoryRule.Type
+	r.RulesetID = repositoryRule.RulesetID
+	r.RulesetSourceType = repositoryRule.RulesetSourceType
+	r.RulesetSource = repositoryRule.RulesetSource
+	r.Type = repositoryRule.Type
 
-	switch RepositoryRule.Type {
+	switch repositoryRule.Type {
 	case "creation", "deletion", "non_fast_forward", "required_linear_history", "required_signatures":
 		r.Parameters = nil
 	case "update":
-		if RepositoryRule.Parameters == nil {
+		if repositoryRule.Parameters == nil {
 			r.Parameters = nil
 			return nil
 		}
 		params := UpdateAllowsFetchAndMergeRuleParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 
@@ -432,12 +432,12 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 
 		r.Parameters = &rawParams
 	case "merge_queue":
-		if RepositoryRule.Parameters == nil {
+		if repositoryRule.Parameters == nil {
 			r.Parameters = nil
 			return nil
 		}
 		params := MergeQueueRuleParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 
@@ -447,7 +447,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "required_deployments":
 		params := RequiredDeploymentEnvironmentsRuleParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 
@@ -457,7 +457,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "commit_message_pattern", "commit_author_email_pattern", "committer_email_pattern", "branch_name_pattern", "tag_name_pattern":
 		params := RulePatternParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 
@@ -467,7 +467,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "pull_request":
 		params := PullRequestRuleParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 
@@ -477,7 +477,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "required_status_checks":
 		params := RequiredStatusChecksRuleParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 
@@ -487,7 +487,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "workflows":
 		params := RequiredWorkflowsRuleParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 
@@ -497,7 +497,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "file_path_restriction":
 		params := RuleFileParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 		bytes, _ := json.Marshal(params)
@@ -506,7 +506,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "code_scanning":
 		params := RequiredCodeScanningRuleParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 		bytes, _ := json.Marshal(params)
@@ -515,7 +515,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "max_file_path_length":
 		params := RuleMaxFilePathLengthParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 		bytes, _ := json.Marshal(params)
@@ -524,7 +524,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "file_extension_restriction":
 		params := RuleFileExtensionRestrictionParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 		bytes, _ := json.Marshal(params)
@@ -533,7 +533,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		r.Parameters = &rawParams
 	case "max_file_size":
 		params := RuleMaxFileSizeParameters{}
-		if err := json.Unmarshal(*RepositoryRule.Parameters, &params); err != nil {
+		if err := json.Unmarshal(*repositoryRule.Parameters, &params); err != nil {
 			return err
 		}
 		bytes, _ := json.Marshal(params)
@@ -543,7 +543,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	default:
 		r.Type = ""
 		r.Parameters = nil
-		return fmt.Errorf("RepositoryRule.Type %q is not yet implemented, unable to unmarshal (%#v)", RepositoryRule.Type, RepositoryRule)
+		return fmt.Errorf("RepositoryRule.Type %q is not yet implemented, unable to unmarshal (%#v)", repositoryRule.Type, repositoryRule)
 	}
 
 	return nil

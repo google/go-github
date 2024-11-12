@@ -67,11 +67,11 @@ func (cpv *CustomPropertyValue) UnmarshalJSON(data []byte) error {
 	case []interface{}:
 		strSlice := make([]string, len(v))
 		for i, item := range v {
-			if str, ok := item.(string); ok {
-				strSlice[i] = str
-			} else {
+			str, ok := item.(string)
+			if !ok {
 				return errors.New("non-string value in string array")
 			}
+			strSlice[i] = str
 		}
 		cpv.Value = strSlice
 	default:
