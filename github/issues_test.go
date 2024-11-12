@@ -470,11 +470,11 @@ func TestIssuesService_Unlock(t *testing.T) {
 func TestIsPullRequest(t *testing.T) {
 	t.Parallel()
 	i := new(Issue)
-	if i.IsPullRequest() == true {
+	if i.IsPullRequest() {
 		t.Errorf("expected i.IsPullRequest (%v) to return false, got true", i)
 	}
 	i.PullRequestLinks = &PullRequestLinks{URL: String("http://example.com")}
-	if i.IsPullRequest() == false {
+	if !i.IsPullRequest() {
 		t.Errorf("expected i.IsPullRequest (%v) to return true, got false", i)
 	}
 }

@@ -90,13 +90,13 @@ func TestRepositoriesService_CreateOrUpdateCustomProperties(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	RepoCustomProperty := []*CustomPropertyValue{
+	repoCustomProperty := []*CustomPropertyValue{
 		{
 			PropertyName: "environment",
 			Value:        "production",
 		},
 	}
-	_, err := client.Repositories.CreateOrUpdateCustomProperties(ctx, "usr", "r", RepoCustomProperty)
+	_, err := client.Repositories.CreateOrUpdateCustomProperties(ctx, "usr", "r", repoCustomProperty)
 	if err != nil {
 		t.Errorf("Repositories.CreateOrUpdateCustomProperties returned error: %v", err)
 	}
@@ -104,6 +104,6 @@ func TestRepositoriesService_CreateOrUpdateCustomProperties(t *testing.T) {
 	const methodName = "CreateOrUpdateCustomProperties"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.CreateOrUpdateCustomProperties(ctx, "usr", "r", RepoCustomProperty)
+		return client.Repositories.CreateOrUpdateCustomProperties(ctx, "usr", "r", repoCustomProperty)
 	})
 }

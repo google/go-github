@@ -56,7 +56,7 @@ func TestEditChange_Marshal_BaseChange(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &EditChange{}, "{}")
 
-	Base := EditBase{
+	base := EditBase{
 		Ref: &EditRef{
 			From: String("BaseRefFrom"),
 		},
@@ -68,7 +68,7 @@ func TestEditChange_Marshal_BaseChange(t *testing.T) {
 	u := &EditChange{
 		Title: nil,
 		Body:  nil,
-		Base:  &Base,
+		Base:  &base,
 	}
 
 	want := `{
