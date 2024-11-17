@@ -9302,6 +9302,38 @@ func (i *InstallationPermissions) GetChecks() string {
 	return *i.Checks
 }
 
+// GetCodespaces returns the Codespaces field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetCodespaces() string {
+	if i == nil || i.Codespaces == nil {
+		return ""
+	}
+	return *i.Codespaces
+}
+
+// GetCodespacesLifecycleAdmin returns the CodespacesLifecycleAdmin field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetCodespacesLifecycleAdmin() string {
+	if i == nil || i.CodespacesLifecycleAdmin == nil {
+		return ""
+	}
+	return *i.CodespacesLifecycleAdmin
+}
+
+// GetCodespacesMetadata returns the CodespacesMetadata field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetCodespacesMetadata() string {
+	if i == nil || i.CodespacesMetadata == nil {
+		return ""
+	}
+	return *i.CodespacesMetadata
+}
+
+// GetCodespacesSecrets returns the CodespacesSecrets field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetCodespacesSecrets() string {
+	if i == nil || i.CodespacesSecrets == nil {
+		return ""
+	}
+	return *i.CodespacesSecrets
+}
+
 // GetContentReferences returns the ContentReferences field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetContentReferences() string {
 	if i == nil || i.ContentReferences == nil {
@@ -9318,12 +9350,28 @@ func (i *InstallationPermissions) GetContents() string {
 	return *i.Contents
 }
 
+// GetDependabotSecrets returns the DependabotSecrets field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetDependabotSecrets() string {
+	if i == nil || i.DependabotSecrets == nil {
+		return ""
+	}
+	return *i.DependabotSecrets
+}
+
 // GetDeployments returns the Deployments field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetDeployments() string {
 	if i == nil || i.Deployments == nil {
 		return ""
 	}
 	return *i.Deployments
+}
+
+// GetDiscussions returns the Discussions field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetDiscussions() string {
+	if i == nil || i.Discussions == nil {
+		return ""
+	}
+	return *i.Discussions
 }
 
 // GetEmails returns the Emails field if it's non-nil, zero value otherwise.
@@ -9364,6 +9412,14 @@ func (i *InstallationPermissions) GetMembers() string {
 		return ""
 	}
 	return *i.Members
+}
+
+// GetMergeQueues returns the MergeQueues field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetMergeQueues() string {
+	if i == nil || i.MergeQueues == nil {
+		return ""
+	}
+	return *i.MergeQueues
 }
 
 // GetMetadata returns the Metadata field if it's non-nil, zero value otherwise.
@@ -9508,6 +9564,22 @@ func (i *InstallationPermissions) GetPullRequests() string {
 		return ""
 	}
 	return *i.PullRequests
+}
+
+// GetRepositoryAdvisories returns the RepositoryAdvisories field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetRepositoryAdvisories() string {
+	if i == nil || i.RepositoryAdvisories == nil {
+		return ""
+	}
+	return *i.RepositoryAdvisories
+}
+
+// GetRepositoryCustomProperties returns the RepositoryCustomProperties field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetRepositoryCustomProperties() string {
+	if i == nil || i.RepositoryCustomProperties == nil {
+		return ""
+	}
+	return *i.RepositoryCustomProperties
 }
 
 // GetRepositoryHooks returns the RepositoryHooks field if it's non-nil, zero value otherwise.
