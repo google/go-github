@@ -82,15 +82,22 @@ type InstallationPermissions struct {
 	Administration                          *string `json:"administration,omitempty"`
 	Blocking                                *string `json:"blocking,omitempty"`
 	Checks                                  *string `json:"checks,omitempty"`
+	Codespaces                              *string `json:"codespaces,omitempty"`
+	CodespacesLifecycleAdmin                *string `json:"codespaces_lifecycle_admin,omitempty"`
+	CodespacesMetadata                      *string `json:"codespaces_metadata,omitempty"`
+	CodespacesSecrets                       *string `json:"codespaces_secrets,omitempty"`
 	Contents                                *string `json:"contents,omitempty"`
 	ContentReferences                       *string `json:"content_references,omitempty"`
+	DependabotSecrets                       *string `json:"dependabot_secrets,omitempty"`
 	Deployments                             *string `json:"deployments,omitempty"`
+	Discussions                             *string `json:"discussions,omitempty"`
 	Emails                                  *string `json:"emails,omitempty"`
 	Environments                            *string `json:"environments,omitempty"`
 	Followers                               *string `json:"followers,omitempty"`
 	Issues                                  *string `json:"issues,omitempty"`
 	Metadata                                *string `json:"metadata,omitempty"`
 	Members                                 *string `json:"members,omitempty"`
+	MergeQueues                             *string `json:"merge_queues,omitempty"`
 	OrganizationAdministration              *string `json:"organization_administration,omitempty"`
 	OrganizationCustomProperties            *string `json:"organization_custom_properties,omitempty"`
 	OrganizationCustomRoles                 *string `json:"organization_custom_roles,omitempty"`
@@ -108,6 +115,8 @@ type InstallationPermissions struct {
 	Packages                                *string `json:"packages,omitempty"`
 	Pages                                   *string `json:"pages,omitempty"`
 	PullRequests                            *string `json:"pull_requests,omitempty"`
+	RepositoryAdvisories                    *string `json:"repository_advisories,omitempty"`
+	RepositoryCustomProperties              *string `json:"repository_custom_properties,omitempty"`
 	RepositoryHooks                         *string `json:"repository_hooks,omitempty"`
 	RepositoryProjects                      *string `json:"repository_projects,omitempty"`
 	RepositoryPreReceiveHooks               *string `json:"repository_pre_receive_hooks,omitempty"`
