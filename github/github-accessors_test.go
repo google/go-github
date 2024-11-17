@@ -12039,6 +12039,50 @@ func TestInstallationPermissions_GetChecks(tt *testing.T) {
 	i.GetChecks()
 }
 
+func TestInstallationPermissions_GetCodespaces(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{Codespaces: &zeroValue}
+	i.GetCodespaces()
+	i = &InstallationPermissions{}
+	i.GetCodespaces()
+	i = nil
+	i.GetCodespaces()
+}
+
+func TestInstallationPermissions_GetCodespacesLifecycleAdmin(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{CodespacesLifecycleAdmin: &zeroValue}
+	i.GetCodespacesLifecycleAdmin()
+	i = &InstallationPermissions{}
+	i.GetCodespacesLifecycleAdmin()
+	i = nil
+	i.GetCodespacesLifecycleAdmin()
+}
+
+func TestInstallationPermissions_GetCodespacesMetadata(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{CodespacesMetadata: &zeroValue}
+	i.GetCodespacesMetadata()
+	i = &InstallationPermissions{}
+	i.GetCodespacesMetadata()
+	i = nil
+	i.GetCodespacesMetadata()
+}
+
+func TestInstallationPermissions_GetCodespacesSecrets(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{CodespacesSecrets: &zeroValue}
+	i.GetCodespacesSecrets()
+	i = &InstallationPermissions{}
+	i.GetCodespacesSecrets()
+	i = nil
+	i.GetCodespacesSecrets()
+}
+
 func TestInstallationPermissions_GetContentReferences(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -12061,6 +12105,17 @@ func TestInstallationPermissions_GetContents(tt *testing.T) {
 	i.GetContents()
 }
 
+func TestInstallationPermissions_GetDependabotSecrets(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{DependabotSecrets: &zeroValue}
+	i.GetDependabotSecrets()
+	i = &InstallationPermissions{}
+	i.GetDependabotSecrets()
+	i = nil
+	i.GetDependabotSecrets()
+}
+
 func TestInstallationPermissions_GetDeployments(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -12070,6 +12125,17 @@ func TestInstallationPermissions_GetDeployments(tt *testing.T) {
 	i.GetDeployments()
 	i = nil
 	i.GetDeployments()
+}
+
+func TestInstallationPermissions_GetDiscussions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{Discussions: &zeroValue}
+	i.GetDiscussions()
+	i = &InstallationPermissions{}
+	i.GetDiscussions()
+	i = nil
+	i.GetDiscussions()
 }
 
 func TestInstallationPermissions_GetEmails(tt *testing.T) {
@@ -12125,6 +12191,17 @@ func TestInstallationPermissions_GetMembers(tt *testing.T) {
 	i.GetMembers()
 	i = nil
 	i.GetMembers()
+}
+
+func TestInstallationPermissions_GetMergeQueues(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{MergeQueues: &zeroValue}
+	i.GetMergeQueues()
+	i = &InstallationPermissions{}
+	i.GetMergeQueues()
+	i = nil
+	i.GetMergeQueues()
 }
 
 func TestInstallationPermissions_GetMetadata(tt *testing.T) {
@@ -12323,6 +12400,28 @@ func TestInstallationPermissions_GetPullRequests(tt *testing.T) {
 	i.GetPullRequests()
 	i = nil
 	i.GetPullRequests()
+}
+
+func TestInstallationPermissions_GetRepositoryAdvisories(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{RepositoryAdvisories: &zeroValue}
+	i.GetRepositoryAdvisories()
+	i = &InstallationPermissions{}
+	i.GetRepositoryAdvisories()
+	i = nil
+	i.GetRepositoryAdvisories()
+}
+
+func TestInstallationPermissions_GetRepositoryCustomProperties(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{RepositoryCustomProperties: &zeroValue}
+	i.GetRepositoryCustomProperties()
+	i = &InstallationPermissions{}
+	i.GetRepositoryCustomProperties()
+	i = nil
+	i.GetRepositoryCustomProperties()
 }
 
 func TestInstallationPermissions_GetRepositoryHooks(tt *testing.T) {
