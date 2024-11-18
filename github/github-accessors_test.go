@@ -5564,6 +5564,104 @@ func TestContributorStats_GetTotal(tt *testing.T) {
 	c.GetTotal()
 }
 
+func TestCopilotDotcomChatModel_GetCustomModelTrainingDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotDotcomChatModel{CustomModelTrainingDate: &zeroValue}
+	c.GetCustomModelTrainingDate()
+	c = &CopilotDotcomChatModel{}
+	c.GetCustomModelTrainingDate()
+	c = nil
+	c.GetCustomModelTrainingDate()
+}
+
+func TestCopilotDotcomPullRequestsModel_GetCustomModelTrainingDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotDotcomPullRequestsModel{CustomModelTrainingDate: &zeroValue}
+	c.GetCustomModelTrainingDate()
+	c = &CopilotDotcomPullRequestsModel{}
+	c.GetCustomModelTrainingDate()
+	c = nil
+	c.GetCustomModelTrainingDate()
+}
+
+func TestCopilotIdeChatModel_GetCustomModelTrainingDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotIdeChatModel{CustomModelTrainingDate: &zeroValue}
+	c.GetCustomModelTrainingDate()
+	c = &CopilotIdeChatModel{}
+	c.GetCustomModelTrainingDate()
+	c = nil
+	c.GetCustomModelTrainingDate()
+}
+
+func TestCopilotIdeCodeCompletionsModel_GetCustomModelTrainingDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotIdeCodeCompletionsModel{CustomModelTrainingDate: &zeroValue}
+	c.GetCustomModelTrainingDate()
+	c = &CopilotIdeCodeCompletionsModel{}
+	c.GetCustomModelTrainingDate()
+	c = nil
+	c.GetCustomModelTrainingDate()
+}
+
+func TestCopilotMetrics_GetCopilotDotcomChat(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetrics{}
+	c.GetCopilotDotcomChat()
+	c = nil
+	c.GetCopilotDotcomChat()
+}
+
+func TestCopilotMetrics_GetCopilotDotcomPullRequests(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetrics{}
+	c.GetCopilotDotcomPullRequests()
+	c = nil
+	c.GetCopilotDotcomPullRequests()
+}
+
+func TestCopilotMetrics_GetCopilotIdeChat(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetrics{}
+	c.GetCopilotIdeChat()
+	c = nil
+	c.GetCopilotIdeChat()
+}
+
+func TestCopilotMetrics_GetCopilotIdeCodeCompletions(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetrics{}
+	c.GetCopilotIdeCodeCompletions()
+	c = nil
+	c.GetCopilotIdeCodeCompletions()
+}
+
+func TestCopilotMetricsListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue time.Time
+	c := &CopilotMetricsListOptions{Since: &zeroValue}
+	c.GetSince()
+	c = &CopilotMetricsListOptions{}
+	c.GetSince()
+	c = nil
+	c.GetSince()
+}
+
+func TestCopilotMetricsListOptions_GetUntil(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue time.Time
+	c := &CopilotMetricsListOptions{Until: &zeroValue}
+	c.GetUntil()
+	c = &CopilotMetricsListOptions{}
+	c.GetUntil()
+	c = nil
+	c.GetUntil()
+}
+
 func TestCopilotOrganizationDetails_GetSeatBreakdown(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotOrganizationDetails{}
@@ -5644,28 +5742,6 @@ func TestCopilotSeatDetails_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 	c = nil
 	c.GetUpdatedAt()
-}
-
-func TestCopilotUsageSummaryListOptions_GetSince(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue time.Time
-	c := &CopilotUsageSummaryListOptions{Since: &zeroValue}
-	c.GetSince()
-	c = &CopilotUsageSummaryListOptions{}
-	c.GetSince()
-	c = nil
-	c.GetSince()
-}
-
-func TestCopilotUsageSummaryListOptions_GetUntil(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue time.Time
-	c := &CopilotUsageSummaryListOptions{Until: &zeroValue}
-	c.GetUntil()
-	c = &CopilotUsageSummaryListOptions{}
-	c.GetUntil()
-	c = nil
-	c.GetUntil()
 }
 
 func TestCreateCheckRunOptions_GetCompletedAt(tt *testing.T) {

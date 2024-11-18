@@ -1127,805 +1127,1365 @@ func TestCopilotService_GetSeatDetails(t *testing.T) {
 	})
 }
 
-func TestCopilotService_GetOrganisationUsage(t *testing.T) {
+func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/copilot/usage", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/copilot/metrics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[
 			{
-				"day": "2023-10-15",
-				"total_suggestions_count": 1000,
-				"total_acceptances_count": 800,
-				"total_lines_suggested": 1800,
-				"total_lines_accepted": 1200,
-				"total_active_users": 10,
-				"total_chat_acceptances": 32,
-				"total_chat_turns": 200,
-				"total_active_chat_users": 4,
-				"breakdown": [
-				{
-					"language": "python",
-					"editor": "vscode",
-					"suggestions_count": 300,
-					"acceptances_count": 250,
-					"lines_suggested": 900,
-					"lines_accepted": 700,
-					"active_users": 5
+				"date": "2024-06-24",
+				"total_active_users": 24,
+				"total_engaged_users": 20,
+				"copilot_ide_code_completions": {
+				"total_engaged_users": 20,
+				"languages": [
+					{
+					"name": "python",
+					"total_engaged_users": 10
+					},
+					{
+					"name": "ruby",
+					"total_engaged_users": 10
+					}
+				],
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 13,
+						"languages": [
+							{
+							"name": "python",
+							"total_engaged_users": 6,
+							"total_code_suggestions": 249,
+							"total_code_acceptances": 123,
+							"total_code_lines_suggested": 225,
+							"total_code_lines_accepted": 135
+							},
+							{
+							"name": "ruby",
+							"total_engaged_users": 7,
+							"total_code_suggestions": 496,
+							"total_code_acceptances": 253,
+							"total_code_lines_suggested": 520,
+							"total_code_lines_accepted": 270
+							}
+						]
+						}
+					]
+					},
+					{
+					"name": "neovim",
+					"total_engaged_users": 7,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"languages": [
+							{
+							"name": "typescript",
+							"total_engaged_users": 3,
+							"total_code_suggestions": 112,
+							"total_code_acceptances": 56,
+							"total_code_lines_suggested": 143,
+							"total_code_lines_accepted": 61
+							},
+							{
+							"name": "go",
+							"total_engaged_users": 4,
+							"total_code_suggestions": 132,
+							"total_code_acceptances": 67,
+							"total_code_lines_suggested": 154,
+							"total_code_lines_accepted": 72
+							}
+						]
+						}
+					]
+					}
+				]
 				},
-				{
-					"language": "python",
-					"editor": "jetbrains",
-					"suggestions_count": 300,
-					"acceptances_count": 200,
-					"lines_suggested": 400,
-					"lines_accepted": 300,
-					"active_users": 2
+				"copilot_ide_chat": {
+				"total_engaged_users": 13,
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 12,
+						"total_chats": 45,
+						"total_chat_insertion_events": 12,
+						"total_chat_copy_events": 16
+						},
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_engaged_users": 1,
+						"total_chats": 10,
+						"total_chat_insertion_events": 11,
+						"total_chat_copy_events": 3
+						}
+					]
+					}
+				]
 				},
-				{
-					"language": "ruby",
-					"editor": "vscode",
-					"suggestions_count": 400,
-					"acceptances_count": 350,
-					"lines_suggested": 500,
-					"lines_accepted": 200,
-					"active_users": 3
+				"copilot_dotcom_chat": {
+				"total_engaged_users": 14,
+				"models": [
+					{
+					"name": "default",
+					"is_custom_model": false,
+					"custom_model_training_date": null,
+					"total_engaged_users": 14,
+					"total_chats": 38
+					}
+				]
+				},
+				"copilot_dotcom_pull_requests": {
+				"total_engaged_users": 12,
+				"repositories": [
+					{
+					"name": "demo/repo1",
+					"total_engaged_users": 8,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_pr_summaries_created": 6,
+						"total_engaged_users": 8
+						}
+					]
+					},
+					{
+					"name": "demo/repo2",
+					"total_engaged_users": 4,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_pr_summaries_created": 10,
+						"total_engaged_users": 4
+						}
+					]
+					}
+				]
 				}
-				]
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	got, _, err := client.Copilot.GetEnterpriseMetrics(ctx, "e", &CopilotMetricsListOptions{})
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseMetrics returned error: %v", err)
+	}
+
+	want := []*CopilotMetrics{
+		{
+			Date:              "2024-06-24",
+			TotalActiveUsers:  24,
+			TotalEngagedUsers: 20,
+			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
+				TotalEngagedUsers: 20,
+				Languages: []*CopilotIdeCodeCompletionsLanguage{
+					{
+						Name:              "python",
+						TotalEngagedUsers: 10,
+					},
+					{
+						Name:              "ruby",
+						TotalEngagedUsers: 10,
+					},
+				},
+				Editors: []*CopilotIdeCodeCompletionsEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIdeCodeCompletionsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalEngagedUsers:       13,
+								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+									{
+										Name:                    "python",
+										TotalEngagedUsers:       6,
+										TotalCodeSuggestions:    249,
+										TotalCodeAcceptances:    123,
+										TotalCodeLinesSuggested: 225,
+										TotalCodeLinesAccepted:  135,
+									},
+									{
+										Name:                    "ruby",
+										TotalEngagedUsers:       7,
+										TotalCodeSuggestions:    496,
+										TotalCodeAcceptances:    253,
+										TotalCodeLinesSuggested: 520,
+										TotalCodeLinesAccepted:  270,
+									},
+								},
+							},
+						},
+					},
+					{
+						Name:              "neovim",
+						TotalEngagedUsers: 7,
+						Models: []*CopilotIdeCodeCompletionsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+									{
+										Name:                    "typescript",
+										TotalEngagedUsers:       3,
+										TotalCodeSuggestions:    112,
+										TotalCodeAcceptances:    56,
+										TotalCodeLinesSuggested: 143,
+										TotalCodeLinesAccepted:  61,
+									},
+									{
+										Name:                    "go",
+										TotalEngagedUsers:       4,
+										TotalCodeSuggestions:    132,
+										TotalCodeAcceptances:    67,
+										TotalCodeLinesSuggested: 154,
+										TotalCodeLinesAccepted:  72,
+									},
+								},
+							},
+						},
+					},
+				},
 			},
+			CopilotIdeChat: &CopilotIdeChat{
+				TotalEngagedUsers: 13,
+				Editors: []*CopilotIdeChatEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIdeChatModel{
+							{
+								Name:                     "default",
+								IsCustomModel:            false,
+								CustomModelTrainingDate:  nil,
+								TotalEngagedUsers:        12,
+								TotalChats:               45,
+								TotalChatInsertionEvents: 12,
+								TotalChatCopyEvents:      16,
+							},
+							{
+								Name:                     "a-custom-model",
+								IsCustomModel:            true,
+								CustomModelTrainingDate:  String("2024-02-01"),
+								TotalEngagedUsers:        1,
+								TotalChats:               10,
+								TotalChatInsertionEvents: 11,
+								TotalChatCopyEvents:      3,
+							},
+						},
+					},
+				},
+			},
+			CopilotDotcomChat: &CopilotDotcomChat{
+				TotalEngagedUsers: 14,
+				Models: []*CopilotDotcomChatModel{
+					{
+						Name:                    "default",
+						IsCustomModel:           false,
+						CustomModelTrainingDate: nil,
+						TotalEngagedUsers:       14,
+						TotalChats:              38,
+					},
+				},
+			},
+			CopilotDotcomPullRequests: &CopilotDotcomPullRequests{
+				TotalEngagedUsers: 12,
+				Repositories: []*CopilotDotcomPullRequestsRepository{
+					{
+						Name:              "demo/repo1",
+						TotalEngagedUsers: 8,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalPrSummariesCreated: 6,
+								TotalEngagedUsers:       8,
+							},
+						},
+					},
+					{
+						Name:              "demo/repo2",
+						TotalEngagedUsers: 4,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								TotalPrSummariesCreated: 10,
+								TotalEngagedUsers:       4,
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseMetrics returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseMetrics"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseMetrics(ctx, "\n", &CopilotMetricsListOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseMetrics(ctx, "e", &CopilotMetricsListOptions{})
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseMetrics returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/team/t/copilot/metrics", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
 			{
-				"day": "2023-10-16",
-				"total_suggestions_count": 800,
-				"total_acceptances_count": 600,
-				"total_lines_suggested": 1100,
-				"total_lines_accepted": 700,
-				"total_active_users": 12,
-				"total_chat_acceptances": 57,
-				"total_chat_turns": 426,
-				"total_active_chat_users": 8,
-				"breakdown": [
-				{
-					"language": "python",
-					"editor": "vscode",
-					"suggestions_count": 300,
-					"acceptances_count": 200,
-					"lines_suggested": 600,
-					"lines_accepted": 300,
-					"active_users": 2
+				"date": "2024-06-24",
+				"total_active_users": 24,
+				"total_engaged_users": 20,
+				"copilot_ide_code_completions": {
+				"total_engaged_users": 20,
+				"languages": [
+					{
+					"name": "python",
+					"total_engaged_users": 10
+					},
+					{
+					"name": "ruby",
+					"total_engaged_users": 10
+					}
+				],
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 13,
+						"languages": [
+							{
+							"name": "python",
+							"total_engaged_users": 6,
+							"total_code_suggestions": 249,
+							"total_code_acceptances": 123,
+							"total_code_lines_suggested": 225,
+							"total_code_lines_accepted": 135
+							},
+							{
+							"name": "ruby",
+							"total_engaged_users": 7,
+							"total_code_suggestions": 496,
+							"total_code_acceptances": 253,
+							"total_code_lines_suggested": 520,
+							"total_code_lines_accepted": 270
+							}
+						]
+						}
+					]
+					},
+					{
+					"name": "neovim",
+					"total_engaged_users": 7,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"languages": [
+							{
+							"name": "typescript",
+							"total_engaged_users": 3,
+							"total_code_suggestions": 112,
+							"total_code_acceptances": 56,
+							"total_code_lines_suggested": 143,
+							"total_code_lines_accepted": 61
+							},
+							{
+							"name": "go",
+							"total_engaged_users": 4,
+							"total_code_suggestions": 132,
+							"total_code_acceptances": 67,
+							"total_code_lines_suggested": 154,
+							"total_code_lines_accepted": 72
+							}
+						]
+						}
+					]
+					}
+				]
 				},
-				{
-					"language": "python",
-					"editor": "jetbrains",
-					"suggestions_count": 300,
-					"acceptances_count": 150,
-					"lines_suggested": 300,
-					"lines_accepted": 250,
-					"active_users": 6
+				"copilot_ide_chat": {
+				"total_engaged_users": 13,
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 12,
+						"total_chats": 45,
+						"total_chat_insertion_events": 12,
+						"total_chat_copy_events": 16
+						},
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_engaged_users": 1,
+						"total_chats": 10,
+						"total_chat_insertion_events": 11,
+						"total_chat_copy_events": 3
+						}
+					]
+					}
+				]
 				},
-				{
-					"language": "ruby",
-					"editor": "vscode",
-					"suggestions_count": 200,
-					"acceptances_count": 150,
-					"lines_suggested": 200,
-					"lines_accepted": 150,
-					"active_users": 3
+				"copilot_dotcom_chat": {
+				"total_engaged_users": 14,
+				"models": [
+					{
+					"name": "default",
+					"is_custom_model": false,
+					"custom_model_training_date": null,
+					"total_engaged_users": 14,
+					"total_chats": 38
+					}
+				]
+				},
+				"copilot_dotcom_pull_requests": {
+				"total_engaged_users": 12,
+				"repositories": [
+					{
+					"name": "demo/repo1",
+					"total_engaged_users": 8,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_pr_summaries_created": 6,
+						"total_engaged_users": 8
+						}
+					]
+					},
+					{
+					"name": "demo/repo2",
+					"total_engaged_users": 4,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_pr_summaries_created": 10,
+						"total_engaged_users": 4
+						}
+					]
+					}
+				]
 				}
-				]
 			}
 		]`)
 	})
 
-	summaryOne := time.Date(2023, time.October, 15, 0, 0, 0, 0, time.UTC)
-	summaryTwoDate := time.Date(2023, time.October, 16, 0, 0, 0, 0, time.UTC)
 	ctx := context.Background()
-	got, _, err := client.Copilot.GetOrganizationUsage(ctx, "o", &CopilotUsageSummaryListOptions{})
+	got, _, err := client.Copilot.GetEnterpriseTeamMetrics(ctx, "e", "t", &CopilotMetricsListOptions{})
 	if err != nil {
-		t.Errorf("Copilot.GetOrganizationUsage returned error: %v", err)
+		t.Errorf("Copilot.GetEnterpriseTeamMetrics returned error: %v", err)
 	}
 
-	want := []*CopilotUsageSummary{
+	want := []*CopilotMetrics{
 		{
-			Day:                   summaryOne.Format("2006-01-02"),
-			TotalSuggestionsCount: 1000,
-			TotalAcceptancesCount: 800,
-			TotalLinesSuggested:   1800,
-			TotalLinesAccepted:    1200,
-			TotalActiveUsers:      10,
-			TotalChatAcceptances:  32,
-			TotalChatTurns:        200,
-			TotalActiveChatUsers:  4,
-			Breakdown: []*CopilotUsageBreakdown{
-				{
-					Language:         "python",
-					Editor:           "vscode",
-					SuggestionsCount: 300,
-					AcceptancesCount: 250,
-					LinesSuggested:   900,
-					LinesAccepted:    700,
-					ActiveUsers:      5,
+			Date:              "2024-06-24",
+			TotalActiveUsers:  24,
+			TotalEngagedUsers: 20,
+			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
+				TotalEngagedUsers: 20,
+				Languages: []*CopilotIdeCodeCompletionsLanguage{
+					{
+						Name:              "python",
+						TotalEngagedUsers: 10,
+					},
+					{
+						Name:              "ruby",
+						TotalEngagedUsers: 10,
+					},
 				},
-				{
-					Language:         "python",
-					Editor:           "jetbrains",
-					SuggestionsCount: 300,
-					AcceptancesCount: 200,
-					LinesSuggested:   400,
-					LinesAccepted:    300,
-					ActiveUsers:      2,
-				},
-				{
-					Language:         "ruby",
-					Editor:           "vscode",
-					SuggestionsCount: 400,
-					AcceptancesCount: 350,
-					LinesSuggested:   500,
-					LinesAccepted:    200,
-					ActiveUsers:      3,
+				Editors: []*CopilotIdeCodeCompletionsEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIdeCodeCompletionsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalEngagedUsers:       13,
+								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+									{
+										Name:                    "python",
+										TotalEngagedUsers:       6,
+										TotalCodeSuggestions:    249,
+										TotalCodeAcceptances:    123,
+										TotalCodeLinesSuggested: 225,
+										TotalCodeLinesAccepted:  135,
+									},
+									{
+										Name:                    "ruby",
+										TotalEngagedUsers:       7,
+										TotalCodeSuggestions:    496,
+										TotalCodeAcceptances:    253,
+										TotalCodeLinesSuggested: 520,
+										TotalCodeLinesAccepted:  270,
+									},
+								},
+							},
+						},
+					},
+					{
+						Name:              "neovim",
+						TotalEngagedUsers: 7,
+						Models: []*CopilotIdeCodeCompletionsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+									{
+										Name:                    "typescript",
+										TotalEngagedUsers:       3,
+										TotalCodeSuggestions:    112,
+										TotalCodeAcceptances:    56,
+										TotalCodeLinesSuggested: 143,
+										TotalCodeLinesAccepted:  61,
+									},
+									{
+										Name:                    "go",
+										TotalEngagedUsers:       4,
+										TotalCodeSuggestions:    132,
+										TotalCodeAcceptances:    67,
+										TotalCodeLinesSuggested: 154,
+										TotalCodeLinesAccepted:  72,
+									},
+								},
+							},
+						},
+					},
 				},
 			},
-		},
-		{
-			Day:                   summaryTwoDate.Format("2006-01-02"),
-			TotalSuggestionsCount: 800,
-			TotalAcceptancesCount: 600,
-			TotalLinesSuggested:   1100,
-			TotalLinesAccepted:    700,
-			TotalActiveUsers:      12,
-			TotalChatAcceptances:  57,
-			TotalChatTurns:        426,
-			TotalActiveChatUsers:  8,
-			Breakdown: []*CopilotUsageBreakdown{
-				{
-					Language:         "python",
-					Editor:           "vscode",
-					SuggestionsCount: 300,
-					AcceptancesCount: 200,
-					LinesSuggested:   600,
-					LinesAccepted:    300,
-					ActiveUsers:      2,
+			CopilotIdeChat: &CopilotIdeChat{
+				TotalEngagedUsers: 13,
+				Editors: []*CopilotIdeChatEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIdeChatModel{
+							{
+								Name:                     "default",
+								IsCustomModel:            false,
+								CustomModelTrainingDate:  nil,
+								TotalEngagedUsers:        12,
+								TotalChats:               45,
+								TotalChatInsertionEvents: 12,
+								TotalChatCopyEvents:      16,
+							},
+							{
+								Name:                     "a-custom-model",
+								IsCustomModel:            true,
+								CustomModelTrainingDate:  String("2024-02-01"),
+								TotalEngagedUsers:        1,
+								TotalChats:               10,
+								TotalChatInsertionEvents: 11,
+								TotalChatCopyEvents:      3,
+							},
+						},
+					},
 				},
-				{
-					Language:         "python",
-					Editor:           "jetbrains",
-					SuggestionsCount: 300,
-					AcceptancesCount: 150,
-					LinesSuggested:   300,
-					LinesAccepted:    250,
-					ActiveUsers:      6,
+			},
+			CopilotDotcomChat: &CopilotDotcomChat{
+				TotalEngagedUsers: 14,
+				Models: []*CopilotDotcomChatModel{
+					{
+						Name:                    "default",
+						IsCustomModel:           false,
+						CustomModelTrainingDate: nil,
+						TotalEngagedUsers:       14,
+						TotalChats:              38,
+					},
 				},
-				{
-					Language:         "ruby",
-					Editor:           "vscode",
-					SuggestionsCount: 200,
-					AcceptancesCount: 150,
-					LinesSuggested:   200,
-					LinesAccepted:    150,
-					ActiveUsers:      3,
+			},
+			CopilotDotcomPullRequests: &CopilotDotcomPullRequests{
+				TotalEngagedUsers: 12,
+				Repositories: []*CopilotDotcomPullRequestsRepository{
+					{
+						Name:              "demo/repo1",
+						TotalEngagedUsers: 8,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalPrSummariesCreated: 6,
+								TotalEngagedUsers:       8,
+							},
+						},
+					},
+					{
+						Name:              "demo/repo2",
+						TotalEngagedUsers: 4,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								TotalPrSummariesCreated: 10,
+								TotalEngagedUsers:       4,
+							},
+						},
+					},
 				},
 			},
 		},
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Copilot.GetOrganizationUsage returned %+v, want %+v", got, want)
+		t.Errorf("Copilot.GetEnterpriseTeamMetrics returned %+v, want %+v", got, want)
 	}
 
-	const methodName = "GetOrganizationUsage"
+	const methodName = "GetEnterpriseTeamMetrics"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.GetOrganizationUsage(ctx, "\n", &CopilotUsageSummaryListOptions{})
+		_, _, err = client.Copilot.GetEnterpriseTeamMetrics(ctx, "\n", "t", &CopilotMetricsListOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.GetOrganizationUsage(ctx, "o", &CopilotUsageSummaryListOptions{})
+		got, resp, err := client.Copilot.GetEnterpriseTeamMetrics(ctx, "e", "t", &CopilotMetricsListOptions{})
 		if got != nil {
-			t.Errorf("Copilot.GetOrganizationUsage returned %+v, want nil", got)
+			t.Errorf("Copilot.GetEnterpriseTeamMetrics returned %+v, want nil", got)
 		}
 		return resp, err
 	})
 }
 
-func TestCopilotService_GetEnterpriseUsage(t *testing.T) {
+func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/e/copilot/usage", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/copilot/metrics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[
 			{
-				"day": "2023-10-15",
-				"total_suggestions_count": 5000,
-				"total_acceptances_count": 3000,
-				"total_lines_suggested": 7000,
-				"total_lines_accepted": 3500,
-				"total_active_users": 15,
-				"total_chat_acceptances": 45,
-				"total_chat_turns": 350,
-				"total_active_chat_users": 8,
-				"breakdown": [
-				  {
-					"language": "python",
-					"editor": "vscode",
-					"suggestions_count": 3000,
-					"acceptances_count": 2000,
-					"lines_suggested": 3000,
-					"lines_accepted": 1500,
-					"active_users": 5
-				  },
-				  {
-					"language": "python",
-					"editor": "jetbrains",
-					"suggestions_count": 1000,
-					"acceptances_count": 500,
-					"lines_suggested": 2000,
-					"lines_accepted": 1000,
-					"active_users": 5
-				  },
-				  {
-					"language": "javascript",
-					"editor": "vscode",
-					"suggestions_count": 1000,
-					"acceptances_count": 500,
-					"lines_suggested": 2000,
-					"lines_accepted": 1000,
-					"active_users": 5
-				  }
-				]
-			},
-			{
-				"day": "2023-10-16",
-				"total_suggestions_count": 5200,
-				"total_acceptances_count": 5100,
-				"total_lines_suggested": 5300,
-				"total_lines_accepted": 5000,
-				"total_active_users": 15,
-				"total_chat_acceptances": 57,
-				"total_chat_turns": 455,
-				"total_active_chat_users": 12,
-				"breakdown": [
+				"date": "2024-06-24",
+				"total_active_users": 24,
+				"total_engaged_users": 20,
+				"copilot_ide_code_completions": {
+				"total_engaged_users": 20,
+				"languages": [
 					{
-						"language": "python",
-						"editor": "vscode",
-						"suggestions_count": 3100,
-						"acceptances_count": 3000,
-						"lines_suggested": 3200,
-						"lines_accepted": 3100,
-						"active_users": 5
+					"name": "python",
+					"total_engaged_users": 10
 					},
 					{
-						"language": "python",
-						"editor": "jetbrains",
-						"suggestions_count": 1100,
-						"acceptances_count": 1000,
-						"lines_suggested": 1200,
-						"lines_accepted": 1100,
-						"active_users": 5
+					"name": "ruby",
+					"total_engaged_users": 10
+					}
+				],
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 13,
+						"languages": [
+							{
+							"name": "python",
+							"total_engaged_users": 6,
+							"total_code_suggestions": 249,
+							"total_code_acceptances": 123,
+							"total_code_lines_suggested": 225,
+							"total_code_lines_accepted": 135
+							},
+							{
+							"name": "ruby",
+							"total_engaged_users": 7,
+							"total_code_suggestions": 496,
+							"total_code_acceptances": 253,
+							"total_code_lines_suggested": 520,
+							"total_code_lines_accepted": 270
+							}
+						]
+						}
+					]
 					},
 					{
-						"language": "javascript",
-						"editor": "vscode",
-						"suggestions_count": 1000,
-						"acceptances_count": 900,
-						"lines_suggested": 1100,
-						"lines_accepted": 1000,
-						"active_users": 5
+					"name": "neovim",
+					"total_engaged_users": 7,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"languages": [
+							{
+							"name": "typescript",
+							"total_engaged_users": 3,
+							"total_code_suggestions": 112,
+							"total_code_acceptances": 56,
+							"total_code_lines_suggested": 143,
+							"total_code_lines_accepted": 61
+							},
+							{
+							"name": "go",
+							"total_engaged_users": 4,
+							"total_code_suggestions": 132,
+							"total_code_acceptances": 67,
+							"total_code_lines_suggested": 154,
+							"total_code_lines_accepted": 72
+							}
+						]
+						}
+					]
 					}
 				]
+				},
+				"copilot_ide_chat": {
+				"total_engaged_users": 13,
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 12,
+						"total_chats": 45,
+						"total_chat_insertion_events": 12,
+						"total_chat_copy_events": 16
+						},
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_engaged_users": 1,
+						"total_chats": 10,
+						"total_chat_insertion_events": 11,
+						"total_chat_copy_events": 3
+						}
+					]
+					}
+				]
+				},
+				"copilot_dotcom_chat": {
+				"total_engaged_users": 14,
+				"models": [
+					{
+					"name": "default",
+					"is_custom_model": false,
+					"custom_model_training_date": null,
+					"total_engaged_users": 14,
+					"total_chats": 38
+					}
+				]
+				},
+				"copilot_dotcom_pull_requests": {
+				"total_engaged_users": 12,
+				"repositories": [
+					{
+					"name": "demo/repo1",
+					"total_engaged_users": 8,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_pr_summaries_created": 6,
+						"total_engaged_users": 8
+						}
+					]
+					},
+					{
+					"name": "demo/repo2",
+					"total_engaged_users": 4,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_pr_summaries_created": 10,
+						"total_engaged_users": 4
+						}
+					]
+					}
+				]
+				}
 			}
 		]`)
 	})
 
-	summaryOne := time.Date(2023, time.October, 15, 0, 0, 0, 0, time.UTC)
-	summaryTwoDate := time.Date(2023, time.October, 16, 0, 0, 0, 0, time.UTC)
 	ctx := context.Background()
-	got, _, err := client.Copilot.GetEnterpriseUsage(ctx, "e", &CopilotUsageSummaryListOptions{})
+	got, _, err := client.Copilot.GetOrganizationMetrics(ctx, "o", &CopilotMetricsListOptions{})
 	if err != nil {
-		t.Errorf("Copilot.GetEnterpriseUsage returned error: %v", err)
+		t.Errorf("Copilot.GetOrganizationMetrics returned error: %v", err)
 	}
 
-	want := []*CopilotUsageSummary{
+	want := []*CopilotMetrics{
 		{
-			Day:                   summaryOne.Format("2006-01-02"),
-			TotalSuggestionsCount: 5000,
-			TotalAcceptancesCount: 3000,
-			TotalLinesSuggested:   7000,
-			TotalLinesAccepted:    3500,
-			TotalActiveUsers:      15,
-			TotalChatAcceptances:  45,
-			TotalChatTurns:        350,
-			TotalActiveChatUsers:  8,
-			Breakdown: []*CopilotUsageBreakdown{
-				{
-					Language:         "python",
-					Editor:           "vscode",
-					SuggestionsCount: 3000,
-					AcceptancesCount: 2000,
-					LinesSuggested:   3000,
-					LinesAccepted:    1500,
-					ActiveUsers:      5,
+			Date:              "2024-06-24",
+			TotalActiveUsers:  24,
+			TotalEngagedUsers: 20,
+			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
+				TotalEngagedUsers: 20,
+				Languages: []*CopilotIdeCodeCompletionsLanguage{
+					{
+						Name:              "python",
+						TotalEngagedUsers: 10,
+					},
+					{
+						Name:              "ruby",
+						TotalEngagedUsers: 10,
+					},
 				},
-				{
-					Language:         "python",
-					Editor:           "jetbrains",
-					SuggestionsCount: 1000,
-					AcceptancesCount: 500,
-					LinesSuggested:   2000,
-					LinesAccepted:    1000,
-					ActiveUsers:      5,
-				},
-				{
-					Language:         "javascript",
-					Editor:           "vscode",
-					SuggestionsCount: 1000,
-					AcceptancesCount: 500,
-					LinesSuggested:   2000,
-					LinesAccepted:    1000,
-					ActiveUsers:      5,
+				Editors: []*CopilotIdeCodeCompletionsEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIdeCodeCompletionsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalEngagedUsers:       13,
+								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+									{
+										Name:                    "python",
+										TotalEngagedUsers:       6,
+										TotalCodeSuggestions:    249,
+										TotalCodeAcceptances:    123,
+										TotalCodeLinesSuggested: 225,
+										TotalCodeLinesAccepted:  135,
+									},
+									{
+										Name:                    "ruby",
+										TotalEngagedUsers:       7,
+										TotalCodeSuggestions:    496,
+										TotalCodeAcceptances:    253,
+										TotalCodeLinesSuggested: 520,
+										TotalCodeLinesAccepted:  270,
+									},
+								},
+							},
+						},
+					},
+					{
+						Name:              "neovim",
+						TotalEngagedUsers: 7,
+						Models: []*CopilotIdeCodeCompletionsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+									{
+										Name:                    "typescript",
+										TotalEngagedUsers:       3,
+										TotalCodeSuggestions:    112,
+										TotalCodeAcceptances:    56,
+										TotalCodeLinesSuggested: 143,
+										TotalCodeLinesAccepted:  61,
+									},
+									{
+										Name:                    "go",
+										TotalEngagedUsers:       4,
+										TotalCodeSuggestions:    132,
+										TotalCodeAcceptances:    67,
+										TotalCodeLinesSuggested: 154,
+										TotalCodeLinesAccepted:  72,
+									},
+								},
+							},
+						},
+					},
 				},
 			},
-		},
-		{
-			Day:                   summaryTwoDate.Format("2006-01-02"),
-			TotalSuggestionsCount: 5200,
-			TotalAcceptancesCount: 5100,
-			TotalLinesSuggested:   5300,
-			TotalLinesAccepted:    5000,
-			TotalActiveUsers:      15,
-			TotalChatAcceptances:  57,
-			TotalChatTurns:        455,
-			TotalActiveChatUsers:  12,
-			Breakdown: []*CopilotUsageBreakdown{
-				{
-					Language:         "python",
-					Editor:           "vscode",
-					SuggestionsCount: 3100,
-					AcceptancesCount: 3000,
-					LinesSuggested:   3200,
-					LinesAccepted:    3100,
-					ActiveUsers:      5,
+			CopilotIdeChat: &CopilotIdeChat{
+				TotalEngagedUsers: 13,
+				Editors: []*CopilotIdeChatEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIdeChatModel{
+							{
+								Name:                     "default",
+								IsCustomModel:            false,
+								CustomModelTrainingDate:  nil,
+								TotalEngagedUsers:        12,
+								TotalChats:               45,
+								TotalChatInsertionEvents: 12,
+								TotalChatCopyEvents:      16,
+							},
+							{
+								Name:                     "a-custom-model",
+								IsCustomModel:            true,
+								CustomModelTrainingDate:  String("2024-02-01"),
+								TotalEngagedUsers:        1,
+								TotalChats:               10,
+								TotalChatInsertionEvents: 11,
+								TotalChatCopyEvents:      3,
+							},
+						},
+					},
 				},
-				{
-					Language:         "python",
-					Editor:           "jetbrains",
-					SuggestionsCount: 1100,
-					AcceptancesCount: 1000,
-					LinesSuggested:   1200,
-					LinesAccepted:    1100,
-					ActiveUsers:      5,
+			},
+			CopilotDotcomChat: &CopilotDotcomChat{
+				TotalEngagedUsers: 14,
+				Models: []*CopilotDotcomChatModel{
+					{
+						Name:                    "default",
+						IsCustomModel:           false,
+						CustomModelTrainingDate: nil,
+						TotalEngagedUsers:       14,
+						TotalChats:              38,
+					},
 				},
-				{
-					Language:         "javascript",
-					Editor:           "vscode",
-					SuggestionsCount: 1000,
-					AcceptancesCount: 900,
-					LinesSuggested:   1100,
-					LinesAccepted:    1000,
-					ActiveUsers:      5,
+			},
+			CopilotDotcomPullRequests: &CopilotDotcomPullRequests{
+				TotalEngagedUsers: 12,
+				Repositories: []*CopilotDotcomPullRequestsRepository{
+					{
+						Name:              "demo/repo1",
+						TotalEngagedUsers: 8,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalPrSummariesCreated: 6,
+								TotalEngagedUsers:       8,
+							},
+						},
+					},
+					{
+						Name:              "demo/repo2",
+						TotalEngagedUsers: 4,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								TotalPrSummariesCreated: 10,
+								TotalEngagedUsers:       4,
+							},
+						},
+					},
 				},
 			},
 		},
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Copilot.GetEnterpriseUsage returned %+v, want %+v", got, want)
+		t.Errorf("Copilot.GetOrganizationMetrics returned %+v, want %+v", got, want)
 	}
 
-	const methodName = "GetEnterpriseUsage"
+	const methodName = "GetOrganizationMetrics"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.GetEnterpriseUsage(ctx, "\n", &CopilotUsageSummaryListOptions{})
+		_, _, err = client.Copilot.GetOrganizationMetrics(ctx, "\n", &CopilotMetricsListOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.GetEnterpriseUsage(ctx, "e", &CopilotUsageSummaryListOptions{})
+		got, resp, err := client.Copilot.GetOrganizationMetrics(ctx, "o", &CopilotMetricsListOptions{})
 		if got != nil {
-			t.Errorf("Copilot.GetEnterpriseUsage returned %+v, want nil", got)
+			t.Errorf("Copilot.GetOrganizationMetrics returned %+v, want nil", got)
 		}
 		return resp, err
 	})
 }
 
-func TestCopilotService_GetEnterpriseTeamUsage(t *testing.T) {
+func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/e/team/t/copilot/usage", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/team/t/copilot/metrics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[
 			{
-				"day": "2023-10-15",
-				"total_suggestions_count": 1000,
-				"total_acceptances_count": 800,
-				"total_lines_suggested": 1800,
-				"total_lines_accepted": 1200,
-				"total_active_users": 10,
-				"total_chat_acceptances": 32,
-				"total_chat_turns": 200,
-				"total_active_chat_users": 4,
-				"breakdown": [
-					{
-						"language": "python",
-						"editor": "vscode",
-						"suggestions_count": 300,
-						"acceptances_count": 250,
-						"lines_suggested": 900,
-						"lines_accepted": 700,
-						"active_users": 5
-					},
-					{
-						"language": "python",
-						"editor": "jetbrains",
-						"suggestions_count": 300,
-						"acceptances_count": 200,
-						"lines_suggested": 400,
-						"lines_accepted": 300,
-						"active_users": 2
-					},
-					{
-						"language": "ruby",
-						"editor": "vscode",
-						"suggestions_count": 400,
-						"acceptances_count": 350,
-						"lines_suggested": 500,
-						"lines_accepted": 200,
-						"active_users": 3
-					}
-				]
-			},
-			{
-				"day": "2023-10-16",
-				"total_suggestions_count": 800,
-				"total_acceptances_count": 600,
-				"total_lines_suggested": 1100,
-				"total_lines_accepted": 700,
-				"total_active_users": 12,
-				"total_chat_acceptances": 57,
-				"total_chat_turns": 426,
-				"total_active_chat_users": 8,
-				"breakdown": [
-					{
-						"language": "python",
-						"editor": "vscode",
-						"suggestions_count": 300,
-						"acceptances_count": 200,
-						"lines_suggested": 600,
-						"lines_accepted": 300,
-						"active_users": 2
-					},
-					{
-						"language": "python",
-						"editor": "jetbrains",
-						"suggestions_count": 300,
-						"acceptances_count": 150,
-						"lines_suggested": 300,
-						"lines_accepted": 250,
-						"active_users": 6
-					},
-					{
-						"language": "ruby",
-						"editor": "vscode",
-						"suggestions_count": 200,
-						"acceptances_count": 150,
-						"lines_suggested": 200,
-						"lines_accepted": 150,
-						"active_users": 3
-					}
-				]
+				"date": "2024-06-24",
+				"total_active_users": 24,
+				"total_engaged_users": 20,
+				"copilot_ide_code_completions": {
+					"total_engaged_users": 20,
+					"languages": [
+						{
+							"name": "python",
+							"total_engaged_users": 10
+						},
+						{
+							"name": "ruby",
+							"total_engaged_users": 10
+						}
+					],
+					"editors": [
+						{
+							"name": "vscode",
+							"total_engaged_users": 13,
+							"models": [
+								{
+									"name": "default",
+									"is_custom_model": false,
+									"custom_model_training_date": null,
+									"total_engaged_users": 13,
+									"languages": [
+										{
+											"name": "python",
+											"total_engaged_users": 6,
+											"total_code_suggestions": 249,
+											"total_code_acceptances": 123,
+											"total_code_lines_suggested": 225,
+											"total_code_lines_accepted": 135
+										},
+										{
+											"name": "ruby",
+											"total_engaged_users": 7,
+											"total_code_suggestions": 496,
+											"total_code_acceptances": 253,
+											"total_code_lines_suggested": 520,
+											"total_code_lines_accepted": 270
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "neovim",
+							"total_engaged_users": 7,
+							"models": [
+								{
+									"name": "a-custom-model",
+									"is_custom_model": true,
+									"custom_model_training_date": "2024-02-01",
+									"languages": [
+										{
+											"name": "typescript",
+											"total_engaged_users": 3,
+											"total_code_suggestions": 112,
+											"total_code_acceptances": 56,
+											"total_code_lines_suggested": 143,
+											"total_code_lines_accepted": 61
+										},
+										{
+											"name": "go",
+											"total_engaged_users": 4,
+											"total_code_suggestions": 132,
+											"total_code_acceptances": 67,
+											"total_code_lines_suggested": 154,
+											"total_code_lines_accepted": 72
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				"copilot_ide_chat": {
+					"total_engaged_users": 13,
+					"editors": [
+						{
+							"name": "vscode",
+							"total_engaged_users": 13,
+							"models": [
+								{
+									"name": "default",
+									"is_custom_model": false,
+									"custom_model_training_date": null,
+									"total_engaged_users": 12,
+									"total_chats": 45,
+									"total_chat_insertion_events": 12,
+									"total_chat_copy_events": 16
+								},
+								{
+									"name": "a-custom-model",
+									"is_custom_model": true,
+									"custom_model_training_date": "2024-02-01",
+									"total_engaged_users": 1,
+									"total_chats": 10,
+									"total_chat_insertion_events": 11,
+									"total_chat_copy_events": 3
+								}
+							]
+						}
+					]
+				},
+				"copilot_dotcom_chat": {
+					"total_engaged_users": 14,
+					"models": [
+						{
+							"name": "default",
+							"is_custom_model": false,
+							"custom_model_training_date": null,
+							"total_engaged_users": 14,
+							"total_chats": 38
+						}
+					]
+				},
+				"copilot_dotcom_pull_requests": {
+					"total_engaged_users": 12,
+					"repositories": [
+						{
+							"name": "demo/repo1",
+							"total_engaged_users": 8,
+							"models": [
+								{
+									"name": "default",
+									"is_custom_model": false,
+									"custom_model_training_date": null,
+									"total_pr_summaries_created": 6,
+									"total_engaged_users": 8
+								}
+							]
+						},
+						{
+							"name": "demo/repo2",
+							"total_engaged_users": 4,
+							"models": [
+								{
+									"name": "a-custom-model",
+									"is_custom_model": true,
+									"custom_model_training_date": "2024-02-01",
+									"total_pr_summaries_created": 10,
+									"total_engaged_users": 4
+								}
+							]
+						}
+					]
+				}
 			}
 		]`)
 	})
 
-	summaryOne := time.Date(2023, time.October, 15, 0, 0, 0, 0, time.UTC)
-	summaryTwoDate := time.Date(2023, time.October, 16, 0, 0, 0, 0, time.UTC)
 	ctx := context.Background()
-	got, _, err := client.Copilot.GetEnterpriseTeamUsage(ctx, "e", "t", &CopilotUsageSummaryListOptions{})
+	got, _, err := client.Copilot.GetOrganizationTeamMetrics(ctx, "o", "t", &CopilotMetricsListOptions{})
 	if err != nil {
-		t.Errorf("Copilot.GetEnterpriseTeamUsage returned error: %v", err)
+		t.Errorf("Copilot.GetOrganizationTeamMetrics returned error: %v", err)
 	}
 
-	want := []*CopilotUsageSummary{
+	want := []*CopilotMetrics{
 		{
-			Day:                   summaryOne.Format("2006-01-02"),
-			TotalSuggestionsCount: 1000,
-			TotalAcceptancesCount: 800,
-			TotalLinesSuggested:   1800,
-			TotalLinesAccepted:    1200,
-			TotalActiveUsers:      10,
-			TotalChatAcceptances:  32,
-			TotalChatTurns:        200,
-			TotalActiveChatUsers:  4,
-			Breakdown: []*CopilotUsageBreakdown{
-				{
-					Language:         "python",
-					Editor:           "vscode",
-					SuggestionsCount: 300,
-					AcceptancesCount: 250,
-					LinesSuggested:   900,
-					LinesAccepted:    700,
-					ActiveUsers:      5,
+			Date:              "2024-06-24",
+			TotalActiveUsers:  24,
+			TotalEngagedUsers: 20,
+			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
+				TotalEngagedUsers: 20,
+				Languages: []*CopilotIdeCodeCompletionsLanguage{
+					{
+						Name:              "python",
+						TotalEngagedUsers: 10,
+					},
+					{
+						Name:              "ruby",
+						TotalEngagedUsers: 10,
+					},
 				},
-				{
-					Language:         "python",
-					Editor:           "jetbrains",
-					SuggestionsCount: 300,
-					AcceptancesCount: 200,
-					LinesSuggested:   400,
-					LinesAccepted:    300,
-					ActiveUsers:      2,
-				},
-				{
-					Language:         "ruby",
-					Editor:           "vscode",
-					SuggestionsCount: 400,
-					AcceptancesCount: 350,
-					LinesSuggested:   500,
-					LinesAccepted:    200,
-					ActiveUsers:      3,
+				Editors: []*CopilotIdeCodeCompletionsEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIdeCodeCompletionsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalEngagedUsers:       13,
+								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+									{
+										Name:                    "python",
+										TotalEngagedUsers:       6,
+										TotalCodeSuggestions:    249,
+										TotalCodeAcceptances:    123,
+										TotalCodeLinesSuggested: 225,
+										TotalCodeLinesAccepted:  135,
+									},
+									{
+										Name:                    "ruby",
+										TotalEngagedUsers:       7,
+										TotalCodeSuggestions:    496,
+										TotalCodeAcceptances:    253,
+										TotalCodeLinesSuggested: 520,
+										TotalCodeLinesAccepted:  270,
+									},
+								},
+							},
+						},
+					},
+					{
+						Name:              "neovim",
+						TotalEngagedUsers: 7,
+						Models: []*CopilotIdeCodeCompletionsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+									{
+										Name:                    "typescript",
+										TotalEngagedUsers:       3,
+										TotalCodeSuggestions:    112,
+										TotalCodeAcceptances:    56,
+										TotalCodeLinesSuggested: 143,
+										TotalCodeLinesAccepted:  61,
+									},
+									{
+										Name:                    "go",
+										TotalEngagedUsers:       4,
+										TotalCodeSuggestions:    132,
+										TotalCodeAcceptances:    67,
+										TotalCodeLinesSuggested: 154,
+										TotalCodeLinesAccepted:  72,
+									},
+								},
+							},
+						},
+					},
 				},
 			},
-		},
-		{
-			Day:                   summaryTwoDate.Format("2006-01-02"),
-			TotalSuggestionsCount: 800,
-			TotalAcceptancesCount: 600,
-			TotalLinesSuggested:   1100,
-			TotalLinesAccepted:    700,
-			TotalActiveUsers:      12,
-			TotalChatAcceptances:  57,
-			TotalChatTurns:        426,
-			TotalActiveChatUsers:  8,
-			Breakdown: []*CopilotUsageBreakdown{
-				{
-					Language:         "python",
-					Editor:           "vscode",
-					SuggestionsCount: 300,
-					AcceptancesCount: 200,
-					LinesSuggested:   600,
-					LinesAccepted:    300,
-					ActiveUsers:      2,
+			CopilotIdeChat: &CopilotIdeChat{
+				TotalEngagedUsers: 13,
+				Editors: []*CopilotIdeChatEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIdeChatModel{
+							{
+								Name:                     "default",
+								IsCustomModel:            false,
+								CustomModelTrainingDate:  nil,
+								TotalEngagedUsers:        12,
+								TotalChats:               45,
+								TotalChatInsertionEvents: 12,
+								TotalChatCopyEvents:      16,
+							},
+							{
+								Name:                     "a-custom-model",
+								IsCustomModel:            true,
+								CustomModelTrainingDate:  String("2024-02-01"),
+								TotalEngagedUsers:        1,
+								TotalChats:               10,
+								TotalChatInsertionEvents: 11,
+								TotalChatCopyEvents:      3,
+							},
+						},
+					},
 				},
-				{
-					Language:         "python",
-					Editor:           "jetbrains",
-					SuggestionsCount: 300,
-					AcceptancesCount: 150,
-					LinesSuggested:   300,
-					LinesAccepted:    250,
-					ActiveUsers:      6,
+			},
+			CopilotDotcomChat: &CopilotDotcomChat{
+				TotalEngagedUsers: 14,
+				Models: []*CopilotDotcomChatModel{
+					{
+						Name:                    "default",
+						IsCustomModel:           false,
+						CustomModelTrainingDate: nil,
+						TotalEngagedUsers:       14,
+						TotalChats:              38,
+					},
 				},
-				{
-					Language:         "ruby",
-					Editor:           "vscode",
-					SuggestionsCount: 200,
-					AcceptancesCount: 150,
-					LinesSuggested:   200,
-					LinesAccepted:    150,
-					ActiveUsers:      3,
+			},
+			CopilotDotcomPullRequests: &CopilotDotcomPullRequests{
+				TotalEngagedUsers: 12,
+				Repositories: []*CopilotDotcomPullRequestsRepository{
+					{
+						Name:              "demo/repo1",
+						TotalEngagedUsers: 8,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalPrSummariesCreated: 6,
+								TotalEngagedUsers:       8,
+							},
+						},
+					},
+					{
+						Name:              "demo/repo2",
+						TotalEngagedUsers: 4,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								TotalPrSummariesCreated: 10,
+								TotalEngagedUsers:       4,
+							},
+						},
+					},
 				},
 			},
 		},
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Copilot.GetEnterpriseTeamUsage returned %+v, want %+v", got, want)
+		t.Errorf("Copilot.GetOrganizationTeamMetrics returned %+v, want %+v", got, want)
 	}
 
-	const methodName = "GetEnterpriseTeamUsage"
+	const methodName = "GetOrganizationTeamMetrics"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.GetEnterpriseTeamUsage(ctx, "\n", "\n", &CopilotUsageSummaryListOptions{})
+		_, _, err = client.Copilot.GetOrganizationTeamMetrics(ctx, "\n", "\n", &CopilotMetricsListOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.GetEnterpriseTeamUsage(ctx, "e", "t", &CopilotUsageSummaryListOptions{})
+		got, resp, err := client.Copilot.GetOrganizationTeamMetrics(ctx, "o", "t", &CopilotMetricsListOptions{})
 		if got != nil {
-			t.Errorf("Copilot.GetEnterpriseTeamUsage returned %+v, want nil", got)
-		}
-		return resp, err
-	})
-}
-
-func TestCopilotService_GetOrganizationTeamUsage(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/orgs/o/team/t/copilot/usage", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[
-			{
-				"day": "2023-10-15",
-				"total_suggestions_count": 1000,
-				"total_acceptances_count": 800,
-				"total_lines_suggested": 1800,
-				"total_lines_accepted": 1200,
-				"total_active_users": 10,
-				"total_chat_acceptances": 32,
-				"total_chat_turns": 200,
-				"total_active_chat_users": 4,
-				"breakdown": [
-					{
-						"language": "python",
-						"editor": "vscode",
-						"suggestions_count": 300,
-						"acceptances_count": 250,
-						"lines_suggested": 900,
-						"lines_accepted": 700,
-						"active_users": 5
-					},
-					{
-						"language": "python",
-						"editor": "jetbrains",
-						"suggestions_count": 300,
-						"acceptances_count": 200,
-						"lines_suggested": 400,
-						"lines_accepted": 300,
-						"active_users": 2
-					},
-					{
-						"language": "ruby",
-						"editor": "vscode",
-						"suggestions_count": 400,
-						"acceptances_count": 350,
-						"lines_suggested": 500,
-						"lines_accepted": 200,
-						"active_users": 3
-					}
-				]
-			},
-			{
-				"day": "2023-10-16",
-				"total_suggestions_count": 800,
-				"total_acceptances_count": 600,
-				"total_lines_suggested": 1100,
-				"total_lines_accepted": 700,
-				"total_active_users": 12,
-				"total_chat_acceptances": 57,
-				"total_chat_turns": 426,
-				"total_active_chat_users": 8,
-				"breakdown": [
-					{
-						"language": "python",
-						"editor": "vscode",
-						"suggestions_count": 300,
-						"acceptances_count": 200,
-						"lines_suggested": 600,
-						"lines_accepted": 300,
-						"active_users": 2
-					},
-					{
-						"language": "python",
-						"editor": "jetbrains",
-						"suggestions_count": 300,
-						"acceptances_count": 150,
-						"lines_suggested": 300,
-						"lines_accepted": 250,
-						"active_users": 6
-					},
-					{
-						"language": "ruby",
-						"editor": "vscode",
-						"suggestions_count": 200,
-						"acceptances_count": 150,
-						"lines_suggested": 200,
-						"lines_accepted": 150,
-						"active_users": 3
-					}
-				]
-			}
-		]`)
-	})
-
-	summaryOne := time.Date(2023, time.October, 15, 0, 0, 0, 0, time.UTC)
-	summaryTwoDate := time.Date(2023, time.October, 16, 0, 0, 0, 0, time.UTC)
-	ctx := context.Background()
-	got, _, err := client.Copilot.GetOrganizationTeamUsage(ctx, "o", "t", &CopilotUsageSummaryListOptions{})
-	if err != nil {
-		t.Errorf("Copilot.GetOrganizationTeamUsage returned error: %v", err)
-	}
-
-	want := []*CopilotUsageSummary{
-		{
-			Day:                   summaryOne.Format("2006-01-02"),
-			TotalSuggestionsCount: 1000,
-			TotalAcceptancesCount: 800,
-			TotalLinesSuggested:   1800,
-			TotalLinesAccepted:    1200,
-			TotalActiveUsers:      10,
-			TotalChatAcceptances:  32,
-			TotalChatTurns:        200,
-			TotalActiveChatUsers:  4,
-			Breakdown: []*CopilotUsageBreakdown{
-				{
-					Language:         "python",
-					Editor:           "vscode",
-					SuggestionsCount: 300,
-					AcceptancesCount: 250,
-					LinesSuggested:   900,
-					LinesAccepted:    700,
-					ActiveUsers:      5,
-				},
-				{
-					Language:         "python",
-					Editor:           "jetbrains",
-					SuggestionsCount: 300,
-					AcceptancesCount: 200,
-					LinesSuggested:   400,
-					LinesAccepted:    300,
-					ActiveUsers:      2,
-				},
-				{
-					Language:         "ruby",
-					Editor:           "vscode",
-					SuggestionsCount: 400,
-					AcceptancesCount: 350,
-					LinesSuggested:   500,
-					LinesAccepted:    200,
-					ActiveUsers:      3,
-				},
-			},
-		},
-		{
-			Day:                   summaryTwoDate.Format("2006-01-02"),
-			TotalSuggestionsCount: 800,
-			TotalAcceptancesCount: 600,
-			TotalLinesSuggested:   1100,
-			TotalLinesAccepted:    700,
-			TotalActiveUsers:      12,
-			TotalChatAcceptances:  57,
-			TotalChatTurns:        426,
-			TotalActiveChatUsers:  8,
-			Breakdown: []*CopilotUsageBreakdown{
-				{
-					Language:         "python",
-					Editor:           "vscode",
-					SuggestionsCount: 300,
-					AcceptancesCount: 200,
-					LinesSuggested:   600,
-					LinesAccepted:    300,
-					ActiveUsers:      2,
-				},
-				{
-					Language:         "python",
-					Editor:           "jetbrains",
-					SuggestionsCount: 300,
-					AcceptancesCount: 150,
-					LinesSuggested:   300,
-					LinesAccepted:    250,
-					ActiveUsers:      6,
-				},
-				{
-					Language:         "ruby",
-					Editor:           "vscode",
-					SuggestionsCount: 200,
-					AcceptancesCount: 150,
-					LinesSuggested:   200,
-					LinesAccepted:    150,
-					ActiveUsers:      3,
-				},
-			},
-		},
-	}
-
-	if !cmp.Equal(got, want) {
-		t.Errorf("Copilot.GetOrganizationTeamUsage returned %+v, want %+v", got, want)
-	}
-
-	const methodName = "GetOrganizationTeamUsage"
-
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.GetOrganizationTeamUsage(ctx, "\n", "\n", &CopilotUsageSummaryListOptions{})
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.GetOrganizationTeamUsage(ctx, "o", "t", &CopilotUsageSummaryListOptions{})
-		if got != nil {
-			t.Errorf("Copilot.GetOrganizationTeamUsage returned %+v, want nil", got)
+			t.Errorf("Copilot.GetOrganizationTeamMetrics returned %+v, want nil", got)
 		}
 		return resp, err
 	})
