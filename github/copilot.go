@@ -66,6 +66,39 @@ type SeatCancellations struct {
 	SeatsCancelled int `json:"seats_cancelled"`
 }
 
+// CopilotUsageSummaryListOptions represents the optional parameters to the CopilotService.GetOrganizationUsage method.
+type CopilotUsageSummaryListOptions struct {
+	Since *time.Time `url:"since,omitempty"`
+	Until *time.Time `url:"until,omitempty"`
+
+	ListOptions
+}
+
+// CopilotUsageBreakdown represents the breakdown of Copilot usage for a specific language and editor.
+type CopilotUsageBreakdown struct {
+	Language         string `json:"language"`
+	Editor           string `json:"editor"`
+	SuggestionsCount int64  `json:"suggestions_count"`
+	AcceptancesCount int64  `json:"acceptances_count"`
+	LinesSuggested   int64  `json:"lines_suggested"`
+	LinesAccepted    int64  `json:"lines_accepted"`
+	ActiveUsers      int    `json:"active_users"`
+}
+
+// CopilotUsageSummary represents the daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE across an organization.
+type CopilotUsageSummary struct {
+	Day                   string                   `json:"day"`
+	TotalSuggestionsCount int64                    `json:"total_suggestions_count"`
+	TotalAcceptancesCount int64                    `json:"total_acceptances_count"`
+	TotalLinesSuggested   int64                    `json:"total_lines_suggested"`
+	TotalLinesAccepted    int64                    `json:"total_lines_accepted"`
+	TotalActiveUsers      int64                    `json:"total_active_users"`
+	TotalChatAcceptances  int64                    `json:"total_chat_acceptances"`
+	TotalChatTurns        int64                    `json:"total_chat_turns"`
+	TotalActiveChatUsers  int                      `json:"total_active_chat_users"`
+	Breakdown             []*CopilotUsageBreakdown `json:"breakdown"`
+}
+
 // CopilotMetricsListOptions represents the optional parameters to the CopilotService get metrics methods.
 type CopilotMetricsListOptions struct {
 	Since *time.Time `url:"since,omitempty"`
@@ -454,6 +487,110 @@ func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (
 	}
 
 	return seatDetails, resp, nil
+}
+
+// GetOrganizationUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE across an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-organization-members
+//
+//meta:operation GET /orgs/{org}/copilot/usage
+func (s *CopilotService) GetOrganizationUsage(ctx context.Context, org string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/usage", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var usage []*CopilotUsageSummary
+	resp, err := s.client.Do(ctx, req, &usage)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return usage, resp, nil
+}
+
+// GetEnterpriseUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE across an enterprise.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-enterprise-members
+//
+//meta:operation GET /enterprises/{enterprise}/copilot/usage
+func (s *CopilotService) GetEnterpriseUsage(ctx context.Context, enterprise string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/copilot/usage", enterprise)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var usage []*CopilotUsageSummary
+	resp, err := s.client.Do(ctx, req, &usage)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return usage, resp, nil
+}
+
+// GetEnterpriseTeamUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE for a team in the enterprise.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-an-enterprise-team
+//
+//meta:operation GET /enterprises/{enterprise}/team/{team_slug}/copilot/usage
+func (s *CopilotService) GetEnterpriseTeamUsage(ctx context.Context, enterprise, team string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/team/%v/copilot/usage", enterprise, team)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var usage []*CopilotUsageSummary
+	resp, err := s.client.Do(ctx, req, &usage)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return usage, resp, nil
+}
+
+// GetOrganizationTeamUsage gets daily breakdown of aggregated usage metrics for Copilot completions and Copilot Chat in the IDE for a team in the organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-a-team
+//
+//meta:operation GET /orgs/{org}/team/{team_slug}/copilot/usage
+func (s *CopilotService) GetOrganizationTeamUsage(ctx context.Context, org, team string, opts *CopilotUsageSummaryListOptions) ([]*CopilotUsageSummary, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/team/%v/copilot/usage", org, team)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var usage []*CopilotUsageSummary
+	resp, err := s.client.Do(ctx, req, &usage)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return usage, resp, nil
 }
 
 // GetEnterpriseMetrics gets Copilot usage metrics for an enterprise.

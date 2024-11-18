@@ -5744,6 +5744,28 @@ func TestCopilotSeatDetails_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
+func TestCopilotUsageSummaryListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue time.Time
+	c := &CopilotUsageSummaryListOptions{Since: &zeroValue}
+	c.GetSince()
+	c = &CopilotUsageSummaryListOptions{}
+	c.GetSince()
+	c = nil
+	c.GetSince()
+}
+
+func TestCopilotUsageSummaryListOptions_GetUntil(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue time.Time
+	c := &CopilotUsageSummaryListOptions{Until: &zeroValue}
+	c.GetUntil()
+	c = &CopilotUsageSummaryListOptions{}
+	c.GetUntil()
+	c = nil
+	c.GetUntil()
+}
+
 func TestCreateCheckRunOptions_GetCompletedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp

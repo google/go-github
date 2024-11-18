@@ -4438,6 +4438,22 @@ func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
 	return *c.UpdatedAt
 }
 
+// GetSince returns the Since field if it's non-nil, zero value otherwise.
+func (c *CopilotUsageSummaryListOptions) GetSince() time.Time {
+	if c == nil || c.Since == nil {
+		return time.Time{}
+	}
+	return *c.Since
+}
+
+// GetUntil returns the Until field if it's non-nil, zero value otherwise.
+func (c *CopilotUsageSummaryListOptions) GetUntil() time.Time {
+	if c == nil || c.Until == nil {
+		return time.Time{}
+	}
+	return *c.Until
+}
+
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
 func (c *CreateCheckRunOptions) GetCompletedAt() Timestamp {
 	if c == nil || c.CompletedAt == nil {
