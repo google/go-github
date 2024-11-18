@@ -2098,11 +2098,13 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 		t.Errorf("Copilot.GetEnterpriseMetrics returned error: %v", err)
 	}
 
+	totalActiveUsers := 24
+	totalEngagedUsers := 20
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  24,
-			TotalEngagedUsers: 20,
+			TotalActiveUsers:  &totalActiveUsers,
+			TotalEngagedUsers: &totalEngagedUsers,
 			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIdeCodeCompletionsLanguage{
@@ -2439,11 +2441,13 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 		t.Errorf("Copilot.GetEnterpriseTeamMetrics returned error: %v", err)
 	}
 
+	totalActiveUsers := 24
+	totalEngagedUsers := 20
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  24,
-			TotalEngagedUsers: 20,
+			TotalActiveUsers:  &totalActiveUsers,
+			TotalEngagedUsers: &totalEngagedUsers,
 			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIdeCodeCompletionsLanguage{
@@ -2780,11 +2784,13 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 		t.Errorf("Copilot.GetOrganizationMetrics returned error: %v", err)
 	}
 
+	totalActiveUsers := 24
+	totalEngagedUsers := 20
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  24,
-			TotalEngagedUsers: 20,
+			TotalActiveUsers:  &totalActiveUsers,
+			TotalEngagedUsers: &totalEngagedUsers,
 			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIdeCodeCompletionsLanguage{
@@ -3121,11 +3127,13 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 		t.Errorf("Copilot.GetOrganizationTeamMetrics returned error: %v", err)
 	}
 
+	totalActiveUsers := 24
+	totalEngagedUsers := 20
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  24,
-			TotalEngagedUsers: 20,
+			TotalActiveUsers:  &totalActiveUsers,
+			TotalEngagedUsers: &totalEngagedUsers,
 			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIdeCodeCompletionsLanguage{

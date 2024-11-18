@@ -201,12 +201,12 @@ type CopilotDotcomPullRequests struct {
 // CopilotMetrics represents Copilot usage metrics for a given day.
 type CopilotMetrics struct {
 	Date                      string                     `json:"date"`
-	TotalActiveUsers          int                        `json:"total_active_users"`
-	TotalEngagedUsers         int                        `json:"total_engaged_users"`
-	CopilotIdeCodeCompletions *CopilotIdeCodeCompletions `json:"copilot_ide_code_completions"`
-	CopilotIdeChat            *CopilotIdeChat            `json:"copilot_ide_chat"`
-	CopilotDotcomChat         *CopilotDotcomChat         `json:"copilot_dotcom_chat"`
-	CopilotDotcomPullRequests *CopilotDotcomPullRequests `json:"copilot_dotcom_pull_requests"`
+	TotalActiveUsers          *int                       `json:"total_active_users,omitempty"`
+	TotalEngagedUsers         *int                       `json:"total_engaged_users,omitempty"`
+	CopilotIdeCodeCompletions *CopilotIdeCodeCompletions `json:"copilot_ide_code_completions,omitempty"`
+	CopilotIdeChat            *CopilotIdeChat            `json:"copilot_ide_chat,omitempty"`
+	CopilotDotcomChat         *CopilotDotcomChat         `json:"copilot_dotcom_chat,omitempty"`
+	CopilotDotcomPullRequests *CopilotDotcomPullRequests `json:"copilot_dotcom_pull_requests,omitempty"`
 }
 
 func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
