@@ -107,14 +107,14 @@ type CopilotMetricsListOptions struct {
 	ListOptions
 }
 
-// CopilotIdeCodeCompletionsLanguage represents Copilot usage metrics for completions in the IDE for a language.
-type CopilotIdeCodeCompletionsLanguage struct {
+// CopilotIDECodeCompletionsLanguage represents Copilot usage metrics for completions in the IDE for a language.
+type CopilotIDECodeCompletionsLanguage struct {
 	Name              string `json:"name"`
 	TotalEngagedUsers int    `json:"total_engaged_users"`
 }
 
-// CopilotIdeCodeCompletionsModelLanguage represents Copilot usage metrics for completions in the IDE for a model and language.
-type CopilotIdeCodeCompletionsModelLanguage struct {
+// CopilotIDECodeCompletionsModelLanguage represents Copilot usage metrics for completions in the IDE for a model and language.
+type CopilotIDECodeCompletionsModelLanguage struct {
 	Name                    string `json:"name"`
 	TotalEngagedUsers       int    `json:"total_engaged_users"`
 	TotalCodeSuggestions    int    `json:"total_code_suggestions"`
@@ -123,8 +123,8 @@ type CopilotIdeCodeCompletionsModelLanguage struct {
 	TotalCodeLinesAccepted  int    `json:"total_code_lines_accepted"`
 }
 
-// CopilotIdeCodeCompletionsModel represents Copilot usage metrics for completions in the IDE for a model.
-type CopilotIdeCodeCompletionsModel struct {
+// CopilotIDECodeCompletionsModel represents Copilot usage metrics for completions in the IDE for a model.
+type CopilotIDECodeCompletionsModel struct {
 	Name                    string                                    `json:"name"`
 	IsCustomModel           bool                                      `json:"is_custom_model"`
 	CustomModelTrainingDate *string                                   `json:"custom_model_training_date,omitempty"`
@@ -132,22 +132,22 @@ type CopilotIdeCodeCompletionsModel struct {
 	Languages               []*CopilotIdeCodeCompletionsModelLanguage `json:"languages"`
 }
 
-// CopilotIdeCodeCompletionsEditor represents Copilot usage metrics for completions in the IDE for an editor.
-type CopilotIdeCodeCompletionsEditor struct {
+// CopilotIDECodeCompletionsEditor represents Copilot usage metrics for completions in the IDE for an editor.
+type CopilotIDECodeCompletionsEditor struct {
 	Name              string                            `json:"name"`
 	TotalEngagedUsers int                               `json:"total_engaged_users"`
 	Models            []*CopilotIdeCodeCompletionsModel `json:"models"`
 }
 
-// CopilotIdeCodeCompletions represents Copilot usage metrics for Copilot code completions in the IDE, categorized by editor, model and language.
-type CopilotIdeCodeCompletions struct {
+// CopilotIDECodeCompletions represents Copilot usage metrics for Copilot code completions in the IDE, categorized by editor, model and language.
+type CopilotIDECodeCompletions struct {
 	TotalEngagedUsers int                                  `json:"total_engaged_users"`
 	Languages         []*CopilotIdeCodeCompletionsLanguage `json:"languages"`
 	Editors           []*CopilotIdeCodeCompletionsEditor   `json:"editors"`
 }
 
-// CopilotIdeChatModel represents Copilot usage metrics for chatting with a model in the IDE.
-type CopilotIdeChatModel struct {
+// CopilotIDEChatModel represents Copilot usage metrics for chatting with a model in the IDE.
+type CopilotIDEChatModel struct {
 	Name                     string  `json:"name"`
 	IsCustomModel            bool    `json:"is_custom_model"`
 	CustomModelTrainingDate  *string `json:"custom_model_training_date,omitempty"`
@@ -157,15 +157,15 @@ type CopilotIdeChatModel struct {
 	TotalChatCopyEvents      int     `json:"total_chat_copy_events"`
 }
 
-// CopilotIdeChatEditor represents Copilot usage metrics for chatting with a model in the IDE, categorized by editor and model.
-type CopilotIdeChatEditor struct {
+// CopilotIDEChatEditor represents Copilot usage metrics for chatting with a model in the IDE, categorized by editor and model.
+type CopilotIDEChatEditor struct {
 	Name              string                 `json:"name"`
 	TotalEngagedUsers int                    `json:"total_engaged_users"`
 	Models            []*CopilotIdeChatModel `json:"models"`
 }
 
-// CopilotIdeChat represents Copilot usage metrics for Copilot Chat in the IDE, categorized by editor and model.
-type CopilotIdeChat struct {
+// CopilotIDEChat represents Copilot usage metrics for Copilot Chat in the IDE, categorized by editor and model.
+type CopilotIDEChat struct {
 	TotalEngagedUsers int                     `json:"total_engaged_users"`
 	Editors           []*CopilotIdeChatEditor `json:"editors"`
 }
@@ -190,7 +190,7 @@ type CopilotDotcomPullRequestsModel struct {
 	Name                    string  `json:"name"`
 	IsCustomModel           bool    `json:"is_custom_model"`
 	CustomModelTrainingDate *string `json:"custom_model_training_date,omitempty"`
-	TotalPrSummariesCreated int     `json:"total_pr_summaries_created"`
+	TotalPRSummariesCreated int     `json:"total_pr_summaries_created"`
 	TotalEngagedUsers       int     `json:"total_engaged_users"`
 }
 
@@ -212,8 +212,8 @@ type CopilotMetrics struct {
 	Date                      string                     `json:"date"`
 	TotalActiveUsers          *int                       `json:"total_active_users,omitempty"`
 	TotalEngagedUsers         *int                       `json:"total_engaged_users,omitempty"`
-	CopilotIdeCodeCompletions *CopilotIdeCodeCompletions `json:"copilot_ide_code_completions,omitempty"`
-	CopilotIdeChat            *CopilotIdeChat            `json:"copilot_ide_chat,omitempty"`
+	CopilotIDECodeCompletions *CopilotIDECodeCompletions `json:"copilot_ide_code_completions,omitempty"`
+	CopilotIDEChat            *CopilotIDEChat            `json:"copilot_ide_chat,omitempty"`
 	CopilotDotcomChat         *CopilotDotcomChat         `json:"copilot_dotcom_chat,omitempty"`
 	CopilotDotcomPullRequests *CopilotDotcomPullRequests `json:"copilot_dotcom_pull_requests,omitempty"`
 }
