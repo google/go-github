@@ -129,21 +129,21 @@ type CopilotIDECodeCompletionsModel struct {
 	IsCustomModel           bool                                      `json:"is_custom_model"`
 	CustomModelTrainingDate *string                                   `json:"custom_model_training_date,omitempty"`
 	TotalEngagedUsers       int                                       `json:"total_engaged_users"`
-	Languages               []*CopilotIdeCodeCompletionsModelLanguage `json:"languages"`
+	Languages               []*CopilotIDECodeCompletionsModelLanguage `json:"languages"`
 }
 
 // CopilotIDECodeCompletionsEditor represents Copilot usage metrics for completions in the IDE for an editor.
 type CopilotIDECodeCompletionsEditor struct {
 	Name              string                            `json:"name"`
 	TotalEngagedUsers int                               `json:"total_engaged_users"`
-	Models            []*CopilotIdeCodeCompletionsModel `json:"models"`
+	Models            []*CopilotIDECodeCompletionsModel `json:"models"`
 }
 
 // CopilotIDECodeCompletions represents Copilot usage metrics for Copilot code completions in the IDE, categorized by editor, model and language.
 type CopilotIDECodeCompletions struct {
 	TotalEngagedUsers int                                  `json:"total_engaged_users"`
-	Languages         []*CopilotIdeCodeCompletionsLanguage `json:"languages"`
-	Editors           []*CopilotIdeCodeCompletionsEditor   `json:"editors"`
+	Languages         []*CopilotIDECodeCompletionsLanguage `json:"languages"`
+	Editors           []*CopilotIDECodeCompletionsEditor   `json:"editors"`
 }
 
 // CopilotIDEChatModel represents Copilot usage metrics for chatting with a model in the IDE.
@@ -161,13 +161,13 @@ type CopilotIDEChatModel struct {
 type CopilotIDEChatEditor struct {
 	Name              string                 `json:"name"`
 	TotalEngagedUsers int                    `json:"total_engaged_users"`
-	Models            []*CopilotIdeChatModel `json:"models"`
+	Models            []*CopilotIDEChatModel `json:"models"`
 }
 
 // CopilotIDEChat represents Copilot usage metrics for Copilot Chat in the IDE, categorized by editor and model.
 type CopilotIDEChat struct {
 	TotalEngagedUsers int                     `json:"total_engaged_users"`
-	Editors           []*CopilotIdeChatEditor `json:"editors"`
+	Editors           []*CopilotIDEChatEditor `json:"editors"`
 }
 
 // CopilotDotcomChatModel represents Copilot usage metrics for chatting with a model in the webbrowser.

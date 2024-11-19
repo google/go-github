@@ -2105,9 +2105,9 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 			Date:              "2024-06-24",
 			TotalActiveUsers:  &totalActiveUsers,
 			TotalEngagedUsers: &totalEngagedUsers,
-			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
+			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
-				Languages: []*CopilotIdeCodeCompletionsLanguage{
+				Languages: []*CopilotIDECodeCompletionsLanguage{
 					{
 						Name:              "python",
 						TotalEngagedUsers: 10,
@@ -2117,17 +2117,17 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 						TotalEngagedUsers: 10,
 					},
 				},
-				Editors: []*CopilotIdeCodeCompletionsEditor{
+				Editors: []*CopilotIDECodeCompletionsEditor{
 					{
 						Name:              "vscode",
 						TotalEngagedUsers: 13,
-						Models: []*CopilotIdeCodeCompletionsModel{
+						Models: []*CopilotIDECodeCompletionsModel{
 							{
 								Name:                    "default",
 								IsCustomModel:           false,
 								CustomModelTrainingDate: nil,
 								TotalEngagedUsers:       13,
-								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "python",
 										TotalEngagedUsers:       6,
@@ -2151,12 +2151,12 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 					{
 						Name:              "neovim",
 						TotalEngagedUsers: 7,
-						Models: []*CopilotIdeCodeCompletionsModel{
+						Models: []*CopilotIDECodeCompletionsModel{
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
 								CustomModelTrainingDate: String("2024-02-01"),
-								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "typescript",
 										TotalEngagedUsers:       3,
@@ -2179,13 +2179,13 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 					},
 				},
 			},
-			CopilotIdeChat: &CopilotIdeChat{
+			CopilotIDEChat: &CopilotIDEChat{
 				TotalEngagedUsers: 13,
-				Editors: []*CopilotIdeChatEditor{
+				Editors: []*CopilotIDEChatEditor{
 					{
 						Name:              "vscode",
 						TotalEngagedUsers: 13,
-						Models: []*CopilotIdeChatModel{
+						Models: []*CopilotIDEChatModel{
 							{
 								Name:                     "default",
 								IsCustomModel:            false,
@@ -2231,7 +2231,7 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 								Name:                    "default",
 								IsCustomModel:           false,
 								CustomModelTrainingDate: nil,
-								TotalPrSummariesCreated: 6,
+								TotalPRSummariesCreated: 6,
 								TotalEngagedUsers:       8,
 							},
 						},
@@ -2244,7 +2244,7 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
 								CustomModelTrainingDate: String("2024-02-01"),
-								TotalPrSummariesCreated: 10,
+								TotalPRSummariesCreated: 10,
 								TotalEngagedUsers:       4,
 							},
 						},
@@ -2448,9 +2448,9 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 			Date:              "2024-06-24",
 			TotalActiveUsers:  &totalActiveUsers,
 			TotalEngagedUsers: &totalEngagedUsers,
-			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
+			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
-				Languages: []*CopilotIdeCodeCompletionsLanguage{
+				Languages: []*CopilotIDECodeCompletionsLanguage{
 					{
 						Name:              "python",
 						TotalEngagedUsers: 10,
@@ -2460,17 +2460,17 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 						TotalEngagedUsers: 10,
 					},
 				},
-				Editors: []*CopilotIdeCodeCompletionsEditor{
+				Editors: []*CopilotIDECodeCompletionsEditor{
 					{
 						Name:              "vscode",
 						TotalEngagedUsers: 13,
-						Models: []*CopilotIdeCodeCompletionsModel{
+						Models: []*CopilotIDECodeCompletionsModel{
 							{
 								Name:                    "default",
 								IsCustomModel:           false,
 								CustomModelTrainingDate: nil,
 								TotalEngagedUsers:       13,
-								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "python",
 										TotalEngagedUsers:       6,
@@ -2494,12 +2494,12 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 					{
 						Name:              "neovim",
 						TotalEngagedUsers: 7,
-						Models: []*CopilotIdeCodeCompletionsModel{
+						Models: []*CopilotIDECodeCompletionsModel{
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
 								CustomModelTrainingDate: String("2024-02-01"),
-								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "typescript",
 										TotalEngagedUsers:       3,
@@ -2522,13 +2522,13 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 					},
 				},
 			},
-			CopilotIdeChat: &CopilotIdeChat{
+			CopilotIDEChat: &CopilotIDEChat{
 				TotalEngagedUsers: 13,
-				Editors: []*CopilotIdeChatEditor{
+				Editors: []*CopilotIDEChatEditor{
 					{
 						Name:              "vscode",
 						TotalEngagedUsers: 13,
-						Models: []*CopilotIdeChatModel{
+						Models: []*CopilotIDEChatModel{
 							{
 								Name:                     "default",
 								IsCustomModel:            false,
@@ -2574,7 +2574,7 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 								Name:                    "default",
 								IsCustomModel:           false,
 								CustomModelTrainingDate: nil,
-								TotalPrSummariesCreated: 6,
+								TotalPRSummariesCreated: 6,
 								TotalEngagedUsers:       8,
 							},
 						},
@@ -2587,7 +2587,7 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
 								CustomModelTrainingDate: String("2024-02-01"),
-								TotalPrSummariesCreated: 10,
+								TotalPRSummariesCreated: 10,
 								TotalEngagedUsers:       4,
 							},
 						},
@@ -2791,9 +2791,9 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 			Date:              "2024-06-24",
 			TotalActiveUsers:  &totalActiveUsers,
 			TotalEngagedUsers: &totalEngagedUsers,
-			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
+			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
-				Languages: []*CopilotIdeCodeCompletionsLanguage{
+				Languages: []*CopilotIDECodeCompletionsLanguage{
 					{
 						Name:              "python",
 						TotalEngagedUsers: 10,
@@ -2803,17 +2803,17 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 						TotalEngagedUsers: 10,
 					},
 				},
-				Editors: []*CopilotIdeCodeCompletionsEditor{
+				Editors: []*CopilotIDECodeCompletionsEditor{
 					{
 						Name:              "vscode",
 						TotalEngagedUsers: 13,
-						Models: []*CopilotIdeCodeCompletionsModel{
+						Models: []*CopilotIDECodeCompletionsModel{
 							{
 								Name:                    "default",
 								IsCustomModel:           false,
 								CustomModelTrainingDate: nil,
 								TotalEngagedUsers:       13,
-								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "python",
 										TotalEngagedUsers:       6,
@@ -2837,12 +2837,12 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 					{
 						Name:              "neovim",
 						TotalEngagedUsers: 7,
-						Models: []*CopilotIdeCodeCompletionsModel{
+						Models: []*CopilotIDECodeCompletionsModel{
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
 								CustomModelTrainingDate: String("2024-02-01"),
-								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "typescript",
 										TotalEngagedUsers:       3,
@@ -2865,13 +2865,13 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 					},
 				},
 			},
-			CopilotIdeChat: &CopilotIdeChat{
+			CopilotIDEChat: &CopilotIDEChat{
 				TotalEngagedUsers: 13,
-				Editors: []*CopilotIdeChatEditor{
+				Editors: []*CopilotIDEChatEditor{
 					{
 						Name:              "vscode",
 						TotalEngagedUsers: 13,
-						Models: []*CopilotIdeChatModel{
+						Models: []*CopilotIDEChatModel{
 							{
 								Name:                     "default",
 								IsCustomModel:            false,
@@ -2917,7 +2917,7 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 								Name:                    "default",
 								IsCustomModel:           false,
 								CustomModelTrainingDate: nil,
-								TotalPrSummariesCreated: 6,
+								TotalPRSummariesCreated: 6,
 								TotalEngagedUsers:       8,
 							},
 						},
@@ -2930,7 +2930,7 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
 								CustomModelTrainingDate: String("2024-02-01"),
-								TotalPrSummariesCreated: 10,
+								TotalPRSummariesCreated: 10,
 								TotalEngagedUsers:       4,
 							},
 						},
@@ -3134,9 +3134,9 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 			Date:              "2024-06-24",
 			TotalActiveUsers:  &totalActiveUsers,
 			TotalEngagedUsers: &totalEngagedUsers,
-			CopilotIdeCodeCompletions: &CopilotIdeCodeCompletions{
+			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
-				Languages: []*CopilotIdeCodeCompletionsLanguage{
+				Languages: []*CopilotIDECodeCompletionsLanguage{
 					{
 						Name:              "python",
 						TotalEngagedUsers: 10,
@@ -3146,17 +3146,17 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 						TotalEngagedUsers: 10,
 					},
 				},
-				Editors: []*CopilotIdeCodeCompletionsEditor{
+				Editors: []*CopilotIDECodeCompletionsEditor{
 					{
 						Name:              "vscode",
 						TotalEngagedUsers: 13,
-						Models: []*CopilotIdeCodeCompletionsModel{
+						Models: []*CopilotIDECodeCompletionsModel{
 							{
 								Name:                    "default",
 								IsCustomModel:           false,
 								CustomModelTrainingDate: nil,
 								TotalEngagedUsers:       13,
-								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "python",
 										TotalEngagedUsers:       6,
@@ -3180,12 +3180,12 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 					{
 						Name:              "neovim",
 						TotalEngagedUsers: 7,
-						Models: []*CopilotIdeCodeCompletionsModel{
+						Models: []*CopilotIDECodeCompletionsModel{
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
 								CustomModelTrainingDate: String("2024-02-01"),
-								Languages: []*CopilotIdeCodeCompletionsModelLanguage{
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "typescript",
 										TotalEngagedUsers:       3,
@@ -3208,13 +3208,13 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 					},
 				},
 			},
-			CopilotIdeChat: &CopilotIdeChat{
+			CopilotIDEChat: &CopilotIDEChat{
 				TotalEngagedUsers: 13,
-				Editors: []*CopilotIdeChatEditor{
+				Editors: []*CopilotIDEChatEditor{
 					{
 						Name:              "vscode",
 						TotalEngagedUsers: 13,
-						Models: []*CopilotIdeChatModel{
+						Models: []*CopilotIDEChatModel{
 							{
 								Name:                     "default",
 								IsCustomModel:            false,
@@ -3260,7 +3260,7 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 								Name:                    "default",
 								IsCustomModel:           false,
 								CustomModelTrainingDate: nil,
-								TotalPrSummariesCreated: 6,
+								TotalPRSummariesCreated: 6,
 								TotalEngagedUsers:       8,
 							},
 						},
@@ -3273,7 +3273,7 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
 								CustomModelTrainingDate: String("2024-02-01"),
-								TotalPrSummariesCreated: 10,
+								TotalPRSummariesCreated: 10,
 								TotalEngagedUsers:       4,
 							},
 						},
