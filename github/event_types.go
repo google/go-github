@@ -1787,6 +1787,7 @@ type WorkflowJobEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+	Deployment   *Deployment   `json:"deployment,omitempty"`
 }
 
 // WorkflowRunEvent is triggered when a GitHub Actions workflow run is requested or completed.
