@@ -604,7 +604,7 @@ func (s *CopilotService) GetOrganizationTeamUsage(ctx context.Context, org, team
 
 // GetEnterpriseMetrics gets Copilot usage metrics for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics
 func (s *CopilotService) GetEnterpriseMetrics(ctx context.Context, enterprise string, opts *CopilotMetricsListOptions) ([]*CopilotMetrics, *Response, error) {
@@ -630,7 +630,7 @@ func (s *CopilotService) GetEnterpriseMetrics(ctx context.Context, enterprise st
 
 // GetEnterpriseTeamMetrics gets Copilot usage metrics for an enterprise team.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise-team
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise-team
 //
 //meta:operation GET /enterprises/{enterprise}/team/{team_slug}/copilot/metrics
 func (s *CopilotService) GetEnterpriseTeamMetrics(ctx context.Context, enterprise, team string, opts *CopilotMetricsListOptions) ([]*CopilotMetrics, *Response, error) {
@@ -656,7 +656,7 @@ func (s *CopilotService) GetEnterpriseTeamMetrics(ctx context.Context, enterpris
 
 // GetOrganizationMetrics gets Copilot usage metrics for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-organization
 //
 //meta:operation GET /orgs/{org}/copilot/metrics
 func (s *CopilotService) GetOrganizationMetrics(ctx context.Context, org string, opts *CopilotMetricsListOptions) ([]*CopilotMetrics, *Response, error) {
@@ -682,7 +682,7 @@ func (s *CopilotService) GetOrganizationMetrics(ctx context.Context, org string,
 
 // GetOrganizationTeamMetrics gets Copilot usage metrics for an organization team.
 //
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-metrics#get-copilot-metrics-for-a-team
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-a-team
 //
 //meta:operation GET /orgs/{org}/team/{team_slug}/copilot/metrics
 func (s *CopilotService) GetOrganizationTeamMetrics(ctx context.Context, org, team string, opts *CopilotMetricsListOptions) ([]*CopilotMetrics, *Response, error) {

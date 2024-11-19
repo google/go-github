@@ -5586,23 +5586,23 @@ func TestCopilotDotcomPullRequestsModel_GetCustomModelTrainingDate(tt *testing.T
 	c.GetCustomModelTrainingDate()
 }
 
-func TestCopilotIdeChatModel_GetCustomModelTrainingDate(tt *testing.T) {
+func TestCopilotIDEChatModel_GetCustomModelTrainingDate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CopilotIdeChatModel{CustomModelTrainingDate: &zeroValue}
+	c := &CopilotIDEChatModel{CustomModelTrainingDate: &zeroValue}
 	c.GetCustomModelTrainingDate()
-	c = &CopilotIdeChatModel{}
+	c = &CopilotIDEChatModel{}
 	c.GetCustomModelTrainingDate()
 	c = nil
 	c.GetCustomModelTrainingDate()
 }
 
-func TestCopilotIdeCodeCompletionsModel_GetCustomModelTrainingDate(tt *testing.T) {
+func TestCopilotIDECodeCompletionsModel_GetCustomModelTrainingDate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CopilotIdeCodeCompletionsModel{CustomModelTrainingDate: &zeroValue}
+	c := &CopilotIDECodeCompletionsModel{CustomModelTrainingDate: &zeroValue}
 	c.GetCustomModelTrainingDate()
-	c = &CopilotIdeCodeCompletionsModel{}
+	c = &CopilotIDECodeCompletionsModel{}
 	c.GetCustomModelTrainingDate()
 	c = nil
 	c.GetCustomModelTrainingDate()
@@ -5624,20 +5624,42 @@ func TestCopilotMetrics_GetCopilotDotcomPullRequests(tt *testing.T) {
 	c.GetCopilotDotcomPullRequests()
 }
 
-func TestCopilotMetrics_GetCopilotIdeChat(tt *testing.T) {
+func TestCopilotMetrics_GetCopilotIDEChat(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotMetrics{}
-	c.GetCopilotIdeChat()
+	c.GetCopilotIDEChat()
 	c = nil
-	c.GetCopilotIdeChat()
+	c.GetCopilotIDEChat()
 }
 
-func TestCopilotMetrics_GetCopilotIdeCodeCompletions(tt *testing.T) {
+func TestCopilotMetrics_GetCopilotIDECodeCompletions(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotMetrics{}
-	c.GetCopilotIdeCodeCompletions()
+	c.GetCopilotIDECodeCompletions()
 	c = nil
-	c.GetCopilotIdeCodeCompletions()
+	c.GetCopilotIDECodeCompletions()
+}
+
+func TestCopilotMetrics_GetTotalActiveUsers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetrics{TotalActiveUsers: &zeroValue}
+	c.GetTotalActiveUsers()
+	c = &CopilotMetrics{}
+	c.GetTotalActiveUsers()
+	c = nil
+	c.GetTotalActiveUsers()
+}
+
+func TestCopilotMetrics_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetrics{TotalEngagedUsers: &zeroValue}
+	c.GetTotalEngagedUsers()
+	c = &CopilotMetrics{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
 }
 
 func TestCopilotMetricsListOptions_GetSince(tt *testing.T) {

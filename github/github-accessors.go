@@ -4311,7 +4311,7 @@ func (c *CopilotDotcomPullRequestsModel) GetCustomModelTrainingDate() string {
 }
 
 // GetCustomModelTrainingDate returns the CustomModelTrainingDate field if it's non-nil, zero value otherwise.
-func (c *CopilotIdeChatModel) GetCustomModelTrainingDate() string {
+func (c *CopilotIDEChatModel) GetCustomModelTrainingDate() string {
 	if c == nil || c.CustomModelTrainingDate == nil {
 		return ""
 	}
@@ -4319,7 +4319,7 @@ func (c *CopilotIdeChatModel) GetCustomModelTrainingDate() string {
 }
 
 // GetCustomModelTrainingDate returns the CustomModelTrainingDate field if it's non-nil, zero value otherwise.
-func (c *CopilotIdeCodeCompletionsModel) GetCustomModelTrainingDate() string {
+func (c *CopilotIDECodeCompletionsModel) GetCustomModelTrainingDate() string {
 	if c == nil || c.CustomModelTrainingDate == nil {
 		return ""
 	}
@@ -4342,20 +4342,36 @@ func (c *CopilotMetrics) GetCopilotDotcomPullRequests() *CopilotDotcomPullReques
 	return c.CopilotDotcomPullRequests
 }
 
-// GetCopilotIdeChat returns the CopilotIdeChat field.
-func (c *CopilotMetrics) GetCopilotIdeChat() *CopilotIdeChat {
+// GetCopilotIDEChat returns the CopilotIDEChat field.
+func (c *CopilotMetrics) GetCopilotIDEChat() *CopilotIDEChat {
 	if c == nil {
 		return nil
 	}
-	return c.CopilotIdeChat
+	return c.CopilotIDEChat
 }
 
-// GetCopilotIdeCodeCompletions returns the CopilotIdeCodeCompletions field.
-func (c *CopilotMetrics) GetCopilotIdeCodeCompletions() *CopilotIdeCodeCompletions {
+// GetCopilotIDECodeCompletions returns the CopilotIDECodeCompletions field.
+func (c *CopilotMetrics) GetCopilotIDECodeCompletions() *CopilotIDECodeCompletions {
 	if c == nil {
 		return nil
 	}
-	return c.CopilotIdeCodeCompletions
+	return c.CopilotIDECodeCompletions
+}
+
+// GetTotalActiveUsers returns the TotalActiveUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotMetrics) GetTotalActiveUsers() int {
+	if c == nil || c.TotalActiveUsers == nil {
+		return 0
+	}
+	return *c.TotalActiveUsers
+}
+
+// GetTotalEngagedUsers returns the TotalEngagedUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotMetrics) GetTotalEngagedUsers() int {
+	if c == nil || c.TotalEngagedUsers == nil {
+		return 0
+	}
+	return *c.TotalEngagedUsers
 }
 
 // GetSince returns the Since field if it's non-nil, zero value otherwise.
