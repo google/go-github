@@ -34213,6 +34213,14 @@ func TestWorkflowJobEvent_GetAction(tt *testing.T) {
 	w.GetAction()
 }
 
+func TestWorkflowJobEvent_GetDeployment(tt *testing.T) {
+	tt.Parallel()
+	w := &WorkflowJobEvent{}
+	w.GetDeployment()
+	w = nil
+	w.GetDeployment()
+}
+
 func TestWorkflowJobEvent_GetInstallation(tt *testing.T) {
 	tt.Parallel()
 	w := &WorkflowJobEvent{}

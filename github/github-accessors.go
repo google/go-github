@@ -26670,6 +26670,14 @@ func (w *WorkflowJobEvent) GetAction() string {
 	return *w.Action
 }
 
+// GetDeployment returns the Deployment field.
+func (w *WorkflowJobEvent) GetDeployment() *Deployment {
+	if w == nil {
+		return nil
+	}
+	return w.Deployment
+}
+
 // GetInstallation returns the Installation field.
 func (w *WorkflowJobEvent) GetInstallation() *Installation {
 	if w == nil {
