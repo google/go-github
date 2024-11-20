@@ -4294,6 +4294,102 @@ func (c *ContributorStats) GetTotal() int {
 	return *c.Total
 }
 
+// GetCustomModelTrainingDate returns the CustomModelTrainingDate field if it's non-nil, zero value otherwise.
+func (c *CopilotDotcomChatModel) GetCustomModelTrainingDate() string {
+	if c == nil || c.CustomModelTrainingDate == nil {
+		return ""
+	}
+	return *c.CustomModelTrainingDate
+}
+
+// GetCustomModelTrainingDate returns the CustomModelTrainingDate field if it's non-nil, zero value otherwise.
+func (c *CopilotDotcomPullRequestsModel) GetCustomModelTrainingDate() string {
+	if c == nil || c.CustomModelTrainingDate == nil {
+		return ""
+	}
+	return *c.CustomModelTrainingDate
+}
+
+// GetCustomModelTrainingDate returns the CustomModelTrainingDate field if it's non-nil, zero value otherwise.
+func (c *CopilotIDEChatModel) GetCustomModelTrainingDate() string {
+	if c == nil || c.CustomModelTrainingDate == nil {
+		return ""
+	}
+	return *c.CustomModelTrainingDate
+}
+
+// GetCustomModelTrainingDate returns the CustomModelTrainingDate field if it's non-nil, zero value otherwise.
+func (c *CopilotIDECodeCompletionsModel) GetCustomModelTrainingDate() string {
+	if c == nil || c.CustomModelTrainingDate == nil {
+		return ""
+	}
+	return *c.CustomModelTrainingDate
+}
+
+// GetCopilotDotcomChat returns the CopilotDotcomChat field.
+func (c *CopilotMetrics) GetCopilotDotcomChat() *CopilotDotcomChat {
+	if c == nil {
+		return nil
+	}
+	return c.CopilotDotcomChat
+}
+
+// GetCopilotDotcomPullRequests returns the CopilotDotcomPullRequests field.
+func (c *CopilotMetrics) GetCopilotDotcomPullRequests() *CopilotDotcomPullRequests {
+	if c == nil {
+		return nil
+	}
+	return c.CopilotDotcomPullRequests
+}
+
+// GetCopilotIDEChat returns the CopilotIDEChat field.
+func (c *CopilotMetrics) GetCopilotIDEChat() *CopilotIDEChat {
+	if c == nil {
+		return nil
+	}
+	return c.CopilotIDEChat
+}
+
+// GetCopilotIDECodeCompletions returns the CopilotIDECodeCompletions field.
+func (c *CopilotMetrics) GetCopilotIDECodeCompletions() *CopilotIDECodeCompletions {
+	if c == nil {
+		return nil
+	}
+	return c.CopilotIDECodeCompletions
+}
+
+// GetTotalActiveUsers returns the TotalActiveUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotMetrics) GetTotalActiveUsers() int {
+	if c == nil || c.TotalActiveUsers == nil {
+		return 0
+	}
+	return *c.TotalActiveUsers
+}
+
+// GetTotalEngagedUsers returns the TotalEngagedUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotMetrics) GetTotalEngagedUsers() int {
+	if c == nil || c.TotalEngagedUsers == nil {
+		return 0
+	}
+	return *c.TotalEngagedUsers
+}
+
+// GetSince returns the Since field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsListOptions) GetSince() time.Time {
+	if c == nil || c.Since == nil {
+		return time.Time{}
+	}
+	return *c.Since
+}
+
+// GetUntil returns the Until field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsListOptions) GetUntil() time.Time {
+	if c == nil || c.Until == nil {
+		return time.Time{}
+	}
+	return *c.Until
+}
+
 // GetSeatBreakdown returns the SeatBreakdown field.
 func (c *CopilotOrganizationDetails) GetSeatBreakdown() *CopilotSeatBreakdown {
 	if c == nil {

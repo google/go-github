@@ -1930,3 +1930,1375 @@ func TestCopilotService_GetOrganizationTeamUsage(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/metrics", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+				"date": "2024-06-24",
+				"total_active_users": 24,
+				"total_engaged_users": 20,
+				"copilot_ide_code_completions": {
+				"total_engaged_users": 20,
+				"languages": [
+					{
+					"name": "python",
+					"total_engaged_users": 10
+					},
+					{
+					"name": "ruby",
+					"total_engaged_users": 10
+					}
+				],
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 13,
+						"languages": [
+							{
+							"name": "python",
+							"total_engaged_users": 6,
+							"total_code_suggestions": 249,
+							"total_code_acceptances": 123,
+							"total_code_lines_suggested": 225,
+							"total_code_lines_accepted": 135
+							},
+							{
+							"name": "ruby",
+							"total_engaged_users": 7,
+							"total_code_suggestions": 496,
+							"total_code_acceptances": 253,
+							"total_code_lines_suggested": 520,
+							"total_code_lines_accepted": 270
+							}
+						]
+						}
+					]
+					},
+					{
+					"name": "neovim",
+					"total_engaged_users": 7,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"languages": [
+							{
+							"name": "typescript",
+							"total_engaged_users": 3,
+							"total_code_suggestions": 112,
+							"total_code_acceptances": 56,
+							"total_code_lines_suggested": 143,
+							"total_code_lines_accepted": 61
+							},
+							{
+							"name": "go",
+							"total_engaged_users": 4,
+							"total_code_suggestions": 132,
+							"total_code_acceptances": 67,
+							"total_code_lines_suggested": 154,
+							"total_code_lines_accepted": 72
+							}
+						]
+						}
+					]
+					}
+				]
+				},
+				"copilot_ide_chat": {
+				"total_engaged_users": 13,
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 12,
+						"total_chats": 45,
+						"total_chat_insertion_events": 12,
+						"total_chat_copy_events": 16
+						},
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_engaged_users": 1,
+						"total_chats": 10,
+						"total_chat_insertion_events": 11,
+						"total_chat_copy_events": 3
+						}
+					]
+					}
+				]
+				},
+				"copilot_dotcom_chat": {
+				"total_engaged_users": 14,
+				"models": [
+					{
+					"name": "default",
+					"is_custom_model": false,
+					"custom_model_training_date": null,
+					"total_engaged_users": 14,
+					"total_chats": 38
+					}
+				]
+				},
+				"copilot_dotcom_pull_requests": {
+				"total_engaged_users": 12,
+				"repositories": [
+					{
+					"name": "demo/repo1",
+					"total_engaged_users": 8,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_pr_summaries_created": 6,
+						"total_engaged_users": 8
+						}
+					]
+					},
+					{
+					"name": "demo/repo2",
+					"total_engaged_users": 4,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_pr_summaries_created": 10,
+						"total_engaged_users": 4
+						}
+					]
+					}
+				]
+				}
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	got, _, err := client.Copilot.GetEnterpriseMetrics(ctx, "e", &CopilotMetricsListOptions{})
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseMetrics returned error: %v", err)
+	}
+
+	totalActiveUsers := 24
+	totalEngagedUsers := 20
+	want := []*CopilotMetrics{
+		{
+			Date:              "2024-06-24",
+			TotalActiveUsers:  &totalActiveUsers,
+			TotalEngagedUsers: &totalEngagedUsers,
+			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
+				TotalEngagedUsers: 20,
+				Languages: []*CopilotIDECodeCompletionsLanguage{
+					{
+						Name:              "python",
+						TotalEngagedUsers: 10,
+					},
+					{
+						Name:              "ruby",
+						TotalEngagedUsers: 10,
+					},
+				},
+				Editors: []*CopilotIDECodeCompletionsEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIDECodeCompletionsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalEngagedUsers:       13,
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
+									{
+										Name:                    "python",
+										TotalEngagedUsers:       6,
+										TotalCodeSuggestions:    249,
+										TotalCodeAcceptances:    123,
+										TotalCodeLinesSuggested: 225,
+										TotalCodeLinesAccepted:  135,
+									},
+									{
+										Name:                    "ruby",
+										TotalEngagedUsers:       7,
+										TotalCodeSuggestions:    496,
+										TotalCodeAcceptances:    253,
+										TotalCodeLinesSuggested: 520,
+										TotalCodeLinesAccepted:  270,
+									},
+								},
+							},
+						},
+					},
+					{
+						Name:              "neovim",
+						TotalEngagedUsers: 7,
+						Models: []*CopilotIDECodeCompletionsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
+									{
+										Name:                    "typescript",
+										TotalEngagedUsers:       3,
+										TotalCodeSuggestions:    112,
+										TotalCodeAcceptances:    56,
+										TotalCodeLinesSuggested: 143,
+										TotalCodeLinesAccepted:  61,
+									},
+									{
+										Name:                    "go",
+										TotalEngagedUsers:       4,
+										TotalCodeSuggestions:    132,
+										TotalCodeAcceptances:    67,
+										TotalCodeLinesSuggested: 154,
+										TotalCodeLinesAccepted:  72,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			CopilotIDEChat: &CopilotIDEChat{
+				TotalEngagedUsers: 13,
+				Editors: []*CopilotIDEChatEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIDEChatModel{
+							{
+								Name:                     "default",
+								IsCustomModel:            false,
+								CustomModelTrainingDate:  nil,
+								TotalEngagedUsers:        12,
+								TotalChats:               45,
+								TotalChatInsertionEvents: 12,
+								TotalChatCopyEvents:      16,
+							},
+							{
+								Name:                     "a-custom-model",
+								IsCustomModel:            true,
+								CustomModelTrainingDate:  String("2024-02-01"),
+								TotalEngagedUsers:        1,
+								TotalChats:               10,
+								TotalChatInsertionEvents: 11,
+								TotalChatCopyEvents:      3,
+							},
+						},
+					},
+				},
+			},
+			CopilotDotcomChat: &CopilotDotcomChat{
+				TotalEngagedUsers: 14,
+				Models: []*CopilotDotcomChatModel{
+					{
+						Name:                    "default",
+						IsCustomModel:           false,
+						CustomModelTrainingDate: nil,
+						TotalEngagedUsers:       14,
+						TotalChats:              38,
+					},
+				},
+			},
+			CopilotDotcomPullRequests: &CopilotDotcomPullRequests{
+				TotalEngagedUsers: 12,
+				Repositories: []*CopilotDotcomPullRequestsRepository{
+					{
+						Name:              "demo/repo1",
+						TotalEngagedUsers: 8,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalPRSummariesCreated: 6,
+								TotalEngagedUsers:       8,
+							},
+						},
+					},
+					{
+						Name:              "demo/repo2",
+						TotalEngagedUsers: 4,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								TotalPRSummariesCreated: 10,
+								TotalEngagedUsers:       4,
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseMetrics returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseMetrics"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseMetrics(ctx, "\n", &CopilotMetricsListOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseMetrics(ctx, "e", &CopilotMetricsListOptions{})
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseMetrics returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/team/t/copilot/metrics", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+				"date": "2024-06-24",
+				"total_active_users": 24,
+				"total_engaged_users": 20,
+				"copilot_ide_code_completions": {
+				"total_engaged_users": 20,
+				"languages": [
+					{
+					"name": "python",
+					"total_engaged_users": 10
+					},
+					{
+					"name": "ruby",
+					"total_engaged_users": 10
+					}
+				],
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 13,
+						"languages": [
+							{
+							"name": "python",
+							"total_engaged_users": 6,
+							"total_code_suggestions": 249,
+							"total_code_acceptances": 123,
+							"total_code_lines_suggested": 225,
+							"total_code_lines_accepted": 135
+							},
+							{
+							"name": "ruby",
+							"total_engaged_users": 7,
+							"total_code_suggestions": 496,
+							"total_code_acceptances": 253,
+							"total_code_lines_suggested": 520,
+							"total_code_lines_accepted": 270
+							}
+						]
+						}
+					]
+					},
+					{
+					"name": "neovim",
+					"total_engaged_users": 7,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"languages": [
+							{
+							"name": "typescript",
+							"total_engaged_users": 3,
+							"total_code_suggestions": 112,
+							"total_code_acceptances": 56,
+							"total_code_lines_suggested": 143,
+							"total_code_lines_accepted": 61
+							},
+							{
+							"name": "go",
+							"total_engaged_users": 4,
+							"total_code_suggestions": 132,
+							"total_code_acceptances": 67,
+							"total_code_lines_suggested": 154,
+							"total_code_lines_accepted": 72
+							}
+						]
+						}
+					]
+					}
+				]
+				},
+				"copilot_ide_chat": {
+				"total_engaged_users": 13,
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 12,
+						"total_chats": 45,
+						"total_chat_insertion_events": 12,
+						"total_chat_copy_events": 16
+						},
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_engaged_users": 1,
+						"total_chats": 10,
+						"total_chat_insertion_events": 11,
+						"total_chat_copy_events": 3
+						}
+					]
+					}
+				]
+				},
+				"copilot_dotcom_chat": {
+				"total_engaged_users": 14,
+				"models": [
+					{
+					"name": "default",
+					"is_custom_model": false,
+					"custom_model_training_date": null,
+					"total_engaged_users": 14,
+					"total_chats": 38
+					}
+				]
+				},
+				"copilot_dotcom_pull_requests": {
+				"total_engaged_users": 12,
+				"repositories": [
+					{
+					"name": "demo/repo1",
+					"total_engaged_users": 8,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_pr_summaries_created": 6,
+						"total_engaged_users": 8
+						}
+					]
+					},
+					{
+					"name": "demo/repo2",
+					"total_engaged_users": 4,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_pr_summaries_created": 10,
+						"total_engaged_users": 4
+						}
+					]
+					}
+				]
+				}
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	got, _, err := client.Copilot.GetEnterpriseTeamMetrics(ctx, "e", "t", &CopilotMetricsListOptions{})
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseTeamMetrics returned error: %v", err)
+	}
+
+	totalActiveUsers := 24
+	totalEngagedUsers := 20
+	want := []*CopilotMetrics{
+		{
+			Date:              "2024-06-24",
+			TotalActiveUsers:  &totalActiveUsers,
+			TotalEngagedUsers: &totalEngagedUsers,
+			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
+				TotalEngagedUsers: 20,
+				Languages: []*CopilotIDECodeCompletionsLanguage{
+					{
+						Name:              "python",
+						TotalEngagedUsers: 10,
+					},
+					{
+						Name:              "ruby",
+						TotalEngagedUsers: 10,
+					},
+				},
+				Editors: []*CopilotIDECodeCompletionsEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIDECodeCompletionsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalEngagedUsers:       13,
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
+									{
+										Name:                    "python",
+										TotalEngagedUsers:       6,
+										TotalCodeSuggestions:    249,
+										TotalCodeAcceptances:    123,
+										TotalCodeLinesSuggested: 225,
+										TotalCodeLinesAccepted:  135,
+									},
+									{
+										Name:                    "ruby",
+										TotalEngagedUsers:       7,
+										TotalCodeSuggestions:    496,
+										TotalCodeAcceptances:    253,
+										TotalCodeLinesSuggested: 520,
+										TotalCodeLinesAccepted:  270,
+									},
+								},
+							},
+						},
+					},
+					{
+						Name:              "neovim",
+						TotalEngagedUsers: 7,
+						Models: []*CopilotIDECodeCompletionsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
+									{
+										Name:                    "typescript",
+										TotalEngagedUsers:       3,
+										TotalCodeSuggestions:    112,
+										TotalCodeAcceptances:    56,
+										TotalCodeLinesSuggested: 143,
+										TotalCodeLinesAccepted:  61,
+									},
+									{
+										Name:                    "go",
+										TotalEngagedUsers:       4,
+										TotalCodeSuggestions:    132,
+										TotalCodeAcceptances:    67,
+										TotalCodeLinesSuggested: 154,
+										TotalCodeLinesAccepted:  72,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			CopilotIDEChat: &CopilotIDEChat{
+				TotalEngagedUsers: 13,
+				Editors: []*CopilotIDEChatEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIDEChatModel{
+							{
+								Name:                     "default",
+								IsCustomModel:            false,
+								CustomModelTrainingDate:  nil,
+								TotalEngagedUsers:        12,
+								TotalChats:               45,
+								TotalChatInsertionEvents: 12,
+								TotalChatCopyEvents:      16,
+							},
+							{
+								Name:                     "a-custom-model",
+								IsCustomModel:            true,
+								CustomModelTrainingDate:  String("2024-02-01"),
+								TotalEngagedUsers:        1,
+								TotalChats:               10,
+								TotalChatInsertionEvents: 11,
+								TotalChatCopyEvents:      3,
+							},
+						},
+					},
+				},
+			},
+			CopilotDotcomChat: &CopilotDotcomChat{
+				TotalEngagedUsers: 14,
+				Models: []*CopilotDotcomChatModel{
+					{
+						Name:                    "default",
+						IsCustomModel:           false,
+						CustomModelTrainingDate: nil,
+						TotalEngagedUsers:       14,
+						TotalChats:              38,
+					},
+				},
+			},
+			CopilotDotcomPullRequests: &CopilotDotcomPullRequests{
+				TotalEngagedUsers: 12,
+				Repositories: []*CopilotDotcomPullRequestsRepository{
+					{
+						Name:              "demo/repo1",
+						TotalEngagedUsers: 8,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalPRSummariesCreated: 6,
+								TotalEngagedUsers:       8,
+							},
+						},
+					},
+					{
+						Name:              "demo/repo2",
+						TotalEngagedUsers: 4,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								TotalPRSummariesCreated: 10,
+								TotalEngagedUsers:       4,
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseTeamMetrics returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseTeamMetrics"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseTeamMetrics(ctx, "\n", "t", &CopilotMetricsListOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseTeamMetrics(ctx, "e", "t", &CopilotMetricsListOptions{})
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseTeamMetrics returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/metrics", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+				"date": "2024-06-24",
+				"total_active_users": 24,
+				"total_engaged_users": 20,
+				"copilot_ide_code_completions": {
+				"total_engaged_users": 20,
+				"languages": [
+					{
+					"name": "python",
+					"total_engaged_users": 10
+					},
+					{
+					"name": "ruby",
+					"total_engaged_users": 10
+					}
+				],
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 13,
+						"languages": [
+							{
+							"name": "python",
+							"total_engaged_users": 6,
+							"total_code_suggestions": 249,
+							"total_code_acceptances": 123,
+							"total_code_lines_suggested": 225,
+							"total_code_lines_accepted": 135
+							},
+							{
+							"name": "ruby",
+							"total_engaged_users": 7,
+							"total_code_suggestions": 496,
+							"total_code_acceptances": 253,
+							"total_code_lines_suggested": 520,
+							"total_code_lines_accepted": 270
+							}
+						]
+						}
+					]
+					},
+					{
+					"name": "neovim",
+					"total_engaged_users": 7,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"languages": [
+							{
+							"name": "typescript",
+							"total_engaged_users": 3,
+							"total_code_suggestions": 112,
+							"total_code_acceptances": 56,
+							"total_code_lines_suggested": 143,
+							"total_code_lines_accepted": 61
+							},
+							{
+							"name": "go",
+							"total_engaged_users": 4,
+							"total_code_suggestions": 132,
+							"total_code_acceptances": 67,
+							"total_code_lines_suggested": 154,
+							"total_code_lines_accepted": 72
+							}
+						]
+						}
+					]
+					}
+				]
+				},
+				"copilot_ide_chat": {
+				"total_engaged_users": 13,
+				"editors": [
+					{
+					"name": "vscode",
+					"total_engaged_users": 13,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_engaged_users": 12,
+						"total_chats": 45,
+						"total_chat_insertion_events": 12,
+						"total_chat_copy_events": 16
+						},
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_engaged_users": 1,
+						"total_chats": 10,
+						"total_chat_insertion_events": 11,
+						"total_chat_copy_events": 3
+						}
+					]
+					}
+				]
+				},
+				"copilot_dotcom_chat": {
+				"total_engaged_users": 14,
+				"models": [
+					{
+					"name": "default",
+					"is_custom_model": false,
+					"custom_model_training_date": null,
+					"total_engaged_users": 14,
+					"total_chats": 38
+					}
+				]
+				},
+				"copilot_dotcom_pull_requests": {
+				"total_engaged_users": 12,
+				"repositories": [
+					{
+					"name": "demo/repo1",
+					"total_engaged_users": 8,
+					"models": [
+						{
+						"name": "default",
+						"is_custom_model": false,
+						"custom_model_training_date": null,
+						"total_pr_summaries_created": 6,
+						"total_engaged_users": 8
+						}
+					]
+					},
+					{
+					"name": "demo/repo2",
+					"total_engaged_users": 4,
+					"models": [
+						{
+						"name": "a-custom-model",
+						"is_custom_model": true,
+						"custom_model_training_date": "2024-02-01",
+						"total_pr_summaries_created": 10,
+						"total_engaged_users": 4
+						}
+					]
+					}
+				]
+				}
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	got, _, err := client.Copilot.GetOrganizationMetrics(ctx, "o", &CopilotMetricsListOptions{})
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationMetrics returned error: %v", err)
+	}
+
+	totalActiveUsers := 24
+	totalEngagedUsers := 20
+	want := []*CopilotMetrics{
+		{
+			Date:              "2024-06-24",
+			TotalActiveUsers:  &totalActiveUsers,
+			TotalEngagedUsers: &totalEngagedUsers,
+			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
+				TotalEngagedUsers: 20,
+				Languages: []*CopilotIDECodeCompletionsLanguage{
+					{
+						Name:              "python",
+						TotalEngagedUsers: 10,
+					},
+					{
+						Name:              "ruby",
+						TotalEngagedUsers: 10,
+					},
+				},
+				Editors: []*CopilotIDECodeCompletionsEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIDECodeCompletionsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalEngagedUsers:       13,
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
+									{
+										Name:                    "python",
+										TotalEngagedUsers:       6,
+										TotalCodeSuggestions:    249,
+										TotalCodeAcceptances:    123,
+										TotalCodeLinesSuggested: 225,
+										TotalCodeLinesAccepted:  135,
+									},
+									{
+										Name:                    "ruby",
+										TotalEngagedUsers:       7,
+										TotalCodeSuggestions:    496,
+										TotalCodeAcceptances:    253,
+										TotalCodeLinesSuggested: 520,
+										TotalCodeLinesAccepted:  270,
+									},
+								},
+							},
+						},
+					},
+					{
+						Name:              "neovim",
+						TotalEngagedUsers: 7,
+						Models: []*CopilotIDECodeCompletionsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
+									{
+										Name:                    "typescript",
+										TotalEngagedUsers:       3,
+										TotalCodeSuggestions:    112,
+										TotalCodeAcceptances:    56,
+										TotalCodeLinesSuggested: 143,
+										TotalCodeLinesAccepted:  61,
+									},
+									{
+										Name:                    "go",
+										TotalEngagedUsers:       4,
+										TotalCodeSuggestions:    132,
+										TotalCodeAcceptances:    67,
+										TotalCodeLinesSuggested: 154,
+										TotalCodeLinesAccepted:  72,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			CopilotIDEChat: &CopilotIDEChat{
+				TotalEngagedUsers: 13,
+				Editors: []*CopilotIDEChatEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIDEChatModel{
+							{
+								Name:                     "default",
+								IsCustomModel:            false,
+								CustomModelTrainingDate:  nil,
+								TotalEngagedUsers:        12,
+								TotalChats:               45,
+								TotalChatInsertionEvents: 12,
+								TotalChatCopyEvents:      16,
+							},
+							{
+								Name:                     "a-custom-model",
+								IsCustomModel:            true,
+								CustomModelTrainingDate:  String("2024-02-01"),
+								TotalEngagedUsers:        1,
+								TotalChats:               10,
+								TotalChatInsertionEvents: 11,
+								TotalChatCopyEvents:      3,
+							},
+						},
+					},
+				},
+			},
+			CopilotDotcomChat: &CopilotDotcomChat{
+				TotalEngagedUsers: 14,
+				Models: []*CopilotDotcomChatModel{
+					{
+						Name:                    "default",
+						IsCustomModel:           false,
+						CustomModelTrainingDate: nil,
+						TotalEngagedUsers:       14,
+						TotalChats:              38,
+					},
+				},
+			},
+			CopilotDotcomPullRequests: &CopilotDotcomPullRequests{
+				TotalEngagedUsers: 12,
+				Repositories: []*CopilotDotcomPullRequestsRepository{
+					{
+						Name:              "demo/repo1",
+						TotalEngagedUsers: 8,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalPRSummariesCreated: 6,
+								TotalEngagedUsers:       8,
+							},
+						},
+					},
+					{
+						Name:              "demo/repo2",
+						TotalEngagedUsers: 4,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								TotalPRSummariesCreated: 10,
+								TotalEngagedUsers:       4,
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetOrganizationMetrics returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationMetrics"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationMetrics(ctx, "\n", &CopilotMetricsListOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationMetrics(ctx, "o", &CopilotMetricsListOptions{})
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationMetrics returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/team/t/copilot/metrics", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+				"date": "2024-06-24",
+				"total_active_users": 24,
+				"total_engaged_users": 20,
+				"copilot_ide_code_completions": {
+					"total_engaged_users": 20,
+					"languages": [
+						{
+							"name": "python",
+							"total_engaged_users": 10
+						},
+						{
+							"name": "ruby",
+							"total_engaged_users": 10
+						}
+					],
+					"editors": [
+						{
+							"name": "vscode",
+							"total_engaged_users": 13,
+							"models": [
+								{
+									"name": "default",
+									"is_custom_model": false,
+									"custom_model_training_date": null,
+									"total_engaged_users": 13,
+									"languages": [
+										{
+											"name": "python",
+											"total_engaged_users": 6,
+											"total_code_suggestions": 249,
+											"total_code_acceptances": 123,
+											"total_code_lines_suggested": 225,
+											"total_code_lines_accepted": 135
+										},
+										{
+											"name": "ruby",
+											"total_engaged_users": 7,
+											"total_code_suggestions": 496,
+											"total_code_acceptances": 253,
+											"total_code_lines_suggested": 520,
+											"total_code_lines_accepted": 270
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "neovim",
+							"total_engaged_users": 7,
+							"models": [
+								{
+									"name": "a-custom-model",
+									"is_custom_model": true,
+									"custom_model_training_date": "2024-02-01",
+									"languages": [
+										{
+											"name": "typescript",
+											"total_engaged_users": 3,
+											"total_code_suggestions": 112,
+											"total_code_acceptances": 56,
+											"total_code_lines_suggested": 143,
+											"total_code_lines_accepted": 61
+										},
+										{
+											"name": "go",
+											"total_engaged_users": 4,
+											"total_code_suggestions": 132,
+											"total_code_acceptances": 67,
+											"total_code_lines_suggested": 154,
+											"total_code_lines_accepted": 72
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				"copilot_ide_chat": {
+					"total_engaged_users": 13,
+					"editors": [
+						{
+							"name": "vscode",
+							"total_engaged_users": 13,
+							"models": [
+								{
+									"name": "default",
+									"is_custom_model": false,
+									"custom_model_training_date": null,
+									"total_engaged_users": 12,
+									"total_chats": 45,
+									"total_chat_insertion_events": 12,
+									"total_chat_copy_events": 16
+								},
+								{
+									"name": "a-custom-model",
+									"is_custom_model": true,
+									"custom_model_training_date": "2024-02-01",
+									"total_engaged_users": 1,
+									"total_chats": 10,
+									"total_chat_insertion_events": 11,
+									"total_chat_copy_events": 3
+								}
+							]
+						}
+					]
+				},
+				"copilot_dotcom_chat": {
+					"total_engaged_users": 14,
+					"models": [
+						{
+							"name": "default",
+							"is_custom_model": false,
+							"custom_model_training_date": null,
+							"total_engaged_users": 14,
+							"total_chats": 38
+						}
+					]
+				},
+				"copilot_dotcom_pull_requests": {
+					"total_engaged_users": 12,
+					"repositories": [
+						{
+							"name": "demo/repo1",
+							"total_engaged_users": 8,
+							"models": [
+								{
+									"name": "default",
+									"is_custom_model": false,
+									"custom_model_training_date": null,
+									"total_pr_summaries_created": 6,
+									"total_engaged_users": 8
+								}
+							]
+						},
+						{
+							"name": "demo/repo2",
+							"total_engaged_users": 4,
+							"models": [
+								{
+									"name": "a-custom-model",
+									"is_custom_model": true,
+									"custom_model_training_date": "2024-02-01",
+									"total_pr_summaries_created": 10,
+									"total_engaged_users": 4
+								}
+							]
+						}
+					]
+				}
+			}
+		]`)
+	})
+
+	ctx := context.Background()
+	got, _, err := client.Copilot.GetOrganizationTeamMetrics(ctx, "o", "t", &CopilotMetricsListOptions{})
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationTeamMetrics returned error: %v", err)
+	}
+
+	totalActiveUsers := 24
+	totalEngagedUsers := 20
+	want := []*CopilotMetrics{
+		{
+			Date:              "2024-06-24",
+			TotalActiveUsers:  &totalActiveUsers,
+			TotalEngagedUsers: &totalEngagedUsers,
+			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
+				TotalEngagedUsers: 20,
+				Languages: []*CopilotIDECodeCompletionsLanguage{
+					{
+						Name:              "python",
+						TotalEngagedUsers: 10,
+					},
+					{
+						Name:              "ruby",
+						TotalEngagedUsers: 10,
+					},
+				},
+				Editors: []*CopilotIDECodeCompletionsEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIDECodeCompletionsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalEngagedUsers:       13,
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
+									{
+										Name:                    "python",
+										TotalEngagedUsers:       6,
+										TotalCodeSuggestions:    249,
+										TotalCodeAcceptances:    123,
+										TotalCodeLinesSuggested: 225,
+										TotalCodeLinesAccepted:  135,
+									},
+									{
+										Name:                    "ruby",
+										TotalEngagedUsers:       7,
+										TotalCodeSuggestions:    496,
+										TotalCodeAcceptances:    253,
+										TotalCodeLinesSuggested: 520,
+										TotalCodeLinesAccepted:  270,
+									},
+								},
+							},
+						},
+					},
+					{
+						Name:              "neovim",
+						TotalEngagedUsers: 7,
+						Models: []*CopilotIDECodeCompletionsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
+									{
+										Name:                    "typescript",
+										TotalEngagedUsers:       3,
+										TotalCodeSuggestions:    112,
+										TotalCodeAcceptances:    56,
+										TotalCodeLinesSuggested: 143,
+										TotalCodeLinesAccepted:  61,
+									},
+									{
+										Name:                    "go",
+										TotalEngagedUsers:       4,
+										TotalCodeSuggestions:    132,
+										TotalCodeAcceptances:    67,
+										TotalCodeLinesSuggested: 154,
+										TotalCodeLinesAccepted:  72,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			CopilotIDEChat: &CopilotIDEChat{
+				TotalEngagedUsers: 13,
+				Editors: []*CopilotIDEChatEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 13,
+						Models: []*CopilotIDEChatModel{
+							{
+								Name:                     "default",
+								IsCustomModel:            false,
+								CustomModelTrainingDate:  nil,
+								TotalEngagedUsers:        12,
+								TotalChats:               45,
+								TotalChatInsertionEvents: 12,
+								TotalChatCopyEvents:      16,
+							},
+							{
+								Name:                     "a-custom-model",
+								IsCustomModel:            true,
+								CustomModelTrainingDate:  String("2024-02-01"),
+								TotalEngagedUsers:        1,
+								TotalChats:               10,
+								TotalChatInsertionEvents: 11,
+								TotalChatCopyEvents:      3,
+							},
+						},
+					},
+				},
+			},
+			CopilotDotcomChat: &CopilotDotcomChat{
+				TotalEngagedUsers: 14,
+				Models: []*CopilotDotcomChatModel{
+					{
+						Name:                    "default",
+						IsCustomModel:           false,
+						CustomModelTrainingDate: nil,
+						TotalEngagedUsers:       14,
+						TotalChats:              38,
+					},
+				},
+			},
+			CopilotDotcomPullRequests: &CopilotDotcomPullRequests{
+				TotalEngagedUsers: 12,
+				Repositories: []*CopilotDotcomPullRequestsRepository{
+					{
+						Name:              "demo/repo1",
+						TotalEngagedUsers: 8,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "default",
+								IsCustomModel:           false,
+								CustomModelTrainingDate: nil,
+								TotalPRSummariesCreated: 6,
+								TotalEngagedUsers:       8,
+							},
+						},
+					},
+					{
+						Name:              "demo/repo2",
+						TotalEngagedUsers: 4,
+						Models: []*CopilotDotcomPullRequestsModel{
+							{
+								Name:                    "a-custom-model",
+								IsCustomModel:           true,
+								CustomModelTrainingDate: String("2024-02-01"),
+								TotalPRSummariesCreated: 10,
+								TotalEngagedUsers:       4,
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetOrganizationTeamMetrics returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationTeamMetrics"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationTeamMetrics(ctx, "\n", "\n", &CopilotMetricsListOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationTeamMetrics(ctx, "o", "t", &CopilotMetricsListOptions{})
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationTeamMetrics returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
