@@ -37,7 +37,7 @@ func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
 		t.Errorf("Organizations.ListOutsideCollaborators returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}}
+	want := []*User{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(members, want) {
 		t.Errorf("Organizations.ListOutsideCollaborators returned %+v, want %+v", members, want)
 	}

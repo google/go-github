@@ -20,34 +20,34 @@ func TestProject_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Project{}, "{}")
 
 	u := &Project{
-		ID:         Int64(1),
-		URL:        String("u"),
-		HTMLURL:    String("h"),
-		ColumnsURL: String("c"),
-		OwnerURL:   String("o"),
-		Name:       String("n"),
-		Body:       String("b"),
-		Number:     Int(1),
-		State:      String("s"),
+		ID:         Ptr(int64(1)),
+		URL:        Ptr("u"),
+		HTMLURL:    Ptr("h"),
+		ColumnsURL: Ptr("c"),
+		OwnerURL:   Ptr("o"),
+		Name:       Ptr("n"),
+		Body:       Ptr("b"),
+		Number:     Ptr(1),
+		State:      Ptr("s"),
 		CreatedAt:  &Timestamp{referenceTime},
 		UpdatedAt:  &Timestamp{referenceTime},
-		NodeID:     String("n"),
+		NodeID:     Ptr("n"),
 		Creator: &User{
-			Login:       String("l"),
-			ID:          Int64(1),
-			AvatarURL:   String("a"),
-			GravatarID:  String("g"),
-			Name:        String("n"),
-			Company:     String("c"),
-			Blog:        String("b"),
-			Location:    String("l"),
-			Email:       String("e"),
-			Hireable:    Bool(true),
-			PublicRepos: Int(1),
-			Followers:   Int(1),
-			Following:   Int(1),
+			Login:       Ptr("l"),
+			ID:          Ptr(int64(1)),
+			AvatarURL:   Ptr("a"),
+			GravatarID:  Ptr("g"),
+			Name:        Ptr("n"),
+			Company:     Ptr("c"),
+			Blog:        Ptr("b"),
+			Location:    Ptr("l"),
+			Email:       Ptr("e"),
+			Hireable:    Ptr(true),
+			PublicRepos: Ptr(1),
+			Followers:   Ptr(1),
+			Following:   Ptr(1),
 			CreatedAt:   &Timestamp{referenceTime},
-			URL:         String("u"),
+			URL:         Ptr("u"),
 		},
 	}
 	want := `{
@@ -89,12 +89,12 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &ProjectOptions{
-		Name:    String("Project Name"),
-		Body:    String("Project body."),
-		State:   String("open"),
-		Private: Bool(false),
+		Name:    Ptr("Project Name"),
+		Body:    Ptr("Project body."),
+		State:   Ptr("open"),
+		Private: Ptr(false),
 
-		OrganizationPermission: String("read"),
+		OrganizationPermission: Ptr("read"),
 	}
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
@@ -116,7 +116,7 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 		t.Errorf("Projects.UpdateProject returned error: %v", err)
 	}
 
-	want := &Project{ID: Int64(1)}
+	want := &Project{ID: Ptr(int64(1))}
 	if !cmp.Equal(project, want) {
 		t.Errorf("Projects.UpdateProject returned %+v, want %+v", project, want)
 	}
@@ -152,7 +152,7 @@ func TestProjectsService_GetProject(t *testing.T) {
 		t.Errorf("Projects.GetProject returned error: %v", err)
 	}
 
-	want := &Project{ID: Int64(1)}
+	want := &Project{ID: Ptr(int64(1))}
 	if !cmp.Equal(project, want) {
 		t.Errorf("Projects.GetProject returned %+v, want %+v", project, want)
 	}
@@ -216,7 +216,7 @@ func TestProjectsService_ListProjectColumns(t *testing.T) {
 		t.Errorf("Projects.ListProjectColumns returned error: %v", err)
 	}
 
-	want := []*ProjectColumn{{ID: Int64(1)}}
+	want := []*ProjectColumn{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(columns, want) {
 		t.Errorf("Projects.ListProjectColumns returned %+v, want %+v", columns, want)
 	}
@@ -252,7 +252,7 @@ func TestProjectsService_GetProjectColumn(t *testing.T) {
 		t.Errorf("Projects.GetProjectColumn returned error: %v", err)
 	}
 
-	want := &ProjectColumn{ID: Int64(1)}
+	want := &ProjectColumn{ID: Ptr(int64(1))}
 	if !cmp.Equal(column, want) {
 		t.Errorf("Projects.GetProjectColumn returned %+v, want %+v", column, want)
 	}
@@ -297,7 +297,7 @@ func TestProjectsService_CreateProjectColumn(t *testing.T) {
 		t.Errorf("Projects.CreateProjectColumn returned error: %v", err)
 	}
 
-	want := &ProjectColumn{ID: Int64(1)}
+	want := &ProjectColumn{ID: Ptr(int64(1))}
 	if !cmp.Equal(column, want) {
 		t.Errorf("Projects.CreateProjectColumn returned %+v, want %+v", column, want)
 	}
@@ -342,7 +342,7 @@ func TestProjectsService_UpdateProjectColumn(t *testing.T) {
 		t.Errorf("Projects.UpdateProjectColumn returned error: %v", err)
 	}
 
-	want := &ProjectColumn{ID: Int64(1)}
+	want := &ProjectColumn{ID: Ptr(int64(1))}
 	if !cmp.Equal(column, want) {
 		t.Errorf("Projects.UpdateProjectColumn returned %+v, want %+v", column, want)
 	}
@@ -436,7 +436,7 @@ func TestProjectsService_ListProjectCards(t *testing.T) {
 	})
 
 	opt := &ProjectCardListOptions{
-		ArchivedState: String("all"),
+		ArchivedState: Ptr("all"),
 		ListOptions:   ListOptions{Page: 2}}
 	ctx := context.Background()
 	cards, _, err := client.Projects.ListProjectCards(ctx, 1, opt)
@@ -444,7 +444,7 @@ func TestProjectsService_ListProjectCards(t *testing.T) {
 		t.Errorf("Projects.ListProjectCards returned error: %v", err)
 	}
 
-	want := []*ProjectCard{{ID: Int64(1)}}
+	want := []*ProjectCard{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(cards, want) {
 		t.Errorf("Projects.ListProjectCards returned %+v, want %+v", cards, want)
 	}
@@ -480,7 +480,7 @@ func TestProjectsService_GetProjectCard(t *testing.T) {
 		t.Errorf("Projects.GetProjectCard returned error: %v", err)
 	}
 
-	want := &ProjectCard{ID: Int64(1)}
+	want := &ProjectCard{ID: Ptr(int64(1))}
 	if !cmp.Equal(card, want) {
 		t.Errorf("Projects.GetProjectCard returned %+v, want %+v", card, want)
 	}
@@ -528,7 +528,7 @@ func TestProjectsService_CreateProjectCard(t *testing.T) {
 		t.Errorf("Projects.CreateProjectCard returned error: %v", err)
 	}
 
-	want := &ProjectCard{ID: Int64(1)}
+	want := &ProjectCard{ID: Ptr(int64(1))}
 	if !cmp.Equal(card, want) {
 		t.Errorf("Projects.CreateProjectCard returned %+v, want %+v", card, want)
 	}
@@ -576,7 +576,7 @@ func TestProjectsService_UpdateProjectCard(t *testing.T) {
 		t.Errorf("Projects.UpdateProjectCard returned error: %v", err)
 	}
 
-	want := &ProjectCard{ID: Int64(1), Archived: Bool(false)}
+	want := &ProjectCard{ID: Ptr(int64(1)), Archived: Ptr(false)}
 	if !cmp.Equal(card, want) {
 		t.Errorf("Projects.UpdateProjectCard returned %+v, want %+v", card, want)
 	}
@@ -661,7 +661,7 @@ func TestProjectsService_AddProjectCollaborator(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	opt := &ProjectCollaboratorOptions{
-		Permission: String("admin"),
+		Permission: Ptr("admin"),
 	}
 
 	mux.HandleFunc("/projects/1/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
@@ -759,7 +759,7 @@ func TestProjectsService_ListCollaborators(t *testing.T) {
 		t.Errorf("Projects.ListProjectCollaborators returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*User{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if !cmp.Equal(users, want) {
 		t.Errorf("Projects.ListProjectCollaborators returned %+v, want %+v", users, want)
 	}
@@ -792,7 +792,7 @@ func TestProjectsService_ListCollaborators_withAffiliation(t *testing.T) {
 
 	opt := &ListCollaboratorOptions{
 		ListOptions: ListOptions{Page: 2},
-		Affiliation: String("all"),
+		Affiliation: Ptr("all"),
 	}
 	ctx := context.Background()
 	users, _, err := client.Projects.ListProjectCollaborators(ctx, 1, opt)
@@ -800,7 +800,7 @@ func TestProjectsService_ListCollaborators_withAffiliation(t *testing.T) {
 		t.Errorf("Projects.ListProjectCollaborators returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*User{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if !cmp.Equal(users, want) {
 		t.Errorf("Projects.ListProjectCollaborators returned %+v, want %+v", users, want)
 	}
@@ -823,9 +823,9 @@ func TestProjectsService_ReviewProjectCollaboratorPermission(t *testing.T) {
 	}
 
 	want := &ProjectPermissionLevel{
-		Permission: String("admin"),
+		Permission: Ptr("admin"),
 		User: &User{
-			Login: String("u"),
+			Login: Ptr("u"),
 		},
 	}
 
@@ -853,11 +853,11 @@ func TestProjectOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectOptions{}, "{}")
 
 	u := &ProjectOptions{
-		Name:                   String("name"),
-		Body:                   String("body"),
-		State:                  String("state"),
-		OrganizationPermission: String("op"),
-		Private:                Bool(false),
+		Name:                   Ptr("name"),
+		Body:                   Ptr("body"),
+		State:                  Ptr("state"),
+		OrganizationPermission: Ptr("op"),
+		Private:                Ptr(false),
 	}
 
 	want := `{
@@ -876,14 +876,14 @@ func TestProjectColumn_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectColumn{}, "{}")
 
 	u := &ProjectColumn{
-		ID:         Int64(1),
-		Name:       String("name"),
-		URL:        String("url"),
-		ProjectURL: String("purl"),
-		CardsURL:   String("curl"),
+		ID:         Ptr(int64(1)),
+		Name:       Ptr("name"),
+		URL:        Ptr("url"),
+		ProjectURL: Ptr("purl"),
+		CardsURL:   Ptr("curl"),
 		CreatedAt:  &Timestamp{referenceTime},
 		UpdatedAt:  &Timestamp{referenceTime},
-		NodeID:     String("onidp"),
+		NodeID:     Ptr("onidp"),
 	}
 
 	want := `{
@@ -935,40 +935,40 @@ func TestProjectCard_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectCard{}, "{}")
 
 	u := &ProjectCard{
-		URL:        String("url"),
-		ColumnURL:  String("curl"),
-		ContentURL: String("conurl"),
-		ID:         Int64(1),
-		Note:       String("note"),
+		URL:        Ptr("url"),
+		ColumnURL:  Ptr("curl"),
+		ContentURL: Ptr("conurl"),
+		ID:         Ptr(int64(1)),
+		Note:       Ptr("note"),
 		Creator: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
 		CreatedAt:          &Timestamp{referenceTime},
 		UpdatedAt:          &Timestamp{referenceTime},
-		NodeID:             String("nid"),
-		Archived:           Bool(true),
-		ColumnID:           Int64(1),
-		ProjectID:          Int64(1),
-		ProjectURL:         String("purl"),
-		ColumnName:         String("cn"),
-		PreviousColumnName: String("pcn"),
+		NodeID:             Ptr("nid"),
+		Archived:           Ptr(true),
+		ColumnID:           Ptr(int64(1)),
+		ProjectID:          Ptr(int64(1)),
+		ProjectURL:         Ptr("purl"),
+		ColumnName:         Ptr("cn"),
+		PreviousColumnName: Ptr("pcn"),
 	}
 
 	want := `{
@@ -1019,7 +1019,7 @@ func TestProjectCardOptions_Marshal(t *testing.T) {
 		Note:        "note",
 		ContentID:   1,
 		ContentType: "ct",
-		Archived:    Bool(false),
+		Archived:    Ptr(false),
 	}
 
 	want := `{
@@ -1054,7 +1054,7 @@ func TestProjectCollaboratorOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectCollaboratorOptions{}, "{}")
 
 	u := &ProjectCollaboratorOptions{
-		Permission: String("per"),
+		Permission: Ptr("per"),
 	}
 
 	want := `{
@@ -1069,24 +1069,24 @@ func TestProjectPermissionLevel_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectPermissionLevel{}, "{}")
 
 	u := &ProjectPermissionLevel{
-		Permission: String("per"),
+		Permission: Ptr("per"),
 		User: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},

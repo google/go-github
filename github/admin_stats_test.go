@@ -156,58 +156,58 @@ func TestAdminService_Stringify(t *testing.T) {
 
 var testAdminStats = &AdminStats{
 	Repos: &RepoStats{
-		TotalRepos:  Int(212),
-		RootRepos:   Int(194),
-		ForkRepos:   Int(18),
-		OrgRepos:    Int(51),
-		TotalPushes: Int(3082),
-		TotalWikis:  Int(15),
+		TotalRepos:  Ptr(212),
+		RootRepos:   Ptr(194),
+		ForkRepos:   Ptr(18),
+		OrgRepos:    Ptr(51),
+		TotalPushes: Ptr(3082),
+		TotalWikis:  Ptr(15),
 	},
 	Hooks: &HookStats{
-		TotalHooks:    Int(27),
-		ActiveHooks:   Int(23),
-		InactiveHooks: Int(4),
+		TotalHooks:    Ptr(27),
+		ActiveHooks:   Ptr(23),
+		InactiveHooks: Ptr(4),
 	},
 	Pages: &PageStats{
-		TotalPages: Int(36),
+		TotalPages: Ptr(36),
 	},
 	Orgs: &OrgStats{
-		TotalOrgs:        Int(33),
-		DisabledOrgs:     Int(0),
-		TotalTeams:       Int(60),
-		TotalTeamMembers: Int(314),
+		TotalOrgs:        Ptr(33),
+		DisabledOrgs:     Ptr(0),
+		TotalTeams:       Ptr(60),
+		TotalTeamMembers: Ptr(314),
 	},
 	Users: &UserStats{
-		TotalUsers:     Int(254),
-		AdminUsers:     Int(45),
-		SuspendedUsers: Int(21),
+		TotalUsers:     Ptr(254),
+		AdminUsers:     Ptr(45),
+		SuspendedUsers: Ptr(21),
 	},
 	Pulls: &PullStats{
-		TotalPulls:      Int(86),
-		MergedPulls:     Int(60),
-		MergablePulls:   Int(21),
-		UnmergablePulls: Int(3),
+		TotalPulls:      Ptr(86),
+		MergedPulls:     Ptr(60),
+		MergablePulls:   Ptr(21),
+		UnmergablePulls: Ptr(3),
 	},
 	Issues: &IssueStats{
-		TotalIssues:  Int(179),
-		OpenIssues:   Int(83),
-		ClosedIssues: Int(96),
+		TotalIssues:  Ptr(179),
+		OpenIssues:   Ptr(83),
+		ClosedIssues: Ptr(96),
 	},
 	Milestones: &MilestoneStats{
-		TotalMilestones:  Int(7),
-		OpenMilestones:   Int(6),
-		ClosedMilestones: Int(1),
+		TotalMilestones:  Ptr(7),
+		OpenMilestones:   Ptr(6),
+		ClosedMilestones: Ptr(1),
 	},
 	Gists: &GistStats{
-		TotalGists:   Int(178),
-		PrivateGists: Int(151),
-		PublicGists:  Int(25),
+		TotalGists:   Ptr(178),
+		PrivateGists: Ptr(151),
+		PublicGists:  Ptr(25),
 	},
 	Comments: &CommentStats{
-		TotalCommitComments:      Int(6),
-		TotalGistComments:        Int(28),
-		TotalIssueComments:       Int(366),
-		TotalPullRequestComments: Int(30),
+		TotalCommitComments:      Ptr(6),
+		TotalGistComments:        Ptr(28),
+		TotalIssueComments:       Ptr(366),
+		TotalPullRequestComments: Ptr(30),
 	},
 }
 
@@ -216,9 +216,9 @@ func TestIssueStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &IssueStats{}, "{}")
 
 	u := &IssueStats{
-		TotalIssues:  Int(1),
-		OpenIssues:   Int(1),
-		ClosedIssues: Int(1),
+		TotalIssues:  Ptr(1),
+		OpenIssues:   Ptr(1),
+		ClosedIssues: Ptr(1),
 	}
 
 	want := `{
@@ -235,9 +235,9 @@ func TestHookStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &HookStats{}, "{}")
 
 	u := &HookStats{
-		TotalHooks:    Int(1),
-		ActiveHooks:   Int(1),
-		InactiveHooks: Int(1),
+		TotalHooks:    Ptr(1),
+		ActiveHooks:   Ptr(1),
+		InactiveHooks: Ptr(1),
 	}
 
 	want := `{
@@ -254,9 +254,9 @@ func TestMilestoneStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &MilestoneStats{}, "{}")
 
 	u := &MilestoneStats{
-		TotalMilestones:  Int(1),
-		OpenMilestones:   Int(1),
-		ClosedMilestones: Int(1),
+		TotalMilestones:  Ptr(1),
+		OpenMilestones:   Ptr(1),
+		ClosedMilestones: Ptr(1),
 	}
 
 	want := `{
@@ -273,10 +273,10 @@ func TestOrgStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &OrgStats{}, "{}")
 
 	u := &OrgStats{
-		TotalOrgs:        Int(1),
-		DisabledOrgs:     Int(1),
-		TotalTeams:       Int(1),
-		TotalTeamMembers: Int(1),
+		TotalOrgs:        Ptr(1),
+		DisabledOrgs:     Ptr(1),
+		TotalTeams:       Ptr(1),
+		TotalTeamMembers: Ptr(1),
 	}
 
 	want := `{
@@ -294,10 +294,10 @@ func TestCommentStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CommentStats{}, "{}")
 
 	u := &CommentStats{
-		TotalCommitComments:      Int(1),
-		TotalGistComments:        Int(1),
-		TotalIssueComments:       Int(1),
-		TotalPullRequestComments: Int(1),
+		TotalCommitComments:      Ptr(1),
+		TotalGistComments:        Ptr(1),
+		TotalIssueComments:       Ptr(1),
+		TotalPullRequestComments: Ptr(1),
 	}
 
 	want := `{
@@ -315,7 +315,7 @@ func TestPageStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PageStats{}, "{}")
 
 	u := &PageStats{
-		TotalPages: Int(1),
+		TotalPages: Ptr(1),
 	}
 
 	want := `{
@@ -330,9 +330,9 @@ func TestUserStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &UserStats{}, "{}")
 
 	u := &UserStats{
-		TotalUsers:     Int(1),
-		AdminUsers:     Int(1),
-		SuspendedUsers: Int(1),
+		TotalUsers:     Ptr(1),
+		AdminUsers:     Ptr(1),
+		SuspendedUsers: Ptr(1),
 	}
 
 	want := `{
@@ -349,9 +349,9 @@ func TestGistStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GistStats{}, "{}")
 
 	u := &GistStats{
-		TotalGists:   Int(1),
-		PrivateGists: Int(1),
-		PublicGists:  Int(1),
+		TotalGists:   Ptr(1),
+		PrivateGists: Ptr(1),
+		PublicGists:  Ptr(1),
 	}
 
 	want := `{
@@ -368,10 +368,10 @@ func TestPullStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullStats{}, "{}")
 
 	u := &PullStats{
-		TotalPulls:      Int(1),
-		MergedPulls:     Int(1),
-		MergablePulls:   Int(1),
-		UnmergablePulls: Int(1),
+		TotalPulls:      Ptr(1),
+		MergedPulls:     Ptr(1),
+		MergablePulls:   Ptr(1),
+		UnmergablePulls: Ptr(1),
 	}
 
 	want := `{
@@ -389,12 +389,12 @@ func TestRepoStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepoStats{}, "{}")
 
 	u := &RepoStats{
-		TotalRepos:  Int(1),
-		RootRepos:   Int(1),
-		ForkRepos:   Int(1),
-		OrgRepos:    Int(1),
-		TotalPushes: Int(1),
-		TotalWikis:  Int(1),
+		TotalRepos:  Ptr(1),
+		RootRepos:   Ptr(1),
+		ForkRepos:   Ptr(1),
+		OrgRepos:    Ptr(1),
+		TotalPushes: Ptr(1),
+		TotalWikis:  Ptr(1),
 	}
 
 	want := `{
@@ -415,58 +415,58 @@ func TestAdminStats_Marshal(t *testing.T) {
 
 	u := &AdminStats{
 		Repos: &RepoStats{
-			TotalRepos:  Int(212),
-			RootRepos:   Int(194),
-			ForkRepos:   Int(18),
-			OrgRepos:    Int(51),
-			TotalPushes: Int(3082),
-			TotalWikis:  Int(15),
+			TotalRepos:  Ptr(212),
+			RootRepos:   Ptr(194),
+			ForkRepos:   Ptr(18),
+			OrgRepos:    Ptr(51),
+			TotalPushes: Ptr(3082),
+			TotalWikis:  Ptr(15),
 		},
 		Hooks: &HookStats{
-			TotalHooks:    Int(27),
-			ActiveHooks:   Int(23),
-			InactiveHooks: Int(4),
+			TotalHooks:    Ptr(27),
+			ActiveHooks:   Ptr(23),
+			InactiveHooks: Ptr(4),
 		},
 		Pages: &PageStats{
-			TotalPages: Int(36),
+			TotalPages: Ptr(36),
 		},
 		Orgs: &OrgStats{
-			TotalOrgs:        Int(33),
-			DisabledOrgs:     Int(0),
-			TotalTeams:       Int(60),
-			TotalTeamMembers: Int(314),
+			TotalOrgs:        Ptr(33),
+			DisabledOrgs:     Ptr(0),
+			TotalTeams:       Ptr(60),
+			TotalTeamMembers: Ptr(314),
 		},
 		Users: &UserStats{
-			TotalUsers:     Int(254),
-			AdminUsers:     Int(45),
-			SuspendedUsers: Int(21),
+			TotalUsers:     Ptr(254),
+			AdminUsers:     Ptr(45),
+			SuspendedUsers: Ptr(21),
 		},
 		Pulls: &PullStats{
-			TotalPulls:      Int(86),
-			MergedPulls:     Int(60),
-			MergablePulls:   Int(21),
-			UnmergablePulls: Int(3),
+			TotalPulls:      Ptr(86),
+			MergedPulls:     Ptr(60),
+			MergablePulls:   Ptr(21),
+			UnmergablePulls: Ptr(3),
 		},
 		Issues: &IssueStats{
-			TotalIssues:  Int(179),
-			OpenIssues:   Int(83),
-			ClosedIssues: Int(96),
+			TotalIssues:  Ptr(179),
+			OpenIssues:   Ptr(83),
+			ClosedIssues: Ptr(96),
 		},
 		Milestones: &MilestoneStats{
-			TotalMilestones:  Int(7),
-			OpenMilestones:   Int(6),
-			ClosedMilestones: Int(1),
+			TotalMilestones:  Ptr(7),
+			OpenMilestones:   Ptr(6),
+			ClosedMilestones: Ptr(1),
 		},
 		Gists: &GistStats{
-			TotalGists:   Int(178),
-			PrivateGists: Int(151),
-			PublicGists:  Int(25),
+			TotalGists:   Ptr(178),
+			PrivateGists: Ptr(151),
+			PublicGists:  Ptr(25),
 		},
 		Comments: &CommentStats{
-			TotalCommitComments:      Int(6),
-			TotalGistComments:        Int(28),
-			TotalIssueComments:       Int(366),
-			TotalPullRequestComments: Int(30),
+			TotalCommitComments:      Ptr(6),
+			TotalGistComments:        Ptr(28),
+			TotalIssueComments:       Ptr(366),
+			TotalPullRequestComments: Ptr(30),
 		},
 	}
 

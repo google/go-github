@@ -53,24 +53,24 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 	}
 
 	want := &OrganizationCustomRepoRoles{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		CustomRepoRoles: []*CustomRepoRoles{
 			{
-				ID:          Int64(1),
-				Name:        String("Developer"),
-				BaseRole:    String("write"),
+				ID:          Ptr(int64(1)),
+				Name:        Ptr("Developer"),
+				BaseRole:    Ptr("write"),
 				Permissions: []string{"delete_alerts_code_scanning"},
 				Org: &Organization{
-					Login:     String("l"),
-					ID:        Int64(1),
-					NodeID:    String("n"),
-					AvatarURL: String("a"),
-					HTMLURL:   String("h"),
-					Name:      String("n"),
-					Company:   String("c"),
-					Blog:      String("b"),
-					Location:  String("l"),
-					Email:     String("e"),
+					Login:     Ptr("l"),
+					ID:        Ptr(int64(1)),
+					NodeID:    Ptr("n"),
+					AvatarURL: Ptr("a"),
+					HTMLURL:   Ptr("h"),
+					Name:      Ptr("n"),
+					Company:   Ptr("c"),
+					Blog:      Ptr("b"),
+					Location:  Ptr("l"),
+					Email:     Ptr("e"),
 				},
 				CreatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
 				UpdatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
@@ -108,9 +108,9 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 	ctx := context.Background()
 
 	opts := &CreateOrUpdateCustomRepoRoleOptions{
-		Name:        String("Labeler"),
-		Description: String("A role for issue and PR labelers"),
-		BaseRole:    String("read"),
+		Name:        Ptr("Labeler"),
+		Description: Ptr("A role for issue and PR labelers"),
+		BaseRole:    Ptr("read"),
 		Permissions: []string{"add_label"},
 	}
 	apps, _, err := client.Organizations.CreateCustomRepoRole(ctx, "o", opts)
@@ -118,7 +118,7 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 		t.Errorf("Organizations.CreateCustomRepoRole returned error: %v", err)
 	}
 
-	want := &CustomRepoRoles{ID: Int64(8030), Name: String("Labeler"), BaseRole: String("read"), Permissions: []string{"add_label"}, Description: String("A role for issue and PR labelers")}
+	want := &CustomRepoRoles{ID: Ptr(int64(8030)), Name: Ptr("Labeler"), BaseRole: Ptr("read"), Permissions: []string{"add_label"}, Description: Ptr("A role for issue and PR labelers")}
 
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.CreateCustomRepoRole returned %+v, want %+v", apps, want)
@@ -151,15 +151,15 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 	ctx := context.Background()
 
 	opts := &CreateOrUpdateCustomRepoRoleOptions{
-		Name:        String("Updated Name"),
-		Description: String("Updated Description"),
+		Name:        Ptr("Updated Name"),
+		Description: Ptr("Updated Description"),
 	}
 	apps, _, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", 8030, opts)
 	if err != nil {
 		t.Errorf("Organizations.UpdateCustomRepoRole returned error: %v", err)
 	}
 
-	want := &CustomRepoRoles{ID: Int64(8030), Name: String("Updated Name"), BaseRole: String("read"), Permissions: []string{"add_label"}, Description: String("Updated Description")}
+	want := &CustomRepoRoles{ID: Ptr(int64(8030)), Name: Ptr("Updated Name"), BaseRole: Ptr("read"), Permissions: []string{"add_label"}, Description: Ptr("Updated Description")}
 
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.UpdateCustomRepoRole returned %+v, want %+v", apps, want)

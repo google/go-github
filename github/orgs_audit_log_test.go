@@ -82,9 +82,9 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	})
 	ctx := context.Background()
 	getOpts := GetAuditLogOptions{
-		Include: String("all"),
-		Phrase:  String("action:workflows"),
-		Order:   String("asc"),
+		Include: Ptr("all"),
+		Phrase:  Ptr("action:workflows"),
+		Order:   Ptr("asc"),
 	}
 
 	auditEntries, resp, err := client.Organizations.GetAuditLog(ctx, "o", &getOpts)
@@ -96,18 +96,18 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	want := []*AuditEntry{
 		{
 			Timestamp:  &Timestamp{timestamp},
-			DocumentID: String("beeZYapIUe-wKg5-beadb33"),
-			Action:     String("workflows.completed_workflow_run"),
-			Actor:      String("testactor"),
+			DocumentID: Ptr("beeZYapIUe-wKg5-beadb33"),
+			Action:     Ptr("workflows.completed_workflow_run"),
+			Actor:      Ptr("testactor"),
 			ActorLocation: &ActorLocation{
-				CountryCode: String("US"),
+				CountryCode: Ptr("US"),
 			},
 			CreatedAt:   &Timestamp{timestamp},
-			HashedToken: String("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-			Org:         String("o"),
-			OrgID:       Int64(1),
-			TokenID:     Int64(1),
-			TokenScopes: String("gist,repo:read"),
+			HashedToken: Ptr("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+			Org:         Ptr("o"),
+			OrgID:       Ptr(int64(1)),
+			TokenID:     Ptr(int64(1)),
+			TokenScopes: Ptr("gist,repo:read"),
 			AdditionalFields: map[string]interface{}{
 				"actor_ip":                 "10.0.0.1",
 				"active":                   true,
@@ -178,9 +178,9 @@ func TestGetAuditLogOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GetAuditLogOptions{}, "{}")
 
 	u := &GetAuditLogOptions{
-		Phrase:  String("p"),
-		Include: String("i"),
-		Order:   String("o"),
+		Phrase:  Ptr("p"),
+		Include: Ptr("i"),
+		Order:   Ptr("o"),
 		ListCursorOptions: ListCursorOptions{
 			Page:    "p",
 			PerPage: 1,
@@ -207,9 +207,9 @@ func TestHookConfig_Marshal(t *testing.T) {
 	testJSONMarshal(t, &HookConfig{}, "{}")
 
 	u := &HookConfig{
-		ContentType: String("ct"),
-		InsecureSSL: String("ct"),
-		URL:         String("url"),
+		ContentType: Ptr("ct"),
+		InsecureSSL: Ptr("ct"),
+		URL:         Ptr("url"),
 	}
 
 	want := `{
@@ -226,21 +226,21 @@ func TestAuditEntry_Marshal(t *testing.T) {
 	testJSONMarshal(t, &AuditEntry{}, "{}")
 
 	u := &AuditEntry{
-		Action:                   String("a"),
-		Actor:                    String("ac"),
-		ActorLocation:            &ActorLocation{CountryCode: String("alcc")},
-		Business:                 String("b"),
+		Action:                   Ptr("a"),
+		Actor:                    Ptr("ac"),
+		ActorLocation:            &ActorLocation{CountryCode: Ptr("alcc")},
+		Business:                 Ptr("b"),
 		CreatedAt:                &Timestamp{referenceTime},
-		DocumentID:               String("did"),
-		ExternalIdentityNameID:   String("ein"),
-		ExternalIdentityUsername: String("eiu"),
-		HashedToken:              String("ht"),
-		Org:                      String("o"),
-		OrgID:                    Int64(1),
+		DocumentID:               Ptr("did"),
+		ExternalIdentityNameID:   Ptr("ein"),
+		ExternalIdentityUsername: Ptr("eiu"),
+		HashedToken:              Ptr("ht"),
+		Org:                      Ptr("o"),
+		OrgID:                    Ptr(int64(1)),
 		Timestamp:                &Timestamp{referenceTime},
-		TokenID:                  Int64(1),
-		TokenScopes:              String("ts"),
-		User:                     String("u"),
+		TokenID:                  Ptr(int64(1)),
+		TokenScopes:              Ptr("ts"),
+		User:                     Ptr("u"),
 		Data: map[string]interface{}{
 			"old_name":  "on",
 			"old_login": "ol",

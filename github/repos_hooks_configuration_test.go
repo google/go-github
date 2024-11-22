@@ -31,10 +31,10 @@ func TestRepositoriesService_GetHookConfiguration(t *testing.T) {
 	}
 
 	want := &HookConfig{
-		ContentType: String("json"),
-		InsecureSSL: String("0"),
-		Secret:      String("********"),
-		URL:         String("https://example.com/webhook"),
+		ContentType: Ptr("json"),
+		InsecureSSL: Ptr("0"),
+		Secret:      Ptr("********"),
+		URL:         Ptr("https://example.com/webhook"),
 	}
 	if !cmp.Equal(config, want) {
 		t.Errorf("Repositories.GetHookConfiguration returned %+v, want %+v", config, want)
@@ -89,10 +89,10 @@ func TestRepositoriesService_EditHookConfiguration(t *testing.T) {
 	}
 
 	want := &HookConfig{
-		ContentType: String("json"),
-		InsecureSSL: String("0"),
-		Secret:      String("********"),
-		URL:         String("https://example.com/webhook"),
+		ContentType: Ptr("json"),
+		InsecureSSL: Ptr("0"),
+		Secret:      Ptr("********"),
+		URL:         Ptr("https://example.com/webhook"),
 	}
 	if !cmp.Equal(config, want) {
 		t.Errorf("Repositories.EditHookConfiguration returned %+v, want %+v", config, want)

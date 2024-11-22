@@ -31,10 +31,10 @@ func TestOrganizationsService_GetHookConfiguration(t *testing.T) {
 	}
 
 	want := &HookConfig{
-		ContentType: String("json"),
-		InsecureSSL: String("0"),
-		Secret:      String("********"),
-		URL:         String("https://example.com/webhook"),
+		ContentType: Ptr("json"),
+		InsecureSSL: Ptr("0"),
+		Secret:      Ptr("********"),
+		URL:         Ptr("https://example.com/webhook"),
 	}
 	if !cmp.Equal(config, want) {
 		t.Errorf("Organizations.GetHookConfiguration returned %+v, want %+v", config, want)
@@ -89,10 +89,10 @@ func TestOrganizationsService_EditHookConfiguration(t *testing.T) {
 	}
 
 	want := &HookConfig{
-		ContentType: String("json"),
-		InsecureSSL: String("0"),
-		Secret:      String("********"),
-		URL:         String("https://example.com/webhook"),
+		ContentType: Ptr("json"),
+		InsecureSSL: Ptr("0"),
+		Secret:      Ptr("********"),
+		URL:         Ptr("https://example.com/webhook"),
 	}
 	if !cmp.Equal(config, want) {
 		t.Errorf("Organizations.EditHookConfiguration returned %+v, want %+v", config, want)

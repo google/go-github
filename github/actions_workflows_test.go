@@ -34,10 +34,10 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 	}
 
 	want := &Workflows{
-		TotalCount: Int(4),
+		TotalCount: Ptr(4),
 		Workflows: []*Workflow{
-			{ID: Int64(72844), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Int64(72845), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(72844)), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(72845)), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(workflows, want) {
@@ -75,7 +75,7 @@ func TestActionsService_GetWorkflowByID(t *testing.T) {
 	}
 
 	want := &Workflow{
-		ID:        Int64(72844),
+		ID:        Ptr(int64(72844)),
 		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
@@ -114,7 +114,7 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 	}
 
 	want := &Workflow{
-		ID:        Int64(72844),
+		ID:        Ptr(int64(72844)),
 		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
@@ -155,13 +155,13 @@ func TestActionsService_GetWorkflowUsageByID(t *testing.T) {
 	want := &WorkflowUsage{
 		Billable: &WorkflowBillMap{
 			"UBUNTU": &WorkflowBill{
-				TotalMS: Int64(180000),
+				TotalMS: Ptr(int64(180000)),
 			},
 			"MACOS": &WorkflowBill{
-				TotalMS: Int64(240000),
+				TotalMS: Ptr(int64(240000)),
 			},
 			"WINDOWS": &WorkflowBill{
-				TotalMS: Int64(300000),
+				TotalMS: Ptr(int64(300000)),
 			},
 		},
 	}
@@ -202,13 +202,13 @@ func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
 	want := &WorkflowUsage{
 		Billable: &WorkflowBillMap{
 			"UBUNTU": &WorkflowBill{
-				TotalMS: Int64(180000),
+				TotalMS: Ptr(int64(180000)),
 			},
 			"MACOS": &WorkflowBill{
-				TotalMS: Int64(240000),
+				TotalMS: Ptr(int64(240000)),
 			},
 			"WINDOWS": &WorkflowBill{
-				TotalMS: Int64(300000),
+				TotalMS: Ptr(int64(300000)),
 			},
 		},
 	}
@@ -464,16 +464,16 @@ func TestWorkflow_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Workflow{}, "{}")
 
 	u := &Workflow{
-		ID:        Int64(1),
-		NodeID:    String("nid"),
-		Name:      String("n"),
-		Path:      String("p"),
-		State:     String("s"),
+		ID:        Ptr(int64(1)),
+		NodeID:    Ptr("nid"),
+		Name:      Ptr("n"),
+		Path:      Ptr("p"),
+		State:     Ptr("s"),
 		CreatedAt: &Timestamp{referenceTime},
 		UpdatedAt: &Timestamp{referenceTime},
-		URL:       String("u"),
-		HTMLURL:   String("h"),
-		BadgeURL:  String("b"),
+		URL:       Ptr("u"),
+		HTMLURL:   Ptr("h"),
+		BadgeURL:  Ptr("b"),
 	}
 
 	want := `{
@@ -497,19 +497,19 @@ func TestWorkflows_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Workflows{}, "{}")
 
 	u := &Workflows{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Workflows: []*Workflow{
 			{
-				ID:        Int64(1),
-				NodeID:    String("nid"),
-				Name:      String("n"),
-				Path:      String("p"),
-				State:     String("s"),
+				ID:        Ptr(int64(1)),
+				NodeID:    Ptr("nid"),
+				Name:      Ptr("n"),
+				Path:      Ptr("p"),
+				State:     Ptr("s"),
 				CreatedAt: &Timestamp{referenceTime},
 				UpdatedAt: &Timestamp{referenceTime},
-				URL:       String("u"),
-				HTMLURL:   String("h"),
-				BadgeURL:  String("b"),
+				URL:       Ptr("u"),
+				HTMLURL:   Ptr("h"),
+				BadgeURL:  Ptr("b"),
 			},
 		},
 	}
@@ -538,7 +538,7 @@ func TestWorkflowBill_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WorkflowBill{}, "{}")
 
 	u := &WorkflowBill{
-		TotalMS: Int64(1),
+		TotalMS: Ptr(int64(1)),
 	}
 
 	want := `{
@@ -554,13 +554,13 @@ func TestWorkflowBillMap_Marshal(t *testing.T) {
 
 	u := &WorkflowBillMap{
 		"UBUNTU": &WorkflowBill{
-			TotalMS: Int64(1),
+			TotalMS: Ptr(int64(1)),
 		},
 		"MACOS": &WorkflowBill{
-			TotalMS: Int64(1),
+			TotalMS: Ptr(int64(1)),
 		},
 		"WINDOWS": &WorkflowBill{
-			TotalMS: Int64(1),
+			TotalMS: Ptr(int64(1)),
 		},
 	}
 
@@ -586,13 +586,13 @@ func TestWorkflowUsage_Marshal(t *testing.T) {
 	u := &WorkflowUsage{
 		Billable: &WorkflowBillMap{
 			"UBUNTU": &WorkflowBill{
-				TotalMS: Int64(1),
+				TotalMS: Ptr(int64(1)),
 			},
 			"MACOS": &WorkflowBill{
-				TotalMS: Int64(1),
+				TotalMS: Ptr(int64(1)),
 			},
 			"WINDOWS": &WorkflowBill{
-				TotalMS: Int64(1),
+				TotalMS: Ptr(int64(1)),
 			},
 		},
 	}

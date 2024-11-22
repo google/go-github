@@ -34,9 +34,9 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 	}
 
 	want := []*TrafficReferrer{{
-		Referrer: String("Google"),
-		Count:    Int(4),
-		Uniques:  Int(3),
+		Referrer: Ptr("Google"),
+		Count:    Ptr(4),
+		Uniques:  Ptr(3),
 	}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListTrafficReferrers returned %+v, want %+v", got, want)
@@ -77,10 +77,10 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 	}
 
 	want := []*TrafficPath{{
-		Path:    String("/github/hubot"),
-		Title:   String("github/hubot: A customizable life embetterment robot."),
-		Count:   Int(3542),
-		Uniques: Int(2225),
+		Path:    Ptr("/github/hubot"),
+		Title:   Ptr("github/hubot: A customizable life embetterment robot."),
+		Count:   Ptr(3542),
+		Uniques: Ptr(2225),
 	}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListTrafficPaths returned %+v, want %+v", got, want)
@@ -125,11 +125,11 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 	want := &TrafficViews{
 		Views: []*TrafficData{{
 			Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
-			Count:     Int(7),
-			Uniques:   Int(6),
+			Count:     Ptr(7),
+			Uniques:   Ptr(6),
 		}},
-		Count:   Int(7),
-		Uniques: Int(6),
+		Count:   Ptr(7),
+		Uniques: Ptr(6),
 	}
 
 	if !cmp.Equal(got, want) {
@@ -175,11 +175,11 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 	want := &TrafficClones{
 		Clones: []*TrafficData{{
 			Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
-			Count:     Int(7),
-			Uniques:   Int(6),
+			Count:     Ptr(7),
+			Uniques:   Ptr(6),
 		}},
-		Count:   Int(7),
-		Uniques: Int(6),
+		Count:   Ptr(7),
+		Uniques: Ptr(6),
 	}
 
 	if !cmp.Equal(got, want) {
@@ -206,9 +206,9 @@ func TestTrafficReferrer_Marshal(t *testing.T) {
 	testJSONMarshal(t, &TrafficReferrer{}, "{}")
 
 	u := &TrafficReferrer{
-		Referrer: String("referrer"),
-		Count:    Int(0),
-		Uniques:  Int(0),
+		Referrer: Ptr("referrer"),
+		Count:    Ptr(0),
+		Uniques:  Ptr(0),
 	}
 
 	want := `{
@@ -227,11 +227,11 @@ func TestTrafficViews_Marshal(t *testing.T) {
 	u := &TrafficViews{
 		Views: []*TrafficData{{
 			Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
-			Count:     Int(7),
-			Uniques:   Int(6),
+			Count:     Ptr(7),
+			Uniques:   Ptr(6),
 		}},
-		Count:   Int(0),
-		Uniques: Int(0),
+		Count:   Ptr(0),
+		Uniques: Ptr(0),
 	}
 
 	want := `{
@@ -254,11 +254,11 @@ func TestTrafficClones_Marshal(t *testing.T) {
 	u := &TrafficClones{
 		Clones: []*TrafficData{{
 			Timestamp: &Timestamp{time.Date(2021, time.October, 29, 16, 0, 0, 0, time.UTC)},
-			Count:     Int(1),
-			Uniques:   Int(1),
+			Count:     Ptr(1),
+			Uniques:   Ptr(1),
 		}},
-		Count:   Int(0),
-		Uniques: Int(0),
+		Count:   Ptr(0),
+		Uniques: Ptr(0),
 	}
 
 	want := `{
@@ -279,10 +279,10 @@ func TestTrafficPath_Marshal(t *testing.T) {
 	testJSONMarshal(t, &TrafficPath{}, "{}")
 
 	u := &TrafficPath{
-		Path:    String("test/path"),
-		Title:   String("test"),
-		Count:   Int(2),
-		Uniques: Int(3),
+		Path:    Ptr("test/path"),
+		Title:   Ptr("test"),
+		Count:   Ptr(2),
+		Uniques: Ptr(3),
 	}
 
 	want := `{
@@ -301,8 +301,8 @@ func TestTrafficData_Marshal(t *testing.T) {
 
 	u := &TrafficData{
 		Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
-		Count:     Int(7),
-		Uniques:   Int(6),
+		Count:     Ptr(7),
+		Uniques:   Ptr(6),
 	}
 
 	want := `{

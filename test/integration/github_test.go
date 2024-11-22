@@ -76,8 +76,8 @@ func createRandomTestRepository(owner string, autoinit bool) (*github.Repository
 		context.Background(),
 		owner,
 		&github.Repository{
-			Name:     github.String(repoName),
-			AutoInit: github.Bool(autoinit),
+			Name:     github.Ptr(repoName),
+			AutoInit: github.Ptr(autoinit),
 		},
 	)
 	if err != nil {

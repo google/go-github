@@ -33,10 +33,10 @@ func TestRepositoriesService_GetAllDeploymentProtectionRules(t *testing.T) {
 
 	want := &ListDeploymentProtectionRuleResponse{
 		ProtectionRules: []*CustomDeploymentProtectionRule{
-			{ID: Int64(3), NodeID: String("IEH37kRlcGxveW1lbnRTdGF0ddiv"), Enabled: Bool(true), App: &CustomDeploymentProtectionRuleApp{ID: Int64(1), NodeID: String("GHT58kRlcGxveW1lbnRTdTY!bbcy"), Slug: String("a-custom-app"), IntegrationURL: String("https://api.github.com/apps/a-custom-app")}},
-			{ID: Int64(4), NodeID: String("MDE2OkRlcGxveW1lbnRTdHJ41128"), Enabled: Bool(true), App: &CustomDeploymentProtectionRuleApp{ID: Int64(1), NodeID: String("UHVE67RlcGxveW1lbnRTdTY!jfeuy"), Slug: String("another-custom-app"), IntegrationURL: String("https://api.github.com/apps/another-custom-app")}},
+			{ID: Ptr(int64(3)), NodeID: Ptr("IEH37kRlcGxveW1lbnRTdGF0ddiv"), Enabled: Ptr(true), App: &CustomDeploymentProtectionRuleApp{ID: Ptr(int64(1)), NodeID: Ptr("GHT58kRlcGxveW1lbnRTdTY!bbcy"), Slug: Ptr("a-custom-app"), IntegrationURL: Ptr("https://api.github.com/apps/a-custom-app")}},
+			{ID: Ptr(int64(4)), NodeID: Ptr("MDE2OkRlcGxveW1lbnRTdHJ41128"), Enabled: Ptr(true), App: &CustomDeploymentProtectionRuleApp{ID: Ptr(int64(1)), NodeID: Ptr("UHVE67RlcGxveW1lbnRTdTY!jfeuy"), Slug: Ptr("another-custom-app"), IntegrationURL: Ptr("https://api.github.com/apps/another-custom-app")}},
 		},
-		TotalCount: Int(2),
+		TotalCount: Ptr(2),
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.GetAllDeploymentProtectionRules = %+v, want %+v", got, want)
@@ -57,7 +57,7 @@ func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) 
 	client, mux, _ := setup(t)
 
 	input := &CustomDeploymentProtectionRuleRequest{
-		IntegrationID: Int64(5),
+		IntegrationID: Ptr(int64(5)),
 	}
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment_protection_rules", func(w http.ResponseWriter, r *http.Request) {
@@ -80,14 +80,14 @@ func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) 
 	}
 
 	want := &CustomDeploymentProtectionRule{
-		ID:      Int64(3),
-		NodeID:  String("IEH37kRlcGxveW1lbnRTdGF0ddiv"),
-		Enabled: Bool(true),
+		ID:      Ptr(int64(3)),
+		NodeID:  Ptr("IEH37kRlcGxveW1lbnRTdGF0ddiv"),
+		Enabled: Ptr(true),
 		App: &CustomDeploymentProtectionRuleApp{
-			ID:             Int64(1),
-			NodeID:         String("GHT58kRlcGxveW1lbnRTdTY!bbcy"),
-			Slug:           String("a-custom-app"),
-			IntegrationURL: String("https://api.github.com/apps/a-custom-app"),
+			ID:             Ptr(int64(1)),
+			NodeID:         Ptr("GHT58kRlcGxveW1lbnRTdTY!bbcy"),
+			Slug:           Ptr("a-custom-app"),
+			IntegrationURL: Ptr("https://api.github.com/apps/a-custom-app"),
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -125,10 +125,10 @@ func TestRepositoriesService_ListCustomDeploymentRuleIntegrations(t *testing.T) 
 	}
 
 	want := &ListCustomDeploymentRuleIntegrationsResponse{
-		TotalCount: Int(2),
+		TotalCount: Ptr(2),
 		AvailableIntegrations: []*CustomDeploymentProtectionRuleApp{
-			{ID: Int64(1), NodeID: String("GHT58kRlcGxveW1lbnRTdTY!bbcy"), Slug: String("a-custom-app"), IntegrationURL: String("https://api.github.com/apps/a-custom-app")},
-			{ID: Int64(2), NodeID: String("UHVE67RlcGxveW1lbnRTdTY!jfeuy"), Slug: String("another-custom-app"), IntegrationURL: String("https://api.github.com/apps/another-custom-app")},
+			{ID: Ptr(int64(1)), NodeID: Ptr("GHT58kRlcGxveW1lbnRTdTY!bbcy"), Slug: Ptr("a-custom-app"), IntegrationURL: Ptr("https://api.github.com/apps/a-custom-app")},
+			{ID: Ptr(int64(2)), NodeID: Ptr("UHVE67RlcGxveW1lbnRTdTY!jfeuy"), Slug: Ptr("another-custom-app"), IntegrationURL: Ptr("https://api.github.com/apps/another-custom-app")},
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -161,14 +161,14 @@ func TestRepositoriesService_GetCustomDeploymentProtectionRule(t *testing.T) {
 	}
 
 	want := &CustomDeploymentProtectionRule{
-		ID:      Int64(1),
-		NodeID:  String("IEH37kRlcGxveW1lbnRTdGF0ddiv"),
-		Enabled: Bool(true),
+		ID:      Ptr(int64(1)),
+		NodeID:  Ptr("IEH37kRlcGxveW1lbnRTdGF0ddiv"),
+		Enabled: Ptr(true),
 		App: &CustomDeploymentProtectionRuleApp{
-			ID:             Int64(1),
-			NodeID:         String("GHT58kRlcGxveW1lbnRTdTY!bbcy"),
-			Slug:           String("a-custom-app"),
-			IntegrationURL: String("https://api.github.com/apps/a-custom-app"),
+			ID:             Ptr(int64(1)),
+			NodeID:         Ptr("GHT58kRlcGxveW1lbnRTdTY!bbcy"),
+			Slug:           Ptr("a-custom-app"),
+			IntegrationURL: Ptr("https://api.github.com/apps/a-custom-app"),
 		},
 	}
 

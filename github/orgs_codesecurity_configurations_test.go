@@ -41,8 +41,8 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 	}
 
 	want := []*CodeSecurityConfiguration{
-		{ID: Int64(1), Name: String("config1"), CodeScanningDefaultSetup: String("enabled")},
-		{ID: Int64(2), Name: String("config2"), PrivateVulnerabilityReporting: String("enabled")},
+		{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")},
+		{ID: Ptr(int64(2)), Name: Ptr("config2"), PrivateVulnerabilityReporting: Ptr("enabled")},
 	}
 	if !reflect.DeepEqual(configurations, want) {
 		t.Errorf("Organizations.GetCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
@@ -80,7 +80,7 @@ func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
 		t.Errorf("Organizations.GetCodeSecurityConfiguration returned error: %v", err)
 	}
 
-	want := &CodeSecurityConfiguration{ID: Int64(1), Name: String("config1"), CodeScanningDefaultSetup: String("enabled")}
+	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")}
 	if !reflect.DeepEqual(configuration, want) {
 		t.Errorf("Organizations.GetCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
@@ -106,8 +106,8 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 	ctx := context.Background()
 
 	input := &CodeSecurityConfiguration{
-		Name:                     String("config1"),
-		CodeScanningDefaultSetup: String("enabled"),
+		Name:                     Ptr("config1"),
+		CodeScanningDefaultSetup: Ptr("enabled"),
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
@@ -133,7 +133,7 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 		t.Errorf("Organizations.CreateCodeSecurityConfiguration returned error: %v", err)
 	}
 
-	want := &CodeSecurityConfiguration{ID: Int64(1), Name: String("config1"), CodeScanningDefaultSetup: String("enabled")}
+	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")}
 	if !reflect.DeepEqual(configuration, want) {
 		t.Errorf("Organizations.CreateCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
@@ -179,8 +179,8 @@ func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T)
 	}
 
 	want := []*CodeSecurityConfiguration{
-		{ID: Int64(1), Name: String("config1"), CodeScanningDefaultSetup: String("enabled")},
-		{ID: Int64(2), Name: String("config2"), PrivateVulnerabilityReporting: String("enabled")},
+		{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")},
+		{ID: Ptr(int64(2)), Name: Ptr("config2"), PrivateVulnerabilityReporting: Ptr("enabled")},
 	}
 	if !reflect.DeepEqual(configurations, want) {
 		t.Errorf("Organizations.GetDefaultCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
@@ -239,8 +239,8 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &CodeSecurityConfiguration{
-		Name:                     String("config1"),
-		CodeScanningDefaultSetup: String("enabled"),
+		Name:                     Ptr("config1"),
+		CodeScanningDefaultSetup: Ptr("enabled"),
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -266,7 +266,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 		t.Errorf("Organizations.UpdateCodeSecurityConfiguration returned error: %v", err)
 	}
 
-	want := &CodeSecurityConfiguration{ID: Int64(1), Name: String("config1"), CodeScanningDefaultSetup: String("enabled")}
+	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")}
 	if !reflect.DeepEqual(configuration, want) {
 		t.Errorf("Organizations.UpdateCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
@@ -392,9 +392,9 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 		t.Errorf("Organizations.SetDefaultCodeSecurityConfiguration returned status %d, want %d", resp.StatusCode, wantStatus)
 	}
 	want := &CodeSecurityConfigurationWithDefaultForNewRepos{
-		DefaultForNewRepos: String("all"),
+		DefaultForNewRepos: Ptr("all"),
 		Configuration: &CodeSecurityConfiguration{
-			ID: Int64(1), Name: String("config1"), CodeScanningDefaultSetup: String("enabled"),
+			ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled"),
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
@@ -440,8 +440,8 @@ func TestOrganizationsService_GetRepositoriesForCodeSecurityConfiguration(t *tes
 	}
 
 	want := []*Repository{
-		{ID: Int64(8), Name: String("repo8")},
-		{ID: Int64(42), Name: String("repo42")},
+		{ID: Ptr(int64(8)), Name: Ptr("repo8")},
+		{ID: Ptr(int64(42)), Name: Ptr("repo42")},
 	}
 	if !reflect.DeepEqual(repositories, want) {
 		t.Errorf("Organizations.GetRepositoriesForCodeSecurityConfiguration returned %+v, want %+v", repositories, want)
@@ -483,9 +483,9 @@ func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testi
 	if err != nil {
 		t.Errorf("Organizations.GetCodeSecurityConfigurationForRepository returned error: %v", err)
 	}
-	c := &CodeSecurityConfiguration{ID: Int64(42), Name: String("config42"), CodeScanningDefaultSetup: String("enabled")}
+	c := &CodeSecurityConfiguration{ID: Ptr(int64(42)), Name: Ptr("config42"), CodeScanningDefaultSetup: Ptr("enabled")}
 	want := &RepositoryCodeSecurityConfiguration{
-		State:         String("attached"),
+		State:         Ptr("attached"),
 		Configuration: c,
 	}
 	if !reflect.DeepEqual(rc, want) {

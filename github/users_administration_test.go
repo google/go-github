@@ -96,7 +96,7 @@ func TestUsersServiceReason_Suspend(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &UserSuspendOptions{Reason: String("test")}
+	input := &UserSuspendOptions{Reason: Ptr("test")}
 
 	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {
 		v := new(UserSuspendOptions)
@@ -148,7 +148,7 @@ func TestUserSuspendOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &UserSuspendOptions{}, "{}")
 
 	u := &UserSuspendOptions{
-		Reason: String("reason"),
+		Reason: Ptr("reason"),
 	}
 
 	want := `{

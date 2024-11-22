@@ -32,11 +32,11 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 	}
 
 	want := []*RunnerApplicationDownload{
-		{OS: String("osx"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz"), Filename: String("actions-runner-osx-x64-2.164.0.tar.gz")},
-		{OS: String("linux"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz"), Filename: String("actions-runner-linux-x64-2.164.0.tar.gz")},
-		{OS: String("linux"), Architecture: String("arm"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz"), Filename: String("actions-runner-linux-arm-2.164.0.tar.gz")},
-		{OS: String("win"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: String("actions-runner-win-x64-2.164.0.zip")},
-		{OS: String("linux"), Architecture: String("arm64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: String("actions-runner-linux-arm64-2.164.0.tar.gz")},
+		{OS: Ptr("osx"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-osx-x64-2.164.0.tar.gz")},
+		{OS: Ptr("linux"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-x64-2.164.0.tar.gz")},
+		{OS: Ptr("linux"), Architecture: Ptr("arm"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-arm-2.164.0.tar.gz")},
+		{OS: Ptr("win"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: Ptr("actions-runner-win-x64-2.164.0.zip")},
+		{OS: Ptr("linux"), Architecture: Ptr("arm64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-arm64-2.164.0.tar.gz")},
 	}
 	if !cmp.Equal(downloads, want) {
 		t.Errorf("Actions.ListRunnerApplicationDownloads returned %+v, want %+v", downloads, want)
@@ -81,7 +81,7 @@ func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
 		t.Errorf("Actions.GenerateOrgJITConfig returned error: %v", err)
 	}
 
-	want := &JITRunnerConfig{EncodedJITConfig: String("foo")}
+	want := &JITRunnerConfig{EncodedJITConfig: Ptr("foo")}
 	if !cmp.Equal(jitConfig, want) {
 		t.Errorf("Actions.GenerateOrgJITConfig returned %+v, want %+v", jitConfig, want)
 	}
@@ -125,7 +125,7 @@ func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
 		t.Errorf("Actions.GenerateRepoJITConfig returned error: %v", err)
 	}
 
-	want := &JITRunnerConfig{EncodedJITConfig: String("foo")}
+	want := &JITRunnerConfig{EncodedJITConfig: Ptr("foo")}
 	if !cmp.Equal(jitConfig, want) {
 		t.Errorf("Actions.GenerateRepoJITConfig returned %+v, want %+v", jitConfig, want)
 	}
@@ -160,7 +160,7 @@ func TestActionsService_CreateRegistrationToken(t *testing.T) {
 		t.Errorf("Actions.CreateRegistrationToken returned error: %v", err)
 	}
 
-	want := &RegistrationToken{Token: String("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
+	want := &RegistrationToken{Token: Ptr("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
 		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
 			123000000, time.UTC)}}
 	if !cmp.Equal(token, want) {
@@ -193,7 +193,7 @@ func TestActionsService_ListRunners(t *testing.T) {
 	})
 
 	opts := &ListRunnersOptions{
-		Name:        String("MBP"),
+		Name:        Ptr("MBP"),
 		ListOptions: ListOptions{Page: 2, PerPage: 2},
 	}
 	ctx := context.Background()
@@ -205,7 +205,7 @@ func TestActionsService_ListRunners(t *testing.T) {
 	want := &Runners{
 		TotalCount: 1,
 		Runners: []*Runner{
-			{ID: Int64(23), Name: String("MBP"), OS: String("macos"), Status: String("online")},
+			{ID: Ptr(int64(23)), Name: Ptr("MBP"), OS: Ptr("macos"), Status: Ptr("online")},
 		},
 	}
 	if !cmp.Equal(runners, want) {
@@ -243,10 +243,10 @@ func TestActionsService_GetRunner(t *testing.T) {
 	}
 
 	want := &Runner{
-		ID:     Int64(23),
-		Name:   String("MBP"),
-		OS:     String("macos"),
-		Status: String("online"),
+		ID:     Ptr(int64(23)),
+		Name:   Ptr("MBP"),
+		OS:     Ptr("macos"),
+		Status: Ptr("online"),
 	}
 	if !cmp.Equal(runner, want) {
 		t.Errorf("Actions.GetRunner returned %+v, want %+v", runner, want)
@@ -282,7 +282,7 @@ func TestActionsService_CreateRemoveToken(t *testing.T) {
 		t.Errorf("Actions.CreateRemoveToken returned error: %v", err)
 	}
 
-	want := &RemoveToken{Token: String("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &Timestamp{time.Date(2020, time.January, 29, 12, 13, 35, 123000000, time.UTC)}}
+	want := &RemoveToken{Token: Ptr("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &Timestamp{time.Date(2020, time.January, 29, 12, 13, 35, 123000000, time.UTC)}}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRemoveToken returned %+v, want %+v", token, want)
 	}
@@ -343,11 +343,11 @@ func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T)
 	}
 
 	want := []*RunnerApplicationDownload{
-		{OS: String("osx"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz"), Filename: String("actions-runner-osx-x64-2.164.0.tar.gz")},
-		{OS: String("linux"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz"), Filename: String("actions-runner-linux-x64-2.164.0.tar.gz")},
-		{OS: String("linux"), Architecture: String("arm"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz"), Filename: String("actions-runner-linux-arm-2.164.0.tar.gz")},
-		{OS: String("win"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: String("actions-runner-win-x64-2.164.0.zip")},
-		{OS: String("linux"), Architecture: String("arm64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: String("actions-runner-linux-arm64-2.164.0.tar.gz")},
+		{OS: Ptr("osx"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-osx-x64-2.164.0.tar.gz")},
+		{OS: Ptr("linux"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-x64-2.164.0.tar.gz")},
+		{OS: Ptr("linux"), Architecture: Ptr("arm"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-arm-2.164.0.tar.gz")},
+		{OS: Ptr("win"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: Ptr("actions-runner-win-x64-2.164.0.zip")},
+		{OS: Ptr("linux"), Architecture: Ptr("arm64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-arm64-2.164.0.tar.gz")},
 	}
 	if !cmp.Equal(downloads, want) {
 		t.Errorf("Actions.ListOrganizationRunnerApplicationDownloads returned %+v, want %+v", downloads, want)
@@ -383,7 +383,7 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 		t.Errorf("Actions.CreateRegistrationToken returned error: %v", err)
 	}
 
-	want := &RegistrationToken{Token: String("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
+	want := &RegistrationToken{Token: Ptr("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
 		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
 			123000000, time.UTC)}}
 	if !cmp.Equal(token, want) {
@@ -427,8 +427,8 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 	want := &Runners{
 		TotalCount: 2,
 		Runners: []*Runner{
-			{ID: Int64(23), Name: String("MBP"), OS: String("macos"), Status: String("online")},
-			{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
+			{ID: Ptr(int64(23)), Name: Ptr("MBP"), OS: Ptr("macos"), Status: Ptr("online")},
+			{ID: Ptr(int64(24)), Name: Ptr("iMac"), OS: Ptr("macos"), Status: Ptr("offline")},
 		},
 	}
 	if !cmp.Equal(runners, want) {
@@ -466,10 +466,10 @@ func TestActionsService_GetOrganizationRunner(t *testing.T) {
 	}
 
 	want := &Runner{
-		ID:     Int64(23),
-		Name:   String("MBP"),
-		OS:     String("macos"),
-		Status: String("online"),
+		ID:     Ptr(int64(23)),
+		Name:   Ptr("MBP"),
+		OS:     Ptr("macos"),
+		Status: Ptr("online"),
 	}
 	if !cmp.Equal(runner, want) {
 		t.Errorf("Actions.GetRunner returned %+v, want %+v", runner, want)
@@ -505,7 +505,7 @@ func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
 		t.Errorf("Actions.CreateRemoveToken returned error: %v", err)
 	}
 
-	want := &RemoveToken{Token: String("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &Timestamp{time.Date(2020, time.January, 29, 12, 13, 35, 123000000, time.UTC)}}
+	want := &RemoveToken{Token: Ptr("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &Timestamp{time.Date(2020, time.January, 29, 12, 13, 35, 123000000, time.UTC)}}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRemoveToken returned %+v, want %+v", token, want)
 	}
@@ -555,12 +555,12 @@ func TestRunnerApplicationDownload_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RunnerApplicationDownload{}, "{}")
 
 	u := &RunnerApplicationDownload{
-		OS:                String("o"),
-		Architecture:      String("a"),
-		DownloadURL:       String("d"),
-		Filename:          String("f"),
-		TempDownloadToken: String("t"),
-		SHA256Checksum:    String("s"),
+		OS:                Ptr("o"),
+		Architecture:      Ptr("a"),
+		DownloadURL:       Ptr("d"),
+		Filename:          Ptr("f"),
+		TempDownloadToken: Ptr("t"),
+		SHA256Checksum:    Ptr("s"),
 	}
 
 	want := `{
@@ -583,9 +583,9 @@ func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
 		TotalCount: 1,
 		Repositories: []*Repository{
 			{
-				ID:   Int64(1),
-				URL:  String("u"),
-				Name: String("n"),
+				ID:   Ptr(int64(1)),
+				URL:  Ptr("u"),
+				Name: Ptr("n"),
 			},
 		},
 	}
@@ -609,7 +609,7 @@ func TestRegistrationToken_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RegistrationToken{}, "{}")
 
 	u := &RegistrationToken{
-		Token:     String("t"),
+		Token:     Ptr("t"),
 		ExpiresAt: &Timestamp{referenceTime},
 	}
 
@@ -626,9 +626,9 @@ func TestRunnerLabels_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RunnerLabels{}, "{}")
 
 	u := &RunnerLabels{
-		ID:   Int64(1),
-		Name: String("n"),
-		Type: String("t"),
+		ID:   Ptr(int64(1)),
+		Name: Ptr("n"),
+		Type: Ptr("t"),
 	}
 
 	want := `{
@@ -645,16 +645,16 @@ func TestRunner_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Runner{}, "{}")
 
 	u := &Runner{
-		ID:     Int64(1),
-		Name:   String("n"),
-		OS:     String("o"),
-		Status: String("s"),
-		Busy:   Bool(false),
+		ID:     Ptr(int64(1)),
+		Name:   Ptr("n"),
+		OS:     Ptr("o"),
+		Status: Ptr("s"),
+		Busy:   Ptr(false),
 		Labels: []*RunnerLabels{
 			{
-				ID:   Int64(1),
-				Name: String("n"),
-				Type: String("t"),
+				ID:   Ptr(int64(1)),
+				Name: Ptr("n"),
+				Type: Ptr("t"),
 			},
 		},
 	}
@@ -685,16 +685,16 @@ func TestRunners_Marshal(t *testing.T) {
 		TotalCount: 1,
 		Runners: []*Runner{
 			{
-				ID:     Int64(1),
-				Name:   String("n"),
-				OS:     String("o"),
-				Status: String("s"),
-				Busy:   Bool(false),
+				ID:     Ptr(int64(1)),
+				Name:   Ptr("n"),
+				OS:     Ptr("o"),
+				Status: Ptr("s"),
+				Busy:   Ptr(false),
 				Labels: []*RunnerLabels{
 					{
-						ID:   Int64(1),
-						Name: String("n"),
-						Type: String("t"),
+						ID:   Ptr(int64(1)),
+						Name: Ptr("n"),
+						Type: Ptr("t"),
 					},
 				},
 			},
@@ -729,7 +729,7 @@ func TestRemoveToken_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RemoveToken{}, "{}")
 
 	u := &RemoveToken{
-		Token:     String("t"),
+		Token:     Ptr("t"),
 		ExpiresAt: &Timestamp{referenceTime},
 	}
 

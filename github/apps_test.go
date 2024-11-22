@@ -31,7 +31,7 @@ func TestAppsService_Get_authenticatedApp(t *testing.T) {
 		t.Errorf("Apps.Get returned error: %v", err)
 	}
 
-	want := &App{ID: Int64(1)}
+	want := &App{ID: Ptr(int64(1))}
 	if !cmp.Equal(app, want) {
 		t.Errorf("Apps.Get returned %+v, want %+v", app, want)
 	}
@@ -66,7 +66,7 @@ func TestAppsService_Get_specifiedApp(t *testing.T) {
 		t.Errorf("Apps.Get returned error: %v", err)
 	}
 
-	want := &App{HTMLURL: String("https://github.com/apps/a")}
+	want := &App{HTMLURL: Ptr("https://github.com/apps/a")}
 	if !cmp.Equal(app, want) {
 		t.Errorf("Apps.Get returned %+v, want %+v", *app.HTMLURL, *want.HTMLURL)
 	}
@@ -100,9 +100,9 @@ func TestAppsService_ListInstallationRequests(t *testing.T) {
 
 	date := Timestamp{Time: time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	want := []*InstallationRequest{{
-		ID:        Int64(1),
-		Account:   &User{ID: Int64(2)},
-		Requester: &User{ID: Int64(3)},
+		ID:        Ptr(int64(1)),
+		Account:   &User{ID: Ptr(int64(2))},
+		Requester: &User{ID: Ptr(int64(3))},
 		CreatedAt: &date,
 	}}
 	if !cmp.Equal(installationRequests, want) {
@@ -192,49 +192,49 @@ func TestAppsService_ListInstallations(t *testing.T) {
 
 	date := Timestamp{Time: time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	want := []*Installation{{
-		ID:                  Int64(1),
-		AppID:               Int64(1),
-		TargetID:            Int64(1),
-		TargetType:          String("Organization"),
-		SingleFileName:      String("config.yml"),
-		RepositorySelection: String("selected"),
+		ID:                  Ptr(int64(1)),
+		AppID:               Ptr(int64(1)),
+		TargetID:            Ptr(int64(1)),
+		TargetType:          Ptr("Organization"),
+		SingleFileName:      Ptr("config.yml"),
+		RepositorySelection: Ptr("selected"),
 		Permissions: &InstallationPermissions{
-			Actions:                                 String("read"),
-			Administration:                          String("read"),
-			Checks:                                  String("read"),
-			Contents:                                String("read"),
-			ContentReferences:                       String("read"),
-			Deployments:                             String("read"),
-			Environments:                            String("read"),
-			Issues:                                  String("write"),
-			Metadata:                                String("read"),
-			Members:                                 String("read"),
-			OrganizationAdministration:              String("write"),
-			OrganizationCustomRoles:                 String("write"),
-			OrganizationHooks:                       String("write"),
-			OrganizationPackages:                    String("write"),
-			OrganizationPersonalAccessTokens:        String("read"),
-			OrganizationPersonalAccessTokenRequests: String("read"),
-			OrganizationPlan:                        String("read"),
-			OrganizationPreReceiveHooks:             String("write"),
-			OrganizationProjects:                    String("read"),
-			OrganizationSecrets:                     String("read"),
-			OrganizationSelfHostedRunners:           String("read"),
-			OrganizationUserBlocking:                String("write"),
-			Packages:                                String("read"),
-			Pages:                                   String("read"),
-			PullRequests:                            String("write"),
-			RepositoryHooks:                         String("write"),
-			RepositoryProjects:                      String("read"),
-			RepositoryPreReceiveHooks:               String("read"),
-			Secrets:                                 String("read"),
-			SecretScanningAlerts:                    String("read"),
-			SecurityEvents:                          String("read"),
-			SingleFile:                              String("write"),
-			Statuses:                                String("write"),
-			TeamDiscussions:                         String("read"),
-			VulnerabilityAlerts:                     String("read"),
-			Workflows:                               String("write")},
+			Actions:                                 Ptr("read"),
+			Administration:                          Ptr("read"),
+			Checks:                                  Ptr("read"),
+			Contents:                                Ptr("read"),
+			ContentReferences:                       Ptr("read"),
+			Deployments:                             Ptr("read"),
+			Environments:                            Ptr("read"),
+			Issues:                                  Ptr("write"),
+			Metadata:                                Ptr("read"),
+			Members:                                 Ptr("read"),
+			OrganizationAdministration:              Ptr("write"),
+			OrganizationCustomRoles:                 Ptr("write"),
+			OrganizationHooks:                       Ptr("write"),
+			OrganizationPackages:                    Ptr("write"),
+			OrganizationPersonalAccessTokens:        Ptr("read"),
+			OrganizationPersonalAccessTokenRequests: Ptr("read"),
+			OrganizationPlan:                        Ptr("read"),
+			OrganizationPreReceiveHooks:             Ptr("write"),
+			OrganizationProjects:                    Ptr("read"),
+			OrganizationSecrets:                     Ptr("read"),
+			OrganizationSelfHostedRunners:           Ptr("read"),
+			OrganizationUserBlocking:                Ptr("write"),
+			Packages:                                Ptr("read"),
+			Pages:                                   Ptr("read"),
+			PullRequests:                            Ptr("write"),
+			RepositoryHooks:                         Ptr("write"),
+			RepositoryProjects:                      Ptr("read"),
+			RepositoryPreReceiveHooks:               Ptr("read"),
+			Secrets:                                 Ptr("read"),
+			SecretScanningAlerts:                    Ptr("read"),
+			SecurityEvents:                          Ptr("read"),
+			SingleFile:                              Ptr("write"),
+			Statuses:                                Ptr("write"),
+			TeamDiscussions:                         Ptr("read"),
+			VulnerabilityAlerts:                     Ptr("read"),
+			Workflows:                               Ptr("write")},
 		Events:    []string{"push", "pull_request"},
 		CreatedAt: &date,
 		UpdatedAt: &date,
@@ -268,7 +268,7 @@ func TestAppsService_GetInstallation(t *testing.T) {
 		t.Errorf("Apps.GetInstallation returned error: %v", err)
 	}
 
-	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
+	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
 	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.GetInstallation returned %+v, want %+v", installation, want)
 	}
@@ -308,7 +308,7 @@ func TestAppsService_ListUserInstallations(t *testing.T) {
 		t.Errorf("Apps.ListUserInstallations returned error: %v", err)
 	}
 
-	want := []*Installation{{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}}
+	want := []*Installation{{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}}
 	if !cmp.Equal(installations, want) {
 		t.Errorf("Apps.ListUserInstallations returned %+v, want %+v", installations, want)
 	}
@@ -416,7 +416,7 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
 
-	want := &InstallationToken{Token: String("t")}
+	want := &InstallationToken{Token: Ptr("t")}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
 	}
@@ -444,8 +444,8 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 		RepositoryIDs: []int64{1234},
 		Repositories:  []string{"foo"},
 		Permissions: &InstallationPermissions{
-			Contents: String("write"),
-			Issues:   String("read"),
+			Contents: Ptr("write"),
+			Issues:   Ptr("read"),
 		},
 	}
 
@@ -467,7 +467,7 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
 
-	want := &InstallationToken{Token: String("t")}
+	want := &InstallationToken{Token: Ptr("t")}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
 	}
@@ -480,8 +480,8 @@ func TestAppsService_CreateInstallationTokenListReposWithOptions(t *testing.T) {
 	installationTokenListRepoOptions := &InstallationTokenListRepoOptions{
 		Repositories: []string{"foo"},
 		Permissions: &InstallationPermissions{
-			Contents: String("write"),
-			Issues:   String("read"),
+			Contents: Ptr("write"),
+			Issues:   Ptr("read"),
 		},
 	}
 
@@ -503,7 +503,7 @@ func TestAppsService_CreateInstallationTokenListReposWithOptions(t *testing.T) {
 		t.Errorf("Apps.CreateInstallationTokenListRepos returned error: %v", err)
 	}
 
-	want := &InstallationToken{Token: String("t")}
+	want := &InstallationToken{Token: Ptr("t")}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Apps.CreateInstallationTokenListRepos returned %+v, want %+v", token, want)
 	}
@@ -524,7 +524,7 @@ func TestAppsService_CreateInstallationTokenListReposWithNoOptions(t *testing.T)
 		t.Errorf("Apps.CreateInstallationTokenListRepos returned error: %v", err)
 	}
 
-	want := &InstallationToken{Token: String("t")}
+	want := &InstallationToken{Token: Ptr("t")}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Apps.CreateInstallationTokenListRepos returned %+v, want %+v", token, want)
 	}
@@ -562,7 +562,7 @@ func TestAppsService_CreateAttachment(t *testing.T) {
 		t.Errorf("CreateAttachment returned error: %v", err)
 	}
 
-	want := &Attachment{ID: Int64(1), Title: String("title1"), Body: String("body1")}
+	want := &Attachment{ID: Ptr(int64(1)), Title: Ptr("title1"), Body: Ptr("body1")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateAttachment = %+v, want %+v", got, want)
 	}
@@ -597,7 +597,7 @@ func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 		t.Errorf("Apps.FindOrganizationInstallation returned error: %v", err)
 	}
 
-	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
+	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
 	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.FindOrganizationInstallation returned %+v, want %+v", installation, want)
 	}
@@ -632,7 +632,7 @@ func TestAppsService_FindRepositoryInstallation(t *testing.T) {
 		t.Errorf("Apps.FindRepositoryInstallation returned error: %v", err)
 	}
 
-	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
+	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
 	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.FindRepositoryInstallation returned %+v, want %+v", installation, want)
 	}
@@ -667,7 +667,7 @@ func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
 		t.Errorf("Apps.FindRepositoryInstallationByID returned error: %v", err)
 	}
 
-	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
+	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
 	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.FindRepositoryInstallationByID returned %+v, want %+v", installation, want)
 	}
@@ -702,7 +702,7 @@ func TestAppsService_FindUserInstallation(t *testing.T) {
 		t.Errorf("Apps.FindUserInstallation returned error: %v", err)
 	}
 
-	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("User")}
+	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("User")}
 	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.FindUserInstallation returned %+v, want %+v", installation, want)
 	}
@@ -727,9 +727,9 @@ func TestContentReference_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ContentReference{}, "{}")
 
 	u := &ContentReference{
-		ID:        Int64(1),
-		NodeID:    String("nid"),
-		Reference: String("r"),
+		ID:        Ptr(int64(1)),
+		NodeID:    Ptr("nid"),
+		Reference: Ptr("r"),
 	}
 
 	want := `{
@@ -746,9 +746,9 @@ func TestAttachment_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Attachment{}, "{}")
 
 	u := &Attachment{
-		ID:    Int64(1),
-		Title: String("t"),
-		Body:  String("b"),
+		ID:    Ptr(int64(1)),
+		Title: Ptr("t"),
+		Body:  Ptr("b"),
 	}
 
 	want := `{
@@ -765,39 +765,39 @@ func TestInstallationPermissions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &InstallationPermissions{}, "{}")
 
 	u := &InstallationPermissions{
-		Actions:                       String("a"),
-		Administration:                String("ad"),
-		Checks:                        String("c"),
-		Contents:                      String("co"),
-		ContentReferences:             String("cr"),
-		Deployments:                   String("d"),
-		Environments:                  String("e"),
-		Issues:                        String("i"),
-		Metadata:                      String("md"),
-		Members:                       String("m"),
-		OrganizationAdministration:    String("oa"),
-		OrganizationCustomOrgRoles:    String("ocr"),
-		OrganizationHooks:             String("oh"),
-		OrganizationPlan:              String("op"),
-		OrganizationPreReceiveHooks:   String("opr"),
-		OrganizationProjects:          String("op"),
-		OrganizationSecrets:           String("os"),
-		OrganizationSelfHostedRunners: String("osh"),
-		OrganizationUserBlocking:      String("oub"),
-		Packages:                      String("pkg"),
-		Pages:                         String("pg"),
-		PullRequests:                  String("pr"),
-		RepositoryHooks:               String("rh"),
-		RepositoryProjects:            String("rp"),
-		RepositoryPreReceiveHooks:     String("rprh"),
-		Secrets:                       String("s"),
-		SecretScanningAlerts:          String("ssa"),
-		SecurityEvents:                String("se"),
-		SingleFile:                    String("sf"),
-		Statuses:                      String("s"),
-		TeamDiscussions:               String("td"),
-		VulnerabilityAlerts:           String("va"),
-		Workflows:                     String("w"),
+		Actions:                       Ptr("a"),
+		Administration:                Ptr("ad"),
+		Checks:                        Ptr("c"),
+		Contents:                      Ptr("co"),
+		ContentReferences:             Ptr("cr"),
+		Deployments:                   Ptr("d"),
+		Environments:                  Ptr("e"),
+		Issues:                        Ptr("i"),
+		Metadata:                      Ptr("md"),
+		Members:                       Ptr("m"),
+		OrganizationAdministration:    Ptr("oa"),
+		OrganizationCustomOrgRoles:    Ptr("ocr"),
+		OrganizationHooks:             Ptr("oh"),
+		OrganizationPlan:              Ptr("op"),
+		OrganizationPreReceiveHooks:   Ptr("opr"),
+		OrganizationProjects:          Ptr("op"),
+		OrganizationSecrets:           Ptr("os"),
+		OrganizationSelfHostedRunners: Ptr("osh"),
+		OrganizationUserBlocking:      Ptr("oub"),
+		Packages:                      Ptr("pkg"),
+		Pages:                         Ptr("pg"),
+		PullRequests:                  Ptr("pr"),
+		RepositoryHooks:               Ptr("rh"),
+		RepositoryProjects:            Ptr("rp"),
+		RepositoryPreReceiveHooks:     Ptr("rprh"),
+		Secrets:                       Ptr("s"),
+		SecretScanningAlerts:          Ptr("ssa"),
+		SecurityEvents:                Ptr("se"),
+		SingleFile:                    Ptr("sf"),
+		Statuses:                      Ptr("s"),
+		TeamDiscussions:               Ptr("td"),
+		VulnerabilityAlerts:           Ptr("va"),
+		Workflows:                     Ptr("w"),
 	}
 
 	want := `{
@@ -844,95 +844,95 @@ func TestInstallation_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Installation{}, "{}")
 
 	u := &Installation{
-		ID:       Int64(1),
-		NodeID:   String("nid"),
-		AppID:    Int64(1),
-		AppSlug:  String("as"),
-		TargetID: Int64(1),
+		ID:       Ptr(int64(1)),
+		NodeID:   Ptr("nid"),
+		AppID:    Ptr(int64(1)),
+		AppSlug:  Ptr("as"),
+		TargetID: Ptr(int64(1)),
 		Account: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		AccessTokensURL:     String("atu"),
-		RepositoriesURL:     String("ru"),
-		HTMLURL:             String("hu"),
-		TargetType:          String("tt"),
-		SingleFileName:      String("sfn"),
-		RepositorySelection: String("rs"),
+		AccessTokensURL:     Ptr("atu"),
+		RepositoriesURL:     Ptr("ru"),
+		HTMLURL:             Ptr("hu"),
+		TargetType:          Ptr("tt"),
+		SingleFileName:      Ptr("sfn"),
+		RepositorySelection: Ptr("rs"),
 		Events:              []string{"e"},
 		SingleFilePaths:     []string{"s"},
 		Permissions: &InstallationPermissions{
-			Actions:                       String("a"),
-			ActionsVariables:              String("ac"),
-			Administration:                String("ad"),
-			Checks:                        String("c"),
-			Contents:                      String("co"),
-			ContentReferences:             String("cr"),
-			Deployments:                   String("d"),
-			Environments:                  String("e"),
-			Issues:                        String("i"),
-			Metadata:                      String("md"),
-			Members:                       String("m"),
-			OrganizationAdministration:    String("oa"),
-			OrganizationCustomOrgRoles:    String("ocr"),
-			OrganizationHooks:             String("oh"),
-			OrganizationPlan:              String("op"),
-			OrganizationPreReceiveHooks:   String("opr"),
-			OrganizationProjects:          String("op"),
-			OrganizationSecrets:           String("os"),
-			OrganizationSelfHostedRunners: String("osh"),
-			OrganizationUserBlocking:      String("oub"),
-			Packages:                      String("pkg"),
-			Pages:                         String("pg"),
-			PullRequests:                  String("pr"),
-			RepositoryHooks:               String("rh"),
-			RepositoryProjects:            String("rp"),
-			RepositoryPreReceiveHooks:     String("rprh"),
-			Secrets:                       String("s"),
-			SecretScanningAlerts:          String("ssa"),
-			SecurityEvents:                String("se"),
-			SingleFile:                    String("sf"),
-			Statuses:                      String("s"),
-			TeamDiscussions:               String("td"),
-			VulnerabilityAlerts:           String("va"),
-			Workflows:                     String("w"),
+			Actions:                       Ptr("a"),
+			ActionsVariables:              Ptr("ac"),
+			Administration:                Ptr("ad"),
+			Checks:                        Ptr("c"),
+			Contents:                      Ptr("co"),
+			ContentReferences:             Ptr("cr"),
+			Deployments:                   Ptr("d"),
+			Environments:                  Ptr("e"),
+			Issues:                        Ptr("i"),
+			Metadata:                      Ptr("md"),
+			Members:                       Ptr("m"),
+			OrganizationAdministration:    Ptr("oa"),
+			OrganizationCustomOrgRoles:    Ptr("ocr"),
+			OrganizationHooks:             Ptr("oh"),
+			OrganizationPlan:              Ptr("op"),
+			OrganizationPreReceiveHooks:   Ptr("opr"),
+			OrganizationProjects:          Ptr("op"),
+			OrganizationSecrets:           Ptr("os"),
+			OrganizationSelfHostedRunners: Ptr("osh"),
+			OrganizationUserBlocking:      Ptr("oub"),
+			Packages:                      Ptr("pkg"),
+			Pages:                         Ptr("pg"),
+			PullRequests:                  Ptr("pr"),
+			RepositoryHooks:               Ptr("rh"),
+			RepositoryProjects:            Ptr("rp"),
+			RepositoryPreReceiveHooks:     Ptr("rprh"),
+			Secrets:                       Ptr("s"),
+			SecretScanningAlerts:          Ptr("ssa"),
+			SecurityEvents:                Ptr("se"),
+			SingleFile:                    Ptr("sf"),
+			Statuses:                      Ptr("s"),
+			TeamDiscussions:               Ptr("td"),
+			VulnerabilityAlerts:           Ptr("va"),
+			Workflows:                     Ptr("w"),
 		},
 		CreatedAt:              &Timestamp{referenceTime},
 		UpdatedAt:              &Timestamp{referenceTime},
-		HasMultipleSingleFiles: Bool(false),
+		HasMultipleSingleFiles: Ptr(false),
 		SuspendedBy: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
@@ -1049,40 +1049,40 @@ func TestInstallationTokenOptions_Marshal(t *testing.T) {
 	u := &InstallationTokenOptions{
 		RepositoryIDs: []int64{1},
 		Permissions: &InstallationPermissions{
-			Actions:                       String("a"),
-			ActionsVariables:              String("ac"),
-			Administration:                String("ad"),
-			Checks:                        String("c"),
-			Contents:                      String("co"),
-			ContentReferences:             String("cr"),
-			Deployments:                   String("d"),
-			Environments:                  String("e"),
-			Issues:                        String("i"),
-			Metadata:                      String("md"),
-			Members:                       String("m"),
-			OrganizationAdministration:    String("oa"),
-			OrganizationCustomOrgRoles:    String("ocr"),
-			OrganizationHooks:             String("oh"),
-			OrganizationPlan:              String("op"),
-			OrganizationPreReceiveHooks:   String("opr"),
-			OrganizationProjects:          String("op"),
-			OrganizationSecrets:           String("os"),
-			OrganizationSelfHostedRunners: String("osh"),
-			OrganizationUserBlocking:      String("oub"),
-			Packages:                      String("pkg"),
-			Pages:                         String("pg"),
-			PullRequests:                  String("pr"),
-			RepositoryHooks:               String("rh"),
-			RepositoryProjects:            String("rp"),
-			RepositoryPreReceiveHooks:     String("rprh"),
-			Secrets:                       String("s"),
-			SecretScanningAlerts:          String("ssa"),
-			SecurityEvents:                String("se"),
-			SingleFile:                    String("sf"),
-			Statuses:                      String("s"),
-			TeamDiscussions:               String("td"),
-			VulnerabilityAlerts:           String("va"),
-			Workflows:                     String("w"),
+			Actions:                       Ptr("a"),
+			ActionsVariables:              Ptr("ac"),
+			Administration:                Ptr("ad"),
+			Checks:                        Ptr("c"),
+			Contents:                      Ptr("co"),
+			ContentReferences:             Ptr("cr"),
+			Deployments:                   Ptr("d"),
+			Environments:                  Ptr("e"),
+			Issues:                        Ptr("i"),
+			Metadata:                      Ptr("md"),
+			Members:                       Ptr("m"),
+			OrganizationAdministration:    Ptr("oa"),
+			OrganizationCustomOrgRoles:    Ptr("ocr"),
+			OrganizationHooks:             Ptr("oh"),
+			OrganizationPlan:              Ptr("op"),
+			OrganizationPreReceiveHooks:   Ptr("opr"),
+			OrganizationProjects:          Ptr("op"),
+			OrganizationSecrets:           Ptr("os"),
+			OrganizationSelfHostedRunners: Ptr("osh"),
+			OrganizationUserBlocking:      Ptr("oub"),
+			Packages:                      Ptr("pkg"),
+			Pages:                         Ptr("pg"),
+			PullRequests:                  Ptr("pr"),
+			RepositoryHooks:               Ptr("rh"),
+			RepositoryProjects:            Ptr("rp"),
+			RepositoryPreReceiveHooks:     Ptr("rprh"),
+			Secrets:                       Ptr("s"),
+			SecretScanningAlerts:          Ptr("ssa"),
+			SecurityEvents:                Ptr("se"),
+			SingleFile:                    Ptr("sf"),
+			Statuses:                      Ptr("s"),
+			TeamDiscussions:               Ptr("td"),
+			VulnerabilityAlerts:           Ptr("va"),
+			Workflows:                     Ptr("w"),
 		},
 	}
 
@@ -1134,49 +1134,49 @@ func TestInstallationToken_Marshal(t *testing.T) {
 	testJSONMarshal(t, &InstallationToken{}, "{}")
 
 	u := &InstallationToken{
-		Token:     String("t"),
+		Token:     Ptr("t"),
 		ExpiresAt: &Timestamp{referenceTime},
 		Permissions: &InstallationPermissions{
-			Actions:                       String("a"),
-			ActionsVariables:              String("ac"),
-			Administration:                String("ad"),
-			Checks:                        String("c"),
-			Contents:                      String("co"),
-			ContentReferences:             String("cr"),
-			Deployments:                   String("d"),
-			Environments:                  String("e"),
-			Issues:                        String("i"),
-			Metadata:                      String("md"),
-			Members:                       String("m"),
-			OrganizationAdministration:    String("oa"),
-			OrganizationCustomOrgRoles:    String("ocr"),
-			OrganizationHooks:             String("oh"),
-			OrganizationPlan:              String("op"),
-			OrganizationPreReceiveHooks:   String("opr"),
-			OrganizationProjects:          String("op"),
-			OrganizationSecrets:           String("os"),
-			OrganizationSelfHostedRunners: String("osh"),
-			OrganizationUserBlocking:      String("oub"),
-			Packages:                      String("pkg"),
-			Pages:                         String("pg"),
-			PullRequests:                  String("pr"),
-			RepositoryHooks:               String("rh"),
-			RepositoryProjects:            String("rp"),
-			RepositoryPreReceiveHooks:     String("rprh"),
-			Secrets:                       String("s"),
-			SecretScanningAlerts:          String("ssa"),
-			SecurityEvents:                String("se"),
-			SingleFile:                    String("sf"),
-			Statuses:                      String("s"),
-			TeamDiscussions:               String("td"),
-			VulnerabilityAlerts:           String("va"),
-			Workflows:                     String("w"),
+			Actions:                       Ptr("a"),
+			ActionsVariables:              Ptr("ac"),
+			Administration:                Ptr("ad"),
+			Checks:                        Ptr("c"),
+			Contents:                      Ptr("co"),
+			ContentReferences:             Ptr("cr"),
+			Deployments:                   Ptr("d"),
+			Environments:                  Ptr("e"),
+			Issues:                        Ptr("i"),
+			Metadata:                      Ptr("md"),
+			Members:                       Ptr("m"),
+			OrganizationAdministration:    Ptr("oa"),
+			OrganizationCustomOrgRoles:    Ptr("ocr"),
+			OrganizationHooks:             Ptr("oh"),
+			OrganizationPlan:              Ptr("op"),
+			OrganizationPreReceiveHooks:   Ptr("opr"),
+			OrganizationProjects:          Ptr("op"),
+			OrganizationSecrets:           Ptr("os"),
+			OrganizationSelfHostedRunners: Ptr("osh"),
+			OrganizationUserBlocking:      Ptr("oub"),
+			Packages:                      Ptr("pkg"),
+			Pages:                         Ptr("pg"),
+			PullRequests:                  Ptr("pr"),
+			RepositoryHooks:               Ptr("rh"),
+			RepositoryProjects:            Ptr("rp"),
+			RepositoryPreReceiveHooks:     Ptr("rprh"),
+			Secrets:                       Ptr("s"),
+			SecretScanningAlerts:          Ptr("ssa"),
+			SecurityEvents:                Ptr("se"),
+			SingleFile:                    Ptr("sf"),
+			Statuses:                      Ptr("s"),
+			TeamDiscussions:               Ptr("td"),
+			VulnerabilityAlerts:           Ptr("va"),
+			Workflows:                     Ptr("w"),
 		},
 		Repositories: []*Repository{
 			{
-				ID:   Int64(1),
-				URL:  String("u"),
-				Name: String("n"),
+				ID:   Ptr(int64(1)),
+				URL:  Ptr("u"),
+				Name: Ptr("n"),
 			},
 		},
 	}
@@ -1237,70 +1237,70 @@ func TestApp_Marshal(t *testing.T) {
 	testJSONMarshal(t, &App{}, "{}")
 
 	u := &App{
-		ID:     Int64(1),
-		Slug:   String("s"),
-		NodeID: String("nid"),
+		ID:     Ptr(int64(1)),
+		Slug:   Ptr("s"),
+		NodeID: Ptr("nid"),
 		Owner: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		Name:        String("n"),
-		Description: String("d"),
-		ExternalURL: String("eu"),
-		HTMLURL:     String("hu"),
+		Name:        Ptr("n"),
+		Description: Ptr("d"),
+		ExternalURL: Ptr("eu"),
+		HTMLURL:     Ptr("hu"),
 		CreatedAt:   &Timestamp{referenceTime},
 		UpdatedAt:   &Timestamp{referenceTime},
 		Permissions: &InstallationPermissions{
-			Actions:                       String("a"),
-			ActionsVariables:              String("ac"),
-			Administration:                String("ad"),
-			Checks:                        String("c"),
-			Contents:                      String("co"),
-			ContentReferences:             String("cr"),
-			Deployments:                   String("d"),
-			Environments:                  String("e"),
-			Issues:                        String("i"),
-			Metadata:                      String("md"),
-			Members:                       String("m"),
-			OrganizationAdministration:    String("oa"),
-			OrganizationCustomOrgRoles:    String("ocr"),
-			OrganizationHooks:             String("oh"),
-			OrganizationPlan:              String("op"),
-			OrganizationPreReceiveHooks:   String("opr"),
-			OrganizationProjects:          String("op"),
-			OrganizationSecrets:           String("os"),
-			OrganizationSelfHostedRunners: String("osh"),
-			OrganizationUserBlocking:      String("oub"),
-			Packages:                      String("pkg"),
-			Pages:                         String("pg"),
-			PullRequests:                  String("pr"),
-			RepositoryHooks:               String("rh"),
-			RepositoryProjects:            String("rp"),
-			RepositoryPreReceiveHooks:     String("rprh"),
-			Secrets:                       String("s"),
-			SecretScanningAlerts:          String("ssa"),
-			SecurityEvents:                String("se"),
-			SingleFile:                    String("sf"),
-			Statuses:                      String("s"),
-			TeamDiscussions:               String("td"),
-			VulnerabilityAlerts:           String("va"),
-			Workflows:                     String("w"),
+			Actions:                       Ptr("a"),
+			ActionsVariables:              Ptr("ac"),
+			Administration:                Ptr("ad"),
+			Checks:                        Ptr("c"),
+			Contents:                      Ptr("co"),
+			ContentReferences:             Ptr("cr"),
+			Deployments:                   Ptr("d"),
+			Environments:                  Ptr("e"),
+			Issues:                        Ptr("i"),
+			Metadata:                      Ptr("md"),
+			Members:                       Ptr("m"),
+			OrganizationAdministration:    Ptr("oa"),
+			OrganizationCustomOrgRoles:    Ptr("ocr"),
+			OrganizationHooks:             Ptr("oh"),
+			OrganizationPlan:              Ptr("op"),
+			OrganizationPreReceiveHooks:   Ptr("opr"),
+			OrganizationProjects:          Ptr("op"),
+			OrganizationSecrets:           Ptr("os"),
+			OrganizationSelfHostedRunners: Ptr("osh"),
+			OrganizationUserBlocking:      Ptr("oub"),
+			Packages:                      Ptr("pkg"),
+			Pages:                         Ptr("pg"),
+			PullRequests:                  Ptr("pr"),
+			RepositoryHooks:               Ptr("rh"),
+			RepositoryProjects:            Ptr("rp"),
+			RepositoryPreReceiveHooks:     Ptr("rprh"),
+			Secrets:                       Ptr("s"),
+			SecretScanningAlerts:          Ptr("ssa"),
+			SecurityEvents:                Ptr("se"),
+			SingleFile:                    Ptr("sf"),
+			Statuses:                      Ptr("s"),
+			TeamDiscussions:               Ptr("td"),
+			VulnerabilityAlerts:           Ptr("va"),
+			Workflows:                     Ptr("w"),
 		},
 		Events: []string{"s"},
 	}
