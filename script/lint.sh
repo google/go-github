@@ -27,7 +27,6 @@ fi
 MOD_DIRS="$(git ls-files '*go.mod' | xargs dirname | sort)"
 
 for dir in $MOD_DIRS; do
-  [ "$dir" = "example/newreposecretwithlibsodium" ] && continue
   echo linting "$dir"
   (
     cd "$dir"
