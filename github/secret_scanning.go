@@ -89,6 +89,11 @@ type SecretScanningAlertUpdateOptions struct {
 	// Required when the state is "resolved" and represents the reason for resolving the alert.
 	// Can be one of: "false_positive", "wont_fix", "revoked", or "used_in_tests".
 	Resolution *string `json:"resolution,omitempty"`
+
+	// An optional comment when closing an alert.
+	// Cannot be updated or deleted.
+	// Must be null when changing state to open.
+	ResolutionComment *string `json:"resolution_comment,omitempty"`
 }
 
 // ListAlertsForEnterprise lists secret scanning alerts for eligible repositories in an enterprise, from newest to oldest.

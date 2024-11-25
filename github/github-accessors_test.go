@@ -29733,6 +29733,17 @@ func TestSecretScanningAlertUpdateOptions_GetResolution(tt *testing.T) {
 	s.GetResolution()
 }
 
+func TestSecretScanningAlertUpdateOptions_GetResolutionComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlertUpdateOptions{ResolutionComment: &zeroValue}
+	s.GetResolutionComment()
+	s = &SecretScanningAlertUpdateOptions{}
+	s.GetResolutionComment()
+	s = nil
+	s.GetResolutionComment()
+}
+
 func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
