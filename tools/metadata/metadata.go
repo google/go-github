@@ -24,7 +24,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/google/go-github/v66/github"
+	"github.com/google/go-github/v67/github"
 	"gopkg.in/yaml.v3"
 )
 

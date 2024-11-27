@@ -1,7 +1,7 @@
 # go-github #
 
 [![go-github release (latest SemVer)](https://img.shields.io/github/v/release/google/go-github?sort=semver)](https://github.com/google/go-github/releases)
-[![Go Reference](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v66/github)
+[![Go Reference](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v67/github)
 [![Test Status](https://github.com/google/go-github/workflows/tests/badge.svg)](https://github.com/google/go-github/actions?query=workflow%3Atests)
 [![Test Coverage](https://codecov.io/gh/google/go-github/branch/master/graph/badge.svg)](https://codecov.io/gh/google/go-github)
 [![Discuss at go-github@googlegroups.com](https://img.shields.io/badge/discuss-go--github%40googlegroups.com-blue.svg)](https://groups.google.com/group/go-github)
@@ -25,7 +25,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 go-github is compatible with modern Go releases in module mode, with Go installed:
 
 ```bash
-go get github.com/google/go-github/v66
+go get github.com/google/go-github/v67
 ```
 
 will resolve and add the package to the current development module, along with its dependencies.
@@ -33,7 +33,7 @@ will resolve and add the package to the current development module, along with i
 Alternatively the same can be achieved if you use import in a package:
 
 ```go
-import "github.com/google/go-github/v66/github"
+import "github.com/google/go-github/v67/github"
 ```
 
 and run `go get` without parameters.
@@ -41,13 +41,13 @@ and run `go get` without parameters.
 Finally, to use the top-of-trunk version of this repo, use the following command:
 
 ```bash
-go get github.com/google/go-github/v66@master
+go get github.com/google/go-github/v67@master
 ```
 
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v66/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+import "github.com/google/go-github/v67/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 import "github.com/google/go-github/github" // with go modules disabled
 ```
 
@@ -120,7 +120,7 @@ import (
 	"net/http"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v66/github"
+	"github.com/google/go-github/v67/github"
 )
 
 func main() {
@@ -154,7 +154,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/google/go-github/v66/github"
+	"github.com/google/go-github/v67/github"
 	"github.com/jferrl/go-githubauth"
 	"golang.org/x/oauth2"
 )
@@ -362,7 +362,7 @@ For complete usage of go-github, see the full [package docs][].
 
 [GitHub API v3]: https://docs.github.com/en/rest
 [personal access token]: https://github.com/blog/1509-personal-api-tokens
-[package docs]: https://pkg.go.dev/github.com/google/go-github/v66/github
+[package docs]: https://pkg.go.dev/github.com/google/go-github/v67/github
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4
 [GitHub webhook events]: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads
@@ -436,29 +436,8 @@ Versions prior to 48.2.0 are not listed.
 
 | go-github Version | GitHub v3 API Version |
 | ----------------- | --------------------- |
-| 66.0.0            | 2022-11-28            |
-| 65.0.0            | 2022-11-28            |
-| 64.0.0            | 2022-11-28            |
-| 63.0.0            | 2022-11-28            |
-| 62.0.0            | 2022-11-28            |
-| 61.0.0            | 2022-11-28            |
-| 60.0.0            | 2022-11-28            |
-| 59.0.0            | 2022-11-28            |
-| 58.0.0            | 2022-11-28            |
-| 57.0.0            | 2022-11-28            |
-| 56.0.0            | 2022-11-28            |
-| 55.0.0            | 2022-11-28            |
-| 54.0.0            | 2022-11-28            |
-| 53.2.0            | 2022-11-28            |
-| 53.1.0            | 2022-11-28            |
-| 53.0.0            | 2022-11-28            |
-| 52.0.0            | 2022-11-28            |
-| 51.0.0            | 2022-11-28            |
-| 50.2.0            | 2022-11-28            |
-| 50.1.0            | 2022-11-28            |
-| 50.0.0            | 2022-11-28            |
-| 49.1.0            | 2022-11-28            |
-| 49.0.0            | 2022-11-28            |
+| 67.0.0            | 2022-11-28            |
+| ...               | 2022-11-28            |
 | 48.2.0            | 2022-11-28            |
 
 ## License ##
