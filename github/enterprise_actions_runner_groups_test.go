@@ -32,11 +32,11 @@ func TestEnterpriseService_ListRunnerGroups(t *testing.T) {
 	}
 
 	want := &EnterpriseRunnerGroups{
-		TotalCount: Int(3),
+		TotalCount: Ptr(3),
 		RunnerGroups: []*EnterpriseRunnerGroup{
-			{ID: Int64(1), Name: String("Default"), Visibility: String("all"), Default: Bool(true), RunnersURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/1/runners"), Inherited: Bool(false), AllowsPublicRepositories: Bool(true), RestrictedToWorkflows: Bool(true), SelectedWorkflows: []string{"a", "b"}},
-			{ID: Int64(2), Name: String("octo-runner-group"), Visibility: String("selected"), Default: Bool(false), SelectedOrganizationsURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"), RunnersURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"), Inherited: Bool(true), AllowsPublicRepositories: Bool(true), RestrictedToWorkflows: Bool(false), SelectedWorkflows: []string{}},
-			{ID: Int64(3), Name: String("expensive-hardware"), Visibility: String("private"), Default: Bool(false), RunnersURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/3/runners"), Inherited: Bool(false), AllowsPublicRepositories: Bool(true), RestrictedToWorkflows: Bool(false), SelectedWorkflows: []string{}},
+			{ID: Ptr(int64(1)), Name: Ptr("Default"), Visibility: Ptr("all"), Default: Ptr(true), RunnersURL: Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/1/runners"), Inherited: Ptr(false), AllowsPublicRepositories: Ptr(true), RestrictedToWorkflows: Ptr(true), SelectedWorkflows: []string{"a", "b"}},
+			{ID: Ptr(int64(2)), Name: Ptr("octo-runner-group"), Visibility: Ptr("selected"), Default: Ptr(false), SelectedOrganizationsURL: Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"), RunnersURL: Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"), Inherited: Ptr(true), AllowsPublicRepositories: Ptr(true), RestrictedToWorkflows: Ptr(false), SelectedWorkflows: []string{}},
+			{ID: Ptr(int64(3)), Name: Ptr("expensive-hardware"), Visibility: Ptr("private"), Default: Ptr(false), RunnersURL: Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/3/runners"), Inherited: Ptr(false), AllowsPublicRepositories: Ptr(true), RestrictedToWorkflows: Ptr(false), SelectedWorkflows: []string{}},
 		},
 	}
 	if !cmp.Equal(groups, want) {
@@ -76,11 +76,11 @@ func TestEnterpriseService_ListRunnerGroupsVisibleToOrganization(t *testing.T) {
 	}
 
 	want := &EnterpriseRunnerGroups{
-		TotalCount: Int(3),
+		TotalCount: Ptr(3),
 		RunnerGroups: []*EnterpriseRunnerGroup{
-			{ID: Int64(1), Name: String("Default"), Visibility: String("all"), Default: Bool(true), RunnersURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/1/runners"), Inherited: Bool(false), AllowsPublicRepositories: Bool(true), RestrictedToWorkflows: Bool(false), SelectedWorkflows: []string{}},
-			{ID: Int64(2), Name: String("octo-runner-group"), Visibility: String("selected"), Default: Bool(false), SelectedOrganizationsURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"), RunnersURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"), Inherited: Bool(true), AllowsPublicRepositories: Bool(true), RestrictedToWorkflows: Bool(false), SelectedWorkflows: []string{}},
-			{ID: Int64(3), Name: String("expensive-hardware"), Visibility: String("private"), Default: Bool(false), RunnersURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/3/runners"), Inherited: Bool(false), AllowsPublicRepositories: Bool(true), RestrictedToWorkflows: Bool(false), SelectedWorkflows: []string{}},
+			{ID: Ptr(int64(1)), Name: Ptr("Default"), Visibility: Ptr("all"), Default: Ptr(true), RunnersURL: Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/1/runners"), Inherited: Ptr(false), AllowsPublicRepositories: Ptr(true), RestrictedToWorkflows: Ptr(false), SelectedWorkflows: []string{}},
+			{ID: Ptr(int64(2)), Name: Ptr("octo-runner-group"), Visibility: Ptr("selected"), Default: Ptr(false), SelectedOrganizationsURL: Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"), RunnersURL: Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"), Inherited: Ptr(true), AllowsPublicRepositories: Ptr(true), RestrictedToWorkflows: Ptr(false), SelectedWorkflows: []string{}},
+			{ID: Ptr(int64(3)), Name: Ptr("expensive-hardware"), Visibility: Ptr("private"), Default: Ptr(false), RunnersURL: Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/3/runners"), Inherited: Ptr(false), AllowsPublicRepositories: Ptr(true), RestrictedToWorkflows: Ptr(false), SelectedWorkflows: []string{}},
 		},
 	}
 	if !cmp.Equal(groups, want) {
@@ -118,15 +118,15 @@ func TestEnterpriseService_GetRunnerGroup(t *testing.T) {
 	}
 
 	want := &EnterpriseRunnerGroup{
-		ID:                       Int64(2),
-		Name:                     String("octo-runner-group"),
-		Visibility:               String("selected"),
-		Default:                  Bool(false),
-		SelectedOrganizationsURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"),
-		RunnersURL:               String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"),
-		Inherited:                Bool(false),
-		AllowsPublicRepositories: Bool(true),
-		RestrictedToWorkflows:    Bool(false),
+		ID:                       Ptr(int64(2)),
+		Name:                     Ptr("octo-runner-group"),
+		Visibility:               Ptr("selected"),
+		Default:                  Ptr(false),
+		SelectedOrganizationsURL: Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"),
+		RunnersURL:               Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"),
+		Inherited:                Ptr(false),
+		AllowsPublicRepositories: Ptr(true),
+		RestrictedToWorkflows:    Ptr(false),
 		SelectedWorkflows:        []string{},
 	}
 
@@ -185,10 +185,10 @@ func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
 
 	ctx := context.Background()
 	req := CreateEnterpriseRunnerGroupRequest{
-		Name:                     String("octo-runner-group"),
-		Visibility:               String("selected"),
-		AllowsPublicRepositories: Bool(true),
-		RestrictedToWorkflows:    Bool(false),
+		Name:                     Ptr("octo-runner-group"),
+		Visibility:               Ptr("selected"),
+		AllowsPublicRepositories: Ptr(true),
+		RestrictedToWorkflows:    Ptr(false),
 		SelectedWorkflows:        []string{},
 	}
 	group, _, err := client.Enterprise.CreateEnterpriseRunnerGroup(ctx, "o", req)
@@ -197,15 +197,15 @@ func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
 	}
 
 	want := &EnterpriseRunnerGroup{
-		ID:                       Int64(2),
-		Name:                     String("octo-runner-group"),
-		Visibility:               String("selected"),
-		Default:                  Bool(false),
-		SelectedOrganizationsURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"),
-		RunnersURL:               String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"),
-		Inherited:                Bool(false),
-		AllowsPublicRepositories: Bool(true),
-		RestrictedToWorkflows:    Bool(false),
+		ID:                       Ptr(int64(2)),
+		Name:                     Ptr("octo-runner-group"),
+		Visibility:               Ptr("selected"),
+		Default:                  Ptr(false),
+		SelectedOrganizationsURL: Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"),
+		RunnersURL:               Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"),
+		Inherited:                Ptr(false),
+		AllowsPublicRepositories: Ptr(true),
+		RestrictedToWorkflows:    Ptr(false),
 		SelectedWorkflows:        []string{},
 	}
 
@@ -239,10 +239,10 @@ func TestEnterpriseService_UpdateRunnerGroup(t *testing.T) {
 
 	ctx := context.Background()
 	req := UpdateEnterpriseRunnerGroupRequest{
-		Name:                     String("octo-runner-group"),
-		Visibility:               String("selected"),
-		AllowsPublicRepositories: Bool(true),
-		RestrictedToWorkflows:    Bool(false),
+		Name:                     Ptr("octo-runner-group"),
+		Visibility:               Ptr("selected"),
+		AllowsPublicRepositories: Ptr(true),
+		RestrictedToWorkflows:    Ptr(false),
 		SelectedWorkflows:        []string{},
 	}
 	group, _, err := client.Enterprise.UpdateEnterpriseRunnerGroup(ctx, "o", 2, req)
@@ -251,15 +251,15 @@ func TestEnterpriseService_UpdateRunnerGroup(t *testing.T) {
 	}
 
 	want := &EnterpriseRunnerGroup{
-		ID:                       Int64(2),
-		Name:                     String("octo-runner-group"),
-		Visibility:               String("selected"),
-		Default:                  Bool(false),
-		SelectedOrganizationsURL: String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"),
-		RunnersURL:               String("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"),
-		Inherited:                Bool(false),
-		AllowsPublicRepositories: Bool(true),
-		RestrictedToWorkflows:    Bool(false),
+		ID:                       Ptr(int64(2)),
+		Name:                     Ptr("octo-runner-group"),
+		Visibility:               Ptr("selected"),
+		Default:                  Ptr(false),
+		SelectedOrganizationsURL: Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations"),
+		RunnersURL:               Ptr("https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners"),
+		Inherited:                Ptr(false),
+		AllowsPublicRepositories: Ptr(true),
+		RestrictedToWorkflows:    Ptr(false),
 		SelectedWorkflows:        []string{},
 	}
 
@@ -300,9 +300,9 @@ func TestEnterpriseService_ListOrganizationAccessRunnerGroup(t *testing.T) {
 	}
 
 	want := &ListOrganizations{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Organizations: []*Organization{
-			{ID: Int64(43), NodeID: String("MDEwOlJlcG9zaXRvcnkxMjk2MjY5"), Name: String("Hello-World"), Login: String("octocat")},
+			{ID: Ptr(int64(43)), NodeID: Ptr("MDEwOlJlcG9zaXRvcnkxMjk2MjY5"), Name: Ptr("Hello-World"), Login: Ptr("octocat")},
 		},
 	}
 	if !cmp.Equal(groups, want) {
@@ -426,8 +426,8 @@ func TestEnterpriseService_ListEnterpriseRunnerGroupRunners(t *testing.T) {
 	want := &Runners{
 		TotalCount: 2,
 		Runners: []*Runner{
-			{ID: Int64(23), Name: String("MBP"), OS: String("macos"), Status: String("online")},
-			{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
+			{ID: Ptr(int64(23)), Name: Ptr("MBP"), OS: Ptr("macos"), Status: Ptr("online")},
+			{ID: Ptr(int64(24)), Name: Ptr("iMac"), OS: Ptr("macos"), Status: Ptr("offline")},
 		},
 	}
 	if !cmp.Equal(runners, want) {
@@ -536,15 +536,15 @@ func TestEnterpriseRunnerGroup_Marshal(t *testing.T) {
 	testJSONMarshal(t, &EnterpriseRunnerGroup{}, "{}")
 
 	u := &EnterpriseRunnerGroup{
-		ID:                       Int64(1),
-		Name:                     String("n"),
-		Visibility:               String("v"),
-		Default:                  Bool(true),
-		SelectedOrganizationsURL: String("s"),
-		RunnersURL:               String("r"),
-		Inherited:                Bool(true),
-		AllowsPublicRepositories: Bool(true),
-		RestrictedToWorkflows:    Bool(false),
+		ID:                       Ptr(int64(1)),
+		Name:                     Ptr("n"),
+		Visibility:               Ptr("v"),
+		Default:                  Ptr(true),
+		SelectedOrganizationsURL: Ptr("s"),
+		RunnersURL:               Ptr("r"),
+		Inherited:                Ptr(true),
+		AllowsPublicRepositories: Ptr(true),
+		RestrictedToWorkflows:    Ptr(false),
 		SelectedWorkflows:        []string{},
 	}
 
@@ -569,18 +569,18 @@ func TestEnterpriseRunnerGroups_Marshal(t *testing.T) {
 	testJSONMarshal(t, &EnterpriseRunnerGroups{}, "{}")
 
 	u := &EnterpriseRunnerGroups{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		RunnerGroups: []*EnterpriseRunnerGroup{
 			{
-				ID:                       Int64(1),
-				Name:                     String("n"),
-				Visibility:               String("v"),
-				Default:                  Bool(true),
-				SelectedOrganizationsURL: String("s"),
-				RunnersURL:               String("r"),
-				Inherited:                Bool(true),
-				AllowsPublicRepositories: Bool(true),
-				RestrictedToWorkflows:    Bool(false),
+				ID:                       Ptr(int64(1)),
+				Name:                     Ptr("n"),
+				Visibility:               Ptr("v"),
+				Default:                  Ptr(true),
+				SelectedOrganizationsURL: Ptr("s"),
+				RunnersURL:               Ptr("r"),
+				Inherited:                Ptr(true),
+				AllowsPublicRepositories: Ptr(true),
+				RestrictedToWorkflows:    Ptr(false),
 				SelectedWorkflows:        []string{},
 			},
 		},
@@ -610,12 +610,12 @@ func TestCreateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CreateEnterpriseRunnerGroupRequest{}, "{}")
 
 	u := &CreateEnterpriseRunnerGroupRequest{
-		Name:                     String("n"),
-		Visibility:               String("v"),
+		Name:                     Ptr("n"),
+		Visibility:               Ptr("v"),
 		SelectedOrganizationIDs:  []int64{1},
 		Runners:                  []int64{1},
-		AllowsPublicRepositories: Bool(true),
-		RestrictedToWorkflows:    Bool(true),
+		AllowsPublicRepositories: Ptr(true),
+		RestrictedToWorkflows:    Ptr(true),
 		SelectedWorkflows:        []string{"a", "b"},
 	}
 
@@ -637,10 +637,10 @@ func TestUpdateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &UpdateEnterpriseRunnerGroupRequest{}, "{}")
 
 	u := &UpdateEnterpriseRunnerGroupRequest{
-		Name:                     String("n"),
-		Visibility:               String("v"),
-		AllowsPublicRepositories: Bool(true),
-		RestrictedToWorkflows:    Bool(false),
+		Name:                     Ptr("n"),
+		Visibility:               Ptr("v"),
+		AllowsPublicRepositories: Ptr(true),
+		RestrictedToWorkflows:    Ptr(false),
 		SelectedWorkflows:        []string{},
 	}
 

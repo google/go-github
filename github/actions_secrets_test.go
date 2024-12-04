@@ -35,17 +35,17 @@ func TestPublicKey_UnmarshalJSON(t *testing.T) {
 		},
 		"Numeric KeyID": {
 			data:          []byte(`{"key_id":1234,"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`),
-			wantPublicKey: PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
+			wantPublicKey: PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
 			wantErr:       false,
 		},
 		"String KeyID": {
 			data:          []byte(`{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`),
-			wantPublicKey: PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
+			wantPublicKey: PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
 			wantErr:       false,
 		},
 		"Invalid KeyID": {
 			data:          []byte(`{"key_id":["1234"],"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`),
-			wantPublicKey: PublicKey{KeyID: nil, Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
+			wantPublicKey: PublicKey{KeyID: nil, Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
 			wantErr:       true,
 		},
 		"Invalid Key": {
@@ -65,12 +65,12 @@ func TestPublicKey_UnmarshalJSON(t *testing.T) {
 		},
 		"Missing Key": {
 			data:          []byte(`{"key_id":"1234"}`),
-			wantPublicKey: PublicKey{KeyID: String("1234")},
+			wantPublicKey: PublicKey{KeyID: Ptr("1234")},
 			wantErr:       false,
 		},
 		"Missing KeyID": {
 			data:          []byte(`{"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`),
-			wantPublicKey: PublicKey{Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
+			wantPublicKey: PublicKey{Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
 			wantErr:       false,
 		},
 	}
@@ -109,7 +109,7 @@ func TestActionsService_GetRepoPublicKey(t *testing.T) {
 		t.Errorf("Actions.GetRepoPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Actions.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
@@ -144,7 +144,7 @@ func TestActionsService_GetRepoPublicKeyNumeric(t *testing.T) {
 		t.Errorf("Actions.GetRepoPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Actions.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
@@ -362,7 +362,7 @@ func TestActionsService_GetOrgPublicKey(t *testing.T) {
 		t.Errorf("Actions.GetOrgPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: String("012345678"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: Ptr("012345678"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Actions.GetOrgPublicKey returned %+v, want %+v", key, want)
 	}
@@ -519,9 +519,9 @@ func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
 	}
 
 	want := &SelectedReposList{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Repositories: []*Repository{
-			{ID: Int64(1)},
+			{ID: Ptr(int64(1))},
 		},
 	}
 	if !cmp.Equal(repos, want) {
@@ -578,7 +578,7 @@ func TestActionsService_AddSelectedRepoToOrgSecret(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	repo := &Repository{ID: Int64(1234)}
+	repo := &Repository{ID: Ptr(int64(1234))}
 	ctx := context.Background()
 	_, err := client.Actions.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repo)
 	if err != nil {
@@ -604,7 +604,7 @@ func TestActionsService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	repo := &Repository{ID: Int64(1234)}
+	repo := &Repository{ID: Ptr(int64(1234))}
 	ctx := context.Background()
 	_, err := client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repo)
 	if err != nil {
@@ -662,7 +662,7 @@ func TestActionsService_GetEnvPublicKey(t *testing.T) {
 		t.Errorf("Actions.GetEnvPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Actions.GetEnvPublicKey returned %+v, want %+v", key, want)
 	}
@@ -697,7 +697,7 @@ func TestActionsService_GetEnvPublicKeyNumeric(t *testing.T) {
 		t.Errorf("Actions.GetEnvPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Actions.GetEnvPublicKey returned %+v, want %+v", key, want)
 	}
@@ -862,8 +862,8 @@ func TestPublicKey_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PublicKey{}, "{}")
 
 	u := &PublicKey{
-		KeyID: String("kid"),
-		Key:   String("k"),
+		KeyID: Ptr("kid"),
+		Key:   Ptr("k"),
 	}
 
 	want := `{
@@ -956,12 +956,12 @@ func TestSelectedReposList_Marshal(t *testing.T) {
 	testJSONMarshal(t, &SelectedReposList{}, "{}")
 
 	u := &SelectedReposList{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Repositories: []*Repository{
 			{
-				ID:   Int64(1),
-				URL:  String("u"),
-				Name: String("n"),
+				ID:   Ptr(int64(1)),
+				URL:  Ptr("u"),
+				Name: Ptr("n"),
 			},
 		},
 	}

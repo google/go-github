@@ -37,7 +37,7 @@ func TestIssuesService_ListMilestones(t *testing.T) {
 		t.Errorf("IssuesService.ListMilestones returned error: %v", err)
 	}
 
-	want := []*Milestone{{Number: Int(1)}}
+	want := []*Milestone{{Number: Ptr(1)}}
 	if !cmp.Equal(milestones, want) {
 		t.Errorf("IssuesService.ListMilestones returned %+v, want %+v", milestones, want)
 	}
@@ -81,7 +81,7 @@ func TestIssuesService_GetMilestone(t *testing.T) {
 		t.Errorf("IssuesService.GetMilestone returned error: %v", err)
 	}
 
-	want := &Milestone{Number: Int(1)}
+	want := &Milestone{Number: Ptr(1)}
 	if !cmp.Equal(milestone, want) {
 		t.Errorf("IssuesService.GetMilestone returned %+v, want %+v", milestone, want)
 	}
@@ -114,7 +114,7 @@ func TestIssuesService_CreateMilestone(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Milestone{Title: String("t")}
+	input := &Milestone{Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/milestones", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Milestone)
@@ -134,7 +134,7 @@ func TestIssuesService_CreateMilestone(t *testing.T) {
 		t.Errorf("IssuesService.CreateMilestone returned error: %v", err)
 	}
 
-	want := &Milestone{Number: Int(1)}
+	want := &Milestone{Number: Ptr(1)}
 	if !cmp.Equal(milestone, want) {
 		t.Errorf("IssuesService.CreateMilestone returned %+v, want %+v", milestone, want)
 	}
@@ -167,7 +167,7 @@ func TestIssuesService_EditMilestone(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Milestone{Title: String("t")}
+	input := &Milestone{Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Milestone)
@@ -187,7 +187,7 @@ func TestIssuesService_EditMilestone(t *testing.T) {
 		t.Errorf("IssuesService.EditMilestone returned error: %v", err)
 	}
 
-	want := &Milestone{Number: Int(1)}
+	want := &Milestone{Number: Ptr(1)}
 	if !cmp.Equal(milestone, want) {
 		t.Errorf("IssuesService.EditMilestone returned %+v, want %+v", milestone, want)
 	}
@@ -255,41 +255,41 @@ func TestMilestone_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Milestone{}, "{}")
 
 	u := &Milestone{
-		URL:         String("url"),
-		HTMLURL:     String("hurl"),
-		LabelsURL:   String("lurl"),
-		ID:          Int64(1),
-		Number:      Int(1),
-		State:       String("state"),
-		Title:       String("title"),
-		Description: String("desc"),
+		URL:         Ptr("url"),
+		HTMLURL:     Ptr("hurl"),
+		LabelsURL:   Ptr("lurl"),
+		ID:          Ptr(int64(1)),
+		Number:      Ptr(1),
+		State:       Ptr("state"),
+		Title:       Ptr("title"),
+		Description: Ptr("desc"),
 		Creator: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("tu"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("tu"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		OpenIssues:   Int(1),
-		ClosedIssues: Int(1),
+		OpenIssues:   Ptr(1),
+		ClosedIssues: Ptr(1),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 		ClosedAt:     &Timestamp{referenceTime},
 		DueOn:        &Timestamp{referenceTime},
-		NodeID:       String("nid"),
+		NodeID:       Ptr("nid"),
 	}
 
 	want := `{

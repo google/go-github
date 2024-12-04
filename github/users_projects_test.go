@@ -33,7 +33,7 @@ func TestUsersService_ListProjects(t *testing.T) {
 		t.Errorf("Users.ListProjects returned error: %v", err)
 	}
 
-	want := []*Project{{ID: Int64(1)}}
+	want := []*Project{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(projects, want) {
 		t.Errorf("Users.ListProjects returned %+v, want %+v", projects, want)
 	}
@@ -57,7 +57,7 @@ func TestUsersService_CreateProject(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &CreateUserProjectOptions{Name: "Project Name", Body: String("Project body.")}
+	input := &CreateUserProjectOptions{Name: "Project Name", Body: Ptr("Project body.")}
 
 	mux.HandleFunc("/user/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -78,7 +78,7 @@ func TestUsersService_CreateProject(t *testing.T) {
 		t.Errorf("Users.CreateProject returned error: %v", err)
 	}
 
-	want := &Project{ID: Int64(1)}
+	want := &Project{ID: Ptr(int64(1))}
 	if !cmp.Equal(project, want) {
 		t.Errorf("Users.CreateProject returned %+v, want %+v", project, want)
 	}
@@ -99,7 +99,7 @@ func TestCreateUserProjectOptions_Marshal(t *testing.T) {
 
 	c := CreateUserProjectOptions{
 		Name: "SomeProject",
-		Body: String("SomeProjectBody"),
+		Body: Ptr("SomeProjectBody"),
 	}
 
 	want := `{

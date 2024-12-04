@@ -24,7 +24,7 @@ func TestDependabotService_ListRepoAlerts(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1,"state":"open"},{"number":42,"state":"fixed"}]`)
 	})
 
-	opts := &ListAlertsOptions{State: String("open")}
+	opts := &ListAlertsOptions{State: Ptr("open")}
 	ctx := context.Background()
 	alerts, _, err := client.Dependabot.ListRepoAlerts(ctx, "o", "r", opts)
 	if err != nil {
@@ -32,8 +32,8 @@ func TestDependabotService_ListRepoAlerts(t *testing.T) {
 	}
 
 	want := []*DependabotAlert{
-		{Number: Int(1), State: String("open")},
-		{Number: Int(42), State: String("fixed")},
+		{Number: Ptr(1), State: Ptr("open")},
+		{Number: Ptr(42), State: Ptr("fixed")},
 	}
 	if !cmp.Equal(alerts, want) {
 		t.Errorf("Dependabot.ListRepoAlerts returned %+v, want %+v", alerts, want)
@@ -70,8 +70,8 @@ func TestDependabotService_GetRepoAlert(t *testing.T) {
 	}
 
 	want := &DependabotAlert{
-		Number: Int(42),
-		State:  String("fixed"),
+		Number: Ptr(42),
+		State:  Ptr("fixed"),
 	}
 	if !cmp.Equal(alert, want) {
 		t.Errorf("Dependabot.GetRepoAlert returned %+v, want %+v", alert, want)
@@ -102,7 +102,7 @@ func TestDependabotService_ListOrgAlerts(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1,"state":"open"},{"number":42,"state":"fixed"}]`)
 	})
 
-	opts := &ListAlertsOptions{State: String("open")}
+	opts := &ListAlertsOptions{State: Ptr("open")}
 	ctx := context.Background()
 	alerts, _, err := client.Dependabot.ListOrgAlerts(ctx, "o", opts)
 	if err != nil {
@@ -110,8 +110,8 @@ func TestDependabotService_ListOrgAlerts(t *testing.T) {
 	}
 
 	want := []*DependabotAlert{
-		{Number: Int(1), State: String("open")},
-		{Number: Int(42), State: String("fixed")},
+		{Number: Ptr(1), State: Ptr("open")},
+		{Number: Ptr(42), State: Ptr("fixed")},
 	}
 	if !cmp.Equal(alerts, want) {
 		t.Errorf("Dependabot.ListOrgAlerts returned %+v, want %+v", alerts, want)
@@ -136,9 +136,9 @@ func TestDependabotService_UpdateAlert(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	state := String("dismissed")
-	dismissedReason := String("no_bandwidth")
-	dismissedComment := String("no time to fix this")
+	state := Ptr("dismissed")
+	dismissedReason := Ptr("no_bandwidth")
+	dismissedComment := Ptr("no time to fix this")
 
 	alertState := &DependabotAlertState{State: *state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
 
@@ -154,10 +154,10 @@ func TestDependabotService_UpdateAlert(t *testing.T) {
 	}
 
 	want := &DependabotAlert{
-		Number:           Int(42),
-		State:            String("dismissed"),
-		DismissedReason:  String("no_bandwidth"),
-		DismissedComment: String("no time to fix this"),
+		Number:           Ptr(42),
+		State:            Ptr("dismissed"),
+		DismissedReason:  Ptr("no_bandwidth"),
+		DismissedComment: Ptr("no time to fix this"),
 	}
 	if !cmp.Equal(alert, want) {
 		t.Errorf("Dependabot.UpdateAlert returned %+v, want %+v", alert, want)

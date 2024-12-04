@@ -39,7 +39,7 @@ func (p *PublicKey) UnmarshalJSON(data []byte) error {
 	case string:
 		p.KeyID = &v
 	case float64:
-		p.KeyID = String(strconv.FormatFloat(v, 'f', -1, 64))
+		p.KeyID = Ptr(strconv.FormatFloat(v, 'f', -1, 64))
 	default:
 		return fmt.Errorf("unable to unmarshal %T as a string", v)
 	}

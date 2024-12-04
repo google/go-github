@@ -44,13 +44,13 @@ type markdownRenderRequest struct {
 //
 //meta:operation POST /markdown
 func (s *MarkdownService) Render(ctx context.Context, text string, opts *MarkdownOptions) (string, *Response, error) {
-	request := &markdownRenderRequest{Text: String(text)}
+	request := &markdownRenderRequest{Text: Ptr(text)}
 	if opts != nil {
 		if opts.Mode != "" {
-			request.Mode = String(opts.Mode)
+			request.Mode = Ptr(opts.Mode)
 		}
 		if opts.Context != "" {
-			request.Context = String(opts.Context)
+			request.Context = Ptr(opts.Context)
 		}
 	}
 

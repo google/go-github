@@ -25,14 +25,14 @@ func TestRepositoryContent_GetContent(t *testing.T) {
 		wantErr           bool    // whether an error is expected
 	}{
 		{
-			encoding: String(""),
-			content:  String("hello"),
+			encoding: Ptr(""),
+			content:  Ptr("hello"),
 			want:     "hello",
 			wantErr:  false,
 		},
 		{
 			encoding: nil,
-			content:  String("hello"),
+			content:  Ptr("hello"),
 			want:     "hello",
 			wantErr:  false,
 		},
@@ -43,19 +43,19 @@ func TestRepositoryContent_GetContent(t *testing.T) {
 			wantErr:  false,
 		},
 		{
-			encoding: String("base64"),
-			content:  String("aGVsbG8="),
+			encoding: Ptr("base64"),
+			content:  Ptr("aGVsbG8="),
 			want:     "hello",
 			wantErr:  false,
 		},
 		{
-			encoding: String("bad"),
-			content:  String("aGVsbG8="),
+			encoding: Ptr("bad"),
+			content:  Ptr("aGVsbG8="),
 			want:     "",
 			wantErr:  true,
 		},
 		{
-			encoding: String("none"),
+			encoding: Ptr("none"),
 			content:  nil,
 			want:     "",
 			wantErr:  true,
@@ -107,7 +107,7 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetReadme returned error: %v", err)
 	}
-	want := &RepositoryContent{Type: String("file"), Name: String("README.md"), Size: Int(5362), Encoding: String("base64"), Path: String("README.md")}
+	want := &RepositoryContent{Type: Ptr("file"), Name: Ptr("README.md"), Size: Ptr(5362), Encoding: Ptr("base64"), Path: Ptr("README.md")}
 	if !cmp.Equal(readme, want) {
 		t.Errorf("Repositories.GetReadme returned %+v, want %+v", readme, want)
 	}
@@ -433,7 +433,7 @@ func TestRepositoriesService_GetContents_File(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetContents returned error: %v", err)
 	}
-	want := &RepositoryContent{Type: String("file"), Name: String("LICENSE"), Size: Int(20678), Encoding: String("base64"), Path: String("LICENSE")}
+	want := &RepositoryContent{Type: Ptr("file"), Name: Ptr("LICENSE"), Size: Ptr(20678), Encoding: Ptr("base64"), Path: Ptr("LICENSE")}
 	if !cmp.Equal(fileContents, want) {
 		t.Errorf("Repositories.GetContents returned %+v, want %+v", fileContents, want)
 	}
@@ -536,8 +536,8 @@ func TestRepositoriesService_GetContents_Directory(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetContents returned error: %v", err)
 	}
-	want := []*RepositoryContent{{Type: String("dir"), Name: String("lib"), Path: String("lib")},
-		{Type: String("file"), Name: String("LICENSE"), Size: Int(20678), Path: String("LICENSE")}}
+	want := []*RepositoryContent{{Type: Ptr("dir"), Name: Ptr("lib"), Path: Ptr("lib")},
+		{Type: Ptr("file"), Name: Ptr("LICENSE"), Size: Ptr(20678), Path: Ptr("LICENSE")}}
 	if !cmp.Equal(directoryContents, want) {
 		t.Errorf("Repositories.GetContents_Directory returned %+v, want %+v", directoryContents, want)
 	}
@@ -564,7 +564,7 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 	repositoryContentsOptions := &RepositoryContentFileOptions{
 		Message:   &message,
 		Content:   content,
-		Committer: &CommitAuthor{Name: String("n"), Email: String("e")},
+		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
 	ctx := context.Background()
 	createResponse, _, err := client.Repositories.CreateFile(ctx, "o", "r", "p", repositoryContentsOptions)
@@ -572,10 +572,10 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 		t.Errorf("Repositories.CreateFile returned error: %v", err)
 	}
 	want := &RepositoryContentResponse{
-		Content: &RepositoryContent{Name: String("p")},
+		Content: &RepositoryContent{Name: Ptr("p")},
 		Commit: Commit{
-			Message: String("m"),
-			SHA:     String("f5f369044773ff9c6383c087466d12adb6fa0828"),
+			Message: Ptr("m"),
+			SHA:     Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
 	}
 	if !cmp.Equal(createResponse, want) {
@@ -620,7 +620,7 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 		Message:   &message,
 		Content:   content,
 		SHA:       &sha,
-		Committer: &CommitAuthor{Name: String("n"), Email: String("e")},
+		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
 	ctx := context.Background()
 	updateResponse, _, err := client.Repositories.UpdateFile(ctx, "o", "r", "p", repositoryContentsOptions)
@@ -628,10 +628,10 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 		t.Errorf("Repositories.UpdateFile returned error: %v", err)
 	}
 	want := &RepositoryContentResponse{
-		Content: &RepositoryContent{Name: String("p")},
+		Content: &RepositoryContent{Name: Ptr("p")},
 		Commit: Commit{
-			Message: String("m"),
-			SHA:     String("f5f369044773ff9c6383c087466d12adb6fa0828"),
+			Message: Ptr("m"),
+			SHA:     Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
 	}
 	if !cmp.Equal(updateResponse, want) {
@@ -672,7 +672,7 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 	repositoryContentsOptions := &RepositoryContentFileOptions{
 		Message:   &message,
 		SHA:       &sha,
-		Committer: &CommitAuthor{Name: String("n"), Email: String("e")},
+		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
 	ctx := context.Background()
 	deleteResponse, _, err := client.Repositories.DeleteFile(ctx, "o", "r", "p", repositoryContentsOptions)
@@ -682,8 +682,8 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 	want := &RepositoryContentResponse{
 		Content: nil,
 		Commit: Commit{
-			Message: String("m"),
-			SHA:     String("f5f369044773ff9c6383c087466d12adb6fa0828"),
+			Message: Ptr("m"),
+			SHA:     Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
 	}
 	if !cmp.Equal(deleteResponse, want) {
@@ -811,19 +811,19 @@ func TestRepositoryContent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepositoryContent{}, "{}")
 
 	r := &RepositoryContent{
-		Type:            String("type"),
-		Target:          String("target"),
-		Encoding:        String("encoding"),
-		Size:            Int(1),
-		Name:            String("name"),
-		Path:            String("path"),
-		Content:         String("content"),
-		SHA:             String("sha"),
-		URL:             String("url"),
-		GitURL:          String("gurl"),
-		HTMLURL:         String("hurl"),
-		DownloadURL:     String("durl"),
-		SubmoduleGitURL: String("smgurl"),
+		Type:            Ptr("type"),
+		Target:          Ptr("target"),
+		Encoding:        Ptr("encoding"),
+		Size:            Ptr(1),
+		Name:            Ptr("name"),
+		Path:            Ptr("path"),
+		Content:         Ptr("content"),
+		SHA:             Ptr("sha"),
+		URL:             Ptr("url"),
+		GitURL:          Ptr("gurl"),
+		HTMLURL:         Ptr("hurl"),
+		DownloadURL:     Ptr("durl"),
+		SubmoduleGitURL: Ptr("smgurl"),
 	}
 
 	want := `{
@@ -851,64 +851,64 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 
 	r := &RepositoryContentResponse{
 		Content: &RepositoryContent{
-			Type:            String("type"),
-			Target:          String("target"),
-			Encoding:        String("encoding"),
-			Size:            Int(1),
-			Name:            String("name"),
-			Path:            String("path"),
-			Content:         String("content"),
-			SHA:             String("sha"),
-			URL:             String("url"),
-			GitURL:          String("gurl"),
-			HTMLURL:         String("hurl"),
-			DownloadURL:     String("durl"),
-			SubmoduleGitURL: String("smgurl"),
+			Type:            Ptr("type"),
+			Target:          Ptr("target"),
+			Encoding:        Ptr("encoding"),
+			Size:            Ptr(1),
+			Name:            Ptr("name"),
+			Path:            Ptr("path"),
+			Content:         Ptr("content"),
+			SHA:             Ptr("sha"),
+			URL:             Ptr("url"),
+			GitURL:          Ptr("gurl"),
+			HTMLURL:         Ptr("hurl"),
+			DownloadURL:     Ptr("durl"),
+			SubmoduleGitURL: Ptr("smgurl"),
 		},
 		Commit: Commit{
-			SHA: String("s"),
+			SHA: Ptr("s"),
 			Author: &CommitAuthor{
 				Date:  &Timestamp{referenceTime},
-				Name:  String("n"),
-				Email: String("e"),
-				Login: String("u"),
+				Name:  Ptr("n"),
+				Email: Ptr("e"),
+				Login: Ptr("u"),
 			},
 			Committer: &CommitAuthor{
 				Date:  &Timestamp{referenceTime},
-				Name:  String("n"),
-				Email: String("e"),
-				Login: String("u"),
+				Name:  Ptr("n"),
+				Email: Ptr("e"),
+				Login: Ptr("u"),
 			},
-			Message: String("m"),
+			Message: Ptr("m"),
 			Tree: &Tree{
-				SHA: String("s"),
+				SHA: Ptr("s"),
 				Entries: []*TreeEntry{{
-					SHA:     String("s"),
-					Path:    String("p"),
-					Mode:    String("m"),
-					Type:    String("t"),
-					Size:    Int(1),
-					Content: String("c"),
-					URL:     String("u"),
+					SHA:     Ptr("s"),
+					Path:    Ptr("p"),
+					Mode:    Ptr("m"),
+					Type:    Ptr("t"),
+					Size:    Ptr(1),
+					Content: Ptr("c"),
+					URL:     Ptr("u"),
 				}},
-				Truncated: Bool(false),
+				Truncated: Ptr(false),
 			},
 			Parents: nil,
 			Stats: &CommitStats{
-				Additions: Int(1),
-				Deletions: Int(1),
-				Total:     Int(1),
+				Additions: Ptr(1),
+				Deletions: Ptr(1),
+				Total:     Ptr(1),
 			},
-			HTMLURL: String("h"),
-			URL:     String("u"),
+			HTMLURL: Ptr("h"),
+			URL:     Ptr("u"),
 			Verification: &SignatureVerification{
-				Verified:  Bool(false),
-				Reason:    String("r"),
-				Signature: String("s"),
-				Payload:   String("p"),
+				Verified:  Ptr(false),
+				Reason:    Ptr("r"),
+				Signature: Ptr("s"),
+				Payload:   Ptr("p"),
 			},
-			NodeID:       String("n"),
-			CommentCount: Int(1),
+			NodeID:       Ptr("n"),
+			CommentCount: Ptr(1),
 		},
 	}
 
@@ -984,21 +984,21 @@ func TestRepositoryContentFileOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepositoryContentFileOptions{}, "{}")
 
 	r := &RepositoryContentFileOptions{
-		Message: String("type"),
+		Message: Ptr("type"),
 		Content: []byte{1},
-		SHA:     String("type"),
-		Branch:  String("type"),
+		SHA:     Ptr("type"),
+		Branch:  Ptr("type"),
 		Author: &CommitAuthor{
 			Date:  &Timestamp{referenceTime},
-			Name:  String("name"),
-			Email: String("email"),
-			Login: String("login"),
+			Name:  Ptr("name"),
+			Email: Ptr("email"),
+			Login: Ptr("login"),
 		},
 		Committer: &CommitAuthor{
 			Date:  &Timestamp{referenceTime},
-			Name:  String("name"),
-			Email: String("email"),
-			Login: String("login"),
+			Name:  Ptr("name"),
+			Email: Ptr("email"),
+			Login: Ptr("login"),
 		},
 	}
 

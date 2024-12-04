@@ -31,7 +31,7 @@ func TestUsersService_ListFollowers_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.ListFollowers returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}}
+	want := []*User{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(users, want) {
 		t.Errorf("Users.ListFollowers returned %+v, want %+v", users, want)
 	}
@@ -66,7 +66,7 @@ func TestUsersService_ListFollowers_specifiedUser(t *testing.T) {
 		t.Errorf("Users.ListFollowers returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}}
+	want := []*User{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(users, want) {
 		t.Errorf("Users.ListFollowers returned %+v, want %+v", users, want)
 	}
@@ -112,7 +112,7 @@ func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}}
+	want := []*User{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(users, want) {
 		t.Errorf("Users.ListFollowing returned %+v, want %+v", users, want)
 	}
@@ -147,7 +147,7 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}}
+	want := []*User{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(users, want) {
 		t.Errorf("Users.ListFollowing returned %+v, want %+v", users, want)
 	}

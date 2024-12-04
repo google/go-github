@@ -59,7 +59,7 @@ func TestGitignoresService_Get(t *testing.T) {
 		t.Errorf("Gitignores.List returned error: %v", err)
 	}
 
-	want := &Gitignore{Name: String("Name"), Source: String("template source")}
+	want := &Gitignore{Name: Ptr("Name"), Source: Ptr("template source")}
 	if !cmp.Equal(gitignore, want) {
 		t.Errorf("Gitignores.Get returned %+v, want %+v", gitignore, want)
 	}
@@ -93,8 +93,8 @@ func TestGitignore_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Gitignore{}, "{}")
 
 	u := &Gitignore{
-		Name:   String("name"),
-		Source: String("source"),
+		Name:   Ptr("name"),
+		Source: Ptr("source"),
 	}
 
 	want := `{

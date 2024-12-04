@@ -41,7 +41,7 @@ func TestAppsService_ListRepos(t *testing.T) {
 		t.Errorf("Apps.ListRepos returned error: %v", err)
 	}
 
-	want := &ListRepositories{TotalCount: Int(1), Repositories: []*Repository{{ID: Int64(1)}}}
+	want := &ListRepositories{TotalCount: Ptr(1), Repositories: []*Repository{{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(repositories, want) {
 		t.Errorf("Apps.ListRepos returned %+v, want %+v", repositories, want)
 	}
@@ -82,7 +82,7 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 		t.Errorf("Apps.ListUserRepos returned error: %v", err)
 	}
 
-	want := &ListRepositories{TotalCount: Int(1), Repositories: []*Repository{{ID: Int64(1)}}}
+	want := &ListRepositories{TotalCount: Ptr(1), Repositories: []*Repository{{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(repositories, want) {
 		t.Errorf("Apps.ListUserRepos returned %+v, want %+v", repositories, want)
 	}
@@ -117,7 +117,7 @@ func TestAppsService_AddRepository(t *testing.T) {
 		t.Errorf("Apps.AddRepository returned error: %v", err)
 	}
 
-	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
+	want := &Repository{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), Owner: &User{Login: Ptr("l")}, License: &License{Key: Ptr("mit")}}
 	if !cmp.Equal(repo, want) {
 		t.Errorf("AddRepository returned %+v, want %+v", repo, want)
 	}
@@ -179,12 +179,12 @@ func TestListRepositories_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ListRepositories{}, "{}")
 
 	u := &ListRepositories{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Repositories: []*Repository{
 			{
-				ID:   Int64(1),
-				URL:  String("u"),
-				Name: String("n"),
+				ID:   Ptr(int64(1)),
+				URL:  Ptr("u"),
+				Name: Ptr("n"),
 			},
 		},
 	}

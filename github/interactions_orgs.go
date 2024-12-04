@@ -47,7 +47,7 @@ func (s *InteractionsService) GetRestrictionsForOrg(ctx context.Context, organiz
 func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, organization, limit string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/interaction-limits", organization)
 
-	interaction := &InteractionRestriction{Limit: String(limit)}
+	interaction := &InteractionRestriction{Limit: Ptr(limit)}
 
 	req, err := s.client.NewRequest("PUT", u, interaction)
 	if err != nil {

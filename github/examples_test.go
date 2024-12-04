@@ -81,10 +81,10 @@ func ExampleRepositoriesService_CreateFile() {
 	// Note: the file needs to be absent from the repository as you are not
 	// specifying a SHA reference here.
 	opts := &github.RepositoryContentFileOptions{
-		Message:   github.String("This is my commit message"),
+		Message:   github.Ptr("This is my commit message"),
 		Content:   fileContent,
-		Branch:    github.String("master"),
-		Committer: &github.CommitAuthor{Name: github.String("FirstName LastName"), Email: github.String("user@example.com")},
+		Branch:    github.Ptr("master"),
+		Committer: &github.CommitAuthor{Name: github.Ptr("FirstName LastName"), Email: github.Ptr("user@example.com")},
 	}
 	_, _, err := client.Repositories.CreateFile(ctx, "myOrganization", "myRepository", "myNewFile.md", opts)
 	if err != nil {
@@ -121,11 +121,11 @@ func ExamplePullRequestsService_Create() {
 	client := github.NewClient(nil)
 
 	newPR := &github.NewPullRequest{
-		Title:               github.String("My awesome pull request"),
-		Head:                github.String("branch_to_merge"),
-		Base:                github.String("master"),
-		Body:                github.String("This is the description of the PR created with the package `github.com/google/go-github/github`"),
-		MaintainerCanModify: github.Bool(true),
+		Title:               github.Ptr("My awesome pull request"),
+		Head:                github.Ptr("branch_to_merge"),
+		Base:                github.Ptr("master"),
+		Body:                github.Ptr("This is the description of the PR created with the package `github.com/google/go-github/github`"),
+		MaintainerCanModify: github.Ptr(true),
 	}
 
 	ctx := context.Background()
