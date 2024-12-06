@@ -859,8 +859,8 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 		if e, ok := err.(*url.Error); ok {
 			if url, err := url.Parse(e.URL); err == nil {
 				e.URL = sanitizeURL(url).String()
+				return response, e
 			}
-			return response, e
 		}
 
 		return response, err
