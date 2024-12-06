@@ -1106,6 +1106,27 @@ func TestDo_redirectLoop(t *testing.T) {
 	}
 }
 
+func TestDo_preservesResponseInURLError(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Not Found", http.StatusNotFound)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	resp, err := client.Do(context.Background(), req, nil)
+
+	if err == nil {
+		t.Fatal("Expected error to be returned")
+	}
+	if resp == nil {
+		t.Fatal("Expected response to be returned even with error")
+	}
+	if resp.StatusCode != http.StatusNotFound {
+		t.Errorf("Expected status code 404, got %d", resp.StatusCode)
+	}
+}
+
 // Test that an error caused by the internal http client's Do() function
 // does not leak the client secret.
 func TestDo_sanitizeURL(t *testing.T) {

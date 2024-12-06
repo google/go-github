@@ -841,6 +841,11 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 	}
 
 	resp, err := c.client.Do(req)
+	var response *Response
+	if resp != nil {
+		response = newResponse(resp)
+	}
+
 	if err != nil {
 		// If we got an error, and the context has been canceled,
 		// the context's error is probably more useful.
@@ -854,14 +859,12 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 		if e, ok := err.(*url.Error); ok {
 			if url, err := url.Parse(e.URL); err == nil {
 				e.URL = sanitizeURL(url).String()
-				return nil, e
 			}
+			return response, e
 		}
 
-		return nil, err
+		return response, err
 	}
-
-	response := newResponse(resp)
 
 	// Don't update the rate limits if this was a cached response.
 	// X-From-Cache is set by https://github.com/gregjones/httpcache
