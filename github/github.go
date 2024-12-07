@@ -851,7 +851,7 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 		// the context's error is probably more useful.
 		select {
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			return response, ctx.Err()
 		default:
 		}
 
