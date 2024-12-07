@@ -1106,7 +1106,7 @@ func TestDo_redirectLoop(t *testing.T) {
 	}
 }
 
-func TestDo_preservesResponseInURLError(t *testing.T) {
+func TestDo_preservesResponseInHTTPError(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
