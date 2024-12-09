@@ -96,6 +96,84 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 	})
 }
 
+func TestOrganizationsService_GetCustomRepoRole(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/custom-repository-roles/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+				"id": 1,
+				"name": "Developer",
+				"base_role": "write",
+				"permissions": ["delete_alerts_code_scanning"],
+				"organization": {
+					"login": "l",
+					"id": 1,
+					"node_id": "n",
+					"avatar_url": "a",
+					"html_url": "h",
+					"name": "n",
+					"company": "c",
+					"blog": "b",
+					"location": "l",
+					"email": "e"
+				},
+				"created_at": "2024-07-21T19:33:08Z",
+				"updated_at": "2024-07-21T19:33:08Z"
+			}`)
+	})
+
+	ctx := context.Background()
+	role, _, err := client.Organizations.GetCustomRepoRole(ctx, "o", 1)
+	if err != nil {
+		t.Errorf("Organizations.GetCustomRepoRole returned error: %v", err)
+	}
+
+	want := &CustomRepoRoles{
+		ID:          Int64(1),
+		Name:        String("Developer"),
+		BaseRole:    String("write"),
+		Permissions: []string{"delete_alerts_code_scanning"},
+		Org: &Organization{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			AvatarURL: String("a"),
+			HTMLURL:   String("h"),
+			Name:      String("n"),
+			Company:   String("c"),
+			Blog:      String("b"),
+			Location:  String("l"),
+			Email:     String("e"),
+		},
+		CreatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
+	}
+	if !cmp.Equal(role, want) {
+		t.Errorf("Organizations.GetCustomRepoRole returned %+v, want %+v", role, want)
+	}
+
+	const methodName = "GetCustomRepoRole"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetCustomRepoRole(ctx, "\no", 1)
+		return err
+	})
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetCustomRepoRole(ctx, "o", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetCustomRepoRole(ctx, "o", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
