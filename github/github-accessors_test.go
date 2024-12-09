@@ -31190,6 +31190,17 @@ func TestTaskStep_GetStatus(tt *testing.T) {
 	t.GetStatus()
 }
 
+func TestTeam_GetAssignment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	t := &Team{Assignment: &zeroValue}
+	t.GetAssignment()
+	t = &Team{}
+	t.GetAssignment()
+	t = nil
+	t.GetAssignment()
+}
+
 func TestTeam_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -32858,6 +32869,17 @@ func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 }
 
+func TestUser_GetAssignment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &User{Assignment: &zeroValue}
+	u.GetAssignment()
+	u = &User{}
+	u.GetAssignment()
+	u = nil
+	u.GetAssignment()
+}
+
 func TestUser_GetAvatarURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -33054,6 +33076,14 @@ func TestUser_GetID(tt *testing.T) {
 	u.GetID()
 	u = nil
 	u.GetID()
+}
+
+func TestUser_GetInheritedFrom(tt *testing.T) {
+	tt.Parallel()
+	u := &User{}
+	u.GetInheritedFrom()
+	u = nil
+	u.GetInheritedFrom()
 }
 
 func TestUser_GetLdapDn(tt *testing.T) {
