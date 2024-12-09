@@ -47,7 +47,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: a0508cecd18ab26b525527e4ba35bd9c6d725c4f
+openapi_commit: 4ab8513682637010cd3bb5d8ee3227cc5ce739d1
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -700,6 +700,30 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /enterprises/{enterprise}/audit-log/stream-key
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/audit-log#get-the-audit-log-stream-key-for-encrypting-secrets
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/audit-log/streams
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/audit-log#list-audit-log-stream-configurations-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/audit-log/streams
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/audit-log#create-an-audit-log-streaming-configuration-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: DELETE /enterprises/{enterprise}/audit-log/streams/{stream_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/audit-log#delete-an-audit-log-streaming-configuration-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/audit-log/streams/{stream_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/audit-log#list-one-audit-log-streaming-configuration-via-a-stream-id
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PUT /enterprises/{enterprise}/audit-log/streams/{stream_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/audit-log#update-an-existing-audit-log-stream-configuration
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/code-scanning/alerts
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/code-scanning/code-scanning#list-code-scanning-alerts-for-an-enterprise
     openapi_files:
@@ -742,6 +766,26 @@ openapi_operations:
       - descriptions/ghes-3.15/ghes-3.15.json
   - name: GET /enterprises/{enterprise}/license-sync-status
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/license#get-a-license-sync-status
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/properties/schema
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/custom-properties#get-custom-properties-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PATCH /enterprises/{enterprise}/properties/schema
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/custom-properties#create-or-update-custom-properties-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: DELETE /enterprises/{enterprise}/properties/schema/{custom_property_name}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/custom-properties#remove-a-custom-property-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/properties/schema/{custom_property_name}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/custom-properties#get-a-custom-property-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PUT /enterprises/{enterprise}/properties/schema/{custom_property_name}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/custom-properties#create-or-update-a-custom-property-for-an-enterprise
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/secret-scanning/alerts
@@ -999,7 +1043,7 @@ openapi_operations:
     openapi_files:
       - descriptions/ghes-3.15/ghes-3.15.json
   - name: POST /manage/v1/config/init
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/manage-ghes#initialize-instance-configuration-with-license-upload
+    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/manage-ghes#initialize-instance-configuration-with-license-and-password
     openapi_files:
       - descriptions/ghes-3.15/ghes-3.15.json
   - name: GET /manage/v1/config/license
@@ -1161,6 +1205,11 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /organizations/{org}/settings/billing/usage
+    documentation_url: https://docs.github.com/rest/billing/enhanced-billing#get-billing-usage-report-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: DELETE /orgs/{org}
     documentation_url: https://docs.github.com/rest/orgs/orgs#delete-an-organization
     openapi_files:
@@ -4723,6 +4772,26 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: DELETE /repos/{owner}/{repo}/issues/{issue_number}/sub_issue
+    documentation_url: https://docs.github.com/rest/issues/sub-issues#remove-sub-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
+    documentation_url: https://docs.github.com/rest/issues/sub-issues#list-sub-issues
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
+    documentation_url: https://docs.github.com/rest/issues/sub-issues#add-sub-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority
+    documentation_url: https://docs.github.com/rest/issues/sub-issues#reprioritize-sub-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/issues/{issue_number}/timeline
     documentation_url: https://docs.github.com/rest/issues/timeline#list-timeline-events-for-an-issue
     openapi_files:
@@ -5370,6 +5439,11 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /repos/{owner}/{repo}/secret-scanning/scan-history
+    documentation_url: https://docs.github.com/rest/secret-scanning/secret-scanning#get-secret-scanning-scan-history-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/security-advisories
     documentation_url: https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories
     openapi_files:
@@ -5776,49 +5850,49 @@ openapi_operations:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
   - name: GET /setup/api/configcheck
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/management-console#get-the-configuration-status
+    documentation_url: https://docs.github.com/enterprise-server@3.14/rest/enterprise-admin/management-console#get-the-configuration-status
     openapi_files:
-      - descriptions/ghes-3.15/ghes-3.15.json
+      - descriptions/ghes-3.14/ghes-3.14.json
   - name: POST /setup/api/configure
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/management-console#start-a-configuration-process
+    documentation_url: https://docs.github.com/enterprise-server@3.14/rest/enterprise-admin/management-console#start-a-configuration-process
     openapi_files:
-      - descriptions/ghes-3.15/ghes-3.15.json
+      - descriptions/ghes-3.14/ghes-3.14.json
   - name: GET /setup/api/maintenance
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/management-console#get-the-maintenance-status
+    documentation_url: https://docs.github.com/enterprise-server@3.14/rest/enterprise-admin/management-console#get-the-maintenance-status
     openapi_files:
-      - descriptions/ghes-3.15/ghes-3.15.json
+      - descriptions/ghes-3.14/ghes-3.14.json
   - name: POST /setup/api/maintenance
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/management-console#enable-or-disable-maintenance-mode
+    documentation_url: https://docs.github.com/enterprise-server@3.14/rest/enterprise-admin/management-console#enable-or-disable-maintenance-mode
     openapi_files:
-      - descriptions/ghes-3.15/ghes-3.15.json
+      - descriptions/ghes-3.14/ghes-3.14.json
   - name: GET /setup/api/settings
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/management-console#get-settings
+    documentation_url: https://docs.github.com/enterprise-server@3.14/rest/enterprise-admin/management-console#get-settings
     openapi_files:
-      - descriptions/ghes-3.15/ghes-3.15.json
+      - descriptions/ghes-3.14/ghes-3.14.json
   - name: PUT /setup/api/settings
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/management-console#set-settings
+    documentation_url: https://docs.github.com/enterprise-server@3.14/rest/enterprise-admin/management-console#set-settings
     openapi_files:
-      - descriptions/ghes-3.15/ghes-3.15.json
+      - descriptions/ghes-3.14/ghes-3.14.json
   - name: DELETE /setup/api/settings/authorized-keys
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/management-console#remove-an-authorized-ssh-key
+    documentation_url: https://docs.github.com/enterprise-server@3.14/rest/enterprise-admin/management-console#remove-an-authorized-ssh-key
     openapi_files:
-      - descriptions/ghes-3.15/ghes-3.15.json
+      - descriptions/ghes-3.14/ghes-3.14.json
   - name: GET /setup/api/settings/authorized-keys
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/management-console#get-all-authorized-ssh-keys
+    documentation_url: https://docs.github.com/enterprise-server@3.14/rest/enterprise-admin/management-console#get-all-authorized-ssh-keys
     openapi_files:
-      - descriptions/ghes-3.15/ghes-3.15.json
+      - descriptions/ghes-3.14/ghes-3.14.json
   - name: POST /setup/api/settings/authorized-keys
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/management-console#add-an-authorized-ssh-key
+    documentation_url: https://docs.github.com/enterprise-server@3.14/rest/enterprise-admin/management-console#add-an-authorized-ssh-key
     openapi_files:
-      - descriptions/ghes-3.15/ghes-3.15.json
+      - descriptions/ghes-3.14/ghes-3.14.json
   - name: POST /setup/api/start
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/management-console#create-a-github-license
+    documentation_url: https://docs.github.com/enterprise-server@3.14/rest/enterprise-admin/management-console#create-a-github-license
     openapi_files:
-      - descriptions/ghes-3.15/ghes-3.15.json
+      - descriptions/ghes-3.14/ghes-3.14.json
   - name: POST /setup/api/upgrade
-    documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/management-console#upgrade-a-license
+    documentation_url: https://docs.github.com/enterprise-server@3.14/rest/enterprise-admin/management-console#upgrade-a-license
     openapi_files:
-      - descriptions/ghes-3.15/ghes-3.15.json
+      - descriptions/ghes-3.14/ghes-3.14.json
   - name: DELETE /teams/{team_id}
     documentation_url: https://docs.github.com/rest/teams/teams#delete-a-team-legacy
     openapi_files:
