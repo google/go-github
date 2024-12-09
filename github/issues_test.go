@@ -47,7 +47,7 @@ func TestIssuesService_List_all(t *testing.T) {
 		t.Errorf("Issues.List returned error: %v", err)
 	}
 
-	want := []*Issue{{Number: Int(1)}}
+	want := []*Issue{{Number: Ptr(1)}}
 	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
@@ -78,7 +78,7 @@ func TestIssuesService_List_owned(t *testing.T) {
 		t.Errorf("Issues.List returned error: %v", err)
 	}
 
-	want := []*Issue{{Number: Int(1)}}
+	want := []*Issue{{Number: Ptr(1)}}
 	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
@@ -100,7 +100,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
 	}
 
-	want := []*Issue{{Number: Int(1)}}
+	want := []*Issue{{Number: Ptr(1)}}
 	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
@@ -170,7 +170,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
 	}
 
-	want := []*Issue{{Number: Int(1)}}
+	want := []*Issue{{Number: Ptr(1)}}
 	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
@@ -216,12 +216,12 @@ func TestIssuesService_Get(t *testing.T) {
 	}
 
 	want := &Issue{
-		Number:            Int(1),
-		AuthorAssociation: String("MEMBER"),
+		Number:            Ptr(1),
+		AuthorAssociation: Ptr("MEMBER"),
 		Labels: []*Label{{
-			URL:   String("u"),
-			Name:  String("n"),
-			Color: String("c"),
+			URL:   Ptr("u"),
+			Name:  Ptr("n"),
+			Color: Ptr("c"),
 		}},
 	}
 	if !cmp.Equal(issue, want) {
@@ -257,9 +257,9 @@ func TestIssuesService_Create(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &IssueRequest{
-		Title:    String("t"),
-		Body:     String("b"),
-		Assignee: String("a"),
+		Title:    Ptr("t"),
+		Body:     Ptr("b"),
+		Assignee: Ptr("a"),
 		Labels:   &[]string{"l1", "l2"},
 	}
 
@@ -281,7 +281,7 @@ func TestIssuesService_Create(t *testing.T) {
 		t.Errorf("Issues.Create returned error: %v", err)
 	}
 
-	want := &Issue{Number: Int(1)}
+	want := &Issue{Number: Ptr(1)}
 	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.Create returned %+v, want %+v", issue, want)
 	}
@@ -314,7 +314,7 @@ func TestIssuesService_Edit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &IssueRequest{Title: String("t")}
+	input := &IssueRequest{Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(IssueRequest)
@@ -334,7 +334,7 @@ func TestIssuesService_Edit(t *testing.T) {
 		t.Errorf("Issues.Edit returned error: %v", err)
 	}
 
-	want := &Issue{Number: Int(1)}
+	want := &Issue{Number: Ptr(1)}
 	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.Edit returned %+v, want %+v", issue, want)
 	}
@@ -369,7 +369,7 @@ func TestIssuesService_RemoveMilestone(t *testing.T) {
 		t.Errorf("Issues.RemoveMilestone returned error: %v", err)
 	}
 
-	want := &Issue{Number: Int(1)}
+	want := &Issue{Number: Ptr(1)}
 	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.RemoveMilestone returned %+v, want %+v", issue, want)
 	}
@@ -473,7 +473,7 @@ func TestIsPullRequest(t *testing.T) {
 	if i.IsPullRequest() {
 		t.Errorf("expected i.IsPullRequest (%v) to return false, got true", i)
 	}
-	i.PullRequestLinks = &PullRequestLinks{URL: String("http://example.com")}
+	i.PullRequestLinks = &PullRequestLinks{URL: Ptr("http://example.com")}
 	if !i.IsPullRequest() {
 		t.Errorf("expected i.IsPullRequest (%v) to return true, got false", i)
 	}
@@ -499,10 +499,10 @@ func TestPullRequestLinks_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestLinks{}, "{}")
 
 	u := &PullRequestLinks{
-		URL:      String("url"),
-		HTMLURL:  String("hurl"),
-		DiffURL:  String("durl"),
-		PatchURL: String("purl"),
+		URL:      Ptr("url"),
+		HTMLURL:  Ptr("hurl"),
+		DiffURL:  Ptr("durl"),
+		PatchURL: Ptr("purl"),
 		MergedAt: &Timestamp{referenceTime},
 	}
 
@@ -522,12 +522,12 @@ func TestIssueRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &IssueRequest{}, "{}")
 
 	u := &IssueRequest{
-		Title:     String("url"),
-		Body:      String("url"),
+		Title:     Ptr("url"),
+		Body:      Ptr("url"),
 		Labels:    &[]string{"l"},
-		Assignee:  String("url"),
-		State:     String("url"),
-		Milestone: Int(1),
+		Assignee:  Ptr("url"),
+		State:     Ptr("url"),
+		Milestone: Ptr(1),
 		Assignees: &[]string{"a"},
 	}
 
@@ -553,35 +553,35 @@ func TestIssue_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Issue{}, "{}")
 
 	u := &Issue{
-		ID:                Int64(1),
-		Number:            Int(1),
-		State:             String("s"),
-		Locked:            Bool(false),
-		Title:             String("title"),
-		Body:              String("body"),
-		AuthorAssociation: String("aa"),
-		User:              &User{ID: Int64(1)},
-		Labels:            []*Label{{ID: Int64(1)}},
-		Assignee:          &User{ID: Int64(1)},
-		Comments:          Int(1),
+		ID:                Ptr(int64(1)),
+		Number:            Ptr(1),
+		State:             Ptr("s"),
+		Locked:            Ptr(false),
+		Title:             Ptr("title"),
+		Body:              Ptr("body"),
+		AuthorAssociation: Ptr("aa"),
+		User:              &User{ID: Ptr(int64(1))},
+		Labels:            []*Label{{ID: Ptr(int64(1))}},
+		Assignee:          &User{ID: Ptr(int64(1))},
+		Comments:          Ptr(1),
 		ClosedAt:          &Timestamp{referenceTime},
 		CreatedAt:         &Timestamp{referenceTime},
 		UpdatedAt:         &Timestamp{referenceTime},
-		ClosedBy:          &User{ID: Int64(1)},
-		URL:               String("url"),
-		HTMLURL:           String("hurl"),
-		CommentsURL:       String("curl"),
-		EventsURL:         String("eurl"),
-		LabelsURL:         String("lurl"),
-		RepositoryURL:     String("rurl"),
-		Milestone:         &Milestone{ID: Int64(1)},
-		PullRequestLinks:  &PullRequestLinks{URL: String("url")},
-		Repository:        &Repository{ID: Int64(1)},
-		Reactions:         &Reactions{TotalCount: Int(1)},
-		Assignees:         []*User{{ID: Int64(1)}},
-		NodeID:            String("nid"),
-		TextMatches:       []*TextMatch{{ObjectURL: String("ourl")}},
-		ActiveLockReason:  String("alr"),
+		ClosedBy:          &User{ID: Ptr(int64(1))},
+		URL:               Ptr("url"),
+		HTMLURL:           Ptr("hurl"),
+		CommentsURL:       Ptr("curl"),
+		EventsURL:         Ptr("eurl"),
+		LabelsURL:         Ptr("lurl"),
+		RepositoryURL:     Ptr("rurl"),
+		Milestone:         &Milestone{ID: Ptr(int64(1))},
+		PullRequestLinks:  &PullRequestLinks{URL: Ptr("url")},
+		Repository:        &Repository{ID: Ptr(int64(1))},
+		Reactions:         &Reactions{TotalCount: Ptr(1)},
+		Assignees:         []*User{{ID: Ptr(int64(1))}},
+		NodeID:            Ptr("nid"),
+		TextMatches:       []*TextMatch{{ObjectURL: Ptr("ourl")}},
+		ActiveLockReason:  Ptr("alr"),
 	}
 
 	want := `{

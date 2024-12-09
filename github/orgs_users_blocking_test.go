@@ -34,7 +34,7 @@ func TestOrganizationsService_ListBlockedUsers(t *testing.T) {
 		t.Errorf("Organizations.ListBlockedUsers returned error: %v", err)
 	}
 
-	want := []*User{{Login: String("octocat")}}
+	want := []*User{{Login: Ptr("octocat")}}
 	if !cmp.Equal(blockedUsers, want) {
 		t.Errorf("Organizations.ListBlockedUsers returned %+v, want %+v", blockedUsers, want)
 	}

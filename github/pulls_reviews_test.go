@@ -35,8 +35,8 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 	}
 
 	want := []*PullRequestReview{
-		{ID: Int64(1)},
-		{ID: Int64(2)},
+		{ID: Ptr(int64(1))},
+		{ID: Ptr(int64(2))},
 	}
 	if !cmp.Equal(reviews, want) {
 		t.Errorf("PullRequests.ListReviews returned %+v, want %+v", reviews, want)
@@ -81,7 +81,7 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 		t.Errorf("PullRequests.GetReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.GetReview returned %+v, want %+v", review, want)
 	}
@@ -125,7 +125,7 @@ func TestPullRequestsService_DeletePendingReview(t *testing.T) {
 		t.Errorf("PullRequests.DeletePendingReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.DeletePendingReview returned %+v, want %+v", review, want)
 	}
@@ -170,8 +170,8 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 	}
 
 	want := []*PullRequestComment{
-		{ID: Int64(1)},
-		{ID: Int64(2)},
+		{ID: Ptr(int64(1))},
+		{ID: Ptr(int64(2))},
 	}
 	if !cmp.Equal(comments, want) {
 		t.Errorf("PullRequests.ListReviewComments returned %+v, want %+v", comments, want)
@@ -361,9 +361,9 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &PullRequestReviewRequest{
-		CommitID: String("commit_id"),
-		Body:     String("b"),
-		Event:    String("APPROVE"),
+		CommitID: Ptr("commit_id"),
+		Body:     Ptr("b"),
+		Event:    Ptr("APPROVE"),
 	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
@@ -384,7 +384,7 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 		t.Errorf("PullRequests.CreateReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.CreateReview returned %+v, want %+v", review, want)
 	}
@@ -504,7 +504,7 @@ func TestPullRequestsService_UpdateReview(t *testing.T) {
 		t.Errorf("PullRequests.UpdateReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("PullRequests.UpdateReview = %+v, want %+v", got, want)
 	}
@@ -529,8 +529,8 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &PullRequestReviewRequest{
-		Body:  String("b"),
-		Event: String("APPROVE"),
+		Body:  Ptr("b"),
+		Event: Ptr("APPROVE"),
 	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/events", func(w http.ResponseWriter, r *http.Request) {
@@ -551,7 +551,7 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 		t.Errorf("PullRequests.SubmitReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.SubmitReview returned %+v, want %+v", review, want)
 	}
@@ -584,7 +584,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &PullRequestReviewDismissalRequest{Message: String("m")}
+	input := &PullRequestReviewDismissalRequest{Message: Ptr("m")}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/dismissals", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PullRequestReviewDismissalRequest)
@@ -604,7 +604,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 		t.Errorf("PullRequests.DismissReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.DismissReview returned %+v, want %+v", review, want)
 	}
@@ -638,7 +638,7 @@ func TestPullRequestReviewDismissalRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestReviewDismissalRequest{}, "{}")
 
 	u := &PullRequestReviewDismissalRequest{
-		Message: String("msg"),
+		Message: Ptr("msg"),
 	}
 
 	want := `{
@@ -653,13 +653,13 @@ func TestDraftReviewComment_Marshal(t *testing.T) {
 	testJSONMarshal(t, &DraftReviewComment{}, "{}")
 
 	u := &DraftReviewComment{
-		Path:      String("path"),
-		Position:  Int(1),
-		Body:      String("body"),
-		StartSide: String("ss"),
-		Side:      String("side"),
-		StartLine: Int(1),
-		Line:      Int(1),
+		Path:      Ptr("path"),
+		Position:  Ptr(1),
+		Body:      Ptr("body"),
+		StartSide: Ptr("ss"),
+		Side:      Ptr("side"),
+		StartLine: Ptr(1),
+		Line:      Ptr(1),
 	}
 
 	want := `{
@@ -680,19 +680,19 @@ func TestPullRequestReviewRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestReviewRequest{}, "{}")
 
 	u := &PullRequestReviewRequest{
-		NodeID:   String("nodeid"),
-		CommitID: String("cid"),
-		Body:     String("body"),
-		Event:    String("event"),
+		NodeID:   Ptr("nodeid"),
+		CommitID: Ptr("cid"),
+		Body:     Ptr("body"),
+		Event:    Ptr("event"),
 		Comments: []*DraftReviewComment{
 			{
-				Path:      String("path"),
-				Position:  Int(1),
-				Body:      String("body"),
-				StartSide: String("ss"),
-				Side:      String("side"),
-				StartLine: Int(1),
-				Line:      Int(1),
+				Path:      Ptr("path"),
+				Position:  Ptr(1),
+				Body:      Ptr("body"),
+				StartSide: Ptr("ss"),
+				Side:      Ptr("side"),
+				StartLine: Ptr(1),
+				Line:      Ptr(1),
 			},
 		},
 	}
@@ -723,35 +723,35 @@ func TestPullRequestReview_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestReview{}, "{}")
 
 	u := &PullRequestReview{
-		ID:     Int64(1),
-		NodeID: String("nid"),
+		ID:     Ptr(int64(1)),
+		NodeID: Ptr("nid"),
 		User: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		Body:              String("body"),
+		Body:              Ptr("body"),
 		SubmittedAt:       &Timestamp{referenceTime},
-		CommitID:          String("cid"),
-		HTMLURL:           String("hurl"),
-		PullRequestURL:    String("prurl"),
-		State:             String("state"),
-		AuthorAssociation: String("aa"),
+		CommitID:          Ptr("cid"),
+		HTMLURL:           Ptr("hurl"),
+		PullRequestURL:    Ptr("prurl"),
+		State:             Ptr("state"),
+		AuthorAssociation: Ptr("aa"),
 	}
 
 	want := `{

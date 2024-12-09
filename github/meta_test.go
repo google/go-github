@@ -21,7 +21,7 @@ func TestAPIMeta_Marshal(t *testing.T) {
 	a := &APIMeta{
 		Hooks:                            []string{"h"},
 		Git:                              []string{"g"},
-		VerifiablePasswordAuthentication: Bool(true),
+		VerifiablePasswordAuthentication: Ptr(true),
 		Pages:                            []string{"p"},
 		Importer:                         []string{"i"},
 		GithubEnterpriseImporter:         []string{"gei"},
@@ -113,7 +113,7 @@ func TestMetaService_Get(t *testing.T) {
 			},
 		},
 
-		VerifiablePasswordAuthentication: Bool(true),
+		VerifiablePasswordAuthentication: Ptr(true),
 	}
 	if !cmp.Equal(want, meta) {
 		t.Errorf("Get returned %+v, want %+v", meta, want)

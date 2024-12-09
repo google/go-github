@@ -32,7 +32,7 @@ func TestOrganizationsService_ListHookDeliveries(t *testing.T) {
 		t.Errorf("Organizations.ListHookDeliveries returned error: %v", err)
 	}
 
-	want := []*HookDelivery{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*HookDelivery{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if d := cmp.Diff(hooks, want); d != "" {
 		t.Errorf("Organizations.ListHooks want (-), got (+):\n%s", d)
 	}
@@ -76,7 +76,7 @@ func TestOrganizationsService_GetHookDelivery(t *testing.T) {
 		t.Errorf("Organizations.GetHookDelivery returned error: %v", err)
 	}
 
-	want := &HookDelivery{ID: Int64(1)}
+	want := &HookDelivery{ID: Ptr(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Organizations.GetHookDelivery returned %+v, want %+v", hook, want)
 	}
@@ -120,7 +120,7 @@ func TestOrganizationsService_RedeliverHookDelivery(t *testing.T) {
 		t.Errorf("Organizations.RedeliverHookDelivery returned error: %v", err)
 	}
 
-	want := &HookDelivery{ID: Int64(1)}
+	want := &HookDelivery{ID: Ptr(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Organizations.RedeliverHookDelivery returned %+v, want %+v", hook, want)
 	}

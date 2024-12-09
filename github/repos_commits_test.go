@@ -48,7 +48,7 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 		t.Errorf("Repositories.ListCommits returned error: %v", err)
 	}
 
-	want := []*RepositoryCommit{{SHA: String("s")}}
+	want := []*RepositoryCommit{{SHA: Ptr("s")}}
 	if !cmp.Equal(commits, want) {
 		t.Errorf("Repositories.ListCommits returned %+v, want %+v", commits, want)
 	}
@@ -106,37 +106,37 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 	}
 
 	want := &RepositoryCommit{
-		SHA: String("s"),
+		SHA: Ptr("s"),
 		Commit: &Commit{
-			Message: String("m"),
+			Message: Ptr("m"),
 		},
 		Author: &User{
-			Login: String("l"),
+			Login: Ptr("l"),
 		},
 		Committer: &User{
-			Login: String("l"),
+			Login: Ptr("l"),
 		},
 		Parents: []*Commit{
 			{
-				SHA: String("s"),
+				SHA: Ptr("s"),
 			},
 		},
 		Stats: &CommitStats{
-			Additions: Int(104),
-			Deletions: Int(4),
-			Total:     Int(108),
+			Additions: Ptr(104),
+			Deletions: Ptr(4),
+			Total:     Ptr(108),
 		},
 		Files: []*CommitFile{
 			{
-				Filename:    String("f"),
-				Additions:   Int(10),
-				Deletions:   Int(2),
-				Changes:     Int(12),
-				Status:      String("s"),
-				Patch:       String("p"),
-				BlobURL:     String("b"),
-				RawURL:      String("r"),
-				ContentsURL: String("c"),
+				Filename:    Ptr("f"),
+				Additions:   Ptr(10),
+				Deletions:   Ptr(2),
+				Changes:     Ptr(12),
+				Status:      Ptr("s"),
+				Patch:       Ptr("p"),
+				BlobURL:     Ptr("b"),
+				RawURL:      Ptr("r"),
+				ContentsURL: Ptr("c"),
 			},
 		},
 	}
@@ -443,50 +443,50 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 
 			want := &CommitsComparison{
 				BaseCommit: &RepositoryCommit{
-					SHA: String("s"),
+					SHA: Ptr("s"),
 					Commit: &Commit{
-						Author:    &CommitAuthor{Name: String("n")},
-						Committer: &CommitAuthor{Name: String("n")},
-						Message:   String("m"),
-						Tree:      &Tree{SHA: String("t")},
+						Author:    &CommitAuthor{Name: Ptr("n")},
+						Committer: &CommitAuthor{Name: Ptr("n")},
+						Message:   Ptr("m"),
+						Tree:      &Tree{SHA: Ptr("t")},
 					},
-					Author:    &User{Login: String("l")},
-					Committer: &User{Login: String("l")},
+					Author:    &User{Login: Ptr("l")},
+					Committer: &User{Login: Ptr("l")},
 					Parents: []*Commit{
 						{
-							SHA: String("s"),
+							SHA: Ptr("s"),
 						},
 					},
 				},
-				Status:       String("s"),
-				AheadBy:      Int(1),
-				BehindBy:     Int(2),
-				TotalCommits: Int(1),
+				Status:       Ptr("s"),
+				AheadBy:      Ptr(1),
+				BehindBy:     Ptr(2),
+				TotalCommits: Ptr(1),
 				Commits: []*RepositoryCommit{
 					{
-						SHA: String("s"),
+						SHA: Ptr("s"),
 						Commit: &Commit{
-							Author: &CommitAuthor{Name: String("n")},
+							Author: &CommitAuthor{Name: Ptr("n")},
 						},
-						Author:    &User{Login: String("l")},
-						Committer: &User{Login: String("l")},
+						Author:    &User{Login: Ptr("l")},
+						Committer: &User{Login: Ptr("l")},
 						Parents: []*Commit{
 							{
-								SHA: String("s"),
+								SHA: Ptr("s"),
 							},
 						},
 					},
 				},
 				Files: []*CommitFile{
 					{
-						Filename: String("f"),
+						Filename: Ptr("f"),
 					},
 				},
-				HTMLURL:      String(fmt.Sprintf("https://github.com/o/r/compare/%v...%v", escapedBase, escapedHead)),
-				PermalinkURL: String("https://github.com/o/r/compare/o:bbcd538c8e72b8c175046e27cc8f907076331401...o:0328041d1152db8ae77652d1618a02e57f745f17"),
-				DiffURL:      String(fmt.Sprintf("https://github.com/o/r/compare/%v...%v.diff", escapedBase, escapedHead)),
-				PatchURL:     String(fmt.Sprintf("https://github.com/o/r/compare/%v...%v.patch", escapedBase, escapedHead)),
-				URL:          String(fmt.Sprintf("https://api.github.com/repos/o/r/compare/%v...%v", escapedBase, escapedHead)),
+				HTMLURL:      Ptr(fmt.Sprintf("https://github.com/o/r/compare/%v...%v", escapedBase, escapedHead)),
+				PermalinkURL: Ptr("https://github.com/o/r/compare/o:bbcd538c8e72b8c175046e27cc8f907076331401...o:0328041d1152db8ae77652d1618a02e57f745f17"),
+				DiffURL:      Ptr(fmt.Sprintf("https://github.com/o/r/compare/%v...%v.diff", escapedBase, escapedHead)),
+				PatchURL:     Ptr(fmt.Sprintf("https://github.com/o/r/compare/%v...%v.patch", escapedBase, escapedHead)),
+				URL:          Ptr(fmt.Sprintf("https://api.github.com/repos/o/r/compare/%v...%v", escapedBase, escapedHead)),
 			}
 
 			if !cmp.Equal(got, want) {
@@ -652,12 +652,12 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 
 	want := []*BranchCommit{
 		{
-			Name: String("b"),
+			Name: Ptr("b"),
 			Commit: &Commit{
-				SHA: String("2e90302801c870f17b6152327d9b9a03c8eca0e2"),
-				URL: String("https://api.github.com/repos/google/go-github/commits/2e90302801c870f17b6152327d9b9a03c8eca0e2"),
+				SHA: Ptr("2e90302801c870f17b6152327d9b9a03c8eca0e2"),
+				URL: Ptr("https://api.github.com/repos/google/go-github/commits/2e90302801c870f17b6152327d9b9a03c8eca0e2"),
 			},
-			Protected: Bool(true),
+			Protected: Ptr(true),
 		},
 	}
 	if !cmp.Equal(branches, want) {
@@ -684,53 +684,53 @@ func TestBranchCommit_Marshal(t *testing.T) {
 	testJSONMarshal(t, &BranchCommit{}, "{}")
 
 	r := &BranchCommit{
-		Name: String("n"),
+		Name: Ptr("n"),
 		Commit: &Commit{
-			SHA: String("s"),
+			SHA: Ptr("s"),
 			Author: &CommitAuthor{
 				Date:  &Timestamp{referenceTime},
-				Name:  String("n"),
-				Email: String("e"),
-				Login: String("u"),
+				Name:  Ptr("n"),
+				Email: Ptr("e"),
+				Login: Ptr("u"),
 			},
 			Committer: &CommitAuthor{
 				Date:  &Timestamp{referenceTime},
-				Name:  String("n"),
-				Email: String("e"),
-				Login: String("u"),
+				Name:  Ptr("n"),
+				Email: Ptr("e"),
+				Login: Ptr("u"),
 			},
-			Message: String("m"),
+			Message: Ptr("m"),
 			Tree: &Tree{
-				SHA: String("s"),
+				SHA: Ptr("s"),
 				Entries: []*TreeEntry{{
-					SHA:     String("s"),
-					Path:    String("p"),
-					Mode:    String("m"),
-					Type:    String("t"),
-					Size:    Int(1),
-					Content: String("c"),
-					URL:     String("u"),
+					SHA:     Ptr("s"),
+					Path:    Ptr("p"),
+					Mode:    Ptr("m"),
+					Type:    Ptr("t"),
+					Size:    Ptr(1),
+					Content: Ptr("c"),
+					URL:     Ptr("u"),
 				}},
-				Truncated: Bool(false),
+				Truncated: Ptr(false),
 			},
 			Parents: nil,
 			Stats: &CommitStats{
-				Additions: Int(1),
-				Deletions: Int(1),
-				Total:     Int(1),
+				Additions: Ptr(1),
+				Deletions: Ptr(1),
+				Total:     Ptr(1),
 			},
-			HTMLURL: String("h"),
-			URL:     String("u"),
+			HTMLURL: Ptr("h"),
+			URL:     Ptr("u"),
 			Verification: &SignatureVerification{
-				Verified:  Bool(false),
-				Reason:    String("r"),
-				Signature: String("s"),
-				Payload:   String("p"),
+				Verified:  Ptr(false),
+				Reason:    Ptr("r"),
+				Signature: Ptr("s"),
+				Payload:   Ptr("p"),
 			},
-			NodeID:       String("n"),
-			CommentCount: Int(1),
+			NodeID:       Ptr("n"),
+			CommentCount: Ptr(1),
 		},
-		Protected: Bool(false),
+		Protected: Ptr(false),
 	}
 
 	want := `{
@@ -792,27 +792,27 @@ func TestCommitsComparison_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CommitsComparison{}, "{}")
 
 	r := &CommitsComparison{
-		BaseCommit:      &RepositoryCommit{NodeID: String("nid")},
-		MergeBaseCommit: &RepositoryCommit{NodeID: String("nid")},
-		Status:          String("status"),
-		AheadBy:         Int(1),
-		BehindBy:        Int(1),
-		TotalCommits:    Int(1),
+		BaseCommit:      &RepositoryCommit{NodeID: Ptr("nid")},
+		MergeBaseCommit: &RepositoryCommit{NodeID: Ptr("nid")},
+		Status:          Ptr("status"),
+		AheadBy:         Ptr(1),
+		BehindBy:        Ptr(1),
+		TotalCommits:    Ptr(1),
 		Commits: []*RepositoryCommit{
 			{
-				NodeID: String("nid"),
+				NodeID: Ptr("nid"),
 			},
 		},
 		Files: []*CommitFile{
 			{
-				SHA: String("sha"),
+				SHA: Ptr("sha"),
 			},
 		},
-		HTMLURL:      String("hurl"),
-		PermalinkURL: String("purl"),
-		DiffURL:      String("durl"),
-		PatchURL:     String("purl"),
-		URL:          String("url"),
+		HTMLURL:      Ptr("hurl"),
+		PermalinkURL: Ptr("purl"),
+		DiffURL:      Ptr("durl"),
+		PatchURL:     Ptr("purl"),
+		URL:          Ptr("url"),
 	}
 
 	want := `{
@@ -851,17 +851,17 @@ func TestCommitFile_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CommitFile{}, "{}")
 
 	r := &CommitFile{
-		SHA:              String("sha"),
-		Filename:         String("fn"),
-		Additions:        Int(1),
-		Deletions:        Int(1),
-		Changes:          Int(1),
-		Status:           String("status"),
-		Patch:            String("patch"),
-		BlobURL:          String("burl"),
-		RawURL:           String("rurl"),
-		ContentsURL:      String("curl"),
-		PreviousFilename: String("pf"),
+		SHA:              Ptr("sha"),
+		Filename:         Ptr("fn"),
+		Additions:        Ptr(1),
+		Deletions:        Ptr(1),
+		Changes:          Ptr(1),
+		Status:           Ptr("status"),
+		Patch:            Ptr("patch"),
+		BlobURL:          Ptr("burl"),
+		RawURL:           Ptr("rurl"),
+		ContentsURL:      Ptr("curl"),
+		PreviousFilename: Ptr("pf"),
 	}
 
 	want := `{
@@ -886,9 +886,9 @@ func TestCommitStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CommitStats{}, "{}")
 
 	r := &CommitStats{
-		Additions: Int(1),
-		Deletions: Int(1),
-		Total:     Int(1),
+		Additions: Ptr(1),
+		Deletions: Ptr(1),
+		Total:     Ptr(1),
 	}
 
 	want := `{
@@ -905,41 +905,41 @@ func TestRepositoryCommit_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepositoryCommit{}, "{}")
 
 	r := &RepositoryCommit{
-		NodeID: String("nid"),
-		SHA:    String("sha"),
+		NodeID: Ptr("nid"),
+		SHA:    Ptr("sha"),
 		Commit: &Commit{
-			Message: String("m"),
+			Message: Ptr("m"),
 		},
 		Author: &User{
-			Login: String("l"),
+			Login: Ptr("l"),
 		},
 		Committer: &User{
-			Login: String("l"),
+			Login: Ptr("l"),
 		},
 		Parents: []*Commit{
 			{
-				SHA: String("s"),
+				SHA: Ptr("s"),
 			},
 		},
-		HTMLURL:     String("hurl"),
-		URL:         String("url"),
-		CommentsURL: String("curl"),
+		HTMLURL:     Ptr("hurl"),
+		URL:         Ptr("url"),
+		CommentsURL: Ptr("curl"),
 		Stats: &CommitStats{
-			Additions: Int(104),
-			Deletions: Int(4),
-			Total:     Int(108),
+			Additions: Ptr(104),
+			Deletions: Ptr(4),
+			Total:     Ptr(108),
 		},
 		Files: []*CommitFile{
 			{
-				Filename:    String("f"),
-				Additions:   Int(10),
-				Deletions:   Int(2),
-				Changes:     Int(12),
-				Status:      String("s"),
-				Patch:       String("p"),
-				BlobURL:     String("b"),
-				RawURL:      String("r"),
-				ContentsURL: String("c"),
+				Filename:    Ptr("f"),
+				Additions:   Ptr(10),
+				Deletions:   Ptr(2),
+				Changes:     Ptr(12),
+				Status:      Ptr("s"),
+				Patch:       Ptr("p"),
+				BlobURL:     Ptr("b"),
+				RawURL:      Ptr("r"),
+				ContentsURL: Ptr("c"),
 			},
 		},
 	}

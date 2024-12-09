@@ -38,7 +38,7 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 		t.Errorf("Repositories.ListForks returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*Repository{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if !cmp.Equal(repos, want) {
 		t.Errorf("Repositories.ListForks returned %+v, want %+v", repos, want)
 	}
@@ -84,7 +84,7 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 		t.Errorf("Repositories.CreateFork returned error: %v", err)
 	}
 
-	want := &Repository{ID: Int64(1)}
+	want := &Repository{ID: Ptr(int64(1))}
 	if !cmp.Equal(repo, want) {
 		t.Errorf("Repositories.CreateFork returned %+v, want %+v", repo, want)
 	}
@@ -123,7 +123,7 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 		t.Errorf("Repositories.CreateFork returned error: %v (want AcceptedError)", err)
 	}
 
-	want := &Repository{ID: Int64(1)}
+	want := &Repository{ID: Ptr(int64(1))}
 	if !cmp.Equal(repo, want) {
 		t.Errorf("Repositories.CreateFork returned %+v, want %+v", repo, want)
 	}

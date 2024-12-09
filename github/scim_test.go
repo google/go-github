@@ -71,35 +71,35 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 	date := Timestamp{time.Date(2018, time.February, 13, 15, 5, 24, 0, time.UTC)}
 	want := SCIMProvisionedIdentities{
 		Schemas:      []string{"urn:ietf:params:scim:api:messages:2.0:ListResponse"},
-		TotalResults: Int(1),
-		ItemsPerPage: Int(1),
-		StartIndex:   Int(1),
+		TotalResults: Ptr(1),
+		ItemsPerPage: Ptr(1),
+		StartIndex:   Ptr(1),
 		Resources: []*SCIMUserAttributes{
 			{
-				ID: String("5fc0c238-1112-11e8-8e45-920c87bdbd75"),
+				ID: Ptr("5fc0c238-1112-11e8-8e45-920c87bdbd75"),
 				Meta: &SCIMMeta{
-					ResourceType: String("User"),
+					ResourceType: Ptr("User"),
 					Created:      &date,
 					LastModified: &date,
-					Location:     String("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"),
+					Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"),
 				},
 				UserName: "octocat@github.com",
 				Name: SCIMUserName{
 					GivenName:  "Mona",
 					FamilyName: "Octocat",
-					Formatted:  String("Mona Octocat"),
+					Formatted:  Ptr("Mona Octocat"),
 				},
-				DisplayName: String("Mona Octocat"),
+				DisplayName: Ptr("Mona Octocat"),
 				Emails: []*SCIMUserEmail{
 					{
 						Value:   "octocat@github.com",
-						Primary: Bool(true),
+						Primary: Ptr(true),
 					},
 				},
 				Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
-				ExternalID: String("00u1dhhb1fkIGP7RL1d8"),
+				ExternalID: Ptr("00u1dhhb1fkIGP7RL1d8"),
 				Groups:     nil,
-				Active:     Bool(true),
+				Active:     Ptr(true),
 			},
 		},
 	}
@@ -150,7 +150,7 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 	}
 
 	want := &SCIMUserAttributes{
-		ID:       String("1234567890"),
+		ID:       Ptr("1234567890"),
 		UserName: "userName",
 	}
 	if !cmp.Equal(user, want) {
@@ -219,33 +219,33 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 
 	date := Timestamp{time.Date(2017, time.March, 9, 16, 11, 13, 0, time.UTC)}
 	want := SCIMUserAttributes{
-		ID: String("edefdfedf-050c-11e7-8d32"),
+		ID: Ptr("edefdfedf-050c-11e7-8d32"),
 		Meta: &SCIMMeta{
-			ResourceType: String("User"),
+			ResourceType: Ptr("User"),
 			Created:      &date,
 			LastModified: &date,
-			Location:     String("https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"),
+			Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"),
 		},
 		UserName: "mona.octocat@okta.example.com",
 		Name: SCIMUserName{
 			GivenName:  "Mona",
 			FamilyName: "Octocat",
-			Formatted:  String("Mona Octocat"),
+			Formatted:  Ptr("Mona Octocat"),
 		},
-		DisplayName: String("Mona Octocat"),
+		DisplayName: Ptr("Mona Octocat"),
 		Emails: []*SCIMUserEmail{
 			{
 				Value:   "mona.octocat@okta.example.com",
-				Primary: Bool(true),
+				Primary: Ptr(true),
 			},
 			{
 				Value: "mona@octocat.github.com",
 			},
 		},
 		Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
-		ExternalID: String("a7d0f98382"),
+		ExternalID: Ptr("a7d0f98382"),
 		Groups:     nil,
-		Active:     Bool(true),
+		Active:     Ptr(true),
 	}
 
 	if !cmp.Equal(user, &want) {
@@ -367,20 +367,20 @@ func TestSCIMUserAttributes_Marshal(t *testing.T) {
 		Name: SCIMUserName{
 			GivenName:  "Name1",
 			FamilyName: "Fname",
-			Formatted:  String("formatted name"),
+			Formatted:  Ptr("formatted name"),
 		},
-		DisplayName: String("Name"),
+		DisplayName: Ptr("Name"),
 		Emails: []*SCIMUserEmail{
 			{
 				Value:   "value",
-				Primary: Bool(false),
-				Type:    String("type"),
+				Primary: Ptr(false),
+				Type:    Ptr("type"),
 			},
 		},
 		Schemas:    []string{"schema1"},
-		ExternalID: String("id"),
+		ExternalID: Ptr("id"),
 		Groups:     []string{"group1"},
-		Active:     Bool(true),
+		Active:     Ptr(true),
 	}
 
 	want := `{
@@ -411,7 +411,7 @@ func TestUpdateAttributeForSCIMUserOperations_Marshal(t *testing.T) {
 
 	u := &UpdateAttributeForSCIMUserOperations{
 		Op:   "TestOp",
-		Path: String("path"),
+		Path: Ptr("path"),
 	}
 
 	want := `{
@@ -430,7 +430,7 @@ func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 		Schemas: []string{"test", "schema"},
 		Operations: UpdateAttributeForSCIMUserOperations{
 			Op:   "TestOp",
-			Path: String("path"),
+			Path: Ptr("path"),
 		},
 	}
 
@@ -461,8 +461,8 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 		t,
 		url,
 		&ListSCIMProvisionedIdentitiesOptions{
-			StartIndex: Int(1),
-			Count:      Int(10),
+			StartIndex: Ptr(1),
+			Count:      Ptr(10),
 		},
 		fmt.Sprintf("%s?count=10&startIndex=1", url),
 	)
@@ -471,9 +471,9 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 		t,
 		url,
 		&ListSCIMProvisionedIdentitiesOptions{
-			StartIndex: Int(1),
-			Count:      Int(10),
-			Filter:     String("test"),
+			StartIndex: Ptr(1),
+			Count:      Ptr(10),
+			Filter:     Ptr("test"),
 		},
 		fmt.Sprintf("%s?count=10&filter=test&startIndex=1", url),
 	)
@@ -488,7 +488,7 @@ func TestSCIMUserName_Marshal(t *testing.T) {
 	u := &SCIMUserName{
 		GivenName:  "Name1",
 		FamilyName: "Fname",
-		Formatted:  String("formatted name"),
+		Formatted:  Ptr("formatted name"),
 	}
 
 	want := `{
@@ -504,8 +504,8 @@ func TestSCIMMeta_Marshal(t *testing.T) {
 	testJSONMarshal(t, &SCIMMeta{}, `{}`)
 
 	u := &SCIMMeta{
-		ResourceType: String("test"),
-		Location:     String("test"),
+		ResourceType: Ptr("test"),
+		Location:     Ptr("test"),
 	}
 
 	want := `{
@@ -522,29 +522,29 @@ func TestSCIMProvisionedIdentities_Marshal(t *testing.T) {
 
 	u := &SCIMProvisionedIdentities{
 		Schemas:      []string{"test", "schema"},
-		TotalResults: Int(1),
-		ItemsPerPage: Int(2),
-		StartIndex:   Int(1),
+		TotalResults: Ptr(1),
+		ItemsPerPage: Ptr(2),
+		StartIndex:   Ptr(1),
 		Resources: []*SCIMUserAttributes{
 			{
 				UserName: "SCIM",
 				Name: SCIMUserName{
 					GivenName:  "scim",
 					FamilyName: "test",
-					Formatted:  String("SCIM"),
+					Formatted:  Ptr("SCIM"),
 				},
-				DisplayName: String("Test SCIM"),
+				DisplayName: Ptr("Test SCIM"),
 				Emails: []*SCIMUserEmail{
 					{
 						Value:   "test",
-						Primary: Bool(true),
-						Type:    String("test"),
+						Primary: Ptr(true),
+						Type:    Ptr("test"),
 					},
 				},
 				Schemas:    []string{"schema1"},
-				ExternalID: String("id"),
+				ExternalID: Ptr("id"),
 				Groups:     []string{"group1"},
-				Active:     Bool(true),
+				Active:     Ptr(true),
 			},
 		},
 	}

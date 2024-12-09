@@ -35,10 +35,10 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 	}
 
 	want := &Jobs{
-		TotalCount: Int(4),
+		TotalCount: Ptr(4),
 		Jobs: []*WorkflowJob{
-			{ID: Int64(399444496), RunID: Int64(29679449), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Int64(399444497), RunID: Int64(29679449), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(jobs, want) {
@@ -78,10 +78,10 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 	}
 
 	want := &Jobs{
-		TotalCount: Int(4),
+		TotalCount: Ptr(4),
 		Jobs: []*WorkflowJob{
-			{ID: Int64(399444496), RunID: Int64(29679449), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Int64(399444497), RunID: Int64(29679449), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(jobs, want) {
@@ -106,21 +106,21 @@ func TestActionsService_ListWorkflowJobsAttempt(t *testing.T) {
 	}
 
 	want := &Jobs{
-		TotalCount: Int(4),
+		TotalCount: Ptr(4),
 		Jobs: []*WorkflowJob{
 			{
-				ID:          Int64(399444496),
-				RunID:       Int64(29679449),
+				ID:          Ptr(int64(399444496)),
+				RunID:       Ptr(int64(29679449)),
 				StartedAt:   &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 				CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
-				RunAttempt:  Int64(2),
+				RunAttempt:  Ptr(int64(2)),
 			},
 			{
-				ID:          Int64(399444497),
-				RunID:       Int64(29679449),
+				ID:          Ptr(int64(399444497)),
+				RunID:       Ptr(int64(29679449)),
 				StartedAt:   &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 				CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
-				RunAttempt:  Int64(2),
+				RunAttempt:  Ptr(int64(2)),
 			},
 		},
 	}
@@ -159,7 +159,7 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 	}
 
 	want := &WorkflowJob{
-		ID:          Int64(399444496),
+		ID:          Ptr(int64(399444496)),
 		StartedAt:   &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
@@ -273,10 +273,10 @@ func TestTaskStep_Marshal(t *testing.T) {
 	testJSONMarshal(t, &TaskStep{}, "{}")
 
 	u := &TaskStep{
-		Name:        String("n"),
-		Status:      String("s"),
-		Conclusion:  String("c"),
-		Number:      Int64(1),
+		Name:        Ptr("n"),
+		Status:      Ptr("s"),
+		Conclusion:  Ptr("c"),
+		Number:      Ptr(int64(1)),
 		StartedAt:   &Timestamp{referenceTime},
 		CompletedAt: &Timestamp{referenceTime},
 	}
@@ -298,32 +298,32 @@ func TestWorkflowJob_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WorkflowJob{}, "{}")
 
 	u := &WorkflowJob{
-		ID:          Int64(1),
-		RunID:       Int64(1),
-		RunURL:      String("r"),
-		NodeID:      String("n"),
-		HeadBranch:  String("b"),
-		HeadSHA:     String("h"),
-		URL:         String("u"),
-		HTMLURL:     String("h"),
-		Status:      String("s"),
-		Conclusion:  String("c"),
+		ID:          Ptr(int64(1)),
+		RunID:       Ptr(int64(1)),
+		RunURL:      Ptr("r"),
+		NodeID:      Ptr("n"),
+		HeadBranch:  Ptr("b"),
+		HeadSHA:     Ptr("h"),
+		URL:         Ptr("u"),
+		HTMLURL:     Ptr("h"),
+		Status:      Ptr("s"),
+		Conclusion:  Ptr("c"),
 		CreatedAt:   &Timestamp{referenceTime},
 		StartedAt:   &Timestamp{referenceTime},
 		CompletedAt: &Timestamp{referenceTime},
-		Name:        String("n"),
+		Name:        Ptr("n"),
 		Steps: []*TaskStep{
 			{
-				Name:        String("n"),
-				Status:      String("s"),
-				Conclusion:  String("c"),
-				Number:      Int64(1),
+				Name:        Ptr("n"),
+				Status:      Ptr("s"),
+				Conclusion:  Ptr("c"),
+				Number:      Ptr(int64(1)),
 				StartedAt:   &Timestamp{referenceTime},
 				CompletedAt: &Timestamp{referenceTime},
 			},
 		},
-		CheckRunURL:  String("c"),
-		WorkflowName: String("w"),
+		CheckRunURL:  Ptr("c"),
+		WorkflowName: Ptr("w"),
 	}
 
 	want := `{
@@ -361,36 +361,36 @@ func TestJobs_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Jobs{}, "{}")
 
 	u := &Jobs{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Jobs: []*WorkflowJob{
 			{
-				ID:          Int64(1),
-				RunID:       Int64(1),
-				RunURL:      String("r"),
-				NodeID:      String("n"),
-				HeadBranch:  String("b"),
-				HeadSHA:     String("h"),
-				URL:         String("u"),
-				HTMLURL:     String("h"),
-				Status:      String("s"),
-				Conclusion:  String("c"),
+				ID:          Ptr(int64(1)),
+				RunID:       Ptr(int64(1)),
+				RunURL:      Ptr("r"),
+				NodeID:      Ptr("n"),
+				HeadBranch:  Ptr("b"),
+				HeadSHA:     Ptr("h"),
+				URL:         Ptr("u"),
+				HTMLURL:     Ptr("h"),
+				Status:      Ptr("s"),
+				Conclusion:  Ptr("c"),
 				CreatedAt:   &Timestamp{referenceTime},
 				StartedAt:   &Timestamp{referenceTime},
 				CompletedAt: &Timestamp{referenceTime},
-				Name:        String("n"),
+				Name:        Ptr("n"),
 				Steps: []*TaskStep{
 					{
-						Name:        String("n"),
-						Status:      String("s"),
-						Conclusion:  String("c"),
-						Number:      Int64(1),
+						Name:        Ptr("n"),
+						Status:      Ptr("s"),
+						Conclusion:  Ptr("c"),
+						Number:      Ptr(int64(1)),
 						StartedAt:   &Timestamp{referenceTime},
 						CompletedAt: &Timestamp{referenceTime},
 					},
 				},
-				CheckRunURL:  String("c"),
-				RunAttempt:   Int64(2),
-				WorkflowName: String("w"),
+				CheckRunURL:  Ptr("c"),
+				RunAttempt:   Ptr(int64(2)),
+				WorkflowName: Ptr("w"),
 			},
 		},
 	}

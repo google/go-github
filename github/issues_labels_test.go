@@ -32,7 +32,7 @@ func TestIssuesService_ListLabels(t *testing.T) {
 		t.Errorf("Issues.ListLabels returned error: %v", err)
 	}
 
-	want := []*Label{{Name: String("a")}, {Name: String("b")}}
+	want := []*Label{{Name: Ptr("a")}, {Name: Ptr("b")}}
 	if !cmp.Equal(labels, want) {
 		t.Errorf("Issues.ListLabels returned %+v, want %+v", labels, want)
 	}
@@ -76,7 +76,7 @@ func TestIssuesService_GetLabel(t *testing.T) {
 		t.Errorf("Issues.GetLabel returned error: %v", err)
 	}
 
-	want := &Label{URL: String("u"), Name: String("n"), Color: String("c"), Description: String("d")}
+	want := &Label{URL: Ptr("u"), Name: Ptr("n"), Color: Ptr("c"), Description: Ptr("d")}
 	if !cmp.Equal(label, want) {
 		t.Errorf("Issues.GetLabel returned %+v, want %+v", label, want)
 	}
@@ -109,7 +109,7 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Label{Name: String("n")}
+	input := &Label{Name: Ptr("n")}
 
 	mux.HandleFunc("/repos/o/r/labels", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Label)
@@ -129,7 +129,7 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 		t.Errorf("Issues.CreateLabel returned error: %v", err)
 	}
 
-	want := &Label{URL: String("u")}
+	want := &Label{URL: Ptr("u")}
 	if !cmp.Equal(label, want) {
 		t.Errorf("Issues.CreateLabel returned %+v, want %+v", label, want)
 	}
@@ -162,7 +162,7 @@ func TestIssuesService_EditLabel(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Label{Name: String("z")}
+	input := &Label{Name: Ptr("z")}
 
 	mux.HandleFunc("/repos/o/r/labels/n", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Label)
@@ -182,7 +182,7 @@ func TestIssuesService_EditLabel(t *testing.T) {
 		t.Errorf("Issues.EditLabel returned error: %v", err)
 	}
 
-	want := &Label{URL: String("u")}
+	want := &Label{URL: Ptr("u")}
 	if !cmp.Equal(label, want) {
 		t.Errorf("Issues.EditLabel returned %+v, want %+v", label, want)
 	}
@@ -263,8 +263,8 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 	}
 
 	want := []*Label{
-		{Name: String("a"), ID: Int64(1)},
-		{Name: String("b"), ID: Int64(2)},
+		{Name: Ptr("a"), ID: Ptr(int64(1))},
+		{Name: Ptr("b"), ID: Ptr(int64(2))},
 	}
 	if !cmp.Equal(labels, want) {
 		t.Errorf("Issues.ListLabelsByIssue returned %+v, want %+v", labels, want)
@@ -318,7 +318,7 @@ func TestIssuesService_AddLabelsToIssue(t *testing.T) {
 		t.Errorf("Issues.AddLabelsToIssue returned error: %v", err)
 	}
 
-	want := []*Label{{URL: String("u")}}
+	want := []*Label{{URL: Ptr("u")}}
 	if !cmp.Equal(labels, want) {
 		t.Errorf("Issues.AddLabelsToIssue returned %+v, want %+v", labels, want)
 	}
@@ -405,7 +405,7 @@ func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
 		t.Errorf("Issues.ReplaceLabelsForIssue returned error: %v", err)
 	}
 
-	want := []*Label{{URL: String("u")}}
+	want := []*Label{{URL: Ptr("u")}}
 	if !cmp.Equal(labels, want) {
 		t.Errorf("Issues.ReplaceLabelsForIssue returned %+v, want %+v", labels, want)
 	}
@@ -485,7 +485,7 @@ func TestIssuesService_ListLabelsForMilestone(t *testing.T) {
 		t.Errorf("Issues.ListLabelsForMilestone returned error: %v", err)
 	}
 
-	want := []*Label{{Name: String("a")}, {Name: String("b")}}
+	want := []*Label{{Name: Ptr("a")}, {Name: Ptr("b")}}
 	if !cmp.Equal(labels, want) {
 		t.Errorf("Issues.ListLabelsForMilestone returned %+v, want %+v", labels, want)
 	}
@@ -519,13 +519,13 @@ func TestLabel_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Label{}, "{}")
 
 	u := &Label{
-		ID:          Int64(1),
-		URL:         String("url"),
-		Name:        String("name"),
-		Color:       String("color"),
-		Description: String("desc"),
-		Default:     Bool(false),
-		NodeID:      String("nid"),
+		ID:          Ptr(int64(1)),
+		URL:         Ptr("url"),
+		Name:        Ptr("name"),
+		Color:       Ptr("color"),
+		Description: Ptr("desc"),
+		Default:     Ptr(false),
+		NodeID:      Ptr("nid"),
 	}
 
 	want := `{

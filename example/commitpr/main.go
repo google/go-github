@@ -81,7 +81,7 @@ func getRef() (ref *github.Reference, err error) {
 	if baseRef, _, err = client.Git.GetRef(ctx, *sourceOwner, *sourceRepo, "refs/heads/"+*baseBranch); err != nil {
 		return nil, err
 	}
-	newRef := &github.Reference{Ref: github.String("refs/heads/" + *commitBranch), Object: &github.GitObject{SHA: baseRef.Object.SHA}}
+	newRef := &github.Reference{Ref: github.Ptr("refs/heads/" + *commitBranch), Object: &github.GitObject{SHA: baseRef.Object.SHA}}
 	ref, _, err = client.Git.CreateRef(ctx, *sourceOwner, *sourceRepo, newRef)
 	return ref, err
 }
@@ -98,7 +98,7 @@ func getTree(ref *github.Reference) (tree *github.Tree, err error) {
 		if err != nil {
 			return nil, err
 		}
-		entries = append(entries, &github.TreeEntry{Path: github.String(file), Type: github.String("blob"), Content: github.String(string(content)), Mode: github.String("100644")})
+		entries = append(entries, &github.TreeEntry{Path: github.Ptr(file), Type: github.Ptr("blob"), Content: github.Ptr(string(content)), Mode: github.Ptr("100644")})
 	}
 
 	tree, _, err = client.Git.CreateTree(ctx, *sourceOwner, *sourceRepo, *ref.Object.SHA, entries)
@@ -190,7 +190,7 @@ func createPR() (err error) {
 		HeadRepo:            repoBranch,
 		Base:                prBranch,
 		Body:                prDescription,
-		MaintainerCanModify: github.Bool(true),
+		MaintainerCanModify: github.Ptr(true),
 	}
 
 	pr, _, err := client.PullRequests.Create(ctx, *prRepoOwner, *prRepo, newPR)

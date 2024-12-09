@@ -52,16 +52,16 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 	want := []*ContributorStats{
 		{
 			Author: &Contributor{
-				ID:     Int64(1),
-				NodeID: String("nodeid-1"),
+				ID:     Ptr(int64(1)),
+				NodeID: Ptr("nodeid-1"),
 			},
-			Total: Int(135),
+			Total: Ptr(135),
 			Weeks: []*WeeklyStats{
 				{
 					Week:      &Timestamp{time.Date(2013, time.May, 05, 00, 00, 00, 0, time.UTC).Local()},
-					Additions: Int(6898),
-					Deletions: Int(77),
-					Commits:   Int(10),
+					Additions: Ptr(6898),
+					Deletions: Ptr(77),
+					Commits:   Ptr(10),
 				},
 			},
 		},
@@ -113,7 +113,7 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 	want := []*WeeklyCommitActivity{
 		{
 			Days:  []int{0, 3, 26, 20, 39, 1, 0},
-			Total: Int(89),
+			Total: Ptr(89),
 			Week:  &Timestamp{time.Date(2012, time.May, 06, 05, 00, 00, 0, time.UTC).Local()},
 		},
 	}
@@ -155,8 +155,8 @@ func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
 
 	want := []*WeeklyStats{{
 		Week:      &Timestamp{time.Date(2011, time.April, 17, 00, 00, 00, 0, time.UTC).Local()},
-		Additions: Int(1124),
-		Deletions: Int(-435),
+		Additions: Ptr(1124),
+		Deletions: Ptr(-435),
 	}}
 
 	if !cmp.Equal(code, want) {
@@ -264,9 +264,9 @@ func TestRepositoriesService_ListPunchCard(t *testing.T) {
 	}
 
 	want := []*PunchCard{
-		{Day: Int(0), Hour: Int(0), Commits: Int(5)},
-		{Day: Int(0), Hour: Int(1), Commits: Int(43)},
-		{Day: Int(0), Hour: Int(2), Commits: Int(21)},
+		{Day: Ptr(0), Hour: Ptr(0), Commits: Ptr(5)},
+		{Day: Ptr(0), Hour: Ptr(1), Commits: Ptr(43)},
+		{Day: Ptr(0), Hour: Ptr(2), Commits: Ptr(21)},
 	}
 
 	if !cmp.Equal(card, want) {
@@ -351,7 +351,7 @@ func TestWeeklyCommitActivity_Marshal(t *testing.T) {
 
 	u := &WeeklyCommitActivity{
 		Days:  []int{1},
-		Total: Int(1),
+		Total: Ptr(1),
 		Week:  &Timestamp{referenceTime},
 	}
 
@@ -372,9 +372,9 @@ func TestWeeklyStats_Marshal(t *testing.T) {
 
 	u := &WeeklyStats{
 		Week:      &Timestamp{referenceTime},
-		Additions: Int(1),
-		Deletions: Int(1),
-		Commits:   Int(1),
+		Additions: Ptr(1),
+		Deletions: Ptr(1),
+		Commits:   Ptr(1),
 	}
 
 	want := `{
@@ -392,14 +392,14 @@ func TestContributorStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ContributorStats{}, "{}")
 
 	u := &ContributorStats{
-		Author: &Contributor{ID: Int64(1)},
-		Total:  Int(1),
+		Author: &Contributor{ID: Ptr(int64(1))},
+		Total:  Ptr(1),
 		Weeks: []*WeeklyStats{
 			{
 				Week:      &Timestamp{referenceTime},
-				Additions: Int(1),
-				Deletions: Int(1),
-				Commits:   Int(1),
+				Additions: Ptr(1),
+				Deletions: Ptr(1),
+				Commits:   Ptr(1),
 			},
 		},
 	}

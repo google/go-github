@@ -40,7 +40,7 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 		t.Errorf("Repositories.CreateHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Int64(1)}
+	want := &Hook{ID: Ptr(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.CreateHook returned %+v, want %+v", hook, want)
 	}
@@ -78,7 +78,7 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 		t.Errorf("Repositories.ListHooks returned error: %v", err)
 	}
 
-	want := []*Hook{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*Hook{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if !cmp.Equal(hooks, want) {
 		t.Errorf("Repositories.ListHooks returned %+v, want %+v", hooks, want)
 	}
@@ -132,7 +132,7 @@ func TestRepositoriesService_GetHook(t *testing.T) {
 		t.Errorf("Repositories.GetHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Int64(1)}
+	want := &Hook{ID: Ptr(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.GetHook returned %+v, want %+v", hook, want)
 	}
@@ -185,7 +185,7 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 		t.Errorf("Repositories.EditHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Int64(1)}
+	want := &Hook{ID: Ptr(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.EditHook returned %+v, want %+v", hook, want)
 	}
@@ -312,64 +312,64 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WebHookPayload{}, "{}")
 
 	v := &WebHookPayload{
-		Action: String("action"),
-		After:  String("after"),
-		Before: String("before"),
+		Action: Ptr("action"),
+		After:  Ptr("after"),
+		Before: Ptr("before"),
 		Commits: []*WebHookCommit{
 			{
 				Added: []string{"1", "2", "3"},
 				Author: &WebHookAuthor{
-					Email: String("abc@gmail.com"),
-					Name:  String("abc"),
-					Login: String("abc_12"),
+					Email: Ptr("abc@gmail.com"),
+					Name:  Ptr("abc"),
+					Login: Ptr("abc_12"),
 				},
 				Committer: &WebHookAuthor{
-					Email: String("abc@gmail.com"),
-					Name:  String("abc"),
-					Login: String("abc_12"),
+					Email: Ptr("abc@gmail.com"),
+					Name:  Ptr("abc"),
+					Login: Ptr("abc_12"),
 				},
-				ID:       String("1"),
-				Message:  String("WebHookCommit"),
+				ID:       Ptr("1"),
+				Message:  Ptr("WebHookCommit"),
 				Modified: []string{"abc", "efg", "erd"},
 				Removed:  []string{"cmd", "rti", "duv"},
 			},
 		},
-		Compare: String("compare"),
-		Created: Bool(true),
-		Forced:  Bool(false),
+		Compare: Ptr("compare"),
+		Created: Ptr(true),
+		Forced:  Ptr(false),
 		HeadCommit: &WebHookCommit{
 			Added: []string{"1", "2", "3"},
 			Author: &WebHookAuthor{
-				Email: String("abc@gmail.com"),
-				Name:  String("abc"),
-				Login: String("abc_12"),
+				Email: Ptr("abc@gmail.com"),
+				Name:  Ptr("abc"),
+				Login: Ptr("abc_12"),
 			},
 			Committer: &WebHookAuthor{
-				Email: String("abc@gmail.com"),
-				Name:  String("abc"),
-				Login: String("abc_12"),
+				Email: Ptr("abc@gmail.com"),
+				Name:  Ptr("abc"),
+				Login: Ptr("abc_12"),
 			},
-			ID:       String("1"),
-			Message:  String("WebHookCommit"),
+			ID:       Ptr("1"),
+			Message:  Ptr("WebHookCommit"),
 			Modified: []string{"abc", "efg", "erd"},
 			Removed:  []string{"cmd", "rti", "duv"},
 		},
 		Installation: &Installation{
-			ID: Int64(12),
+			ID: Ptr(int64(12)),
 		},
 		Organization: &Organization{
-			ID: Int64(22),
+			ID: Ptr(int64(22)),
 		},
 		Pusher: &CommitAuthor{
-			Login: String("rd@yahoo.com"),
+			Login: Ptr("rd@yahoo.com"),
 		},
 		Repo: &PushEventRepository{
-			ID:     Int64(321),
-			NodeID: String("node_321"),
+			ID:     Ptr(int64(321)),
+			NodeID: Ptr("node_321"),
 		},
 		Sender: &User{
-			Login: String("st@gmail.com"),
-			ID:    Int64(202),
+			Login: Ptr("st@gmail.com"),
+			ID:    Ptr(int64(202)),
 		},
 	}
 
@@ -443,9 +443,9 @@ func TestBranchWebHookAuthor_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WebHookAuthor{}, "{}")
 
 	v := &WebHookAuthor{
-		Email: String("abc@gmail.com"),
-		Name:  String("abc"),
-		Login: String("abc_12"),
+		Email: Ptr("abc@gmail.com"),
+		Name:  Ptr("abc"),
+		Login: Ptr("abc_12"),
 	}
 
 	want := `{
@@ -464,17 +464,17 @@ func TestBranchWebHookCommit_Marshal(t *testing.T) {
 	v := &WebHookCommit{
 		Added: []string{"1", "2", "3"},
 		Author: &WebHookAuthor{
-			Email: String("abc@gmail.com"),
-			Name:  String("abc"),
-			Login: String("abc_12"),
+			Email: Ptr("abc@gmail.com"),
+			Name:  Ptr("abc"),
+			Login: Ptr("abc_12"),
 		},
 		Committer: &WebHookAuthor{
-			Email: String("abc@gmail.com"),
-			Name:  String("abc"),
-			Login: String("abc_12"),
+			Email: Ptr("abc@gmail.com"),
+			Name:  Ptr("abc"),
+			Login: Ptr("abc_12"),
 		},
-		ID:       String("1"),
-		Message:  String("WebHookCommit"),
+		ID:       Ptr("1"),
+		Message:  Ptr("WebHookCommit"),
 		Modified: []string{"abc", "efg", "erd"},
 		Removed:  []string{"cmd", "rti", "duv"},
 	}
@@ -507,8 +507,8 @@ func TestBranchCreateHookRequest_Marshal(t *testing.T) {
 	v := &createHookRequest{
 		Name:   "abc",
 		Events: []string{"1", "2", "3"},
-		Active: Bool(true),
-		Config: &HookConfig{ContentType: String("json")},
+		Active: Ptr(true),
+		Config: &HookConfig{ContentType: Ptr("json")},
 	}
 
 	want := `{
@@ -530,18 +530,18 @@ func TestBranchHook_Marshal(t *testing.T) {
 	v := &Hook{
 		CreatedAt: &Timestamp{referenceTime},
 		UpdatedAt: &Timestamp{referenceTime},
-		URL:       String("url"),
-		ID:        Int64(1),
-		Type:      String("type"),
-		Name:      String("name"),
-		TestURL:   String("testurl"),
-		PingURL:   String("pingurl"),
+		URL:       Ptr("url"),
+		ID:        Ptr(int64(1)),
+		Type:      Ptr("type"),
+		Name:      Ptr("name"),
+		TestURL:   Ptr("testurl"),
+		PingURL:   Ptr("pingurl"),
 		LastResponse: map[string]interface{}{
 			"item": "item",
 		},
-		Config: &HookConfig{ContentType: String("json")},
+		Config: &HookConfig{ContentType: Ptr("json")},
 		Events: []string{"1", "2", "3"},
-		Active: Bool(true),
+		Active: Ptr(true),
 	}
 
 	want := `{

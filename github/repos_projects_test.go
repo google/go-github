@@ -33,7 +33,7 @@ func TestRepositoriesService_ListProjects(t *testing.T) {
 		t.Errorf("Repositories.ListProjects returned error: %v", err)
 	}
 
-	want := []*Project{{ID: Int64(1)}}
+	want := []*Project{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(projects, want) {
 		t.Errorf("Repositories.ListProjects returned %+v, want %+v", projects, want)
 	}
@@ -57,7 +57,7 @@ func TestRepositoriesService_CreateProject(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ProjectOptions{Name: String("Project Name"), Body: String("Project body.")}
+	input := &ProjectOptions{Name: Ptr("Project Name"), Body: Ptr("Project body.")}
 
 	mux.HandleFunc("/repos/o/r/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -78,7 +78,7 @@ func TestRepositoriesService_CreateProject(t *testing.T) {
 		t.Errorf("Repositories.CreateProject returned error: %v", err)
 	}
 
-	want := &Project{ID: Int64(1)}
+	want := &Project{ID: Ptr(int64(1))}
 	if !cmp.Equal(project, want) {
 		t.Errorf("Repositories.CreateProject returned %+v, want %+v", project, want)
 	}

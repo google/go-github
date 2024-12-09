@@ -36,7 +36,7 @@ func TestActionsService_ListCaches(t *testing.T) {
 		t.Errorf("Actions.ListCaches returned error: %v", err)
 	}
 
-	want := &ActionsCacheList{TotalCount: 1, ActionsCaches: []*ActionsCache{{ID: Int64(1)}}}
+	want := &ActionsCacheList{TotalCount: 1, ActionsCaches: []*ActionsCache{{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(cacheList, want) {
 		t.Errorf("Actions.ListCaches returned %+v, want %+v", cacheList, want)
 	}
@@ -106,19 +106,19 @@ func TestActionsService_DeleteCachesByKey(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", String("main"))
+	_, err := client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", Ptr("main"))
 	if err != nil {
 		t.Errorf("Actions.DeleteCachesByKey return error: %v", err)
 	}
 
 	const methodName = "DeleteCachesByKey"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.DeleteCachesByKey(ctx, "\n", "\n", "\n", String("\n"))
+		_, err = client.Actions.DeleteCachesByKey(ctx, "\n", "\n", "\n", Ptr("\n"))
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", String("main"))
+		return client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", Ptr("main"))
 	})
 }
 
@@ -127,7 +127,7 @@ func TestActionsService_DeleteCachesByKey_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
-	_, err := client.Actions.DeleteCachesByKey(ctx, "%", "r", "1", String("main"))
+	_, err := client.Actions.DeleteCachesByKey(ctx, "%", "r", "1", Ptr("main"))
 	testURLParseError(t, err)
 }
 
@@ -136,7 +136,7 @@ func TestActionsService_DeleteCachesByKey_invalidRepo(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
-	_, err := client.Actions.DeleteCachesByKey(ctx, "o", "%", "1", String("main"))
+	_, err := client.Actions.DeleteCachesByKey(ctx, "o", "%", "1", Ptr("main"))
 	testURLParseError(t, err)
 }
 func TestActionsService_DeleteCachesByKey_notFound(t *testing.T) {
@@ -149,7 +149,7 @@ func TestActionsService_DeleteCachesByKey_notFound(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	resp, err := client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", String("main"))
+	resp, err := client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", Ptr("main"))
 	if err == nil {
 		t.Errorf("Expected HTTP 404 response")
 	}
@@ -521,13 +521,13 @@ func TestActionsCache_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ActionsCache{}, "{}")
 
 	u := &ActionsCache{
-		ID:             Int64(1),
-		Ref:            String("refAction"),
-		Key:            String("key1"),
-		Version:        String("alpha"),
+		ID:             Ptr(int64(1)),
+		Ref:            Ptr("refAction"),
+		Key:            Ptr("key1"),
+		Version:        Ptr("alpha"),
 		LastAccessedAt: &Timestamp{referenceTime},
 		CreatedAt:      &Timestamp{referenceTime},
-		SizeInBytes:    Int64(1),
+		SizeInBytes:    Ptr(int64(1)),
 	}
 
 	want := `{
@@ -551,19 +551,19 @@ func TestActionsCacheList_Marshal(t *testing.T) {
 		TotalCount: 2,
 		ActionsCaches: []*ActionsCache{
 			{
-				ID:             Int64(1),
-				Key:            String("key1"),
-				Version:        String("alpha"),
+				ID:             Ptr(int64(1)),
+				Key:            Ptr("key1"),
+				Version:        Ptr("alpha"),
 				LastAccessedAt: &Timestamp{referenceTime},
 				CreatedAt:      &Timestamp{referenceTime},
-				SizeInBytes:    Int64(1),
+				SizeInBytes:    Ptr(int64(1)),
 			},
 			{
-				ID:             Int64(2),
-				Ref:            String("refAction"),
+				ID:             Ptr(int64(2)),
+				Ref:            Ptr("refAction"),
 				LastAccessedAt: &Timestamp{referenceTime},
 				CreatedAt:      &Timestamp{referenceTime},
-				SizeInBytes:    Int64(1),
+				SizeInBytes:    Ptr(int64(1)),
 			},
 		},
 	}
