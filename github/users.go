@@ -70,6 +70,14 @@ type User struct {
 	// repository. These are only populated when calling Repositories.ListCollaborators.
 	Permissions map[string]bool `json:"permissions,omitempty"`
 	RoleName    *string         `json:"role_name,omitempty"`
+
+	// Assignment identifies how a user was assigned to an organization role. Its
+	// possible values are: "direct", "indirect", "mixed". This is only populated when
+	// calling the ListUsersAssignedToOrgRole method.
+	Assignment *string `json:"assignment,omitempty"`
+	// InheritedFrom identifies the team that a user inherited their organization role
+	// from. This is only populated when calling the ListUsersAssignedToOrgRole method.
+	InheritedFrom *Team `json:"inherited_from,omitempty"`
 }
 
 func (u User) String() string {

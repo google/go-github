@@ -24358,6 +24358,14 @@ func (t *TaskStep) GetStatus() string {
 	return *t.Status
 }
 
+// GetAssignment returns the Assignment field if it's non-nil, zero value otherwise.
+func (t *Team) GetAssignment() string {
+	if t == nil || t.Assignment == nil {
+		return ""
+	}
+	return *t.Assignment
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (t *Team) GetDescription() string {
 	if t == nil || t.Description == nil {
@@ -25654,6 +25662,14 @@ func (u *UpdateRunnerGroupRequest) GetVisibility() string {
 	return *u.Visibility
 }
 
+// GetAssignment returns the Assignment field if it's non-nil, zero value otherwise.
+func (u *User) GetAssignment() string {
+	if u == nil || u.Assignment == nil {
+		return ""
+	}
+	return *u.Assignment
+}
+
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (u *User) GetAvatarURL() string {
 	if u == nil || u.AvatarURL == nil {
@@ -25796,6 +25812,14 @@ func (u *User) GetID() int64 {
 		return 0
 	}
 	return *u.ID
+}
+
+// GetInheritedFrom returns the InheritedFrom field.
+func (u *User) GetInheritedFrom() *Team {
+	if u == nil {
+		return nil
+	}
+	return u.InheritedFrom
 }
 
 // GetLdapDn returns the LdapDn field if it's non-nil, zero value otherwise.

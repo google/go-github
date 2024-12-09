@@ -30,10 +30,6 @@ type Team struct {
 	// Permission specifies the default permission for repositories owned by the team.
 	Permission *string `json:"permission,omitempty"`
 
-	// Permissions identifies the permissions that a team has on a given
-	// repository. This is only populated when calling Repositories.ListTeams.
-	Permissions map[string]bool `json:"permissions,omitempty"`
-
 	// Privacy identifies the level of privacy this team should have.
 	// Possible values are:
 	//     secret - only visible to organization owners and members of this team
@@ -52,6 +48,15 @@ type Team struct {
 	// LDAPDN is only available in GitHub Enterprise and when the team
 	// membership is synchronized with LDAP.
 	LDAPDN *string `json:"ldap_dn,omitempty"`
+
+	// Permissions identifies the permissions that a team has on a given
+	// repository. This is only populated when calling Repositories.ListTeams.
+	Permissions map[string]bool `json:"permissions,omitempty"`
+
+	// Assignment identifies how a team was assigned to an organization role. Its
+	// possible values are: "direct", "indirect", "mixed". This is only populated when
+	// calling the ListTeamsAssignedToOrgRole method.
+	Assignment *string `json:"assignment,omitempty"`
 }
 
 func (t Team) String() string {
