@@ -5182,12 +5182,116 @@ func (c *CustomProperty) GetRequired() bool {
 	return *c.Required
 }
 
+// GetSourceType returns the SourceType field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetSourceType() string {
+	if c == nil || c.SourceType == nil {
+		return ""
+	}
+	return *c.SourceType
+}
+
 // GetValuesEditableBy returns the ValuesEditableBy field if it's non-nil, zero value otherwise.
 func (c *CustomProperty) GetValuesEditableBy() string {
 	if c == nil || c.ValuesEditableBy == nil {
 		return ""
 	}
 	return *c.ValuesEditableBy
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (c *CustomPropertyEvent) GetAction() string {
+	if c == nil || c.Action == nil {
+		return ""
+	}
+	return *c.Action
+}
+
+// GetDefinition returns the Definition field.
+func (c *CustomPropertyEvent) GetDefinition() *CustomProperty {
+	if c == nil {
+		return nil
+	}
+	return c.Definition
+}
+
+// GetEnterprise returns the Enterprise field.
+func (c *CustomPropertyEvent) GetEnterprise() *Enterprise {
+	if c == nil {
+		return nil
+	}
+	return c.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (c *CustomPropertyEvent) GetInstallation() *Installation {
+	if c == nil {
+		return nil
+	}
+	return c.Installation
+}
+
+// GetOrg returns the Org field.
+func (c *CustomPropertyEvent) GetOrg() *Organization {
+	if c == nil {
+		return nil
+	}
+	return c.Org
+}
+
+// GetSender returns the Sender field.
+func (c *CustomPropertyEvent) GetSender() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Sender
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (c *CustomPropertyValuesEvent) GetAction() string {
+	if c == nil || c.Action == nil {
+		return ""
+	}
+	return *c.Action
+}
+
+// GetEnterprise returns the Enterprise field.
+func (c *CustomPropertyValuesEvent) GetEnterprise() *Enterprise {
+	if c == nil {
+		return nil
+	}
+	return c.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (c *CustomPropertyValuesEvent) GetInstallation() *Installation {
+	if c == nil {
+		return nil
+	}
+	return c.Installation
+}
+
+// GetOrg returns the Org field.
+func (c *CustomPropertyValuesEvent) GetOrg() *Organization {
+	if c == nil {
+		return nil
+	}
+	return c.Org
+}
+
+// GetRepo returns the Repo field.
+func (c *CustomPropertyValuesEvent) GetRepo() *Repository {
+	if c == nil {
+		return nil
+	}
+	return c.Repo
+}
+
+// GetSender returns the Sender field.
+func (c *CustomPropertyValuesEvent) GetSender() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Sender
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.

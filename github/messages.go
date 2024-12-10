@@ -54,6 +54,8 @@ var (
 		"commit_comment":                  &CommitCommentEvent{},
 		"content_reference":               &ContentReferenceEvent{},
 		"create":                          &CreateEvent{},
+		"custom_property":                 &CustomPropertyEvent{},
+		"custom_property_values":          &CustomPropertyValuesEvent{},
 		"delete":                          &DeleteEvent{},
 		"dependabot_alert":                &DependabotAlertEvent{},
 		"deploy_key":                      &DeployKeyEvent{},

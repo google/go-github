@@ -132,6 +132,43 @@ type CreateEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// CustomPropertyEvent represents a created, deleted or updated custom property.
+// The Webhook event name is "custom_property".
+//
+// Note: this is related to custom property configuration at the enterprise or organization level.
+// See CustomPropertyValuesEvent for activity related to custom property values for a repository.
+//
+// GitHub API docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#custom_property
+type CustomPropertyEvent struct {
+	// Action possible values are: "created", "deleted", "updated".
+	Action     *string         `json:"action,omitempty"`
+	Definition *CustomProperty `json:"definition,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
+// CustomPropertyValuesEvent represents an update to a custom property.
+// The Webhook event name is "custom_property_values".
+//
+// GitHub API docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#custom_property_values
+type CustomPropertyValuesEvent struct {
+	// Action possible values are: "updated".
+	Action            *string                `json:"action,omitempty"`
+	NewPropertyValues []*CustomPropertyValue `json:"new_property_values,omitempty"`
+	OldPropertyValues []*CustomPropertyValue `json:"old_property_values,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
 // DeleteEvent represents a deleted branch or tag.
 // The Webhook event name is "delete".
 //
