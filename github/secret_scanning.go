@@ -91,8 +91,6 @@ type SecretScanningAlertUpdateOptions struct {
 	Resolution *string `json:"resolution,omitempty"`
 
 	// An optional comment when closing an alert.
-	// Cannot be updated or deleted.
-	// Must be null when changing state to open.
 	ResolutionComment *string `json:"resolution_comment,omitempty"`
 }
 
