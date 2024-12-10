@@ -359,7 +359,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		v := new(SecretScanningAlertUpdateOptions)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-		want := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: String("used_in_tests")}
+		want := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: String("used_in_tests"), ResolutionComment: String("resolution comment")}
 
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -373,6 +373,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
 			"state": "resolved",
 			"resolution": "used_in_tests",
+			"resolution_comment": "resolution comment",
 			"resolved_at": "1996-06-20T00:00:00Z",
 			"resolved_by": null,
 			"secret_type": "mailchimp_api_key",
@@ -381,7 +382,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: String("used_in_tests")}
+	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: String("used_in_tests"), ResolutionComment: String("resolution comment")}
 
 	alert, _, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
 	if err != nil {
@@ -390,17 +391,18 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := &SecretScanningAlert{
-		Number:       Int(1),
-		CreatedAt:    &date,
-		URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
-		HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
-		LocationsURL: String("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
-		State:        String("resolved"),
-		Resolution:   String("used_in_tests"),
-		ResolvedAt:   &date,
-		ResolvedBy:   nil,
-		SecretType:   String("mailchimp_api_key"),
-		Secret:       String("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+		Number:            Int(1),
+		CreatedAt:         &date,
+		URL:               String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
+		HTMLURL:           String("https://github.com/o/r/security/secret-scanning/1"),
+		LocationsURL:      String("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
+		State:             String("resolved"),
+		Resolution:        String("used_in_tests"),
+		ResolutionComment: String("resolution comment"),
+		ResolvedAt:        &date,
+		ResolvedBy:        nil,
+		SecretType:        String("mailchimp_api_key"),
+		Secret:            String("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
 	}
 
 	if !cmp.Equal(alert, want) {
