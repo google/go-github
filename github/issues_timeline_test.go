@@ -170,8 +170,7 @@ func TestTimeline_Marshal(t *testing.T) {
 			From: String("from"),
 			To:   String("to"),
 		},
-		ProjectCard: &ProjectCard{ID: Int64(1)},
-		State:       String("state"),
+		State: String("state"),
 	}
 
 	want := `{

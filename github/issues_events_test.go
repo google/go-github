@@ -245,8 +245,7 @@ func TestIssueEvent_Marshal(t *testing.T) {
 			From: String("from"),
 			To:   String("to"),
 		},
-		LockReason:  String("lr"),
-		ProjectCard: &ProjectCard{ID: Int64(1)},
+		LockReason: String("lr"),
 		DismissedReview: &DismissedReview{
 			State:             String("state"),
 			ReviewID:          Int64(1),

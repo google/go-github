@@ -1023,7 +1023,7 @@ func TestTeamsService_ListProjectsByID(t *testing.T) {
 		t.Errorf("Teams.ListTeamProjectsByID returned error: %v", err)
 	}
 
-	want := []*Project{{ID: Int64(1)}}
+	want := []*ProjectV2{{ID: Int64(1)}}
 	if !cmp.Equal(projects, want) {
 		t.Errorf("Teams.ListTeamProjectsByID returned %+v, want %+v", projects, want)
 	}
@@ -1059,7 +1059,7 @@ func TestTeamsService_ListProjectsBySlug(t *testing.T) {
 		t.Errorf("Teams.ListTeamProjectsBySlug returned error: %v", err)
 	}
 
-	want := []*Project{{ID: Int64(1)}}
+	want := []*ProjectV2{{ID: Int64(1)}}
 	if !cmp.Equal(projects, want) {
 		t.Errorf("Teams.ListTeamProjectsBySlug returned %+v, want %+v", projects, want)
 	}
@@ -1095,7 +1095,7 @@ func TestTeamsService_ReviewProjectsByID(t *testing.T) {
 		t.Errorf("Teams.ReviewTeamProjectsByID returned error: %v", err)
 	}
 
-	want := &Project{ID: Int64(1)}
+	want := &ProjectV2{ID: Int64(1)}
 	if !cmp.Equal(project, want) {
 		t.Errorf("Teams.ReviewTeamProjectsByID returned %+v, want %+v", project, want)
 	}
@@ -1131,7 +1131,7 @@ func TestTeamsService_ReviewProjectsBySlug(t *testing.T) {
 		t.Errorf("Teams.ReviewTeamProjectsBySlug returned error: %v", err)
 	}
 
-	want := &Project{ID: Int64(1)}
+	want := &ProjectV2{ID: Int64(1)}
 	if !cmp.Equal(project, want) {
 		t.Errorf("Teams.ReviewTeamProjectsBySlug returned %+v, want %+v", project, want)
 	}
