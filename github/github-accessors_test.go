@@ -6328,17 +6328,6 @@ func TestCreateUpdateRequiredWorkflowOptions_GetWorkflowFilePath(tt *testing.T) 
 	c.GetWorkflowFilePath()
 }
 
-func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateUserProjectOptions{Body: &zeroValue}
-	c.GetBody()
-	c = &CreateUserProjectOptions{}
-	c.GetBody()
-	c = nil
-	c.GetBody()
-}
-
 func TestCreateUserRequest_GetEmail(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -13865,14 +13854,6 @@ func TestIssueEvent_GetPerformedViaGithubApp(tt *testing.T) {
 	i.GetPerformedViaGithubApp()
 }
 
-func TestIssueEvent_GetProjectCard(tt *testing.T) {
-	tt.Parallel()
-	i := &IssueEvent{}
-	i.GetProjectCard()
-	i = nil
-	i.GetProjectCard()
-}
-
 func TestIssueEvent_GetRename(tt *testing.T) {
 	tt.Parallel()
 	i := &IssueEvent{}
@@ -15136,17 +15117,6 @@ func TestListCodespaces_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 	l = nil
 	l.GetTotalCount()
-}
-
-func TestListCollaboratorOptions_GetAffiliation(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListCollaboratorOptions{Affiliation: &zeroValue}
-	l.GetAffiliation()
-	l = &ListCollaboratorOptions{}
-	l.GetAffiliation()
-	l = nil
-	l.GetAffiliation()
 }
 
 func TestListCustomDeploymentRuleIntegrationsResponse_GetTotalCount(tt *testing.T) {
@@ -20225,168 +20195,6 @@ func TestPRLinks_GetStatuses(tt *testing.T) {
 	p.GetStatuses()
 }
 
-func TestProject_GetBody(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &Project{Body: &zeroValue}
-	p.GetBody()
-	p = &Project{}
-	p.GetBody()
-	p = nil
-	p.GetBody()
-}
-
-func TestProject_GetColumnsURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &Project{ColumnsURL: &zeroValue}
-	p.GetColumnsURL()
-	p = &Project{}
-	p.GetColumnsURL()
-	p = nil
-	p.GetColumnsURL()
-}
-
-func TestProject_GetCreatedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	p := &Project{CreatedAt: &zeroValue}
-	p.GetCreatedAt()
-	p = &Project{}
-	p.GetCreatedAt()
-	p = nil
-	p.GetCreatedAt()
-}
-
-func TestProject_GetCreator(tt *testing.T) {
-	tt.Parallel()
-	p := &Project{}
-	p.GetCreator()
-	p = nil
-	p.GetCreator()
-}
-
-func TestProject_GetHTMLURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &Project{HTMLURL: &zeroValue}
-	p.GetHTMLURL()
-	p = &Project{}
-	p.GetHTMLURL()
-	p = nil
-	p.GetHTMLURL()
-}
-
-func TestProject_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	p := &Project{ID: &zeroValue}
-	p.GetID()
-	p = &Project{}
-	p.GetID()
-	p = nil
-	p.GetID()
-}
-
-func TestProject_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &Project{Name: &zeroValue}
-	p.GetName()
-	p = &Project{}
-	p.GetName()
-	p = nil
-	p.GetName()
-}
-
-func TestProject_GetNodeID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &Project{NodeID: &zeroValue}
-	p.GetNodeID()
-	p = &Project{}
-	p.GetNodeID()
-	p = nil
-	p.GetNodeID()
-}
-
-func TestProject_GetNumber(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	p := &Project{Number: &zeroValue}
-	p.GetNumber()
-	p = &Project{}
-	p.GetNumber()
-	p = nil
-	p.GetNumber()
-}
-
-func TestProject_GetOrganizationPermission(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &Project{OrganizationPermission: &zeroValue}
-	p.GetOrganizationPermission()
-	p = &Project{}
-	p.GetOrganizationPermission()
-	p = nil
-	p.GetOrganizationPermission()
-}
-
-func TestProject_GetOwnerURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &Project{OwnerURL: &zeroValue}
-	p.GetOwnerURL()
-	p = &Project{}
-	p.GetOwnerURL()
-	p = nil
-	p.GetOwnerURL()
-}
-
-func TestProject_GetPrivate(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	p := &Project{Private: &zeroValue}
-	p.GetPrivate()
-	p = &Project{}
-	p.GetPrivate()
-	p = nil
-	p.GetPrivate()
-}
-
-func TestProject_GetState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &Project{State: &zeroValue}
-	p.GetState()
-	p = &Project{}
-	p.GetState()
-	p = nil
-	p.GetState()
-}
-
-func TestProject_GetUpdatedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	p := &Project{UpdatedAt: &zeroValue}
-	p.GetUpdatedAt()
-	p = &Project{}
-	p.GetUpdatedAt()
-	p = nil
-	p.GetUpdatedAt()
-}
-
-func TestProject_GetURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &Project{URL: &zeroValue}
-	p.GetURL()
-	p = &Project{}
-	p.GetURL()
-	p = nil
-	p.GetURL()
-}
-
 func TestProjectBody_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -20398,255 +20206,12 @@ func TestProjectBody_GetFrom(tt *testing.T) {
 	p.GetFrom()
 }
 
-func TestProjectCard_GetArchived(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	p := &ProjectCard{Archived: &zeroValue}
-	p.GetArchived()
-	p = &ProjectCard{}
-	p.GetArchived()
-	p = nil
-	p.GetArchived()
-}
-
-func TestProjectCard_GetColumnID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	p := &ProjectCard{ColumnID: &zeroValue}
-	p.GetColumnID()
-	p = &ProjectCard{}
-	p.GetColumnID()
-	p = nil
-	p.GetColumnID()
-}
-
-func TestProjectCard_GetColumnName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectCard{ColumnName: &zeroValue}
-	p.GetColumnName()
-	p = &ProjectCard{}
-	p.GetColumnName()
-	p = nil
-	p.GetColumnName()
-}
-
-func TestProjectCard_GetColumnURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectCard{ColumnURL: &zeroValue}
-	p.GetColumnURL()
-	p = &ProjectCard{}
-	p.GetColumnURL()
-	p = nil
-	p.GetColumnURL()
-}
-
-func TestProjectCard_GetContentURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectCard{ContentURL: &zeroValue}
-	p.GetContentURL()
-	p = &ProjectCard{}
-	p.GetContentURL()
-	p = nil
-	p.GetContentURL()
-}
-
-func TestProjectCard_GetCreatedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	p := &ProjectCard{CreatedAt: &zeroValue}
-	p.GetCreatedAt()
-	p = &ProjectCard{}
-	p.GetCreatedAt()
-	p = nil
-	p.GetCreatedAt()
-}
-
-func TestProjectCard_GetCreator(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectCard{}
-	p.GetCreator()
-	p = nil
-	p.GetCreator()
-}
-
-func TestProjectCard_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	p := &ProjectCard{ID: &zeroValue}
-	p.GetID()
-	p = &ProjectCard{}
-	p.GetID()
-	p = nil
-	p.GetID()
-}
-
-func TestProjectCard_GetNodeID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectCard{NodeID: &zeroValue}
-	p.GetNodeID()
-	p = &ProjectCard{}
-	p.GetNodeID()
-	p = nil
-	p.GetNodeID()
-}
-
-func TestProjectCard_GetNote(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectCard{Note: &zeroValue}
-	p.GetNote()
-	p = &ProjectCard{}
-	p.GetNote()
-	p = nil
-	p.GetNote()
-}
-
-func TestProjectCard_GetPreviousColumnName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectCard{PreviousColumnName: &zeroValue}
-	p.GetPreviousColumnName()
-	p = &ProjectCard{}
-	p.GetPreviousColumnName()
-	p = nil
-	p.GetPreviousColumnName()
-}
-
-func TestProjectCard_GetProjectID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	p := &ProjectCard{ProjectID: &zeroValue}
-	p.GetProjectID()
-	p = &ProjectCard{}
-	p.GetProjectID()
-	p = nil
-	p.GetProjectID()
-}
-
-func TestProjectCard_GetProjectURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectCard{ProjectURL: &zeroValue}
-	p.GetProjectURL()
-	p = &ProjectCard{}
-	p.GetProjectURL()
-	p = nil
-	p.GetProjectURL()
-}
-
-func TestProjectCard_GetUpdatedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	p := &ProjectCard{UpdatedAt: &zeroValue}
-	p.GetUpdatedAt()
-	p = &ProjectCard{}
-	p.GetUpdatedAt()
-	p = nil
-	p.GetUpdatedAt()
-}
-
-func TestProjectCard_GetURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectCard{URL: &zeroValue}
-	p.GetURL()
-	p = &ProjectCard{}
-	p.GetURL()
-	p = nil
-	p.GetURL()
-}
-
 func TestProjectCardChange_GetNote(tt *testing.T) {
 	tt.Parallel()
 	p := &ProjectCardChange{}
 	p.GetNote()
 	p = nil
 	p.GetNote()
-}
-
-func TestProjectCardEvent_GetAction(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectCardEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &ProjectCardEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
-}
-
-func TestProjectCardEvent_GetAfterID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	p := &ProjectCardEvent{AfterID: &zeroValue}
-	p.GetAfterID()
-	p = &ProjectCardEvent{}
-	p.GetAfterID()
-	p = nil
-	p.GetAfterID()
-}
-
-func TestProjectCardEvent_GetChanges(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectCardEvent{}
-	p.GetChanges()
-	p = nil
-	p.GetChanges()
-}
-
-func TestProjectCardEvent_GetInstallation(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectCardEvent{}
-	p.GetInstallation()
-	p = nil
-	p.GetInstallation()
-}
-
-func TestProjectCardEvent_GetOrg(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectCardEvent{}
-	p.GetOrg()
-	p = nil
-	p.GetOrg()
-}
-
-func TestProjectCardEvent_GetProjectCard(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectCardEvent{}
-	p.GetProjectCard()
-	p = nil
-	p.GetProjectCard()
-}
-
-func TestProjectCardEvent_GetRepo(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectCardEvent{}
-	p.GetRepo()
-	p = nil
-	p.GetRepo()
-}
-
-func TestProjectCardEvent_GetSender(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectCardEvent{}
-	p.GetSender()
-	p = nil
-	p.GetSender()
-}
-
-func TestProjectCardListOptions_GetArchivedState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectCardListOptions{ArchivedState: &zeroValue}
-	p.GetArchivedState()
-	p = &ProjectCardListOptions{}
-	p.GetArchivedState()
-	p = nil
-	p.GetArchivedState()
 }
 
 func TestProjectCardNote_GetFrom(tt *testing.T) {
@@ -20658,17 +20223,6 @@ func TestProjectCardNote_GetFrom(tt *testing.T) {
 	p.GetFrom()
 	p = nil
 	p.GetFrom()
-}
-
-func TestProjectCardOptions_GetArchived(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	p := &ProjectCardOptions{Archived: &zeroValue}
-	p.GetArchived()
-	p = &ProjectCardOptions{}
-	p.GetArchived()
-	p = nil
-	p.GetArchived()
 }
 
 func TestProjectChange_GetBody(tt *testing.T) {
@@ -20687,181 +20241,12 @@ func TestProjectChange_GetName(tt *testing.T) {
 	p.GetName()
 }
 
-func TestProjectCollaboratorOptions_GetPermission(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectCollaboratorOptions{Permission: &zeroValue}
-	p.GetPermission()
-	p = &ProjectCollaboratorOptions{}
-	p.GetPermission()
-	p = nil
-	p.GetPermission()
-}
-
-func TestProjectColumn_GetCardsURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectColumn{CardsURL: &zeroValue}
-	p.GetCardsURL()
-	p = &ProjectColumn{}
-	p.GetCardsURL()
-	p = nil
-	p.GetCardsURL()
-}
-
-func TestProjectColumn_GetCreatedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	p := &ProjectColumn{CreatedAt: &zeroValue}
-	p.GetCreatedAt()
-	p = &ProjectColumn{}
-	p.GetCreatedAt()
-	p = nil
-	p.GetCreatedAt()
-}
-
-func TestProjectColumn_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	p := &ProjectColumn{ID: &zeroValue}
-	p.GetID()
-	p = &ProjectColumn{}
-	p.GetID()
-	p = nil
-	p.GetID()
-}
-
-func TestProjectColumn_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectColumn{Name: &zeroValue}
-	p.GetName()
-	p = &ProjectColumn{}
-	p.GetName()
-	p = nil
-	p.GetName()
-}
-
-func TestProjectColumn_GetNodeID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectColumn{NodeID: &zeroValue}
-	p.GetNodeID()
-	p = &ProjectColumn{}
-	p.GetNodeID()
-	p = nil
-	p.GetNodeID()
-}
-
-func TestProjectColumn_GetProjectURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectColumn{ProjectURL: &zeroValue}
-	p.GetProjectURL()
-	p = &ProjectColumn{}
-	p.GetProjectURL()
-	p = nil
-	p.GetProjectURL()
-}
-
-func TestProjectColumn_GetUpdatedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	p := &ProjectColumn{UpdatedAt: &zeroValue}
-	p.GetUpdatedAt()
-	p = &ProjectColumn{}
-	p.GetUpdatedAt()
-	p = nil
-	p.GetUpdatedAt()
-}
-
-func TestProjectColumn_GetURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectColumn{URL: &zeroValue}
-	p.GetURL()
-	p = &ProjectColumn{}
-	p.GetURL()
-	p = nil
-	p.GetURL()
-}
-
 func TestProjectColumnChange_GetName(tt *testing.T) {
 	tt.Parallel()
 	p := &ProjectColumnChange{}
 	p.GetName()
 	p = nil
 	p.GetName()
-}
-
-func TestProjectColumnEvent_GetAction(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectColumnEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &ProjectColumnEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
-}
-
-func TestProjectColumnEvent_GetAfterID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	p := &ProjectColumnEvent{AfterID: &zeroValue}
-	p.GetAfterID()
-	p = &ProjectColumnEvent{}
-	p.GetAfterID()
-	p = nil
-	p.GetAfterID()
-}
-
-func TestProjectColumnEvent_GetChanges(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectColumnEvent{}
-	p.GetChanges()
-	p = nil
-	p.GetChanges()
-}
-
-func TestProjectColumnEvent_GetInstallation(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectColumnEvent{}
-	p.GetInstallation()
-	p = nil
-	p.GetInstallation()
-}
-
-func TestProjectColumnEvent_GetOrg(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectColumnEvent{}
-	p.GetOrg()
-	p = nil
-	p.GetOrg()
-}
-
-func TestProjectColumnEvent_GetProjectColumn(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectColumnEvent{}
-	p.GetProjectColumn()
-	p = nil
-	p.GetProjectColumn()
-}
-
-func TestProjectColumnEvent_GetRepo(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectColumnEvent{}
-	p.GetRepo()
-	p = nil
-	p.GetRepo()
-}
-
-func TestProjectColumnEvent_GetSender(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectColumnEvent{}
-	p.GetSender()
-	p = nil
-	p.GetSender()
 }
 
 func TestProjectColumnName_GetFrom(tt *testing.T) {
@@ -20875,65 +20260,6 @@ func TestProjectColumnName_GetFrom(tt *testing.T) {
 	p.GetFrom()
 }
 
-func TestProjectEvent_GetAction(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectEvent{Action: &zeroValue}
-	p.GetAction()
-	p = &ProjectEvent{}
-	p.GetAction()
-	p = nil
-	p.GetAction()
-}
-
-func TestProjectEvent_GetChanges(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectEvent{}
-	p.GetChanges()
-	p = nil
-	p.GetChanges()
-}
-
-func TestProjectEvent_GetInstallation(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectEvent{}
-	p.GetInstallation()
-	p = nil
-	p.GetInstallation()
-}
-
-func TestProjectEvent_GetOrg(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectEvent{}
-	p.GetOrg()
-	p = nil
-	p.GetOrg()
-}
-
-func TestProjectEvent_GetProject(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectEvent{}
-	p.GetProject()
-	p = nil
-	p.GetProject()
-}
-
-func TestProjectEvent_GetRepo(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectEvent{}
-	p.GetRepo()
-	p = nil
-	p.GetRepo()
-}
-
-func TestProjectEvent_GetSender(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectEvent{}
-	p.GetSender()
-	p = nil
-	p.GetSender()
-}
-
 func TestProjectName_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -20945,223 +20271,248 @@ func TestProjectName_GetFrom(tt *testing.T) {
 	p.GetFrom()
 }
 
-func TestProjectOptions_GetBody(tt *testing.T) {
+func TestProjectV2_GetBody(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	p := &ProjectOptions{Body: &zeroValue}
+	p := &ProjectV2{Body: &zeroValue}
 	p.GetBody()
-	p = &ProjectOptions{}
+	p = &ProjectV2{}
 	p.GetBody()
 	p = nil
 	p.GetBody()
 }
 
-func TestProjectOptions_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectOptions{Name: &zeroValue}
-	p.GetName()
-	p = &ProjectOptions{}
-	p.GetName()
-	p = nil
-	p.GetName()
-}
-
-func TestProjectOptions_GetOrganizationPermission(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectOptions{OrganizationPermission: &zeroValue}
-	p.GetOrganizationPermission()
-	p = &ProjectOptions{}
-	p.GetOrganizationPermission()
-	p = nil
-	p.GetOrganizationPermission()
-}
-
-func TestProjectOptions_GetPrivate(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	p := &ProjectOptions{Private: &zeroValue}
-	p.GetPrivate()
-	p = &ProjectOptions{}
-	p.GetPrivate()
-	p = nil
-	p.GetPrivate()
-}
-
-func TestProjectOptions_GetState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectOptions{State: &zeroValue}
-	p.GetState()
-	p = &ProjectOptions{}
-	p.GetState()
-	p = nil
-	p.GetState()
-}
-
-func TestProjectPermissionLevel_GetPermission(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &ProjectPermissionLevel{Permission: &zeroValue}
-	p.GetPermission()
-	p = &ProjectPermissionLevel{}
-	p.GetPermission()
-	p = nil
-	p.GetPermission()
-}
-
-func TestProjectPermissionLevel_GetUser(tt *testing.T) {
-	tt.Parallel()
-	p := &ProjectPermissionLevel{}
-	p.GetUser()
-	p = nil
-	p.GetUser()
-}
-
-func TestProjectsV2_GetClosedAt(tt *testing.T) {
+func TestProjectV2_GetClosedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	p := &ProjectsV2{ClosedAt: &zeroValue}
+	p := &ProjectV2{ClosedAt: &zeroValue}
 	p.GetClosedAt()
-	p = &ProjectsV2{}
+	p = &ProjectV2{}
 	p.GetClosedAt()
 	p = nil
 	p.GetClosedAt()
 }
 
-func TestProjectsV2_GetCreatedAt(tt *testing.T) {
+func TestProjectV2_GetColumnsURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2{ColumnsURL: &zeroValue}
+	p.GetColumnsURL()
+	p = &ProjectV2{}
+	p.GetColumnsURL()
+	p = nil
+	p.GetColumnsURL()
+}
+
+func TestProjectV2_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	p := &ProjectsV2{CreatedAt: &zeroValue}
+	p := &ProjectV2{CreatedAt: &zeroValue}
 	p.GetCreatedAt()
-	p = &ProjectsV2{}
+	p = &ProjectV2{}
 	p.GetCreatedAt()
 	p = nil
 	p.GetCreatedAt()
 }
 
-func TestProjectsV2_GetCreator(tt *testing.T) {
+func TestProjectV2_GetCreator(tt *testing.T) {
 	tt.Parallel()
-	p := &ProjectsV2{}
+	p := &ProjectV2{}
 	p.GetCreator()
 	p = nil
 	p.GetCreator()
 }
 
-func TestProjectsV2_GetDeletedAt(tt *testing.T) {
+func TestProjectV2_GetDeletedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	p := &ProjectsV2{DeletedAt: &zeroValue}
+	p := &ProjectV2{DeletedAt: &zeroValue}
 	p.GetDeletedAt()
-	p = &ProjectsV2{}
+	p = &ProjectV2{}
 	p.GetDeletedAt()
 	p = nil
 	p.GetDeletedAt()
 }
 
-func TestProjectsV2_GetDeletedBy(tt *testing.T) {
+func TestProjectV2_GetDeletedBy(tt *testing.T) {
 	tt.Parallel()
-	p := &ProjectsV2{}
+	p := &ProjectV2{}
 	p.GetDeletedBy()
 	p = nil
 	p.GetDeletedBy()
 }
 
-func TestProjectsV2_GetDescription(tt *testing.T) {
+func TestProjectV2_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	p := &ProjectsV2{Description: &zeroValue}
+	p := &ProjectV2{Description: &zeroValue}
 	p.GetDescription()
-	p = &ProjectsV2{}
+	p = &ProjectV2{}
 	p.GetDescription()
 	p = nil
 	p.GetDescription()
 }
 
-func TestProjectsV2_GetID(tt *testing.T) {
+func TestProjectV2_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2{HTMLURL: &zeroValue}
+	p.GetHTMLURL()
+	p = &ProjectV2{}
+	p.GetHTMLURL()
+	p = nil
+	p.GetHTMLURL()
+}
+
+func TestProjectV2_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
-	p := &ProjectsV2{ID: &zeroValue}
+	p := &ProjectV2{ID: &zeroValue}
 	p.GetID()
-	p = &ProjectsV2{}
+	p = &ProjectV2{}
 	p.GetID()
 	p = nil
 	p.GetID()
 }
 
-func TestProjectsV2_GetNodeID(tt *testing.T) {
+func TestProjectV2_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	p := &ProjectsV2{NodeID: &zeroValue}
+	p := &ProjectV2{Name: &zeroValue}
+	p.GetName()
+	p = &ProjectV2{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
+func TestProjectV2_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2{NodeID: &zeroValue}
 	p.GetNodeID()
-	p = &ProjectsV2{}
+	p = &ProjectV2{}
 	p.GetNodeID()
 	p = nil
 	p.GetNodeID()
 }
 
-func TestProjectsV2_GetNumber(tt *testing.T) {
+func TestProjectV2_GetNumber(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	p := &ProjectsV2{Number: &zeroValue}
+	p := &ProjectV2{Number: &zeroValue}
 	p.GetNumber()
-	p = &ProjectsV2{}
+	p = &ProjectV2{}
 	p.GetNumber()
 	p = nil
 	p.GetNumber()
 }
 
-func TestProjectsV2_GetOwner(tt *testing.T) {
+func TestProjectV2_GetOrganizationPermission(tt *testing.T) {
 	tt.Parallel()
-	p := &ProjectsV2{}
+	var zeroValue string
+	p := &ProjectV2{OrganizationPermission: &zeroValue}
+	p.GetOrganizationPermission()
+	p = &ProjectV2{}
+	p.GetOrganizationPermission()
+	p = nil
+	p.GetOrganizationPermission()
+}
+
+func TestProjectV2_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2{}
 	p.GetOwner()
 	p = nil
 	p.GetOwner()
 }
 
-func TestProjectsV2_GetPublic(tt *testing.T) {
+func TestProjectV2_GetOwnerURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2{OwnerURL: &zeroValue}
+	p.GetOwnerURL()
+	p = &ProjectV2{}
+	p.GetOwnerURL()
+	p = nil
+	p.GetOwnerURL()
+}
+
+func TestProjectV2_GetPrivate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	p := &ProjectsV2{Public: &zeroValue}
+	p := &ProjectV2{Private: &zeroValue}
+	p.GetPrivate()
+	p = &ProjectV2{}
+	p.GetPrivate()
+	p = nil
+	p.GetPrivate()
+}
+
+func TestProjectV2_GetPublic(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &ProjectV2{Public: &zeroValue}
 	p.GetPublic()
-	p = &ProjectsV2{}
+	p = &ProjectV2{}
 	p.GetPublic()
 	p = nil
 	p.GetPublic()
 }
 
-func TestProjectsV2_GetShortDescription(tt *testing.T) {
+func TestProjectV2_GetShortDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	p := &ProjectsV2{ShortDescription: &zeroValue}
+	p := &ProjectV2{ShortDescription: &zeroValue}
 	p.GetShortDescription()
-	p = &ProjectsV2{}
+	p = &ProjectV2{}
 	p.GetShortDescription()
 	p = nil
 	p.GetShortDescription()
 }
 
-func TestProjectsV2_GetTitle(tt *testing.T) {
+func TestProjectV2_GetState(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	p := &ProjectsV2{Title: &zeroValue}
+	p := &ProjectV2{State: &zeroValue}
+	p.GetState()
+	p = &ProjectV2{}
+	p.GetState()
+	p = nil
+	p.GetState()
+}
+
+func TestProjectV2_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2{Title: &zeroValue}
 	p.GetTitle()
-	p = &ProjectsV2{}
+	p = &ProjectV2{}
 	p.GetTitle()
 	p = nil
 	p.GetTitle()
 }
 
-func TestProjectsV2_GetUpdatedAt(tt *testing.T) {
+func TestProjectV2_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	p := &ProjectsV2{UpdatedAt: &zeroValue}
+	p := &ProjectV2{UpdatedAt: &zeroValue}
 	p.GetUpdatedAt()
-	p = &ProjectsV2{}
+	p = &ProjectV2{}
 	p.GetUpdatedAt()
 	p = nil
 	p.GetUpdatedAt()
+}
+
+func TestProjectV2_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2{URL: &zeroValue}
+	p.GetURL()
+	p = &ProjectV2{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
 }
 
 func TestProjectV2Event_GetAction(tt *testing.T) {
@@ -32146,14 +31497,6 @@ func TestTimeline_GetPerformedViaGithubApp(tt *testing.T) {
 	t.GetPerformedViaGithubApp()
 	t = nil
 	t.GetPerformedViaGithubApp()
-}
-
-func TestTimeline_GetProjectCard(tt *testing.T) {
-	tt.Parallel()
-	t := &Timeline{}
-	t.GetProjectCard()
-	t = nil
-	t.GetProjectCard()
 }
 
 func TestTimeline_GetRename(tt *testing.T) {
