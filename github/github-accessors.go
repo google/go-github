@@ -9366,6 +9366,14 @@ func (i *InstallationPermissions) GetAdministration() string {
 	return *i.Administration
 }
 
+// GetAttestations returns the Attestations field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetAttestations() string {
+	if i == nil || i.Attestations == nil {
+		return ""
+	}
+	return *i.Attestations
+}
+
 // GetBlocking returns the Blocking field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetBlocking() string {
 	if i == nil || i.Blocking == nil {
@@ -9414,6 +9422,14 @@ func (i *InstallationPermissions) GetCodespacesSecrets() string {
 	return *i.CodespacesSecrets
 }
 
+// GetCodespacesUserSecrets returns the CodespacesUserSecrets field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetCodespacesUserSecrets() string {
+	if i == nil || i.CodespacesUserSecrets == nil {
+		return ""
+	}
+	return *i.CodespacesUserSecrets
+}
+
 // GetContentReferences returns the ContentReferences field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetContentReferences() string {
 	if i == nil || i.ContentReferences == nil {
@@ -9428,6 +9444,14 @@ func (i *InstallationPermissions) GetContents() string {
 		return ""
 	}
 	return *i.Contents
+}
+
+// GetCopilotMessages returns the CopilotMessages field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetCopilotMessages() string {
+	if i == nil || i.CopilotMessages == nil {
+		return ""
+	}
+	return *i.CopilotMessages
 }
 
 // GetDependabotSecrets returns the DependabotSecrets field if it's non-nil, zero value otherwise.
@@ -9478,12 +9502,52 @@ func (i *InstallationPermissions) GetFollowers() string {
 	return *i.Followers
 }
 
+// GetGists returns the Gists field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetGists() string {
+	if i == nil || i.Gists == nil {
+		return ""
+	}
+	return *i.Gists
+}
+
+// GetGitSigningSSHPublicKeys returns the GitSigningSSHPublicKeys field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetGitSigningSSHPublicKeys() string {
+	if i == nil || i.GitSigningSSHPublicKeys == nil {
+		return ""
+	}
+	return *i.GitSigningSSHPublicKeys
+}
+
+// GetGPGKeys returns the GPGKeys field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetGPGKeys() string {
+	if i == nil || i.GPGKeys == nil {
+		return ""
+	}
+	return *i.GPGKeys
+}
+
+// GetInteractionLimits returns the InteractionLimits field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetInteractionLimits() string {
+	if i == nil || i.InteractionLimits == nil {
+		return ""
+	}
+	return *i.InteractionLimits
+}
+
 // GetIssues returns the Issues field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetIssues() string {
 	if i == nil || i.Issues == nil {
 		return ""
 	}
 	return *i.Issues
+}
+
+// GetKeys returns the Keys field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetKeys() string {
+	if i == nil || i.Keys == nil {
+		return ""
+	}
+	return *i.Keys
 }
 
 // GetMembers returns the Members field if it's non-nil, zero value otherwise.
@@ -9510,12 +9574,68 @@ func (i *InstallationPermissions) GetMetadata() string {
 	return *i.Metadata
 }
 
+// GetOrganizationActionsVariables returns the OrganizationActionsVariables field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationActionsVariables() string {
+	if i == nil || i.OrganizationActionsVariables == nil {
+		return ""
+	}
+	return *i.OrganizationActionsVariables
+}
+
 // GetOrganizationAdministration returns the OrganizationAdministration field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetOrganizationAdministration() string {
 	if i == nil || i.OrganizationAdministration == nil {
 		return ""
 	}
 	return *i.OrganizationAdministration
+}
+
+// GetOrganizationAnnouncementBanners returns the OrganizationAnnouncementBanners field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationAnnouncementBanners() string {
+	if i == nil || i.OrganizationAnnouncementBanners == nil {
+		return ""
+	}
+	return *i.OrganizationAnnouncementBanners
+}
+
+// GetOrganizationAPIInsights returns the OrganizationAPIInsights field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationAPIInsights() string {
+	if i == nil || i.OrganizationAPIInsights == nil {
+		return ""
+	}
+	return *i.OrganizationAPIInsights
+}
+
+// GetOrganizationCodespaces returns the OrganizationCodespaces field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationCodespaces() string {
+	if i == nil || i.OrganizationCodespaces == nil {
+		return ""
+	}
+	return *i.OrganizationCodespaces
+}
+
+// GetOrganizationCodespacesSecrets returns the OrganizationCodespacesSecrets field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationCodespacesSecrets() string {
+	if i == nil || i.OrganizationCodespacesSecrets == nil {
+		return ""
+	}
+	return *i.OrganizationCodespacesSecrets
+}
+
+// GetOrganizationCodespacesSettings returns the OrganizationCodespacesSettings field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationCodespacesSettings() string {
+	if i == nil || i.OrganizationCodespacesSettings == nil {
+		return ""
+	}
+	return *i.OrganizationCodespacesSettings
+}
+
+// GetOrganizationCopilotSeatManagement returns the OrganizationCopilotSeatManagement field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationCopilotSeatManagement() string {
+	if i == nil || i.OrganizationCopilotSeatManagement == nil {
+		return ""
+	}
+	return *i.OrganizationCopilotSeatManagement
 }
 
 // GetOrganizationCustomOrgRoles returns the OrganizationCustomOrgRoles field if it's non-nil, zero value otherwise.
@@ -9542,12 +9662,36 @@ func (i *InstallationPermissions) GetOrganizationCustomRoles() string {
 	return *i.OrganizationCustomRoles
 }
 
+// GetOrganizationDependabotSecrets returns the OrganizationDependabotSecrets field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationDependabotSecrets() string {
+	if i == nil || i.OrganizationDependabotSecrets == nil {
+		return ""
+	}
+	return *i.OrganizationDependabotSecrets
+}
+
+// GetOrganizationEvents returns the OrganizationEvents field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationEvents() string {
+	if i == nil || i.OrganizationEvents == nil {
+		return ""
+	}
+	return *i.OrganizationEvents
+}
+
 // GetOrganizationHooks returns the OrganizationHooks field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetOrganizationHooks() string {
 	if i == nil || i.OrganizationHooks == nil {
 		return ""
 	}
 	return *i.OrganizationHooks
+}
+
+// GetOrganizationKnowledgeBases returns the OrganizationKnowledgeBases field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationKnowledgeBases() string {
+	if i == nil || i.OrganizationKnowledgeBases == nil {
+		return ""
+	}
+	return *i.OrganizationKnowledgeBases
 }
 
 // GetOrganizationPackages returns the OrganizationPackages field if it's non-nil, zero value otherwise.
@@ -9638,6 +9782,22 @@ func (i *InstallationPermissions) GetPages() string {
 	return *i.Pages
 }
 
+// GetPlan returns the Plan field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetPlan() string {
+	if i == nil || i.Plan == nil {
+		return ""
+	}
+	return *i.Plan
+}
+
+// GetProfile returns the Profile field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetProfile() string {
+	if i == nil || i.Profile == nil {
+		return ""
+	}
+	return *i.Profile
+}
+
 // GetPullRequests returns the PullRequests field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetPullRequests() string {
 	if i == nil || i.PullRequests == nil {
@@ -9718,6 +9878,14 @@ func (i *InstallationPermissions) GetSingleFile() string {
 	return *i.SingleFile
 }
 
+// GetStarring returns the Starring field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetStarring() string {
+	if i == nil || i.Starring == nil {
+		return ""
+	}
+	return *i.Starring
+}
+
 // GetStatuses returns the Statuses field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetStatuses() string {
 	if i == nil || i.Statuses == nil {
@@ -9734,12 +9902,28 @@ func (i *InstallationPermissions) GetTeamDiscussions() string {
 	return *i.TeamDiscussions
 }
 
+// GetUserEvents returns the UserEvents field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetUserEvents() string {
+	if i == nil || i.UserEvents == nil {
+		return ""
+	}
+	return *i.UserEvents
+}
+
 // GetVulnerabilityAlerts returns the VulnerabilityAlerts field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetVulnerabilityAlerts() string {
 	if i == nil || i.VulnerabilityAlerts == nil {
 		return ""
 	}
 	return *i.VulnerabilityAlerts
+}
+
+// GetWatching returns the Watching field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetWatching() string {
+	if i == nil || i.Watching == nil {
+		return ""
+	}
+	return *i.Watching
 }
 
 // GetWorkflows returns the Workflows field if it's non-nil, zero value otherwise.
@@ -24182,6 +24366,14 @@ func (t *TaskStep) GetStatus() string {
 	return *t.Status
 }
 
+// GetAssignment returns the Assignment field if it's non-nil, zero value otherwise.
+func (t *Team) GetAssignment() string {
+	if t == nil || t.Assignment == nil {
+		return ""
+	}
+	return *t.Assignment
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (t *Team) GetDescription() string {
 	if t == nil || t.Description == nil {
@@ -25478,6 +25670,14 @@ func (u *UpdateRunnerGroupRequest) GetVisibility() string {
 	return *u.Visibility
 }
 
+// GetAssignment returns the Assignment field if it's non-nil, zero value otherwise.
+func (u *User) GetAssignment() string {
+	if u == nil || u.Assignment == nil {
+		return ""
+	}
+	return *u.Assignment
+}
+
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (u *User) GetAvatarURL() string {
 	if u == nil || u.AvatarURL == nil {
@@ -25620,6 +25820,14 @@ func (u *User) GetID() int64 {
 		return 0
 	}
 	return *u.ID
+}
+
+// GetInheritedFrom returns the InheritedFrom field.
+func (u *User) GetInheritedFrom() *Team {
+	if u == nil {
+		return nil
+	}
+	return u.InheritedFrom
 }
 
 // GetLdapDn returns the LdapDn field if it's non-nil, zero value otherwise.

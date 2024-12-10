@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-github/v66/github"
+	"github.com/google/go-github/v67/github"
 )
 
 const msgEnvMissing = "Skipping test because the required environment variable (%v) is not present."
