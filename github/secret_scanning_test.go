@@ -373,6 +373,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
 			"state": "resolved",
 			"resolution": "used_in_tests",
+			"resolution_comment": "resolution comment",
 			"resolved_at": "1996-06-20T00:00:00Z",
 			"resolved_by": null,
 			"secret_type": "mailchimp_api_key",
@@ -390,17 +391,18 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := &SecretScanningAlert{
-		Number:       Ptr(1),
-		CreatedAt:    &date,
-		URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
-		HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
-		LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
-		State:        Ptr("resolved"),
-		Resolution:   Ptr("used_in_tests"),
-		ResolvedAt:   &date,
-		ResolvedBy:   nil,
-		SecretType:   Ptr("mailchimp_api_key"),
-		Secret:       Ptr("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+		Number:            Ptr(1),
+		CreatedAt:         &date,
+		URL:               Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
+		HTMLURL:           Ptr("https://github.com/o/r/security/secret-scanning/1"),
+		LocationsURL:      Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
+		State:             Ptr("resolved"),
+		Resolution:        Ptr("used_in_tests"),
+		ResolutionComment: Ptr("resolution comment"),
+		ResolvedAt:        &date,
+		ResolvedBy:        nil,
+		SecretType:        Ptr("mailchimp_api_key"),
+		Secret:            Ptr("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
 	}
 
 	if !cmp.Equal(alert, want) {
