@@ -152,7 +152,7 @@ type CustomPropertyEvent struct {
 }
 
 // CustomPropertyValuesEvent represents an update to a custom property.
-// The Webhook event  name is "custom_property_values"
+// The Webhook event name is "custom_property_values".
 //
 // GitHub API docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#custom_property_values
 type CustomPropertyValuesEvent struct {
