@@ -32,7 +32,7 @@ func TestRepositoriesService_ListKeys(t *testing.T) {
 		t.Errorf("Repositories.ListKeys returned error: %v", err)
 	}
 
-	want := []*Key{{ID: Int64(1)}}
+	want := []*Key{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Repositories.ListKeys returned %+v, want %+v", keys, want)
 	}
@@ -76,7 +76,7 @@ func TestRepositoriesService_GetKey(t *testing.T) {
 		t.Errorf("Repositories.GetKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Int64(1)}
+	want := &Key{ID: Ptr(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}
@@ -109,7 +109,7 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Key{Key: String("k"), Title: String("t")}
+	input := &Key{Key: Ptr("k"), Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/keys", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Key)
@@ -129,7 +129,7 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 		t.Errorf("Repositories.GetKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Int64(1)}
+	want := &Key{ID: Ptr(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}

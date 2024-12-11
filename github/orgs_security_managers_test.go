@@ -29,7 +29,7 @@ func TestOrganizationsService_ListSecurityManagerTeams(t *testing.T) {
 		t.Errorf("Organizations.ListSecurityManagerTeams returned error: %v", err)
 	}
 
-	want := []*Team{{ID: Int64(1)}}
+	want := []*Team{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(teams, want) {
 		t.Errorf("Organizations.ListSecurityManagerTeams returned %+v, want %+v", teams, want)
 	}

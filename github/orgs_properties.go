@@ -17,7 +17,9 @@ type CustomProperty struct {
 	// PropertyName is required for most endpoints except when calling CreateOrUpdateCustomProperty;
 	// where this is sent in the path and thus can be omitted.
 	PropertyName *string `json:"property_name,omitempty"`
-	// The type of the value for the property. Can be one of: string, single_select.
+	// SourceType is the source type of the property where it has been created. Can be one of: organization, enterprise.
+	SourceType *string `json:"source_type,omitempty"`
+	// The type of the value for the property. Can be one of: string, single_select, multi_select, true_false.
 	ValueType string `json:"value_type"`
 	// Whether the property is required.
 	Required *bool `json:"required,omitempty"`

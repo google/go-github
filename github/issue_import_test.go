@@ -23,11 +23,11 @@ func TestIssueImportService_Create(t *testing.T) {
 	createdAt := time.Date(2020, time.August, 11, 15, 30, 0, 0, time.UTC)
 	input := &IssueImportRequest{
 		IssueImport: IssueImport{
-			Assignee:  String("developer"),
+			Assignee:  Ptr("developer"),
 			Body:      "Dummy description",
 			CreatedAt: &Timestamp{createdAt},
 			Labels:    []string{"l1", "l2"},
-			Milestone: Int(1),
+			Milestone: Ptr(1),
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{{
@@ -81,11 +81,11 @@ func TestIssueImportService_Create_deferred(t *testing.T) {
 	createdAt := time.Date(2020, time.August, 11, 15, 30, 0, 0, time.UTC)
 	input := &IssueImportRequest{
 		IssueImport: IssueImport{
-			Assignee:  String("developer"),
+			Assignee:  Ptr("developer"),
 			Body:      "Dummy description",
 			CreatedAt: &Timestamp{createdAt},
 			Labels:    []string{"l1", "l2"},
-			Milestone: Int(1),
+			Milestone: Ptr(1),
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{{
@@ -127,11 +127,11 @@ func TestIssueImportService_Create_badResponse(t *testing.T) {
 	createdAt := time.Date(2020, time.August, 11, 15, 30, 0, 0, time.UTC)
 	input := &IssueImportRequest{
 		IssueImport: IssueImport{
-			Assignee:  String("developer"),
+			Assignee:  Ptr("developer"),
 			Body:      "Dummy description",
 			CreatedAt: &Timestamp{createdAt},
 			Labels:    []string{"l1", "l2"},
-			Milestone: Int(1),
+			Milestone: Ptr(1),
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{{
@@ -288,11 +288,11 @@ var issueImportResponseJSON = []byte(`{
 }`)
 
 var wantIssueImportResponse = &IssueImportResponse{
-	ID:              Int(3),
-	Status:          String("pending"),
-	URL:             String("https://api.github.com/repos/o/r/import/issues/3"),
-	ImportIssuesURL: String("https://api.github.com/repos/o/r/import/issues"),
-	RepositoryURL:   String("https://api.github.com/repos/o/r"),
+	ID:              Ptr(3),
+	Status:          Ptr("pending"),
+	URL:             Ptr("https://api.github.com/repos/o/r/import/issues/3"),
+	ImportIssuesURL: Ptr("https://api.github.com/repos/o/r/import/issues"),
+	RepositoryURL:   Ptr("https://api.github.com/repos/o/r"),
 }
 
 func TestIssueImportError_Marshal(t *testing.T) {
@@ -300,11 +300,11 @@ func TestIssueImportError_Marshal(t *testing.T) {
 	testJSONMarshal(t, &IssueImportError{}, "{}")
 
 	u := &IssueImportError{
-		Location: String("loc"),
-		Resource: String("res"),
-		Field:    String("field"),
-		Value:    String("value"),
-		Code:     String("code"),
+		Location: Ptr("loc"),
+		Resource: Ptr("res"),
+		Field:    Ptr("field"),
+		Value:    Ptr("value"),
+		Code:     Ptr("code"),
 	}
 
 	want := `{
@@ -323,22 +323,22 @@ func TestIssueImportResponse_Marshal(t *testing.T) {
 	testJSONMarshal(t, &IssueImportResponse{}, "{}")
 
 	u := &IssueImportResponse{
-		ID:               Int(1),
-		Status:           String("status"),
-		URL:              String("url"),
-		ImportIssuesURL:  String("iiu"),
-		RepositoryURL:    String("ru"),
+		ID:               Ptr(1),
+		Status:           Ptr("status"),
+		URL:              Ptr("url"),
+		ImportIssuesURL:  Ptr("iiu"),
+		RepositoryURL:    Ptr("ru"),
 		CreatedAt:        &Timestamp{referenceTime},
 		UpdatedAt:        &Timestamp{referenceTime},
-		Message:          String("msg"),
-		DocumentationURL: String("durl"),
+		Message:          Ptr("msg"),
+		DocumentationURL: Ptr("durl"),
 		Errors: []*IssueImportError{
 			{
-				Location: String("loc"),
-				Resource: String("res"),
-				Field:    String("field"),
-				Value:    String("value"),
-				Code:     String("code"),
+				Location: Ptr("loc"),
+				Resource: Ptr("res"),
+				Field:    Ptr("field"),
+				Value:    Ptr("value"),
+				Code:     Ptr("code"),
 			},
 		},
 	}
@@ -394,9 +394,9 @@ func TestIssueImport_Marshal(t *testing.T) {
 		CreatedAt: &Timestamp{referenceTime},
 		ClosedAt:  &Timestamp{referenceTime},
 		UpdatedAt: &Timestamp{referenceTime},
-		Assignee:  String("a"),
-		Milestone: Int(1),
-		Closed:    Bool(false),
+		Assignee:  Ptr("a"),
+		Milestone: Ptr(1),
+		Closed:    Ptr(false),
 		Labels:    []string{"l"},
 	}
 
@@ -428,9 +428,9 @@ func TestIssueImportRequest_Marshal(t *testing.T) {
 			CreatedAt: &Timestamp{referenceTime},
 			ClosedAt:  &Timestamp{referenceTime},
 			UpdatedAt: &Timestamp{referenceTime},
-			Assignee:  String("a"),
-			Milestone: Int(1),
-			Closed:    Bool(false),
+			Assignee:  Ptr("a"),
+			Milestone: Ptr(1),
+			Closed:    Ptr(false),
 			Labels:    []string{"l"},
 		},
 		Comments: []*Comment{

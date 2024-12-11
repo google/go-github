@@ -32,7 +32,7 @@ func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.ListKeys returned error: %v", err)
 	}
 
-	want := []*Key{{ID: Int64(1)}}
+	want := []*Key{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}
@@ -67,7 +67,7 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 		t.Errorf("Users.ListKeys returned error: %v", err)
 	}
 
-	want := []*Key{{ID: Int64(1)}}
+	want := []*Key{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}
@@ -97,7 +97,7 @@ func TestUsersService_GetKey(t *testing.T) {
 		t.Errorf("Users.GetKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Int64(1)}
+	want := &Key{ID: Ptr(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Users.GetKey returned %+v, want %+v", key, want)
 	}
@@ -121,7 +121,7 @@ func TestUsersService_CreateKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Key{Key: String("k"), Title: String("t")}
+	input := &Key{Key: Ptr("k"), Title: Ptr("t")}
 
 	mux.HandleFunc("/user/keys", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Key)
@@ -141,7 +141,7 @@ func TestUsersService_CreateKey(t *testing.T) {
 		t.Errorf("Users.CreateKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Int64(1)}
+	want := &Key{ID: Ptr(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Users.CreateKey returned %+v, want %+v", key, want)
 	}
@@ -186,12 +186,12 @@ func TestKey_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Key{}, "{}")
 
 	u := &Key{
-		ID:        Int64(1),
-		Key:       String("abc"),
-		URL:       String("url"),
-		Title:     String("title"),
-		ReadOnly:  Bool(true),
-		Verified:  Bool(true),
+		ID:        Ptr(int64(1)),
+		Key:       Ptr("abc"),
+		URL:       Ptr("url"),
+		Title:     Ptr("title"),
+		ReadOnly:  Ptr(true),
+		Verified:  Ptr(true),
 		CreatedAt: &Timestamp{referenceTime},
 	}
 

@@ -297,6 +297,14 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "create",
 		},
 		{
+			payload:     &CustomPropertyEvent{},
+			messageType: "custom_property",
+		},
+		{
+			payload:     &CustomPropertyValuesEvent{},
+			messageType: "custom_property_values",
+		},
+		{
 			payload:     &DeleteEvent{},
 			messageType: "delete",
 		},

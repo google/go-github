@@ -6726,6 +6726,17 @@ func TestCustomProperty_GetRequired(tt *testing.T) {
 	c.GetRequired()
 }
 
+func TestCustomProperty_GetSourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CustomProperty{SourceType: &zeroValue}
+	c.GetSourceType()
+	c = &CustomProperty{}
+	c.GetSourceType()
+	c = nil
+	c.GetSourceType()
+}
+
 func TestCustomProperty_GetValuesEditableBy(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -6735,6 +6746,108 @@ func TestCustomProperty_GetValuesEditableBy(tt *testing.T) {
 	c.GetValuesEditableBy()
 	c = nil
 	c.GetValuesEditableBy()
+}
+
+func TestCustomPropertyEvent_GetAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CustomPropertyEvent{Action: &zeroValue}
+	c.GetAction()
+	c = &CustomPropertyEvent{}
+	c.GetAction()
+	c = nil
+	c.GetAction()
+}
+
+func TestCustomPropertyEvent_GetDefinition(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyEvent{}
+	c.GetDefinition()
+	c = nil
+	c.GetDefinition()
+}
+
+func TestCustomPropertyEvent_GetEnterprise(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyEvent{}
+	c.GetEnterprise()
+	c = nil
+	c.GetEnterprise()
+}
+
+func TestCustomPropertyEvent_GetInstallation(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyEvent{}
+	c.GetInstallation()
+	c = nil
+	c.GetInstallation()
+}
+
+func TestCustomPropertyEvent_GetOrg(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyEvent{}
+	c.GetOrg()
+	c = nil
+	c.GetOrg()
+}
+
+func TestCustomPropertyEvent_GetSender(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyEvent{}
+	c.GetSender()
+	c = nil
+	c.GetSender()
+}
+
+func TestCustomPropertyValuesEvent_GetAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CustomPropertyValuesEvent{Action: &zeroValue}
+	c.GetAction()
+	c = &CustomPropertyValuesEvent{}
+	c.GetAction()
+	c = nil
+	c.GetAction()
+}
+
+func TestCustomPropertyValuesEvent_GetEnterprise(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyValuesEvent{}
+	c.GetEnterprise()
+	c = nil
+	c.GetEnterprise()
+}
+
+func TestCustomPropertyValuesEvent_GetInstallation(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyValuesEvent{}
+	c.GetInstallation()
+	c = nil
+	c.GetInstallation()
+}
+
+func TestCustomPropertyValuesEvent_GetOrg(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyValuesEvent{}
+	c.GetOrg()
+	c = nil
+	c.GetOrg()
+}
+
+func TestCustomPropertyValuesEvent_GetRepo(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyValuesEvent{}
+	c.GetRepo()
+	c = nil
+	c.GetRepo()
+}
+
+func TestCustomPropertyValuesEvent_GetSender(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyValuesEvent{}
+	c.GetSender()
+	c = nil
+	c.GetSender()
 }
 
 func TestCustomRepoRoles_GetBaseRole(tt *testing.T) {
@@ -29335,6 +29448,17 @@ func TestSecretScanningAlertUpdateOptions_GetResolution(tt *testing.T) {
 	s.GetResolution()
 	s = nil
 	s.GetResolution()
+}
+
+func TestSecretScanningAlertUpdateOptions_GetResolutionComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlertUpdateOptions{ResolutionComment: &zeroValue}
+	s.GetResolutionComment()
+	s = &SecretScanningAlertUpdateOptions{}
+	s.GetResolutionComment()
+	s = nil
+	s.GetResolutionComment()
 }
 
 func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
