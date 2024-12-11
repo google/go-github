@@ -12,8 +12,8 @@ func TestInteractionRestriction_Marshal(t *testing.T) {
 	testJSONMarshal(t, &InteractionRestriction{}, "{}")
 
 	u := &InteractionRestriction{
-		Limit:     String("limit"),
-		Origin:    String("origin"),
+		Limit:     Ptr("limit"),
+		Origin:    Ptr("origin"),
 		ExpiresAt: &Timestamp{referenceTime},
 	}
 

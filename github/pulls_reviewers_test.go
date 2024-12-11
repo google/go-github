@@ -19,7 +19,7 @@ func TestReviewersRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ReviewersRequest{}, "{}")
 
 	u := &ReviewersRequest{
-		NodeID:        String("n"),
+		NodeID:        Ptr("n"),
 		Reviewers:     []string{"r"},
 		TeamReviewers: []string{"t"},
 	}
@@ -43,38 +43,38 @@ func TestReviewers_Marshal(t *testing.T) {
 
 	u := &Reviewers{
 		Users: []*User{{
-			Login:       String("l"),
-			ID:          Int64(1),
-			AvatarURL:   String("a"),
-			GravatarID:  String("g"),
-			Name:        String("n"),
-			Company:     String("c"),
-			Blog:        String("b"),
-			Location:    String("l"),
-			Email:       String("e"),
-			Hireable:    Bool(true),
-			PublicRepos: Int(1),
-			Followers:   Int(1),
-			Following:   Int(1),
+			Login:       Ptr("l"),
+			ID:          Ptr(int64(1)),
+			AvatarURL:   Ptr("a"),
+			GravatarID:  Ptr("g"),
+			Name:        Ptr("n"),
+			Company:     Ptr("c"),
+			Blog:        Ptr("b"),
+			Location:    Ptr("l"),
+			Email:       Ptr("e"),
+			Hireable:    Ptr(true),
+			PublicRepos: Ptr(1),
+			Followers:   Ptr(1),
+			Following:   Ptr(1),
 			CreatedAt:   &Timestamp{referenceTime},
-			URL:         String("u"),
+			URL:         Ptr("u"),
 		}},
 		Teams: []*Team{{
-			ID:              Int64(1),
-			NodeID:          String("node"),
-			Name:            String("n"),
-			Description:     String("d"),
-			URL:             String("u"),
-			Slug:            String("s"),
-			Permission:      String("p"),
-			Privacy:         String("priv"),
-			MembersCount:    Int(1),
-			ReposCount:      Int(1),
+			ID:              Ptr(int64(1)),
+			NodeID:          Ptr("node"),
+			Name:            Ptr("n"),
+			Description:     Ptr("d"),
+			URL:             Ptr("u"),
+			Slug:            Ptr("s"),
+			Permission:      Ptr("p"),
+			Privacy:         Ptr("priv"),
+			MembersCount:    Ptr(1),
+			ReposCount:      Ptr(1),
 			Organization:    nil,
-			MembersURL:      String("m"),
-			RepositoriesURL: String("r"),
+			MembersURL:      Ptr("m"),
+			RepositoriesURL: Ptr("r"),
 			Parent:          nil,
-			LDAPDN:          String("l"),
+			LDAPDN:          Ptr("l"),
 		}},
 	}
 
@@ -136,7 +136,7 @@ func TestRequestReviewers(t *testing.T) {
 	if err != nil {
 		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
 	}
-	want := &PullRequest{Number: Int(1)}
+	want := &PullRequest{Number: Ptr(1)}
 	if !cmp.Equal(got, want) {
 		t.Errorf("PullRequests.RequestReviewers returned %+v, want %+v", got, want)
 	}
@@ -211,14 +211,14 @@ func TestListReviewers(t *testing.T) {
 	want := &Reviewers{
 		Users: []*User{
 			{
-				Login: String("octocat"),
-				ID:    Int64(1),
+				Login: Ptr("octocat"),
+				ID:    Ptr(int64(1)),
 			},
 		},
 		Teams: []*Team{
 			{
-				ID:   Int64(1),
-				Name: String("Justice League"),
+				ID:   Ptr(int64(1)),
+				Name: Ptr("Justice League"),
 			},
 		},
 	}

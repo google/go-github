@@ -54,13 +54,13 @@ var (
 		},
 		"processZeroValue": func(v string) string {
 			switch v {
-			case "Bool(false)":
+			case "Ptr(false)":
 				return "false"
-			case "Float64(0.0)":
+			case "Ptr(0.0)":
 				return "0"
-			case "0", "Int(0)", "Int64(0)":
+			case "0", "Ptr(0)", "Ptr(int64(0))":
 				return "0"
-			case `""`, `String("")`:
+			case `""`, `Ptr("")`:
 				return `""`
 			case "Timestamp{}", "&Timestamp{}":
 				return "github.Timestamp{0001-01-01 00:00:00 +0000 UTC}"
@@ -276,15 +276,15 @@ func (t *templateData) addIdentPtr(x *ast.Ident, receiverType, fieldName string)
 	var namedStruct = false
 	switch x.String() {
 	case "int":
-		zeroValue = "Int(0)"
+		zeroValue = "Ptr(0)"
 	case "int64":
-		zeroValue = "Int64(0)"
+		zeroValue = "Ptr(int64(0))"
 	case "float64":
-		zeroValue = "Float64(0.0)"
+		zeroValue = "Ptr(0.0)"
 	case "string":
-		zeroValue = `String("")`
+		zeroValue = `Ptr("")`
 	case "bool":
-		zeroValue = "Bool(false)"
+		zeroValue = "Ptr(false)"
 	case "Timestamp":
 		zeroValue = "&Timestamp{}"
 	default:
@@ -400,7 +400,6 @@ import (
   {{end -}}
 )
 {{end}}
-func Float64(v float64) *float64 { return &v }
 {{range $key, $value := .StructFields}}
 func Test{{ $key }}_String(t *testing.T) {
   t.Parallel()

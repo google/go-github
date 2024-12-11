@@ -88,44 +88,44 @@ var feedsJSON = []byte(`{
 }`)
 
 var wantFeeds = &Feeds{
-	TimelineURL:                String("https://github.com/timeline"),
-	UserURL:                    String("https://github.com/{user}"),
-	CurrentUserPublicURL:       String("https://github.com/defunkt"),
-	CurrentUserURL:             String("https://github.com/defunkt.private?token=abc123"),
-	CurrentUserActorURL:        String("https://github.com/defunkt.private.actor?token=abc123"),
-	CurrentUserOrganizationURL: String(""),
+	TimelineURL:                Ptr("https://github.com/timeline"),
+	UserURL:                    Ptr("https://github.com/{user}"),
+	CurrentUserPublicURL:       Ptr("https://github.com/defunkt"),
+	CurrentUserURL:             Ptr("https://github.com/defunkt.private?token=abc123"),
+	CurrentUserActorURL:        Ptr("https://github.com/defunkt.private.actor?token=abc123"),
+	CurrentUserOrganizationURL: Ptr(""),
 	CurrentUserOrganizationURLs: []string{
 		"https://github.com/organizations/github/defunkt.private.atom?token=abc123",
 	},
 	Links: &FeedLinks{
 		Timeline: &FeedLink{
-			HRef: String("https://github.com/timeline"),
-			Type: String("application/atom+xml"),
+			HRef: Ptr("https://github.com/timeline"),
+			Type: Ptr("application/atom+xml"),
 		},
 		User: &FeedLink{
-			HRef: String("https://github.com/{user}"),
-			Type: String("application/atom+xml"),
+			HRef: Ptr("https://github.com/{user}"),
+			Type: Ptr("application/atom+xml"),
 		},
 		CurrentUserPublic: &FeedLink{
-			HRef: String("https://github.com/defunkt"),
-			Type: String("application/atom+xml"),
+			HRef: Ptr("https://github.com/defunkt"),
+			Type: Ptr("application/atom+xml"),
 		},
 		CurrentUser: &FeedLink{
-			HRef: String("https://github.com/defunkt.private?token=abc123"),
-			Type: String("application/atom+xml"),
+			HRef: Ptr("https://github.com/defunkt.private?token=abc123"),
+			Type: Ptr("application/atom+xml"),
 		},
 		CurrentUserActor: &FeedLink{
-			HRef: String("https://github.com/defunkt.private.actor?token=abc123"),
-			Type: String("application/atom+xml"),
+			HRef: Ptr("https://github.com/defunkt.private.actor?token=abc123"),
+			Type: Ptr("application/atom+xml"),
 		},
 		CurrentUserOrganization: &FeedLink{
-			HRef: String(""),
-			Type: String(""),
+			HRef: Ptr(""),
+			Type: Ptr(""),
 		},
 		CurrentUserOrganizations: []*FeedLink{
 			{
-				HRef: String("https://github.com/organizations/github/defunkt.private.atom?token=abc123"),
-				Type: String("application/atom+xml"),
+				HRef: Ptr("https://github.com/organizations/github/defunkt.private.atom?token=abc123"),
+				Type: Ptr("application/atom+xml"),
 			},
 		},
 	},
@@ -136,8 +136,8 @@ func TestFeedLink_Marshal(t *testing.T) {
 	testJSONMarshal(t, &FeedLink{}, "{}")
 
 	u := &FeedLink{
-		HRef: String("h"),
-		Type: String("t"),
+		HRef: Ptr("h"),
+		Type: Ptr("t"),
 	}
 
 	want := `{
@@ -153,42 +153,42 @@ func TestFeeds_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Feeds{}, "{}")
 
 	u := &Feeds{
-		TimelineURL:                 String("t"),
-		UserURL:                     String("u"),
-		CurrentUserPublicURL:        String("cupu"),
-		CurrentUserURL:              String("cuu"),
-		CurrentUserActorURL:         String("cuau"),
-		CurrentUserOrganizationURL:  String("cuou"),
+		TimelineURL:                 Ptr("t"),
+		UserURL:                     Ptr("u"),
+		CurrentUserPublicURL:        Ptr("cupu"),
+		CurrentUserURL:              Ptr("cuu"),
+		CurrentUserActorURL:         Ptr("cuau"),
+		CurrentUserOrganizationURL:  Ptr("cuou"),
 		CurrentUserOrganizationURLs: []string{"a"},
 		Links: &FeedLinks{
 			Timeline: &FeedLink{
-				HRef: String("h"),
-				Type: String("t"),
+				HRef: Ptr("h"),
+				Type: Ptr("t"),
 			},
 			User: &FeedLink{
-				HRef: String("h"),
-				Type: String("t"),
+				HRef: Ptr("h"),
+				Type: Ptr("t"),
 			},
 			CurrentUserPublic: &FeedLink{
-				HRef: String("h"),
-				Type: String("t"),
+				HRef: Ptr("h"),
+				Type: Ptr("t"),
 			},
 			CurrentUser: &FeedLink{
-				HRef: String("h"),
-				Type: String("t"),
+				HRef: Ptr("h"),
+				Type: Ptr("t"),
 			},
 			CurrentUserActor: &FeedLink{
-				HRef: String("h"),
-				Type: String("t"),
+				HRef: Ptr("h"),
+				Type: Ptr("t"),
 			},
 			CurrentUserOrganization: &FeedLink{
-				HRef: String("h"),
-				Type: String("t"),
+				HRef: Ptr("h"),
+				Type: Ptr("t"),
 			},
 			CurrentUserOrganizations: []*FeedLink{
 				{
-					HRef: String("h"),
-					Type: String("t"),
+					HRef: Ptr("h"),
+					Type: Ptr("t"),
 				},
 			},
 		},
@@ -245,33 +245,33 @@ func TestFeedLinks_Marshal(t *testing.T) {
 
 	u := &FeedLinks{
 		Timeline: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
+			HRef: Ptr("h"),
+			Type: Ptr("t"),
 		},
 		User: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
+			HRef: Ptr("h"),
+			Type: Ptr("t"),
 		},
 		CurrentUserPublic: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
+			HRef: Ptr("h"),
+			Type: Ptr("t"),
 		},
 		CurrentUser: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
+			HRef: Ptr("h"),
+			Type: Ptr("t"),
 		},
 		CurrentUserActor: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
+			HRef: Ptr("h"),
+			Type: Ptr("t"),
 		},
 		CurrentUserOrganization: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
+			HRef: Ptr("h"),
+			Type: Ptr("t"),
 		},
 		CurrentUserOrganizations: []*FeedLink{
 			{
-				HRef: String("h"),
-				Type: String("t"),
+				HRef: Ptr("h"),
+				Type: Ptr("t"),
 			},
 		},
 	}

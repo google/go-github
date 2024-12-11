@@ -139,8 +139,8 @@ func (s *RepositoriesService) ListCodeFrequency(ctx context.Context, owner, repo
 		}
 		stat := &WeeklyStats{
 			Week:      &Timestamp{time.Unix(int64(week[0]), 0)},
-			Additions: Int(week[1]),
-			Deletions: Int(week[2]),
+			Additions: Ptr(week[1]),
+			Deletions: Ptr(week[2]),
 		}
 		stats = append(stats, stat)
 	}
@@ -231,9 +231,9 @@ func (s *RepositoriesService) ListPunchCard(ctx context.Context, owner, repo str
 			continue
 		}
 		card := &PunchCard{
-			Day:     Int(result[0]),
-			Hour:    Int(result[1]),
-			Commits: Int(result[2]),
+			Day:     Ptr(result[0]),
+			Hour:    Ptr(result[1]),
+			Commits: Ptr(result[2]),
 		}
 		cards = append(cards, card)
 	}

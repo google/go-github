@@ -29,7 +29,7 @@ func TestOrganizationsService_GetActionsPermissions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.GetActionsPermissions returned error: %v", err)
 	}
-	want := &ActionsPermissions{EnabledRepositories: String("all"), AllowedActions: String("all")}
+	want := &ActionsPermissions{EnabledRepositories: Ptr("all"), AllowedActions: Ptr("all")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.GetActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -53,7 +53,7 @@ func TestOrganizationsService_EditActionsPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsPermissions{EnabledRepositories: String("all"), AllowedActions: String("selected")}
+	input := &ActionsPermissions{EnabledRepositories: Ptr("all"), AllowedActions: Ptr("selected")}
 
 	mux.HandleFunc("/orgs/o/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ActionsPermissions)
@@ -73,7 +73,7 @@ func TestOrganizationsService_EditActionsPermissions(t *testing.T) {
 		t.Errorf("Organizations.EditActionsPermissions returned error: %v", err)
 	}
 
-	want := &ActionsPermissions{EnabledRepositories: String("all"), AllowedActions: String("selected")}
+	want := &ActionsPermissions{EnabledRepositories: Ptr("all"), AllowedActions: Ptr("selected")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.EditActionsPermissions returned %+v, want %+v", org, want)
 	}

@@ -49,11 +49,11 @@ func TestDependencyGraphService_GetSBOM(t *testing.T) {
 			CreationInfo: &CreationInfo{
 				Created: &Timestamp{testTime},
 			},
-			Name: String("owner/repo"),
+			Name: Ptr("owner/repo"),
 			Packages: []*RepoDependencies{
 				{
-					Name:        String("rubygems:rails"),
-					VersionInfo: String("1.0.0"),
+					Name:        Ptr("rubygems:rails"),
+					VersionInfo: Ptr("1.0.0"),
 				},
 			},
 		},

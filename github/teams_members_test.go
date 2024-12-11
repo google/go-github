@@ -32,7 +32,7 @@ func TestTeamsService__ListTeamMembersByID(t *testing.T) {
 		t.Errorf("Teams.ListTeamMembersByID returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}}
+	want := []*User{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(members, want) {
 		t.Errorf("Teams.ListTeamMembersByID returned %+v, want %+v", members, want)
 	}
@@ -107,7 +107,7 @@ func TestTeamsService__ListTeamMembersBySlug(t *testing.T) {
 		t.Errorf("Teams.ListTeamMembersBySlug returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}}
+	want := []*User{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(members, want) {
 		t.Errorf("Teams.ListTeamMembersBySlug returned %+v, want %+v", members, want)
 	}
@@ -189,7 +189,7 @@ func TestTeamsService__GetTeamMembershipByID(t *testing.T) {
 		t.Errorf("Teams.GetTeamMembershipByID returned error: %v", err)
 	}
 
-	want := &Membership{URL: String("u"), State: String("active")}
+	want := &Membership{URL: Ptr("u"), State: Ptr("active")}
 	if !cmp.Equal(membership, want) {
 		t.Errorf("Teams.GetTeamMembershipByID returned %+v, want %+v", membership, want)
 	}
@@ -260,7 +260,7 @@ func TestTeamsService__GetTeamMembershipBySlug(t *testing.T) {
 		t.Errorf("Teams.GetTeamMembershipBySlug returned error: %v", err)
 	}
 
-	want := &Membership{URL: String("u"), State: String("active")}
+	want := &Membership{URL: Ptr("u"), State: Ptr("active")}
 	if !cmp.Equal(membership, want) {
 		t.Errorf("Teams.GetTeamMembershipBySlug returned %+v, want %+v", membership, want)
 	}
@@ -349,7 +349,7 @@ func TestTeamsService__AddTeamMembershipByID(t *testing.T) {
 		t.Errorf("Teams.AddTeamMembershipByID returned error: %v", err)
 	}
 
-	want := &Membership{URL: String("u"), State: String("pending")}
+	want := &Membership{URL: Ptr("u"), State: Ptr("pending")}
 	if !cmp.Equal(membership, want) {
 		t.Errorf("Teams.AddTeamMembershipByID returned %+v, want %+v", membership, want)
 	}
@@ -438,7 +438,7 @@ func TestTeamsService__AddTeamMembershipBySlug(t *testing.T) {
 		t.Errorf("Teams.AddTeamMembershipBySlug returned error: %v", err)
 	}
 
-	want := &Membership{URL: String("u"), State: String("pending")}
+	want := &Membership{URL: Ptr("u"), State: Ptr("pending")}
 	if !cmp.Equal(membership, want) {
 		t.Errorf("Teams.AddTeamMembershipBySlug returned %+v, want %+v", membership, want)
 	}
@@ -648,7 +648,7 @@ func TestTeamsService__ListPendingTeamInvitationsByID(t *testing.T) {
 		t.Errorf("Teams.ListPendingTeamInvitationsByID returned error: %v", err)
 	}
 
-	want := []*Invitation{{ID: Int64(1)}}
+	want := []*Invitation{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(invitations, want) {
 		t.Errorf("Teams.ListPendingTeamInvitationsByID returned %+v, want %+v", invitations, want)
 	}
@@ -723,7 +723,7 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug(t *testing.T) {
 		t.Errorf("Teams.ListPendingTeamInvitationsByID returned error: %v", err)
 	}
 
-	want := []*Invitation{{ID: Int64(1)}}
+	want := []*Invitation{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(invitations, want) {
 		t.Errorf("Teams.ListPendingTeamInvitationsByID returned %+v, want %+v", invitations, want)
 	}

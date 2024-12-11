@@ -93,7 +93,7 @@ func deleteSubscription(t *testing.T) {
 
 func createSubscription(t *testing.T) {
 	// watch the target repository
-	sub := &github.Subscription{Subscribed: github.Bool(true)}
+	sub := &github.Subscription{Subscribed: github.Ptr(true)}
 	_, _, err := client.Activity.SetRepositorySubscription(context.Background(), owner, repo, sub)
 	if err != nil {
 		t.Fatalf("Activity.SetRepositorySubscription returned error: %v", err)

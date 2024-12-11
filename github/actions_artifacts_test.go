@@ -32,7 +32,7 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 	})
 
 	opts := &ListArtifactsOptions{
-		Name:        String("TheArtifact"),
+		Name:        Ptr("TheArtifact"),
 		ListOptions: ListOptions{Page: 2},
 	}
 	ctx := context.Background()
@@ -41,7 +41,7 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 		t.Errorf("Actions.ListArtifacts returned error: %v", err)
 	}
 
-	want := &ArtifactList{TotalCount: Int64(1), Artifacts: []*Artifact{{ID: Int64(1)}}}
+	want := &ArtifactList{TotalCount: Ptr(int64(1)), Artifacts: []*Artifact{{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(artifacts, want) {
 		t.Errorf("Actions.ListArtifacts returned %+v, want %+v", artifacts, want)
 	}
@@ -123,7 +123,7 @@ func TestActionsService_ListWorkflowRunArtifacts(t *testing.T) {
 		t.Errorf("Actions.ListWorkflowRunArtifacts returned error: %v", err)
 	}
 
-	want := &ArtifactList{TotalCount: Int64(1), Artifacts: []*Artifact{{ID: Int64(1)}}}
+	want := &ArtifactList{TotalCount: Ptr(int64(1)), Artifacts: []*Artifact{{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(artifacts, want) {
 		t.Errorf("Actions.ListWorkflowRunArtifacts returned %+v, want %+v", artifacts, want)
 	}
@@ -205,11 +205,11 @@ func TestActionsService_GetArtifact(t *testing.T) {
 	}
 
 	want := &Artifact{
-		ID:                 Int64(1),
-		NodeID:             String("xyz"),
-		Name:               String("a"),
-		SizeInBytes:        Int64(5),
-		ArchiveDownloadURL: String("u"),
+		ID:                 Ptr(int64(1)),
+		NodeID:             Ptr("xyz"),
+		Name:               Ptr("a"),
+		SizeInBytes:        Ptr(int64(5)),
+		ArchiveDownloadURL: Ptr("u"),
 	}
 	if !cmp.Equal(artifact, want) {
 		t.Errorf("Actions.GetArtifact returned %+v, want %+v", artifact, want)
@@ -438,22 +438,22 @@ func TestArtifact_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Artifact{}, "{}")
 
 	u := &Artifact{
-		ID:                 Int64(1),
-		NodeID:             String("nid"),
-		Name:               String("n"),
-		SizeInBytes:        Int64(1),
-		URL:                String("u"),
-		ArchiveDownloadURL: String("a"),
-		Expired:            Bool(false),
+		ID:                 Ptr(int64(1)),
+		NodeID:             Ptr("nid"),
+		Name:               Ptr("n"),
+		SizeInBytes:        Ptr(int64(1)),
+		URL:                Ptr("u"),
+		ArchiveDownloadURL: Ptr("a"),
+		Expired:            Ptr(false),
 		CreatedAt:          &Timestamp{referenceTime},
 		UpdatedAt:          &Timestamp{referenceTime},
 		ExpiresAt:          &Timestamp{referenceTime},
 		WorkflowRun: &ArtifactWorkflowRun{
-			ID:               Int64(1),
-			RepositoryID:     Int64(1),
-			HeadRepositoryID: Int64(1),
-			HeadBranch:       String("b"),
-			HeadSHA:          String("s"),
+			ID:               Ptr(int64(1)),
+			RepositoryID:     Ptr(int64(1)),
+			HeadRepositoryID: Ptr(int64(1)),
+			HeadBranch:       Ptr("b"),
+			HeadSHA:          Ptr("s"),
 		},
 	}
 
@@ -485,25 +485,25 @@ func TestArtifactList_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ArtifactList{}, "{}")
 
 	u := &ArtifactList{
-		TotalCount: Int64(1),
+		TotalCount: Ptr(int64(1)),
 		Artifacts: []*Artifact{
 			{
-				ID:                 Int64(1),
-				NodeID:             String("nid"),
-				Name:               String("n"),
-				SizeInBytes:        Int64(1),
-				URL:                String("u"),
-				ArchiveDownloadURL: String("a"),
-				Expired:            Bool(false),
+				ID:                 Ptr(int64(1)),
+				NodeID:             Ptr("nid"),
+				Name:               Ptr("n"),
+				SizeInBytes:        Ptr(int64(1)),
+				URL:                Ptr("u"),
+				ArchiveDownloadURL: Ptr("a"),
+				Expired:            Ptr(false),
 				CreatedAt:          &Timestamp{referenceTime},
 				UpdatedAt:          &Timestamp{referenceTime},
 				ExpiresAt:          &Timestamp{referenceTime},
 				WorkflowRun: &ArtifactWorkflowRun{
-					ID:               Int64(1),
-					RepositoryID:     Int64(1),
-					HeadRepositoryID: Int64(1),
-					HeadBranch:       String("b"),
-					HeadSHA:          String("s"),
+					ID:               Ptr(int64(1)),
+					RepositoryID:     Ptr(int64(1)),
+					HeadRepositoryID: Ptr(int64(1)),
+					HeadBranch:       Ptr("b"),
+					HeadSHA:          Ptr("s"),
 				},
 			},
 		},

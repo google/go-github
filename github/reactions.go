@@ -98,7 +98,7 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
 
-	body := &Reaction{Content: String(content)}
+	body := &Reaction{Content: Ptr(content)}
 	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -178,7 +178,7 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo string, number int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions", owner, repo, number)
 
-	body := &Reaction{Content: String(content)}
+	body := &Reaction{Content: Ptr(content)}
 	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -258,7 +258,7 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
 
-	body := &Reaction{Content: String(content)}
+	body := &Reaction{Content: Ptr(content)}
 	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -338,7 +338,7 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
 
-	body := &Reaction{Content: String(content)}
+	body := &Reaction{Content: Ptr(content)}
 	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -415,7 +415,7 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, teamID int64, discussionNumber int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
 
-	body := &Reaction{Content: String(content)}
+	body := &Reaction{Content: Ptr(content)}
 	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -490,7 +490,7 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Context, teamID int64, discussionNumber, commentNumber int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
 
-	body := &Reaction{Content: String(content)}
+	body := &Reaction{Content: Ptr(content)}
 	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -552,7 +552,7 @@ func (s *ReactionsService) deleteReaction(ctx context.Context, url string) (*Res
 func (s *ReactionsService) CreateReleaseReaction(ctx context.Context, owner, repo string, releaseID int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/%v/reactions", owner, repo, releaseID)
 
-	body := &Reaction{Content: String(content)}
+	body := &Reaction{Content: Ptr(content)}
 	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
 		return nil, nil, err

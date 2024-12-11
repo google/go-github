@@ -269,11 +269,11 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 		"Valid required_status_checks params": {
 			data: `{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test","integration_id":1}],"strict_required_status_checks_policy":true,"do_not_enforce_on_create":true}}`,
 			want: NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
-				DoNotEnforceOnCreate: Bool(true),
+				DoNotEnforceOnCreate: Ptr(true),
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
 					{
 						Context:       "test",
-						IntegrationID: Int64(1),
+						IntegrationID: Ptr(int64(1)),
 					},
 				},
 				StrictRequiredStatusChecksPolicy: true,
@@ -300,7 +300,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 				RequiredWorkflows: []*RuleRequiredWorkflow{
 					{
 						Path:         ".github/workflows/test.yml",
-						RepositoryID: Int64(1),
+						RepositoryID: Ptr(int64(1)),
 					},
 				},
 			}),
@@ -541,18 +541,18 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 
 	want := []*Ruleset{
 		{
-			ID:          Int64(42),
+			ID:          Ptr(int64(42)),
 			Name:        "ruleset",
-			SourceType:  String("Repository"),
+			SourceType:  Ptr("Repository"),
 			Source:      "o/repo",
 			Enforcement: "enabled",
 			CreatedAt:   &Timestamp{referenceTime},
 			UpdatedAt:   &Timestamp{referenceTime},
 		},
 		{
-			ID:          Int64(314),
+			ID:          Ptr(int64(314)),
 			Name:        "Another ruleset",
-			SourceType:  String("Repository"),
+			SourceType:  Ptr("Repository"),
 			Source:      "o/repo",
 			Enforcement: "enabled",
 			CreatedAt:   &Timestamp{referenceTime},
@@ -599,9 +599,9 @@ func TestRepositoriesService_CreateRuleset(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          Int64(42),
+		ID:          Ptr(int64(42)),
 		Name:        "ruleset",
-		SourceType:  String("Repository"),
+		SourceType:  Ptr("Repository"),
 		Source:      "o/repo",
 		Enforcement: "enabled",
 	}
@@ -672,11 +672,11 @@ func TestRepositoriesService_CreateRulesetWithPushRules(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          Int64(42),
+		ID:          Ptr(int64(42)),
 		Name:        "ruleset",
-		SourceType:  String("Repository"),
+		SourceType:  Ptr("Repository"),
 		Source:      "o/repo",
-		Target:      String("push"),
+		Target:      Ptr("push"),
 		Enforcement: "enabled",
 		Rules: []*RepositoryRule{
 			NewFilePathRestrictionRule(&RuleFileParameters{
@@ -732,9 +732,9 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          Int64(42),
+		ID:          Ptr(int64(42)),
 		Name:        "ruleset",
-		SourceType:  String("Organization"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "enabled",
 		CreatedAt:   &Timestamp{referenceTime},
@@ -785,9 +785,9 @@ func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          Int64(42),
+		ID:          Ptr(int64(42)),
 		Name:        "ruleset",
-		SourceType:  String("Repository"),
+		SourceType:  Ptr("Repository"),
 		Source:      "o/repo",
 		Enforcement: "enabled",
 	}
@@ -832,9 +832,9 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          Int64(42),
+		ID:          Ptr(int64(42)),
 		Name:        "ruleset",
-		SourceType:  String("Repository"),
+		SourceType:  Ptr("Repository"),
 		Source:      "o/repo",
 		Enforcement: "enabled",
 	}

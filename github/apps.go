@@ -425,7 +425,7 @@ func (s *AppsService) CreateInstallationTokenListRepos(ctx context.Context, id i
 //meta:operation POST /repos/{owner}/{repo}/content_references/{content_reference_id}/attachments
 func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID int64, title, body string) (*Attachment, *Response, error) {
 	u := fmt.Sprintf("content_references/%v/attachments", contentReferenceID)
-	payload := &Attachment{Title: String(title), Body: String(body)}
+	payload := &Attachment{Title: Ptr(title), Body: Ptr(body)}
 	req, err := s.client.NewRequest("POST", u, payload)
 	if err != nil {
 		return nil, nil, err

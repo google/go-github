@@ -43,7 +43,7 @@ func TestEnterpriseService_GenerateEnterpriseJITConfig(t *testing.T) {
 		t.Errorf("Enterprise.GenerateEnterpriseJITConfig returned error: %v", err)
 	}
 
-	want := &JITRunnerConfig{EncodedJITConfig: String("foo")}
+	want := &JITRunnerConfig{EncodedJITConfig: Ptr("foo")}
 	if !cmp.Equal(jitConfig, want) {
 		t.Errorf("Enterprise.GenerateEnterpriseJITConfig returned %+v, want %+v", jitConfig, want)
 	}
@@ -78,7 +78,7 @@ func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
 		t.Errorf("Enterprise.CreateRegistrationToken returned error: %v", err)
 	}
 
-	want := &RegistrationToken{Token: String("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
+	want := &RegistrationToken{Token: Ptr("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
 		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
 			123000000, time.UTC)}}
 	if !cmp.Equal(token, want) {
@@ -111,7 +111,7 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 	})
 
 	opts := &ListRunnersOptions{
-		Name:        String("MBP"),
+		Name:        Ptr("MBP"),
 		ListOptions: ListOptions{Page: 2, PerPage: 2},
 	}
 	ctx := context.Background()
@@ -123,7 +123,7 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 	want := &Runners{
 		TotalCount: 1,
 		Runners: []*Runner{
-			{ID: Int64(23), Name: String("MBP"), OS: String("macos"), Status: String("online")},
+			{ID: Ptr(int64(23)), Name: Ptr("MBP"), OS: Ptr("macos"), Status: Ptr("online")},
 		},
 	}
 	if !cmp.Equal(runners, want) {
@@ -161,10 +161,10 @@ func TestEnterpriseService_GetRunner(t *testing.T) {
 	}
 
 	want := &Runner{
-		ID:     Int64(23),
-		Name:   String("MBP"),
-		OS:     String("macos"),
-		Status: String("online"),
+		ID:     Ptr(int64(23)),
+		Name:   Ptr("MBP"),
+		OS:     Ptr("macos"),
+		Status: Ptr("online"),
 	}
 	if !cmp.Equal(runner, want) {
 		t.Errorf("Enterprise.GetRunner returned %+v, want %+v", runner, want)
@@ -226,11 +226,11 @@ func TestEnterpriseService_ListRunnerApplicationDownloads(t *testing.T) {
 	}
 
 	want := []*RunnerApplicationDownload{
-		{OS: String("osx"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz"), Filename: String("actions-runner-osx-x64-2.164.0.tar.gz")},
-		{OS: String("linux"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz"), Filename: String("actions-runner-linux-x64-2.164.0.tar.gz")},
-		{OS: String("linux"), Architecture: String("arm"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz"), Filename: String("actions-runner-linux-arm-2.164.0.tar.gz")},
-		{OS: String("win"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: String("actions-runner-win-x64-2.164.0.zip")},
-		{OS: String("linux"), Architecture: String("arm64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: String("actions-runner-linux-arm64-2.164.0.tar.gz")},
+		{OS: Ptr("osx"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-osx-x64-2.164.0.tar.gz")},
+		{OS: Ptr("linux"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-x64-2.164.0.tar.gz")},
+		{OS: Ptr("linux"), Architecture: Ptr("arm"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-arm-2.164.0.tar.gz")},
+		{OS: Ptr("win"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: Ptr("actions-runner-win-x64-2.164.0.zip")},
+		{OS: Ptr("linux"), Architecture: Ptr("arm64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-arm64-2.164.0.tar.gz")},
 	}
 	if !cmp.Equal(downloads, want) {
 		t.Errorf("Enterprise.ListRunnerApplicationDownloads returned %+v, want %+v", downloads, want)

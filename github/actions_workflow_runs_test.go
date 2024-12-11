@@ -35,10 +35,10 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 	}
 
 	want := &WorkflowRuns{
-		TotalCount: Int(4),
+		TotalCount: Ptr(4),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Int64(399444496), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Int64(399444497), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(runs, want) {
@@ -78,10 +78,10 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 	}
 
 	want := &WorkflowRuns{
-		TotalCount: Int(4),
+		TotalCount: Ptr(4),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Int64(399444496), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Int64(399444497), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(runs, want) {
@@ -119,8 +119,8 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 	}
 
 	want := &WorkflowRun{
-		ID:        Int64(399444496),
-		RunNumber: Int(296),
+		ID:        Ptr(int64(399444496)),
+		RunNumber: Ptr(296),
 		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
@@ -154,7 +154,7 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 		fmt.Fprint(w, `{"id":399444496,"run_number":296,"run_attempt":3,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}}`)
 	})
 
-	opts := &WorkflowRunAttemptOptions{ExcludePullRequests: Bool(true)}
+	opts := &WorkflowRunAttemptOptions{ExcludePullRequests: Ptr(true)}
 	ctx := context.Background()
 	runs, _, err := client.Actions.GetWorkflowRunAttempt(ctx, "o", "r", 29679449, 3, opts)
 	if err != nil {
@@ -162,9 +162,9 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 	}
 
 	want := &WorkflowRun{
-		ID:         Int64(399444496),
-		RunNumber:  Int(296),
-		RunAttempt: Int(3),
+		ID:         Ptr(int64(399444496)),
+		RunNumber:  Ptr(296),
+		RunAttempt: Ptr(3),
 		CreatedAt:  &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt:  &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
@@ -491,10 +491,10 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 	}
 
 	expected := &WorkflowRuns{
-		TotalCount: Int(2),
+		TotalCount: Ptr(2),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Int64(298499444), RunNumber: Int(301), CreatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}},
-			{ID: Int64(298499445), RunNumber: Int(302), CreatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}},
+			{ID: Ptr(int64(298499444)), RunNumber: Ptr(301), CreatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}},
+			{ID: Ptr(int64(298499445)), RunNumber: Ptr(302), CreatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}},
 		},
 	}
 
@@ -577,26 +577,26 @@ func TestPendingDeployment_Marshal(t *testing.T) {
 
 	u := &PendingDeployment{
 		Environment: &PendingDeploymentEnvironment{
-			ID:      Int64(1),
-			NodeID:  String("nid"),
-			Name:    String("n"),
-			URL:     String("u"),
-			HTMLURL: String("hu"),
+			ID:      Ptr(int64(1)),
+			NodeID:  Ptr("nid"),
+			Name:    Ptr("n"),
+			URL:     Ptr("u"),
+			HTMLURL: Ptr("hu"),
 		},
-		WaitTimer:             Int64(100),
+		WaitTimer:             Ptr(int64(100)),
 		WaitTimerStartedAt:    &Timestamp{referenceTime},
-		CurrentUserCanApprove: Bool(false),
+		CurrentUserCanApprove: Ptr(false),
 		Reviewers: []*RequiredReviewer{
 			{
-				Type: String("User"),
+				Type: Ptr("User"),
 				Reviewer: &User{
-					Login: String("l"),
+					Login: Ptr("l"),
 				},
 			},
 			{
-				Type: String("Team"),
+				Type: Ptr("Team"),
 				Reviewer: &Team{
-					Name: String("n"),
+					Name: Ptr("n"),
 				},
 			},
 		},
@@ -697,35 +697,35 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 	want := &WorkflowRunUsage{
 		Billable: &WorkflowRunBillMap{
 			"UBUNTU": &WorkflowRunBill{
-				TotalMS: Int64(180000),
-				Jobs:    Int(1),
+				TotalMS: Ptr(int64(180000)),
+				Jobs:    Ptr(1),
 				JobRuns: []*WorkflowRunJobRun{
 					{
-						JobID:      Int(1),
-						DurationMS: Int64(60000),
+						JobID:      Ptr(1),
+						DurationMS: Ptr(int64(60000)),
 					},
 				},
 			},
 			"MACOS": &WorkflowRunBill{
-				TotalMS: Int64(240000),
-				Jobs:    Int(2),
+				TotalMS: Ptr(int64(240000)),
+				Jobs:    Ptr(2),
 				JobRuns: []*WorkflowRunJobRun{
 					{
-						JobID:      Int(2),
-						DurationMS: Int64(30000),
+						JobID:      Ptr(2),
+						DurationMS: Ptr(int64(30000)),
 					},
 					{
-						JobID:      Int(3),
-						DurationMS: Int64(10000),
+						JobID:      Ptr(3),
+						DurationMS: Ptr(int64(10000)),
 					},
 				},
 			},
 			"WINDOWS": &WorkflowRunBill{
-				TotalMS: Int64(300000),
-				Jobs:    Int(2),
+				TotalMS: Ptr(int64(300000)),
+				Jobs:    Ptr(2),
 			},
 		},
-		RunDurationMS: Int64(500000),
+		RunDurationMS: Ptr(int64(500000)),
 	}
 
 	if !cmp.Equal(workflowRunUsage, want) {
@@ -752,41 +752,41 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WorkflowRun{}, "{}")
 
 	u := &WorkflowRun{
-		ID:         Int64(1),
-		Name:       String("n"),
-		NodeID:     String("nid"),
-		HeadBranch: String("hb"),
-		HeadSHA:    String("hs"),
-		Path:       String("p"),
-		RunNumber:  Int(1),
-		RunAttempt: Int(1),
-		Event:      String("e"),
-		Status:     String("s"),
-		Conclusion: String("c"),
-		WorkflowID: Int64(1),
-		URL:        String("u"),
-		HTMLURL:    String("h"),
+		ID:         Ptr(int64(1)),
+		Name:       Ptr("n"),
+		NodeID:     Ptr("nid"),
+		HeadBranch: Ptr("hb"),
+		HeadSHA:    Ptr("hs"),
+		Path:       Ptr("p"),
+		RunNumber:  Ptr(1),
+		RunAttempt: Ptr(1),
+		Event:      Ptr("e"),
+		Status:     Ptr("s"),
+		Conclusion: Ptr("c"),
+		WorkflowID: Ptr(int64(1)),
+		URL:        Ptr("u"),
+		HTMLURL:    Ptr("h"),
 		PullRequests: []*PullRequest{
 			{
-				URL:    String("u"),
-				ID:     Int64(1),
-				Number: Int(1),
+				URL:    Ptr("u"),
+				ID:     Ptr(int64(1)),
+				Number: Ptr(1),
 				Head: &PullRequestBranch{
-					Ref: String("r"),
-					SHA: String("s"),
+					Ref: Ptr("r"),
+					SHA: Ptr("s"),
 					Repo: &Repository{
-						ID:   Int64(1),
-						URL:  String("s"),
-						Name: String("n"),
+						ID:   Ptr(int64(1)),
+						URL:  Ptr("s"),
+						Name: Ptr("n"),
 					},
 				},
 				Base: &PullRequestBranch{
-					Ref: String("r"),
-					SHA: String("s"),
+					Ref: Ptr("r"),
+					SHA: Ptr("s"),
 					Repo: &Repository{
-						ID:   Int64(1),
-						URL:  String("u"),
-						Name: String("n"),
+						ID:   Ptr(int64(1)),
+						URL:  Ptr("u"),
+						Name: Ptr("n"),
 					},
 				},
 			},
@@ -794,88 +794,88 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 		CreatedAt:          &Timestamp{referenceTime},
 		UpdatedAt:          &Timestamp{referenceTime},
 		RunStartedAt:       &Timestamp{referenceTime},
-		JobsURL:            String("j"),
-		LogsURL:            String("l"),
-		CheckSuiteURL:      String("c"),
-		ArtifactsURL:       String("a"),
-		CancelURL:          String("c"),
-		RerunURL:           String("r"),
-		PreviousAttemptURL: String("p"),
+		JobsURL:            Ptr("j"),
+		LogsURL:            Ptr("l"),
+		CheckSuiteURL:      Ptr("c"),
+		ArtifactsURL:       Ptr("a"),
+		CancelURL:          Ptr("c"),
+		RerunURL:           Ptr("r"),
+		PreviousAttemptURL: Ptr("p"),
 		HeadCommit: &HeadCommit{
-			Message: String("m"),
+			Message: Ptr("m"),
 			Author: &CommitAuthor{
-				Name:  String("n"),
-				Email: String("e"),
-				Login: String("l"),
+				Name:  Ptr("n"),
+				Email: Ptr("e"),
+				Login: Ptr("l"),
 			},
-			URL:       String("u"),
-			Distinct:  Bool(false),
-			SHA:       String("s"),
-			ID:        String("i"),
-			TreeID:    String("tid"),
+			URL:       Ptr("u"),
+			Distinct:  Ptr(false),
+			SHA:       Ptr("s"),
+			ID:        Ptr("i"),
+			TreeID:    Ptr("tid"),
 			Timestamp: &Timestamp{referenceTime},
 			Committer: &CommitAuthor{
-				Name:  String("n"),
-				Email: String("e"),
-				Login: String("l"),
+				Name:  Ptr("n"),
+				Email: Ptr("e"),
+				Login: Ptr("l"),
 			},
 		},
-		WorkflowURL: String("w"),
+		WorkflowURL: Ptr("w"),
 		Repository: &Repository{
-			ID:   Int64(1),
-			URL:  String("u"),
-			Name: String("n"),
+			ID:   Ptr(int64(1)),
+			URL:  Ptr("u"),
+			Name: Ptr("n"),
 		},
 		HeadRepository: &Repository{
-			ID:   Int64(1),
-			URL:  String("u"),
-			Name: String("n"),
+			ID:   Ptr(int64(1)),
+			URL:  Ptr("u"),
+			Name: Ptr("n"),
 		},
 		Actor: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
-			URL:             String("u"),
+			URL:             Ptr("u"),
 		},
 		TriggeringActor: &User{
-			Login:           String("l2"),
-			ID:              Int64(2),
-			AvatarURL:       String("a2"),
-			GravatarID:      String("g2"),
-			Name:            String("n2"),
-			Company:         String("c2"),
-			Blog:            String("b2"),
-			Location:        String("l2"),
-			Email:           String("e2"),
-			Hireable:        Bool(false),
-			Bio:             String("b2"),
-			TwitterUsername: String("t2"),
-			PublicRepos:     Int(2),
-			Followers:       Int(2),
-			Following:       Int(2),
+			Login:           Ptr("l2"),
+			ID:              Ptr(int64(2)),
+			AvatarURL:       Ptr("a2"),
+			GravatarID:      Ptr("g2"),
+			Name:            Ptr("n2"),
+			Company:         Ptr("c2"),
+			Blog:            Ptr("b2"),
+			Location:        Ptr("l2"),
+			Email:           Ptr("e2"),
+			Hireable:        Ptr(false),
+			Bio:             Ptr("b2"),
+			TwitterUsername: Ptr("t2"),
+			PublicRepos:     Ptr(2),
+			Followers:       Ptr(2),
+			Following:       Ptr(2),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
-			URL:             String("u2"),
+			URL:             Ptr("u2"),
 		},
 		ReferencedWorkflows: []*ReferencedWorkflow{
 			{
-				Path: String("rwfp"),
-				SHA:  String("rwfsha"),
-				Ref:  String("rwfref"),
+				Path: Ptr("rwfp"),
+				SHA:  Ptr("rwfsha"),
+				Ref:  Ptr("rwfref"),
 			},
 		},
 	}
@@ -1017,43 +1017,43 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WorkflowRuns{}, "{}")
 
 	u := &WorkflowRuns{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		WorkflowRuns: []*WorkflowRun{
 			{
-				ID:         Int64(1),
-				Name:       String("n"),
-				NodeID:     String("nid"),
-				HeadBranch: String("hb"),
-				HeadSHA:    String("hs"),
-				RunNumber:  Int(1),
-				RunAttempt: Int(1),
-				Event:      String("e"),
-				Status:     String("s"),
-				Conclusion: String("c"),
-				WorkflowID: Int64(1),
-				URL:        String("u"),
-				HTMLURL:    String("h"),
+				ID:         Ptr(int64(1)),
+				Name:       Ptr("n"),
+				NodeID:     Ptr("nid"),
+				HeadBranch: Ptr("hb"),
+				HeadSHA:    Ptr("hs"),
+				RunNumber:  Ptr(1),
+				RunAttempt: Ptr(1),
+				Event:      Ptr("e"),
+				Status:     Ptr("s"),
+				Conclusion: Ptr("c"),
+				WorkflowID: Ptr(int64(1)),
+				URL:        Ptr("u"),
+				HTMLURL:    Ptr("h"),
 				PullRequests: []*PullRequest{
 					{
-						URL:    String("u"),
-						ID:     Int64(1),
-						Number: Int(1),
+						URL:    Ptr("u"),
+						ID:     Ptr(int64(1)),
+						Number: Ptr(1),
 						Head: &PullRequestBranch{
-							Ref: String("r"),
-							SHA: String("s"),
+							Ref: Ptr("r"),
+							SHA: Ptr("s"),
 							Repo: &Repository{
-								ID:   Int64(1),
-								URL:  String("s"),
-								Name: String("n"),
+								ID:   Ptr(int64(1)),
+								URL:  Ptr("s"),
+								Name: Ptr("n"),
 							},
 						},
 						Base: &PullRequestBranch{
-							Ref: String("r"),
-							SHA: String("s"),
+							Ref: Ptr("r"),
+							SHA: Ptr("s"),
 							Repo: &Repository{
-								ID:   Int64(1),
-								URL:  String("u"),
-								Name: String("n"),
+								ID:   Ptr(int64(1)),
+								URL:  Ptr("u"),
+								Name: Ptr("n"),
 							},
 						},
 					},
@@ -1061,82 +1061,82 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 				CreatedAt:          &Timestamp{referenceTime},
 				UpdatedAt:          &Timestamp{referenceTime},
 				RunStartedAt:       &Timestamp{referenceTime},
-				JobsURL:            String("j"),
-				LogsURL:            String("l"),
-				CheckSuiteURL:      String("c"),
-				ArtifactsURL:       String("a"),
-				CancelURL:          String("c"),
-				RerunURL:           String("r"),
-				PreviousAttemptURL: String("p"),
+				JobsURL:            Ptr("j"),
+				LogsURL:            Ptr("l"),
+				CheckSuiteURL:      Ptr("c"),
+				ArtifactsURL:       Ptr("a"),
+				CancelURL:          Ptr("c"),
+				RerunURL:           Ptr("r"),
+				PreviousAttemptURL: Ptr("p"),
 				HeadCommit: &HeadCommit{
-					Message: String("m"),
+					Message: Ptr("m"),
 					Author: &CommitAuthor{
-						Name:  String("n"),
-						Email: String("e"),
-						Login: String("l"),
+						Name:  Ptr("n"),
+						Email: Ptr("e"),
+						Login: Ptr("l"),
 					},
-					URL:       String("u"),
-					Distinct:  Bool(false),
-					SHA:       String("s"),
-					ID:        String("i"),
-					TreeID:    String("tid"),
+					URL:       Ptr("u"),
+					Distinct:  Ptr(false),
+					SHA:       Ptr("s"),
+					ID:        Ptr("i"),
+					TreeID:    Ptr("tid"),
 					Timestamp: &Timestamp{referenceTime},
 					Committer: &CommitAuthor{
-						Name:  String("n"),
-						Email: String("e"),
-						Login: String("l"),
+						Name:  Ptr("n"),
+						Email: Ptr("e"),
+						Login: Ptr("l"),
 					},
 				},
-				WorkflowURL: String("w"),
+				WorkflowURL: Ptr("w"),
 				Repository: &Repository{
-					ID:   Int64(1),
-					URL:  String("u"),
-					Name: String("n"),
+					ID:   Ptr(int64(1)),
+					URL:  Ptr("u"),
+					Name: Ptr("n"),
 				},
 				HeadRepository: &Repository{
-					ID:   Int64(1),
-					URL:  String("u"),
-					Name: String("n"),
+					ID:   Ptr(int64(1)),
+					URL:  Ptr("u"),
+					Name: Ptr("n"),
 				},
 				Actor: &User{
-					Login:           String("l"),
-					ID:              Int64(1),
-					AvatarURL:       String("a"),
-					GravatarID:      String("g"),
-					Name:            String("n"),
-					Company:         String("c"),
-					Blog:            String("b"),
-					Location:        String("l"),
-					Email:           String("e"),
-					Hireable:        Bool(true),
-					Bio:             String("b"),
-					TwitterUsername: String("t"),
-					PublicRepos:     Int(1),
-					Followers:       Int(1),
-					Following:       Int(1),
+					Login:           Ptr("l"),
+					ID:              Ptr(int64(1)),
+					AvatarURL:       Ptr("a"),
+					GravatarID:      Ptr("g"),
+					Name:            Ptr("n"),
+					Company:         Ptr("c"),
+					Blog:            Ptr("b"),
+					Location:        Ptr("l"),
+					Email:           Ptr("e"),
+					Hireable:        Ptr(true),
+					Bio:             Ptr("b"),
+					TwitterUsername: Ptr("t"),
+					PublicRepos:     Ptr(1),
+					Followers:       Ptr(1),
+					Following:       Ptr(1),
 					CreatedAt:       &Timestamp{referenceTime},
 					SuspendedAt:     &Timestamp{referenceTime},
-					URL:             String("u"),
+					URL:             Ptr("u"),
 				},
 				TriggeringActor: &User{
-					Login:           String("l2"),
-					ID:              Int64(2),
-					AvatarURL:       String("a2"),
-					GravatarID:      String("g2"),
-					Name:            String("n2"),
-					Company:         String("c2"),
-					Blog:            String("b2"),
-					Location:        String("l2"),
-					Email:           String("e2"),
-					Hireable:        Bool(false),
-					Bio:             String("b2"),
-					TwitterUsername: String("t2"),
-					PublicRepos:     Int(2),
-					Followers:       Int(2),
-					Following:       Int(2),
+					Login:           Ptr("l2"),
+					ID:              Ptr(int64(2)),
+					AvatarURL:       Ptr("a2"),
+					GravatarID:      Ptr("g2"),
+					Name:            Ptr("n2"),
+					Company:         Ptr("c2"),
+					Blog:            Ptr("b2"),
+					Location:        Ptr("l2"),
+					Email:           Ptr("e2"),
+					Hireable:        Ptr(false),
+					Bio:             Ptr("b2"),
+					TwitterUsername: Ptr("t2"),
+					PublicRepos:     Ptr(2),
+					Followers:       Ptr(2),
+					Following:       Ptr(2),
 					CreatedAt:       &Timestamp{referenceTime},
 					SuspendedAt:     &Timestamp{referenceTime},
-					URL:             String("u2"),
+					URL:             Ptr("u2"),
 				},
 			},
 		},
@@ -1276,8 +1276,8 @@ func TestWorkflowRunBill_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WorkflowRunBill{}, "{}")
 
 	u := &WorkflowRunBill{
-		TotalMS: Int64(1),
-		Jobs:    Int(1),
+		TotalMS: Ptr(int64(1)),
+		Jobs:    Ptr(1),
 	}
 
 	want := `{
@@ -1294,16 +1294,16 @@ func TestWorkflowRunBillMap_Marshal(t *testing.T) {
 
 	u := &WorkflowRunBillMap{
 		"UBUNTU": &WorkflowRunBill{
-			TotalMS: Int64(1),
-			Jobs:    Int(1),
+			TotalMS: Ptr(int64(1)),
+			Jobs:    Ptr(1),
 		},
 		"MACOS": &WorkflowRunBill{
-			TotalMS: Int64(1),
-			Jobs:    Int(1),
+			TotalMS: Ptr(int64(1)),
+			Jobs:    Ptr(1),
 		},
 		"WINDOWS": &WorkflowRunBill{
-			TotalMS: Int64(1),
-			Jobs:    Int(1),
+			TotalMS: Ptr(int64(1)),
+			Jobs:    Ptr(1),
 		},
 	}
 
@@ -1332,19 +1332,19 @@ func TestWorkflowRunUsage_Marshal(t *testing.T) {
 	u := &WorkflowRunUsage{
 		Billable: &WorkflowRunBillMap{
 			"UBUNTU": &WorkflowRunBill{
-				TotalMS: Int64(1),
-				Jobs:    Int(1),
+				TotalMS: Ptr(int64(1)),
+				Jobs:    Ptr(1),
 			},
 			"MACOS": &WorkflowRunBill{
-				TotalMS: Int64(1),
-				Jobs:    Int(1),
+				TotalMS: Ptr(int64(1)),
+				Jobs:    Ptr(1),
 			},
 			"WINDOWS": &WorkflowRunBill{
-				TotalMS: Int64(1),
-				Jobs:    Int(1),
+				TotalMS: Ptr(int64(1)),
+				Jobs:    Ptr(1),
 			},
 		},
-		RunDurationMS: Int64(1),
+		RunDurationMS: Ptr(int64(1)),
 	}
 
 	want := `{
@@ -1392,7 +1392,7 @@ func TestActionService_PendingDeployments(t *testing.T) {
 		t.Errorf("Actions.PendingDeployments returned error: %v", err)
 	}
 
-	want := []*Deployment{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*Deployment{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if !cmp.Equal(deployments, want) {
 		t.Errorf("Actions.PendingDeployments returned %+v, want %+v", deployments, want)
 	}
@@ -1471,40 +1471,40 @@ func TestActionService_GetPendingDeployments(t *testing.T) {
 	want := []*PendingDeployment{
 		{
 			Environment: &PendingDeploymentEnvironment{
-				ID:      Int64(1),
-				NodeID:  String("nid"),
-				Name:    String("n"),
-				URL:     String("u"),
-				HTMLURL: String("hu"),
+				ID:      Ptr(int64(1)),
+				NodeID:  Ptr("nid"),
+				Name:    Ptr("n"),
+				URL:     Ptr("u"),
+				HTMLURL: Ptr("hu"),
 			},
-			WaitTimer:             Int64(0),
+			WaitTimer:             Ptr(int64(0)),
 			WaitTimerStartedAt:    &Timestamp{referenceTime},
-			CurrentUserCanApprove: Bool(false),
+			CurrentUserCanApprove: Ptr(false),
 			Reviewers:             []*RequiredReviewer{},
 		},
 		{
 			Environment: &PendingDeploymentEnvironment{
-				ID:      Int64(2),
-				NodeID:  String("nid"),
-				Name:    String("n"),
-				URL:     String("u"),
-				HTMLURL: String("hu"),
+				ID:      Ptr(int64(2)),
+				NodeID:  Ptr("nid"),
+				Name:    Ptr("n"),
+				URL:     Ptr("u"),
+				HTMLURL: Ptr("hu"),
 			},
-			WaitTimer:             Int64(13),
+			WaitTimer:             Ptr(int64(13)),
 			WaitTimerStartedAt:    &Timestamp{referenceTime},
-			CurrentUserCanApprove: Bool(true),
+			CurrentUserCanApprove: Ptr(true),
 			Reviewers: []*RequiredReviewer{
 				{
-					Type: String("User"),
+					Type: Ptr("User"),
 					Reviewer: &User{
-						Login: String("l"),
+						Login: Ptr("l"),
 					},
 				},
 				{
-					Type: String("Team"),
+					Type: Ptr("Team"),
 					Reviewer: &Team{
-						Name: String("t"),
-						Slug: String("s"),
+						Name: Ptr("t"),
+						Slug: Ptr("s"),
 					},
 				},
 			},

@@ -20,9 +20,9 @@ func TestRepositoriesService_Merge(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &RepositoryMergeRequest{
-		Base:          String("b"),
-		Head:          String("h"),
-		CommitMessage: String("c"),
+		Base:          Ptr("b"),
+		Head:          Ptr("h"),
+		CommitMessage: Ptr("c"),
 	}
 
 	mux.HandleFunc("/repos/o/r/merges", func(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +43,7 @@ func TestRepositoriesService_Merge(t *testing.T) {
 		t.Errorf("Repositories.Merge returned error: %v", err)
 	}
 
-	want := &RepositoryCommit{SHA: String("s")}
+	want := &RepositoryCommit{SHA: Ptr("s")}
 	if !cmp.Equal(commit, want) {
 		t.Errorf("Repositories.Merge returned %+v, want %+v", commit, want)
 	}
@@ -68,9 +68,9 @@ func TestRepositoryMergeRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepositoryMergeRequest{}, "{}")
 
 	u := &RepositoryMergeRequest{
-		Base:          String("base"),
-		Head:          String("head"),
-		CommitMessage: String("cm"),
+		Base:          Ptr("base"),
+		Head:          Ptr("head"),
+		CommitMessage: Ptr("cm"),
 	}
 
 	want := `{
@@ -87,7 +87,7 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &RepoMergeUpstreamRequest{
-		Branch: String("b"),
+		Branch: Ptr("b"),
 	}
 
 	mux.HandleFunc("/repos/o/r/merge-upstream", func(w http.ResponseWriter, r *http.Request) {
@@ -108,7 +108,7 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 		t.Errorf("Repositories.MergeUpstream returned error: %v", err)
 	}
 
-	want := &RepoMergeUpstreamResult{MergeType: String("m")}
+	want := &RepoMergeUpstreamResult{MergeType: Ptr("m")}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Repositories.MergeUpstream returned %+v, want %+v", result, want)
 	}
@@ -133,9 +133,9 @@ func TestRepoMergeUpstreamResult_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepoMergeUpstreamResult{}, "{}")
 
 	u := &RepoMergeUpstreamResult{
-		Message:    String("message"),
-		MergeType:  String("merge_type"),
-		BaseBranch: String("base_branch"),
+		Message:    Ptr("message"),
+		MergeType:  Ptr("merge_type"),
+		BaseBranch: Ptr("base_branch"),
 	}
 
 	want := `{

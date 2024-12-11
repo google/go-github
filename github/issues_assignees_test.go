@@ -32,7 +32,7 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 		t.Errorf("Issues.ListAssignees returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}}
+	want := []*User{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(assignees, want) {
 		t.Errorf("Issues.ListAssignees returned %+v, want %+v", assignees, want)
 	}
@@ -192,7 +192,7 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 		t.Errorf("Issues.AddAssignees returned error: %v", err)
 	}
 
-	want := &Issue{Number: Int(1), Assignees: []*User{{Login: String("user1")}, {Login: String("user2")}}}
+	want := &Issue{Number: Ptr(1), Assignees: []*User{{Login: Ptr("user1")}, {Login: Ptr("user2")}}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Issues.AddAssignees = %+v, want %+v", got, want)
 	}
@@ -236,7 +236,7 @@ func TestIssuesService_RemoveAssignees(t *testing.T) {
 		t.Errorf("Issues.RemoveAssignees returned error: %v", err)
 	}
 
-	want := &Issue{Number: Int(1), Assignees: []*User{}}
+	want := &Issue{Number: Ptr(1), Assignees: []*User{}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Issues.RemoveAssignees = %+v, want %+v", got, want)
 	}

@@ -20,7 +20,7 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &UserLDAPMapping{
-		LDAPDN: String("uid=asdf,ou=users,dc=github,dc=com"),
+		LDAPDN: Ptr("uid=asdf,ou=users,dc=github,dc=com"),
 	}
 
 	mux.HandleFunc("/admin/ldap/users/u/mapping", func(w http.ResponseWriter, r *http.Request) {
@@ -41,8 +41,8 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 	}
 
 	want := &UserLDAPMapping{
-		ID:     Int64(1),
-		LDAPDN: String("uid=asdf,ou=users,dc=github,dc=com"),
+		ID:     Ptr(int64(1)),
+		LDAPDN: Ptr("uid=asdf,ou=users,dc=github,dc=com"),
 	}
 	if !cmp.Equal(mapping, want) {
 		t.Errorf("Admin.UpdateUserLDAPMapping returned %+v, want %+v", mapping, want)
@@ -68,7 +68,7 @@ func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &TeamLDAPMapping{
-		LDAPDN: String("cn=Enterprise Ops,ou=teams,dc=github,dc=com"),
+		LDAPDN: Ptr("cn=Enterprise Ops,ou=teams,dc=github,dc=com"),
 	}
 
 	mux.HandleFunc("/admin/ldap/teams/1/mapping", func(w http.ResponseWriter, r *http.Request) {
@@ -89,8 +89,8 @@ func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
 	}
 
 	want := &TeamLDAPMapping{
-		ID:     Int64(1),
-		LDAPDN: String("cn=Enterprise Ops,ou=teams,dc=github,dc=com"),
+		ID:     Ptr(int64(1)),
+		LDAPDN: Ptr("cn=Enterprise Ops,ou=teams,dc=github,dc=com"),
 	}
 	if !cmp.Equal(mapping, want) {
 		t.Errorf("Admin.UpdateTeamLDAPMapping returned %+v, want %+v", mapping, want)
@@ -114,16 +114,16 @@ func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
 func TestAdminService_TeamLDAPMapping_String(t *testing.T) {
 	t.Parallel()
 	v := &TeamLDAPMapping{
-		ID:              Int64(1),
-		LDAPDN:          String("a"),
-		URL:             String("b"),
-		Name:            String("c"),
-		Slug:            String("d"),
-		Description:     String("e"),
-		Privacy:         String("f"),
-		Permission:      String("g"),
-		MembersURL:      String("h"),
-		RepositoriesURL: String("i"),
+		ID:              Ptr(int64(1)),
+		LDAPDN:          Ptr("a"),
+		URL:             Ptr("b"),
+		Name:            Ptr("c"),
+		Slug:            Ptr("d"),
+		Description:     Ptr("e"),
+		Privacy:         Ptr("f"),
+		Permission:      Ptr("g"),
+		MembersURL:      Ptr("h"),
+		RepositoriesURL: Ptr("i"),
 	}
 
 	want := `github.TeamLDAPMapping{ID:1, LDAPDN:"a", URL:"b", Name:"c", Slug:"d", Description:"e", Privacy:"f", Permission:"g", MembersURL:"h", RepositoriesURL:"i"}`
@@ -135,23 +135,23 @@ func TestAdminService_TeamLDAPMapping_String(t *testing.T) {
 func TestAdminService_UserLDAPMapping_String(t *testing.T) {
 	t.Parallel()
 	v := &UserLDAPMapping{
-		ID:                Int64(1),
-		LDAPDN:            String("a"),
-		Login:             String("b"),
-		AvatarURL:         String("c"),
-		GravatarID:        String("d"),
-		Type:              String("e"),
-		SiteAdmin:         Bool(true),
-		URL:               String("f"),
-		EventsURL:         String("g"),
-		FollowingURL:      String("h"),
-		FollowersURL:      String("i"),
-		GistsURL:          String("j"),
-		OrganizationsURL:  String("k"),
-		ReceivedEventsURL: String("l"),
-		ReposURL:          String("m"),
-		StarredURL:        String("n"),
-		SubscriptionsURL:  String("o"),
+		ID:                Ptr(int64(1)),
+		LDAPDN:            Ptr("a"),
+		Login:             Ptr("b"),
+		AvatarURL:         Ptr("c"),
+		GravatarID:        Ptr("d"),
+		Type:              Ptr("e"),
+		SiteAdmin:         Ptr(true),
+		URL:               Ptr("f"),
+		EventsURL:         Ptr("g"),
+		FollowingURL:      Ptr("h"),
+		FollowersURL:      Ptr("i"),
+		GistsURL:          Ptr("j"),
+		OrganizationsURL:  Ptr("k"),
+		ReceivedEventsURL: Ptr("l"),
+		ReposURL:          Ptr("m"),
+		StarredURL:        Ptr("n"),
+		SubscriptionsURL:  Ptr("o"),
 	}
 
 	want := `github.UserLDAPMapping{ID:1, LDAPDN:"a", Login:"b", AvatarURL:"c", GravatarID:"d", Type:"e", SiteAdmin:true, URL:"f", EventsURL:"g", FollowingURL:"h", FollowersURL:"i", GistsURL:"j", OrganizationsURL:"k", ReceivedEventsURL:"l", ReposURL:"m", StarredURL:"n", SubscriptionsURL:"o"}`
@@ -165,16 +165,16 @@ func TestTeamLDAPMapping_Marshal(t *testing.T) {
 	testJSONMarshal(t, &TeamLDAPMapping{}, "{}")
 
 	u := &TeamLDAPMapping{
-		ID:              Int64(1),
-		LDAPDN:          String("ldapdn"),
-		URL:             String("u"),
-		Name:            String("n"),
-		Slug:            String("s"),
-		Description:     String("d"),
-		Privacy:         String("p"),
-		Permission:      String("per"),
-		MembersURL:      String("mu"),
-		RepositoriesURL: String("ru"),
+		ID:              Ptr(int64(1)),
+		LDAPDN:          Ptr("ldapdn"),
+		URL:             Ptr("u"),
+		Name:            Ptr("n"),
+		Slug:            Ptr("s"),
+		Description:     Ptr("d"),
+		Privacy:         Ptr("p"),
+		Permission:      Ptr("per"),
+		MembersURL:      Ptr("mu"),
+		RepositoriesURL: Ptr("ru"),
 	}
 
 	want := `{
@@ -198,23 +198,23 @@ func TestUserLDAPMapping_Marshal(t *testing.T) {
 	testJSONMarshal(t, &UserLDAPMapping{}, "{}")
 
 	u := &UserLDAPMapping{
-		ID:                Int64(1),
-		LDAPDN:            String("ldapdn"),
-		Login:             String("l"),
-		AvatarURL:         String("au"),
-		GravatarID:        String("gi"),
-		Type:              String("t"),
-		SiteAdmin:         Bool(true),
-		URL:               String("u"),
-		EventsURL:         String("eu"),
-		FollowingURL:      String("fu"),
-		FollowersURL:      String("fu"),
-		GistsURL:          String("gu"),
-		OrganizationsURL:  String("ou"),
-		ReceivedEventsURL: String("reu"),
-		ReposURL:          String("ru"),
-		StarredURL:        String("su"),
-		SubscriptionsURL:  String("subu"),
+		ID:                Ptr(int64(1)),
+		LDAPDN:            Ptr("ldapdn"),
+		Login:             Ptr("l"),
+		AvatarURL:         Ptr("au"),
+		GravatarID:        Ptr("gi"),
+		Type:              Ptr("t"),
+		SiteAdmin:         Ptr(true),
+		URL:               Ptr("u"),
+		EventsURL:         Ptr("eu"),
+		FollowingURL:      Ptr("fu"),
+		FollowersURL:      Ptr("fu"),
+		GistsURL:          Ptr("gu"),
+		OrganizationsURL:  Ptr("ou"),
+		ReceivedEventsURL: Ptr("reu"),
+		ReposURL:          Ptr("ru"),
+		StarredURL:        Ptr("su"),
+		SubscriptionsURL:  Ptr("subu"),
 	}
 
 	want := `{
@@ -245,14 +245,14 @@ func TestEnterprise_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Enterprise{}, "{}")
 
 	u := &Enterprise{
-		ID:          Int(1),
-		Slug:        String("s"),
-		Name:        String("n"),
-		NodeID:      String("nid"),
-		AvatarURL:   String("au"),
-		Description: String("d"),
-		WebsiteURL:  String("wu"),
-		HTMLURL:     String("hu"),
+		ID:          Ptr(1),
+		Slug:        Ptr("s"),
+		Name:        Ptr("n"),
+		NodeID:      Ptr("nid"),
+		AvatarURL:   Ptr("au"),
+		Description: Ptr("d"),
+		WebsiteURL:  Ptr("wu"),
+		HTMLURL:     Ptr("hu"),
 		CreatedAt:   &Timestamp{referenceTime},
 		UpdatedAt:   &Timestamp{referenceTime},
 	}

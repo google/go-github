@@ -44,15 +44,15 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 	}
 
 	want := []*Ruleset{{
-		ID:          Int64(26110),
+		ID:          Ptr(int64(26110)),
 		Name:        "test ruleset",
-		Target:      String("branch"),
-		SourceType:  String("Organization"),
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "active",
-		NodeID:      String("nid"),
+		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
+			Self: &RulesetLink{HRef: Ptr("https://api.github.com/orgs/o/rulesets/26110")},
 		},
 	}}
 	if !cmp.Equal(rulesets, want) {
@@ -221,16 +221,16 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 
 	ctx := context.Background()
 	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
-		ID:          Int64(21),
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
-		Target:      String("branch"),
-		SourceType:  String("Organization"),
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
-				ActorID:   Int64(234),
-				ActorType: String("Team"),
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
 			},
 		},
 		Conditions: &RulesetConditions{
@@ -241,7 +241,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 			RepositoryName: &RulesetRepositoryNamesConditionParameters{
 				Include:   []string{"important_repository", "another_important_repository"},
 				Exclude:   []string{"unimportant_repository"},
-				Protected: Bool(true),
+				Protected: Ptr(true),
 			},
 		},
 		Rules: []*RepositoryRule{
@@ -266,15 +266,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
 					{
 						Context:       "test",
-						IntegrationID: Int64(1),
+						IntegrationID: Ptr(int64(1)),
 					},
 				},
 				StrictRequiredStatusChecksPolicy: true,
 			}),
 			NewNonFastForwardRule(),
 			NewCommitMessagePatternRule(&RulePatternParameters{
-				Name:     String("avoid test commits"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
 				Operator: "starts_with",
 				Pattern:  "[test]",
 			}),
@@ -283,20 +283,20 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				Pattern:  "github",
 			}),
 			NewCommitterEmailPatternRule(&RulePatternParameters{
-				Name:     String("avoid commit emails"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
 				Operator: "ends_with",
 				Pattern:  "abc",
 			}),
 			NewBranchNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid branch names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
 				Operator: "regex",
 				Pattern:  "github$",
 			}),
 			NewTagNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid tag names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
 				Operator: "contains",
 				Pattern:  "github",
 			}),
@@ -316,16 +316,16 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 	}
 
 	want := &Ruleset{
-		ID:          Int64(21),
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
-		Target:      String("branch"),
-		SourceType:  String("Organization"),
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
-				ActorID:   Int64(234),
-				ActorType: String("Team"),
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
 			},
 		},
 		Conditions: &RulesetConditions{
@@ -336,7 +336,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 			RepositoryName: &RulesetRepositoryNamesConditionParameters{
 				Include:   []string{"important_repository", "another_important_repository"},
 				Exclude:   []string{"unimportant_repository"},
-				Protected: Bool(true),
+				Protected: Ptr(true),
 			},
 		},
 		Rules: []*RepositoryRule{
@@ -361,15 +361,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
 					{
 						Context:       "test",
-						IntegrationID: Int64(1),
+						IntegrationID: Ptr(int64(1)),
 					},
 				},
 				StrictRequiredStatusChecksPolicy: true,
 			}),
 			NewNonFastForwardRule(),
 			NewCommitMessagePatternRule(&RulePatternParameters{
-				Name:     String("avoid test commits"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
 				Operator: "starts_with",
 				Pattern:  "[test]",
 			}),
@@ -378,20 +378,20 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 				Pattern:  "github",
 			}),
 			NewCommitterEmailPatternRule(&RulePatternParameters{
-				Name:     String("avoid commit emails"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
 				Operator: "ends_with",
 				Pattern:  "abc",
 			}),
 			NewBranchNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid branch names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
 				Operator: "regex",
 				Pattern:  "github$",
 			}),
 			NewTagNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid tag names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
 				Operator: "contains",
 				Pattern:  "github",
 			}),
@@ -572,16 +572,16 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 
 	ctx := context.Background()
 	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
-		ID:          Int64(21),
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
-		Target:      String("branch"),
-		SourceType:  String("Organization"),
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
-				ActorID:   Int64(234),
-				ActorType: String("Team"),
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
 			},
 		},
 		Conditions: &RulesetConditions{
@@ -589,7 +589,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
-						Source: String("custom"),
+						Source: Ptr("custom"),
 						Values: []string{"true"},
 					},
 				},
@@ -623,15 +623,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
 					{
 						Context:       "test",
-						IntegrationID: Int64(1),
+						IntegrationID: Ptr(int64(1)),
 					},
 				},
 				StrictRequiredStatusChecksPolicy: true,
 			}),
 			NewNonFastForwardRule(),
 			NewCommitMessagePatternRule(&RulePatternParameters{
-				Name:     String("avoid test commits"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
 				Operator: "starts_with",
 				Pattern:  "[test]",
 			}),
@@ -640,20 +640,20 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Pattern:  "github",
 			}),
 			NewCommitterEmailPatternRule(&RulePatternParameters{
-				Name:     String("avoid commit emails"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
 				Operator: "ends_with",
 				Pattern:  "abc",
 			}),
 			NewBranchNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid branch names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
 				Operator: "regex",
 				Pattern:  "github$",
 			}),
 			NewTagNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid tag names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
 				Operator: "contains",
 				Pattern:  "github",
 			}),
@@ -673,16 +673,16 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 	}
 
 	want := &Ruleset{
-		ID:          Int64(21),
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
-		Target:      String("branch"),
-		SourceType:  String("Organization"),
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
-				ActorID:   Int64(234),
-				ActorType: String("Team"),
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
 			},
 		},
 		Conditions: &RulesetConditions{
@@ -690,7 +690,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
-						Source: String("custom"),
+						Source: Ptr("custom"),
 						Values: []string{"true"},
 					},
 				},
@@ -724,15 +724,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
 					{
 						Context:       "test",
-						IntegrationID: Int64(1),
+						IntegrationID: Ptr(int64(1)),
 					},
 				},
 				StrictRequiredStatusChecksPolicy: true,
 			}),
 			NewNonFastForwardRule(),
 			NewCommitMessagePatternRule(&RulePatternParameters{
-				Name:     String("avoid test commits"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
 				Operator: "starts_with",
 				Pattern:  "[test]",
 			}),
@@ -741,20 +741,20 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 				Pattern:  "github",
 			}),
 			NewCommitterEmailPatternRule(&RulePatternParameters{
-				Name:     String("avoid commit emails"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
 				Operator: "ends_with",
 				Pattern:  "abc",
 			}),
 			NewBranchNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid branch names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
 				Operator: "regex",
 				Pattern:  "github$",
 			}),
 			NewTagNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid tag names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
 				Operator: "contains",
 				Pattern:  "github",
 			}),
@@ -928,16 +928,16 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 
 	ctx := context.Background()
 	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
-		ID:          Int64(21),
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
-		Target:      String("branch"),
-		SourceType:  String("Organization"),
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
-				ActorID:   Int64(234),
-				ActorType: String("Team"),
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
 			},
 		},
 		Conditions: &RulesetConditions{
@@ -971,15 +971,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
 					{
 						Context:       "test",
-						IntegrationID: Int64(1),
+						IntegrationID: Ptr(int64(1)),
 					},
 				},
 				StrictRequiredStatusChecksPolicy: true,
 			}),
 			NewNonFastForwardRule(),
 			NewCommitMessagePatternRule(&RulePatternParameters{
-				Name:     String("avoid test commits"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
 				Operator: "starts_with",
 				Pattern:  "[test]",
 			}),
@@ -988,20 +988,20 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				Pattern:  "github",
 			}),
 			NewCommitterEmailPatternRule(&RulePatternParameters{
-				Name:     String("avoid commit emails"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
 				Operator: "ends_with",
 				Pattern:  "abc",
 			}),
 			NewBranchNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid branch names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
 				Operator: "regex",
 				Pattern:  "github$",
 			}),
 			NewTagNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid tag names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
 				Operator: "contains",
 				Pattern:  "github",
 			}),
@@ -1021,16 +1021,16 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          Int64(21),
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
-		Target:      String("branch"),
-		SourceType:  String("Organization"),
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
-				ActorID:   Int64(234),
-				ActorType: String("Team"),
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
 			},
 		},
 		Conditions: &RulesetConditions{
@@ -1064,15 +1064,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
 					{
 						Context:       "test",
-						IntegrationID: Int64(1),
+						IntegrationID: Ptr(int64(1)),
 					},
 				},
 				StrictRequiredStatusChecksPolicy: true,
 			}),
 			NewNonFastForwardRule(),
 			NewCommitMessagePatternRule(&RulePatternParameters{
-				Name:     String("avoid test commits"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
 				Operator: "starts_with",
 				Pattern:  "[test]",
 			}),
@@ -1081,20 +1081,20 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 				Pattern:  "github",
 			}),
 			NewCommitterEmailPatternRule(&RulePatternParameters{
-				Name:     String("avoid commit emails"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
 				Operator: "ends_with",
 				Pattern:  "abc",
 			}),
 			NewBranchNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid branch names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
 				Operator: "regex",
 				Pattern:  "github$",
 			}),
 			NewTagNamePatternRule(&RulePatternParameters{
-				Name:     String("avoid tag names"),
-				Negate:   Bool(true),
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
 				Operator: "contains",
 				Pattern:  "github",
 			}),
@@ -1180,15 +1180,15 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          Int64(26110),
+		ID:          Ptr(int64(26110)),
 		Name:        "test ruleset",
-		Target:      String("branch"),
-		SourceType:  String("Organization"),
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "active",
-		NodeID:      String("nid"),
+		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
+			Self: &RulesetLink{HRef: Ptr("https://api.github.com/orgs/o/rulesets/26110")},
 		},
 		Conditions: &RulesetConditions{
 			RefName: &RulesetRefConditionParameters{
@@ -1198,7 +1198,7 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 			RepositoryName: &RulesetRepositoryNamesConditionParameters{
 				Include:   []string{"important_repository", "another_important_repository"},
 				Exclude:   []string{"unimportant_repository"},
-				Protected: Bool(true),
+				Protected: Ptr(true),
 			},
 		},
 		Rules: []*RepositoryRule{
@@ -1269,22 +1269,22 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 	}
 
 	want := &Ruleset{
-		ID:          Int64(26110),
+		ID:          Ptr(int64(26110)),
 		Name:        "test ruleset",
-		Target:      String("branch"),
-		SourceType:  String("Organization"),
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "active",
-		NodeID:      String("nid"),
+		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
+			Self: &RulesetLink{HRef: Ptr("https://api.github.com/orgs/o/rulesets/26110")},
 		},
 		Conditions: &RulesetConditions{
 			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
-						Source: String("custom"),
+						Source: Ptr("custom"),
 						Values: []string{"true"},
 					},
 				},
@@ -1362,7 +1362,7 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 	ctx := context.Background()
 	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, &Ruleset{
 		Name:        "test ruleset",
-		Target:      String("branch"),
+		Target:      Ptr("branch"),
 		Enforcement: "active",
 		Conditions: &RulesetConditions{
 			RefName: &RulesetRefConditionParameters{
@@ -1372,7 +1372,7 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 			RepositoryName: &RulesetRepositoryNamesConditionParameters{
 				Include:   []string{"important_repository", "another_important_repository"},
 				Exclude:   []string{"unimportant_repository"},
-				Protected: Bool(true),
+				Protected: Ptr(true),
 			},
 		},
 		Rules: []*RepositoryRule{
@@ -1385,15 +1385,15 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          Int64(26110),
+		ID:          Ptr(int64(26110)),
 		Name:        "test ruleset",
-		Target:      String("branch"),
-		SourceType:  String("Organization"),
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "active",
-		NodeID:      String("nid"),
+		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
+			Self: &RulesetLink{HRef: Ptr("https://api.github.com/orgs/o/rulesets/26110")},
 		},
 		Conditions: &RulesetConditions{
 			RefName: &RulesetRefConditionParameters{
@@ -1403,7 +1403,7 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 			RepositoryName: &RulesetRepositoryNamesConditionParameters{
 				Include:   []string{"important_repository", "another_important_repository"},
 				Exclude:   []string{"unimportant_repository"},
-				Protected: Bool(true),
+				Protected: Ptr(true),
 			},
 		},
 		Rules: []*RepositoryRule{
@@ -1470,14 +1470,14 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 	ctx := context.Background()
 	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, &Ruleset{
 		Name:        "test ruleset",
-		Target:      String("branch"),
+		Target:      Ptr("branch"),
 		Enforcement: "active",
 		Conditions: &RulesetConditions{
 			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
-						Source: String("custom"),
+						Source: Ptr("custom"),
 						Values: []string{"true"},
 					},
 				},
@@ -1494,22 +1494,22 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 	}
 
 	want := &Ruleset{
-		ID:          Int64(26110),
+		ID:          Ptr(int64(26110)),
 		Name:        "test ruleset",
-		Target:      String("branch"),
-		SourceType:  String("Organization"),
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
 		Source:      "o",
 		Enforcement: "active",
-		NodeID:      String("nid"),
+		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: String("https://api.github.com/orgs/o/rulesets/26110")},
+			Self: &RulesetLink{HRef: Ptr("https://api.github.com/orgs/o/rulesets/26110")},
 		},
 		Conditions: &RulesetConditions{
 			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
 						Name:   "testIncludeProp",
-						Source: String("custom"),
+						Source: Ptr("custom"),
 						Values: []string{"true"},
 					},
 				},

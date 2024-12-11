@@ -20,9 +20,9 @@ func TestMarkdownService_Markdown(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &markdownRenderRequest{
-		Text:    String("# text #"),
-		Mode:    String("gfm"),
-		Context: String("google/go-github"),
+		Text:    Ptr("# text #"),
+		Mode:    Ptr("gfm"),
+		Context: Ptr("google/go-github"),
 	}
 	mux.HandleFunc("/markdown", func(w http.ResponseWriter, r *http.Request) {
 		v := new(markdownRenderRequest)
@@ -66,9 +66,9 @@ func TestMarkdownRenderRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &markdownRenderRequest{}, "{}")
 
 	a := &markdownRenderRequest{
-		Text:    String("txt"),
-		Mode:    String("mode"),
-		Context: String("ctx"),
+		Text:    Ptr("txt"),
+		Mode:    Ptr("mode"),
+		Context: Ptr("ctx"),
 	}
 
 	want := `{

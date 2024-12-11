@@ -250,9 +250,9 @@ func TestActionsService_ListOrgVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 3,
 		Variables: []*ActionsVariable{
-			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("private")},
-			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("all")},
-			{Name: "C", Value: "CC", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("selected"), SelectedRepositoriesURL: String("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories")},
+			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: Ptr("private")},
+			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: Ptr("all")},
+			{Name: "C", Value: "CC", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: Ptr("selected"), SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories")},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -294,8 +294,8 @@ func TestActionsService_GetOrgVariable(t *testing.T) {
 		Value:                   "VALUE",
 		CreatedAt:               &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt:               &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		Visibility:              String("selected"),
-		SelectedRepositoriesURL: String("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"),
+		Visibility:              Ptr("selected"),
+		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"),
 	}
 	if !cmp.Equal(variable, want) {
 		t.Errorf("Actions.GetOrgVariable returned %+v, want %+v", variable, want)
@@ -330,7 +330,7 @@ func TestActionsService_CreateOrgVariable(t *testing.T) {
 	input := &ActionsVariable{
 		Name:                  "NAME",
 		Value:                 "VALUE",
-		Visibility:            String("selected"),
+		Visibility:            Ptr("selected"),
 		SelectedRepositoryIDs: &SelectedRepoIDs{1296269, 1269280},
 	}
 	ctx := context.Background()
@@ -364,7 +364,7 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 	input := &ActionsVariable{
 		Name:                  "NAME",
 		Value:                 "VALUE",
-		Visibility:            String("selected"),
+		Visibility:            Ptr("selected"),
 		SelectedRepositoryIDs: &SelectedRepoIDs{1296269, 1269280},
 	}
 	ctx := context.Background()
@@ -401,9 +401,9 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 	}
 
 	want := &SelectedReposList{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Repositories: []*Repository{
-			{ID: Int64(1)},
+			{ID: Ptr(int64(1))},
 		},
 	}
 	if !cmp.Equal(repos, want) {
@@ -460,7 +460,7 @@ func TestActionsService_AddSelectedRepoToOrgVariable(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	repo := &Repository{ID: Int64(1234)}
+	repo := &Repository{ID: Ptr(int64(1234))}
 	ctx := context.Background()
 	_, err := client.Actions.AddSelectedRepoToOrgVariable(ctx, "o", "NAME", repo)
 	if err != nil {
@@ -486,7 +486,7 @@ func TestActionsService_RemoveSelectedRepoFromOrgVariable(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	repo := &Repository{ID: Int64(1234)}
+	repo := &Repository{ID: Ptr(int64(1234))}
 	ctx := context.Background()
 	_, err := client.Actions.RemoveSelectedRepoFromOrgVariable(ctx, "o", "NAME", repo)
 	if err != nil {
@@ -710,8 +710,8 @@ func TestActionVariable_Marshal(t *testing.T) {
 		Value:                   "v",
 		CreatedAt:               &Timestamp{referenceTime},
 		UpdatedAt:               &Timestamp{referenceTime},
-		Visibility:              String("v"),
-		SelectedRepositoriesURL: String("s"),
+		Visibility:              Ptr("v"),
+		SelectedRepositoriesURL: Ptr("s"),
 		SelectedRepositoryIDs:   &SelectedRepoIDs{1, 2, 3},
 	}
 

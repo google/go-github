@@ -47,7 +47,7 @@ func (s *InteractionsService) GetRestrictionsForRepo(ctx context.Context, owner,
 func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, owner, repo, limit string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
 
-	interaction := &InteractionRestriction{Limit: String(limit)}
+	interaction := &InteractionRestriction{Limit: Ptr(limit)}
 
 	req, err := s.client.NewRequest("PUT", u, interaction)
 	if err != nil {

@@ -20,10 +20,10 @@ func TestMigrationService_StartImport(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &Import{
-		VCS:         String("git"),
-		VCSURL:      String("url"),
-		VCSUsername: String("u"),
-		VCSPassword: String("p"),
+		VCS:         Ptr("git"),
+		VCSURL:      Ptr("url"),
+		VCSUsername: Ptr("u"),
+		VCSPassword: Ptr("p"),
 	}
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +44,7 @@ func TestMigrationService_StartImport(t *testing.T) {
 	if err != nil {
 		t.Errorf("StartImport returned error: %v", err)
 	}
-	want := &Import{Status: String("importing")}
+	want := &Import{Status: Ptr("importing")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("StartImport = %+v, want %+v", got, want)
 	}
@@ -78,7 +78,7 @@ func TestMigrationService_ImportProgress(t *testing.T) {
 	if err != nil {
 		t.Errorf("ImportProgress returned error: %v", err)
 	}
-	want := &Import{Status: String("complete")}
+	want := &Import{Status: Ptr("complete")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("ImportProgress = %+v, want %+v", got, want)
 	}
@@ -103,10 +103,10 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &Import{
-		VCS:         String("git"),
-		VCSURL:      String("url"),
-		VCSUsername: String("u"),
-		VCSPassword: String("p"),
+		VCS:         Ptr("git"),
+		VCSURL:      Ptr("url"),
+		VCSUsername: Ptr("u"),
+		VCSPassword: Ptr("p"),
 	}
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
@@ -127,7 +127,7 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 	if err != nil {
 		t.Errorf("UpdateImport returned error: %v", err)
 	}
-	want := &Import{Status: String("importing")}
+	want := &Import{Status: Ptr("importing")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("UpdateImport = %+v, want %+v", got, want)
 	}
@@ -162,8 +162,8 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 		t.Errorf("CommitAuthors returned error: %v", err)
 	}
 	want := []*SourceImportAuthor{
-		{ID: Int64(1), Name: String("a")},
-		{ID: Int64(2), Name: String("b")},
+		{ID: Ptr(int64(1)), Name: Ptr("a")},
+		{ID: Ptr(int64(2)), Name: Ptr("b")},
 	}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CommitAuthors = %+v, want %+v", got, want)
@@ -188,7 +188,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SourceImportAuthor{Name: String("n"), Email: String("e")}
+	input := &SourceImportAuthor{Name: Ptr("n"), Email: Ptr("e")}
 
 	mux.HandleFunc("/repos/o/r/import/authors/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(SourceImportAuthor)
@@ -207,7 +207,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 	if err != nil {
 		t.Errorf("MapCommitAuthor returned error: %v", err)
 	}
-	want := &SourceImportAuthor{ID: Int64(1)}
+	want := &SourceImportAuthor{ID: Ptr(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("MapCommitAuthor = %+v, want %+v", got, want)
 	}
@@ -231,7 +231,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Import{UseLFS: String("opt_in")}
+	input := &Import{UseLFS: Ptr("opt_in")}
 
 	mux.HandleFunc("/repos/o/r/import/lfs", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Import)
@@ -251,7 +251,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 	if err != nil {
 		t.Errorf("SetLFSPreference returned error: %v", err)
 	}
-	want := &Import{Status: String("importing")}
+	want := &Import{Status: Ptr("importing")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("SetLFSPreference = %+v, want %+v", got, want)
 	}
@@ -286,8 +286,8 @@ func TestMigrationService_LargeFiles(t *testing.T) {
 		t.Errorf("LargeFiles returned error: %v", err)
 	}
 	want := []*LargeFile{
-		{OID: String("a")},
-		{OID: String("b")},
+		{OID: Ptr("a")},
+		{OID: Ptr("b")},
 	}
 	if !cmp.Equal(got, want) {
 		t.Errorf("LargeFiles = %+v, want %+v", got, want)
@@ -339,10 +339,10 @@ func TestLargeFile_Marshal(t *testing.T) {
 	testJSONMarshal(t, &LargeFile{}, "{}")
 
 	u := &LargeFile{
-		RefName: String("rn"),
-		Path:    String("p"),
-		OID:     String("oid"),
-		Size:    Int(1),
+		RefName: Ptr("rn"),
+		Path:    Ptr("p"),
+		OID:     Ptr("oid"),
+		Size:    Ptr(1),
 	}
 
 	want := `{
@@ -360,13 +360,13 @@ func TestSourceImportAuthor_Marshal(t *testing.T) {
 	testJSONMarshal(t, &SourceImportAuthor{}, "{}")
 
 	u := &SourceImportAuthor{
-		ID:         Int64(1),
-		RemoteID:   String("rid"),
-		RemoteName: String("rn"),
-		Email:      String("e"),
-		Name:       String("n"),
-		URL:        String("url"),
-		ImportURL:  String("iurl"),
+		ID:         Ptr(int64(1)),
+		RemoteID:   Ptr("rid"),
+		RemoteName: Ptr("rn"),
+		Email:      Ptr("e"),
+		Name:       Ptr("n"),
+		URL:        Ptr("url"),
+		ImportURL:  Ptr("iurl"),
 	}
 
 	want := `{
@@ -387,29 +387,29 @@ func TestImport_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Import{}, "{}")
 
 	u := &Import{
-		VCSURL:          String("vcsurl"),
-		VCS:             String("vcs"),
-		VCSUsername:     String("vcsusr"),
-		VCSPassword:     String("vcspass"),
-		TFVCProject:     String("tfvcp"),
-		UseLFS:          String("uselfs"),
-		HasLargeFiles:   Bool(false),
-		LargeFilesSize:  Int(1),
-		LargeFilesCount: Int(1),
-		Status:          String("status"),
-		CommitCount:     Int(1),
-		StatusText:      String("statustxt"),
-		AuthorsCount:    Int(1),
-		Percent:         Int(1),
-		PushPercent:     Int(1),
-		URL:             String("url"),
-		HTMLURL:         String("hurl"),
-		AuthorsURL:      String("aurl"),
-		RepositoryURL:   String("rurl"),
-		Message:         String("msg"),
-		FailedStep:      String("fs"),
-		HumanName:       String("hn"),
-		ProjectChoices:  []*Import{{VCSURL: String("vcsurl")}},
+		VCSURL:          Ptr("vcsurl"),
+		VCS:             Ptr("vcs"),
+		VCSUsername:     Ptr("vcsusr"),
+		VCSPassword:     Ptr("vcspass"),
+		TFVCProject:     Ptr("tfvcp"),
+		UseLFS:          Ptr("uselfs"),
+		HasLargeFiles:   Ptr(false),
+		LargeFilesSize:  Ptr(1),
+		LargeFilesCount: Ptr(1),
+		Status:          Ptr("status"),
+		CommitCount:     Ptr(1),
+		StatusText:      Ptr("statustxt"),
+		AuthorsCount:    Ptr(1),
+		Percent:         Ptr(1),
+		PushPercent:     Ptr(1),
+		URL:             Ptr("url"),
+		HTMLURL:         Ptr("hurl"),
+		AuthorsURL:      Ptr("aurl"),
+		RepositoryURL:   Ptr("rurl"),
+		Message:         Ptr("msg"),
+		FailedStep:      Ptr("fs"),
+		HumanName:       Ptr("hn"),
+		ProjectChoices:  []*Import{{VCSURL: Ptr("vcsurl")}},
 	}
 
 	want := `{
