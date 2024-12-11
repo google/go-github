@@ -61,6 +61,29 @@ func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org stri
 	return customRepoRoles, resp, nil
 }
 
+// GetCustomRepoRole gets a custom repository roles available in this organization.
+// In order to see custom repository roles in an organization, the authenticated user must be an organization owner.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#get-a-custom-repository-role
+//
+//meta:operation GET /orgs/{org}/custom-repository-roles/{role_id}
+func (s *OrganizationsService) GetCustomRepoRole(ctx context.Context, org string, roleID int64) (*CustomRepoRoles, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	resultingRole := new(CustomRepoRoles)
+	resp, err := s.client.Do(ctx, req, resultingRole)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return resultingRole, resp, nil
+}
+
 // CreateCustomRepoRole creates a custom repository role in this organization.
 // In order to create custom repository roles in an organization, the authenticated user must be an organization owner.
 //
