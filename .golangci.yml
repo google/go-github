@@ -25,6 +25,7 @@ linters-settings:
   gocritic:
     disable-all: true
     enabled-checks:
+      - commentedOutCode
       - commentFormatting
   gosec:
     excludes:
