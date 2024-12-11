@@ -31,7 +31,7 @@ func TestInteractionsService_GetRestrictionsForRepo(t *testing.T) {
 		t.Errorf("Interactions.GetRestrictionsForRepo returned error: %v", err)
 	}
 
-	want := &InteractionRestriction{Origin: String("repository")}
+	want := &InteractionRestriction{Origin: Ptr("repository")}
 	if !cmp.Equal(repoInteractions, want) {
 		t.Errorf("Interactions.GetRestrictionsForRepo returned %+v, want %+v", repoInteractions, want)
 	}
@@ -55,7 +55,7 @@ func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &InteractionRestriction{Limit: String("existing_users")}
+	input := &InteractionRestriction{Limit: Ptr("existing_users")}
 
 	mux.HandleFunc("/repos/o/r/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
 		v := new(InteractionRestriction)
@@ -75,7 +75,7 @@ func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
 		t.Errorf("Interactions.UpdateRestrictionsForRepo returned error: %v", err)
 	}
 
-	want := &InteractionRestriction{Origin: String("repository")}
+	want := &InteractionRestriction{Origin: Ptr("repository")}
 	if !cmp.Equal(repoInteractions, want) {
 		t.Errorf("Interactions.UpdateRestrictionsForRepo returned %+v, want %+v", repoInteractions, want)
 	}

@@ -79,7 +79,7 @@ func main() {
 		"example/foo.txt",
 		&github.RepositoryContentFileOptions{
 			Content: []byte("foo"),
-			Message: github.String("sample commit"),
+			Message: github.Ptr("sample commit"),
 			SHA:     nil,
 		})
 	if err != nil {

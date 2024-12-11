@@ -35,55 +35,55 @@ func TestCodespacesService_ListInRepo(t *testing.T) {
 		t.Errorf("Codespaces.ListInRepo returned error: %v", err)
 	}
 
-	want := &ListCodespaces{TotalCount: Int(2), Codespaces: []*Codespace{
+	want := &ListCodespaces{TotalCount: Ptr(2), Codespaces: []*Codespace{
 		{
-			ID:            Int64(1),
-			Name:          String("monalisa-octocat-hello-world-g4wpq6h95q"),
-			EnvironmentID: String("26a7c758-7299-4a73-b978-5a92a7ae98a0"),
+			ID:            Ptr(int64(1)),
+			Name:          Ptr("monalisa-octocat-hello-world-g4wpq6h95q"),
+			EnvironmentID: Ptr("26a7c758-7299-4a73-b978-5a92a7ae98a0"),
 			Owner: &User{
-				Login: String("octocat"),
+				Login: Ptr("octocat"),
 			},
 			BillableOwner: &User{
-				Login: String("octocat"),
+				Login: Ptr("octocat"),
 			},
 			Repository: &Repository{
-				ID: Int64(1296269),
+				ID: Ptr(int64(1296269)),
 			},
 			Machine: &CodespacesMachine{
-				Name:            String("standardLinux"),
-				DisplayName:     String("4 cores, 8 GB RAM, 64 GB storage"),
-				OperatingSystem: String("linux"),
-				StorageInBytes:  Int64(68719476736),
-				MemoryInBytes:   Int64(8589934592),
-				CPUs:            Int(4),
+				Name:            Ptr("standardLinux"),
+				DisplayName:     Ptr("4 cores, 8 GB RAM, 64 GB storage"),
+				OperatingSystem: Ptr("linux"),
+				StorageInBytes:  Ptr(int64(68719476736)),
+				MemoryInBytes:   Ptr(int64(8589934592)),
+				CPUs:            Ptr(4),
 			},
-			Prebuild:         Bool(false),
-			DevcontainerPath: String(".devcontainer/devcontainer.json"),
+			Prebuild:         Ptr(false),
+			DevcontainerPath: Ptr(".devcontainer/devcontainer.json"),
 			CreatedAt:        &Timestamp{time.Date(2021, 10, 14, 0, 53, 30, 0, time.FixedZone("", -6*60*60))},
 			UpdatedAt:        &Timestamp{time.Date(2021, 10, 14, 0, 53, 32, 0, time.FixedZone("", -6*60*60))},
 			LastUsedAt:       &Timestamp{time.Date(2021, 10, 14, 0, 53, 30, 0, time.FixedZone("", -6*60*60))},
-			State:            String("Available"),
-			URL:              String("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q"),
+			State:            Ptr("Available"),
+			URL:              Ptr("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q"),
 			GitStatus: &CodespacesGitStatus{
-				Ahead:                 Int(0),
-				Behind:                Int(0),
-				HasUnpushedChanges:    Bool(false),
-				HasUncommittedChanges: Bool(false),
-				Ref:                   String("main"),
+				Ahead:                 Ptr(0),
+				Behind:                Ptr(0),
+				HasUnpushedChanges:    Ptr(false),
+				HasUncommittedChanges: Ptr(false),
+				Ref:                   Ptr("main"),
 			},
-			Location:           String("WestUs2"),
-			IdleTimeoutMinutes: Int(60),
-			WebURL:             String("https://monalisa-octocat-hello-world-g4wpq6h95q.github.dev"),
-			MachinesURL:        String("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/machines"),
-			StartURL:           String("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/start"),
-			StopURL:            String("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/stop"),
+			Location:           Ptr("WestUs2"),
+			IdleTimeoutMinutes: Ptr(60),
+			WebURL:             Ptr("https://monalisa-octocat-hello-world-g4wpq6h95q.github.dev"),
+			MachinesURL:        Ptr("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/machines"),
+			StartURL:           Ptr("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/start"),
+			StopURL:            Ptr("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/stop"),
 			RecentFolders: []string{
 				"testfolder1",
 				"testfolder2",
 			},
 		},
 		{
-			ID: Int64(2),
+			ID: Ptr(int64(2)),
 		},
 	}}
 	if !cmp.Equal(codespaces, want) {
@@ -121,11 +121,11 @@ func TestCodespacesService_List(t *testing.T) {
 		t.Errorf("Codespaces.List returned error: %v", err)
 	}
 
-	want := &ListCodespaces{TotalCount: Int(1), Codespaces: []*Codespace{
+	want := &ListCodespaces{TotalCount: Ptr(1), Codespaces: []*Codespace{
 		{
-			ID: Int64(1),
+			ID: Ptr(int64(1)),
 			Repository: &Repository{
-				ID: Int64(1296269),
+				ID: Ptr(int64(1296269)),
 			},
 		},
 	}}
@@ -154,10 +154,10 @@ func TestCodespacesService_CreateInRepo(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "repository": {"id": 1296269}}`)
 	})
 	input := &CreateCodespaceOptions{
-		Ref:                String("main"),
-		Geo:                String("WestUs2"),
-		Machine:            String("standardLinux"),
-		IdleTimeoutMinutes: Int(60),
+		Ref:                Ptr("main"),
+		Geo:                Ptr("WestUs2"),
+		Machine:            Ptr("standardLinux"),
+		IdleTimeoutMinutes: Ptr(60),
 	}
 	ctx := context.Background()
 	codespace, _, err := client.Codespaces.CreateInRepo(ctx, "owner", "repo", input)
@@ -165,9 +165,9 @@ func TestCodespacesService_CreateInRepo(t *testing.T) {
 		t.Errorf("Codespaces.CreateInRepo returned error: %v", err)
 	}
 	want := &Codespace{
-		ID: Int64(1),
+		ID: Ptr(int64(1)),
 		Repository: &Repository{
-			ID: Int64(1296269),
+			ID: Ptr(int64(1296269)),
 		},
 	}
 
@@ -204,9 +204,9 @@ func TestCodespacesService_Start(t *testing.T) {
 		t.Errorf("Codespaces.Start returned error: %v", err)
 	}
 	want := &Codespace{
-		ID: Int64(1),
+		ID: Ptr(int64(1)),
 		Repository: &Repository{
-			ID: Int64(1296269),
+			ID: Ptr(int64(1296269)),
 		},
 	}
 
@@ -243,9 +243,9 @@ func TestCodespacesService_Stop(t *testing.T) {
 		t.Errorf("Codespaces.Stop returned error: %v", err)
 	}
 	want := &Codespace{
-		ID: Int64(1),
+		ID: Ptr(int64(1)),
 		Repository: &Repository{
-			ID: Int64(1296269),
+			ID: Ptr(int64(1296269)),
 		},
 	}
 

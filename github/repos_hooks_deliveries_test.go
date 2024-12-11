@@ -34,7 +34,7 @@ func TestRepositoriesService_ListHookDeliveries(t *testing.T) {
 		t.Errorf("Repositories.ListHookDeliveries returned error: %v", err)
 	}
 
-	want := []*HookDelivery{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*HookDelivery{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if d := cmp.Diff(hooks, want); d != "" {
 		t.Errorf("Repositories.ListHooks want (-), got (+):\n%s", d)
 	}
@@ -78,7 +78,7 @@ func TestRepositoriesService_GetHookDelivery(t *testing.T) {
 		t.Errorf("Repositories.GetHookDelivery returned error: %v", err)
 	}
 
-	want := &HookDelivery{ID: Int64(1)}
+	want := &HookDelivery{ID: Ptr(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.GetHookDelivery returned %+v, want %+v", hook, want)
 	}
@@ -122,7 +122,7 @@ func TestRepositoriesService_RedeliverHookDelivery(t *testing.T) {
 		t.Errorf("Repositories.RedeliverHookDelivery returned error: %v", err)
 	}
 
-	want := &HookDelivery{ID: Int64(1)}
+	want := &HookDelivery{ID: Ptr(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.RedeliverHookDelivery returned %+v, want %+v", hook, want)
 	}
@@ -219,7 +219,7 @@ func TestHookDelivery_ParsePayload(t *testing.T) {
 			p := json.RawMessage(bs)
 
 			d := &HookDelivery{
-				Event: String(evt),
+				Event: Ptr(evt),
 				Request: &HookRequest{
 					RawPayload: &p,
 				},
@@ -242,7 +242,7 @@ func TestHookDelivery_ParsePayload_invalidEvent(t *testing.T) {
 	p := json.RawMessage(nil)
 
 	d := &HookDelivery{
-		Event: String("some_invalid_event"),
+		Event: Ptr("some_invalid_event"),
 		Request: &HookRequest{
 			RawPayload: &p,
 		},
@@ -259,7 +259,7 @@ func TestHookDelivery_ParsePayload_invalidPayload(t *testing.T) {
 	p := json.RawMessage([]byte(`{"check_run":{"id":"invalid"}}`))
 
 	d := &HookDelivery{
-		Event: String("check_run"),
+		Event: Ptr("check_run"),
 		Request: &HookRequest{
 			RawPayload: &p,
 		},
@@ -333,17 +333,17 @@ func TestHookDelivery_Marshal(t *testing.T) {
 	jsonMsg, _ := json.Marshal(&header)
 
 	r := &HookDelivery{
-		ID:             Int64(1),
-		GUID:           String("guid"),
+		ID:             Ptr(int64(1)),
+		GUID:           Ptr("guid"),
 		DeliveredAt:    &Timestamp{referenceTime},
-		Redelivery:     Bool(true),
-		Duration:       Float64(1),
-		Status:         String("guid"),
-		StatusCode:     Int(1),
-		Event:          String("guid"),
-		Action:         String("guid"),
-		InstallationID: Int64(1),
-		RepositoryID:   Int64(1),
+		Redelivery:     Ptr(true),
+		Duration:       Ptr(1.0),
+		Status:         Ptr("guid"),
+		StatusCode:     Ptr(1),
+		Event:          Ptr("guid"),
+		Action:         Ptr("guid"),
+		InstallationID: Ptr(int64(1)),
+		RepositoryID:   Ptr(int64(1)),
 		Request: &HookRequest{
 			Headers:    header,
 			RawPayload: (*json.RawMessage)(&jsonMsg),

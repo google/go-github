@@ -41,11 +41,11 @@ func TestEnterpriseService_GetCodeSecurityAndAnalysis(t *testing.T) {
 		t.Errorf("Enterprise.%v returned error: %v", methodName, err)
 	}
 	want := &EnterpriseSecurityAnalysisSettings{
-		AdvancedSecurityEnabledForNewRepositories:             Bool(true),
-		SecretScanningEnabledForNewRepositories:               Bool(true),
-		SecretScanningPushProtectionEnabledForNewRepositories: Bool(true),
-		SecretScanningPushProtectionCustomLink:                String("https://github.com/test-org/test-repo/blob/main/README.md"),
-		SecretScanningValidityChecksEnabled:                   Bool(true),
+		AdvancedSecurityEnabledForNewRepositories:             Ptr(true),
+		SecretScanningEnabledForNewRepositories:               Ptr(true),
+		SecretScanningPushProtectionEnabledForNewRepositories: Ptr(true),
+		SecretScanningPushProtectionCustomLink:                Ptr("https://github.com/test-org/test-repo/blob/main/README.md"),
+		SecretScanningValidityChecksEnabled:                   Ptr(true),
 	}
 
 	if !cmp.Equal(settings, want) {
@@ -71,11 +71,11 @@ func TestEnterpriseService_UpdateCodeSecurityAndAnalysis(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &EnterpriseSecurityAnalysisSettings{
-		AdvancedSecurityEnabledForNewRepositories:             Bool(true),
-		SecretScanningEnabledForNewRepositories:               Bool(true),
-		SecretScanningPushProtectionEnabledForNewRepositories: Bool(true),
-		SecretScanningPushProtectionCustomLink:                String("https://github.com/test-org/test-repo/blob/main/README.md"),
-		SecretScanningValidityChecksEnabled:                   Bool(true),
+		AdvancedSecurityEnabledForNewRepositories:             Ptr(true),
+		SecretScanningEnabledForNewRepositories:               Ptr(true),
+		SecretScanningPushProtectionEnabledForNewRepositories: Ptr(true),
+		SecretScanningPushProtectionCustomLink:                Ptr("https://github.com/test-org/test-repo/blob/main/README.md"),
+		SecretScanningValidityChecksEnabled:                   Ptr(true),
 	}
 
 	mux.HandleFunc("/enterprises/e/code_security_and_analysis", func(w http.ResponseWriter, r *http.Request) {

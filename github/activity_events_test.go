@@ -34,7 +34,7 @@ func TestActivityService_ListEvents(t *testing.T) {
 		t.Errorf("Activities.ListEvents returned error: %v", err)
 	}
 
-	want := []*Event{{ID: String("1")}, {ID: String("2")}}
+	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListEvents returned %+v, want %+v", events, want)
 	}
@@ -68,7 +68,7 @@ func TestActivityService_ListRepositoryEvents(t *testing.T) {
 		t.Errorf("Activities.ListRepositoryEvents returned error: %v", err)
 	}
 
-	want := []*Event{{ID: String("1")}, {ID: String("2")}}
+	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListRepositoryEvents returned %+v, want %+v", events, want)
 	}
@@ -116,7 +116,7 @@ func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
 		t.Errorf("Activities.ListIssueEventsForRepository returned error: %v", err)
 	}
 
-	want := []*IssueEvent{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*IssueEvent{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListIssueEventsForRepository returned %+v, want %+v", events, want)
 	}
@@ -164,7 +164,7 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 		t.Errorf("Activities.ListEventsForRepoNetwork returned error: %v", err)
 	}
 
-	want := []*Event{{ID: String("1")}, {ID: String("2")}}
+	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListEventsForRepoNetwork returned %+v, want %+v", events, want)
 	}
@@ -212,7 +212,7 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 		t.Errorf("Activities.ListEventsForOrganization returned error: %v", err)
 	}
 
-	want := []*Event{{ID: String("1")}, {ID: String("2")}}
+	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListEventsForOrganization returned %+v, want %+v", events, want)
 	}
@@ -260,7 +260,7 @@ func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
 		t.Errorf("Events.ListPerformedByUser returned error: %v", err)
 	}
 
-	want := []*Event{{ID: String("1")}, {ID: String("2")}}
+	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Events.ListPerformedByUser returned %+v, want %+v", events, want)
 	}
@@ -295,7 +295,7 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 		t.Errorf("Events.ListPerformedByUser returned error: %v", err)
 	}
 
-	want := []*Event{{ID: String("1")}, {ID: String("2")}}
+	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Events.ListPerformedByUser returned %+v, want %+v", events, want)
 	}
@@ -329,7 +329,7 @@ func TestActivityService_ListEventsReceivedByUser_all(t *testing.T) {
 		t.Errorf("Events.ListReceivedByUser returned error: %v", err)
 	}
 
-	want := []*Event{{ID: String("1")}, {ID: String("2")}}
+	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Events.ListReceivedUser returned %+v, want %+v", events, want)
 	}
@@ -364,7 +364,7 @@ func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
 		t.Errorf("Events.ListReceivedByUser returned error: %v", err)
 	}
 
-	want := []*Event{{ID: String("1")}, {ID: String("2")}}
+	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Events.ListReceivedByUser returned %+v, want %+v", events, want)
 	}
@@ -398,7 +398,7 @@ func TestActivityService_ListUserEventsForOrganization(t *testing.T) {
 		t.Errorf("Activities.ListUserEventsForOrganization returned error: %v", err)
 	}
 
-	want := []*Event{{ID: String("1")}, {ID: String("2")}}
+	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListUserEventsForOrganization returned %+v, want %+v", events, want)
 	}
@@ -426,7 +426,7 @@ func TestActivityService_EventParsePayload_typed(t *testing.T) {
 		t.Fatalf("Unmarshal Event returned error: %v", err)
 	}
 
-	want := &PushEvent{PushID: Int64(1)}
+	want := &PushEvent{PushID: Ptr(int64(1))}
 	got, err := event.ParsePayload()
 	if err != nil {
 		t.Fatalf("ParsePayload returned unexpected error: %v", err)
@@ -465,7 +465,7 @@ func TestActivityService_EventParsePayload_installation(t *testing.T) {
 		t.Fatalf("Unmarshal Event returned error: %v", err)
 	}
 
-	want := &PullRequestEvent{Installation: &Installation{ID: Int64(1)}}
+	want := &PullRequestEvent{Installation: &Installation{ID: Ptr(int64(1))}}
 	got, err := event.ParsePayload()
 	if err != nil {
 		t.Fatalf("ParsePayload returned unexpected error: %v", err)

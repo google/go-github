@@ -29,7 +29,7 @@ func TestActionsService_GetActionsPermissionsInEnterprise(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.GetActionsPermissionsInEnterprise returned error: %v", err)
 	}
-	want := &ActionsPermissionsEnterprise{EnabledOrganizations: String("all"), AllowedActions: String("all")}
+	want := &ActionsPermissionsEnterprise{EnabledOrganizations: Ptr("all"), AllowedActions: Ptr("all")}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.GetActionsPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -53,7 +53,7 @@ func TestActionsService_EditActionsPermissionsInEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsPermissionsEnterprise{EnabledOrganizations: String("all"), AllowedActions: String("selected")}
+	input := &ActionsPermissionsEnterprise{EnabledOrganizations: Ptr("all"), AllowedActions: Ptr("selected")}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ActionsPermissionsEnterprise)
@@ -73,7 +73,7 @@ func TestActionsService_EditActionsPermissionsInEnterprise(t *testing.T) {
 		t.Errorf("Actions.EditActionsPermissionsInEnterprise returned error: %v", err)
 	}
 
-	want := &ActionsPermissionsEnterprise{EnabledOrganizations: String("all"), AllowedActions: String("selected")}
+	want := &ActionsPermissionsEnterprise{EnabledOrganizations: Ptr("all"), AllowedActions: Ptr("selected")}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.EditActionsPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -115,8 +115,8 @@ func TestActionsService_ListEnabledOrgsInEnterprise(t *testing.T) {
 	}
 
 	want := &ActionsEnabledOnEnterpriseRepos{TotalCount: int(2), Organizations: []*Organization{
-		{ID: Int64(2)},
-		{ID: Int64(3)},
+		{ID: Ptr(int64(2))},
+		{ID: Ptr(int64(3))},
 	}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Actions.ListEnabledOrgsInEnterprise returned %+v, want %+v", got, want)
@@ -234,7 +234,7 @@ func TestActionsService_GetActionsAllowedInEnterprise(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.GetActionsAllowedInEnterprise returned error: %v", err)
 	}
-	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.GetActionsAllowedInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -258,7 +258,7 @@ func TestActionsService_EditActionsAllowedInEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
+	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ActionsAllowed)
@@ -278,7 +278,7 @@ func TestActionsService_EditActionsAllowedInEnterprise(t *testing.T) {
 		t.Errorf("Actions.EditActionsAllowedInEnterprise returned error: %v", err)
 	}
 
-	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.EditActionsAllowedInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -312,7 +312,7 @@ func TestActionsService_GetDefaultWorkflowPermissionsInEnterprise(t *testing.T) 
 	if err != nil {
 		t.Errorf("Actions.GetDefaultWorkflowPermissionsInEnterprise returned error: %v", err)
 	}
-	want := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	want := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.GetDefaultWorkflowPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -336,7 +336,7 @@ func TestActionsService_EditDefaultWorkflowPermissionsInEnterprise(t *testing.T)
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	input := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
 		v := new(DefaultWorkflowPermissionEnterprise)
@@ -356,7 +356,7 @@ func TestActionsService_EditDefaultWorkflowPermissionsInEnterprise(t *testing.T)
 		t.Errorf("Actions.EditDefaultWorkflowPermissionsInEnterprise returned error: %v", err)
 	}
 
-	want := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	want := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.EditDefaultWorkflowPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}

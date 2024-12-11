@@ -82,8 +82,8 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 
 	body := &startMigration{Repositories: repos}
 	if opts != nil {
-		body.LockRepositories = Bool(opts.LockRepositories)
-		body.ExcludeAttachments = Bool(opts.ExcludeAttachments)
+		body.LockRepositories = Ptr(opts.LockRepositories)
+		body.ExcludeAttachments = Ptr(opts.ExcludeAttachments)
 	}
 
 	req, err := s.client.NewRequest("POST", u, body)
