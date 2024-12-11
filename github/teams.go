@@ -615,7 +615,7 @@ func (s *TeamsService) ListUserTeams(ctx context.Context, opts *ListOptions) ([]
 // GitHub API docs: https://docs.github.com/rest/teams/teams#list-team-projects
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/projects
-func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID int64) ([]*Project, *Response, error) {
+func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID int64) ([]*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects", orgID, teamID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -626,7 +626,7 @@ func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID i
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	var projects []*Project
+	var projects []*ProjectV2
 	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
 		return nil, resp, err
@@ -640,7 +640,7 @@ func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID i
 // GitHub API docs: https://docs.github.com/rest/teams/teams#list-team-projects
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/projects
-func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug string) ([]*Project, *Response, error) {
+func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug string) ([]*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects", org, slug)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -651,7 +651,7 @@ func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug str
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	var projects []*Project
+	var projects []*ProjectV2
 	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
 		return nil, resp, err
@@ -668,7 +668,7 @@ func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug str
 // GitHub API docs: https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-project
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/projects/{project_id}
-func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID, projectID int64) (*Project, *Response, error) {
+func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID, projectID int64) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -678,7 +678,7 @@ func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	projects := &Project{}
+	projects := &ProjectV2{}
 	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
 		return nil, resp, err
@@ -693,7 +693,7 @@ func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID
 // GitHub API docs: https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-project
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/projects/{project_id}
-func (s *TeamsService) ReviewTeamProjectsBySlug(ctx context.Context, org, slug string, projectID int64) (*Project, *Response, error) {
+func (s *TeamsService) ReviewTeamProjectsBySlug(ctx context.Context, org, slug string, projectID int64) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects/%v", org, slug, projectID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -703,7 +703,7 @@ func (s *TeamsService) ReviewTeamProjectsBySlug(ctx context.Context, org, slug s
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	projects := &Project{}
+	projects := &ProjectV2{}
 	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
 		return nil, resp, err

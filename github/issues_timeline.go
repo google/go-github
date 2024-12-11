@@ -134,8 +134,7 @@ type Timeline struct {
 	Source *Source `json:"source,omitempty"`
 	// An object containing rename details including 'from' and 'to' attributes.
 	// Only provided for 'renamed' events.
-	Rename      *Rename      `json:"rename,omitempty"`
-	ProjectCard *ProjectCard `json:"project_card,omitempty"`
+	Rename *Rename `json:"rename,omitempty"`
 	// The state of a submitted review. Can be one of: 'commented',
 	// 'changes_requested' or 'approved'.
 	// Only provided for 'reviewed' events.

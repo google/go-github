@@ -1083,63 +1083,13 @@ type PingEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
-// ProjectEvent is triggered when project is created, modified or deleted.
-// The webhook event name is "project".
-//
-// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#project
-type ProjectEvent struct {
-	Action  *string        `json:"action,omitempty"`
-	Changes *ProjectChange `json:"changes,omitempty"`
-	Project *Project       `json:"project,omitempty"`
-
-	// The following fields are only populated by Webhook events.
-	Repo         *Repository   `json:"repository,omitempty"`
-	Org          *Organization `json:"organization,omitempty"`
-	Sender       *User         `json:"sender,omitempty"`
-	Installation *Installation `json:"installation,omitempty"`
-}
-
-// ProjectCardEvent is triggered when a project card is created, updated, moved, converted to an issue, or deleted.
-// The webhook event name is "project_card".
-//
-// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#project_card
-type ProjectCardEvent struct {
-	Action      *string            `json:"action,omitempty"`
-	Changes     *ProjectCardChange `json:"changes,omitempty"`
-	AfterID     *int64             `json:"after_id,omitempty"`
-	ProjectCard *ProjectCard       `json:"project_card,omitempty"`
-
-	// The following fields are only populated by Webhook events.
-	Repo         *Repository   `json:"repository,omitempty"`
-	Org          *Organization `json:"organization,omitempty"`
-	Sender       *User         `json:"sender,omitempty"`
-	Installation *Installation `json:"installation,omitempty"`
-}
-
-// ProjectColumnEvent is triggered when a project column is created, updated, moved, or deleted.
-// The webhook event name is "project_column".
-//
-// GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#project_column
-type ProjectColumnEvent struct {
-	Action        *string              `json:"action,omitempty"`
-	Changes       *ProjectColumnChange `json:"changes,omitempty"`
-	AfterID       *int64               `json:"after_id,omitempty"`
-	ProjectColumn *ProjectColumn       `json:"project_column,omitempty"`
-
-	// The following fields are only populated by Webhook events.
-	Repo         *Repository   `json:"repository,omitempty"`
-	Org          *Organization `json:"organization,omitempty"`
-	Sender       *User         `json:"sender,omitempty"`
-	Installation *Installation `json:"installation,omitempty"`
-}
-
 // ProjectV2Event is triggered when there is activity relating to an organization-level project.
 // The Webhook event name is "projects_v2".
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#projects_v2
 type ProjectV2Event struct {
-	Action     *string     `json:"action,omitempty"`
-	ProjectsV2 *ProjectsV2 `json:"projects_v2,omitempty"`
+	Action     *string    `json:"action,omitempty"`
+	ProjectsV2 *ProjectV2 `json:"projects_v2,omitempty"`
 
 	// The following fields are only populated by Webhook events.
 	Installation *Installation `json:"installation,omitempty"`
@@ -1147,8 +1097,8 @@ type ProjectV2Event struct {
 	Sender       *User         `json:"sender,omitempty"`
 }
 
-// ProjectsV2 represents a projects v2 project.
-type ProjectsV2 struct {
+// ProjectV2 represents a v2 project.
+type ProjectV2 struct {
 	ID               *int64     `json:"id,omitempty"`
 	NodeID           *string    `json:"node_id,omitempty"`
 	Owner            *User      `json:"owner,omitempty"`
@@ -1163,6 +1113,17 @@ type ProjectsV2 struct {
 	Number           *int       `json:"number,omitempty"`
 	ShortDescription *string    `json:"short_description,omitempty"`
 	DeletedBy        *User      `json:"deleted_by,omitempty"`
+
+	// Fields migrated from the Project (classic) struct:
+	URL                    *string `json:"url,omitempty"`
+	HTMLURL                *string `json:"html_url,omitempty"`
+	ColumnsURL             *string `json:"columns_url,omitempty"`
+	OwnerURL               *string `json:"owner_url,omitempty"`
+	Name                   *string `json:"name,omitempty"`
+	Body                   *string `json:"body,omitempty"`
+	State                  *string `json:"state,omitempty"`
+	OrganizationPermission *string `json:"organization_permission,omitempty"`
+	Private                *bool   `json:"private,omitempty"`
 }
 
 // ProjectV2ItemEvent is triggered when there is activity relating to an item on an organization-level project.
