@@ -35,14 +35,14 @@ const (
 	defaultUserAgent  = "go-github" + "/" + Version
 	uploadBaseURL     = "https://uploads.github.com/"
 
-	headerAPIVersion    = "X-GitHub-Api-Version"
-	headerRateLimit     = "X-RateLimit-Limit"
-	headerRateRemaining = "X-RateLimit-Remaining"
-	headerRateReset     = "X-RateLimit-Reset"
-	headerOTP           = "X-GitHub-OTP"
+	headerAPIVersion    = "X-Github-Api-Version"
+	headerRateLimit     = "X-Ratelimit-Limit"
+	headerRateRemaining = "X-Ratelimit-Remaining"
+	headerRateReset     = "X-Ratelimit-Reset"
+	headerOTP           = "X-Github-Otp"
 	headerRetryAfter    = "Retry-After"
 
-	headerTokenExpiration = "GitHub-Authentication-Token-Expiration"
+	headerTokenExpiration = "Github-Authentication-Token-Expiration"
 
 	mediaTypeV3                = "application/vnd.github.v3+json"
 	defaultMediaType           = "application/octet-stream"
