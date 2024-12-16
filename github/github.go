@@ -801,7 +801,11 @@ func parseTokenExpiration(r *http.Response) Timestamp {
 type requestContext uint8
 
 const (
+	// BypassRateLimitCheck prevents a pre-emptive check for exceeded primary rate limits
+	// Specify this by providing a context with this key, e.g.
+	//   context.WithValue(context.Background(), github.BypassRateLimitCheck, true)
 	BypassRateLimitCheck requestContext = iota
+
 	SleepUntilPrimaryRateLimitResetWhenRateLimited
 )
 
