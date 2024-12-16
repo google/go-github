@@ -4,6 +4,7 @@ run:
   timeout: 10m
 linters:
   enable:
+    - canonicalheader
     - dogsled
     - dupl
     - gocritic
