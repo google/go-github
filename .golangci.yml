@@ -6,6 +6,7 @@ linters:
   enable:
     - dogsled
     - dupl
+    - gci
     - gocritic
     - godot
     - gofmt
