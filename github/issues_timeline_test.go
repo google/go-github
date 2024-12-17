@@ -11,19 +11,9 @@ import (
 	"net/http"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
-
-func parseTime(t *testing.T, value string) time.Time {
-	t.Helper()
-	parsedTime, err := time.Parse(time.RFC3339, value)
-	if err != nil {
-		t.Fatalf("failed to parse time: %v", err)
-	}
-	return parsedTime
-}
 
 func TestIssuesService_ListIssueTimeline(t *testing.T) {
 	t.Parallel()
@@ -273,36 +263,36 @@ func TestTimeline_ReviewRequests(t *testing.T) {
 	mux.HandleFunc("/repos/example-org/example-repo/issues/3/timeline", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{
-			"id": 1234567890,
-			"url": "http://example.com/timeline/1",
-			"actor": {
-				"login": "actor-user",
-				"id": 1
-			},
-			"event": "review_requested",
-			"created_at": "2024-12-17T15:47:42Z",
-			"requested_reviewer": {
-				"login": "reviewer-user",
-				"id": 2
-			},
-			"review_requester": {
-				"login": "requester-user",
-				"id": 1
-			}
+		    "id": 1234567890,
+		    "url": "http://example.com/timeline/1",
+		    "actor": {
+			"login": "actor-user",
+			"id": 1
+		    },
+		    "event": "review_requested",
+		    "created_at": "2006-01-02T15:04:05Z",
+		    "requested_reviewer": {
+			"login": "reviewer-user",
+			"id": 2
+		    },
+		    "review_requester": {
+			"login": "requester-user",
+			"id": 1
+		    }
 		},
 		{
-			"id": 1234567891,
-			"url": "http://example.com/timeline/2",
-			"actor": {
-				"login": "actor-user",
-				"id": 1
-			},
-			"event": "review_request_removed",
-			"created_at": "2024-12-17T15:51:04Z",
-			"requested_reviewer": {
-				"login": "reviewer-user",
-				"id": 2
-			}
+		    "id": 1234567891,
+		    "url": "http://example.com/timeline/2",
+		    "actor": {
+			"login": "actor-user",
+			"id": 1
+		    },
+		    "event": "review_request_removed",
+		    "created_at": "2006-01-02T15:04:05Z",
+		    "requested_reviewer": {
+			"login": "reviewer-user",
+			"id": 2
+		    }
 		}]`)
 	})
 
@@ -321,7 +311,7 @@ func TestTimeline_ReviewRequests(t *testing.T) {
 				ID:    Ptr(int64(1)),
 			},
 			Event:     Ptr("review_requested"),
-			CreatedAt: &Timestamp{parseTime(t, "2024-12-17T15:47:42Z")},
+			CreatedAt: &Timestamp{referenceTime},
 			Reviewer: &User{
 				Login: Ptr("reviewer-user"),
 				ID:    Ptr(int64(2)),
@@ -339,7 +329,7 @@ func TestTimeline_ReviewRequests(t *testing.T) {
 				ID:    Ptr(int64(1)),
 			},
 			Event:     Ptr("review_request_removed"),
-			CreatedAt: &Timestamp{parseTime(t, "2024-12-17T15:51:04Z")},
+			CreatedAt: &Timestamp{referenceTime},
 			Reviewer: &User{
 				Login: Ptr("reviewer-user"),
 				ID:    Ptr(int64(2)),
