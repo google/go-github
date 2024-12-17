@@ -489,9 +489,51 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 	})
 	mux.HandleFunc("/yo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", "*/*")
+		testHeader(t, r, "Accept", defaultMediaType)
 		w.Header().Set("Content-Type", "application/octet-stream")
 		w.Header().Set("Content-Disposition", "attachment; filename=hello-world.txt")
+		fmt.Fprint(w, "Hello World")
+	})
+
+	ctx := context.Background()
+	reader, _, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, http.DefaultClient)
+	if err != nil {
+		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
+	}
+	content, err := io.ReadAll(reader)
+	if err != nil {
+		t.Errorf("Reading Repositories.DownloadReleaseAsset returned error: %v", err)
+	}
+	reader.Close()
+	want := []byte("Hello World")
+	if !bytes.Equal(want, content) {
+		t.Errorf("Repositories.DownloadReleaseAsset returned %+v, want %+v", content, want)
+	}
+}
+
+func TestRepositoriesService_DownloadReleaseAsset_FollowMultipleRedirects(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		// /yo, below will be served as baseURLPath/yo
+		http.Redirect(w, r, baseURLPath+"/yo", http.StatusMovedPermanently)
+	})
+	mux.HandleFunc("/yo", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html;charset=utf-8")
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		// /yo2, below will be served as baseURLPath/yo2
+		http.Redirect(w, r, baseURLPath+"/yo2", http.StatusFound)
+	})
+	mux.HandleFunc("/yo2", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/octet-stream")
+		w.Header().Set("Content-Disposition", "attachment; filename=hello-world.txt")
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
 		fmt.Fprint(w, "Hello World")
 	})
 
@@ -523,7 +565,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 	})
 	mux.HandleFunc("/yo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", "*/*")
+		testHeader(t, r, "Accept", defaultMediaType)
 		w.WriteHeader(http.StatusNotFound)
 	})
 

@@ -387,7 +387,7 @@ func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, f
 		return nil, err
 	}
 	req = withContext(ctx, req)
-	req.Header.Set("Accept", "*/*")
+	req.Header.Set("Accept", defaultMediaType)
 	resp, err := followRedirectsClient.Do(req)
 	if err != nil {
 		return nil, err
