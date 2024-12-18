@@ -231,7 +231,7 @@ func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client 
 	client.BaseURL.Path = "/api-v3/"
 	client.rateLimits[category].Reset.Time = time.Now().Add(10 * time.Minute)
 	resp, err = f()
-	if bypass := resp.Request.Context().Value(bypassRateLimitCheck); bypass != nil {
+	if bypass := resp.Request.Context().Value(BypassRateLimitCheck); bypass != nil {
 		return
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
