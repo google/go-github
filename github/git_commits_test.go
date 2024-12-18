@@ -71,11 +71,6 @@ func TestCommit_Marshal(t *testing.T) {
 			Truncated: Ptr(false),
 		},
 		Parents: nil,
-		Stats: &CommitStats{
-			Additions: Ptr(1),
-			Deletions: Ptr(1),
-			Total:     Ptr(1),
-		},
 		HTMLURL: Ptr("h"),
 		URL:     Ptr("u"),
 		Verification: &SignatureVerification{
@@ -117,11 +112,6 @@ func TestCommit_Marshal(t *testing.T) {
 				}
 			],
 			"truncated": false
-		},
-		"stats": {
-			"additions": 1,
-			"deletions": 1,
-			"total": 1
 		},
 		"html_url": "h",
 		"url": "u",

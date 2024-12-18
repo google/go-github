@@ -283,14 +283,13 @@ func TestCommit_String(t *testing.T) {
 		Committer:    &CommitAuthor{},
 		Message:      Ptr(""),
 		Tree:         &Tree{},
-		Stats:        &CommitStats{},
 		HTMLURL:      Ptr(""),
 		URL:          Ptr(""),
 		Verification: &SignatureVerification{},
 		NodeID:       Ptr(""),
 		CommentCount: Ptr(0),
 	}
-	want := `github.Commit{SHA:"", Author:github.CommitAuthor{}, Committer:github.CommitAuthor{}, Message:"", Tree:github.Tree{}, Stats:github.CommitStats{}, HTMLURL:"", URL:"", Verification:github.SignatureVerification{}, NodeID:"", CommentCount:0}`
+	want := `github.Commit{SHA:"", Author:github.CommitAuthor{}, Committer:github.CommitAuthor{}, Message:"", Tree:github.Tree{}, HTMLURL:"", URL:"", Verification:github.SignatureVerification{}, NodeID:"", CommentCount:0}`
 	if got := v.String(); got != want {
 		t.Errorf("Commit.String = %v, want %v", got, want)
 	}

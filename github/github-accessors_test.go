@@ -4614,14 +4614,6 @@ func TestCommit_GetSHA(tt *testing.T) {
 	c.GetSHA()
 }
 
-func TestCommit_GetStats(tt *testing.T) {
-	tt.Parallel()
-	c := &Commit{}
-	c.GetStats()
-	c = nil
-	c.GetStats()
-}
-
 func TestCommit_GetTree(tt *testing.T) {
 	tt.Parallel()
 	c := &Commit{}
