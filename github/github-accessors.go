@@ -3542,14 +3542,6 @@ func (c *Commit) GetSHA() string {
 	return *c.SHA
 }
 
-// GetStats returns the Stats field.
-func (c *Commit) GetStats() *CommitStats {
-	if c == nil {
-		return nil
-	}
-	return c.Stats
-}
-
 // GetTree returns the Tree field.
 func (c *Commit) GetTree() *Tree {
 	if c == nil {
