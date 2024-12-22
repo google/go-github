@@ -333,9 +333,10 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 // of the io.ReadCloser. Exactly one of rc and redirectURL will be zero.
 //
 // followRedirectsClient can be passed to download the asset from a redirected
-// location. Passing http.DefaultClient is recommended unless special circumstances
-// exist, but it's possible to pass any http.Client. If nil is passed the
-// redirectURL will be returned instead.
+// location. Specifying any http.Client is possible, but passing http.DefaultClient
+// is recommended, except when the specified repository is private, in which case
+// it's necessary to pass an http.Client that performs authenticated requests.
+// If nil is passed the redirectURL will be returned instead.
 //
 // GitHub API docs: https://docs.github.com/rest/releases/assets#get-a-release-asset
 //
@@ -387,7 +388,7 @@ func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, f
 		return nil, err
 	}
 	req = withContext(ctx, req)
-	req.Header.Set("Accept", "*/*")
+	req.Header.Set("Accept", defaultMediaType)
 	resp, err := followRedirectsClient.Do(req)
 	if err != nil {
 		return nil, err
