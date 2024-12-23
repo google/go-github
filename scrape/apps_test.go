@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v67/github"
+	"github.com/google/go-github/v68/github"
 )
 
 func Test_AppRestrictionsEnabled(t *testing.T) {
@@ -95,7 +95,7 @@ func Test_CreateApp(t *testing.T) {
 	})
 
 	if _, err := client.CreateApp(&AppManifest{
-		URL: github.String("https://example.com"),
+		URL: github.Ptr("https://example.com"),
 		HookAttributes: map[string]string{
 			"url": "https://example.com/hook",
 		},
@@ -113,7 +113,7 @@ func Test_CreateAppWithOrg(t *testing.T) {
 	})
 
 	if _, err := client.CreateApp(&AppManifest{
-		URL: github.String("https://example.com"),
+		URL: github.Ptr("https://example.com"),
 		HookAttributes: map[string]string{
 			"url": "https://example.com/hook",
 		},
