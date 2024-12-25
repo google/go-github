@@ -15342,12 +15342,28 @@ func (p *PersonalAccessToken) GetTokenExpiresAt() Timestamp {
 	return *p.TokenExpiresAt
 }
 
+// GetTokenID returns the TokenID field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetTokenID() int64 {
+	if p == nil || p.TokenID == nil {
+		return 0
+	}
+	return *p.TokenID
+}
+
 // GetTokenLastUsedAt returns the TokenLastUsedAt field if it's non-nil, zero value otherwise.
 func (p *PersonalAccessToken) GetTokenLastUsedAt() Timestamp {
 	if p == nil || p.TokenLastUsedAt == nil {
 		return Timestamp{}
 	}
 	return *p.TokenLastUsedAt
+}
+
+// GetTokenName returns the TokenName field if it's non-nil, zero value otherwise.
+func (p *PersonalAccessToken) GetTokenName() string {
+	if p == nil || p.TokenName == nil {
+		return ""
+	}
+	return *p.TokenName
 }
 
 // GetOrg returns the Org map if it's non-nil, an empty map otherwise.
