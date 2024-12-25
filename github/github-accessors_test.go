@@ -19849,6 +19849,17 @@ func TestPersonalAccessToken_GetTokenExpiresAt(tt *testing.T) {
 	p.GetTokenExpiresAt()
 }
 
+func TestPersonalAccessToken_GetTokenID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &PersonalAccessToken{TokenID: &zeroValue}
+	p.GetTokenID()
+	p = &PersonalAccessToken{}
+	p.GetTokenID()
+	p = nil
+	p.GetTokenID()
+}
+
 func TestPersonalAccessToken_GetTokenLastUsedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -19858,6 +19869,17 @@ func TestPersonalAccessToken_GetTokenLastUsedAt(tt *testing.T) {
 	p.GetTokenLastUsedAt()
 	p = nil
 	p.GetTokenLastUsedAt()
+}
+
+func TestPersonalAccessToken_GetTokenName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PersonalAccessToken{TokenName: &zeroValue}
+	p.GetTokenName()
+	p = &PersonalAccessToken{}
+	p.GetTokenName()
+	p = nil
+	p.GetTokenName()
 }
 
 func TestPersonalAccessTokenPermissions_GetOrg(tt *testing.T) {
