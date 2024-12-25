@@ -44,6 +44,12 @@ type PersonalAccessToken struct {
 	// Date and time when the associated fine-grained personal access token expires.
 	TokenExpiresAt *Timestamp `json:"token_expires_at"`
 
+	// TokenID
+	TokenID *int64 `json:"token_id"`
+
+	// TokenName
+	TokenName *string `json:"token_name"`
+
 	// Date and time when the associated fine-grained personal access token was last used for authentication.
 	TokenLastUsedAt *Timestamp `json:"token_last_used_at"`
 }
