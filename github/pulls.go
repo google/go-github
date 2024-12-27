@@ -59,32 +59,20 @@ type PullRequest struct {
 	RequestedReviewers []*User               `json:"requested_reviewers,omitempty"`
 	AutoMerge          *PullRequestAutoMerge `json:"auto_merge,omitempty"`
 
-	// Merged is not populated by List operation.
-	Merged *bool `json:"merged,omitempty"`
-	// Mergeable is not populated by List operation.
-	Mergeable *bool `json:"mergeable,omitempty"`
-	// MergeableState is not populated by List operation.
-	MergeableState *string `json:"mergeable_state,omitempty"`
-	// Rebaseable is not populated by List operation.
-	Rebaseable *bool `json:"rebaseable,omitempty"`
-	// MergedBy is not populated by List operation.
-	MergedBy *User `json:"merged_by,omitempty"`
-	// MergeCommitSHA is not populated by List operation.
-	MergeCommitSHA *string `json:"merge_commit_sha,omitempty"`
-	// Comments is not populated by List operation.
-	Comments *int `json:"comments,omitempty"`
-	// Commits is not populated by List operation.
-	Commits *int `json:"commits,omitempty"`
-	// Additions are not populated by List operation.
-	Additions *int `json:"additions,omitempty"`
-	// Deletions are not populated by List operation.
-	Deletions *int `json:"deletions,omitempty"`
-	// ChangedFiles is not populated by List operation.
-	ChangedFiles *int `json:"changed_files,omitempty"`
-	// MaintainerCanModify is not populated by List operation.
-	MaintainerCanModify *bool `json:"maintainer_can_modify,omitempty"`
-	// ReviewComments is not populated by List operation.
-	ReviewComments *int `json:"review_comments,omitempty"`
+	// These fields are not populated by the List operation.
+	Merged              *bool   `json:"merged,omitempty"`
+	Mergeable           *bool   `json:"mergeable,omitempty"`
+	MergeableState      *string `json:"mergeable_state,omitempty"`
+	Rebaseable          *bool   `json:"rebaseable,omitempty"`
+	MergedBy            *User   `json:"merged_by,omitempty"`
+	MergeCommitSHA      *string `json:"merge_commit_sha,omitempty"`
+	Comments            *int    `json:"comments,omitempty"`
+	Commits             *int    `json:"commits,omitempty"`
+	Additions           *int    `json:"additions,omitempty"`
+	Deletions           *int    `json:"deletions,omitempty"`
+	ChangedFiles        *int    `json:"changed_files,omitempty"`
+	MaintainerCanModify *bool   `json:"maintainer_can_modify,omitempty"`
+	ReviewComments      *int    `json:"review_comments,omitempty"`
 
 	// RequestedTeams is populated as part of the PullRequestEvent.
 	// See, https://docs.github.com/developers/webhooks-and-events/github-event-types#pullrequestevent for an example.
