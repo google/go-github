@@ -7,6 +7,8 @@
 set -e
 
 CDPATH="" cd -- "$(dirname -- "$0")/.."
+# TODO(gmlewis): Remove this when #3409 is resolved.
+export GODEBUG=httpmuxgo121=1
 
 if [ "$#" = "0" ]; then
   set -- -race -covermode atomic ./...

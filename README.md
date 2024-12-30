@@ -15,6 +15,19 @@ the library is tested against Go version 1.22 and greater.  go-github tracks
 older versions of Go if we don't have to, but due to tooling constraints, we
 don't always test older versions.
 
+Go version 1.22 introduced significant changes to the pattern syntax and matching
+behavior of `http.ServerMux` which causes a large number of legacy unit tests to break.
+(See https://pkg.go.dev/net/http#hdr-Compatibility-ServeMux for more information.)
+As a result, testing of this repo is currently performed by setting this env variable:
+
+```bash
+export GODEBUG=httpmuxgo121=1
+```
+
+An issue has been created (#3409) requesting assistance in updating all breaking legacy unit
+tests when this `GODEBUG` environment variable is not set and Go 1.23.4 or later is
+used to perform unit tests.
+
 [support-policy]: https://golang.org/doc/devel/release.html#policy
 
 If you're interested in using the [GraphQL API v4][], the recommended library is
