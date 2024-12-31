@@ -77,7 +77,7 @@ func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, err
 	})
 
 	// This resource is not subject to rate limits.
-	ctx = context.WithValue(ctx, bypassRateLimitCheck, true)
+	ctx = context.WithValue(ctx, BypassRateLimitCheck, true)
 	resp, err := s.client.Do(ctx, req, response)
 	if err != nil {
 		return nil, resp, err
