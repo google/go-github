@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -474,6 +475,57 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 			want := "http://github.com/artifact"
 			if url.String() != want {
 				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
+			}
+		})
+	}
+}
+
+func TestActionsService_DownloadArtifact_unexpectedCode(t *testing.T) {
+	t.Parallel()
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
+	}
+
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, serverURL := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+
+			mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
+				http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
+			})
+			mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				w.WriteHeader(http.StatusNoContent)
+			})
+
+			ctx := context.Background()
+			url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
+			if err == nil {
+				t.Fatalf("Actions.DownloadArtifact should return error on unexpected code")
+			}
+			if !strings.Contains(err.Error(), "unexpected status code") {
+				t.Error("Actions.DownloadArtifact should return unexpected status code")
+			}
+			if got, want := resp.Response.StatusCode, http.StatusNoContent; got != want {
+				t.Errorf("Actions.DownloadArtifact return status %d, want %d", got, want)
+			}
+			if url != nil {
+				t.Errorf("Actions.DownloadArtifact return %+v, want nil", url)
 			}
 		})
 	}

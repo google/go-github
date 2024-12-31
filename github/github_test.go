@@ -1824,6 +1824,48 @@ func TestDo_noContent(t *testing.T) {
 	}
 }
 
+func TestBareDoUntilFound_redirectLoop(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, baseURLPath, http.StatusMovedPermanently)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	_, _, err := client.bareDoUntilFound(ctx, req, 1)
+
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	var rerr *RedirectionError
+	if !errors.As(err, &rerr) {
+		t.Errorf("Expected a Redirection error; got %#v.", err)
+	}
+}
+
+func TestBareDoUntilFound_UnexpectedRedirection(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, baseURLPath, http.StatusSeeOther)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	_, _, err := client.bareDoUntilFound(ctx, req, 1)
+
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	var rerr *RedirectionError
+	if !errors.As(err, &rerr) {
+		t.Errorf("Expected a Redirection error; got %#v.", err)
+	}
+}
+
 func TestSanitizeURL(t *testing.T) {
 	t.Parallel()
 	tests := []struct {

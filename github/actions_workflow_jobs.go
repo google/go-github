@@ -165,7 +165,7 @@ func (s *ActionsService) getWorkflowJobLogsWithoutRateLimit(ctx context.Context,
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusFound {
-		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
@@ -184,10 +184,10 @@ func (s *ActionsService) getWorkflowJobLogsWithRateLimit(ctx context.Context, u 
 	}
 	defer resp.Body.Close()
 
-	// If we received a valid Location in a 302 response
-	if url != nil {
-		return url, resp, nil
+	// If we didn't receive a valid Location in a 302 response
+	if url == nil {
+		return nil, resp, fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 
-	return nil, resp, fmt.Errorf("unexpected status code: %s", resp.Status)
+	return url, resp, nil
 }
