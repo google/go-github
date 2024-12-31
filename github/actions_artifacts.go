@@ -142,6 +142,14 @@ func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, ar
 func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo string, artifactID int64, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v/zip", owner, repo, artifactID)
 
+	if s.client.RateLimitRedirectionalEndpoints {
+		return s.downloadArtifactWithRateLimit(ctx, u, maxRedirects)
+	}
+
+	return s.downloadArtifactWithoutRateLimit(ctx, u, maxRedirects)
+}
+
+func (s *ActionsService) downloadArtifactWithoutRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
@@ -158,6 +166,26 @@ func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo strin
 	}
 
 	return parsedURL, newResponse(resp), nil
+}
+
+func (s *ActionsService) downloadArtifactWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	if err != nil {
+		return nil, resp, err
+	}
+	defer resp.Body.Close()
+
+	// If we received a valid Location in a 302 response
+	if url != nil {
+		return url, resp, nil
+	}
+
+	return nil, resp, fmt.Errorf("unexpected status code: %s", resp.Status)
 }
 
 // DeleteArtifact deletes a workflow run artifact.

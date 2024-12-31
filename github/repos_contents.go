@@ -348,6 +348,15 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 	if opts != nil && opts.Ref != "" {
 		u += fmt.Sprintf("/%s", opts.Ref)
 	}
+
+	if s.client.RateLimitRedirectionalEndpoints {
+		return s.getArchiveLinkWithRateLimit(ctx, u, maxRedirects)
+	}
+
+	return s.getArchiveLinkWithoutRateLimit(ctx, u, maxRedirects)
+}
+
+func (s *RepositoriesService) getArchiveLinkWithoutRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
@@ -364,4 +373,24 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 	}
 
 	return parsedURL, newResponse(resp), nil
+}
+
+func (s *RepositoriesService) getArchiveLinkWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	if err != nil {
+		return nil, resp, err
+	}
+	defer resp.Body.Close()
+
+	// If we received a valid Location in a 302 response
+	if url != nil {
+		return url, resp, nil
+	}
+
+	return nil, resp, fmt.Errorf("unexpected status code: %s", resp.Status)
 }

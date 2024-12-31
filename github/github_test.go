@@ -1925,6 +1925,38 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 	}
 }
 
+func TestCheckResponse_RedirectionError(t *testing.T) {
+	t.Parallel()
+	urlStr := "/foo/bar"
+
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusFound,
+		Header:     http.Header{},
+		Body:       io.NopCloser(strings.NewReader(``)),
+	}
+	res.Header.Set("Location", urlStr)
+	err := CheckResponse(res).(*RedirectionError)
+
+	if err == nil {
+		t.Errorf("Expected error response.")
+	}
+
+	wantedURL, parseErr := url.Parse(urlStr)
+	if parseErr != nil {
+		t.Errorf("Error parsing fixture url: %v", parseErr)
+	}
+
+	want := &RedirectionError{
+		Response:   res,
+		StatusCode: http.StatusFound,
+		Location:   wantedURL,
+	}
+	if !errors.Is(err, want) {
+		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
 func TestCompareHttpResponse(t *testing.T) {
 	t.Parallel()
 	testcases := map[string]struct {

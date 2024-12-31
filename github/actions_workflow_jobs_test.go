@@ -184,87 +184,152 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 
 func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
-	})
-
-	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
-	if err != nil {
-		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
-	}
-	if resp.StatusCode != http.StatusFound {
-		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
-	}
-	want := "http://github.com/a"
-	if url.String() != want {
-		t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
 	}
 
-	const methodName = "GetWorkflowJobLogs"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "\n", "\n", 399444496, 1)
-		return err
-	})
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
 
-	// Add custom round tripper
-	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
-		return nil, errors.New("failed to get workflow logs")
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
-		return err
-	})
+			mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+			})
+
+			ctx := context.Background()
+			url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
+			if err != nil {
+				t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
+			}
+			if resp.StatusCode != http.StatusFound {
+				t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+			}
+			want := "http://github.com/a"
+			if url.String() != want {
+				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
+			}
+
+			const methodName = "GetWorkflowJobLogs"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "\n", "\n", 399444496, 1)
+				return err
+			})
+
+			// Add custom round tripper
+			client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+				return nil, errors.New("failed to get workflow logs")
+			})
+			// propagate custom round tripper to client without CheckRedirect
+			client.initialize()
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
+				return err
+			})
+		})
+	}
 }
 
 func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
 	t.Parallel()
-	client, mux, _ := setup(t)
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
+	}
 
-	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
-	})
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
 
-	ctx := context.Background()
-	_, resp, _ := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 0)
-	if resp.StatusCode != http.StatusMovedPermanently {
-		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+			mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
+			})
+
+			ctx := context.Background()
+			_, resp, _ := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 0)
+			if resp.StatusCode != http.StatusMovedPermanently {
+				t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+			}
+		})
 	}
 }
 
 func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirects(t *testing.T) {
 	t.Parallel()
-	client, mux, serverURL := setup(t)
-
-	// Mock a redirect link, which leads to an archive link
-	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
-		http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
-	})
-
-	mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
-	})
-
-	ctx := context.Background()
-	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
-	if err != nil {
-		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
 	}
 
-	if resp.StatusCode != http.StatusFound {
-		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
-	}
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, serverURL := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
 
-	want := "http://github.com/a"
-	if url.String() != want {
-		t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
+			// Mock a redirect link, which leads to an archive link
+			mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
+				http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
+			})
+
+			mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+			})
+
+			ctx := context.Background()
+			url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
+			if err != nil {
+				t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
+			}
+
+			if resp.StatusCode != http.StatusFound {
+				t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+			}
+
+			want := "http://github.com/a"
+			if url.String() != want {
+				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
+			}
+		})
 	}
 }
 

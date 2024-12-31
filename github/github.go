@@ -155,8 +155,9 @@ var errNonNilContext = errors.New("context must be non-nil")
 
 // A Client manages communication with the GitHub API.
 type Client struct {
-	clientMu sync.Mutex   // clientMu protects the client during calls that modify the CheckRedirect func.
-	client   *http.Client // HTTP client used to communicate with the API.
+	clientMu              sync.Mutex   // clientMu protects the client during calls that modify the CheckRedirect func.
+	client                *http.Client // HTTP client used to communicate with the API.
+	clientIgnoreRedirects *http.Client // HTTP client used to communicate with the API on endpoints where we don't want to follow redirects.
 
 	// Base URL for API requests. Defaults to the public GitHub API, but can be
 	// set to a domain endpoint to use with GitHub Enterprise. BaseURL should
@@ -172,6 +173,9 @@ type Client struct {
 	rateMu                  sync.Mutex
 	rateLimits              [Categories]Rate // Rate limits for the client as determined by the most recent API calls.
 	secondaryRateLimitReset time.Time        // Secondary rate limit reset for the client as determined by the most recent API calls.
+
+	// Whether to respect rate limit headers on endpoints that return 302 redirections to artifacts
+	RateLimitRedirectionalEndpoints bool
 
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
@@ -394,6 +398,14 @@ func (c *Client) initialize() {
 	if c.client == nil {
 		c.client = &http.Client{}
 	}
+	// Copy the main http client into the IgnoreRedirects one, overriding the `CheckRedirect` func
+	c.clientIgnoreRedirects = &http.Client{}
+	c.clientIgnoreRedirects.Transport = c.client.Transport
+	c.clientIgnoreRedirects.Timeout = c.client.Timeout
+	c.clientIgnoreRedirects.Jar = c.client.Jar
+	c.clientIgnoreRedirects.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+		return http.ErrUseLastResponse
+	}
 	if c.BaseURL == nil {
 		c.BaseURL, _ = url.Parse(defaultBaseURL)
 	}
@@ -448,11 +460,12 @@ func (c *Client) copy() *Client {
 	c.clientMu.Lock()
 	// can't use *c here because that would copy mutexes by value.
 	clone := Client{
-		client:                  &http.Client{},
-		UserAgent:               c.UserAgent,
-		BaseURL:                 c.BaseURL,
-		UploadURL:               c.UploadURL,
-		secondaryRateLimitReset: c.secondaryRateLimitReset,
+		client:                          &http.Client{},
+		UserAgent:                       c.UserAgent,
+		BaseURL:                         c.BaseURL,
+		UploadURL:                       c.UploadURL,
+		RateLimitRedirectionalEndpoints: c.RateLimitRedirectionalEndpoints,
+		secondaryRateLimitReset:         c.secondaryRateLimitReset,
 	}
 	c.clientMu.Unlock()
 	if c.client != nil {
@@ -805,15 +818,15 @@ const (
 	SleepUntilPrimaryRateLimitResetWhenRateLimited
 )
 
-// BareDo sends an API request and lets you handle the api response. If an error
-// or API Error occurs, the error will contain more information. Otherwise you
-// are supposed to read and close the response's Body. If rate limit is exceeded
-// and reset time is in the future, BareDo returns *RateLimitError immediately
-// without making a network API call.
+// bareDo sends an API request using `caller` http.Client passed in the parameters
+// and lets you handle the api response. If an error or API Error occurs, the error
+// will contain more information. Otherwise you are supposed to read and close the
+// response's Body. If rate limit is exceeded and reset time is in the future,
+// bareDo returns *RateLimitError immediately without making a network API call.
 //
 // The provided ctx must be non-nil, if it is nil an error is returned. If it is
 // canceled or times out, ctx.Err() will be returned.
-func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, error) {
+func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Request) (*Response, error) {
 	if ctx == nil {
 		return nil, errNonNilContext
 	}
@@ -838,7 +851,7 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 		}
 	}
 
-	resp, err := c.client.Do(req)
+	resp, err := caller.Do(req)
 	var response *Response
 	if resp != nil {
 		response = newResponse(resp)
@@ -897,7 +910,7 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 				return response, err
 			}
 			// retry the request once when the rate limit has reset
-			return c.BareDo(context.WithValue(req.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, nil), req)
+			return c.bareDo(context.WithValue(req.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, nil), caller, req)
 		}
 
 		// Update the secondary rate limit if we hit it.
@@ -909,6 +922,73 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 		}
 	}
 	return response, err
+}
+
+// BareDo sends an API request and lets you handle the api response. If an error
+// or API Error occurs, the error will contain more information. Otherwise you
+// are supposed to read and close the response's Body. If rate limit is exceeded
+// and reset time is in the future, BareDo returns *RateLimitError immediately
+// without making a network API call.
+//
+// The provided ctx must be non-nil, if it is nil an error is returned. If it is
+// canceled or times out, ctx.Err() will be returned.
+func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, error) {
+	return c.bareDo(ctx, c.client, req)
+}
+
+// bareDoIgnoreRedirects has the exact same behavior as BareDo but stops at the first
+// redirection code returned by the API. If a redirection is returned by the api, bareDoIgnoreRedirects
+// returns a *RedirectionError.
+//
+// The provided ctx must be non-nil, if it is nil an error is returned. If it is
+// canceled or times out, ctx.Err() will be returned.
+func (c *Client) bareDoIgnoreRedirects(ctx context.Context, req *http.Request) (*Response, error) {
+	return c.bareDo(ctx, c.clientIgnoreRedirects, req)
+}
+
+var errInvalidLocation = errors.New("invalid or empty Location header in redirection response")
+
+// bareDoUntilFound has the exact same behavior as BareDo but only follows 301s, up to maxRedirects times. If it receives
+// a 302, it will parse the Location header into a *url.URL and return that.
+// This is useful for endpoints that return a 302 in successful cases but still might return 301s for
+// permanent redirections.
+//
+// The provided ctx must be non-nil, if it is nil an error is returned. If it is
+// canceled or times out, ctx.Err() will be returned.
+func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRedirects int) (*url.URL, *Response, error) {
+	response, err := c.bareDoIgnoreRedirects(ctx, req)
+
+	if err != nil {
+		rerr, ok := err.(*RedirectionError)
+		if ok {
+			// If we receive a 302, transform potential relative locations into absolute and return it.
+			if rerr.StatusCode == http.StatusFound {
+				if rerr.Location == nil {
+					return nil, nil, errInvalidLocation
+				}
+				newURL := c.BaseURL.ResolveReference(rerr.Location)
+				return newURL, response, nil
+			}
+			// If permanent redirect response is returned, follow it
+			if maxRedirects > 0 && rerr.StatusCode == http.StatusMovedPermanently {
+				if rerr.Location == nil {
+					return nil, nil, errInvalidLocation
+				}
+				newURL := c.BaseURL.ResolveReference(rerr.Location)
+				newRequest := req.Clone(ctx)
+				newRequest.URL = newURL
+				return c.bareDoUntilFound(ctx, newRequest, maxRedirects-1)
+			}
+			// If we reached the maximum amount of redirections, return an error
+			if maxRedirects <= 0 && rerr.StatusCode == http.StatusMovedPermanently {
+				return nil, response, fmt.Errorf("reached the maximum amount of redirections: %w", err)
+			}
+			return nil, response, fmt.Errorf("unexepected redirection response: %w", err)
+		}
+	}
+
+	// If we don't receive a redirection, forward the response and potential error
+	return nil, response, err
 }
 
 // Do sends an API request and returns the API response. The API response is
@@ -1196,6 +1276,40 @@ func (r *AbuseRateLimitError) Is(target error) bool {
 		compareHTTPResponse(r.Response, v.Response)
 }
 
+// RedirectionError represents a response that returned a redirect status code:
+//
+//	301 (Moved Permanently)
+//	302 (Found)
+//	303 (See Other)
+//	307 (Temporary Redirect)
+//	308 (Permanent Redirect)
+//
+// If there was a valid Location header included, it will be parsed to a URL. You should use
+// `BaseURL.ResolveReference()` to enrich it with the correct hostname where needed.
+type RedirectionError struct {
+	Response   *http.Response // HTTP response that caused this error
+	StatusCode int
+	Location   *url.URL // location header of the redirection if present
+}
+
+func (r *RedirectionError) Error() string {
+	return fmt.Sprintf("%v %v: %d location %v",
+		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
+		r.StatusCode, sanitizeURL(r.Location))
+}
+
+// Is returns whether the provided error equals this error.
+func (r *RedirectionError) Is(target error) bool {
+	v, ok := target.(*RedirectionError)
+	if !ok {
+		return false
+	}
+
+	return r.StatusCode == v.StatusCode &&
+		(r.Location == v.Location || // either both locations are nil or exactly the same pointer
+			r.Location != nil && v.Location != nil && r.Location.String() == v.Location.String()) // or they are both not nil and marshalled identically
+}
+
 // sanitizeURL redacts the client_secret parameter from the URL which may be
 // exposed to the user.
 func sanitizeURL(uri *url.URL) *url.URL {
@@ -1260,7 +1374,8 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 //
 // The error type will be *RateLimitError for rate limit exceeded errors,
 // *AcceptedError for 202 Accepted status codes,
-// and *TwoFactorAuthError for two-factor authentication errors.
+// *TwoFactorAuthError for two-factor authentication errors,
+// and *RedirectionError for redirect status codes (only happens when ignoring redirections).
 func CheckResponse(r *http.Response) error {
 	if r.StatusCode == http.StatusAccepted {
 		return &AcceptedError{}
@@ -1302,6 +1417,25 @@ func CheckResponse(r *http.Response) error {
 			abuseRateLimitError.RetryAfter = retryAfter
 		}
 		return abuseRateLimitError
+	// Check that the status code is a redirection and return a sentinel error that can be used to handle special cases
+	// where 302 is considered a successful result.
+	// This should never happen with the default `CheckRedirect`, because it would return a `url.Error` that should be handled upstream.
+	case r.StatusCode == http.StatusMovedPermanently ||
+		r.StatusCode == http.StatusFound ||
+		r.StatusCode == http.StatusSeeOther ||
+		r.StatusCode == http.StatusTemporaryRedirect ||
+		r.StatusCode == http.StatusPermanentRedirect:
+
+		locationStr := r.Header.Get("Location")
+		var location *url.URL
+		if locationStr != "" {
+			location, _ = url.Parse(locationStr)
+		}
+		return &RedirectionError{
+			Response:   errorResponse.Response,
+			StatusCode: r.StatusCode,
+			Location:   location,
+		}
 	default:
 		return errorResponse
 	}
