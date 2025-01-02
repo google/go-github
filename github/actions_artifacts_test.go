@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -272,102 +273,261 @@ func TestActionsService_GetArtifact_notFound(t *testing.T) {
 
 func TestActionsService_DownloadArtifact(t *testing.T) {
 	t.Parallel()
-	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		http.Redirect(w, r, "https://github.com/artifact", http.StatusFound)
-	})
-
-	ctx := context.Background()
-	url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
-	if err != nil {
-		t.Errorf("Actions.DownloadArtifact returned error: %v", err)
-	}
-	if resp.StatusCode != http.StatusFound {
-		t.Errorf("Actions.DownloadArtifact returned status: %d, want %d", resp.StatusCode, http.StatusFound)
-	}
-
-	want := "https://github.com/artifact"
-	if url.String() != want {
-		t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
 	}
 
-	const methodName = "DownloadArtifact"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.DownloadArtifact(ctx, "\n", "\n", -1, 1)
-		return err
-	})
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
 
-	// Add custom round tripper
-	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
-		return nil, errors.New("failed to download artifact")
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
-		return err
-	})
+			mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				http.Redirect(w, r, "https://github.com/artifact", http.StatusFound)
+			})
+
+			ctx := context.Background()
+			url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
+			if err != nil {
+				t.Errorf("Actions.DownloadArtifact returned error: %v", err)
+			}
+			if resp.StatusCode != http.StatusFound {
+				t.Errorf("Actions.DownloadArtifact returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+			}
+
+			want := "https://github.com/artifact"
+			if url.String() != want {
+				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
+			}
+
+			const methodName = "DownloadArtifact"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Actions.DownloadArtifact(ctx, "\n", "\n", -1, 1)
+				return err
+			})
+
+			// Add custom round tripper
+			client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+				return nil, errors.New("failed to download artifact")
+			})
+			// propagate custom round tripper to client without CheckRedirect
+			client.initialize()
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
+				return err
+			})
+		})
+	}
 }
 
 func TestActionsService_DownloadArtifact_invalidOwner(t *testing.T) {
 	t.Parallel()
-	client, _, _ := setup(t)
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
+	}
 
-	ctx := context.Background()
-	_, _, err := client.Actions.DownloadArtifact(ctx, "%", "r", 1, 1)
-	testURLParseError(t, err)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, _, _ := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+
+			ctx := context.Background()
+			_, _, err := client.Actions.DownloadArtifact(ctx, "%", "r", 1, 1)
+			testURLParseError(t, err)
+		})
+	}
 }
 
 func TestActionsService_DownloadArtifact_invalidRepo(t *testing.T) {
 	t.Parallel()
-	client, _, _ := setup(t)
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
+	}
 
-	ctx := context.Background()
-	_, _, err := client.Actions.DownloadArtifact(ctx, "o", "%", 1, 1)
-	testURLParseError(t, err)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, _, _ := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+
+			ctx := context.Background()
+			_, _, err := client.Actions.DownloadArtifact(ctx, "o", "%", 1, 1)
+			testURLParseError(t, err)
+		})
+	}
 }
 
 func TestActionsService_DownloadArtifact_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
 	t.Parallel()
-	client, mux, _ := setup(t)
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
+	}
 
-	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		http.Redirect(w, r, "https://github.com/artifact", http.StatusMovedPermanently)
-	})
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
 
-	ctx := context.Background()
-	_, resp, _ := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 0)
-	if resp.StatusCode != http.StatusMovedPermanently {
-		t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+			mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				http.Redirect(w, r, "https://github.com/artifact", http.StatusMovedPermanently)
+			})
+
+			ctx := context.Background()
+			_, resp, _ := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 0)
+			if resp.StatusCode != http.StatusMovedPermanently {
+				t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+			}
+		})
 	}
 }
 
 func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(t *testing.T) {
 	t.Parallel()
-	client, mux, serverURL := setup(t)
-
-	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
-		http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
-	})
-	mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		http.Redirect(w, r, "http://github.com/artifact", http.StatusFound)
-	})
-
-	ctx := context.Background()
-	url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
-	if err != nil {
-		t.Errorf("Actions.DownloadArtifact return error: %v", err)
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
 	}
-	if resp.StatusCode != http.StatusFound {
-		t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusFound)
+
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, serverURL := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+
+			mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
+				http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
+			})
+			mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				http.Redirect(w, r, "http://github.com/artifact", http.StatusFound)
+			})
+
+			ctx := context.Background()
+			url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
+			if err != nil {
+				t.Errorf("Actions.DownloadArtifact return error: %v", err)
+			}
+			if resp.StatusCode != http.StatusFound {
+				t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusFound)
+			}
+			want := "http://github.com/artifact"
+			if url.String() != want {
+				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
+			}
+		})
 	}
-	want := "http://github.com/artifact"
-	if url.String() != want {
-		t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
+}
+
+func TestActionsService_DownloadArtifact_unexpectedCode(t *testing.T) {
+	t.Parallel()
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
+	}
+
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, serverURL := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+
+			mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
+				http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
+			})
+			mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				w.WriteHeader(http.StatusNoContent)
+			})
+
+			ctx := context.Background()
+			url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
+			if err == nil {
+				t.Fatalf("Actions.DownloadArtifact should return error on unexpected code")
+			}
+			if !strings.Contains(err.Error(), "unexpected status code") {
+				t.Error("Actions.DownloadArtifact should return unexpected status code")
+			}
+			if got, want := resp.Response.StatusCode, http.StatusNoContent; got != want {
+				t.Errorf("Actions.DownloadArtifact return status %d, want %d", got, want)
+			}
+			if url != nil {
+				t.Errorf("Actions.DownloadArtifact return %+v, want nil", url)
+			}
+		})
 	}
 }
 

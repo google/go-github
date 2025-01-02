@@ -707,81 +707,144 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 
 func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/repos/o/r/tarball/yo", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
-	})
-	ctx := context.Background()
-	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{Ref: "yo"}, 1)
-	if err != nil {
-		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
-	}
-	if resp.StatusCode != http.StatusFound {
-		t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusFound)
-	}
-	want := "http://github.com/a"
-	if url.String() != want {
-		t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
 	}
 
-	const methodName = "GetArchiveLink"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetArchiveLink(ctx, "\n", "\n", Tarball, &RepositoryContentGetOptions{}, 1)
-		return err
-	})
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
 
-	// Add custom round tripper
-	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
-		return nil, errors.New("failed to get archive link")
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 1)
-		return err
-	})
+			mux.HandleFunc("/repos/o/r/tarball/yo", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+			})
+			ctx := context.Background()
+			url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{Ref: "yo"}, 1)
+			if err != nil {
+				t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
+			}
+			if resp.StatusCode != http.StatusFound {
+				t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+			}
+			want := "http://github.com/a"
+			if url.String() != want {
+				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
+			}
+
+			const methodName = "GetArchiveLink"
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.GetArchiveLink(ctx, "\n", "\n", Tarball, &RepositoryContentGetOptions{}, 1)
+				return err
+			})
+
+			// Add custom round tripper
+			client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+				return nil, errors.New("failed to get archive link")
+			})
+			testBadOptions(t, methodName, func() (err error) {
+				_, _, err = client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 1)
+				return err
+			})
+		})
+	}
 }
 
 func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
 	t.Parallel()
-	client, mux, _ := setup(t)
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
+	}
 
-	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
-	})
-	ctx := context.Background()
-	_, resp, _ := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 0)
-	if resp.StatusCode != http.StatusMovedPermanently {
-		t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+
+			mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
+			})
+			ctx := context.Background()
+			_, resp, _ := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 0)
+			if resp.StatusCode != http.StatusMovedPermanently {
+				t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+			}
+		})
 	}
 }
 
 func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirects(t *testing.T) {
 	t.Parallel()
-	client, mux, serverURL := setup(t)
+	tcs := []struct {
+		name              string
+		respectRateLimits bool
+	}{
+		{
+			name:              "withoutRateLimits",
+			respectRateLimits: false,
+		},
+		{
+			name:              "withRateLimits",
+			respectRateLimits: true,
+		},
+	}
 
-	// Mock a redirect link, which leads to an archive link
-	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
-		http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
-	})
-	mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
-	})
-	ctx := context.Background()
-	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 1)
-	if err != nil {
-		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
-	}
-	if resp.StatusCode != http.StatusFound {
-		t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusFound)
-	}
-	want := "http://github.com/a"
-	if url.String() != want {
-		t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, serverURL := setup(t)
+			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+
+			// Mock a redirect link, which leads to an archive link
+			mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
+				http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
+			})
+			mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+			})
+			ctx := context.Background()
+			url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 1)
+			if err != nil {
+				t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
+			}
+			if resp.StatusCode != http.StatusFound {
+				t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+			}
+			want := "http://github.com/a"
+			if url.String() != want {
+				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
+			}
+		})
 	}
 }
 

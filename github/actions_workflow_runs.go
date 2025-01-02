@@ -259,6 +259,14 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 func (s *ActionsService) GetWorkflowRunAttemptLogs(ctx context.Context, owner, repo string, runID int64, attemptNumber int, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/attempts/%v/logs", owner, repo, runID, attemptNumber)
 
+	if s.client.RateLimitRedirectionalEndpoints {
+		return s.getWorkflowRunAttemptLogsWithRateLimit(ctx, u, maxRedirects)
+	}
+
+	return s.getWorkflowRunAttemptLogsWithoutRateLimit(ctx, u, maxRedirects)
+}
+
+func (s *ActionsService) getWorkflowRunAttemptLogsWithoutRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
@@ -266,11 +274,31 @@ func (s *ActionsService) GetWorkflowRunAttemptLogs(ctx context.Context, owner, r
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusFound {
-		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
 	return parsedURL, newResponse(resp), err
+}
+
+func (s *ActionsService) getWorkflowRunAttemptLogsWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	if err != nil {
+		return nil, resp, err
+	}
+	defer resp.Body.Close()
+
+	// If we didn't receive a valid Location in a 302 response
+	if url == nil {
+		return nil, resp, fmt.Errorf("unexpected status code: %v", resp.Status)
+	}
+
+	return url, resp, nil
 }
 
 // RerunWorkflowByID re-runs a workflow by ID.
@@ -345,6 +373,14 @@ func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo 
 func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
 
+	if s.client.RateLimitRedirectionalEndpoints {
+		return s.getWorkflowRunLogsWithRateLimit(ctx, u, maxRedirects)
+	}
+
+	return s.getWorkflowRunLogsWithoutRateLimit(ctx, u, maxRedirects)
+}
+
+func (s *ActionsService) getWorkflowRunLogsWithoutRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
@@ -357,6 +393,26 @@ func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo str
 
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
 	return parsedURL, newResponse(resp), err
+}
+
+func (s *ActionsService) getWorkflowRunLogsWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	if err != nil {
+		return nil, resp, err
+	}
+	defer resp.Body.Close()
+
+	// If we didn't receive a valid Location in a 302 response
+	if url == nil {
+		return nil, resp, fmt.Errorf("unexpected status code: %v", resp.Status)
+	}
+
+	return url, resp, nil
 }
 
 // DeleteWorkflowRun deletes a workflow run by ID.

@@ -1824,6 +1824,48 @@ func TestDo_noContent(t *testing.T) {
 	}
 }
 
+func TestBareDoUntilFound_redirectLoop(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, baseURLPath, http.StatusMovedPermanently)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	_, _, err := client.bareDoUntilFound(ctx, req, 1)
+
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	var rerr *RedirectionError
+	if !errors.As(err, &rerr) {
+		t.Errorf("Expected a Redirection error; got %#v.", err)
+	}
+}
+
+func TestBareDoUntilFound_UnexpectedRedirection(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, baseURLPath, http.StatusSeeOther)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	_, _, err := client.bareDoUntilFound(ctx, req, 1)
+
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	var rerr *RedirectionError
+	if !errors.As(err, &rerr) {
+		t.Errorf("Expected a Redirection error; got %#v.", err)
+	}
+}
+
 func TestSanitizeURL(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
@@ -1919,6 +1961,38 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 	want := &AbuseRateLimitError{
 		Response: res,
 		Message:  "m",
+	}
+	if !errors.Is(err, want) {
+		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
+func TestCheckResponse_RedirectionError(t *testing.T) {
+	t.Parallel()
+	urlStr := "/foo/bar"
+
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusFound,
+		Header:     http.Header{},
+		Body:       io.NopCloser(strings.NewReader(``)),
+	}
+	res.Header.Set("Location", urlStr)
+	err := CheckResponse(res).(*RedirectionError)
+
+	if err == nil {
+		t.Errorf("Expected error response.")
+	}
+
+	wantedURL, parseErr := url.Parse(urlStr)
+	if parseErr != nil {
+		t.Errorf("Error parsing fixture url: %v", parseErr)
+	}
+
+	want := &RedirectionError{
+		Response:   res,
+		StatusCode: http.StatusFound,
+		Location:   wantedURL,
 	}
 	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
