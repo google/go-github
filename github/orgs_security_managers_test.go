@@ -109,7 +109,8 @@ func TestOrganizationsService_RemoveSecurityManagerTeam(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/security-managers/teams/t", func(w http.ResponseWriter, r *http.Request) {
+	handleGetSecurityManagerRole(t, mux, "o")
+	mux.HandleFunc("/orgs/o/organization-roles/teams/t/138", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -141,10 +142,12 @@ func TestOrganizationsService_RemoveSecurityManagerTeam_invalidOrg(t *testing.T)
 
 func TestOrganizationsService_RemoveSecurityManagerTeam_invalidTeam(t *testing.T) {
 	t.Parallel()
-	client, _, _ := setup(t)
+	client, mux, _ := setup(t)
+
+	handleGetSecurityManagerRole(t, mux, "o")
 
 	ctx := context.Background()
-	_, err := client.Organizations.RemoveSecurityManagerTeam(ctx, "%", "t")
+	_, err := client.Organizations.RemoveSecurityManagerTeam(ctx, "o", "%")
 	testURLParseError(t, err)
 }
 
