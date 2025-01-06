@@ -10,6 +10,11 @@ import (
 	"errors"
 )
 
+// GetSecurityManagerRole retrieves the security manager role for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#get-all-organization-roles-for-an-organization
+//
+//meta:operation GET /orgs/{org}/organization-roles
 func (s *OrganizationsService) GetSecurityManagerRole(ctx context.Context, org string) (*CustomOrgRoles, *Response, error) {
 	roles, resp, err := s.ListRoles(ctx, org)
 	if err != nil {
@@ -27,9 +32,11 @@ func (s *OrganizationsService) GetSecurityManagerRole(ctx context.Context, org s
 
 // ListSecurityManagerTeams lists all security manager teams for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/organization-roles#list-teams-that-are-assigned-to-an-organization-role
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#get-all-organization-roles-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#list-teams-that-are-assigned-to-an-organization-role
 //
-//meta:operation GET /orgs/{org}/organization-roles/{security_manager_role_id}/teams
+//meta:operation GET /orgs/{org}/organization-roles
+//meta:operation GET /orgs/{org}/organization-roles/{role_id}/teams
 func (s *OrganizationsService) ListSecurityManagerTeams(ctx context.Context, org string) ([]*Team, *Response, error) {
 	securityManagerRole, resp, err := s.GetSecurityManagerRole(ctx, org)
 	if err != nil {
@@ -55,9 +62,11 @@ func (s *OrganizationsService) ListSecurityManagerTeams(ctx context.Context, org
 
 // AddSecurityManagerTeam adds a team to the list of security managers for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/organization-roles#assign-an-organization-role-to-a-team
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#assign-an-organization-role-to-a-team
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#get-all-organization-roles-for-an-organization
 //
-//meta:operation PUT /orgs/{org}/organization-roles/teams/{team_slug}/{security_manager_role_id}
+//meta:operation GET /orgs/{org}/organization-roles
+//meta:operation PUT /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}
 func (s *OrganizationsService) AddSecurityManagerTeam(ctx context.Context, org, team string) (*Response, error) {
 	securityManagerRole, resp, err := s.GetSecurityManagerRole(ctx, org)
 	if err != nil {
@@ -69,9 +78,11 @@ func (s *OrganizationsService) AddSecurityManagerTeam(ctx context.Context, org, 
 
 // RemoveSecurityManagerTeam removes a team from the list of security managers for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/organization-roles#remove-an-organization-role-from-a-team
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#get-all-organization-roles-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#remove-an-organization-role-from-a-team
 //
-//meta:operation DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{security_manager_role_id}
+//meta:operation GET /orgs/{org}/organization-roles
+//meta:operation DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}
 func (s *OrganizationsService) RemoveSecurityManagerTeam(ctx context.Context, org, team string) (*Response, error) {
 	securityManagerRole, resp, err := s.GetSecurityManagerRole(ctx, org)
 	if err != nil {
