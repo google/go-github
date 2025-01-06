@@ -14,6 +14,47 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+func TestOrganizationService_GetSecurityManagerRole(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	handleGetSecurityManagerRole(t, mux, "o")
+
+	ctx := context.Background()
+	role, _, err := client.Organizations.GetSecurityManagerRole(ctx, "o")
+	if err != nil {
+		t.Errorf("Organizations.GetSecurityManagerRole returned error: %v", err)
+	}
+
+	want := &CustomOrgRoles{ID: Ptr(int64(138)), Name: Ptr("security_manager")}
+	if !cmp.Equal(role, want) {
+		t.Errorf("Organizations.GetSecurityManagerRole returned %+v, want %+v", role, want)
+	}
+
+	const methodName = "GetSecurityManagerRole"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetSecurityManagerRole(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetSecurityManagerRole(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestOrganizationsService_GetSecurityManagerRole_invalidOrg(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := context.Background()
+	_, _, err := client.Organizations.GetSecurityManagerRole(ctx, "%")
+	testURLParseError(t, err)
+}
+
 func TestOrganizationsService_ListSecurityManagerTeams(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
