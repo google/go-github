@@ -307,7 +307,7 @@ func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string, opts 
 //
 // To paginate through all seats, populate 'Page' with the number of the last page.
 //
-// GitHub API docs: https://docs.github.com/rest/copilot/copilot-user-management#list-all-copilot-seat-assignments-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-user-management#list-all-copilot-seat-assignments-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/billing/seats
 func (s *CopilotService) ListCopilotEnterpriseSeats(ctx context.Context, enterprise string, opts *ListOptions) (*ListCopilotSeatsResponse, *Response, error) {
@@ -467,7 +467,7 @@ func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (
 
 // GetEnterpriseMetrics gets Copilot usage metrics for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics
 func (s *CopilotService) GetEnterpriseMetrics(ctx context.Context, enterprise string, opts *CopilotMetricsListOptions) ([]*CopilotMetrics, *Response, error) {
@@ -493,7 +493,7 @@ func (s *CopilotService) GetEnterpriseMetrics(ctx context.Context, enterprise st
 
 // GetEnterpriseTeamMetrics gets Copilot usage metrics for an enterprise team.
 //
-// GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise-team
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise-team
 //
 //meta:operation GET /enterprises/{enterprise}/team/{team_slug}/copilot/metrics
 func (s *CopilotService) GetEnterpriseTeamMetrics(ctx context.Context, enterprise, team string, opts *CopilotMetricsListOptions) ([]*CopilotMetrics, *Response, error) {
