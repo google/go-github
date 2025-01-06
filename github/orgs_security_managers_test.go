@@ -18,11 +18,7 @@ func TestOrganizationsService_ListSecurityManagerTeams(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/organization-roles", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"roles":[{"id":138,"name":"security_manager"}]}`)
-	})
-
+	handleGetSecurityManagerRole(t, mux, "o")
 	mux.HandleFunc("/orgs/o/organization-roles/138/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1}]`)
@@ -67,7 +63,8 @@ func TestOrganizationsService_AddSecurityManagerTeam(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/security-managers/teams/t", func(w http.ResponseWriter, r *http.Request) {
+	handleGetSecurityManagerRole(t, mux, "o")
+	mux.HandleFunc("/orgs/o/organization-roles/teams/t/138", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -99,10 +96,12 @@ func TestOrganizationsService_AddSecurityManagerTeam_invalidOrg(t *testing.T) {
 
 func TestOrganizationsService_AddSecurityManagerTeam_invalidTeam(t *testing.T) {
 	t.Parallel()
-	client, _, _ := setup(t)
+	client, mux, _ := setup(t)
+
+	handleGetSecurityManagerRole(t, mux, "o")
 
 	ctx := context.Background()
-	_, err := client.Organizations.AddSecurityManagerTeam(ctx, "%", "t")
+	_, err := client.Organizations.AddSecurityManagerTeam(ctx, "o", "%")
 	testURLParseError(t, err)
 }
 
@@ -147,4 +146,11 @@ func TestOrganizationsService_RemoveSecurityManagerTeam_invalidTeam(t *testing.T
 	ctx := context.Background()
 	_, err := client.Organizations.RemoveSecurityManagerTeam(ctx, "%", "t")
 	testURLParseError(t, err)
+}
+
+func handleGetSecurityManagerRole(t *testing.T, mux *http.ServeMux, org string) {
+	mux.HandleFunc(fmt.Sprintf("/orgs/%s/organization-roles", org), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprintf(w, `{"roles":[{"id":138,"name":"security_manager"}]}`)
+	})
 }

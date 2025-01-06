@@ -55,17 +55,16 @@ func (s *OrganizationsService) ListSecurityManagerTeams(ctx context.Context, org
 
 // AddSecurityManagerTeam adds a team to the list of security managers for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/security-managers#add-a-security-manager-team
+// GitHub API docs: https://docs.github.com/en/rest/orgs/organization-roles#assign-an-organization-role-to-a-team
 //
-//meta:operation PUT /orgs/{org}/security-managers/teams/{team_slug}
+//meta:operation PUT /orgs/{org}/organization-roles/teams/{team_slug}/{security_manager_role_id}
 func (s *OrganizationsService) AddSecurityManagerTeam(ctx context.Context, org, team string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/security-managers/teams/%v", org, team)
-	req, err := s.client.NewRequest("PUT", u, nil)
+	securityManagerRole, resp, err := s.GetSecurityManagerRole(ctx, org)
 	if err != nil {
-		return nil, err
+		return resp, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.AssignOrgRoleToTeam(ctx, org, team, securityManagerRole.GetID())
 }
 
 // RemoveSecurityManagerTeam removes a team from the list of security managers for an organization.
