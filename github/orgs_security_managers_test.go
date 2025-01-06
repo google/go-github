@@ -154,6 +154,6 @@ func TestOrganizationsService_RemoveSecurityManagerTeam_invalidTeam(t *testing.T
 func handleGetSecurityManagerRole(t *testing.T, mux *http.ServeMux, org string) {
 	mux.HandleFunc(fmt.Sprintf("/orgs/%s/organization-roles", org), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{"roles":[{"id":138,"name":"security_manager"}]}`)
+		fmt.Fprint(w, `{"roles":[{"id":138,"name":"security_manager"}]}`)
 	})
 }

@@ -7,7 +7,7 @@ package github
 
 import (
 	"context"
-	"fmt"
+	"errors"
 )
 
 func (s *OrganizationsService) GetSecurityManagerRole(ctx context.Context, org string) (*CustomOrgRoles, *Response, error) {
@@ -22,7 +22,7 @@ func (s *OrganizationsService) GetSecurityManagerRole(ctx context.Context, org s
 		}
 	}
 
-	return nil, resp, fmt.Errorf("security manager role not found")
+	return nil, resp, errors.New("security manager role not found")
 }
 
 // ListSecurityManagerTeams lists all security manager teams for an organization.
