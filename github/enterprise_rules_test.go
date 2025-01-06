@@ -1,4 +1,4 @@
-// Copyright 2023 The go-github AUTHORS. All rights reserved.
+// Copyright 2025 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -14,809 +14,56 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
+func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoName(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
+	enterprise := "e"
+	rulesetID := int64(21)
 
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets", org), func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `[{
-			"id": 26110,
-			"name": "test ruleset",
-			"target": "branch",
-			"source_type": "Organization",
-			"source": "%s",
-			"enforcement": "active",
-			"bypass_mode": "none",
-			"node_id": "nid",
-			"_links": {
-			  "self": {
-				"href": "https://api.github.com/orgs/o/rulesets/26110"
-			  }
-			}
-		}]`, org)
-	})
-
-	ctx := context.Background()
-	rulesets, _, err := client.Organizations.GetAllOrganizationRulesets(ctx, org)
-	if err != nil {
-		t.Errorf("Organizations.GetAllOrganizationRulesets returned error: %v", err)
-	}
-
-	want := []*Ruleset{{
-		ID:          Ptr(int64(26110)),
-		Name:        "test ruleset",
-		Target:      Ptr("branch"),
-		SourceType:  Ptr("Organization"),
-		Source:      org,
-		Enforcement: "active",
-		NodeID:      Ptr("nid"),
-		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: Ptr("https://api.github.com/orgs/o/rulesets/26110")},
-		},
-	}}
-	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.GetAllOrganizationRulesets returned %+v, want %+v", rulesets, want)
-	}
-
-	const methodName = "GetAllOrganizationRulesets"
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetAllOrganizationRulesets(ctx, org)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
-func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets", enterprise), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		fmt.Fprintf(w, `{
-			"id": 21,
+			"id": %d,
 			"name": "ruleset",
 			"target": "branch",
-			"source_type": "Organization",
+			"source_type": "Enterprise",
 			"source": "%s",
 			"enforcement": "active",
 			"bypass_actors": [
-			  {
-				"actor_id": 234,
-				"actor_type": "Team"
-			  }
+				{
+					"actor_id": 234,
+					"actor_type": "Team"
+				}
 			],
 			"conditions": {
-			  "ref_name": {
-				"include": [
-				  "refs/heads/main",
-				  "refs/heads/master"
-				],
-				"exclude": [
-				  "refs/heads/dev*"
-				]
-			  },
+				"organization_name": {
+					"include": [
+						"important_organization",
+						"another_important_organization"
+					],
+					"exclude": [
+						"unimportant_organization"
+					]
+				},
 			  "repository_name": {
-				"include": [
-				  "important_repository",
-				  "another_important_repository"
-				],
-				"exclude": [
-				  "unimportant_repository"
-				],
-				"protected": true
-			  }
-			},
-			"rules": [
-			  {
-				"type": "creation"
-			  },
-			  {
-				"type": "update",
-				"parameters": {
-				  "update_allows_fetch_and_merge": true
-				}
-			  },
-			  {
-				"type": "deletion"
-			  },
-			  {
-				"type": "required_linear_history"
-			  },
-			  {
-				"type": "required_deployments",
-				"parameters": {
-				  "required_deployment_environments": ["test"]
-				}
-			  },
-			  {
-				"type": "required_signatures"
-			  },
-			  {
-				"type": "pull_request",
-				"parameters": {
-				  "dismiss_stale_reviews_on_push": true,
-				  "require_code_owner_review": true,
-				  "require_last_push_approval": true,
-				  "required_approving_review_count": 1,
-				  "required_review_thread_resolution": true
-				}
-			  },
-			  {
-				"type": "required_status_checks",
-				"parameters": {
-				  "required_status_checks": [
-					{
-					  "context": "test",
-					  "integration_id": 1
-					}
-				  ],
-				  "strict_required_status_checks_policy": true
-				}
-			  },
-			  {
-				"type": "non_fast_forward"
-			  },
-			  {
-				"type": "commit_message_pattern",
-				"parameters": {
-				  "name": "avoid test commits",
-				  "negate": true,
-				  "operator": "starts_with",
-				  "pattern": "[test]"
-				}
-			  },
-			  {
-				"type": "commit_author_email_pattern",
-				"parameters": {
-				  "operator": "contains",
-				  "pattern": "github"
-				}
-			  },
-			  {
-				"type": "committer_email_pattern",
-				"parameters": {
-				  "name": "avoid commit emails",
-				  "negate": true,
-				  "operator": "ends_with",
-				  "pattern": "abc"
-				}
-			  },
-			  {
-				"type": "branch_name_pattern",
-				"parameters": {
-				  "name": "avoid branch names",
-				  "negate": true,
-				  "operator": "regex",
-				  "pattern": "github$"
-				}
-			  },
-			  {
-				"type": "tag_name_pattern",
-				"parameters": {
-				  "name": "avoid tag names",
-				  "negate": true,
-				  "operator": "contains",
-				  "pattern": "github"
-				}
-			  },
-			  {
-			    "type": "code_scanning",
-			    "parameters": {
-				  "code_scanning_tools": [
-				    {
-					  "tool": "CodeQL",
-					  "security_alerts_threshold": "high_or_higher",
-					  "alerts_threshold": "errors"
-				    }
-				  ]
-			    }
-			  }
-			]
-		  }`, org)
-	})
-
-	ctx := context.Background()
-	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, org, &Ruleset{
-		Name:        "ruleset",
-		Target:      Ptr("branch"),
-		Enforcement: "active",
-		BypassActors: []*BypassActor{
-			{
-				ActorID:   Ptr(int64(234)),
-				ActorType: Ptr("Team"),
-			},
-		},
-		Conditions: &RulesetConditions{
-			RefName: &RulesetRefConditionParameters{
-				Include: []string{"refs/heads/main", "refs/heads/master"},
-				Exclude: []string{"refs/heads/dev*"},
-			},
-			RepositoryName: &RulesetRepositoryNamesConditionParameters{
-				Include:   []string{"important_repository", "another_important_repository"},
-				Exclude:   []string{"unimportant_repository"},
-				Protected: Ptr(true),
-			},
-		},
-		Rules: []*RepositoryRule{
-			NewCreationRule(),
-			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
-			}),
-			NewDeletionRule(),
-			NewRequiredLinearHistoryRule(),
-			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
-				RequiredDeploymentEnvironments: []string{"test"},
-			}),
-			NewRequiredSignaturesRule(),
-			NewPullRequestRule(&PullRequestRuleParameters{
-				RequireCodeOwnerReview:         true,
-				RequireLastPushApproval:        true,
-				RequiredApprovingReviewCount:   1,
-				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
-			}),
-			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
-				RequiredStatusChecks: []RuleRequiredStatusChecks{
-					{
-						Context:       "test",
-						IntegrationID: Ptr(int64(1)),
-					},
+					"include": [
+						"important_repository",
+						"another_important_repository"
+					],
+					"exclude": [
+						"unimportant_repository"
+					],
+					"protected": true
 				},
-				StrictRequiredStatusChecksPolicy: true,
-			}),
-			NewNonFastForwardRule(),
-			NewCommitMessagePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid test commits"),
-				Negate:   Ptr(true),
-				Operator: "starts_with",
-				Pattern:  "[test]",
-			}),
-			NewCommitAuthorEmailPatternRule(&RulePatternParameters{
-				Operator: "contains",
-				Pattern:  "github",
-			}),
-			NewCommitterEmailPatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid commit emails"),
-				Negate:   Ptr(true),
-				Operator: "ends_with",
-				Pattern:  "abc",
-			}),
-			NewBranchNamePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid branch names"),
-				Negate:   Ptr(true),
-				Operator: "regex",
-				Pattern:  "github$",
-			}),
-			NewTagNamePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid tag names"),
-				Negate:   Ptr(true),
-				Operator: "contains",
-				Pattern:  "github",
-			}),
-			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
-				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
-					{
-						Tool:                    "CodeQL",
-						SecurityAlertsThreshold: "high_or_higher",
-						AlertsThreshold:         "errors",
-					},
-				},
-			}),
-		},
-	})
-	if err != nil {
-		t.Errorf("Organizations.CreateOrganizationRuleset returned error: %v", err)
-	}
-
-	want := &Ruleset{
-		ID:          Ptr(int64(21)),
-		Name:        "ruleset",
-		Target:      Ptr("branch"),
-		SourceType:  Ptr("Organization"),
-		Source:      org,
-		Enforcement: "active",
-		BypassActors: []*BypassActor{
-			{
-				ActorID:   Ptr(int64(234)),
-				ActorType: Ptr("Team"),
-			},
-		},
-		Conditions: &RulesetConditions{
-			RefName: &RulesetRefConditionParameters{
-				Include: []string{"refs/heads/main", "refs/heads/master"},
-				Exclude: []string{"refs/heads/dev*"},
-			},
-			RepositoryName: &RulesetRepositoryNamesConditionParameters{
-				Include:   []string{"important_repository", "another_important_repository"},
-				Exclude:   []string{"unimportant_repository"},
-				Protected: Ptr(true),
-			},
-		},
-		Rules: []*RepositoryRule{
-			NewCreationRule(),
-			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
-			}),
-			NewDeletionRule(),
-			NewRequiredLinearHistoryRule(),
-			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
-				RequiredDeploymentEnvironments: []string{"test"},
-			}),
-			NewRequiredSignaturesRule(),
-			NewPullRequestRule(&PullRequestRuleParameters{
-				RequireCodeOwnerReview:         true,
-				RequireLastPushApproval:        true,
-				RequiredApprovingReviewCount:   1,
-				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
-			}),
-			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
-				RequiredStatusChecks: []RuleRequiredStatusChecks{
-					{
-						Context:       "test",
-						IntegrationID: Ptr(int64(1)),
-					},
-				},
-				StrictRequiredStatusChecksPolicy: true,
-			}),
-			NewNonFastForwardRule(),
-			NewCommitMessagePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid test commits"),
-				Negate:   Ptr(true),
-				Operator: "starts_with",
-				Pattern:  "[test]",
-			}),
-			NewCommitAuthorEmailPatternRule(&RulePatternParameters{
-				Operator: "contains",
-				Pattern:  "github",
-			}),
-			NewCommitterEmailPatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid commit emails"),
-				Negate:   Ptr(true),
-				Operator: "ends_with",
-				Pattern:  "abc",
-			}),
-			NewBranchNamePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid branch names"),
-				Negate:   Ptr(true),
-				Operator: "regex",
-				Pattern:  "github$",
-			}),
-			NewTagNamePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid tag names"),
-				Negate:   Ptr(true),
-				Operator: "contains",
-				Pattern:  "github",
-			}),
-			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
-				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
-					{
-						Tool:                    "CodeQL",
-						SecurityAlertsThreshold: "high_or_higher",
-						AlertsThreshold:         "errors",
-					},
-				},
-			}),
-		},
-	}
-	if !cmp.Equal(ruleset, want) {
-		t.Errorf("Organizations.CreateOrganizationRuleset returned %+v, want %+v", ruleset, want)
-	}
-
-	const methodName = "CreateOrganizationRuleset"
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, org, nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
-func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets", org), func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{
-			"id": 21,
-			"name": "ruleset",
-			"target": "branch",
-			"source_type": "Organization",
-			"source": "%s",
-			"enforcement": "active",
-			"bypass_actors": [
-			  {
-				"actor_id": 234,
-				"actor_type": "Team"
-			  }
-			],
-			"conditions": {
-			  "repository_property": {
-				"include": [
-					{
-						"name": "testIncludeProp",
-						"source": "custom",
-						"property_values": [
-							"true"
-						]
-					}
-				],
-				"exclude": [
-					{
-						"name": "testExcludeProp",
-						"property_values": [
-							"false"
-						]
-					}
-				]
-			  }
-			},
-			"rules": [
-			  {
-				"type": "creation"
-			  },
-			  {
-				"type": "update",
-				"parameters": {
-				  "update_allows_fetch_and_merge": true
-				}
-			  },
-			  {
-				"type": "deletion"
-			  },
-			  {
-				"type": "required_linear_history"
-			  },
-			  {
-				"type": "required_deployments",
-				"parameters": {
-				  "required_deployment_environments": ["test"]
-				}
-			  },
-			  {
-				"type": "required_signatures"
-			  },
-			  {
-				"type": "pull_request",
-				"parameters": {
-				  "dismiss_stale_reviews_on_push": true,
-				  "require_code_owner_review": true,
-				  "require_last_push_approval": true,
-				  "required_approving_review_count": 1,
-				  "required_review_thread_resolution": true
-				}
-			  },
-			  {
-				"type": "required_status_checks",
-				"parameters": {
-				  "required_status_checks": [
-					{
-					  "context": "test",
-					  "integration_id": 1
-					}
-				  ],
-				  "strict_required_status_checks_policy": true
-				}
-			  },
-			  {
-				"type": "non_fast_forward"
-			  },
-			  {
-				"type": "commit_message_pattern",
-				"parameters": {
-				  "name": "avoid test commits",
-				  "negate": true,
-				  "operator": "starts_with",
-				  "pattern": "[test]"
-				}
-			  },
-			  {
-				"type": "commit_author_email_pattern",
-				"parameters": {
-				  "operator": "contains",
-				  "pattern": "github"
-				}
-			  },
-			  {
-				"type": "committer_email_pattern",
-				"parameters": {
-				  "name": "avoid commit emails",
-				  "negate": true,
-				  "operator": "ends_with",
-				  "pattern": "abc"
-				}
-			  },
-			  {
-				"type": "branch_name_pattern",
-				"parameters": {
-				  "name": "avoid branch names",
-				  "negate": true,
-				  "operator": "regex",
-				  "pattern": "github$"
-				}
-			  },
-			  {
-				"type": "tag_name_pattern",
-				"parameters": {
-				  "name": "avoid tag names",
-				  "negate": true,
-				  "operator": "contains",
-				  "pattern": "github"
-				}
-			  },
-			  {
-			    "type": "code_scanning",
-			    "parameters": {
-				  "code_scanning_tools": [
-				    {
-					  "tool": "CodeQL",
-					  "security_alerts_threshold": "high_or_higher",
-					  "alerts_threshold": "errors"
-				    }
-				  ]
-			    }
-			  }
-			]
-		  }`, org)
-	})
-
-	ctx := context.Background()
-	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, org, &Ruleset{
-		Name:        "ruleset",
-		Target:      Ptr("branch"),
-		Enforcement: "active",
-		BypassActors: []*BypassActor{
-			{
-				ActorID:   Ptr(int64(234)),
-				ActorType: Ptr("Team"),
-			},
-		},
-		Conditions: &RulesetConditions{
-			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
-				Include: []RulesetRepositoryPropertyTargetParameters{
-					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
-					},
-				},
-				Exclude: []RulesetRepositoryPropertyTargetParameters{
-					{
-						Name:   "testExcludeProp",
-						Values: []string{"false"},
-					},
-				},
-			},
-		},
-		Rules: []*RepositoryRule{
-			NewCreationRule(),
-			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
-			}),
-			NewDeletionRule(),
-			NewRequiredLinearHistoryRule(),
-			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
-				RequiredDeploymentEnvironments: []string{"test"},
-			}),
-			NewRequiredSignaturesRule(),
-			NewPullRequestRule(&PullRequestRuleParameters{
-				RequireCodeOwnerReview:         true,
-				RequireLastPushApproval:        true,
-				RequiredApprovingReviewCount:   1,
-				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
-			}),
-			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
-				RequiredStatusChecks: []RuleRequiredStatusChecks{
-					{
-						Context:       "test",
-						IntegrationID: Ptr(int64(1)),
-					},
-				},
-				StrictRequiredStatusChecksPolicy: true,
-			}),
-			NewNonFastForwardRule(),
-			NewCommitMessagePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid test commits"),
-				Negate:   Ptr(true),
-				Operator: "starts_with",
-				Pattern:  "[test]",
-			}),
-			NewCommitAuthorEmailPatternRule(&RulePatternParameters{
-				Operator: "contains",
-				Pattern:  "github",
-			}),
-			NewCommitterEmailPatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid commit emails"),
-				Negate:   Ptr(true),
-				Operator: "ends_with",
-				Pattern:  "abc",
-			}),
-			NewBranchNamePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid branch names"),
-				Negate:   Ptr(true),
-				Operator: "regex",
-				Pattern:  "github$",
-			}),
-			NewTagNamePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid tag names"),
-				Negate:   Ptr(true),
-				Operator: "contains",
-				Pattern:  "github",
-			}),
-			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
-				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
-					{
-						Tool:                    "CodeQL",
-						SecurityAlertsThreshold: "high_or_higher",
-						AlertsThreshold:         "errors",
-					},
-				},
-			}),
-		},
-	})
-	if err != nil {
-		t.Errorf("Organizations.CreateOrganizationRuleset returned error: %v", err)
-	}
-
-	want := &Ruleset{
-		ID:          Ptr(int64(21)),
-		Name:        "ruleset",
-		Target:      Ptr("branch"),
-		SourceType:  Ptr("Organization"),
-		Source:      org,
-		Enforcement: "active",
-		BypassActors: []*BypassActor{
-			{
-				ActorID:   Ptr(int64(234)),
-				ActorType: Ptr("Team"),
-			},
-		},
-		Conditions: &RulesetConditions{
-			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
-				Include: []RulesetRepositoryPropertyTargetParameters{
-					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
-					},
-				},
-				Exclude: []RulesetRepositoryPropertyTargetParameters{
-					{
-						Name:   "testExcludeProp",
-						Values: []string{"false"},
-					},
-				},
-			},
-		},
-		Rules: []*RepositoryRule{
-			NewCreationRule(),
-			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
-			}),
-			NewDeletionRule(),
-			NewRequiredLinearHistoryRule(),
-			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
-				RequiredDeploymentEnvironments: []string{"test"},
-			}),
-			NewRequiredSignaturesRule(),
-			NewPullRequestRule(&PullRequestRuleParameters{
-				RequireCodeOwnerReview:         true,
-				RequireLastPushApproval:        true,
-				RequiredApprovingReviewCount:   1,
-				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
-			}),
-			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
-				RequiredStatusChecks: []RuleRequiredStatusChecks{
-					{
-						Context:       "test",
-						IntegrationID: Ptr(int64(1)),
-					},
-				},
-				StrictRequiredStatusChecksPolicy: true,
-			}),
-			NewNonFastForwardRule(),
-			NewCommitMessagePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid test commits"),
-				Negate:   Ptr(true),
-				Operator: "starts_with",
-				Pattern:  "[test]",
-			}),
-			NewCommitAuthorEmailPatternRule(&RulePatternParameters{
-				Operator: "contains",
-				Pattern:  "github",
-			}),
-			NewCommitterEmailPatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid commit emails"),
-				Negate:   Ptr(true),
-				Operator: "ends_with",
-				Pattern:  "abc",
-			}),
-			NewBranchNamePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid branch names"),
-				Negate:   Ptr(true),
-				Operator: "regex",
-				Pattern:  "github$",
-			}),
-			NewTagNamePatternRule(&RulePatternParameters{
-				Name:     Ptr("avoid tag names"),
-				Negate:   Ptr(true),
-				Operator: "contains",
-				Pattern:  "github",
-			}),
-			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
-				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
-					{
-						Tool:                    "CodeQL",
-						SecurityAlertsThreshold: "high_or_higher",
-						AlertsThreshold:         "errors",
-					},
-				},
-			}),
-		},
-	}
-	if !cmp.Equal(ruleset, want) {
-		t.Errorf("Organizations.CreateOrganizationRuleset returned %+v, want %+v", ruleset, want)
-	}
-
-	const methodName = "CreateOrganizationRuleset"
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, org, nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
-func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets", org), func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{
-			"id": 21,
-			"name": "ruleset",
-			"target": "branch",
-			"source_type": "Organization",
-			"source": "%s",
-			"enforcement": "active",
-			"bypass_actors": [
-			  {
-				"actor_id": 234,
-				"actor_type": "Team"
-			  }
-			],
-			"conditions": {
 			  "ref_name": {
-				"include": [
-				  "refs/heads/main",
-				  "refs/heads/master"
-				],
-				"exclude": [
-				  "refs/heads/dev*"
-				]
-			  },
-			  "repository_id": {
-					"repository_ids": [ 123, 456 ]
+					"include": [
+						"refs/heads/main",
+						"refs/heads/master"
+					],
+					"exclude": [
+						"refs/heads/dev*"
+					]
 				}
 			},
 			"rules": [
@@ -925,12 +172,11 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 			    }
 			  }
 			]
-		  }`, org)
+		  }`, rulesetID, enterprise)
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, org, &Ruleset{
-		ID:          Ptr(int64(21)),
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, &Ruleset{
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -941,12 +187,18 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 			},
 		},
 		Conditions: &RulesetConditions{
+			OrganizationName: &RulesetOrganizationNamesConditionParameters{
+				Include: []string{"important_organization", "another_important_organization"},
+				Exclude: []string{"unimportant_organization"},
+			},
+			RepositoryName: &RulesetRepositoryNamesConditionParameters{
+				Include:   []string{"important_repository", "another_important_repository"},
+				Exclude:   []string{"unimportant_repository"},
+				Protected: Ptr(true),
+			},
 			RefName: &RulesetRefConditionParameters{
 				Include: []string{"refs/heads/main", "refs/heads/master"},
 				Exclude: []string{"refs/heads/dev*"},
-			},
-			RepositoryID: &RulesetRepositoryIDsConditionParameters{
-				RepositoryIDs: []int64{123, 456},
 			},
 		},
 		Rules: []*RepositoryRule{
@@ -1017,15 +269,15 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Errorf("Organizations.CreateOrganizationRuleset returned error: %v", err)
+		t.Errorf("Enterprise.CreateEnterpriseRuleset returned error: %v", err)
 	}
 
 	want := &Ruleset{
-		ID:          Ptr(int64(21)),
+		ID:          Ptr(rulesetID),
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
-		SourceType:  Ptr("Organization"),
-		Source:      org,
+		SourceType:  Ptr("Enterprise"),
+		Source:      enterprise,
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
@@ -1034,12 +286,18 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 			},
 		},
 		Conditions: &RulesetConditions{
+			OrganizationName: &RulesetOrganizationNamesConditionParameters{
+				Include: []string{"important_organization", "another_important_organization"},
+				Exclude: []string{"unimportant_organization"},
+			},
+			RepositoryName: &RulesetRepositoryNamesConditionParameters{
+				Include:   []string{"important_repository", "another_important_repository"},
+				Exclude:   []string{"unimportant_repository"},
+				Protected: Ptr(true),
+			},
 			RefName: &RulesetRefConditionParameters{
 				Include: []string{"refs/heads/main", "refs/heads/master"},
 				Exclude: []string{"refs/heads/dev*"},
-			},
-			RepositoryID: &RulesetRepositoryIDsConditionParameters{
-				RepositoryIDs: []int64{123, 456},
 			},
 		},
 		Rules: []*RepositoryRule{
@@ -1110,13 +368,13 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(ruleset, want) {
-		t.Errorf("Organizations.CreateOrganizationRuleset returned %+v, want %+v", ruleset, want)
+		t.Errorf("Enterprise.CreateEnterpriseRuleset returned %+v, want %+v", ruleset, want)
 	}
 
-	const methodName = "CreateOrganizationRuleset"
+	const methodName = "CreateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, org, nil)
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1124,166 +382,192 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
+func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoProperty(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
+	enterprise := "e"
+	rulesetID := int64(21)
 
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets/26110", org), func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
+	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets", enterprise), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
 		fmt.Fprintf(w, `{
-			"id": 26110,
-			"name": "test ruleset",
+			"id": %d,
+			"name": "ruleset",
 			"target": "branch",
-			"source_type": "Organization",
+			"source_type": "Enterprise",
 			"source": "%s",
 			"enforcement": "active",
-			"bypass_mode": "none",
-			"node_id": "nid",
-			"_links": {
-			  "self": {
-				"href": "https://api.github.com/orgs/o/rulesets/26110"
-			  }
-			},
-			"conditions": {
-				"ref_name": {
-				  "include": [
-					"refs/heads/main",
-					"refs/heads/master"
-				  ],
-				  "exclude": [
-					"refs/heads/dev*"
-				  ]
-				},
-				"repository_name": {
-				  "include": [
-					"important_repository",
-					"another_important_repository"
-				  ],
-				  "exclude": [
-					"unimportant_repository"
-				  ],
-				  "protected": true
-				}
-			  },
-			  "rules": [
+			"bypass_actors": [
 				{
-				  "type": "creation"
+					"actor_id": 234,
+					"actor_type": "Team"
 				}
-			  ]
-		}`, org)
-	})
-
-	ctx := context.Background()
-	rulesets, _, err := client.Organizations.GetOrganizationRuleset(ctx, org, 26110)
-	if err != nil {
-		t.Errorf("Organizations.GetOrganizationRepositoryRuleset returned error: %v", err)
-	}
-
-	want := &Ruleset{
-		ID:          Ptr(int64(26110)),
-		Name:        "test ruleset",
-		Target:      Ptr("branch"),
-		SourceType:  Ptr("Organization"),
-		Source:      org,
-		Enforcement: "active",
-		NodeID:      Ptr("nid"),
-		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: Ptr("https://api.github.com/orgs/o/rulesets/26110")},
-		},
-		Conditions: &RulesetConditions{
-			RefName: &RulesetRefConditionParameters{
-				Include: []string{"refs/heads/main", "refs/heads/master"},
-				Exclude: []string{"refs/heads/dev*"},
-			},
-			RepositoryName: &RulesetRepositoryNamesConditionParameters{
-				Include:   []string{"important_repository", "another_important_repository"},
-				Exclude:   []string{"unimportant_repository"},
-				Protected: Ptr(true),
-			},
-		},
-		Rules: []*RepositoryRule{
-			NewCreationRule(),
-		},
-	}
-	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.GetOrganizationRuleset returned %+v, want %+v", rulesets, want)
-	}
-
-	const methodName = "GetOrganizationRuleset"
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetOrganizationRuleset(ctx, org, 26110)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
-func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets/26110", org), func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{
-			"id": 26110,
-			"name": "test ruleset",
-			"target": "branch",
-			"source_type": "Organization",
-			"source": "%s",
-			"enforcement": "active",
-			"bypass_mode": "none",
-			"node_id": "nid",
-			"_links": {
-			  "self": {
-				"href": "https://api.github.com/orgs/o/rulesets/26110"
-			  }
-			},
+			],
 			"conditions": {
-			  "repository_property": {
-				"exclude": [],
-				"include": [
-				  {
-					"name": "testIncludeProp",
-					"source": "custom",
-					"property_values": [
-					  "true"
+				"organization_name": {
+					"include": [
+						"important_organization",
+						"another_important_organization"
+					],
+					"exclude": [
+						"unimportant_organization"
 					]
-				  }
-				]
-			  }
+				},
+			  "repository_property": {
+					"include": [
+						{
+							"name": "testIncludeProp",
+							"source": "custom",
+							"property_values": [
+								"true"
+							]
+						}
+					],
+					"exclude": [
+						{
+							"name": "testExcludeProp",
+							"property_values": [
+								"false"
+							]
+						}
+					]
+				},
+			  "ref_name": {
+					"include": [
+						"refs/heads/main",
+						"refs/heads/master"
+					],
+					"exclude": [
+						"refs/heads/dev*"
+					]
+				}
 			},
 			"rules": [
-			{
+			  {
 				"type": "creation"
-			}
+			  },
+			  {
+				"type": "update",
+				"parameters": {
+				  "update_allows_fetch_and_merge": true
+				}
+			  },
+			  {
+				"type": "deletion"
+			  },
+			  {
+				"type": "required_linear_history"
+			  },
+			  {
+				"type": "required_deployments",
+				"parameters": {
+				  "required_deployment_environments": ["test"]
+				}
+			  },
+			  {
+				"type": "required_signatures"
+			  },
+			  {
+				"type": "pull_request",
+				"parameters": {
+				  "dismiss_stale_reviews_on_push": true,
+				  "require_code_owner_review": true,
+				  "require_last_push_approval": true,
+				  "required_approving_review_count": 1,
+				  "required_review_thread_resolution": true
+				}
+			  },
+			  {
+				"type": "required_status_checks",
+				"parameters": {
+				  "required_status_checks": [
+					{
+					  "context": "test",
+					  "integration_id": 1
+					}
+				  ],
+				  "strict_required_status_checks_policy": true
+				}
+			  },
+			  {
+				"type": "non_fast_forward"
+			  },
+			  {
+				"type": "commit_message_pattern",
+				"parameters": {
+				  "name": "avoid test commits",
+				  "negate": true,
+				  "operator": "starts_with",
+				  "pattern": "[test]"
+				}
+			  },
+			  {
+				"type": "commit_author_email_pattern",
+				"parameters": {
+				  "operator": "contains",
+				  "pattern": "github"
+				}
+			  },
+			  {
+				"type": "committer_email_pattern",
+				"parameters": {
+				  "name": "avoid commit emails",
+				  "negate": true,
+				  "operator": "ends_with",
+				  "pattern": "abc"
+				}
+			  },
+			  {
+				"type": "branch_name_pattern",
+				"parameters": {
+				  "name": "avoid branch names",
+				  "negate": true,
+				  "operator": "regex",
+				  "pattern": "github$"
+				}
+			  },
+			  {
+				"type": "tag_name_pattern",
+				"parameters": {
+				  "name": "avoid tag names",
+				  "negate": true,
+				  "operator": "contains",
+				  "pattern": "github"
+				}
+			  },
+			  {
+			    "type": "code_scanning",
+			    "parameters": {
+				  "code_scanning_tools": [
+				    {
+					  "tool": "CodeQL",
+					  "security_alerts_threshold": "high_or_higher",
+					  "alerts_threshold": "errors"
+				    }
+				  ]
+			    }
+			  }
 			]
-		}`, org)
+		  }`, rulesetID, enterprise)
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.GetOrganizationRuleset(ctx, org, 26110)
-	if err != nil {
-		t.Errorf("Organizations.GetOrganizationRepositoryRuleset returned error: %v", err)
-	}
-
-	want := &Ruleset{
-		ID:          Ptr(int64(26110)),
-		Name:        "test ruleset",
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, &Ruleset{
+		Name:        "ruleset",
 		Target:      Ptr("branch"),
-		SourceType:  Ptr("Organization"),
-		Source:      org,
 		Enforcement: "active",
-		NodeID:      Ptr("nid"),
-		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: Ptr("https://api.github.com/orgs/o/rulesets/26110")},
+		BypassActors: []*BypassActor{
+			{
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
+			},
 		},
 		Conditions: &RulesetConditions{
+			OrganizationName: &RulesetOrganizationNamesConditionParameters{
+				Include: []string{"important_organization", "another_important_organization"},
+				Exclude: []string{"unimportant_organization"},
+			},
 			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
 				Include: []RulesetRepositoryPropertyTargetParameters{
 					{
@@ -1292,21 +576,202 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 						Values: []string{"true"},
 					},
 				},
-				Exclude: []RulesetRepositoryPropertyTargetParameters{},
+				Exclude: []RulesetRepositoryPropertyTargetParameters{
+					{
+						Name:   "testExcludeProp",
+						Values: []string{"false"},
+					},
+				},
+			},
+			RefName: &RulesetRefConditionParameters{
+				Include: []string{"refs/heads/main", "refs/heads/master"},
+				Exclude: []string{"refs/heads/dev*"},
 			},
 		},
 		Rules: []*RepositoryRule{
 			NewCreationRule(),
+			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
+				UpdateAllowsFetchAndMerge: true,
+			}),
+			NewDeletionRule(),
+			NewRequiredLinearHistoryRule(),
+			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
+				RequiredDeploymentEnvironments: []string{"test"},
+			}),
+			NewRequiredSignaturesRule(),
+			NewPullRequestRule(&PullRequestRuleParameters{
+				RequireCodeOwnerReview:         true,
+				RequireLastPushApproval:        true,
+				RequiredApprovingReviewCount:   1,
+				RequiredReviewThreadResolution: true,
+				DismissStaleReviewsOnPush:      true,
+			}),
+			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
+				RequiredStatusChecks: []RuleRequiredStatusChecks{
+					{
+						Context:       "test",
+						IntegrationID: Ptr(int64(1)),
+					},
+				},
+				StrictRequiredStatusChecksPolicy: true,
+			}),
+			NewNonFastForwardRule(),
+			NewCommitMessagePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
+				Operator: "starts_with",
+				Pattern:  "[test]",
+			}),
+			NewCommitAuthorEmailPatternRule(&RulePatternParameters{
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewCommitterEmailPatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
+				Operator: "ends_with",
+				Pattern:  "abc",
+			}),
+			NewBranchNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
+				Operator: "regex",
+				Pattern:  "github$",
+			}),
+			NewTagNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
+		},
+	})
+	if err != nil {
+		t.Errorf("Enterprise.CreateEnterpriseRuleset returned error: %v", err)
+	}
+
+	want := &Ruleset{
+		ID:          Ptr(rulesetID),
+		Name:        "ruleset",
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Enterprise"),
+		Source:      enterprise,
+		Enforcement: "active",
+		BypassActors: []*BypassActor{
+			{
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
+			},
+		},
+		Conditions: &RulesetConditions{
+			OrganizationName: &RulesetOrganizationNamesConditionParameters{
+				Include: []string{"important_organization", "another_important_organization"},
+				Exclude: []string{"unimportant_organization"},
+			},
+			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
+				Include: []RulesetRepositoryPropertyTargetParameters{
+					{
+						Name:   "testIncludeProp",
+						Source: Ptr("custom"),
+						Values: []string{"true"},
+					},
+				},
+				Exclude: []RulesetRepositoryPropertyTargetParameters{
+					{
+						Name:   "testExcludeProp",
+						Values: []string{"false"},
+					},
+				},
+			},
+			RefName: &RulesetRefConditionParameters{
+				Include: []string{"refs/heads/main", "refs/heads/master"},
+				Exclude: []string{"refs/heads/dev*"},
+			},
+		},
+		Rules: []*RepositoryRule{
+			NewCreationRule(),
+			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
+				UpdateAllowsFetchAndMerge: true,
+			}),
+			NewDeletionRule(),
+			NewRequiredLinearHistoryRule(),
+			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
+				RequiredDeploymentEnvironments: []string{"test"},
+			}),
+			NewRequiredSignaturesRule(),
+			NewPullRequestRule(&PullRequestRuleParameters{
+				RequireCodeOwnerReview:         true,
+				RequireLastPushApproval:        true,
+				RequiredApprovingReviewCount:   1,
+				RequiredReviewThreadResolution: true,
+				DismissStaleReviewsOnPush:      true,
+			}),
+			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
+				RequiredStatusChecks: []RuleRequiredStatusChecks{
+					{
+						Context:       "test",
+						IntegrationID: Ptr(int64(1)),
+					},
+				},
+				StrictRequiredStatusChecksPolicy: true,
+			}),
+			NewNonFastForwardRule(),
+			NewCommitMessagePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
+				Operator: "starts_with",
+				Pattern:  "[test]",
+			}),
+			NewCommitAuthorEmailPatternRule(&RulePatternParameters{
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewCommitterEmailPatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
+				Operator: "ends_with",
+				Pattern:  "abc",
+			}),
+			NewBranchNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
+				Operator: "regex",
+				Pattern:  "github$",
+			}),
+			NewTagNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
 		},
 	}
-	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.GetOrganizationRuleset returned %+v, want %+v", rulesets, want)
+	if !cmp.Equal(ruleset, want) {
+		t.Errorf("Enterprise.CreateEnterpriseRuleset returned %+v, want %+v", ruleset, want)
 	}
 
-	const methodName = "GetOrganizationRuleset"
+	const methodName = "CreateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetOrganizationRuleset(ctx, org, 26110)
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1314,101 +779,846 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 	})
 }
 
-func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
+func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoName(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
+	enterprise := "e"
+	rulesetID := int64(21)
 
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets/26110", org), func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
+	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets", enterprise), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
 		fmt.Fprintf(w, `{
-			"id": 26110,
+			"id": %d,
+			"name": "ruleset",
+			"target": "branch",
+			"source_type": "Enterprise",
+			"source": "%s",
+			"enforcement": "active",
+			"bypass_actors": [
+				{
+					"actor_id": 234,
+					"actor_type": "Team"
+				}
+			],
+			"conditions": {
+				"organization_id": {
+					"organization_ids": [1001, 1002]
+				},
+			  "repository_name": {
+					"include": [
+						"important_repository",
+						"another_important_repository"
+					],
+					"exclude": [
+						"unimportant_repository"
+					],
+					"protected": true
+				},
+			  "ref_name": {
+					"include": [
+						"refs/heads/main",
+						"refs/heads/master"
+					],
+					"exclude": [
+						"refs/heads/dev*"
+					]
+				}
+			},
+			"rules": [
+			  {
+				"type": "creation"
+			  },
+			  {
+				"type": "update",
+				"parameters": {
+				  "update_allows_fetch_and_merge": true
+				}
+			  },
+			  {
+				"type": "deletion"
+			  },
+			  {
+				"type": "required_linear_history"
+			  },
+			  {
+				"type": "required_deployments",
+				"parameters": {
+				  "required_deployment_environments": ["test"]
+				}
+			  },
+			  {
+				"type": "required_signatures"
+			  },
+			  {
+				"type": "pull_request",
+				"parameters": {
+				  "dismiss_stale_reviews_on_push": true,
+				  "require_code_owner_review": true,
+				  "require_last_push_approval": true,
+				  "required_approving_review_count": 1,
+				  "required_review_thread_resolution": true
+				}
+			  },
+			  {
+				"type": "required_status_checks",
+				"parameters": {
+				  "required_status_checks": [
+					{
+					  "context": "test",
+					  "integration_id": 1
+					}
+				  ],
+				  "strict_required_status_checks_policy": true
+				}
+			  },
+			  {
+				"type": "non_fast_forward"
+			  },
+			  {
+				"type": "commit_message_pattern",
+				"parameters": {
+				  "name": "avoid test commits",
+				  "negate": true,
+				  "operator": "starts_with",
+				  "pattern": "[test]"
+				}
+			  },
+			  {
+				"type": "commit_author_email_pattern",
+				"parameters": {
+				  "operator": "contains",
+				  "pattern": "github"
+				}
+			  },
+			  {
+				"type": "committer_email_pattern",
+				"parameters": {
+				  "name": "avoid commit emails",
+				  "negate": true,
+				  "operator": "ends_with",
+				  "pattern": "abc"
+				}
+			  },
+			  {
+				"type": "branch_name_pattern",
+				"parameters": {
+				  "name": "avoid branch names",
+				  "negate": true,
+				  "operator": "regex",
+				  "pattern": "github$"
+				}
+			  },
+			  {
+				"type": "tag_name_pattern",
+				"parameters": {
+				  "name": "avoid tag names",
+				  "negate": true,
+				  "operator": "contains",
+				  "pattern": "github"
+				}
+			  },
+			  {
+			    "type": "code_scanning",
+			    "parameters": {
+				  "code_scanning_tools": [
+				    {
+					  "tool": "CodeQL",
+					  "security_alerts_threshold": "high_or_higher",
+					  "alerts_threshold": "errors"
+				    }
+				  ]
+			    }
+			  }
+			]
+		  }`, rulesetID, enterprise)
+	})
+
+	ctx := context.Background()
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, &Ruleset{
+		Name:        "ruleset",
+		Target:      Ptr("branch"),
+		Enforcement: "active",
+		BypassActors: []*BypassActor{
+			{
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
+			},
+		},
+		Conditions: &RulesetConditions{
+			OrganizationID: &RulesetOrganizationIDsConditionParameters{
+				OrganizationIDs: []int64{1001, 1002},
+			},
+			RepositoryName: &RulesetRepositoryNamesConditionParameters{
+				Include:   []string{"important_repository", "another_important_repository"},
+				Exclude:   []string{"unimportant_repository"},
+				Protected: Ptr(true),
+			},
+			RefName: &RulesetRefConditionParameters{
+				Include: []string{"refs/heads/main", "refs/heads/master"},
+				Exclude: []string{"refs/heads/dev*"},
+			},
+		},
+		Rules: []*RepositoryRule{
+			NewCreationRule(),
+			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
+				UpdateAllowsFetchAndMerge: true,
+			}),
+			NewDeletionRule(),
+			NewRequiredLinearHistoryRule(),
+			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
+				RequiredDeploymentEnvironments: []string{"test"},
+			}),
+			NewRequiredSignaturesRule(),
+			NewPullRequestRule(&PullRequestRuleParameters{
+				RequireCodeOwnerReview:         true,
+				RequireLastPushApproval:        true,
+				RequiredApprovingReviewCount:   1,
+				RequiredReviewThreadResolution: true,
+				DismissStaleReviewsOnPush:      true,
+			}),
+			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
+				RequiredStatusChecks: []RuleRequiredStatusChecks{
+					{
+						Context:       "test",
+						IntegrationID: Ptr(int64(1)),
+					},
+				},
+				StrictRequiredStatusChecksPolicy: true,
+			}),
+			NewNonFastForwardRule(),
+			NewCommitMessagePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
+				Operator: "starts_with",
+				Pattern:  "[test]",
+			}),
+			NewCommitAuthorEmailPatternRule(&RulePatternParameters{
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewCommitterEmailPatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
+				Operator: "ends_with",
+				Pattern:  "abc",
+			}),
+			NewBranchNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
+				Operator: "regex",
+				Pattern:  "github$",
+			}),
+			NewTagNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
+		},
+	})
+	if err != nil {
+		t.Errorf("Enterprise.CreateEnterpriseRuleset returned error: %v", err)
+	}
+
+	want := &Ruleset{
+		ID:          Ptr(rulesetID),
+		Name:        "ruleset",
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Enterprise"),
+		Source:      enterprise,
+		Enforcement: "active",
+		BypassActors: []*BypassActor{
+			{
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
+			},
+		},
+		Conditions: &RulesetConditions{
+			OrganizationID: &RulesetOrganizationIDsConditionParameters{
+				OrganizationIDs: []int64{1001, 1002},
+			},
+			RepositoryName: &RulesetRepositoryNamesConditionParameters{
+				Include:   []string{"important_repository", "another_important_repository"},
+				Exclude:   []string{"unimportant_repository"},
+				Protected: Ptr(true),
+			},
+			RefName: &RulesetRefConditionParameters{
+				Include: []string{"refs/heads/main", "refs/heads/master"},
+				Exclude: []string{"refs/heads/dev*"},
+			},
+		},
+		Rules: []*RepositoryRule{
+			NewCreationRule(),
+			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
+				UpdateAllowsFetchAndMerge: true,
+			}),
+			NewDeletionRule(),
+			NewRequiredLinearHistoryRule(),
+			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
+				RequiredDeploymentEnvironments: []string{"test"},
+			}),
+			NewRequiredSignaturesRule(),
+			NewPullRequestRule(&PullRequestRuleParameters{
+				RequireCodeOwnerReview:         true,
+				RequireLastPushApproval:        true,
+				RequiredApprovingReviewCount:   1,
+				RequiredReviewThreadResolution: true,
+				DismissStaleReviewsOnPush:      true,
+			}),
+			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
+				RequiredStatusChecks: []RuleRequiredStatusChecks{
+					{
+						Context:       "test",
+						IntegrationID: Ptr(int64(1)),
+					},
+				},
+				StrictRequiredStatusChecksPolicy: true,
+			}),
+			NewNonFastForwardRule(),
+			NewCommitMessagePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
+				Operator: "starts_with",
+				Pattern:  "[test]",
+			}),
+			NewCommitAuthorEmailPatternRule(&RulePatternParameters{
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewCommitterEmailPatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
+				Operator: "ends_with",
+				Pattern:  "abc",
+			}),
+			NewBranchNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
+				Operator: "regex",
+				Pattern:  "github$",
+			}),
+			NewTagNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
+		},
+	}
+	if !cmp.Equal(ruleset, want) {
+		t.Errorf("Enterprise.CreateEnterpriseRuleset returned %+v, want %+v", ruleset, want)
+	}
+
+	const methodName = "CreateEnterpriseRuleset"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoProperty(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	enterprise := "e"
+	rulesetID := int64(21)
+
+	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets", enterprise), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprintf(w, `{
+			"id": %d,
+			"name": "ruleset",
+			"target": "branch",
+			"source_type": "Enterprise",
+			"source": "%s",
+			"enforcement": "active",
+			"bypass_actors": [
+				{
+					"actor_id": 234,
+					"actor_type": "Team"
+				}
+			],
+			"conditions": {
+				"organization_id": {
+					"organization_ids": [1001, 1002]
+				},
+			  "repository_property": {
+					"include": [
+						{
+							"name": "testIncludeProp",
+							"source": "custom",
+							"property_values": [
+								"true"
+							]
+						}
+					],
+					"exclude": [
+						{
+							"name": "testExcludeProp",
+							"property_values": [
+								"false"
+							]
+						}
+					]
+				},
+			  "ref_name": {
+					"include": [
+						"refs/heads/main",
+						"refs/heads/master"
+					],
+					"exclude": [
+						"refs/heads/dev*"
+					]
+				}
+			},
+			"rules": [
+			  {
+				"type": "creation"
+			  },
+			  {
+				"type": "update",
+				"parameters": {
+				  "update_allows_fetch_and_merge": true
+				}
+			  },
+			  {
+				"type": "deletion"
+			  },
+			  {
+				"type": "required_linear_history"
+			  },
+			  {
+				"type": "required_deployments",
+				"parameters": {
+				  "required_deployment_environments": ["test"]
+				}
+			  },
+			  {
+				"type": "required_signatures"
+			  },
+			  {
+				"type": "pull_request",
+				"parameters": {
+				  "dismiss_stale_reviews_on_push": true,
+				  "require_code_owner_review": true,
+				  "require_last_push_approval": true,
+				  "required_approving_review_count": 1,
+				  "required_review_thread_resolution": true
+				}
+			  },
+			  {
+				"type": "required_status_checks",
+				"parameters": {
+				  "required_status_checks": [
+					{
+					  "context": "test",
+					  "integration_id": 1
+					}
+				  ],
+				  "strict_required_status_checks_policy": true
+				}
+			  },
+			  {
+				"type": "non_fast_forward"
+			  },
+			  {
+				"type": "commit_message_pattern",
+				"parameters": {
+				  "name": "avoid test commits",
+				  "negate": true,
+				  "operator": "starts_with",
+				  "pattern": "[test]"
+				}
+			  },
+			  {
+				"type": "commit_author_email_pattern",
+				"parameters": {
+				  "operator": "contains",
+				  "pattern": "github"
+				}
+			  },
+			  {
+				"type": "committer_email_pattern",
+				"parameters": {
+				  "name": "avoid commit emails",
+				  "negate": true,
+				  "operator": "ends_with",
+				  "pattern": "abc"
+				}
+			  },
+			  {
+				"type": "branch_name_pattern",
+				"parameters": {
+				  "name": "avoid branch names",
+				  "negate": true,
+				  "operator": "regex",
+				  "pattern": "github$"
+				}
+			  },
+			  {
+				"type": "tag_name_pattern",
+				"parameters": {
+				  "name": "avoid tag names",
+				  "negate": true,
+				  "operator": "contains",
+				  "pattern": "github"
+				}
+			  },
+			  {
+			    "type": "code_scanning",
+			    "parameters": {
+				  "code_scanning_tools": [
+				    {
+					  "tool": "CodeQL",
+					  "security_alerts_threshold": "high_or_higher",
+					  "alerts_threshold": "errors"
+				    }
+				  ]
+			    }
+			  }
+			]
+		  }`, rulesetID, enterprise)
+	})
+
+	ctx := context.Background()
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, &Ruleset{
+		Name:        "ruleset",
+		Target:      Ptr("branch"),
+		Enforcement: "active",
+		BypassActors: []*BypassActor{
+			{
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
+			},
+		},
+		Conditions: &RulesetConditions{
+			OrganizationID: &RulesetOrganizationIDsConditionParameters{
+				OrganizationIDs: []int64{1001, 1002},
+			},
+			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
+				Include: []RulesetRepositoryPropertyTargetParameters{
+					{
+						Name:   "testIncludeProp",
+						Source: Ptr("custom"),
+						Values: []string{"true"},
+					},
+				},
+				Exclude: []RulesetRepositoryPropertyTargetParameters{
+					{
+						Name:   "testExcludeProp",
+						Values: []string{"false"},
+					},
+				},
+			},
+			RefName: &RulesetRefConditionParameters{
+				Include: []string{"refs/heads/main", "refs/heads/master"},
+				Exclude: []string{"refs/heads/dev*"},
+			},
+		},
+		Rules: []*RepositoryRule{
+			NewCreationRule(),
+			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
+				UpdateAllowsFetchAndMerge: true,
+			}),
+			NewDeletionRule(),
+			NewRequiredLinearHistoryRule(),
+			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
+				RequiredDeploymentEnvironments: []string{"test"},
+			}),
+			NewRequiredSignaturesRule(),
+			NewPullRequestRule(&PullRequestRuleParameters{
+				RequireCodeOwnerReview:         true,
+				RequireLastPushApproval:        true,
+				RequiredApprovingReviewCount:   1,
+				RequiredReviewThreadResolution: true,
+				DismissStaleReviewsOnPush:      true,
+			}),
+			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
+				RequiredStatusChecks: []RuleRequiredStatusChecks{
+					{
+						Context:       "test",
+						IntegrationID: Ptr(int64(1)),
+					},
+				},
+				StrictRequiredStatusChecksPolicy: true,
+			}),
+			NewNonFastForwardRule(),
+			NewCommitMessagePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
+				Operator: "starts_with",
+				Pattern:  "[test]",
+			}),
+			NewCommitAuthorEmailPatternRule(&RulePatternParameters{
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewCommitterEmailPatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
+				Operator: "ends_with",
+				Pattern:  "abc",
+			}),
+			NewBranchNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
+				Operator: "regex",
+				Pattern:  "github$",
+			}),
+			NewTagNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
+		},
+	})
+	if err != nil {
+		t.Errorf("Enterprise.CreateEnterpriseRuleset returned error: %v", err)
+	}
+
+	want := &Ruleset{
+		ID:          Ptr(rulesetID),
+		Name:        "ruleset",
+		Target:      Ptr("branch"),
+		SourceType:  Ptr("Enterprise"),
+		Source:      enterprise,
+		Enforcement: "active",
+		BypassActors: []*BypassActor{
+			{
+				ActorID:   Ptr(int64(234)),
+				ActorType: Ptr("Team"),
+			},
+		},
+		Conditions: &RulesetConditions{
+			OrganizationID: &RulesetOrganizationIDsConditionParameters{
+				OrganizationIDs: []int64{1001, 1002},
+			},
+			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
+				Include: []RulesetRepositoryPropertyTargetParameters{
+					{
+						Name:   "testIncludeProp",
+						Source: Ptr("custom"),
+						Values: []string{"true"},
+					},
+				},
+				Exclude: []RulesetRepositoryPropertyTargetParameters{
+					{
+						Name:   "testExcludeProp",
+						Values: []string{"false"},
+					},
+				},
+			},
+			RefName: &RulesetRefConditionParameters{
+				Include: []string{"refs/heads/main", "refs/heads/master"},
+				Exclude: []string{"refs/heads/dev*"},
+			},
+		},
+		Rules: []*RepositoryRule{
+			NewCreationRule(),
+			NewUpdateRule(&UpdateAllowsFetchAndMergeRuleParameters{
+				UpdateAllowsFetchAndMerge: true,
+			}),
+			NewDeletionRule(),
+			NewRequiredLinearHistoryRule(),
+			NewRequiredDeploymentsRule(&RequiredDeploymentEnvironmentsRuleParameters{
+				RequiredDeploymentEnvironments: []string{"test"},
+			}),
+			NewRequiredSignaturesRule(),
+			NewPullRequestRule(&PullRequestRuleParameters{
+				RequireCodeOwnerReview:         true,
+				RequireLastPushApproval:        true,
+				RequiredApprovingReviewCount:   1,
+				RequiredReviewThreadResolution: true,
+				DismissStaleReviewsOnPush:      true,
+			}),
+			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
+				RequiredStatusChecks: []RuleRequiredStatusChecks{
+					{
+						Context:       "test",
+						IntegrationID: Ptr(int64(1)),
+					},
+				},
+				StrictRequiredStatusChecksPolicy: true,
+			}),
+			NewNonFastForwardRule(),
+			NewCommitMessagePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid test commits"),
+				Negate:   Ptr(true),
+				Operator: "starts_with",
+				Pattern:  "[test]",
+			}),
+			NewCommitAuthorEmailPatternRule(&RulePatternParameters{
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewCommitterEmailPatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid commit emails"),
+				Negate:   Ptr(true),
+				Operator: "ends_with",
+				Pattern:  "abc",
+			}),
+			NewBranchNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid branch names"),
+				Negate:   Ptr(true),
+				Operator: "regex",
+				Pattern:  "github$",
+			}),
+			NewTagNamePatternRule(&RulePatternParameters{
+				Name:     Ptr("avoid tag names"),
+				Negate:   Ptr(true),
+				Operator: "contains",
+				Pattern:  "github",
+			}),
+			NewRequiredCodeScanningRule(&RequiredCodeScanningRuleParameters{
+				RequiredCodeScanningTools: []*RuleRequiredCodeScanningTool{
+					{
+						Tool:                    "CodeQL",
+						SecurityAlertsThreshold: "high_or_higher",
+						AlertsThreshold:         "errors",
+					},
+				},
+			}),
+		},
+	}
+	if !cmp.Equal(ruleset, want) {
+		t.Errorf("Enterprise.CreateEnterpriseRuleset returned %+v, want %+v", ruleset, want)
+	}
+
+	const methodName = "CreateEnterpriseRuleset"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_GetEnterpriseRuleset(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	enterprise := "e"
+	rulesetID := int64(26110)
+
+	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets/%d", enterprise, rulesetID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprintf(w, `{
+			"id": %d,
 			"name": "test ruleset",
 			"target": "branch",
-			"source_type": "Organization",
+			"source_type": "Enterprise",
 			"source": "%s",
 			"enforcement": "active",
 			"bypass_mode": "none",
 			"node_id": "nid",
 			"_links": {
 			  "self": {
-				"href": "https://api.github.com/orgs/o/rulesets/26110"
-			  }
+					"href": "https://api.github.com/enterprises/%[2]s/rulesets/%[1]d"
+				}
 			},
 			"conditions": {
-				"ref_name": {
-				  "include": [
-					"refs/heads/main",
-					"refs/heads/master"
-				  ],
-				  "exclude": [
-					"refs/heads/dev*"
-				  ]
+				"organization_name": {
+					"include": [
+						"important_organization",
+						"another_important_organization"
+					],
+					"exclude": [
+						"unimportant_organization"
+					]
 				},
 				"repository_name": {
-				  "include": [
-					"important_repository",
-					"another_important_repository"
-				  ],
-				  "exclude": [
-					"unimportant_repository"
+					"include": [
+						"important_repository",
+						"another_important_repository"
+					],
+					"exclude": [
+						"unimportant_repository"
 				  ],
 				  "protected": true
+				},
+				"ref_name": {
+					"include": [
+						"refs/heads/main",
+						"refs/heads/master"
+				  ],
+				  "exclude": [
+						"refs/heads/dev*"
+				  ]
 				}
-			  },
+			},
 			  "rules": [
-				{
-				  "type": "creation"
-				}
+					{
+						"type": "creation"
+					}
 			  ]
-		}`, org)
+		}`, rulesetID, enterprise)
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, org, 26110, &Ruleset{
-		Name:        "test ruleset",
-		Target:      Ptr("branch"),
-		Enforcement: "active",
-		Conditions: &RulesetConditions{
-			RefName: &RulesetRefConditionParameters{
-				Include: []string{"refs/heads/main", "refs/heads/master"},
-				Exclude: []string{"refs/heads/dev*"},
-			},
-			RepositoryName: &RulesetRepositoryNamesConditionParameters{
-				Include:   []string{"important_repository", "another_important_repository"},
-				Exclude:   []string{"unimportant_repository"},
-				Protected: Ptr(true),
-			},
-		},
-		Rules: []*RepositoryRule{
-			NewCreationRule(),
-		},
-	})
+	rulesets, _, err := client.Enterprise.GetEnterpriseRuleset(ctx, enterprise, rulesetID)
 	if err != nil {
-		t.Errorf("Organizations.UpdateOrganizationRuleset returned error: %v", err)
+		t.Errorf("Enterprise.GetEnterpriseRuleset returned error: %v", err)
 	}
 
 	want := &Ruleset{
-		ID:          Ptr(int64(26110)),
+		ID:          Ptr(rulesetID),
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
-		SourceType:  Ptr("Organization"),
-		Source:      org,
+		SourceType:  Ptr("Enterprise"),
+		Source:      enterprise,
 		Enforcement: "active",
 		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: Ptr("https://api.github.com/orgs/o/rulesets/26110")},
+			Self: &RulesetLink{HRef: Ptr(fmt.Sprintf("https://api.github.com/enterprises/%s/rulesets/%d", enterprise, rulesetID))},
 		},
 		Conditions: &RulesetConditions{
-			RefName: &RulesetRefConditionParameters{
-				Include: []string{"refs/heads/main", "refs/heads/master"},
-				Exclude: []string{"refs/heads/dev*"},
+			OrganizationName: &RulesetOrganizationNamesConditionParameters{
+				Include: []string{"important_organization", "another_important_organization"},
+				Exclude: []string{"unimportant_organization"},
 			},
 			RepositoryName: &RulesetRepositoryNamesConditionParameters{
 				Include:   []string{"important_repository", "another_important_repository"},
 				Exclude:   []string{"unimportant_repository"},
 				Protected: Ptr(true),
+			},
+			RefName: &RulesetRefConditionParameters{
+				Include: []string{"refs/heads/main", "refs/heads/master"},
+				Exclude: []string{"refs/heads/dev*"},
 			},
 		},
 		Rules: []*RepositoryRule{
@@ -1416,13 +1626,13 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.UpdateOrganizationRuleset returned %+v, want %+v", rulesets, want)
+		t.Errorf("Enterprise.GetEnterpriseRuleset returned %+v, want %+v", rulesets, want)
 	}
 
-	const methodName = "UpdateOrganizationRuleset"
+	const methodName = "GetEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, org, 26110, nil)
+		got, resp, err := client.Enterprise.GetEnterpriseRuleset(ctx, enterprise, rulesetID)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1430,65 +1640,81 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T) {
+func TestEnterpriseService_UpdateEnterpriseRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
+	enterprise := "e"
+	rulesetID := int64(26110)
 
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets/26110", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets/%d", enterprise, rulesetID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		fmt.Fprintf(w, `{
-			"id": 26110,
+			"id": %d,
 			"name": "test ruleset",
 			"target": "branch",
-			"source_type": "Organization",
+			"source_type": "Enterprise",
 			"source": "%s",
 			"enforcement": "active",
 			"bypass_mode": "none",
 			"node_id": "nid",
 			"_links": {
 			  "self": {
-				"href": "https://api.github.com/orgs/o/rulesets/26110"
+				"href": "https://api.github.com/enterprises/%[2]s/rulesets/%[1]d"
 			  }
 			},
 			"conditions": {
-			  "repository_property": {
-				"exclude": [],
-				"include": [
-				  {
-					"name": "testIncludeProp",
-					"source": "custom",
-					"property_values": [
-					  "true"
+				"organization_name": {
+					"include": [
+						"important_organization",
+						"another_important_organization"
+					],
+					"exclude": [
+						"unimportant_organization"
 					]
-				  }
-				]
-			  }
-			  },
-			  "rules": [
+				},
+				"repository_name": {
+					"include": [
+						"important_repository",
+						"another_important_repository"
+				  ],
+					"exclude": [
+						"unimportant_repository"
+					],
+				  "protected": true
+				},
+				"ref_name": {
+					"include": [
+						"refs/heads/main",
+						"refs/heads/master"
+					],
+					"exclude": [
+						"refs/heads/dev*"
+					]
+				}
+			},
+			"rules": [
 				{
 				  "type": "creation"
 				}
-			  ]
-		}`, org)
+			]
+		}`, rulesetID, enterprise)
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, org, 26110, &Ruleset{
+	rulesets, _, err := client.Enterprise.UpdateEnterpriseRuleset(ctx, enterprise, rulesetID, &Ruleset{
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
 		Conditions: &RulesetConditions{
-			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
-				Include: []RulesetRepositoryPropertyTargetParameters{
-					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
-					},
-				},
-				Exclude: []RulesetRepositoryPropertyTargetParameters{},
+			RefName: &RulesetRefConditionParameters{
+				Include: []string{"refs/heads/main", "refs/heads/master"},
+				Exclude: []string{"refs/heads/dev*"},
+			},
+			RepositoryName: &RulesetRepositoryNamesConditionParameters{
+				Include:   []string{"important_repository", "another_important_repository"},
+				Exclude:   []string{"unimportant_repository"},
+				Protected: Ptr(true),
 			},
 		},
 		Rules: []*RepositoryRule{
@@ -1496,30 +1722,33 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 		},
 	})
 	if err != nil {
-		t.Errorf("Organizations.UpdateOrganizationRuleset returned error: %v", err)
+		t.Errorf("Enterprise.UpdateEnterpriseRuleset returned error: %v", err)
 	}
 
 	want := &Ruleset{
-		ID:          Ptr(int64(26110)),
+		ID:          Ptr(rulesetID),
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
-		SourceType:  Ptr("Organization"),
-		Source:      org,
+		SourceType:  Ptr("Enterprise"),
+		Source:      enterprise,
 		Enforcement: "active",
 		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: Ptr("https://api.github.com/orgs/o/rulesets/26110")},
+			Self: &RulesetLink{HRef: Ptr(fmt.Sprintf("https://api.github.com/enterprises/%s/rulesets/%d", enterprise, rulesetID))},
 		},
 		Conditions: &RulesetConditions{
-			RepositoryProperty: &RulesetRepositoryPropertyConditionParameters{
-				Include: []RulesetRepositoryPropertyTargetParameters{
-					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
-					},
-				},
-				Exclude: []RulesetRepositoryPropertyTargetParameters{},
+			OrganizationName: &RulesetOrganizationNamesConditionParameters{
+				Include: []string{"important_organization", "another_important_organization"},
+				Exclude: []string{"unimportant_organization"},
+			},
+			RepositoryName: &RulesetRepositoryNamesConditionParameters{
+				Include:   []string{"important_repository", "another_important_repository"},
+				Exclude:   []string{"unimportant_repository"},
+				Protected: Ptr(true),
+			},
+			RefName: &RulesetRefConditionParameters{
+				Include: []string{"refs/heads/main", "refs/heads/master"},
+				Exclude: []string{"refs/heads/dev*"},
 			},
 		},
 		Rules: []*RepositoryRule{
@@ -1527,13 +1756,13 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 		},
 	}
 	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.UpdateOrganizationRuleset returned %+v, want %+v", rulesets, want)
+		t.Errorf("Enterprise.UpdateEnterpriseRuleset returned %+v, want %+v", rulesets, want)
 	}
 
-	const methodName = "UpdateOrganizationRuleset"
+	const methodName = "UpdateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, org, 26110, nil)
+		got, resp, err := client.Enterprise.UpdateEnterpriseRuleset(ctx, enterprise, rulesetID, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1541,25 +1770,26 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 	})
 }
 
-func TestOrganizationsService_DeleteOrganizationRuleset(t *testing.T) {
+func TestEnterpriseService_DeleteEnterpriseRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
+	enterprise := "e"
+	rulesetID := int64(26110)
 
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets/26110", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets/%d", enterprise, rulesetID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.DeleteOrganizationRuleset(ctx, org, 26110)
+	_, err := client.Enterprise.DeleteEnterpriseRuleset(ctx, enterprise, rulesetID)
 	if err != nil {
-		t.Errorf("Organizations.DeleteOrganizationRuleset returned error: %v", err)
+		t.Errorf("Enterprise.DeleteEnterpriseRuleset returned error: %v", err)
 	}
 
-	const methodName = "DeleteOrganizationRuleset"
+	const methodName = "DeleteEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Organizations.DeleteOrganizationRuleset(ctx, org, 26110)
+		return client.Enterprise.DeleteEnterpriseRuleset(ctx, enterprise, rulesetID)
 	})
 }

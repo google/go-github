@@ -36,14 +36,14 @@ type RulesetRefConditionParameters struct {
 	Exclude []string `json:"exclude"`
 }
 
-// RulesetRepositoryNamesConditionParameters represents the conditions object for repository_names.
+// RulesetRepositoryNamesConditionParameters represents the conditions object for repository_name.
 type RulesetRepositoryNamesConditionParameters struct {
 	Include   []string `json:"include"`
 	Exclude   []string `json:"exclude"`
 	Protected *bool    `json:"protected,omitempty"`
 }
 
-// RulesetRepositoryIDsConditionParameters represents the conditions object for repository_ids.
+// RulesetRepositoryIDsConditionParameters represents the conditions object for repository_id.
 type RulesetRepositoryIDsConditionParameters struct {
 	RepositoryIDs []int64 `json:"repository_ids,omitempty"`
 }
@@ -61,6 +61,17 @@ type RulesetRepositoryPropertyConditionParameters struct {
 	Exclude []RulesetRepositoryPropertyTargetParameters `json:"exclude"`
 }
 
+// RulesetOrganizationNamesConditionParameters represents the conditions object for organization_name.
+type RulesetOrganizationNamesConditionParameters struct {
+	Include []string `json:"include"`
+	Exclude []string `json:"exclude"`
+}
+
+// RulesetOrganizationIDsConditionParameters represents the conditions object for organization_id.
+type RulesetOrganizationIDsConditionParameters struct {
+	OrganizationIDs []int64 `json:"organization_ids,omitempty"`
+}
+
 // RulesetConditions represents the conditions object in a ruleset.
 // Set either RepositoryName or RepositoryID or RepositoryProperty, not more than one.
 type RulesetConditions struct {
@@ -68,6 +79,8 @@ type RulesetConditions struct {
 	RepositoryName     *RulesetRepositoryNamesConditionParameters    `json:"repository_name,omitempty"`
 	RepositoryID       *RulesetRepositoryIDsConditionParameters      `json:"repository_id,omitempty"`
 	RepositoryProperty *RulesetRepositoryPropertyConditionParameters `json:"repository_property,omitempty"`
+	OrganizationName   *RulesetOrganizationNamesConditionParameters  `json:"organization_name,omitempty"`
+	OrganizationID     *RulesetOrganizationIDsConditionParameters    `json:"organization_id,omitempty"`
 }
 
 // RulePatternParameters represents the rule pattern parameters.
