@@ -18,17 +18,14 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoName(t *testing.T)
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	enterprise := "e"
-	rulesetID := int64(21)
-
-	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets", enterprise), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{
-			"id": %d,
+		fmt.Fprint(w, `{
+			"id": 21,
 			"name": "ruleset",
 			"target": "branch",
 			"source_type": "Enterprise",
-			"source": "%s",
+			"source": "e",
 			"enforcement": "active",
 			"bypass_actors": [
 				{
@@ -172,11 +169,11 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoName(t *testing.T)
 			    }
 			  }
 			]
-		  }`, rulesetID, enterprise)
+		  }`)
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, &Ruleset{
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", &Ruleset{
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -273,11 +270,11 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoName(t *testing.T)
 	}
 
 	want := &Ruleset{
-		ID:          Ptr(rulesetID),
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Enterprise"),
-		Source:      enterprise,
+		Source:      "e",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
@@ -374,7 +371,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoName(t *testing.T)
 	const methodName = "CreateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, nil)
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -386,17 +383,14 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoProperty(t *testin
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	enterprise := "e"
-	rulesetID := int64(21)
-
-	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets", enterprise), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{
-			"id": %d,
+		fmt.Fprint(w, `{
+			"id": 21,
 			"name": "ruleset",
 			"target": "branch",
 			"source_type": "Enterprise",
-			"source": "%s",
+			"source": "e",
 			"enforcement": "active",
 			"bypass_actors": [
 				{
@@ -549,11 +543,11 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoProperty(t *testin
 			    }
 			  }
 			]
-		  }`, rulesetID, enterprise)
+		  }`)
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, &Ruleset{
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", &Ruleset{
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -660,11 +654,11 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoProperty(t *testin
 	}
 
 	want := &Ruleset{
-		ID:          Ptr(rulesetID),
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Enterprise"),
-		Source:      enterprise,
+		Source:      "e",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
@@ -771,7 +765,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoProperty(t *testin
 	const methodName = "CreateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, nil)
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -783,17 +777,14 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoName(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	enterprise := "e"
-	rulesetID := int64(21)
-
-	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets", enterprise), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{
-			"id": %d,
+		fmt.Fprint(w, `{
+			"id": 21,
 			"name": "ruleset",
 			"target": "branch",
 			"source_type": "Enterprise",
-			"source": "%s",
+			"source": "e",
 			"enforcement": "active",
 			"bypass_actors": [
 				{
@@ -931,11 +922,11 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoName(t *testing.T) {
 			    }
 			  }
 			]
-		  }`, rulesetID, enterprise)
+		  }`)
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, &Ruleset{
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", &Ruleset{
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -1031,11 +1022,11 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoName(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          Ptr(rulesetID),
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Enterprise"),
-		Source:      enterprise,
+		Source:      "e",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
@@ -1131,7 +1122,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoName(t *testing.T) {
 	const methodName = "CreateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, nil)
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1143,17 +1134,14 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoProperty(t *testing.
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	enterprise := "e"
-	rulesetID := int64(21)
-
-	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets", enterprise), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{
-			"id": %d,
+		fmt.Fprint(w, `{
+			"id": 21,
 			"name": "ruleset",
 			"target": "branch",
 			"source_type": "Enterprise",
-			"source": "%s",
+			"source": "e",
 			"enforcement": "active",
 			"bypass_actors": [
 				{
@@ -1300,11 +1288,11 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoProperty(t *testing.
 			    }
 			  }
 			]
-		  }`, rulesetID, enterprise)
+		  }`)
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, &Ruleset{
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", &Ruleset{
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -1410,11 +1398,11 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoProperty(t *testing.
 	}
 
 	want := &Ruleset{
-		ID:          Ptr(rulesetID),
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Enterprise"),
-		Source:      enterprise,
+		Source:      "e",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
@@ -1520,7 +1508,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoProperty(t *testing.
 	const methodName = "CreateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, enterprise, nil)
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1532,23 +1520,20 @@ func TestEnterpriseService_GetEnterpriseRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	enterprise := "e"
-	rulesetID := int64(26110)
-
-	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets/%d", enterprise, rulesetID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{
-			"id": %d,
+		fmt.Fprint(w, `{
+			"id": 26110,
 			"name": "test ruleset",
 			"target": "branch",
 			"source_type": "Enterprise",
-			"source": "%s",
+			"source": "e",
 			"enforcement": "active",
 			"bypass_mode": "none",
 			"node_id": "nid",
 			"_links": {
 			  "self": {
-					"href": "https://api.github.com/enterprises/%[2]s/rulesets/%[1]d"
+					"href": "https://api.github.com/enterprises/e/rulesets/26110"
 				}
 			},
 			"conditions": {
@@ -1586,25 +1571,25 @@ func TestEnterpriseService_GetEnterpriseRuleset(t *testing.T) {
 						"type": "creation"
 					}
 			  ]
-		}`, rulesetID, enterprise)
+		}`)
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Enterprise.GetEnterpriseRuleset(ctx, enterprise, rulesetID)
+	rulesets, _, err := client.Enterprise.GetEnterpriseRuleset(ctx, "e", 26110)
 	if err != nil {
 		t.Errorf("Enterprise.GetEnterpriseRuleset returned error: %v", err)
 	}
 
 	want := &Ruleset{
-		ID:          Ptr(rulesetID),
+		ID:          Ptr(int64(26110)),
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Enterprise"),
-		Source:      enterprise,
+		Source:      "e",
 		Enforcement: "active",
 		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: Ptr(fmt.Sprintf("https://api.github.com/enterprises/%s/rulesets/%d", enterprise, rulesetID))},
+			Self: &RulesetLink{HRef: Ptr("https://api.github.com/enterprises/e/rulesets/26110")},
 		},
 		Conditions: &RulesetConditions{
 			OrganizationName: &RulesetOrganizationNamesConditionParameters{
@@ -1632,7 +1617,7 @@ func TestEnterpriseService_GetEnterpriseRuleset(t *testing.T) {
 	const methodName = "GetEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.GetEnterpriseRuleset(ctx, enterprise, rulesetID)
+		got, resp, err := client.Enterprise.GetEnterpriseRuleset(ctx, "e", 26110)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1644,23 +1629,20 @@ func TestEnterpriseService_UpdateEnterpriseRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	enterprise := "e"
-	rulesetID := int64(26110)
-
-	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets/%d", enterprise, rulesetID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		fmt.Fprintf(w, `{
-			"id": %d,
+		fmt.Fprint(w, `{
+			"id": 26110,
 			"name": "test ruleset",
 			"target": "branch",
 			"source_type": "Enterprise",
-			"source": "%s",
+			"source": "e",
 			"enforcement": "active",
 			"bypass_mode": "none",
 			"node_id": "nid",
 			"_links": {
 			  "self": {
-				"href": "https://api.github.com/enterprises/%[2]s/rulesets/%[1]d"
+				"href": "https://api.github.com/enterprises/e/rulesets/26110"
 			  }
 			},
 			"conditions": {
@@ -1698,11 +1680,11 @@ func TestEnterpriseService_UpdateEnterpriseRuleset(t *testing.T) {
 				  "type": "creation"
 				}
 			]
-		}`, rulesetID, enterprise)
+		}`)
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Enterprise.UpdateEnterpriseRuleset(ctx, enterprise, rulesetID, &Ruleset{
+	rulesets, _, err := client.Enterprise.UpdateEnterpriseRuleset(ctx, "e", 26110, &Ruleset{
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -1726,15 +1708,15 @@ func TestEnterpriseService_UpdateEnterpriseRuleset(t *testing.T) {
 	}
 
 	want := &Ruleset{
-		ID:          Ptr(rulesetID),
+		ID:          Ptr(int64(26110)),
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Enterprise"),
-		Source:      enterprise,
+		Source:      "e",
 		Enforcement: "active",
 		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
-			Self: &RulesetLink{HRef: Ptr(fmt.Sprintf("https://api.github.com/enterprises/%s/rulesets/%d", enterprise, rulesetID))},
+			Self: &RulesetLink{HRef: Ptr("https://api.github.com/enterprises/e/rulesets/26110")},
 		},
 		Conditions: &RulesetConditions{
 			OrganizationName: &RulesetOrganizationNamesConditionParameters{
@@ -1762,7 +1744,7 @@ func TestEnterpriseService_UpdateEnterpriseRuleset(t *testing.T) {
 	const methodName = "UpdateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.UpdateEnterpriseRuleset(ctx, enterprise, rulesetID, nil)
+		got, resp, err := client.Enterprise.UpdateEnterpriseRuleset(ctx, "e", 26110, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1774,15 +1756,12 @@ func TestEnterpriseService_DeleteEnterpriseRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	enterprise := "e"
-	rulesetID := int64(26110)
-
-	mux.HandleFunc(fmt.Sprintf("/enterprises/%s/rulesets/%d", enterprise, rulesetID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
 	ctx := context.Background()
-	_, err := client.Enterprise.DeleteEnterpriseRuleset(ctx, enterprise, rulesetID)
+	_, err := client.Enterprise.DeleteEnterpriseRuleset(ctx, "e", 26110)
 	if err != nil {
 		t.Errorf("Enterprise.DeleteEnterpriseRuleset returned error: %v", err)
 	}
@@ -1790,6 +1769,6 @@ func TestEnterpriseService_DeleteEnterpriseRuleset(t *testing.T) {
 	const methodName = "DeleteEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.DeleteEnterpriseRuleset(ctx, enterprise, rulesetID)
+		return client.Enterprise.DeleteEnterpriseRuleset(ctx, "e", 26110)
 	})
 }

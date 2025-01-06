@@ -18,16 +18,14 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `[{
+		fmt.Fprint(w, `[{
 			"id": 26110,
 			"name": "test ruleset",
 			"target": "branch",
 			"source_type": "Organization",
-			"source": "%s",
+			"source": "o",
 			"enforcement": "active",
 			"bypass_mode": "none",
 			"node_id": "nid",
@@ -36,11 +34,11 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 				"href": "https://api.github.com/orgs/o/rulesets/26110"
 			  }
 			}
-		}]`, org)
+		}]`)
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.GetAllOrganizationRulesets(ctx, org)
+	rulesets, _, err := client.Organizations.GetAllOrganizationRulesets(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.GetAllOrganizationRulesets returned error: %v", err)
 	}
@@ -50,7 +48,7 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Organization"),
-		Source:      org,
+		Source:      "o",
 		Enforcement: "active",
 		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
@@ -64,7 +62,7 @@ func TestOrganizationsService_GetAllOrganizationRulesets(t *testing.T) {
 	const methodName = "GetAllOrganizationRulesets"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetAllOrganizationRulesets(ctx, org)
+		got, resp, err := client.Organizations.GetAllOrganizationRulesets(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -76,16 +74,14 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 			"id": 21,
 			"name": "ruleset",
 			"target": "branch",
 			"source_type": "Organization",
-			"source": "%s",
+			"source": "o",
 			"enforcement": "active",
 			"bypass_actors": [
 			  {
@@ -220,13 +216,16 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 			    }
 			  }
 			]
-		  }`, org)
+		  }`)
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, org, &Ruleset{
+	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
+		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
@@ -321,7 +320,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Organization"),
-		Source:      org,
+		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
@@ -414,7 +413,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 	const methodName = "CreateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, org, nil)
+		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -426,16 +425,14 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 			"id": 21,
 			"name": "ruleset",
 			"target": "branch",
 			"source_type": "Organization",
-			"source": "%s",
+			"source": "o",
 			"enforcement": "active",
 			"bypass_actors": [
 			  {
@@ -570,13 +567,16 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 			    }
 			  }
 			]
-		  }`, org)
+		  }`)
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, org, &Ruleset{
+	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
+		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
+		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
@@ -677,7 +677,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Organization"),
-		Source:      org,
+		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
@@ -776,7 +776,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 	const methodName = "CreateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, org, nil)
+		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -788,16 +788,14 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 			"id": 21,
 			"name": "ruleset",
 			"target": "branch",
 			"source_type": "Organization",
-			"source": "%s",
+			"source": "o",
 			"enforcement": "active",
 			"bypass_actors": [
 			  {
@@ -925,14 +923,16 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 			    }
 			  }
 			]
-		  }`, org)
+		  }`)
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, org, &Ruleset{
+	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
 		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
+		SourceType:  Ptr("Organization"),
+		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
@@ -1025,7 +1025,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Organization"),
-		Source:      org,
+		Source:      "o",
 		Enforcement: "active",
 		BypassActors: []*BypassActor{
 			{
@@ -1116,7 +1116,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 	const methodName = "CreateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, org, nil)
+		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1128,16 +1128,14 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets/26110", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 			"id": 26110,
 			"name": "test ruleset",
 			"target": "branch",
 			"source_type": "Organization",
-			"source": "%s",
+			"source": "o",
 			"enforcement": "active",
 			"bypass_mode": "none",
 			"node_id": "nid",
@@ -1172,11 +1170,11 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 				  "type": "creation"
 				}
 			  ]
-		}`, org)
+		}`)
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.GetOrganizationRuleset(ctx, org, 26110)
+	rulesets, _, err := client.Organizations.GetOrganizationRuleset(ctx, "o", 26110)
 	if err != nil {
 		t.Errorf("Organizations.GetOrganizationRepositoryRuleset returned error: %v", err)
 	}
@@ -1186,7 +1184,7 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Organization"),
-		Source:      org,
+		Source:      "o",
 		Enforcement: "active",
 		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
@@ -1214,7 +1212,7 @@ func TestOrganizationsService_GetOrganizationRuleset(t *testing.T) {
 	const methodName = "GetOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetOrganizationRuleset(ctx, org, 26110)
+		got, resp, err := client.Organizations.GetOrganizationRuleset(ctx, "o", 26110)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1226,16 +1224,14 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets/26110", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 			"id": 26110,
 			"name": "test ruleset",
 			"target": "branch",
 			"source_type": "Organization",
-			"source": "%s",
+			"source": "o",
 			"enforcement": "active",
 			"bypass_mode": "none",
 			"node_id": "nid",
@@ -1263,11 +1259,11 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 				"type": "creation"
 			}
 			]
-		}`, org)
+		}`)
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.GetOrganizationRuleset(ctx, org, 26110)
+	rulesets, _, err := client.Organizations.GetOrganizationRuleset(ctx, "o", 26110)
 	if err != nil {
 		t.Errorf("Organizations.GetOrganizationRepositoryRuleset returned error: %v", err)
 	}
@@ -1277,7 +1273,7 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Organization"),
-		Source:      org,
+		Source:      "o",
 		Enforcement: "active",
 		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
@@ -1306,7 +1302,7 @@ func TestOrganizationsService_GetOrganizationRulesetWithRepoPropCondition(t *tes
 	const methodName = "GetOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetOrganizationRuleset(ctx, org, 26110)
+		got, resp, err := client.Organizations.GetOrganizationRuleset(ctx, "o", 26110)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1318,16 +1314,14 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets/26110", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 			"id": 26110,
 			"name": "test ruleset",
 			"target": "branch",
 			"source_type": "Organization",
-			"source": "%s",
+			"source": "o",
 			"enforcement": "active",
 			"bypass_mode": "none",
 			"node_id": "nid",
@@ -1362,11 +1356,11 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 				  "type": "creation"
 				}
 			  ]
-		}`, org)
+		}`)
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, org, 26110, &Ruleset{
+	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, &Ruleset{
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -1394,7 +1388,7 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Organization"),
-		Source:      org,
+		Source:      "o",
 		Enforcement: "active",
 		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
@@ -1422,7 +1416,7 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 	const methodName = "UpdateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, org, 26110, nil)
+		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1434,16 +1428,14 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets/26110", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 			"id": 26110,
 			"name": "test ruleset",
 			"target": "branch",
 			"source_type": "Organization",
-			"source": "%s",
+			"source": "o",
 			"enforcement": "active",
 			"bypass_mode": "none",
 			"node_id": "nid",
@@ -1471,11 +1463,11 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 				  "type": "creation"
 				}
 			  ]
-		}`, org)
+		}`)
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, org, 26110, &Ruleset{
+	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, &Ruleset{
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -1504,7 +1496,7 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		SourceType:  Ptr("Organization"),
-		Source:      org,
+		Source:      "o",
 		Enforcement: "active",
 		NodeID:      Ptr("nid"),
 		Links: &RulesetLinks{
@@ -1533,7 +1525,7 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 	const methodName = "UpdateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, org, 26110, nil)
+		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1545,14 +1537,12 @@ func TestOrganizationsService_DeleteOrganizationRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	org := "o"
-
-	mux.HandleFunc(fmt.Sprintf("/orgs/%s/rulesets/26110", org), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.DeleteOrganizationRuleset(ctx, org, 26110)
+	_, err := client.Organizations.DeleteOrganizationRuleset(ctx, "o", 26110)
 	if err != nil {
 		t.Errorf("Organizations.DeleteOrganizationRuleset returned error: %v", err)
 	}
@@ -1560,6 +1550,6 @@ func TestOrganizationsService_DeleteOrganizationRuleset(t *testing.T) {
 	const methodName = "DeleteOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Organizations.DeleteOrganizationRuleset(ctx, org, 26110)
+		return client.Organizations.DeleteOrganizationRuleset(ctx, "0", 26110)
 	})
 }
