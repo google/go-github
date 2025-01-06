@@ -10,26 +10,47 @@ import (
 	"fmt"
 )
 
-// ListSecurityManagerTeams lists all security manager teams for an organization.
-//
-// GitHub API docs: https://docs.github.com/rest/orgs/security-managers#list-security-manager-teams
-//
-//meta:operation GET /orgs/{org}/security-managers
-func (s *OrganizationsService) ListSecurityManagerTeams(ctx context.Context, org string) ([]*Team, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/security-managers", org)
-
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+func (s *OrganizationsService) GetSecurityManagerRole(ctx context.Context, org string) (*CustomOrgRoles, *Response, error) {
+	roles, resp, err := s.ListRoles(ctx, org)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return teams, resp, nil
+	for _, role := range roles.CustomRepoRoles {
+		if *role.Name == "security_manager" {
+			return role, resp, nil
+		}
+	}
+
+	return nil, resp, fmt.Errorf("security manager role not found")
+}
+
+// ListSecurityManagerTeams lists all security manager teams for an organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/orgs/organization-roles#list-teams-that-are-assigned-to-an-organization-role
+//
+//meta:operation GET /orgs/{org}/organization-roles/{security_manager_role_id}/teams
+func (s *OrganizationsService) ListSecurityManagerTeams(ctx context.Context, org string) ([]*Team, *Response, error) {
+	securityManagerRole, resp, err := s.GetSecurityManagerRole(ctx, org)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	options := &ListOptions{PerPage: 100}
+	securityManagerTeams := make([]*Team, 0)
+	for {
+		teams, resp, err := s.ListTeamsAssignedToOrgRole(ctx, org, securityManagerRole.GetID(), options)
+		if err != nil {
+			return nil, resp, err
+		}
+
+		securityManagerTeams = append(securityManagerTeams, teams...)
+		if resp.NextPage == 0 {
+			return securityManagerTeams, resp, nil
+		}
+
+		options.Page = resp.NextPage
+	}
 }
 
 // AddSecurityManagerTeam adds a team to the list of security managers for an organization.

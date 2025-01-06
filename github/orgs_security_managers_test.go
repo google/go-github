@@ -18,7 +18,12 @@ func TestOrganizationsService_ListSecurityManagerTeams(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/security-managers", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/organization-roles", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"roles":[{"id":138,"name":"security_manager"}]}`)
+	})
+
+	mux.HandleFunc("/orgs/o/organization-roles/138/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
