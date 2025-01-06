@@ -47,7 +47,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 4ab8513682637010cd3bb5d8ee3227cc5ce739d1
+openapi_commit: 8031023b31a852778532c5fa688b8bb6bcbab9d6
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -729,6 +729,51 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /enterprises/{enterprise}/code-security/configurations
+    documentation_url: https://docs.github.com/rest/code-security/configurations#get-code-security-configurations-for-an-enterprise
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/code-security/configurations
+    documentation_url: https://docs.github.com/rest/code-security/configurations#create-a-code-security-configuration-for-an-enterprise
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/code-security/configurations/defaults
+    documentation_url: https://docs.github.com/rest/code-security/configurations#get-default-code-security-configurations-for-an-enterprise
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /enterprises/{enterprise}/code-security/configurations/{configuration_id}
+    documentation_url: https://docs.github.com/rest/code-security/configurations#delete-a-code-security-configuration-for-an-enterprise
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}
+    documentation_url: https://docs.github.com/rest/code-security/configurations#retrieve-a-code-security-configuration-of-an-enterprise
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /enterprises/{enterprise}/code-security/configurations/{configuration_id}
+    documentation_url: https://docs.github.com/rest/code-security/configurations#update-a-custom-code-security-configuration-for-an-enterprise
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/code-security/configurations/{configuration_id}/attach
+    documentation_url: https://docs.github.com/rest/code-security/configurations#attach-an-enterprise-configuration-to-repositories
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /enterprises/{enterprise}/code-security/configurations/{configuration_id}/defaults
+    documentation_url: https://docs.github.com/rest/code-security/configurations#set-a-code-security-configuration-as-a-default-for-an-enterprise
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}/repositories
+    documentation_url: https://docs.github.com/rest/code-security/configurations#get-repositories-associated-with-an-enterprise-code-security-configuration
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/code_security_and_analysis
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/code-security-and-analysis#get-code-security-and-analysis-features-for-an-enterprise
     openapi_files:
@@ -744,19 +789,16 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/copilot/billing/seats
-    documentation_url: https://docs.github.com/rest/copilot/copilot-user-management#list-all-copilot-seat-assignments-for-an-enterprise
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-user-management#list-all-copilot-seat-assignments-for-an-enterprise
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/copilot/metrics
-    documentation_url: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/copilot/usage
-    documentation_url: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-enterprise-members
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-enterprise-members
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/dependabot/alerts
     documentation_url: https://docs.github.com/rest/dependabot/alerts#list-dependabot-alerts-for-an-enterprise
@@ -786,6 +828,22 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: PUT /enterprises/{enterprise}/properties/schema/{custom_property_name}
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/custom-properties#create-or-update-a-custom-property-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/rulesets
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/rules#create-an-enterprise-repository-ruleset
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: DELETE /enterprises/{enterprise}/rulesets/{ruleset_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/rules#delete-an-enterprise-repository-ruleset
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/rulesets/{ruleset_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/rules#get-an-enterprise-repository-ruleset
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PUT /enterprises/{enterprise}/rulesets/{ruleset_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/secret-scanning/alerts
@@ -828,14 +886,12 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/team/{team_slug}/copilot/metrics
-    documentation_url: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise-team
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise-team
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/team/{team_slug}/copilot/usage
-    documentation_url: https://docs.github.com/rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-an-enterprise-team
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-usage#get-a-summary-of-copilot-usage-for-an-enterprise-team
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: POST /enterprises/{enterprise}/{security_product}/{enablement}
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/code-security-and-analysis#enable-or-disable-a-security-feature
@@ -1614,6 +1670,10 @@ openapi_operations:
     documentation_url: https://docs.github.com/rest/orgs/blocking#block-a-user-from-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/bypass-requests/push-rules
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/orgs/bypass-requests#list-push-rule-bypass-requests-within-an-organization
+    openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/code-scanning/alerts
     documentation_url: https://docs.github.com/rest/code-scanning/code-scanning#list-code-scanning-alerts-for-an-organization
@@ -2398,6 +2458,36 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/org-pre-receive-hooks#update-pre-receive-hook-enforcement-for-an-organization
     openapi_files:
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /orgs/{org}/private-registries
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#list-private-registries-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /orgs/{org}/private-registries
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#create-a-private-registry-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/private-registries/public-key
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#get-private-registries-public-key-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/private-registries/{secret_name}
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#delete-a-private-registry-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/private-registries/{secret_name}
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#get-a-private-registry-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/private-registries/{secret_name}
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#update-a-private-registry-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/projects
     documentation_url: https://docs.github.com/rest/projects/projects#list-organization-projects
     openapi_files:
@@ -3699,6 +3789,14 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /repos/{owner}/{repo}/bypass-requests/push-rules
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/repos/bypass-requests#list-repository-push-rule-bypass-requests
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/bypass-requests/push-rules/{bypass_request_number}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/repos/bypass-requests#get-a-repository-push-bypass-request
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: POST /repos/{owner}/{repo}/check-runs
     documentation_url: https://docs.github.com/rest/checks/runs#create-a-check-run
     openapi_files:
@@ -3777,6 +3875,21 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix
+    documentation_url: https://docs.github.com/rest/code-scanning/code-scanning#get-the-status-of-an-autofix-for-a-code-scanning-alert
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix
+    documentation_url: https://docs.github.com/rest/code-scanning/code-scanning#create-an-autofix-for-a-code-scanning-alert
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix/commits
+    documentation_url: https://docs.github.com/rest/code-scanning/code-scanning#commit-an-autofix-for-a-code-scanning-alert
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances
     documentation_url: https://docs.github.com/rest/code-scanning/code-scanning#list-instances-of-a-code-scanning-alert
     openapi_files:
