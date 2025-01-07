@@ -46,7 +46,7 @@ func (s *OrganizationsService) CreateOrganizationRuleset(ctx context.Context, or
 	}
 
 	var rs *Ruleset
-	resp, err := s.client.Do(ctx, req, &ruleset)
+	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -90,7 +90,7 @@ func (s *OrganizationsService) UpdateOrganizationRuleset(ctx context.Context, or
 	}
 
 	var rs *Ruleset
-	resp, err := s.client.Do(ctx, req, &ruleset)
+	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}

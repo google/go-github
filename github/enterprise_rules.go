@@ -24,7 +24,7 @@ func (s *EnterpriseService) CreateEnterpriseRuleset(ctx context.Context, enterpr
 	}
 
 	var rs *Ruleset
-	resp, err := s.client.Do(ctx, req, &ruleset)
+	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -68,7 +68,7 @@ func (s *EnterpriseService) UpdateEnterpriseRuleset(ctx context.Context, enterpr
 	}
 
 	var rs *Ruleset
-	resp, err := s.client.Do(ctx, req, &ruleset)
+	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}

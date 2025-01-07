@@ -912,7 +912,7 @@ func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo str
 	}
 
 	var rs *Ruleset
-	resp, err := s.client.Do(ctx, req, &ruleset)
+	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -957,7 +957,7 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 	}
 
 	var rs *Ruleset
-	resp, err := s.client.Do(ctx, req, &ruleset)
+	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -999,21 +999,21 @@ func (s *RepositoriesService) UpdateRulesetClearBypassActor(ctx context.Context,
 // GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
 //
 //meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
-func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, owner, repo string, rulesetID int64, ruleSet Ruleset) (*Ruleset, *Response, error) {
+func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, owner, repo string, rulesetID int64, ruleset Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 
 	rsNoBypassActor := rulesetNoOmitBypassActors{
-		ID:           ruleSet.ID,
-		Name:         ruleSet.Name,
-		Target:       ruleSet.Target,
-		SourceType:   ruleSet.SourceType,
-		Source:       ruleSet.Source,
-		Enforcement:  ruleSet.Enforcement,
-		BypassActors: ruleSet.BypassActors,
-		NodeID:       ruleSet.NodeID,
-		Links:        ruleSet.Links,
-		Conditions:   ruleSet.Conditions,
-		Rules:        ruleSet.Rules,
+		ID:           ruleset.ID,
+		Name:         ruleset.Name,
+		Target:       ruleset.Target,
+		SourceType:   ruleset.SourceType,
+		Source:       ruleset.Source,
+		Enforcement:  ruleset.Enforcement,
+		BypassActors: ruleset.BypassActors,
+		NodeID:       ruleset.NodeID,
+		Links:        ruleset.Links,
+		Conditions:   ruleset.Conditions,
+		Rules:        ruleset.Rules,
 	}
 
 	req, err := s.client.NewRequest("PUT", u, rsNoBypassActor)
@@ -1022,7 +1022,7 @@ func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, ow
 	}
 
 	var rs *Ruleset
-	resp, err := s.client.Do(ctx, req, &ruleSet)
+	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}
