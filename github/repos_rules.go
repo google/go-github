@@ -11,6 +11,16 @@ import (
 	"fmt"
 )
 
+// MergeMethod models a GitHub merge method.
+type MergeMethod string
+
+// This is the set of GitHub merge methods.
+const (
+	MergeMethodMerge  MergeMethod = "merge"
+	MergeMethodRebase MergeMethod = "rebase"
+	MergeMethodSquash MergeMethod = "squash"
+)
+
 // BypassActor represents the bypass actors from a ruleset.
 type BypassActor struct {
 	ActorID *int64 `json:"actor_id,omitempty"`
@@ -125,11 +135,12 @@ type RequiredDeploymentEnvironmentsRuleParameters struct {
 
 // PullRequestRuleParameters represents the pull_request rule parameters.
 type PullRequestRuleParameters struct {
-	DismissStaleReviewsOnPush      bool `json:"dismiss_stale_reviews_on_push"`
-	RequireCodeOwnerReview         bool `json:"require_code_owner_review"`
-	RequireLastPushApproval        bool `json:"require_last_push_approval"`
-	RequiredApprovingReviewCount   int  `json:"required_approving_review_count"`
-	RequiredReviewThreadResolution bool `json:"required_review_thread_resolution"`
+	AllowedMergeMethods            []MergeMethod `json:"allowed_merge_methods"`
+	DismissStaleReviewsOnPush      bool          `json:"dismiss_stale_reviews_on_push"`
+	RequireCodeOwnerReview         bool          `json:"require_code_owner_review"`
+	RequireLastPushApproval        bool          `json:"require_last_push_approval"`
+	RequiredApprovingReviewCount   int           `json:"required_approving_review_count"`
+	RequiredReviewThreadResolution bool          `json:"required_review_thread_resolution"`
 }
 
 // RuleRequiredStatusChecks represents the RequiredStatusChecks for the RequiredStatusChecksRuleParameters object.

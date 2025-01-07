@@ -8651,7 +8651,6 @@ func TestRepositoryDispatchEvent_Marshal(t *testing.T) {
 		Branch:        Ptr("b"),
 		ClientPayload: jsonMsg,
 		Repo: &Repository{
-
 			ID:   Ptr(int64(1)),
 			URL:  Ptr("s"),
 			Name: Ptr("n"),
@@ -9770,11 +9769,12 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 					PullRequest: &RepositoryRulesetPullRequestRule{
 						Type: "pull_request",
 						Parameters: &PullRequestRuleParameters{
+							AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+							DismissStaleReviewsOnPush:      true,
 							RequireCodeOwnerReview:         true,
 							RequireLastPushApproval:        true,
 							RequiredApprovingReviewCount:   1,
 							RequiredReviewThreadResolution: true,
-							DismissStaleReviewsOnPush:      true,
 						},
 					},
 					RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
@@ -9977,11 +9977,12 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 						PullRequest: &RepositoryRulesetPullRequestRule{
 							Type: "pull_request",
 							Parameters: &PullRequestRuleParameters{
+								AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+								DismissStaleReviewsOnPush:      true,
 								RequireCodeOwnerReview:         true,
 								RequireLastPushApproval:        true,
 								RequiredApprovingReviewCount:   1,
 								RequiredReviewThreadResolution: true,
-								DismissStaleReviewsOnPush:      true,
 							},
 						},
 						RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
@@ -10131,11 +10132,12 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 						PullRequest: &RepositoryRulesetPullRequestRule{
 							Type: "pull_request",
 							Parameters: &PullRequestRuleParameters{
+								AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+								DismissStaleReviewsOnPush:      true,
 								RequireCodeOwnerReview:         true,
 								RequireLastPushApproval:        true,
 								RequiredApprovingReviewCount:   1,
 								RequiredReviewThreadResolution: true,
-								DismissStaleReviewsOnPush:      true,
 							},
 						},
 						RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
@@ -10285,11 +10287,12 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
 							PullRequest: &RepositoryRulesetPullRequestRule{
 								Type: "pull_request",
 								Parameters: &PullRequestRuleParameters{
+									AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+									DismissStaleReviewsOnPush:      true,
 									RequireCodeOwnerReview:         true,
 									RequireLastPushApproval:        true,
 									RequiredApprovingReviewCount:   1,
 									RequiredReviewThreadResolution: true,
-									DismissStaleReviewsOnPush:      true,
 								},
 							},
 							RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
@@ -10630,6 +10633,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
                 "pull_request": {
                   "type": "pull_request",
                   "parameters": {
+										"allowed_merge_methods": ["rebase","squash"],
                     "dismiss_stale_reviews_on_push": true,
                     "require_code_owner_review": true,
                     "require_last_push_approval": true,
@@ -10863,6 +10867,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
                   "pull_request": {
                     "type": "pull_request",
                     "parameters": {
+											"allowed_merge_methods": ["rebase","squash"],
                       "dismiss_stale_reviews_on_push": true,
                       "require_code_owner_review": true,
                       "require_last_push_approval": true,
@@ -11024,6 +11029,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
                   "pull_request": {
                     "type": "pull_request",
                     "parameters": {
+											"allowed_merge_methods": ["rebase","squash"],
                       "dismiss_stale_reviews_on_push": true,
                       "require_code_owner_review": true,
                       "require_last_push_approval": true,
@@ -11186,6 +11192,7 @@ func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
                     "pull_request": {
                       "type": "pull_request",
                       "parameters": {
+												"allowed_merge_methods": ["rebase","squash"],
                         "dismiss_stale_reviews_on_push": true,
                         "require_code_owner_review": true,
                         "require_last_push_approval": true,

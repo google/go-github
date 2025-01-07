@@ -243,6 +243,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 			data: `{
 				"type":"pull_request",
 				"parameters":{
+					"allowed_merge_methods": ["rebase","squash"],
 					"dismiss_stale_reviews_on_push": true,
 					"require_code_owner_review": true,
 					"require_last_push_approval": true,
@@ -251,6 +252,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 				}
 			}`,
 			want: NewPullRequestRule(&PullRequestRuleParameters{
+				AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,

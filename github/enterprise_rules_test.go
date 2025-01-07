@@ -91,6 +91,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoName(t *testing.T)
 			  {
 				"type": "pull_request",
 				"parameters": {
+					"allowed_merge_methods": ["rebase","squash"],
 				  "dismiss_stale_reviews_on_push": true,
 				  "require_code_owner_review": true,
 				  "require_last_push_approval": true,
@@ -210,11 +211,12 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoName(t *testing.T)
 			}),
 			NewRequiredSignaturesRule(),
 			NewPullRequestRule(&PullRequestRuleParameters{
+				AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
 				RequiredApprovingReviewCount:   1,
 				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
 			}),
 			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -309,11 +311,12 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoName(t *testing.T)
 			}),
 			NewRequiredSignaturesRule(),
 			NewPullRequestRule(&PullRequestRuleParameters{
+				AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
 				RequiredApprovingReviewCount:   1,
 				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
 			}),
 			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -465,6 +468,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoProperty(t *testin
 			  {
 				"type": "pull_request",
 				"parameters": {
+					"allowed_merge_methods": ["rebase","squash"],
 				  "dismiss_stale_reviews_on_push": true,
 				  "require_code_owner_review": true,
 				  "require_last_push_approval": true,
@@ -594,11 +598,12 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoProperty(t *testin
 			}),
 			NewRequiredSignaturesRule(),
 			NewPullRequestRule(&PullRequestRuleParameters{
+				AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
 				RequiredApprovingReviewCount:   1,
 				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
 			}),
 			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -703,11 +708,12 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoProperty(t *testin
 			}),
 			NewRequiredSignaturesRule(),
 			NewPullRequestRule(&PullRequestRuleParameters{
+				AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
 				RequiredApprovingReviewCount:   1,
 				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
 			}),
 			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -844,6 +850,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoName(t *testing.T) {
 			  {
 				"type": "pull_request",
 				"parameters": {
+					"allowed_merge_methods": ["rebase","squash"],
 				  "dismiss_stale_reviews_on_push": true,
 				  "require_code_owner_review": true,
 				  "require_last_push_approval": true,
@@ -962,11 +969,12 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoName(t *testing.T) {
 			}),
 			NewRequiredSignaturesRule(),
 			NewPullRequestRule(&PullRequestRuleParameters{
+				AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
 				RequiredApprovingReviewCount:   1,
 				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
 			}),
 			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -1060,11 +1068,12 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoName(t *testing.T) {
 			}),
 			NewRequiredSignaturesRule(),
 			NewPullRequestRule(&PullRequestRuleParameters{
+				AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
 				RequiredApprovingReviewCount:   1,
 				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
 			}),
 			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -1210,6 +1219,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoProperty(t *testing.
 			  {
 				"type": "pull_request",
 				"parameters": {
+					"allowed_merge_methods": ["rebase","squash"],
 				  "dismiss_stale_reviews_on_push": true,
 				  "require_code_owner_review": true,
 				  "require_last_push_approval": true,
@@ -1338,11 +1348,12 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoProperty(t *testing.
 			}),
 			NewRequiredSignaturesRule(),
 			NewPullRequestRule(&PullRequestRuleParameters{
+				AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
 				RequiredApprovingReviewCount:   1,
 				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
 			}),
 			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
@@ -1446,11 +1457,12 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoProperty(t *testing.
 			}),
 			NewRequiredSignaturesRule(),
 			NewPullRequestRule(&PullRequestRuleParameters{
+				AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
+				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
 				RequiredApprovingReviewCount:   1,
 				RequiredReviewThreadResolution: true,
-				DismissStaleReviewsOnPush:      true,
 			}),
 			NewRequiredStatusChecksRule(&RequiredStatusChecksRuleParameters{
 				RequiredStatusChecks: []RuleRequiredStatusChecks{
