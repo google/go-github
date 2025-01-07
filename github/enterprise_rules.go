@@ -15,7 +15,7 @@ import (
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#create-an-enterprise-repository-ruleset
 //
 //meta:operation POST /enterprises/{enterprise}/rulesets
-func (s *EnterpriseService) CreateEnterpriseRuleset(ctx context.Context, enterprise string, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *EnterpriseService) CreateEnterpriseRuleset(ctx context.Context, enterprise string, rs Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets", enterprise)
 
 	req, err := s.client.NewRequest("POST", u, rs)
@@ -59,7 +59,7 @@ func (s *EnterpriseService) GetEnterpriseRuleset(ctx context.Context, enterprise
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
 //
 //meta:operation PUT /enterprises/{enterprise}/rulesets/{ruleset_id}
-func (s *EnterpriseService) UpdateEnterpriseRuleset(ctx context.Context, enterprise string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *EnterpriseService) UpdateEnterpriseRuleset(ctx context.Context, enterprise string, rulesetID int64, rs Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 
 	req, err := s.client.NewRequest("PUT", u, rs)
