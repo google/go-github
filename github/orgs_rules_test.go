@@ -1533,6 +1533,63 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 	})
 }
 
+func TestOrganizationsService_UpdateOrganizationRulesetClearBypassActor(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/rulesets/26110", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `{
+			"id": 26110,
+			"name": "test ruleset",
+			"target": "branch",
+			"source_type": "Organization",
+			"source": "o",
+			"enforcement": "active",
+			"bypass_mode": "none",
+			"conditions": {
+				"repository_name": {
+					"include": [
+						"important_repository",
+						"another_important_repository"
+					],
+					"exclude": [
+						"unimportant_repository"
+					],
+					"protected": true
+				},
+			  "ref_name": {
+					"include": [
+						"refs/heads/main",
+						"refs/heads/master"
+					],
+					"exclude": [
+						"refs/heads/dev*"
+					]
+				}
+			},
+			"rules": [
+			  {
+					"type": "creation"
+			  }
+			]
+		}`)
+	})
+
+	ctx := context.Background()
+
+	_, err := client.Organizations.UpdateOrganizationRulesetClearBypassActor(ctx, "o", 26110)
+	if err != nil {
+		t.Errorf("Organizations.UpdateOrganizationRulesetClearBypassActor returned error: %v \n", err)
+	}
+
+	const methodName = "UpdateOrganizationRulesetClearBypassActor"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.UpdateOrganizationRulesetClearBypassActor(ctx, "o", 26110)
+	})
+}
+
 func TestOrganizationsService_DeleteOrganizationRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

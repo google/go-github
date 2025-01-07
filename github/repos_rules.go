@@ -837,6 +837,11 @@ type rulesetNoOmitBypassActors struct {
 	Rules        []*RepositoryRule  `json:"rules,omitempty"`
 }
 
+// rulesetClearBypassActors is used to clear the bypass actors when modifying a GitHub ruleset object.
+type rulesetClearBypassActors struct {
+	BypassActors []*BypassActor `json:"bypass_actors"`
+}
+
 // GetRulesForBranch gets all the rules that apply to the specified branch.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/rules#get-rules-for-a-branch
@@ -949,9 +954,36 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 	return ruleset, resp, nil
 }
 
+// UpdateRulesetClearBypassActor clears the ruleset bypass actors for a ruleset for the specified repository.
+//
+// This function is necessary as the UpdateRuleset function does not marshal ByPassActor if passed as nil or an empty array.
+//
+// GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
+//
+//meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
+func (s *RepositoriesService) UpdateRulesetClearBypassActor(ctx context.Context, owner, repo string, rulesetID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
+
+	rsClearBypassActor := rulesetClearBypassActors{}
+
+	req, err := s.client.NewRequest("PUT", u, rsClearBypassActor)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
 // UpdateRulesetNoBypassActor updates a ruleset for the specified repository.
 //
 // This function is necessary as the UpdateRuleset function does not marshal ByPassActor if passed as nil or an empty array.
+//
+// Deprecated: Use UpdateRulesetClearBypassActor instead.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
 //
