@@ -220,7 +220,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
+	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", Ruleset{
 		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
@@ -413,7 +413,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoNames(t *testing.T) 
 	const methodName = "CreateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", nil)
+		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -571,7 +571,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
+	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", Ruleset{
 		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
@@ -776,7 +776,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoProperty(t *testing.
 	const methodName = "CreateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", nil)
+		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -927,7 +927,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", &Ruleset{
+	ruleset, _, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", Ruleset{
 		ID:          Ptr(int64(21)),
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
@@ -1116,7 +1116,7 @@ func TestOrganizationsService_CreateOrganizationRuleset_RepoIDs(t *testing.T) {
 	const methodName = "CreateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", nil)
+		got, resp, err := client.Organizations.CreateOrganizationRuleset(ctx, "o", Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1360,7 +1360,7 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, &Ruleset{
+	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, Ruleset{
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -1416,7 +1416,7 @@ func TestOrganizationsService_UpdateOrganizationRuleset(t *testing.T) {
 	const methodName = "UpdateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, nil)
+		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1467,7 +1467,7 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, &Ruleset{
+	rulesets, _, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, Ruleset{
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -1525,7 +1525,7 @@ func TestOrganizationsService_UpdateOrganizationRulesetWithRepoProp(t *testing.T
 	const methodName = "UpdateOrganizationRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, nil)
+		got, resp, err := client.Organizations.UpdateOrganizationRuleset(ctx, "o", 26110, Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

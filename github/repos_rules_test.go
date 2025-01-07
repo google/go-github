@@ -590,7 +590,7 @@ func TestRepositoriesService_CreateRuleset(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ruleSet, _, err := client.Repositories.CreateRuleset(ctx, "o", "repo", &Ruleset{
+	ruleSet, _, err := client.Repositories.CreateRuleset(ctx, "o", "repo", Ruleset{
 		Name:        "ruleset",
 		Enforcement: "enabled",
 	})
@@ -612,7 +612,7 @@ func TestRepositoriesService_CreateRuleset(t *testing.T) {
 	const methodName = "CreateRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.CreateRuleset(ctx, "o", "repo", &Ruleset{})
+		got, resp, err := client.Repositories.CreateRuleset(ctx, "o", "repo", Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -663,7 +663,7 @@ func TestRepositoriesService_CreateRulesetWithPushRules(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ruleSet, _, err := client.Repositories.CreateRuleset(ctx, "o", "repo", &Ruleset{
+	ruleSet, _, err := client.Repositories.CreateRuleset(ctx, "o", "repo", Ruleset{
 		Name:        "ruleset",
 		Enforcement: "enabled",
 	})
@@ -700,7 +700,7 @@ func TestRepositoriesService_CreateRulesetWithPushRules(t *testing.T) {
 	const methodName = "CreateRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.CreateRuleset(ctx, "o", "repo", &Ruleset{})
+		got, resp, err := client.Repositories.CreateRuleset(ctx, "o", "repo", Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -759,7 +759,7 @@ func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	rs := &Ruleset{
+	rs := Ruleset{
 		Name:        "ruleset",
 		Source:      "o/repo",
 		Enforcement: "enabled",
@@ -779,7 +779,6 @@ func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
 	ctx := context.Background()
 
 	ruleSet, _, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, rs)
-
 	if err != nil {
 		t.Errorf("Repositories.UpdateRulesetNoBypassActor returned error: %v \n", err)
 	}
@@ -799,7 +798,7 @@ func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
 	const methodName = "UpdateRulesetNoBypassActor"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, nil)
+		got, resp, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -823,7 +822,7 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ruleSet, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, &Ruleset{
+	ruleSet, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, Ruleset{
 		Name:        "ruleset",
 		Enforcement: "enabled",
 	})
@@ -846,7 +845,7 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 	const methodName = "UpdateRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, nil)
+		got, resp, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

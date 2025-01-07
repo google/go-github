@@ -37,7 +37,7 @@ func (s *OrganizationsService) GetAllOrganizationRulesets(ctx context.Context, o
 // GitHub API docs: https://docs.github.com/rest/orgs/rules#create-an-organization-repository-ruleset
 //
 //meta:operation POST /orgs/{org}/rulesets
-func (s *OrganizationsService) CreateOrganizationRuleset(ctx context.Context, org string, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *OrganizationsService) CreateOrganizationRuleset(ctx context.Context, org string, rs Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets", org)
 
 	req, err := s.client.NewRequest("POST", u, rs)
@@ -81,7 +81,7 @@ func (s *OrganizationsService) GetOrganizationRuleset(ctx context.Context, org s
 // GitHub API docs: https://docs.github.com/rest/orgs/rules#update-an-organization-repository-ruleset
 //
 //meta:operation PUT /orgs/{org}/rulesets/{ruleset_id}
-func (s *OrganizationsService) UpdateOrganizationRuleset(ctx context.Context, org string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *OrganizationsService) UpdateOrganizationRuleset(ctx context.Context, org string, rulesetID int64, rs Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, rulesetID)
 
 	req, err := s.client.NewRequest("PUT", u, rs)

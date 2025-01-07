@@ -887,7 +887,7 @@ func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo st
 // GitHub API docs: https://docs.github.com/rest/repos/rules#create-a-repository-ruleset
 //
 //meta:operation POST /repos/{owner}/{repo}/rulesets
-func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo string, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo string, rs Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets", owner, repo)
 
 	req, err := s.client.NewRequest("POST", u, rs)
@@ -932,7 +932,7 @@ func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
 //
 //meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
-func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo string, rulesetID int64, rs Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 
 	req, err := s.client.NewRequest("PUT", u, rs)
@@ -956,25 +956,23 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 // GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
 //
 //meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
-func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, owner, repo string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, owner, repo string, rulesetID int64, rs Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 
 	rsNoBypassActor := &rulesetNoOmitBypassActors{}
 
-	if rs != nil {
-		rsNoBypassActor = &rulesetNoOmitBypassActors{
-			ID:           rs.ID,
-			Name:         rs.Name,
-			Target:       rs.Target,
-			SourceType:   rs.SourceType,
-			Source:       rs.Source,
-			Enforcement:  rs.Enforcement,
-			BypassActors: rs.BypassActors,
-			NodeID:       rs.NodeID,
-			Links:        rs.Links,
-			Conditions:   rs.Conditions,
-			Rules:        rs.Rules,
-		}
+	rsNoBypassActor = &rulesetNoOmitBypassActors{
+		ID:           rs.ID,
+		Name:         rs.Name,
+		Target:       rs.Target,
+		SourceType:   rs.SourceType,
+		Source:       rs.Source,
+		Enforcement:  rs.Enforcement,
+		BypassActors: rs.BypassActors,
+		NodeID:       rs.NodeID,
+		Links:        rs.Links,
+		Conditions:   rs.Conditions,
+		Rules:        rs.Rules,
 	}
 
 	req, err := s.client.NewRequest("PUT", u, rsNoBypassActor)

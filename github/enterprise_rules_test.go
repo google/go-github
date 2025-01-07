@@ -173,7 +173,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoName(t *testing.T)
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", &Ruleset{
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", Ruleset{
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -371,7 +371,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoName(t *testing.T)
 	const methodName = "CreateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", nil)
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -547,7 +547,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoProperty(t *testin
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", &Ruleset{
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", Ruleset{
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -765,7 +765,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgNameRepoProperty(t *testin
 	const methodName = "CreateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", nil)
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -926,7 +926,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoName(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", &Ruleset{
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", Ruleset{
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -1122,7 +1122,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoName(t *testing.T) {
 	const methodName = "CreateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", nil)
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1292,7 +1292,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoProperty(t *testing.
 	})
 
 	ctx := context.Background()
-	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", &Ruleset{
+	ruleset, _, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", Ruleset{
 		Name:        "ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -1508,7 +1508,7 @@ func TestEnterpriseService_CreateEnterpriseRuleset_OrgIdRepoProperty(t *testing.
 	const methodName = "CreateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", nil)
+		got, resp, err := client.Enterprise.CreateEnterpriseRuleset(ctx, "e", Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1684,7 +1684,7 @@ func TestEnterpriseService_UpdateEnterpriseRuleset(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Enterprise.UpdateEnterpriseRuleset(ctx, "e", 26110, &Ruleset{
+	rulesets, _, err := client.Enterprise.UpdateEnterpriseRuleset(ctx, "e", 26110, Ruleset{
 		Name:        "test ruleset",
 		Target:      Ptr("branch"),
 		Enforcement: "active",
@@ -1744,7 +1744,7 @@ func TestEnterpriseService_UpdateEnterpriseRuleset(t *testing.T) {
 	const methodName = "UpdateEnterpriseRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.UpdateEnterpriseRuleset(ctx, "e", 26110, nil)
+		got, resp, err := client.Enterprise.UpdateEnterpriseRuleset(ctx, "e", 26110, Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
