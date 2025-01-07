@@ -15,21 +15,21 @@ import (
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#create-an-enterprise-repository-ruleset
 //
 //meta:operation POST /enterprises/{enterprise}/rulesets
-func (s *EnterpriseService) CreateEnterpriseRuleset(ctx context.Context, enterprise string, rs Ruleset) (*Ruleset, *Response, error) {
+func (s *EnterpriseService) CreateEnterpriseRuleset(ctx context.Context, enterprise string, ruleset Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets", enterprise)
 
-	req, err := s.client.NewRequest("POST", u, rs)
+	req, err := s.client.NewRequest("POST", u, ruleset)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var ruleset *Ruleset
+	var rs *Ruleset
 	resp, err := s.client.Do(ctx, req, &ruleset)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return ruleset, resp, nil
+	return rs, resp, nil
 }
 
 // GetEnterpriseRuleset gets a ruleset from the specified enterprise.
@@ -59,26 +59,26 @@ func (s *EnterpriseService) GetEnterpriseRuleset(ctx context.Context, enterprise
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
 //
 //meta:operation PUT /enterprises/{enterprise}/rulesets/{ruleset_id}
-func (s *EnterpriseService) UpdateEnterpriseRuleset(ctx context.Context, enterprise string, rulesetID int64, rs Ruleset) (*Ruleset, *Response, error) {
+func (s *EnterpriseService) UpdateEnterpriseRuleset(ctx context.Context, enterprise string, rulesetID int64, ruleset Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 
-	req, err := s.client.NewRequest("PUT", u, rs)
+	req, err := s.client.NewRequest("PUT", u, ruleset)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var ruleset *Ruleset
+	var rs *Ruleset
 	resp, err := s.client.Do(ctx, req, &ruleset)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return ruleset, resp, nil
+	return rs, resp, nil
 }
 
 // UpdateEnterpriseRulesetClearBypassActor clears the ruleset bypass actors for a ruleset for the specified repository.
 //
-// This function is necessary as the UpdateEnterpriseRuleset function does not marshal ByPassActor if passed as nil or an empty array.
+// This function is necessary as the UpdateEnterpriseRuleset function does not marshal ByPassActor if passed as an empty array.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
 //

@@ -872,7 +872,7 @@ func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
 
 	ctx := context.Background()
 
-	ruleSet, _, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, &rs)
+	ruleSet, _, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, rs)
 	if err != nil {
 		t.Errorf("Repositories.UpdateRulesetNoBypassActor returned error: %v \n", err)
 	}
@@ -892,7 +892,7 @@ func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
 	const methodName = "UpdateRulesetNoBypassActor"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, &Ruleset{})
+		got, resp, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

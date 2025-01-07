@@ -37,21 +37,21 @@ func (s *OrganizationsService) GetAllOrganizationRulesets(ctx context.Context, o
 // GitHub API docs: https://docs.github.com/rest/orgs/rules#create-an-organization-repository-ruleset
 //
 //meta:operation POST /orgs/{org}/rulesets
-func (s *OrganizationsService) CreateOrganizationRuleset(ctx context.Context, org string, rs Ruleset) (*Ruleset, *Response, error) {
+func (s *OrganizationsService) CreateOrganizationRuleset(ctx context.Context, org string, ruleset Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets", org)
 
-	req, err := s.client.NewRequest("POST", u, rs)
+	req, err := s.client.NewRequest("POST", u, ruleset)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var ruleset *Ruleset
+	var rs *Ruleset
 	resp, err := s.client.Do(ctx, req, &ruleset)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return ruleset, resp, nil
+	return rs, resp, nil
 }
 
 // GetOrganizationRuleset gets a ruleset from the specified organization.
@@ -81,26 +81,26 @@ func (s *OrganizationsService) GetOrganizationRuleset(ctx context.Context, org s
 // GitHub API docs: https://docs.github.com/rest/orgs/rules#update-an-organization-repository-ruleset
 //
 //meta:operation PUT /orgs/{org}/rulesets/{ruleset_id}
-func (s *OrganizationsService) UpdateOrganizationRuleset(ctx context.Context, org string, rulesetID int64, rs Ruleset) (*Ruleset, *Response, error) {
+func (s *OrganizationsService) UpdateOrganizationRuleset(ctx context.Context, org string, rulesetID int64, ruleset Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, rulesetID)
 
-	req, err := s.client.NewRequest("PUT", u, rs)
+	req, err := s.client.NewRequest("PUT", u, ruleset)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var ruleset *Ruleset
+	var rs *Ruleset
 	resp, err := s.client.Do(ctx, req, &ruleset)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return ruleset, resp, nil
+	return rs, resp, nil
 }
 
 // UpdateOrganizationRulesetClearBypassActor clears the ruleset bypass actors for a ruleset for the specified repository.
 //
-// This function is necessary as the UpdateOrganizationRuleset function does not marshal ByPassActor if passed as nil or an empty array.
+// This function is necessary as the UpdateOrganizationRuleset function does not marshal ByPassActor if passed as an empty array.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/rules#update-an-organization-repository-ruleset
 //
