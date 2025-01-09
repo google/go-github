@@ -11,6 +11,16 @@ import (
 	"fmt"
 )
 
+// MergeMethod models a GitHub merge method.
+type MergeMethod string
+
+// This is the set of GitHub merge methods.
+const (
+	MergeMethodMerge  MergeMethod = "merge"
+	MergeMethodRebase MergeMethod = "rebase"
+	MergeMethodSquash MergeMethod = "squash"
+)
+
 // BypassActor represents the bypass actors from a ruleset.
 type BypassActor struct {
 	ActorID *int64 `json:"actor_id,omitempty"`
@@ -36,14 +46,14 @@ type RulesetRefConditionParameters struct {
 	Exclude []string `json:"exclude"`
 }
 
-// RulesetRepositoryNamesConditionParameters represents the conditions object for repository_names.
+// RulesetRepositoryNamesConditionParameters represents the conditions object for repository_name.
 type RulesetRepositoryNamesConditionParameters struct {
 	Include   []string `json:"include"`
 	Exclude   []string `json:"exclude"`
 	Protected *bool    `json:"protected,omitempty"`
 }
 
-// RulesetRepositoryIDsConditionParameters represents the conditions object for repository_ids.
+// RulesetRepositoryIDsConditionParameters represents the conditions object for repository_id.
 type RulesetRepositoryIDsConditionParameters struct {
 	RepositoryIDs []int64 `json:"repository_ids,omitempty"`
 }
@@ -61,6 +71,17 @@ type RulesetRepositoryPropertyConditionParameters struct {
 	Exclude []RulesetRepositoryPropertyTargetParameters `json:"exclude"`
 }
 
+// RulesetOrganizationNamesConditionParameters represents the conditions object for organization_name.
+type RulesetOrganizationNamesConditionParameters struct {
+	Include []string `json:"include"`
+	Exclude []string `json:"exclude"`
+}
+
+// RulesetOrganizationIDsConditionParameters represents the conditions object for organization_id.
+type RulesetOrganizationIDsConditionParameters struct {
+	OrganizationIDs []int64 `json:"organization_ids,omitempty"`
+}
+
 // RulesetConditions represents the conditions object in a ruleset.
 // Set either RepositoryName or RepositoryID or RepositoryProperty, not more than one.
 type RulesetConditions struct {
@@ -68,6 +89,8 @@ type RulesetConditions struct {
 	RepositoryName     *RulesetRepositoryNamesConditionParameters    `json:"repository_name,omitempty"`
 	RepositoryID       *RulesetRepositoryIDsConditionParameters      `json:"repository_id,omitempty"`
 	RepositoryProperty *RulesetRepositoryPropertyConditionParameters `json:"repository_property,omitempty"`
+	OrganizationName   *RulesetOrganizationNamesConditionParameters  `json:"organization_name,omitempty"`
+	OrganizationID     *RulesetOrganizationIDsConditionParameters    `json:"organization_id,omitempty"`
 }
 
 // RulePatternParameters represents the rule pattern parameters.
@@ -112,11 +135,12 @@ type RequiredDeploymentEnvironmentsRuleParameters struct {
 
 // PullRequestRuleParameters represents the pull_request rule parameters.
 type PullRequestRuleParameters struct {
-	DismissStaleReviewsOnPush      bool `json:"dismiss_stale_reviews_on_push"`
-	RequireCodeOwnerReview         bool `json:"require_code_owner_review"`
-	RequireLastPushApproval        bool `json:"require_last_push_approval"`
-	RequiredApprovingReviewCount   int  `json:"required_approving_review_count"`
-	RequiredReviewThreadResolution bool `json:"required_review_thread_resolution"`
+	AllowedMergeMethods            []MergeMethod `json:"allowed_merge_methods"`
+	DismissStaleReviewsOnPush      bool          `json:"dismiss_stale_reviews_on_push"`
+	RequireCodeOwnerReview         bool          `json:"require_code_owner_review"`
+	RequireLastPushApproval        bool          `json:"require_last_push_approval"`
+	RequiredApprovingReviewCount   int           `json:"required_approving_review_count"`
+	RequiredReviewThreadResolution bool          `json:"required_review_thread_resolution"`
 }
 
 // RuleRequiredStatusChecks represents the RequiredStatusChecks for the RequiredStatusChecksRuleParameters object.
@@ -824,6 +848,11 @@ type rulesetNoOmitBypassActors struct {
 	Rules        []*RepositoryRule  `json:"rules,omitempty"`
 }
 
+// rulesetClearBypassActors is used to clear the bypass actors when modifying a GitHub ruleset object.
+type rulesetClearBypassActors struct {
+	BypassActors []*BypassActor `json:"bypass_actors"`
+}
+
 // GetRulesForBranch gets all the rules that apply to the specified branch.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/rules#get-rules-for-a-branch
@@ -874,21 +903,21 @@ func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo st
 // GitHub API docs: https://docs.github.com/rest/repos/rules#create-a-repository-ruleset
 //
 //meta:operation POST /repos/{owner}/{repo}/rulesets
-func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo string, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo string, ruleset Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, rs)
+	req, err := s.client.NewRequest("POST", u, ruleset)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var ruleset *Ruleset
-	resp, err := s.client.Do(ctx, req, &ruleset)
+	var rs *Ruleset
+	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return ruleset, resp, nil
+	return rs, resp, nil
 }
 
 // GetRuleset gets a ruleset for the specified repository.
@@ -919,49 +948,72 @@ func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
 //
 //meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
-func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo string, rulesetID int64, ruleset Ruleset) (*Ruleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 
-	req, err := s.client.NewRequest("PUT", u, rs)
+	req, err := s.client.NewRequest("PUT", u, ruleset)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var ruleset *Ruleset
-	resp, err := s.client.Do(ctx, req, &ruleset)
+	var rs *Ruleset
+	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return ruleset, resp, nil
+	return rs, resp, nil
 }
 
-// UpdateRulesetNoBypassActor updates a ruleset for the specified repository.
+// UpdateRulesetClearBypassActor clears the ruleset bypass actors for a ruleset for the specified repository.
 //
-// This function is necessary as the UpdateRuleset function does not marshal ByPassActor if passed as nil or an empty array.
+// This function is necessary as the UpdateRuleset function does not marshal ByPassActor if passed as an empty array.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
 //
 //meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
-func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, owner, repo string, rulesetID int64, rs *Ruleset) (*Ruleset, *Response, error) {
+func (s *RepositoriesService) UpdateRulesetClearBypassActor(ctx context.Context, owner, repo string, rulesetID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 
-	rsNoBypassActor := &rulesetNoOmitBypassActors{}
+	rsClearBypassActor := rulesetClearBypassActors{}
 
-	if rs != nil {
-		rsNoBypassActor = &rulesetNoOmitBypassActors{
-			ID:           rs.ID,
-			Name:         rs.Name,
-			Target:       rs.Target,
-			SourceType:   rs.SourceType,
-			Source:       rs.Source,
-			Enforcement:  rs.Enforcement,
-			BypassActors: rs.BypassActors,
-			NodeID:       rs.NodeID,
-			Links:        rs.Links,
-			Conditions:   rs.Conditions,
-			Rules:        rs.Rules,
-		}
+	req, err := s.client.NewRequest("PUT", u, rsClearBypassActor)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
+// UpdateRulesetNoBypassActor updates a ruleset for the specified repository.
+//
+// This function is necessary as the UpdateRuleset function does not marshal ByPassActor if passed as an empty array.
+//
+// Deprecated: Use UpdateRulesetClearBypassActor instead.
+//
+// GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
+//
+//meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
+func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, owner, repo string, rulesetID int64, ruleset Ruleset) (*Ruleset, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
+
+	rsNoBypassActor := rulesetNoOmitBypassActors{
+		ID:           ruleset.ID,
+		Name:         ruleset.Name,
+		Target:       ruleset.Target,
+		SourceType:   ruleset.SourceType,
+		Source:       ruleset.Source,
+		Enforcement:  ruleset.Enforcement,
+		BypassActors: ruleset.BypassActors,
+		NodeID:       ruleset.NodeID,
+		Links:        ruleset.Links,
+		Conditions:   ruleset.Conditions,
+		Rules:        ruleset.Rules,
 	}
 
 	req, err := s.client.NewRequest("PUT", u, rsNoBypassActor)
@@ -969,13 +1021,13 @@ func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, ow
 		return nil, nil, err
 	}
 
-	var ruleSet *Ruleset
-	resp, err := s.client.Do(ctx, req, &ruleSet)
+	var rs *Ruleset
+	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return ruleSet, resp, nil
+	return rs, resp, nil
 }
 
 // DeleteRuleset deletes a ruleset for the specified repository.
