@@ -243,6 +243,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 			data: `{
 				"type":"pull_request",
 				"parameters":{
+					"allowed_merge_methods": ["rebase","squash"],
 					"dismiss_stale_reviews_on_push": true,
 					"require_code_owner_review": true,
 					"require_last_push_approval": true,
@@ -251,6 +252,7 @@ func TestRepositoryRule_UnmarshalJSON(t *testing.T) {
 				}
 			}`,
 			want: NewPullRequestRule(&PullRequestRuleParameters{
+				AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -590,7 +592,7 @@ func TestRepositoriesService_CreateRuleset(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ruleSet, _, err := client.Repositories.CreateRuleset(ctx, "o", "repo", &Ruleset{
+	ruleSet, _, err := client.Repositories.CreateRuleset(ctx, "o", "repo", Ruleset{
 		Name:        "ruleset",
 		Enforcement: "enabled",
 	})
@@ -612,7 +614,7 @@ func TestRepositoriesService_CreateRuleset(t *testing.T) {
 	const methodName = "CreateRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.CreateRuleset(ctx, "o", "repo", &Ruleset{})
+		got, resp, err := client.Repositories.CreateRuleset(ctx, "o", "repo", Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -663,7 +665,7 @@ func TestRepositoriesService_CreateRulesetWithPushRules(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ruleSet, _, err := client.Repositories.CreateRuleset(ctx, "o", "repo", &Ruleset{
+	ruleSet, _, err := client.Repositories.CreateRuleset(ctx, "o", "repo", Ruleset{
 		Name:        "ruleset",
 		Enforcement: "enabled",
 	})
@@ -700,7 +702,7 @@ func TestRepositoriesService_CreateRulesetWithPushRules(t *testing.T) {
 	const methodName = "CreateRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.CreateRuleset(ctx, "o", "repo", &Ruleset{})
+		got, resp, err := client.Repositories.CreateRuleset(ctx, "o", "repo", Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -755,58 +757,6 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	rs := &Ruleset{
-		Name:        "ruleset",
-		Source:      "o/repo",
-		Enforcement: "enabled",
-	}
-
-	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		fmt.Fprint(w, `{
-			"id": 42,
-			"name": "ruleset",
-			"source_type": "Repository",
-			"source": "o/repo",
-			"enforcement": "enabled"
-		}`)
-	})
-
-	ctx := context.Background()
-
-	ruleSet, _, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, rs)
-
-	if err != nil {
-		t.Errorf("Repositories.UpdateRulesetNoBypassActor returned error: %v \n", err)
-	}
-
-	want := &Ruleset{
-		ID:          Ptr(int64(42)),
-		Name:        "ruleset",
-		SourceType:  Ptr("Repository"),
-		Source:      "o/repo",
-		Enforcement: "enabled",
-	}
-
-	if !cmp.Equal(ruleSet, want) {
-		t.Errorf("Repositories.UpdateRulesetNoBypassActor returned %+v, want %+v", ruleSet, want)
-	}
-
-	const methodName = "UpdateRulesetNoBypassActor"
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
 func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -823,7 +773,7 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ruleSet, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, &Ruleset{
+	ruleSet, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, Ruleset{
 		Name:        "ruleset",
 		Enforcement: "enabled",
 	})
@@ -846,7 +796,103 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 	const methodName = "UpdateRuleset"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, nil)
+		got, resp, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, Ruleset{})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_UpdateRulesetClearBypassActor(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `{
+			"id": 42,
+			"name": "ruleset",
+			"source_type": "Repository",
+			"source": "o/repo",
+			"enforcement": "enabled"
+			"conditions": {
+				"ref_name": {
+					"include": [
+						"refs/heads/main",
+						"refs/heads/master"
+					],
+					"exclude": [
+						"refs/heads/dev*"
+					]
+				}
+			},
+			"rules": [
+			  {
+					"type": "creation"
+			  }
+			]
+		}`)
+	})
+
+	ctx := context.Background()
+
+	_, err := client.Repositories.UpdateRulesetClearBypassActor(ctx, "o", "repo", 42)
+	if err != nil {
+		t.Errorf("Repositories.UpdateRulesetClearBypassActor returned error: %v \n", err)
+	}
+
+	const methodName = "UpdateRulesetClearBypassActor"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.UpdateRulesetClearBypassActor(ctx, "o", "repo", 42)
+	})
+}
+
+func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	rs := Ruleset{
+		Name:        "ruleset",
+		Source:      "o/repo",
+		Enforcement: "enabled",
+	}
+
+	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `{
+			"id": 42,
+			"name": "ruleset",
+			"source_type": "Repository",
+			"source": "o/repo",
+			"enforcement": "enabled"
+		}`)
+	})
+
+	ctx := context.Background()
+
+	ruleSet, _, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, rs)
+	if err != nil {
+		t.Errorf("Repositories.UpdateRulesetNoBypassActor returned error: %v \n", err)
+	}
+
+	want := &Ruleset{
+		ID:          Ptr(int64(42)),
+		Name:        "ruleset",
+		SourceType:  Ptr("Repository"),
+		Source:      "o/repo",
+		Enforcement: "enabled",
+	}
+
+	if !cmp.Equal(ruleSet, want) {
+		t.Errorf("Repositories.UpdateRulesetNoBypassActor returned %+v, want %+v", ruleSet, want)
+	}
+
+	const methodName = "UpdateRulesetNoBypassActor"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, Ruleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

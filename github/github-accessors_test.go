@@ -28164,6 +28164,22 @@ func TestRuleset_GetUpdatedAt(tt *testing.T) {
 	r.GetUpdatedAt()
 }
 
+func TestRulesetConditions_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	r := &RulesetConditions{}
+	r.GetOrganizationID()
+	r = nil
+	r.GetOrganizationID()
+}
+
+func TestRulesetConditions_GetOrganizationName(tt *testing.T) {
+	tt.Parallel()
+	r := &RulesetConditions{}
+	r.GetOrganizationName()
+	r = nil
+	r.GetOrganizationName()
+}
+
 func TestRulesetConditions_GetRefName(tt *testing.T) {
 	tt.Parallel()
 	r := &RulesetConditions{}
