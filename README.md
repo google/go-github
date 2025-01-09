@@ -9,11 +9,18 @@
 
 go-github is a Go client library for accessing the [GitHub API v3][].
 
-**go-github requires Go version 1.17 and greater** and
-the library is tested against Go version 1.22 and greater.  go-github tracks
-[Go's version support policy][support-policy].  We do our best not to break
-older versions of Go if we don't have to, but due to tooling constraints, we
-don't always test older versions.
+go-github tracks [Go's version support policy][support-policy] supporting any
+minor version of the latest two major releases of Go and the go directive in
+go.mod reflects that.
+We do our best not to break older versions of Go if we don't have to, but we
+don't explicitly test older versions and as of Go 1.21 the go directive in
+go.mod declares a hard required _minimum_ version of Go to use with this module
+and this _must_ be greater than or equal to the go line of all dependencies so
+go-github will require the N-1 major release of Go by default.
+
+[support-policy]: https://golang.org/doc/devel/release.html#policy
+
+## Development
 
 Go version 1.22 introduced significant changes to the pattern syntax and matching
 behavior of `http.ServerMux` which causes a large number of legacy unit tests to break.
@@ -27,8 +34,6 @@ export GODEBUG=httpmuxgo121=1
 An issue has been created (#3409) requesting assistance in updating all breaking legacy unit
 tests when this `GODEBUG` environment variable is not set and Go 1.23.4 or later is
 used to perform unit tests.
-
-[support-policy]: https://golang.org/doc/devel/release.html#policy
 
 If you're interested in using the [GraphQL API v4][], the recommended library is
 [shurcooL/githubv4][].
