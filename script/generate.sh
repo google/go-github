@@ -43,6 +43,6 @@ for dir in $MOD_DIRS; do
   (
     cd "$dir"
     go generate ./...
-    go mod tidy -compat '1.21'
+    GOTOOLCHAIN="go1.22+auto" go mod tidy
   )
 done
