@@ -1551,9 +1551,9 @@ type RepositoryRulesetChangeSources struct {
 
 // RepositoryRulesetChangedConditions holds changes to conditions in a ruleset.
 type RepositoryRulesetChangedConditions struct {
-	Added   []RepositoryRulesetConditions        `json:"added,omitempty"`
-	Deleted []RepositoryRulesetConditions        `json:"deleted,omitempty"`
-	Updated []RepositoryRulesetUpdatedConditions `json:"updated,omitempty"`
+	Added   []*RepositoryRulesetConditions        `json:"added,omitempty"`
+	Deleted []*RepositoryRulesetConditions        `json:"deleted,omitempty"`
+	Updated []*RepositoryRulesetUpdatedConditions `json:"updated,omitempty"`
 }
 
 // RepositoryRulesetUpdatedConditions represents the edited updates to conditions in a ruleset.
@@ -1572,9 +1572,9 @@ type RepositoryRulesetUpdatedCondition struct {
 
 // RepositoryRulesetChangedRules holds changes to rules in a ruleset.
 type RepositoryRulesetChangedRules struct {
-	Added   []RepositoryRulesetRule         `json:"added,omitempty"`
-	Deleted []RepositoryRulesetRule         `json:"deleted,omitempty"`
-	Updated []RepositoryRulesetUpdatedRules `json:"updated,omitempty"`
+	Added   []*RepositoryRulesetRule         `json:"added,omitempty"`
+	Deleted []*RepositoryRulesetRule         `json:"deleted,omitempty"`
+	Updated []*RepositoryRulesetUpdatedRules `json:"updated,omitempty"`
 }
 
 // RepositoryRulesetUpdatedRules holds updates to rules in a ruleset.

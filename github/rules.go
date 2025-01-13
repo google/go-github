@@ -7,6 +7,7 @@ package github
 
 import (
 	"encoding/json"
+	"reflect"
 )
 
 // RulesetTarget represents a GitHub ruleset target.
@@ -150,7 +151,7 @@ type RepositoryRuleset struct {
 	SourceType           *RulesetSourceType           `json:"source_type,omitempty"`
 	Source               string                       `json:"source"`
 	Enforcement          RulesetEnforcement           `json:"enforcement"`
-	BypassActors         []BypassActor                `json:"bypass_actors,omitempty"`
+	BypassActors         []*BypassActor               `json:"bypass_actors,omitempty"`
 	CurrentUserCanBypass *BypassMode                  `json:"current_user_can_bypass,omitempty"`
 	NodeID               *string                      `json:"node_id,omitempty"`
 	Links                *RepositoryRulesetLinks      `json:"_links,omitempty"`
@@ -209,15 +210,15 @@ type RepositoryRulesetRepositoryNamesConditionParameters struct {
 
 // RepositoryRulesetRepositoryPropertyConditionParameters represents the conditions object for repository_property.
 type RepositoryRulesetRepositoryPropertyConditionParameters struct {
-	Include []RepositoryRulesetRepositoryPropertyTargetParameters `json:"include"`
-	Exclude []RepositoryRulesetRepositoryPropertyTargetParameters `json:"exclude"`
+	Include []*RepositoryRulesetRepositoryPropertyTargetParameters `json:"include"`
+	Exclude []*RepositoryRulesetRepositoryPropertyTargetParameters `json:"exclude"`
 }
 
 // RepositoryRulesetRepositoryPropertyTargetParameters represents a repository_property name and values to be used for targeting.
 type RepositoryRulesetRepositoryPropertyTargetParameters struct {
-	Name   string   `json:"name"`
-	Values []string `json:"property_values"`
-	Source *string  `json:"source,omitempty"`
+	Name           string   `json:"name"`
+	PropertyValues []string `json:"property_values"`
+	Source         *string  `json:"source,omitempty"`
 }
 
 // RepositoryRulesetOrganizationIDsConditionParameters represents the conditions object for organization_id.
@@ -238,6 +239,7 @@ type RepositoryRulesetRule struct {
 }
 
 // RepositoryRulesetRules represents a GitHub ruleset rules object.
+// This type doesn't have JSON annotations as it uses custom marshalling.
 type RepositoryRulesetRules struct {
 	Creation                 *EmptyRuleParameters
 	Update                   *UpdateRuleParameters
@@ -263,28 +265,29 @@ type RepositoryRulesetRules struct {
 }
 
 // BranchRules represents the rules active for a GitHub repository branch.
+// This type doesn't have JSON annotations as it uses custom marshalling.
 type BranchRules struct {
-	Creation                 []BranchRuleMetadata
-	Update                   []UpdateBranchRule
-	Deletion                 []BranchRuleMetadata
-	RequiredLinearHistory    []BranchRuleMetadata
-	MergeQueue               []MergeQueueBranchRule
-	RequiredDeployments      []RequiredDeploymentsBranchRule
-	RequiredSignatures       []BranchRuleMetadata
-	PullRequest              []PullRequestBranchRule
-	RequiredStatusChecks     []RequiredStatusChecksBranchRule
-	NonFastForward           []BranchRuleMetadata
-	CommitMessagePattern     []PatternBranchRule
-	CommitAuthorEmailPattern []PatternBranchRule
-	CommitterEmailPattern    []PatternBranchRule
-	BranchNamePattern        []PatternBranchRule
-	TagNamePattern           []PatternBranchRule
-	FilePathRestriction      []FilePathRestrictionBranchRule
-	MaxFilePathLength        []MaxFilePathLengthBranchRule
-	FileExtensionRestriction []FileExtensionRestrictionBranchRule
-	MaxFileSize              []MaxFileSizeBranchRule
-	Workflows                []WorkflowsBranchRule
-	CodeScanning             []CodeScanningBranchRule
+	Creation                 []*BranchRuleMetadata
+	Update                   []*UpdateBranchRule
+	Deletion                 []*BranchRuleMetadata
+	RequiredLinearHistory    []*BranchRuleMetadata
+	MergeQueue               []*MergeQueueBranchRule
+	RequiredDeployments      []*RequiredDeploymentsBranchRule
+	RequiredSignatures       []*BranchRuleMetadata
+	PullRequest              []*PullRequestBranchRule
+	RequiredStatusChecks     []*RequiredStatusChecksBranchRule
+	NonFastForward           []*BranchRuleMetadata
+	CommitMessagePattern     []*PatternBranchRule
+	CommitAuthorEmailPattern []*PatternBranchRule
+	CommitterEmailPattern    []*PatternBranchRule
+	BranchNamePattern        []*PatternBranchRule
+	TagNamePattern           []*PatternBranchRule
+	FilePathRestriction      []*FilePathRestrictionBranchRule
+	MaxFilePathLength        []*MaxFilePathLengthBranchRule
+	FileExtensionRestriction []*FileExtensionRestrictionBranchRule
+	MaxFileSize              []*MaxFileSizeBranchRule
+	Workflows                []*WorkflowsBranchRule
+	CodeScanning             []*CodeScanningBranchRule
 }
 
 // BranchRuleMetadata represents the metadata for a branch rule.
@@ -371,7 +374,7 @@ type EmptyRuleParameters struct{}
 
 // UpdateRuleParameters represents the update rule parameters.
 type UpdateRuleParameters struct {
-	UpdateAllowsFetchAndMerge bool `json:"update_allows_fetch_and_merge"`
+	UpdateAllowsFetchAndMerge bool `json:"update_allows_fetch_and_merge,omitempty"`
 }
 
 // MergeQueueRuleParameters represents the merge_queue rule parameters.
@@ -402,9 +405,9 @@ type PullRequestRuleParameters struct {
 
 // RequiredStatusChecksRuleParameters represents the required status checks rule parameters.
 type RequiredStatusChecksRuleParameters struct {
-	DoNotEnforceOnCreate             *bool             `json:"do_not_enforce_on_create,omitempty"`
-	RequiredStatusChecks             []RuleStatusCheck `json:"required_status_checks"`
-	StrictRequiredStatusChecksPolicy bool              `json:"strict_required_status_checks_policy"`
+	DoNotEnforceOnCreate             *bool              `json:"do_not_enforce_on_create,omitempty"`
+	RequiredStatusChecks             []*RuleStatusCheck `json:"required_status_checks"`
+	StrictRequiredStatusChecksPolicy bool               `json:"strict_required_status_checks_policy"`
 }
 
 // RuleStatusCheck represents a status checks for the required status checks rule parameters.
@@ -444,8 +447,8 @@ type MaxFileSizeRuleParameters struct {
 
 // WorkflowsRuleParameters represents the workflows rule parameters.
 type WorkflowsRuleParameters struct {
-	DoNotEnforceOnCreate *bool          `json:"do_not_enforce_on_create,omitempty"`
-	Workflows            []RuleWorkflow `json:"workflows"`
+	DoNotEnforceOnCreate *bool           `json:"do_not_enforce_on_create,omitempty"`
+	Workflows            []*RuleWorkflow `json:"workflows"`
 }
 
 // RuleWorkflow represents a Workflow for the workflows rule parameters.
@@ -453,12 +456,12 @@ type RuleWorkflow struct {
 	Path         string  `json:"path"`
 	Ref          *string `json:"ref,omitempty"`
 	RepositoryID *int64  `json:"repository_id,omitempty"`
-	Sha          *string `json:"sha,omitempty"`
+	SHA          *string `json:"sha,omitempty"`
 }
 
 // CodeScanningRuleParameters represents the code scanning rule parameters.
 type CodeScanningRuleParameters struct {
-	CodeScanningTools []RuleCodeScanningTool `json:"code_scanning_tools"`
+	CodeScanningTools []*RuleCodeScanningTool `json:"code_scanning_tools"`
 }
 
 // RuleCodeScanningTool represents a single code scanning tool for the code scanning parameters.
@@ -470,8 +473,8 @@ type RuleCodeScanningTool struct {
 
 // repositoryRulesetRuleWrapper is a helper type to marshal & unmarshal a ruleset rule.
 type repositoryRulesetRuleWrapper struct {
-	Type       RulesetRuleType  `json:"type"`
-	Parameters *json.RawMessage `json:"parameters,omitempty"`
+	Type       RulesetRuleType `json:"type"`
+	Parameters json.RawMessage `json:"parameters,omitempty"`
 }
 
 // MarshalJSON is a custom JSON marshaller for RulesetRules.
@@ -480,7 +483,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 	arr := make([]json.RawMessage, 0, 21)
 
 	if r.Creation != nil {
-		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCreation, nil)
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCreation, r.Creation)
 		if err != nil {
 			return nil, err
 		}
@@ -496,7 +499,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 	}
 
 	if r.Deletion != nil {
-		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeDeletion, nil)
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeDeletion, r.Deletion)
 		if err != nil {
 			return nil, err
 		}
@@ -504,7 +507,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 	}
 
 	if r.RequiredLinearHistory != nil {
-		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeRequiredLinearHistory, nil)
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeRequiredLinearHistory, r.RequiredLinearHistory)
 		if err != nil {
 			return nil, err
 		}
@@ -528,7 +531,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 	}
 
 	if r.RequiredSignatures != nil {
-		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeRequiredSignatures, nil)
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeRequiredSignatures, r.RequiredSignatures)
 		if err != nil {
 			return nil, err
 		}
@@ -552,7 +555,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 	}
 
 	if r.NonFastForward != nil {
-		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeNonFastForward, nil)
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeNonFastForward, r.NonFastForward)
 		if err != nil {
 			return nil, err
 		}
@@ -651,8 +654,10 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 }
 
 // marshalRepositoryRulesetRule is a helper function to marshal a ruleset rule.
-func marshalRepositoryRulesetRule(t RulesetRuleType, params any) ([]byte, error) {
-	if params == nil {
+func marshalRepositoryRulesetRule[T any](t RulesetRuleType, params T) ([]byte, error) {
+	paramsType := reflect.TypeFor[T]()
+
+	if paramsType.Kind() == reflect.Pointer && (reflect.ValueOf(params).IsNil() || reflect.ValueOf(params).Elem().IsZero()) {
 		return json.Marshal(repositoryRulesetRuleWrapper{Type: t})
 	}
 
@@ -661,7 +666,7 @@ func marshalRepositoryRulesetRule(t RulesetRuleType, params any) ([]byte, error)
 		return nil, err
 	}
 
-	return json.Marshal(repositoryRulesetRuleWrapper{Type: t, Parameters: Ptr(json.RawMessage(bytes))})
+	return json.Marshal(repositoryRulesetRuleWrapper{Type: t, Parameters: json.RawMessage(bytes)})
 }
 
 // UnmarshalJSON is a custom JSON unmarshaller for RulesetRules.
@@ -682,7 +687,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.Update = &UpdateRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.Update)
+				err = json.Unmarshal(w.Parameters, r.Update)
 				if err != nil {
 					return err
 				}
@@ -695,7 +700,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.MergeQueue = &MergeQueueRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.MergeQueue)
+				err = json.Unmarshal(w.Parameters, r.MergeQueue)
 				if err != nil {
 					return err
 				}
@@ -704,7 +709,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.RequiredDeployments = &RequiredDeploymentsRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.RequiredDeployments)
+				err = json.Unmarshal(w.Parameters, r.RequiredDeployments)
 				if err != nil {
 					return err
 				}
@@ -715,7 +720,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.PullRequest = &PullRequestRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.PullRequest)
+				err = json.Unmarshal(w.Parameters, r.PullRequest)
 				if err != nil {
 					return err
 				}
@@ -724,7 +729,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.RequiredStatusChecks = &RequiredStatusChecksRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.RequiredStatusChecks)
+				err = json.Unmarshal(w.Parameters, r.RequiredStatusChecks)
 				if err != nil {
 					return err
 				}
@@ -735,7 +740,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CommitMessagePattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.CommitMessagePattern)
+				err = json.Unmarshal(w.Parameters, r.CommitMessagePattern)
 				if err != nil {
 					return err
 				}
@@ -744,7 +749,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CommitAuthorEmailPattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.CommitAuthorEmailPattern)
+				err = json.Unmarshal(w.Parameters, r.CommitAuthorEmailPattern)
 				if err != nil {
 					return err
 				}
@@ -753,7 +758,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CommitterEmailPattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.CommitterEmailPattern)
+				err = json.Unmarshal(w.Parameters, r.CommitterEmailPattern)
 				if err != nil {
 					return err
 				}
@@ -762,7 +767,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.BranchNamePattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.BranchNamePattern)
+				err = json.Unmarshal(w.Parameters, r.BranchNamePattern)
 				if err != nil {
 					return err
 				}
@@ -771,7 +776,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.TagNamePattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.TagNamePattern)
+				err = json.Unmarshal(w.Parameters, r.TagNamePattern)
 				if err != nil {
 					return err
 				}
@@ -780,7 +785,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.FilePathRestriction = &FilePathRestrictionRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.FilePathRestriction)
+				err = json.Unmarshal(w.Parameters, r.FilePathRestriction)
 				if err != nil {
 					return err
 				}
@@ -789,7 +794,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.MaxFilePathLength = &MaxFilePathLengthRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.MaxFilePathLength)
+				err = json.Unmarshal(w.Parameters, r.MaxFilePathLength)
 				if err != nil {
 					return err
 				}
@@ -798,7 +803,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.FileExtensionRestriction = &FileExtensionRestrictionRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.FileExtensionRestriction)
+				err = json.Unmarshal(w.Parameters, r.FileExtensionRestriction)
 				if err != nil {
 					return err
 				}
@@ -807,7 +812,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.MaxFileSize = &MaxFileSizeRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.MaxFileSize)
+				err = json.Unmarshal(w.Parameters, r.MaxFileSize)
 				if err != nil {
 					return err
 				}
@@ -816,7 +821,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.Workflows = &WorkflowsRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.Workflows)
+				err = json.Unmarshal(w.Parameters, r.Workflows)
 				if err != nil {
 					return err
 				}
@@ -825,7 +830,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CodeScanning = &CodeScanningRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, r.CodeScanning)
+				err = json.Unmarshal(w.Parameters, r.CodeScanning)
 				if err != nil {
 					return err
 				}
@@ -840,7 +845,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 type branchRuleWrapper struct {
 	Type RulesetRuleType `json:"type"`
 	BranchRuleMetadata
-	Parameters *json.RawMessage `json:"parameters,omitempty"`
+	Parameters json.RawMessage `json:"parameters,omitempty"`
 }
 
 // UnmarshalJSON is a custom JSON unmarshaller for BranchRules.
@@ -856,191 +861,191 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 	for _, w := range arr {
 		switch w.Type {
 		case RulesetRuleTypeCreation:
-			r.Creation = append(r.Creation, BranchRuleMetadata{RulesetSourceType: w.RulesetSourceType, RulesetSource: w.RulesetSource, RulesetID: w.RulesetID})
+			r.Creation = append(r.Creation, &BranchRuleMetadata{RulesetSourceType: w.RulesetSourceType, RulesetSource: w.RulesetSource, RulesetID: w.RulesetID})
 		case RulesetRuleTypeUpdate:
 			params := &UpdateRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.Update = append(r.Update, UpdateBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.Update = append(r.Update, &UpdateBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeDeletion:
-			r.Deletion = append(r.Deletion, BranchRuleMetadata{RulesetSourceType: w.RulesetSourceType, RulesetSource: w.RulesetSource, RulesetID: w.RulesetID})
+			r.Deletion = append(r.Deletion, &BranchRuleMetadata{RulesetSourceType: w.RulesetSourceType, RulesetSource: w.RulesetSource, RulesetID: w.RulesetID})
 		case RulesetRuleTypeRequiredLinearHistory:
-			r.RequiredLinearHistory = append(r.RequiredLinearHistory, BranchRuleMetadata{RulesetSourceType: w.RulesetSourceType, RulesetSource: w.RulesetSource, RulesetID: w.RulesetID})
+			r.RequiredLinearHistory = append(r.RequiredLinearHistory, &BranchRuleMetadata{RulesetSourceType: w.RulesetSourceType, RulesetSource: w.RulesetSource, RulesetID: w.RulesetID})
 		case RulesetRuleTypeMergeQueue:
 			params := &MergeQueueRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.MergeQueue = append(r.MergeQueue, MergeQueueBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.MergeQueue = append(r.MergeQueue, &MergeQueueBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeRequiredDeployments:
 			params := &RequiredDeploymentsRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.RequiredDeployments = append(r.RequiredDeployments, RequiredDeploymentsBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.RequiredDeployments = append(r.RequiredDeployments, &RequiredDeploymentsBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeRequiredSignatures:
-			r.RequiredSignatures = append(r.RequiredSignatures, BranchRuleMetadata{RulesetSourceType: w.RulesetSourceType, RulesetSource: w.RulesetSource, RulesetID: w.RulesetID})
+			r.RequiredSignatures = append(r.RequiredSignatures, &BranchRuleMetadata{RulesetSourceType: w.RulesetSourceType, RulesetSource: w.RulesetSource, RulesetID: w.RulesetID})
 		case RulesetRuleTypePullRequest:
 			params := &PullRequestRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.PullRequest = append(r.PullRequest, PullRequestBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.PullRequest = append(r.PullRequest, &PullRequestBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeRequiredStatusChecks:
 			params := &RequiredStatusChecksRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.RequiredStatusChecks = append(r.RequiredStatusChecks, RequiredStatusChecksBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.RequiredStatusChecks = append(r.RequiredStatusChecks, &RequiredStatusChecksBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeNonFastForward:
-			r.NonFastForward = append(r.NonFastForward, BranchRuleMetadata{RulesetSourceType: w.RulesetSourceType, RulesetSource: w.RulesetSource, RulesetID: w.RulesetID})
+			r.NonFastForward = append(r.NonFastForward, &BranchRuleMetadata{RulesetSourceType: w.RulesetSourceType, RulesetSource: w.RulesetSource, RulesetID: w.RulesetID})
 		case RulesetRuleTypeCommitMessagePattern:
 			params := &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.CommitMessagePattern = append(r.CommitMessagePattern, PatternBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.CommitMessagePattern = append(r.CommitMessagePattern, &PatternBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeCommitAuthorEmailPattern:
 			params := &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.CommitAuthorEmailPattern = append(r.CommitAuthorEmailPattern, PatternBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.CommitAuthorEmailPattern = append(r.CommitAuthorEmailPattern, &PatternBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeCommitterEmailPattern:
 			params := &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.CommitterEmailPattern = append(r.CommitterEmailPattern, PatternBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.CommitterEmailPattern = append(r.CommitterEmailPattern, &PatternBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeBranchNamePattern:
 			params := &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.BranchNamePattern = append(r.BranchNamePattern, PatternBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.BranchNamePattern = append(r.BranchNamePattern, &PatternBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeTagNamePattern:
 			params := &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.TagNamePattern = append(r.TagNamePattern, PatternBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.TagNamePattern = append(r.TagNamePattern, &PatternBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeFilePathRestriction:
 			params := &FilePathRestrictionRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.FilePathRestriction = append(r.FilePathRestriction, FilePathRestrictionBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.FilePathRestriction = append(r.FilePathRestriction, &FilePathRestrictionBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeMaxFilePathLength:
 			params := &MaxFilePathLengthRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.MaxFilePathLength = append(r.MaxFilePathLength, MaxFilePathLengthBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.MaxFilePathLength = append(r.MaxFilePathLength, &MaxFilePathLengthBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeFileExtensionRestriction:
 			params := &FileExtensionRestrictionRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.FileExtensionRestriction = append(r.FileExtensionRestriction, FileExtensionRestrictionBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.FileExtensionRestriction = append(r.FileExtensionRestriction, &FileExtensionRestrictionBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeMaxFileSize:
 			params := &MaxFileSizeRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.MaxFileSize = append(r.MaxFileSize, MaxFileSizeBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.MaxFileSize = append(r.MaxFileSize, &MaxFileSizeBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeWorkflows:
 			params := &WorkflowsRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.Workflows = append(r.Workflows, WorkflowsBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.Workflows = append(r.Workflows, &WorkflowsBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeCodeScanning:
 			params := &CodeScanningRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(*w.Parameters, params)
+				err = json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
 			}
 
-			r.CodeScanning = append(r.CodeScanning, CodeScanningBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+			r.CodeScanning = append(r.CodeScanning, &CodeScanningBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		}
 	}
 
@@ -1065,7 +1070,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &UpdateRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1080,7 +1085,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &MergeQueueRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1091,7 +1096,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &RequiredDeploymentsRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1104,7 +1109,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PullRequestRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1115,7 +1120,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &RequiredStatusChecksRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1128,7 +1133,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PatternRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1139,7 +1144,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PatternRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1150,7 +1155,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PatternRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1161,7 +1166,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PatternRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1172,7 +1177,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PatternRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1183,7 +1188,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &FilePathRestrictionRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1194,7 +1199,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &MaxFilePathLengthRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1205,7 +1210,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &FileExtensionRestrictionRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1216,7 +1221,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &MaxFileSizeRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1227,7 +1232,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &WorkflowsRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}
@@ -1238,7 +1243,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &CodeScanningRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(*w.Parameters, p)
+			err = json.Unmarshal(w.Parameters, p)
 			if err != nil {
 				return err
 			}

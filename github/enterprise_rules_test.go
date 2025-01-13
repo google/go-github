@@ -179,7 +179,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoName(t *testing.T)
 		Name:        "ruleset",
 		Target:      Ptr(RulesetTargetBranch),
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -221,7 +221,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoName(t *testing.T)
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -259,7 +259,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoName(t *testing.T)
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -280,7 +280,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoName(t *testing.T)
 		SourceType:  Ptr(RulesetSourceTypeEnterprise),
 		Source:      "e",
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -322,7 +322,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoName(t *testing.T)
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -360,7 +360,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoName(t *testing.T)
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -559,7 +559,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 		Name:        "ruleset",
 		Target:      Ptr(RulesetTargetBranch),
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -571,17 +571,17 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 				Exclude: []string{"unimportant_organization"},
 			},
 			RepositoryProperty: &RepositoryRulesetRepositoryPropertyConditionParameters{
-				Include: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Include: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
+						Name:           "testIncludeProp",
+						Source:         Ptr("custom"),
+						PropertyValues: []string{"true"},
 					},
 				},
-				Exclude: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Exclude: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testExcludeProp",
-						Values: []string{"false"},
+						Name:           "testExcludeProp",
+						PropertyValues: []string{"false"},
 					},
 				},
 			},
@@ -611,7 +611,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -649,7 +649,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -670,7 +670,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 		SourceType:  Ptr(RulesetSourceTypeEnterprise),
 		Source:      "e",
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -682,17 +682,17 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 				Exclude: []string{"unimportant_organization"},
 			},
 			RepositoryProperty: &RepositoryRulesetRepositoryPropertyConditionParameters{
-				Include: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Include: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
+						Name:           "testIncludeProp",
+						Source:         Ptr("custom"),
+						PropertyValues: []string{"true"},
 					},
 				},
-				Exclude: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Exclude: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testExcludeProp",
-						Values: []string{"false"},
+						Name:           "testExcludeProp",
+						PropertyValues: []string{"false"},
 					},
 				},
 			},
@@ -722,7 +722,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -760,7 +760,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -944,7 +944,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoName(t *testing.T) {
 		Name:        "ruleset",
 		Target:      Ptr(RulesetTargetBranch),
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -985,7 +985,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoName(t *testing.T) {
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -1023,7 +1023,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoName(t *testing.T) {
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -1044,7 +1044,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoName(t *testing.T) {
 		SourceType:  Ptr(RulesetSourceTypeEnterprise),
 		Source:      "e",
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -1085,7 +1085,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoName(t *testing.T) {
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -1123,7 +1123,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoName(t *testing.T) {
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -1316,7 +1316,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 		Name:        "ruleset",
 		Target:      Ptr(RulesetTargetBranch),
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -1327,17 +1327,17 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 				OrganizationIDs: []int64{1001, 1002},
 			},
 			RepositoryProperty: &RepositoryRulesetRepositoryPropertyConditionParameters{
-				Include: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Include: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
+						Name:           "testIncludeProp",
+						Source:         Ptr("custom"),
+						PropertyValues: []string{"true"},
 					},
 				},
-				Exclude: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Exclude: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testExcludeProp",
-						Values: []string{"false"},
+						Name:           "testExcludeProp",
+						PropertyValues: []string{"false"},
 					},
 				},
 			},
@@ -1367,7 +1367,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -1405,7 +1405,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -1426,7 +1426,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 		SourceType:  Ptr(RulesetSourceTypeEnterprise),
 		Source:      "e",
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -1437,17 +1437,17 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 				OrganizationIDs: []int64{1001, 1002},
 			},
 			RepositoryProperty: &RepositoryRulesetRepositoryPropertyConditionParameters{
-				Include: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Include: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
+						Name:           "testIncludeProp",
+						Source:         Ptr("custom"),
+						PropertyValues: []string{"true"},
 					},
 				},
-				Exclude: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Exclude: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testExcludeProp",
-						Values: []string{"false"},
+						Name:           "testExcludeProp",
+						PropertyValues: []string{"false"},
 					},
 				},
 			},
@@ -1477,7 +1477,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -1515,7 +1515,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,

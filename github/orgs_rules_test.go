@@ -226,7 +226,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 		Name:        "ruleset",
 		Target:      Ptr(RulesetTargetBranch),
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -264,7 +264,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -302,7 +302,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -323,7 +323,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 		SourceType:  Ptr(RulesetSourceTypeOrganization),
 		Source:      "o",
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -361,7 +361,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -399,7 +399,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -580,7 +580,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 		Name:        "ruleset",
 		Target:      Ptr(RulesetTargetBranch),
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -588,17 +588,17 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 		},
 		Conditions: &RepositoryRulesetConditions{
 			RepositoryProperty: &RepositoryRulesetRepositoryPropertyConditionParameters{
-				Include: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Include: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
+						Name:           "testIncludeProp",
+						Source:         Ptr("custom"),
+						PropertyValues: []string{"true"},
 					},
 				},
-				Exclude: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Exclude: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testExcludeProp",
-						Values: []string{"false"},
+						Name:           "testExcludeProp",
+						PropertyValues: []string{"false"},
 					},
 				},
 			},
@@ -624,7 +624,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -662,7 +662,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -683,7 +683,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 		SourceType:  Ptr(RulesetSourceTypeOrganization),
 		Source:      "o",
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -691,17 +691,17 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 		},
 		Conditions: &RepositoryRulesetConditions{
 			RepositoryProperty: &RepositoryRulesetRepositoryPropertyConditionParameters{
-				Include: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Include: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
+						Name:           "testIncludeProp",
+						Source:         Ptr("custom"),
+						PropertyValues: []string{"true"},
 					},
 				},
-				Exclude: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Exclude: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testExcludeProp",
-						Values: []string{"false"},
+						Name:           "testExcludeProp",
+						PropertyValues: []string{"false"},
 					},
 				},
 			},
@@ -727,7 +727,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -765,7 +765,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -939,7 +939,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoIDs(t *testing.T) {
 		Name:        "ruleset",
 		Target:      Ptr(RulesetTargetBranch),
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -975,7 +975,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoIDs(t *testing.T) {
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -1013,7 +1013,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoIDs(t *testing.T) {
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -1034,7 +1034,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoIDs(t *testing.T) {
 		SourceType:  Ptr(RulesetSourceTypeOrganization),
 		Source:      "o",
 		Enforcement: "active",
-		BypassActors: []BypassActor{
+		BypassActors: []*BypassActor{
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
@@ -1070,7 +1070,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoIDs(t *testing.T) {
 			},
 			RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
 				DoNotEnforceOnCreate: Ptr(true),
-				RequiredStatusChecks: []RuleStatusCheck{
+				RequiredStatusChecks: []*RuleStatusCheck{
 					{
 						Context:       "test",
 						IntegrationID: Ptr(int64(1)),
@@ -1108,7 +1108,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoIDs(t *testing.T) {
 				Pattern:  "github",
 			},
 			CodeScanning: &CodeScanningRuleParameters{
-				CodeScanningTools: []RuleCodeScanningTool{
+				CodeScanningTools: []*RuleCodeScanningTool{
 					{
 						AlertsThreshold:         CodeScanningAlertsThresholdErrors,
 						SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
@@ -1288,14 +1288,14 @@ func TestOrganizationsService_GetRepositoryRulesetWithRepoPropCondition(t *testi
 		},
 		Conditions: &RepositoryRulesetConditions{
 			RepositoryProperty: &RepositoryRulesetRepositoryPropertyConditionParameters{
-				Include: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Include: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
+						Name:           "testIncludeProp",
+						Source:         Ptr("custom"),
+						PropertyValues: []string{"true"},
 					},
 				},
-				Exclude: []RepositoryRulesetRepositoryPropertyTargetParameters{},
+				Exclude: []*RepositoryRulesetRepositoryPropertyTargetParameters{},
 			},
 		},
 		Rules: &RepositoryRulesetRules{Creation: &EmptyRuleParameters{}},
@@ -1474,14 +1474,14 @@ func TestOrganizationsService_UpdateRepositoryRulesetWithRepoProp(t *testing.T) 
 		Enforcement: "active",
 		Conditions: &RepositoryRulesetConditions{
 			RepositoryProperty: &RepositoryRulesetRepositoryPropertyConditionParameters{
-				Include: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Include: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
+						Name:           "testIncludeProp",
+						Source:         Ptr("custom"),
+						PropertyValues: []string{"true"},
 					},
 				},
-				Exclude: []RepositoryRulesetRepositoryPropertyTargetParameters{},
+				Exclude: []*RepositoryRulesetRepositoryPropertyTargetParameters{},
 			},
 		},
 		Rules: &RepositoryRulesetRules{Creation: &EmptyRuleParameters{}},
@@ -1503,14 +1503,14 @@ func TestOrganizationsService_UpdateRepositoryRulesetWithRepoProp(t *testing.T) 
 		},
 		Conditions: &RepositoryRulesetConditions{
 			RepositoryProperty: &RepositoryRulesetRepositoryPropertyConditionParameters{
-				Include: []RepositoryRulesetRepositoryPropertyTargetParameters{
+				Include: []*RepositoryRulesetRepositoryPropertyTargetParameters{
 					{
-						Name:   "testIncludeProp",
-						Source: Ptr("custom"),
-						Values: []string{"true"},
+						Name:           "testIncludeProp",
+						Source:         Ptr("custom"),
+						PropertyValues: []string{"true"},
 					},
 				},
-				Exclude: []RepositoryRulesetRepositoryPropertyTargetParameters{},
+				Exclude: []*RepositoryRulesetRepositoryPropertyTargetParameters{},
 			},
 		},
 		Rules: &RepositoryRulesetRules{Creation: &EmptyRuleParameters{}},

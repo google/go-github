@@ -18,7 +18,7 @@ type rulesetNoOmitBypassActors struct {
 	SourceType           *RulesetSourceType           `json:"source_type,omitempty"`
 	Source               string                       `json:"source"`
 	Enforcement          RulesetEnforcement           `json:"enforcement"`
-	BypassActors         []BypassActor                `json:"bypass_actors"`
+	BypassActors         []*BypassActor               `json:"bypass_actors"`
 	CurrentUserCanBypass *BypassMode                  `json:"current_user_can_bypass,omitempty"`
 	NodeID               *string                      `json:"node_id,omitempty"`
 	Links                *RepositoryRulesetLinks      `json:"_links,omitempty"`

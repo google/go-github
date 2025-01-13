@@ -28038,15 +28038,15 @@ func TestRuleWorkflow_GetRepositoryID(tt *testing.T) {
 	r.GetRepositoryID()
 }
 
-func TestRuleWorkflow_GetSha(tt *testing.T) {
+func TestRuleWorkflow_GetSHA(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	r := &RuleWorkflow{Sha: &zeroValue}
-	r.GetSha()
+	r := &RuleWorkflow{SHA: &zeroValue}
+	r.GetSHA()
 	r = &RuleWorkflow{}
-	r.GetSha()
+	r.GetSHA()
 	r = nil
-	r.GetSha()
+	r.GetSHA()
 }
 
 func TestRunner_GetBusy(tt *testing.T) {

@@ -21878,12 +21878,12 @@ func (r *RuleWorkflow) GetRepositoryID() int64 {
 	return *r.RepositoryID
 }
 
-// GetSha returns the Sha field if it's non-nil, zero value otherwise.
-func (r *RuleWorkflow) GetSha() string {
-	if r == nil || r.Sha == nil {
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (r *RuleWorkflow) GetSHA() string {
+	if r == nil || r.SHA == nil {
 		return ""
 	}
-	return *r.Sha
+	return *r.SHA
 }
 
 // GetBusy returns the Busy field if it's non-nil, zero value otherwise.
