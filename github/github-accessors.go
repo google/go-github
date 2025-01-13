@@ -20942,14 +20942,6 @@ func (r *RepositoryRulesetChangedRule) GetRuleType() *RepositoryRulesetChangeSou
 	return r.RuleType
 }
 
-// GetFrom returns the From field if it's non-nil, zero value otherwise.
-func (r *RepositoryRulesetChangeSource) GetFrom() string {
-	if r == nil || r.From == nil {
-		return ""
-	}
-	return *r.From
-}
-
 // GetConditions returns the Conditions field.
 func (r *RepositoryRulesetChanges) GetConditions() *RepositoryRulesetChangedConditions {
 	if r == nil {
@@ -20980,6 +20972,14 @@ func (r *RepositoryRulesetChanges) GetRules() *RepositoryRulesetChangedRules {
 		return nil
 	}
 	return r.Rules
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (r *RepositoryRulesetChangeSource) GetFrom() string {
+	if r == nil || r.From == nil {
+		return ""
+	}
+	return *r.From
 }
 
 // GetOrganizationID returns the OrganizationID field.

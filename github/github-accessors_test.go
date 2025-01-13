@@ -26919,17 +26919,6 @@ func TestRepositoryRulesetChangedRule_GetRuleType(tt *testing.T) {
 	r.GetRuleType()
 }
 
-func TestRepositoryRulesetChangedSource_GetFrom(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryRulesetChangeSource{From: &zeroValue}
-	r.GetFrom()
-	r = &RepositoryRulesetChangeSource{}
-	r.GetFrom()
-	r = nil
-	r.GetFrom()
-}
-
 func TestRepositoryRulesetChanges_GetConditions(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryRulesetChanges{}
@@ -26960,6 +26949,17 @@ func TestRepositoryRulesetChanges_GetRules(tt *testing.T) {
 	r.GetRules()
 	r = nil
 	r.GetRules()
+}
+
+func TestRepositoryRulesetChangeSource_GetFrom(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryRulesetChangeSource{From: &zeroValue}
+	r.GetFrom()
+	r = &RepositoryRulesetChangeSource{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
 }
 
 func TestRepositoryRulesetConditions_GetOrganizationID(tt *testing.T) {
