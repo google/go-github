@@ -37,6 +37,9 @@ type Team struct {
 	// Default is "secret".
 	Privacy *string `json:"privacy,omitempty"`
 
+	// NotificationSetting can be one of: "notifications_enabled", "notifications_disabled".
+	NotificationSetting *string `json:"notification_setting,omitempty"`
+
 	MembersCount    *int          `json:"members_count,omitempty"`
 	ReposCount      *int          `json:"repos_count,omitempty"`
 	Organization    *Organization `json:"organization,omitempty"`
