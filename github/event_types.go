@@ -1572,14 +1572,14 @@ type RepositoryRulesetUpdatedCondition struct {
 
 // RepositoryRulesetChangedRules holds changes to rules in a ruleset.
 type RepositoryRulesetChangedRules struct {
-	Added   []*RepositoryRulesetRule         `json:"added,omitempty"`
-	Deleted []*RepositoryRulesetRule         `json:"deleted,omitempty"`
+	Added   []*RepositoryRule                `json:"added,omitempty"`
+	Deleted []*RepositoryRule                `json:"deleted,omitempty"`
 	Updated []*RepositoryRulesetUpdatedRules `json:"updated,omitempty"`
 }
 
 // RepositoryRulesetUpdatedRules holds updates to rules in a ruleset.
 type RepositoryRulesetUpdatedRules struct {
-	Rule    *RepositoryRulesetRule        `json:"rule,omitempty"`
+	Rule    *RepositoryRule               `json:"rule,omitempty"`
 	Changes *RepositoryRulesetChangedRule `json:"changes,omitempty"`
 }
 

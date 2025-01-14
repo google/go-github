@@ -62,32 +62,32 @@ const (
 	BypassModeNever       BypassMode = "never"
 )
 
-// RulesetRuleType represents a GitHub ruleset rule type.
-type RulesetRuleType string
+// RepositoryRuleType represents a GitHub ruleset rule type.
+type RepositoryRuleType string
 
 // This is the set of GitHub ruleset rule types.
 const (
-	RulesetRuleTypeCreation                 RulesetRuleType = "creation"
-	RulesetRuleTypeUpdate                   RulesetRuleType = "update"
-	RulesetRuleTypeDeletion                 RulesetRuleType = "deletion"
-	RulesetRuleTypeRequiredLinearHistory    RulesetRuleType = "required_linear_history"
-	RulesetRuleTypeMergeQueue               RulesetRuleType = "merge_queue"
-	RulesetRuleTypeRequiredDeployments      RulesetRuleType = "required_deployments"
-	RulesetRuleTypeRequiredSignatures       RulesetRuleType = "required_signatures"
-	RulesetRuleTypePullRequest              RulesetRuleType = "pull_request"
-	RulesetRuleTypeRequiredStatusChecks     RulesetRuleType = "required_status_checks"
-	RulesetRuleTypeNonFastForward           RulesetRuleType = "non_fast_forward"
-	RulesetRuleTypeCommitMessagePattern     RulesetRuleType = "commit_message_pattern"
-	RulesetRuleTypeCommitAuthorEmailPattern RulesetRuleType = "commit_author_email_pattern"
-	RulesetRuleTypeCommitterEmailPattern    RulesetRuleType = "committer_email_pattern"
-	RulesetRuleTypeBranchNamePattern        RulesetRuleType = "branch_name_pattern"
-	RulesetRuleTypeTagNamePattern           RulesetRuleType = "tag_name_pattern"
-	RulesetRuleTypeFilePathRestriction      RulesetRuleType = "file_path_restriction"
-	RulesetRuleTypeMaxFilePathLength        RulesetRuleType = "max_file_path_length"
-	RulesetRuleTypeFileExtensionRestriction RulesetRuleType = "file_extension_restriction"
-	RulesetRuleTypeMaxFileSize              RulesetRuleType = "max_file_size"
-	RulesetRuleTypeWorkflows                RulesetRuleType = "workflows"
-	RulesetRuleTypeCodeScanning             RulesetRuleType = "code_scanning"
+	RulesetRuleTypeCreation                 RepositoryRuleType = "creation"
+	RulesetRuleTypeUpdate                   RepositoryRuleType = "update"
+	RulesetRuleTypeDeletion                 RepositoryRuleType = "deletion"
+	RulesetRuleTypeRequiredLinearHistory    RepositoryRuleType = "required_linear_history"
+	RulesetRuleTypeMergeQueue               RepositoryRuleType = "merge_queue"
+	RulesetRuleTypeRequiredDeployments      RepositoryRuleType = "required_deployments"
+	RulesetRuleTypeRequiredSignatures       RepositoryRuleType = "required_signatures"
+	RulesetRuleTypePullRequest              RepositoryRuleType = "pull_request"
+	RulesetRuleTypeRequiredStatusChecks     RepositoryRuleType = "required_status_checks"
+	RulesetRuleTypeNonFastForward           RepositoryRuleType = "non_fast_forward"
+	RulesetRuleTypeCommitMessagePattern     RepositoryRuleType = "commit_message_pattern"
+	RulesetRuleTypeCommitAuthorEmailPattern RepositoryRuleType = "commit_author_email_pattern"
+	RulesetRuleTypeCommitterEmailPattern    RepositoryRuleType = "committer_email_pattern"
+	RulesetRuleTypeBranchNamePattern        RepositoryRuleType = "branch_name_pattern"
+	RulesetRuleTypeTagNamePattern           RepositoryRuleType = "tag_name_pattern"
+	RulesetRuleTypeFilePathRestriction      RepositoryRuleType = "file_path_restriction"
+	RulesetRuleTypeMaxFilePathLength        RepositoryRuleType = "max_file_path_length"
+	RulesetRuleTypeFileExtensionRestriction RepositoryRuleType = "file_extension_restriction"
+	RulesetRuleTypeMaxFileSize              RepositoryRuleType = "max_file_size"
+	RulesetRuleTypeWorkflows                RepositoryRuleType = "workflows"
+	RulesetRuleTypeCodeScanning             RepositoryRuleType = "code_scanning"
 )
 
 // MergeGroupingStrategy models a GitHub merge grouping strategy.
@@ -232,10 +232,10 @@ type RepositoryRulesetOrganizationNamesConditionParameters struct {
 	Exclude []string `json:"exclude"`
 }
 
-// RepositoryRulesetRule represents a GitHub ruleset rule object.
-type RepositoryRulesetRule struct {
-	Type       RulesetRuleType `json:"type"`
-	Parameters any             `json:"parameters,omitempty"`
+// RepositoryRule represents a GitHub ruleset rule object.
+type RepositoryRule struct {
+	Type       RepositoryRuleType `json:"type"`
+	Parameters any                `json:"parameters,omitempty"`
 }
 
 // RepositoryRulesetRules represents a GitHub ruleset rules object.
@@ -473,8 +473,8 @@ type RuleCodeScanningTool struct {
 
 // repositoryRulesetRuleWrapper is a helper type to marshal & unmarshal a ruleset rule.
 type repositoryRulesetRuleWrapper struct {
-	Type       RulesetRuleType `json:"type"`
-	Parameters json.RawMessage `json:"parameters,omitempty"`
+	Type       RepositoryRuleType `json:"type"`
+	Parameters json.RawMessage    `json:"parameters,omitempty"`
 }
 
 // MarshalJSON is a custom JSON marshaler for RulesetRules.
@@ -657,7 +657,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 //
 // TODO: Benchmark the code that uses reflection.
 // TODO: Use a generator here instead of reflection if there is a significant performance hit.
-func marshalRepositoryRulesetRule[T any](t RulesetRuleType, params T) ([]byte, error) {
+func marshalRepositoryRulesetRule[T any](t RepositoryRuleType, params T) ([]byte, error) {
 	paramsType := reflect.TypeFor[T]()
 
 	if paramsType.Kind() == reflect.Pointer && (reflect.ValueOf(params).IsNil() || reflect.ValueOf(params).Elem().IsZero()) {
@@ -829,7 +829,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 
 // branchRuleWrapper is a helper type to unmarshal a branch rule.
 type branchRuleWrapper struct {
-	Type RulesetRuleType `json:"type"`
+	Type RepositoryRuleType `json:"type"`
 	BranchRuleMetadata
 	Parameters json.RawMessage `json:"parameters,omitempty"`
 }
@@ -1022,7 +1022,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 }
 
 // UnmarshalJSON is a custom JSON unmarshaler for RulesetRule.
-func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
+func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	w := repositoryRulesetRuleWrapper{}
 
 	if err := json.Unmarshal(data, &w); err != nil {

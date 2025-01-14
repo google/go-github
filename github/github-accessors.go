@@ -21359,7 +21359,7 @@ func (r *RepositoryRulesetUpdatedRules) GetChanges() *RepositoryRulesetChangedRu
 }
 
 // GetRule returns the Rule field.
-func (r *RepositoryRulesetUpdatedRules) GetRule() *RepositoryRulesetRule {
+func (r *RepositoryRulesetUpdatedRules) GetRule() *RepositoryRule {
 	if r == nil {
 		return nil
 	}
