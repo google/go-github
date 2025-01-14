@@ -109,7 +109,6 @@ func main() {
 		}
 
 		err := runVerification(sev, pb, b)
-
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -188,11 +187,11 @@ func runVerification(sev *verify.SignedEntityVerifier, pb *verify.PolicyBuilder,
 
 	fmt.Fprintf(os.Stderr, "Verification successful!\n")
 
-	marshaled, err := json.MarshalIndent(res, "", "  ")
+	marshalled, err := json.MarshalIndent(res, "", "  ")
 	if err != nil {
 		return err
 	}
 
-	fmt.Println(string(marshaled))
+	fmt.Println(string(marshalled))
 	return nil
 }

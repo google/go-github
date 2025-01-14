@@ -239,7 +239,7 @@ type RepositoryRulesetRule struct {
 }
 
 // RepositoryRulesetRules represents a GitHub ruleset rules object.
-// This type doesn't have JSON annotations as it uses custom marshalling.
+// This type doesn't have JSON annotations as it uses custom marshaling.
 type RepositoryRulesetRules struct {
 	Creation                 *EmptyRuleParameters
 	Update                   *UpdateRuleParameters
@@ -265,7 +265,7 @@ type RepositoryRulesetRules struct {
 }
 
 // BranchRules represents the rules active for a GitHub repository branch.
-// This type doesn't have JSON annotations as it uses custom marshalling.
+// This type doesn't have JSON annotations as it uses custom marshaling.
 type BranchRules struct {
 	Creation                 []*BranchRuleMetadata
 	Update                   []*UpdateBranchRule
@@ -477,7 +477,7 @@ type repositoryRulesetRuleWrapper struct {
 	Parameters json.RawMessage `json:"parameters,omitempty"`
 }
 
-// MarshalJSON is a custom JSON marshaller for RulesetRules.
+// MarshalJSON is a custom JSON marshaler for RulesetRules.
 func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 	// If new rules are added to RulesetRules the capacity needs increasing
 	arr := make([]json.RawMessage, 0, 21)
@@ -654,6 +654,9 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 }
 
 // marshalRepositoryRulesetRule is a helper function to marshal a ruleset rule.
+//
+// TODO: Benchmark the code that uses reflection.
+// TODO: Use a generator here instead of reflection if there is a significant performance hit.
 func marshalRepositoryRulesetRule[T any](t RulesetRuleType, params T) ([]byte, error) {
 	paramsType := reflect.TypeFor[T]()
 
@@ -669,13 +672,12 @@ func marshalRepositoryRulesetRule[T any](t RulesetRuleType, params T) ([]byte, e
 	return json.Marshal(repositoryRulesetRuleWrapper{Type: t, Parameters: json.RawMessage(bytes)})
 }
 
-// UnmarshalJSON is a custom JSON unmarshaller for RulesetRules.
+// UnmarshalJSON is a custom JSON unmarshaler for RulesetRules.
 func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 	// If new rules are added to RulesetRules the capacity needs increasing
 	arr := make([]repositoryRulesetRuleWrapper, 0, 21)
 
-	err := json.Unmarshal(data, &arr)
-	if err != nil {
+	if err := json.Unmarshal(data, &arr); err != nil {
 		return err
 	}
 
@@ -687,7 +689,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.Update = &UpdateRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.Update)
+				err := json.Unmarshal(w.Parameters, r.Update)
 				if err != nil {
 					return err
 				}
@@ -700,7 +702,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.MergeQueue = &MergeQueueRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.MergeQueue)
+				err := json.Unmarshal(w.Parameters, r.MergeQueue)
 				if err != nil {
 					return err
 				}
@@ -709,7 +711,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.RequiredDeployments = &RequiredDeploymentsRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.RequiredDeployments)
+				err := json.Unmarshal(w.Parameters, r.RequiredDeployments)
 				if err != nil {
 					return err
 				}
@@ -720,7 +722,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.PullRequest = &PullRequestRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.PullRequest)
+				err := json.Unmarshal(w.Parameters, r.PullRequest)
 				if err != nil {
 					return err
 				}
@@ -729,7 +731,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.RequiredStatusChecks = &RequiredStatusChecksRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.RequiredStatusChecks)
+				err := json.Unmarshal(w.Parameters, r.RequiredStatusChecks)
 				if err != nil {
 					return err
 				}
@@ -740,7 +742,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CommitMessagePattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.CommitMessagePattern)
+				err := json.Unmarshal(w.Parameters, r.CommitMessagePattern)
 				if err != nil {
 					return err
 				}
@@ -749,7 +751,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CommitAuthorEmailPattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.CommitAuthorEmailPattern)
+				err := json.Unmarshal(w.Parameters, r.CommitAuthorEmailPattern)
 				if err != nil {
 					return err
 				}
@@ -758,7 +760,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CommitterEmailPattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.CommitterEmailPattern)
+				err := json.Unmarshal(w.Parameters, r.CommitterEmailPattern)
 				if err != nil {
 					return err
 				}
@@ -767,7 +769,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.BranchNamePattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.BranchNamePattern)
+				err := json.Unmarshal(w.Parameters, r.BranchNamePattern)
 				if err != nil {
 					return err
 				}
@@ -776,7 +778,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.TagNamePattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.TagNamePattern)
+				err := json.Unmarshal(w.Parameters, r.TagNamePattern)
 				if err != nil {
 					return err
 				}
@@ -785,7 +787,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.FilePathRestriction = &FilePathRestrictionRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.FilePathRestriction)
+				err := json.Unmarshal(w.Parameters, r.FilePathRestriction)
 				if err != nil {
 					return err
 				}
@@ -794,7 +796,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.MaxFilePathLength = &MaxFilePathLengthRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.MaxFilePathLength)
+				err := json.Unmarshal(w.Parameters, r.MaxFilePathLength)
 				if err != nil {
 					return err
 				}
@@ -803,7 +805,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.FileExtensionRestriction = &FileExtensionRestrictionRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.FileExtensionRestriction)
+				err := json.Unmarshal(w.Parameters, r.FileExtensionRestriction)
 				if err != nil {
 					return err
 				}
@@ -812,7 +814,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.MaxFileSize = &MaxFileSizeRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.MaxFileSize)
+				err := json.Unmarshal(w.Parameters, r.MaxFileSize)
 				if err != nil {
 					return err
 				}
@@ -821,7 +823,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.Workflows = &WorkflowsRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.Workflows)
+				err := json.Unmarshal(w.Parameters, r.Workflows)
 				if err != nil {
 					return err
 				}
@@ -830,7 +832,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CodeScanning = &CodeScanningRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, r.CodeScanning)
+				err := json.Unmarshal(w.Parameters, r.CodeScanning)
 				if err != nil {
 					return err
 				}
@@ -848,7 +850,7 @@ type branchRuleWrapper struct {
 	Parameters json.RawMessage `json:"parameters,omitempty"`
 }
 
-// UnmarshalJSON is a custom JSON unmarshaller for BranchRules.
+// UnmarshalJSON is a custom JSON unmarshaler for BranchRules.
 func (r *BranchRules) UnmarshalJSON(data []byte) error {
 	// If new rules are added to RulesetRules the capacity needs increasing
 	arr := make([]branchRuleWrapper, 0, 21)
@@ -866,7 +868,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &UpdateRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
+				err := json.Unmarshal(w.Parameters, params)
 				if err != nil {
 					return err
 				}
@@ -1052,7 +1054,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// UnmarshalJSON is a custom JSON unmarshaller for RulesetRule.
+// UnmarshalJSON is a custom JSON unmarshaler for RulesetRule.
 func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 	w := repositoryRulesetRuleWrapper{}
 
