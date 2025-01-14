@@ -30794,6 +30794,17 @@ func TestTeam_GetNodeID(tt *testing.T) {
 	t.GetNodeID()
 }
 
+func TestTeam_GetNotificationSetting(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	t := &Team{NotificationSetting: &zeroValue}
+	t.GetNotificationSetting()
+	t = &Team{}
+	t.GetNotificationSetting()
+	t = nil
+	t.GetNotificationSetting()
+}
+
 func TestTeam_GetOrganization(tt *testing.T) {
 	tt.Parallel()
 	t := &Team{}
