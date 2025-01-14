@@ -689,8 +689,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.Update = &UpdateRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.Update)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.Update); err != nil {
 					return err
 				}
 			}
@@ -702,8 +701,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.MergeQueue = &MergeQueueRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.MergeQueue)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.MergeQueue); err != nil {
 					return err
 				}
 			}
@@ -711,8 +709,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.RequiredDeployments = &RequiredDeploymentsRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.RequiredDeployments)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.RequiredDeployments); err != nil {
 					return err
 				}
 			}
@@ -722,8 +719,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.PullRequest = &PullRequestRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.PullRequest)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.PullRequest); err != nil {
 					return err
 				}
 			}
@@ -731,8 +727,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.RequiredStatusChecks = &RequiredStatusChecksRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.RequiredStatusChecks)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.RequiredStatusChecks); err != nil {
 					return err
 				}
 			}
@@ -742,8 +737,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CommitMessagePattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.CommitMessagePattern)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.CommitMessagePattern); err != nil {
 					return err
 				}
 			}
@@ -751,8 +745,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CommitAuthorEmailPattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.CommitAuthorEmailPattern)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.CommitAuthorEmailPattern); err != nil {
 					return err
 				}
 			}
@@ -760,8 +753,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CommitterEmailPattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.CommitterEmailPattern)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.CommitterEmailPattern); err != nil {
 					return err
 				}
 			}
@@ -769,8 +761,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.BranchNamePattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.BranchNamePattern)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.BranchNamePattern); err != nil {
 					return err
 				}
 			}
@@ -778,8 +769,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.TagNamePattern = &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.TagNamePattern)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.TagNamePattern); err != nil {
 					return err
 				}
 			}
@@ -787,8 +777,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.FilePathRestriction = &FilePathRestrictionRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.FilePathRestriction)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.FilePathRestriction); err != nil {
 					return err
 				}
 			}
@@ -796,8 +785,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.MaxFilePathLength = &MaxFilePathLengthRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.MaxFilePathLength)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.MaxFilePathLength); err != nil {
 					return err
 				}
 			}
@@ -805,8 +793,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.FileExtensionRestriction = &FileExtensionRestrictionRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.FileExtensionRestriction)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.FileExtensionRestriction); err != nil {
 					return err
 				}
 			}
@@ -814,8 +801,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.MaxFileSize = &MaxFileSizeRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.MaxFileSize)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.MaxFileSize); err != nil {
 					return err
 				}
 			}
@@ -823,8 +809,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.Workflows = &WorkflowsRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.Workflows)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.Workflows); err != nil {
 					return err
 				}
 			}
@@ -832,8 +817,7 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 			r.CodeScanning = &CodeScanningRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, r.CodeScanning)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, r.CodeScanning); err != nil {
 					return err
 				}
 			}
@@ -855,8 +839,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 	// If new rules are added to RulesetRules the capacity needs increasing
 	arr := make([]branchRuleWrapper, 0, 21)
 
-	err := json.Unmarshal(data, &arr)
-	if err != nil {
+	if err := json.Unmarshal(data, &arr); err != nil {
 		return err
 	}
 
@@ -868,8 +851,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &UpdateRuleParameters{}
 
 			if w.Parameters != nil {
-				err := json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -883,8 +865,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &MergeQueueRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -894,8 +875,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &RequiredDeploymentsRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -907,8 +887,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &PullRequestRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -918,8 +897,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &RequiredStatusChecksRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -931,8 +909,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -942,8 +919,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -953,8 +929,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -964,8 +939,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -975,8 +949,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &PatternRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -986,8 +959,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &FilePathRestrictionRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -997,8 +969,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &MaxFilePathLengthRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -1008,8 +979,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &FileExtensionRestrictionRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -1019,8 +989,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &MaxFileSizeRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -1030,8 +999,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &WorkflowsRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -1041,8 +1009,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			params := &CodeScanningRuleParameters{}
 
 			if w.Parameters != nil {
-				err = json.Unmarshal(w.Parameters, params)
-				if err != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
 					return err
 				}
 			}
@@ -1058,8 +1025,7 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 	w := repositoryRulesetRuleWrapper{}
 
-	err := json.Unmarshal(data, &w)
-	if err != nil {
+	if err := json.Unmarshal(data, &w); err != nil {
 		return err
 	}
 
@@ -1072,8 +1038,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &UpdateRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1087,8 +1052,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &MergeQueueRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1098,8 +1062,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &RequiredDeploymentsRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1111,8 +1074,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PullRequestRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1122,8 +1084,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &RequiredStatusChecksRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1135,8 +1096,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PatternRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1146,8 +1106,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PatternRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1157,8 +1116,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PatternRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1168,8 +1126,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PatternRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1179,8 +1136,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &PatternRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1190,8 +1146,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &FilePathRestrictionRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1201,8 +1156,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &MaxFilePathLengthRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1212,8 +1166,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &FileExtensionRestrictionRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1223,8 +1176,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &MaxFileSizeRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1234,8 +1186,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &WorkflowsRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
@@ -1245,8 +1196,7 @@ func (r *RepositoryRulesetRule) UnmarshalJSON(data []byte) error {
 		p := &CodeScanningRuleParameters{}
 
 		if w.Parameters != nil {
-			err = json.Unmarshal(w.Parameters, p)
-			if err != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
 				return err
 			}
 		}
