@@ -1930,25 +1930,26 @@ func TestSourceImportAuthor_String(t *testing.T) {
 func TestTeam_String(t *testing.T) {
 	t.Parallel()
 	v := Team{
-		ID:              Ptr(int64(0)),
-		NodeID:          Ptr(""),
-		Name:            Ptr(""),
-		Description:     Ptr(""),
-		URL:             Ptr(""),
-		Slug:            Ptr(""),
-		Permission:      Ptr(""),
-		Privacy:         Ptr(""),
-		MembersCount:    Ptr(0),
-		ReposCount:      Ptr(0),
-		Organization:    &Organization{},
-		HTMLURL:         Ptr(""),
-		MembersURL:      Ptr(""),
-		RepositoriesURL: Ptr(""),
-		Parent:          &Team{},
-		LDAPDN:          Ptr(""),
-		Assignment:      Ptr(""),
+		ID:                  Ptr(int64(0)),
+		NodeID:              Ptr(""),
+		Name:                Ptr(""),
+		Description:         Ptr(""),
+		URL:                 Ptr(""),
+		Slug:                Ptr(""),
+		Permission:          Ptr(""),
+		Privacy:             Ptr(""),
+		NotificationSetting: Ptr(""),
+		MembersCount:        Ptr(0),
+		ReposCount:          Ptr(0),
+		Organization:        &Organization{},
+		HTMLURL:             Ptr(""),
+		MembersURL:          Ptr(""),
+		RepositoriesURL:     Ptr(""),
+		Parent:              &Team{},
+		LDAPDN:              Ptr(""),
+		Assignment:          Ptr(""),
 	}
-	want := `github.Team{ID:0, NodeID:"", Name:"", Description:"", URL:"", Slug:"", Permission:"", Privacy:"", MembersCount:0, ReposCount:0, Organization:github.Organization{}, HTMLURL:"", MembersURL:"", RepositoriesURL:"", Parent:github.Team{}, LDAPDN:"", Assignment:""}`
+	want := `github.Team{ID:0, NodeID:"", Name:"", Description:"", URL:"", Slug:"", Permission:"", Privacy:"", NotificationSetting:"", MembersCount:0, ReposCount:0, Organization:github.Organization{}, HTMLURL:"", MembersURL:"", RepositoriesURL:"", Parent:github.Team{}, LDAPDN:"", Assignment:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Team.String = %v, want %v", got, want)
 	}

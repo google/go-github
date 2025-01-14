@@ -24046,6 +24046,14 @@ func (t *Team) GetNodeID() string {
 	return *t.NodeID
 }
 
+// GetNotificationSetting returns the NotificationSetting field if it's non-nil, zero value otherwise.
+func (t *Team) GetNotificationSetting() string {
+	if t == nil || t.NotificationSetting == nil {
+		return ""
+	}
+	return *t.NotificationSetting
+}
+
 // GetOrganization returns the Organization field.
 func (t *Team) GetOrganization() *Organization {
 	if t == nil {
