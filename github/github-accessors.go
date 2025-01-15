@@ -24806,20 +24806,20 @@ func (s *SMTP) GetSupportAddressType() string {
 	return *s.SupportAddressType
 }
 
-// GetUsername returns the Username field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetUsername() string {
-	if s == nil || s.Username == nil {
-		return ""
-	}
-	return *s.Username
-}
-
 // GetUserName returns the UserName field if it's non-nil, zero value otherwise.
 func (s *SMTP) GetUserName() string {
 	if s == nil || s.UserName == nil {
 		return ""
 	}
 	return *s.UserName
+}
+
+// GetUsername returns the Username field if it's non-nil, zero value otherwise.
+func (s *SMTP) GetUsername() string {
+	if s == nil || s.Username == nil {
+		return ""
+	}
+	return *s.Username
 }
 
 // GetCommunity returns the Community field if it's non-nil, zero value otherwise.
