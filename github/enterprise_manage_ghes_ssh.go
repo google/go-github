@@ -14,7 +14,7 @@ type SSHKeyStatus struct {
 	Hostname *string `json:"hostname,omitempty"`
 	UUID     *string `json:"uuid,omitempty"`
 	Message  *string `json:"message,omitempty"`
-	Modified bool    `json:"modified,omitempty"`
+	Modified *bool   `json:"modified,omitempty"`
 }
 
 // SSHKeyOptions specifies the parameters to the SSH create and delete functions.
