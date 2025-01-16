@@ -19,7 +19,7 @@ type NodeQueryOptions struct {
 	ClusterRoles string `url:"cluster_roles,omitempty"`
 }
 
-// ClusterStatus represents a response from the GetClusterStatus and  GetReplicationStatus method.
+// ClusterStatus represents a response from the GetClusterStatus and GetReplicationStatus method.
 type ClusterStatus struct {
 	Status *string               `json:"status"`
 	Nodes  []*ClusterStatusNodes `json:"nodes"`
