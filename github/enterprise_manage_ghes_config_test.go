@@ -657,6 +657,15 @@ func TestEnterpriseService_ConfigApply(t *testing.T) {
 	if !cmp.Equal(configApply, want) {
 		t.Errorf("Enterprise.ConfigApply returned %+v, want %+v", configApply, want)
 	}
+	const methodName = "ConfigApply"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.ConfigApply(ctx, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
@@ -708,4 +717,13 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 	if !cmp.Equal(configApplyStatus, want) {
 		t.Errorf("Enterprise.ConfigApplyStatus returned %+v, want %+v", configApplyStatus, want)
 	}
+	const methodName = "ConfigApplyStatus"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.ConfigApplyStatus(ctx, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
