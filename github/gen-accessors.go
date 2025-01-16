@@ -22,7 +22,7 @@ import (
 	"go/token"
 	"log"
 	"os"
-	"sort"
+	"slices"
 	"strings"
 	"text/template"
 )
@@ -182,7 +182,9 @@ func (t *templateData) dump() error {
 	}
 
 	// Sort getters by ReceiverType.FieldName.
-	sort.Sort(byName(t.Getters))
+	slices.SortStableFunc(t.Getters, func(a, b *getter) int {
+		return strings.Compare(a.sortVal, b.sortVal)
+	})
 
 	processTemplate := func(tmpl *template.Template, filename string) error {
 		var buf bytes.Buffer
@@ -343,12 +345,6 @@ type getter struct {
 	MapType      bool
 	ArrayType    bool
 }
-
-type byName []*getter
-
-func (b byName) Len() int           { return len(b) }
-func (b byName) Less(i, j int) bool { return b[i].sortVal < b[j].sortVal }
-func (b byName) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
 
 const source = `// Copyright {{.Year}} The go-github AUTHORS. All rights reserved.
 //
