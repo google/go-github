@@ -32168,6 +32168,17 @@ func TestSSHKeyStatus_GetMessage(tt *testing.T) {
 	s.GetMessage()
 }
 
+func TestSSHKeyStatus_GetModified(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SSHKeyStatus{Modified: &zeroValue}
+	s.GetModified()
+	s = &SSHKeyStatus{}
+	s.GetModified()
+	s = nil
+	s.GetModified()
+}
+
 func TestSSHKeyStatus_GetUUID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

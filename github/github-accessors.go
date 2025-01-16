@@ -25054,6 +25054,14 @@ func (s *SSHKeyStatus) GetMessage() string {
 	return *s.Message
 }
 
+// GetModified returns the Modified field if it's non-nil, zero value otherwise.
+func (s *SSHKeyStatus) GetModified() bool {
+	if s == nil || s.Modified == nil {
+		return false
+	}
+	return *s.Modified
+}
+
 // GetUUID returns the UUID field if it's non-nil, zero value otherwise.
 func (s *SSHKeyStatus) GetUUID() string {
 	if s == nil || s.UUID == nil {
