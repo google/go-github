@@ -15,7 +15,6 @@ You generally only need to submit a CLA once, so if you've already submitted one
 (even if it was for a different project), you probably don't need to do it
 again.
 
-
 ## Reporting issues
 
 Bugs, feature requests, and development-related questions should be directed to
@@ -27,6 +26,21 @@ how the requested feature would help you do that.
 
 Security related bugs can either be reported in the issue tracker, or if they
 are more sensitive, emailed to <opensource@google.com>.
+
+## Reviewing PRs
+
+In addition to writing code, community projects also require community
+contributions in other ways; one of these is reviewing code contributions. If
+you are willing to review PRs please open a PR to add your GitHub username to
+the [REVIEWERS](./REVIEWERS) file. By adding your GitHub username to the list
+of reviewers you are giving contributors permission to request a review for a
+PR that has already been approved by a maintainer. If you are asked to review a
+PR and either do not have the time or do not think you are able to you should
+feel comfortable politely saying no.
+
+If at any time you would like to remove your permission to be contacted for a
+review you can open a PR to remove your name from the [REVIEWERS](./REVIEWERS)
+file.
 
 ## Submitting a patch
 
@@ -67,10 +81,14 @@ are more sensitive, emailed to <opensource@google.com>.
    This is done to make a much cleaner `git log` history and helps to find regressions in the code
    using existing tools such as `git bisect`.
 
+   - If your PR needs additional reviews you can request one of the
+     [REVIEWERS][] takes a look by mentioning them in a PR comment.
+
 [forking]: https://help.github.com/articles/fork-a-repo
 [well-formed commit messages]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 [pull request]: https://help.github.com/articles/creating-a-pull-request
 [monitored by codecov.io]: https://codecov.io/gh/google/go-github
+[REVIEWERS]: ./REVIEWERS
 
 ## Code Comments
 
@@ -195,7 +213,7 @@ section for more information.
 
 **script/test.sh** runs tests on all modules.
 
-## Other notes on code organization ##
+## Other notes on code organization
 
 Currently, everything is defined in the main `github` package, with API methods
 broken into separate service objects. These services map directly to how
@@ -209,7 +227,6 @@ defined at <https://docs.github.com/en/rest/webhooks/repos> live in
 
 [GitHub API documentation]: https://docs.github.com/en/rest
 [repos_hooks.go]: https://github.com/google/go-github/blob/master/github/repos_hooks.go
-
 
 ## Maintainer's Guide
 
