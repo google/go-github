@@ -118,7 +118,7 @@ func TestEnterpriseService_CreateSSHKey(t *testing.T) {
 		t.Errorf("Enterprise.CreateSSHKey returned error: %v", err)
 	}
 
-	want := []*SSHKeyStatus{{Hostname: Ptr("primary"), UUID: Ptr("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: Ptr("SSH key added successfully"), Modified: true}}
+	want := []*SSHKeyStatus{{Hostname: Ptr("primary"), UUID: Ptr("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: Ptr("SSH key added successfully"), Modified: Ptr(true)}}
 	if diff := cmp.Diff(want, sshStatus); diff != "" {
 		t.Errorf("diff mismatch (-want +got):\n%v", diff)
 	}
