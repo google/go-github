@@ -11,33 +11,33 @@ import (
 
 // MaintenanceOperationStatus represents the message to be displayed when the instance gets a maintenance operation request.
 type MaintenanceOperationStatus struct {
-	Hostname *string `json:"hostname"`
-	UUID     *string `json:"uuid"`
-	Message  *string `json:"message"`
+	Hostname *string `json:"hostname,omitempty"`
+	UUID     *string `json:"uuid,omitempty"`
+	Message  *string `json:"message,omitempty"`
 }
 
 // MaintenanceStatus represents the status of maintenance mode for all nodes.
 type MaintenanceStatus struct {
-	Hostname               *string               `json:"hostname"`
-	UUID                   *string               `json:"uuid"`
-	Status                 *string               `json:"status"`
-	ScheduledTime          *Timestamp            `json:"scheduled_time"`
+	Hostname               *string               `json:"hostname,omitempty"`
+	UUID                   *string               `json:"uuid,omitempty"`
+	Status                 *string               `json:"status,omitempty"`
+	ScheduledTime          *Timestamp            `json:"scheduled_time,omitempty"`
 	ConnectionServices     []*ConnectionServices `json:"connection_services"`
-	CanUnsetMaintenance    *bool                 `json:"can_unset_maintenance"`
-	IPExceptionList        []*string             `json:"ip_exception_list"`
-	MaintenanceModeMessage *string               `json:"maintenance_mode_message"`
+	CanUnsetMaintenance    *bool                 `json:"can_unset_maintenance,omitempty"`
+	IPExceptionList        []*string             `json:"ip_exception_list,omitempty"`
+	MaintenanceModeMessage *string               `json:"maintenance_mode_message,omitempty"`
 }
 
 // ConnectionServices represents the connection services for the maintenance status.
 type ConnectionServices struct {
-	Name   *string `json:"name"`
-	Number *int    `json:"number"`
+	Name   *string `json:"name,omitempty"`
+	Number *int    `json:"number,omitempty"`
 }
 
 // MaintenanceOptions represents the options for setting the maintenance mode for the instance.
 // When can be a string, so we cant use a Timestamp type.
 type MaintenanceOptions struct {
-	Enabled                *bool     `json:"enabled,omitempty"`
+	Enabled                bool      `json:"enabled"`
 	UUID                   *string   `json:"uuid,omitempty"`
 	When                   *string   `json:"when,omitempty"`
 	IPExceptionList        []*string `json:"ip_exception_list,omitempty"`
@@ -77,7 +77,7 @@ func (s *EnterpriseService) GetMaintenanceStatus(ctx context.Context, opts *Node
 func (s *EnterpriseService) CreateMaintenance(ctx context.Context, enable bool, opts *MaintenanceOptions) ([]*MaintenanceOperationStatus, *Response, error) {
 	u := "manage/v1/maintenance"
 
-	opts.Enabled = &enable
+	opts.Enabled = enable
 
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {

@@ -13,63 +13,63 @@ import (
 // Node management APIS.
 type NodeQueryOptions struct {
 	// UUID filters issues based on the node UUID.
-	UUID string `url:"uuid,omitempty"`
+	UUID *string `url:"uuid,omitempty"`
 
 	// ClusterRoles filters The cluster roles from the cluster configuration file.
-	ClusterRoles string `url:"cluster_roles,omitempty"`
+	ClusterRoles *string `url:"cluster_roles,omitempty"`
 }
 
 // ClusterStatus represents a response from the GetClusterStatus and GetReplicationStatus method.
 type ClusterStatus struct {
-	Status *string               `json:"status"`
+	Status *string               `json:"status,omitempty"`
 	Nodes  []*ClusterStatusNodes `json:"nodes"`
 }
 
 // ClusterStatusNodes represents the status of a cluster node.
 type ClusterStatusNodes struct {
-	Hostname *string                       `json:"hostname"`
-	Status   *string                       `json:"status"`
-	Services []*ClusterStatusNodesServices `json:"services,omitempty"`
+	Hostname *string                       `json:"hostname,omitempty"`
+	Status   *string                       `json:"status,omitempty"`
+	Services []*ClusterStatusNodesServices `json:"services"`
 }
 
 // ClusterStatusNodesServices represents the status of a service running on a cluster node.
 type ClusterStatusNodesServices struct {
-	Status  *string `json:"status"`
-	Name    *string `json:"name"`
-	Details *string `json:"details"`
+	Status  *string `json:"status,omitempty"`
+	Name    *string `json:"name,omitempty"`
+	Details *string `json:"details,omitempty"`
 }
 
 // SystemRequirements represents a response from the GetCheckSystemRequirements method.
 type SystemRequirements struct {
-	Status *string                    `json:"status"`
+	Status *string                    `json:"status,omitempty"`
 	Nodes  []*SystemRequirementsNodes `json:"nodes"`
 }
 
 // SystemRequirementsNodes represents the status of a system node.
 type SystemRequirementsNodes struct {
-	Hostname    *string                               `json:"hostname"`
-	Status      *string                               `json:"status"`
+	Hostname    *string                               `json:"hostname,omitempty"`
+	Status      *string                               `json:"status,omitempty"`
 	RolesStatus []*SystemRequirementsNodesRolesStatus `json:"roles_status"`
 }
 
 // SystemRequirementsNodesRolesStatus represents the status of a role on a system node.
 type SystemRequirementsNodesRolesStatus struct {
-	Status *string `json:"status"`
-	Role   *string `json:"role"`
+	Status *string `json:"status,omitempty"`
+	Role   *string `json:"role,omitempty"`
 }
 
 // NodeReleaseVersions represents a response from the GetReplicationStatus method.
 type NodeReleaseVersions struct {
-	Hostname *string          `json:"hostname"`
+	Hostname *string          `json:"hostname,omitempty"`
 	Version  *ReleaseVersions `json:"version"`
 }
 
 // ReleaseVersions holds the release version information of the node.
 type ReleaseVersions struct {
-	Version   *string `json:"version"`
-	Platform  *string `json:"platform"`
-	BuildID   *string `json:"build_id"`
-	BuildDate *string `json:"build_date"`
+	Version   *string `json:"version,omitempty"`
+	Platform  *string `json:"platform,omitempty"`
+	BuildID   *string `json:"build_id,omitempty"`
+	BuildDate *string `json:"build_date,omitempty"`
 }
 
 // CheckSystemRequirements checks if GHES system nodes meet the system requirements.

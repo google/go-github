@@ -5560,6 +5560,28 @@ func TestConfigApplyEventsNodes_GetNode(tt *testing.T) {
 	c.GetNode()
 }
 
+func TestConfigApplyEventsOptions_GetLastRequestID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ConfigApplyEventsOptions{LastRequestID: &zeroValue}
+	c.GetLastRequestID()
+	c = &ConfigApplyEventsOptions{}
+	c.GetLastRequestID()
+	c = nil
+	c.GetLastRequestID()
+}
+
+func TestConfigApplyOptions_GetRunID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ConfigApplyOptions{RunID: &zeroValue}
+	c.GetRunID()
+	c = &ConfigApplyOptions{}
+	c.GetRunID()
+	c = nil
+	c.GetRunID()
+}
+
 func TestConfigApplyStatus_GetRunning(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -16856,17 +16878,6 @@ func TestMaintenanceOperationStatus_GetUUID(tt *testing.T) {
 	m.GetUUID()
 }
 
-func TestMaintenanceOptions_GetEnabled(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	m := &MaintenanceOptions{Enabled: &zeroValue}
-	m.GetEnabled()
-	m = &MaintenanceOptions{}
-	m.GetEnabled()
-	m = nil
-	m.GetEnabled()
-}
-
 func TestMaintenanceOptions_GetMaintenanceModeMessage(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -18611,6 +18622,28 @@ func TestNodeMetadataStatus_GetTopology(tt *testing.T) {
 	n.GetTopology()
 	n = nil
 	n.GetTopology()
+}
+
+func TestNodeQueryOptions_GetClusterRoles(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	n := &NodeQueryOptions{ClusterRoles: &zeroValue}
+	n.GetClusterRoles()
+	n = &NodeQueryOptions{}
+	n.GetClusterRoles()
+	n = nil
+	n.GetClusterRoles()
+}
+
+func TestNodeQueryOptions_GetUUID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	n := &NodeQueryOptions{UUID: &zeroValue}
+	n.GetUUID()
+	n = &NodeQueryOptions{}
+	n.GetUUID()
+	n = nil
+	n.GetUUID()
 }
 
 func TestNodeReleaseVersions_GetHostname(tt *testing.T) {
@@ -32133,17 +32166,6 @@ func TestSSHKeyStatus_GetMessage(tt *testing.T) {
 	s.GetMessage()
 	s = nil
 	s.GetMessage()
-}
-
-func TestSSHKeyStatus_GetModified(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	s := &SSHKeyStatus{Modified: &zeroValue}
-	s.GetModified()
-	s = &SSHKeyStatus{}
-	s.GetModified()
-	s = nil
-	s.GetModified()
 }
 
 func TestSSHKeyStatus_GetUUID(tt *testing.T) {

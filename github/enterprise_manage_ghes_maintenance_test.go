@@ -46,7 +46,7 @@ func TestEnterpriseService_GetMaintenanceStatus(t *testing.T) {
 	})
 
 	opt := &NodeQueryOptions{
-		UUID: "1234-1234", ClusterRoles: "primary",
+		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
 	}
 	ctx := context.Background()
 	maintenanceStatus, _, err := client.Enterprise.GetMaintenanceStatus(ctx, opt)
@@ -86,7 +86,7 @@ func TestEnterpriseService_CreateMaintenance(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &MaintenanceOptions{
-		Enabled: Ptr(true),
+		Enabled: true,
 		UUID:    Ptr("1234-1234"),
 		When:    Ptr("now"),
 		IPExceptionList: []*string{

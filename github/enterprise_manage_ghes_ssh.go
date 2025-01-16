@@ -11,22 +11,22 @@ import (
 
 // SSHKeyStatus represents the status of a SSH key operation.
 type SSHKeyStatus struct {
-	Hostname *string `json:"hostname"`
-	UUID     *string `json:"uuid"`
-	Message  *string `json:"message"`
-	Modified *bool   `json:"modified,omitempty"`
+	Hostname *string `json:"hostname,omitempty"`
+	UUID     *string `json:"uuid,omitempty"`
+	Message  *string `json:"message,omitempty"`
+	Modified bool    `json:"modified,omitempty"`
 }
 
-// SSHKeyOptions specifies the optional parameters to the SSH create and delete functions.
+// SSHKeyOptions specifies the parameters to the SSH create and delete functions.
 type SSHKeyOptions struct {
 	// Key is the SSH key to add to the instance.
-	Key string `json:"key,omitempty"`
+	Key string `json:"key"`
 }
 
 // ClusterSSHKeys represents the SSH keys configured for the instance.
 type ClusterSSHKeys struct {
-	Key         *string `json:"key"`
-	Fingerprint *string `json:"fingerprint"`
+	Key         *string `json:"key,omitempty"`
+	Fingerprint *string `json:"fingerprint,omitempty"`
 }
 
 // DeleteSSHKey deletes the SSH key from the instance.

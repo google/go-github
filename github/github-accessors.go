@@ -4278,6 +4278,22 @@ func (c *ConfigApplyEventsNodes) GetNode() string {
 	return *c.Node
 }
 
+// GetLastRequestID returns the LastRequestID field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsOptions) GetLastRequestID() string {
+	if c == nil || c.LastRequestID == nil {
+		return ""
+	}
+	return *c.LastRequestID
+}
+
+// GetRunID returns the RunID field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyOptions) GetRunID() string {
+	if c == nil || c.RunID == nil {
+		return ""
+	}
+	return *c.RunID
+}
+
 // GetRunning returns the Running field if it's non-nil, zero value otherwise.
 func (c *ConfigApplyStatus) GetRunning() bool {
 	if c == nil || c.Running == nil {
@@ -13006,14 +13022,6 @@ func (m *MaintenanceOperationStatus) GetUUID() string {
 	return *m.UUID
 }
 
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (m *MaintenanceOptions) GetEnabled() bool {
-	if m == nil || m.Enabled == nil {
-		return false
-	}
-	return *m.Enabled
-}
-
 // GetMaintenanceModeMessage returns the MaintenanceModeMessage field if it's non-nil, zero value otherwise.
 func (m *MaintenanceOptions) GetMaintenanceModeMessage() string {
 	if m == nil || m.MaintenanceModeMessage == nil {
@@ -14380,6 +14388,22 @@ func (n *NodeMetadataStatus) GetTopology() string {
 		return ""
 	}
 	return *n.Topology
+}
+
+// GetClusterRoles returns the ClusterRoles field if it's non-nil, zero value otherwise.
+func (n *NodeQueryOptions) GetClusterRoles() string {
+	if n == nil || n.ClusterRoles == nil {
+		return ""
+	}
+	return *n.ClusterRoles
+}
+
+// GetUUID returns the UUID field if it's non-nil, zero value otherwise.
+func (n *NodeQueryOptions) GetUUID() string {
+	if n == nil || n.UUID == nil {
+		return ""
+	}
+	return *n.UUID
 }
 
 // GetHostname returns the Hostname field if it's non-nil, zero value otherwise.
@@ -25028,14 +25052,6 @@ func (s *SSHKeyStatus) GetMessage() string {
 		return ""
 	}
 	return *s.Message
-}
-
-// GetModified returns the Modified field if it's non-nil, zero value otherwise.
-func (s *SSHKeyStatus) GetModified() bool {
-	if s == nil || s.Modified == nil {
-		return false
-	}
-	return *s.Modified
 }
 
 // GetUUID returns the UUID field if it's non-nil, zero value otherwise.

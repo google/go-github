@@ -207,13 +207,13 @@ func TestEnterpriseService_Settings(t *testing.T) {
 		LDAP: &LDAP{
 			Host:                    nil,
 			Port:                    Ptr(0),
-			Base:                    []string{},
+			Base:                    []*string{},
 			UID:                     nil,
 			BindDN:                  nil,
 			Password:                nil,
 			Method:                  Ptr("Plain"),
 			SearchStrategy:          Ptr("detect"),
-			UserGroups:              []string{},
+			UserGroups:              []*string{},
 			AdminGroup:              nil,
 			VirtualAttributeEnabled: Ptr(false),
 			RecursiveGroupSearch:    Ptr(false),
@@ -337,7 +337,7 @@ func TestEnterpriseService_NodeMetadata(t *testing.T) {
 	})
 
 	opt := &NodeQueryOptions{
-		UUID: "1234-1234", ClusterRoles: "primary",
+		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
 	}
 	ctx := context.Background()
 	configNodes, _, err := client.Enterprise.NodeMetadata(ctx, opt)
@@ -350,8 +350,8 @@ func TestEnterpriseService_NodeMetadata(t *testing.T) {
 		Nodes: []*NodeDetails{{
 			Hostname: Ptr("data1"),
 			UUID:     Ptr("1b6cf518-f97c-11ed-8544-061d81f7eedb"),
-			ClusterRoles: []string{
-				"ConsulServer",
+			ClusterRoles: []*string{
+				Ptr("ConsulServer"),
 			},
 		}},
 	}
@@ -498,7 +498,7 @@ func TestEnterpriseService_ConfigApplyEvents(t *testing.T) {
 	})
 
 	input := &ConfigApplyEventsOptions{
-		LastRequestID: "387cd628c06d606700e79be368e5e574:0cde553750689",
+		LastRequestID: Ptr("387cd628c06d606700e79be368e5e574:0cde553750689"),
 	}
 
 	ctx := context.Background()
@@ -634,7 +634,7 @@ func TestEnterpriseService_ConfigApply(t *testing.T) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(got))
 
 		want := &ConfigApplyOptions{
-			RunID: "1234",
+			RunID: Ptr("1234"),
 		}
 		if diff := cmp.Diff(want, got); diff != "" {
 			t.Errorf("diff mismatch (-want +got):\n%v", diff)
@@ -643,7 +643,7 @@ func TestEnterpriseService_ConfigApply(t *testing.T) {
 	})
 
 	input := &ConfigApplyOptions{
-		RunID: "1234",
+		RunID: Ptr("1234"),
 	}
 
 	ctx := context.Background()
@@ -652,7 +652,7 @@ func TestEnterpriseService_ConfigApply(t *testing.T) {
 		t.Errorf("Enterprise.ConfigApply returned error: %v", err)
 	}
 	want := &ConfigApplyOptions{
-		RunID: "1234",
+		RunID: Ptr("1234"),
 	}
 	if !cmp.Equal(configApply, want) {
 		t.Errorf("Enterprise.ConfigApply returned %+v, want %+v", configApply, want)
@@ -669,7 +669,7 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(got))
 
 		want := &ConfigApplyOptions{
-			RunID: "1234",
+			RunID: Ptr("1234"),
 		}
 		if diff := cmp.Diff(want, got); diff != "" {
 			t.Errorf("diff mismatch (-want +got):\n%v", diff)
@@ -688,7 +688,7 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 		}`)
 	})
 	input := &ConfigApplyOptions{
-		RunID: "1234",
+		RunID: Ptr("1234"),
 	}
 	ctx := context.Background()
 	configApplyStatus, _, err := client.Enterprise.ConfigApplyStatus(ctx, input)

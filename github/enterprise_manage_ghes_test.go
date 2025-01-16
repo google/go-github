@@ -129,7 +129,7 @@ func TestEnterpriseService_ReplicationStatus(t *testing.T) {
 	})
 
 	opt := &NodeQueryOptions{
-		UUID: "1234-1234", ClusterRoles: "primary",
+		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
 	}
 	ctx := context.Background()
 	replicationStatus, _, err := client.Enterprise.ReplicationStatus(ctx, opt)
@@ -181,7 +181,7 @@ func TestEnterpriseService_Versions(t *testing.T) {
 	})
 
 	opt := &NodeQueryOptions{
-		UUID: "1234-1234", ClusterRoles: "primary",
+		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
 	}
 	ctx := context.Background()
 	releaseVersions, _, err := client.Enterprise.Versions(ctx, opt)

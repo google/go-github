@@ -13,27 +13,27 @@ import (
 // ConfigApplyOptions is a struct to hold the options for the ConfigApply API and the response.
 type ConfigApplyOptions struct {
 	// RunID is the ID of the run to get the status of. If empty a random one will be generated.
-	RunID string `json:"run_id,omitempty"`
+	RunID *string `json:"run_id,omitempty"`
 }
 
 // ConfigApplyStatus is a struct to hold the response from the ConfigApply API.
 type ConfigApplyStatus struct {
-	Running    *bool                     `json:"running"`
-	Successful *bool                     `json:"successful"`
+	Running    *bool                     `json:"running,omitempty"`
+	Successful *bool                     `json:"successful,omitempty"`
 	Nodes      []*ConfigApplyStatusNodes `json:"nodes"`
 }
 
 // ConfigApplyStatusNodes is a struct to hold the response from the ConfigApply API.
 type ConfigApplyStatusNodes struct {
-	Hostname   *string `json:"hostname"`
-	Running    *bool   `json:"running"`
-	Successful *bool   `json:"successful"`
-	RunID      *string `json:"run_id"`
+	Hostname   *string `json:"hostname,omitempty"`
+	Running    *bool   `json:"running,omitempty"`
+	Successful *bool   `json:"successful,omitempty"`
+	RunID      *string `json:"run_id,omitempty"`
 }
 
 // ConfigApplyEventsOptions is used to enable pagination.
 type ConfigApplyEventsOptions struct {
-	LastRequestID string `url:"last_request_id,omitempty"`
+	LastRequestID *string `url:"last_request_id,omitempty"`
 }
 
 // ConfigApplyEvents is a struct to hold the response from the ConfigApplyEvents API.
@@ -43,24 +43,24 @@ type ConfigApplyEvents struct {
 
 // ConfigApplyEventsNodes is a struct to hold the response from the ConfigApplyEvents API.
 type ConfigApplyEventsNodes struct {
-	Node          *string                        `json:"node"`
-	LastRequestID *string                        `json:"last_request_id"`
+	Node          *string                        `json:"node,omitempty"`
+	LastRequestID *string                        `json:"last_request_id,omitempty"`
 	Events        []*ConfigApplyEventsNodeEvents `json:"events"`
 }
 
 // ConfigApplyEventsNodeEvents is a struct to hold the response from the ConfigApplyEvents API.
 type ConfigApplyEventsNodeEvents struct {
-	Timestamp    *Timestamp `json:"timestamp"`
-	SeverityText *string    `json:"severity_text"`
-	Body         *string    `json:"body"`
-	EventName    *string    `json:"event_name"`
-	Topology     *string    `json:"topology"`
-	Hostname     *string    `json:"hostname"`
-	ConfigRunID  *string    `json:"config_run_id"`
-	TraceID      *string    `json:"trace_id"`
-	SpanID       *string    `json:"span_id"`
-	SpanParentID *int       `json:"span_parent_id"`
-	SpanDepth    *int       `json:"span_depth"`
+	Timestamp    *Timestamp `json:"timestamp,omitempty"`
+	SeverityText *string    `json:"severity_text,omitempty"`
+	Body         *string    `json:"body,omitempty"`
+	EventName    *string    `json:"event_name,omitempty"`
+	Topology     *string    `json:"topology,omitempty"`
+	Hostname     *string    `json:"hostname,omitempty"`
+	ConfigRunID  *string    `json:"config_run_id,omitempty"`
+	TraceID      *string    `json:"trace_id,omitempty"`
+	SpanID       *string    `json:"span_id,omitempty"`
+	SpanParentID *int       `json:"span_parent_id,omitempty"`
+	SpanDepth    *int       `json:"span_depth,omitempty"`
 }
 
 // InitialConfigOptions is a struct to hold the options for the InitialConfig API.
@@ -71,24 +71,24 @@ type InitialConfigOptions struct {
 
 // LicenseStatus is a struct to hold the response from the License API.
 type LicenseStatus struct {
-	AdvancedSecurityEnabled      *bool      `json:"advancedSecurityEnabled"`
-	AdvancedSecuritySeats        *int       `json:"advancedSecuritySeats"`
-	ClusterSupport               *bool      `json:"clusterSupport"`
-	Company                      *string    `json:"company"`
-	CroquetSupport               *bool      `json:"croquetSupport"`
-	CustomTerms                  *bool      `json:"customTerms"`
-	Evaluation                   *bool      `json:"evaluation"`
-	ExpireAt                     *Timestamp `json:"expireAt"`
-	InsightsEnabled              *bool      `json:"insightsEnabled"`
-	InsightsExpireAt             *Timestamp `json:"insightsExpireAt"`
-	LearningLabEvaluationExpires *Timestamp `json:"learningLabEvaluationExpires"`
-	LearningLabSeats             *int       `json:"learningLabSeats"`
-	Perpetual                    *bool      `json:"perpetual"`
-	ReferenceNumber              *string    `json:"referenceNumber"`
-	Seats                        *int       `json:"seats"`
-	SSHAllowed                   *bool      `json:"sshAllowed"`
-	SupportKey                   *string    `json:"supportKey"`
-	UnlimitedSeating             *bool      `json:"unlimitedSeating"`
+	AdvancedSecurityEnabled      *bool      `json:"advancedSecurityEnabled,omitempty"`
+	AdvancedSecuritySeats        *int       `json:"advancedSecuritySeats,omitempty"`
+	ClusterSupport               *bool      `json:"clusterSupport,omitempty"`
+	Company                      *string    `json:"company,omitempty"`
+	CroquetSupport               *bool      `json:"croquetSupport,omitempty"`
+	CustomTerms                  *bool      `json:"customTerms,omitempty"`
+	Evaluation                   *bool      `json:"evaluation,omitempty"`
+	ExpireAt                     *Timestamp `json:"expireAt,omitempty"`
+	InsightsEnabled              *bool      `json:"insightsEnabled,omitempty"`
+	InsightsExpireAt             *Timestamp `json:"insightsExpireAt,omitempty"`
+	LearningLabEvaluationExpires *Timestamp `json:"learningLabEvaluationExpires,omitempty"`
+	LearningLabSeats             *int       `json:"learningLabSeats,omitempty"`
+	Perpetual                    *bool      `json:"perpetual,omitempty"`
+	ReferenceNumber              *string    `json:"referenceNumber,omitempty"`
+	Seats                        *int       `json:"seats,omitempty"`
+	SSHAllowed                   *bool      `json:"sshAllowed,omitempty"`
+	SupportKey                   *string    `json:"supportKey,omitempty"`
+	UnlimitedSeating             *bool      `json:"unlimitedSeating,omitempty"`
 }
 
 // UploadLicenseOptions is a struct to hold the options for the UploadLicense API.
@@ -98,7 +98,7 @@ type UploadLicenseOptions struct {
 
 // LicenseCheck is a struct to hold the response from the LicenseStatus API.
 type LicenseCheck struct {
-	Status *string `json:"status"`
+	Status *string `json:"status,omitempty"`
 }
 
 // ConfigSettings is a struct to hold the response from the Settings API.
@@ -123,7 +123,7 @@ type ConfigSettings struct {
 	LDAP                  *LDAP            `json:"ldap,omitempty"`
 	CAS                   *CAS             `json:"cas,omitempty"`
 	SAML                  *SAML            `json:"saml,omitempty"`
-	GitHubOAuth           *GitHubOAuth     `json:"github_oauth"`
+	GitHubOAuth           *GitHubOAuth     `json:"github_oauth,omitempty"`
 	SMTP                  *SMTP            `json:"smtp,omitempty"`
 	NTP                   *NTP             `json:"ntp,omitempty"`
 	Timezone              *string          `json:"timezone,omitempty"`
@@ -174,13 +174,13 @@ type GitHubSSL struct {
 type LDAP struct {
 	Host                    *string         `json:"host,omitempty"`
 	Port                    *int            `json:"port,omitempty"`
-	Base                    []string        `json:"base,omitempty"`
+	Base                    []*string       `json:"base,omitempty"`
 	UID                     *string         `json:"uid,omitempty"`
 	BindDN                  *string         `json:"bind_dn,omitempty"`
 	Password                *string         `json:"password,omitempty"`
 	Method                  *string         `json:"method,omitempty"`
 	SearchStrategy          *string         `json:"search_strategy,omitempty"`
-	UserGroups              []string        `json:"user_groups,omitempty"`
+	UserGroups              []*string       `json:"user_groups,omitempty"`
 	AdminGroup              *string         `json:"admin_group,omitempty"`
 	VirtualAttributeEnabled *bool           `json:"virtual_attribute_enabled,omitempty"`
 	RecursiveGroupSearch    *bool           `json:"recursive_group_search,omitempty"`
@@ -292,15 +292,15 @@ type Mapping struct {
 
 // NodeMetadataStatus is a struct to hold the response from the NodeMetadata API.
 type NodeMetadataStatus struct {
-	Topology *string        `json:"topology"`
+	Topology *string        `json:"topology,omitempty"`
 	Nodes    []*NodeDetails `json:"nodes"`
 }
 
 // NodeDetails is a struct to hold the response from the NodeMetadata API.
 type NodeDetails struct {
-	Hostname     *string  `json:"hostname"`
-	UUID         *string  `json:"uuid"`
-	ClusterRoles []string `json:"cluster_roles"`
+	Hostname     *string   `json:"hostname,omitempty"`
+	UUID         *string   `json:"uuid,omitempty"`
+	ClusterRoles []*string `json:"cluster_roles,omitempty"`
 }
 
 // ConfigApplyEvents gets events from the command ghe-config-apply
