@@ -5417,147 +5417,147 @@ func TestCommunityHealthMetrics_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
-func TestConfigApplyEventsNodeEvents_GetBody(tt *testing.T) {
+func TestConfigApplyEventsNode_GetLastRequestID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConfigApplyEventsNodeEvents{Body: &zeroValue}
+	c := &ConfigApplyEventsNode{LastRequestID: &zeroValue}
+	c.GetLastRequestID()
+	c = &ConfigApplyEventsNode{}
+	c.GetLastRequestID()
+	c = nil
+	c.GetLastRequestID()
+}
+
+func TestConfigApplyEventsNode_GetNode(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ConfigApplyEventsNode{Node: &zeroValue}
+	c.GetNode()
+	c = &ConfigApplyEventsNode{}
+	c.GetNode()
+	c = nil
+	c.GetNode()
+}
+
+func TestConfigApplyEventsNodeEvent_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ConfigApplyEventsNodeEvent{Body: &zeroValue}
 	c.GetBody()
-	c = &ConfigApplyEventsNodeEvents{}
+	c = &ConfigApplyEventsNodeEvent{}
 	c.GetBody()
 	c = nil
 	c.GetBody()
 }
 
-func TestConfigApplyEventsNodeEvents_GetConfigRunID(tt *testing.T) {
+func TestConfigApplyEventsNodeEvent_GetConfigRunID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConfigApplyEventsNodeEvents{ConfigRunID: &zeroValue}
+	c := &ConfigApplyEventsNodeEvent{ConfigRunID: &zeroValue}
 	c.GetConfigRunID()
-	c = &ConfigApplyEventsNodeEvents{}
+	c = &ConfigApplyEventsNodeEvent{}
 	c.GetConfigRunID()
 	c = nil
 	c.GetConfigRunID()
 }
 
-func TestConfigApplyEventsNodeEvents_GetEventName(tt *testing.T) {
+func TestConfigApplyEventsNodeEvent_GetEventName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConfigApplyEventsNodeEvents{EventName: &zeroValue}
+	c := &ConfigApplyEventsNodeEvent{EventName: &zeroValue}
 	c.GetEventName()
-	c = &ConfigApplyEventsNodeEvents{}
+	c = &ConfigApplyEventsNodeEvent{}
 	c.GetEventName()
 	c = nil
 	c.GetEventName()
 }
 
-func TestConfigApplyEventsNodeEvents_GetHostname(tt *testing.T) {
+func TestConfigApplyEventsNodeEvent_GetHostname(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConfigApplyEventsNodeEvents{Hostname: &zeroValue}
+	c := &ConfigApplyEventsNodeEvent{Hostname: &zeroValue}
 	c.GetHostname()
-	c = &ConfigApplyEventsNodeEvents{}
+	c = &ConfigApplyEventsNodeEvent{}
 	c.GetHostname()
 	c = nil
 	c.GetHostname()
 }
 
-func TestConfigApplyEventsNodeEvents_GetSeverityText(tt *testing.T) {
+func TestConfigApplyEventsNodeEvent_GetSeverityText(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConfigApplyEventsNodeEvents{SeverityText: &zeroValue}
+	c := &ConfigApplyEventsNodeEvent{SeverityText: &zeroValue}
 	c.GetSeverityText()
-	c = &ConfigApplyEventsNodeEvents{}
+	c = &ConfigApplyEventsNodeEvent{}
 	c.GetSeverityText()
 	c = nil
 	c.GetSeverityText()
 }
 
-func TestConfigApplyEventsNodeEvents_GetSpanDepth(tt *testing.T) {
+func TestConfigApplyEventsNodeEvent_GetSpanDepth(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	c := &ConfigApplyEventsNodeEvents{SpanDepth: &zeroValue}
+	c := &ConfigApplyEventsNodeEvent{SpanDepth: &zeroValue}
 	c.GetSpanDepth()
-	c = &ConfigApplyEventsNodeEvents{}
+	c = &ConfigApplyEventsNodeEvent{}
 	c.GetSpanDepth()
 	c = nil
 	c.GetSpanDepth()
 }
 
-func TestConfigApplyEventsNodeEvents_GetSpanID(tt *testing.T) {
+func TestConfigApplyEventsNodeEvent_GetSpanID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConfigApplyEventsNodeEvents{SpanID: &zeroValue}
+	c := &ConfigApplyEventsNodeEvent{SpanID: &zeroValue}
 	c.GetSpanID()
-	c = &ConfigApplyEventsNodeEvents{}
+	c = &ConfigApplyEventsNodeEvent{}
 	c.GetSpanID()
 	c = nil
 	c.GetSpanID()
 }
 
-func TestConfigApplyEventsNodeEvents_GetSpanParentID(tt *testing.T) {
+func TestConfigApplyEventsNodeEvent_GetSpanParentID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	c := &ConfigApplyEventsNodeEvents{SpanParentID: &zeroValue}
+	c := &ConfigApplyEventsNodeEvent{SpanParentID: &zeroValue}
 	c.GetSpanParentID()
-	c = &ConfigApplyEventsNodeEvents{}
+	c = &ConfigApplyEventsNodeEvent{}
 	c.GetSpanParentID()
 	c = nil
 	c.GetSpanParentID()
 }
 
-func TestConfigApplyEventsNodeEvents_GetTimestamp(tt *testing.T) {
+func TestConfigApplyEventsNodeEvent_GetTimestamp(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	c := &ConfigApplyEventsNodeEvents{Timestamp: &zeroValue}
+	c := &ConfigApplyEventsNodeEvent{Timestamp: &zeroValue}
 	c.GetTimestamp()
-	c = &ConfigApplyEventsNodeEvents{}
+	c = &ConfigApplyEventsNodeEvent{}
 	c.GetTimestamp()
 	c = nil
 	c.GetTimestamp()
 }
 
-func TestConfigApplyEventsNodeEvents_GetTopology(tt *testing.T) {
+func TestConfigApplyEventsNodeEvent_GetTopology(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConfigApplyEventsNodeEvents{Topology: &zeroValue}
+	c := &ConfigApplyEventsNodeEvent{Topology: &zeroValue}
 	c.GetTopology()
-	c = &ConfigApplyEventsNodeEvents{}
+	c = &ConfigApplyEventsNodeEvent{}
 	c.GetTopology()
 	c = nil
 	c.GetTopology()
 }
 
-func TestConfigApplyEventsNodeEvents_GetTraceID(tt *testing.T) {
+func TestConfigApplyEventsNodeEvent_GetTraceID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConfigApplyEventsNodeEvents{TraceID: &zeroValue}
+	c := &ConfigApplyEventsNodeEvent{TraceID: &zeroValue}
 	c.GetTraceID()
-	c = &ConfigApplyEventsNodeEvents{}
+	c = &ConfigApplyEventsNodeEvent{}
 	c.GetTraceID()
 	c = nil
 	c.GetTraceID()
-}
-
-func TestConfigApplyEventsNodes_GetLastRequestID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &ConfigApplyEventsNodes{LastRequestID: &zeroValue}
-	c.GetLastRequestID()
-	c = &ConfigApplyEventsNodes{}
-	c.GetLastRequestID()
-	c = nil
-	c.GetLastRequestID()
-}
-
-func TestConfigApplyEventsNodes_GetNode(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &ConfigApplyEventsNodes{Node: &zeroValue}
-	c.GetNode()
-	c = &ConfigApplyEventsNodes{}
-	c.GetNode()
-	c = nil
-	c.GetNode()
 }
 
 func TestConfigApplyEventsOptions_GetLastRequestID(tt *testing.T) {
@@ -5604,45 +5604,45 @@ func TestConfigApplyStatus_GetSuccessful(tt *testing.T) {
 	c.GetSuccessful()
 }
 
-func TestConfigApplyStatusNodes_GetHostname(tt *testing.T) {
+func TestConfigApplyStatusNode_GetHostname(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConfigApplyStatusNodes{Hostname: &zeroValue}
+	c := &ConfigApplyStatusNode{Hostname: &zeroValue}
 	c.GetHostname()
-	c = &ConfigApplyStatusNodes{}
+	c = &ConfigApplyStatusNode{}
 	c.GetHostname()
 	c = nil
 	c.GetHostname()
 }
 
-func TestConfigApplyStatusNodes_GetRunID(tt *testing.T) {
+func TestConfigApplyStatusNode_GetRunID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConfigApplyStatusNodes{RunID: &zeroValue}
+	c := &ConfigApplyStatusNode{RunID: &zeroValue}
 	c.GetRunID()
-	c = &ConfigApplyStatusNodes{}
+	c = &ConfigApplyStatusNode{}
 	c.GetRunID()
 	c = nil
 	c.GetRunID()
 }
 
-func TestConfigApplyStatusNodes_GetRunning(tt *testing.T) {
+func TestConfigApplyStatusNode_GetRunning(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	c := &ConfigApplyStatusNodes{Running: &zeroValue}
+	c := &ConfigApplyStatusNode{Running: &zeroValue}
 	c.GetRunning()
-	c = &ConfigApplyStatusNodes{}
+	c = &ConfigApplyStatusNode{}
 	c.GetRunning()
 	c = nil
 	c.GetRunning()
 }
 
-func TestConfigApplyStatusNodes_GetSuccessful(tt *testing.T) {
+func TestConfigApplyStatusNode_GetSuccessful(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	c := &ConfigApplyStatusNodes{Successful: &zeroValue}
+	c := &ConfigApplyStatusNode{Successful: &zeroValue}
 	c.GetSuccessful()
-	c = &ConfigApplyStatusNodes{}
+	c = &ConfigApplyStatusNode{}
 	c.GetSuccessful()
 	c = nil
 	c.GetSuccessful()

@@ -508,10 +508,10 @@ func TestEnterpriseService_ConfigApplyEvents(t *testing.T) {
 	}
 
 	want := &ConfigApplyEvents{
-		Nodes: []*ConfigApplyEventsNodes{{
+		Nodes: []*ConfigApplyEventsNode{{
 			Node:          Ptr("ghes-01.lan"),
 			LastRequestID: Ptr("387cd628c06d606700e79be368e5e574:0cde553750689c76:0000000000000000"),
-			Events: []*ConfigApplyEventsNodeEvents{{
+			Events: []*ConfigApplyEventsNodeEvent{{
 				Timestamp:    &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
 				SeverityText: Ptr("INFO"),
 				Body:         Ptr("Validating services"),
@@ -707,7 +707,7 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 	want := &ConfigApplyStatus{
 		Running:    Ptr(true),
 		Successful: Ptr(false),
-		Nodes: []*ConfigApplyStatusNodes{{
+		Nodes: []*ConfigApplyStatusNode{{
 			RunID:      Ptr("d34db33f"),
 			Hostname:   Ptr("ghes-01.lan"),
 			Running:    Ptr(true),

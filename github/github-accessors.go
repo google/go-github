@@ -4174,96 +4174,8 @@ func (c *CommunityHealthMetrics) GetUpdatedAt() Timestamp {
 	return *c.UpdatedAt
 }
 
-// GetBody returns the Body field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvents) GetBody() string {
-	if c == nil || c.Body == nil {
-		return ""
-	}
-	return *c.Body
-}
-
-// GetConfigRunID returns the ConfigRunID field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvents) GetConfigRunID() string {
-	if c == nil || c.ConfigRunID == nil {
-		return ""
-	}
-	return *c.ConfigRunID
-}
-
-// GetEventName returns the EventName field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvents) GetEventName() string {
-	if c == nil || c.EventName == nil {
-		return ""
-	}
-	return *c.EventName
-}
-
-// GetHostname returns the Hostname field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvents) GetHostname() string {
-	if c == nil || c.Hostname == nil {
-		return ""
-	}
-	return *c.Hostname
-}
-
-// GetSeverityText returns the SeverityText field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvents) GetSeverityText() string {
-	if c == nil || c.SeverityText == nil {
-		return ""
-	}
-	return *c.SeverityText
-}
-
-// GetSpanDepth returns the SpanDepth field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvents) GetSpanDepth() int {
-	if c == nil || c.SpanDepth == nil {
-		return 0
-	}
-	return *c.SpanDepth
-}
-
-// GetSpanID returns the SpanID field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvents) GetSpanID() string {
-	if c == nil || c.SpanID == nil {
-		return ""
-	}
-	return *c.SpanID
-}
-
-// GetSpanParentID returns the SpanParentID field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvents) GetSpanParentID() int {
-	if c == nil || c.SpanParentID == nil {
-		return 0
-	}
-	return *c.SpanParentID
-}
-
-// GetTimestamp returns the Timestamp field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvents) GetTimestamp() Timestamp {
-	if c == nil || c.Timestamp == nil {
-		return Timestamp{}
-	}
-	return *c.Timestamp
-}
-
-// GetTopology returns the Topology field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvents) GetTopology() string {
-	if c == nil || c.Topology == nil {
-		return ""
-	}
-	return *c.Topology
-}
-
-// GetTraceID returns the TraceID field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvents) GetTraceID() string {
-	if c == nil || c.TraceID == nil {
-		return ""
-	}
-	return *c.TraceID
-}
-
 // GetLastRequestID returns the LastRequestID field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodes) GetLastRequestID() string {
+func (c *ConfigApplyEventsNode) GetLastRequestID() string {
 	if c == nil || c.LastRequestID == nil {
 		return ""
 	}
@@ -4271,11 +4183,99 @@ func (c *ConfigApplyEventsNodes) GetLastRequestID() string {
 }
 
 // GetNode returns the Node field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodes) GetNode() string {
+func (c *ConfigApplyEventsNode) GetNode() string {
 	if c == nil || c.Node == nil {
 		return ""
 	}
 	return *c.Node
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsNodeEvent) GetBody() string {
+	if c == nil || c.Body == nil {
+		return ""
+	}
+	return *c.Body
+}
+
+// GetConfigRunID returns the ConfigRunID field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsNodeEvent) GetConfigRunID() string {
+	if c == nil || c.ConfigRunID == nil {
+		return ""
+	}
+	return *c.ConfigRunID
+}
+
+// GetEventName returns the EventName field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsNodeEvent) GetEventName() string {
+	if c == nil || c.EventName == nil {
+		return ""
+	}
+	return *c.EventName
+}
+
+// GetHostname returns the Hostname field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsNodeEvent) GetHostname() string {
+	if c == nil || c.Hostname == nil {
+		return ""
+	}
+	return *c.Hostname
+}
+
+// GetSeverityText returns the SeverityText field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsNodeEvent) GetSeverityText() string {
+	if c == nil || c.SeverityText == nil {
+		return ""
+	}
+	return *c.SeverityText
+}
+
+// GetSpanDepth returns the SpanDepth field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsNodeEvent) GetSpanDepth() int {
+	if c == nil || c.SpanDepth == nil {
+		return 0
+	}
+	return *c.SpanDepth
+}
+
+// GetSpanID returns the SpanID field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsNodeEvent) GetSpanID() string {
+	if c == nil || c.SpanID == nil {
+		return ""
+	}
+	return *c.SpanID
+}
+
+// GetSpanParentID returns the SpanParentID field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsNodeEvent) GetSpanParentID() int {
+	if c == nil || c.SpanParentID == nil {
+		return 0
+	}
+	return *c.SpanParentID
+}
+
+// GetTimestamp returns the Timestamp field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsNodeEvent) GetTimestamp() Timestamp {
+	if c == nil || c.Timestamp == nil {
+		return Timestamp{}
+	}
+	return *c.Timestamp
+}
+
+// GetTopology returns the Topology field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsNodeEvent) GetTopology() string {
+	if c == nil || c.Topology == nil {
+		return ""
+	}
+	return *c.Topology
+}
+
+// GetTraceID returns the TraceID field if it's non-nil, zero value otherwise.
+func (c *ConfigApplyEventsNodeEvent) GetTraceID() string {
+	if c == nil || c.TraceID == nil {
+		return ""
+	}
+	return *c.TraceID
 }
 
 // GetLastRequestID returns the LastRequestID field if it's non-nil, zero value otherwise.
@@ -4311,7 +4311,7 @@ func (c *ConfigApplyStatus) GetSuccessful() bool {
 }
 
 // GetHostname returns the Hostname field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyStatusNodes) GetHostname() string {
+func (c *ConfigApplyStatusNode) GetHostname() string {
 	if c == nil || c.Hostname == nil {
 		return ""
 	}
@@ -4319,7 +4319,7 @@ func (c *ConfigApplyStatusNodes) GetHostname() string {
 }
 
 // GetRunID returns the RunID field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyStatusNodes) GetRunID() string {
+func (c *ConfigApplyStatusNode) GetRunID() string {
 	if c == nil || c.RunID == nil {
 		return ""
 	}
@@ -4327,7 +4327,7 @@ func (c *ConfigApplyStatusNodes) GetRunID() string {
 }
 
 // GetRunning returns the Running field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyStatusNodes) GetRunning() bool {
+func (c *ConfigApplyStatusNode) GetRunning() bool {
 	if c == nil || c.Running == nil {
 		return false
 	}
@@ -4335,7 +4335,7 @@ func (c *ConfigApplyStatusNodes) GetRunning() bool {
 }
 
 // GetSuccessful returns the Successful field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyStatusNodes) GetSuccessful() bool {
+func (c *ConfigApplyStatusNode) GetSuccessful() bool {
 	if c == nil || c.Successful == nil {
 		return false
 	}

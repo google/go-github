@@ -18,13 +18,13 @@ type ConfigApplyOptions struct {
 
 // ConfigApplyStatus is a struct to hold the response from the ConfigApply API.
 type ConfigApplyStatus struct {
-	Running    *bool                     `json:"running,omitempty"`
-	Successful *bool                     `json:"successful,omitempty"`
-	Nodes      []*ConfigApplyStatusNodes `json:"nodes"`
+	Running    *bool                    `json:"running,omitempty"`
+	Successful *bool                    `json:"successful,omitempty"`
+	Nodes      []*ConfigApplyStatusNode `json:"nodes"`
 }
 
-// ConfigApplyStatusNodes is a struct to hold the response from the ConfigApply API.
-type ConfigApplyStatusNodes struct {
+// ConfigApplyStatusNode is a struct to hold the response from the ConfigApply API.
+type ConfigApplyStatusNode struct {
 	Hostname   *string `json:"hostname,omitempty"`
 	Running    *bool   `json:"running,omitempty"`
 	Successful *bool   `json:"successful,omitempty"`
@@ -38,18 +38,18 @@ type ConfigApplyEventsOptions struct {
 
 // ConfigApplyEvents is a struct to hold the response from the ConfigApplyEvents API.
 type ConfigApplyEvents struct {
-	Nodes []*ConfigApplyEventsNodes `json:"nodes"`
+	Nodes []*ConfigApplyEventsNode `json:"nodes"`
 }
 
-// ConfigApplyEventsNodes is a struct to hold the response from the ConfigApplyEvents API.
-type ConfigApplyEventsNodes struct {
-	Node          *string                        `json:"node,omitempty"`
-	LastRequestID *string                        `json:"last_request_id,omitempty"`
-	Events        []*ConfigApplyEventsNodeEvents `json:"events"`
+// ConfigApplyEventsNode is a struct to hold the response from the ConfigApplyEvents API.
+type ConfigApplyEventsNode struct {
+	Node          *string                       `json:"node,omitempty"`
+	LastRequestID *string                       `json:"last_request_id,omitempty"`
+	Events        []*ConfigApplyEventsNodeEvent `json:"events"`
 }
 
-// ConfigApplyEventsNodeEvents is a struct to hold the response from the ConfigApplyEvents API.
-type ConfigApplyEventsNodeEvents struct {
+// ConfigApplyEventsNodeEvent is a struct to hold the response from the ConfigApplyEvents API.
+type ConfigApplyEventsNodeEvent struct {
 	Timestamp    *Timestamp `json:"timestamp,omitempty"`
 	SeverityText *string    `json:"severity_text,omitempty"`
 	Body         *string    `json:"body,omitempty"`
