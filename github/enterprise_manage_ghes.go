@@ -10,7 +10,7 @@ import (
 )
 
 // NodeQueryOptions specifies the optional parameters to the EnterpriseService
-// Node management APIS.
+// Node management APIs.
 type NodeQueryOptions struct {
 	// UUID filters issues based on the node UUID.
 	UUID *string `url:"uuid,omitempty"`
