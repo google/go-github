@@ -33,7 +33,7 @@ func TestEnterpriseService_GetSSHKey(t *testing.T) {
 		t.Errorf("Enterprise.GetSSHKey returned error: %v", err)
 	}
 
-	want := []*ClusterSSHKeys{{
+	want := []*ClusterSSHKey{{
 		Key:         Ptr("ssh-rsa 1234"),
 		Fingerprint: Ptr("bd"),
 	}}

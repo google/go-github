@@ -23,8 +23,8 @@ type SSHKeyOptions struct {
 	Key string `json:"key"`
 }
 
-// ClusterSSHKeys represents the SSH keys configured for the instance.
-type ClusterSSHKeys struct {
+// ClusterSSHKey represents the SSH keys configured for the instance.
+type ClusterSSHKey struct {
 	Key         *string `json:"key,omitempty"`
 	Fingerprint *string `json:"fingerprint,omitempty"`
 }
@@ -58,14 +58,14 @@ func (s *EnterpriseService) DeleteSSHKey(ctx context.Context, key string) ([]*SS
 // GitHub API docs: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/manage-ghes#get-the-configured-ssh-keys
 //
 //meta:operation GET /manage/v1/access/ssh
-func (s *EnterpriseService) GetSSHKey(ctx context.Context) ([]*ClusterSSHKeys, *Response, error) {
+func (s *EnterpriseService) GetSSHKey(ctx context.Context) ([]*ClusterSSHKey, *Response, error) {
 	u := "manage/v1/access/ssh"
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var sshKeys []*ClusterSSHKeys
+	var sshKeys []*ClusterSSHKey
 	resp, err := s.client.Do(ctx, req, &sshKeys)
 	if err != nil {
 		return nil, resp, err

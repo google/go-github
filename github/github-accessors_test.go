@@ -3228,23 +3228,23 @@ func TestCheckSuitePreferenceResults_GetRepository(tt *testing.T) {
 	c.GetRepository()
 }
 
-func TestClusterSSHKeys_GetFingerprint(tt *testing.T) {
+func TestClusterSSHKey_GetFingerprint(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ClusterSSHKeys{Fingerprint: &zeroValue}
+	c := &ClusterSSHKey{Fingerprint: &zeroValue}
 	c.GetFingerprint()
-	c = &ClusterSSHKeys{}
+	c = &ClusterSSHKey{}
 	c.GetFingerprint()
 	c = nil
 	c.GetFingerprint()
 }
 
-func TestClusterSSHKeys_GetKey(tt *testing.T) {
+func TestClusterSSHKey_GetKey(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ClusterSSHKeys{Key: &zeroValue}
+	c := &ClusterSSHKey{Key: &zeroValue}
 	c.GetKey()
-	c = &ClusterSSHKeys{}
+	c = &ClusterSSHKey{}
 	c.GetKey()
 	c = nil
 	c.GetKey()

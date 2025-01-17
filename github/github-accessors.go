@@ -2487,7 +2487,7 @@ func (c *CheckSuitePreferenceResults) GetRepository() *Repository {
 }
 
 // GetFingerprint returns the Fingerprint field if it's non-nil, zero value otherwise.
-func (c *ClusterSSHKeys) GetFingerprint() string {
+func (c *ClusterSSHKey) GetFingerprint() string {
 	if c == nil || c.Fingerprint == nil {
 		return ""
 	}
@@ -2495,7 +2495,7 @@ func (c *ClusterSSHKeys) GetFingerprint() string {
 }
 
 // GetKey returns the Key field if it's non-nil, zero value otherwise.
-func (c *ClusterSSHKeys) GetKey() string {
+func (c *ClusterSSHKey) GetKey() string {
 	if c == nil || c.Key == nil {
 		return ""
 	}
