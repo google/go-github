@@ -21,12 +21,12 @@ type NodeQueryOptions struct {
 
 // ClusterStatus represents a response from the GetClusterStatus and GetReplicationStatus methods.
 type ClusterStatus struct {
-	Status *string               `json:"status,omitempty"`
-	Nodes  []*ClusterStatusNodes `json:"nodes"`
+	Status *string              `json:"status,omitempty"`
+	Nodes  []*ClusterStatusNode `json:"nodes"`
 }
 
-// ClusterStatusNodes represents the status of a cluster node.
-type ClusterStatusNodes struct {
+// ClusterStatusNode represents the status of a cluster node.
+type ClusterStatusNode struct {
 	Hostname *string                       `json:"hostname,omitempty"`
 	Status   *string                       `json:"status,omitempty"`
 	Services []*ClusterStatusNodesServices `json:"services"`
@@ -41,31 +41,31 @@ type ClusterStatusNodesServices struct {
 
 // SystemRequirements represents a response from the GetCheckSystemRequirements method.
 type SystemRequirements struct {
-	Status *string                    `json:"status,omitempty"`
-	Nodes  []*SystemRequirementsNodes `json:"nodes"`
+	Status *string                   `json:"status,omitempty"`
+	Nodes  []*SystemRequirementsNode `json:"nodes"`
 }
 
-// SystemRequirementsNodes represents the status of a system node.
-type SystemRequirementsNodes struct {
-	Hostname    *string                               `json:"hostname,omitempty"`
-	Status      *string                               `json:"status,omitempty"`
-	RolesStatus []*SystemRequirementsNodesRolesStatus `json:"roles_status"`
+// SystemRequirementsNode represents the status of a system node.
+type SystemRequirementsNode struct {
+	Hostname    *string                             `json:"hostname,omitempty"`
+	Status      *string                             `json:"status,omitempty"`
+	RolesStatus []*SystemRequirementsNodeRoleStatus `json:"roles_status"`
 }
 
-// SystemRequirementsNodesRolesStatus represents the status of a role on a system node.
-type SystemRequirementsNodesRolesStatus struct {
+// SystemRequirementsNodeRoleStatus represents the status of a role on a system node.
+type SystemRequirementsNodeRoleStatus struct {
 	Status *string `json:"status,omitempty"`
 	Role   *string `json:"role,omitempty"`
 }
 
-// NodeReleaseVersions represents a response from the GetReplicationStatus method.
-type NodeReleaseVersions struct {
-	Hostname *string          `json:"hostname,omitempty"`
-	Version  *ReleaseVersions `json:"version"`
+// NodeReleaseVersion represents a response from the GetNodeReleaseVersions method.
+type NodeReleaseVersion struct {
+	Hostname *string         `json:"hostname,omitempty"`
+	Version  *ReleaseVersion `json:"version"`
 }
 
-// ReleaseVersions holds the release version information of the node.
-type ReleaseVersions struct {
+// ReleaseVersion holds the release version information of the node.
+type ReleaseVersion struct {
 	Version   *string `json:"version,omitempty"`
 	Platform  *string `json:"platform,omitempty"`
 	BuildID   *string `json:"build_id,omitempty"`
@@ -138,12 +138,12 @@ func (s *EnterpriseService) ReplicationStatus(ctx context.Context, opts *NodeQue
 	return replicationStatus, resp, nil
 }
 
-// Versions gets the versions information deployed to each node.
+// GetNodeReleaseVersions gets the version information deployed to each node.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/manage-ghes#get-all-ghes-release-versions-for-all-nodes
 //
 //meta:operation GET /manage/v1/version
-func (s *EnterpriseService) Versions(ctx context.Context, opts *NodeQueryOptions) ([]*NodeReleaseVersions, *Response, error) {
+func (s *EnterpriseService) GetNodeReleaseVersions(ctx context.Context, opts *NodeQueryOptions) ([]*NodeReleaseVersion, *Response, error) {
 	u, err := addOptions("manage/v1/version", opts)
 	if err != nil {
 		return nil, nil, err
@@ -153,7 +153,7 @@ func (s *EnterpriseService) Versions(ctx context.Context, opts *NodeQueryOptions
 		return nil, nil, err
 	}
 
-	var releaseVersions []*NodeReleaseVersions
+	var releaseVersions []*NodeReleaseVersion
 	resp, err := s.client.Do(ctx, req, &releaseVersions)
 	if err != nil {
 		return nil, resp, err

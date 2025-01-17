@@ -3261,23 +3261,23 @@ func TestClusterStatus_GetStatus(tt *testing.T) {
 	c.GetStatus()
 }
 
-func TestClusterStatusNodes_GetHostname(tt *testing.T) {
+func TestClusterStatusNode_GetHostname(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ClusterStatusNodes{Hostname: &zeroValue}
+	c := &ClusterStatusNode{Hostname: &zeroValue}
 	c.GetHostname()
-	c = &ClusterStatusNodes{}
+	c = &ClusterStatusNode{}
 	c.GetHostname()
 	c = nil
 	c.GetHostname()
 }
 
-func TestClusterStatusNodes_GetStatus(tt *testing.T) {
+func TestClusterStatusNode_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ClusterStatusNodes{Status: &zeroValue}
+	c := &ClusterStatusNode{Status: &zeroValue}
 	c.GetStatus()
-	c = &ClusterStatusNodes{}
+	c = &ClusterStatusNode{}
 	c.GetStatus()
 	c = nil
 	c.GetStatus()
@@ -18646,20 +18646,20 @@ func TestNodeQueryOptions_GetUUID(tt *testing.T) {
 	n.GetUUID()
 }
 
-func TestNodeReleaseVersions_GetHostname(tt *testing.T) {
+func TestNodeReleaseVersion_GetHostname(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	n := &NodeReleaseVersions{Hostname: &zeroValue}
+	n := &NodeReleaseVersion{Hostname: &zeroValue}
 	n.GetHostname()
-	n = &NodeReleaseVersions{}
+	n = &NodeReleaseVersion{}
 	n.GetHostname()
 	n = nil
 	n.GetHostname()
 }
 
-func TestNodeReleaseVersions_GetVersion(tt *testing.T) {
+func TestNodeReleaseVersion_GetVersion(tt *testing.T) {
 	tt.Parallel()
-	n := &NodeReleaseVersions{}
+	n := &NodeReleaseVersion{}
 	n.GetVersion()
 	n = nil
 	n.GetVersion()
@@ -25879,45 +25879,45 @@ func TestReleaseEvent_GetSender(tt *testing.T) {
 	r.GetSender()
 }
 
-func TestReleaseVersions_GetBuildDate(tt *testing.T) {
+func TestReleaseVersion_GetBuildDate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	r := &ReleaseVersions{BuildDate: &zeroValue}
+	r := &ReleaseVersion{BuildDate: &zeroValue}
 	r.GetBuildDate()
-	r = &ReleaseVersions{}
+	r = &ReleaseVersion{}
 	r.GetBuildDate()
 	r = nil
 	r.GetBuildDate()
 }
 
-func TestReleaseVersions_GetBuildID(tt *testing.T) {
+func TestReleaseVersion_GetBuildID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	r := &ReleaseVersions{BuildID: &zeroValue}
+	r := &ReleaseVersion{BuildID: &zeroValue}
 	r.GetBuildID()
-	r = &ReleaseVersions{}
+	r = &ReleaseVersion{}
 	r.GetBuildID()
 	r = nil
 	r.GetBuildID()
 }
 
-func TestReleaseVersions_GetPlatform(tt *testing.T) {
+func TestReleaseVersion_GetPlatform(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	r := &ReleaseVersions{Platform: &zeroValue}
+	r := &ReleaseVersion{Platform: &zeroValue}
 	r.GetPlatform()
-	r = &ReleaseVersions{}
+	r = &ReleaseVersion{}
 	r.GetPlatform()
 	r = nil
 	r.GetPlatform()
 }
 
-func TestReleaseVersions_GetVersion(tt *testing.T) {
+func TestReleaseVersion_GetVersion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	r := &ReleaseVersions{Version: &zeroValue}
+	r := &ReleaseVersion{Version: &zeroValue}
 	r.GetVersion()
-	r = &ReleaseVersions{}
+	r = &ReleaseVersion{}
 	r.GetVersion()
 	r = nil
 	r.GetVersion()
@@ -32586,45 +32586,45 @@ func TestSystemRequirements_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
-func TestSystemRequirementsNodes_GetHostname(tt *testing.T) {
+func TestSystemRequirementsNode_GetHostname(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	s := &SystemRequirementsNodes{Hostname: &zeroValue}
+	s := &SystemRequirementsNode{Hostname: &zeroValue}
 	s.GetHostname()
-	s = &SystemRequirementsNodes{}
+	s = &SystemRequirementsNode{}
 	s.GetHostname()
 	s = nil
 	s.GetHostname()
 }
 
-func TestSystemRequirementsNodes_GetStatus(tt *testing.T) {
+func TestSystemRequirementsNode_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	s := &SystemRequirementsNodes{Status: &zeroValue}
+	s := &SystemRequirementsNode{Status: &zeroValue}
 	s.GetStatus()
-	s = &SystemRequirementsNodes{}
+	s = &SystemRequirementsNode{}
 	s.GetStatus()
 	s = nil
 	s.GetStatus()
 }
 
-func TestSystemRequirementsNodesRolesStatus_GetRole(tt *testing.T) {
+func TestSystemRequirementsNodeRoleStatus_GetRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	s := &SystemRequirementsNodesRolesStatus{Role: &zeroValue}
+	s := &SystemRequirementsNodeRoleStatus{Role: &zeroValue}
 	s.GetRole()
-	s = &SystemRequirementsNodesRolesStatus{}
+	s = &SystemRequirementsNodeRoleStatus{}
 	s.GetRole()
 	s = nil
 	s.GetRole()
 }
 
-func TestSystemRequirementsNodesRolesStatus_GetStatus(tt *testing.T) {
+func TestSystemRequirementsNodeRoleStatus_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	s := &SystemRequirementsNodesRolesStatus{Status: &zeroValue}
+	s := &SystemRequirementsNodeRoleStatus{Status: &zeroValue}
 	s.GetStatus()
-	s = &SystemRequirementsNodesRolesStatus{}
+	s = &SystemRequirementsNodeRoleStatus{}
 	s.GetStatus()
 	s = nil
 	s.GetStatus()

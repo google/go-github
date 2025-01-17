@@ -41,10 +41,10 @@ func TestEnterpriseService_CheckSystemRequirements(t *testing.T) {
 
 	want := &SystemRequirements{
 		Status: Ptr("OK"),
-		Nodes: []*SystemRequirementsNodes{{
+		Nodes: []*SystemRequirementsNode{{
 			Hostname: Ptr("primary"),
 			Status:   Ptr("OK"),
-			RolesStatus: []*SystemRequirementsNodesRolesStatus{{
+			RolesStatus: []*SystemRequirementsNodeRoleStatus{{
 				Status: Ptr("OK"),
 				Role:   Ptr("ConsulServer"),
 			}},
@@ -88,7 +88,7 @@ func TestEnterpriseService_ClusterStatus(t *testing.T) {
 
 	want := &ClusterStatus{
 		Status: Ptr("OK"),
-		Nodes: []*ClusterStatusNodes{{
+		Nodes: []*ClusterStatusNode{{
 			Hostname: Ptr("primary"),
 			Status:   Ptr("OK"),
 			Services: []*ClusterStatusNodesServices{},
@@ -139,7 +139,7 @@ func TestEnterpriseService_ReplicationStatus(t *testing.T) {
 
 	want := &ClusterStatus{
 		Status: Ptr("OK"),
-		Nodes: []*ClusterStatusNodes{{
+		Nodes: []*ClusterStatusNode{{
 			Hostname: Ptr("primary"),
 			Status:   Ptr("OK"),
 			Services: []*ClusterStatusNodesServices{},
@@ -184,14 +184,14 @@ func TestEnterpriseService_Versions(t *testing.T) {
 		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
 	}
 	ctx := context.Background()
-	releaseVersions, _, err := client.Enterprise.Versions(ctx, opt)
+	releaseVersions, _, err := client.Enterprise.GetNodeReleaseVersions(ctx, opt)
 	if err != nil {
-		t.Errorf("Enterprise.Versions returned error: %v", err)
+		t.Errorf("Enterprise.GetNodeReleaseVersions returned error: %v", err)
 	}
 
-	want := []*NodeReleaseVersions{{
+	want := []*NodeReleaseVersion{{
 		Hostname: Ptr("primary"),
-		Version: &ReleaseVersions{
+		Version: &ReleaseVersion{
 			Version:   Ptr("3.9.0"),
 			Platform:  Ptr("azure"),
 			BuildID:   Ptr("fc542058b5"),
@@ -199,12 +199,12 @@ func TestEnterpriseService_Versions(t *testing.T) {
 		},
 	}}
 	if !cmp.Equal(releaseVersions, want) {
-		t.Errorf("Enterprise.Versions returned %+v, want %+v", releaseVersions, want)
+		t.Errorf("Enterprise.GetNodeReleaseVersions returned %+v, want %+v", releaseVersions, want)
 	}
 
-	const methodName = "Versions"
+	const methodName = "GetNodeReleaseVersions"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.Versions(ctx, opt)
+		got, resp, err := client.Enterprise.GetNodeReleaseVersions(ctx, opt)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

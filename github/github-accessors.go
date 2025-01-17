@@ -2511,7 +2511,7 @@ func (c *ClusterStatus) GetStatus() string {
 }
 
 // GetHostname returns the Hostname field if it's non-nil, zero value otherwise.
-func (c *ClusterStatusNodes) GetHostname() string {
+func (c *ClusterStatusNode) GetHostname() string {
 	if c == nil || c.Hostname == nil {
 		return ""
 	}
@@ -2519,7 +2519,7 @@ func (c *ClusterStatusNodes) GetHostname() string {
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
-func (c *ClusterStatusNodes) GetStatus() string {
+func (c *ClusterStatusNode) GetStatus() string {
 	if c == nil || c.Status == nil {
 		return ""
 	}
@@ -14407,7 +14407,7 @@ func (n *NodeQueryOptions) GetUUID() string {
 }
 
 // GetHostname returns the Hostname field if it's non-nil, zero value otherwise.
-func (n *NodeReleaseVersions) GetHostname() string {
+func (n *NodeReleaseVersion) GetHostname() string {
 	if n == nil || n.Hostname == nil {
 		return ""
 	}
@@ -14415,7 +14415,7 @@ func (n *NodeReleaseVersions) GetHostname() string {
 }
 
 // GetVersion returns the Version field.
-func (n *NodeReleaseVersions) GetVersion() *ReleaseVersions {
+func (n *NodeReleaseVersion) GetVersion() *ReleaseVersion {
 	if n == nil {
 		return nil
 	}
@@ -20119,7 +20119,7 @@ func (r *ReleaseEvent) GetSender() *User {
 }
 
 // GetBuildDate returns the BuildDate field if it's non-nil, zero value otherwise.
-func (r *ReleaseVersions) GetBuildDate() string {
+func (r *ReleaseVersion) GetBuildDate() string {
 	if r == nil || r.BuildDate == nil {
 		return ""
 	}
@@ -20127,7 +20127,7 @@ func (r *ReleaseVersions) GetBuildDate() string {
 }
 
 // GetBuildID returns the BuildID field if it's non-nil, zero value otherwise.
-func (r *ReleaseVersions) GetBuildID() string {
+func (r *ReleaseVersion) GetBuildID() string {
 	if r == nil || r.BuildID == nil {
 		return ""
 	}
@@ -20135,7 +20135,7 @@ func (r *ReleaseVersions) GetBuildID() string {
 }
 
 // GetPlatform returns the Platform field if it's non-nil, zero value otherwise.
-func (r *ReleaseVersions) GetPlatform() string {
+func (r *ReleaseVersion) GetPlatform() string {
 	if r == nil || r.Platform == nil {
 		return ""
 	}
@@ -20143,7 +20143,7 @@ func (r *ReleaseVersions) GetPlatform() string {
 }
 
 // GetVersion returns the Version field if it's non-nil, zero value otherwise.
-func (r *ReleaseVersions) GetVersion() string {
+func (r *ReleaseVersion) GetVersion() string {
 	if r == nil || r.Version == nil {
 		return ""
 	}
@@ -25383,7 +25383,7 @@ func (s *SystemRequirements) GetStatus() string {
 }
 
 // GetHostname returns the Hostname field if it's non-nil, zero value otherwise.
-func (s *SystemRequirementsNodes) GetHostname() string {
+func (s *SystemRequirementsNode) GetHostname() string {
 	if s == nil || s.Hostname == nil {
 		return ""
 	}
@@ -25391,7 +25391,7 @@ func (s *SystemRequirementsNodes) GetHostname() string {
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
-func (s *SystemRequirementsNodes) GetStatus() string {
+func (s *SystemRequirementsNode) GetStatus() string {
 	if s == nil || s.Status == nil {
 		return ""
 	}
@@ -25399,7 +25399,7 @@ func (s *SystemRequirementsNodes) GetStatus() string {
 }
 
 // GetRole returns the Role field if it's non-nil, zero value otherwise.
-func (s *SystemRequirementsNodesRolesStatus) GetRole() string {
+func (s *SystemRequirementsNodeRoleStatus) GetRole() string {
 	if s == nil || s.Role == nil {
 		return ""
 	}
@@ -25407,7 +25407,7 @@ func (s *SystemRequirementsNodesRolesStatus) GetRole() string {
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
-func (s *SystemRequirementsNodesRolesStatus) GetStatus() string {
+func (s *SystemRequirementsNodeRoleStatus) GetStatus() string {
 	if s == nil || s.Status == nil {
 		return ""
 	}
