@@ -186,14 +186,14 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 
 	opt := &ListOptions{Page: 2}
 	ctx := context.Background()
-	statutses, _, err := client.Repositories.ListDeploymentStatuses(ctx, "o", "r", 1, opt)
+	statuses, _, err := client.Repositories.ListDeploymentStatuses(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("Repositories.ListDeploymentStatuses returned error: %v", err)
 	}
 
 	want := []*DeploymentStatus{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
-	if !cmp.Equal(statutses, want) {
-		t.Errorf("Repositories.ListDeploymentStatuses returned %+v, want %+v", statutses, want)
+	if !cmp.Equal(statuses, want) {
+		t.Errorf("Repositories.ListDeploymentStatuses returned %+v, want %+v", statuses, want)
 	}
 
 	const methodName = "ListDeploymentStatuses"
