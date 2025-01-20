@@ -391,7 +391,7 @@ func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	// This will always return an error without unmarshalling the data
+	// This will always return an error without unmarshaling the data
 	resp, err := s.client.Do(ctx, req, nil)
 	// Even though there was an error, we still return the response
 	// in case the caller wants to inspect it further.

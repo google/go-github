@@ -1311,7 +1311,7 @@ func (r *RedirectionError) Is(target error) bool {
 
 	return r.StatusCode == v.StatusCode &&
 		(r.Location == v.Location || // either both locations are nil or exactly the same pointer
-			r.Location != nil && v.Location != nil && r.Location.String() == v.Location.String()) // or they are both not nil and marshalled identically
+			r.Location != nil && v.Location != nil && r.Location.String() == v.Location.String()) // or they are both not nil and marshaled identically
 }
 
 // sanitizeURL redacts the client_secret parameter from the URL which may be
