@@ -22964,15 +22964,15 @@ func TestPullRequestThread_GetNodeID(tt *testing.T) {
 	p.GetNodeID()
 }
 
-func TestPullStats_GetMergablePulls(tt *testing.T) {
+func TestPullStats_GetMergeablePulls(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	p := &PullStats{MergablePulls: &zeroValue}
-	p.GetMergablePulls()
+	p := &PullStats{MergeablePulls: &zeroValue}
+	p.GetMergeablePulls()
 	p = &PullStats{}
-	p.GetMergablePulls()
+	p.GetMergeablePulls()
 	p = nil
-	p.GetMergablePulls()
+	p.GetMergeablePulls()
 }
 
 func TestPullStats_GetMergedPulls(tt *testing.T) {
@@ -22997,15 +22997,15 @@ func TestPullStats_GetTotalPulls(tt *testing.T) {
 	p.GetTotalPulls()
 }
 
-func TestPullStats_GetUnmergablePulls(tt *testing.T) {
+func TestPullStats_GetUnmergeablePulls(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	p := &PullStats{UnmergablePulls: &zeroValue}
-	p.GetUnmergablePulls()
+	p := &PullStats{UnmergeablePulls: &zeroValue}
+	p.GetUnmergeablePulls()
 	p = &PullStats{}
-	p.GetUnmergablePulls()
+	p.GetUnmergeablePulls()
 	p = nil
-	p.GetUnmergablePulls()
+	p.GetUnmergeablePulls()
 }
 
 func TestPunchCard_GetCommits(tt *testing.T) {

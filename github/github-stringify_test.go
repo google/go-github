@@ -1454,12 +1454,12 @@ func TestPullRequestThread_String(t *testing.T) {
 func TestPullStats_String(t *testing.T) {
 	t.Parallel()
 	v := PullStats{
-		TotalPulls:      Ptr(0),
-		MergedPulls:     Ptr(0),
-		MergablePulls:   Ptr(0),
-		UnmergablePulls: Ptr(0),
+		TotalPulls:       Ptr(0),
+		MergedPulls:      Ptr(0),
+		MergeablePulls:   Ptr(0),
+		UnmergeablePulls: Ptr(0),
 	}
-	want := `github.PullStats{TotalPulls:0, MergedPulls:0, MergablePulls:0, UnmergablePulls:0}`
+	want := `github.PullStats{TotalPulls:0, MergedPulls:0, MergeablePulls:0, UnmergeablePulls:0}`
 	if got := v.String(); got != want {
 		t.Errorf("PullStats.String = %v, want %v", got, want)
 	}
