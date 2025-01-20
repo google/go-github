@@ -5397,7 +5397,7 @@ func TestConfigApplyEventsNodeEvent_GetSeverityText(tt *testing.T) {
 
 func TestConfigApplyEventsNodeEvent_GetSpanDepth(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue int
 	c := &ConfigApplyEventsNodeEvent{SpanDepth: &zeroValue}
 	c.GetSpanDepth()
 	c = &ConfigApplyEventsNodeEvent{}
@@ -5619,7 +5619,7 @@ func TestConfigSettings_GetConfigurationID(tt *testing.T) {
 
 func TestConfigSettings_GetConfigurationRunCount(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue int
 	c := &ConfigSettings{ConfigurationRunCount: &zeroValue}
 	c.GetConfigurationRunCount()
 	c = &ConfigSettings{}
@@ -5902,7 +5902,7 @@ func TestConfigSettingsCollectd_GetPassword(tt *testing.T) {
 
 func TestConfigSettingsCollectd_GetPort(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue int
 	c := &ConfigSettingsCollectd{Port: &zeroValue}
 	c.GetPort()
 	c = &ConfigSettingsCollectd{}
@@ -6122,7 +6122,7 @@ func TestConfigSettingsLDAP_GetPassword(tt *testing.T) {
 
 func TestConfigSettingsLDAP_GetPort(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue int
 	c := &ConfigSettingsLDAP{Port: &zeroValue}
 	c.GetPort()
 	c = &ConfigSettingsLDAP{}
@@ -6193,7 +6193,7 @@ func TestConfigSettingsLDAP_GetSyncEnabled(tt *testing.T) {
 
 func TestConfigSettingsLDAP_GetTeamSyncInterval(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue int
 	c := &ConfigSettingsLDAP{TeamSyncInterval: &zeroValue}
 	c.GetTeamSyncInterval()
 	c = &ConfigSettingsLDAP{}
@@ -6226,7 +6226,7 @@ func TestConfigSettingsLDAP_GetUserSyncEmails(tt *testing.T) {
 
 func TestConfigSettingsLDAP_GetUserSyncInterval(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue int
 	c := &ConfigSettingsLDAP{UserSyncInterval: &zeroValue}
 	c.GetUserSyncInterval()
 	c = &ConfigSettingsLDAP{}
@@ -6369,7 +6369,7 @@ func TestConfigSettingsLicenseSettings_GetPerpetual(tt *testing.T) {
 
 func TestConfigSettingsLicenseSettings_GetSeats(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue int
 	c := &ConfigSettingsLicenseSettings{Seats: &zeroValue}
 	c.GetSeats()
 	c = &ConfigSettingsLicenseSettings{}
@@ -16594,7 +16594,7 @@ func TestLicenseStatus_GetAdvancedSecurityEnabled(tt *testing.T) {
 
 func TestLicenseStatus_GetAdvancedSecuritySeats(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue int
 	l := &LicenseStatus{AdvancedSecuritySeats: &zeroValue}
 	l.GetAdvancedSecuritySeats()
 	l = &LicenseStatus{}
@@ -16704,7 +16704,7 @@ func TestLicenseStatus_GetLearningLabEvaluationExpires(tt *testing.T) {
 
 func TestLicenseStatus_GetLearningLabSeats(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue int
 	l := &LicenseStatus{LearningLabSeats: &zeroValue}
 	l.GetLearningLabSeats()
 	l = &LicenseStatus{}
@@ -16737,7 +16737,7 @@ func TestLicenseStatus_GetReferenceNumber(tt *testing.T) {
 
 func TestLicenseStatus_GetSeats(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue int
 	l := &LicenseStatus{Seats: &zeroValue}
 	l.GetSeats()
 	l = &LicenseStatus{}

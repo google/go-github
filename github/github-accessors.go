@@ -4159,7 +4159,7 @@ func (c *ConfigApplyEventsNodeEvent) GetSeverityText() string {
 }
 
 // GetSpanDepth returns the SpanDepth field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvent) GetSpanDepth() int64 {
+func (c *ConfigApplyEventsNodeEvent) GetSpanDepth() int {
 	if c == nil || c.SpanDepth == nil {
 		return 0
 	}
@@ -4327,7 +4327,7 @@ func (c *ConfigSettings) GetConfigurationID() int64 {
 }
 
 // GetConfigurationRunCount returns the ConfigurationRunCount field if it's non-nil, zero value otherwise.
-func (c *ConfigSettings) GetConfigurationRunCount() int64 {
+func (c *ConfigSettings) GetConfigurationRunCount() int {
 	if c == nil || c.ConfigurationRunCount == nil {
 		return 0
 	}
@@ -4559,7 +4559,7 @@ func (c *ConfigSettingsCollectd) GetPassword() string {
 }
 
 // GetPort returns the Port field if it's non-nil, zero value otherwise.
-func (c *ConfigSettingsCollectd) GetPort() int64 {
+func (c *ConfigSettingsCollectd) GetPort() int {
 	if c == nil || c.Port == nil {
 		return 0
 	}
@@ -4719,7 +4719,7 @@ func (c *ConfigSettingsLDAP) GetPassword() string {
 }
 
 // GetPort returns the Port field if it's non-nil, zero value otherwise.
-func (c *ConfigSettingsLDAP) GetPort() int64 {
+func (c *ConfigSettingsLDAP) GetPort() int {
 	if c == nil || c.Port == nil {
 		return 0
 	}
@@ -4775,7 +4775,7 @@ func (c *ConfigSettingsLDAP) GetSyncEnabled() bool {
 }
 
 // GetTeamSyncInterval returns the TeamSyncInterval field if it's non-nil, zero value otherwise.
-func (c *ConfigSettingsLDAP) GetTeamSyncInterval() int64 {
+func (c *ConfigSettingsLDAP) GetTeamSyncInterval() int {
 	if c == nil || c.TeamSyncInterval == nil {
 		return 0
 	}
@@ -4799,7 +4799,7 @@ func (c *ConfigSettingsLDAP) GetUserSyncEmails() bool {
 }
 
 // GetUserSyncInterval returns the UserSyncInterval field if it's non-nil, zero value otherwise.
-func (c *ConfigSettingsLDAP) GetUserSyncInterval() int64 {
+func (c *ConfigSettingsLDAP) GetUserSyncInterval() int {
 	if c == nil || c.UserSyncInterval == nil {
 		return 0
 	}
@@ -4903,7 +4903,7 @@ func (c *ConfigSettingsLicenseSettings) GetPerpetual() bool {
 }
 
 // GetSeats returns the Seats field if it's non-nil, zero value otherwise.
-func (c *ConfigSettingsLicenseSettings) GetSeats() int64 {
+func (c *ConfigSettingsLicenseSettings) GetSeats() int {
 	if c == nil || c.Seats == nil {
 		return 0
 	}
@@ -12815,7 +12815,7 @@ func (l *LicenseStatus) GetAdvancedSecurityEnabled() bool {
 }
 
 // GetAdvancedSecuritySeats returns the AdvancedSecuritySeats field if it's non-nil, zero value otherwise.
-func (l *LicenseStatus) GetAdvancedSecuritySeats() int64 {
+func (l *LicenseStatus) GetAdvancedSecuritySeats() int {
 	if l == nil || l.AdvancedSecuritySeats == nil {
 		return 0
 	}
@@ -12895,7 +12895,7 @@ func (l *LicenseStatus) GetLearningLabEvaluationExpires() Timestamp {
 }
 
 // GetLearningLabSeats returns the LearningLabSeats field if it's non-nil, zero value otherwise.
-func (l *LicenseStatus) GetLearningLabSeats() int64 {
+func (l *LicenseStatus) GetLearningLabSeats() int {
 	if l == nil || l.LearningLabSeats == nil {
 		return 0
 	}
@@ -12919,7 +12919,7 @@ func (l *LicenseStatus) GetReferenceNumber() string {
 }
 
 // GetSeats returns the Seats field if it's non-nil, zero value otherwise.
-func (l *LicenseStatus) GetSeats() int64 {
+func (l *LicenseStatus) GetSeats() int {
 	if l == nil || l.Seats == nil {
 		return 0
 	}

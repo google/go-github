@@ -177,7 +177,7 @@ func TestEnterpriseService_Settings(t *testing.T) {
 		ExpireSessions:        Ptr(false),
 		AdminPassword:         nil,
 		ConfigurationID:       Ptr(int64(1401777404)),
-		ConfigurationRunCount: Ptr(int64(4)),
+		ConfigurationRunCount: Ptr(4),
 		Avatar: &ConfigSettingsAvatar{
 			Enabled: Ptr(false),
 			URI:     Ptr(""),
@@ -190,7 +190,7 @@ func TestEnterpriseService_Settings(t *testing.T) {
 			PublicKeyData: Ptr("-"),
 		},
 		License: &ConfigSettingsLicenseSettings{
-			Seats:            Ptr(int64(0)),
+			Seats:            Ptr(0),
 			Evaluation:       Ptr(false),
 			Perpetual:        Ptr(false),
 			UnlimitedSeating: Ptr(true),
@@ -206,7 +206,7 @@ func TestEnterpriseService_Settings(t *testing.T) {
 		},
 		LDAP: &ConfigSettingsLDAP{
 			Host:                    nil,
-			Port:                    Ptr(int64(0)),
+			Port:                    Ptr(0),
 			Base:                    []*string{},
 			UID:                     nil,
 			BindDN:                  nil,
@@ -220,8 +220,8 @@ func TestEnterpriseService_Settings(t *testing.T) {
 			PosixSupport:            Ptr(true),
 			UserSyncEmails:          Ptr(false),
 			UserSyncKeys:            Ptr(false),
-			UserSyncInterval:        Ptr(int64(4)),
-			TeamSyncInterval:        Ptr(int64(4)),
+			UserSyncInterval:        Ptr(4),
+			TeamSyncInterval:        Ptr(4),
 			SyncEnabled:             Ptr(false),
 			Reconciliation: &ConfigSettingsLDAPReconciliation{
 				User: nil,
@@ -287,7 +287,7 @@ func TestEnterpriseService_Settings(t *testing.T) {
 		Collectd: &ConfigSettingsCollectd{
 			Enabled:    Ptr(false),
 			Server:     nil,
-			Port:       Ptr(int64(0)),
+			Port:       Ptr(0),
 			Encryption: nil,
 			Username:   nil,
 			Password:   nil,
@@ -439,7 +439,7 @@ func TestEnterpriseService_License(t *testing.T) {
 
 	want := []*LicenseStatus{{
 		AdvancedSecurityEnabled:      Ptr(true),
-		AdvancedSecuritySeats:        Ptr(int64(0)),
+		AdvancedSecuritySeats:        Ptr(0),
 		ClusterSupport:               Ptr(false),
 		Company:                      Ptr("GitHub"),
 		CroquetSupport:               Ptr(true),
@@ -449,10 +449,10 @@ func TestEnterpriseService_License(t *testing.T) {
 		InsightsEnabled:              Ptr(true),
 		InsightsExpireAt:             &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
 		LearningLabEvaluationExpires: &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
-		LearningLabSeats:             Ptr(int64(100)),
+		LearningLabSeats:             Ptr(100),
 		Perpetual:                    Ptr(false),
 		ReferenceNumber:              Ptr("32a145"),
-		Seats:                        Ptr(int64(0)),
+		Seats:                        Ptr(0),
 		SSHAllowed:                   Ptr(true),
 		SupportKey:                   Ptr(""),
 		UnlimitedSeating:             Ptr(true),
@@ -522,7 +522,7 @@ func TestEnterpriseService_ConfigApplyEvents(t *testing.T) {
 				TraceID:      Ptr("387cd628c06d606700e79be368e5e574"),
 				SpanID:       Ptr("0cde553750689c76"),
 				SpanParentID: Ptr(int64(0)),
-				SpanDepth:    Ptr(int64(0)),
+				SpanDepth:    Ptr(0),
 			}},
 		}},
 	}

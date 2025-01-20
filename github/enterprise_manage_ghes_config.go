@@ -60,7 +60,7 @@ type ConfigApplyEventsNodeEvent struct {
 	TraceID      *string    `json:"trace_id,omitempty"`
 	SpanID       *string    `json:"span_id,omitempty"`
 	SpanParentID *int64     `json:"span_parent_id,omitempty"`
-	SpanDepth    *int64     `json:"span_depth,omitempty"`
+	SpanDepth    *int       `json:"span_depth,omitempty"`
 }
 
 // InitialConfigOptions is a struct to hold the options for the InitialConfig API.
@@ -72,7 +72,7 @@ type InitialConfigOptions struct {
 // LicenseStatus is a struct to hold the response from the License API.
 type LicenseStatus struct {
 	AdvancedSecurityEnabled      *bool      `json:"advancedSecurityEnabled,omitempty"`
-	AdvancedSecuritySeats        *int64     `json:"advancedSecuritySeats,omitempty"`
+	AdvancedSecuritySeats        *int       `json:"advancedSecuritySeats,omitempty"`
 	ClusterSupport               *bool      `json:"clusterSupport,omitempty"`
 	Company                      *string    `json:"company,omitempty"`
 	CroquetSupport               *bool      `json:"croquetSupport,omitempty"`
@@ -82,10 +82,10 @@ type LicenseStatus struct {
 	InsightsEnabled              *bool      `json:"insightsEnabled,omitempty"`
 	InsightsExpireAt             *Timestamp `json:"insightsExpireAt,omitempty"`
 	LearningLabEvaluationExpires *Timestamp `json:"learningLabEvaluationExpires,omitempty"`
-	LearningLabSeats             *int64     `json:"learningLabSeats,omitempty"`
+	LearningLabSeats             *int       `json:"learningLabSeats,omitempty"`
 	Perpetual                    *bool      `json:"perpetual,omitempty"`
 	ReferenceNumber              *string    `json:"referenceNumber,omitempty"`
-	Seats                        *int64     `json:"seats,omitempty"`
+	Seats                        *int       `json:"seats,omitempty"`
 	SSHAllowed                   *bool      `json:"sshAllowed,omitempty"`
 	SupportKey                   *string    `json:"supportKey,omitempty"`
 	UnlimitedSeating             *bool      `json:"unlimitedSeating,omitempty"`
@@ -115,7 +115,7 @@ type ConfigSettings struct {
 	ExpireSessions        *bool                          `json:"expire_sessions,omitempty"`
 	AdminPassword         *string                        `json:"admin_password,omitempty"`
 	ConfigurationID       *int64                         `json:"configuration_id,omitempty"`
-	ConfigurationRunCount *int64                         `json:"configuration_run_count,omitempty"`
+	ConfigurationRunCount *int                           `json:"configuration_run_count,omitempty"`
 	Avatar                *ConfigSettingsAvatar          `json:"avatar,omitempty"`
 	Customer              *ConfigSettingsCustomer        `json:"customer,omitempty"`
 	License               *ConfigSettingsLicenseSettings `json:"license,omitempty"`
@@ -153,7 +153,7 @@ type ConfigSettingsCustomer struct {
 
 // ConfigSettingsLicenseSettings is a struct to hold the response from the Settings API.
 type ConfigSettingsLicenseSettings struct {
-	Seats            *int64     `json:"seats,omitempty"`
+	Seats            *int       `json:"seats,omitempty"`
 	Evaluation       *bool      `json:"evaluation,omitempty"`
 	Perpetual        *bool      `json:"perpetual,omitempty"`
 	UnlimitedSeating *bool      `json:"unlimited_seating,omitempty"`
@@ -173,7 +173,7 @@ type ConfigSettingsGithubSSL struct {
 // ConfigSettingsLDAP is a struct to hold the response from the Settings API.
 type ConfigSettingsLDAP struct {
 	Host                    *string                           `json:"host,omitempty"`
-	Port                    *int64                            `json:"port,omitempty"`
+	Port                    *int                              `json:"port,omitempty"`
 	Base                    []*string                         `json:"base,omitempty"`
 	UID                     *string                           `json:"uid,omitempty"`
 	BindDN                  *string                           `json:"bind_dn,omitempty"`
@@ -187,8 +187,8 @@ type ConfigSettingsLDAP struct {
 	PosixSupport            *bool                             `json:"posix_support,omitempty"`
 	UserSyncEmails          *bool                             `json:"user_sync_emails,omitempty"`
 	UserSyncKeys            *bool                             `json:"user_sync_keys,omitempty"`
-	UserSyncInterval        *int64                            `json:"user_sync_interval,omitempty"`
-	TeamSyncInterval        *int64                            `json:"team_sync_interval,omitempty"`
+	UserSyncInterval        *int                              `json:"user_sync_interval,omitempty"`
+	TeamSyncInterval        *int                              `json:"team_sync_interval,omitempty"`
 	SyncEnabled             *bool                             `json:"sync_enabled,omitempty"`
 	Reconciliation          *ConfigSettingsLDAPReconciliation `json:"reconciliation,omitempty"`
 	Profile                 *ConfigSettingsLDAPProfile        `json:"profile,omitempty"`
@@ -276,7 +276,7 @@ type ConfigSettingsPagesSettings struct {
 type ConfigSettingsCollectd struct {
 	Enabled    *bool   `json:"enabled,omitempty"`
 	Server     *string `json:"server,omitempty"`
-	Port       *int64  `json:"port,omitempty"`
+	Port       *int    `json:"port,omitempty"`
 	Encryption *string `json:"encryption,omitempty"`
 	Username   *string `json:"username,omitempty"`
 	Password   *string `json:"password,omitempty"`
