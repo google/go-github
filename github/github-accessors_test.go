@@ -3283,34 +3283,34 @@ func TestClusterStatusNode_GetStatus(tt *testing.T) {
 	c.GetStatus()
 }
 
-func TestClusterStatusNodesServices_GetDetails(tt *testing.T) {
+func TestClusterStatusNodeServiceItem_GetDetails(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ClusterStatusNodesServices{Details: &zeroValue}
+	c := &ClusterStatusNodeServiceItem{Details: &zeroValue}
 	c.GetDetails()
-	c = &ClusterStatusNodesServices{}
+	c = &ClusterStatusNodeServiceItem{}
 	c.GetDetails()
 	c = nil
 	c.GetDetails()
 }
 
-func TestClusterStatusNodesServices_GetName(tt *testing.T) {
+func TestClusterStatusNodeServiceItem_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ClusterStatusNodesServices{Name: &zeroValue}
+	c := &ClusterStatusNodeServiceItem{Name: &zeroValue}
 	c.GetName()
-	c = &ClusterStatusNodesServices{}
+	c = &ClusterStatusNodeServiceItem{}
 	c.GetName()
 	c = nil
 	c.GetName()
 }
 
-func TestClusterStatusNodesServices_GetStatus(tt *testing.T) {
+func TestClusterStatusNodeServiceItem_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ClusterStatusNodesServices{Status: &zeroValue}
+	c := &ClusterStatusNodeServiceItem{Status: &zeroValue}
 	c.GetStatus()
-	c = &ClusterStatusNodesServices{}
+	c = &ClusterStatusNodeServiceItem{}
 	c.GetStatus()
 	c = nil
 	c.GetStatus()
@@ -5933,23 +5933,23 @@ func TestConfigSettings_GetTimezone(tt *testing.T) {
 	c.GetTimezone()
 }
 
-func TestConnectionServices_GetName(tt *testing.T) {
+func TestConnectionServiceItem_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConnectionServices{Name: &zeroValue}
+	c := &ConnectionServiceItem{Name: &zeroValue}
 	c.GetName()
-	c = &ConnectionServices{}
+	c = &ConnectionServiceItem{}
 	c.GetName()
 	c = nil
 	c.GetName()
 }
 
-func TestConnectionServices_GetNumber(tt *testing.T) {
+func TestConnectionServiceItem_GetNumber(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	c := &ConnectionServices{Number: &zeroValue}
+	c := &ConnectionServiceItem{Number: &zeroValue}
 	c.GetNumber()
-	c = &ConnectionServices{}
+	c = &ConnectionServiceItem{}
 	c.GetNumber()
 	c = nil
 	c.GetNumber()

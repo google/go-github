@@ -2527,7 +2527,7 @@ func (c *ClusterStatusNode) GetStatus() string {
 }
 
 // GetDetails returns the Details field if it's non-nil, zero value otherwise.
-func (c *ClusterStatusNodesServices) GetDetails() string {
+func (c *ClusterStatusNodeServiceItem) GetDetails() string {
 	if c == nil || c.Details == nil {
 		return ""
 	}
@@ -2535,7 +2535,7 @@ func (c *ClusterStatusNodesServices) GetDetails() string {
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *ClusterStatusNodesServices) GetName() string {
+func (c *ClusterStatusNodeServiceItem) GetName() string {
 	if c == nil || c.Name == nil {
 		return ""
 	}
@@ -2543,7 +2543,7 @@ func (c *ClusterStatusNodesServices) GetName() string {
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
-func (c *ClusterStatusNodesServices) GetStatus() string {
+func (c *ClusterStatusNodeServiceItem) GetStatus() string {
 	if c == nil || c.Status == nil {
 		return ""
 	}
@@ -4583,7 +4583,7 @@ func (c *ConfigSettings) GetTimezone() string {
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *ConnectionServices) GetName() string {
+func (c *ConnectionServiceItem) GetName() string {
 	if c == nil || c.Name == nil {
 		return ""
 	}
@@ -4591,7 +4591,7 @@ func (c *ConnectionServices) GetName() string {
 }
 
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
-func (c *ConnectionServices) GetNumber() int {
+func (c *ConnectionServiceItem) GetNumber() int {
 	if c == nil || c.Number == nil {
 		return 0
 	}

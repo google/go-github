@@ -91,7 +91,7 @@ func TestEnterpriseService_ClusterStatus(t *testing.T) {
 		Nodes: []*ClusterStatusNode{{
 			Hostname: Ptr("primary"),
 			Status:   Ptr("OK"),
-			Services: []*ClusterStatusNodesServices{},
+			Services: []*ClusterStatusNodeServiceItem{},
 		}},
 	}
 	if !cmp.Equal(clusterStatus, want) {
@@ -142,7 +142,7 @@ func TestEnterpriseService_ReplicationStatus(t *testing.T) {
 		Nodes: []*ClusterStatusNode{{
 			Hostname: Ptr("primary"),
 			Status:   Ptr("OK"),
-			Services: []*ClusterStatusNodesServices{},
+			Services: []*ClusterStatusNodeServiceItem{},
 		}},
 	}
 	if !cmp.Equal(replicationStatus, want) {

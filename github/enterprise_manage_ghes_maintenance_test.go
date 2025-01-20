@@ -59,7 +59,7 @@ func TestEnterpriseService_GetMaintenanceStatus(t *testing.T) {
 		UUID:          Ptr("1b6cf518-f97c-11ed-8544-061d81f7eedb"),
 		Status:        Ptr("scheduled"),
 		ScheduledTime: &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
-		ConnectionServices: []*ConnectionServices{{
+		ConnectionServices: []*ConnectionServiceItem{{
 			Name:   Ptr("git operations"),
 			Number: Ptr(15),
 		}},

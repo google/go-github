@@ -27,13 +27,13 @@ type ClusterStatus struct {
 
 // ClusterStatusNode represents the status of a cluster node.
 type ClusterStatusNode struct {
-	Hostname *string                       `json:"hostname,omitempty"`
-	Status   *string                       `json:"status,omitempty"`
-	Services []*ClusterStatusNodesServices `json:"services"`
+	Hostname *string                         `json:"hostname,omitempty"`
+	Status   *string                         `json:"status,omitempty"`
+	Services []*ClusterStatusNodeServiceItem `json:"services"`
 }
 
-// ClusterStatusNodesServices represents the status of a service running on a cluster node.
-type ClusterStatusNodesServices struct {
+// ClusterStatusNodeServiceItem represents the status of a service running on a cluster node.
+type ClusterStatusNodeServiceItem struct {
 	Status  *string `json:"status,omitempty"`
 	Name    *string `json:"name,omitempty"`
 	Details *string `json:"details,omitempty"`

@@ -18,18 +18,18 @@ type MaintenanceOperationStatus struct {
 
 // MaintenanceStatus represents the status of maintenance mode for all nodes.
 type MaintenanceStatus struct {
-	Hostname               *string               `json:"hostname,omitempty"`
-	UUID                   *string               `json:"uuid,omitempty"`
-	Status                 *string               `json:"status,omitempty"`
-	ScheduledTime          *Timestamp            `json:"scheduled_time,omitempty"`
-	ConnectionServices     []*ConnectionServices `json:"connection_services"`
-	CanUnsetMaintenance    *bool                 `json:"can_unset_maintenance,omitempty"`
-	IPExceptionList        []*string             `json:"ip_exception_list,omitempty"`
-	MaintenanceModeMessage *string               `json:"maintenance_mode_message,omitempty"`
+	Hostname               *string                  `json:"hostname,omitempty"`
+	UUID                   *string                  `json:"uuid,omitempty"`
+	Status                 *string                  `json:"status,omitempty"`
+	ScheduledTime          *Timestamp               `json:"scheduled_time,omitempty"`
+	ConnectionServices     []*ConnectionServiceItem `json:"connection_services"`
+	CanUnsetMaintenance    *bool                    `json:"can_unset_maintenance,omitempty"`
+	IPExceptionList        []*string                `json:"ip_exception_list,omitempty"`
+	MaintenanceModeMessage *string                  `json:"maintenance_mode_message,omitempty"`
 }
 
-// ConnectionServices represents the connection services for the maintenance status.
-type ConnectionServices struct {
+// ConnectionServiceItem represents the connection services for the maintenance status.
+type ConnectionServiceItem struct {
 	Name   *string `json:"name,omitempty"`
 	Number *int    `json:"number,omitempty"`
 }
