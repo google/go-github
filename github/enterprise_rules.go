@@ -78,7 +78,7 @@ func (s *EnterpriseService) UpdateRepositoryRuleset(ctx context.Context, enterpr
 
 // UpdateRepositoryRulesetClearBypassActor clears the bypass actors for a repository ruleset for the specified enterprise.
 //
-// This function is necessary as the UpdateEnterpriseRuleset function does not marshal ByPassActor if passed as an empty array.
+// This function is necessary as the UpdateRepositoryRuleset function does not marshal ByPassActor if passed as an empty array.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
 //
