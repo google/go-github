@@ -167,8 +167,8 @@ func (s *TeamsService) CreateCommentByID(ctx context.Context, orgID, teamID int6
 // GitHub API docs: https://docs.github.com/rest/teams/discussion-comments#create-a-discussion-comment
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments
-func (s *TeamsService) CreateCommentBySlug(ctx context.Context, org, slug string, discsusionNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments", org, slug, discsusionNumber)
+func (s *TeamsService) CreateCommentBySlug(ctx context.Context, org, slug string, discussionNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments", org, slug, discussionNumber)
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
 		return nil, nil, err

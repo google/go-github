@@ -169,7 +169,7 @@ func getPolicyBuilder() (*verify.PolicyBuilder, error) {
 		return nil, err
 	}
 
-	// Set up the articaft policy
+	// Set up the artifact policy
 	artifactDigestBytes, err := hex.DecodeString(*artifactDigest)
 	if err != nil {
 		return nil, err
