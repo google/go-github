@@ -413,6 +413,7 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/repo/rules/branches/branch", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprint(w, `[
 			{
 			  "ruleset_id": 42069,
@@ -433,7 +434,7 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch")
+	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", &ListOptions{Page: 2, PerPage: 2})
 	if err != nil {
 		t.Errorf("Repositories.GetRulesForBranch returned error: %v", err)
 	}
@@ -460,7 +461,7 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 	const methodName = "GetRulesForBranch"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch")
+		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -474,6 +475,7 @@ func TestRepositoriesService_GetRulesForBranchEmptyUpdateRule(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/repo/rules/branches/branch", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprint(w, `[
 			{
 			  "type": "update"
@@ -482,7 +484,7 @@ func TestRepositoriesService_GetRulesForBranchEmptyUpdateRule(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch")
+	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", &ListOptions{Page: 2, PerPage: 2})
 	if err != nil {
 		t.Errorf("Repositories.GetRulesForBranch returned error: %v", err)
 	}
@@ -499,7 +501,7 @@ func TestRepositoriesService_GetRulesForBranchEmptyUpdateRule(t *testing.T) {
 	const methodName = "GetRulesForBranch"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch")
+		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -513,6 +515,7 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/repo/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprint(w, `[
 			{
 			  "id": 42,
@@ -536,7 +539,7 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", false)
+	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", false, &ListOptions{Page: 2, PerPage: 2})
 	if err != nil {
 		t.Errorf("Repositories.GetAllRulesets returned error: %v", err)
 	}
@@ -568,7 +571,7 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 	const methodName = "GetAllRulesets"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", false)
+		got, resp, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", false, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
