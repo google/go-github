@@ -59,8 +59,8 @@ type ConfigApplyEventsNodeEvent struct {
 	ConfigRunID  *string    `json:"config_run_id,omitempty"`
 	TraceID      *string    `json:"trace_id,omitempty"`
 	SpanID       *string    `json:"span_id,omitempty"`
-	SpanParentID *int       `json:"span_parent_id,omitempty"`
-	SpanDepth    *int       `json:"span_depth,omitempty"`
+	SpanParentID *int64     `json:"span_parent_id,omitempty"`
+	SpanDepth    *int64     `json:"span_depth,omitempty"`
 }
 
 // InitialConfigOptions is a struct to hold the options for the InitialConfig API.
@@ -72,7 +72,7 @@ type InitialConfigOptions struct {
 // LicenseStatus is a struct to hold the response from the License API.
 type LicenseStatus struct {
 	AdvancedSecurityEnabled      *bool      `json:"advancedSecurityEnabled,omitempty"`
-	AdvancedSecuritySeats        *int       `json:"advancedSecuritySeats,omitempty"`
+	AdvancedSecuritySeats        *int64     `json:"advancedSecuritySeats,omitempty"`
 	ClusterSupport               *bool      `json:"clusterSupport,omitempty"`
 	Company                      *string    `json:"company,omitempty"`
 	CroquetSupport               *bool      `json:"croquetSupport,omitempty"`
@@ -82,10 +82,10 @@ type LicenseStatus struct {
 	InsightsEnabled              *bool      `json:"insightsEnabled,omitempty"`
 	InsightsExpireAt             *Timestamp `json:"insightsExpireAt,omitempty"`
 	LearningLabEvaluationExpires *Timestamp `json:"learningLabEvaluationExpires,omitempty"`
-	LearningLabSeats             *int       `json:"learningLabSeats,omitempty"`
+	LearningLabSeats             *int64     `json:"learningLabSeats,omitempty"`
 	Perpetual                    *bool      `json:"perpetual,omitempty"`
 	ReferenceNumber              *string    `json:"referenceNumber,omitempty"`
-	Seats                        *int       `json:"seats,omitempty"`
+	Seats                        *int64     `json:"seats,omitempty"`
 	SSHAllowed                   *bool      `json:"sshAllowed,omitempty"`
 	SupportKey                   *string    `json:"supportKey,omitempty"`
 	UnlimitedSeating             *bool      `json:"unlimitedSeating,omitempty"`
@@ -104,46 +104,46 @@ type LicenseCheck struct {
 // ConfigSettings is a struct to hold the response from the Settings API.
 // There are many fields that link to other structs.
 type ConfigSettings struct {
-	PrivateMode           *bool            `json:"private_mode,omitempty"`
-	PublicPages           *bool            `json:"public_pages,omitempty"`
-	SubdomainIsolation    *bool            `json:"subdomain_isolation,omitempty"`
-	SignupEnabled         *bool            `json:"signup_enabled,omitempty"`
-	GitHubHostname        *string          `json:"github_hostname,omitempty"`
-	IdenticonsHost        *string          `json:"identicons_host,omitempty"`
-	HTTPProxy             *string          `json:"http_proxy,omitempty"`
-	AuthMode              *string          `json:"auth_mode,omitempty"`
-	ExpireSessions        *bool            `json:"expire_sessions,omitempty"`
-	AdminPassword         *string          `json:"admin_password,omitempty"`
-	ConfigurationID       *int             `json:"configuration_id,omitempty"`
-	ConfigurationRunCount *int             `json:"configuration_run_count,omitempty"`
-	Avatar                *Avatar          `json:"avatar,omitempty"`
-	Customer              *Customer        `json:"customer,omitempty"`
-	License               *LicenseSettings `json:"license,omitempty"`
-	GitHubSSL             *GitHubSSL       `json:"github_ssl,omitempty"`
-	LDAP                  *LDAP            `json:"ldap,omitempty"`
-	CAS                   *CAS             `json:"cas,omitempty"`
-	SAML                  *SAML            `json:"saml,omitempty"`
-	GitHubOAuth           *GitHubOAuth     `json:"github_oauth,omitempty"`
-	SMTP                  *SMTP            `json:"smtp,omitempty"`
-	NTP                   *NTP             `json:"ntp,omitempty"`
-	Timezone              *string          `json:"timezone,omitempty"`
-	SNMP                  *SNMP            `json:"snmp,omitempty"`
-	Syslog                *Syslog          `json:"syslog,omitempty"`
-	Assets                *string          `json:"assets,omitempty"`
-	Pages                 *PagesSettings   `json:"pages,omitempty"`
-	Collectd              *Collectd        `json:"collectd,omitempty"`
-	Mapping               *Mapping         `json:"mapping,omitempty"`
-	LoadBalancer          *string          `json:"load_balancer,omitempty"`
+	PrivateMode           *bool                          `json:"private_mode,omitempty"`
+	PublicPages           *bool                          `json:"public_pages,omitempty"`
+	SubdomainIsolation    *bool                          `json:"subdomain_isolation,omitempty"`
+	SignupEnabled         *bool                          `json:"signup_enabled,omitempty"`
+	GithubHostname        *string                        `json:"github_hostname,omitempty"`
+	IdenticonsHost        *string                        `json:"identicons_host,omitempty"`
+	HTTPProxy             *string                        `json:"http_proxy,omitempty"`
+	AuthMode              *string                        `json:"auth_mode,omitempty"`
+	ExpireSessions        *bool                          `json:"expire_sessions,omitempty"`
+	AdminPassword         *string                        `json:"admin_password,omitempty"`
+	ConfigurationID       *int64                         `json:"configuration_id,omitempty"`
+	ConfigurationRunCount *int64                         `json:"configuration_run_count,omitempty"`
+	Avatar                *ConfigSettingsAvatar          `json:"avatar,omitempty"`
+	Customer              *ConfigSettingsCustomer        `json:"customer,omitempty"`
+	License               *ConfigSettingsLicenseSettings `json:"license,omitempty"`
+	GithubSSL             *ConfigSettingsGithubSSL       `json:"github_ssl,omitempty"`
+	LDAP                  *ConfigSettingsLDAP            `json:"ldap,omitempty"`
+	CAS                   *ConfigSettingsCAS             `json:"cas,omitempty"`
+	SAML                  *ConfigSettingsSAML            `json:"saml,omitempty"`
+	GithubOAuth           *ConfigSettingsGithubOAuth     `json:"github_oauth,omitempty"`
+	SMTP                  *ConfigSettingsSMTP            `json:"smtp,omitempty"`
+	NTP                   *ConfigSettingsNTP             `json:"ntp,omitempty"`
+	Timezone              *string                        `json:"timezone,omitempty"`
+	SNMP                  *ConfigSettingsSNMP            `json:"snmp,omitempty"`
+	Syslog                *ConfigSettingsSyslog          `json:"syslog,omitempty"`
+	Assets                *string                        `json:"assets,omitempty"`
+	Pages                 *ConfigSettingsPagesSettings   `json:"pages,omitempty"`
+	Collectd              *ConfigSettingsCollectd        `json:"collectd,omitempty"`
+	Mapping               *ConfigSettingsMapping         `json:"mapping,omitempty"`
+	LoadBalancer          *string                        `json:"load_balancer,omitempty"`
 }
 
-// Avatar is a struct to hold the response from the Settings API.
-type Avatar struct {
+// ConfigSettingsAvatar is a struct to hold the response from the Settings API.
+type ConfigSettingsAvatar struct {
 	Enabled *bool   `json:"enabled,omitempty"`
 	URI     *string `json:"uri,omitempty"`
 }
 
-// Customer is a struct to hold the response from the Settings API.
-type Customer struct {
+// ConfigSettingsCustomer is a struct to hold the response from the Settings API.
+type ConfigSettingsCustomer struct {
 	Name          *string `json:"name,omitempty"`
 	Email         *string `json:"email,omitempty"`
 	UUID          *string `json:"uuid,omitempty"`
@@ -151,9 +151,9 @@ type Customer struct {
 	PublicKeyData *string `json:"public_key_data,omitempty"`
 }
 
-// LicenseSettings is a struct to hold the response from the Settings API.
-type LicenseSettings struct {
-	Seats            *int       `json:"seats,omitempty"`
+// ConfigSettingsLicenseSettings is a struct to hold the response from the Settings API.
+type ConfigSettingsLicenseSettings struct {
+	Seats            *int64     `json:"seats,omitempty"`
 	Evaluation       *bool      `json:"evaluation,omitempty"`
 	Perpetual        *bool      `json:"perpetual,omitempty"`
 	UnlimitedSeating *bool      `json:"unlimited_seating,omitempty"`
@@ -163,58 +163,58 @@ type LicenseSettings struct {
 	ExpireAt         *Timestamp `json:"expire_at,omitempty"`
 }
 
-// GitHubSSL is a struct to hold the response from the Settings API.
-type GitHubSSL struct {
+// ConfigSettingsGithubSSL is a struct to hold the response from the Settings API.
+type ConfigSettingsGithubSSL struct {
 	Enabled *bool   `json:"enabled,omitempty"`
 	Cert    *string `json:"cert,omitempty"`
 	Key     *string `json:"key,omitempty"`
 }
 
-// LDAP is a struct to hold the response from the Settings API.
-type LDAP struct {
-	Host                    *string         `json:"host,omitempty"`
-	Port                    *int            `json:"port,omitempty"`
-	Base                    []*string       `json:"base,omitempty"`
-	UID                     *string         `json:"uid,omitempty"`
-	BindDN                  *string         `json:"bind_dn,omitempty"`
-	Password                *string         `json:"password,omitempty"`
-	Method                  *string         `json:"method,omitempty"`
-	SearchStrategy          *string         `json:"search_strategy,omitempty"`
-	UserGroups              []*string       `json:"user_groups,omitempty"`
-	AdminGroup              *string         `json:"admin_group,omitempty"`
-	VirtualAttributeEnabled *bool           `json:"virtual_attribute_enabled,omitempty"`
-	RecursiveGroupSearch    *bool           `json:"recursive_group_search,omitempty"`
-	PosixSupport            *bool           `json:"posix_support,omitempty"`
-	UserSyncEmails          *bool           `json:"user_sync_emails,omitempty"`
-	UserSyncKeys            *bool           `json:"user_sync_keys,omitempty"`
-	UserSyncInterval        *int            `json:"user_sync_interval,omitempty"`
-	TeamSyncInterval        *int            `json:"team_sync_interval,omitempty"`
-	SyncEnabled             *bool           `json:"sync_enabled,omitempty"`
-	Reconciliation          *Reconciliation `json:"reconciliation,omitempty"`
-	Profile                 *Profile        `json:"profile,omitempty"`
+// ConfigSettingsLDAP is a struct to hold the response from the Settings API.
+type ConfigSettingsLDAP struct {
+	Host                    *string                           `json:"host,omitempty"`
+	Port                    *int64                            `json:"port,omitempty"`
+	Base                    []*string                         `json:"base,omitempty"`
+	UID                     *string                           `json:"uid,omitempty"`
+	BindDN                  *string                           `json:"bind_dn,omitempty"`
+	Password                *string                           `json:"password,omitempty"`
+	Method                  *string                           `json:"method,omitempty"`
+	SearchStrategy          *string                           `json:"search_strategy,omitempty"`
+	UserGroups              []*string                         `json:"user_groups,omitempty"`
+	AdminGroup              *string                           `json:"admin_group,omitempty"`
+	VirtualAttributeEnabled *bool                             `json:"virtual_attribute_enabled,omitempty"`
+	RecursiveGroupSearch    *bool                             `json:"recursive_group_search,omitempty"`
+	PosixSupport            *bool                             `json:"posix_support,omitempty"`
+	UserSyncEmails          *bool                             `json:"user_sync_emails,omitempty"`
+	UserSyncKeys            *bool                             `json:"user_sync_keys,omitempty"`
+	UserSyncInterval        *int64                            `json:"user_sync_interval,omitempty"`
+	TeamSyncInterval        *int64                            `json:"team_sync_interval,omitempty"`
+	SyncEnabled             *bool                             `json:"sync_enabled,omitempty"`
+	Reconciliation          *ConfigSettingsLDAPReconciliation `json:"reconciliation,omitempty"`
+	Profile                 *ConfigSettingsLDAPProfile        `json:"profile,omitempty"`
 }
 
-// Reconciliation is part of the LDAP struct.
-type Reconciliation struct {
+// ConfigSettingsLDAPReconciliation is part of the LDAP struct.
+type ConfigSettingsLDAPReconciliation struct {
 	User *string `json:"user,omitempty"`
 	Org  *string `json:"org,omitempty"`
 }
 
-// Profile is part of the LDAP struct.
-type Profile struct {
+// ConfigSettingsLDAPProfile is part of the LDAP struct.
+type ConfigSettingsLDAPProfile struct {
 	UID  *string `json:"uid,omitempty"`
 	Name *string `json:"name,omitempty"`
 	Mail *string `json:"mail,omitempty"`
 	Key  *string `json:"key,omitempty"`
 }
 
-// CAS is a struct to hold the response from the Settings API.
-type CAS struct {
+// ConfigSettingsCAS is a struct to hold the response from the Settings API.
+type ConfigSettingsCAS struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// SAML is a struct to hold the response from the Settings API.
-type SAML struct {
+// ConfigSettingsSAML is a struct to hold the response from the Settings API.
+type ConfigSettingsSAML struct {
 	SSOURL             *string `json:"sso_url,omitempty"`
 	Certificate        *string `json:"certificate,omitempty"`
 	CertificatePath    *string `json:"certificate_path,omitempty"`
@@ -223,16 +223,16 @@ type SAML struct {
 	DisableAdminDemote *bool   `json:"disable_admin_demote,omitempty"`
 }
 
-// GitHubOAuth is a struct to hold the response from the Settings API.
-type GitHubOAuth struct {
+// ConfigSettingsGithubOAuth is a struct to hold the response from the Settings API.
+type ConfigSettingsGithubOAuth struct {
 	ClientID         *string `json:"client_id,omitempty"`
 	ClientSecret     *string `json:"client_secret,omitempty"`
 	OrganizationName *string `json:"organization_name,omitempty"`
 	OrganizationTeam *string `json:"organization_team,omitempty"`
 }
 
-// SMTP is a struct to hold the response from the Settings API.
-type SMTP struct {
+// ConfigSettingsSMTP is a struct to hold the response from the Settings API.
+type ConfigSettingsSMTP struct {
 	Enabled                 *bool   `json:"enabled,omitempty"`
 	Address                 *string `json:"address,omitempty"`
 	Authentication          *string `json:"authentication,omitempty"`
@@ -248,42 +248,42 @@ type SMTP struct {
 	NoreplyAddress          *string `json:"noreply_address,omitempty"`
 }
 
-// NTP is a struct to hold the response from the Settings API.
-type NTP struct {
+// ConfigSettingsNTP is a struct to hold the response from the Settings API.
+type ConfigSettingsNTP struct {
 	PrimaryServer   *string `json:"primary_server,omitempty"`
 	SecondaryServer *string `json:"secondary_server,omitempty"`
 }
 
-// SNMP is a struct to hold the response from the Settings API.
-type SNMP struct {
+// ConfigSettingsSNMP is a struct to hold the response from the Settings API.
+type ConfigSettingsSNMP struct {
 	Enabled   *bool   `json:"enabled,omitempty"`
 	Community *string `json:"community,omitempty"`
 }
 
-// Syslog is a struct to hold the response from the Settings API.
-type Syslog struct {
+// ConfigSettingsSyslog is a struct to hold the response from the Settings API.
+type ConfigSettingsSyslog struct {
 	Enabled      *bool   `json:"enabled,omitempty"`
 	Server       *string `json:"server,omitempty"`
 	ProtocolName *string `json:"protocol_name,omitempty"`
 }
 
-// PagesSettings is a struct to hold the response from the Settings API.
-type PagesSettings struct {
+// ConfigSettingsPagesSettings is a struct to hold the response from the Settings API.
+type ConfigSettingsPagesSettings struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// Collectd is a struct to hold the response from the Settings API.
-type Collectd struct {
+// ConfigSettingsCollectd is a struct to hold the response from the Settings API.
+type ConfigSettingsCollectd struct {
 	Enabled    *bool   `json:"enabled,omitempty"`
 	Server     *string `json:"server,omitempty"`
-	Port       *int    `json:"port,omitempty"`
+	Port       *int64  `json:"port,omitempty"`
 	Encryption *string `json:"encryption,omitempty"`
 	Username   *string `json:"username,omitempty"`
 	Password   *string `json:"password,omitempty"`
 }
 
-// Mapping is a struct to hold the response from the Settings API.
-type Mapping struct {
+// ConfigSettingsMapping is a struct to hold the response from the Settings API.
+type ConfigSettingsMapping struct {
 	Enabled    *bool   `json:"enabled,omitempty"`
 	Tileserver *string `json:"tileserver,omitempty"`
 	Basemap    *string `json:"basemap,omitempty"`

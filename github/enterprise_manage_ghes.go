@@ -15,7 +15,7 @@ type NodeQueryOptions struct {
 	// UUID filters issues based on the node UUID.
 	UUID *string `url:"uuid,omitempty"`
 
-	// ClusterRoles filters The cluster roles from the cluster configuration file.
+	// ClusterRoles filters the cluster roles from the cluster configuration file.
 	ClusterRoles *string `url:"cluster_roles,omitempty"`
 }
 

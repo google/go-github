@@ -1510,22 +1510,6 @@ func (a *AutoTriggerCheck) GetSetting() bool {
 	return *a.Setting
 }
 
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (a *Avatar) GetEnabled() bool {
-	if a == nil || a.Enabled == nil {
-		return false
-	}
-	return *a.Enabled
-}
-
-// GetURI returns the URI field if it's non-nil, zero value otherwise.
-func (a *Avatar) GetURI() string {
-	if a == nil || a.URI == nil {
-		return ""
-	}
-	return *a.URI
-}
-
 // GetContent returns the Content field if it's non-nil, zero value otherwise.
 func (b *Blob) GetContent() string {
 	if b == nil || b.Content == nil {
@@ -1964,14 +1948,6 @@ func (b *BypassActor) GetBypassMode() string {
 		return ""
 	}
 	return *b.BypassMode
-}
-
-// GetURL returns the URL field if it's non-nil, zero value otherwise.
-func (c *CAS) GetURL() string {
-	if c == nil || c.URL == nil {
-		return ""
-	}
-	return *c.URL
 }
 
 // GetApp returns the App field.
@@ -3382,54 +3358,6 @@ func (c *CollaboratorInvitation) GetURL() string {
 	return *c.URL
 }
 
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (c *Collectd) GetEnabled() bool {
-	if c == nil || c.Enabled == nil {
-		return false
-	}
-	return *c.Enabled
-}
-
-// GetEncryption returns the Encryption field if it's non-nil, zero value otherwise.
-func (c *Collectd) GetEncryption() string {
-	if c == nil || c.Encryption == nil {
-		return ""
-	}
-	return *c.Encryption
-}
-
-// GetPassword returns the Password field if it's non-nil, zero value otherwise.
-func (c *Collectd) GetPassword() string {
-	if c == nil || c.Password == nil {
-		return ""
-	}
-	return *c.Password
-}
-
-// GetPort returns the Port field if it's non-nil, zero value otherwise.
-func (c *Collectd) GetPort() int {
-	if c == nil || c.Port == nil {
-		return 0
-	}
-	return *c.Port
-}
-
-// GetServer returns the Server field if it's non-nil, zero value otherwise.
-func (c *Collectd) GetServer() string {
-	if c == nil || c.Server == nil {
-		return ""
-	}
-	return *c.Server
-}
-
-// GetUsername returns the Username field if it's non-nil, zero value otherwise.
-func (c *Collectd) GetUsername() string {
-	if c == nil || c.Username == nil {
-		return ""
-	}
-	return *c.Username
-}
-
 // GetCommitURL returns the CommitURL field if it's non-nil, zero value otherwise.
 func (c *CombinedStatus) GetCommitURL() string {
 	if c == nil || c.CommitURL == nil {
@@ -4231,7 +4159,7 @@ func (c *ConfigApplyEventsNodeEvent) GetSeverityText() string {
 }
 
 // GetSpanDepth returns the SpanDepth field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvent) GetSpanDepth() int {
+func (c *ConfigApplyEventsNodeEvent) GetSpanDepth() int64 {
 	if c == nil || c.SpanDepth == nil {
 		return 0
 	}
@@ -4247,7 +4175,7 @@ func (c *ConfigApplyEventsNodeEvent) GetSpanID() string {
 }
 
 // GetSpanParentID returns the SpanParentID field if it's non-nil, zero value otherwise.
-func (c *ConfigApplyEventsNodeEvent) GetSpanParentID() int {
+func (c *ConfigApplyEventsNodeEvent) GetSpanParentID() int64 {
 	if c == nil || c.SpanParentID == nil {
 		return 0
 	}
@@ -4367,7 +4295,7 @@ func (c *ConfigSettings) GetAuthMode() string {
 }
 
 // GetAvatar returns the Avatar field.
-func (c *ConfigSettings) GetAvatar() *Avatar {
+func (c *ConfigSettings) GetAvatar() *ConfigSettingsAvatar {
 	if c == nil {
 		return nil
 	}
@@ -4375,7 +4303,7 @@ func (c *ConfigSettings) GetAvatar() *Avatar {
 }
 
 // GetCAS returns the CAS field.
-func (c *ConfigSettings) GetCAS() *CAS {
+func (c *ConfigSettings) GetCAS() *ConfigSettingsCAS {
 	if c == nil {
 		return nil
 	}
@@ -4383,7 +4311,7 @@ func (c *ConfigSettings) GetCAS() *CAS {
 }
 
 // GetCollectd returns the Collectd field.
-func (c *ConfigSettings) GetCollectd() *Collectd {
+func (c *ConfigSettings) GetCollectd() *ConfigSettingsCollectd {
 	if c == nil {
 		return nil
 	}
@@ -4391,7 +4319,7 @@ func (c *ConfigSettings) GetCollectd() *Collectd {
 }
 
 // GetConfigurationID returns the ConfigurationID field if it's non-nil, zero value otherwise.
-func (c *ConfigSettings) GetConfigurationID() int {
+func (c *ConfigSettings) GetConfigurationID() int64 {
 	if c == nil || c.ConfigurationID == nil {
 		return 0
 	}
@@ -4399,7 +4327,7 @@ func (c *ConfigSettings) GetConfigurationID() int {
 }
 
 // GetConfigurationRunCount returns the ConfigurationRunCount field if it's non-nil, zero value otherwise.
-func (c *ConfigSettings) GetConfigurationRunCount() int {
+func (c *ConfigSettings) GetConfigurationRunCount() int64 {
 	if c == nil || c.ConfigurationRunCount == nil {
 		return 0
 	}
@@ -4407,7 +4335,7 @@ func (c *ConfigSettings) GetConfigurationRunCount() int {
 }
 
 // GetCustomer returns the Customer field.
-func (c *ConfigSettings) GetCustomer() *Customer {
+func (c *ConfigSettings) GetCustomer() *ConfigSettingsCustomer {
 	if c == nil {
 		return nil
 	}
@@ -4422,28 +4350,28 @@ func (c *ConfigSettings) GetExpireSessions() bool {
 	return *c.ExpireSessions
 }
 
-// GetGitHubHostname returns the GitHubHostname field if it's non-nil, zero value otherwise.
-func (c *ConfigSettings) GetGitHubHostname() string {
-	if c == nil || c.GitHubHostname == nil {
+// GetGithubHostname returns the GithubHostname field if it's non-nil, zero value otherwise.
+func (c *ConfigSettings) GetGithubHostname() string {
+	if c == nil || c.GithubHostname == nil {
 		return ""
 	}
-	return *c.GitHubHostname
+	return *c.GithubHostname
 }
 
-// GetGitHubOAuth returns the GitHubOAuth field.
-func (c *ConfigSettings) GetGitHubOAuth() *GitHubOAuth {
+// GetGithubOAuth returns the GithubOAuth field.
+func (c *ConfigSettings) GetGithubOAuth() *ConfigSettingsGithubOAuth {
 	if c == nil {
 		return nil
 	}
-	return c.GitHubOAuth
+	return c.GithubOAuth
 }
 
-// GetGitHubSSL returns the GitHubSSL field.
-func (c *ConfigSettings) GetGitHubSSL() *GitHubSSL {
+// GetGithubSSL returns the GithubSSL field.
+func (c *ConfigSettings) GetGithubSSL() *ConfigSettingsGithubSSL {
 	if c == nil {
 		return nil
 	}
-	return c.GitHubSSL
+	return c.GithubSSL
 }
 
 // GetHTTPProxy returns the HTTPProxy field if it's non-nil, zero value otherwise.
@@ -4463,7 +4391,7 @@ func (c *ConfigSettings) GetIdenticonsHost() string {
 }
 
 // GetLDAP returns the LDAP field.
-func (c *ConfigSettings) GetLDAP() *LDAP {
+func (c *ConfigSettings) GetLDAP() *ConfigSettingsLDAP {
 	if c == nil {
 		return nil
 	}
@@ -4471,7 +4399,7 @@ func (c *ConfigSettings) GetLDAP() *LDAP {
 }
 
 // GetLicense returns the License field.
-func (c *ConfigSettings) GetLicense() *LicenseSettings {
+func (c *ConfigSettings) GetLicense() *ConfigSettingsLicenseSettings {
 	if c == nil {
 		return nil
 	}
@@ -4487,7 +4415,7 @@ func (c *ConfigSettings) GetLoadBalancer() string {
 }
 
 // GetMapping returns the Mapping field.
-func (c *ConfigSettings) GetMapping() *Mapping {
+func (c *ConfigSettings) GetMapping() *ConfigSettingsMapping {
 	if c == nil {
 		return nil
 	}
@@ -4495,7 +4423,7 @@ func (c *ConfigSettings) GetMapping() *Mapping {
 }
 
 // GetNTP returns the NTP field.
-func (c *ConfigSettings) GetNTP() *NTP {
+func (c *ConfigSettings) GetNTP() *ConfigSettingsNTP {
 	if c == nil {
 		return nil
 	}
@@ -4503,7 +4431,7 @@ func (c *ConfigSettings) GetNTP() *NTP {
 }
 
 // GetPages returns the Pages field.
-func (c *ConfigSettings) GetPages() *PagesSettings {
+func (c *ConfigSettings) GetPages() *ConfigSettingsPagesSettings {
 	if c == nil {
 		return nil
 	}
@@ -4527,7 +4455,7 @@ func (c *ConfigSettings) GetPublicPages() bool {
 }
 
 // GetSAML returns the SAML field.
-func (c *ConfigSettings) GetSAML() *SAML {
+func (c *ConfigSettings) GetSAML() *ConfigSettingsSAML {
 	if c == nil {
 		return nil
 	}
@@ -4543,7 +4471,7 @@ func (c *ConfigSettings) GetSignupEnabled() bool {
 }
 
 // GetSMTP returns the SMTP field.
-func (c *ConfigSettings) GetSMTP() *SMTP {
+func (c *ConfigSettings) GetSMTP() *ConfigSettingsSMTP {
 	if c == nil {
 		return nil
 	}
@@ -4551,7 +4479,7 @@ func (c *ConfigSettings) GetSMTP() *SMTP {
 }
 
 // GetSNMP returns the SNMP field.
-func (c *ConfigSettings) GetSNMP() *SNMP {
+func (c *ConfigSettings) GetSNMP() *ConfigSettingsSNMP {
 	if c == nil {
 		return nil
 	}
@@ -4567,7 +4495,7 @@ func (c *ConfigSettings) GetSubdomainIsolation() bool {
 }
 
 // GetSyslog returns the Syslog field.
-func (c *ConfigSettings) GetSyslog() *Syslog {
+func (c *ConfigSettings) GetSyslog() *ConfigSettingsSyslog {
 	if c == nil {
 		return nil
 	}
@@ -4580,6 +4508,678 @@ func (c *ConfigSettings) GetTimezone() string {
 		return ""
 	}
 	return *c.Timezone
+}
+
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsAvatar) GetEnabled() bool {
+	if c == nil || c.Enabled == nil {
+		return false
+	}
+	return *c.Enabled
+}
+
+// GetURI returns the URI field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsAvatar) GetURI() string {
+	if c == nil || c.URI == nil {
+		return ""
+	}
+	return *c.URI
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCAS) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCollectd) GetEnabled() bool {
+	if c == nil || c.Enabled == nil {
+		return false
+	}
+	return *c.Enabled
+}
+
+// GetEncryption returns the Encryption field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCollectd) GetEncryption() string {
+	if c == nil || c.Encryption == nil {
+		return ""
+	}
+	return *c.Encryption
+}
+
+// GetPassword returns the Password field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCollectd) GetPassword() string {
+	if c == nil || c.Password == nil {
+		return ""
+	}
+	return *c.Password
+}
+
+// GetPort returns the Port field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCollectd) GetPort() int64 {
+	if c == nil || c.Port == nil {
+		return 0
+	}
+	return *c.Port
+}
+
+// GetServer returns the Server field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCollectd) GetServer() string {
+	if c == nil || c.Server == nil {
+		return ""
+	}
+	return *c.Server
+}
+
+// GetUsername returns the Username field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCollectd) GetUsername() string {
+	if c == nil || c.Username == nil {
+		return ""
+	}
+	return *c.Username
+}
+
+// GetEmail returns the Email field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCustomer) GetEmail() string {
+	if c == nil || c.Email == nil {
+		return ""
+	}
+	return *c.Email
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCustomer) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetPublicKeyData returns the PublicKeyData field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCustomer) GetPublicKeyData() string {
+	if c == nil || c.PublicKeyData == nil {
+		return ""
+	}
+	return *c.PublicKeyData
+}
+
+// GetSecretKeyData returns the SecretKeyData field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCustomer) GetSecretKeyData() string {
+	if c == nil || c.SecretKeyData == nil {
+		return ""
+	}
+	return *c.SecretKeyData
+}
+
+// GetUUID returns the UUID field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCustomer) GetUUID() string {
+	if c == nil || c.UUID == nil {
+		return ""
+	}
+	return *c.UUID
+}
+
+// GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsGithubOAuth) GetClientID() string {
+	if c == nil || c.ClientID == nil {
+		return ""
+	}
+	return *c.ClientID
+}
+
+// GetClientSecret returns the ClientSecret field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsGithubOAuth) GetClientSecret() string {
+	if c == nil || c.ClientSecret == nil {
+		return ""
+	}
+	return *c.ClientSecret
+}
+
+// GetOrganizationName returns the OrganizationName field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsGithubOAuth) GetOrganizationName() string {
+	if c == nil || c.OrganizationName == nil {
+		return ""
+	}
+	return *c.OrganizationName
+}
+
+// GetOrganizationTeam returns the OrganizationTeam field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsGithubOAuth) GetOrganizationTeam() string {
+	if c == nil || c.OrganizationTeam == nil {
+		return ""
+	}
+	return *c.OrganizationTeam
+}
+
+// GetCert returns the Cert field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsGithubSSL) GetCert() string {
+	if c == nil || c.Cert == nil {
+		return ""
+	}
+	return *c.Cert
+}
+
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsGithubSSL) GetEnabled() bool {
+	if c == nil || c.Enabled == nil {
+		return false
+	}
+	return *c.Enabled
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsGithubSSL) GetKey() string {
+	if c == nil || c.Key == nil {
+		return ""
+	}
+	return *c.Key
+}
+
+// GetAdminGroup returns the AdminGroup field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetAdminGroup() string {
+	if c == nil || c.AdminGroup == nil {
+		return ""
+	}
+	return *c.AdminGroup
+}
+
+// GetBindDN returns the BindDN field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetBindDN() string {
+	if c == nil || c.BindDN == nil {
+		return ""
+	}
+	return *c.BindDN
+}
+
+// GetHost returns the Host field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetHost() string {
+	if c == nil || c.Host == nil {
+		return ""
+	}
+	return *c.Host
+}
+
+// GetMethod returns the Method field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetMethod() string {
+	if c == nil || c.Method == nil {
+		return ""
+	}
+	return *c.Method
+}
+
+// GetPassword returns the Password field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetPassword() string {
+	if c == nil || c.Password == nil {
+		return ""
+	}
+	return *c.Password
+}
+
+// GetPort returns the Port field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetPort() int64 {
+	if c == nil || c.Port == nil {
+		return 0
+	}
+	return *c.Port
+}
+
+// GetPosixSupport returns the PosixSupport field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetPosixSupport() bool {
+	if c == nil || c.PosixSupport == nil {
+		return false
+	}
+	return *c.PosixSupport
+}
+
+// GetProfile returns the Profile field.
+func (c *ConfigSettingsLDAP) GetProfile() *ConfigSettingsLDAPProfile {
+	if c == nil {
+		return nil
+	}
+	return c.Profile
+}
+
+// GetReconciliation returns the Reconciliation field.
+func (c *ConfigSettingsLDAP) GetReconciliation() *ConfigSettingsLDAPReconciliation {
+	if c == nil {
+		return nil
+	}
+	return c.Reconciliation
+}
+
+// GetRecursiveGroupSearch returns the RecursiveGroupSearch field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetRecursiveGroupSearch() bool {
+	if c == nil || c.RecursiveGroupSearch == nil {
+		return false
+	}
+	return *c.RecursiveGroupSearch
+}
+
+// GetSearchStrategy returns the SearchStrategy field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetSearchStrategy() string {
+	if c == nil || c.SearchStrategy == nil {
+		return ""
+	}
+	return *c.SearchStrategy
+}
+
+// GetSyncEnabled returns the SyncEnabled field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetSyncEnabled() bool {
+	if c == nil || c.SyncEnabled == nil {
+		return false
+	}
+	return *c.SyncEnabled
+}
+
+// GetTeamSyncInterval returns the TeamSyncInterval field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetTeamSyncInterval() int64 {
+	if c == nil || c.TeamSyncInterval == nil {
+		return 0
+	}
+	return *c.TeamSyncInterval
+}
+
+// GetUID returns the UID field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetUID() string {
+	if c == nil || c.UID == nil {
+		return ""
+	}
+	return *c.UID
+}
+
+// GetUserSyncEmails returns the UserSyncEmails field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetUserSyncEmails() bool {
+	if c == nil || c.UserSyncEmails == nil {
+		return false
+	}
+	return *c.UserSyncEmails
+}
+
+// GetUserSyncInterval returns the UserSyncInterval field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetUserSyncInterval() int64 {
+	if c == nil || c.UserSyncInterval == nil {
+		return 0
+	}
+	return *c.UserSyncInterval
+}
+
+// GetUserSyncKeys returns the UserSyncKeys field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetUserSyncKeys() bool {
+	if c == nil || c.UserSyncKeys == nil {
+		return false
+	}
+	return *c.UserSyncKeys
+}
+
+// GetVirtualAttributeEnabled returns the VirtualAttributeEnabled field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAP) GetVirtualAttributeEnabled() bool {
+	if c == nil || c.VirtualAttributeEnabled == nil {
+		return false
+	}
+	return *c.VirtualAttributeEnabled
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAPProfile) GetKey() string {
+	if c == nil || c.Key == nil {
+		return ""
+	}
+	return *c.Key
+}
+
+// GetMail returns the Mail field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAPProfile) GetMail() string {
+	if c == nil || c.Mail == nil {
+		return ""
+	}
+	return *c.Mail
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAPProfile) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetUID returns the UID field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAPProfile) GetUID() string {
+	if c == nil || c.UID == nil {
+		return ""
+	}
+	return *c.UID
+}
+
+// GetOrg returns the Org field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAPReconciliation) GetOrg() string {
+	if c == nil || c.Org == nil {
+		return ""
+	}
+	return *c.Org
+}
+
+// GetUser returns the User field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLDAPReconciliation) GetUser() string {
+	if c == nil || c.User == nil {
+		return ""
+	}
+	return *c.User
+}
+
+// GetClusterSupport returns the ClusterSupport field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLicenseSettings) GetClusterSupport() bool {
+	if c == nil || c.ClusterSupport == nil {
+		return false
+	}
+	return *c.ClusterSupport
+}
+
+// GetEvaluation returns the Evaluation field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLicenseSettings) GetEvaluation() bool {
+	if c == nil || c.Evaluation == nil {
+		return false
+	}
+	return *c.Evaluation
+}
+
+// GetExpireAt returns the ExpireAt field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLicenseSettings) GetExpireAt() Timestamp {
+	if c == nil || c.ExpireAt == nil {
+		return Timestamp{}
+	}
+	return *c.ExpireAt
+}
+
+// GetPerpetual returns the Perpetual field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLicenseSettings) GetPerpetual() bool {
+	if c == nil || c.Perpetual == nil {
+		return false
+	}
+	return *c.Perpetual
+}
+
+// GetSeats returns the Seats field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLicenseSettings) GetSeats() int64 {
+	if c == nil || c.Seats == nil {
+		return 0
+	}
+	return *c.Seats
+}
+
+// GetSSHAllowed returns the SSHAllowed field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLicenseSettings) GetSSHAllowed() bool {
+	if c == nil || c.SSHAllowed == nil {
+		return false
+	}
+	return *c.SSHAllowed
+}
+
+// GetSupportKey returns the SupportKey field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLicenseSettings) GetSupportKey() string {
+	if c == nil || c.SupportKey == nil {
+		return ""
+	}
+	return *c.SupportKey
+}
+
+// GetUnlimitedSeating returns the UnlimitedSeating field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsLicenseSettings) GetUnlimitedSeating() bool {
+	if c == nil || c.UnlimitedSeating == nil {
+		return false
+	}
+	return *c.UnlimitedSeating
+}
+
+// GetBasemap returns the Basemap field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsMapping) GetBasemap() string {
+	if c == nil || c.Basemap == nil {
+		return ""
+	}
+	return *c.Basemap
+}
+
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsMapping) GetEnabled() bool {
+	if c == nil || c.Enabled == nil {
+		return false
+	}
+	return *c.Enabled
+}
+
+// GetTileserver returns the Tileserver field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsMapping) GetTileserver() string {
+	if c == nil || c.Tileserver == nil {
+		return ""
+	}
+	return *c.Tileserver
+}
+
+// GetToken returns the Token field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsMapping) GetToken() string {
+	if c == nil || c.Token == nil {
+		return ""
+	}
+	return *c.Token
+}
+
+// GetPrimaryServer returns the PrimaryServer field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsNTP) GetPrimaryServer() string {
+	if c == nil || c.PrimaryServer == nil {
+		return ""
+	}
+	return *c.PrimaryServer
+}
+
+// GetSecondaryServer returns the SecondaryServer field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsNTP) GetSecondaryServer() string {
+	if c == nil || c.SecondaryServer == nil {
+		return ""
+	}
+	return *c.SecondaryServer
+}
+
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsPagesSettings) GetEnabled() bool {
+	if c == nil || c.Enabled == nil {
+		return false
+	}
+	return *c.Enabled
+}
+
+// GetCertificate returns the Certificate field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSAML) GetCertificate() string {
+	if c == nil || c.Certificate == nil {
+		return ""
+	}
+	return *c.Certificate
+}
+
+// GetCertificatePath returns the CertificatePath field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSAML) GetCertificatePath() string {
+	if c == nil || c.CertificatePath == nil {
+		return ""
+	}
+	return *c.CertificatePath
+}
+
+// GetDisableAdminDemote returns the DisableAdminDemote field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSAML) GetDisableAdminDemote() bool {
+	if c == nil || c.DisableAdminDemote == nil {
+		return false
+	}
+	return *c.DisableAdminDemote
+}
+
+// GetIDPInitiatedSSO returns the IDPInitiatedSSO field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSAML) GetIDPInitiatedSSO() bool {
+	if c == nil || c.IDPInitiatedSSO == nil {
+		return false
+	}
+	return *c.IDPInitiatedSSO
+}
+
+// GetIssuer returns the Issuer field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSAML) GetIssuer() string {
+	if c == nil || c.Issuer == nil {
+		return ""
+	}
+	return *c.Issuer
+}
+
+// GetSSOURL returns the SSOURL field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSAML) GetSSOURL() string {
+	if c == nil || c.SSOURL == nil {
+		return ""
+	}
+	return *c.SSOURL
+}
+
+// GetAddress returns the Address field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetAddress() string {
+	if c == nil || c.Address == nil {
+		return ""
+	}
+	return *c.Address
+}
+
+// GetAuthentication returns the Authentication field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetAuthentication() string {
+	if c == nil || c.Authentication == nil {
+		return ""
+	}
+	return *c.Authentication
+}
+
+// GetDiscardToNoreplyAddress returns the DiscardToNoreplyAddress field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetDiscardToNoreplyAddress() bool {
+	if c == nil || c.DiscardToNoreplyAddress == nil {
+		return false
+	}
+	return *c.DiscardToNoreplyAddress
+}
+
+// GetDomain returns the Domain field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetDomain() string {
+	if c == nil || c.Domain == nil {
+		return ""
+	}
+	return *c.Domain
+}
+
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetEnabled() bool {
+	if c == nil || c.Enabled == nil {
+		return false
+	}
+	return *c.Enabled
+}
+
+// GetEnableStarttlsAuto returns the EnableStarttlsAuto field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetEnableStarttlsAuto() bool {
+	if c == nil || c.EnableStarttlsAuto == nil {
+		return false
+	}
+	return *c.EnableStarttlsAuto
+}
+
+// GetNoreplyAddress returns the NoreplyAddress field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetNoreplyAddress() string {
+	if c == nil || c.NoreplyAddress == nil {
+		return ""
+	}
+	return *c.NoreplyAddress
+}
+
+// GetPassword returns the Password field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetPassword() string {
+	if c == nil || c.Password == nil {
+		return ""
+	}
+	return *c.Password
+}
+
+// GetPort returns the Port field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetPort() string {
+	if c == nil || c.Port == nil {
+		return ""
+	}
+	return *c.Port
+}
+
+// GetSupportAddress returns the SupportAddress field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetSupportAddress() string {
+	if c == nil || c.SupportAddress == nil {
+		return ""
+	}
+	return *c.SupportAddress
+}
+
+// GetSupportAddressType returns the SupportAddressType field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetSupportAddressType() string {
+	if c == nil || c.SupportAddressType == nil {
+		return ""
+	}
+	return *c.SupportAddressType
+}
+
+// GetUsername returns the Username field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetUsername() string {
+	if c == nil || c.Username == nil {
+		return ""
+	}
+	return *c.Username
+}
+
+// GetUserName returns the UserName field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSMTP) GetUserName() string {
+	if c == nil || c.UserName == nil {
+		return ""
+	}
+	return *c.UserName
+}
+
+// GetCommunity returns the Community field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSNMP) GetCommunity() string {
+	if c == nil || c.Community == nil {
+		return ""
+	}
+	return *c.Community
+}
+
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSNMP) GetEnabled() bool {
+	if c == nil || c.Enabled == nil {
+		return false
+	}
+	return *c.Enabled
+}
+
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSyslog) GetEnabled() bool {
+	if c == nil || c.Enabled == nil {
+		return false
+	}
+	return *c.Enabled
+}
+
+// GetProtocolName returns the ProtocolName field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSyslog) GetProtocolName() string {
+	if c == nil || c.ProtocolName == nil {
+		return ""
+	}
+	return *c.ProtocolName
+}
+
+// GetServer returns the Server field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsSyslog) GetServer() string {
+	if c == nil || c.Server == nil {
+		return ""
+	}
+	return *c.Server
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -5628,46 +6228,6 @@ func (c *CustomDeploymentProtectionRuleRequest) GetIntegrationID() int64 {
 		return 0
 	}
 	return *c.IntegrationID
-}
-
-// GetEmail returns the Email field if it's non-nil, zero value otherwise.
-func (c *Customer) GetEmail() string {
-	if c == nil || c.Email == nil {
-		return ""
-	}
-	return *c.Email
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *Customer) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
-}
-
-// GetPublicKeyData returns the PublicKeyData field if it's non-nil, zero value otherwise.
-func (c *Customer) GetPublicKeyData() string {
-	if c == nil || c.PublicKeyData == nil {
-		return ""
-	}
-	return *c.PublicKeyData
-}
-
-// GetSecretKeyData returns the SecretKeyData field if it's non-nil, zero value otherwise.
-func (c *Customer) GetSecretKeyData() string {
-	if c == nil || c.SecretKeyData == nil {
-		return ""
-	}
-	return *c.SecretKeyData
-}
-
-// GetUUID returns the UUID field if it's non-nil, zero value otherwise.
-func (c *Customer) GetUUID() string {
-	if c == nil || c.UUID == nil {
-		return ""
-	}
-	return *c.UUID
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
@@ -8990,62 +9550,6 @@ func (g *GitHubAppAuthorizationEvent) GetSender() *User {
 	return g.Sender
 }
 
-// GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
-func (g *GitHubOAuth) GetClientID() string {
-	if g == nil || g.ClientID == nil {
-		return ""
-	}
-	return *g.ClientID
-}
-
-// GetClientSecret returns the ClientSecret field if it's non-nil, zero value otherwise.
-func (g *GitHubOAuth) GetClientSecret() string {
-	if g == nil || g.ClientSecret == nil {
-		return ""
-	}
-	return *g.ClientSecret
-}
-
-// GetOrganizationName returns the OrganizationName field if it's non-nil, zero value otherwise.
-func (g *GitHubOAuth) GetOrganizationName() string {
-	if g == nil || g.OrganizationName == nil {
-		return ""
-	}
-	return *g.OrganizationName
-}
-
-// GetOrganizationTeam returns the OrganizationTeam field if it's non-nil, zero value otherwise.
-func (g *GitHubOAuth) GetOrganizationTeam() string {
-	if g == nil || g.OrganizationTeam == nil {
-		return ""
-	}
-	return *g.OrganizationTeam
-}
-
-// GetCert returns the Cert field if it's non-nil, zero value otherwise.
-func (g *GitHubSSL) GetCert() string {
-	if g == nil || g.Cert == nil {
-		return ""
-	}
-	return *g.Cert
-}
-
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (g *GitHubSSL) GetEnabled() bool {
-	if g == nil || g.Enabled == nil {
-		return false
-	}
-	return *g.Enabled
-}
-
-// GetKey returns the Key field if it's non-nil, zero value otherwise.
-func (g *GitHubSSL) GetKey() string {
-	if g == nil || g.Key == nil {
-		return ""
-	}
-	return *g.Key
-}
-
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (g *Gitignore) GetName() string {
 	if g == nil || g.Name == nil {
@@ -12198,150 +12702,6 @@ func (l *LargeFile) GetSize() int {
 	return *l.Size
 }
 
-// GetAdminGroup returns the AdminGroup field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetAdminGroup() string {
-	if l == nil || l.AdminGroup == nil {
-		return ""
-	}
-	return *l.AdminGroup
-}
-
-// GetBindDN returns the BindDN field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetBindDN() string {
-	if l == nil || l.BindDN == nil {
-		return ""
-	}
-	return *l.BindDN
-}
-
-// GetHost returns the Host field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetHost() string {
-	if l == nil || l.Host == nil {
-		return ""
-	}
-	return *l.Host
-}
-
-// GetMethod returns the Method field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetMethod() string {
-	if l == nil || l.Method == nil {
-		return ""
-	}
-	return *l.Method
-}
-
-// GetPassword returns the Password field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetPassword() string {
-	if l == nil || l.Password == nil {
-		return ""
-	}
-	return *l.Password
-}
-
-// GetPort returns the Port field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetPort() int {
-	if l == nil || l.Port == nil {
-		return 0
-	}
-	return *l.Port
-}
-
-// GetPosixSupport returns the PosixSupport field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetPosixSupport() bool {
-	if l == nil || l.PosixSupport == nil {
-		return false
-	}
-	return *l.PosixSupport
-}
-
-// GetProfile returns the Profile field.
-func (l *LDAP) GetProfile() *Profile {
-	if l == nil {
-		return nil
-	}
-	return l.Profile
-}
-
-// GetReconciliation returns the Reconciliation field.
-func (l *LDAP) GetReconciliation() *Reconciliation {
-	if l == nil {
-		return nil
-	}
-	return l.Reconciliation
-}
-
-// GetRecursiveGroupSearch returns the RecursiveGroupSearch field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetRecursiveGroupSearch() bool {
-	if l == nil || l.RecursiveGroupSearch == nil {
-		return false
-	}
-	return *l.RecursiveGroupSearch
-}
-
-// GetSearchStrategy returns the SearchStrategy field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetSearchStrategy() string {
-	if l == nil || l.SearchStrategy == nil {
-		return ""
-	}
-	return *l.SearchStrategy
-}
-
-// GetSyncEnabled returns the SyncEnabled field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetSyncEnabled() bool {
-	if l == nil || l.SyncEnabled == nil {
-		return false
-	}
-	return *l.SyncEnabled
-}
-
-// GetTeamSyncInterval returns the TeamSyncInterval field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetTeamSyncInterval() int {
-	if l == nil || l.TeamSyncInterval == nil {
-		return 0
-	}
-	return *l.TeamSyncInterval
-}
-
-// GetUID returns the UID field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetUID() string {
-	if l == nil || l.UID == nil {
-		return ""
-	}
-	return *l.UID
-}
-
-// GetUserSyncEmails returns the UserSyncEmails field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetUserSyncEmails() bool {
-	if l == nil || l.UserSyncEmails == nil {
-		return false
-	}
-	return *l.UserSyncEmails
-}
-
-// GetUserSyncInterval returns the UserSyncInterval field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetUserSyncInterval() int {
-	if l == nil || l.UserSyncInterval == nil {
-		return 0
-	}
-	return *l.UserSyncInterval
-}
-
-// GetUserSyncKeys returns the UserSyncKeys field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetUserSyncKeys() bool {
-	if l == nil || l.UserSyncKeys == nil {
-		return false
-	}
-	return *l.UserSyncKeys
-}
-
-// GetVirtualAttributeEnabled returns the VirtualAttributeEnabled field if it's non-nil, zero value otherwise.
-func (l *LDAP) GetVirtualAttributeEnabled() bool {
-	if l == nil || l.VirtualAttributeEnabled == nil {
-		return false
-	}
-	return *l.VirtualAttributeEnabled
-}
-
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (l *License) GetBody() string {
 	if l == nil || l.Body == nil {
@@ -12446,70 +12806,6 @@ func (l *LicenseCheck) GetStatus() string {
 	return *l.Status
 }
 
-// GetClusterSupport returns the ClusterSupport field if it's non-nil, zero value otherwise.
-func (l *LicenseSettings) GetClusterSupport() bool {
-	if l == nil || l.ClusterSupport == nil {
-		return false
-	}
-	return *l.ClusterSupport
-}
-
-// GetEvaluation returns the Evaluation field if it's non-nil, zero value otherwise.
-func (l *LicenseSettings) GetEvaluation() bool {
-	if l == nil || l.Evaluation == nil {
-		return false
-	}
-	return *l.Evaluation
-}
-
-// GetExpireAt returns the ExpireAt field if it's non-nil, zero value otherwise.
-func (l *LicenseSettings) GetExpireAt() Timestamp {
-	if l == nil || l.ExpireAt == nil {
-		return Timestamp{}
-	}
-	return *l.ExpireAt
-}
-
-// GetPerpetual returns the Perpetual field if it's non-nil, zero value otherwise.
-func (l *LicenseSettings) GetPerpetual() bool {
-	if l == nil || l.Perpetual == nil {
-		return false
-	}
-	return *l.Perpetual
-}
-
-// GetSeats returns the Seats field if it's non-nil, zero value otherwise.
-func (l *LicenseSettings) GetSeats() int {
-	if l == nil || l.Seats == nil {
-		return 0
-	}
-	return *l.Seats
-}
-
-// GetSSHAllowed returns the SSHAllowed field if it's non-nil, zero value otherwise.
-func (l *LicenseSettings) GetSSHAllowed() bool {
-	if l == nil || l.SSHAllowed == nil {
-		return false
-	}
-	return *l.SSHAllowed
-}
-
-// GetSupportKey returns the SupportKey field if it's non-nil, zero value otherwise.
-func (l *LicenseSettings) GetSupportKey() string {
-	if l == nil || l.SupportKey == nil {
-		return ""
-	}
-	return *l.SupportKey
-}
-
-// GetUnlimitedSeating returns the UnlimitedSeating field if it's non-nil, zero value otherwise.
-func (l *LicenseSettings) GetUnlimitedSeating() bool {
-	if l == nil || l.UnlimitedSeating == nil {
-		return false
-	}
-	return *l.UnlimitedSeating
-}
-
 // GetAdvancedSecurityEnabled returns the AdvancedSecurityEnabled field if it's non-nil, zero value otherwise.
 func (l *LicenseStatus) GetAdvancedSecurityEnabled() bool {
 	if l == nil || l.AdvancedSecurityEnabled == nil {
@@ -12519,7 +12815,7 @@ func (l *LicenseStatus) GetAdvancedSecurityEnabled() bool {
 }
 
 // GetAdvancedSecuritySeats returns the AdvancedSecuritySeats field if it's non-nil, zero value otherwise.
-func (l *LicenseStatus) GetAdvancedSecuritySeats() int {
+func (l *LicenseStatus) GetAdvancedSecuritySeats() int64 {
 	if l == nil || l.AdvancedSecuritySeats == nil {
 		return 0
 	}
@@ -12599,7 +12895,7 @@ func (l *LicenseStatus) GetLearningLabEvaluationExpires() Timestamp {
 }
 
 // GetLearningLabSeats returns the LearningLabSeats field if it's non-nil, zero value otherwise.
-func (l *LicenseStatus) GetLearningLabSeats() int {
+func (l *LicenseStatus) GetLearningLabSeats() int64 {
 	if l == nil || l.LearningLabSeats == nil {
 		return 0
 	}
@@ -12623,7 +12919,7 @@ func (l *LicenseStatus) GetReferenceNumber() string {
 }
 
 // GetSeats returns the Seats field if it's non-nil, zero value otherwise.
-func (l *LicenseStatus) GetSeats() int {
+func (l *LicenseStatus) GetSeats() int64 {
 	if l == nil || l.Seats == nil {
 		return 0
 	}
@@ -13092,38 +13388,6 @@ func (m *MaintenanceStatus) GetUUID() string {
 		return ""
 	}
 	return *m.UUID
-}
-
-// GetBasemap returns the Basemap field if it's non-nil, zero value otherwise.
-func (m *Mapping) GetBasemap() string {
-	if m == nil || m.Basemap == nil {
-		return ""
-	}
-	return *m.Basemap
-}
-
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (m *Mapping) GetEnabled() bool {
-	if m == nil || m.Enabled == nil {
-		return false
-	}
-	return *m.Enabled
-}
-
-// GetTileserver returns the Tileserver field if it's non-nil, zero value otherwise.
-func (m *Mapping) GetTileserver() string {
-	if m == nil || m.Tileserver == nil {
-		return ""
-	}
-	return *m.Tileserver
-}
-
-// GetToken returns the Token field if it's non-nil, zero value otherwise.
-func (m *Mapping) GetToken() string {
-	if m == nil || m.Token == nil {
-		return ""
-	}
-	return *m.Token
 }
 
 // GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
@@ -14516,22 +14780,6 @@ func (n *NotificationSubject) GetURL() string {
 		return ""
 	}
 	return *n.URL
-}
-
-// GetPrimaryServer returns the PrimaryServer field if it's non-nil, zero value otherwise.
-func (n *NTP) GetPrimaryServer() string {
-	if n == nil || n.PrimaryServer == nil {
-		return ""
-	}
-	return *n.PrimaryServer
-}
-
-// GetSecondaryServer returns the SecondaryServer field if it's non-nil, zero value otherwise.
-func (n *NTP) GetSecondaryServer() string {
-	if n == nil || n.SecondaryServer == nil {
-		return ""
-	}
-	return *n.SecondaryServer
 }
 
 // GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
@@ -16358,14 +16606,6 @@ func (p *PagesHTTPSCertificate) GetState() string {
 	return *p.State
 }
 
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (p *PagesSettings) GetEnabled() bool {
-	if p == nil || p.Enabled == nil {
-		return false
-	}
-	return *p.Enabled
-}
-
 // GetBranch returns the Branch field if it's non-nil, zero value otherwise.
 func (p *PagesSource) GetBranch() string {
 	if p == nil || p.Branch == nil {
@@ -16956,38 +17196,6 @@ func (p *PRLinks) GetStatuses() *PRLink {
 		return nil
 	}
 	return p.Statuses
-}
-
-// GetKey returns the Key field if it's non-nil, zero value otherwise.
-func (p *Profile) GetKey() string {
-	if p == nil || p.Key == nil {
-		return ""
-	}
-	return *p.Key
-}
-
-// GetMail returns the Mail field if it's non-nil, zero value otherwise.
-func (p *Profile) GetMail() string {
-	if p == nil || p.Mail == nil {
-		return ""
-	}
-	return *p.Mail
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (p *Profile) GetName() string {
-	if p == nil || p.Name == nil {
-		return ""
-	}
-	return *p.Name
-}
-
-// GetUID returns the UID field if it's non-nil, zero value otherwise.
-func (p *Profile) GetUID() string {
-	if p == nil || p.UID == nil {
-		return ""
-	}
-	return *p.UID
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
@@ -19876,22 +20084,6 @@ func (r *Reactions) GetURL() string {
 		return ""
 	}
 	return *r.URL
-}
-
-// GetOrg returns the Org field if it's non-nil, zero value otherwise.
-func (r *Reconciliation) GetOrg() string {
-	if r == nil || r.Org == nil {
-		return ""
-	}
-	return *r.Org
-}
-
-// GetUser returns the User field if it's non-nil, zero value otherwise.
-func (r *Reconciliation) GetUser() string {
-	if r == nil || r.User == nil {
-		return ""
-	}
-	return *r.User
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
@@ -23550,54 +23742,6 @@ func (r *RunnerLabels) GetType() string {
 	return *r.Type
 }
 
-// GetCertificate returns the Certificate field if it's non-nil, zero value otherwise.
-func (s *SAML) GetCertificate() string {
-	if s == nil || s.Certificate == nil {
-		return ""
-	}
-	return *s.Certificate
-}
-
-// GetCertificatePath returns the CertificatePath field if it's non-nil, zero value otherwise.
-func (s *SAML) GetCertificatePath() string {
-	if s == nil || s.CertificatePath == nil {
-		return ""
-	}
-	return *s.CertificatePath
-}
-
-// GetDisableAdminDemote returns the DisableAdminDemote field if it's non-nil, zero value otherwise.
-func (s *SAML) GetDisableAdminDemote() bool {
-	if s == nil || s.DisableAdminDemote == nil {
-		return false
-	}
-	return *s.DisableAdminDemote
-}
-
-// GetIDPInitiatedSSO returns the IDPInitiatedSSO field if it's non-nil, zero value otherwise.
-func (s *SAML) GetIDPInitiatedSSO() bool {
-	if s == nil || s.IDPInitiatedSSO == nil {
-		return false
-	}
-	return *s.IDPInitiatedSSO
-}
-
-// GetIssuer returns the Issuer field if it's non-nil, zero value otherwise.
-func (s *SAML) GetIssuer() string {
-	if s == nil || s.Issuer == nil {
-		return ""
-	}
-	return *s.Issuer
-}
-
-// GetSSOURL returns the SSOURL field if it's non-nil, zero value otherwise.
-func (s *SAML) GetSSOURL() string {
-	if s == nil || s.SSOURL == nil {
-		return ""
-	}
-	return *s.SSOURL
-}
-
 // GetCheckoutURI returns the CheckoutURI field if it's non-nil, zero value otherwise.
 func (s *SarifAnalysis) GetCheckoutURI() string {
 	if s == nil || s.CheckoutURI == nil {
@@ -24742,126 +24886,6 @@ func (s *SignatureVerification) GetVerified() bool {
 	return *s.Verified
 }
 
-// GetAddress returns the Address field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetAddress() string {
-	if s == nil || s.Address == nil {
-		return ""
-	}
-	return *s.Address
-}
-
-// GetAuthentication returns the Authentication field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetAuthentication() string {
-	if s == nil || s.Authentication == nil {
-		return ""
-	}
-	return *s.Authentication
-}
-
-// GetDiscardToNoreplyAddress returns the DiscardToNoreplyAddress field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetDiscardToNoreplyAddress() bool {
-	if s == nil || s.DiscardToNoreplyAddress == nil {
-		return false
-	}
-	return *s.DiscardToNoreplyAddress
-}
-
-// GetDomain returns the Domain field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetDomain() string {
-	if s == nil || s.Domain == nil {
-		return ""
-	}
-	return *s.Domain
-}
-
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetEnabled() bool {
-	if s == nil || s.Enabled == nil {
-		return false
-	}
-	return *s.Enabled
-}
-
-// GetEnableStarttlsAuto returns the EnableStarttlsAuto field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetEnableStarttlsAuto() bool {
-	if s == nil || s.EnableStarttlsAuto == nil {
-		return false
-	}
-	return *s.EnableStarttlsAuto
-}
-
-// GetNoreplyAddress returns the NoreplyAddress field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetNoreplyAddress() string {
-	if s == nil || s.NoreplyAddress == nil {
-		return ""
-	}
-	return *s.NoreplyAddress
-}
-
-// GetPassword returns the Password field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetPassword() string {
-	if s == nil || s.Password == nil {
-		return ""
-	}
-	return *s.Password
-}
-
-// GetPort returns the Port field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetPort() string {
-	if s == nil || s.Port == nil {
-		return ""
-	}
-	return *s.Port
-}
-
-// GetSupportAddress returns the SupportAddress field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetSupportAddress() string {
-	if s == nil || s.SupportAddress == nil {
-		return ""
-	}
-	return *s.SupportAddress
-}
-
-// GetSupportAddressType returns the SupportAddressType field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetSupportAddressType() string {
-	if s == nil || s.SupportAddressType == nil {
-		return ""
-	}
-	return *s.SupportAddressType
-}
-
-// GetUsername returns the Username field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetUsername() string {
-	if s == nil || s.Username == nil {
-		return ""
-	}
-	return *s.Username
-}
-
-// GetUserName returns the UserName field if it's non-nil, zero value otherwise.
-func (s *SMTP) GetUserName() string {
-	if s == nil || s.UserName == nil {
-		return ""
-	}
-	return *s.UserName
-}
-
-// GetCommunity returns the Community field if it's non-nil, zero value otherwise.
-func (s *SNMP) GetCommunity() string {
-	if s == nil || s.Community == nil {
-		return ""
-	}
-	return *s.Community
-}
-
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (s *SNMP) GetEnabled() bool {
-	if s == nil || s.Enabled == nil {
-		return false
-	}
-	return *s.Enabled
-}
-
 // GetActor returns the Actor field.
 func (s *Source) GetActor() *User {
 	if s == nil {
@@ -25348,30 +25372,6 @@ func (s *Subscription) GetURL() string {
 		return ""
 	}
 	return *s.URL
-}
-
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (s *Syslog) GetEnabled() bool {
-	if s == nil || s.Enabled == nil {
-		return false
-	}
-	return *s.Enabled
-}
-
-// GetProtocolName returns the ProtocolName field if it's non-nil, zero value otherwise.
-func (s *Syslog) GetProtocolName() string {
-	if s == nil || s.ProtocolName == nil {
-		return ""
-	}
-	return *s.ProtocolName
-}
-
-// GetServer returns the Server field if it's non-nil, zero value otherwise.
-func (s *Syslog) GetServer() string {
-	if s == nil || s.Server == nil {
-		return ""
-	}
-	return *s.Server
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.

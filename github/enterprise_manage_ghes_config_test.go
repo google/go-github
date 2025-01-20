@@ -170,27 +170,27 @@ func TestEnterpriseService_Settings(t *testing.T) {
 		PublicPages:           Ptr(false),
 		SubdomainIsolation:    Ptr(true),
 		SignupEnabled:         Ptr(false),
-		GitHubHostname:        Ptr("ghe.local"),
+		GithubHostname:        Ptr("ghe.local"),
 		IdenticonsHost:        Ptr("dotcom"),
 		HTTPProxy:             nil,
 		AuthMode:              Ptr("default"),
 		ExpireSessions:        Ptr(false),
 		AdminPassword:         nil,
-		ConfigurationID:       Ptr(1401777404),
-		ConfigurationRunCount: Ptr(4),
-		Avatar: &Avatar{
+		ConfigurationID:       Ptr(int64(1401777404)),
+		ConfigurationRunCount: Ptr(int64(4)),
+		Avatar: &ConfigSettingsAvatar{
 			Enabled: Ptr(false),
 			URI:     Ptr(""),
 		},
-		Customer: &Customer{
+		Customer: &ConfigSettingsCustomer{
 			Name:          Ptr("GitHub"),
 			Email:         Ptr("stannis"),
 			UUID:          Ptr("af6cac80-e4e1-012e-d822-1231380e52e9"),
 			SecretKeyData: nil,
 			PublicKeyData: Ptr("-"),
 		},
-		License: &LicenseSettings{
-			Seats:            Ptr(0),
+		License: &ConfigSettingsLicenseSettings{
+			Seats:            Ptr(int64(0)),
 			Evaluation:       Ptr(false),
 			Perpetual:        Ptr(false),
 			UnlimitedSeating: Ptr(true),
@@ -199,14 +199,14 @@ func TestEnterpriseService_Settings(t *testing.T) {
 			ClusterSupport:   Ptr(false),
 			ExpireAt:         &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
 		},
-		GitHubSSL: &GitHubSSL{
+		GithubSSL: &ConfigSettingsGithubSSL{
 			Enabled: Ptr(false),
 			Cert:    nil,
 			Key:     nil,
 		},
-		LDAP: &LDAP{
+		LDAP: &ConfigSettingsLDAP{
 			Host:                    nil,
-			Port:                    Ptr(0),
+			Port:                    Ptr(int64(0)),
 			Base:                    []*string{},
 			UID:                     nil,
 			BindDN:                  nil,
@@ -220,24 +220,24 @@ func TestEnterpriseService_Settings(t *testing.T) {
 			PosixSupport:            Ptr(true),
 			UserSyncEmails:          Ptr(false),
 			UserSyncKeys:            Ptr(false),
-			UserSyncInterval:        Ptr(4),
-			TeamSyncInterval:        Ptr(4),
+			UserSyncInterval:        Ptr(int64(4)),
+			TeamSyncInterval:        Ptr(int64(4)),
 			SyncEnabled:             Ptr(false),
-			Reconciliation: &Reconciliation{
+			Reconciliation: &ConfigSettingsLDAPReconciliation{
 				User: nil,
 				Org:  nil,
 			},
-			Profile: &Profile{
+			Profile: &ConfigSettingsLDAPProfile{
 				UID:  Ptr("uid"),
 				Name: nil,
 				Mail: nil,
 				Key:  nil,
 			},
 		},
-		CAS: &CAS{
+		CAS: &ConfigSettingsCAS{
 			URL: nil,
 		},
-		SAML: &SAML{
+		SAML: &ConfigSettingsSAML{
 			SSOURL:             nil,
 			Certificate:        nil,
 			CertificatePath:    nil,
@@ -245,13 +245,13 @@ func TestEnterpriseService_Settings(t *testing.T) {
 			IDPInitiatedSSO:    Ptr(false),
 			DisableAdminDemote: Ptr(false),
 		},
-		GitHubOAuth: &GitHubOAuth{
+		GithubOAuth: &ConfigSettingsGithubOAuth{
 			ClientID:         Ptr("12313412"),
 			ClientSecret:     Ptr("kj123131132"),
 			OrganizationName: Ptr("Homestar Runners"),
 			OrganizationTeam: Ptr("homestarrunners/characters"),
 		},
-		SMTP: &SMTP{
+		SMTP: &ConfigSettingsSMTP{
 			Enabled:                 Ptr(true),
 			Address:                 Ptr("smtp.example.com"),
 			Authentication:          Ptr("plain"),
@@ -266,33 +266,33 @@ func TestEnterpriseService_Settings(t *testing.T) {
 			NoreplyAddress:          Ptr("noreply@github.com"),
 			EnableStarttlsAuto:      Ptr(true),
 		},
-		NTP: &NTP{
+		NTP: &ConfigSettingsNTP{
 			PrimaryServer:   Ptr("0.pool.ntp.org"),
 			SecondaryServer: Ptr("1.pool.ntp.org"),
 		},
 		Timezone: nil,
-		SNMP: &SNMP{
+		SNMP: &ConfigSettingsSNMP{
 			Enabled:   Ptr(false),
 			Community: Ptr(""),
 		},
-		Syslog: &Syslog{
+		Syslog: &ConfigSettingsSyslog{
 			Enabled:      Ptr(false),
 			Server:       nil,
 			ProtocolName: Ptr("udp"),
 		},
 		Assets: nil,
-		Pages: &PagesSettings{
+		Pages: &ConfigSettingsPagesSettings{
 			Enabled: Ptr(true),
 		},
-		Collectd: &Collectd{
+		Collectd: &ConfigSettingsCollectd{
 			Enabled:    Ptr(false),
 			Server:     nil,
-			Port:       Ptr(0),
+			Port:       Ptr(int64(0)),
 			Encryption: nil,
 			Username:   nil,
 			Password:   nil,
 		},
-		Mapping: &Mapping{
+		Mapping: &ConfigSettingsMapping{
 			Enabled:    Ptr(true),
 			Tileserver: nil,
 			Basemap:    Ptr("company.map-qsz2zrvs"),
@@ -439,7 +439,7 @@ func TestEnterpriseService_License(t *testing.T) {
 
 	want := []*LicenseStatus{{
 		AdvancedSecurityEnabled:      Ptr(true),
-		AdvancedSecuritySeats:        Ptr(0),
+		AdvancedSecuritySeats:        Ptr(int64(0)),
 		ClusterSupport:               Ptr(false),
 		Company:                      Ptr("GitHub"),
 		CroquetSupport:               Ptr(true),
@@ -449,10 +449,10 @@ func TestEnterpriseService_License(t *testing.T) {
 		InsightsEnabled:              Ptr(true),
 		InsightsExpireAt:             &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
 		LearningLabEvaluationExpires: &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
-		LearningLabSeats:             Ptr(100),
+		LearningLabSeats:             Ptr(int64(100)),
 		Perpetual:                    Ptr(false),
 		ReferenceNumber:              Ptr("32a145"),
-		Seats:                        Ptr(0),
+		Seats:                        Ptr(int64(0)),
 		SSHAllowed:                   Ptr(true),
 		SupportKey:                   Ptr(""),
 		UnlimitedSeating:             Ptr(true),
@@ -521,8 +521,8 @@ func TestEnterpriseService_ConfigApplyEvents(t *testing.T) {
 				ConfigRunID:  Ptr("d34db33f"),
 				TraceID:      Ptr("387cd628c06d606700e79be368e5e574"),
 				SpanID:       Ptr("0cde553750689c76"),
-				SpanParentID: Ptr(0),
-				SpanDepth:    Ptr(0),
+				SpanParentID: Ptr(int64(0)),
+				SpanDepth:    Ptr(int64(0)),
 			}},
 		}},
 	}
