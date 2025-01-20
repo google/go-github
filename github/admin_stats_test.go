@@ -98,7 +98,7 @@ func TestAdminService_GetAdminStats(t *testing.T) {
 
 func TestAdminService_Stringify(t *testing.T) {
 	t.Parallel()
-	want := "github.AdminStats{Issues:github.IssueStats{TotalIssues:179, OpenIssues:83, ClosedIssues:96}, Hooks:github.HookStats{TotalHooks:27, ActiveHooks:23, InactiveHooks:4}, Milestones:github.MilestoneStats{TotalMilestones:7, OpenMilestones:6, ClosedMilestones:1}, Orgs:github.OrgStats{TotalOrgs:33, DisabledOrgs:0, TotalTeams:60, TotalTeamMembers:314}, Comments:github.CommentStats{TotalCommitComments:6, TotalGistComments:28, TotalIssueComments:366, TotalPullRequestComments:30}, Pages:github.PageStats{TotalPages:36}, Users:github.UserStats{TotalUsers:254, AdminUsers:45, SuspendedUsers:21}, Gists:github.GistStats{TotalGists:178, PrivateGists:151, PublicGists:25}, Pulls:github.PullStats{TotalPulls:86, MergedPulls:60, MergablePulls:21, UnmergablePulls:3}, Repos:github.RepoStats{TotalRepos:212, RootRepos:194, ForkRepos:18, OrgRepos:51, TotalPushes:3082, TotalWikis:15}}"
+	want := "github.AdminStats{Issues:github.IssueStats{TotalIssues:179, OpenIssues:83, ClosedIssues:96}, Hooks:github.HookStats{TotalHooks:27, ActiveHooks:23, InactiveHooks:4}, Milestones:github.MilestoneStats{TotalMilestones:7, OpenMilestones:6, ClosedMilestones:1}, Orgs:github.OrgStats{TotalOrgs:33, DisabledOrgs:0, TotalTeams:60, TotalTeamMembers:314}, Comments:github.CommentStats{TotalCommitComments:6, TotalGistComments:28, TotalIssueComments:366, TotalPullRequestComments:30}, Pages:github.PageStats{TotalPages:36}, Users:github.UserStats{TotalUsers:254, AdminUsers:45, SuspendedUsers:21}, Gists:github.GistStats{TotalGists:178, PrivateGists:151, PublicGists:25}, Pulls:github.PullStats{TotalPulls:86, MergedPulls:60, MergeablePulls:21, UnmergeablePulls:3}, Repos:github.RepoStats{TotalRepos:212, RootRepos:194, ForkRepos:18, OrgRepos:51, TotalPushes:3082, TotalWikis:15}}"
 	if got := testAdminStats.String(); got != want {
 		t.Errorf("testAdminStats.String = %q, want %q", got, want)
 	}
@@ -143,7 +143,7 @@ func TestAdminService_Stringify(t *testing.T) {
 		t.Errorf("testAdminStats.Gists.String = %q, want %q", got, want)
 	}
 
-	want = "github.PullStats{TotalPulls:86, MergedPulls:60, MergablePulls:21, UnmergablePulls:3}"
+	want = "github.PullStats{TotalPulls:86, MergedPulls:60, MergeablePulls:21, UnmergeablePulls:3}"
 	if got := testAdminStats.Pulls.String(); got != want {
 		t.Errorf("testAdminStats.Pulls.String = %q, want %q", got, want)
 	}
@@ -183,10 +183,10 @@ var testAdminStats = &AdminStats{
 		SuspendedUsers: Ptr(21),
 	},
 	Pulls: &PullStats{
-		TotalPulls:      Ptr(86),
-		MergedPulls:     Ptr(60),
-		MergablePulls:   Ptr(21),
-		UnmergablePulls: Ptr(3),
+		TotalPulls:       Ptr(86),
+		MergedPulls:      Ptr(60),
+		MergeablePulls:   Ptr(21),
+		UnmergeablePulls: Ptr(3),
 	},
 	Issues: &IssueStats{
 		TotalIssues:  Ptr(179),
@@ -368,10 +368,10 @@ func TestPullStats_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullStats{}, "{}")
 
 	u := &PullStats{
-		TotalPulls:      Ptr(1),
-		MergedPulls:     Ptr(1),
-		MergablePulls:   Ptr(1),
-		UnmergablePulls: Ptr(1),
+		TotalPulls:       Ptr(1),
+		MergedPulls:      Ptr(1),
+		MergeablePulls:   Ptr(1),
+		UnmergeablePulls: Ptr(1),
 	}
 
 	want := `{
@@ -442,10 +442,10 @@ func TestAdminStats_Marshal(t *testing.T) {
 			SuspendedUsers: Ptr(21),
 		},
 		Pulls: &PullStats{
-			TotalPulls:      Ptr(86),
-			MergedPulls:     Ptr(60),
-			MergablePulls:   Ptr(21),
-			UnmergablePulls: Ptr(3),
+			TotalPulls:       Ptr(86),
+			MergedPulls:      Ptr(60),
+			MergeablePulls:   Ptr(21),
+			UnmergeablePulls: Ptr(3),
 		},
 		Issues: &IssueStats{
 			TotalIssues:  Ptr(179),

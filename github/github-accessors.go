@@ -17902,12 +17902,12 @@ func (p *PullRequestThread) GetNodeID() string {
 	return *p.NodeID
 }
 
-// GetMergablePulls returns the MergablePulls field if it's non-nil, zero value otherwise.
-func (p *PullStats) GetMergablePulls() int {
-	if p == nil || p.MergablePulls == nil {
+// GetMergeablePulls returns the MergeablePulls field if it's non-nil, zero value otherwise.
+func (p *PullStats) GetMergeablePulls() int {
+	if p == nil || p.MergeablePulls == nil {
 		return 0
 	}
-	return *p.MergablePulls
+	return *p.MergeablePulls
 }
 
 // GetMergedPulls returns the MergedPulls field if it's non-nil, zero value otherwise.
@@ -17926,12 +17926,12 @@ func (p *PullStats) GetTotalPulls() int {
 	return *p.TotalPulls
 }
 
-// GetUnmergablePulls returns the UnmergablePulls field if it's non-nil, zero value otherwise.
-func (p *PullStats) GetUnmergablePulls() int {
-	if p == nil || p.UnmergablePulls == nil {
+// GetUnmergeablePulls returns the UnmergeablePulls field if it's non-nil, zero value otherwise.
+func (p *PullStats) GetUnmergeablePulls() int {
+	if p == nil || p.UnmergeablePulls == nil {
 		return 0
 	}
-	return *p.UnmergablePulls
+	return *p.UnmergeablePulls
 }
 
 // GetCommits returns the Commits field if it's non-nil, zero value otherwise.
