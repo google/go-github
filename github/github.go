@@ -986,7 +986,7 @@ func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRed
 			if maxRedirects <= 0 && rerr.StatusCode == http.StatusMovedPermanently {
 				return nil, response, fmt.Errorf("reached the maximum amount of redirections: %w", err)
 			}
-			return nil, response, fmt.Errorf("unexepected redirection response: %w", err)
+			return nil, response, fmt.Errorf("unexpected redirection response: %w", err)
 		}
 	}
 
