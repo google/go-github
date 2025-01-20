@@ -1521,14 +1521,73 @@ type RepositoryImportEvent struct {
 //
 // GitHub API docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#repository_ruleset
 type RepositoryRulesetEvent struct {
-	Action            *string                         `json:"action,omitempty"`
-	Enterprise        *Enterprise                     `json:"enterprise,omitempty"`
-	Installation      *Installation                   `json:"installation,omitempty"`
-	Organization      *Organization                   `json:"organization,omitempty"`
-	Repository        *Repository                     `json:"repository,omitempty"`
-	RepositoryRuleset *RepositoryRuleset              `json:"repository_ruleset"`
-	Changes           *RepositoryRulesetEditedChanges `json:"changes,omitempty"`
-	Sender            *User                           `json:"sender"`
+	Action            *string                   `json:"action,omitempty"`
+	Enterprise        *Enterprise               `json:"enterprise,omitempty"`
+	Installation      *Installation             `json:"installation,omitempty"`
+	Organization      *Organization             `json:"organization,omitempty"`
+	Repository        *Repository               `json:"repository,omitempty"`
+	RepositoryRuleset *RepositoryRuleset        `json:"repository_ruleset"`
+	Changes           *RepositoryRulesetChanges `json:"changes,omitempty"`
+	Sender            *User                     `json:"sender"`
+}
+
+// RepositoryRulesetChanges represents the changes made to a repository ruleset.
+type RepositoryRulesetChanges struct {
+	Name        *RepositoryRulesetChangeSource      `json:"name,omitempty"`
+	Enforcement *RepositoryRulesetChangeSource      `json:"enforcement,omitempty"`
+	Conditions  *RepositoryRulesetChangedConditions `json:"conditions,omitempty"`
+	Rules       *RepositoryRulesetChangedRules      `json:"rules,omitempty"`
+}
+
+// RepositoryRulesetChangeSource represents a source change for the ruleset.
+type RepositoryRulesetChangeSource struct {
+	From *string `json:"from,omitempty"`
+}
+
+// RepositoryRulesetChangeSources represents multiple source changes for the ruleset.
+type RepositoryRulesetChangeSources struct {
+	From []string `json:"from,omitempty"`
+}
+
+// RepositoryRulesetChangedConditions holds changes to conditions in a ruleset.
+type RepositoryRulesetChangedConditions struct {
+	Added   []*RepositoryRulesetConditions        `json:"added,omitempty"`
+	Deleted []*RepositoryRulesetConditions        `json:"deleted,omitempty"`
+	Updated []*RepositoryRulesetUpdatedConditions `json:"updated,omitempty"`
+}
+
+// RepositoryRulesetUpdatedConditions represents the edited updates to conditions in a ruleset.
+type RepositoryRulesetUpdatedConditions struct {
+	Condition *RepositoryRulesetConditions       `json:"condition,omitempty"`
+	Changes   *RepositoryRulesetUpdatedCondition `json:"changes,omitempty"`
+}
+
+// RepositoryRulesetUpdatedCondition represents the changes to a condition in a ruleset.
+type RepositoryRulesetUpdatedCondition struct {
+	ConditionType *RepositoryRulesetChangeSource  `json:"condition_type,omitempty"`
+	Target        *RepositoryRulesetChangeSource  `json:"target,omitempty"`
+	Include       *RepositoryRulesetChangeSources `json:"include,omitempty"`
+	Exclude       *RepositoryRulesetChangeSources `json:"exclude,omitempty"`
+}
+
+// RepositoryRulesetChangedRules holds changes to rules in a ruleset.
+type RepositoryRulesetChangedRules struct {
+	Added   []*RepositoryRule                `json:"added,omitempty"`
+	Deleted []*RepositoryRule                `json:"deleted,omitempty"`
+	Updated []*RepositoryRulesetUpdatedRules `json:"updated,omitempty"`
+}
+
+// RepositoryRulesetUpdatedRules holds updates to rules in a ruleset.
+type RepositoryRulesetUpdatedRules struct {
+	Rule    *RepositoryRule               `json:"rule,omitempty"`
+	Changes *RepositoryRulesetChangedRule `json:"changes,omitempty"`
+}
+
+// RepositoryRulesetChangedRule holds changes made to a rule in a ruleset.
+type RepositoryRulesetChangedRule struct {
+	Configuration *RepositoryRulesetChangeSource `json:"configuration,omitempty"`
+	RuleType      *RepositoryRulesetChangeSource `json:"rule_type,omitempty"`
+	Pattern       *RepositoryRulesetChangeSource `json:"pattern,omitempty"`
 }
 
 // RepositoryVulnerabilityAlertEvent is triggered when a security alert is created, dismissed, or resolved.
