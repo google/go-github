@@ -2358,20 +2358,20 @@ func (c *CheckSuite) GetRepository() *Repository {
 	return c.Repository
 }
 
-// GetRerequstable returns the Rerequstable field if it's non-nil, zero value otherwise.
-func (c *CheckSuite) GetRerequstable() bool {
-	if c == nil || c.Rerequstable == nil {
+// GetRerequestable returns the Rerequestable field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetRerequestable() bool {
+	if c == nil || c.Rerequestable == nil {
 		return false
 	}
-	return *c.Rerequstable
+	return *c.Rerequestable
 }
 
-// GetRunsRerequstable returns the RunsRerequstable field if it's non-nil, zero value otherwise.
-func (c *CheckSuite) GetRunsRerequstable() bool {
-	if c == nil || c.RunsRerequstable == nil {
+// GetRunsRerequestable returns the RunsRerequestable field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetRunsRerequestable() bool {
+	if c == nil || c.RunsRerequestable == nil {
 		return false
 	}
-	return *c.RunsRerequstable
+	return *c.RunsRerequestable
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.

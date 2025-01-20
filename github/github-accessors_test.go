@@ -3073,26 +3073,26 @@ func TestCheckSuite_GetRepository(tt *testing.T) {
 	c.GetRepository()
 }
 
-func TestCheckSuite_GetRerequstable(tt *testing.T) {
+func TestCheckSuite_GetRerequestable(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	c := &CheckSuite{Rerequstable: &zeroValue}
-	c.GetRerequstable()
+	c := &CheckSuite{Rerequestable: &zeroValue}
+	c.GetRerequestable()
 	c = &CheckSuite{}
-	c.GetRerequstable()
+	c.GetRerequestable()
 	c = nil
-	c.GetRerequstable()
+	c.GetRerequestable()
 }
 
-func TestCheckSuite_GetRunsRerequstable(tt *testing.T) {
+func TestCheckSuite_GetRunsRerequestable(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	c := &CheckSuite{RunsRerequstable: &zeroValue}
-	c.GetRunsRerequstable()
+	c := &CheckSuite{RunsRerequestable: &zeroValue}
+	c.GetRunsRerequestable()
 	c = &CheckSuite{}
-	c.GetRunsRerequstable()
+	c.GetRunsRerequestable()
 	c = nil
-	c.GetRunsRerequstable()
+	c.GetRunsRerequestable()
 }
 
 func TestCheckSuite_GetStatus(tt *testing.T) {

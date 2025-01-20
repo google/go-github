@@ -207,10 +207,10 @@ func TestCheckSuite_String(t *testing.T) {
 		Repository:           &Repository{},
 		HeadCommit:           &Commit{},
 		LatestCheckRunsCount: Ptr(int64(0)),
-		Rerequstable:         Ptr(false),
-		RunsRerequstable:     Ptr(false),
+		Rerequestable:        Ptr(false),
+		RunsRerequestable:    Ptr(false),
 	}
-	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}, LatestCheckRunsCount:0, Rerequstable:false, RunsRerequstable:false}`
+	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}, LatestCheckRunsCount:0, Rerequestable:false, RunsRerequestable:false}`
 	if got := v.String(); got != want {
 		t.Errorf("CheckSuite.String = %v, want %v", got, want)
 	}

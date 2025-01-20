@@ -87,8 +87,8 @@ type CheckSuite struct {
 	// The following fields are only populated by Webhook events.
 	HeadCommit           *Commit `json:"head_commit,omitempty"`
 	LatestCheckRunsCount *int64  `json:"latest_check_runs_count,omitempty"`
-	Rerequstable         *bool   `json:"rerequestable,omitempty"`
-	RunsRerequstable     *bool   `json:"runs_rerequestable,omitempty"`
+	Rerequestable        *bool   `json:"rerequestable,omitempty"`
+	RunsRerequestable    *bool   `json:"runs_rerequestable,omitempty"`
 }
 
 func (c CheckRun) String() string {
