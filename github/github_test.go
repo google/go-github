@@ -1806,6 +1806,47 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 	}
 }
 
+// Ensure *AbuseRateLimitError.RetryAfter respect a max duration if specified.
+func TestDo_rateLimit_abuseRateLimitError_maxDuration(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	// specify a max retry after duration of 1 min
+	client.MaxSecondaryRateLimitRetryAfterDuration = 60 * time.Second
+
+	// x-ratelimit-reset value of 1h into the future, to make sure we are way over the max wait time duration.
+	blockUntil := time.Now().Add(1 * time.Hour).Unix()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set(headerRateReset, strconv.Itoa(int(blockUntil)))
+		w.Header().Set(headerRateRemaining, "1") // set remaining to a value > 0 to distinct from a primary rate limit
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "You have triggered an abuse detection mechanism ...",
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	_, err := client.Do(ctx, req, nil)
+
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	abuseRateLimitErr, ok := err.(*AbuseRateLimitError)
+	if !ok {
+		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+	}
+	if abuseRateLimitErr.RetryAfter == nil {
+		t.Fatalf("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+	}
+	// check that the retry after is set to be the max allowed duration
+	if got, want := *abuseRateLimitErr.RetryAfter, client.MaxSecondaryRateLimitRetryAfterDuration; got != want {
+		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
+	}
+}
+
 func TestDo_noContent(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

@@ -174,6 +174,10 @@ type Client struct {
 	rateLimits              [Categories]Rate // Rate limits for the client as determined by the most recent API calls.
 	secondaryRateLimitReset time.Time        // Secondary rate limit reset for the client as determined by the most recent API calls.
 
+	// If specified, Client will block requests for at most this duration in case of reaching a secondary
+	// rate limit
+	MaxSecondaryRateLimitRetryAfterDuration time.Duration
+
 	// Whether to respect rate limit headers on endpoints that return 302 redirections to artifacts
 	RateLimitRedirectionalEndpoints bool
 
@@ -920,6 +924,10 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 		// Update the secondary rate limit if we hit it.
 		rerr, ok := err.(*AbuseRateLimitError)
 		if ok && rerr.RetryAfter != nil {
+			// if a max duration is specified, make sure that we are waiting at most this duration
+			if c.MaxSecondaryRateLimitRetryAfterDuration > 0 && rerr.GetRetryAfter() > c.MaxSecondaryRateLimitRetryAfterDuration {
+				rerr.RetryAfter = &c.MaxSecondaryRateLimitRetryAfterDuration
+			}
 			c.rateMu.Lock()
 			c.secondaryRateLimitReset = time.Now().Add(*rerr.RetryAfter)
 			c.rateMu.Unlock()
