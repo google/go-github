@@ -130,7 +130,7 @@ func TestRequestReviewers(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	// This returns a PR, unmarshalling of which is tested elsewhere
+	// This returns a PR, unmarshaling of which is tested elsewhere
 	ctx := context.Background()
 	got, _, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
 	if err != nil {
