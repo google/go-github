@@ -134,7 +134,7 @@ func addRepoSecret(ctx context.Context, client *github.Client, owner string, rep
 	}
 
 	if _, err := client.Codespaces.CreateOrUpdateRepoSecret(ctx, owner, repo, encryptedSecret); err != nil {
-		return fmt.Errorf("Codespaces.CreateOrUpdateRepoSecret returned error: %v", err)
+		return fmt.Errorf("client.Codespaces.CreateOrUpdateRepoSecret returned error: %v", err)
 	}
 
 	return nil
@@ -143,7 +143,7 @@ func addRepoSecret(ctx context.Context, client *github.Client, owner string, rep
 func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName string, secretValue string) (*github.EncryptedSecret, error) {
 	decodedPublicKey, err := base64.StdEncoding.DecodeString(publicKey.GetKey())
 	if err != nil {
-		return nil, fmt.Errorf("base64.StdEncoding.DecodeString was unable to decode public key: %v", err)
+		return nil, fmt.Errorf("unable to decode public key: %v", err)
 	}
 
 	var boxKey [32]byte

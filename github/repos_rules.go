@@ -567,7 +567,7 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	default:
 		r.Type = ""
 		r.Parameters = nil
-		return fmt.Errorf("RepositoryRule.Type %q is not yet implemented, unable to unmarshal (%#v)", repositoryRule.Type, repositoryRule)
+		return fmt.Errorf("repositoryRule.Type %q is not yet implemented, unable to unmarshal (%#v)", repositoryRule.Type, repositoryRule)
 	}
 
 	return nil

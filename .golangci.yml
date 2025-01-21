@@ -60,6 +60,8 @@ linters-settings:
     errorf: true
     strconcat: false
   revive:
+    # Set below 0.8 to enable error-strings rule.
+    confidence: 0.6
     rules:
       - name: blank-imports
       - name: bool-literal-in-expr
