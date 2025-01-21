@@ -480,14 +480,14 @@ type repositoryRulesetRuleWrapper struct {
 // MarshalJSON is a custom JSON marshaler for RulesetRules.
 func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 	// If new rules are added to RulesetRules the capacity needs increasing
-	arr := make([]json.RawMessage, 0, 21)
+	rawRules := make([]json.RawMessage, 0, 21)
 
 	if r.Creation != nil {
 		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCreation, r.Creation)
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.Update != nil {
@@ -495,7 +495,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.Deletion != nil {
@@ -503,7 +503,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.RequiredLinearHistory != nil {
@@ -511,7 +511,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.MergeQueue != nil {
@@ -519,7 +519,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.RequiredDeployments != nil {
@@ -527,7 +527,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.RequiredSignatures != nil {
@@ -535,7 +535,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.PullRequest != nil {
@@ -543,7 +543,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.RequiredStatusChecks != nil {
@@ -551,7 +551,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.NonFastForward != nil {
@@ -559,7 +559,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.CommitMessagePattern != nil {
@@ -567,7 +567,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.CommitAuthorEmailPattern != nil {
@@ -575,7 +575,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.CommitterEmailPattern != nil {
@@ -583,7 +583,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.BranchNamePattern != nil {
@@ -591,7 +591,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.TagNamePattern != nil {
@@ -599,7 +599,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.FilePathRestriction != nil {
@@ -607,7 +607,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.MaxFilePathLength != nil {
@@ -615,7 +615,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.FileExtensionRestriction != nil {
@@ -623,7 +623,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.MaxFileSize != nil {
@@ -631,7 +631,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.Workflows != nil {
@@ -639,7 +639,7 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
 	if r.CodeScanning != nil {
@@ -647,10 +647,10 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		arr = append(arr, json.RawMessage(bytes))
+		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
-	return json.Marshal(arr)
+	return json.Marshal(rawRules)
 }
 
 // marshalRepositoryRulesetRule is a helper function to marshal a ruleset rule.
@@ -675,13 +675,13 @@ func marshalRepositoryRulesetRule[T any](t RepositoryRuleType, params T) ([]byte
 // UnmarshalJSON is a custom JSON unmarshaler for RulesetRules.
 func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 	// If new rules are added to RulesetRules the capacity needs increasing
-	arr := make([]repositoryRulesetRuleWrapper, 0, 21)
+	wrappers := make([]repositoryRulesetRuleWrapper, 0, 21)
 
-	if err := json.Unmarshal(data, &arr); err != nil {
+	if err := json.Unmarshal(data, &wrappers); err != nil {
 		return err
 	}
 
-	for _, w := range arr {
+	for _, w := range wrappers {
 		switch w.Type {
 		case RulesetRuleTypeCreation:
 			r.Creation = &EmptyRuleParameters{}
@@ -837,13 +837,13 @@ type branchRuleWrapper struct {
 // UnmarshalJSON is a custom JSON unmarshaler for BranchRules.
 func (r *BranchRules) UnmarshalJSON(data []byte) error {
 	// If new rules are added to RulesetRules the capacity needs increasing
-	arr := make([]branchRuleWrapper, 0, 21)
+	wrappers := make([]branchRuleWrapper, 0, 21)
 
-	if err := json.Unmarshal(data, &arr); err != nil {
+	if err := json.Unmarshal(data, &wrappers); err != nil {
 		return err
 	}
 
-	for _, w := range arr {
+	for _, w := range wrappers {
 		switch w.Type {
 		case RulesetRuleTypeCreation:
 			r.Creation = append(r.Creation, &BranchRuleMetadata{RulesetSourceType: w.RulesetSourceType, RulesetSource: w.RulesetSource, RulesetID: w.RulesetID})
