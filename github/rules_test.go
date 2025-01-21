@@ -251,7 +251,12 @@ func TestRulesetRules(t *testing.T) {
 				}
 
 				if diff := cmp.Diff(test.json, string(got)); diff != "" {
-					t.Errorf("json.Marshal returned:\n%s\nwant:\n%s\ndiff:\n%v", got, test.json, diff)
+					t.Errorf(
+						"json.Marshal returned:\n%s\nwant:\n%s\ndiff:\n%v",
+						got,
+						test.json,
+						diff,
+					)
 				}
 			})
 		}
@@ -271,7 +276,12 @@ func TestRulesetRules(t *testing.T) {
 				}
 
 				if diff := cmp.Diff(test.rules, got); diff != "" {
-					t.Errorf("json.Unmarshal returned:\n%#v\nwant:\n%#v\ndiff:\n%v", got, test.rules, diff)
+					t.Errorf(
+						"json.Unmarshal returned:\n%#v\nwant:\n%#v\ndiff:\n%v",
+						got,
+						test.rules,
+						diff,
+					)
 				}
 			})
 		}
@@ -617,7 +627,288 @@ func TestBranchRules(t *testing.T) {
 				}
 
 				if diff := cmp.Diff(test.rules, got); diff != "" {
-					t.Errorf("json.Unmarshal returned:\n%#v\nwant:\n%#v\ndiff:\n%v", got, test.rules, diff)
+					t.Errorf(
+						"json.Unmarshal returned:\n%#v\nwant:\n%#v\ndiff:\n%v",
+						got,
+						test.rules,
+						diff,
+					)
+				}
+			})
+		}
+	})
+}
+
+func TestRepositoryRule(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		rule *RepositoryRule
+		json string
+	}{
+		{
+			"empty",
+			&RepositoryRule{},
+			`{}`,
+		},
+		{
+			"creation",
+			&RepositoryRule{Type: RulesetRuleTypeCreation, Parameters: nil},
+			`{"type":"creation"}`,
+		},
+		{
+			"update",
+			&RepositoryRule{Type: RulesetRuleTypeUpdate, Parameters: &UpdateRuleParameters{}},
+			`{"type":"update"}`,
+		},
+		{
+			"update_params_empty",
+			&RepositoryRule{Type: RulesetRuleTypeUpdate, Parameters: &UpdateRuleParameters{}},
+			`{"type":"update","parameters":{}}`,
+		},
+		{
+			"update_params_set",
+			&RepositoryRule{
+				Type:       RulesetRuleTypeUpdate,
+				Parameters: &UpdateRuleParameters{UpdateAllowsFetchAndMerge: true},
+			},
+			`{"type":"update","parameters":{"update_allows_fetch_and_merge":true}}`,
+		},
+		{
+			"deletion",
+			&RepositoryRule{Type: RulesetRuleTypeDeletion, Parameters: nil},
+			`{"type":"deletion"}`,
+		},
+		{
+			"required_linear_history",
+			&RepositoryRule{Type: RulesetRuleTypeRequiredLinearHistory, Parameters: nil},
+			`{"type":"required_linear_history"}`,
+		},
+		{
+			"merge_queue",
+			&RepositoryRule{
+				Type: RulesetRuleTypeMergeQueue,
+				Parameters: &MergeQueueRuleParameters{
+					CheckResponseTimeoutMinutes:  5,
+					GroupingStrategy:             MergeGroupingStrategyAllGreen,
+					MaxEntriesToBuild:            10,
+					MaxEntriesToMerge:            20,
+					MergeMethod:                  MergeMethodSquash,
+					MinEntriesToMerge:            1,
+					MinEntriesToMergeWaitMinutes: 15,
+				},
+			},
+			`{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"squash","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}}`,
+		},
+		{
+			"required_deployments",
+			&RepositoryRule{
+				Type: RulesetRuleTypeRequiredDeployments,
+				Parameters: &RequiredDeploymentsRuleParameters{
+					RequiredDeploymentEnvironments: []string{"test1", "test2"},
+				},
+			},
+			`{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}}`,
+		},
+		{
+			"required_signatures",
+			&RepositoryRule{Type: RulesetRuleTypeRequiredSignatures, Parameters: nil},
+			`{"type":"required_signatures"}`,
+		},
+		{
+			"pull_request",
+			&RepositoryRule{
+				Type: RulesetRuleTypePullRequest,
+				Parameters: &PullRequestRuleParameters{
+					AllowedMergeMethods: []MergeMethod{
+						MergeMethodSquash,
+						MergeMethodRebase,
+					},
+					DismissStaleReviewsOnPush:      true,
+					RequireCodeOwnerReview:         true,
+					RequireLastPushApproval:        true,
+					RequiredApprovingReviewCount:   2,
+					RequiredReviewThreadResolution: true,
+				},
+			},
+			`{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}}`,
+		},
+		{
+			"required_status_checks",
+			&RepositoryRule{
+				Type: RulesetRuleTypeRequiredStatusChecks,
+				Parameters: &RequiredStatusChecksRuleParameters{
+					RequiredStatusChecks: []*RuleStatusCheck{
+						{Context: "test1"},
+						{Context: "test2"},
+					},
+					StrictRequiredStatusChecksPolicy: true,
+				},
+			},
+			`{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test1"},{"context":"test2"}],"strict_required_status_checks_policy":true}}`,
+		},
+		{
+			"non_fast_forward",
+			&RepositoryRule{Type: RulesetRuleTypeNonFastForward, Parameters: nil},
+			`{"type":"non_fast_forward"}`,
+		},
+		{
+			"commit_message_pattern",
+			&RepositoryRule{
+				Type: RulesetRuleTypeCommitMessagePattern,
+				Parameters: &PatternRuleParameters{
+					Name:     Ptr("test"),
+					Negate:   Ptr(false),
+					Operator: PatternRuleOperatorStartsWith,
+					Pattern:  "test",
+				},
+			},
+			`{"type":"commit_message_pattern","parameters":{"name":"test","negate":false,"operator":"starts_with","pattern":"test"}}`,
+		},
+		{
+			"commit_author_email_pattern",
+			&RepositoryRule{
+				Type: RulesetRuleTypeCommitAuthorEmailPattern,
+				Parameters: &PatternRuleParameters{
+					Name:     Ptr("test"),
+					Negate:   Ptr(false),
+					Operator: PatternRuleOperatorStartsWith,
+					Pattern:  "test",
+				},
+			},
+			`{"type":"commit_author_email_pattern","parameters":{"name":"test","negate":false,"operator":"starts_with","pattern":"test"}}`,
+		},
+		{
+			"committer_email_pattern",
+			&RepositoryRule{
+				Type: RulesetRuleTypeCommitterEmailPattern,
+				Parameters: &PatternRuleParameters{
+					Name:     Ptr("test"),
+					Negate:   Ptr(false),
+					Operator: PatternRuleOperatorStartsWith,
+					Pattern:  "test",
+				},
+			},
+			`{"type":"committer_email_pattern","parameters":{"name":"test","negate":false,"operator":"starts_with","pattern":"test"}}`,
+		},
+		{
+			"branch_name_pattern",
+			&RepositoryRule{
+				Type: RulesetRuleTypeBranchNamePattern,
+				Parameters: &PatternRuleParameters{
+					Name:     Ptr("test"),
+					Negate:   Ptr(false),
+					Operator: PatternRuleOperatorStartsWith,
+					Pattern:  "test",
+				},
+			},
+			`{"type":"branch_name_pattern","parameters":{"name":"test","negate":false,"operator":"starts_with","pattern":"test"}}`,
+		},
+		{
+			"tag_name_pattern",
+			&RepositoryRule{
+				Type: RulesetRuleTypeTagNamePattern,
+				Parameters: &PatternRuleParameters{
+					Name:     Ptr("test"),
+					Negate:   Ptr(false),
+					Operator: PatternRuleOperatorStartsWith,
+					Pattern:  "test",
+				},
+			},
+			`{"type":"tag_name_pattern","parameters":{"name":"test","negate":false,"operator":"starts_with","pattern":"test"}}`,
+		},
+		{
+			"file_path_restriction",
+			&RepositoryRule{
+				Type: RulesetRuleTypeFilePathRestriction,
+				Parameters: &FilePathRestrictionRuleParameters{
+					RestrictedFilePaths: []string{"test1", "test2"},
+				},
+			},
+			`{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}}`,
+		},
+		{
+			"max_file_path_length",
+			&RepositoryRule{
+				Type:       RulesetRuleTypeMaxFilePathLength,
+				Parameters: &MaxFilePathLengthRuleParameters{MaxFilePathLength: 512},
+			},
+			`{"type":"max_file_path_length","parameters":{"max_file_path_length":512}}`,
+		},
+		{
+			"file_extension_restriction",
+			&RepositoryRule{
+				Type: RulesetRuleTypeFileExtensionRestriction,
+				Parameters: &FileExtensionRestrictionRuleParameters{
+					RestrictedFileExtensions: []string{".exe", ".pkg"},
+				},
+			},
+			`{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}}`,
+		},
+		{
+			"max_file_size",
+			&RepositoryRule{
+				Type:       RulesetRuleTypeMaxFileSize,
+				Parameters: &MaxFileSizeRuleParameters{MaxFileSize: 1024},
+			},
+			`{"type":"max_file_size","parameters":{"max_file_size":1024}}`,
+		},
+		{
+			"workflows",
+			&RepositoryRule{
+				Type: RulesetRuleTypeWorkflows,
+				Parameters: &WorkflowsRuleParameters{
+					Workflows: []*RuleWorkflow{
+						{Path: ".github/workflows/test1.yaml"},
+						{Path: ".github/workflows/test2.yaml"},
+					},
+				},
+			},
+			`{"type":"workflows","parameters":{"workflows":[{"path":".github/workflows/test1.yaml"},{"path":".github/workflows/test2.yaml"}]}}`,
+		},
+		{
+			"code_scanning",
+			&RepositoryRule{
+				Type: RulesetRuleTypeCodeScanning,
+				Parameters: &CodeScanningRuleParameters{
+					CodeScanningTools: []*RuleCodeScanningTool{
+						{
+							AlertsThreshold:         CodeScanningAlertsThresholdAll,
+							SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdAll,
+							Tool:                    "test",
+						},
+						{
+							AlertsThreshold:         CodeScanningAlertsThresholdNone,
+							SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdNone,
+							Tool:                    "test",
+						},
+					},
+				},
+			},
+			`{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}}`,
+		},
+	}
+
+	t.Run("UnmarshalJSON", func(t *testing.T) {
+		t.Parallel()
+
+		for _, test := range tests {
+			t.Run(test.name, func(t *testing.T) {
+				t.Parallel()
+
+				got := &RepositoryRule{}
+				err := json.Unmarshal([]byte(test.json), got)
+				if err != nil {
+					t.Errorf("Unable to unmarshal JSON %v: %v", test.json, err)
+				}
+
+				if diff := cmp.Diff(test.rule, got); diff != "" {
+					t.Errorf(
+						"json.Unmarshal returned:\n%#v\nwant:\n%#v\ndiff:\n%v",
+						got,
+						test.rule,
+						diff,
+					)
 				}
 			})
 		}
