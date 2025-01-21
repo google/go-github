@@ -961,7 +961,6 @@ var errInvalidLocation = errors.New("invalid or empty Location header in redirec
 // canceled or times out, ctx.Err() will be returned.
 func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRedirects int) (*url.URL, *Response, error) {
 	response, err := c.bareDoIgnoreRedirects(ctx, req)
-
 	if err != nil {
 		rerr, ok := err.(*RedirectionError)
 		if ok {
