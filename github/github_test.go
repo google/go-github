@@ -2180,7 +2180,7 @@ func TestErrorResponse_Is(t *testing.T) {
 		},
 		"errors have different types": {
 			wantSame:   false,
-			otherError: errors.New("Github"),
+			otherError: errors.New("github"),
 		},
 	}
 
@@ -2250,7 +2250,7 @@ func TestRateLimitError_Is(t *testing.T) {
 		"errors have different types": {
 			wantSame:   false,
 			err:        err,
-			otherError: errors.New("Github"),
+			otherError: errors.New("github"),
 		},
 	}
 
@@ -2337,7 +2337,7 @@ func TestAbuseRateLimitError_Is(t *testing.T) {
 		"errors have different types": {
 			wantSame:   false,
 			err:        err,
-			otherError: errors.New("Github"),
+			otherError: errors.New("github"),
 		},
 	}
 
@@ -2369,7 +2369,7 @@ func TestAcceptedError_Is(t *testing.T) {
 		},
 		"errors have different types": {
 			wantSame:   false,
-			otherError: errors.New("Github"),
+			otherError: errors.New("github"),
 		},
 	}
 
