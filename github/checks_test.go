@@ -891,8 +891,8 @@ func Test_CheckSuiteMarshal(t *testing.T) {
 			SHA: Ptr("s"),
 		},
 		LatestCheckRunsCount: Ptr(int64(1)),
-		Rerequstable:         Ptr(true),
-		RunsRerequstable:     Ptr(true),
+		Rerequestable:        Ptr(true),
+		RunsRerequestable:    Ptr(true),
 	}
 
 	w := fmt.Sprintf(`{

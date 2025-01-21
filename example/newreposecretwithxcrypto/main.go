@@ -134,7 +134,7 @@ func addRepoSecret(ctx context.Context, client *github.Client, owner string, rep
 	}
 
 	if _, err := client.Actions.CreateOrUpdateRepoSecret(ctx, owner, repo, encryptedSecret); err != nil {
-		return fmt.Errorf("Actions.CreateOrUpdateRepoSecret returned error: %v", err)
+		return fmt.Errorf("client.Actions.CreateOrUpdateRepoSecret returned error: %v", err)
 	}
 
 	return nil

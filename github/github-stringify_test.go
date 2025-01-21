@@ -207,10 +207,10 @@ func TestCheckSuite_String(t *testing.T) {
 		Repository:           &Repository{},
 		HeadCommit:           &Commit{},
 		LatestCheckRunsCount: Ptr(int64(0)),
-		Rerequstable:         Ptr(false),
-		RunsRerequstable:     Ptr(false),
+		Rerequestable:        Ptr(false),
+		RunsRerequestable:    Ptr(false),
 	}
-	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}, LatestCheckRunsCount:0, Rerequstable:false, RunsRerequstable:false}`
+	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}, LatestCheckRunsCount:0, Rerequestable:false, RunsRerequestable:false}`
 	if got := v.String(); got != want {
 		t.Errorf("CheckSuite.String = %v, want %v", got, want)
 	}
@@ -1454,12 +1454,12 @@ func TestPullRequestThread_String(t *testing.T) {
 func TestPullStats_String(t *testing.T) {
 	t.Parallel()
 	v := PullStats{
-		TotalPulls:      Ptr(0),
-		MergedPulls:     Ptr(0),
-		MergablePulls:   Ptr(0),
-		UnmergablePulls: Ptr(0),
+		TotalPulls:       Ptr(0),
+		MergedPulls:      Ptr(0),
+		MergeablePulls:   Ptr(0),
+		UnmergeablePulls: Ptr(0),
 	}
-	want := `github.PullStats{TotalPulls:0, MergedPulls:0, MergablePulls:0, UnmergablePulls:0}`
+	want := `github.PullStats{TotalPulls:0, MergedPulls:0, MergeablePulls:0, UnmergeablePulls:0}`
 	if got := v.String(); got != want {
 		t.Errorf("PullStats.String = %v, want %v", got, want)
 	}
