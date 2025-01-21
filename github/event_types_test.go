@@ -7,7 +7,10 @@ package github
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestEditChange_Marshal_TitleChange(t *testing.T) {
@@ -9560,1789 +9563,302 @@ func TestReleaseEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestRepositoryRulesetEvent_Marshal(t *testing.T) {
+func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RepositoryRulesetEvent{}, "{}")
 
-	l := make(map[string]interface{})
-	l["key"] = "value"
+	enterprise := &Enterprise{
+		ID:     Ptr(1),
+		NodeID: Ptr("n"),
+		Slug:   Ptr("e"),
+		Name:   Ptr("e"),
+	}
 
-	jsonMsg, _ := json.Marshal(&l)
+	installation := &Installation{
+		ID:      Ptr(int64(1)),
+		NodeID:  Ptr("n"),
+		AppID:   Ptr(int64(1)),
+		AppSlug: Ptr("a"),
+	}
 
-	u := &RepositoryRulesetEvent{
-		Action: Ptr("a"),
-		Enterprise: &Enterprise{
-			ID:          Ptr(1),
-			Slug:        Ptr("s"),
-			Name:        Ptr("n"),
-			NodeID:      Ptr("nid"),
-			AvatarURL:   Ptr("au"),
-			Description: Ptr("d"),
-			WebsiteURL:  Ptr("wu"),
-			HTMLURL:     Ptr("hu"),
-			CreatedAt:   &Timestamp{referenceTime},
-			UpdatedAt:   &Timestamp{referenceTime},
-		},
-		Installation: &Installation{
-			ID:       Ptr(int64(1)),
-			NodeID:   Ptr("nid"),
-			AppID:    Ptr(int64(1)),
-			AppSlug:  Ptr("as"),
-			TargetID: Ptr(int64(1)),
-			Account: &User{
-				Login:           Ptr("l"),
-				ID:              Ptr(int64(1)),
-				URL:             Ptr("u"),
-				AvatarURL:       Ptr("a"),
-				GravatarID:      Ptr("g"),
-				Name:            Ptr("n"),
-				Company:         Ptr("c"),
-				Blog:            Ptr("b"),
-				Location:        Ptr("l"),
-				Email:           Ptr("e"),
-				Hireable:        Ptr(true),
-				Bio:             Ptr("b"),
-				TwitterUsername: Ptr("t"),
-				PublicRepos:     Ptr(1),
-				Followers:       Ptr(1),
-				Following:       Ptr(1),
-				CreatedAt:       &Timestamp{referenceTime},
-				SuspendedAt:     &Timestamp{referenceTime},
-			},
-			AccessTokensURL:     Ptr("atu"),
-			RepositoriesURL:     Ptr("ru"),
-			HTMLURL:             Ptr("hu"),
-			TargetType:          Ptr("tt"),
-			SingleFileName:      Ptr("sfn"),
-			RepositorySelection: Ptr("rs"),
-			Events:              []string{"e"},
-			SingleFilePaths:     []string{"s"},
-			Permissions: &InstallationPermissions{
-				Actions:                       Ptr("a"),
-				Administration:                Ptr("ad"),
-				Checks:                        Ptr("c"),
-				Contents:                      Ptr("co"),
-				ContentReferences:             Ptr("cr"),
-				Deployments:                   Ptr("d"),
-				Environments:                  Ptr("e"),
-				Issues:                        Ptr("i"),
-				Metadata:                      Ptr("md"),
-				Members:                       Ptr("m"),
-				OrganizationAdministration:    Ptr("oa"),
-				OrganizationHooks:             Ptr("oh"),
-				OrganizationPlan:              Ptr("op"),
-				OrganizationPreReceiveHooks:   Ptr("opr"),
-				OrganizationProjects:          Ptr("op"),
-				OrganizationSecrets:           Ptr("os"),
-				OrganizationSelfHostedRunners: Ptr("osh"),
-				OrganizationUserBlocking:      Ptr("oub"),
-				Packages:                      Ptr("pkg"),
-				Pages:                         Ptr("pg"),
-				PullRequests:                  Ptr("pr"),
-				RepositoryHooks:               Ptr("rh"),
-				RepositoryProjects:            Ptr("rp"),
-				RepositoryPreReceiveHooks:     Ptr("rprh"),
-				Secrets:                       Ptr("s"),
-				SecretScanningAlerts:          Ptr("ssa"),
-				SecurityEvents:                Ptr("se"),
-				SingleFile:                    Ptr("sf"),
-				Statuses:                      Ptr("s"),
-				TeamDiscussions:               Ptr("td"),
-				VulnerabilityAlerts:           Ptr("va"),
-				Workflows:                     Ptr("w"),
-			},
-			CreatedAt:              &Timestamp{referenceTime},
-			UpdatedAt:              &Timestamp{referenceTime},
-			HasMultipleSingleFiles: Ptr(false),
-			SuspendedBy: &User{
-				Login:           Ptr("l"),
-				ID:              Ptr(int64(1)),
-				URL:             Ptr("u"),
-				AvatarURL:       Ptr("a"),
-				GravatarID:      Ptr("g"),
-				Name:            Ptr("n"),
-				Company:         Ptr("c"),
-				Blog:            Ptr("b"),
-				Location:        Ptr("l"),
-				Email:           Ptr("e"),
-				Hireable:        Ptr(true),
-				Bio:             Ptr("b"),
-				TwitterUsername: Ptr("t"),
-				PublicRepos:     Ptr(1),
-				Followers:       Ptr(1),
-				Following:       Ptr(1),
-				CreatedAt:       &Timestamp{referenceTime},
-				SuspendedAt:     &Timestamp{referenceTime},
-			},
-			SuspendedAt: &Timestamp{referenceTime},
-		},
-		Organization: &Organization{
-			BillingEmail:                         Ptr("be"),
-			Blog:                                 Ptr("b"),
-			Company:                              Ptr("c"),
-			Email:                                Ptr("e"),
-			TwitterUsername:                      Ptr("tu"),
-			Location:                             Ptr("loc"),
-			Name:                                 Ptr("n"),
-			Description:                          Ptr("d"),
-			IsVerified:                           Ptr(true),
-			HasOrganizationProjects:              Ptr(true),
-			HasRepositoryProjects:                Ptr(true),
-			DefaultRepoPermission:                Ptr("drp"),
-			MembersCanCreateRepos:                Ptr(true),
-			MembersCanCreateInternalRepos:        Ptr(true),
-			MembersCanCreatePrivateRepos:         Ptr(true),
-			MembersCanCreatePublicRepos:          Ptr(false),
-			MembersAllowedRepositoryCreationType: Ptr("marct"),
-			MembersCanCreatePages:                Ptr(true),
-			MembersCanCreatePublicPages:          Ptr(false),
-			MembersCanCreatePrivatePages:         Ptr(true),
-		},
-		Repository: &Repository{
-			ID:   Ptr(int64(1)),
-			URL:  Ptr("u"),
-			Name: Ptr("n"),
-		},
-		RepositoryRuleset: &RepositoryRuleset{
-			ID:          1,
-			Name:        "n",
-			Target:      Ptr("branch"),
-			SourceType:  Ptr("Repository"),
-			Source:      "s",
-			Enforcement: "disabled",
-			BypassActors: []*BypassActor{
-				{
-					ActorID:    Ptr(int64(234)),
-					ActorType:  Ptr("Team"),
-					BypassMode: Ptr("Always"),
-				},
-			},
-			CurrentUserCanBypass: Ptr("always"),
-			NodeID:               Ptr("n"),
-			Links: &RepositoryRulesetLink{
-				Self: &RulesetLink{
-					HRef: Ptr("href"),
-				},
-				HTML: &RulesetLink{
-					HRef: Ptr("href"),
-				},
-			},
-			Conditions: json.RawMessage(jsonMsg),
-			Rules: []*RepositoryRulesetRule{
-				{
-					Creation: &RepositoryRulesetRuleType{
-						Type: "creation",
-					},
-					Update: &RepositoryRulesetUpdateRule{
-						Type: "update",
-						Parameters: &UpdateAllowsFetchAndMergeRuleParameters{
-							UpdateAllowsFetchAndMerge: true,
+	organization := &Organization{
+		ID:     Ptr(int64(1)),
+		NodeID: Ptr("n"),
+		Name:   Ptr("o"),
+	}
+
+	repository := &Repository{
+		ID:       Ptr(int64(1)),
+		NodeID:   Ptr("n"),
+		Name:     Ptr("r"),
+		FullName: Ptr("o/r"),
+	}
+
+	sender := &User{
+		ID:     Ptr(int64(1)),
+		NodeID: Ptr("n"),
+		Login:  Ptr("l"),
+	}
+
+	tests := []struct {
+		name  string
+		json  string
+		event *RepositoryRulesetEvent
+	}{
+		{"empty", `{}`, &RepositoryRulesetEvent{}},
+		{
+			"created",
+			fmt.Sprintf(
+				`{"action":"created","repository_ruleset":{"id":1,"name":"r","target":"branch","source_type":"Repository","source":"o/r","enforcement":"active","conditions":{"ref_name":{"exclude":[],"include":["~ALL"]}},"rules":[{"type":"deletion"},{"type":"creation"},{"type":"update"},{"type":"required_linear_history"},{"type":"pull_request","parameters":{"required_approving_review_count":2,"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_review_thread_resolution":false,"automatic_copilot_code_review_enabled":false,"allowed_merge_methods":["squash","rebase","merge"]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool":"CodeQL","security_alerts_threshold":"high_or_higher","alerts_threshold":"errors"}]}}],"node_id":"n","created_at":%[1]s,"updated_at":%[1]s,"_links":{"self":{"href":"a"},"html":{"href":"a"}}},"repository":{"id":1,"node_id":"n","name":"r","full_name":"o/r"},"organization":{"id":1,"node_id":"n","name":"o"},"enterprise":{"id":1,"node_id":"n","slug":"e","name":"e"},"installation":{"id":1,"node_id":"n","app_id":1,"app_slug":"a"},"sender":{"id":1,"node_id":"n","login":"l"}}`,
+				referenceTimeStr,
+			),
+			&RepositoryRulesetEvent{
+				Action: Ptr("created"),
+				RepositoryRuleset: &RepositoryRuleset{
+					ID:          Ptr(int64(1)),
+					Name:        "r",
+					Target:      Ptr(RulesetTargetBranch),
+					SourceType:  Ptr(RulesetSourceTypeRepository),
+					Source:      "o/r",
+					Enforcement: RulesetEnforcementActive,
+					Conditions: &RepositoryRulesetConditions{
+						RefName: &RepositoryRulesetRefConditionParameters{
+							Include: []string{"~ALL"},
+							Exclude: []string{},
 						},
 					},
-					Deletion: &RepositoryRulesetRuleType{
-						Type: "deletion",
-					},
-					RequiredLinearHistory: &RepositoryRulesetRuleType{
-						Type: "required_linear_history",
-					},
-					MergeQueue: &RepositoryRulesetMergeQueueRule{
-						Type: "merge_queue",
-						Parameters: &MergeQueueRuleParameters{
-							CheckResponseTimeoutMinutes:  35,
-							GroupingStrategy:             "HEADGREEN",
-							MaxEntriesToBuild:            8,
-							MaxEntriesToMerge:            4,
-							MergeMethod:                  "SQUASH",
-							MinEntriesToMerge:            2,
-							MinEntriesToMergeWaitMinutes: 13,
+					Rules: &RepositoryRulesetRules{
+						Creation:              &EmptyRuleParameters{},
+						Update:                &UpdateRuleParameters{},
+						Deletion:              &EmptyRuleParameters{},
+						RequiredLinearHistory: &EmptyRuleParameters{},
+						PullRequest: &PullRequestRuleParameters{
+							AllowedMergeMethods: []MergeMethod{
+								MergeMethodSquash,
+								MergeMethodRebase,
+								MergeMethodMerge,
+							},
+							DismissStaleReviewsOnPush:      false,
+							RequireCodeOwnerReview:         false,
+							RequireLastPushApproval:        false,
+							RequiredApprovingReviewCount:   2,
+							RequiredReviewThreadResolution: false,
 						},
-					},
-					RequiredDeployments: &RepositoryRulesetRequiredDeploymentsRule{
-						Type: "required_deployments",
-						Parameters: &RequiredDeploymentEnvironmentsRuleParameters{
-							RequiredDeploymentEnvironments: []string{"test"},
-						},
-					},
-					RequiredSignatures: &RepositoryRulesetRuleType{
-						Type: "required_signatures",
-					},
-					PullRequest: &RepositoryRulesetPullRequestRule{
-						Type: "pull_request",
-						Parameters: &PullRequestRuleParameters{
-							AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
-							DismissStaleReviewsOnPush:      true,
-							RequireCodeOwnerReview:         true,
-							RequireLastPushApproval:        true,
-							RequiredApprovingReviewCount:   1,
-							RequiredReviewThreadResolution: true,
-						},
-					},
-					RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
-						Type: "required_status_checks",
-						Parameters: &RequiredStatusChecksRuleParameters{
-							RequiredStatusChecks: []RuleRequiredStatusChecks{
+						CodeScanning: &CodeScanningRuleParameters{
+							CodeScanningTools: []*RuleCodeScanningTool{
 								{
-									Context:       "test",
-									IntegrationID: Ptr(int64(1)),
-								},
-							},
-							StrictRequiredStatusChecksPolicy: true,
-						},
-					},
-					NonFastForward: &RepositoryRulesetRuleType{
-						Type: "non_fast_forward",
-					},
-					CommitMessagePattern: &RepositoryRulesetPatternRule{
-						Type: "commit_message_pattern",
-						Parameters: &RulePatternParameters{
-							Name:     Ptr("avoid test commits"),
-							Negate:   Ptr(true),
-							Operator: "starts_with",
-							Pattern:  "[test]",
-						},
-					},
-					CommitAuthorEmailPattern: &RepositoryRulesetPatternRule{
-						Type: "commit_author_email_pattern",
-						Parameters: &RulePatternParameters{
-							Operator: "contains",
-							Pattern:  "github",
-						},
-					},
-					CommitterEmailPattern: &RepositoryRulesetPatternRule{
-						Type: "committer_email_pattern",
-						Parameters: &RulePatternParameters{
-							Name:     Ptr("avoid commit emails"),
-							Negate:   Ptr(true),
-							Operator: "ends_with",
-							Pattern:  "abc",
-						},
-					},
-					BranchNamePattern: &RepositoryRulesetPatternRule{
-						Type: "branch_name_pattern",
-						Parameters: &RulePatternParameters{
-							Name:     Ptr("avoid branch names"),
-							Negate:   Ptr(true),
-							Operator: "regex",
-							Pattern:  "github$",
-						},
-					},
-					TagNamePattern: &RepositoryRulesetPatternRule{
-						Type: "tag_name_pattern",
-						Parameters: &RulePatternParameters{
-							Name:     Ptr("avoid tag names"),
-							Negate:   Ptr(true),
-							Operator: "contains",
-							Pattern:  "github",
-						},
-					},
-					FilePathRestriction: &RepositoryRulesetFilePathRestrictionRule{
-						Type: "file_path_restriction",
-						Parameters: &RuleFileParameters{
-							RestrictedFilePaths: &[]string{"/a/file"},
-						},
-					},
-					MaxFilePathLength: &RepositoryRulesetMaxFilePathLengthRule{
-						Type: "max_file_path_length",
-						Parameters: &RuleMaxFilePathLengthParameters{
-							MaxFilePathLength: 255,
-						},
-					},
-					FileExtensionRestriction: &RepositoryRulesetFileExtensionRestrictionRule{
-						Type: "file_extension_restriction",
-						Parameters: &RuleFileExtensionRestrictionParameters{
-							RestrictedFileExtensions: []string{".exe"},
-						},
-					},
-					MaxFileSize: &RepositoryRulesetMaxFileSizeRule{
-						Type: "max_file_size",
-						Parameters: &RuleMaxFileSizeParameters{
-							MaxFileSize: 1024,
-						},
-					},
-					Workflows: &RepositoryRulesetWorkflowsRule{
-						Type: "workflows",
-						Parameters: &RequiredWorkflowsRuleParameters{
-							RequiredWorkflows: []*RuleRequiredWorkflow{
-								{
-									Path:         ".github/workflows/test.yml",
-									RepositoryID: Ptr(int64(1)),
+									AlertsThreshold:         CodeScanningAlertsThresholdErrors,
+									SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdHighOrHigher,
+									Tool:                    "CodeQL",
 								},
 							},
 						},
 					},
-					CodeScanning: &RepositoryRulesetCodeScanningRule{
-						Type: "code_scanning",
-						Parameters: &RuleCodeScanningParameters{
-							CodeScanningTools: []*CodeScanningTool{{
-								AlertsThreshold:         "alert",
-								SecurityAlertsThreshold: "security",
-								Tool:                    "tool",
-							}},
-						},
+					NodeID:    Ptr("n"),
+					CreatedAt: &Timestamp{referenceTime},
+					UpdatedAt: &Timestamp{referenceTime},
+					Links: &RepositoryRulesetLinks{
+						Self: &RepositoryRulesetLink{HRef: Ptr("a")},
+						HTML: &RepositoryRulesetLink{HRef: Ptr("a")},
 					},
 				},
+				Repository:   repository,
+				Organization: organization,
+				Enterprise:   enterprise,
+				Installation: installation,
+				Sender:       sender,
 			},
-			CreatedAt: &Timestamp{referenceTime},
-			UpdatedAt: &Timestamp{referenceTime},
 		},
-		Changes: &RepositoryRulesetEditedChanges{
-			Name: &RepositoryRulesetEditedSource{
-				From: Ptr("f"),
-			},
-			Enforcement: &RepositoryRulesetEditedSource{
-				From: Ptr("e"),
-			},
-			Conditions: &RepositoryRulesetEditedConditions{
-				Added: []*RepositoryRulesetRefCondition{
-					{
-						RefName: &RulesetRefConditionParameters{
-							Include: []string{"refs/heads/main", "refs/heads/master"},
-							Exclude: []string{"refs/heads/dev*"},
+		{
+			"edited",
+			fmt.Sprintf(
+				`{"action":"edited","repository_ruleset":{"id":1,"name":"r","target":"branch","source_type":"Repository","source":"o/r","enforcement":"active","conditions":{"ref_name":{"exclude":[],"include":["~DEFAULT_BRANCH","refs/heads/dev-*"]}},"rules":[{"type":"deletion"},{"type":"creation"},{"type":"update"},{"type": "required_signatures"},{"type":"pull_request","parameters":{"required_approving_review_count":2,"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_review_thread_resolution":false,"automatic_copilot_code_review_enabled":false,"allowed_merge_methods":["squash","rebase"]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool":"CodeQL","security_alerts_threshold":"medium_or_higher","alerts_threshold":"errors"}]}}],"node_id":"n","created_at":%[1]s,"updated_at":%[1]s,"_links":{"self":{"href":"a"},"html":{"href":"a"}}},"changes":{"rules":{"added":[{"type": "required_signatures"}],"updated":[{"rule":{"type":"pull_request","parameters":{"required_approving_review_count":2,"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_review_thread_resolution":false,"automatic_copilot_code_review_enabled":false,"allowed_merge_methods":["squash","rebase"]}},"changes":{"configuration":{"from":"{\\\"required_reviewers\\\":[],\\\"allowed_merge_methods\\\":[\\\"squash\\\",\\\"rebase\\\",\\\"merge\\\"],\\\"require_code_owner_review\\\":false,\\\"require_last_push_approval\\\":false,\\\"dismiss_stale_reviews_on_push\\\":false,\\\"required_approving_review_count\\\":2,\\\"authorized_dismissal_actors_only\\\":false,\\\"required_review_thread_resolution\\\":false,\\\"ignore_approvals_from_contributors\\\":false,\\\"automatic_copilot_code_review_enabled\\\":false}"}}},{"rule":{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool":"CodeQL","security_alerts_threshold":"medium_or_higher","alerts_threshold":"errors"}]}},"changes":{"configuration":{"from":"{\\\"code_scanning_tools\\\":[{\\\"tool\\\":\\\"CodeQL\\\",\\\"alerts_threshold\\\":\\\"errors\\\",\\\"security_alerts_threshold\\\":\\\"high_or_higher\\\"}]}"}}}],"deleted":[{"type":"required_linear_history"}]},"conditions":{"updated":[{"condition":{"ref_name":{"exclude":[],"include":["~DEFAULT_BRANCH","refs/heads/dev-*"]}},"changes":{"include":{"from":["~ALL"]}}}],"deleted":[]}},"repository":{"id":1,"node_id":"n","name":"r","full_name":"o/r"},"organization":{"id":1,"node_id":"n","name":"o"},"enterprise":{"id":1,"node_id":"n","slug":"e","name":"e"},"installation":{"id":1,"node_id":"n","app_id":1,"app_slug":"a"},"sender":{"id":1,"node_id":"n","login":"l"}}`,
+				referenceTimeStr,
+			),
+			&RepositoryRulesetEvent{
+				Action: Ptr("edited"),
+				RepositoryRuleset: &RepositoryRuleset{
+					ID:          Ptr(int64(1)),
+					Name:        "r",
+					Target:      Ptr(RulesetTargetBranch),
+					SourceType:  Ptr(RulesetSourceTypeRepository),
+					Source:      "o/r",
+					Enforcement: RulesetEnforcementActive,
+					Conditions: &RepositoryRulesetConditions{
+						RefName: &RepositoryRulesetRefConditionParameters{
+							Include: []string{"~DEFAULT_BRANCH", "refs/heads/dev-*"},
+							Exclude: []string{},
 						},
 					},
-				},
-				Deleted: []*RepositoryRulesetRefCondition{
-					{
-						RefName: &RulesetRefConditionParameters{
-							Include: []string{"refs/heads/main", "refs/heads/master"},
-							Exclude: []string{"refs/heads/dev*"},
+					Rules: &RepositoryRulesetRules{
+						Creation:           &EmptyRuleParameters{},
+						Update:             &UpdateRuleParameters{},
+						Deletion:           &EmptyRuleParameters{},
+						RequiredSignatures: &EmptyRuleParameters{},
+						PullRequest: &PullRequestRuleParameters{
+							AllowedMergeMethods: []MergeMethod{
+								MergeMethodSquash,
+								MergeMethodRebase,
+							},
+							DismissStaleReviewsOnPush:      false,
+							RequireCodeOwnerReview:         false,
+							RequireLastPushApproval:        false,
+							RequiredApprovingReviewCount:   2,
+							RequiredReviewThreadResolution: false,
 						},
-					},
-				},
-				Updated: []*RepositoryRulesetEditedUpdatedConditions{
-					{
-						Condition: &RepositoryRulesetRefCondition{
-							RefName: &RulesetRefConditionParameters{
-								Include: []string{"refs/heads/main", "refs/heads/master"},
-								Exclude: []string{"refs/heads/dev*"},
-							},
-						},
-						Changes: &RepositoryRulesetUpdatedConditionsEdited{
-							ConditionType: &RepositoryRulesetEditedSource{
-								From: Ptr("c"),
-							},
-							Target: &RepositoryRulesetEditedSource{
-								From: Ptr("t"),
-							},
-							Include: &RepositoryRulesetEditedSources{
-								From: []string{"from"},
-							},
-							Exclude: &RepositoryRulesetEditedSources{
-								From: []string{"to"},
+						CodeScanning: &CodeScanningRuleParameters{
+							CodeScanningTools: []*RuleCodeScanningTool{
+								{
+									AlertsThreshold:         CodeScanningAlertsThresholdErrors,
+									SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdMediumOrHigher,
+									Tool:                    "CodeQL",
+								},
 							},
 						},
 					},
+					NodeID:    Ptr("n"),
+					CreatedAt: &Timestamp{referenceTime},
+					UpdatedAt: &Timestamp{referenceTime},
+					Links: &RepositoryRulesetLinks{
+						Self: &RepositoryRulesetLink{HRef: Ptr("a")},
+						HTML: &RepositoryRulesetLink{HRef: Ptr("a")},
+					},
 				},
-			},
-			Rules: &RepositoryRulesetEditedRules{
-				Added: []*RepositoryRulesetRule{
-					// Creating just one object with all the possible rules for testing
-					{
-						Creation: &RepositoryRulesetRuleType{
-							Type: "creation",
-						},
-						Update: &RepositoryRulesetUpdateRule{
-							Type: "update",
-							Parameters: &UpdateAllowsFetchAndMergeRuleParameters{
-								UpdateAllowsFetchAndMerge: true,
-							},
-						},
-						Deletion: &RepositoryRulesetRuleType{
-							Type: "deletion",
-						},
-						RequiredLinearHistory: &RepositoryRulesetRuleType{
-							Type: "required_linear_history",
-						},
-						MergeQueue: &RepositoryRulesetMergeQueueRule{
-							Type: "merge_queue",
-							Parameters: &MergeQueueRuleParameters{
-								CheckResponseTimeoutMinutes:  35,
-								GroupingStrategy:             "HEADGREEN",
-								MaxEntriesToBuild:            8,
-								MaxEntriesToMerge:            4,
-								MergeMethod:                  "SQUASH",
-								MinEntriesToMerge:            2,
-								MinEntriesToMergeWaitMinutes: 13,
-							},
-						},
-						RequiredDeployments: &RepositoryRulesetRequiredDeploymentsRule{
-							Type: "required_deployments",
-							Parameters: &RequiredDeploymentEnvironmentsRuleParameters{
-								RequiredDeploymentEnvironments: []string{"test"},
-							},
-						},
-						RequiredSignatures: &RepositoryRulesetRuleType{
-							Type: "required_signatures",
-						},
-						PullRequest: &RepositoryRulesetPullRequestRule{
-							Type: "pull_request",
-							Parameters: &PullRequestRuleParameters{
-								AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
-								DismissStaleReviewsOnPush:      true,
-								RequireCodeOwnerReview:         true,
-								RequireLastPushApproval:        true,
-								RequiredApprovingReviewCount:   1,
-								RequiredReviewThreadResolution: true,
-							},
-						},
-						RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
-							Type: "required_status_checks",
-							Parameters: &RequiredStatusChecksRuleParameters{
-								RequiredStatusChecks: []RuleRequiredStatusChecks{
-									{
-										Context:       "test",
-										IntegrationID: Ptr(int64(1)),
+				Changes: &RepositoryRulesetChanges{
+					Conditions: &RepositoryRulesetChangedConditions{
+						Updated: []*RepositoryRulesetUpdatedConditions{
+							{
+								Condition: &RepositoryRulesetConditions{
+									RefName: &RepositoryRulesetRefConditionParameters{
+										Include: []string{"~DEFAULT_BRANCH", "refs/heads/dev-*"},
+										Exclude: []string{},
 									},
 								},
-								StrictRequiredStatusChecksPolicy: true,
-							},
-						},
-						NonFastForward: &RepositoryRulesetRuleType{
-							Type: "non_fast_forward",
-						},
-						CommitMessagePattern: &RepositoryRulesetPatternRule{
-							Type: "commit_message_pattern",
-							Parameters: &RulePatternParameters{
-								Name:     Ptr("avoid test commits"),
-								Negate:   Ptr(true),
-								Operator: "starts_with",
-								Pattern:  "[test]",
-							},
-						},
-						CommitAuthorEmailPattern: &RepositoryRulesetPatternRule{
-							Type: "commit_author_email_pattern",
-							Parameters: &RulePatternParameters{
-								Operator: "contains",
-								Pattern:  "github",
-							},
-						},
-						CommitterEmailPattern: &RepositoryRulesetPatternRule{
-							Type: "committer_email_pattern",
-							Parameters: &RulePatternParameters{
-								Name:     Ptr("avoid commit emails"),
-								Negate:   Ptr(true),
-								Operator: "ends_with",
-								Pattern:  "abc",
-							},
-						},
-						BranchNamePattern: &RepositoryRulesetPatternRule{
-							Type: "branch_name_pattern",
-							Parameters: &RulePatternParameters{
-								Name:     Ptr("avoid branch names"),
-								Negate:   Ptr(true),
-								Operator: "regex",
-								Pattern:  "github$",
-							},
-						},
-						TagNamePattern: &RepositoryRulesetPatternRule{
-							Type: "tag_name_pattern",
-							Parameters: &RulePatternParameters{
-								Name:     Ptr("avoid tag names"),
-								Negate:   Ptr(true),
-								Operator: "contains",
-								Pattern:  "github",
-							},
-						},
-						FilePathRestriction: &RepositoryRulesetFilePathRestrictionRule{
-							Type: "file_path_restriction",
-							Parameters: &RuleFileParameters{
-								RestrictedFilePaths: &[]string{"/a/file"},
-							},
-						},
-						MaxFilePathLength: &RepositoryRulesetMaxFilePathLengthRule{
-							Type: "max_file_path_length",
-							Parameters: &RuleMaxFilePathLengthParameters{
-								MaxFilePathLength: 255,
-							},
-						},
-						FileExtensionRestriction: &RepositoryRulesetFileExtensionRestrictionRule{
-							Type: "file_extension_restriction",
-							Parameters: &RuleFileExtensionRestrictionParameters{
-								RestrictedFileExtensions: []string{".exe"},
-							},
-						},
-						MaxFileSize: &RepositoryRulesetMaxFileSizeRule{
-							Type: "max_file_size",
-							Parameters: &RuleMaxFileSizeParameters{
-								MaxFileSize: 1024,
-							},
-						},
-						Workflows: &RepositoryRulesetWorkflowsRule{
-							Type: "workflows",
-							Parameters: &RequiredWorkflowsRuleParameters{
-								RequiredWorkflows: []*RuleRequiredWorkflow{
-									{
-										Path:         ".github/workflows/test.yml",
-										RepositoryID: Ptr(int64(1)),
+								Changes: &RepositoryRulesetUpdatedCondition{
+									Include: &RepositoryRulesetChangeSources{
+										From: []string{"~ALL"},
 									},
 								},
 							},
 						},
-						CodeScanning: &RepositoryRulesetCodeScanningRule{
-							Type: "code_scanning",
-							Parameters: &RuleCodeScanningParameters{
-								CodeScanningTools: []*CodeScanningTool{{
-									AlertsThreshold:         "alert",
-									SecurityAlertsThreshold: "security",
-									Tool:                    "tool",
-								}},
-							},
-						},
+						Deleted: []*RepositoryRulesetConditions{},
 					},
-				},
-				Deleted: []*RepositoryRulesetRule{
-					// Creating just one object with all the possible rules for testing
-					{
-						Creation: &RepositoryRulesetRuleType{
-							Type: "creation",
-						},
-						Update: &RepositoryRulesetUpdateRule{
-							Type: "update",
-							Parameters: &UpdateAllowsFetchAndMergeRuleParameters{
-								UpdateAllowsFetchAndMerge: true,
-							},
-						},
-						Deletion: &RepositoryRulesetRuleType{
-							Type: "deletion",
-						},
-						RequiredLinearHistory: &RepositoryRulesetRuleType{
-							Type: "required_linear_history",
-						},
-						MergeQueue: &RepositoryRulesetMergeQueueRule{
-							Type: "merge_queue",
-							Parameters: &MergeQueueRuleParameters{
-								CheckResponseTimeoutMinutes:  35,
-								GroupingStrategy:             "HEADGREEN",
-								MaxEntriesToBuild:            8,
-								MaxEntriesToMerge:            4,
-								MergeMethod:                  "SQUASH",
-								MinEntriesToMerge:            2,
-								MinEntriesToMergeWaitMinutes: 13,
-							},
-						},
-						RequiredDeployments: &RepositoryRulesetRequiredDeploymentsRule{
-							Type: "required_deployments",
-							Parameters: &RequiredDeploymentEnvironmentsRuleParameters{
-								RequiredDeploymentEnvironments: []string{"test"},
-							},
-						},
-						RequiredSignatures: &RepositoryRulesetRuleType{
-							Type: "required_signatures",
-						},
-						PullRequest: &RepositoryRulesetPullRequestRule{
-							Type: "pull_request",
-							Parameters: &PullRequestRuleParameters{
-								AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
-								DismissStaleReviewsOnPush:      true,
-								RequireCodeOwnerReview:         true,
-								RequireLastPushApproval:        true,
-								RequiredApprovingReviewCount:   1,
-								RequiredReviewThreadResolution: true,
-							},
-						},
-						RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
-							Type: "required_status_checks",
-							Parameters: &RequiredStatusChecksRuleParameters{
-								RequiredStatusChecks: []RuleRequiredStatusChecks{
-									{
-										Context:       "test",
-										IntegrationID: Ptr(int64(1)),
-									},
-								},
-								StrictRequiredStatusChecksPolicy: true,
-							},
-						},
-						NonFastForward: &RepositoryRulesetRuleType{
-							Type: "non_fast_forward",
-						},
-						CommitMessagePattern: &RepositoryRulesetPatternRule{
-							Type: "commit_message_pattern",
-							Parameters: &RulePatternParameters{
-								Name:     Ptr("avoid test commits"),
-								Negate:   Ptr(true),
-								Operator: "starts_with",
-								Pattern:  "[test]",
-							},
-						},
-						CommitAuthorEmailPattern: &RepositoryRulesetPatternRule{
-							Type: "commit_author_email_pattern",
-							Parameters: &RulePatternParameters{
-								Operator: "contains",
-								Pattern:  "github",
-							},
-						},
-						CommitterEmailPattern: &RepositoryRulesetPatternRule{
-							Type: "committer_email_pattern",
-							Parameters: &RulePatternParameters{
-								Name:     Ptr("avoid commit emails"),
-								Negate:   Ptr(true),
-								Operator: "ends_with",
-								Pattern:  "abc",
-							},
-						},
-						BranchNamePattern: &RepositoryRulesetPatternRule{
-							Type: "branch_name_pattern",
-							Parameters: &RulePatternParameters{
-								Name:     Ptr("avoid branch names"),
-								Negate:   Ptr(true),
-								Operator: "regex",
-								Pattern:  "github$",
-							},
-						},
-						TagNamePattern: &RepositoryRulesetPatternRule{
-							Type: "tag_name_pattern",
-							Parameters: &RulePatternParameters{
-								Name:     Ptr("avoid tag names"),
-								Negate:   Ptr(true),
-								Operator: "contains",
-								Pattern:  "github",
-							},
-						},
-						FilePathRestriction: &RepositoryRulesetFilePathRestrictionRule{
-							Type: "file_path_restriction",
-							Parameters: &RuleFileParameters{
-								RestrictedFilePaths: &[]string{"/a/file"},
-							},
-						},
-						MaxFilePathLength: &RepositoryRulesetMaxFilePathLengthRule{
-							Type: "max_file_path_length",
-							Parameters: &RuleMaxFilePathLengthParameters{
-								MaxFilePathLength: 255,
-							},
-						},
-						FileExtensionRestriction: &RepositoryRulesetFileExtensionRestrictionRule{
-							Type: "file_extension_restriction",
-							Parameters: &RuleFileExtensionRestrictionParameters{
-								RestrictedFileExtensions: []string{".exe"},
-							},
-						},
-						MaxFileSize: &RepositoryRulesetMaxFileSizeRule{
-							Type: "max_file_size",
-							Parameters: &RuleMaxFileSizeParameters{
-								MaxFileSize: 1024,
-							},
-						},
-						Workflows: &RepositoryRulesetWorkflowsRule{
-							Type: "workflows",
-							Parameters: &RequiredWorkflowsRuleParameters{
-								RequiredWorkflows: []*RuleRequiredWorkflow{
-									{
-										Path:         ".github/workflows/test.yml",
-										RepositoryID: Ptr(int64(1)),
-									},
-								},
-							},
-						},
-						CodeScanning: &RepositoryRulesetCodeScanningRule{
-							Type: "code_scanning",
-							Parameters: &RuleCodeScanningParameters{
-								CodeScanningTools: []*CodeScanningTool{{
-									AlertsThreshold:         "alert",
-									SecurityAlertsThreshold: "security",
-									Tool:                    "tool",
-								}},
-							},
-						},
-					},
-				},
-				Updated: []*RepositoryRulesetUpdatedRules{
-					{
-						Rule: &RepositoryRulesetRule{
-							Creation: &RepositoryRulesetRuleType{
-								Type: "creation",
-							},
-							Update: &RepositoryRulesetUpdateRule{
-								Type: "update",
-								Parameters: &UpdateAllowsFetchAndMergeRuleParameters{
-									UpdateAllowsFetchAndMerge: true,
-								},
-							},
-							Deletion: &RepositoryRulesetRuleType{
-								Type: "deletion",
-							},
-							RequiredLinearHistory: &RepositoryRulesetRuleType{
-								Type: "required_linear_history",
-							},
-							MergeQueue: &RepositoryRulesetMergeQueueRule{
-								Type: "merge_queue",
-								Parameters: &MergeQueueRuleParameters{
-									CheckResponseTimeoutMinutes:  35,
-									GroupingStrategy:             "HEADGREEN",
-									MaxEntriesToBuild:            8,
-									MaxEntriesToMerge:            4,
-									MergeMethod:                  "SQUASH",
-									MinEntriesToMerge:            2,
-									MinEntriesToMergeWaitMinutes: 13,
-								},
-							},
-							RequiredDeployments: &RepositoryRulesetRequiredDeploymentsRule{
-								Type: "required_deployments",
-								Parameters: &RequiredDeploymentEnvironmentsRuleParameters{
-									RequiredDeploymentEnvironments: []string{"test"},
-								},
-							},
-							RequiredSignatures: &RepositoryRulesetRuleType{
-								Type: "required_signatures",
-							},
-							PullRequest: &RepositoryRulesetPullRequestRule{
-								Type: "pull_request",
-								Parameters: &PullRequestRuleParameters{
-									AllowedMergeMethods:            []MergeMethod{"rebase", "squash"},
-									DismissStaleReviewsOnPush:      true,
-									RequireCodeOwnerReview:         true,
-									RequireLastPushApproval:        true,
-									RequiredApprovingReviewCount:   1,
-									RequiredReviewThreadResolution: true,
-								},
-							},
-							RequiredStatusChecks: &RepositoryRulesetRequiredStatusChecksRule{
-								Type: "required_status_checks",
-								Parameters: &RequiredStatusChecksRuleParameters{
-									RequiredStatusChecks: []RuleRequiredStatusChecks{
-										{
-											Context:       "test",
-											IntegrationID: Ptr(int64(1)),
+					Rules: &RepositoryRulesetChangedRules{
+						Added: []*RepositoryRule{{Type: RulesetRuleTypeRequiredSignatures}},
+						Updated: []*RepositoryRulesetUpdatedRules{
+							{
+								Rule: &RepositoryRule{
+									Type: RulesetRuleTypePullRequest,
+									Parameters: &PullRequestRuleParameters{
+										AllowedMergeMethods: []MergeMethod{
+											MergeMethodSquash,
+											MergeMethodRebase,
 										},
+										DismissStaleReviewsOnPush:      false,
+										RequireCodeOwnerReview:         false,
+										RequireLastPushApproval:        false,
+										RequiredApprovingReviewCount:   2,
+										RequiredReviewThreadResolution: false,
 									},
-									StrictRequiredStatusChecksPolicy: true,
+								},
+								Changes: &RepositoryRulesetChangedRule{
+									Configuration: &RepositoryRulesetChangeSource{
+										From: Ptr(
+											`{\"required_reviewers\":[],\"allowed_merge_methods\":[\"squash\",\"rebase\",\"merge\"],\"require_code_owner_review\":false,\"require_last_push_approval\":false,\"dismiss_stale_reviews_on_push\":false,\"required_approving_review_count\":2,\"authorized_dismissal_actors_only\":false,\"required_review_thread_resolution\":false,\"ignore_approvals_from_contributors\":false,\"automatic_copilot_code_review_enabled\":false}`,
+										),
+									},
 								},
 							},
-							NonFastForward: &RepositoryRulesetRuleType{
-								Type: "non_fast_forward",
-							},
-							CommitMessagePattern: &RepositoryRulesetPatternRule{
-								Type: "commit_message_pattern",
-								Parameters: &RulePatternParameters{
-									Name:     Ptr("avoid test commits"),
-									Negate:   Ptr(true),
-									Operator: "starts_with",
-									Pattern:  "[test]",
-								},
-							},
-							CommitAuthorEmailPattern: &RepositoryRulesetPatternRule{
-								Type: "commit_author_email_pattern",
-								Parameters: &RulePatternParameters{
-									Operator: "contains",
-									Pattern:  "github",
-								},
-							},
-							CommitterEmailPattern: &RepositoryRulesetPatternRule{
-								Type: "committer_email_pattern",
-								Parameters: &RulePatternParameters{
-									Name:     Ptr("avoid commit emails"),
-									Negate:   Ptr(true),
-									Operator: "ends_with",
-									Pattern:  "abc",
-								},
-							},
-							BranchNamePattern: &RepositoryRulesetPatternRule{
-								Type: "branch_name_pattern",
-								Parameters: &RulePatternParameters{
-									Name:     Ptr("avoid branch names"),
-									Negate:   Ptr(true),
-									Operator: "regex",
-									Pattern:  "github$",
-								},
-							},
-							TagNamePattern: &RepositoryRulesetPatternRule{
-								Type: "tag_name_pattern",
-								Parameters: &RulePatternParameters{
-									Name:     Ptr("avoid tag names"),
-									Negate:   Ptr(true),
-									Operator: "contains",
-									Pattern:  "github",
-								},
-							},
-							FilePathRestriction: &RepositoryRulesetFilePathRestrictionRule{
-								Type: "file_path_restriction",
-								Parameters: &RuleFileParameters{
-									RestrictedFilePaths: &[]string{"/a/file"},
-								},
-							},
-							MaxFilePathLength: &RepositoryRulesetMaxFilePathLengthRule{
-								Type: "max_file_path_length",
-								Parameters: &RuleMaxFilePathLengthParameters{
-									MaxFilePathLength: 255,
-								},
-							},
-							FileExtensionRestriction: &RepositoryRulesetFileExtensionRestrictionRule{
-								Type: "file_extension_restriction",
-								Parameters: &RuleFileExtensionRestrictionParameters{
-									RestrictedFileExtensions: []string{".exe"},
-								},
-							},
-							MaxFileSize: &RepositoryRulesetMaxFileSizeRule{
-								Type: "max_file_size",
-								Parameters: &RuleMaxFileSizeParameters{
-									MaxFileSize: 1024,
-								},
-							},
-							Workflows: &RepositoryRulesetWorkflowsRule{
-								Type: "workflows",
-								Parameters: &RequiredWorkflowsRuleParameters{
-									RequiredWorkflows: []*RuleRequiredWorkflow{
-										{
-											Path:         ".github/workflows/test.yml",
-											RepositoryID: Ptr(int64(1)),
+							{
+								Rule: &RepositoryRule{
+									Type: RulesetRuleTypeCodeScanning,
+									Parameters: &CodeScanningRuleParameters{
+										CodeScanningTools: []*RuleCodeScanningTool{
+											{
+												AlertsThreshold:         CodeScanningAlertsThresholdErrors,
+												SecurityAlertsThreshold: CodeScanningSecurityAlertsThresholdMediumOrHigher,
+												Tool:                    "CodeQL",
+											},
 										},
 									},
 								},
-							},
-							CodeScanning: &RepositoryRulesetCodeScanningRule{
-								Type: "code_scanning",
-								Parameters: &RuleCodeScanningParameters{
-									CodeScanningTools: []*CodeScanningTool{{
-										AlertsThreshold:         "alert",
-										SecurityAlertsThreshold: "security",
-										Tool:                    "tool",
-									}},
+								Changes: &RepositoryRulesetChangedRule{
+									Configuration: &RepositoryRulesetChangeSource{
+										From: Ptr(
+											`{\"code_scanning_tools\":[{\"tool\":\"CodeQL\",\"alerts_threshold\":\"errors\",\"security_alerts_threshold\":\"high_or_higher\"}]}`,
+										),
+									},
 								},
 							},
 						},
-						Changes: &RepositoryRulesetEditedRuleChanges{
-							Configuration: &RepositoryRulesetEditedSources{
-								From: []string{"from"},
-							},
-							RuleType: &RepositoryRulesetEditedSources{
-								From: []string{"from"},
-							},
-							Pattern: &RepositoryRulesetEditedSources{
-								From: []string{"from"},
-							},
-						},
+						Deleted: []*RepositoryRule{{Type: RulesetRuleTypeRequiredLinearHistory}},
 					},
 				},
+				Repository:   repository,
+				Organization: organization,
+				Enterprise:   enterprise,
+				Installation: installation,
+				Sender:       sender,
 			},
 		},
-		Sender: &User{
-			Login:     Ptr("l"),
-			ID:        Ptr(int64(1)),
-			NodeID:    Ptr("n"),
-			URL:       Ptr("u"),
-			ReposURL:  Ptr("r"),
-			EventsURL: Ptr("e"),
-			AvatarURL: Ptr("a"),
+		{
+			"deleted",
+			fmt.Sprintf(
+				`{"action":"deleted","repository_ruleset":{"id":1,"name":"r","target":"branch","source_type":"Repository","source":"o/r","enforcement":"active","conditions":{"ref_name":{"exclude":[],"include":["~DEFAULT_BRANCH","refs/heads/dev-*"]}},"rules":[{"type":"deletion"},{"type":"creation"},{"type":"update"},{"type":"required_linear_history"}],"node_id":"n","created_at":%[1]s,"updated_at":%[1]s,"_links":{"self":{"href":"a"},"html":{"href":"a"}}},"repository":{"id":1,"node_id":"n","name":"r","full_name":"o/r"},"organization":{"id":1,"node_id":"n","name":"o"},"enterprise":{"id":1,"node_id":"n","slug":"e","name":"e"},"installation":{"id":1,"node_id":"n","app_id":1,"app_slug":"a"},"sender":{"id":1,"node_id":"n","login":"l"}}`,
+				referenceTimeStr,
+			),
+			&RepositoryRulesetEvent{
+				Action: Ptr("deleted"),
+				RepositoryRuleset: &RepositoryRuleset{
+					ID:          Ptr(int64(1)),
+					Name:        "r",
+					Target:      Ptr(RulesetTargetBranch),
+					SourceType:  Ptr(RulesetSourceTypeRepository),
+					Source:      "o/r",
+					Enforcement: RulesetEnforcementActive,
+					Conditions: &RepositoryRulesetConditions{
+						RefName: &RepositoryRulesetRefConditionParameters{
+							Include: []string{"~DEFAULT_BRANCH", "refs/heads/dev-*"},
+							Exclude: []string{},
+						},
+					},
+					Rules: &RepositoryRulesetRules{
+						Creation:              &EmptyRuleParameters{},
+						Update:                &UpdateRuleParameters{},
+						Deletion:              &EmptyRuleParameters{},
+						RequiredLinearHistory: &EmptyRuleParameters{},
+					},
+					NodeID:    Ptr("n"),
+					CreatedAt: &Timestamp{referenceTime},
+					UpdatedAt: &Timestamp{referenceTime},
+					Links: &RepositoryRulesetLinks{
+						Self: &RepositoryRulesetLink{HRef: Ptr("a")},
+						HTML: &RepositoryRulesetLink{HRef: Ptr("a")},
+					},
+				},
+				Repository:   repository,
+				Organization: organization,
+				Enterprise:   enterprise,
+				Installation: installation,
+				Sender:       sender,
+			},
 		},
 	}
 
-	want := `{
-          "action": "a",
-          "enterprise": {
-            "id": 1,
-            "slug": "s",
-            "name": "n",
-            "node_id": "nid",
-            "avatar_url": "au",
-            "description": "d",
-            "website_url": "wu",
-            "html_url": "hu",
-            "created_at":  ` + referenceTimeStr + `,
-            "updated_at":  ` + referenceTimeStr + `
-          },
-          "installation": {
-            "id": 1,
-            "node_id": "nid",
-            "app_id": 1,
-            "app_slug": "as",
-            "target_id": 1,
-            "account": {
-              "login": "l",
-              "id": 1,
-              "avatar_url": "a",
-              "gravatar_id": "g",
-              "name": "n",
-              "company": "c",
-              "blog": "b",
-              "location": "l",
-              "email": "e",
-              "hireable": true,
-              "bio": "b",
-              "twitter_username": "t",
-              "public_repos": 1,
-              "followers": 1,
-              "following": 1,
-              "created_at":  ` + referenceTimeStr + `,
-              "suspended_at":  ` + referenceTimeStr + `,
-              "url": "u"
-            },
-            "access_tokens_url": "atu",
-            "repositories_url": "ru",
-            "html_url": "hu",
-            "target_type": "tt",
-            "single_file_name": "sfn",
-            "repository_selection": "rs",
-            "events": [
-              "e"
-            ],
-            "single_file_paths": [
-              "s"
-            ],
-            "permissions": {
-              "actions": "a",
-              "administration": "ad",
-              "checks": "c",
-              "contents": "co",
-              "content_references": "cr",
-              "deployments": "d",
-              "environments": "e",
-              "issues": "i",
-              "metadata": "md",
-              "members": "m",
-              "organization_administration": "oa",
-              "organization_hooks": "oh",
-              "organization_plan": "op",
-              "organization_pre_receive_hooks": "opr",
-              "organization_projects": "op",
-              "organization_secrets": "os",
-              "organization_self_hosted_runners": "osh",
-              "organization_user_blocking": "oub",
-              "packages": "pkg",
-              "pages": "pg",
-              "pull_requests": "pr",
-              "repository_hooks": "rh",
-              "repository_projects": "rp",
-              "repository_pre_receive_hooks": "rprh",
-              "secrets": "s",
-              "secret_scanning_alerts": "ssa",
-              "security_events": "se",
-              "single_file": "sf",
-              "statuses": "s",
-              "team_discussions": "td",
-              "vulnerability_alerts": "va",
-              "workflows": "w"
-            },
-            "created_at":  ` + referenceTimeStr + `,
-            "updated_at":  ` + referenceTimeStr + `,
-            "has_multiple_single_files": false,
-            "suspended_by": {
-              "login": "l",
-              "id": 1,
-              "avatar_url": "a",
-              "gravatar_id": "g",
-              "name": "n",
-              "company": "c",
-              "blog": "b",
-              "location": "l",
-              "email": "e",
-              "hireable": true,
-              "bio": "b",
-              "twitter_username": "t",
-              "public_repos": 1,
-              "followers": 1,
-              "following": 1,
-              "created_at":  ` + referenceTimeStr + `,
-              "suspended_at":  ` + referenceTimeStr + `,
-              "url": "u"
-            },
-            "suspended_at":  ` + referenceTimeStr + `
-          },
-          "organization": {
-            "name": "n",
-            "company": "c",
-            "blog": "b",
-            "location": "loc",
-            "email": "e",
-            "twitter_username": "tu",
-            "description": "d",
-            "billing_email": "be",
-            "is_verified": true,
-            "has_organization_projects": true,
-            "has_repository_projects": true,
-            "default_repository_permission": "drp",
-            "members_can_create_repositories": true,
-            "members_can_create_public_repositories": false,
-            "members_can_create_private_repositories": true,
-            "members_can_create_internal_repositories": true,
-            "members_allowed_repository_creation_type": "marct",
-            "members_can_create_pages": true,
-            "members_can_create_public_pages": false,
-            "members_can_create_private_pages": true
-          },
-          "repository": {
-            "id": 1,
-            "name": "n",
-            "url": "u"
-          },
-          "repository_ruleset": {
-            "id": 1,
-            "name": "n",
-            "target": "branch",
-            "source_type": "Repository",
-            "source": "s",
-            "enforcement": "disabled",
-            "bypass_actors": [
-              {
-                "actor_id": 234,
-                "actor_type": "Team",
-                "bypass_mode": "Always"
-              }
-            ],
-            "current_user_can_bypass": "always",
-            "node_id": "n",
-            "_links": {
-              "self": {
-                "href": "href"
-              },
-              "html": {
-                "href": "href"
-              }
-            },
-            "conditions": {
-              "key": "value"
-            },
-            "rules": [
-              {
-                "creation": {
-                  "type": "creation"
-                },
-                "update": {
-                  "type": "update",
-                  "parameters": {
-                    "update_allows_fetch_and_merge": true
-                  }
-                },
-                "deletion": {
-                  "type": "deletion"
-                },
-                "required_linear_history": {
-                  "type": "required_linear_history"
-                },
-                "merge_queue": {
-                  "type": "merge_queue",
-                  "parameters": {
-                    "check_response_timeout_minutes": 35,
-                    "grouping_strategy": "HEADGREEN",
-                    "max_entries_to_build": 8,
-                    "max_entries_to_merge": 4,
-                    "merge_method": "SQUASH",
-                    "min_entries_to_merge": 2,
-                    "min_entries_to_merge_wait_minutes": 13
-                  }
-                },
-                "required_deployments": {
-                  "type": "required_deployments",
-                  "parameters": {
-                    "required_deployment_environments": [
-                      "test"
-                    ]
-                  }
-                },
-                "required_signatures": {
-                  "type": "required_signatures"
-                },
-                "pull_request": {
-                  "type": "pull_request",
-                  "parameters": {
-										"allowed_merge_methods": ["rebase","squash"],
-                    "dismiss_stale_reviews_on_push": true,
-                    "require_code_owner_review": true,
-                    "require_last_push_approval": true,
-                    "required_approving_review_count": 1,
-                    "required_review_thread_resolution": true
-                  }
-                },
-                "required_status_checks": {
-                  "type": "required_status_checks",
-                  "parameters": {
-                    "required_status_checks": [
-                      {
-                        "context": "test",
-                        "integration_id": 1
-                      }
-                    ],
-                    "strict_required_status_checks_policy": true
-                  }
-                },
-                "non_fast_forward": {
-                  "type": "non_fast_forward"
-                },
-                "commit_message_pattern": {
-                  "type": "commit_message_pattern",
-                  "parameters": {
-                    "name": "avoid test commits",
-                    "negate": true,
-                    "operator": "starts_with",
-                    "pattern": "[test]"
-                  }
-                },
-                "commit_author_email_pattern": {
-                  "type": "commit_author_email_pattern",
-                  "parameters": {
-                    "operator": "contains",
-                    "pattern": "github"
-                  }
-                },
-                "committer_email_pattern": {
-                  "type": "committer_email_pattern",
-                  "parameters": {
-                    "name": "avoid commit emails",
-                    "negate": true,
-                    "operator": "ends_with",
-                    "pattern": "abc"
-                  }
-                },
-                "branch_name_pattern": {
-                  "type": "branch_name_pattern",
-                  "parameters": {
-                    "name": "avoid branch names",
-                    "negate": true,
-                    "operator": "regex",
-                    "pattern": "github$"
-                  }
-                },
-                "tag_name_pattern": {
-                  "type": "tag_name_pattern",
-                  "parameters": {
-                    "name": "avoid tag names",
-                    "negate": true,
-                    "operator": "contains",
-                    "pattern": "github"
-                  }
-                },
-                "file_path_restriction": {
-                  "type": "file_path_restriction",
-                  "parameters": {
-                    "restricted_file_paths": [
-                      "/a/file"
-                    ]
-                  }
-                },
-                "max_file_path_length": {
-                  "type": "max_file_path_length",
-                  "parameters": {
-                    "max_file_path_length": 255
-                  }
-                },
-                "file_extension_restriction": {
-                  "type": "file_extension_restriction",
-                  "parameters": {
-                    "restricted_file_extensions": [
-                      ".exe"
-                    ]
-                  }
-                },
-                "max_file_size": {
-                  "type": "max_file_size",
-                  "parameters": {
-                    "max_file_size": 1024
-                  }
-                },
-                "workflows": {
-                  "type": "workflows",
-                  "parameters": {
-                    "workflows": [
-                      {
-                        "path": ".github/workflows/test.yml",
-                        "repository_id": 1
-                      }
-                    ]
-                  }
-                },
-                "code_scanning": {
-                  "type": "code_scanning",
-                  "parameters": {
-                    "code_scanning_tools": [
-                      {
-                        "alerts_threshold": "alert",
-                        "security_alerts_threshold": "security",
-                        "tool": "tool"
-                      }
-                    ]
-                  }
-                }
-              }
-            ],
-            "created_at":  ` + referenceTimeStr + `,
-            "updated_at":  ` + referenceTimeStr + `
-          },
-          "changes": {
-            "name": {
-              "from": "f"
-            },
-            "enforcement": {
-              "from": "e"
-            },
-            "conditions": {
-              "added": [
-                {
-                  "ref_name": {
-                    "include": [
-                      "refs/heads/main",
-                      "refs/heads/master"
-                    ],
-                    "exclude": [
-                      "refs/heads/dev*"
-                    ]
-                  }
-                }
-              ],
-              "deleted": [
-                {
-                  "ref_name": {
-                    "include": [
-                      "refs/heads/main",
-                      "refs/heads/master"
-                    ],
-                    "exclude": [
-                      "refs/heads/dev*"
-                    ]
-                  }
-                }
-              ],
-              "updated": [
-                {
-                  "condition": {
-                    "ref_name": {
-                      "include": [
-                        "refs/heads/main",
-                        "refs/heads/master"
-                      ],
-                      "exclude": [
-                        "refs/heads/dev*"
-                      ]
-                    }
-                  },
-                  "changes": {
-                    "condition_type": {
-                      "from": "c"
-                    },
-                    "target": {
-                      "from": "t"
-                    },
-                    "include": {
-                      "from": [
-                        "from"
-                      ]
-                    },
-                    "exclude": {
-                      "from": [
-                        "to"
-                      ]
-                    }
-                  }
-                }
-              ]
-            },
-            "rules": {
-              "added": [
-                {
-                  "creation": {
-                    "type": "creation"
-                  },
-                  "update": {
-                    "type": "update",
-                    "parameters": {
-                      "update_allows_fetch_and_merge": true
-                    }
-                  },
-                  "deletion": {
-                    "type": "deletion"
-                  },
-                  "required_linear_history": {
-                    "type": "required_linear_history"
-                  },
-                  "merge_queue": {
-                    "type": "merge_queue",
-                    "parameters": {
-                      "check_response_timeout_minutes": 35,
-                      "grouping_strategy": "HEADGREEN",
-                      "max_entries_to_build": 8,
-                      "max_entries_to_merge": 4,
-                      "merge_method": "SQUASH",
-                      "min_entries_to_merge": 2,
-                      "min_entries_to_merge_wait_minutes": 13
-                    }
-                  },
-                  "required_deployments": {
-                    "type": "required_deployments",
-                    "parameters": {
-                      "required_deployment_environments": [
-                        "test"
-                      ]
-                    }
-                  },
-                  "required_signatures": {
-                    "type": "required_signatures"
-                  },
-                  "pull_request": {
-                    "type": "pull_request",
-                    "parameters": {
-											"allowed_merge_methods": ["rebase","squash"],
-                      "dismiss_stale_reviews_on_push": true,
-                      "require_code_owner_review": true,
-                      "require_last_push_approval": true,
-                      "required_approving_review_count": 1,
-                      "required_review_thread_resolution": true
-                    }
-                  },
-                  "required_status_checks": {
-                    "type": "required_status_checks",
-                    "parameters": {
-                      "required_status_checks": [
-                        {
-                          "context": "test",
-                          "integration_id": 1
-                        }
-                      ],
-                      "strict_required_status_checks_policy": true
-                    }
-                  },
-                  "non_fast_forward": {
-                    "type": "non_fast_forward"
-                  },
-                  "commit_message_pattern": {
-                    "type": "commit_message_pattern",
-                    "parameters": {
-                      "name": "avoid test commits",
-                      "negate": true,
-                      "operator": "starts_with",
-                      "pattern": "[test]"
-                    }
-                  },
-                  "commit_author_email_pattern": {
-                    "type": "commit_author_email_pattern",
-                    "parameters": {
-                      "operator": "contains",
-                      "pattern": "github"
-                    }
-                  },
-                  "committer_email_pattern": {
-                    "type": "committer_email_pattern",
-                    "parameters": {
-                      "name": "avoid commit emails",
-                      "negate": true,
-                      "operator": "ends_with",
-                      "pattern": "abc"
-                    }
-                  },
-                  "branch_name_pattern": {
-                    "type": "branch_name_pattern",
-                    "parameters": {
-                      "name": "avoid branch names",
-                      "negate": true,
-                      "operator": "regex",
-                      "pattern": "github$"
-                    }
-                  },
-                  "tag_name_pattern": {
-                    "type": "tag_name_pattern",
-                    "parameters": {
-                      "name": "avoid tag names",
-                      "negate": true,
-                      "operator": "contains",
-                      "pattern": "github"
-                    }
-                  },
-                  "file_path_restriction": {
-                    "type": "file_path_restriction",
-                    "parameters": {
-                      "restricted_file_paths": [
-                        "/a/file"
-                      ]
-                    }
-                  },
-                  "max_file_path_length": {
-                    "type": "max_file_path_length",
-                    "parameters": {
-                      "max_file_path_length": 255
-                    }
-                  },
-                  "file_extension_restriction": {
-                    "type": "file_extension_restriction",
-                    "parameters": {
-                      "restricted_file_extensions": [
-                        ".exe"
-                      ]
-                    }
-                  },
-                  "max_file_size": {
-                    "type": "max_file_size",
-                    "parameters": {
-                      "max_file_size": 1024
-                    }
-                  },
-                  "workflows": {
-                    "type": "workflows",
-                    "parameters": {
-                      "workflows": [
-                        {
-                          "path": ".github/workflows/test.yml",
-                          "repository_id": 1
-                        }
-                      ]
-                    }
-                  },
-                  "code_scanning": {
-                    "type": "code_scanning",
-                    "parameters": {
-                      "code_scanning_tools": [
-                        {
-                          "alerts_threshold": "alert",
-                          "security_alerts_threshold": "security",
-                          "tool": "tool"
-                        }
-                      ]
-                    }
-                  }
-                }
-              ],
-              "deleted": [
-                {
-                  "creation": {
-                    "type": "creation"
-                  },
-                  "update": {
-                    "type": "update",
-                    "parameters": {
-                      "update_allows_fetch_and_merge": true
-                    }
-                  },
-                  "deletion": {
-                    "type": "deletion"
-                  },
-                  "required_linear_history": {
-                    "type": "required_linear_history"
-                  },
-                  "merge_queue": {
-                    "type": "merge_queue",
-                    "parameters": {
-                      "check_response_timeout_minutes": 35,
-                      "grouping_strategy": "HEADGREEN",
-                      "max_entries_to_build": 8,
-                      "max_entries_to_merge": 4,
-                      "merge_method": "SQUASH",
-                      "min_entries_to_merge": 2,
-                      "min_entries_to_merge_wait_minutes": 13
-                    }
-                  },
-                  "required_deployments": {
-                    "type": "required_deployments",
-                    "parameters": {
-                      "required_deployment_environments": [
-                        "test"
-                      ]
-                    }
-                  },
-                  "required_signatures": {
-                    "type": "required_signatures"
-                  },
-                  "pull_request": {
-                    "type": "pull_request",
-                    "parameters": {
-											"allowed_merge_methods": ["rebase","squash"],
-                      "dismiss_stale_reviews_on_push": true,
-                      "require_code_owner_review": true,
-                      "require_last_push_approval": true,
-                      "required_approving_review_count": 1,
-                      "required_review_thread_resolution": true
-                    }
-                  },
-                  "required_status_checks": {
-                    "type": "required_status_checks",
-                    "parameters": {
-                      "required_status_checks": [
-                        {
-                          "context": "test",
-                          "integration_id": 1
-                        }
-                      ],
-                      "strict_required_status_checks_policy": true
-                    }
-                  },
-                  "non_fast_forward": {
-                    "type": "non_fast_forward"
-                  },
-                  "commit_message_pattern": {
-                    "type": "commit_message_pattern",
-                    "parameters": {
-                      "name": "avoid test commits",
-                      "negate": true,
-                      "operator": "starts_with",
-                      "pattern": "[test]"
-                    }
-                  },
-                  "commit_author_email_pattern": {
-                    "type": "commit_author_email_pattern",
-                    "parameters": {
-                      "operator": "contains",
-                      "pattern": "github"
-                    }
-                  },
-                  "committer_email_pattern": {
-                    "type": "committer_email_pattern",
-                    "parameters": {
-                      "name": "avoid commit emails",
-                      "negate": true,
-                      "operator": "ends_with",
-                      "pattern": "abc"
-                    }
-                  },
-                  "branch_name_pattern": {
-                    "type": "branch_name_pattern",
-                    "parameters": {
-                      "name": "avoid branch names",
-                      "negate": true,
-                      "operator": "regex",
-                      "pattern": "github$"
-                    }
-                  },
-                  "tag_name_pattern": {
-                    "type": "tag_name_pattern",
-                    "parameters": {
-                      "name": "avoid tag names",
-                      "negate": true,
-                      "operator": "contains",
-                      "pattern": "github"
-                    }
-                  },
-                  "file_path_restriction": {
-                    "type": "file_path_restriction",
-                    "parameters": {
-                      "restricted_file_paths": [
-                        "/a/file"
-                      ]
-                    }
-                  },
-                  "max_file_path_length": {
-                    "type": "max_file_path_length",
-                    "parameters": {
-                      "max_file_path_length": 255
-                    }
-                  },
-                  "file_extension_restriction": {
-                    "type": "file_extension_restriction",
-                    "parameters": {
-                      "restricted_file_extensions": [
-                        ".exe"
-                      ]
-                    }
-                  },
-                  "max_file_size": {
-                    "type": "max_file_size",
-                    "parameters": {
-                      "max_file_size": 1024
-                    }
-                  },
-                  "workflows": {
-                    "type": "workflows",
-                    "parameters": {
-                      "workflows": [
-                        {
-                          "path": ".github/workflows/test.yml",
-                          "repository_id": 1
-                        }
-                      ]
-                    }
-                  },
-                  "code_scanning": {
-                    "type": "code_scanning",
-                    "parameters": {
-                      "code_scanning_tools": [
-                        {
-                          "alerts_threshold": "alert",
-                          "security_alerts_threshold": "security",
-                          "tool": "tool"
-                        }
-                      ]
-                    }
-                  }
-                }
-              ],
-              "updated": [
-                {
-                  "rule": {
-                    "creation": {
-                      "type": "creation"
-                    },
-                    "update": {
-                      "type": "update",
-                      "parameters": {
-                        "update_allows_fetch_and_merge": true
-                      }
-                    },
-                    "deletion": {
-                      "type": "deletion"
-                    },
-                    "required_linear_history": {
-                      "type": "required_linear_history"
-                    },
-                    "merge_queue": {
-                      "type": "merge_queue",
-                      "parameters": {
-                        "check_response_timeout_minutes": 35,
-                        "grouping_strategy": "HEADGREEN",
-                        "max_entries_to_build": 8,
-                        "max_entries_to_merge": 4,
-                        "merge_method": "SQUASH",
-                        "min_entries_to_merge": 2,
-                        "min_entries_to_merge_wait_minutes": 13
-                      }
-                    },
-                    "required_deployments": {
-                      "type": "required_deployments",
-                      "parameters": {
-                        "required_deployment_environments": [
-                          "test"
-                        ]
-                      }
-                    },
-                    "required_signatures": {
-                      "type": "required_signatures"
-                    },
-                    "pull_request": {
-                      "type": "pull_request",
-                      "parameters": {
-												"allowed_merge_methods": ["rebase","squash"],
-                        "dismiss_stale_reviews_on_push": true,
-                        "require_code_owner_review": true,
-                        "require_last_push_approval": true,
-                        "required_approving_review_count": 1,
-                        "required_review_thread_resolution": true
-                      }
-                    },
-                    "required_status_checks": {
-                      "type": "required_status_checks",
-                      "parameters": {
-                        "required_status_checks": [
-                          {
-                            "context": "test",
-                            "integration_id": 1
-                          }
-                        ],
-                        "strict_required_status_checks_policy": true
-                      }
-                    },
-                    "non_fast_forward": {
-                      "type": "non_fast_forward"
-                    },
-                    "commit_message_pattern": {
-                      "type": "commit_message_pattern",
-                      "parameters": {
-                        "name": "avoid test commits",
-                        "negate": true,
-                        "operator": "starts_with",
-                        "pattern": "[test]"
-                      }
-                    },
-                    "commit_author_email_pattern": {
-                      "type": "commit_author_email_pattern",
-                      "parameters": {
-                        "operator": "contains",
-                        "pattern": "github"
-                      }
-                    },
-                    "committer_email_pattern": {
-                      "type": "committer_email_pattern",
-                      "parameters": {
-                        "name": "avoid commit emails",
-                        "negate": true,
-                        "operator": "ends_with",
-                        "pattern": "abc"
-                      }
-                    },
-                    "branch_name_pattern": {
-                      "type": "branch_name_pattern",
-                      "parameters": {
-                        "name": "avoid branch names",
-                        "negate": true,
-                        "operator": "regex",
-                        "pattern": "github$"
-                      }
-                    },
-                    "tag_name_pattern": {
-                      "type": "tag_name_pattern",
-                      "parameters": {
-                        "name": "avoid tag names",
-                        "negate": true,
-                        "operator": "contains",
-                        "pattern": "github"
-                      }
-                    },
-                    "file_path_restriction": {
-                      "type": "file_path_restriction",
-                      "parameters": {
-                        "restricted_file_paths": [
-                          "/a/file"
-                        ]
-                      }
-                    },
-                    "max_file_path_length": {
-                      "type": "max_file_path_length",
-                      "parameters": {
-                        "max_file_path_length": 255
-                      }
-                    },
-                    "file_extension_restriction": {
-                      "type": "file_extension_restriction",
-                      "parameters": {
-                        "restricted_file_extensions": [
-                          ".exe"
-                        ]
-                      }
-                    },
-                    "max_file_size": {
-                      "type": "max_file_size",
-                      "parameters": {
-                        "max_file_size": 1024
-                      }
-                    },
-                    "workflows": {
-                      "type": "workflows",
-                      "parameters": {
-                        "workflows": [
-                          {
-                            "path": ".github/workflows/test.yml",
-                            "repository_id": 1
-                          }
-                        ]
-                      }
-                    },
-                    "code_scanning": {
-                      "type": "code_scanning",
-                      "parameters": {
-                        "code_scanning_tools": [
-                          {
-                            "alerts_threshold": "alert",
-                            "security_alerts_threshold": "security",
-                            "tool": "tool"
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  "changes": {
-                    "configuration": {
-                      "from": [
-                        "from"
-                      ]
-                    },
-                    "rule_type": {
-                      "from": [
-                        "from"
-                      ]
-                    },
-                    "pattern": {
-                      "from": [
-                        "from"
-                      ]
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "sender": {
-            "login": "l",
-            "id": 1,
-            "node_id": "n",
-            "avatar_url": "a",
-            "url": "u",
-            "events_url": "e",
-            "repos_url": "r"
-          }
-        }`
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	testJSONMarshal(t, u, want)
+			got := &RepositoryRulesetEvent{}
+			err := json.Unmarshal([]byte(test.json), got)
+			if err != nil {
+				t.Errorf("Unable to unmarshal JSON %v: %v", test.json, err)
+			}
+
+			if diff := cmp.Diff(test.event, got); diff != "" {
+				t.Errorf("json.Unmarshal returned:\n%#v\nwant:\n%#v\ndiff:\n%v", got, test.event, diff)
+			}
+		})
+	}
 }
 
 func TestContentReferenceEvent_Marshal(t *testing.T) {

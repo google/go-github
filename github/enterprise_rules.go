@@ -10,12 +10,12 @@ import (
 	"fmt"
 )
 
-// CreateEnterpriseRuleset creates a ruleset for the specified enterprise.
+// CreateRepositoryRuleset creates a repository ruleset for the specified enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#create-an-enterprise-repository-ruleset
 //
 //meta:operation POST /enterprises/{enterprise}/rulesets
-func (s *EnterpriseService) CreateEnterpriseRuleset(ctx context.Context, enterprise string, ruleset Ruleset) (*Ruleset, *Response, error) {
+func (s *EnterpriseService) CreateRepositoryRuleset(ctx context.Context, enterprise string, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets", enterprise)
 
 	req, err := s.client.NewRequest("POST", u, ruleset)
@@ -23,7 +23,7 @@ func (s *EnterpriseService) CreateEnterpriseRuleset(ctx context.Context, enterpr
 		return nil, nil, err
 	}
 
-	var rs *Ruleset
+	var rs *RepositoryRuleset
 	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
@@ -32,12 +32,12 @@ func (s *EnterpriseService) CreateEnterpriseRuleset(ctx context.Context, enterpr
 	return rs, resp, nil
 }
 
-// GetEnterpriseRuleset gets a ruleset from the specified enterprise.
+// GetRepositoryRuleset gets a repository ruleset for the specified enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#get-an-enterprise-repository-ruleset
 //
 //meta:operation GET /enterprises/{enterprise}/rulesets/{ruleset_id}
-func (s *EnterpriseService) GetEnterpriseRuleset(ctx context.Context, enterprise string, rulesetID int64) (*Ruleset, *Response, error) {
+func (s *EnterpriseService) GetRepositoryRuleset(ctx context.Context, enterprise string, rulesetID int64) (*RepositoryRuleset, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -45,7 +45,7 @@ func (s *EnterpriseService) GetEnterpriseRuleset(ctx context.Context, enterprise
 		return nil, nil, err
 	}
 
-	var ruleset *Ruleset
+	var ruleset *RepositoryRuleset
 	resp, err := s.client.Do(ctx, req, &ruleset)
 	if err != nil {
 		return nil, resp, err
@@ -54,12 +54,12 @@ func (s *EnterpriseService) GetEnterpriseRuleset(ctx context.Context, enterprise
 	return ruleset, resp, nil
 }
 
-// UpdateEnterpriseRuleset updates a ruleset from the specified enterprise.
+// UpdateRepositoryRuleset updates a repository ruleset for the specified enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
 //
 //meta:operation PUT /enterprises/{enterprise}/rulesets/{ruleset_id}
-func (s *EnterpriseService) UpdateEnterpriseRuleset(ctx context.Context, enterprise string, rulesetID int64, ruleset Ruleset) (*Ruleset, *Response, error) {
+func (s *EnterpriseService) UpdateRepositoryRuleset(ctx context.Context, enterprise string, rulesetID int64, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 
 	req, err := s.client.NewRequest("PUT", u, ruleset)
@@ -67,7 +67,7 @@ func (s *EnterpriseService) UpdateEnterpriseRuleset(ctx context.Context, enterpr
 		return nil, nil, err
 	}
 
-	var rs *Ruleset
+	var rs *RepositoryRuleset
 	resp, err := s.client.Do(ctx, req, &rs)
 	if err != nil {
 		return nil, resp, err
@@ -76,14 +76,14 @@ func (s *EnterpriseService) UpdateEnterpriseRuleset(ctx context.Context, enterpr
 	return rs, resp, nil
 }
 
-// UpdateEnterpriseRulesetClearBypassActor clears the ruleset bypass actors for a ruleset for the specified repository.
+// UpdateRepositoryRulesetClearBypassActor clears the bypass actors for a repository ruleset for the specified enterprise.
 //
-// This function is necessary as the UpdateEnterpriseRuleset function does not marshal ByPassActor if passed as an empty array.
+// This function is necessary as the UpdateRepositoryRuleset function does not marshal ByPassActor if passed as an empty array.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
 //
 //meta:operation PUT /enterprises/{enterprise}/rulesets/{ruleset_id}
-func (s *EnterpriseService) UpdateEnterpriseRulesetClearBypassActor(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {
+func (s *EnterpriseService) UpdateRepositoryRulesetClearBypassActor(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 
 	rsClearBypassActor := rulesetClearBypassActors{}
@@ -101,12 +101,12 @@ func (s *EnterpriseService) UpdateEnterpriseRulesetClearBypassActor(ctx context.
 	return resp, nil
 }
 
-// DeleteEnterpriseRuleset deletes a ruleset from the specified enterprise.
+// DeleteRepositoryRuleset deletes a repository ruleset from the specified enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#delete-an-enterprise-repository-ruleset
 //
 //meta:operation DELETE /enterprises/{enterprise}/rulesets/{ruleset_id}
-func (s *EnterpriseService) DeleteEnterpriseRuleset(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {
+func (s *EnterpriseService) DeleteRepositoryRuleset(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
