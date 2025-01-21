@@ -519,7 +519,7 @@ func WithVersion(version string) RequestOption {
 // request body.
 func (c *Client) NewRequest(method, urlStr string, body interface{}, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
-		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.BaseURL)
+		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
 
 	u, err := c.BaseURL.Parse(urlStr)
@@ -565,7 +565,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}, opts ...Req
 // Body is sent with Content-Type: application/x-www-form-urlencoded.
 func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
-		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.BaseURL)
+		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
 
 	u, err := c.BaseURL.Parse(urlStr)
@@ -597,7 +597,7 @@ func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOp
 // Relative URLs should always be specified without a preceding slash.
 func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, mediaType string, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.UploadURL.Path, "/") {
-		return nil, fmt.Errorf("UploadURL must have a trailing slash, but %q does not", c.UploadURL)
+		return nil, fmt.Errorf("uploadURL must have a trailing slash, but %q does not", c.UploadURL)
 	}
 	u, err := c.UploadURL.Parse(urlStr)
 	if err != nil {
