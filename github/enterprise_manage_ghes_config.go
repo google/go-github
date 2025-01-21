@@ -147,7 +147,7 @@ type ConfigSettingsCustomer struct {
 	Name          *string `json:"name,omitempty"`
 	Email         *string `json:"email,omitempty"`
 	UUID          *string `json:"uuid,omitempty"`
-	SecretKeyData *string `json:"secret,omitempty"`
+	Secret        *string `json:"secret,omitempty"`
 	PublicKeyData *string `json:"public_key_data,omitempty"`
 }
 
@@ -174,13 +174,13 @@ type ConfigSettingsGithubSSL struct {
 type ConfigSettingsLDAP struct {
 	Host                    *string                           `json:"host,omitempty"`
 	Port                    *int                              `json:"port,omitempty"`
-	Base                    []*string                         `json:"base,omitempty"`
+	Base                    []string                          `json:"base,omitempty"`
 	UID                     *string                           `json:"uid,omitempty"`
 	BindDN                  *string                           `json:"bind_dn,omitempty"`
 	Password                *string                           `json:"password,omitempty"`
 	Method                  *string                           `json:"method,omitempty"`
 	SearchStrategy          *string                           `json:"search_strategy,omitempty"`
-	UserGroups              []*string                         `json:"user_groups,omitempty"`
+	UserGroups              []string                          `json:"user_groups,omitempty"`
 	AdminGroup              *string                           `json:"admin_group,omitempty"`
 	VirtualAttributeEnabled *bool                             `json:"virtual_attribute_enabled,omitempty"`
 	RecursiveGroupSearch    *bool                             `json:"recursive_group_search,omitempty"`
@@ -194,13 +194,13 @@ type ConfigSettingsLDAP struct {
 	Profile                 *ConfigSettingsLDAPProfile        `json:"profile,omitempty"`
 }
 
-// ConfigSettingsLDAPReconciliation is part of the LDAP struct.
+// ConfigSettingsLDAPReconciliation is part of the ConfigSettingsLDAP struct.
 type ConfigSettingsLDAPReconciliation struct {
 	User *string `json:"user,omitempty"`
 	Org  *string `json:"org,omitempty"`
 }
 
-// ConfigSettingsLDAPProfile is part of the LDAP struct.
+// ConfigSettingsLDAPProfile is part of the ConfigSettingsLDAP struct.
 type ConfigSettingsLDAPProfile struct {
 	UID  *string `json:"uid,omitempty"`
 	Name *string `json:"name,omitempty"`
@@ -298,12 +298,12 @@ type NodeMetadataStatus struct {
 
 // NodeDetails is a struct to hold the response from the NodeMetadata API.
 type NodeDetails struct {
-	Hostname     *string   `json:"hostname,omitempty"`
-	UUID         *string   `json:"uuid,omitempty"`
-	ClusterRoles []*string `json:"cluster_roles,omitempty"`
+	Hostname     *string  `json:"hostname,omitempty"`
+	UUID         *string  `json:"uuid,omitempty"`
+	ClusterRoles []string `json:"cluster_roles,omitempty"`
 }
 
-// ConfigApplyEvents gets events from the command ghe-config-apply
+// ConfigApplyEvents gets events from the command ghe-config-apply.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/manage-ghes#list-events-from-ghe-config-apply
 //
@@ -333,7 +333,7 @@ func (s *EnterpriseService) ConfigApplyEvents(ctx context.Context, opts *ConfigA
 // GitHub API docs: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/manage-ghes#initialize-instance-configuration-with-license-and-password
 //
 //meta:operation POST /manage/v1/config/init
-func (s *EnterpriseService) InitialConfig(ctx context.Context, license string, password string) (*Response, error) {
+func (s *EnterpriseService) InitialConfig(ctx context.Context, license, password string) (*Response, error) {
 	u := "manage/v1/config/init"
 
 	opts := &InitialConfigOptions{
@@ -400,13 +400,13 @@ func (s *EnterpriseService) LicenseStatus(ctx context.Context) ([]*LicenseCheck,
 		return nil, nil, err
 	}
 
-	var licenseStatus []*LicenseCheck
-	resp, err := s.client.Do(ctx, req, &licenseStatus)
+	var checks []*LicenseCheck
+	resp, err := s.client.Do(ctx, req, &checks)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return licenseStatus, resp, nil
+	return checks, resp, nil
 }
 
 // NodeMetadata gets the metadata for all nodes in the GitHub Enterprise instance.
@@ -425,13 +425,13 @@ func (s *EnterpriseService) NodeMetadata(ctx context.Context, opts *NodeQueryOpt
 		return nil, nil, err
 	}
 
-	configNodes := new(NodeMetadataStatus)
-	resp, err := s.client.Do(ctx, req, configNodes)
+	status := new(NodeMetadataStatus)
+	resp, err := s.client.Do(ctx, req, status)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return configNodes, resp, nil
+	return status, resp, nil
 }
 
 // Settings gets the current configuration settings for the GitHub Enterprise instance.
@@ -486,12 +486,12 @@ func (s *EnterpriseService) ConfigApply(ctx context.Context, opts *ConfigApplyOp
 		return nil, nil, err
 	}
 
-	configApplyStatus := new(ConfigApplyOptions)
-	resp, err := s.client.Do(ctx, req, configApplyStatus)
+	configApplyOptions := new(ConfigApplyOptions)
+	resp, err := s.client.Do(ctx, req, configApplyOptions)
 	if err != nil {
 		return nil, resp, err
 	}
-	return configApplyStatus, resp, nil
+	return configApplyOptions, resp, nil
 }
 
 // ConfigApplyStatus gets the status of a ghe-config-apply run on the GitHub Enterprise instance.
@@ -507,10 +507,10 @@ func (s *EnterpriseService) ConfigApplyStatus(ctx context.Context, opts *ConfigA
 		return nil, nil, err
 	}
 
-	configApplyRun := new(ConfigApplyStatus)
-	resp, err := s.client.Do(ctx, req, configApplyRun)
+	status := new(ConfigApplyStatus)
+	resp, err := s.client.Do(ctx, req, status)
 	if err != nil {
 		return nil, resp, err
 	}
-	return configApplyRun, resp, nil
+	return status, resp, nil
 }

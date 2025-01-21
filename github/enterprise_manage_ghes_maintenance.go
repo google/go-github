@@ -22,9 +22,9 @@ type MaintenanceStatus struct {
 	UUID                   *string                  `json:"uuid,omitempty"`
 	Status                 *string                  `json:"status,omitempty"`
 	ScheduledTime          *Timestamp               `json:"scheduled_time,omitempty"`
-	ConnectionServices     []*ConnectionServiceItem `json:"connection_services"`
+	ConnectionServices     []*ConnectionServiceItem `json:"connection_services,omitempty"`
 	CanUnsetMaintenance    *bool                    `json:"can_unset_maintenance,omitempty"`
-	IPExceptionList        []*string                `json:"ip_exception_list,omitempty"`
+	IPExceptionList        []string                 `json:"ip_exception_list,omitempty"`
 	MaintenanceModeMessage *string                  `json:"maintenance_mode_message,omitempty"`
 }
 
@@ -35,13 +35,13 @@ type ConnectionServiceItem struct {
 }
 
 // MaintenanceOptions represents the options for setting the maintenance mode for the instance.
-// When can be a string, so we cant use a Timestamp type.
+// When can be a string, so we can't use a Timestamp type.
 type MaintenanceOptions struct {
-	Enabled                bool      `json:"enabled"`
-	UUID                   *string   `json:"uuid,omitempty"`
-	When                   *string   `json:"when,omitempty"`
-	IPExceptionList        []*string `json:"ip_exception_list,omitempty"`
-	MaintenanceModeMessage *string   `json:"maintenance_mode_message,omitempty"`
+	Enabled                bool     `json:"enabled"`
+	UUID                   *string  `json:"uuid,omitempty"`
+	When                   *string  `json:"when,omitempty"`
+	IPExceptionList        []string `json:"ip_exception_list,omitempty"`
+	MaintenanceModeMessage *string  `json:"maintenance_mode_message,omitempty"`
 }
 
 // GetMaintenanceStatus gets the status of maintenance mode for all nodes.
@@ -69,7 +69,7 @@ func (s *EnterpriseService) GetMaintenanceStatus(ctx context.Context, opts *Node
 }
 
 // CreateMaintenance sets the maintenance mode for the instance.
-// With the enable parameter we can control to put instance into maintenance mode or not. With False we can disable the maintenance mode.
+// With the enable parameter we can control to put instance into maintenance mode or not. With false we can disable the maintenance mode.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/manage-ghes#set-the-status-of-maintenance-mode
 //

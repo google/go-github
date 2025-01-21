@@ -19,7 +19,7 @@ type NodeQueryOptions struct {
 	ClusterRoles *string `url:"cluster_roles,omitempty"`
 }
 
-// ClusterStatus represents a response from the GetClusterStatus and GetReplicationStatus methods.
+// ClusterStatus represents a response from the ClusterStatus and ReplicationStatus methods.
 type ClusterStatus struct {
 	Status *string              `json:"status,omitempty"`
 	Nodes  []*ClusterStatusNode `json:"nodes"`
@@ -39,7 +39,7 @@ type ClusterStatusNodeServiceItem struct {
 	Details *string `json:"details,omitempty"`
 }
 
-// SystemRequirements represents a response from the GetCheckSystemRequirements method.
+// SystemRequirements represents a response from the CheckSystemRequirements method.
 type SystemRequirements struct {
 	Status *string                   `json:"status,omitempty"`
 	Nodes  []*SystemRequirementsNode `json:"nodes"`
@@ -129,13 +129,13 @@ func (s *EnterpriseService) ReplicationStatus(ctx context.Context, opts *NodeQue
 		return nil, nil, err
 	}
 
-	replicationStatus := new(ClusterStatus)
-	resp, err := s.client.Do(ctx, req, replicationStatus)
+	status := new(ClusterStatus)
+	resp, err := s.client.Do(ctx, req, status)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return replicationStatus, resp, nil
+	return status, resp, nil
 }
 
 // GetNodeReleaseVersions gets the version information deployed to each node.

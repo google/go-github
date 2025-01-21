@@ -4606,12 +4606,12 @@ func (c *ConfigSettingsCustomer) GetPublicKeyData() string {
 	return *c.PublicKeyData
 }
 
-// GetSecretKeyData returns the SecretKeyData field if it's non-nil, zero value otherwise.
-func (c *ConfigSettingsCustomer) GetSecretKeyData() string {
-	if c == nil || c.SecretKeyData == nil {
+// GetSecret returns the Secret field if it's non-nil, zero value otherwise.
+func (c *ConfigSettingsCustomer) GetSecret() string {
+	if c == nil || c.Secret == nil {
 		return ""
 	}
-	return *c.SecretKeyData
+	return *c.Secret
 }
 
 // GetUUID returns the UUID field if it's non-nil, zero value otherwise.

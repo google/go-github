@@ -5966,15 +5966,15 @@ func TestConfigSettingsCustomer_GetPublicKeyData(tt *testing.T) {
 	c.GetPublicKeyData()
 }
 
-func TestConfigSettingsCustomer_GetSecretKeyData(tt *testing.T) {
+func TestConfigSettingsCustomer_GetSecret(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &ConfigSettingsCustomer{SecretKeyData: &zeroValue}
-	c.GetSecretKeyData()
+	c := &ConfigSettingsCustomer{Secret: &zeroValue}
+	c.GetSecret()
 	c = &ConfigSettingsCustomer{}
-	c.GetSecretKeyData()
+	c.GetSecret()
 	c = nil
-	c.GetSecretKeyData()
+	c.GetSecret()
 }
 
 func TestConfigSettingsCustomer_GetUUID(tt *testing.T) {

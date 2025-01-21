@@ -64,7 +64,7 @@ func TestEnterpriseService_GetMaintenanceStatus(t *testing.T) {
 			Number: Ptr(15),
 		}},
 		CanUnsetMaintenance:    Ptr(true),
-		IPExceptionList:        []*string{Ptr("1.1.1.1")},
+		IPExceptionList:        []string{"1.1.1.1"},
 		MaintenanceModeMessage: Ptr("Scheduled maintenance for upgrading."),
 	}}
 	if !cmp.Equal(maintenanceStatus, want) {
@@ -89,8 +89,8 @@ func TestEnterpriseService_CreateMaintenance(t *testing.T) {
 		Enabled: true,
 		UUID:    Ptr("1234-1234"),
 		When:    Ptr("now"),
-		IPExceptionList: []*string{
-			Ptr("1.1.1.1"),
+		IPExceptionList: []string{
+			"1.1.1.1",
 		},
 		MaintenanceModeMessage: Ptr("Scheduled maintenance for upgrading."),
 	}

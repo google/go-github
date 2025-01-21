@@ -186,7 +186,7 @@ func TestEnterpriseService_Settings(t *testing.T) {
 			Name:          Ptr("GitHub"),
 			Email:         Ptr("stannis"),
 			UUID:          Ptr("af6cac80-e4e1-012e-d822-1231380e52e9"),
-			SecretKeyData: nil,
+			Secret:        nil,
 			PublicKeyData: Ptr("-"),
 		},
 		License: &ConfigSettingsLicenseSettings{
@@ -207,13 +207,13 @@ func TestEnterpriseService_Settings(t *testing.T) {
 		LDAP: &ConfigSettingsLDAP{
 			Host:                    nil,
 			Port:                    Ptr(0),
-			Base:                    []*string{},
+			Base:                    []string{},
 			UID:                     nil,
 			BindDN:                  nil,
 			Password:                nil,
 			Method:                  Ptr("Plain"),
 			SearchStrategy:          Ptr("detect"),
-			UserGroups:              []*string{},
+			UserGroups:              []string{},
 			AdminGroup:              nil,
 			VirtualAttributeEnabled: Ptr(false),
 			RecursiveGroupSearch:    Ptr(false),
@@ -350,8 +350,8 @@ func TestEnterpriseService_NodeMetadata(t *testing.T) {
 		Nodes: []*NodeDetails{{
 			Hostname: Ptr("data1"),
 			UUID:     Ptr("1b6cf518-f97c-11ed-8544-061d81f7eedb"),
-			ClusterRoles: []*string{
-				Ptr("ConsulServer"),
+			ClusterRoles: []string{
+				"ConsulServer",
 			},
 		}},
 	}
