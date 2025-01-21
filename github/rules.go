@@ -675,7 +675,7 @@ func marshalRepositoryRulesetRule[T any](t RepositoryRuleType, params T) ([]byte
 
 // UnmarshalJSON is a custom JSON unmarshaler for RulesetRules.
 func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
-	var wrappers []repositoryRulesetRuleWrapper
+	var wrappers []*repositoryRulesetRuleWrapper
 
 	if err := json.Unmarshal(data, &wrappers); err != nil {
 		return err
@@ -836,7 +836,7 @@ type branchRuleWrapper struct {
 
 // UnmarshalJSON is a custom JSON unmarshaler for BranchRules.
 func (r *BranchRules) UnmarshalJSON(data []byte) error {
-	var wrappers []branchRuleWrapper
+	var wrappers []*branchRuleWrapper
 
 	if err := json.Unmarshal(data, &wrappers); err != nil {
 		return err
