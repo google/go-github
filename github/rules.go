@@ -479,7 +479,8 @@ type repositoryRulesetRuleWrapper struct {
 
 // MarshalJSON is a custom JSON marshaler for RulesetRules.
 func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
-	// If new rules are added to RulesetRules the capacity needs increasing
+	// The RepositoryRulesetRules type marshals to between 1 and 21 rules.
+	// If new rules are added to RepositoryRulesetRules the capacity below needs increasing
 	rawRules := make([]json.RawMessage, 0, 21)
 
 	if r.Creation != nil {
@@ -674,8 +675,7 @@ func marshalRepositoryRulesetRule[T any](t RepositoryRuleType, params T) ([]byte
 
 // UnmarshalJSON is a custom JSON unmarshaler for RulesetRules.
 func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
-	// If new rules are added to RulesetRules the capacity needs increasing
-	wrappers := make([]repositoryRulesetRuleWrapper, 0, 21)
+	var wrappers []repositoryRulesetRuleWrapper
 
 	if err := json.Unmarshal(data, &wrappers); err != nil {
 		return err
@@ -836,8 +836,7 @@ type branchRuleWrapper struct {
 
 // UnmarshalJSON is a custom JSON unmarshaler for BranchRules.
 func (r *BranchRules) UnmarshalJSON(data []byte) error {
-	// If new rules are added to RulesetRules the capacity needs increasing
-	wrappers := make([]branchRuleWrapper, 0, 21)
+	var wrappers []branchRuleWrapper
 
 	if err := json.Unmarshal(data, &wrappers); err != nil {
 		return err
