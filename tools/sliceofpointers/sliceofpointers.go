@@ -1,21 +1,40 @@
-// sliceofpointers is a custom linter to be used by
+// Package sliceofpointers is a custom linter to be used by
 // golangci-lint to find instances of `[]*string` and
 // slices of structs without pointers and report them.
 // See: https://github.com/google/go-github/issues/180
-package main
+package sliceofpointers
 
 import (
 	"go/ast"
 	"go/token"
 
+	"github.com/golangci/plugin-module-register/register"
 	"golang.org/x/tools/go/analysis"
-	"golang.org/x/tools/go/analysis/singlechecker"
 )
 
-var analyzer = &analysis.Analyzer{
-	Name: "sliceofpointers",
-	Doc:  "reports usage of []*string and slices of structs without pointers",
-	Run:  run,
+func init() {
+	register.Plugin("sliceofpointers", New)
+}
+
+type SliceOfPointersPlugin struct{}
+
+// New returns an analysis.Analyzer to use with golangci-lint
+func New(settings any) (register.LinterPlugin, error) {
+	return &SliceOfPointersPlugin{}, nil
+}
+
+func (f *SliceOfPointersPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
+	return []*analysis.Analyzer{
+		{
+			Name: "sliceofpointers",
+			Doc:  "Reports usage of []*string and slices of structs without pointers.",
+			Run:  run,
+		},
+	}, nil
+}
+
+func (f *SliceOfPointersPlugin) GetLoadMode() string {
+	return register.LoadModeSyntax
 }
 
 func run(pass *analysis.Pass) (interface{}, error) {
@@ -47,8 +66,4 @@ func checkArrayType(arrType *ast.ArrayType, tokenPos token.Pos, pass *analysis.P
 			pass.Reportf(tokenPos, "use []*%v instead of []%[1]v", ident.Name)
 		}
 	}
-}
-
-func main() {
-	singlechecker.Main(analyzer)
 }
