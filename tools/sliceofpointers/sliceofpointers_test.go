@@ -7,6 +7,7 @@ import (
 )
 
 func TestRun(t *testing.T) {
+	t.Parallel()
 	testdata := analysistest.TestData()
 	plugin, _ := New(nil)
 	analyzers, _ := plugin.BuildAnalyzers()
