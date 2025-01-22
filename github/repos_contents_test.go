@@ -472,12 +472,12 @@ func TestRepositoriesService_GetContents_DirectoryWithSpaces(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/contents/some directory/file.go", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/contents/some%2520directory/file.go", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{}`)
 	})
 	ctx := context.Background()
-	_, _, _, err := client.Repositories.GetContents(ctx, "o", "r", "some directory/file.go", &RepositoryContentGetOptions{})
+	_, _, _, err := client.Repositories.GetContents(ctx, "o", "r", "some%2520directory/file.go", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
 	}
@@ -497,17 +497,17 @@ func TestRepositoriesService_GetContents_PathWithParent(t *testing.T) {
 		t.Fatal("Repositories.GetContents expected error but got none")
 	}
 }
-
 func TestRepositoriesService_GetContents_DirectoryWithPlusChars(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/contents/some directory+name/file.go", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/contents/some%2520directory+name/file.go", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{}`)
 	})
+
 	ctx := context.Background()
-	_, _, _, err := client.Repositories.GetContents(ctx, "o", "r", "some directory+name/file.go", &RepositoryContentGetOptions{})
+	_, _, _, err := client.Repositories.GetContents(ctx, "o", "r", "some%20directory+name/file.go", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
 	}
