@@ -1,3 +1,8 @@
+// Copyright 2025 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 // Package sliceofpointers is a custom linter to be used by
 // golangci-lint to find instances of `[]*string` and
 // slices of structs without pointers and report them.
