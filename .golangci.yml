@@ -18,12 +18,18 @@ linters:
     - perfsprint
     - paralleltest
     - revive
+    - sliceofpointers
     - stylecheck
     - tparallel
     - unconvert
     - unparam
     - whitespace
 linters-settings:
+  custom:
+    sliceofpointers:
+      type: module
+      description: Reports usage of []*string and slices of structs without pointers.
+      original-url: github.com/google/go-github/v68/tools/sliceofpointers
   gocritic:
     disable-all: true
     enabled-checks:
@@ -38,7 +44,7 @@ linters-settings:
   misspell:
     locale: US
     ignore-words:
-      - "analyses"  # returned by the GitHub API
+      - "analyses" # returned by the GitHub API
       - "cancelled" # returned by the GitHub API
     # extra words from https://go.dev//wiki/Spelling
     extra-words:
@@ -102,28 +108,28 @@ issues:
       path: _test\.go
 
     # We need to pass nil Context in order to test DoBare erroring on nil ctx.
-    - linters: [ staticcheck ]
-      text: 'SA1012: do not pass a nil Context'
+    - linters: [staticcheck]
+      text: "SA1012: do not pass a nil Context"
       path: _test\.go
 
     # We need to use sha1 for validating signatures
-    - linters: [ gosec ]
-      text: 'G505: Blocklisted import crypto/sha1: weak cryptographic primitive'
+    - linters: [gosec]
+      text: "G505: Blocklisted import crypto/sha1: weak cryptographic primitive"
 
     # This is adapted from golangci-lint's default exclusions. It disables linting for error checks on
     # os.RemoveAll, fmt.Fprint*, fmt.Scanf, and any function ending in "Close".
-    - linters: [ errcheck ]
+    - linters: [errcheck]
       text: Error return value of .(.*Close|fmt\.Fprint.*|fmt\.Scanf|os\.Remove(All)?). is not checked
 
     # We don't care about file inclusion via variable in examples or internal tools.
-    - linters: [ gosec ]
-      text: 'G304: Potential file inclusion via variable'
+    - linters: [gosec]
+      text: "G304: Potential file inclusion via variable"
       path: '^(example|tools)\/'
 
     # We don't run parallel integration tests
-    - linters: [ paralleltest, tparallel ]
-      path: '^test/integration'
+    - linters: [paralleltest, tparallel]
+      path: "^test/integration"
 
     # Because fmt.Sprint(reset.Unix())) is more readable than strconv.FormatInt(reset.Unix(), 10).
-    - linters: [ perfsprint]
-      text: 'fmt.Sprint.* can be replaced with faster strconv.FormatInt'
+    - linters: [perfsprint]
+      text: "fmt.Sprint.* can be replaced with faster strconv.FormatInt"

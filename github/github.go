@@ -1117,7 +1117,8 @@ GitHub API docs: https://docs.github.com/rest/#client-errors
 type ErrorResponse struct {
 	Response *http.Response `json:"-"`       // HTTP response that caused this error
 	Message  string         `json:"message"` // error message
-	Errors   []Error        `json:"errors"`  // more detail on individual errors
+	//nolint:sliceofpointers
+	Errors []Error `json:"errors"` // more detail on individual errors
 	// Block is only populated on certain types of errors such as code 451.
 	Block *ErrorBlock `json:"block,omitempty"`
 	// Most errors will also include a documentation_url field pointing

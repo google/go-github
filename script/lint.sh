@@ -19,9 +19,10 @@ fail() {
   EXIT_CODE=1
 }
 
-# install golangci-lint bin/golangci-lint doesn't exist with the correct version
-if ! "$BIN"/golangci-lint --version 2> /dev/null | grep -q "$GOLANGCI_LINT_VERSION"; then
+# install golangci-lint and custom-gcl in ./bin if they don't exist with the correct version
+if ! "$BIN"/custom-gcl --version 2> /dev/null | grep -q "$GOLANGCI_LINT_VERSION"; then
   GOBIN="$BIN" go install "github.com/golangci/golangci-lint/cmd/golangci-lint@v$GOLANGCI_LINT_VERSION"
+  "$BIN"/golangci-lint custom && mv ./custom-gcl "$BIN"
 fi
 
 MOD_DIRS="$(git ls-files '*go.mod' | xargs dirname | sort)"
@@ -33,9 +34,9 @@ for dir in $MOD_DIRS; do
     cd "$dir"
     # github actions output when running in an action
     if [ -n "$GITHUB_ACTIONS" ]; then
-      "$BIN"/golangci-lint run --path-prefix "$dir" --out-format colored-line-number
+      "$BIN"/custom-gcl run --path-prefix "$dir" --out-format colored-line-number
     else
-      "$BIN"/golangci-lint run --path-prefix "$dir"
+      "$BIN"/custom-gcl run --path-prefix "$dir"
     fi
   ) || fail "failed linting $dir"
 done

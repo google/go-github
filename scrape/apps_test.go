@@ -61,7 +61,7 @@ func Test_ListOAuthApps(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ListOAuthApps(e) returned err: %v", err)
 	}
-	want := []OAuthApp{
+	want := []*OAuthApp{
 		{
 			ID:          22222,
 			Name:        "Coveralls",
