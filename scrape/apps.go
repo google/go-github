@@ -46,13 +46,13 @@ func (c *Client) AppRestrictionsEnabled(org string) (bool, error) {
 
 // ListOAuthApps lists the reviewed OAuth Applications for the
 // specified organization (whether approved or denied).
-func (c *Client) ListOAuthApps(org string) ([]OAuthApp, error) {
+func (c *Client) ListOAuthApps(org string) ([]*OAuthApp, error) {
 	doc, err := c.get("/organizations/%s/settings/oauth_application_policy", org)
 	if err != nil {
 		return nil, err
 	}
 
-	var apps []OAuthApp
+	var apps []*OAuthApp
 	doc.Find(".oauth-application-allowlist ul > li").Each(func(i int, s *goquery.Selection) {
 		var app OAuthApp
 		app.Name = s.Find(".request-info strong").First().Text()
@@ -73,7 +73,7 @@ func (c *Client) ListOAuthApps(org string) ([]OAuthApp, error) {
 		} else if r := s.Find(".request-indicator .denied-request"); r.Length() > 0 {
 			app.State = OAuthAppDenied
 		}
-		apps = append(apps, app)
+		apps = append(apps, &app)
 	})
 
 	return apps, nil

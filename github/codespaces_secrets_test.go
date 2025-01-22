@@ -25,7 +25,7 @@ func TestCodespacesService_ListSecrets(t *testing.T) {
 		methodName string
 	}
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -128,7 +128,7 @@ func TestCodespacesService_GetSecret(t *testing.T) {
 		badCall    func(context.Context, *Client) (*Secret, *Response, error)
 		methodName string
 	}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -222,7 +222,7 @@ func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
 		badCall    func(context.Context, *Client, *EncryptedSecret) (*Response, error)
 		methodName string
 	}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -318,7 +318,7 @@ func TestCodespacesService_DeleteSecret(t *testing.T) {
 		badCall    func(context.Context, *Client) (*Response, error)
 		methodName string
 	}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -401,7 +401,7 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 		methodName string
 	}
 
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -496,7 +496,7 @@ func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
 		methodName string
 	}
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -581,7 +581,7 @@ func TestCodespacesService_SetSelectedReposForSecret(t *testing.T) {
 		methodName string
 	}
 	ids := SelectedRepoIDs{64780797}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -653,7 +653,7 @@ func TestCodespacesService_AddSelectedReposForSecret(t *testing.T) {
 		methodName string
 	}
 	repo := &Repository{ID: Ptr(int64(1234))}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -721,7 +721,7 @@ func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
 		methodName string
 	}
 	repo := &Repository{ID: Ptr(int64(1234))}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
