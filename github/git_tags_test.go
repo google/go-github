@@ -80,7 +80,7 @@ func TestGitService_CreateTag(t *testing.T) {
 
 	want := &Tag{Tag: Ptr("t")}
 	if !cmp.Equal(tag, want) {
-		t.Errorf("Git.GetTag returned %+v, want %+v", tag, want)
+		t.Errorf("Git.CreateTag returned %+v, want %+v", tag, want)
 	}
 
 	const methodName = "CreateTag"
