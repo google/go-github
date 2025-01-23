@@ -1,3 +1,8 @@
+// Copyright 2019 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 // The scrape tool demonstrates use of the github.com/google/go-github/scrape
 // package to fetch data from GitHub.  The tool lists whether third-party app
 // restrictions are enabled for an organization, and lists information about
