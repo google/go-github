@@ -85,11 +85,8 @@ func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo str
 func (s *PullRequestsService) RemoveReviewers(ctx context.Context, owner, repo string, number int, reviewers ReviewersRequest) (*Response, error) {
 	// reviewers.Reviewers may be empty if the caller wants to remove teams, but not users. Unlike AddReviewers,
 	// "reviewers" is a required param here. Reference: https://github.com/google/go-github/issues/3336
-	removeRequest := removeReviewersRequest{
-		NodeID:        reviewers.NodeID,
-		Reviewers:     reviewers.Reviewers,
-		TeamReviewers: reviewers.TeamReviewers,
-	}
+	// The type `removeReviewersRequest` is required because the struct tags are different from `ReviewersRequest`.
+	removeRequest := removeReviewersRequest(reviewers)
 
 	if removeRequest.Reviewers == nil {
 		// GitHub accepts the empty list, but rejects null. Removing `omitempty` is not enough - we also have to promote nil to [].

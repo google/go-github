@@ -11,12 +11,13 @@ linters:
     - gocritic
     - godot
     - gofmt
+    - goheader
     - goimports
     - gosec
     - misspell
     - nakedret
-    - perfsprint
     - paralleltest
+    - perfsprint
     - revive
     - sliceofpointers
     - stylecheck
@@ -35,6 +36,15 @@ linters-settings:
     enabled-checks:
       - commentedOutCode
       - commentFormatting
+  goheader:
+    values:
+      regexp:
+        CopyrightDate: "Copyright \\d{4} "
+    template: |-
+      {{CopyrightDate}}The go-github AUTHORS. All rights reserved.
+      
+      Use of this source code is governed by a BSD-style
+      license that can be found in the LICENSE file.
   gosec:
     excludes:
       # duplicates errcheck
