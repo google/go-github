@@ -85,6 +85,7 @@ func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo str
 func (s *PullRequestsService) RemoveReviewers(ctx context.Context, owner, repo string, number int, reviewers ReviewersRequest) (*Response, error) {
 	// reviewers.Reviewers may be empty if the caller wants to remove teams, but not users. Unlike AddReviewers,
 	// "reviewers" is a required param here. Reference: https://github.com/google/go-github/issues/3336
+	// The type `removeReviewersRequest` is required because the struct tags are different from `ReviewersRequest`.
 	removeRequest := removeReviewersRequest(reviewers)
 
 	if removeRequest.Reviewers == nil {
