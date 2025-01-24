@@ -15166,6 +15166,14 @@ func TestIssue_GetTitle(tt *testing.T) {
 	i.GetTitle()
 }
 
+func TestIssue_GetType(tt *testing.T) {
+	tt.Parallel()
+	i := &Issue{}
+	i.GetType()
+	i = nil
+	i.GetType()
+}
+
 func TestIssue_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -16025,6 +16033,83 @@ func TestIssueStats_GetTotalIssues(tt *testing.T) {
 	i.GetTotalIssues()
 	i = nil
 	i.GetTotalIssues()
+}
+
+func TestIssueType_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueType{Color: &zeroValue}
+	i.GetColor()
+	i = &IssueType{}
+	i.GetColor()
+	i = nil
+	i.GetColor()
+}
+
+func TestIssueType_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	i := &IssueType{CreatedAt: &zeroValue}
+	i.GetCreatedAt()
+	i = &IssueType{}
+	i.GetCreatedAt()
+	i = nil
+	i.GetCreatedAt()
+}
+
+func TestIssueType_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueType{Description: &zeroValue}
+	i.GetDescription()
+	i = &IssueType{}
+	i.GetDescription()
+	i = nil
+	i.GetDescription()
+}
+
+func TestIssueType_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	i := &IssueType{ID: &zeroValue}
+	i.GetID()
+	i = &IssueType{}
+	i.GetID()
+	i = nil
+	i.GetID()
+}
+
+func TestIssueType_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueType{Name: &zeroValue}
+	i.GetName()
+	i = &IssueType{}
+	i.GetName()
+	i = nil
+	i.GetName()
+}
+
+func TestIssueType_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueType{NodeID: &zeroValue}
+	i.GetNodeID()
+	i = &IssueType{}
+	i.GetNodeID()
+	i = nil
+	i.GetNodeID()
+}
+
+func TestIssueType_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	i := &IssueType{UpdatedAt: &zeroValue}
+	i.GetUpdatedAt()
+	i = &IssueType{}
+	i.GetUpdatedAt()
+	i = nil
+	i.GetUpdatedAt()
 }
 
 func TestJITRunnerConfig_GetEncodedJITConfig(tt *testing.T) {

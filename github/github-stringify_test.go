@@ -815,9 +815,10 @@ func TestIssue_String(t *testing.T) {
 		Reactions:         &Reactions{},
 		NodeID:            Ptr(""),
 		Draft:             Ptr(false),
+		Type:              &IssueType{},
 		ActiveLockReason:  Ptr(""),
 	}
-	want := `github.Issue{ID:0, Number:0, State:"", StateReason:"", Locked:false, Title:"", Body:"", AuthorAssociation:"", User:github.User{}, Assignee:github.User{}, Comments:0, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ClosedBy:github.User{}, URL:"", HTMLURL:"", CommentsURL:"", EventsURL:"", LabelsURL:"", RepositoryURL:"", Milestone:github.Milestone{}, PullRequestLinks:github.PullRequestLinks{}, Repository:github.Repository{}, Reactions:github.Reactions{}, NodeID:"", Draft:false, ActiveLockReason:""}`
+	want := `github.Issue{ID:0, Number:0, State:"", StateReason:"", Locked:false, Title:"", Body:"", AuthorAssociation:"", User:github.User{}, Assignee:github.User{}, Comments:0, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ClosedBy:github.User{}, URL:"", HTMLURL:"", CommentsURL:"", EventsURL:"", LabelsURL:"", RepositoryURL:"", Milestone:github.Milestone{}, PullRequestLinks:github.PullRequestLinks{}, Repository:github.Repository{}, Reactions:github.Reactions{}, NodeID:"", Draft:false, Type:github.IssueType{}, ActiveLockReason:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Issue.String = %v, want %v", got, want)
 	}

@@ -55,6 +55,7 @@ type Issue struct {
 	Assignees         []*User           `json:"assignees,omitempty"`
 	NodeID            *string           `json:"node_id,omitempty"`
 	Draft             *bool             `json:"draft,omitempty"`
+	Type              *IssueType        `json:"type,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://docs.github.com/rest/search/#text-match-metadata
@@ -127,6 +128,18 @@ type PullRequestLinks struct {
 	DiffURL  *string    `json:"diff_url,omitempty"`
 	PatchURL *string    `json:"patch_url,omitempty"`
 	MergedAt *Timestamp `json:"merged_at,omitempty"`
+}
+
+// IssueType represents the type of issue.
+// For now it shows up when receiveing an Issue event.
+type IssueType struct {
+	ID          *int64     `json:"id,omitempty"`
+	NodeID      *string    `json:"node_id,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	Color       *string    `json:"color,omitempty"`
+	CreatedAt   *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
 }
 
 // List the issues for the authenticated user. If all is true, list issues
