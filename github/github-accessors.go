@@ -11694,6 +11694,14 @@ func (i *Issue) GetTitle() string {
 	return *i.Title
 }
 
+// GetType returns the Type field.
+func (i *Issue) GetType() *IssueType {
+	if i == nil {
+		return nil
+	}
+	return i.Type
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (i *Issue) GetUpdatedAt() Timestamp {
 	if i == nil || i.UpdatedAt == nil {
@@ -12388,6 +12396,62 @@ func (i *IssueStats) GetTotalIssues() int {
 		return 0
 	}
 	return *i.TotalIssues
+}
+
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (i *IssueType) GetColor() string {
+	if i == nil || i.Color == nil {
+		return ""
+	}
+	return *i.Color
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (i *IssueType) GetCreatedAt() Timestamp {
+	if i == nil || i.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *i.CreatedAt
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (i *IssueType) GetDescription() string {
+	if i == nil || i.Description == nil {
+		return ""
+	}
+	return *i.Description
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (i *IssueType) GetID() int64 {
+	if i == nil || i.ID == nil {
+		return 0
+	}
+	return *i.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (i *IssueType) GetName() string {
+	if i == nil || i.Name == nil {
+		return ""
+	}
+	return *i.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (i *IssueType) GetNodeID() string {
+	if i == nil || i.NodeID == nil {
+		return ""
+	}
+	return *i.NodeID
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (i *IssueType) GetUpdatedAt() Timestamp {
+	if i == nil || i.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *i.UpdatedAt
 }
 
 // GetEncodedJITConfig returns the EncodedJITConfig field if it's non-nil, zero value otherwise.
