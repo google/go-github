@@ -1500,9 +1500,11 @@ func TestRate_String(t *testing.T) {
 	v := Rate{
 		Limit:     0,
 		Remaining: 0,
+		Used:	   0,
 		Reset:     Timestamp{},
+		Resource:  "core",
 	}
-	want := `github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:"core"}`
 	if got := v.String(); got != want {
 		t.Errorf("Rate.String = %v, want %v", got, want)
 	}
