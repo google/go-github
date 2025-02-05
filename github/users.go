@@ -77,7 +77,7 @@ type User struct {
 	Assignment *string `json:"assignment,omitempty"`
 	// InheritedFrom identifies the team that a user inherited their organization role
 	// from. This is only populated when calling the ListUsersAssignedToOrgRole method.
-	InheritedFrom *Team `json:"inherited_from,omitempty"`
+	InheritedFrom []*Team `json:"inherited_from,omitempty"`
 }
 
 func (u User) String() string {

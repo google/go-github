@@ -34569,14 +34569,6 @@ func TestUser_GetID(tt *testing.T) {
 	u.GetID()
 }
 
-func TestUser_GetInheritedFrom(tt *testing.T) {
-	tt.Parallel()
-	u := &User{}
-	u.GetInheritedFrom()
-	u = nil
-	u.GetInheritedFrom()
-}
-
 func TestUser_GetLdapDn(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

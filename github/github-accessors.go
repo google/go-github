@@ -26894,14 +26894,6 @@ func (u *User) GetID() int64 {
 	return *u.ID
 }
 
-// GetInheritedFrom returns the InheritedFrom field.
-func (u *User) GetInheritedFrom() *Team {
-	if u == nil {
-		return nil
-	}
-	return u.InheritedFrom
-}
-
 // GetLdapDn returns the LdapDn field if it's non-nil, zero value otherwise.
 func (u *User) GetLdapDn() string {
 	if u == nil || u.LdapDn == nil {
