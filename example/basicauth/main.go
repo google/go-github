@@ -21,7 +21,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/google/go-github/v68/github"
+	"github.com/google/go-github/v69/github"
 	"golang.org/x/term"
 )
 

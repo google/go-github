@@ -1,4 +1,4 @@
-module github.com/google/go-github/v68
+module github.com/google/go-github/v69
 
 go 1.22.0
 
