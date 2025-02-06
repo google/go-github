@@ -925,7 +925,7 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25"},
 	}
 
 	for _, test := range tests {
@@ -975,7 +975,7 @@ func TestRepositoriesService_GetBranch_BadJSONResponse(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25"},
 	}
 
 	for _, test := range tests {
@@ -1089,7 +1089,7 @@ func TestRepositoriesService_RenameBranch(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/rename"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/rename"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/rename"},
 	}
 
 	for _, test := range tests {
@@ -1149,7 +1149,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		enforceAdminsURLPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection", enforceAdminsURLPath: "/repos/o/r/branches/b/protection/enforce_admins"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection", enforceAdminsURLPath: "/repos/o/r/branches/feat/branch-50%/protection/enforce_admins"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection", enforceAdminsURLPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/enforce_admins"},
 	}
 
 	for _, test := range tests {
@@ -1309,7 +1309,7 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 		enforceAdminsURLPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection", enforceAdminsURLPath: "/repos/o/r/branches/b/protection/enforce_admins"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection", enforceAdminsURLPath: "/repos/o/r/branches/feat/branch-50%/protection/enforce_admins"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection", enforceAdminsURLPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/enforce_admins"},
 	}
 
 	for _, test := range tests {
@@ -1392,7 +1392,7 @@ func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection"},
 	}
 
 	for _, test := range tests {
@@ -1432,7 +1432,7 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection"},
 	}
 
 	for _, test := range tests {
@@ -1622,7 +1622,7 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection"},
 	}
 
 	for _, test := range tests {
@@ -1802,7 +1802,7 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection"},
 	}
 
 	for _, test := range tests {
@@ -1961,7 +1961,7 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection"},
 	}
 
 	for _, test := range tests {
@@ -2106,7 +2106,7 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection"},
 	}
 
 	for _, test := range tests {
@@ -2250,7 +2250,7 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection"},
 	}
 
 	for _, test := range tests {
@@ -2306,7 +2306,7 @@ func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection"},
 	}
 
 	for _, test := range tests {
@@ -2401,7 +2401,7 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_status_checks"},
 	}
 
 	for _, test := range tests {
@@ -2481,7 +2481,7 @@ func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testi
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_status_checks"},
 	}
 
 	for _, test := range tests {
@@ -2521,7 +2521,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_status_checks"},
 	}
 
 	for _, test := range tests {
@@ -2599,7 +2599,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_status_checks"},
 	}
 
 	for _, test := range tests {
@@ -2692,7 +2692,7 @@ func TestRepositoriesService_RemoveRequiredStatusChecks(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_status_checks"},
 	}
 
 	for _, test := range tests {
@@ -2733,7 +2733,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks/contexts"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks/contexts"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_status_checks/contexts"},
 	}
 
 	for _, test := range tests {
@@ -2782,7 +2782,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_status_checks/contexts"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_status_checks/contexts"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_status_checks/contexts"},
 	}
 
 	for _, test := range tests {
@@ -2822,7 +2822,7 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_pull_request_reviews"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_pull_request_reviews"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_pull_request_reviews"},
 	}
 
 	for _, test := range tests {
@@ -2898,7 +2898,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_pull_request_reviews"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_pull_request_reviews"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_pull_request_reviews"},
 	}
 
 	for _, test := range tests {
@@ -2987,7 +2987,7 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_pull_request_reviews"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_pull_request_reviews"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_pull_request_reviews"},
 	}
 
 	for _, test := range tests {
@@ -3044,7 +3044,7 @@ func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_pull_request_reviews"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_pull_request_reviews"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_pull_request_reviews"},
 	}
 
 	for _, test := range tests {
@@ -3084,7 +3084,7 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/enforce_admins"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/enforce_admins"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/enforce_admins"},
 	}
 
 	for _, test := range tests {
@@ -3137,7 +3137,7 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/enforce_admins"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/enforce_admins"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/enforce_admins"},
 	}
 
 	for _, test := range tests {
@@ -3189,7 +3189,7 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/enforce_admins"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/enforce_admins"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/enforce_admins"},
 	}
 
 	for _, test := range tests {
@@ -3229,7 +3229,7 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_signatures"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_signatures"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_signatures"},
 	}
 
 	for _, test := range tests {
@@ -3283,7 +3283,7 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_signatures"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_signatures"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_signatures"},
 	}
 
 	for _, test := range tests {
@@ -3337,7 +3337,7 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_signatures"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/required_signatures"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_signatures"},
 	}
 
 	for _, test := range tests {
@@ -3566,7 +3566,7 @@ func TestRepositoriesService_ListAppRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/apps"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/apps"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/apps"},
 	}
 
 	for _, test := range tests {
@@ -3609,7 +3609,7 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/apps"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/apps"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/apps"},
 	}
 
 	for _, test := range tests {
@@ -3661,7 +3661,7 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/apps"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/apps"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/apps"},
 	}
 
 	for _, test := range tests {
@@ -3713,7 +3713,7 @@ func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/apps"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/apps"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/apps"},
 	}
 
 	for _, test := range tests {
@@ -3761,7 +3761,7 @@ func TestRepositoriesService_ListTeamRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/teams"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/teams"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/teams"},
 	}
 
 	for _, test := range tests {
@@ -3804,7 +3804,7 @@ func TestRepositoriesService_ReplaceTeamRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/teams"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/teams"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/teams"},
 	}
 
 	for _, test := range tests {
@@ -3856,7 +3856,7 @@ func TestRepositoriesService_AddTeamRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/teams"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/teams"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/teams"},
 	}
 
 	for _, test := range tests {
@@ -3908,7 +3908,7 @@ func TestRepositoriesService_RemoveTeamRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/teams"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/teams"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/teams"},
 	}
 
 	for _, test := range tests {
@@ -3956,7 +3956,7 @@ func TestRepositoriesService_ListUserRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/users"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/users"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/users"},
 	}
 
 	for _, test := range tests {
@@ -3999,7 +3999,7 @@ func TestRepositoriesService_ReplaceUserRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/users"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/users"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/users"},
 	}
 
 	for _, test := range tests {
@@ -4051,7 +4051,7 @@ func TestRepositoriesService_AddUserRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/users"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/users"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/users"},
 	}
 
 	for _, test := range tests {
@@ -4103,7 +4103,7 @@ func TestRepositoriesService_RemoveUserRestrictions(t *testing.T) {
 		urlPath string
 	}{
 		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/restrictions/users"},
-		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat/branch-50%/protection/restrictions/users"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/restrictions/users"},
 	}
 
 	for _, test := range tests {
