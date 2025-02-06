@@ -118,7 +118,7 @@ func TestOrganizationsService_GetPackage(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2fhello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		_, err := io.WriteString(w, `{
 			"id": 197,
@@ -177,7 +177,7 @@ func TestOrganizationsService_DeletePackage(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2fhello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -207,7 +207,7 @@ func TestOrganizationsService_RestorePackage(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 
@@ -233,7 +233,7 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "1", "state": "deleted", "visibility": "internal", "package_type": "container"})
 		_, err := io.WriteString(w, `[
@@ -307,7 +307,7 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		_, err := io.WriteString(w, `
 			{
@@ -377,7 +377,7 @@ func TestOrganizationsService_PackageDeleteVersion(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -403,7 +403,7 @@ func TestOrganizationsService_PackageRestoreVersion(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 

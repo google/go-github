@@ -296,7 +296,7 @@ func TestRepositoriesService_NonAlphabetCharacter_GetCommitSHA1(t *testing.T) {
 
 	const sha1 = "01234abcde"
 
-	mux.HandleFunc("/repos/o/r/commits/master%20hash", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/commits/master%2520hash", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeV3SHA)
 
@@ -391,10 +391,14 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 
 			base := sample.base
 			head := sample.head
+
+			encodedBase := url.PathEscape(base)
+			encodedHead := url.PathEscape(head)
+
 			escapedBase := url.QueryEscape(base)
 			escapedHead := url.QueryEscape(head)
 
-			pattern := fmt.Sprintf("/repos/o/r/compare/%v...%v", base, head)
+			pattern := fmt.Sprintf("/repos/o/r/compare/%v...%v", encodedBase, encodedHead)
 
 			mux.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -529,7 +533,11 @@ func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
 
 			base := sample.base
 			head := sample.head
-			pattern := fmt.Sprintf("/repos/o/r/compare/%v...%v", base, head)
+
+			encodedBase := url.PathEscape(base)
+			encodedHead := url.PathEscape(head)
+
+			pattern := fmt.Sprintf("/repos/o/r/compare/%v...%v", encodedBase, encodedHead)
 			const rawStr = "@@diff content"
 
 			mux.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
@@ -584,7 +592,11 @@ func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
 
 			base := sample.base
 			head := sample.head
-			pattern := fmt.Sprintf("/repos/o/r/compare/%v...%v", base, head)
+
+			encodedBase := url.PathEscape(base)
+			encodedHead := url.PathEscape(head)
+
+			pattern := fmt.Sprintf("/repos/o/r/compare/%v...%v", encodedBase, encodedHead)
 			const rawStr = "@@patch content"
 
 			mux.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
