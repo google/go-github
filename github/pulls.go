@@ -169,10 +169,12 @@ func (s *PullRequestsService) List(ctx context.Context, owner string, repo strin
 	return pulls, resp, nil
 }
 
-// ListPullRequestsWithCommit returns pull requests associated with a commit SHA.
+// ListPullRequestsWithCommit returns pull requests associated with a commit SHA
+// or branch name.
 //
-// The results may include open and closed pull requests.
-// By default, the PullRequestListOptions State filters for "open".
+// The results may include open and closed pull requests. If the commit SHA is
+// not present in the repository's default branch, the result will only include
+// open pull requests.
 //
 // GitHub API docs: https://docs.github.com/rest/commits/commits#list-pull-requests-associated-with-a-commit
 //
