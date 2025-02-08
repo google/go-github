@@ -144,7 +144,7 @@ rate limit, as well as help speed up your application. go-github does not
 handle conditional requests directly, but is instead designed to work with a
 caching http.Transport.
 
-Typically, a RFC 7234 compliant HTTP cache such as https://github.com/gregjones/httpcache
+Typically, an RFC 7234 compliant HTTP cache such as https://github.com/gregjones/httpcache
 is recommended. Alternatively, the https://github.com/bored-engineer/github-conditional-http-transport
 package relies on (undocumented) GitHub specific cache logic and is
 recommended when making requests using short-lived credentials such as a
