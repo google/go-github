@@ -139,10 +139,10 @@ To detect this condition of error, you can check if its type is
 # Conditional Requests
 
 The GitHub REST API has good support for conditional HTTP requests
-via the `ETag` header which will help prevent you from burning through your
-rate limit, as well as help speed up your application. `go-github` does not
+via the ETag header which will help prevent you from burning through your
+rate limit, as well as help speed up your application. go-github does not
 handle conditional requests directly, but is instead designed to work with a
-caching `http.Transport`.
+caching http.Transport.
 
 Typically, a RFC 7234 compliant HTTP cache such as https://github.com/gregjones/httpcache
 is recommended. Alternatively, the https://github.com/bored-engineer/github-conditional-http-transport
