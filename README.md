@@ -263,7 +263,7 @@ rate limit, as well as help speed up your application. `go-github` does not
 handle conditional requests directly, but is instead designed to work with a
 caching `http.Transport`.
 
-Typically, a [RFC 7234](https://datatracker.ietf.org/doc/html/rfc7234)
+Typically, an [RFC 7234](https://datatracker.ietf.org/doc/html/rfc7234)
 compliant HTTP cache such as [gregjones/httpcache](https://github.com/gregjones/httpcache)
 is recommended, ex:
 
