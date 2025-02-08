@@ -138,11 +138,17 @@ To detect this condition of error, you can check if its type is
 
 # Conditional Requests
 
-The GitHub API has good support for conditional requests which will help
-prevent you from burning through your rate limit, as well as help speed up your
-application. go-github does not handle conditional requests directly, but is
-instead designed to work with a caching http.Transport. We recommend using
-https://github.com/gregjones/httpcache for that.
+The GitHub REST API has good support for conditional HTTP requests
+via the ETag header which will help prevent you from burning through your
+rate limit, as well as help speed up your application. go-github does not
+handle conditional requests directly, but is instead designed to work with a
+caching http.Transport.
+
+Typically, an RFC 7234 compliant HTTP cache such as https://github.com/gregjones/httpcache
+is recommended. Alternatively, the https://github.com/bored-engineer/github-conditional-http-transport
+package relies on (undocumented) GitHub specific cache logic and is
+recommended when making requests using short-lived credentials such as a
+GitHub App installation token.
 
 Learn more about GitHub conditional requests at
 https://docs.github.com/rest/overview/resources-in-the-rest-api#conditional-requests.
