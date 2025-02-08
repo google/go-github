@@ -30744,6 +30744,58 @@ func TestScanningAnalysis_GetWarning(tt *testing.T) {
 	s.GetWarning()
 }
 
+func TestSCIMDisplayReference_GetDisplay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMDisplayReference{Display: &zeroValue}
+	s.GetDisplay()
+	s = &SCIMDisplayReference{}
+	s.GetDisplay()
+	s = nil
+	s.GetDisplay()
+}
+
+func TestSCIMGroupAttributes_GetDisplayName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMGroupAttributes{DisplayName: &zeroValue}
+	s.GetDisplayName()
+	s = &SCIMGroupAttributes{}
+	s.GetDisplayName()
+	s = nil
+	s.GetDisplayName()
+}
+
+func TestSCIMGroupAttributes_GetExternalID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMGroupAttributes{ExternalID: &zeroValue}
+	s.GetExternalID()
+	s = &SCIMGroupAttributes{}
+	s.GetExternalID()
+	s = nil
+	s.GetExternalID()
+}
+
+func TestSCIMGroupAttributes_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMGroupAttributes{ID: &zeroValue}
+	s.GetID()
+	s = &SCIMGroupAttributes{}
+	s.GetID()
+	s = nil
+	s.GetID()
+}
+
+func TestSCIMGroupAttributes_GetMeta(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMGroupAttributes{}
+	s.GetMeta()
+	s = nil
+	s.GetMeta()
+}
+
 func TestSCIMMeta_GetCreated(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -30786,6 +30838,39 @@ func TestSCIMMeta_GetResourceType(tt *testing.T) {
 	s.GetResourceType()
 	s = nil
 	s.GetResourceType()
+}
+
+func TestSCIMProvisionedGroups_GetItemsPerPage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SCIMProvisionedGroups{ItemsPerPage: &zeroValue}
+	s.GetItemsPerPage()
+	s = &SCIMProvisionedGroups{}
+	s.GetItemsPerPage()
+	s = nil
+	s.GetItemsPerPage()
+}
+
+func TestSCIMProvisionedGroups_GetStartIndex(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SCIMProvisionedGroups{StartIndex: &zeroValue}
+	s.GetStartIndex()
+	s = &SCIMProvisionedGroups{}
+	s.GetStartIndex()
+	s = nil
+	s.GetStartIndex()
+}
+
+func TestSCIMProvisionedGroups_GetTotalResults(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SCIMProvisionedGroups{TotalResults: &zeroValue}
+	s.GetTotalResults()
+	s = &SCIMProvisionedGroups{}
+	s.GetTotalResults()
+	s = nil
+	s.GetTotalResults()
 }
 
 func TestSCIMProvisionedIdentities_GetItemsPerPage(tt *testing.T) {
