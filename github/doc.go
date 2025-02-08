@@ -147,7 +147,7 @@ caching http.Transport.
 Typically, a RFC 7234 compliant HTTP cache such as https://github.com/gregjones/httpcache
 is recommended. Alternatively, the https://github.com/bored-engineer/github-conditional-http-transport
 package relies on (undocumented) GitHub specific cache logic and is
-recommended when making requests using short-lived credentials such as a 
+recommended when making requests using short-lived credentials such as a
 GitHub App installation token.
 
 Learn more about GitHub conditional requests at
