@@ -30,6 +30,7 @@ type SCIMGroupAttributes struct {
 	Meta *SCIMMeta `json:"meta,omitempty"`
 }
 
+// SCIMDisplayReference represents a JSON SCIM resource comprising of a value, $ref, and display.
 type SCIMDisplayReference struct {
 	Value   string  `json:"value"`             // (Required.)
 	Ref     string  `json:"$ref"`              // (Required.)
