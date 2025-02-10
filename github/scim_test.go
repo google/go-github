@@ -121,6 +121,100 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 	})
 }
 
+func TestSCIMService_ListSCIMProvisionedGroups(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/scim/v2/enterprises/o/Groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{
+			"schemas": [
+			  "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+			],
+			"totalResults": 1,
+			"itemsPerPage": 1,
+			"startIndex": 1,
+			"Resources": [
+			  {
+				"schemas": [
+				  "urn:ietf:params:scim:schemas:core:2.0:Group"
+				],
+				"id": "123e4567-e89b-12d3-a456-426614174000",
+				"externalId": "00u1dhhb1fkIGP7RL1d8",
+				"displayName": "Mona Octocat",
+				"meta": {
+				  "resourceType": "Group",
+				  "created": "2018-02-13T15:05:24.000-00:00",
+				  "lastModified": "2018-02-13T15:05:24.000-00:00",
+				  "location": "https://api.github.com/scim/v2/enterprises/octo/Groups/123e4567-e89b-12d3-a456-426614174000"
+				},
+				"members": [
+				  {
+					"value": "5fc0c238-1112-11e8-8e45-920c87bdbd75",
+					"$ref": "https://api.github.com/scim/v2/enterprises/octo/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75",
+					"display": "Mona Octocat"
+				  }
+				]
+			  }
+			]
+		  }`))
+	})
+
+	ctx := context.Background()
+	opts := &ListSCIMProvisionedIdentitiesOptions{}
+	groups, _, err := client.SCIM.ListSCIMProvisionedGroupsForEnterprise(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("SCIM.ListSCIMProvisionedIdentities returned error: %v", err)
+	}
+
+	date := Timestamp{time.Date(2018, time.February, 13, 15, 5, 24, 0, time.UTC)}
+	want := SCIMProvisionedGroups{
+		Schemas:      []string{"urn:ietf:params:scim:api:messages:2.0:ListResponse"},
+		TotalResults: Ptr(1),
+		ItemsPerPage: Ptr(1),
+		StartIndex:   Ptr(1),
+		Resources: []*SCIMGroupAttributes{
+			{
+				ID: Ptr("123e4567-e89b-12d3-a456-426614174000"),
+				Meta: &SCIMMeta{
+					ResourceType: Ptr("Group"),
+					Created:      &date,
+					LastModified: &date,
+					Location:     Ptr("https://api.github.com/scim/v2/enterprises/octo/Groups/123e4567-e89b-12d3-a456-426614174000"),
+				},
+
+				DisplayName: Ptr("Mona Octocat"),
+				Schemas:     []string{"urn:ietf:params:scim:schemas:core:2.0:Group"},
+				ExternalID:  Ptr("00u1dhhb1fkIGP7RL1d8"),
+				Members: []*SCIMDisplayReference{
+					{
+						Value:   "5fc0c238-1112-11e8-8e45-920c87bdbd75",
+						Ref:     "https://api.github.com/scim/v2/enterprises/octo/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75",
+						Display: Ptr("Mona Octocat"),
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(groups, &want) {
+		diff := cmp.Diff(groups, want)
+		t.Errorf("SCIM.ListSCIMProvisionedGroupsForEnterprise returned %+v, want %+v: diff %+v", groups, want, diff)
+	}
+
+	const methodName = "ListSCIMProvisionedGroupsForEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SCIM.ListSCIMProvisionedGroupsForEnterprise(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		_, r, err := client.SCIM.ListSCIMProvisionedGroupsForEnterprise(ctx, "o", opts)
+		return r, err
+	})
+}
+
 func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
