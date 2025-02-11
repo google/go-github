@@ -2,7 +2,7 @@
 
 [![go-github release (latest SemVer)](https://img.shields.io/github/v/release/google/go-github?sort=semver)](https://github.com/google/go-github/releases)
 [![Go Reference](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v69/github)
-[![Test Status](https://github.com/google/go-github/workflows/tests/badge.svg)](https://github.com/google/go-github/actions?query=workflow%3Atests)
+[![Test Status](https://github.com/google/go-github/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/google/go-github/actions/workflows/tests.yml)
 [![Test Coverage](https://codecov.io/gh/google/go-github/branch/master/graph/badge.svg)](https://codecov.io/gh/google/go-github)
 [![Discuss at go-github@googlegroups.com](https://img.shields.io/badge/discuss-go--github%40googlegroups.com-blue.svg)](https://groups.google.com/group/go-github)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/796/badge)](https://bestpractices.coreinfrastructure.org/projects/796)
@@ -257,22 +257,28 @@ if _, ok := err.(*github.AcceptedError); ok {
 
 ### Conditional Requests ###
 
-The GitHub API has good support for conditional requests which will help
-prevent you from burning through your rate limit, as well as help speed up your
-application. `go-github` does not handle conditional requests directly, but is
-instead designed to work with a caching `http.Transport`. We recommend using
-[gregjones/httpcache](https://github.com/gregjones/httpcache) for that. For example:
+The GitHub REST API has good support for [conditional HTTP requests](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api?apiVersion=2022-11-28#use-conditional-requests-if-appropriate)
+via the `ETag` header which will help prevent you from burning through your
+rate limit, as well as help speed up your application. `go-github` does not
+handle conditional requests directly, but is instead designed to work with a
+caching `http.Transport`.
+
+Typically, an [RFC 7234](https://datatracker.ietf.org/doc/html/rfc7234)
+compliant HTTP cache such as [gregjones/httpcache](https://github.com/gregjones/httpcache)
+is recommended, ex:
 
 ```go
 import "github.com/gregjones/httpcache"
 
-	client := github.NewClient(
-		httpcache.NewMemoryCacheTransport().Client()
-    ).WithAuthToken(os.Getenv("GITHUB_TOKEN"))
+client := github.NewClient(
+	httpcache.NewMemoryCacheTransport().Client()
+).WithAuthToken(os.Getenv("GITHUB_TOKEN"))
 ```
 
-Learn more about GitHub conditional requests in
-["Use conditional requests if appropriate"](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api?apiVersion=2022-11-28#use-conditional-requests-if-appropriate).
+Alternatively, the [bored-engineer/github-conditional-http-transport](https://github.com/bored-engineer/github-conditional-http-transport)
+package relies on (undocumented) GitHub specific cache logic and is
+recommended when making requests using short-lived credentials such as a 
+[GitHub App installation token](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation).
 
 ### Creating and Updating Resources ###
 
