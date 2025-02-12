@@ -3101,3 +3101,20 @@ func TestPtr(t *testing.T) {
 	equal(t, int64(-10), *Ptr(int64(-10)))
 	equal(t, "str", *Ptr("str"))
 }
+
+func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
+	t.Parallel()
+	var want int64 = 123456789
+	testURL := fmt.Sprintf("repos/dummy-org/dummy-repo/actions/runs/%v/deployment_protection_rule", want)
+
+	e := DeploymentProtectionRuleEvent{
+		DeploymentCallbackURL: &testURL,
+	}
+	got, err := e.GetRunID()
+	if err != nil {
+                t.Errorf("error %v", err) 
+	}
+	if got != want {
+		t.Errorf("want %#v, got %#v", want, got)
+	}
+}

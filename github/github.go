@@ -19,6 +19,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"sync"
@@ -1771,13 +1772,14 @@ func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
 	return fn(r)
 }
 
-func (e *DeploymentProtectionRuleEvent) GetRunID() int64 {
-	r, _ := regexp.MustCompile(`^repos\/.*\/.*\/actions\/runs\/(?P<Year>[0-9].*)\/deployment_protection_rule$`)
+// Helper Function to extract the workflow RunID from the *DeploymentProtectionRuleEvent.DeploymentCallBackURL
+func (e *DeploymentProtectionRuleEvent) GetRunID() (int64, error) {
+	r := regexp.MustCompile(`^repos\/.*\/.*\/actions\/runs\/(?P<RunID>[0-9].*)\/deployment_protection_rule$`)
+	match := r.FindStringSubmatch(*e.DeploymentCallbackURL)
 
-	match = r.FindStringSubmatch(e.DeploymentCallbackURL)
-	runID, err := strconv.ParseInt(match, 10, 64)
+	runID, err := strconv.ParseInt(match[1], 10, 64)
 	if err != nil {
-		panic(err)
+		return -1, err
 	}
-	return returnID
+	return runID, nil
 }
