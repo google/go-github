@@ -22,6 +22,7 @@ import (
 	"testing"
 	"time"
 
+        "github.com/stretchr/testify/assert"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -3104,30 +3105,29 @@ func TestPtr(t *testing.T) {
 
 func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 	t.Parallel()
-	tests := []struct {
-		want int64
-		URL   string
-	}{
-		{
-			want: 123456789,
-			URL:   fmt.Sprintf("repos/dummy-org/dummy-repo/actions/runs/%v/deployment_protection_rule", 123456789),
-		},
-		{
-			want: ,
-			URL:   fmt.Sprintf("repos/dummy-org/dummy-repo/actions/runs/%v/deployment_protection_rule", "abc123"),
-		},
-	}
-	for _, tt := range tests {
 
-		e := DeploymentProtectionRuleEvent{
-			DeploymentCallbackURL: &tt.URL,
-		}
-		got, err := e.GetRunID()
-		if err != nil {
-			t.Errorf("error %v", err)
-		}
-		if got != tt.want {
-			t.Errorf("want %#v, got %#v", tt.want, got)
-		}
+	var want int64 = 123456789
+	URL  := "repos/dummy-org/dummy-repo/actions/runs/123456789/deployment_protection_rule"
+
+	e := DeploymentProtectionRuleEvent{
+		DeploymentCallbackURL: &URL,
+	}
+
+	got, _ := e.GetRunID()
+	if got != want {
+		t.Errorf("want %#v, got %#v", want, got)
+	}
+
+	want = -1
+	URL  = "repos/dummy-org/dummy-repo/actions/runs/abc123/deployment_protection_rule"
+
+	var err error
+	expectedErrorMsg := "no match"
+	got, err = e.GetRunID()
+
+	assert.EqualErrorf(t, err, expectedErrorMsg, "Error should be: %v, got: %v", expectedErrorMsg, err)
+
+	if got != want {
+		t.Errorf("want %#v, got %#v", want, got)
 	}
 }
