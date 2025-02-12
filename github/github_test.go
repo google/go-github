@@ -3104,17 +3104,30 @@ func TestPtr(t *testing.T) {
 
 func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 	t.Parallel()
-	var want int64 = 123456789
-	testURL := fmt.Sprintf("repos/dummy-org/dummy-repo/actions/runs/%v/deployment_protection_rule", want)
+	tests := []struct {
+		want int64
+		URL   string
+	}{
+		{
+			want: 123456789,
+			URL:   fmt.Sprintf("repos/dummy-org/dummy-repo/actions/runs/%v/deployment_protection_rule", 123456789),
+		},
+		{
+			want: ,
+			URL:   fmt.Sprintf("repos/dummy-org/dummy-repo/actions/runs/%v/deployment_protection_rule", "abc123"),
+		},
+	}
+	for _, tt := range tests {
 
-	e := DeploymentProtectionRuleEvent{
-		DeploymentCallbackURL: &testURL,
-	}
-	got, err := e.GetRunID()
-	if err != nil {
-                t.Errorf("error %v", err) 
-	}
-	if got != want {
-		t.Errorf("want %#v, got %#v", want, got)
+		e := DeploymentProtectionRuleEvent{
+			DeploymentCallbackURL: &tt.URL,
+		}
+		got, err := e.GetRunID()
+		if err != nil {
+			t.Errorf("error %v", err)
+		}
+		if got != tt.want {
+			t.Errorf("want %#v, got %#v", tt.want, got)
+		}
 	}
 }

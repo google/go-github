@@ -1774,7 +1774,7 @@ func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
 
 // Helper Function to extract the workflow RunID from the *DeploymentProtectionRuleEvent.DeploymentCallBackURL.
 func (e *DeploymentProtectionRuleEvent) GetRunID() (int64, error) {
-	r := regexp.MustCompile(`^repos\/.*\/.*\/actions\/runs\/(?P<RunID>[0-9].*)\/deployment_protection_rule$`)
+	r := regexp.MustCompile(`^repos\/.*\/.*\/actions\/runs\/(?P<RunID>[0-9]*)\/deployment_protection_rule$`)
 	match := r.FindStringSubmatch(*e.DeploymentCallbackURL)
 	if len(match) != 2 {
 		return -1, errors.New("no match")
