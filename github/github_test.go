@@ -22,8 +22,8 @@ import (
 	"testing"
 	"time"
 
-        "github.com/stretchr/testify/assert"
 	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -3107,7 +3107,7 @@ func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 	t.Parallel()
 
 	var want int64 = 123456789
-	URL  := "repos/dummy-org/dummy-repo/actions/runs/123456789/deployment_protection_rule"
+	URL := "repos/dummy-org/dummy-repo/actions/runs/123456789/deployment_protection_rule"
 
 	e := DeploymentProtectionRuleEvent{
 		DeploymentCallbackURL: &URL,
@@ -3119,7 +3119,7 @@ func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 	}
 
 	want = -1
-	URL  = "repos/dummy-org/dummy-repo/actions/runs/abc123/deployment_protection_rule"
+	URL = "repos/dummy-org/dummy-repo/actions/runs/abc123/deployment_protection_rule"
 
 	var err error
 	expectedErrorMsg := "no match"
