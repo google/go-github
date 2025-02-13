@@ -1777,9 +1777,8 @@ var r *regexp.Regexp = regexp.MustCompile(`^repos/.*/actions/runs/(\d+)/deployme
 // Helper Function to extract the workflow RunID from the *DeploymentProtectionRuleEvent.DeploymentCallBackURL.
 func (e *DeploymentProtectionRuleEvent) GetRunID() (int64, error) {
 	match := r.FindStringSubmatch(*e.DeploymentCallbackURL)
-	var ErrNoMatch = errors.New("no match found")
 	if len(match) != 2 {
-		return -1, ErrNoMatch
+		return -1, errors.New("no match")
 	}
 	runID, err := strconv.ParseInt(match[1], 10, 64)
 	if err != nil {
