@@ -203,7 +203,7 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 	return runs, resp, nil
 }
 
-// GetWorkflowRunByID gets a specific workflow run by ID. 
+// GetWorkflowRunByID gets a specific workflow run by ID.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-a-workflow-run
@@ -341,6 +341,7 @@ func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo st
 // RerunJobByID re-runs a job and its dependent jobs in a workflow run by ID.
 //
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
+//
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-a-job-from-a-workflow-run
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun
