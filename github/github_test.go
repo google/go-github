@@ -3119,11 +3119,11 @@ func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 
 	want = -1
 	URL = "repos/dummy-org/dummy-repo/actions/runs/abc123/deployment_protection_rule"
-	
+
 	got, err := e.GetRunID()
-        if err == nil {
-                t.Errorf("Expected error to be returned")
-        }
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
 
 	if got != want {
 		t.Errorf("want %#v, got %#v", want, got)
