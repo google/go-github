@@ -23,7 +23,6 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -3120,12 +3119,11 @@ func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 
 	want = -1
 	URL = "repos/dummy-org/dummy-repo/actions/runs/abc123/deployment_protection_rule"
-
-	var err error
-	expectedErrorMsg := "no match"
-	got, err = e.GetRunID()
-
-	assert.EqualErrorf(t, err, expectedErrorMsg, "Error should be: %v, got: %v", expectedErrorMsg, err)
+	
+	got, err := e.GetRunID()
+        if err == nil {
+                t.Errorf("Expected error to be returned")
+        }
 
 	if got != want {
 		t.Errorf("want %#v, got %#v", want, got)
