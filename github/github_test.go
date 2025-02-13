@@ -3106,10 +3106,10 @@ func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 	t.Parallel()
 
 	var want int64 = 123456789
-	URL := "repos/dummy-org/dummy-repo/actions/runs/123456789/deployment_protection_rule"
+	url := "repos/dummy-org/dummy-repo/actions/runs/123456789/deployment_protection_rule"
 
 	e := DeploymentProtectionRuleEvent{
-		DeploymentCallbackURL: &URL,
+		DeploymentCallbackURL: &url,
 	}
 
 	got, _ := e.GetRunID()
@@ -3118,7 +3118,7 @@ func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 	}
 
 	want = -1
-	URL = "repos/dummy-org/dummy-repo/actions/runs/abc123/deployment_protection_rule"
+	url = "repos/dummy-org/dummy-repo/actions/runs/abc123/deployment_protection_rule"
 
 	got, err := e.GetRunID()
 	if err == nil {
