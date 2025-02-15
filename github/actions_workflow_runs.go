@@ -204,6 +204,7 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 }
 
 // GetWorkflowRunByID gets a specific workflow run by ID.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-a-workflow-run
 //
@@ -226,6 +227,7 @@ func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo str
 }
 
 // GetWorkflowRunAttempt gets a specific workflow run attempt.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-a-workflow-run-attempt
 //
@@ -252,6 +254,7 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 }
 
 // GetWorkflowRunAttemptLogs gets a redirect URL to download a plain text file of logs for a workflow run for attempt number.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve a workflow run ID from the DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#download-workflow-run-attempt-logs
 //
@@ -302,6 +305,7 @@ func (s *ActionsService) getWorkflowRunAttemptLogsWithRateLimit(ctx context.Cont
 }
 
 // RerunWorkflowByID re-runs a workflow by ID.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID a the DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-a-workflow
 //
@@ -318,6 +322,7 @@ func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo stri
 }
 
 // RerunFailedJobsByID re-runs all of the failed jobs and their dependent jobs in a workflow run by ID.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-failed-jobs-from-a-workflow-run
 //
@@ -335,6 +340,8 @@ func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo st
 
 // RerunJobByID re-runs a job and its dependent jobs in a workflow run by ID.
 //
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
+//
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-a-job-from-a-workflow-run
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun
@@ -350,6 +357,7 @@ func (s *ActionsService) RerunJobByID(ctx context.Context, owner, repo string, j
 }
 
 // CancelWorkflowRunByID cancels a workflow run by ID.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#cancel-a-workflow-run
 //
@@ -366,6 +374,7 @@ func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo 
 }
 
 // GetWorkflowRunLogs gets a redirect URL to download a plain text file of logs for a workflow run.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#download-workflow-run-logs
 //
@@ -416,6 +425,7 @@ func (s *ActionsService) getWorkflowRunLogsWithRateLimit(ctx context.Context, u 
 }
 
 // DeleteWorkflowRun deletes a workflow run by ID.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#delete-a-workflow-run
 //
@@ -432,6 +442,7 @@ func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo stri
 }
 
 // DeleteWorkflowRunLogs deletes all logs for a workflow run.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#delete-workflow-run-logs
 //
@@ -448,6 +459,7 @@ func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo 
 }
 
 // GetWorkflowRunUsageByID gets a specific workflow usage run by run ID in the unit of billable milliseconds.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-workflow-run-usage
 //
@@ -470,6 +482,7 @@ func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, rep
 }
 
 // GetPendingDeployments get all deployment environments for a workflow run that are waiting for protection rules to pass.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-pending-deployments-for-a-workflow-run
 //
@@ -492,6 +505,7 @@ func (s *ActionsService) GetPendingDeployments(ctx context.Context, owner, repo 
 }
 
 // PendingDeployments approve or reject pending deployments that are waiting on approval by a required reviewer.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#review-pending-deployments-for-a-workflow-run
 //
@@ -514,6 +528,7 @@ func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo str
 }
 
 // ReviewCustomDeploymentProtectionRule approves or rejects custom deployment protection rules provided by a GitHub App for a workflow run.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#review-custom-deployment-protection-rules-for-a-workflow-run
 //

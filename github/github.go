@@ -19,6 +19,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"sync"
@@ -28,7 +29,7 @@ import (
 )
 
 const (
-	Version = "v69.0.0"
+	Version = "v69.1.0"
 
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
@@ -1769,4 +1770,19 @@ type roundTripperFunc func(*http.Request) (*http.Response, error)
 
 func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
 	return fn(r)
+}
+
+var runIDFromURLRE = regexp.MustCompile(`^repos/.*/actions/runs/(\d+)/deployment_protection_rule$`)
+
+// GetRunID is a Helper Function used to extract the workflow RunID from the *DeploymentProtectionRuleEvent.DeploymentCallBackURL.
+func (e *DeploymentProtectionRuleEvent) GetRunID() (int64, error) {
+	match := runIDFromURLRE.FindStringSubmatch(*e.DeploymentCallbackURL)
+	if len(match) != 2 {
+		return -1, errors.New("no match")
+	}
+	runID, err := strconv.ParseInt(match[1], 10, 64)
+	if err != nil {
+		return -1, err
+	}
+	return runID, nil
 }
