@@ -68,6 +68,12 @@ type SecretScanningAlertListOptions struct {
 	// Valid resolutions are false_positive, wont_fix, revoked, pattern_edited, pattern_deleted or used_in_tests.
 	Resolution string `url:"resolution,omitempty"`
 
+	// The direction to sort the results by. Possible values are: asc, desc. Default: desc.
+	Direction string `url:"direction,omitempty"`
+
+	// The property by which to sort the results. Possible values are: created, updated. Default: created.
+	Sort string `url:"sort,omitempty"`
+
 	ListCursorOptions
 
 	// List options can vary on the Enterprise type.
