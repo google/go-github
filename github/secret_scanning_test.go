@@ -22,7 +22,7 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key"})
+		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key", "sort": "updated", "direction": "asc"})
 
 		fmt.Fprint(w, `[{
 			"number": 1,
@@ -45,7 +45,7 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key"}
+	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForEnterprise(ctx, "e", opts)
 	if err != nil {
@@ -97,7 +97,7 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key"})
+		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key", "sort": "updated", "direction": "asc"})
 
 		fmt.Fprint(w, `[{
 			"number": 1,
@@ -115,7 +115,7 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key"}
+	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForOrg(ctx, "o", opts)
 	if err != nil {
@@ -162,7 +162,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key", "per_page": "1", "page": "1"})
+		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key", "per_page": "1", "page": "1", "sort": "updated", "direction": "asc"})
 
 		fmt.Fprint(w, `[{
 			"number": 1,
@@ -182,7 +182,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 	ctx := context.Background()
 
 	// Testing pagination by index
-	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", ListOptions: ListOptions{Page: 1, PerPage: 1}}
+	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", ListOptions: ListOptions{Page: 1, PerPage: 1}, Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForOrg(ctx, "o", opts)
 	if err != nil {
@@ -229,7 +229,7 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key"})
+		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key", "sort": "updated", "direction": "asc"})
 
 		fmt.Fprint(w, `[{
 			"number": 1,
@@ -247,7 +247,7 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key"}
+	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForRepo(ctx, "o", "r", opts)
 	if err != nil {
