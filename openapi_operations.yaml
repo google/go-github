@@ -47,7 +47,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 8031023b31a852778532c5fa688b8bb6bcbab9d6
+openapi_commit: 2320d61e4c805300787f8551fda53076bb4fae8b
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -504,6 +504,46 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.15/rest/actions/cache#set-github-actions-cache-usage-policy-for-an-enterprise
     openapi_files:
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /enterprises/{enterprise}/actions/hosted-runners
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/hosted-runners#list-github-hosted-runners-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/actions/hosted-runners
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/hosted-runners#create-a-github-hosted-runner-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/actions/hosted-runners/images/github-owned
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/hosted-runners#get-github-owned-images-for-github-hosted-runners-in-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/actions/hosted-runners/images/partner
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/hosted-runners#get-partner-images-for-github-hosted-runners-in-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/actions/hosted-runners/limits
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/hosted-runners#get-limits-on-github-hosted-runners-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/actions/hosted-runners/machine-sizes
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/hosted-runners#get-github-hosted-runners-machine-specs-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/actions/hosted-runners/platforms
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/hosted-runners#get-platforms-for-github-hosted-runners-in-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: DELETE /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/hosted-runners#delete-a-github-hosted-runner-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/hosted-runners#get-a-github-hosted-runner-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PATCH /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/hosted-runners#update-a-github-hosted-runner-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: PUT /enterprises/{enterprise}/actions/oidc/customization/issuer
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/oidc#set-the-github-actions-oidc-custom-issuer-policy-for-an-enterprise
     openapi_files:
@@ -724,6 +764,10 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/audit-log#update-an-existing-audit-log-stream-configuration
     openapi_files:
       - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/bypass-requests/push-rules
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/bypass-requests#list-push-rule-bypass-requests-within-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/code-scanning/alerts
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/code-scanning/code-scanning#list-code-scanning-alerts-for-an-enterprise
     openapi_files:
@@ -810,6 +854,30 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/license#get-a-license-sync-status
     openapi_files:
       - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/network-configurations
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/network-configurations#list-hosted-compute-network-configurations-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/network-configurations
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/network-configurations#create-a-hosted-compute-network-configuration-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: DELETE /enterprises/{enterprise}/network-configurations/{network_configuration_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/network-configurations#delete-a-hosted-compute-network-configuration-from-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/network-configurations/{network_configuration_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/network-configurations#get-a-hosted-compute-network-configuration-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PATCH /enterprises/{enterprise}/network-configurations/{network_configuration_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/network-configurations#update-a-hosted-compute-network-configuration-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/network-settings/{network_settings_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/network-configurations#get-a-hosted-compute-network-settings-resource-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/properties/schema
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/custom-properties#get-custom-properties-for-an-enterprise
     openapi_files:
@@ -844,6 +912,14 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: PUT /enterprises/{enterprise}/rulesets/{ruleset_id}
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/rulesets/{ruleset_id}/history
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/rules#get-enterprise-ruleset-history
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/rulesets/{ruleset_id}/history/{version_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/rules#get-enterprise-ruleset-version
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/secret-scanning/alerts
@@ -1296,6 +1372,56 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /orgs/{org}/actions/hosted-runners
+    documentation_url: https://docs.github.com/rest/actions/hosted-runners#list-github-hosted-runners-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /orgs/{org}/actions/hosted-runners
+    documentation_url: https://docs.github.com/rest/actions/hosted-runners#create-a-github-hosted-runner-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/actions/hosted-runners/images/github-owned
+    documentation_url: https://docs.github.com/rest/actions/hosted-runners#get-github-owned-images-for-github-hosted-runners-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/actions/hosted-runners/images/partner
+    documentation_url: https://docs.github.com/rest/actions/hosted-runners#get-partner-images-for-github-hosted-runners-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/actions/hosted-runners/limits
+    documentation_url: https://docs.github.com/rest/actions/hosted-runners#get-limits-on-github-hosted-runners-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/actions/hosted-runners/machine-sizes
+    documentation_url: https://docs.github.com/rest/actions/hosted-runners#get-github-hosted-runners-machine-specs-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/actions/hosted-runners/platforms
+    documentation_url: https://docs.github.com/rest/actions/hosted-runners#get-platforms-for-github-hosted-runners-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/actions/hosted-runners/{hosted_runner_id}
+    documentation_url: https://docs.github.com/rest/actions/hosted-runners#delete-a-github-hosted-runner-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/actions/hosted-runners/{hosted_runner_id}
+    documentation_url: https://docs.github.com/rest/actions/hosted-runners#get-a-github-hosted-runner-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/actions/hosted-runners/{hosted_runner_id}
+    documentation_url: https://docs.github.com/rest/actions/hosted-runners#update-a-github-hosted-runner-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/actions/oidc/customization/sub
     documentation_url: https://docs.github.com/rest/actions/oidc#get-the-customization-template-for-an-oidc-subject-claim-for-an-organization
     openapi_files:
@@ -1398,6 +1524,11 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /orgs/{org}/actions/runner-groups/{runner_group_id}/hosted-runners
+    documentation_url: https://docs.github.com/rest/actions/self-hosted-runner-groups#list-github-hosted-runners-in-a-group-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories
     documentation_url: https://docs.github.com/rest/actions/self-hosted-runner-groups#list-repository-access-to-a-self-hosted-runner-group-in-an-organization
     openapi_files:
@@ -2625,6 +2756,16 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /orgs/{org}/rulesets/{ruleset_id}/history
+    documentation_url: https://docs.github.com/rest/orgs/rules#get-organization-ruleset-history
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/rulesets/{ruleset_id}/history/{version_id}
+    documentation_url: https://docs.github.com/rest/orgs/rules#get-organization-ruleset-version
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/secret-scanning/alerts
     documentation_url: https://docs.github.com/rest/secret-scanning/secret-scanning#list-secret-scanning-alerts-for-an-organization
     openapi_files:
@@ -2671,6 +2812,36 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/settings/billing/shared-storage
     documentation_url: https://docs.github.com/rest/billing/billing#get-shared-storage-billing-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/settings/network-configurations
+    documentation_url: https://docs.github.com/rest/orgs/network-configurations#list-hosted-compute-network-configurations-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /orgs/{org}/settings/network-configurations
+    documentation_url: https://docs.github.com/rest/orgs/network-configurations#create-a-hosted-compute-network-configuration-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/settings/network-configurations/{network_configuration_id}
+    documentation_url: https://docs.github.com/rest/orgs/network-configurations#delete-a-hosted-compute-network-configuration-from-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/settings/network-configurations/{network_configuration_id}
+    documentation_url: https://docs.github.com/rest/orgs/network-configurations#get-a-hosted-compute-network-configuration-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/settings/network-configurations/{network_configuration_id}
+    documentation_url: https://docs.github.com/rest/orgs/network-configurations#update-a-hosted-compute-network-configuration-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/settings/network-settings/{network_settings_id}
+    documentation_url: https://docs.github.com/rest/orgs/network-configurations#get-a-hosted-compute-network-settings-resource-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -3558,18 +3729,18 @@ openapi_operations:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
   - name: DELETE /repos/{owner}/{repo}/automated-security-fixes
-    documentation_url: https://docs.github.com/rest/repos/repos#disable-automated-security-fixes
+    documentation_url: https://docs.github.com/rest/repos/repos#disable-dependabot-security-updates
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/automated-security-fixes
-    documentation_url: https://docs.github.com/rest/repos/repos#check-if-automated-security-fixes-are-enabled-for-a-repository
+    documentation_url: https://docs.github.com/rest/repos/repos#check-if-dependabot-security-updates-are-enabled-for-a-repository
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
   - name: PUT /repos/{owner}/{repo}/automated-security-fixes
-    documentation_url: https://docs.github.com/rest/repos/repos#enable-automated-security-fixes
+    documentation_url: https://docs.github.com/rest/repos/repos#enable-dependabot-security-updates
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -5522,6 +5693,16 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.15/ghes-3.15.json
+  - name: GET /repos/{owner}/{repo}/rulesets/{ruleset_id}/history
+    documentation_url: https://docs.github.com/rest/repos/rules#get-repository-ruleset-history
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/rulesets/{ruleset_id}/history/{version_id}
+    documentation_url: https://docs.github.com/rest/repos/rules#get-repository-ruleset-version
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/secret-scanning/alerts
     documentation_url: https://docs.github.com/rest/secret-scanning/secret-scanning#list-secret-scanning-alerts-for-a-repository
     openapi_files:
