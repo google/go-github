@@ -46,13 +46,13 @@ type HostedRunnerImageDetail struct {
 	Size *int    `json:"size,omitempty"`
 }
 
-// HostedRunners represents a collection of github-hosted runners for a organization.
+// HostedRunners represents a collection of github-hosted runners for an organization.
 type HostedRunners struct {
 	TotalCount int             `json:"total_count"`
 	Runners    []*HostedRunner `json:"runners"`
 }
 
-// ListHostedRunners lists all the github-hosted runners for a organization.
+// ListHostedRunners lists all the github-hosted runners for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#list-github-hosted-runners-for-an-organization
 //
