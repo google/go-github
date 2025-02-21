@@ -161,6 +161,16 @@ type PagesUpdate struct {
 func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, opts *PagesUpdate) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
+	// Safety check for opts to avoid nil pointer dereference
+	if opts == nil {
+		return nil, fmt.Errorf("PagesUpdate options cannot be nil")
+	}
+
+	// Set CNAME to nil if not using the public GitHub API
+	if s.client.BaseURL.Host != "api.github.com" {
+		opts.CNAME = nil
+	}
+
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
