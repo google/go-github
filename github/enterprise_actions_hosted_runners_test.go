@@ -257,7 +257,7 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_GetHostedRunnerGithubOwnedImages(t *testing.T) {
+func TestEnterpriseService_GetHostedRunnerGitHubOwnedImages(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
