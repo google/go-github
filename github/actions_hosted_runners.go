@@ -19,10 +19,10 @@ type HostedRunnerPublicIP struct {
 
 // HostedRunnerMachineSpec represents the details of a particular machine specification for GitHub-hosted runner.
 type HostedRunnerMachineSpec struct {
-	ID        string `json:"id"`
-	CPUCores  int    `json:"cpu_cores"`
-	MemoryGB  int    `json:"memory_gb"`
-	StorageGB int    `json:"storage_gb"`
+	ID        string `json:"id"`         // The ID used for the `size` parameter when creating a new runner. Example: 8-core
+	CPUCores  int    `json:"cpu_cores"`  // The number of cores. Example: 8
+	MemoryGB  int    `json:"memory_gb"`  // The available RAM for the machine spec. Example: 32
+	StorageGB int    `json:"storage_gb"` // The available SSD storage for the machine spec. Example: 300
 }
 
 // HostedRunner represents a single GitHub-hosted runner with additional details.
