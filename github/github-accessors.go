@@ -10190,12 +10190,12 @@ func (h *HostedRunner) GetID() int64 {
 	return *h.ID
 }
 
-// GetImage returns the Image field.
-func (h *HostedRunner) GetImage() *HostedRunnerImageDetail {
+// GetImageDetails returns the ImageDetails field.
+func (h *HostedRunner) GetImageDetails() *HostedRunnerImageDetail {
 	if h == nil {
 		return nil
 	}
-	return h.Image
+	return h.ImageDetails
 }
 
 // GetLastActiveOn returns the LastActiveOn field if it's non-nil, zero value otherwise.

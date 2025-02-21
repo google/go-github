@@ -31,7 +31,7 @@ type HostedRunner struct {
 	Name               *string                  `json:"name,omitempty"`
 	RunnerGroupID      *int64                   `json:"runner_group_id,omitempty"`
 	Platform           *string                  `json:"platform,omitempty"`
-	Image              *HostedRunnerImageDetail `json:"image,omitempty"`
+	ImageDetails       *HostedRunnerImageDetail `json:"image_details,omitempty"`
 	MachineSizeDetails *HostedRunnerMachineSpec `json:"machine_size_details,omitempty"`
 	Status             *string                  `json:"status,omitempty"`
 	MaximumRunners     *int64                   `json:"maximum_runners,omitempty"`

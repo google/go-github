@@ -29,7 +29,7 @@ func TestEnterpriseService_ListHostedRunners(t *testing.T) {
 					"name": "My hosted ubuntu runner",
 					"runner_group_id": 2,
 					"platform": "linux-x64",
-					"image": {
+					"image_details": {
 						"id": "ubuntu-20.04",
 						"size_gb": 86
 					},
@@ -56,7 +56,7 @@ func TestEnterpriseService_ListHostedRunners(t *testing.T) {
 					"name": "My hosted Windows runner",
 					"runner_group_id": 2,
 					"platform": "win-x64",
-					"image": {
+					"image_details": {
 						"id": "windows-latest",
 						"size_gb": 256
 					},
@@ -92,7 +92,7 @@ func TestEnterpriseService_ListHostedRunners(t *testing.T) {
 				Name:          Ptr("My hosted ubuntu runner"),
 				RunnerGroupID: Ptr(int64(2)),
 				Platform:      Ptr("linux-x64"),
-				Image: &HostedRunnerImageDetail{
+				ImageDetails: &HostedRunnerImageDetail{
 					ID:     Ptr("ubuntu-20.04"),
 					SizeGB: Ptr(int64(86)),
 				},
@@ -119,7 +119,7 @@ func TestEnterpriseService_ListHostedRunners(t *testing.T) {
 				Name:          Ptr("My hosted Windows runner"),
 				RunnerGroupID: Ptr(int64(2)),
 				Platform:      Ptr("win-x64"),
-				Image: &HostedRunnerImageDetail{
+				ImageDetails: &HostedRunnerImageDetail{
 					ID:     Ptr("windows-latest"),
 					SizeGB: Ptr(int64(256)),
 				},
@@ -167,7 +167,7 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 			"name": "My hosted ubuntu runner",
 			"runner_group_id": 2,
 			"platform": "linux-x64",
-			"image": {
+			"image_details": {
 				"id": "ubuntu-20.04",
 				"size_gb": 86
 			},
@@ -215,7 +215,7 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 		Name:          Ptr("My hosted ubuntu runner"),
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
-		Image: &HostedRunnerImageDetail{
+		ImageDetails: &HostedRunnerImageDetail{
 			ID:     Ptr("ubuntu-20.04"),
 			SizeGB: Ptr(int64(86)),
 		},
@@ -531,7 +531,7 @@ func TestEnterpriseService_GetHostedRunner(t *testing.T) {
 			"name": "My hosted ubuntu runner",
 			"runner_group_id": 2,
 			"platform": "linux-x64",
-			"image": {
+			"image_details": {
 				"id": "ubuntu-20.04",
 				"size_gb": 86
 			},
@@ -567,7 +567,7 @@ func TestEnterpriseService_GetHostedRunner(t *testing.T) {
 		Name:          Ptr("My hosted ubuntu runner"),
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
-		Image: &HostedRunnerImageDetail{
+		ImageDetails: &HostedRunnerImageDetail{
 			ID:     Ptr("ubuntu-20.04"),
 			SizeGB: Ptr(int64(86)),
 		},
@@ -620,7 +620,7 @@ func TestEnterpriseService_UpdateHostedRunner(t *testing.T) {
 			"name": "My hosted ubuntu runner",
 			"runner_group_id": 2,
 			"platform": "linux-x64",
-			"image": {
+			"image_details": {
 				"id": "ubuntu-20.04",
 				"size_gb": 86
 			},
@@ -663,7 +663,7 @@ func TestEnterpriseService_UpdateHostedRunner(t *testing.T) {
 		Name:          Ptr("My hosted ubuntu runner"),
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
-		Image: &HostedRunnerImageDetail{
+		ImageDetails: &HostedRunnerImageDetail{
 			ID:     Ptr("ubuntu-20.04"),
 			SizeGB: Ptr(int64(86)),
 		},
@@ -716,7 +716,7 @@ func TestEnterpriseService_DeleteHostedRunner(t *testing.T) {
 			"name": "My hosted ubuntu runner",
 			"runner_group_id": 2,
 			"platform": "linux-x64",
-			"image": {
+			"image_details": {
 				"id": "ubuntu-20.04",
 				"size_gb": 86
 			},
@@ -752,7 +752,7 @@ func TestEnterpriseService_DeleteHostedRunner(t *testing.T) {
 		Name:          Ptr("My hosted ubuntu runner"),
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
-		Image: &HostedRunnerImageDetail{
+		ImageDetails: &HostedRunnerImageDetail{
 			ID:     Ptr("ubuntu-20.04"),
 			SizeGB: Ptr(int64(86)),
 		},

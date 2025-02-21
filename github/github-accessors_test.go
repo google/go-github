@@ -13191,12 +13191,12 @@ func TestHostedRunner_GetID(tt *testing.T) {
 	h.GetID()
 }
 
-func TestHostedRunner_GetImage(tt *testing.T) {
+func TestHostedRunner_GetImageDetails(tt *testing.T) {
 	tt.Parallel()
 	h := &HostedRunner{}
-	h.GetImage()
+	h.GetImageDetails()
 	h = nil
-	h.GetImage()
+	h.GetImageDetails()
 }
 
 func TestHostedRunner_GetLastActiveOn(tt *testing.T) {
