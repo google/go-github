@@ -31,7 +31,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 					"platform": "linux-x64",
 					"image": {
 						"id": "ubuntu-20.04",
-						"size": 86
+						"size_gb": 86
 					},
 					"machine_size_details": {
 						"id": "4-core",
@@ -58,7 +58,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 					"platform": "win-x64",
 					"image": {
 						"id": "windows-latest",
-						"size": 256
+						"size_gb": 256
 					},
 					"machine_size_details": {
 						"id": "8-core",
@@ -121,7 +121,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 				Platform:      Ptr("win-x64"),
 				Image: &HostedRunnerImageDetail{
 					ID:     Ptr("windows-latest"),
-					SizeGB: Ptr(int64(86)),
+					SizeGB: Ptr(int64(256)),
 				},
 				MachineSizeDetails: &HostedRunnerMachineSpec{
 					ID:        "8-core",
@@ -169,7 +169,7 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 			"platform": "linux-x64",
 			"image": {
 				"id": "ubuntu-20.04",
-				"size": 86
+				"size_gb": 86
 			},
 			"machine_size_details": {
 				"id": "4-core",
@@ -534,7 +534,7 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 			"platform": "linux-x64",
 			"image": {
 				"id": "ubuntu-20.04",
-				"size": 86
+				"size_gb": 86
 			},
 			"machine_size_details": {
 				"id": "4-core",
@@ -623,7 +623,7 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 			"platform": "linux-x64",
 			"image": {
 				"id": "ubuntu-20.04",
-				"size": 86
+				"size_gb": 86
 			},
 			"machine_size_details": {
 				"id": "4-core",
@@ -719,7 +719,7 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 			"platform": "linux-x64",
 			"image": {
 				"id": "ubuntu-20.04",
-				"size": 86
+				"size_gb": 86
 			},
 			"machine_size_details": {
 				"id": "4-core",

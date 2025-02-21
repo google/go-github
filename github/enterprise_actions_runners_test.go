@@ -22,7 +22,7 @@ func TestEnterpriseService_GenerateEnterpriseJITConfig(t *testing.T) {
 
 	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
 
-	mux.HandleFunc("/enterprises/e/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		v := new(GenerateJITConfigRequest)
 		err := json.NewDecoder(r.Body).Decode(v)
 		if err != nil {
@@ -189,7 +189,7 @@ func TestEnterpriseService_RemoveRunner(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/e/actions/runners/21", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/o/actions/runners/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -214,7 +214,7 @@ func TestEnterpriseService_ListRunnerApplicationDownloads(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/e/actions/runners/downloads", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/o/actions/runners/downloads", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"os":"osx","architecture":"x64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz","filename":"actions-runner-osx-x64-2.164.0.tar.gz"},{"os":"linux","architecture":"x64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz","filename":"actions-runner-linux-x64-2.164.0.tar.gz"},{"os": "linux","architecture":"arm","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz","filename":"actions-runner-linux-arm-2.164.0.tar.gz"},{"os":"win","architecture":"x64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip","filename":"actions-runner-win-x64-2.164.0.zip"},{"os":"linux","architecture":"arm64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz","filename":"actions-runner-linux-arm64-2.164.0.tar.gz"}]`)
 	})
