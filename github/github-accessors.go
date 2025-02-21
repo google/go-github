@@ -10182,6 +10182,134 @@ func (h *HookStats) GetTotalHooks() int {
 	return *h.TotalHooks
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (h *HostedRunner) GetID() int64 {
+	if h == nil || h.ID == nil {
+		return 0
+	}
+	return *h.ID
+}
+
+// GetImageDetails returns the ImageDetails field.
+func (h *HostedRunner) GetImageDetails() *HostedRunnerImageDetail {
+	if h == nil {
+		return nil
+	}
+	return h.ImageDetails
+}
+
+// GetLastActiveOn returns the LastActiveOn field if it's non-nil, zero value otherwise.
+func (h *HostedRunner) GetLastActiveOn() Timestamp {
+	if h == nil || h.LastActiveOn == nil {
+		return Timestamp{}
+	}
+	return *h.LastActiveOn
+}
+
+// GetMachineSizeDetails returns the MachineSizeDetails field.
+func (h *HostedRunner) GetMachineSizeDetails() *HostedRunnerMachineSpec {
+	if h == nil {
+		return nil
+	}
+	return h.MachineSizeDetails
+}
+
+// GetMaximumRunners returns the MaximumRunners field if it's non-nil, zero value otherwise.
+func (h *HostedRunner) GetMaximumRunners() int64 {
+	if h == nil || h.MaximumRunners == nil {
+		return 0
+	}
+	return *h.MaximumRunners
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (h *HostedRunner) GetName() string {
+	if h == nil || h.Name == nil {
+		return ""
+	}
+	return *h.Name
+}
+
+// GetPlatform returns the Platform field if it's non-nil, zero value otherwise.
+func (h *HostedRunner) GetPlatform() string {
+	if h == nil || h.Platform == nil {
+		return ""
+	}
+	return *h.Platform
+}
+
+// GetPublicIPEnabled returns the PublicIPEnabled field if it's non-nil, zero value otherwise.
+func (h *HostedRunner) GetPublicIPEnabled() bool {
+	if h == nil || h.PublicIPEnabled == nil {
+		return false
+	}
+	return *h.PublicIPEnabled
+}
+
+// GetRunnerGroupID returns the RunnerGroupID field if it's non-nil, zero value otherwise.
+func (h *HostedRunner) GetRunnerGroupID() int64 {
+	if h == nil || h.RunnerGroupID == nil {
+		return 0
+	}
+	return *h.RunnerGroupID
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (h *HostedRunner) GetStatus() string {
+	if h == nil || h.Status == nil {
+		return ""
+	}
+	return *h.Status
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerImageDetail) GetDisplayName() string {
+	if h == nil || h.DisplayName == nil {
+		return ""
+	}
+	return *h.DisplayName
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerImageDetail) GetID() string {
+	if h == nil || h.ID == nil {
+		return ""
+	}
+	return *h.ID
+}
+
+// GetSizeGB returns the SizeGB field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerImageDetail) GetSizeGB() int64 {
+	if h == nil || h.SizeGB == nil {
+		return 0
+	}
+	return *h.SizeGB
+}
+
+// GetSource returns the Source field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerImageDetail) GetSource() string {
+	if h == nil || h.Source == nil {
+		return ""
+	}
+	return *h.Source
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerImageDetail) GetVersion() string {
+	if h == nil || h.Version == nil {
+		return ""
+	}
+	return *h.Version
+}
+
+// GetPublicIPs returns the PublicIPs field.
+func (h *HostedRunnerPublicIPLimits) GetPublicIPs() *PublicIPUsage {
+	if h == nil {
+		return nil
+	}
+	return h.PublicIPs
+}
+
 // GetGroupDescription returns the GroupDescription field if it's non-nil, zero value otherwise.
 func (i *IDPGroup) GetGroupDescription() string {
 	if i == nil || i.GroupDescription == nil {
