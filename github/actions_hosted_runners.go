@@ -1,4 +1,4 @@
-// Copyright 2020 The go-github AUTHORS. All rights reserved.
+// Copyright 2025 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -10,14 +10,14 @@ import (
 	"fmt"
 )
 
-// HostedRunnerPublicIP represents the details of a public IP for github-hosted runner.
+// HostedRunnerPublicIP represents the details of a public IP for GitHub-hosted runner.
 type HostedRunnerPublicIP struct {
-	Enabled bool   `json:"enabled"`
-	Prefix  string `json:"prefix"`
-	Length  int    `json:"length"`
+	Enabled bool   `json:"enabled"` // Whether public IP is enabled.
+	Prefix  string `json:"prefix"`  // The prefix for the public IP. Example: 20.80.208.150
+	Length  int    `json:"length"`  // The length of the IP prefix. Example: 28
 }
 
-// HostedRunnerMachineSpec represents the details of a particular machine specification for github-hosted runner.
+// HostedRunnerMachineSpec represents the details of a particular machine specification for GitHub-hosted runner.
 type HostedRunnerMachineSpec struct {
 	ID        string `json:"id"`
 	CPUCores  int    `json:"cpu_cores"`
@@ -25,7 +25,7 @@ type HostedRunnerMachineSpec struct {
 	StorageGB int    `json:"storage_gb"`
 }
 
-// HostedRunner represents a single github-hosted runner with additional details.
+// HostedRunner represents a single GitHub-hosted runner with additional details.
 type HostedRunner struct {
 	ID                 *int64                   `json:"id,omitempty"`
 	Name               *string                  `json:"name,omitempty"`
@@ -37,22 +37,25 @@ type HostedRunner struct {
 	MaximumRunners     *int64                   `json:"maximum_runners,omitempty"`
 	PublicIPEnabled    *bool                    `json:"public_ip_enabled,omitempty"`
 	PublicIPs          []*HostedRunnerPublicIP  `json:"public_ips,omitempty"`
-	LastActiveOn       *string                  `json:"last_active_on,omitempty"`
+	LastActiveOn       *Timestamp               `json:"last_active_on,omitempty"`
 }
 
-// HostedRunnerImageDetail represents the image details of a github-hosted runners.
+// HostedRunnerImageDetail represents the image details of a GitHub-hosted runners.
 type HostedRunnerImageDetail struct {
-	ID   *string `json:"id,omitempty"`
-	Size *int    `json:"size,omitempty"`
+	ID          *string `json:"id"`           // The ID of the image. Use this ID for the `image` parameter when creating a new larger runner. Example: ubuntu-20.04
+	SizeGB      *int64  `json:"size_gb"`      // Image size in GB. Example: 86
+	DisplayName *string `json:"display_name"` // Display name for this image. Example: 20.04
+	Source      *string `json:"source"`       // The image provider. Example: github, partner, custom
+	Version     *string `json:"version"`      // The image version of the hosted runner pool. Example: latest
 }
 
-// HostedRunners represents a collection of github-hosted runners for an organization.
+// HostedRunners represents a collection of GitHub-hosted runners for an organization.
 type HostedRunners struct {
 	TotalCount int             `json:"total_count"`
 	Runners    []*HostedRunner `json:"runners"`
 }
 
-// ListHostedRunners lists all the github-hosted runners for an organization.
+// ListHostedRunners lists all the GitHub-hosted runners for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#list-github-hosted-runners-for-an-organization
 //
@@ -78,8 +81,8 @@ func (s *ActionsService) ListHostedRunners(ctx context.Context, org string, opts
 	return runners, resp, nil
 }
 
-// HostedRunnerImage represents the image of github-hosted runners
-// To list all available images, use GET /actions/hosted-runners/images/github-owned or GET /actions/hosted-runners/images/partner
+// HostedRunnerImage represents the image of GitHub-hosted runners.
+// To list all available images, use GET /actions/hosted-runners/images/github-owned or GET /actions/hosted-runners/images/partner.
 type HostedRunnerImage struct {
 	ID      string `json:"id"`
 	Source  string `json:"source"`
@@ -96,7 +99,7 @@ type CreateHostedRunnerRequest struct {
 	EnableStaticIP bool              `json:"enable_static_ip,omitempty"`
 }
 
-// CreateHostedRunner creates a github-hosted runner for an organization.
+// CreateHostedRunner creates a GitHub-hosted runner for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#create-a-github-hosted-runner-for-an-organization
 //
@@ -117,7 +120,7 @@ func (s *ActionsService) CreateHostedRunner(ctx context.Context, org string, req
 	return hostedRunner, resp, nil
 }
 
-// HostedRunnerImageSpecs represents the details of a github-hosted runner image.
+// HostedRunnerImageSpecs represents the details of a GitHub-hosted runner image.
 type HostedRunnerImageSpecs struct {
 	ID          string `json:"id"`
 	Platform    string `json:"platform"`
@@ -132,12 +135,12 @@ type HostedRunnerImages struct {
 	Images     []*HostedRunnerImageSpecs `json:"images"`
 }
 
-// GetHostedRunnerGithubOwnedImages gets the list of GitHub-owned images available for github-hosted runners for an organization.
+// GetHostedRunnerGitHubOwnedImages gets the list of GitHub-owned images available for GitHub-hosted runners for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-github-owned-images-for-github-hosted-runners-in-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/images/github-owned
-func (s *ActionsService) GetHostedRunnerGithubOwnedImages(ctx context.Context, org string) (*HostedRunnerImages, *Response, error) {
+func (s *ActionsService) GetHostedRunnerGitHubOwnedImages(ctx context.Context, org string) (*HostedRunnerImages, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/hosted-runners/images/github-owned", org)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -153,7 +156,7 @@ func (s *ActionsService) GetHostedRunnerGithubOwnedImages(ctx context.Context, o
 	return hostedRunnerImages, resp, nil
 }
 
-// GetHostedRunnerPartnerImages gets the list of partner images available for github-hosted runners for an organization.
+// GetHostedRunnerPartnerImages gets the list of partner images available for GitHub-hosted runners for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-partner-images-for-github-hosted-runners-in-an-organization
 //
@@ -174,18 +177,18 @@ func (s *ActionsService) GetHostedRunnerPartnerImages(ctx context.Context, org s
 	return hostedRunnerImages, resp, nil
 }
 
-// HostedRunnerPublicIPLimits represents the static public IP limits for github-hosted runners.
+// HostedRunnerPublicIPLimits represents the static public IP limits for GitHub-hosted runners.
 type HostedRunnerPublicIPLimits struct {
 	PublicIPs *PublicIPUsage `json:"public_ips"`
 }
 
-// PublicIPUsage provides details of static public IP limits for github-hosted runners.
+// PublicIPUsage provides details of static public IP limits for GitHub-hosted runners.
 type PublicIPUsage struct {
-	Maximum      int `json:"maximum"`
-	CurrentUsage int `json:"current_usage"`
+	Maximum      int64 `json:"maximum"`       // The maximum number of static public IP addresses that can be used for Hosted Runners. Example: 50
+	CurrentUsage int64 `json:"current_usage"` // The current number of static public IP addresses in use by Hosted Runners. Example: 17
 }
 
-// GetHostedRunnerLimits gets the github-hosted runners Static public IP Limits for an organization.
+// GetHostedRunnerLimits gets the GitHub-hosted runners Static public IP Limits for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-limits-on-github-hosted-runners-for-an-organization
 //
@@ -206,13 +209,13 @@ func (s *ActionsService) GetHostedRunnerLimits(ctx context.Context, org string) 
 	return publicIPLimits, resp, nil
 }
 
-// HostedRunnerMachineSpecs represents the response containing the total count and details of machine specs for github-hosted runners.
+// HostedRunnerMachineSpecs represents the response containing the total count and details of machine specs for GitHub-hosted runners.
 type HostedRunnerMachineSpecs struct {
 	TotalCount   int                        `json:"total_count"`
 	MachineSpecs []*HostedRunnerMachineSpec `json:"machine_specs"`
 }
 
-// GetHostedRunnerMachineSpecs gets the list of machine specs available for github-hosted runners for an organization.
+// GetHostedRunnerMachineSpecs gets the list of machine specs available for GitHub-hosted runners for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-github-hosted-runners-machine-specs-for-an-organization
 //
@@ -233,13 +236,13 @@ func (s *ActionsService) GetHostedRunnerMachineSpecs(ctx context.Context, org st
 	return machineSpecs, resp, nil
 }
 
-// HostedRunnerPlatforms represents the response containing the total count and platforms for github-hosted runners.
+// HostedRunnerPlatforms represents the response containing the total count and platforms for GitHub-hosted runners.
 type HostedRunnerPlatforms struct {
 	TotalCount int      `json:"total_count"`
 	Platforms  []string `json:"platforms"`
 }
 
-// GetHostedRunnerPlatforms gets list of platforms available for github-hosted runners for an organization.
+// GetHostedRunnerPlatforms gets list of platforms available for GitHub-hosted runners for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-platforms-for-github-hosted-runners-in-an-organization
 //
@@ -260,7 +263,7 @@ func (s *ActionsService) GetHostedRunnerPlatforms(ctx context.Context, org strin
 	return platforms, resp, nil
 }
 
-// GetHostedRunner gets a github-hosted runner in an organization.
+// GetHostedRunner gets a GitHub-hosted runner in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-a-github-hosted-runner-for-an-organization
 //
@@ -290,7 +293,7 @@ type UpdateHostedRunnerRequest struct {
 	ImageVersion   string `json:"image_version"`
 }
 
-// UpdateHostedRunner updates a github-hosted runner for an organization.
+// UpdateHostedRunner updates a GitHub-hosted runner for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#update-a-github-hosted-runner-for-an-organization
 //
@@ -311,7 +314,7 @@ func (s *ActionsService) UpdateHostedRunner(ctx context.Context, org string, run
 	return hostedRunner, resp, nil
 }
 
-// DeleteHostedRunner deletes github-hosted runner from an organization.
+// DeleteHostedRunner deletes GitHub-hosted runner from an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#delete-a-github-hosted-runner-for-an-organization
 //

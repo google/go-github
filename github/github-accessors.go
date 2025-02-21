@@ -10199,9 +10199,9 @@ func (h *HostedRunner) GetImage() *HostedRunnerImageDetail {
 }
 
 // GetLastActiveOn returns the LastActiveOn field if it's non-nil, zero value otherwise.
-func (h *HostedRunner) GetLastActiveOn() string {
+func (h *HostedRunner) GetLastActiveOn() Timestamp {
 	if h == nil || h.LastActiveOn == nil {
-		return ""
+		return Timestamp{}
 	}
 	return *h.LastActiveOn
 }
@@ -10262,6 +10262,14 @@ func (h *HostedRunner) GetStatus() string {
 	return *h.Status
 }
 
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerImageDetail) GetDisplayName() string {
+	if h == nil || h.DisplayName == nil {
+		return ""
+	}
+	return *h.DisplayName
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (h *HostedRunnerImageDetail) GetID() string {
 	if h == nil || h.ID == nil {
@@ -10270,12 +10278,28 @@ func (h *HostedRunnerImageDetail) GetID() string {
 	return *h.ID
 }
 
-// GetSize returns the Size field if it's non-nil, zero value otherwise.
-func (h *HostedRunnerImageDetail) GetSize() int {
-	if h == nil || h.Size == nil {
+// GetSizeGB returns the SizeGB field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerImageDetail) GetSizeGB() int64 {
+	if h == nil || h.SizeGB == nil {
 		return 0
 	}
-	return *h.Size
+	return *h.SizeGB
+}
+
+// GetSource returns the Source field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerImageDetail) GetSource() string {
+	if h == nil || h.Source == nil {
+		return ""
+	}
+	return *h.Source
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerImageDetail) GetVersion() string {
+	if h == nil || h.Version == nil {
+		return ""
+	}
+	return *h.Version
 }
 
 // GetPublicIPs returns the PublicIPs field.

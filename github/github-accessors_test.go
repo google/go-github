@@ -13201,7 +13201,7 @@ func TestHostedRunner_GetImage(tt *testing.T) {
 
 func TestHostedRunner_GetLastActiveOn(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
+	var zeroValue Timestamp
 	h := &HostedRunner{LastActiveOn: &zeroValue}
 	h.GetLastActiveOn()
 	h = &HostedRunner{}
@@ -13284,6 +13284,17 @@ func TestHostedRunner_GetStatus(tt *testing.T) {
 	h.GetStatus()
 }
 
+func TestHostedRunnerImageDetail_GetDisplayName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerImageDetail{DisplayName: &zeroValue}
+	h.GetDisplayName()
+	h = &HostedRunnerImageDetail{}
+	h.GetDisplayName()
+	h = nil
+	h.GetDisplayName()
+}
+
 func TestHostedRunnerImageDetail_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -13295,15 +13306,37 @@ func TestHostedRunnerImageDetail_GetID(tt *testing.T) {
 	h.GetID()
 }
 
-func TestHostedRunnerImageDetail_GetSize(tt *testing.T) {
+func TestHostedRunnerImageDetail_GetSizeGB(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	h := &HostedRunnerImageDetail{Size: &zeroValue}
-	h.GetSize()
+	var zeroValue int64
+	h := &HostedRunnerImageDetail{SizeGB: &zeroValue}
+	h.GetSizeGB()
 	h = &HostedRunnerImageDetail{}
-	h.GetSize()
+	h.GetSizeGB()
 	h = nil
-	h.GetSize()
+	h.GetSizeGB()
+}
+
+func TestHostedRunnerImageDetail_GetSource(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerImageDetail{Source: &zeroValue}
+	h.GetSource()
+	h = &HostedRunnerImageDetail{}
+	h.GetSource()
+	h = nil
+	h.GetSource()
+}
+
+func TestHostedRunnerImageDetail_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerImageDetail{Version: &zeroValue}
+	h.GetVersion()
+	h = &HostedRunnerImageDetail{}
+	h.GetVersion()
+	h = nil
+	h.GetVersion()
 }
 
 func TestHostedRunnerPublicIPLimits_GetPublicIPs(tt *testing.T) {

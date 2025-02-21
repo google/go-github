@@ -15,11 +15,11 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestActionsService_ListHostedRunners(t *testing.T) {
+func TestEnterpriseService_ListHostedRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/hosted-runners", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/hosted-runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"total_count": 2,
@@ -77,9 +77,9 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 	})
 	opts := &ListOptions{Page: 1, PerPage: 1}
 	ctx := context.Background()
-	hostedRunners, _, err := client.Actions.ListHostedRunners(ctx, "o", opts)
+	hostedRunners, _, err := client.Enterprise.ListHostedRunners(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Actions.ListHostedRunners returned error: %v", err)
+		t.Errorf("Enterprise.ListHostedRunners returned error: %v", err)
 	}
 
 	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
@@ -138,17 +138,17 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(hostedRunners, want) {
-		t.Errorf("Actions.ListHostedRunners returned %+v, want %+v", hostedRunners, want)
+		t.Errorf("Enterprise.ListHostedRunners returned %+v, want %+v", hostedRunners, want)
 	}
 
 	const methodName = "ListHostedRunners"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListHostedRunners(ctx, "\n", opts)
+		_, _, err = client.Enterprise.ListHostedRunners(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListHostedRunners(ctx, "o", opts)
+		got, resp, err := client.Enterprise.ListHostedRunners(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -156,11 +156,11 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 	})
 }
 
-func TestActionsService_CreateHostedRunner(t *testing.T) {
+func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/hosted-runners", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/hosted-runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{
 			"id": 5,
@@ -204,9 +204,9 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 		MaximumRunners: 50,
 		EnableStaticIP: false,
 	}
-	hostedRunner, _, err := client.Actions.CreateHostedRunner(ctx, "o", req)
+	hostedRunner, _, err := client.Enterprise.CreateHostedRunner(ctx, "o", req)
 	if err != nil {
-		t.Errorf("Actions.CreateHostedRunner returned error: %v", err)
+		t.Errorf("Enterprise.CreateHostedRunner returned error: %v", err)
 	}
 
 	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
@@ -239,17 +239,17 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 	}
 
 	if !cmp.Equal(hostedRunner, want) {
-		t.Errorf("Actions.CreateHostedRunner returned %+v, want %+v", hostedRunner, want)
+		t.Errorf("Enterprise.CreateHostedRunner returned %+v, want %+v", hostedRunner, want)
 	}
 
 	const methodName = "CreateHostedRunner"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.CreateHostedRunner(ctx, "\n", req)
+		_, _, err = client.Enterprise.CreateHostedRunner(ctx, "\n", req)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.CreateHostedRunner(ctx, "o", req)
+		got, resp, err := client.Enterprise.CreateHostedRunner(ctx, "o", req)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -257,11 +257,11 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 	})
 }
 
-func TestActionsService_GetHostedRunnerGithubOwnedImages(t *testing.T) {
+func TestEnterpriseService_GetHostedRunnerGithubOwnedImages(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/hosted-runners/images/github-owned", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/hosted-runners/images/github-owned", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"total_count": 1,
@@ -278,9 +278,9 @@ func TestActionsService_GetHostedRunnerGithubOwnedImages(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	hostedRunnerImages, _, err := client.Actions.GetHostedRunnerGitHubOwnedImages(ctx, "o")
+	hostedRunnerImages, _, err := client.Enterprise.GetHostedRunnerGitHubOwnedImages(ctx, "o")
 	if err != nil {
-		t.Errorf("Actions.GetHostedRunnerGitHubOwnedImages returned error: %v", err)
+		t.Errorf("Enterprise.GetHostedRunnerGitHubOwnedImages returned error: %v", err)
 	}
 
 	want := &HostedRunnerImages{
@@ -297,17 +297,17 @@ func TestActionsService_GetHostedRunnerGithubOwnedImages(t *testing.T) {
 	}
 
 	if !cmp.Equal(hostedRunnerImages, want) {
-		t.Errorf("Actions.GetHostedRunnerGitHubOwnedImages returned %+v, want %+v", hostedRunnerImages, want)
+		t.Errorf("Enterprise.GetHostedRunnerGitHubOwnedImages returned %+v, want %+v", hostedRunnerImages, want)
 	}
 
 	const methodName = "GetHostedRunnerGitHubOwnedImages"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetHostedRunnerGitHubOwnedImages(ctx, "\n")
+		_, _, err = client.Enterprise.GetHostedRunnerGitHubOwnedImages(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetHostedRunnerGitHubOwnedImages(ctx, "o")
+		got, resp, err := client.Enterprise.GetHostedRunnerGitHubOwnedImages(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -315,11 +315,11 @@ func TestActionsService_GetHostedRunnerGithubOwnedImages(t *testing.T) {
 	})
 }
 
-func TestActionsService_GetHostedRunnerPartnerImages(t *testing.T) {
+func TestEnterpriseService_GetHostedRunnerPartnerImages(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/hosted-runners/images/partner", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/hosted-runners/images/partner", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"total_count": 1,
@@ -336,9 +336,9 @@ func TestActionsService_GetHostedRunnerPartnerImages(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	hostedRunnerImages, _, err := client.Actions.GetHostedRunnerPartnerImages(ctx, "o")
+	hostedRunnerImages, _, err := client.Enterprise.GetHostedRunnerPartnerImages(ctx, "o")
 	if err != nil {
-		t.Errorf("Actions.GetHostedRunnerPartnerImages returned error: %v", err)
+		t.Errorf("Enterprise.GetHostedRunnerPartnerImages returned error: %v", err)
 	}
 
 	want := &HostedRunnerImages{
@@ -355,17 +355,17 @@ func TestActionsService_GetHostedRunnerPartnerImages(t *testing.T) {
 	}
 
 	if !cmp.Equal(hostedRunnerImages, want) {
-		t.Errorf("Actions.GetHostedRunnerPartnerImages returned %+v, want %+v", hostedRunnerImages, want)
+		t.Errorf("Enterprise.GetHostedRunnerPartnerImages returned %+v, want %+v", hostedRunnerImages, want)
 	}
 
 	const methodName = "GetHostedRunnerPartnerImages"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetHostedRunnerPartnerImages(ctx, "\n")
+		_, _, err = client.Enterprise.GetHostedRunnerPartnerImages(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetHostedRunnerPartnerImages(ctx, "o")
+		got, resp, err := client.Enterprise.GetHostedRunnerPartnerImages(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -373,11 +373,11 @@ func TestActionsService_GetHostedRunnerPartnerImages(t *testing.T) {
 	})
 }
 
-func TestActionsService_GetHostedRunnerLimits(t *testing.T) {
+func TestEnterpriseService_GetHostedRunnerLimits(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/hosted-runners/limits", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/hosted-runners/limits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"public_ips": {
@@ -388,9 +388,9 @@ func TestActionsService_GetHostedRunnerLimits(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	publicIPLimits, _, err := client.Actions.GetHostedRunnerLimits(ctx, "o")
+	publicIPLimits, _, err := client.Enterprise.GetHostedRunnerLimits(ctx, "o")
 	if err != nil {
-		t.Errorf("Actions.GetPartnerImages returned error: %v", err)
+		t.Errorf("Enterprise.GetPartnerImages returned error: %v", err)
 	}
 
 	want := &HostedRunnerPublicIPLimits{
@@ -401,17 +401,17 @@ func TestActionsService_GetHostedRunnerLimits(t *testing.T) {
 	}
 
 	if !cmp.Equal(publicIPLimits, want) {
-		t.Errorf("Actions.GetHostedRunnerLimits returned %+v, want %+v", publicIPLimits, want)
+		t.Errorf("Enterprise.GetHostedRunnerLimits returned %+v, want %+v", publicIPLimits, want)
 	}
 
 	const methodName = "GetHostedRunnerLimits"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetHostedRunnerLimits(ctx, "\n")
+		_, _, err = client.Enterprise.GetHostedRunnerLimits(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetHostedRunnerLimits(ctx, "o")
+		got, resp, err := client.Enterprise.GetHostedRunnerLimits(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -419,11 +419,11 @@ func TestActionsService_GetHostedRunnerLimits(t *testing.T) {
 	})
 }
 
-func TestActionsService_GetHostedRunnerMachineSpecs(t *testing.T) {
+func TestEnterpriseService_GetHostedRunnerMachineSpecs(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/hosted-runners/machine-sizes", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/hosted-runners/machine-sizes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"total_count": 1,
@@ -439,9 +439,9 @@ func TestActionsService_GetHostedRunnerMachineSpecs(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	machineSpecs, _, err := client.Actions.GetHostedRunnerMachineSpecs(ctx, "o")
+	machineSpecs, _, err := client.Enterprise.GetHostedRunnerMachineSpecs(ctx, "o")
 	if err != nil {
-		t.Errorf("Actions.GetHostedRunnerMachineSpecs returned error: %v", err)
+		t.Errorf("Enterprise.GetHostedRunnerMachineSpecs returned error: %v", err)
 	}
 	want := &HostedRunnerMachineSpecs{
 		TotalCount: 1,
@@ -456,17 +456,17 @@ func TestActionsService_GetHostedRunnerMachineSpecs(t *testing.T) {
 	}
 
 	if !cmp.Equal(machineSpecs, want) {
-		t.Errorf("Actions.GetHostedRunnerMachineSpecs returned %+v, want %+v", machineSpecs, want)
+		t.Errorf("Enterprise.GetHostedRunnerMachineSpecs returned %+v, want %+v", machineSpecs, want)
 	}
 
 	const methodName = "GetHostedRunnerMachineSpecs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetHostedRunnerMachineSpecs(ctx, "\n")
+		_, _, err = client.Enterprise.GetHostedRunnerMachineSpecs(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetHostedRunnerMachineSpecs(ctx, "o")
+		got, resp, err := client.Enterprise.GetHostedRunnerMachineSpecs(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -474,11 +474,11 @@ func TestActionsService_GetHostedRunnerMachineSpecs(t *testing.T) {
 	})
 }
 
-func TestActionsService_GetHostedRunnerPlatforms(t *testing.T) {
+func TestEnterpriseService_GetHostedRunnerPlatforms(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/hosted-runners/platforms", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/hosted-runners/platforms", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"total_count": 1,
@@ -490,9 +490,9 @@ func TestActionsService_GetHostedRunnerPlatforms(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	platforms, _, err := client.Actions.GetHostedRunnerPlatforms(ctx, "o")
+	platforms, _, err := client.Enterprise.GetHostedRunnerPlatforms(ctx, "o")
 	if err != nil {
-		t.Errorf("Actions.GetHostedRunnerPlatforms returned error: %v", err)
+		t.Errorf("Enterprise.GetHostedRunnerPlatforms returned error: %v", err)
 	}
 	want := &HostedRunnerPlatforms{
 		TotalCount: 1,
@@ -503,17 +503,17 @@ func TestActionsService_GetHostedRunnerPlatforms(t *testing.T) {
 	}
 
 	if !cmp.Equal(platforms, want) {
-		t.Errorf("Actions.GetHostedRunnerPlatforms returned %+v, want %+v", platforms, want)
+		t.Errorf("Enterprise.GetHostedRunnerPlatforms returned %+v, want %+v", platforms, want)
 	}
 
 	const methodName = "GetHostedRunnerPlatforms"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetHostedRunnerPlatforms(ctx, "\n")
+		_, _, err = client.Enterprise.GetHostedRunnerPlatforms(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetHostedRunnerPlatforms(ctx, "o")
+		got, resp, err := client.Enterprise.GetHostedRunnerPlatforms(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -521,11 +521,11 @@ func TestActionsService_GetHostedRunnerPlatforms(t *testing.T) {
 	})
 }
 
-func TestActionsService_GetHostedRunner(t *testing.T) {
+func TestEnterpriseService_GetHostedRunner(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/hosted-runners/23", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/hosted-runners/23", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"id": 5,
@@ -557,9 +557,9 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	hostedRunner, _, err := client.Actions.GetHostedRunner(ctx, "o", 23)
+	hostedRunner, _, err := client.Enterprise.GetHostedRunner(ctx, "o", 23)
 	if err != nil {
-		t.Errorf("Actions.GetHostedRunner returned error: %v", err)
+		t.Errorf("Enterprise.GetHostedRunner returned error: %v", err)
 	}
 
 	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
@@ -592,17 +592,17 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 	}
 
 	if !cmp.Equal(hostedRunner, want) {
-		t.Errorf("Actions.GetHostedRunner returned %+v, want %+v", hostedRunner, want)
+		t.Errorf("Enterprise.GetHostedRunner returned %+v, want %+v", hostedRunner, want)
 	}
 
 	const methodName = "GetHostedRunner"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetHostedRunner(ctx, "\n", 23)
+		_, _, err = client.Enterprise.GetHostedRunner(ctx, "\n", 23)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetHostedRunner(ctx, "o", 23)
+		got, resp, err := client.Enterprise.GetHostedRunner(ctx, "o", 23)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -610,11 +610,11 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 	})
 }
 
-func TestActionsService_UpdateHostedRunner(t *testing.T) {
+func TestEnterpriseService_UpdateHostedRunner(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/hosted-runners/23", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/hosted-runners/23", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{
 			"id": 5,
@@ -653,9 +653,9 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 		EnableStaticIP: false,
 		ImageVersion:   "1.0.0",
 	}
-	hostedRunner, _, err := client.Actions.UpdateHostedRunner(ctx, "o", 23, req)
+	hostedRunner, _, err := client.Enterprise.UpdateHostedRunner(ctx, "o", 23, req)
 	if err != nil {
-		t.Errorf("Actions.UpdateHostedRunner returned error: %v", err)
+		t.Errorf("Enterprise.UpdateHostedRunner returned error: %v", err)
 	}
 
 	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
@@ -688,17 +688,17 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 	}
 
 	if !cmp.Equal(hostedRunner, want) {
-		t.Errorf("Actions.UpdateHostedRunner returned %+v, want %+v", hostedRunner, want)
+		t.Errorf("Enterprise.UpdateHostedRunner returned %+v, want %+v", hostedRunner, want)
 	}
 
 	const methodName = "UpdateHostedRunner"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.UpdateHostedRunner(ctx, "\n", 23, req)
+		_, _, err = client.Enterprise.UpdateHostedRunner(ctx, "\n", 23, req)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.UpdateHostedRunner(ctx, "o", 23, req)
+		got, resp, err := client.Enterprise.UpdateHostedRunner(ctx, "o", 23, req)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -706,11 +706,11 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 	})
 }
 
-func TestActionsService_DeleteHostedRunner(t *testing.T) {
+func TestEnterpriseService_DeleteHostedRunner(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/hosted-runners/23", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/hosted-runners/23", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		fmt.Fprint(w, `{
 			"id": 5,
@@ -742,9 +742,9 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	hostedRunner, _, err := client.Actions.DeleteHostedRunner(ctx, "o", 23)
+	hostedRunner, _, err := client.Enterprise.DeleteHostedRunner(ctx, "o", 23)
 	if err != nil {
-		t.Errorf("Actions.GetHostedRunner returned error: %v", err)
+		t.Errorf("Enterprise.GetHostedRunner returned error: %v", err)
 	}
 
 	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
@@ -777,17 +777,17 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 	}
 
 	if !cmp.Equal(hostedRunner, want) {
-		t.Errorf("Actions.DeleteHostedRunner returned %+v, want %+v", hostedRunner, want)
+		t.Errorf("Enterprise.DeleteHostedRunner returned %+v, want %+v", hostedRunner, want)
 	}
 
 	const methodName = "DeleteHostedRunner"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.DeleteHostedRunner(ctx, "\n", 23)
+		_, _, err = client.Enterprise.DeleteHostedRunner(ctx, "\n", 23)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.DeleteHostedRunner(ctx, "o", 23)
+		got, resp, err := client.Enterprise.DeleteHostedRunner(ctx, "o", 23)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

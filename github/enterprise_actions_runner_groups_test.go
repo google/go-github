@@ -18,7 +18,7 @@ func TestEnterpriseService_ListRunnerGroups(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprint(w, `{"total_count":3,"runner_groups":[{"id":1,"name":"Default","visibility":"all","default":true,"runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/1/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":true,"selected_workflows":["a","b"]},{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_organizations_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations","runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners","inherited":true,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]},{"id":3,"name":"expensive-hardware","visibility":"private","default":false,"runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/3/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}]}`)
@@ -62,7 +62,7 @@ func TestEnterpriseService_ListRunnerGroupsVisibleToOrganization(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2", "visible_to_organization": "github"})
 		fmt.Fprint(w, `{"total_count":3,"runner_groups":[{"id":1,"name":"Default","visibility":"all","default":true,"runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/1/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]},{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_organizations_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations","runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners","inherited":true,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]},{"id":3,"name":"expensive-hardware","visibility":"private","default":false,"runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/3/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}]}`)
@@ -106,7 +106,7 @@ func TestEnterpriseService_GetRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_organizations_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations","runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
@@ -153,7 +153,7 @@ func TestEnterpriseService_DeleteRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -178,7 +178,7 @@ func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_organizations_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations","runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
@@ -232,7 +232,7 @@ func TestEnterpriseService_UpdateRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_organizations_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations","runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
@@ -286,7 +286,7 @@ func TestEnterpriseService_ListOrganizationAccessRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups/2/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "1", "page": "1"})
 		fmt.Fprint(w, `{"total_count": 1, "organizations": [{"id": 43, "node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5", "name": "Hello-World", "login": "octocat"}]}`)
@@ -328,7 +328,7 @@ func TestEnterpriseService_SetOrganizationAccessRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups/2/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -360,7 +360,7 @@ func TestEnterpriseService_AddOrganizationAccessRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups/2/organizations/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -385,7 +385,7 @@ func TestEnterpriseService_RemoveOrganizationAccessRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups/2/organizations/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -410,7 +410,7 @@ func TestEnterpriseService_ListEnterpriseRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprint(w, `{"total_count":2,"runners":[{"id":23,"name":"MBP","os":"macos","status":"online"},{"id":24,"name":"iMac","os":"macos","status":"offline"}]}`)
@@ -453,7 +453,7 @@ func TestEnterpriseService_SetEnterpriseRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -485,7 +485,7 @@ func TestEnterpriseService_AddEnterpriseRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -510,7 +510,7 @@ func TestEnterpriseService_RemoveEnterpriseRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
