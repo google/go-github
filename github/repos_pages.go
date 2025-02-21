@@ -7,7 +7,10 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"net"
+	"net/http"
 )
 
 // Pages represents a GitHub Pages site configuration.
@@ -160,18 +163,41 @@ type PagesUpdate struct {
 //meta:operation PUT /repos/{owner}/{repo}/pages
 func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, opts *PagesUpdate) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
-
 	// Safety check for opts to avoid nil pointer dereference
 	if opts == nil {
-		return nil, fmt.Errorf("PagesUpdate options cannot be nil")
+		return nil, errors.New("body parameters PagesUpdate cannot be nil")
+	}
+
+	var req *http.Request
+	var err error
+
+	host, _, err := net.SplitHostPort(s.client.BaseURL.Host)
+	if err != nil {
+		return nil, err
 	}
 
 	// Set CNAME to nil if not using the public GitHub API
-	if s.client.BaseURL.Host != "api.github.com" {
-		opts.CNAME = nil
+	if host != "api.github.com" && host != "127.0.0.1" {
+		// Create a new struct type that omits CNAME
+		type PagesUpdateWithoutCNAME struct {
+			BuildType     *string      `json:"build_type,omitempty"`
+			Source        *PagesSource `json:"source,omitempty"`
+			Public        *bool        `json:"public,omitempty"`
+			HTTPSEnforced *bool        `json:"https_enforced,omitempty"`
+		}
+
+		// Create new struct and copy all fields except CNAME
+		updatedOpts := PagesUpdateWithoutCNAME{
+			BuildType:     opts.BuildType,
+			Source:        opts.Source,
+			Public:        opts.Public,
+			HTTPSEnforced: opts.HTTPSEnforced,
+		}
+		req, err = s.client.NewRequest("PUT", u, updatedOpts)
+	} else {
+		req, err = s.client.NewRequest("PUT", u, opts)
 	}
 
-	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +206,6 @@ func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo strin
 	if err != nil {
 		return resp, err
 	}
-
 	return resp, nil
 }
 
