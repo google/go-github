@@ -162,7 +162,6 @@ func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo strin
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
 	req, err := s.client.NewRequest("PUT", u, opts)
-
 	if err != nil {
 		return nil, err
 	}
