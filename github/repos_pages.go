@@ -174,7 +174,7 @@ func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo strin
 }
 
 // PagesUpdateWithoutCNAME defines parameters for updating a GitHub Pages site on GitHub Enterprise Servers.
-// Sending a request with a CNAME (any value, empty string, or null) results in a 400 error: "Custom domains are not available for GitHub Pages."
+// Sending a request with a CNAME (any value, empty string, or null) results in a 400 error: "Custom domains are not available for GitHub Pages".
 type PagesUpdateWithoutCNAME struct {
 	BuildType     *string      `json:"build_type,omitempty"`
 	Source        *PagesSource `json:"source,omitempty"`
