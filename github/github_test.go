@@ -3118,7 +3118,7 @@ func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 	}
 
 	want = 123456789
-	url = "https://local.dummyhost.net/repos/dummy-org/dummy-repo/actions/runs/123456789/deployment_protection_rule"
+	url = "repos/dummy-org/dummy-repo/actions/runs/123456789/deployment_protection_rule"
 
 	e = DeploymentProtectionRuleEvent{
 		DeploymentCallbackURL: &url,
