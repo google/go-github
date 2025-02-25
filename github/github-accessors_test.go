@@ -21709,6 +21709,47 @@ func TestPagesUpdate_GetSource(tt *testing.T) {
 	p.GetSource()
 }
 
+func TestPagesUpdateWithoutCNAME_GetBuildType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PagesUpdateWithoutCNAME{BuildType: &zeroValue}
+	p.GetBuildType()
+	p = &PagesUpdateWithoutCNAME{}
+	p.GetBuildType()
+	p = nil
+	p.GetBuildType()
+}
+
+func TestPagesUpdateWithoutCNAME_GetHTTPSEnforced(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &PagesUpdateWithoutCNAME{HTTPSEnforced: &zeroValue}
+	p.GetHTTPSEnforced()
+	p = &PagesUpdateWithoutCNAME{}
+	p.GetHTTPSEnforced()
+	p = nil
+	p.GetHTTPSEnforced()
+}
+
+func TestPagesUpdateWithoutCNAME_GetPublic(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &PagesUpdateWithoutCNAME{Public: &zeroValue}
+	p.GetPublic()
+	p = &PagesUpdateWithoutCNAME{}
+	p.GetPublic()
+	p = nil
+	p.GetPublic()
+}
+
+func TestPagesUpdateWithoutCNAME_GetSource(tt *testing.T) {
+	tt.Parallel()
+	p := &PagesUpdateWithoutCNAME{}
+	p.GetSource()
+	p = nil
+	p.GetSource()
+}
+
 func TestPatternRuleParameters_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

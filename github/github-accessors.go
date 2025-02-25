@@ -16734,6 +16734,38 @@ func (p *PagesUpdate) GetSource() *PagesSource {
 	return p.Source
 }
 
+// GetBuildType returns the BuildType field if it's non-nil, zero value otherwise.
+func (p *PagesUpdateWithoutCNAME) GetBuildType() string {
+	if p == nil || p.BuildType == nil {
+		return ""
+	}
+	return *p.BuildType
+}
+
+// GetHTTPSEnforced returns the HTTPSEnforced field if it's non-nil, zero value otherwise.
+func (p *PagesUpdateWithoutCNAME) GetHTTPSEnforced() bool {
+	if p == nil || p.HTTPSEnforced == nil {
+		return false
+	}
+	return *p.HTTPSEnforced
+}
+
+// GetPublic returns the Public field if it's non-nil, zero value otherwise.
+func (p *PagesUpdateWithoutCNAME) GetPublic() bool {
+	if p == nil || p.Public == nil {
+		return false
+	}
+	return *p.Public
+}
+
+// GetSource returns the Source field.
+func (p *PagesUpdateWithoutCNAME) GetSource() *PagesSource {
+	if p == nil {
+		return nil
+	}
+	return p.Source
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (p *PatternRuleParameters) GetName() string {
 	if p == nil || p.Name == nil {

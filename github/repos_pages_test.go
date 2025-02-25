@@ -200,6 +200,44 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_UpdatePagesGHES(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &PagesUpdateWithoutCNAME{
+		BuildType: Ptr("workflow"),
+	}
+
+	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
+		v := new(PagesUpdate)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		want := &PagesUpdate{BuildType: Ptr("workflow")}
+		if !cmp.Equal(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{"build_type":"workflow"}`)
+	})
+
+	ctx := context.Background()
+	_, err := client.Repositories.UpdatePagesGHES(ctx, "o", "r", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdatePagesGHES returned error: %v", err)
+	}
+
+	const methodName = "UpdatePagesGHES"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.UpdatePagesGHES(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.UpdatePagesGHES(ctx, "o", "r", input)
+	})
+}
+
 func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
