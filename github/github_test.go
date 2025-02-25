@@ -3117,6 +3117,19 @@ func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 		t.Errorf("want %#v, got %#v", want, got)
 	}
 
+	want = 123456789
+	url = "https://local.dummyhost.net/repos/dummy-org/dummy-repo/actions/runs/123456789/deployment_protection_rule"
+
+	e = DeploymentProtectionRuleEvent{
+		DeploymentCallbackURL: &url,
+	}
+
+	got, _ = e.GetRunID()
+	if got != want {
+		t.Errorf("want %#v, got %#v", want, got)
+	}
+
+
 	want = -1
 	url = "https://api.github.com/repos/dummy-org/dummy-repo/actions/runs/abc123/deployment_protection_rule"
 	got, err := e.GetRunID()
