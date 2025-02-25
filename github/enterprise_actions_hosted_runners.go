@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
 
@@ -41,7 +42,12 @@ func (s *EnterpriseService) ListHostedRunners(ctx context.Context, enterprise st
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#create-a-github-hosted-runner-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/actions/hosted-runners
-func (s *EnterpriseService) CreateHostedRunner(ctx context.Context, enterprise string, request *CreateHostedRunnerRequest) (*HostedRunner, *Response, error) {
+func (s *EnterpriseService) CreateHostedRunner(ctx context.Context, enterprise string, request *HostedRunnerRequest) (*HostedRunner, *Response, error) {
+	err := validateCreateHostedRunnerRequest(request)
+	if err != nil {
+		return nil, nil, errors.New("validation failed: " + err.Error())
+	}
+
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners", enterprise)
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
@@ -188,7 +194,12 @@ func (s *EnterpriseService) GetHostedRunner(ctx context.Context, enterprise stri
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#update-a-github-hosted-runner-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
-func (s *EnterpriseService) UpdateHostedRunner(ctx context.Context, enterprise string, runnerID int64, updateReq UpdateHostedRunnerRequest) (*HostedRunner, *Response, error) {
+func (s *EnterpriseService) UpdateHostedRunner(ctx context.Context, enterprise string, runnerID int64, updateReq HostedRunnerRequest) (*HostedRunner, *Response, error) {
+	err := validateUpdateHostedRunnerRequest(&updateReq)
+	if err != nil {
+		return nil, nil, errors.New("validation failed: " + err.Error())
+	}
+
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/%v", enterprise, runnerID)
 	req, err := s.client.NewRequest("PATCH", u, updateReq)
 	if err != nil {

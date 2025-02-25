@@ -192,7 +192,7 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	req := &CreateHostedRunnerRequest{
+	req := &HostedRunnerRequest{
 		Name: "My Hosted runner",
 		Image: HostedRunnerImage{
 			ID:      "ubuntu-latest",
@@ -240,6 +240,86 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 
 	if !cmp.Equal(hostedRunner, want) {
 		t.Errorf("Enterprise.CreateHostedRunner returned %+v, want %+v", hostedRunner, want)
+	}
+
+	// Validation tests
+	testCases := []struct {
+		name          string
+		request       *HostedRunnerRequest
+		expectedError string
+	}{
+		{
+			name: "Missing Size",
+			request: &HostedRunnerRequest{
+				Name: "My Hosted runner",
+				Image: HostedRunnerImage{
+					ID:      "ubuntu-latest",
+					Source:  "github",
+					Version: "latest",
+				},
+				RunnerGroupID: 1,
+			},
+			expectedError: "validation failed: size is required for creating a hosted runner",
+		},
+		{
+			name: "Missing Image",
+			request: &HostedRunnerRequest{
+				Name:          "My Hosted runner",
+				RunnerGroupID: 1,
+				Size:          "4-core",
+			},
+			expectedError: "validation failed: image is required for creating a hosted runner",
+		},
+		{
+			name: "Missing Name",
+			request: &HostedRunnerRequest{
+				Image: HostedRunnerImage{
+					ID:      "ubuntu-latest",
+					Source:  "github",
+					Version: "latest",
+				},
+				RunnerGroupID: 1,
+				Size:          "4-core",
+			},
+			expectedError: "validation failed: name is required for creating a hosted runner",
+		},
+		{
+			name: "Missing RunnerGroupID",
+			request: &HostedRunnerRequest{
+				Name: "My Hosted runner",
+				Image: HostedRunnerImage{
+					ID:      "ubuntu-latest",
+					Source:  "github",
+					Version: "latest",
+				},
+				Size: "4-core",
+			},
+			expectedError: "validation failed: runner group ID is required for creating a hosted runner",
+		},
+		{
+			name: "ImageVersion Set Instead of Image Struct",
+			request: &HostedRunnerRequest{
+				Name: "My Hosted runner",
+				Image: HostedRunnerImage{
+					ID:      "ubuntu-latest",
+					Source:  "github",
+					Version: "latest",
+				},
+				RunnerGroupID:  1,
+				Size:           "4-core",
+				ImageVersion:   "1.0.0",
+				MaximumRunners: 50,
+				EnableStaticIP: false,
+			},
+			expectedError: "validation failed: imageVersion should not be set directly; use the Image struct to specify image details",
+		},
+	}
+
+	for _, tt := range testCases {
+		_, _, err := client.Enterprise.CreateHostedRunner(ctx, "o", tt.request)
+		if err == nil || err.Error() != tt.expectedError {
+			t.Errorf("expected error: %v, got: %v", tt.expectedError, err)
+		}
 	}
 
 	const methodName = "CreateHostedRunner"
@@ -641,18 +721,19 @@ func TestEnterpriseService_UpdateHostedRunner(t *testing.T) {
 				}
 			],
 			"last_active_on": "2023-04-26T15:23:37Z"
-			}`)
+		}`)
 	})
 
+	// Test for a valid update without `Size`
 	ctx := context.Background()
-	req := UpdateHostedRunnerRequest{
+	validReq := HostedRunnerRequest{
 		Name:           "My larger runner",
 		RunnerGroupID:  1,
 		MaximumRunners: 50,
 		EnableStaticIP: false,
 		ImageVersion:   "1.0.0",
 	}
-	hostedRunner, _, err := client.Enterprise.UpdateHostedRunner(ctx, "o", 23, req)
+	hostedRunner, _, err := client.Enterprise.UpdateHostedRunner(ctx, "o", 23, validReq)
 	if err != nil {
 		t.Errorf("Enterprise.UpdateHostedRunner returned error: %v", err)
 	}
@@ -690,14 +771,55 @@ func TestEnterpriseService_UpdateHostedRunner(t *testing.T) {
 		t.Errorf("Enterprise.UpdateHostedRunner returned %+v, want %+v", hostedRunner, want)
 	}
 
+	testCases := []struct {
+		name          string
+		request       HostedRunnerRequest
+		expectedError string
+	}{
+		{
+			name: "Size Set in Update Request",
+			request: HostedRunnerRequest{
+				Name:           "My larger runner",
+				RunnerGroupID:  1,
+				MaximumRunners: 50,
+				EnableStaticIP: false,
+				ImageVersion:   "1.0.0",
+				Size:           "4-core", // Should cause validation error
+			},
+			expectedError: "validation failed: size cannot be updated, API does not support updating size",
+		},
+		{
+			name: "Image Set in Update Request",
+			request: HostedRunnerRequest{
+				Name:           "My larger runner",
+				RunnerGroupID:  1,
+				MaximumRunners: 50,
+				EnableStaticIP: false,
+				ImageVersion:   "1.0.0",
+				Image: HostedRunnerImage{ // Should cause validation error
+					ID:      "ubuntu-latest",
+					Source:  "github",
+					Version: "latest",
+				},
+			},
+			expectedError: "validation failed: image struct should not be set directly; use the ImageVersion to specify version details",
+		},
+	}
+	for _, tt := range testCases {
+		_, _, err := client.Enterprise.UpdateHostedRunner(ctx, "o", 23, tt.request)
+		if err == nil || err.Error() != tt.expectedError {
+			t.Errorf("expected error: %v, got: %v", tt.expectedError, err)
+		}
+	}
+
 	const methodName = "UpdateHostedRunner"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.UpdateHostedRunner(ctx, "\n", 23, req)
+		_, _, err = client.Enterprise.UpdateHostedRunner(ctx, "\n", 23, validReq)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.UpdateHostedRunner(ctx, "o", 23, req)
+		got, resp, err := client.Enterprise.UpdateHostedRunner(ctx, "o", 23, validReq)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
