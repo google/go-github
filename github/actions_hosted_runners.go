@@ -315,6 +315,12 @@ func (s *ActionsService) GetHostedRunner(ctx context.Context, org string, runner
 	return hostedRunner, resp, nil
 }
 
+// validateUpdateHostedRunnerRequest validates the provided HostedRunnerRequest to ensure
+// that no disallowed updates are made for a hosted runner update request.
+//
+// If any of these conditions are violated, an appropriate error message is returned.
+// Otherwise, nil is returned, indicating the request is valid for an update.
+
 func validateUpdateHostedRunnerRequest(request *HostedRunnerRequest) error {
 	if request.Size != "" {
 		return errors.New("size cannot be updated, API does not support updating size")
