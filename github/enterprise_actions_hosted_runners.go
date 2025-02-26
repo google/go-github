@@ -42,8 +42,7 @@ func (s *EnterpriseService) ListHostedRunners(ctx context.Context, enterprise st
 //
 //meta:operation POST /enterprises/{enterprise}/actions/hosted-runners
 func (s *EnterpriseService) CreateHostedRunner(ctx context.Context, enterprise string, request *HostedRunnerRequest) (*HostedRunner, *Response, error) {
-	err := validateCreateHostedRunnerRequest(request)
-	if err != nil {
+	if err := validateCreateHostedRunnerRequest(request); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
@@ -194,8 +193,7 @@ func (s *EnterpriseService) GetHostedRunner(ctx context.Context, enterprise stri
 //
 //meta:operation PATCH /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
 func (s *EnterpriseService) UpdateHostedRunner(ctx context.Context, enterprise string, runnerID int64, updateReq HostedRunnerRequest) (*HostedRunner, *Response, error) {
-	err := validateUpdateHostedRunnerRequest(&updateReq)
-	if err != nil {
+	if err := validateUpdateHostedRunnerRequest(&updateReq); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 

@@ -131,8 +131,7 @@ func validateCreateHostedRunnerRequest(request *HostedRunnerRequest) error {
 //
 //meta:operation POST /orgs/{org}/actions/hosted-runners
 func (s *ActionsService) CreateHostedRunner(ctx context.Context, org string, request *HostedRunnerRequest) (*HostedRunner, *Response, error) {
-	err := validateCreateHostedRunnerRequest(request)
-	if err != nil {
+	if err := validateCreateHostedRunnerRequest(request); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
@@ -336,8 +335,7 @@ func validateUpdateHostedRunnerRequest(request *HostedRunnerRequest) error {
 //
 //meta:operation PATCH /orgs/{org}/actions/hosted-runners/{hosted_runner_id}
 func (s *ActionsService) UpdateHostedRunner(ctx context.Context, org string, runnerID int64, updateReq HostedRunnerRequest) (*HostedRunner, *Response, error) {
-	err := validateUpdateHostedRunnerRequest(&updateReq)
-	if err != nil {
+	if err := validateUpdateHostedRunnerRequest(&updateReq); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
