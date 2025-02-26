@@ -833,7 +833,7 @@ func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, ow
 
 // GetAutomatedSecurityFixes checks if the automated security fixes for a repository are enabled.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#check-if-automated-security-fixes-are-enabled-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#check-if-dependabot-security-updates-are-enabled-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/automated-security-fixes
 func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*AutomatedSecurityFixes, *Response, error) {
@@ -854,7 +854,7 @@ func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, own
 
 // EnableAutomatedSecurityFixes enables the automated security fixes for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#enable-automated-security-fixes
+// GitHub API docs: https://docs.github.com/rest/repos/repos#enable-dependabot-security-updates
 //
 //meta:operation PUT /repos/{owner}/{repo}/automated-security-fixes
 func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error) {
@@ -870,7 +870,7 @@ func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, 
 
 // DisableAutomatedSecurityFixes disables vulnerability alerts and the dependency graph for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#disable-automated-security-fixes
+// GitHub API docs: https://docs.github.com/rest/repos/repos#disable-dependabot-security-updates
 //
 //meta:operation DELETE /repos/{owner}/{repo}/automated-security-fixes
 func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error) {

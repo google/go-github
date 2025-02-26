@@ -13180,6 +13180,173 @@ func TestHookStats_GetTotalHooks(tt *testing.T) {
 	h.GetTotalHooks()
 }
 
+func TestHostedRunner_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	h := &HostedRunner{ID: &zeroValue}
+	h.GetID()
+	h = &HostedRunner{}
+	h.GetID()
+	h = nil
+	h.GetID()
+}
+
+func TestHostedRunner_GetImageDetails(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunner{}
+	h.GetImageDetails()
+	h = nil
+	h.GetImageDetails()
+}
+
+func TestHostedRunner_GetLastActiveOn(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	h := &HostedRunner{LastActiveOn: &zeroValue}
+	h.GetLastActiveOn()
+	h = &HostedRunner{}
+	h.GetLastActiveOn()
+	h = nil
+	h.GetLastActiveOn()
+}
+
+func TestHostedRunner_GetMachineSizeDetails(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunner{}
+	h.GetMachineSizeDetails()
+	h = nil
+	h.GetMachineSizeDetails()
+}
+
+func TestHostedRunner_GetMaximumRunners(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	h := &HostedRunner{MaximumRunners: &zeroValue}
+	h.GetMaximumRunners()
+	h = &HostedRunner{}
+	h.GetMaximumRunners()
+	h = nil
+	h.GetMaximumRunners()
+}
+
+func TestHostedRunner_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunner{Name: &zeroValue}
+	h.GetName()
+	h = &HostedRunner{}
+	h.GetName()
+	h = nil
+	h.GetName()
+}
+
+func TestHostedRunner_GetPlatform(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunner{Platform: &zeroValue}
+	h.GetPlatform()
+	h = &HostedRunner{}
+	h.GetPlatform()
+	h = nil
+	h.GetPlatform()
+}
+
+func TestHostedRunner_GetPublicIPEnabled(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	h := &HostedRunner{PublicIPEnabled: &zeroValue}
+	h.GetPublicIPEnabled()
+	h = &HostedRunner{}
+	h.GetPublicIPEnabled()
+	h = nil
+	h.GetPublicIPEnabled()
+}
+
+func TestHostedRunner_GetRunnerGroupID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	h := &HostedRunner{RunnerGroupID: &zeroValue}
+	h.GetRunnerGroupID()
+	h = &HostedRunner{}
+	h.GetRunnerGroupID()
+	h = nil
+	h.GetRunnerGroupID()
+}
+
+func TestHostedRunner_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunner{Status: &zeroValue}
+	h.GetStatus()
+	h = &HostedRunner{}
+	h.GetStatus()
+	h = nil
+	h.GetStatus()
+}
+
+func TestHostedRunnerImageDetail_GetDisplayName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerImageDetail{DisplayName: &zeroValue}
+	h.GetDisplayName()
+	h = &HostedRunnerImageDetail{}
+	h.GetDisplayName()
+	h = nil
+	h.GetDisplayName()
+}
+
+func TestHostedRunnerImageDetail_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerImageDetail{ID: &zeroValue}
+	h.GetID()
+	h = &HostedRunnerImageDetail{}
+	h.GetID()
+	h = nil
+	h.GetID()
+}
+
+func TestHostedRunnerImageDetail_GetSizeGB(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	h := &HostedRunnerImageDetail{SizeGB: &zeroValue}
+	h.GetSizeGB()
+	h = &HostedRunnerImageDetail{}
+	h.GetSizeGB()
+	h = nil
+	h.GetSizeGB()
+}
+
+func TestHostedRunnerImageDetail_GetSource(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerImageDetail{Source: &zeroValue}
+	h.GetSource()
+	h = &HostedRunnerImageDetail{}
+	h.GetSource()
+	h = nil
+	h.GetSource()
+}
+
+func TestHostedRunnerImageDetail_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerImageDetail{Version: &zeroValue}
+	h.GetVersion()
+	h = &HostedRunnerImageDetail{}
+	h.GetVersion()
+	h = nil
+	h.GetVersion()
+}
+
+func TestHostedRunnerPublicIPLimits_GetPublicIPs(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerPublicIPLimits{}
+	h.GetPublicIPs()
+	h = nil
+	h.GetPublicIPs()
+}
+
 func TestIDPGroup_GetGroupDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
