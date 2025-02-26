@@ -133,7 +133,7 @@ func validateCreateHostedRunnerRequest(request *HostedRunnerRequest) error {
 func (s *ActionsService) CreateHostedRunner(ctx context.Context, org string, request *HostedRunnerRequest) (*HostedRunner, *Response, error) {
 	err := validateCreateHostedRunnerRequest(request)
 	if err != nil {
-		return nil, nil, errors.New("validation failed: " + err.Error())
+		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
 	u := fmt.Sprintf("orgs/%v/actions/hosted-runners", org)
@@ -338,7 +338,7 @@ func validateUpdateHostedRunnerRequest(request *HostedRunnerRequest) error {
 func (s *ActionsService) UpdateHostedRunner(ctx context.Context, org string, runnerID int64, updateReq HostedRunnerRequest) (*HostedRunner, *Response, error) {
 	err := validateUpdateHostedRunnerRequest(&updateReq)
 	if err != nil {
-		return nil, nil, errors.New("validation failed: " + err.Error())
+		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
 	u := fmt.Sprintf("orgs/%v/actions/hosted-runners/%v", org, runnerID)

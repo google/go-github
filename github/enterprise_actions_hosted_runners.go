@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"errors"
 	"fmt"
 )
 
@@ -45,7 +44,7 @@ func (s *EnterpriseService) ListHostedRunners(ctx context.Context, enterprise st
 func (s *EnterpriseService) CreateHostedRunner(ctx context.Context, enterprise string, request *HostedRunnerRequest) (*HostedRunner, *Response, error) {
 	err := validateCreateHostedRunnerRequest(request)
 	if err != nil {
-		return nil, nil, errors.New("validation failed: " + err.Error())
+		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners", enterprise)
@@ -197,7 +196,7 @@ func (s *EnterpriseService) GetHostedRunner(ctx context.Context, enterprise stri
 func (s *EnterpriseService) UpdateHostedRunner(ctx context.Context, enterprise string, runnerID int64, updateReq HostedRunnerRequest) (*HostedRunner, *Response, error) {
 	err := validateUpdateHostedRunnerRequest(&updateReq)
 	if err != nil {
-		return nil, nil, errors.New("validation failed: " + err.Error())
+		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/%v", enterprise, runnerID)
