@@ -18445,6 +18445,17 @@ func TestMergeGroupEvent_GetOrg(tt *testing.T) {
 	m.GetOrg()
 }
 
+func TestMergeGroupEvent_GetReason(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	m := &MergeGroupEvent{Reason: &zeroValue}
+	m.GetReason()
+	m = &MergeGroupEvent{}
+	m.GetReason()
+	m = nil
+	m.GetReason()
+}
+
 func TestMergeGroupEvent_GetRepo(tt *testing.T) {
 	tt.Parallel()
 	m := &MergeGroupEvent{}

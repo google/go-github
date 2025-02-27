@@ -14238,6 +14238,14 @@ func (m *MergeGroupEvent) GetOrg() *Organization {
 	return m.Org
 }
 
+// GetReason returns the Reason field if it's non-nil, zero value otherwise.
+func (m *MergeGroupEvent) GetReason() string {
+	if m == nil || m.Reason == nil {
+		return ""
+	}
+	return *m.Reason
+}
+
 // GetRepo returns the Repo field.
 func (m *MergeGroupEvent) GetRepo() *Repository {
 	if m == nil {
