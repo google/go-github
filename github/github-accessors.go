@@ -8606,6 +8606,110 @@ func (e *Enterprise) GetWebsiteURL() string {
 	return *e.WebsiteURL
 }
 
+// GetComputeService returns the ComputeService field.
+func (e *EnterpriseNetworkConfiguration) GetComputeService() *ComputeService {
+	if e == nil {
+		return nil
+	}
+	return e.ComputeService
+}
+
+// GetCreatedOn returns the CreatedOn field if it's non-nil, zero value otherwise.
+func (e *EnterpriseNetworkConfiguration) GetCreatedOn() Timestamp {
+	if e == nil || e.CreatedOn == nil {
+		return Timestamp{}
+	}
+	return *e.CreatedOn
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseNetworkConfiguration) GetID() string {
+	if e == nil || e.ID == nil {
+		return ""
+	}
+	return *e.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (e *EnterpriseNetworkConfiguration) GetName() string {
+	if e == nil || e.Name == nil {
+		return ""
+	}
+	return *e.Name
+}
+
+// GetComputeService returns the ComputeService field.
+func (e *EnterpriseNetworkConfigurationRequest) GetComputeService() *ComputeService {
+	if e == nil {
+		return nil
+	}
+	return e.ComputeService
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (e *EnterpriseNetworkConfigurationRequest) GetName() string {
+	if e == nil || e.Name == nil {
+		return ""
+	}
+	return *e.Name
+}
+
+// GetNetworkSettingsIDs returns the NetworkSettingsIDs field if it's non-nil, zero value otherwise.
+func (e *EnterpriseNetworkConfigurationRequest) GetNetworkSettingsIDs() []string {
+	if e == nil || e.NetworkSettingsIDs == nil {
+		return nil
+	}
+	return *e.NetworkSettingsIDs
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (e *EnterpriseNetworkConfigurations) GetTotalCount() int64 {
+	if e == nil || e.TotalCount == nil {
+		return 0
+	}
+	return *e.TotalCount
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseNetworkSettingsResource) GetID() string {
+	if e == nil || e.ID == nil {
+		return ""
+	}
+	return *e.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (e *EnterpriseNetworkSettingsResource) GetName() string {
+	if e == nil || e.Name == nil {
+		return ""
+	}
+	return *e.Name
+}
+
+// GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseNetworkSettingsResource) GetNetworkConfigurationID() string {
+	if e == nil || e.NetworkConfigurationID == nil {
+		return ""
+	}
+	return *e.NetworkConfigurationID
+}
+
+// GetRegion returns the Region field if it's non-nil, zero value otherwise.
+func (e *EnterpriseNetworkSettingsResource) GetRegion() string {
+	if e == nil || e.Region == nil {
+		return ""
+	}
+	return *e.Region
+}
+
+// GetSubnetID returns the SubnetID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseNetworkSettingsResource) GetSubnetID() string {
+	if e == nil || e.SubnetID == nil {
+		return ""
+	}
+	return *e.SubnetID
+}
+
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
 func (e *EnterpriseRunnerGroup) GetAllowsPublicRepositories() bool {
 	if e == nil || e.AllowsPublicRepositories == nil {
