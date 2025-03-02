@@ -118,7 +118,7 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 	req := EnterpriseNetworkConfigurationRequest{
 		Name:           Ptr("configuration_one"),
 		ComputeService: Ptr(ComputeService("actions")),
-		NetworkSettingsIDs: &[]string{
+		NetworkSettingsIDs: []string{
 			"23456789ABDCEF1",
 			"3456789ABDCEF12",
 		},
@@ -225,7 +225,7 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 	ctx := context.Background()
 	req := EnterpriseNetworkConfigurationRequest{
 		Name: Ptr("updated_configuration_one"),
-		NetworkSettingsIDs: &[]string{
+		NetworkSettingsIDs: []string{
 			"456789ABDCEF123",
 			"56789ABDCEF1234",
 		},

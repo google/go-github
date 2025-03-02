@@ -11178,17 +11178,6 @@ func TestEnterpriseNetworkConfigurationRequest_GetName(tt *testing.T) {
 	e.GetName()
 }
 
-func TestEnterpriseNetworkConfigurationRequest_GetNetworkSettingsIDs(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue []string
-	e := &EnterpriseNetworkConfigurationRequest{NetworkSettingsIDs: &zeroValue}
-	e.GetNetworkSettingsIDs()
-	e = &EnterpriseNetworkConfigurationRequest{}
-	e.GetNetworkSettingsIDs()
-	e = nil
-	e.GetNetworkSettingsIDs()
-}
-
 func TestEnterpriseNetworkConfigurations_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64

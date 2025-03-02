@@ -8654,14 +8654,6 @@ func (e *EnterpriseNetworkConfigurationRequest) GetName() string {
 	return *e.Name
 }
 
-// GetNetworkSettingsIDs returns the NetworkSettingsIDs field if it's non-nil, zero value otherwise.
-func (e *EnterpriseNetworkConfigurationRequest) GetNetworkSettingsIDs() []string {
-	if e == nil || e.NetworkSettingsIDs == nil {
-		return nil
-	}
-	return *e.NetworkSettingsIDs
-}
-
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (e *EnterpriseNetworkConfigurations) GetTotalCount() int64 {
 	if e == nil || e.TotalCount == nil {
