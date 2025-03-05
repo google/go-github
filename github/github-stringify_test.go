@@ -1513,12 +1513,13 @@ func TestRate_String(t *testing.T) {
 func TestReaction_String(t *testing.T) {
 	t.Parallel()
 	v := Reaction{
-		ID:      Ptr(int64(0)),
-		User:    &User{},
-		NodeID:  Ptr(""),
-		Content: Ptr(""),
+		ID:        Ptr(int64(0)),
+		User:      &User{},
+		NodeID:    Ptr(""),
+		Content:   Ptr(""),
+		CreatedAt: &Timestamp{},
 	}
-	want := `github.Reaction{ID:0, User:github.User{}, NodeID:"", Content:""}`
+	want := `github.Reaction{ID:0, User:github.User{}, NodeID:"", Content:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("Reaction.String = %v, want %v", got, want)
 	}

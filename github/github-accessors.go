@@ -20318,6 +20318,14 @@ func (r *Reaction) GetContent() string {
 	return *r.Content
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (r *Reaction) GetCreatedAt() Timestamp {
+	if r == nil || r.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *r.CreatedAt
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (r *Reaction) GetID() int64 {
 	if r == nil || r.ID == nil {
