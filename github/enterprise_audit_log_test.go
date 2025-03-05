@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -60,7 +61,7 @@ func TestEnterpriseService_GetAuditLog(t *testing.T) {
 			Action:     Ptr("workflows.completed_workflow_run"),
 			Actor:      Ptr("testactor"),
 			CreatedAt:  &Timestamp{timestamp},
-			Org:        Ptr("o"),
+			Org:        json.RawMessage(`"o"`),
 			AdditionalFields: map[string]interface{}{
 				"completed_at":    "2021-03-07T00:35:08.000Z",
 				"conclusion":      "success",

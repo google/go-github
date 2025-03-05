@@ -30,24 +30,24 @@ type ActorLocation struct {
 // in AdditionalFields.
 // For a list of actions see - https://docs.github.com/github/setting-up-and-managing-organizations-and-teams/reviewing-the-audit-log-for-your-organization#audit-log-actions
 type AuditEntry struct {
-	Action                   *string        `json:"action,omitempty"` // The name of the action that was performed, for example `user.login` or `repo.create`.
-	Actor                    *string        `json:"actor,omitempty"`  // The actor who performed the action.
-	ActorID                  *int64         `json:"actor_id,omitempty"`
-	ActorLocation            *ActorLocation `json:"actor_location,omitempty"`
-	Business                 *string        `json:"business,omitempty"`
-	BusinessID               *int64         `json:"business_id,omitempty"`
-	CreatedAt                *Timestamp     `json:"created_at,omitempty"`
-	DocumentID               *string        `json:"_document_id,omitempty"`
-	ExternalIdentityNameID   *string        `json:"external_identity_nameid,omitempty"`
-	ExternalIdentityUsername *string        `json:"external_identity_username,omitempty"`
-	HashedToken              *string        `json:"hashed_token,omitempty"`
-	Org                      *string        `json:"org,omitempty"`
-	OrgID                    *int64         `json:"org_id,omitempty"`
-	Timestamp                *Timestamp     `json:"@timestamp,omitempty"` // The time the audit log event occurred, given as a [Unix timestamp](http://en.wikipedia.org/wiki/Unix_time).
-	TokenID                  *int64         `json:"token_id,omitempty"`
-	TokenScopes              *string        `json:"token_scopes,omitempty"`
-	User                     *string        `json:"user,omitempty"` // The user that was affected by the action performed (if available).
-	UserID                   *int64         `json:"user_id,omitempty"`
+	Action                   *string         `json:"action,omitempty"` // The name of the action that was performed, for example `user.login` or `repo.create`.
+	Actor                    *string         `json:"actor,omitempty"`  // The actor who performed the action.
+	ActorID                  *int64          `json:"actor_id,omitempty"`
+	ActorLocation            *ActorLocation  `json:"actor_location,omitempty"`
+	Business                 *string         `json:"business,omitempty"`
+	BusinessID               *int64          `json:"business_id,omitempty"`
+	CreatedAt                *Timestamp      `json:"created_at,omitempty"`
+	DocumentID               *string         `json:"_document_id,omitempty"`
+	ExternalIdentityNameID   *string         `json:"external_identity_nameid,omitempty"`
+	ExternalIdentityUsername *string         `json:"external_identity_username,omitempty"`
+	HashedToken              *string         `json:"hashed_token,omitempty"`
+	Org                      json.RawMessage `json:"org,omitempty"`
+	OrgID                    json.RawMessage `json:"org_id,omitempty"`
+	Timestamp                *Timestamp      `json:"@timestamp,omitempty"` // The time the audit log event occurred, given as a [Unix timestamp](http://en.wikipedia.org/wiki/Unix_time).
+	TokenID                  *int64          `json:"token_id,omitempty"`
+	TokenScopes              *string         `json:"token_scopes,omitempty"`
+	User                     *string         `json:"user,omitempty"` // The user that was affected by the action performed (if available).
+	UserID                   *int64          `json:"user_id,omitempty"`
 
 	// Some events types have a data field that contains additional information about the event.
 	Data map[string]interface{} `json:"data,omitempty"`

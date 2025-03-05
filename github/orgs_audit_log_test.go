@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -93,6 +94,8 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	}
 	timestamp := time.Unix(0, 1615077308538*1e6)
 
+	orgID, _ := json.Marshal(Ptr(int64(1)))
+
 	want := []*AuditEntry{
 		{
 			Timestamp:  &Timestamp{timestamp},
@@ -104,8 +107,8 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 			},
 			CreatedAt:   &Timestamp{timestamp},
 			HashedToken: Ptr("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-			Org:         Ptr("o"),
-			OrgID:       Ptr(int64(1)),
+			Org:         json.RawMessage(`"o"`),
+			OrgID:       orgID,
 			TokenID:     Ptr(int64(1)),
 			TokenScopes: Ptr("gist,repo:read"),
 			AdditionalFields: map[string]interface{}{
@@ -225,6 +228,8 @@ func TestAuditEntry_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &AuditEntry{}, "{}")
 
+	orgID, _ := json.Marshal(Ptr(int64(1)))
+
 	u := &AuditEntry{
 		Action:                   Ptr("a"),
 		Actor:                    Ptr("ac"),
@@ -235,8 +240,8 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		ExternalIdentityNameID:   Ptr("ein"),
 		ExternalIdentityUsername: Ptr("eiu"),
 		HashedToken:              Ptr("ht"),
-		Org:                      Ptr("o"),
-		OrgID:                    Ptr(int64(1)),
+		Org:                      json.RawMessage(`"o"`),
+		OrgID:                    orgID,
 		Timestamp:                &Timestamp{referenceTime},
 		TokenID:                  Ptr(int64(1)),
 		TokenScopes:              Ptr("ts"),

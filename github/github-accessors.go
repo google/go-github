@@ -1166,22 +1166,6 @@ func (a *AuditEntry) GetHashedToken() string {
 	return *a.HashedToken
 }
 
-// GetOrg returns the Org field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetOrg() string {
-	if a == nil || a.Org == nil {
-		return ""
-	}
-	return *a.Org
-}
-
-// GetOrgID returns the OrgID field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetOrgID() int64 {
-	if a == nil || a.OrgID == nil {
-		return 0
-	}
-	return *a.OrgID
-}
-
 // GetTimestamp returns the Timestamp field if it's non-nil, zero value otherwise.
 func (a *AuditEntry) GetTimestamp() Timestamp {
 	if a == nil || a.Timestamp == nil {
