@@ -26,7 +26,8 @@ type Reaction struct {
 	// Content is the type of reaction.
 	// Possible values are:
 	//     "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
-	Content *string `json:"content,omitempty"`
+	Content   *string    `json:"content,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
 }
 
 // Reactions represents a summary of GitHub reactions.

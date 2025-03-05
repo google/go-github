@@ -26151,6 +26151,17 @@ func TestReaction_GetContent(tt *testing.T) {
 	r.GetContent()
 }
 
+func TestReaction_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	r := &Reaction{CreatedAt: &zeroValue}
+	r.GetCreatedAt()
+	r = &Reaction{}
+	r.GetCreatedAt()
+	r = nil
+	r.GetCreatedAt()
+}
+
 func TestReaction_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
