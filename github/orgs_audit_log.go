@@ -89,7 +89,7 @@ func (a *AuditEntry) GetOrgID() (orgID int64, ok bool) {
 	return orgID, true
 }
 
-// GetRawOrg returns the OrgID field as a json.RawMessage.
+// GetRawOrgID returns the OrgID field as a json.RawMessage.
 func (a *AuditEntry) GetRawOrgID() json.RawMessage {
 	if a == nil || a.OrgID == nil {
 		return json.RawMessage{}

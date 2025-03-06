@@ -427,6 +427,8 @@ func TestAuditEntry_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 func TestAuditEntry_Getters(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name         string
 		entry        *AuditEntry
@@ -487,6 +489,7 @@ func TestAuditEntry_Getters(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			gotOrg, gotOrgOk := tt.entry.GetOrg()
 			if gotOrg != tt.wantOrg || gotOrgOk != tt.wantOrgOk {
 				t.Errorf("GetOrg() = %v, %v; want %v, %v", gotOrg, gotOrgOk, tt.wantOrg, tt.wantOrgOk)
