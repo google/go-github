@@ -426,3 +426,86 @@ func TestAuditEntry_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+func TestAuditEntry_Getters(t *testing.T) {
+	tests := []struct {
+		name         string
+		entry        *AuditEntry
+		wantOrg      string
+		wantOrgOk    bool
+		wantRawOrg   json.RawMessage
+		wantOrgID    int64
+		wantOrgIDOk  bool
+		wantRawOrgID json.RawMessage
+	}{
+		{
+			name:         "nil entry",
+			entry:        nil,
+			wantOrg:      "",
+			wantOrgOk:    false,
+			wantRawOrg:   json.RawMessage{},
+			wantOrgID:    0,
+			wantOrgIDOk:  false,
+			wantRawOrgID: json.RawMessage{},
+		},
+		{
+			name:         "nil Org field",
+			entry:        &AuditEntry{},
+			wantOrg:      "",
+			wantOrgOk:    false,
+			wantRawOrg:   json.RawMessage{},
+			wantOrgID:    0,
+			wantOrgIDOk:  false,
+			wantRawOrgID: json.RawMessage{},
+		},
+		{
+			name: "valid Org field",
+			entry: &AuditEntry{
+				Org:   json.RawMessage(`"testorg"`),
+				OrgID: json.RawMessage(`1`),
+			},
+			wantOrg:      "testorg",
+			wantOrgOk:    true,
+			wantRawOrg:   json.RawMessage(`"testorg"`),
+			wantOrgID:    1,
+			wantOrgIDOk:  true,
+			wantRawOrgID: json.RawMessage(`1`),
+		},
+		{
+			name: "invalid Org field",
+			entry: &AuditEntry{
+				Org:   json.RawMessage(`{"invalid": "json"}`),
+				OrgID: json.RawMessage(`"invalid"`),
+			},
+			wantOrg:      "",
+			wantOrgOk:    false,
+			wantRawOrg:   json.RawMessage(`{"invalid": "json"}`),
+			wantOrgID:    0,
+			wantOrgIDOk:  false,
+			wantRawOrgID: json.RawMessage(`"invalid"`),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotOrg, gotOrgOk := tt.entry.GetOrg()
+			if gotOrg != tt.wantOrg || gotOrgOk != tt.wantOrgOk {
+				t.Errorf("GetOrg() = %v, %v; want %v, %v", gotOrg, gotOrgOk, tt.wantOrg, tt.wantOrgOk)
+			}
+
+			gotRawOrg := tt.entry.GetRawOrg()
+			if string(gotRawOrg) != string(tt.wantRawOrg) {
+				t.Errorf("GetRawOrg() = %v; want %v", string(gotRawOrg), string(tt.wantRawOrg))
+			}
+
+			gotOrgID, gotOrgIDOk := tt.entry.GetOrgID()
+			if gotOrgID != tt.wantOrgID || gotOrgIDOk != tt.wantOrgIDOk {
+				t.Errorf("GetOrgID() = %v, %v; want %v, %v", gotOrgID, gotOrgIDOk, tt.wantOrgID, tt.wantOrgIDOk)
+			}
+
+			gotRawOrgID := tt.entry.GetRawOrgID()
+			if string(gotRawOrgID) != string(tt.wantRawOrgID) {
+				t.Errorf("GetRawOrgID() = %v; want %v", string(gotRawOrgID), string(tt.wantRawOrgID))
+			}
+		})
+	}
+}

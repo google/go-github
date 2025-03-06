@@ -56,6 +56,48 @@ type AuditEntry struct {
 	AdditionalFields map[string]interface{} `json:"-"`
 }
 
+// GetOrg returns the Org field, as a string, if it's valid.
+func (a *AuditEntry) GetOrg() (org string, ok bool) {
+	if a == nil || a.Org == nil {
+		return "", false
+	}
+	if err := json.Unmarshal([]byte(a.Org), &org); err != nil {
+		return "", false
+	}
+
+	return org, true
+}
+
+// GetRawOrg returns the Org field as a json.RawMessage.
+func (a *AuditEntry) GetRawOrg() json.RawMessage {
+	if a == nil || a.Org == nil {
+		return json.RawMessage{}
+	}
+
+	return a.Org
+}
+
+// GetOrgID returns the OrgID field, as an int64, if it's valid.
+func (a *AuditEntry) GetOrgID() (orgID int64, ok bool) {
+	if a == nil || a.OrgID == nil {
+		return 0, false
+	}
+	if err := json.Unmarshal([]byte(a.OrgID), &orgID); err != nil {
+		return 0, false
+	}
+
+	return orgID, true
+}
+
+// GetRawOrg returns the OrgID field as a json.RawMessage.
+func (a *AuditEntry) GetRawOrgID() json.RawMessage {
+	if a == nil || a.OrgID == nil {
+		return json.RawMessage{}
+	}
+
+	return a.OrgID
+}
+
 func (a *AuditEntry) UnmarshalJSON(data []byte) error {
 	type entryAlias AuditEntry
 	var v entryAlias
