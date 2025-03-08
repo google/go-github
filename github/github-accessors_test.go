@@ -20373,6 +20373,28 @@ func TestPackage_GetCreatedAt(tt *testing.T) {
 	p.GetCreatedAt()
 }
 
+func TestPackage_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &Package{Description: &zeroValue}
+	p.GetDescription()
+	p = &Package{}
+	p.GetDescription()
+	p = nil
+	p.GetDescription()
+}
+
+func TestPackage_GetEcosystem(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &Package{Ecosystem: &zeroValue}
+	p.GetEcosystem()
+	p = &Package{}
+	p.GetEcosystem()
+	p = nil
+	p.GetEcosystem()
+}
+
 func TestPackage_GetHTMLURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -20404,6 +20426,17 @@ func TestPackage_GetName(tt *testing.T) {
 	p.GetName()
 	p = nil
 	p.GetName()
+}
+
+func TestPackage_GetNamespace(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &Package{Namespace: &zeroValue}
+	p.GetNamespace()
+	p = &Package{}
+	p.GetNamespace()
+	p = nil
+	p.GetNamespace()
 }
 
 func TestPackage_GetOwner(tt *testing.T) {
@@ -20439,14 +20472,6 @@ func TestPackage_GetRegistry(tt *testing.T) {
 	p.GetRegistry()
 	p = nil
 	p.GetRegistry()
-}
-
-func TestPackage_GetRepository(tt *testing.T) {
-	tt.Parallel()
-	p := &Package{}
-	p.GetRepository()
-	p = nil
-	p.GetRepository()
 }
 
 func TestPackage_GetUpdatedAt(tt *testing.T) {
@@ -20544,12 +20569,56 @@ func TestPackageEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 }
 
-func TestPackageFile_GetAuthor(tt *testing.T) {
+func TestPackageEventContainerMetadata_GetLabels(tt *testing.T) {
 	tt.Parallel()
-	p := &PackageFile{}
-	p.GetAuthor()
+	zeroValue := map[string]any{}
+	p := &PackageEventContainerMetadata{Labels: zeroValue}
+	p.GetLabels()
+	p = &PackageEventContainerMetadata{}
+	p.GetLabels()
 	p = nil
-	p.GetAuthor()
+	p.GetLabels()
+}
+
+func TestPackageEventContainerMetadata_GetManifest(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	p := &PackageEventContainerMetadata{Manifest: zeroValue}
+	p.GetManifest()
+	p = &PackageEventContainerMetadata{}
+	p.GetManifest()
+	p = nil
+	p.GetManifest()
+}
+
+func TestPackageEventContainerMetadata_GetTag(tt *testing.T) {
+	tt.Parallel()
+	p := &PackageEventContainerMetadata{}
+	p.GetTag()
+	p = nil
+	p.GetTag()
+}
+
+func TestPackageEventContainerMetadataTag_GetDigest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageEventContainerMetadataTag{Digest: &zeroValue}
+	p.GetDigest()
+	p = &PackageEventContainerMetadataTag{}
+	p.GetDigest()
+	p = nil
+	p.GetDigest()
+}
+
+func TestPackageEventContainerMetadataTag_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageEventContainerMetadataTag{Name: &zeroValue}
+	p.GetName()
+	p = &PackageEventContainerMetadataTag{}
+	p.GetName()
+	p = nil
+	p.GetName()
 }
 
 func TestPackageFile_GetContentType(tt *testing.T) {
@@ -20723,6 +20792,424 @@ func TestPackageMetadata_GetPackageType(tt *testing.T) {
 	p.GetPackageType()
 	p = nil
 	p.GetPackageType()
+}
+
+func TestPackageNPMMetadata_GetAuthor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]string
+	p := &PackageNPMMetadata{Author: &zeroValue}
+	p.GetAuthor()
+	p = &PackageNPMMetadata{}
+	p.GetAuthor()
+	p = nil
+	p.GetAuthor()
+}
+
+func TestPackageNPMMetadata_GetBin(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]any
+	p := &PackageNPMMetadata{Bin: &zeroValue}
+	p.GetBin()
+	p = &PackageNPMMetadata{}
+	p.GetBin()
+	p = nil
+	p.GetBin()
+}
+
+func TestPackageNPMMetadata_GetBugs(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]string
+	p := &PackageNPMMetadata{Bugs: &zeroValue}
+	p.GetBugs()
+	p = &PackageNPMMetadata{}
+	p.GetBugs()
+	p = nil
+	p.GetBugs()
+}
+
+func TestPackageNPMMetadata_GetCommitOID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{CommitOID: &zeroValue}
+	p.GetCommitOID()
+	p = &PackageNPMMetadata{}
+	p.GetCommitOID()
+	p = nil
+	p.GetCommitOID()
+}
+
+func TestPackageNPMMetadata_GetContributors(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue []any
+	p := &PackageNPMMetadata{Contributors: &zeroValue}
+	p.GetContributors()
+	p = &PackageNPMMetadata{}
+	p.GetContributors()
+	p = nil
+	p.GetContributors()
+}
+
+func TestPackageNPMMetadata_GetCPU(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue []string
+	p := &PackageNPMMetadata{CPU: &zeroValue}
+	p.GetCPU()
+	p = &PackageNPMMetadata{}
+	p.GetCPU()
+	p = nil
+	p.GetCPU()
+}
+
+func TestPackageNPMMetadata_GetDeletedByID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &PackageNPMMetadata{DeletedByID: &zeroValue}
+	p.GetDeletedByID()
+	p = &PackageNPMMetadata{}
+	p.GetDeletedByID()
+	p = nil
+	p.GetDeletedByID()
+}
+
+func TestPackageNPMMetadata_GetDependencies(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]string
+	p := &PackageNPMMetadata{Dependencies: &zeroValue}
+	p.GetDependencies()
+	p = &PackageNPMMetadata{}
+	p.GetDependencies()
+	p = nil
+	p.GetDependencies()
+}
+
+func TestPackageNPMMetadata_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{Description: &zeroValue}
+	p.GetDescription()
+	p = &PackageNPMMetadata{}
+	p.GetDescription()
+	p = nil
+	p.GetDescription()
+}
+
+func TestPackageNPMMetadata_GetDevDependencies(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]string
+	p := &PackageNPMMetadata{DevDependencies: &zeroValue}
+	p.GetDevDependencies()
+	p = &PackageNPMMetadata{}
+	p.GetDevDependencies()
+	p = nil
+	p.GetDevDependencies()
+}
+
+func TestPackageNPMMetadata_GetDirectories(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]string
+	p := &PackageNPMMetadata{Directories: &zeroValue}
+	p.GetDirectories()
+	p = &PackageNPMMetadata{}
+	p.GetDirectories()
+	p = nil
+	p.GetDirectories()
+}
+
+func TestPackageNPMMetadata_GetDist(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]string
+	p := &PackageNPMMetadata{Dist: &zeroValue}
+	p.GetDist()
+	p = &PackageNPMMetadata{}
+	p.GetDist()
+	p = nil
+	p.GetDist()
+}
+
+func TestPackageNPMMetadata_GetEngines(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]string
+	p := &PackageNPMMetadata{Engines: &zeroValue}
+	p.GetEngines()
+	p = &PackageNPMMetadata{}
+	p.GetEngines()
+	p = nil
+	p.GetEngines()
+}
+
+func TestPackageNPMMetadata_GetFiles(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue []string
+	p := &PackageNPMMetadata{Files: &zeroValue}
+	p.GetFiles()
+	p = &PackageNPMMetadata{}
+	p.GetFiles()
+	p = nil
+	p.GetFiles()
+}
+
+func TestPackageNPMMetadata_GetGitHead(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{GitHead: &zeroValue}
+	p.GetGitHead()
+	p = &PackageNPMMetadata{}
+	p.GetGitHead()
+	p = nil
+	p.GetGitHead()
+}
+
+func TestPackageNPMMetadata_GetHasShrinkwrap(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &PackageNPMMetadata{HasShrinkwrap: &zeroValue}
+	p.GetHasShrinkwrap()
+	p = &PackageNPMMetadata{}
+	p.GetHasShrinkwrap()
+	p = nil
+	p.GetHasShrinkwrap()
+}
+
+func TestPackageNPMMetadata_GetHomepage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{Homepage: &zeroValue}
+	p.GetHomepage()
+	p = &PackageNPMMetadata{}
+	p.GetHomepage()
+	p = nil
+	p.GetHomepage()
+}
+
+func TestPackageNPMMetadata_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{ID: &zeroValue}
+	p.GetID()
+	p = &PackageNPMMetadata{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPackageNPMMetadata_GetInstallationCommand(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{InstallationCommand: &zeroValue}
+	p.GetInstallationCommand()
+	p = &PackageNPMMetadata{}
+	p.GetInstallationCommand()
+	p = nil
+	p.GetInstallationCommand()
+}
+
+func TestPackageNPMMetadata_GetKeywords(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue []string
+	p := &PackageNPMMetadata{Keywords: &zeroValue}
+	p.GetKeywords()
+	p = &PackageNPMMetadata{}
+	p.GetKeywords()
+	p = nil
+	p.GetKeywords()
+}
+
+func TestPackageNPMMetadata_GetLicense(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{License: &zeroValue}
+	p.GetLicense()
+	p = &PackageNPMMetadata{}
+	p.GetLicense()
+	p = nil
+	p.GetLicense()
+}
+
+func TestPackageNPMMetadata_GetMain(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{Main: &zeroValue}
+	p.GetMain()
+	p = &PackageNPMMetadata{}
+	p.GetMain()
+	p = nil
+	p.GetMain()
+}
+
+func TestPackageNPMMetadata_GetMaintainers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue []any
+	p := &PackageNPMMetadata{Maintainers: &zeroValue}
+	p.GetMaintainers()
+	p = &PackageNPMMetadata{}
+	p.GetMaintainers()
+	p = nil
+	p.GetMaintainers()
+}
+
+func TestPackageNPMMetadata_GetMan(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]any
+	p := &PackageNPMMetadata{Man: &zeroValue}
+	p.GetMan()
+	p = &PackageNPMMetadata{}
+	p.GetMan()
+	p = nil
+	p.GetMan()
+}
+
+func TestPackageNPMMetadata_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{Name: &zeroValue}
+	p.GetName()
+	p = &PackageNPMMetadata{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
+func TestPackageNPMMetadata_GetNodeVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{NodeVersion: &zeroValue}
+	p.GetNodeVersion()
+	p = &PackageNPMMetadata{}
+	p.GetNodeVersion()
+	p = nil
+	p.GetNodeVersion()
+}
+
+func TestPackageNPMMetadata_GetNPMUser(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{NPMUser: &zeroValue}
+	p.GetNPMUser()
+	p = &PackageNPMMetadata{}
+	p.GetNPMUser()
+	p = nil
+	p.GetNPMUser()
+}
+
+func TestPackageNPMMetadata_GetNPMVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{NPMVersion: &zeroValue}
+	p.GetNPMVersion()
+	p = &PackageNPMMetadata{}
+	p.GetNPMVersion()
+	p = nil
+	p.GetNPMVersion()
+}
+
+func TestPackageNPMMetadata_GetOptionalDependencies(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]string
+	p := &PackageNPMMetadata{OptionalDependencies: &zeroValue}
+	p.GetOptionalDependencies()
+	p = &PackageNPMMetadata{}
+	p.GetOptionalDependencies()
+	p = nil
+	p.GetOptionalDependencies()
+}
+
+func TestPackageNPMMetadata_GetOS(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue []string
+	p := &PackageNPMMetadata{OS: &zeroValue}
+	p.GetOS()
+	p = &PackageNPMMetadata{}
+	p.GetOS()
+	p = nil
+	p.GetOS()
+}
+
+func TestPackageNPMMetadata_GetPeerDependencies(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]string
+	p := &PackageNPMMetadata{PeerDependencies: &zeroValue}
+	p.GetPeerDependencies()
+	p = &PackageNPMMetadata{}
+	p.GetPeerDependencies()
+	p = nil
+	p.GetPeerDependencies()
+}
+
+func TestPackageNPMMetadata_GetPublishedViaActions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &PackageNPMMetadata{PublishedViaActions: &zeroValue}
+	p.GetPublishedViaActions()
+	p = &PackageNPMMetadata{}
+	p.GetPublishedViaActions()
+	p = nil
+	p.GetPublishedViaActions()
+}
+
+func TestPackageNPMMetadata_GetReadme(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{Readme: &zeroValue}
+	p.GetReadme()
+	p = &PackageNPMMetadata{}
+	p.GetReadme()
+	p = nil
+	p.GetReadme()
+}
+
+func TestPackageNPMMetadata_GetReleaseID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &PackageNPMMetadata{ReleaseID: &zeroValue}
+	p.GetReleaseID()
+	p = &PackageNPMMetadata{}
+	p.GetReleaseID()
+	p = nil
+	p.GetReleaseID()
+}
+
+func TestPackageNPMMetadata_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]string
+	p := &PackageNPMMetadata{Repository: &zeroValue}
+	p.GetRepository()
+	p = &PackageNPMMetadata{}
+	p.GetRepository()
+	p = nil
+	p.GetRepository()
+}
+
+func TestPackageNPMMetadata_GetScripts(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue map[string]any
+	p := &PackageNPMMetadata{Scripts: &zeroValue}
+	p.GetScripts()
+	p = &PackageNPMMetadata{}
+	p.GetScripts()
+	p = nil
+	p.GetScripts()
+}
+
+func TestPackageNPMMetadata_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNPMMetadata{Version: &zeroValue}
+	p.GetVersion()
+	p = &PackageNPMMetadata{}
+	p.GetVersion()
+	p = nil
+	p.GetVersion()
+}
+
+func TestPackageNugetMetadata_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageNugetMetadata{Name: &zeroValue}
+	p.GetName()
+	p = &PackageNugetMetadata{}
+	p.GetName()
+	p = nil
+	p.GetName()
 }
 
 func TestPackageRegistry_GetAboutURL(tt *testing.T) {
@@ -20906,17 +21393,6 @@ func TestPackageVersion_GetAuthor(tt *testing.T) {
 	p.GetAuthor()
 }
 
-func TestPackageVersion_GetBody(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &PackageVersion{Body: &zeroValue}
-	p.GetBody()
-	p = &PackageVersion{}
-	p.GetBody()
-	p = nil
-	p.GetBody()
-}
-
 func TestPackageVersion_GetBodyHTML(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -20928,6 +21404,14 @@ func TestPackageVersion_GetBodyHTML(tt *testing.T) {
 	p.GetBodyHTML()
 }
 
+func TestPackageVersion_GetContainerMetadata(tt *testing.T) {
+	tt.Parallel()
+	p := &PackageVersion{}
+	p.GetContainerMetadata()
+	p = nil
+	p.GetContainerMetadata()
+}
+
 func TestPackageVersion_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -20937,6 +21421,28 @@ func TestPackageVersion_GetCreatedAt(tt *testing.T) {
 	p.GetCreatedAt()
 	p = nil
 	p.GetCreatedAt()
+}
+
+func TestPackageVersion_GetDeletedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PackageVersion{DeletedAt: &zeroValue}
+	p.GetDeletedAt()
+	p = &PackageVersion{}
+	p.GetDeletedAt()
+	p = nil
+	p.GetDeletedAt()
+}
+
+func TestPackageVersion_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageVersion{Description: &zeroValue}
+	p.GetDescription()
+	p = &PackageVersion{}
+	p.GetDescription()
+	p = nil
+	p.GetDescription()
 }
 
 func TestPackageVersion_GetDraft(tt *testing.T) {
@@ -20983,6 +21489,17 @@ func TestPackageVersion_GetInstallationCommand(tt *testing.T) {
 	p.GetInstallationCommand()
 }
 
+func TestPackageVersion_GetLicense(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageVersion{License: &zeroValue}
+	p.GetLicense()
+	p = &PackageVersion{}
+	p.GetLicense()
+	p = nil
+	p.GetLicense()
+}
+
 func TestPackageVersion_GetManifest(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -20992,14 +21509,6 @@ func TestPackageVersion_GetManifest(tt *testing.T) {
 	p.GetManifest()
 	p = nil
 	p.GetManifest()
-}
-
-func TestPackageVersion_GetMetadata(tt *testing.T) {
-	tt.Parallel()
-	p := &PackageVersion{}
-	p.GetMetadata()
-	p = nil
-	p.GetMetadata()
 }
 
 func TestPackageVersion_GetName(tt *testing.T) {
@@ -21013,6 +21522,36 @@ func TestPackageVersion_GetName(tt *testing.T) {
 	p.GetName()
 }
 
+func TestPackageVersion_GetNPMMetadata(tt *testing.T) {
+	tt.Parallel()
+	p := &PackageVersion{}
+	p.GetNPMMetadata()
+	p = nil
+	p.GetNPMMetadata()
+}
+
+func TestPackageVersion_GetNugetMetadata(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue []PackageNugetMetadata
+	p := &PackageVersion{NugetMetadata: &zeroValue}
+	p.GetNugetMetadata()
+	p = &PackageVersion{}
+	p.GetNugetMetadata()
+	p = nil
+	p.GetNugetMetadata()
+}
+
+func TestPackageVersion_GetPackageFiles(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue []PackageFile
+	p := &PackageVersion{PackageFiles: &zeroValue}
+	p.GetPackageFiles()
+	p = &PackageVersion{}
+	p.GetPackageFiles()
+	p = nil
+	p.GetPackageFiles()
+}
+
 func TestPackageVersion_GetPackageHTMLURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -21022,6 +21561,17 @@ func TestPackageVersion_GetPackageHTMLURL(tt *testing.T) {
 	p.GetPackageHTMLURL()
 	p = nil
 	p.GetPackageHTMLURL()
+}
+
+func TestPackageVersion_GetPackageURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageVersion{PackageURL: &zeroValue}
+	p.GetPackageURL()
+	p = &PackageVersion{}
+	p.GetPackageURL()
+	p = nil
+	p.GetPackageURL()
 }
 
 func TestPackageVersion_GetPrerelease(tt *testing.T) {
@@ -21041,6 +21591,28 @@ func TestPackageVersion_GetRelease(tt *testing.T) {
 	p.GetRelease()
 	p = nil
 	p.GetRelease()
+}
+
+func TestPackageVersion_GetRubyMetadata(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	p := &PackageVersion{RubyMetadata: zeroValue}
+	p.GetRubyMetadata()
+	p = &PackageVersion{}
+	p.GetRubyMetadata()
+	p = nil
+	p.GetRubyMetadata()
+}
+
+func TestPackageVersion_GetSourceURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageVersion{SourceURL: &zeroValue}
+	p.GetSourceURL()
+	p = &PackageVersion{}
+	p.GetSourceURL()
+	p = nil
+	p.GetSourceURL()
 }
 
 func TestPackageVersion_GetSummary(tt *testing.T) {
@@ -21118,6 +21690,99 @@ func TestPackageVersion_GetVersion(tt *testing.T) {
 	p.GetVersion()
 	p = nil
 	p.GetVersion()
+}
+
+func TestPackageVersionBody_GetInfo(tt *testing.T) {
+	tt.Parallel()
+	p := &PackageVersionBody{}
+	p.GetInfo()
+	p = nil
+	p.GetInfo()
+}
+
+func TestPackageVersionBody_GetRepo(tt *testing.T) {
+	tt.Parallel()
+	p := &PackageVersionBody{}
+	p.GetRepo()
+	p = nil
+	p.GetRepo()
+}
+
+func TestPackageVersionBodyInfo_GetCollection(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &PackageVersionBodyInfo{Collection: &zeroValue}
+	p.GetCollection()
+	p = &PackageVersionBodyInfo{}
+	p.GetCollection()
+	p = nil
+	p.GetCollection()
+}
+
+func TestPackageVersionBodyInfo_GetMode(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &PackageVersionBodyInfo{Mode: &zeroValue}
+	p.GetMode()
+	p = &PackageVersionBodyInfo{}
+	p.GetMode()
+	p = nil
+	p.GetMode()
+}
+
+func TestPackageVersionBodyInfo_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageVersionBodyInfo{Name: &zeroValue}
+	p.GetName()
+	p = &PackageVersionBodyInfo{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
+func TestPackageVersionBodyInfo_GetOID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageVersionBodyInfo{OID: &zeroValue}
+	p.GetOID()
+	p = &PackageVersionBodyInfo{}
+	p.GetOID()
+	p = nil
+	p.GetOID()
+}
+
+func TestPackageVersionBodyInfo_GetPath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageVersionBodyInfo{Path: &zeroValue}
+	p.GetPath()
+	p = &PackageVersionBodyInfo{}
+	p.GetPath()
+	p = nil
+	p.GetPath()
+}
+
+func TestPackageVersionBodyInfo_GetSize(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &PackageVersionBodyInfo{Size: &zeroValue}
+	p.GetSize()
+	p = &PackageVersionBodyInfo{}
+	p.GetSize()
+	p = nil
+	p.GetSize()
+}
+
+func TestPackageVersionBodyInfo_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PackageVersionBodyInfo{Type: &zeroValue}
+	p.GetType()
+	p = &PackageVersionBodyInfo{}
+	p.GetType()
+	p = nil
+	p.GetType()
 }
 
 func TestPage_GetAction(tt *testing.T) {

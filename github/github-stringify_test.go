@@ -1136,17 +1136,19 @@ func TestPackage_String(t *testing.T) {
 		Name:           Ptr(""),
 		PackageType:    Ptr(""),
 		HTMLURL:        Ptr(""),
+		Visibility:     Ptr(""),
+		Owner:          &User{},
 		CreatedAt:      &Timestamp{},
 		UpdatedAt:      &Timestamp{},
-		Owner:          &User{},
+		Namespace:      Ptr(""),
+		Description:    Ptr(""),
+		Ecosystem:      Ptr(""),
 		PackageVersion: &PackageVersion{},
 		Registry:       &PackageRegistry{},
 		URL:            Ptr(""),
 		VersionCount:   Ptr(int64(0)),
-		Visibility:     Ptr(""),
-		Repository:     &Repository{},
 	}
-	want := `github.Package{ID:0, Name:"", PackageType:"", HTMLURL:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Owner:github.User{}, PackageVersion:github.PackageVersion{}, Registry:github.PackageRegistry{}, URL:"", VersionCount:0, Visibility:"", Repository:github.Repository{}}`
+	want := `github.Package{ID:0, Name:"", PackageType:"", HTMLURL:"", Visibility:"", Owner:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Namespace:"", Description:"", Ecosystem:"", PackageVersion:github.PackageVersion{}, Registry:github.PackageRegistry{}, URL:"", VersionCount:0}`
 	if got := v.String(); got != want {
 		t.Errorf("Package.String = %v, want %v", got, want)
 	}
@@ -1163,6 +1165,29 @@ func TestPackageContainerMetadata_String(t *testing.T) {
 	}
 }
 
+func TestPackageEventContainerMetadata_String(t *testing.T) {
+	t.Parallel()
+	v := PackageEventContainerMetadata{
+		Tag: &PackageEventContainerMetadataTag{},
+	}
+	want := `github.PackageEventContainerMetadata{Tag:github.PackageEventContainerMetadataTag{}}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageEventContainerMetadata.String = %v, want %v", got, want)
+	}
+}
+
+func TestPackageEventContainerMetadataTag_String(t *testing.T) {
+	t.Parallel()
+	v := PackageEventContainerMetadataTag{
+		Name:   Ptr(""),
+		Digest: Ptr(""),
+	}
+	want := `github.PackageEventContainerMetadataTag{Name:"", Digest:""}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageEventContainerMetadataTag.String = %v, want %v", got, want)
+	}
+}
+
 func TestPackageFile_String(t *testing.T) {
 	t.Parallel()
 	v := PackageFile{
@@ -1174,12 +1199,11 @@ func TestPackageFile_String(t *testing.T) {
 		MD5:         Ptr(""),
 		ContentType: Ptr(""),
 		State:       Ptr(""),
-		Author:      &User{},
 		Size:        Ptr(int64(0)),
 		CreatedAt:   &Timestamp{},
 		UpdatedAt:   &Timestamp{},
 	}
-	want := `github.PackageFile{DownloadURL:"", ID:0, Name:"", SHA256:"", SHA1:"", MD5:"", ContentType:"", State:"", Author:github.User{}, Size:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.PackageFile{DownloadURL:"", ID:0, Name:"", SHA256:"", SHA1:"", MD5:"", ContentType:"", State:"", Size:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("PackageFile.String = %v, want %v", got, want)
 	}
@@ -1194,6 +1218,45 @@ func TestPackageMetadata_String(t *testing.T) {
 	want := `github.PackageMetadata{PackageType:"", Container:github.PackageContainerMetadata{}}`
 	if got := v.String(); got != want {
 		t.Errorf("PackageMetadata.String = %v, want %v", got, want)
+	}
+}
+
+func TestPackageNPMMetadata_String(t *testing.T) {
+	t.Parallel()
+	v := PackageNPMMetadata{
+		Name:                Ptr(""),
+		Version:             Ptr(""),
+		NPMUser:             Ptr(""),
+		Description:         Ptr(""),
+		GitHead:             Ptr(""),
+		Homepage:            Ptr(""),
+		License:             Ptr(""),
+		Main:                Ptr(""),
+		ID:                  Ptr(""),
+		NodeVersion:         Ptr(""),
+		NPMVersion:          Ptr(""),
+		HasShrinkwrap:       Ptr(false),
+		Readme:              Ptr(""),
+		InstallationCommand: Ptr(""),
+		ReleaseID:           Ptr(int64(0)),
+		CommitOID:           Ptr(""),
+		PublishedViaActions: Ptr(false),
+		DeletedByID:         Ptr(int64(0)),
+	}
+	want := `github.PackageNPMMetadata{Name:"", Version:"", NPMUser:"", Description:"", GitHead:"", Homepage:"", License:"", Main:"", ID:"", NodeVersion:"", NPMVersion:"", HasShrinkwrap:false, Readme:"", InstallationCommand:"", ReleaseID:0, CommitOID:"", PublishedViaActions:false, DeletedByID:0}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageNPMMetadata.String = %v, want %v", got, want)
+	}
+}
+
+func TestPackageNugetMetadata_String(t *testing.T) {
+	t.Parallel()
+	v := PackageNugetMetadata{
+		Name: Ptr(""),
+	}
+	want := `github.PackageNugetMetadata{Name:""}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageNugetMetadata.String = %v, want %v", got, want)
 	}
 }
 
@@ -1237,9 +1300,15 @@ func TestPackageVersion_String(t *testing.T) {
 	t.Parallel()
 	v := PackageVersion{
 		ID:                  Ptr(int64(0)),
+		Name:                Ptr(""),
+		URL:                 Ptr(""),
+		PackageHTMLURL:      Ptr(""),
+		License:             Ptr(""),
+		Description:         Ptr(""),
+		CreatedAt:           &Timestamp{},
+		UpdatedAt:           &Timestamp{},
 		Version:             Ptr(""),
 		Summary:             Ptr(""),
-		Body:                Ptr(""),
 		BodyHTML:            Ptr(""),
 		Release:             &PackageRelease{},
 		Manifest:            Ptr(""),
@@ -1249,18 +1318,46 @@ func TestPackageVersion_String(t *testing.T) {
 		TargetOID:           Ptr(""),
 		Draft:               Ptr(false),
 		Prerelease:          Ptr(false),
-		CreatedAt:           &Timestamp{},
-		UpdatedAt:           &Timestamp{},
+		ContainerMetadata:   &PackageEventContainerMetadata{},
+		NPMMetadata:         &PackageNPMMetadata{},
+		PackageURL:          Ptr(""),
 		Author:              &User{},
+		SourceURL:           Ptr(""),
 		InstallationCommand: Ptr(""),
-		Metadata:            &PackageMetadata{},
-		PackageHTMLURL:      Ptr(""),
-		Name:                Ptr(""),
-		URL:                 Ptr(""),
+		DeletedAt:           &Timestamp{},
 	}
-	want := `github.PackageVersion{ID:0, Version:"", Summary:"", Body:"", BodyHTML:"", Release:github.PackageRelease{}, Manifest:"", HTMLURL:"", TagName:"", TargetCommitish:"", TargetOID:"", Draft:false, Prerelease:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Author:github.User{}, InstallationCommand:"", Metadata:github.PackageMetadata{}, PackageHTMLURL:"", Name:"", URL:""}`
+	want := `github.PackageVersion{ID:0, Name:"", URL:"", PackageHTMLURL:"", License:"", Description:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Version:"", Summary:"", BodyHTML:"", Release:github.PackageRelease{}, Manifest:"", HTMLURL:"", TagName:"", TargetCommitish:"", TargetOID:"", Draft:false, Prerelease:false, ContainerMetadata:github.PackageEventContainerMetadata{}, NPMMetadata:github.PackageNPMMetadata{}, PackageURL:"", Author:github.User{}, SourceURL:"", InstallationCommand:"", DeletedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("PackageVersion.String = %v, want %v", got, want)
+	}
+}
+
+func TestPackageVersionBody_String(t *testing.T) {
+	t.Parallel()
+	v := PackageVersionBody{
+		Repo: &Repository{},
+		Info: &PackageVersionBodyInfo{},
+	}
+	want := `github.PackageVersionBody{Repo:github.Repository{}, Info:github.PackageVersionBodyInfo{}}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageVersionBody.String = %v, want %v", got, want)
+	}
+}
+
+func TestPackageVersionBodyInfo_String(t *testing.T) {
+	t.Parallel()
+	v := PackageVersionBodyInfo{
+		Type:       Ptr(""),
+		OID:        Ptr(""),
+		Mode:       Ptr(int64(0)),
+		Name:       Ptr(""),
+		Path:       Ptr(""),
+		Size:       Ptr(int64(0)),
+		Collection: Ptr(false),
+	}
+	want := `github.PackageVersionBodyInfo{Type:"", OID:"", Mode:0, Name:"", Path:"", Size:0, Collection:false}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageVersionBodyInfo.String = %v, want %v", got, want)
 	}
 }
 
