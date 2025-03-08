@@ -141,6 +141,15 @@ type AlertListOptions struct {
 	// The name of a code scanning tool. Only results by this tool will be listed.
 	ToolName string `url:"tool_name,omitempty"`
 
+	// The GUID of a code scanning tool. Only results by this tool will be listed.
+	ToolGUID string `url:"tool_guid,omitempty"`
+
+	// The direction to sort the results by. Possible values are: asc, desc. Default: desc.
+	Direction string `url:"direction,omitempty"`
+
+	// The property by which to sort the results. Possible values are: created, updated. Default: created.
+	Sort string `url:"sort,omitempty"`
+
 	ListCursorOptions
 
 	// Add ListOptions so offset pagination with integer type "page" query parameter is accepted
@@ -391,7 +400,7 @@ func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	// This will always return an error without unmarshalling the data
+	// This will always return an error without unmarshaling the data
 	resp, err := s.client.Do(ctx, req, nil)
 	// Even though there was an error, we still return the response
 	// in case the caller wants to inspect it further.

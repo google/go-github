@@ -15,33 +15,34 @@ import (
 )
 
 func TestRepositoryLicense_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryLicense{}, "{}")
 
 	rl := &RepositoryLicense{
-		Name:        String("n"),
-		Path:        String("p"),
-		SHA:         String("s"),
-		Size:        Int(1),
-		URL:         String("u"),
-		HTMLURL:     String("h"),
-		GitURL:      String("g"),
-		DownloadURL: String("d"),
-		Type:        String("t"),
-		Content:     String("c"),
-		Encoding:    String("e"),
+		Name:        Ptr("n"),
+		Path:        Ptr("p"),
+		SHA:         Ptr("s"),
+		Size:        Ptr(1),
+		URL:         Ptr("u"),
+		HTMLURL:     Ptr("h"),
+		GitURL:      Ptr("g"),
+		DownloadURL: Ptr("d"),
+		Type:        Ptr("t"),
+		Content:     Ptr("c"),
+		Encoding:    Ptr("e"),
 		License: &License{
-			Key:            String("k"),
-			Name:           String("n"),
-			URL:            String("u"),
-			SPDXID:         String("s"),
-			HTMLURL:        String("h"),
-			Featured:       Bool(true),
-			Description:    String("d"),
-			Implementation: String("i"),
+			Key:            Ptr("k"),
+			Name:           Ptr("n"),
+			URL:            Ptr("u"),
+			SPDXID:         Ptr("s"),
+			HTMLURL:        Ptr("h"),
+			Featured:       Ptr(true),
+			Description:    Ptr("d"),
+			Implementation: Ptr("i"),
 			Permissions:    &[]string{"p"},
 			Conditions:     &[]string{"c"},
 			Limitations:    &[]string{"l"},
-			Body:           String("b"),
+			Body:           Ptr("b"),
 		},
 	}
 	want := `{
@@ -75,21 +76,22 @@ func TestRepositoryLicense_Marshal(t *testing.T) {
 }
 
 func TestLicense_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &License{}, "{}")
 
 	l := &License{
-		Key:            String("k"),
-		Name:           String("n"),
-		URL:            String("u"),
-		SPDXID:         String("s"),
-		HTMLURL:        String("h"),
-		Featured:       Bool(true),
-		Description:    String("d"),
-		Implementation: String("i"),
+		Key:            Ptr("k"),
+		Name:           Ptr("n"),
+		URL:            Ptr("u"),
+		SPDXID:         Ptr("s"),
+		HTMLURL:        Ptr("h"),
+		Featured:       Ptr(true),
+		Description:    Ptr("d"),
+		Implementation: Ptr("i"),
 		Permissions:    &[]string{"p"},
 		Conditions:     &[]string{"c"},
 		Limitations:    &[]string{"l"},
-		Body:           String("b"),
+		Body:           Ptr("b"),
 	}
 	want := `{
 		"key": "k",
@@ -109,8 +111,8 @@ func TestLicense_Marshal(t *testing.T) {
 }
 
 func TestLicensesService_List(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/licenses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -124,11 +126,11 @@ func TestLicensesService_List(t *testing.T) {
 	}
 
 	want := []*License{{
-		Key:      String("mit"),
-		Name:     String("MIT"),
-		SPDXID:   String("MIT"),
-		URL:      String("https://api.github.com/licenses/mit"),
-		Featured: Bool(true),
+		Key:      Ptr("mit"),
+		Name:     Ptr("MIT"),
+		SPDXID:   Ptr("MIT"),
+		URL:      Ptr("https://api.github.com/licenses/mit"),
+		Featured: Ptr(true),
 	}}
 	if !cmp.Equal(licenses, want) {
 		t.Errorf("Licenses.List returned %+v, want %+v", licenses, want)
@@ -145,8 +147,8 @@ func TestLicensesService_List(t *testing.T) {
 }
 
 func TestLicensesService_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/licenses/mit", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -159,7 +161,7 @@ func TestLicensesService_Get(t *testing.T) {
 		t.Errorf("Licenses.Get returned error: %v", err)
 	}
 
-	want := &License{Key: String("mit"), Name: String("MIT")}
+	want := &License{Key: Ptr("mit"), Name: Ptr("MIT")}
 	if !cmp.Equal(license, want) {
 		t.Errorf("Licenses.Get returned %+v, want %+v", license, want)
 	}
@@ -180,8 +182,8 @@ func TestLicensesService_Get(t *testing.T) {
 }
 
 func TestLicensesService_Get_invalidTemplate(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Licenses.Get(ctx, "%")

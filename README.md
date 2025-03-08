@@ -1,20 +1,26 @@
 # go-github #
 
 [![go-github release (latest SemVer)](https://img.shields.io/github/v/release/google/go-github?sort=semver)](https://github.com/google/go-github/releases)
-[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v64/github)
-[![Test Status](https://github.com/google/go-github/workflows/tests/badge.svg)](https://github.com/google/go-github/actions?query=workflow%3Atests)
+[![Go Reference](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v69/github)
+[![Test Status](https://github.com/google/go-github/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/google/go-github/actions/workflows/tests.yml)
 [![Test Coverage](https://codecov.io/gh/google/go-github/branch/master/graph/badge.svg)](https://codecov.io/gh/google/go-github)
 [![Discuss at go-github@googlegroups.com](https://img.shields.io/badge/discuss-go--github%40googlegroups.com-blue.svg)](https://groups.google.com/group/go-github)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/796/badge)](https://bestpractices.coreinfrastructure.org/projects/796)
 
 go-github is a Go client library for accessing the [GitHub API v3][].
 
-Currently, **go-github requires Go version 1.13 or greater**.  go-github tracks
-[Go's version support policy][support-policy].  We do our best not to break
-older versions of Go if we don't have to, but due to tooling constraints, we
-don't always test older versions.
+go-github tracks [Go's version support policy][support-policy] supporting any
+minor version of the latest two major releases of Go and the go directive in
+go.mod reflects that.
+We do our best not to break older versions of Go if we don't have to, but we
+don't explicitly test older versions and as of Go 1.21 the go directive in
+go.mod declares a hard required _minimum_ version of Go to use with this module
+and this _must_ be greater than or equal to the go line of all dependencies so
+go-github will require the N-1 major release of Go by default.
 
 [support-policy]: https://golang.org/doc/devel/release.html#policy
+
+## Development
 
 If you're interested in using the [GraphQL API v4][], the recommended library is
 [shurcooL/githubv4][].
@@ -24,7 +30,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 go-github is compatible with modern Go releases in module mode, with Go installed:
 
 ```bash
-go get github.com/google/go-github/v64
+go get github.com/google/go-github/v69
 ```
 
 will resolve and add the package to the current development module, along with its dependencies.
@@ -32,7 +38,7 @@ will resolve and add the package to the current development module, along with i
 Alternatively the same can be achieved if you use import in a package:
 
 ```go
-import "github.com/google/go-github/v64/github"
+import "github.com/google/go-github/v69/github"
 ```
 
 and run `go get` without parameters.
@@ -40,13 +46,13 @@ and run `go get` without parameters.
 Finally, to use the top-of-trunk version of this repo, use the following command:
 
 ```bash
-go get github.com/google/go-github/v64@master
+go get github.com/google/go-github/v69@master
 ```
 
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v64/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+import "github.com/google/go-github/v69/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 import "github.com/google/go-github/github" // with go modules disabled
 ```
 
@@ -71,10 +77,9 @@ repos, _, err := client.Repositories.ListByOrg(context.Background(), "github", o
 ```
 
 The services of a client divide the API into logical chunks and correspond to
-the structure of the GitHub API documentation at
-https://docs.github.com/en/rest .
+the structure of the [GitHub API documentation](https://docs.github.com/en/rest).
 
-NOTE: Using the [context](https://godoc.org/context) package, one can easily
+NOTE: Using the [context](https://pkg.go.dev/context) package, one can easily
 pass cancelation signals and deadlines to various services of the client for
 handling a request. In case there is no context available, then `context.Background()`
 can be used as a starting point.
@@ -97,11 +102,12 @@ include the specified OAuth token. Therefore, authenticated clients should
 almost never be shared between different users.
 
 For API methods that require HTTP Basic Authentication, use the
-[`BasicAuthTransport`](https://godoc.org/github.com/google/go-github/github#BasicAuthTransport).
+[`BasicAuthTransport`](https://pkg.go.dev/github.com/google/go-github/github#BasicAuthTransport).
 
 #### As a GitHub App ####
 
-GitHub Apps authentication can be provided by different pkgs like [ghinstallation](https://github.com/bradleyfalzon/ghinstallation) or [go-githubauth](https://github.com/jferrl/go-githubauth).
+GitHub Apps authentication can be provided by different pkgs like [bradleyfalzon/ghinstallation](https://github.com/bradleyfalzon/ghinstallation)
+or [jferrl/go-githubauth](https://github.com/jferrl/go-githubauth).
 
 > **Note**: Most endpoints (ex. [`GET /rate_limit`]) require access token authentication
 > while a few others (ex. [`GET /app/hook/deliveries`]) require [JWT] authentication.
@@ -119,7 +125,7 @@ import (
 	"net/http"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v69/github"
 )
 
 func main() {
@@ -148,33 +154,33 @@ Other example using `go-githubauth`:
 package main
 
 import (
- "context"
- "fmt"
- "os"
- "strconv"
+	"context"
+	"fmt"
+	"os"
+	"strconv"
 
- "github.com/google/go-github/v64/github"
- "github.com/jferrl/go-githubauth"
- "golang.org/x/oauth2"
+	"github.com/google/go-github/v69/github"
+	"github.com/jferrl/go-githubauth"
+	"golang.org/x/oauth2"
 )
 
 func main() {
- privateKey := []byte(os.Getenv("GITHUB_APP_PRIVATE_KEY"))
+	privateKey := []byte(os.Getenv("GITHUB_APP_PRIVATE_KEY"))
 
- appTokenSource, err := githubauth.NewApplicationTokenSource(1112, privateKey)
- if err != nil {
-  fmt.Println("Error creating application token source:", err)
-  return
- }
+	appTokenSource, err := githubauth.NewApplicationTokenSource(1112, privateKey)
+	if err != nil {
+		fmt.Println("Error creating application token source:", err)
+		return
+	 }
 
- installationTokenSource := githubauth.NewInstallationTokenSource(1113, appTokenSource)
+	installationTokenSource := githubauth.NewInstallationTokenSource(1113, appTokenSource)
 
- // oauth2.NewClient uses oauth2.ReuseTokenSource to reuse the token until it expires.
- // The token will be automatically refreshed when it expires.
- // InstallationTokenSource has the mechanism to refresh the token when it expires.
- httpClient := oauth2.NewClient(context.Background(), installationTokenSource)
+	// oauth2.NewClient uses oauth2.ReuseTokenSource to reuse the token until it expires.
+	// The token will be automatically refreshed when it expires.
+	// InstallationTokenSource has the mechanism to refresh the token when it expires.
+	httpClient := oauth2.NewClient(context.Background(), installationTokenSource)
 
- client := github.NewClient(httpClient)
+	client := github.NewClient(httpClient)
 }
 ```
 
@@ -205,8 +211,8 @@ if _, ok := err.(*github.RateLimitError); ok {
 }
 ```
 
-Learn more about GitHub rate limiting at
-https://docs.github.com/en/rest/rate-limit .
+Learn more about GitHub rate limiting in
+["REST API endpoints for rate limits"](https://docs.github.com/en/rest/rate-limit).
 
 In addition to these rate limits, GitHub imposes a secondary rate limit on all API clients.
 This rate limit prevents clients from making too many concurrent requests.
@@ -226,11 +232,11 @@ Alternatively, you can block until the rate limit is reset by using the `context
 repos, _, err := client.Repositories.List(context.WithValue(ctx, github.SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "", nil)
 ```
 
-You can use [go-github-ratelimit](https://github.com/gofri/go-github-ratelimit) to handle
+You can use [gofri/go-github-ratelimit](https://github.com/gofri/go-github-ratelimit) to handle
 secondary rate limit sleep-and-retry for you.
 
-Learn more about GitHub secondary rate limiting at
-https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits .
+Learn more about GitHub secondary rate limiting in
+["About secondary rate limits"](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits).
 
 ### Accepted Status ###
 
@@ -251,22 +257,28 @@ if _, ok := err.(*github.AcceptedError); ok {
 
 ### Conditional Requests ###
 
-The GitHub API has good support for conditional requests which will help
-prevent you from burning through your rate limit, as well as help speed up your
-application. `go-github` does not handle conditional requests directly, but is
-instead designed to work with a caching `http.Transport`. We recommend using
-https://github.com/gregjones/httpcache for that. For example:
+The GitHub REST API has good support for [conditional HTTP requests](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api?apiVersion=2022-11-28#use-conditional-requests-if-appropriate)
+via the `ETag` header which will help prevent you from burning through your
+rate limit, as well as help speed up your application. `go-github` does not
+handle conditional requests directly, but is instead designed to work with a
+caching `http.Transport`.
+
+Typically, an [RFC 7234](https://datatracker.ietf.org/doc/html/rfc7234)
+compliant HTTP cache such as [gregjones/httpcache](https://github.com/gregjones/httpcache)
+is recommended, ex:
 
 ```go
 import "github.com/gregjones/httpcache"
 
-	client := github.NewClient(
-		httpcache.NewMemoryCacheTransport().Client()
-    ).WithAuthToken(os.Getenv("GITHUB_TOKEN"))
+client := github.NewClient(
+	httpcache.NewMemoryCacheTransport().Client()
+).WithAuthToken(os.Getenv("GITHUB_TOKEN"))
 ```
 
-Learn more about GitHub conditional requests at
-https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api?apiVersion=2022-11-28#use-conditional-requests-if-appropriate
+Alternatively, the [bored-engineer/github-conditional-http-transport](https://github.com/bored-engineer/github-conditional-http-transport)
+package relies on (undocumented) GitHub specific cache logic and is
+recommended when making requests using short-lived credentials such as a 
+[GitHub App installation token](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation).
 
 ### Creating and Updating Resources ###
 
@@ -278,8 +290,8 @@ bool, and int values. For example:
 ```go
 // create a new private repository named "foo"
 repo := &github.Repository{
-	Name:    github.String("foo"),
-	Private: github.Bool(true),
+	Name:    github.Ptr("foo"),
+	Private: github.Ptr(true),
 }
 client.Repositories.Create(ctx, "", repo)
 ```
@@ -316,7 +328,7 @@ for {
 }
 ```
 
-#### Iterators (**experimental**)
+#### Iterators (**experimental**) ####
 
 Go v1.23 introduces the new `iter` package.  
 
@@ -361,13 +373,13 @@ For complete usage of go-github, see the full [package docs][].
 
 [GitHub API v3]: https://docs.github.com/en/rest
 [personal access token]: https://github.com/blog/1509-personal-api-tokens
-[package docs]: https://pkg.go.dev/github.com/google/go-github/v64/github
+[package docs]: https://pkg.go.dev/github.com/google/go-github/v69/github
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4
 [GitHub webhook events]: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads
 [cbrgm/githubevents]: https://github.com/cbrgm/githubevents
 
-### Testing code that uses `go-github`
+### Testing code that uses `go-github` ###
 
 The repo [migueleliasweb/go-github-mock](https://github.com/migueleliasweb/go-github-mock) provides a way to mock responses. Check the repo for more details.
 
@@ -376,6 +388,7 @@ The repo [migueleliasweb/go-github-mock](https://github.com/migueleliasweb/go-gi
 You can run integration tests from the `test` directory. See the integration tests [README](test/README.md).
 
 ## Contributing ##
+
 I would like to cover the entire GitHub API and contributions are of course always welcome. The
 calling pattern is pretty well established, so adding new methods is relatively
 straightforward. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
@@ -434,27 +447,8 @@ Versions prior to 48.2.0 are not listed.
 
 | go-github Version | GitHub v3 API Version |
 | ----------------- | --------------------- |
-| 64.0.0            | 2022-11-28            |
-| 63.0.0            | 2022-11-28            |
-| 62.0.0            | 2022-11-28            |
-| 61.0.0            | 2022-11-28            |
-| 60.0.0            | 2022-11-28            |
-| 59.0.0            | 2022-11-28            |
-| 58.0.0            | 2022-11-28            |
-| 57.0.0            | 2022-11-28            |
-| 56.0.0            | 2022-11-28            |
-| 55.0.0            | 2022-11-28            |
-| 54.0.0            | 2022-11-28            |
-| 53.2.0            | 2022-11-28            |
-| 53.1.0            | 2022-11-28            |
-| 53.0.0            | 2022-11-28            |
-| 52.0.0            | 2022-11-28            |
-| 51.0.0            | 2022-11-28            |
-| 50.2.0            | 2022-11-28            |
-| 50.1.0            | 2022-11-28            |
-| 50.0.0            | 2022-11-28            |
-| 49.1.0            | 2022-11-28            |
-| 49.0.0            | 2022-11-28            |
+| 69.x.0            | 2022-11-28            |
+| ...               | 2022-11-28            |
 | 48.2.0            | 2022-11-28            |
 
 ## License ##

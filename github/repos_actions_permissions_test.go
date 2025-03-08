@@ -16,8 +16,8 @@ import (
 )
 
 func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -29,7 +29,7 @@ func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetActionsPermissions returned error: %v", err)
 	}
-	want := &ActionsPermissionsRepository{Enabled: Bool(true), AllowedActions: String("all")}
+	want := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("all")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.GetActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -50,10 +50,10 @@ func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
 }
 
 func TestRepositoriesService_EditActionsPermissions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &ActionsPermissionsRepository{Enabled: Bool(true), AllowedActions: String("selected")}
+	input := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("selected")}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ActionsPermissionsRepository)
@@ -73,7 +73,7 @@ func TestRepositoriesService_EditActionsPermissions(t *testing.T) {
 		t.Errorf("Repositories.EditActionsPermissions returned error: %v", err)
 	}
 
-	want := &ActionsPermissionsRepository{Enabled: Bool(true), AllowedActions: String("selected")}
+	want := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("selected")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.EditActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -94,12 +94,13 @@ func TestRepositoriesService_EditActionsPermissions(t *testing.T) {
 }
 
 func TestActionsPermissionsRepository_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ActionsPermissions{}, "{}")
 
 	u := &ActionsPermissionsRepository{
-		Enabled:            Bool(true),
-		AllowedActions:     String("all"),
-		SelectedActionsURL: String("someURL"),
+		Enabled:            Ptr(true),
+		AllowedActions:     Ptr("all"),
+		SelectedActionsURL: Ptr("someURL"),
 	}
 
 	want := `{
@@ -112,8 +113,8 @@ func TestActionsPermissionsRepository_Marshal(t *testing.T) {
 }
 
 func TestRepositoriesService_GetDefaultWorkflowPermissions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -125,7 +126,7 @@ func TestRepositoriesService_GetDefaultWorkflowPermissions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetDefaultWorkflowPermissions returned error: %v", err)
 	}
-	want := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	want := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.GetDefaultWorkflowPermissions returned %+v, want %+v", org, want)
 	}
@@ -146,10 +147,10 @@ func TestRepositoriesService_GetDefaultWorkflowPermissions(t *testing.T) {
 }
 
 func TestRepositoriesService_EditDefaultWorkflowPermissions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	input := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
 		v := new(DefaultWorkflowPermissionRepository)
@@ -169,7 +170,7 @@ func TestRepositoriesService_EditDefaultWorkflowPermissions(t *testing.T) {
 		t.Errorf("Repositories.EditDefaultWorkflowPermissions returned error: %v", err)
 	}
 
-	want := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: String("read"), CanApprovePullRequestReviews: Bool(true)}
+	want := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.EditDefaultWorkflowPermissions returned %+v, want %+v", org, want)
 	}

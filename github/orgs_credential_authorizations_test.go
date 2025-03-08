@@ -16,12 +16,12 @@ import (
 )
 
 func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/credential-authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		testFormValues(t, r, values{"per_page": "2", "page": "2"})
+		testFormValues(t, r, values{"per_page": "2", "page": "2", "login": "l"})
 		fmt.Fprint(w, `[
 			{
 				"login": "l",
@@ -34,7 +34,11 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 		]`)
 	})
 
-	opts := &ListOptions{Page: 2, PerPage: 2}
+	opts := &CredentialAuthorizationsListOptions{
+		ListOptions: ListOptions{Page: 2, PerPage: 2},
+		Login:       "l",
+	}
+
 	ctx := context.Background()
 	creds, _, err := client.Organizations.ListCredentialAuthorizations(ctx, "o", opts)
 	if err != nil {
@@ -44,12 +48,12 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 	ts := time.Date(2017, time.January, 21, 0, 0, 0, 0, time.UTC)
 	want := []*CredentialAuthorization{
 		{
-			Login:                  String("l"),
-			CredentialID:           Int64(1),
-			CredentialType:         String("t"),
+			Login:                  Ptr("l"),
+			CredentialID:           Ptr(int64(1)),
+			CredentialType:         Ptr("t"),
 			CredentialAuthorizedAt: &Timestamp{ts},
 			CredentialAccessedAt:   &Timestamp{ts},
-			AuthorizedCredentialID: Int64(1),
+			AuthorizedCredentialID: Ptr(int64(1)),
 		},
 	}
 	if !cmp.Equal(creds, want) {
@@ -69,8 +73,8 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveCredentialAuthorization(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/credential-authorizations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)

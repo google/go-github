@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -38,52 +39,48 @@ func uncalledSigner(t *testing.T) MessageSignerFunc {
 }
 
 func TestCommit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Commit{}, "{}")
 
 	u := &Commit{
-		SHA: String("s"),
+		SHA: Ptr("s"),
 		Author: &CommitAuthor{
 			Date:  &Timestamp{referenceTime},
-			Name:  String("n"),
-			Email: String("e"),
-			Login: String("u"),
+			Name:  Ptr("n"),
+			Email: Ptr("e"),
+			Login: Ptr("u"),
 		},
 		Committer: &CommitAuthor{
 			Date:  &Timestamp{referenceTime},
-			Name:  String("n"),
-			Email: String("e"),
-			Login: String("u"),
+			Name:  Ptr("n"),
+			Email: Ptr("e"),
+			Login: Ptr("u"),
 		},
-		Message: String("m"),
+		Message: Ptr("m"),
 		Tree: &Tree{
-			SHA: String("s"),
+			SHA: Ptr("s"),
 			Entries: []*TreeEntry{{
-				SHA:     String("s"),
-				Path:    String("p"),
-				Mode:    String("m"),
-				Type:    String("t"),
-				Size:    Int(1),
-				Content: String("c"),
-				URL:     String("u"),
+				SHA:     Ptr("s"),
+				Path:    Ptr("p"),
+				Mode:    Ptr("m"),
+				Type:    Ptr("t"),
+				Size:    Ptr(1),
+				Content: Ptr("c"),
+				URL:     Ptr("u"),
 			}},
-			Truncated: Bool(false),
+			Truncated: Ptr(false),
 		},
 		Parents: nil,
-		Stats: &CommitStats{
-			Additions: Int(1),
-			Deletions: Int(1),
-			Total:     Int(1),
-		},
-		HTMLURL: String("h"),
-		URL:     String("u"),
+		HTMLURL: Ptr("h"),
+		URL:     Ptr("u"),
 		Verification: &SignatureVerification{
-			Verified:  Bool(false),
-			Reason:    String("r"),
-			Signature: String("s"),
-			Payload:   String("p"),
+			Verified:  Ptr(false),
+			Reason:    Ptr("r"),
+			Signature: Ptr("s"),
+			Payload:   Ptr("p"),
 		},
-		NodeID:       String("n"),
-		CommentCount: Int(1),
+		NodeID:       Ptr("n"),
+		CommentCount: Ptr(1),
 	}
 
 	want := `{
@@ -116,11 +113,6 @@ func TestCommit_Marshal(t *testing.T) {
 			],
 			"truncated": false
 		},
-		"stats": {
-			"additions": 1,
-			"deletions": 1,
-			"total": 1
-		},
 		"html_url": "h",
 		"url": "u",
 		"verification": {
@@ -137,8 +129,8 @@ func TestCommit_Marshal(t *testing.T) {
 }
 
 func TestGitService_GetCommit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/commits/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -151,7 +143,7 @@ func TestGitService_GetCommit(t *testing.T) {
 		t.Errorf("Git.GetCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: String("s"), Message: String("Commit Message."), Author: &CommitAuthor{Name: String("n")}}
+	want := &Commit{SHA: Ptr("s"), Message: Ptr("Commit Message."), Author: &CommitAuthor{Name: Ptr("n")}}
 	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.GetCommit returned %+v, want %+v", commit, want)
 	}
@@ -172,8 +164,8 @@ func TestGitService_GetCommit(t *testing.T) {
 }
 
 func TestGitService_GetCommit_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Git.GetCommit(ctx, "%", "%", "%")
@@ -181,13 +173,13 @@ func TestGitService_GetCommit_invalidOwner(t *testing.T) {
 }
 
 func TestGitService_CreateCommit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &Commit{
-		Message: String("Commit Message."),
-		Tree:    &Tree{SHA: String("t")},
-		Parents: []*Commit{{SHA: String("p")}},
+		Message: Ptr("Commit Message."),
+		Tree:    &Tree{SHA: Ptr("t")},
+		Parents: []*Commit{{SHA: Ptr("p")}},
 	}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
@@ -198,7 +190,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 
 		want := &createCommit{
 			Message: input.Message,
-			Tree:    String("t"),
+			Tree:    Ptr("t"),
 			Parents: []string{"p"},
 		}
 		if !cmp.Equal(v, want) {
@@ -213,7 +205,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 		t.Errorf("Git.CreateCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: String("s")}
+	want := &Commit{SHA: Ptr("s")}
 	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
@@ -234,17 +226,17 @@ func TestGitService_CreateCommit(t *testing.T) {
 }
 
 func TestGitService_CreateSignedCommit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	signature := "----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"
 
 	input := &Commit{
-		Message: String("Commit Message."),
-		Tree:    &Tree{SHA: String("t")},
-		Parents: []*Commit{{SHA: String("p")}},
+		Message: Ptr("Commit Message."),
+		Tree:    &Tree{SHA: Ptr("t")},
+		Parents: []*Commit{{SHA: Ptr("p")}},
 		Verification: &SignatureVerification{
-			Signature: String(signature),
+			Signature: Ptr(signature),
 		},
 	}
 
@@ -256,9 +248,9 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 
 		want := &createCommit{
 			Message:   input.Message,
-			Tree:      String("t"),
+			Tree:      Ptr("t"),
 			Parents:   []string{"p"},
-			Signature: String(signature),
+			Signature: Ptr(signature),
 		}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -272,7 +264,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 		t.Errorf("Git.CreateCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: String("commitSha")}
+	want := &Commit{SHA: Ptr("commitSha")}
 	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
@@ -293,8 +285,8 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 }
 
 func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	input := &Commit{}
 
@@ -307,8 +299,8 @@ func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
 }
 
 func TestGitService_CreateCommitWithNilCommit(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Git.CreateCommit(ctx, "o", "r", nil, nil)
@@ -318,13 +310,14 @@ func TestGitService_CreateCommitWithNilCommit(t *testing.T) {
 }
 
 func TestGitService_CreateCommit_WithSigner(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	signature := "my voice is my password"
 	date := time.Date(2017, time.May, 4, 0, 3, 43, 0, time.FixedZone("CEST", 2*3600))
 	author := CommitAuthor{
-		Name:  String("go-github"),
-		Email: String("go-github@github.com"),
+		Name:  Ptr("go-github"),
+		Email: Ptr("go-github@github.com"),
 		Date:  &Timestamp{date},
 	}
 	wantMessage := `tree t
@@ -336,14 +329,14 @@ Commit Message.`
 	sha := "commitSha"
 	input := &Commit{
 		SHA:     &sha,
-		Message: String("Commit Message."),
-		Tree:    &Tree{SHA: String("t")},
-		Parents: []*Commit{{SHA: String("p")}},
+		Message: Ptr("Commit Message."),
+		Tree:    &Tree{SHA: Ptr("t")},
+		Parents: []*Commit{{SHA: Ptr("p")}},
 		Author:  &author,
 	}
 	wantBody := createCommit{
 		Message:   input.Message,
-		Tree:      String("t"),
+		Tree:      Ptr("t"),
 		Parents:   []string{"p"},
 		Author:    &author,
 		Signature: &signature,
@@ -355,7 +348,7 @@ Commit Message.`
 		fmt.Fprintf(w, `{"sha":"%s"}`, sha)
 	})
 	ctx := context.Background()
-	wantCommit := &Commit{SHA: String(sha)}
+	wantCommit := &Commit{SHA: Ptr(sha)}
 	opts := CreateCommitOptions{Signer: mockSigner(t, signature, nil, wantMessage)}
 	commit, _, err := client.Git.CreateCommit(ctx, "o", "r", input, &opts)
 	assertNilError(t, err)
@@ -368,9 +361,10 @@ Commit Message.`
 }
 
 func TestGitService_createSignature_nilSigner(t *testing.T) {
+	t.Parallel()
 	a := &createCommit{
-		Message: String("Commit Message."),
-		Tree:    String("t"),
+		Message: Ptr("Commit Message."),
+		Tree:    Ptr("t"),
 		Parents: []string{"p"},
 	}
 
@@ -382,6 +376,7 @@ func TestGitService_createSignature_nilSigner(t *testing.T) {
 }
 
 func TestGitService_createSignature_nilCommit(t *testing.T) {
+	t.Parallel()
 	_, err := createSignature(uncalledSigner(t), nil)
 
 	if err == nil {
@@ -390,14 +385,15 @@ func TestGitService_createSignature_nilCommit(t *testing.T) {
 }
 
 func TestGitService_createSignature_signerError(t *testing.T) {
+	t.Parallel()
 	a := &createCommit{
-		Message: String("Commit Message."),
-		Tree:    String("t"),
+		Message: Ptr("Commit Message."),
+		Tree:    Ptr("t"),
 		Parents: []string{"p"},
-		Author:  &CommitAuthor{Name: String("go-github")},
+		Author:  &CommitAuthor{Name: Ptr("go-github")},
 	}
 
-	signer := mockSigner(t, "", fmt.Errorf("signer error"), "")
+	signer := mockSigner(t, "", errors.New("signer error"), "")
 	_, err := createSignature(signer, a)
 
 	if err == nil {
@@ -406,6 +402,7 @@ func TestGitService_createSignature_signerError(t *testing.T) {
 }
 
 func TestGitService_createSignatureMessage_nilCommit(t *testing.T) {
+	t.Parallel()
 	_, err := createSignatureMessage(nil)
 	if err == nil {
 		t.Errorf("Expected error to be returned due to nil key")
@@ -413,14 +410,15 @@ func TestGitService_createSignatureMessage_nilCommit(t *testing.T) {
 }
 
 func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
+	t.Parallel()
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
 	_, err := createSignatureMessage(&createCommit{
 		Message: nil,
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
-			Name:  String("go-github"),
-			Email: String("go-github@github.com"),
+			Name:  Ptr("go-github"),
+			Email: Ptr("go-github@github.com"),
 			Date:  &Timestamp{date},
 		},
 	})
@@ -430,14 +428,15 @@ func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
 }
 
 func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
+	t.Parallel()
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 	emptyString := ""
 	_, err := createSignatureMessage(&createCommit{
 		Message: &emptyString,
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
-			Name:  String("go-github"),
-			Email: String("go-github@github.com"),
+			Name:  Ptr("go-github"),
+			Email: Ptr("go-github@github.com"),
 			Date:  &Timestamp{date},
 		},
 	})
@@ -447,8 +446,9 @@ func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
 }
 
 func TestGitService_createSignatureMessage_nilAuthor(t *testing.T) {
+	t.Parallel()
 	_, err := createSignatureMessage(&createCommit{
-		Message: String("Commit Message."),
+		Message: Ptr("Commit Message."),
 		Parents: []string{"p"},
 		Author:  nil,
 	})
@@ -458,14 +458,15 @@ func TestGitService_createSignatureMessage_nilAuthor(t *testing.T) {
 }
 
 func TestGitService_createSignatureMessage_withoutTree(t *testing.T) {
+	t.Parallel()
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
 	msg, _ := createSignatureMessage(&createCommit{
-		Message: String("Commit Message."),
+		Message: Ptr("Commit Message."),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
-			Name:  String("go-github"),
-			Email: String("go-github@github.com"),
+			Name:  Ptr("go-github"),
+			Email: Ptr("go-github@github.com"),
 			Date:  &Timestamp{date},
 		},
 	})
@@ -480,19 +481,20 @@ Commit Message.`
 }
 
 func TestGitService_createSignatureMessage_withoutCommitter(t *testing.T) {
+	t.Parallel()
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
 	msg, _ := createSignatureMessage(&createCommit{
-		Message: String("Commit Message."),
+		Message: Ptr("Commit Message."),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
-			Name:  String("go-github"),
-			Email: String("go-github@github.com"),
+			Name:  Ptr("go-github"),
+			Email: Ptr("go-github@github.com"),
 			Date:  &Timestamp{date},
 		},
 		Committer: &CommitAuthor{
-			Name:  String("foo"),
-			Email: String("foo@bar.com"),
+			Name:  Ptr("foo"),
+			Email: Ptr("foo@bar.com"),
 			Date:  &Timestamp{date},
 		},
 	})
@@ -507,8 +509,8 @@ Commit Message.`
 }
 
 func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Git.CreateCommit(ctx, "%", "%", &Commit{}, nil)
@@ -516,13 +518,14 @@ func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
 }
 
 func TestSignatureVerification_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SignatureVerification{}, "{}")
 
 	u := &SignatureVerification{
-		Verified:  Bool(true),
-		Reason:    String("reason"),
-		Signature: String("sign"),
-		Payload:   String("payload"),
+		Verified:  Ptr(true),
+		Reason:    Ptr("reason"),
+		Signature: Ptr("sign"),
+		Payload:   Ptr("payload"),
 	}
 
 	want := `{
@@ -536,13 +539,14 @@ func TestSignatureVerification_Marshal(t *testing.T) {
 }
 
 func TestCommitAuthor_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommitAuthor{}, "{}")
 
 	u := &CommitAuthor{
 		Date:  &Timestamp{referenceTime},
-		Name:  String("name"),
-		Email: String("email"),
-		Login: String("login"),
+		Name:  Ptr("name"),
+		Email: Ptr("email"),
+		Login: Ptr("login"),
 	}
 
 	want := `{
@@ -556,25 +560,26 @@ func TestCommitAuthor_Marshal(t *testing.T) {
 }
 
 func TestCreateCommit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &createCommit{}, "{}")
 
 	u := &createCommit{
 		Author: &CommitAuthor{
 			Date:  &Timestamp{referenceTime},
-			Name:  String("name"),
-			Email: String("email"),
-			Login: String("login"),
+			Name:  Ptr("name"),
+			Email: Ptr("email"),
+			Login: Ptr("login"),
 		},
 		Committer: &CommitAuthor{
 			Date:  &Timestamp{referenceTime},
-			Name:  String("name"),
-			Email: String("email"),
-			Login: String("login"),
+			Name:  Ptr("name"),
+			Email: Ptr("email"),
+			Login: Ptr("login"),
 		},
-		Message:   String("message"),
-		Tree:      String("tree"),
+		Message:   Ptr("message"),
+		Tree:      Ptr("tree"),
 		Parents:   []string{"p"},
-		Signature: String("sign"),
+		Signature: Ptr("sign"),
 	}
 
 	want := `{

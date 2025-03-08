@@ -17,8 +17,8 @@ import (
 )
 
 func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/personal-access-tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -99,35 +99,35 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 
 	want := []*PersonalAccessToken{
 		{
-			ID: Int64(25381),
+			ID: Ptr(int64(25381)),
 			Owner: &User{
-				Login:             String("octocat"),
-				ID:                Int64(1),
-				NodeID:            String("MDQ6VXNlcjE="),
-				AvatarURL:         String("https://github.com/images/error/octocat_happy.gif"),
-				GravatarID:        String(""),
-				URL:               String("https://api.github.com/users/octocat"),
-				HTMLURL:           String("https://github.com/octocat"),
-				FollowersURL:      String("https://api.github.com/users/octocat/followers"),
-				FollowingURL:      String("https://api.github.com/users/octocat/following{/other_user}"),
-				GistsURL:          String("https://api.github.com/users/octocat/gists{/gist_id}"),
-				StarredURL:        String("https://api.github.com/users/octocat/starred{/owner}{/repo}"),
-				SubscriptionsURL:  String("https://api.github.com/users/octocat/subscriptions"),
-				OrganizationsURL:  String("https://api.github.com/users/octocat/orgs"),
-				ReposURL:          String("https://api.github.com/users/octocat/repos"),
-				EventsURL:         String("https://api.github.com/users/octocat/events{/privacy}"),
-				ReceivedEventsURL: String("https://api.github.com/users/octocat/received_events"),
-				Type:              String("User"),
-				SiteAdmin:         Bool(false),
+				Login:             Ptr("octocat"),
+				ID:                Ptr(int64(1)),
+				NodeID:            Ptr("MDQ6VXNlcjE="),
+				AvatarURL:         Ptr("https://github.com/images/error/octocat_happy.gif"),
+				GravatarID:        Ptr(""),
+				URL:               Ptr("https://api.github.com/users/octocat"),
+				HTMLURL:           Ptr("https://github.com/octocat"),
+				FollowersURL:      Ptr("https://api.github.com/users/octocat/followers"),
+				FollowingURL:      Ptr("https://api.github.com/users/octocat/following{/other_user}"),
+				GistsURL:          Ptr("https://api.github.com/users/octocat/gists{/gist_id}"),
+				StarredURL:        Ptr("https://api.github.com/users/octocat/starred{/owner}{/repo}"),
+				SubscriptionsURL:  Ptr("https://api.github.com/users/octocat/subscriptions"),
+				OrganizationsURL:  Ptr("https://api.github.com/users/octocat/orgs"),
+				ReposURL:          Ptr("https://api.github.com/users/octocat/repos"),
+				EventsURL:         Ptr("https://api.github.com/users/octocat/events{/privacy}"),
+				ReceivedEventsURL: Ptr("https://api.github.com/users/octocat/received_events"),
+				Type:              Ptr("User"),
+				SiteAdmin:         Ptr(false),
 			},
-			RepositorySelection: String("all"),
-			RepositoriesURL:     String("https://api.github.com/organizations/652551/personal-access-tokens/25381/repositories"),
+			RepositorySelection: Ptr("all"),
+			RepositoriesURL:     Ptr("https://api.github.com/organizations/652551/personal-access-tokens/25381/repositories"),
 			Permissions: &PersonalAccessTokenPermissions{
 				Org:  map[string]string{"members": "read"},
 				Repo: map[string]string{"metadata": "read"},
 			},
 			AccessGrantedAt: &Timestamp{time.Date(2023, time.May, 16, 8, 47, 9, 0, time.FixedZone("PDT", -7*60*60))},
-			TokenExpired:    Bool(false),
+			TokenExpired:    Ptr(false),
 			TokenExpiresAt:  &Timestamp{time.Date(2023, time.November, 16, 8, 47, 9, 0, time.FixedZone("PDT", -7*60*60))},
 			TokenLastUsedAt: nil,
 		},
@@ -156,12 +156,12 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 }
 
 func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := ReviewPersonalAccessTokenRequestOptions{
 		Action: "a",
-		Reason: String("r"),
+		Reason: Ptr("r"),
 	}
 
 	mux.HandleFunc("/orgs/o/personal-access-token-requests/1", func(w http.ResponseWriter, r *http.Request) {
@@ -198,11 +198,12 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 }
 
 func TestReviewPersonalAccessTokenRequestOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ReviewPersonalAccessTokenRequestOptions{}, "{}")
 
 	u := &ReviewPersonalAccessTokenRequestOptions{
 		Action: "a",
-		Reason: String("r"),
+		Reason: Ptr("r"),
 	}
 
 	want := `{

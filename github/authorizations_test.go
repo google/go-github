@@ -15,8 +15,8 @@ import (
 )
 
 func TestAuthorizationsService_Check(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -31,7 +31,7 @@ func TestAuthorizationsService_Check(t *testing.T) {
 		t.Errorf("Authorizations.Check returned error: %v", err)
 	}
 
-	want := &Authorization{ID: Int64(1)}
+	want := &Authorization{ID: Ptr(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Authorizations.Check returned auth %+v, want %+v", got, want)
 	}
@@ -52,8 +52,8 @@ func TestAuthorizationsService_Check(t *testing.T) {
 }
 
 func TestAuthorizationsService_Reset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -68,7 +68,7 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 		t.Errorf("Authorizations.Reset returned error: %v", err)
 	}
 
-	want := &Authorization{ID: Int64(1)}
+	want := &Authorization{ID: Ptr(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Authorizations.Reset returned auth %+v, want %+v", got, want)
 	}
@@ -89,8 +89,8 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 }
 
 func TestAuthorizationsService_Revoke(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -117,8 +117,8 @@ func TestAuthorizationsService_Revoke(t *testing.T) {
 }
 
 func TestDeleteGrant(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/applications/id/grant", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -144,8 +144,8 @@ func TestDeleteGrant(t *testing.T) {
 }
 
 func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -159,7 +159,7 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 		t.Errorf("Authorizations.CreateImpersonation returned error: %+v", err)
 	}
 
-	want := &Authorization{ID: Int64(1)}
+	want := &Authorization{ID: Ptr(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Authorizations.CreateImpersonation returned %+v, want %+v", *got.ID, *want.ID)
 	}
@@ -180,8 +180,8 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 }
 
 func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -205,15 +205,16 @@ func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
 }
 
 func TestAuthorizationUpdateRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AuthorizationUpdateRequest{}, "{}")
 
 	u := &AuthorizationUpdateRequest{
 		Scopes:       []string{"s"},
 		AddScopes:    []string{"a"},
 		RemoveScopes: []string{"r"},
-		Note:         String("n"),
-		NoteURL:      String("nu"),
-		Fingerprint:  String("f"),
+		Note:         Ptr("n"),
+		NoteURL:      Ptr("nu"),
+		Fingerprint:  Ptr("f"),
 	}
 
 	want := `{
@@ -229,15 +230,16 @@ func TestAuthorizationUpdateRequest_Marshal(t *testing.T) {
 }
 
 func TestAuthorizationRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AuthorizationRequest{}, "{}")
 
 	u := &AuthorizationRequest{
 		Scopes:       []Scope{"s"},
-		ClientID:     String("cid"),
-		ClientSecret: String("cs"),
-		Note:         String("n"),
-		NoteURL:      String("nu"),
-		Fingerprint:  String("f"),
+		ClientID:     Ptr("cid"),
+		ClientSecret: Ptr("cs"),
+		Note:         Ptr("n"),
+		NoteURL:      Ptr("nu"),
+		Fingerprint:  Ptr("f"),
 	}
 
 	want := `{
@@ -253,12 +255,13 @@ func TestAuthorizationRequest_Marshal(t *testing.T) {
 }
 
 func TestAuthorizationApp_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AuthorizationApp{}, "{}")
 
 	u := &AuthorizationApp{
-		URL:      String("u"),
-		Name:     String("n"),
-		ClientID: String("cid"),
+		URL:      Ptr("u"),
+		Name:     Ptr("n"),
+		ClientID: Ptr("cid"),
 	}
 
 	want := `{
@@ -271,15 +274,16 @@ func TestAuthorizationApp_Marshal(t *testing.T) {
 }
 
 func TestGrant_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Grant{}, "{}")
 
 	u := &Grant{
-		ID:  Int64(1),
-		URL: String("u"),
+		ID:  Ptr(int64(1)),
+		URL: Ptr("u"),
 		App: &AuthorizationApp{
-			URL:      String("u"),
-			Name:     String("n"),
-			ClientID: String("cid"),
+			URL:      Ptr("u"),
+			Name:     Ptr("n"),
+			ClientID: Ptr("cid"),
 		},
 		CreatedAt: &Timestamp{referenceTime},
 		UpdatedAt: &Timestamp{referenceTime},
@@ -303,42 +307,43 @@ func TestGrant_Marshal(t *testing.T) {
 }
 
 func TestAuthorization_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Authorization{}, "{}")
 
 	u := &Authorization{
-		ID:             Int64(1),
-		URL:            String("u"),
+		ID:             Ptr(int64(1)),
+		URL:            Ptr("u"),
 		Scopes:         []Scope{"s"},
-		Token:          String("t"),
-		TokenLastEight: String("tle"),
-		HashedToken:    String("ht"),
+		Token:          Ptr("t"),
+		TokenLastEight: Ptr("tle"),
+		HashedToken:    Ptr("ht"),
 		App: &AuthorizationApp{
-			URL:      String("u"),
-			Name:     String("n"),
-			ClientID: String("cid"),
+			URL:      Ptr("u"),
+			Name:     Ptr("n"),
+			ClientID: Ptr("cid"),
 		},
-		Note:        String("n"),
-		NoteURL:     String("nu"),
+		Note:        Ptr("n"),
+		NoteURL:     Ptr("nu"),
 		UpdatedAt:   &Timestamp{referenceTime},
 		CreatedAt:   &Timestamp{referenceTime},
-		Fingerprint: String("f"),
+		Fingerprint: Ptr("f"),
 		User: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},

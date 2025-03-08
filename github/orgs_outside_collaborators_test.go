@@ -15,8 +15,8 @@ import (
 )
 
 func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/outside_collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -37,7 +37,7 @@ func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
 		t.Errorf("Organizations.ListOutsideCollaborators returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}}
+	want := []*User{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(members, want) {
 		t.Errorf("Organizations.ListOutsideCollaborators returned %+v, want %+v", members, want)
 	}
@@ -58,8 +58,8 @@ func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
 }
 
 func TestOrganizationsService_ListOutsideCollaborators_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Organizations.ListOutsideCollaborators(ctx, "%", nil)
@@ -67,8 +67,8 @@ func TestOrganizationsService_ListOutsideCollaborators_invalidOrg(t *testing.T) 
 }
 
 func TestOrganizationsService_RemoveOutsideCollaborator(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -93,8 +93,8 @@ func TestOrganizationsService_RemoveOutsideCollaborator(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveOutsideCollaborator_NonMember(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -112,8 +112,8 @@ func TestOrganizationsService_RemoveOutsideCollaborator_NonMember(t *testing.T) 
 }
 
 func TestOrganizationsService_RemoveOutsideCollaborator_Member(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -131,8 +131,8 @@ func TestOrganizationsService_RemoveOutsideCollaborator_Member(t *testing.T) {
 }
 
 func TestOrganizationsService_ConvertMemberToOutsideCollaborator(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -157,8 +157,8 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator(t *testing.T) {
 }
 
 func TestOrganizationsService_ConvertMemberToOutsideCollaborator_NonMemberOrLastOwner(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")

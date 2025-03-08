@@ -16,8 +16,8 @@ import (
 )
 
 func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependency-graph/snapshots", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -28,40 +28,40 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 	ctx := context.Background()
 	snapshot := &DependencyGraphSnapshot{
 		Version: 0,
-		Sha:     String("ce587453ced02b1526dfb4cb910479d431683101"),
-		Ref:     String("refs/heads/main"),
+		Sha:     Ptr("ce587453ced02b1526dfb4cb910479d431683101"),
+		Ref:     Ptr("refs/heads/main"),
 		Job: &DependencyGraphSnapshotJob{
-			Correlator: String("yourworkflowname_youractionname"),
-			ID:         String("yourrunid"),
-			HTMLURL:    String("https://example.com"),
+			Correlator: Ptr("yourworkflowname_youractionname"),
+			ID:         Ptr("yourrunid"),
+			HTMLURL:    Ptr("https://example.com"),
 		},
 		Detector: &DependencyGraphSnapshotDetector{
-			Name:    String("octo-detector"),
-			Version: String("0.0.1"),
-			URL:     String("https://github.com/octo-org/octo-repo"),
+			Name:    Ptr("octo-detector"),
+			Version: Ptr("0.0.1"),
+			URL:     Ptr("https://github.com/octo-org/octo-repo"),
 		},
 		Scanned: &Timestamp{time.Date(2022, time.June, 14, 20, 25, 00, 0, time.UTC)},
 		Manifests: map[string]*DependencyGraphSnapshotManifest{
 			"package-lock.json": {
-				Name: String("package-lock.json"),
-				File: &DependencyGraphSnapshotManifestFile{SourceLocation: String("src/package-lock.json")},
+				Name: Ptr("package-lock.json"),
+				File: &DependencyGraphSnapshotManifestFile{SourceLocation: Ptr("src/package-lock.json")},
 				Resolved: map[string]*DependencyGraphSnapshotResolvedDependency{
 					"@actions/core": {
-						PackageURL:   String("pkg:/npm/%40actions/core@1.1.9"),
-						Relationship: String("direct"),
-						Scope:        String("runtime"),
+						PackageURL:   Ptr("pkg:/npm/%40actions/core@1.1.9"),
+						Relationship: Ptr("direct"),
+						Scope:        Ptr("runtime"),
 						Dependencies: []string{"@actions/http-client"},
 					},
 					"@actions/http-client": {
-						PackageURL:   String("pkg:/npm/%40actions/http-client@1.0.7"),
-						Relationship: String("indirect"),
-						Scope:        String("runtime"),
+						PackageURL:   Ptr("pkg:/npm/%40actions/http-client@1.0.7"),
+						Relationship: Ptr("indirect"),
+						Scope:        Ptr("runtime"),
 						Dependencies: []string{"tunnel"},
 					},
 					"tunnel": {
-						PackageURL:   String("pkg:/npm/tunnel@0.0.6"),
-						Relationship: String("indirect"),
-						Scope:        String("runtime"),
+						PackageURL:   Ptr("pkg:/npm/tunnel@0.0.6"),
+						Relationship: Ptr("indirect"),
+						Scope:        Ptr("runtime"),
 					},
 				},
 			},
@@ -76,8 +76,8 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 	want := &DependencyGraphSnapshotCreationData{
 		ID:        12345,
 		CreatedAt: &Timestamp{time.Date(2022, time.June, 14, 20, 25, 01, 0, time.UTC)},
-		Message:   String("Dependency results for the repo have been successfully updated."),
-		Result:    String("SUCCESS"),
+		Message:   Ptr("Dependency results for the repo have been successfully updated."),
+		Result:    Ptr("SUCCESS"),
 	}
 	if !cmp.Equal(snapshotCreationData, want) {
 		t.Errorf("DependencyGraph.CreateSnapshot returned %+v, want %+v", snapshotCreationData, want)

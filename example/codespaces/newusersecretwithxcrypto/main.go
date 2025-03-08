@@ -32,12 +32,13 @@ import (
 	"context"
 	crypto_rand "crypto/rand"
 	"encoding/base64"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v69/github"
 	"golang.org/x/crypto/nacl/box"
 )
 
@@ -77,7 +78,7 @@ func main() {
 func getSecretName() (string, error) {
 	secretName := flag.Arg(0)
 	if secretName == "" {
-		return "", fmt.Errorf("missing argument secret name")
+		return "", errors.New("missing argument secret name")
 	}
 	return secretName, nil
 }
@@ -128,17 +129,17 @@ func addUserSecret(ctx context.Context, client *github.Client, secretName, secre
 	}
 
 	if _, err := client.Codespaces.CreateOrUpdateUserSecret(ctx, encryptedSecret); err != nil {
-		return fmt.Errorf("Codespaces.CreateOrUpdateUserSecret returned error: %v", err)
+		return fmt.Errorf("client.Codespaces.CreateOrUpdateUserSecret returned error: %v", err)
 	}
 
 	if owner != "" && repo != "" {
 		r, _, err := client.Repositories.Get(ctx, owner, repo)
 		if err != nil {
-			return fmt.Errorf("Repositories.Get returned error: %v", err)
+			return fmt.Errorf("client.Repositories.Get returned error: %v", err)
 		}
 		_, err = client.Codespaces.AddSelectedRepoToUserSecret(ctx, encryptedSecret.Name, r)
 		if err != nil {
-			return fmt.Errorf("Codespaces.AddSelectedRepoToUserSecret returned error: %v", err)
+			return fmt.Errorf("client.Codespaces.AddSelectedRepoToUserSecret returned error: %v", err)
 		}
 		fmt.Printf("Added secret %q to %v/%v\n", secretName, owner, repo)
 	}
@@ -154,8 +155,7 @@ func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName string, 
 
 	var boxKey [32]byte
 	copy(boxKey[:], decodedPublicKey)
-	secretBytes := []byte(secretValue)
-	encryptedBytes, err := box.SealAnonymous([]byte{}, secretBytes, &boxKey, crypto_rand.Reader)
+	encryptedBytes, err := box.SealAnonymous([]byte{}, []byte(secretValue), &boxKey, crypto_rand.Reader)
 	if err != nil {
 		return nil, fmt.Errorf("box.SealAnonymous failed with error %w", err)
 	}

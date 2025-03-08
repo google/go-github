@@ -11,6 +11,7 @@ import (
 )
 
 func TestPayload_Panic(t *testing.T) {
+	t.Parallel()
 	defer func() {
 		if r := recover(); r == nil {
 			t.Errorf("Payload did not panic but should have")
@@ -24,6 +25,7 @@ func TestPayload_Panic(t *testing.T) {
 }
 
 func TestPayload_NoPanic(t *testing.T) {
+	t.Parallel()
 	name := "UserEvent"
 	body := json.RawMessage("{}")
 	e := &Event{Type: &name, RawPayload: &body}
@@ -31,6 +33,7 @@ func TestPayload_NoPanic(t *testing.T) {
 }
 
 func TestEmptyEvent_NoPanic(t *testing.T) {
+	t.Parallel()
 	e := &Event{}
 	if _, err := e.ParsePayload(); err == nil {
 		t.Error("ParsePayload unexpectedly succeeded on empty event")
@@ -43,6 +46,7 @@ func TestEmptyEvent_NoPanic(t *testing.T) {
 }
 
 func TestEvent_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Event{}, "{}")
 
 	l := make(map[string]interface{})
@@ -51,47 +55,47 @@ func TestEvent_Marshal(t *testing.T) {
 	jsonMsg, _ := json.Marshal(&l)
 
 	u := &Event{
-		Type:       String("t"),
-		Public:     Bool(false),
+		Type:       Ptr("t"),
+		Public:     Ptr(false),
 		RawPayload: (*json.RawMessage)(&jsonMsg),
 		Repo: &Repository{
-			ID:   Int64(1),
-			URL:  String("s"),
-			Name: String("n"),
+			ID:   Ptr(int64(1)),
+			URL:  Ptr("s"),
+			Name: Ptr("n"),
 		},
 		Actor: &User{
-			Login:     String("l"),
-			ID:        Int64(1),
-			NodeID:    String("n"),
-			URL:       String("u"),
-			ReposURL:  String("r"),
-			EventsURL: String("e"),
-			AvatarURL: String("a"),
+			Login:     Ptr("l"),
+			ID:        Ptr(int64(1)),
+			NodeID:    Ptr("n"),
+			URL:       Ptr("u"),
+			ReposURL:  Ptr("r"),
+			EventsURL: Ptr("e"),
+			AvatarURL: Ptr("a"),
 		},
 		Org: &Organization{
-			BillingEmail:                         String("be"),
-			Blog:                                 String("b"),
-			Company:                              String("c"),
-			Email:                                String("e"),
-			TwitterUsername:                      String("tu"),
-			Location:                             String("loc"),
-			Name:                                 String("n"),
-			Description:                          String("d"),
-			IsVerified:                           Bool(true),
-			HasOrganizationProjects:              Bool(true),
-			HasRepositoryProjects:                Bool(true),
-			DefaultRepoPermission:                String("drp"),
-			MembersCanCreateRepos:                Bool(true),
-			MembersCanCreateInternalRepos:        Bool(true),
-			MembersCanCreatePrivateRepos:         Bool(true),
-			MembersCanCreatePublicRepos:          Bool(false),
-			MembersAllowedRepositoryCreationType: String("marct"),
-			MembersCanCreatePages:                Bool(true),
-			MembersCanCreatePublicPages:          Bool(false),
-			MembersCanCreatePrivatePages:         Bool(true),
+			BillingEmail:                         Ptr("be"),
+			Blog:                                 Ptr("b"),
+			Company:                              Ptr("c"),
+			Email:                                Ptr("e"),
+			TwitterUsername:                      Ptr("tu"),
+			Location:                             Ptr("loc"),
+			Name:                                 Ptr("n"),
+			Description:                          Ptr("d"),
+			IsVerified:                           Ptr(true),
+			HasOrganizationProjects:              Ptr(true),
+			HasRepositoryProjects:                Ptr(true),
+			DefaultRepoPermission:                Ptr("drp"),
+			MembersCanCreateRepos:                Ptr(true),
+			MembersCanCreateInternalRepos:        Ptr(true),
+			MembersCanCreatePrivateRepos:         Ptr(true),
+			MembersCanCreatePublicRepos:          Ptr(false),
+			MembersAllowedRepositoryCreationType: Ptr("marct"),
+			MembersCanCreatePages:                Ptr(true),
+			MembersCanCreatePublicPages:          Ptr(false),
+			MembersCanCreatePrivatePages:         Ptr(true),
 		},
 		CreatedAt: &Timestamp{referenceTime},
-		ID:        String("id"),
+		ID:        Ptr("id"),
 	}
 
 	want := `{

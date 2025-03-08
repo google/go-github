@@ -15,8 +15,8 @@ import (
 )
 
 func TestOrganizationsService_ListPackages(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -64,34 +64,34 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 	}
 
 	want := []*Package{{
-		ID:           Int64(197),
-		Name:         String("hello_docker"),
-		PackageType:  String("container"),
-		VersionCount: Int64(1),
-		Visibility:   String("private"),
-		URL:          String("https://api.github.com/orgs/github/packages/container/hello_docker"),
-		HTMLURL:      String("https://github.com/orgs/github/packages/container/package/hello_docker"),
+		ID:           Ptr(int64(197)),
+		Name:         Ptr("hello_docker"),
+		PackageType:  Ptr("container"),
+		VersionCount: Ptr(int64(1)),
+		Visibility:   Ptr("private"),
+		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello_docker"),
+		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 		Owner: &User{
-			Login:             String("github"),
-			ID:                Int64(9919),
-			NodeID:            String("MDEyOk9yZ2FuaXphdGlvbjk5MTk="),
-			AvatarURL:         String("https://avatars.githubusercontent.com/u/9919?v=4"),
-			GravatarID:        String(""),
-			URL:               String("https://api.github.com/users/github"),
-			HTMLURL:           String("https://github.com/github"),
-			FollowersURL:      String("https://api.github.com/users/github/followers"),
-			FollowingURL:      String("https://api.github.com/users/github/following{/other_user}"),
-			GistsURL:          String("https://api.github.com/users/github/gists{/gist_id}"),
-			StarredURL:        String("https://api.github.com/users/github/starred{/owner}{/repo}"),
-			SubscriptionsURL:  String("https://api.github.com/users/github/subscriptions"),
-			OrganizationsURL:  String("https://api.github.com/users/github/orgs"),
-			ReposURL:          String("https://api.github.com/users/github/repos"),
-			EventsURL:         String("https://api.github.com/users/github/events{/privacy}"),
-			ReceivedEventsURL: String("https://api.github.com/users/github/received_events"),
-			Type:              String("Organization"),
-			SiteAdmin:         Bool(false),
+			Login:             Ptr("github"),
+			ID:                Ptr(int64(9919)),
+			NodeID:            Ptr("MDEyOk9yZ2FuaXphdGlvbjk5MTk="),
+			AvatarURL:         Ptr("https://avatars.githubusercontent.com/u/9919?v=4"),
+			GravatarID:        Ptr(""),
+			URL:               Ptr("https://api.github.com/users/github"),
+			HTMLURL:           Ptr("https://github.com/github"),
+			FollowersURL:      Ptr("https://api.github.com/users/github/followers"),
+			FollowingURL:      Ptr("https://api.github.com/users/github/following{/other_user}"),
+			GistsURL:          Ptr("https://api.github.com/users/github/gists{/gist_id}"),
+			StarredURL:        Ptr("https://api.github.com/users/github/starred{/owner}{/repo}"),
+			SubscriptionsURL:  Ptr("https://api.github.com/users/github/subscriptions"),
+			OrganizationsURL:  Ptr("https://api.github.com/users/github/orgs"),
+			ReposURL:          Ptr("https://api.github.com/users/github/repos"),
+			EventsURL:         Ptr("https://api.github.com/users/github/events{/privacy}"),
+			ReceivedEventsURL: Ptr("https://api.github.com/users/github/received_events"),
+			Type:              Ptr("Organization"),
+			SiteAdmin:         Ptr(false),
 		},
 	}}
 	if !cmp.Equal(packages, want) {
@@ -114,11 +114,11 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 }
 
 func TestOrganizationsService_GetPackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2fhello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		_, err := io.WriteString(w, `{
 			"id": 197,
@@ -143,13 +143,13 @@ func TestOrganizationsService_GetPackage(t *testing.T) {
 	}
 
 	want := &Package{
-		ID:           Int64(197),
-		Name:         String("hello/hello_docker"),
-		PackageType:  String("container"),
-		VersionCount: Int64(1),
-		Visibility:   String("private"),
-		URL:          String("https://api.github.com/orgs/github/packages/container/hello%2Fhello_docker"),
-		HTMLURL:      String("https://github.com/orgs/github/packages/container/package/hello%2Fhello_docker"),
+		ID:           Ptr(int64(197)),
+		Name:         Ptr("hello/hello_docker"),
+		PackageType:  Ptr("container"),
+		VersionCount: Ptr(int64(1)),
+		Visibility:   Ptr("private"),
+		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello%2Fhello_docker"),
+		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello%2Fhello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 	}
@@ -173,11 +173,11 @@ func TestOrganizationsService_GetPackage(t *testing.T) {
 }
 
 func TestOrganizationsService_DeletePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2fhello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -203,11 +203,11 @@ func TestOrganizationsService_DeletePackage(t *testing.T) {
 }
 
 func TestOrganizationsService_RestorePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 
@@ -229,11 +229,11 @@ func TestOrganizationsService_RestorePackage(t *testing.T) {
 }
 
 func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "1", "state": "deleted", "visibility": "internal", "package_type": "container"})
 		_, err := io.WriteString(w, `[
@@ -261,7 +261,7 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 
 	ctx := context.Background()
 	opts := &PackageListOptions{
-		String("internal"), String("container"), String("deleted"), ListOptions{Page: 1, PerPage: 2},
+		Ptr("internal"), Ptr("container"), Ptr("deleted"), ListOptions{Page: 1, PerPage: 2},
 	}
 	packages, _, err := client.Organizations.PackageGetAllVersions(ctx, "o", "container", "hello/hello_docker", opts)
 	if err != nil {
@@ -269,15 +269,15 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 	}
 
 	want := []*PackageVersion{{
-		ID:             Int64(45763),
-		Name:           String("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            String("https://api.github.com/users/octocat/packages/container/hello%2Fhello_docker/versions/45763"),
-		PackageHTMLURL: String("https://github.com/users/octocat/packages/container/package/hello%2Fhello_docker"),
+		ID:             Ptr(int64(45763)),
+		Name:           Ptr("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
+		URL:            Ptr("https://api.github.com/users/octocat/packages/container/hello%2Fhello_docker/versions/45763"),
+		PackageHTMLURL: Ptr("https://github.com/users/octocat/packages/container/package/hello%2Fhello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        String("https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763"),
+		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763"),
 		Metadata: &PackageMetadata{
-			PackageType: String("container"),
+			PackageType: Ptr("container"),
 			Container: &PackageContainerMetadata{
 				Tags: []string{"latest"},
 			},
@@ -303,11 +303,11 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 }
 
 func TestOrganizationsService_PackageGetVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		_, err := io.WriteString(w, `
 			{
@@ -339,15 +339,15 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 	}
 
 	want := &PackageVersion{
-		ID:             Int64(45763),
-		Name:           String("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            String("https://api.github.com/users/octocat/packages/container/hello%2Fhello_docker/versions/45763"),
-		PackageHTMLURL: String("https://github.com/users/octocat/packages/container/package/hello%2Fhello_docker"),
+		ID:             Ptr(int64(45763)),
+		Name:           Ptr("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
+		URL:            Ptr("https://api.github.com/users/octocat/packages/container/hello%2Fhello_docker/versions/45763"),
+		PackageHTMLURL: Ptr("https://github.com/users/octocat/packages/container/package/hello%2Fhello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        String("https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763"),
+		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763"),
 		Metadata: &PackageMetadata{
-			PackageType: String("container"),
+			PackageType: Ptr("container"),
 			Container: &PackageContainerMetadata{
 				Tags: []string{"latest"},
 			},
@@ -373,11 +373,11 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 }
 
 func TestOrganizationsService_PackageDeleteVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -399,11 +399,11 @@ func TestOrganizationsService_PackageDeleteVersion(t *testing.T) {
 }
 
 func TestOrganizationsService_PackageRestoreVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// don't url escape the package name here since mux will convert it to a slash automatically
-	mux.HandleFunc("/orgs/o/packages/container/hello/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 

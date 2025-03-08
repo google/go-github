@@ -16,8 +16,8 @@ import (
 )
 
 func TestRepositoriesService_ListTagProtection(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/tags/protection", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -31,7 +31,7 @@ func TestRepositoriesService_ListTagProtection(t *testing.T) {
 		t.Errorf("Repositories.ListTagProtection returned error: %v", err)
 	}
 
-	want := []*TagProtection{{ID: Int64(1), Pattern: String("tag1")}, {ID: Int64(2), Pattern: String("tag2")}}
+	want := []*TagProtection{{ID: Ptr(int64(1)), Pattern: Ptr("tag1")}, {ID: Ptr(int64(2)), Pattern: Ptr("tag2")}}
 	if !cmp.Equal(tagProtections, want) {
 		t.Errorf("Repositories.ListTagProtection returned %+v, want %+v", tagProtections, want)
 	}
@@ -52,8 +52,8 @@ func TestRepositoriesService_ListTagProtection(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTagProtection_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListTagProtection(ctx, "%", "r")
@@ -61,8 +61,8 @@ func TestRepositoriesService_ListTagProtection_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateTagProtection(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	pattern := "tag*"
 
@@ -85,7 +85,7 @@ func TestRepositoriesService_CreateTagProtection(t *testing.T) {
 		t.Errorf("Repositories.CreateTagProtection returned error: %v", err)
 	}
 
-	want := &TagProtection{ID: Int64(1), Pattern: String("tag*")}
+	want := &TagProtection{ID: Ptr(int64(1)), Pattern: Ptr("tag*")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.CreateTagProtection returned %+v, want %+v", got, want)
 	}
@@ -106,8 +106,8 @@ func TestRepositoriesService_CreateTagProtection(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteTagProtection(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/tags/protection/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -132,11 +132,12 @@ func TestRepositoriesService_DeleteTagProtection(t *testing.T) {
 }
 
 func TestTagProtection_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TagProtection{}, "{}")
 
 	u := &TagProtection{
-		ID:      Int64(1),
-		Pattern: String("pattern"),
+		ID:      Ptr(int64(1)),
+		Pattern: Ptr("pattern"),
 	}
 
 	want := `{

@@ -16,8 +16,8 @@ import (
 )
 
 func TestDependabotService_GetRepoPublicKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -30,7 +30,7 @@ func TestDependabotService_GetRepoPublicKey(t *testing.T) {
 		t.Errorf("Dependabot.GetRepoPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Dependabot.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
@@ -51,8 +51,8 @@ func TestDependabotService_GetRepoPublicKey(t *testing.T) {
 }
 
 func TestDependabotService_GetRepoPublicKeyNumeric(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -65,7 +65,7 @@ func TestDependabotService_GetRepoPublicKeyNumeric(t *testing.T) {
 		t.Errorf("Dependabot.GetRepoPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Dependabot.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
@@ -86,8 +86,8 @@ func TestDependabotService_GetRepoPublicKeyNumeric(t *testing.T) {
 }
 
 func TestDependabotService_ListRepoSecrets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -129,8 +129,8 @@ func TestDependabotService_ListRepoSecrets(t *testing.T) {
 }
 
 func TestDependabotService_GetRepoSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -168,8 +168,8 @@ func TestDependabotService_GetRepoSecret(t *testing.T) {
 }
 
 func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -201,8 +201,8 @@ func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
 }
 
 func TestDependabotService_DeleteRepoSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -226,8 +226,8 @@ func TestDependabotService_DeleteRepoSecret(t *testing.T) {
 }
 
 func TestDependabotService_GetOrgPublicKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -240,7 +240,7 @@ func TestDependabotService_GetOrgPublicKey(t *testing.T) {
 		t.Errorf("Dependabot.GetOrgPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: String("012345678"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: Ptr("012345678"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Dependabot.GetOrgPublicKey returned %+v, want %+v", key, want)
 	}
@@ -261,8 +261,8 @@ func TestDependabotService_GetOrgPublicKey(t *testing.T) {
 }
 
 func TestDependabotService_ListOrgSecrets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -305,8 +305,8 @@ func TestDependabotService_ListOrgSecrets(t *testing.T) {
 }
 
 func TestDependabotService_GetOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -346,8 +346,8 @@ func TestDependabotService_GetOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -381,8 +381,8 @@ func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_ListSelectedReposForOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -397,9 +397,9 @@ func TestDependabotService_ListSelectedReposForOrgSecret(t *testing.T) {
 	}
 
 	want := &SelectedReposList{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Repositories: []*Repository{
-			{ID: Int64(1)},
+			{ID: Ptr(int64(1))},
 		},
 	}
 	if !cmp.Equal(repos, want) {
@@ -422,8 +422,8 @@ func TestDependabotService_ListSelectedReposForOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_SetSelectedReposForOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -449,14 +449,14 @@ func TestDependabotService_SetSelectedReposForOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_AddSelectedRepoToOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
-	repo := &Repository{ID: Int64(1234)}
+	repo := &Repository{ID: Ptr(int64(1234))}
 	ctx := context.Background()
 	_, err := client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repo)
 	if err != nil {
@@ -475,14 +475,14 @@ func TestDependabotService_AddSelectedRepoToOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
-	repo := &Repository{ID: Int64(1234)}
+	repo := &Repository{ID: Ptr(int64(1234))}
 	ctx := context.Background()
 	_, err := client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repo)
 	if err != nil {
@@ -501,8 +501,8 @@ func TestDependabotService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 }
 
 func TestDependabotService_DeleteOrgSecret(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

@@ -12,14 +12,22 @@ type RateLimitService service
 
 // Rate represents the rate limit for the current client.
 type Rate struct {
-	// The number of requests per hour the client is currently limited to.
+	// The maximum number of requests that you can make per hour.
 	Limit int `json:"limit"`
 
-	// The number of remaining requests the client can make this hour.
+	// The number of requests remaining in the current rate limit window.
 	Remaining int `json:"remaining"`
 
-	// The time at which the current rate limit will reset.
+	// The number of requests you have made in the current rate limit window.
+	Used int `json:"used"`
+
+	// The time at which the current rate limit window resets, in UTC epoch seconds.
 	Reset Timestamp `json:"reset"`
+
+	// The rate limit resource that the request counted against.
+	// For more information about the different resources, see REST API endpoints for rate limits.
+	// GitHub API docs: https://docs.github.com/en/rest/rate-limit/rate-limit#get-rate-limit-status-for-the-authenticated-user
+	Resource string `json:"resource,omitempty"`
 }
 
 func (r Rate) String() string {
@@ -77,7 +85,7 @@ func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, err
 	})
 
 	// This resource is not subject to rate limits.
-	ctx = context.WithValue(ctx, bypassRateLimitCheck, true)
+	ctx = context.WithValue(ctx, BypassRateLimitCheck, true)
 	resp, err := s.client.Do(ctx, req, response)
 	if err != nil {
 		return nil, resp, err

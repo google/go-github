@@ -16,8 +16,8 @@ import (
 )
 
 func TestSearchService_Repositories(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -40,9 +40,9 @@ func TestSearchService_Repositories(t *testing.T) {
 	}
 
 	want := &RepositoriesSearchResult{
-		Total:             Int(4),
-		IncompleteResults: Bool(false),
-		Repositories:      []*Repository{{ID: Int64(1)}, {ID: Int64(2)}},
+		Total:             Ptr(4),
+		IncompleteResults: Ptr(false),
+		Repositories:      []*Repository{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
@@ -50,8 +50,8 @@ func TestSearchService_Repositories(t *testing.T) {
 }
 
 func TestSearchService_Repositories_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -63,8 +63,8 @@ func TestSearchService_Repositories_coverage(t *testing.T) {
 }
 
 func TestSearchService_RepositoriesTextMatch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -123,17 +123,17 @@ func TestSearchService_RepositoriesTextMatch(t *testing.T) {
 	}
 
 	wantedRepoResult := &Repository{
-		Name: String("gopher1"),
+		Name: Ptr("gopher1"),
 		TextMatches: []*TextMatch{{
-			Fragment: String("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
-			Matches:  []*Match{{Text: String("gopher"), Indices: []int{14, 21}}},
+			Fragment: Ptr("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
+			Matches:  []*Match{{Text: Ptr("gopher"), Indices: []int{14, 21}}},
 		},
 		},
 	}
 
 	want := &RepositoriesSearchResult{
-		Total:             Int(1),
-		IncompleteResults: Bool(false),
+		Total:             Ptr(1),
+		IncompleteResults: Ptr(false),
 		Repositories:      []*Repository{wantedRepoResult},
 	}
 	if !cmp.Equal(result, want) {
@@ -142,8 +142,8 @@ func TestSearchService_RepositoriesTextMatch(t *testing.T) {
 }
 
 func TestSearchService_Topics(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -164,9 +164,9 @@ func TestSearchService_Topics(t *testing.T) {
 	}
 
 	want := &TopicsSearchResult{
-		Total:             Int(4),
-		IncompleteResults: Bool(false),
-		Topics:            []*TopicResult{{Name: String("blah")}, {Name: String("blahblah")}},
+		Total:             Ptr(4),
+		IncompleteResults: Ptr(false),
+		Topics:            []*TopicResult{{Name: Ptr("blah")}, {Name: Ptr("blahblah")}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Topics returned %+v, want %+v", result, want)
@@ -174,8 +174,8 @@ func TestSearchService_Topics(t *testing.T) {
 }
 
 func TestSearchService_Topics_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -187,8 +187,8 @@ func TestSearchService_Topics_coverage(t *testing.T) {
 }
 
 func TestSearchService_Commits(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -209,9 +209,9 @@ func TestSearchService_Commits(t *testing.T) {
 	}
 
 	want := &CommitsSearchResult{
-		Total:             Int(4),
-		IncompleteResults: Bool(false),
-		Commits:           []*CommitResult{{SHA: String("random_hash1")}, {SHA: String("random_hash2")}},
+		Total:             Ptr(4),
+		IncompleteResults: Ptr(false),
+		Commits:           []*CommitResult{{SHA: Ptr("random_hash1")}, {SHA: Ptr("random_hash2")}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Commits returned %+v, want %+v", result, want)
@@ -219,8 +219,8 @@ func TestSearchService_Commits(t *testing.T) {
 }
 
 func TestSearchService_Commits_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -232,8 +232,8 @@ func TestSearchService_Commits_coverage(t *testing.T) {
 }
 
 func TestSearchService_Issues(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -256,9 +256,9 @@ func TestSearchService_Issues(t *testing.T) {
 	}
 
 	want := &IssuesSearchResult{
-		Total:             Int(4),
-		IncompleteResults: Bool(true),
-		Issues:            []*Issue{{Number: Int(1)}, {Number: Int(2)}},
+		Total:             Ptr(4),
+		IncompleteResults: Ptr(true),
+		Issues:            []*Issue{{Number: Ptr(1)}, {Number: Ptr(2)}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
@@ -266,8 +266,8 @@ func TestSearchService_Issues(t *testing.T) {
 }
 
 func TestSearchService_Issues_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -279,8 +279,8 @@ func TestSearchService_Issues_coverage(t *testing.T) {
 }
 
 func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	const q = "gopher is:issue label:bug language:c++ pushed:>=2018-01-01 stars:>=200"
 
@@ -307,9 +307,9 @@ func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
 	}
 
 	want := &IssuesSearchResult{
-		Total:             Int(4),
-		IncompleteResults: Bool(true),
-		Issues:            []*Issue{{Number: Int(1)}, {Number: Int(2)}},
+		Total:             Ptr(4),
+		IncompleteResults: Ptr(true),
+		Issues:            []*Issue{{Number: Ptr(1)}, {Number: Ptr(2)}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
@@ -317,8 +317,8 @@ func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
 }
 
 func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	const q = "gopher is:issue label:bug language:c++ pushed:>=2018-01-01 stars:>=200"
 
@@ -346,9 +346,9 @@ func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
 	}
 
 	want := &IssuesSearchResult{
-		Total:             Int(4),
-		IncompleteResults: Bool(true),
-		Issues:            []*Issue{{Number: Int(1)}, {Number: Int(2)}},
+		Total:             Ptr(4),
+		IncompleteResults: Ptr(true),
+		Issues:            []*Issue{{Number: Ptr(1)}, {Number: Ptr(2)}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
@@ -356,8 +356,8 @@ func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
 }
 
 func TestSearchService_Users(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -380,9 +380,9 @@ func TestSearchService_Users(t *testing.T) {
 	}
 
 	want := &UsersSearchResult{
-		Total:             Int(4),
-		IncompleteResults: Bool(false),
-		Users:             []*User{{ID: Int64(1)}, {ID: Int64(2)}},
+		Total:             Ptr(4),
+		IncompleteResults: Ptr(false),
+		Users:             []*User{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Users returned %+v, want %+v", result, want)
@@ -390,8 +390,8 @@ func TestSearchService_Users(t *testing.T) {
 }
 
 func TestSearchService_Users_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -403,8 +403,8 @@ func TestSearchService_Users_coverage(t *testing.T) {
 }
 
 func TestSearchService_Code(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -427,9 +427,9 @@ func TestSearchService_Code(t *testing.T) {
 	}
 
 	want := &CodeSearchResult{
-		Total:             Int(4),
-		IncompleteResults: Bool(false),
-		CodeResults:       []*CodeResult{{Name: String("1")}, {Name: String("2")}},
+		Total:             Ptr(4),
+		IncompleteResults: Ptr(false),
+		CodeResults:       []*CodeResult{{Name: Ptr("1")}, {Name: Ptr("2")}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
@@ -437,8 +437,8 @@ func TestSearchService_Code(t *testing.T) {
 }
 
 func TestSearchService_Code_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -450,8 +450,8 @@ func TestSearchService_Code_coverage(t *testing.T) {
 }
 
 func TestSearchService_CodeTextMatch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -493,17 +493,17 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 	}
 
 	wantedCodeResult := &CodeResult{
-		Name: String("gopher1"),
+		Name: Ptr("gopher1"),
 		TextMatches: []*TextMatch{{
-			Fragment: String("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
-			Matches:  []*Match{{Text: String("gopher"), Indices: []int{14, 21}}},
+			Fragment: Ptr("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
+			Matches:  []*Match{{Text: Ptr("gopher"), Indices: []int{14, 21}}},
 		},
 		},
 	}
 
 	want := &CodeSearchResult{
-		Total:             Int(1),
-		IncompleteResults: Bool(false),
+		Total:             Ptr(1),
+		IncompleteResults: Ptr(false),
 		CodeResults:       []*CodeResult{wantedCodeResult},
 	}
 	if !cmp.Equal(result, want) {
@@ -512,8 +512,8 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 }
 
 func TestSearchService_Labels(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/search/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -537,11 +537,11 @@ func TestSearchService_Labels(t *testing.T) {
 	}
 
 	want := &LabelsSearchResult{
-		Total:             Int(4),
-		IncompleteResults: Bool(false),
+		Total:             Ptr(4),
+		IncompleteResults: Ptr(false),
 		Labels: []*LabelResult{
-			{ID: Int64(1234), Name: String("bug"), Description: String("some text")},
-			{ID: Int64(4567), Name: String("feature")},
+			{ID: Ptr(int64(1234)), Name: Ptr("bug"), Description: Ptr("some text")},
+			{ID: Ptr(int64(4567)), Name: Ptr("feature")},
 		},
 	}
 	if !cmp.Equal(result, want) {
@@ -550,8 +550,8 @@ func TestSearchService_Labels(t *testing.T) {
 }
 
 func TestSearchService_Labels_coverage(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -563,10 +563,11 @@ func TestSearchService_Labels_coverage(t *testing.T) {
 }
 
 func TestMatch_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Match{}, "{}")
 
 	u := &Match{
-		Text:    String("txt"),
+		Text:    Ptr("txt"),
 		Indices: []int{1},
 	}
 
@@ -579,16 +580,17 @@ func TestMatch_Marshal(t *testing.T) {
 }
 
 func TestTextMatch_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TextMatch{}, "{}")
 
 	u := &TextMatch{
-		ObjectURL:  String("ourl"),
-		ObjectType: String("otype"),
-		Property:   String("prop"),
-		Fragment:   String("fragment"),
+		ObjectURL:  Ptr("ourl"),
+		ObjectType: Ptr("otype"),
+		Property:   Ptr("prop"),
+		Fragment:   Ptr("fragment"),
 		Matches: []*Match{
 			{
-				Text:    String("txt"),
+				Text:    Ptr("txt"),
 				Indices: []int{1},
 			},
 		},
@@ -609,18 +611,19 @@ func TestTextMatch_Marshal(t *testing.T) {
 }
 
 func TestTopicResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TopicResult{}, "{}")
 
 	u := &TopicResult{
-		Name:             String("name"),
-		DisplayName:      String("displayName"),
-		ShortDescription: String("shortDescription"),
-		Description:      String("description"),
-		CreatedBy:        String("createdBy"),
-		UpdatedAt:        String("2021-10-26"),
-		Featured:         Bool(false),
-		Curated:          Bool(true),
-		Score:            Float64(99.9),
+		Name:             Ptr("name"),
+		DisplayName:      Ptr("displayName"),
+		ShortDescription: Ptr("shortDescription"),
+		Description:      Ptr("description"),
+		CreatedBy:        Ptr("createdBy"),
+		UpdatedAt:        Ptr("2021-10-26"),
+		Featured:         Ptr(false),
+		Curated:          Ptr(true),
+		Score:            Ptr(99.9),
 	}
 
 	want := `{
@@ -639,12 +642,13 @@ func TestTopicResult_Marshal(t *testing.T) {
 }
 
 func TestRepositoriesSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoriesSearchResult{}, "{}")
 
 	u := &RepositoriesSearchResult{
-		Total:             Int(0),
-		IncompleteResults: Bool(true),
-		Repositories:      []*Repository{{ID: Int64(1)}},
+		Total:             Ptr(0),
+		IncompleteResults: Ptr(true),
+		Repositories:      []*Repository{{ID: Ptr(int64(1))}},
 	}
 
 	want := `{
@@ -657,13 +661,14 @@ func TestRepositoriesSearchResult_Marshal(t *testing.T) {
 }
 
 func TestCommitsSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommitsSearchResult{}, "{}")
 
 	c := &CommitsSearchResult{
-		Total:             Int(0),
-		IncompleteResults: Bool(true),
+		Total:             Ptr(0),
+		IncompleteResults: Ptr(true),
 		Commits: []*CommitResult{{
-			SHA: String("s"),
+			SHA: Ptr("s"),
 		}},
 	}
 
@@ -677,23 +682,24 @@ func TestCommitsSearchResult_Marshal(t *testing.T) {
 }
 
 func TestTopicsSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TopicsSearchResult{}, "{}")
 
 	u := &TopicsSearchResult{
-		Total:             Int(2),
-		IncompleteResults: Bool(false),
+		Total:             Ptr(2),
+		IncompleteResults: Ptr(false),
 		Topics: []*TopicResult{
 			{
-				Name:             String("t1"),
-				DisplayName:      String("tt"),
-				ShortDescription: String("t desc"),
-				Description:      String("desc"),
-				CreatedBy:        String("mi"),
+				Name:             Ptr("t1"),
+				DisplayName:      Ptr("tt"),
+				ShortDescription: Ptr("t desc"),
+				Description:      Ptr("desc"),
+				CreatedBy:        Ptr("mi"),
 				CreatedAt:        &Timestamp{referenceTime},
-				UpdatedAt:        String("2006-01-02T15:04:05Z"),
-				Featured:         Bool(true),
-				Curated:          Bool(true),
-				Score:            Float64(123),
+				UpdatedAt:        Ptr("2006-01-02T15:04:05Z"),
+				Featured:         Ptr(true),
+				Curated:          Ptr(true),
+				Score:            Ptr(123.0),
 			},
 		},
 	}
@@ -721,16 +727,17 @@ func TestTopicsSearchResult_Marshal(t *testing.T) {
 }
 
 func TestLabelResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &LabelResult{}, "{}")
 
 	u := &LabelResult{
-		ID:          Int64(11),
-		URL:         String("url"),
-		Name:        String("label"),
-		Color:       String("green"),
-		Default:     Bool(true),
-		Description: String("desc"),
-		Score:       Float64(123),
+		ID:          Ptr(int64(11)),
+		URL:         Ptr("url"),
+		Name:        Ptr("label"),
+		Color:       Ptr("green"),
+		Default:     Ptr(true),
+		Description: Ptr("desc"),
+		Score:       Ptr(123.0),
 	}
 
 	want := `{
@@ -747,6 +754,7 @@ func TestLabelResult_Marshal(t *testing.T) {
 }
 
 func TestSearchOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SearchOptions{}, "{}")
 
 	u := &SearchOptions{
@@ -759,7 +767,7 @@ func TestSearchOptions_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{	
+	want := `{
 		"sort": "author-date",
 		"order": "asc",
 		"page": 1,
@@ -770,42 +778,43 @@ func TestSearchOptions_Marshal(t *testing.T) {
 }
 
 func TestIssuesSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &IssuesSearchResult{}, "{}")
 
 	u := &IssuesSearchResult{
-		Total:             Int(48),
-		IncompleteResults: Bool(false),
+		Total:             Ptr(48),
+		IncompleteResults: Ptr(false),
 		Issues: []*Issue{
 			{
-				ID:                Int64(1),
-				Number:            Int(1),
-				State:             String("s"),
-				Locked:            Bool(false),
-				Title:             String("title"),
-				Body:              String("body"),
-				AuthorAssociation: String("aa"),
-				User:              &User{ID: Int64(1)},
-				Labels:            []*Label{{ID: Int64(1)}},
-				Assignee:          &User{ID: Int64(1)},
-				Comments:          Int(1),
+				ID:                Ptr(int64(1)),
+				Number:            Ptr(1),
+				State:             Ptr("s"),
+				Locked:            Ptr(false),
+				Title:             Ptr("title"),
+				Body:              Ptr("body"),
+				AuthorAssociation: Ptr("aa"),
+				User:              &User{ID: Ptr(int64(1))},
+				Labels:            []*Label{{ID: Ptr(int64(1))}},
+				Assignee:          &User{ID: Ptr(int64(1))},
+				Comments:          Ptr(1),
 				ClosedAt:          &Timestamp{referenceTime},
 				CreatedAt:         &Timestamp{referenceTime},
 				UpdatedAt:         &Timestamp{referenceTime},
-				ClosedBy:          &User{ID: Int64(1)},
-				URL:               String("url"),
-				HTMLURL:           String("hurl"),
-				CommentsURL:       String("curl"),
-				EventsURL:         String("eurl"),
-				LabelsURL:         String("lurl"),
-				RepositoryURL:     String("rurl"),
-				Milestone:         &Milestone{ID: Int64(1)},
-				PullRequestLinks:  &PullRequestLinks{URL: String("url")},
-				Repository:        &Repository{ID: Int64(1)},
-				Reactions:         &Reactions{TotalCount: Int(1)},
-				Assignees:         []*User{{ID: Int64(1)}},
-				NodeID:            String("nid"),
-				TextMatches:       []*TextMatch{{ObjectURL: String("ourl")}},
-				ActiveLockReason:  String("alr"),
+				ClosedBy:          &User{ID: Ptr(int64(1))},
+				URL:               Ptr("url"),
+				HTMLURL:           Ptr("hurl"),
+				CommentsURL:       Ptr("curl"),
+				EventsURL:         Ptr("eurl"),
+				LabelsURL:         Ptr("lurl"),
+				RepositoryURL:     Ptr("rurl"),
+				Milestone:         &Milestone{ID: Ptr(int64(1))},
+				PullRequestLinks:  &PullRequestLinks{URL: Ptr("url")},
+				Repository:        &Repository{ID: Ptr(int64(1))},
+				Reactions:         &Reactions{TotalCount: Ptr(1)},
+				Assignees:         []*User{{ID: Ptr(int64(1))}},
+				NodeID:            Ptr("nid"),
+				TextMatches:       []*TextMatch{{ObjectURL: Ptr("ourl")}},
+				ActiveLockReason:  Ptr("alr"),
 			},
 		},
 	}
@@ -878,20 +887,21 @@ func TestIssuesSearchResult_Marshal(t *testing.T) {
 }
 
 func TestLabelsSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &LabelsSearchResult{}, "{}")
 
 	u := &LabelsSearchResult{
-		Total:             Int(5),
-		IncompleteResults: Bool(false),
+		Total:             Ptr(5),
+		IncompleteResults: Ptr(false),
 		Labels: []*LabelResult{
 			{
-				ID:          Int64(1),
-				URL:         String("https://www.test-url.com"),
-				Name:        String("test name"),
-				Color:       String("green"),
-				Default:     Bool(true),
-				Description: String("testDescription"),
-				Score:       Float64(1),
+				ID:          Ptr(int64(1)),
+				URL:         Ptr("https://www.test-url.com"),
+				Name:        Ptr("test name"),
+				Color:       Ptr("green"),
+				Default:     Ptr(true),
+				Description: Ptr("testDescription"),
+				Score:       Ptr(1.0),
 			},
 		},
 	}
@@ -916,18 +926,19 @@ func TestLabelsSearchResult_Marshal(t *testing.T) {
 }
 
 func TestCommitResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommitResult{}, "{}")
 
 	c := &CommitResult{
-		SHA:         String("test"),
-		HTMLURL:     String("hurl"),
-		CommentsURL: String("curl"),
-		URL:         String("url"),
-		Repository:  &Repository{ID: Int64(1)},
-		Score:       Float64(123),
-		Commit:      &Commit{SHA: String("test")},
-		Author:      &User{ID: Int64(1)},
-		Committer:   &User{ID: Int64(1)},
+		SHA:         Ptr("test"),
+		HTMLURL:     Ptr("hurl"),
+		CommentsURL: Ptr("curl"),
+		URL:         Ptr("url"),
+		Repository:  &Repository{ID: Ptr(int64(1))},
+		Score:       Ptr(123.0),
+		Commit:      &Commit{SHA: Ptr("test")},
+		Author:      &User{ID: Ptr(int64(1))},
+		Committer:   &User{ID: Ptr(int64(1))},
 		Parents:     []*Commit{},
 	}
 
@@ -955,19 +966,20 @@ func TestCommitResult_Marshal(t *testing.T) {
 }
 
 func TestUsersSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UsersSearchResult{}, "{}")
 
 	u := &UsersSearchResult{
-		Total:             Int(2),
-		IncompleteResults: Bool(false),
+		Total:             Ptr(2),
+		IncompleteResults: Ptr(false),
 		Users: []*User{{
-			Login:      String("loginTest"),
-			ID:         Int64(1),
-			NodeID:     String("NodeTest"),
-			AvatarURL:  String("AvatarURLTest"),
-			HTMLURL:    String("Hurl"),
-			GravatarID: String("gravatarIDTest"),
-			Name:       String("nameTest"),
+			Login:      Ptr("loginTest"),
+			ID:         Ptr(int64(1)),
+			NodeID:     Ptr("NodeTest"),
+			AvatarURL:  Ptr("AvatarURLTest"),
+			HTMLURL:    Ptr("Hurl"),
+			GravatarID: Ptr("gravatarIDTest"),
+			Name:       Ptr("nameTest"),
 		}},
 	}
 
@@ -991,12 +1003,13 @@ func TestUsersSearchResult_Marshal(t *testing.T) {
 }
 
 func TestCodeSearchResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CodeSearchResult{}, "{}")
 
 	u := &CodeSearchResult{
-		Total:             Int(4),
-		IncompleteResults: Bool(false),
-		CodeResults:       []*CodeResult{{Name: String("n")}},
+		Total:             Ptr(4),
+		IncompleteResults: Ptr(false),
+		CodeResults:       []*CodeResult{{Name: Ptr("n")}},
 	}
 
 	want := `{

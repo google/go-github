@@ -16,6 +16,7 @@ import (
 )
 
 func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
 	var testCases = map[string]struct {
 		data      []byte
 		wantRule  []*RequiredReviewer
@@ -23,17 +24,17 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 	}{
 		"User Reviewer": {
 			data:      []byte(`[{"type": "User", "reviewer": {"id": 1,"login": "octocat"}}]`),
-			wantRule:  []*RequiredReviewer{{Type: String("User"), Reviewer: &User{ID: Int64(1), Login: String("octocat")}}},
+			wantRule:  []*RequiredReviewer{{Type: Ptr("User"), Reviewer: &User{ID: Ptr(int64(1)), Login: Ptr("octocat")}}},
 			wantError: false,
 		},
 		"Team Reviewer": {
 			data:      []byte(`[{"type": "Team", "reviewer": {"id": 1, "name": "Justice League"}}]`),
-			wantRule:  []*RequiredReviewer{{Type: String("Team"), Reviewer: &Team{ID: Int64(1), Name: String("Justice League")}}},
+			wantRule:  []*RequiredReviewer{{Type: Ptr("Team"), Reviewer: &Team{ID: Ptr(int64(1)), Name: Ptr("Justice League")}}},
 			wantError: false,
 		},
 		"Both Types Reviewer": {
 			data:      []byte(`[{"type": "User", "reviewer": {"id": 1,"login": "octocat"}},{"type": "Team", "reviewer": {"id": 1, "name": "Justice League"}}]`),
-			wantRule:  []*RequiredReviewer{{Type: String("User"), Reviewer: &User{ID: Int64(1), Login: String("octocat")}}, {Type: String("Team"), Reviewer: &Team{ID: Int64(1), Name: String("Justice League")}}},
+			wantRule:  []*RequiredReviewer{{Type: Ptr("User"), Reviewer: &User{ID: Ptr(int64(1)), Login: Ptr("octocat")}}, {Type: Ptr("Team"), Reviewer: &Team{ID: Ptr(int64(1)), Name: Ptr("Justice League")}}},
 			wantError: false,
 		},
 		"Empty JSON Object": {
@@ -53,12 +54,12 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 		},
 		"Wrong ID Type in User Object": {
 			data:      []byte(`[{"type": "User", "reviewer": {"id": "string"}}]`),
-			wantRule:  []*RequiredReviewer{{Type: String("User"), Reviewer: nil}},
+			wantRule:  []*RequiredReviewer{{Type: Ptr("User"), Reviewer: nil}},
 			wantError: true,
 		},
 		"Wrong ID Type in Team Object": {
 			data:      []byte(`[{"type": "Team", "reviewer": {"id": "string"}}]`),
-			wantRule:  []*RequiredReviewer{{Type: String("Team"), Reviewer: nil}},
+			wantRule:  []*RequiredReviewer{{Type: Ptr("Team"), Reviewer: nil}},
 			wantError: true,
 		},
 		"Wrong Type of Reviewer": {
@@ -69,7 +70,9 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 	}
 
 	for name, test := range testCases {
+		test := test
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			rule := []*RequiredReviewer{}
 			err := json.Unmarshal(test.data, &rule)
 			if err != nil && !test.wantError {
@@ -86,6 +89,7 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 }
 
 func TestCreateUpdateEnvironment_MarshalJSON(t *testing.T) {
+	t.Parallel()
 	cu := &CreateUpdateEnvironment{}
 
 	got, err := cu.MarshalJSON()
@@ -100,8 +104,8 @@ func TestCreateUpdateEnvironment_MarshalJSON(t *testing.T) {
 }
 
 func TestRepositoriesService_ListEnvironments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -119,7 +123,7 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.ListEnvironments returned error: %v", err)
 	}
-	want := &EnvResponse{TotalCount: Int(1), Environments: []*Environment{{ID: Int64(1)}, {ID: Int64(2)}}}
+	want := &EnvResponse{TotalCount: Ptr(1), Environments: []*Environment{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}}
 	if !cmp.Equal(environments, want) {
 		t.Errorf("Repositories.ListEnvironments returned %+v, want %+v", environments, want)
 	}
@@ -140,8 +144,8 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 }
 
 func TestRepositoriesService_GetEnvironment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -154,7 +158,7 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 		t.Errorf("Repositories.GetEnvironment returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &Environment{ID: Int64(1), Name: String("staging"), DeploymentBranchPolicy: &BranchPolicy{ProtectedBranches: Bool(true), CustomBranchPolicies: Bool(false)}, CanAdminsBypass: Bool(false)}
+	want := &Environment{ID: Ptr(int64(1)), Name: Ptr("staging"), DeploymentBranchPolicy: &BranchPolicy{ProtectedBranches: Ptr(true), CustomBranchPolicies: Ptr(false)}, CanAdminsBypass: Ptr(false)}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetEnvironment returned %+v, want %+v", release, want)
 	}
@@ -175,11 +179,11 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateEnvironment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &CreateUpdateEnvironment{
-		WaitTimer: Int(30),
+		WaitTimer: Ptr(30),
 	}
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
@@ -187,7 +191,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
-		want := &CreateUpdateEnvironment{WaitTimer: Int(30), CanAdminsBypass: Bool(true)}
+		want := &CreateUpdateEnvironment{WaitTimer: Ptr(30), CanAdminsBypass: Ptr(true)}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -200,7 +204,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned error: %v", err)
 	}
 
-	want := &Environment{ID: Int64(1), Name: String("staging"), ProtectionRules: []*ProtectionRule{{ID: Int64(1), Type: String("wait_timer"), WaitTimer: Int(30)}}}
+	want := &Environment{ID: Ptr(int64(1)), Name: Ptr("staging"), ProtectionRules: []*ProtectionRule{{ID: Ptr(int64(1)), Type: Ptr("wait_timer"), WaitTimer: Ptr(30)}}}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned %+v, want %+v", release, want)
 	}
@@ -221,8 +225,8 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &CreateUpdateEnvironment{}
 	callCount := 0
@@ -250,20 +254,20 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned error: %v", err)
 	}
 
-	want := &Environment{ID: Int64(1), Name: String("staging"), ProtectionRules: []*ProtectionRule{}}
+	want := &Environment{ID: Ptr(int64(1)), Name: Ptr("staging"), ProtectionRules: []*ProtectionRule{}}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned %+v, want %+v", release, want)
 	}
 }
 
 func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &CreateUpdateEnvironment{
 		DeploymentBranchPolicy: &BranchPolicy{
-			ProtectedBranches:    Bool(true),
-			CustomBranchPolicies: Bool(false),
+			ProtectedBranches:    Ptr(true),
+			CustomBranchPolicies: Ptr(false),
 		},
 	}
 
@@ -274,8 +278,8 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 		testMethod(t, r, "PUT")
 		want := &createUpdateEnvironmentNoEnterprise{
 			DeploymentBranchPolicy: &BranchPolicy{
-				ProtectedBranches:    Bool(true),
-				CustomBranchPolicies: Bool(false),
+				ProtectedBranches:    Ptr(true),
+				CustomBranchPolicies: Ptr(false),
 			},
 		}
 		if !cmp.Equal(v, want) {
@@ -291,18 +295,18 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 	}
 
 	want := &Environment{
-		ID:   Int64(1),
-		Name: String("staging"),
+		ID:   Ptr(int64(1)),
+		Name: Ptr("staging"),
 		ProtectionRules: []*ProtectionRule{
 			{
-				ID:     Int64(1),
-				NodeID: String("id"),
-				Type:   String("branch_policy"),
+				ID:     Ptr(int64(1)),
+				NodeID: Ptr("id"),
+				Type:   Ptr("branch_policy"),
 			},
 		},
 		DeploymentBranchPolicy: &BranchPolicy{
-			ProtectedBranches:    Bool(true),
-			CustomBranchPolicies: Bool(false),
+			ProtectedBranches:    Ptr(true),
+			CustomBranchPolicies: Ptr(false),
 		},
 	}
 	if !cmp.Equal(release, want) {
@@ -325,8 +329,8 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteEnvironment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -350,43 +354,44 @@ func TestRepositoriesService_DeleteEnvironment(t *testing.T) {
 }
 
 func TestRepoEnvironment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EnvResponse{}, "{}")
 
 	repoEnv := &EnvResponse{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Environments: []*Environment{
 			{
-				Owner:           String("me"),
-				Repo:            String("se"),
-				EnvironmentName: String("dev"),
-				WaitTimer:       Int(123),
+				Owner:           Ptr("me"),
+				Repo:            Ptr("se"),
+				EnvironmentName: Ptr("dev"),
+				WaitTimer:       Ptr(123),
 				Reviewers: []*EnvReviewers{
 					{
-						Type: String("main"),
-						ID:   Int64(1),
+						Type: Ptr("main"),
+						ID:   Ptr(int64(1)),
 					},
 					{
-						Type: String("rev"),
-						ID:   Int64(2),
+						Type: Ptr("rev"),
+						ID:   Ptr(int64(2)),
 					},
 				},
 				DeploymentBranchPolicy: &BranchPolicy{
-					ProtectedBranches:    Bool(false),
-					CustomBranchPolicies: Bool(false),
+					ProtectedBranches:    Ptr(false),
+					CustomBranchPolicies: Ptr(false),
 				},
-				ID:        Int64(2),
-				NodeID:    String("star"),
-				Name:      String("eg"),
-				URL:       String("https://hey.in"),
-				HTMLURL:   String("htmlurl"),
+				ID:        Ptr(int64(2)),
+				NodeID:    Ptr("star"),
+				Name:      Ptr("eg"),
+				URL:       Ptr("https://hey.in"),
+				HTMLURL:   Ptr("htmlurl"),
 				CreatedAt: &Timestamp{referenceTime},
 				UpdatedAt: &Timestamp{referenceTime},
 				ProtectionRules: []*ProtectionRule{
 					{
-						ID:        Int64(21),
-						NodeID:    String("mnb"),
-						Type:      String("ewq"),
-						WaitTimer: Int(9090),
+						ID:        Ptr(int64(21)),
+						NodeID:    Ptr("mnb"),
+						Type:      Ptr("ewq"),
+						WaitTimer: Ptr(9090),
 					},
 				},
 			},
@@ -438,11 +443,12 @@ func TestRepoEnvironment_Marshal(t *testing.T) {
 }
 
 func TestEnvReviewers_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &EnvReviewers{}, "{}")
 
 	repoEnv := &EnvReviewers{
-		Type: String("main"),
-		ID:   Int64(1),
+		Type: Ptr("main"),
+		ID:   Ptr(int64(1)),
 	}
 
 	want := `{
@@ -454,40 +460,41 @@ func TestEnvReviewers_Marshal(t *testing.T) {
 }
 
 func TestEnvironment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Environment{}, "{}")
 
 	repoEnv := &Environment{
-		Owner:           String("o"),
-		Repo:            String("r"),
-		EnvironmentName: String("e"),
-		WaitTimer:       Int(123),
+		Owner:           Ptr("o"),
+		Repo:            Ptr("r"),
+		EnvironmentName: Ptr("e"),
+		WaitTimer:       Ptr(123),
 		Reviewers: []*EnvReviewers{
 			{
-				Type: String("main"),
-				ID:   Int64(1),
+				Type: Ptr("main"),
+				ID:   Ptr(int64(1)),
 			},
 			{
-				Type: String("rev"),
-				ID:   Int64(2),
+				Type: Ptr("rev"),
+				ID:   Ptr(int64(2)),
 			},
 		},
 		DeploymentBranchPolicy: &BranchPolicy{
-			ProtectedBranches:    Bool(false),
-			CustomBranchPolicies: Bool(false),
+			ProtectedBranches:    Ptr(false),
+			CustomBranchPolicies: Ptr(false),
 		},
-		ID:        Int64(2),
-		NodeID:    String("star"),
-		Name:      String("eg"),
-		URL:       String("https://hey.in"),
-		HTMLURL:   String("htmlurl"),
+		ID:        Ptr(int64(2)),
+		NodeID:    Ptr("star"),
+		Name:      Ptr("eg"),
+		URL:       Ptr("https://hey.in"),
+		HTMLURL:   Ptr("htmlurl"),
 		CreatedAt: &Timestamp{referenceTime},
 		UpdatedAt: &Timestamp{referenceTime},
 		ProtectionRules: []*ProtectionRule{
 			{
-				ID:        Int64(21),
-				NodeID:    String("mnb"),
-				Type:      String("ewq"),
-				WaitTimer: Int(9090),
+				ID:        Ptr(int64(21)),
+				NodeID:    Ptr("mnb"),
+				Type:      Ptr("ewq"),
+				WaitTimer: Ptr(9090),
 			},
 		},
 	}
@@ -532,11 +539,12 @@ func TestEnvironment_Marshal(t *testing.T) {
 }
 
 func TestBranchPolicy_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &BranchPolicy{}, "{}")
 
 	bp := &BranchPolicy{
-		ProtectedBranches:    Bool(false),
-		CustomBranchPolicies: Bool(false),
+		ProtectedBranches:    Ptr(false),
+		CustomBranchPolicies: Ptr(false),
 	}
 
 	want := `{

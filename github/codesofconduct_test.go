@@ -15,8 +15,8 @@ import (
 )
 
 func TestCodesOfConductService_List(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/codes_of_conduct", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -34,9 +34,9 @@ func TestCodesOfConductService_List(t *testing.T) {
 
 	want := []*CodeOfConduct{
 		{
-			Key:  String("key"),
-			Name: String("name"),
-			URL:  String("url"),
+			Key:  Ptr("key"),
+			Name: Ptr("name"),
+			URL:  Ptr("url"),
 		}}
 	if !cmp.Equal(want, cs) {
 		t.Errorf("returned %+v, want %+v", cs, want)
@@ -53,8 +53,8 @@ func TestCodesOfConductService_List(t *testing.T) {
 }
 
 func TestCodesOfConductService_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/codes_of_conduct/k", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -72,10 +72,10 @@ func TestCodesOfConductService_Get(t *testing.T) {
 	assertNilError(t, err)
 
 	want := &CodeOfConduct{
-		Key:  String("key"),
-		Name: String("name"),
-		URL:  String("url"),
-		Body: String("body"),
+		Key:  Ptr("key"),
+		Name: Ptr("name"),
+		URL:  Ptr("url"),
+		Body: Ptr("body"),
 	}
 	if !cmp.Equal(want, coc) {
 		t.Errorf("returned %+v, want %+v", coc, want)
@@ -97,13 +97,14 @@ func TestCodesOfConductService_Get(t *testing.T) {
 }
 
 func TestCodeOfConduct_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CodeOfConduct{}, "{}")
 
 	a := &CodeOfConduct{
-		Name: String("name"),
-		Key:  String("key"),
-		URL:  String("url"),
-		Body: String("body"),
+		Name: Ptr("name"),
+		Key:  Ptr("key"),
+		URL:  Ptr("url"),
+		Body: Ptr("body"),
 	}
 
 	want := `{

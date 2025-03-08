@@ -85,7 +85,6 @@ type IssueEvent struct {
 	Label                 *Label           `json:"label,omitempty"`
 	Rename                *Rename          `json:"rename,omitempty"`
 	LockReason            *string          `json:"lock_reason,omitempty"`
-	ProjectCard           *ProjectCard     `json:"project_card,omitempty"`
 	DismissedReview       *DismissedReview `json:"dismissed_review,omitempty"`
 	RequestedReviewer     *User            `json:"requested_reviewer,omitempty"`
 	RequestedTeam         *Team            `json:"requested_team,omitempty"`

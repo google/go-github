@@ -16,8 +16,8 @@ import (
 )
 
 func TestOrganizationsService_GetHookConfiguration(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/hooks/1/config", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -31,10 +31,10 @@ func TestOrganizationsService_GetHookConfiguration(t *testing.T) {
 	}
 
 	want := &HookConfig{
-		ContentType: String("json"),
-		InsecureSSL: String("0"),
-		Secret:      String("********"),
-		URL:         String("https://example.com/webhook"),
+		ContentType: Ptr("json"),
+		InsecureSSL: Ptr("0"),
+		Secret:      Ptr("********"),
+		URL:         Ptr("https://example.com/webhook"),
 	}
 	if !cmp.Equal(config, want) {
 		t.Errorf("Organizations.GetHookConfiguration returned %+v, want %+v", config, want)
@@ -56,8 +56,8 @@ func TestOrganizationsService_GetHookConfiguration(t *testing.T) {
 }
 
 func TestOrganizationsService_GetHookConfiguration_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Organizations.GetHookConfiguration(ctx, "%", 1)
@@ -65,8 +65,8 @@ func TestOrganizationsService_GetHookConfiguration_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_EditHookConfiguration(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &HookConfig{}
 
@@ -89,10 +89,10 @@ func TestOrganizationsService_EditHookConfiguration(t *testing.T) {
 	}
 
 	want := &HookConfig{
-		ContentType: String("json"),
-		InsecureSSL: String("0"),
-		Secret:      String("********"),
-		URL:         String("https://example.com/webhook"),
+		ContentType: Ptr("json"),
+		InsecureSSL: Ptr("0"),
+		Secret:      Ptr("********"),
+		URL:         Ptr("https://example.com/webhook"),
 	}
 	if !cmp.Equal(config, want) {
 		t.Errorf("Organizations.EditHookConfiguration returned %+v, want %+v", config, want)
@@ -114,8 +114,8 @@ func TestOrganizationsService_EditHookConfiguration(t *testing.T) {
 }
 
 func TestOrganizationsService_EditHookConfiguration_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Organizations.EditHookConfiguration(ctx, "%", 1, nil)

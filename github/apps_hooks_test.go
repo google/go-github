@@ -15,8 +15,8 @@ import (
 )
 
 func TestAppsService_GetHookConfig(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/hook/config", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -35,10 +35,10 @@ func TestAppsService_GetHookConfig(t *testing.T) {
 	}
 
 	want := &HookConfig{
-		ContentType: String("json"),
-		InsecureSSL: String("0"),
-		Secret:      String("********"),
-		URL:         String("https://example.com/webhook"),
+		ContentType: Ptr("json"),
+		InsecureSSL: Ptr("0"),
+		Secret:      Ptr("********"),
+		URL:         Ptr("https://example.com/webhook"),
 	}
 	if !cmp.Equal(config, want) {
 		t.Errorf("Apps.GetHookConfig returned %+v, want %+v", config, want)
@@ -55,14 +55,14 @@ func TestAppsService_GetHookConfig(t *testing.T) {
 }
 
 func TestAppsService_UpdateHookConfig(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &HookConfig{
-		ContentType: String("json"),
-		InsecureSSL: String("1"),
-		Secret:      String("s"),
-		URL:         String("u"),
+		ContentType: Ptr("json"),
+		InsecureSSL: Ptr("1"),
+		Secret:      Ptr("s"),
+		URL:         Ptr("u"),
 	}
 
 	mux.HandleFunc("/app/hook/config", func(w http.ResponseWriter, r *http.Request) {
@@ -83,10 +83,10 @@ func TestAppsService_UpdateHookConfig(t *testing.T) {
 	}
 
 	want := &HookConfig{
-		ContentType: String("json"),
-		InsecureSSL: String("1"),
-		Secret:      String("********"),
-		URL:         String("u"),
+		ContentType: Ptr("json"),
+		InsecureSSL: Ptr("1"),
+		Secret:      Ptr("********"),
+		URL:         Ptr("u"),
 	}
 	if !cmp.Equal(config, want) {
 		t.Errorf("Apps.UpdateHookConfig returned %+v, want %+v", config, want)

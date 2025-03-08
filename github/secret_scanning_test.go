@@ -17,12 +17,12 @@ import (
 )
 
 func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key"})
+		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key", "sort": "updated", "direction": "asc"})
 
 		fmt.Fprint(w, `[{
 			"number": 1,
@@ -45,7 +45,7 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key"}
+	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForEnterprise(ctx, "e", opts)
 	if err != nil {
@@ -55,21 +55,21 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
-			Number:       Int(1),
+			Number:       Ptr(1),
 			CreatedAt:    &date,
-			URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
-			HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
-			LocationsURL: String("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
-			State:        String("open"),
+			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
+			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
+			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
+			State:        Ptr("open"),
 			Resolution:   nil,
 			ResolvedAt:   nil,
 			ResolvedBy:   nil,
-			SecretType:   String("mailchimp_api_key"),
-			Secret:       String("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+			SecretType:   Ptr("mailchimp_api_key"),
+			Secret:       Ptr("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
 			Repository: &Repository{
-				ID:   Int64(1),
-				URL:  String("url"),
-				Name: String("n"),
+				ID:   Ptr(int64(1)),
+				URL:  Ptr("url"),
+				Name: Ptr("n"),
 			},
 		},
 	}
@@ -92,12 +92,12 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 }
 
 func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key"})
+		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key", "sort": "updated", "direction": "asc"})
 
 		fmt.Fprint(w, `[{
 			"number": 1,
@@ -115,7 +115,7 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key"}
+	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForOrg(ctx, "o", opts)
 	if err != nil {
@@ -125,17 +125,17 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
-			Number:       Int(1),
+			Number:       Ptr(1),
 			CreatedAt:    &date,
-			URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
-			HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
-			LocationsURL: String("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
-			State:        String("open"),
+			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
+			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
+			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
+			State:        Ptr("open"),
 			Resolution:   nil,
 			ResolvedAt:   nil,
 			ResolvedBy:   nil,
-			SecretType:   String("mailchimp_api_key"),
-			Secret:       String("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+			SecretType:   Ptr("mailchimp_api_key"),
+			Secret:       Ptr("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
 		},
 	}
 
@@ -157,12 +157,12 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 }
 
 func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key", "per_page": "1", "page": "1"})
+		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key", "per_page": "1", "page": "1", "sort": "updated", "direction": "asc"})
 
 		fmt.Fprint(w, `[{
 			"number": 1,
@@ -182,7 +182,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 	ctx := context.Background()
 
 	// Testing pagination by index
-	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", ListOptions: ListOptions{Page: 1, PerPage: 1}}
+	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", ListOptions: ListOptions{Page: 1, PerPage: 1}, Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForOrg(ctx, "o", opts)
 	if err != nil {
@@ -192,17 +192,17 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
-			Number:       Int(1),
+			Number:       Ptr(1),
 			CreatedAt:    &date,
-			URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
-			HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
-			LocationsURL: String("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
-			State:        String("open"),
+			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
+			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
+			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
+			State:        Ptr("open"),
 			Resolution:   nil,
 			ResolvedAt:   nil,
 			ResolvedBy:   nil,
-			SecretType:   String("mailchimp_api_key"),
-			Secret:       String("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+			SecretType:   Ptr("mailchimp_api_key"),
+			Secret:       Ptr("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
 		},
 	}
 
@@ -224,12 +224,12 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 }
 
 func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key"})
+		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key", "sort": "updated", "direction": "asc"})
 
 		fmt.Fprint(w, `[{
 			"number": 1,
@@ -247,7 +247,7 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key"}
+	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForRepo(ctx, "o", "r", opts)
 	if err != nil {
@@ -257,17 +257,17 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
-			Number:       Int(1),
+			Number:       Ptr(1),
 			CreatedAt:    &date,
-			URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
-			HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
-			LocationsURL: String("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
-			State:        String("open"),
+			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
+			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
+			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
+			State:        Ptr("open"),
 			Resolution:   nil,
 			ResolvedAt:   nil,
 			ResolvedBy:   nil,
-			SecretType:   String("mailchimp_api_key"),
-			Secret:       String("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+			SecretType:   Ptr("mailchimp_api_key"),
+			Secret:       Ptr("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
 		},
 	}
 
@@ -289,8 +289,8 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 }
 
 func TestSecretScanningService_GetAlert(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -319,17 +319,17 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := &SecretScanningAlert{
-		Number:       Int(1),
+		Number:       Ptr(1),
 		CreatedAt:    &date,
-		URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
-		HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
-		LocationsURL: String("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
-		State:        String("open"),
+		URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
+		HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
+		LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
+		State:        Ptr("open"),
 		Resolution:   nil,
 		ResolvedAt:   nil,
 		ResolvedBy:   nil,
-		SecretType:   String("mailchimp_api_key"),
-		Secret:       String("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+		SecretType:   Ptr("mailchimp_api_key"),
+		Secret:       Ptr("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
 	}
 
 	if !cmp.Equal(alert, want) {
@@ -350,8 +350,8 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 }
 
 func TestSecretScanningService_UpdateAlert(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -359,7 +359,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		v := new(SecretScanningAlertUpdateOptions)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-		want := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: String("used_in_tests")}
+		want := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: Ptr("used_in_tests")}
 
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -373,6 +373,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
 			"state": "resolved",
 			"resolution": "used_in_tests",
+			"resolution_comment": "resolution comment",
 			"resolved_at": "1996-06-20T00:00:00Z",
 			"resolved_by": null,
 			"secret_type": "mailchimp_api_key",
@@ -381,7 +382,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: String("used_in_tests")}
+	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: Ptr("used_in_tests")}
 
 	alert, _, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
 	if err != nil {
@@ -390,17 +391,18 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := &SecretScanningAlert{
-		Number:       Int(1),
-		CreatedAt:    &date,
-		URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
-		HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
-		LocationsURL: String("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
-		State:        String("resolved"),
-		Resolution:   String("used_in_tests"),
-		ResolvedAt:   &date,
-		ResolvedBy:   nil,
-		SecretType:   String("mailchimp_api_key"),
-		Secret:       String("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+		Number:            Ptr(1),
+		CreatedAt:         &date,
+		URL:               Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
+		HTMLURL:           Ptr("https://github.com/o/r/security/secret-scanning/1"),
+		LocationsURL:      Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
+		State:             Ptr("resolved"),
+		Resolution:        Ptr("used_in_tests"),
+		ResolutionComment: Ptr("resolution comment"),
+		ResolvedAt:        &date,
+		ResolvedBy:        nil,
+		SecretType:        Ptr("mailchimp_api_key"),
+		Secret:            Ptr("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
 	}
 
 	if !cmp.Equal(alert, want) {
@@ -421,8 +423,8 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 }
 
 func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1/locations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -454,17 +456,17 @@ func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
 
 	want := []*SecretScanningAlertLocation{
 		{
-			Type: String("commit"),
+			Type: Ptr("commit"),
 			Details: &SecretScanningAlertLocationDetails{
-				Path:        String("/example/secrets.txt"),
-				Startline:   Int(1),
-				EndLine:     Int(1),
-				StartColumn: Int(1),
-				EndColumn:   Int(64),
-				BlobSHA:     String("af5626b4a114abcb82d63db7c8082c3c4756e51b"),
-				BlobURL:     String("https://api.github.com/repos/o/r/git/blobs/af5626b4a114abcb82d63db7c8082c3c4756e51b"),
-				CommitSHA:   String("f14d7debf9775f957cf4f1e8176da0786431f72b"),
-				CommitURL:   String("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
+				Path:        Ptr("/example/secrets.txt"),
+				Startline:   Ptr(1),
+				EndLine:     Ptr(1),
+				StartColumn: Ptr(1),
+				EndColumn:   Ptr(64),
+				BlobSHA:     Ptr("af5626b4a114abcb82d63db7c8082c3c4756e51b"),
+				BlobURL:     Ptr("https://api.github.com/repos/o/r/git/blobs/af5626b4a114abcb82d63db7c8082c3c4756e51b"),
+				CommitSHA:   Ptr("f14d7debf9775f957cf4f1e8176da0786431f72b"),
+				CommitURL:   Ptr("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
 			},
 		},
 	}
@@ -487,25 +489,26 @@ func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
 }
 
 func TestSecretScanningAlert_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlert{}, `{}`)
 
 	u := &SecretScanningAlert{
-		Number:       Int(1),
+		Number:       Ptr(1),
 		CreatedAt:    &Timestamp{referenceTime},
-		URL:          String("https://api.github.com/teams/2/discussions/3/comments"),
-		HTMLURL:      String("https://api.github.com/teams/2/discussions/3/comments"),
-		LocationsURL: String("https://api.github.com/teams/2/discussions/3/comments"),
-		State:        String("test_state"),
-		Resolution:   String("test_resolution"),
+		URL:          Ptr("https://api.github.com/teams/2/discussions/3/comments"),
+		HTMLURL:      Ptr("https://api.github.com/teams/2/discussions/3/comments"),
+		LocationsURL: Ptr("https://api.github.com/teams/2/discussions/3/comments"),
+		State:        Ptr("test_state"),
+		Resolution:   Ptr("test_resolution"),
 		ResolvedAt:   &Timestamp{referenceTime},
 		ResolvedBy: &User{
-			Login:     String("test"),
-			ID:        Int64(10),
-			NodeID:    String("A123"),
-			AvatarURL: String("https://api.github.com/teams/2/discussions/3/comments"),
+			Login:     Ptr("test"),
+			ID:        Ptr(int64(10)),
+			NodeID:    Ptr("A123"),
+			AvatarURL: Ptr("https://api.github.com/teams/2/discussions/3/comments"),
 		},
-		SecretType: String("test"),
-		Secret:     String("test"),
+		SecretType: Ptr("test"),
+		Secret:     Ptr("test"),
 	}
 
 	want := `{
@@ -531,20 +534,21 @@ func TestSecretScanningAlert_Marshal(t *testing.T) {
 }
 
 func TestSecretScanningAlertLocation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlertLocation{}, `{}`)
 
 	u := &SecretScanningAlertLocation{
-		Type: String("test"),
+		Type: Ptr("test"),
 		Details: &SecretScanningAlertLocationDetails{
-			Path:        String("test_path"),
-			Startline:   Int(10),
-			EndLine:     Int(20),
-			StartColumn: Int(30),
-			EndColumn:   Int(40),
-			BlobSHA:     String("test_sha"),
-			BlobURL:     String("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
-			CommitSHA:   String("test_sha"),
-			CommitURL:   String("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
+			Path:        Ptr("test_path"),
+			Startline:   Ptr(10),
+			EndLine:     Ptr(20),
+			StartColumn: Ptr(30),
+			EndColumn:   Ptr(40),
+			BlobSHA:     Ptr("test_sha"),
+			BlobURL:     Ptr("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
+			CommitSHA:   Ptr("test_sha"),
+			CommitURL:   Ptr("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
 		},
 	}
 
@@ -560,25 +564,26 @@ func TestSecretScanningAlertLocation_Marshal(t *testing.T) {
 			"blob_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b",
 			"commit_sha": "test_sha",
 			"commit_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"
-		} 
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestSecretScanningAlertLocationDetails_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlertLocationDetails{}, `{}`)
 
 	u := &SecretScanningAlertLocationDetails{
-		Path:        String("test_path"),
-		Startline:   Int(10),
-		EndLine:     Int(20),
-		StartColumn: Int(30),
-		EndColumn:   Int(40),
-		BlobSHA:     String("test_sha"),
-		BlobURL:     String("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
-		CommitSHA:   String("test_sha"),
-		CommitURL:   String("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
+		Path:        Ptr("test_path"),
+		Startline:   Ptr(10),
+		EndLine:     Ptr(20),
+		StartColumn: Ptr(30),
+		EndColumn:   Ptr(40),
+		BlobSHA:     Ptr("test_sha"),
+		BlobURL:     Ptr("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
+		CommitSHA:   Ptr("test_sha"),
+		CommitURL:   Ptr("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
 	}
 
 	want := `{
@@ -590,18 +595,19 @@ func TestSecretScanningAlertLocationDetails_Marshal(t *testing.T) {
 		"blob_sha": "test_sha",
 		"blob_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b",
 		"commit_sha": "test_sha",
-		"commit_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"	
+		"commit_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"
 	}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecretScanningAlertUpdateOptions{}, `{}`)
 
 	u := &SecretScanningAlertUpdateOptions{
 		State:      "open",
-		Resolution: String("false_positive"),
+		Resolution: Ptr("false_positive"),
 	}
 
 	want := `{

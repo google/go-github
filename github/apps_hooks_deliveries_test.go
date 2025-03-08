@@ -15,8 +15,8 @@ import (
 )
 
 func TestAppsService_ListHookDeliveries(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/hook/deliveries", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -33,7 +33,7 @@ func TestAppsService_ListHookDeliveries(t *testing.T) {
 		t.Errorf("Apps.ListHookDeliveries returned error: %v", err)
 	}
 
-	want := []*HookDelivery{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*HookDelivery{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if d := cmp.Diff(deliveries, want); d != "" {
 		t.Errorf("Apps.ListHooks want (-), got (+):\n%s", d)
 	}
@@ -49,8 +49,8 @@ func TestAppsService_ListHookDeliveries(t *testing.T) {
 }
 
 func TestAppsService_GetHookDelivery(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/hook/deliveries/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -63,7 +63,7 @@ func TestAppsService_GetHookDelivery(t *testing.T) {
 		t.Errorf("Apps.GetHookDelivery returned error: %v", err)
 	}
 
-	want := &HookDelivery{ID: Int64(1)}
+	want := &HookDelivery{ID: Ptr(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Apps.GetHookDelivery returned %+v, want %+v", hook, want)
 	}
@@ -84,8 +84,8 @@ func TestAppsService_GetHookDelivery(t *testing.T) {
 }
 
 func TestAppsService_RedeliverHookDelivery(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app/hook/deliveries/1/attempts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -98,7 +98,7 @@ func TestAppsService_RedeliverHookDelivery(t *testing.T) {
 		t.Errorf("Apps.RedeliverHookDelivery returned error: %v", err)
 	}
 
-	want := &HookDelivery{ID: Int64(1)}
+	want := &HookDelivery{ID: Ptr(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Apps.RedeliverHookDelivery returned %+v, want %+v", hook, want)
 	}

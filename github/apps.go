@@ -80,22 +80,47 @@ type InstallationPermissions struct {
 	Actions                                 *string `json:"actions,omitempty"`
 	ActionsVariables                        *string `json:"actions_variables,omitempty"`
 	Administration                          *string `json:"administration,omitempty"`
+	Attestations                            *string `json:"attestations,omitempty"`
 	Blocking                                *string `json:"blocking,omitempty"`
 	Checks                                  *string `json:"checks,omitempty"`
+	Codespaces                              *string `json:"codespaces,omitempty"`
+	CodespacesLifecycleAdmin                *string `json:"codespaces_lifecycle_admin,omitempty"`
+	CodespacesMetadata                      *string `json:"codespaces_metadata,omitempty"`
+	CodespacesSecrets                       *string `json:"codespaces_secrets,omitempty"`
+	CodespacesUserSecrets                   *string `json:"codespaces_user_secrets,omitempty"`
 	Contents                                *string `json:"contents,omitempty"`
 	ContentReferences                       *string `json:"content_references,omitempty"`
+	CopilotMessages                         *string `json:"copilot_messages,omitempty"`
+	DependabotSecrets                       *string `json:"dependabot_secrets,omitempty"`
 	Deployments                             *string `json:"deployments,omitempty"`
+	Discussions                             *string `json:"discussions,omitempty"`
 	Emails                                  *string `json:"emails,omitempty"`
 	Environments                            *string `json:"environments,omitempty"`
 	Followers                               *string `json:"followers,omitempty"`
+	Gists                                   *string `json:"gists,omitempty"`
+	GitSigningSSHPublicKeys                 *string `json:"git_signing_ssh_public_keys,omitempty"`
+	GPGKeys                                 *string `json:"gpg_keys,omitempty"`
+	InteractionLimits                       *string `json:"interaction_limits,omitempty"`
 	Issues                                  *string `json:"issues,omitempty"`
+	Keys                                    *string `json:"keys,omitempty"`
 	Metadata                                *string `json:"metadata,omitempty"`
 	Members                                 *string `json:"members,omitempty"`
+	MergeQueues                             *string `json:"merge_queues,omitempty"`
+	OrganizationActionsVariables            *string `json:"organization_actions_variables,omitempty"`
 	OrganizationAdministration              *string `json:"organization_administration,omitempty"`
+	OrganizationAnnouncementBanners         *string `json:"organization_announcement_banners,omitempty"`
+	OrganizationAPIInsights                 *string `json:"organization_api_insights,omitempty"`
+	OrganizationCodespaces                  *string `json:"organization_codespaces,omitempty"`
+	OrganizationCodespacesSecrets           *string `json:"organization_codespaces_secrets,omitempty"`
+	OrganizationCodespacesSettings          *string `json:"organization_codespaces_settings,omitempty"`
+	OrganizationCopilotSeatManagement       *string `json:"organization_copilot_seat_management,omitempty"`
 	OrganizationCustomProperties            *string `json:"organization_custom_properties,omitempty"`
 	OrganizationCustomRoles                 *string `json:"organization_custom_roles,omitempty"`
 	OrganizationCustomOrgRoles              *string `json:"organization_custom_org_roles,omitempty"`
+	OrganizationDependabotSecrets           *string `json:"organization_dependabot_secrets,omitempty"`
+	OrganizationEvents                      *string `json:"organization_events,omitempty"`
 	OrganizationHooks                       *string `json:"organization_hooks,omitempty"`
+	OrganizationKnowledgeBases              *string `json:"organization_knowledge_bases,omitempty"`
 	OrganizationPackages                    *string `json:"organization_packages,omitempty"`
 	OrganizationPersonalAccessTokens        *string `json:"organization_personal_access_tokens,omitempty"`
 	OrganizationPersonalAccessTokenRequests *string `json:"organization_personal_access_token_requests,omitempty"`
@@ -107,7 +132,11 @@ type InstallationPermissions struct {
 	OrganizationUserBlocking                *string `json:"organization_user_blocking,omitempty"`
 	Packages                                *string `json:"packages,omitempty"`
 	Pages                                   *string `json:"pages,omitempty"`
+	Plan                                    *string `json:"plan,omitempty"`
+	Profile                                 *string `json:"profile,omitempty"`
 	PullRequests                            *string `json:"pull_requests,omitempty"`
+	RepositoryAdvisories                    *string `json:"repository_advisories,omitempty"`
+	RepositoryCustomProperties              *string `json:"repository_custom_properties,omitempty"`
 	RepositoryHooks                         *string `json:"repository_hooks,omitempty"`
 	RepositoryProjects                      *string `json:"repository_projects,omitempty"`
 	RepositoryPreReceiveHooks               *string `json:"repository_pre_receive_hooks,omitempty"`
@@ -115,9 +144,12 @@ type InstallationPermissions struct {
 	SecretScanningAlerts                    *string `json:"secret_scanning_alerts,omitempty"`
 	SecurityEvents                          *string `json:"security_events,omitempty"`
 	SingleFile                              *string `json:"single_file,omitempty"`
+	Starring                                *string `json:"starring,omitempty"`
 	Statuses                                *string `json:"statuses,omitempty"`
 	TeamDiscussions                         *string `json:"team_discussions,omitempty"`
+	UserEvents                              *string `json:"user_events,omitempty"`
 	VulnerabilityAlerts                     *string `json:"vulnerability_alerts,omitempty"`
+	Watching                                *string `json:"watching,omitempty"`
 	Workflows                               *string `json:"workflows,omitempty"`
 }
 
@@ -393,7 +425,7 @@ func (s *AppsService) CreateInstallationTokenListRepos(ctx context.Context, id i
 //meta:operation POST /repos/{owner}/{repo}/content_references/{content_reference_id}/attachments
 func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID int64, title, body string) (*Attachment, *Response, error) {
 	u := fmt.Sprintf("content_references/%v/attachments", contentReferenceID)
-	payload := &Attachment{Title: String(title), Body: String(body)}
+	payload := &Attachment{Title: Ptr(title), Body: Ptr(body)}
 	req, err := s.client.NewRequest("POST", u, payload)
 	if err != nil {
 		return nil, nil, err

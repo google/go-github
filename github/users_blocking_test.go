@@ -15,8 +15,8 @@ import (
 )
 
 func TestUsersService_ListBlockedUsers(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/blocks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -34,7 +34,7 @@ func TestUsersService_ListBlockedUsers(t *testing.T) {
 		t.Errorf("Users.ListBlockedUsers returned error: %v", err)
 	}
 
-	want := []*User{{Login: String("octocat")}}
+	want := []*User{{Login: Ptr("octocat")}}
 	if !cmp.Equal(blockedUsers, want) {
 		t.Errorf("Users.ListBlockedUsers returned %+v, want %+v", blockedUsers, want)
 	}
@@ -50,8 +50,8 @@ func TestUsersService_ListBlockedUsers(t *testing.T) {
 }
 
 func TestUsersService_IsBlocked(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/blocks/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -84,8 +84,8 @@ func TestUsersService_IsBlocked(t *testing.T) {
 }
 
 func TestUsersService_BlockUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/blocks/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -111,8 +111,8 @@ func TestUsersService_BlockUser(t *testing.T) {
 }
 
 func TestUsersService_UnblockUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/blocks/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")

@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 	"testing"
 
@@ -20,8 +19,8 @@ import (
 )
 
 func TestRepositoriesService_ListReleases(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -35,7 +34,7 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.ListReleases returned error: %v", err)
 	}
-	want := []*RepositoryRelease{{ID: Int64(1)}}
+	want := []*RepositoryRelease{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(releases, want) {
 		t.Errorf("Repositories.ListReleases returned %+v, want %+v", releases, want)
 	}
@@ -56,8 +55,8 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 }
 
 func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/generate-notes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -97,8 +96,8 @@ func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -111,7 +110,7 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 		t.Errorf("Repositories.GetRelease returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &RepositoryRelease{ID: Int64(1), Author: &User{Login: String("l")}}
+	want := &RepositoryRelease{ID: Ptr(int64(1)), Author: &User{Login: Ptr("l")}}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetRelease returned %+v, want %+v", release, want)
 	}
@@ -132,8 +131,8 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_GetLatestRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/latest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -146,7 +145,7 @@ func TestRepositoriesService_GetLatestRelease(t *testing.T) {
 		t.Errorf("Repositories.GetLatestRelease returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &RepositoryRelease{ID: Int64(3)}
+	want := &RepositoryRelease{ID: Ptr(int64(3))}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetLatestRelease returned %+v, want %+v", release, want)
 	}
@@ -167,8 +166,8 @@ func TestRepositoriesService_GetLatestRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/tags/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -181,7 +180,7 @@ func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
 		t.Errorf("Repositories.GetReleaseByTag returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &RepositoryRelease{ID: Int64(13)}
+	want := &RepositoryRelease{ID: Ptr(int64(13))}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetReleaseByTag returned %+v, want %+v", release, want)
 	}
@@ -202,26 +201,26 @@ func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &RepositoryRelease{
-		Name:                   String("v1.0"),
-		DiscussionCategoryName: String("General"),
-		GenerateReleaseNotes:   Bool(true),
+		Name:                   Ptr("v1.0"),
+		DiscussionCategoryName: Ptr("General"),
+		GenerateReleaseNotes:   Ptr(true),
 		// Fields to be removed:
-		ID:          Int64(2),
+		ID:          Ptr(int64(2)),
 		CreatedAt:   &Timestamp{referenceTime},
 		PublishedAt: &Timestamp{referenceTime},
-		URL:         String("http://url/"),
-		HTMLURL:     String("http://htmlurl/"),
-		AssetsURL:   String("http://assetsurl/"),
-		Assets:      []*ReleaseAsset{{ID: Int64(5)}},
-		UploadURL:   String("http://uploadurl/"),
-		ZipballURL:  String("http://zipballurl/"),
-		TarballURL:  String("http://tarballurl/"),
-		Author:      &User{Name: String("octocat")},
-		NodeID:      String("nodeid"),
+		URL:         Ptr("http://url/"),
+		HTMLURL:     Ptr("http://htmlurl/"),
+		AssetsURL:   Ptr("http://assetsurl/"),
+		Assets:      []*ReleaseAsset{{ID: Ptr(int64(5))}},
+		UploadURL:   Ptr("http://uploadurl/"),
+		ZipballURL:  Ptr("http://zipballurl/"),
+		TarballURL:  Ptr("http://tarballurl/"),
+		Author:      &User{Name: Ptr("octocat")},
+		NodeID:      Ptr("nodeid"),
 	}
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
@@ -230,9 +229,9 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 
 		testMethod(t, r, "POST")
 		want := &repositoryReleaseRequest{
-			Name:                   String("v1.0"),
-			DiscussionCategoryName: String("General"),
-			GenerateReleaseNotes:   Bool(true),
+			Name:                   Ptr("v1.0"),
+			DiscussionCategoryName: Ptr("General"),
+			GenerateReleaseNotes:   Ptr(true),
 		}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -246,7 +245,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 		t.Errorf("Repositories.CreateRelease returned error: %v", err)
 	}
 
-	want := &RepositoryRelease{ID: Int64(1)}
+	want := &RepositoryRelease{ID: Ptr(int64(1))}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.CreateRelease returned %+v, want %+v", release, want)
 	}
@@ -267,26 +266,26 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_EditRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &RepositoryRelease{
-		Name:                   String("n"),
-		DiscussionCategoryName: String("General"),
+		Name:                   Ptr("n"),
+		DiscussionCategoryName: Ptr("General"),
 		// Fields to be removed:
-		GenerateReleaseNotes: Bool(true),
-		ID:                   Int64(2),
+		GenerateReleaseNotes: Ptr(true),
+		ID:                   Ptr(int64(2)),
 		CreatedAt:            &Timestamp{referenceTime},
 		PublishedAt:          &Timestamp{referenceTime},
-		URL:                  String("http://url/"),
-		HTMLURL:              String("http://htmlurl/"),
-		AssetsURL:            String("http://assetsurl/"),
-		Assets:               []*ReleaseAsset{{ID: Int64(5)}},
-		UploadURL:            String("http://uploadurl/"),
-		ZipballURL:           String("http://zipballurl/"),
-		TarballURL:           String("http://tarballurl/"),
-		Author:               &User{Name: String("octocat")},
-		NodeID:               String("nodeid"),
+		URL:                  Ptr("http://url/"),
+		HTMLURL:              Ptr("http://htmlurl/"),
+		AssetsURL:            Ptr("http://assetsurl/"),
+		Assets:               []*ReleaseAsset{{ID: Ptr(int64(5))}},
+		UploadURL:            Ptr("http://uploadurl/"),
+		ZipballURL:           Ptr("http://zipballurl/"),
+		TarballURL:           Ptr("http://tarballurl/"),
+		Author:               &User{Name: Ptr("octocat")},
+		NodeID:               Ptr("nodeid"),
 	}
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
@@ -295,8 +294,8 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 
 		testMethod(t, r, "PATCH")
 		want := &repositoryReleaseRequest{
-			Name:                   String("n"),
-			DiscussionCategoryName: String("General"),
+			Name:                   Ptr("n"),
+			DiscussionCategoryName: Ptr("General"),
 		}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -309,7 +308,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.EditRelease returned error: %v", err)
 	}
-	want := &RepositoryRelease{ID: Int64(1)}
+	want := &RepositoryRelease{ID: Ptr(int64(1))}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.EditRelease returned = %+v, want %+v", release, want)
 	}
@@ -330,8 +329,8 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteRelease(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -355,8 +354,8 @@ func TestRepositoriesService_DeleteRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -370,7 +369,7 @@ func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.ListReleaseAssets returned error: %v", err)
 	}
-	want := []*ReleaseAsset{{ID: Int64(1)}}
+	want := []*ReleaseAsset{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(assets, want) {
 		t.Errorf("Repositories.ListReleaseAssets returned %+v, want %+v", assets, want)
 	}
@@ -391,8 +390,8 @@ func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
 }
 
 func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -404,7 +403,7 @@ func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetReleaseAsset returned error: %v", err)
 	}
-	want := &ReleaseAsset{ID: Int64(1)}
+	want := &ReleaseAsset{ID: Ptr(int64(1))}
 	if !cmp.Equal(asset, want) {
 		t.Errorf("Repositories.GetReleaseAsset returned %+v, want %+v", asset, want)
 	}
@@ -425,8 +424,8 @@ func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -458,8 +457,8 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -479,8 +478,8 @@ func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -490,7 +489,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 	})
 	mux.HandleFunc("/yo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", "*/*")
+		testHeader(t, r, "Accept", defaultMediaType)
 		w.Header().Set("Content-Type", "application/octet-stream")
 		w.Header().Set("Content-Disposition", "attachment; filename=hello-world.txt")
 		fmt.Fprint(w, "Hello World")
@@ -512,9 +511,51 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_DownloadReleaseAsset_FollowMultipleRedirects(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		// /yo, below will be served as baseURLPath/yo
+		http.Redirect(w, r, baseURLPath+"/yo", http.StatusMovedPermanently)
+	})
+	mux.HandleFunc("/yo", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html;charset=utf-8")
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		// /yo2, below will be served as baseURLPath/yo2
+		http.Redirect(w, r, baseURLPath+"/yo2", http.StatusFound)
+	})
+	mux.HandleFunc("/yo2", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/octet-stream")
+		w.Header().Set("Content-Disposition", "attachment; filename=hello-world.txt")
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		fmt.Fprint(w, "Hello World")
+	})
+
+	ctx := context.Background()
+	reader, _, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, http.DefaultClient)
+	if err != nil {
+		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
+	}
+	content, err := io.ReadAll(reader)
+	if err != nil {
+		t.Errorf("Reading Repositories.DownloadReleaseAsset returned error: %v", err)
+	}
+	reader.Close()
+	want := []byte("Hello World")
+	if !bytes.Equal(want, content) {
+		t.Errorf("Repositories.DownloadReleaseAsset returned %+v, want %+v", content, want)
+	}
+}
+
 func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -524,7 +565,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 	})
 	mux.HandleFunc("/yo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", "*/*")
+		testHeader(t, r, "Accept", defaultMediaType)
 		w.WriteHeader(http.StatusNotFound)
 	})
 
@@ -543,8 +584,8 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -570,10 +611,10 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 }
 
 func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &ReleaseAsset{Name: String("n")}
+	input := &ReleaseAsset{Name: Ptr("n")}
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ReleaseAsset)
@@ -591,7 +632,7 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.EditReleaseAsset returned error: %v", err)
 	}
-	want := &ReleaseAsset{ID: Int64(1)}
+	want := &ReleaseAsset{ID: Ptr(int64(1))}
 	if !cmp.Equal(asset, want) {
 		t.Errorf("Repositories.EditReleaseAsset returned = %+v, want %+v", asset, want)
 	}
@@ -612,8 +653,8 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -637,6 +678,7 @@ func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
+	t.Parallel()
 	var (
 		defaultUploadOptions     = &UploadOptions{Name: "n"}
 		defaultExpectedFormValue = values{"name": "n"}
@@ -692,8 +734,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		},
 	}
 
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	for key, test := range uploadTests {
 		releaseEndpoint := fmt.Sprintf("/repos/o/r/releases/%d/assets", key)
@@ -707,18 +748,14 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 			fmt.Fprintf(w, `{"id":1}`)
 		})
 
-		file, dir, err := openTestFile(test.fileName, "Upload me !\n")
-		if err != nil {
-			t.Fatalf("Unable to create temp file: %v", err)
-		}
-		defer os.RemoveAll(dir)
+		file := openTestFile(t, test.fileName, "Upload me !\n")
 
 		ctx := context.Background()
 		asset, _, err := client.Repositories.UploadReleaseAsset(ctx, "o", "r", int64(key), test.uploadOpts, file)
 		if err != nil {
 			t.Errorf("Repositories.UploadReleaseAssert returned error: %v", err)
 		}
-		want := &ReleaseAsset{ID: Int64(1)}
+		want := &ReleaseAsset{ID: Ptr(int64(1))}
 		if !cmp.Equal(asset, want) {
 			t.Errorf("Repositories.UploadReleaseAssert returned %+v, want %+v", asset, want)
 		}
@@ -732,17 +769,18 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &repositoryReleaseRequest{}, "{}")
 
 	u := &repositoryReleaseRequest{
-		TagName:                String("tn"),
-		TargetCommitish:        String("tc"),
-		Name:                   String("name"),
-		Body:                   String("body"),
-		Draft:                  Bool(false),
-		Prerelease:             Bool(false),
-		MakeLatest:             String("legacy"),
-		DiscussionCategoryName: String("dcn"),
+		TagName:                Ptr("tn"),
+		TargetCommitish:        Ptr("tc"),
+		Name:                   Ptr("name"),
+		Body:                   Ptr("body"),
+		Draft:                  Ptr(false),
+		Prerelease:             Ptr(false),
+		MakeLatest:             Ptr("legacy"),
+		DiscussionCategoryName: Ptr("dcn"),
 	}
 
 	want := `{
@@ -760,22 +798,23 @@ func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
 }
 
 func TestReleaseAsset_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ReleaseAsset{}, "{}")
 
 	u := &ReleaseAsset{
-		ID:                 Int64(1),
-		URL:                String("url"),
-		Name:               String("name"),
-		Label:              String("label"),
-		State:              String("state"),
-		ContentType:        String("ct"),
-		Size:               Int(1),
-		DownloadCount:      Int(1),
+		ID:                 Ptr(int64(1)),
+		URL:                Ptr("url"),
+		Name:               Ptr("name"),
+		Label:              Ptr("label"),
+		State:              Ptr("state"),
+		ContentType:        Ptr("ct"),
+		Size:               Ptr(1),
+		DownloadCount:      Ptr(1),
 		CreatedAt:          &Timestamp{referenceTime},
 		UpdatedAt:          &Timestamp{referenceTime},
-		BrowserDownloadURL: String("bdu"),
-		Uploader:           &User{ID: Int64(1)},
-		NodeID:             String("nid"),
+		BrowserDownloadURL: Ptr("bdu"),
+		Uploader:           &User{ID: Ptr(int64(1))},
+		NodeID:             Ptr("nid"),
 	}
 
 	want := `{
@@ -800,29 +839,30 @@ func TestReleaseAsset_Marshal(t *testing.T) {
 }
 
 func TestRepositoryRelease_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepositoryRelease{}, "{}")
 
 	u := &RepositoryRelease{
-		TagName:                String("tn"),
-		TargetCommitish:        String("tc"),
-		Name:                   String("name"),
-		Body:                   String("body"),
-		Draft:                  Bool(false),
-		Prerelease:             Bool(false),
-		MakeLatest:             String("legacy"),
-		DiscussionCategoryName: String("dcn"),
-		ID:                     Int64(1),
+		TagName:                Ptr("tn"),
+		TargetCommitish:        Ptr("tc"),
+		Name:                   Ptr("name"),
+		Body:                   Ptr("body"),
+		Draft:                  Ptr(false),
+		Prerelease:             Ptr(false),
+		MakeLatest:             Ptr("legacy"),
+		DiscussionCategoryName: Ptr("dcn"),
+		ID:                     Ptr(int64(1)),
 		CreatedAt:              &Timestamp{referenceTime},
 		PublishedAt:            &Timestamp{referenceTime},
-		URL:                    String("url"),
-		HTMLURL:                String("hurl"),
-		AssetsURL:              String("aurl"),
-		Assets:                 []*ReleaseAsset{{ID: Int64(1)}},
-		UploadURL:              String("uurl"),
-		ZipballURL:             String("zurl"),
-		TarballURL:             String("turl"),
-		Author:                 &User{ID: Int64(1)},
-		NodeID:                 String("nid"),
+		URL:                    Ptr("url"),
+		HTMLURL:                Ptr("hurl"),
+		AssetsURL:              Ptr("aurl"),
+		Assets:                 []*ReleaseAsset{{ID: Ptr(int64(1))}},
+		UploadURL:              Ptr("uurl"),
+		ZipballURL:             Ptr("zurl"),
+		TarballURL:             Ptr("turl"),
+		Author:                 &User{ID: Ptr(int64(1))},
+		NodeID:                 Ptr("nid"),
 	}
 
 	want := `{
@@ -858,12 +898,13 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 }
 
 func TestGenerateNotesOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GenerateNotesOptions{}, "{}")
 
 	u := &GenerateNotesOptions{
 		TagName:         "tag_name",
-		PreviousTagName: String("previous_tag_name"),
-		TargetCommitish: String("target_commitish"),
+		PreviousTagName: Ptr("previous_tag_name"),
+		TargetCommitish: Ptr("target_commitish"),
 	}
 
 	want := `{

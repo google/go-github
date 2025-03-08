@@ -16,8 +16,8 @@ import (
 )
 
 func TestUsersService_ListEmails(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -36,7 +36,7 @@ func TestUsersService_ListEmails(t *testing.T) {
 		t.Errorf("Users.ListEmails returned error: %v", err)
 	}
 
-	want := []*UserEmail{{Email: String("user@example.com"), Verified: Bool(false), Primary: Bool(true)}}
+	want := []*UserEmail{{Email: Ptr("user@example.com"), Verified: Ptr(false), Primary: Ptr(true)}}
 	if !cmp.Equal(emails, want) {
 		t.Errorf("Users.ListEmails returned %+v, want %+v", emails, want)
 	}
@@ -52,8 +52,8 @@ func TestUsersService_ListEmails(t *testing.T) {
 }
 
 func TestUsersService_AddEmails(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := []string{"new@example.com"}
 
@@ -76,8 +76,8 @@ func TestUsersService_AddEmails(t *testing.T) {
 	}
 
 	want := []*UserEmail{
-		{Email: String("old@example.com")},
-		{Email: String("new@example.com")},
+		{Email: Ptr("old@example.com")},
+		{Email: Ptr("new@example.com")},
 	}
 	if !cmp.Equal(emails, want) {
 		t.Errorf("Users.AddEmails returned %+v, want %+v", emails, want)
@@ -94,8 +94,8 @@ func TestUsersService_AddEmails(t *testing.T) {
 }
 
 func TestUsersService_DeleteEmails(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := []string{"user@example.com"}
 
@@ -122,13 +122,14 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 }
 
 func TestUserEmail_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UserEmail{}, "{}")
 
 	u := &UserEmail{
-		Email:      String("qwe@qwe.qwe"),
-		Primary:    Bool(false),
-		Verified:   Bool(true),
-		Visibility: String("yes"),
+		Email:      Ptr("qwe@qwe.qwe"),
+		Primary:    Ptr(false),
+		Verified:   Ptr(true),
+		Visibility: Ptr("yes"),
 	}
 
 	want := `{
@@ -142,10 +143,10 @@ func TestUserEmail_Marshal(t *testing.T) {
 }
 
 func TestUsersService_SetEmailVisibility(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &UserEmail{Visibility: String("private")}
+	input := &UserEmail{Visibility: Ptr("private")}
 
 	mux.HandleFunc("/user/email/visibility", func(w http.ResponseWriter, r *http.Request) {
 		v := new(UserEmail)
@@ -170,7 +171,7 @@ func TestUsersService_SetEmailVisibility(t *testing.T) {
 		t.Errorf("Users.SetEmailVisibility returned error: %v", err)
 	}
 
-	want := []*UserEmail{{Email: String("user@example.com"), Verified: Bool(false), Primary: Bool(true), Visibility: String("private")}}
+	want := []*UserEmail{{Email: Ptr("user@example.com"), Verified: Ptr(false), Primary: Ptr(true), Visibility: Ptr("private")}}
 	if !cmp.Equal(emails, want) {
 		t.Errorf("Users.SetEmailVisibility returned %+v, want %+v", emails, want)
 	}

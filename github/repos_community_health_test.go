@@ -16,8 +16,8 @@ import (
 )
 
 func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/community/profile", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -74,43 +74,43 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 
 	updatedAt := time.Date(2017, time.February, 28, 0, 0, 0, 0, time.UTC)
 	want := &CommunityHealthMetrics{
-		HealthPercentage:      Int(100),
-		Description:           String("My first repository on GitHub!"),
+		HealthPercentage:      Ptr(100),
+		Description:           Ptr("My first repository on GitHub!"),
 		UpdatedAt:             &Timestamp{updatedAt},
-		ContentReportsEnabled: Bool(true),
+		ContentReportsEnabled: Ptr(true),
 		Files: &CommunityHealthFiles{
 			CodeOfConduct: &Metric{
-				Name:    String("Contributor Covenant"),
-				Key:     String("contributor_covenant"),
-				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/CODE_OF_CONDUCT.md"),
+				Name:    Ptr("Contributor Covenant"),
+				Key:     Ptr("contributor_covenant"),
+				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/CODE_OF_CONDUCT.md"),
 			},
 			CodeOfConductFile: &Metric{
-				URL:     String("https://api.github.com/repos/octocat/Hello-World/contents/CODE_OF_CONDUCT.md"),
-				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/CODE_OF_CONDUCT.md"),
+				URL:     Ptr("https://api.github.com/repos/octocat/Hello-World/contents/CODE_OF_CONDUCT.md"),
+				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/CODE_OF_CONDUCT.md"),
 			},
 			Contributing: &Metric{
-				URL:     String("https://api.github.com/repos/octocat/Hello-World/contents/CONTRIBUTING"),
-				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/CONTRIBUTING"),
+				URL:     Ptr("https://api.github.com/repos/octocat/Hello-World/contents/CONTRIBUTING"),
+				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/CONTRIBUTING"),
 			},
 			IssueTemplate: &Metric{
-				URL:     String("https://api.github.com/repos/octocat/Hello-World/contents/ISSUE_TEMPLATE"),
-				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/ISSUE_TEMPLATE"),
+				URL:     Ptr("https://api.github.com/repos/octocat/Hello-World/contents/ISSUE_TEMPLATE"),
+				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/ISSUE_TEMPLATE"),
 			},
 			PullRequestTemplate: &Metric{
-				URL:     String("https://api.github.com/repos/octocat/Hello-World/contents/PULL_REQUEST_TEMPLATE"),
-				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/PULL_REQUEST_TEMPLATE"),
+				URL:     Ptr("https://api.github.com/repos/octocat/Hello-World/contents/PULL_REQUEST_TEMPLATE"),
+				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/PULL_REQUEST_TEMPLATE"),
 			},
 			License: &Metric{
-				Name:    String("MIT License"),
-				Key:     String("mit"),
-				SPDXID:  String("MIT"),
-				URL:     String("https://api.github.com/licenses/mit"),
-				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/LICENSE"),
-				NodeID:  String("MDc6TGljZW5zZW1pdA=="),
+				Name:    Ptr("MIT License"),
+				Key:     Ptr("mit"),
+				SPDXID:  Ptr("MIT"),
+				URL:     Ptr("https://api.github.com/licenses/mit"),
+				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/LICENSE"),
+				NodeID:  Ptr("MDc6TGljZW5zZW1pdA=="),
 			},
 			Readme: &Metric{
-				URL:     String("https://api.github.com/repos/octocat/Hello-World/contents/README.md"),
-				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/README.md"),
+				URL:     Ptr("https://api.github.com/repos/octocat/Hello-World/contents/README.md"),
+				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/README.md"),
 			},
 		},
 	}
@@ -134,15 +134,16 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 }
 
 func TestMetric_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Metric{}, "{}")
 
 	r := &Metric{
-		Name:    String("name"),
-		Key:     String("key"),
-		SPDXID:  String("spdx_id"),
-		URL:     String("url"),
-		HTMLURL: String("hurl"),
-		NodeID:  String("node_id"),
+		Name:    Ptr("name"),
+		Key:     Ptr("key"),
+		SPDXID:  Ptr("spdx_id"),
+		URL:     Ptr("url"),
+		HTMLURL: Ptr("hurl"),
+		NodeID:  Ptr("node_id"),
 	}
 
 	want := `{
@@ -158,52 +159,53 @@ func TestMetric_Marshal(t *testing.T) {
 }
 
 func TestCommunityHealthFiles_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommunityHealthFiles{}, "{}")
 
 	r := &CommunityHealthFiles{
 		CodeOfConduct: &Metric{
-			Name:    String("name"),
-			Key:     String("key"),
-			URL:     String("url"),
-			HTMLURL: String("hurl"),
+			Name:    Ptr("name"),
+			Key:     Ptr("key"),
+			URL:     Ptr("url"),
+			HTMLURL: Ptr("hurl"),
 		},
 		CodeOfConductFile: &Metric{
-			Name:    String("name"),
-			Key:     String("key"),
-			URL:     String("url"),
-			HTMLURL: String("hurl"),
+			Name:    Ptr("name"),
+			Key:     Ptr("key"),
+			URL:     Ptr("url"),
+			HTMLURL: Ptr("hurl"),
 		},
 		Contributing: &Metric{
-			Name:    String("name"),
-			Key:     String("key"),
-			URL:     String("url"),
-			HTMLURL: String("hurl"),
+			Name:    Ptr("name"),
+			Key:     Ptr("key"),
+			URL:     Ptr("url"),
+			HTMLURL: Ptr("hurl"),
 		},
 		IssueTemplate: &Metric{
-			Name:    String("name"),
-			Key:     String("key"),
-			URL:     String("url"),
-			HTMLURL: String("hurl"),
+			Name:    Ptr("name"),
+			Key:     Ptr("key"),
+			URL:     Ptr("url"),
+			HTMLURL: Ptr("hurl"),
 		},
 		PullRequestTemplate: &Metric{
-			Name:    String("name"),
-			Key:     String("key"),
-			URL:     String("url"),
-			HTMLURL: String("hurl"),
+			Name:    Ptr("name"),
+			Key:     Ptr("key"),
+			URL:     Ptr("url"),
+			HTMLURL: Ptr("hurl"),
 		},
 		License: &Metric{
-			Name:    String("name"),
-			Key:     String("key"),
-			SPDXID:  String("spdx_id"),
-			URL:     String("url"),
-			HTMLURL: String("hurl"),
-			NodeID:  String("node_id"),
+			Name:    Ptr("name"),
+			Key:     Ptr("key"),
+			SPDXID:  Ptr("spdx_id"),
+			URL:     Ptr("url"),
+			HTMLURL: Ptr("hurl"),
+			NodeID:  Ptr("node_id"),
 		},
 		Readme: &Metric{
-			Name:    String("name"),
-			Key:     String("key"),
-			URL:     String("url"),
-			HTMLURL: String("hurl"),
+			Name:    Ptr("name"),
+			Key:     Ptr("key"),
+			URL:     Ptr("url"),
+			HTMLURL: Ptr("hurl"),
 		},
 	}
 
@@ -258,60 +260,61 @@ func TestCommunityHealthFiles_Marshal(t *testing.T) {
 }
 
 func TestCommunityHealthMetrics_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CommunityHealthMetrics{}, "{}")
 
 	r := &CommunityHealthMetrics{
-		HealthPercentage: Int(1),
-		Description:      String("desc"),
-		Documentation:    String("docs"),
+		HealthPercentage: Ptr(1),
+		Description:      Ptr("desc"),
+		Documentation:    Ptr("docs"),
 		Files: &CommunityHealthFiles{
 			CodeOfConduct: &Metric{
-				Name:    String("name"),
-				Key:     String("key"),
-				URL:     String("url"),
-				HTMLURL: String("hurl"),
+				Name:    Ptr("name"),
+				Key:     Ptr("key"),
+				URL:     Ptr("url"),
+				HTMLURL: Ptr("hurl"),
 			},
 			CodeOfConductFile: &Metric{
-				Name:    String("name"),
-				Key:     String("key"),
-				URL:     String("url"),
-				HTMLURL: String("hurl"),
+				Name:    Ptr("name"),
+				Key:     Ptr("key"),
+				URL:     Ptr("url"),
+				HTMLURL: Ptr("hurl"),
 			},
 			Contributing: &Metric{
-				Name:    String("name"),
-				Key:     String("key"),
-				URL:     String("url"),
-				HTMLURL: String("hurl"),
+				Name:    Ptr("name"),
+				Key:     Ptr("key"),
+				URL:     Ptr("url"),
+				HTMLURL: Ptr("hurl"),
 			},
 			IssueTemplate: &Metric{
-				Name:    String("name"),
-				Key:     String("key"),
-				URL:     String("url"),
-				HTMLURL: String("hurl"),
+				Name:    Ptr("name"),
+				Key:     Ptr("key"),
+				URL:     Ptr("url"),
+				HTMLURL: Ptr("hurl"),
 			},
 			PullRequestTemplate: &Metric{
-				Name:    String("name"),
-				Key:     String("key"),
-				URL:     String("url"),
-				HTMLURL: String("hurl"),
+				Name:    Ptr("name"),
+				Key:     Ptr("key"),
+				URL:     Ptr("url"),
+				HTMLURL: Ptr("hurl"),
 			},
 			License: &Metric{
-				Name:    String("name"),
-				Key:     String("key"),
-				SPDXID:  String("spdx_id"),
-				URL:     String("url"),
-				HTMLURL: String("hurl"),
-				NodeID:  String("node_id"),
+				Name:    Ptr("name"),
+				Key:     Ptr("key"),
+				SPDXID:  Ptr("spdx_id"),
+				URL:     Ptr("url"),
+				HTMLURL: Ptr("hurl"),
+				NodeID:  Ptr("node_id"),
 			},
 			Readme: &Metric{
-				Name:    String("name"),
-				Key:     String("key"),
-				URL:     String("url"),
-				HTMLURL: String("hurl"),
+				Name:    Ptr("name"),
+				Key:     Ptr("key"),
+				URL:     Ptr("url"),
+				HTMLURL: Ptr("hurl"),
 			},
 		},
 		UpdatedAt:             &Timestamp{referenceTime},
-		ContentReportsEnabled: Bool(true),
+		ContentReportsEnabled: Ptr(true),
 	}
 
 	want := `{

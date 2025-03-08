@@ -4,7 +4,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build integration
-// +build integration
 
 package integration
 
@@ -15,7 +14,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v69/github"
 )
 
 var (
@@ -29,7 +28,7 @@ var (
 func init() {
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 	if token == "" {
-		print("!!! No OAuth token. Some tests won't run. !!!\n\n")
+		fmt.Print("!!! No OAuth token. Some tests won't run. !!!\n\n")
 		client = github.NewClient(nil)
 	} else {
 		client = github.NewClient(nil).WithAuthToken(token)
@@ -77,8 +76,8 @@ func createRandomTestRepository(owner string, autoinit bool) (*github.Repository
 		context.Background(),
 		owner,
 		&github.Repository{
-			Name:     github.String(repoName),
-			AutoInit: github.Bool(autoinit),
+			Name:     github.Ptr(repoName),
+			AutoInit: github.Ptr(autoinit),
 		},
 	)
 	if err != nil {

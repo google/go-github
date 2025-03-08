@@ -16,8 +16,8 @@ import (
 )
 
 func TestRepositoryService_GetActionsAllowed(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -29,7 +29,7 @@ func TestRepositoryService_GetActionsAllowed(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetActionsAllowed returned error: %v", err)
 	}
-	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.GetActionsAllowed returned %+v, want %+v", org, want)
 	}
@@ -50,9 +50,10 @@ func TestRepositoryService_GetActionsAllowed(t *testing.T) {
 }
 
 func TestRepositoriesService_EditActionsAllowed(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-	input := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ActionsAllowed)
@@ -72,7 +73,7 @@ func TestRepositoriesService_EditActionsAllowed(t *testing.T) {
 		t.Errorf("Repositories.EditActionsAllowed returned error: %v", err)
 	}
 
-	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.EditActionsAllowed returned %+v, want %+v", org, want)
 	}

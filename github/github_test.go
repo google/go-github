@@ -15,7 +15,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"os"
-	"path"
+	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
@@ -34,7 +34,8 @@ const (
 // setup sets up a test HTTP server along with a github.Client that is
 // configured to talk to that test server. Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
-func setup() (client *Client, mux *http.ServeMux, serverURL string, teardown func()) {
+func setup(t *testing.T) (client *Client, mux *http.ServeMux, serverURL string) {
+	t.Helper()
 	// mux is the HTTP request multiplexer used with the test server.
 	mux = http.NewServeMux()
 
@@ -63,34 +64,30 @@ func setup() (client *Client, mux *http.ServeMux, serverURL string, teardown fun
 	client.BaseURL = url
 	client.UploadURL = url
 
-	return client, mux, server.URL, server.Close
+	t.Cleanup(server.Close)
+
+	return client, mux, server.URL
 }
 
 // openTestFile creates a new file with the given name and content for testing.
 // In order to ensure the exact file name, this function will create a new temp
-// directory, and create the file in that directory. It is the caller's
-// responsibility to remove the directory and its contents when no longer needed.
-func openTestFile(name, content string) (file *os.File, dir string, err error) {
-	dir, err = os.MkdirTemp("", "go-github")
+// directory, and create the file in that directory. The file is automatically
+// cleaned up after the test.
+func openTestFile(t *testing.T, name, content string) *os.File {
+	t.Helper()
+	fname := filepath.Join(t.TempDir(), name)
+	err := os.WriteFile(fname, []byte(content), 0600)
 	if err != nil {
-		return nil, dir, err
+		t.Fatal(err)
+	}
+	file, err := os.Open(fname)
+	if err != nil {
+		t.Fatal(err)
 	}
 
-	file, err = os.OpenFile(path.Join(dir, name), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
-	if err != nil {
-		return nil, dir, err
-	}
+	t.Cleanup(func() { file.Close() })
 
-	fmt.Fprint(file, content)
-
-	// close and re-open the file to keep file.Stat() happy
-	file.Close()
-	file, err = os.Open(file.Name())
-	if err != nil {
-		return nil, dir, err
-	}
-
-	return file, dir, err
+	return file
 }
 
 func testMethod(t *testing.T, r *http.Request, want string) {
@@ -215,7 +212,7 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	testNewRequestAndDoFailureCategory(t, methodName, client, CoreCategory, f)
 }
 
-// testNewRequestAndDoFailureCategory works Like testNewRequestAndDoFailure, but allows setting the category
+// testNewRequestAndDoFailureCategory works Like testNewRequestAndDoFailure, but allows setting the category.
 func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client *Client, category RateLimitCategory, f func() (*Response, error)) {
 	t.Helper()
 	if methodName == "" {
@@ -234,7 +231,7 @@ func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client 
 	client.BaseURL.Path = "/api-v3/"
 	client.rateLimits[category].Reset.Time = time.Now().Add(10 * time.Minute)
 	resp, err = f()
-	if bypass := resp.Request.Context().Value(bypassRateLimitCheck); bypass != nil {
+	if bypass := resp.Request.Context().Value(BypassRateLimitCheck); bypass != nil {
 		return
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
@@ -252,8 +249,7 @@ func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client 
 // Test that all error response types contain the status code.
 func testErrorResponseForStatusCode(t *testing.T, code int) {
 	t.Helper()
-	client, mux, _, teardown := setup()
-	defer teardown()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -296,6 +292,7 @@ func assertWrite(t *testing.T, w io.Writer, data []byte) {
 }
 
 func TestNewClient(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 
 	if got, want := c.BaseURL.String(), defaultBaseURL; got != want {
@@ -312,6 +309,7 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestNewClientWithEnvProxy(t *testing.T) {
+	t.Parallel()
 	client := NewClientWithEnvProxy()
 	if got, want := client.BaseURL.String(), defaultBaseURL; got != want {
 		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
@@ -319,6 +317,7 @@ func TestNewClientWithEnvProxy(t *testing.T) {
 }
 
 func TestClient(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	c2 := c.Client()
 	if c.client == c2 {
@@ -327,6 +326,7 @@ func TestClient(t *testing.T) {
 }
 
 func TestWithAuthToken(t *testing.T) {
+	t.Parallel()
 	token := "gh_test_token"
 
 	validate := func(t *testing.T, c *http.Client, token string) {
@@ -352,11 +352,13 @@ func TestWithAuthToken(t *testing.T) {
 	}
 
 	t.Run("zero-value Client", func(t *testing.T) {
+		t.Parallel()
 		c := new(Client).WithAuthToken(token)
 		validate(t, c.Client(), token)
 	})
 
 	t.Run("NewClient", func(t *testing.T) {
+		t.Parallel()
 		httpClient := &http.Client{}
 		client := NewClient(httpClient).WithAuthToken(token)
 		validate(t, client.Client(), token)
@@ -365,11 +367,13 @@ func TestWithAuthToken(t *testing.T) {
 	})
 
 	t.Run("NewTokenClient", func(t *testing.T) {
+		t.Parallel()
 		validate(t, NewTokenClient(context.Background(), token).Client(), token)
 	})
 }
 
 func TestWithEnterpriseURLs(t *testing.T) {
+	t.Parallel()
 	for _, test := range []struct {
 		name          string
 		baseURL       string
@@ -461,7 +465,9 @@ func TestWithEnterpriseURLs(t *testing.T) {
 			wantUploadURL: "https://cloud-api.custom-upload-url/api/uploads/",
 		},
 	} {
+		test := test
 		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 			validate := func(c *Client, err error) {
 				t.Helper()
 				if test.wantErr != "" {
@@ -489,16 +495,18 @@ func TestWithEnterpriseURLs(t *testing.T) {
 
 // Ensure that length of Client.rateLimits is the same as number of fields in RateLimits struct.
 func TestClient_rateLimits(t *testing.T) {
+	t.Parallel()
 	if got, want := len(Client{}.rateLimits), reflect.TypeOf(RateLimits{}).NumField(); got != want {
 		t.Errorf("len(Client{}.rateLimits) is %v, want %v", got, want)
 	}
 }
 
 func TestNewRequest(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 
 	inURL, outURL := "/foo", defaultBaseURL+"foo"
-	inBody, outBody := &User{Login: String("l")}, `{"login":"l"}`+"\n"
+	inBody, outBody := &User{Login: Ptr("l")}, `{"login":"l"}`+"\n"
 	req, _ := c.NewRequest("GET", inURL, inBody)
 
 	// test that relative URL was expanded
@@ -536,6 +544,7 @@ func TestNewRequest(t *testing.T) {
 }
 
 func TestNewRequest_invalidJSON(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 
 	type T struct {
@@ -552,12 +561,14 @@ func TestNewRequest_invalidJSON(t *testing.T) {
 }
 
 func TestNewRequest_badURL(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	_, err := c.NewRequest("GET", ":", nil)
 	testURLParseError(t, err)
 }
 
 func TestNewRequest_badMethod(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	if _, err := c.NewRequest("BOGUS\nMETHOD", ".", nil); err == nil {
 		t.Fatal("NewRequest returned nil; expected error")
@@ -567,6 +578,7 @@ func TestNewRequest_badMethod(t *testing.T) {
 // ensure that no User-Agent header is set if the client's UserAgent is empty.
 // This caused a problem with Google's internal http client.
 func TestNewRequest_emptyUserAgent(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	c.UserAgent = ""
 	req, err := c.NewRequest("GET", ".", nil)
@@ -585,6 +597,7 @@ func TestNewRequest_emptyUserAgent(t *testing.T) {
 // certain cases, intermediate systems may treat these differently resulting in
 // subtle errors.
 func TestNewRequest_emptyBody(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	req, err := c.NewRequest("GET", ".", nil)
 	if err != nil {
@@ -596,6 +609,7 @@ func TestNewRequest_emptyBody(t *testing.T) {
 }
 
 func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		rawurl    string
 		wantError bool
@@ -619,6 +633,7 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 }
 
 func TestNewFormRequest(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 
 	inURL, outURL := "/foo", defaultBaseURL+"foo"
@@ -656,12 +671,14 @@ func TestNewFormRequest(t *testing.T) {
 }
 
 func TestNewFormRequest_badURL(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	_, err := c.NewFormRequest(":", nil)
 	testURLParseError(t, err)
 }
 
 func TestNewFormRequest_emptyUserAgent(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	c.UserAgent = ""
 	req, err := c.NewFormRequest(".", nil)
@@ -674,6 +691,7 @@ func TestNewFormRequest_emptyUserAgent(t *testing.T) {
 }
 
 func TestNewFormRequest_emptyBody(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	req, err := c.NewFormRequest(".", nil)
 	if err != nil {
@@ -685,6 +703,7 @@ func TestNewFormRequest_emptyBody(t *testing.T) {
 }
 
 func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		rawURL    string
 		wantError bool
@@ -708,6 +727,7 @@ func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
 }
 
 func TestNewUploadRequest_WithVersion(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	req, _ := c.NewUploadRequest("https://example.com/", nil, 0, "")
 
@@ -724,6 +744,7 @@ func TestNewUploadRequest_WithVersion(t *testing.T) {
 }
 
 func TestNewUploadRequest_badURL(t *testing.T) {
+	t.Parallel()
 	c := NewClient(nil)
 	_, err := c.NewUploadRequest(":", nil, 0, "")
 	testURLParseError(t, err)
@@ -736,6 +757,7 @@ func TestNewUploadRequest_badURL(t *testing.T) {
 }
 
 func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		rawurl    string
 		wantError bool
@@ -759,6 +781,7 @@ func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
 }
 
 func TestResponse_populatePageValues(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?page=1>; rel="first",` +
@@ -788,6 +811,7 @@ func TestResponse_populatePageValues(t *testing.T) {
 }
 
 func TestResponse_populateSinceValues(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?since=1>; rel="first",` +
@@ -817,6 +841,7 @@ func TestResponse_populateSinceValues(t *testing.T) {
 }
 
 func TestResponse_SinceWithPage(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=1>; rel="first",` +
@@ -846,6 +871,7 @@ func TestResponse_SinceWithPage(t *testing.T) {
 }
 
 func TestResponse_cursorPagination(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Status": {"200 OK"},
@@ -886,6 +912,7 @@ func TestResponse_cursorPagination(t *testing.T) {
 }
 
 func TestResponse_beforeAfterPagination(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?after=a1b2c3&before=>; rel="next",` +
@@ -920,6 +947,7 @@ func TestResponse_beforeAfterPagination(t *testing.T) {
 }
 
 func TestResponse_populatePageValues_invalid(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?page=1>,` +
@@ -959,6 +987,7 @@ func TestResponse_populatePageValues_invalid(t *testing.T) {
 }
 
 func TestResponse_populateSinceValues_invalid(t *testing.T) {
+	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?since=1>,` +
@@ -998,8 +1027,8 @@ func TestResponse_populateSinceValues_invalid(t *testing.T) {
 }
 
 func TestDo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	type foo struct {
 		A string
@@ -1023,8 +1052,8 @@ func TestDo(t *testing.T) {
 }
 
 func TestDo_nilContext(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	req, _ := client.NewRequest("GET", ".", nil)
 	_, err := client.Do(nil, req, nil)
@@ -1035,8 +1064,8 @@ func TestDo_nilContext(t *testing.T) {
 }
 
 func TestDo_httpError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Bad Request", 400)
@@ -1058,8 +1087,8 @@ func TestDo_httpError(t *testing.T) {
 // function. A redirect loop is pretty unlikely to occur within the GitHub
 // API, but does allow us to exercise the right code path.
 func TestDo_redirectLoop(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, baseURLPath, http.StatusFound)
@@ -1077,9 +1106,55 @@ func TestDo_redirectLoop(t *testing.T) {
 	}
 }
 
+func TestDo_preservesResponseInHTTPError(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, `{
+			"message": "Resource not found",
+			"documentation_url": "https://docs.github.com/rest/reference/repos#get-a-repository"
+		}`)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	var resp *Response
+	var data interface{}
+	resp, err := client.Do(context.Background(), req, &data)
+
+	if err == nil {
+		t.Fatal("Expected error response")
+	}
+
+	// Verify error type and access to status code
+	errResp, ok := err.(*ErrorResponse)
+	if !ok {
+		t.Fatalf("Expected *ErrorResponse error, got %T", err)
+	}
+
+	// Verify status code is accessible from both Response and ErrorResponse
+	if resp == nil {
+		t.Fatal("Expected response to be returned even with error")
+	}
+	if got, want := resp.StatusCode, http.StatusNotFound; got != want {
+		t.Errorf("Response status = %d, want %d", got, want)
+	}
+	if got, want := errResp.Response.StatusCode, http.StatusNotFound; got != want {
+		t.Errorf("Error response status = %d, want %d", got, want)
+	}
+
+	// Verify error contains proper message
+	if !strings.Contains(errResp.Message, "Resource not found") {
+		t.Errorf("Error message = %q, want to contain 'Resource not found'", errResp.Message)
+	}
+}
+
 // Test that an error caused by the internal http client's Do() function
 // does not leak the client secret.
 func TestDo_sanitizeURL(t *testing.T) {
+	t.Parallel()
 	tp := &UnauthenticatedRateLimitedTransport{
 		ClientID:     "id",
 		ClientSecret: "secret",
@@ -1101,13 +1176,15 @@ func TestDo_sanitizeURL(t *testing.T) {
 }
 
 func TestDo_rateLimit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set(headerRateLimit, "60")
 		w.Header().Set(headerRateRemaining, "59")
+		w.Header().Set(headerRateUsed, "1")
 		w.Header().Set(headerRateReset, "1372700873")
+		w.Header().Set(headerRateResource, "core")
 	})
 
 	req, _ := client.NewRequest("GET", ".", nil)
@@ -1122,13 +1199,20 @@ func TestDo_rateLimit(t *testing.T) {
 	if got, want := resp.Rate.Remaining, 59; got != want {
 		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
+	if got, want := resp.Rate.Used, 1; got != want {
+		t.Errorf("Client rate used = %v, want %v", got, want)
+	}
 	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if resp.Rate.Reset.UTC() != reset {
-		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, reset)
+	if !resp.Rate.Reset.UTC().Equal(reset) {
+		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset.UTC(), reset)
+	}
+	if got, want := resp.Rate.Resource, "core"; got != want {
+		t.Errorf("Client rate resource = %v, want %v", got, want)
 	}
 }
 
 func TestDo_rateLimitCategory(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		method   string
 		url      string
@@ -1204,15 +1288,17 @@ func TestDo_rateLimitCategory(t *testing.T) {
 	}
 }
 
-// ensure rate limit is still parsed, even for error responses
+// Ensure rate limit is still parsed, even for error responses.
 func TestDo_rateLimit_errorResponse(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set(headerRateLimit, "60")
 		w.Header().Set(headerRateRemaining, "59")
+		w.Header().Set(headerRateUsed, "1")
 		w.Header().Set(headerRateReset, "1372700873")
+		w.Header().Set(headerRateResource, "core")
 		http.Error(w, "Bad Request", 400)
 	})
 
@@ -1231,21 +1317,29 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	if got, want := resp.Rate.Remaining, 59; got != want {
 		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
+	if got, want := resp.Rate.Used, 1; got != want {
+		t.Errorf("Client rate used = %v, want %v", got, want)
+	}
 	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if resp.Rate.Reset.UTC() != reset {
+	if !resp.Rate.Reset.UTC().Equal(reset) {
 		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, reset)
+	}
+	if got, want := resp.Rate.Resource, "core"; got != want {
+		t.Errorf("Client rate resource = %v, want %v", got, want)
 	}
 }
 
 // Ensure *RateLimitError is returned when API rate limit is exceeded.
 func TestDo_rateLimit_rateLimitError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set(headerRateLimit, "60")
 		w.Header().Set(headerRateRemaining, "0")
+		w.Header().Set(headerRateUsed, "60")
 		w.Header().Set(headerRateReset, "1372700873")
+		w.Header().Set(headerRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
@@ -1271,23 +1365,31 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 	if got, want := rateLimitErr.Rate.Remaining, 0; got != want {
 		t.Errorf("rateLimitErr rate remaining = %v, want %v", got, want)
 	}
+	if got, want := rateLimitErr.Rate.Used, 60; got != want {
+		t.Errorf("rateLimitErr rate used = %v, want %v", got, want)
+	}
 	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if rateLimitErr.Rate.Reset.UTC() != reset {
+	if !rateLimitErr.Rate.Reset.UTC().Equal(reset) {
 		t.Errorf("rateLimitErr rate reset = %v, want %v", rateLimitErr.Rate.Reset.UTC(), reset)
+	}
+	if got, want := rateLimitErr.Rate.Resource, "core"; got != want {
+		t.Errorf("rateLimitErr rate resource = %v, want %v", got, want)
 	}
 }
 
 // Ensure a network call is not made when it's known that API rate limit is still exceeded.
 func TestDo_rateLimit_noNetworkCall(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Minute).Round(time.Second) // Rate reset is a minute from now, with 1 second precision.
 
 	mux.HandleFunc("/first", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set(headerRateLimit, "60")
 		w.Header().Set(headerRateRemaining, "0")
+		w.Header().Set(headerRateUsed, "60")
 		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(headerRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
@@ -1330,15 +1432,21 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	if got, want := rateLimitErr.Rate.Remaining, 0; got != want {
 		t.Errorf("rateLimitErr rate remaining = %v, want %v", got, want)
 	}
-	if rateLimitErr.Rate.Reset.UTC() != reset {
+	if got, want := rateLimitErr.Rate.Used, 60; got != want {
+		t.Errorf("rateLimitErr rate used = %v, want %v", got, want)
+	}
+	if !rateLimitErr.Rate.Reset.UTC().Equal(reset) {
 		t.Errorf("rateLimitErr rate reset = %v, want %v", rateLimitErr.Rate.Reset.UTC(), reset)
+	}
+	if got, want := rateLimitErr.Rate.Resource, "core"; got != want {
+		t.Errorf("rateLimitErr rate resource = %v, want %v", got, want)
 	}
 }
 
 // Ignore rate limit headers if the response was served from cache.
 func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Minute).Round(time.Second) // Rate reset is a minute from now, with 1 second precision.
 
@@ -1347,7 +1455,9 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 		w.Header().Set("X-From-Cache", "1")
 		w.Header().Set(headerRateLimit, "60")
 		w.Header().Set(headerRateRemaining, "0")
+		w.Header().Set(headerRateUsed, "60")
 		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(headerRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
@@ -1383,8 +1493,8 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 
 // Ensure sleeps until the rate limit is reset when the client is rate limited.
 func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Second)
 
@@ -1394,7 +1504,9 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 			firstRequest = false
 			w.Header().Set(headerRateLimit, "60")
 			w.Header().Set(headerRateRemaining, "0")
+			w.Header().Set(headerRateUsed, "60")
 			w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+			w.Header().Set(headerRateResource, "core")
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			w.WriteHeader(http.StatusForbidden)
 			fmt.Fprintln(w, `{
@@ -1405,7 +1517,9 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 		}
 		w.Header().Set(headerRateLimit, "5000")
 		w.Header().Set(headerRateRemaining, "5000")
+		w.Header().Set(headerRateUsed, "0")
 		w.Header().Set(headerRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(headerRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
@@ -1424,8 +1538,8 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 
 // Ensure tries to sleep until the rate limit is reset when the client is rate limited, but only once.
 func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Second)
 
@@ -1434,7 +1548,9 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 		requestCount++
 		w.Header().Set(headerRateLimit, "60")
 		w.Header().Set(headerRateRemaining, "0")
+		w.Header().Set(headerRateUsed, "60")
 		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(headerRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
@@ -1456,8 +1572,8 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 
 // Ensure a network call is not made when it's known that API rate limit is still exceeded.
 func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Second)
 	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
@@ -1466,7 +1582,9 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 		requestCount++
 		w.Header().Set(headerRateLimit, "5000")
 		w.Header().Set(headerRateRemaining, "5000")
+		w.Header().Set(headerRateUsed, "0")
 		w.Header().Set(headerRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(headerRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
@@ -1487,8 +1605,8 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 
 // Ensure sleep is aborted when the context is cancelled.
 func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// We use a 1 minute reset time to ensure the sleep is not completed.
 	reset := time.Now().UTC().Add(time.Minute)
@@ -1497,7 +1615,9 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 		requestCount++
 		w.Header().Set(headerRateLimit, "60")
 		w.Header().Set(headerRateRemaining, "0")
+		w.Header().Set(headerRateUsed, "60")
 		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(headerRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
@@ -1520,8 +1640,8 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 
 // Ensure sleep is aborted when the context is cancelled on initial request.
 func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	reset := time.Now().UTC().Add(time.Minute)
 	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
@@ -1530,7 +1650,9 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 		requestCount++
 		w.Header().Set(headerRateLimit, "5000")
 		w.Header().Set(headerRateRemaining, "5000")
+		w.Header().Set(headerRateUsed, "0")
 		w.Header().Set(headerRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(headerRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
@@ -1554,8 +1676,8 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 // Ensure *AbuseRateLimitError is returned when the response indicates that
 // the client has triggered an abuse detection mechanism.
 func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1587,8 +1709,8 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 // Ensure *AbuseRateLimitError is returned when the response indicates that
 // the client has triggered an abuse detection mechanism on GitHub Enterprise.
 func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1621,8 +1743,8 @@ func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 
 // Ensure *AbuseRateLimitError.RetryAfter is parsed correctly for the Retry-After header.
 func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1674,8 +1796,8 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 
 // Ensure *AbuseRateLimitError.RetryAfter is parsed correctly for the x-ratelimit-reset header.
 func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	// x-ratelimit-reset value of 123 seconds into the future.
 	blockUntil := time.Now().Add(time.Duration(123) * time.Second).Unix()
@@ -1730,9 +1852,50 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 	}
 }
 
+// Ensure *AbuseRateLimitError.RetryAfter respect a max duration if specified.
+func TestDo_rateLimit_abuseRateLimitError_maxDuration(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	// specify a max retry after duration of 1 min
+	client.MaxSecondaryRateLimitRetryAfterDuration = 60 * time.Second
+
+	// x-ratelimit-reset value of 1h into the future, to make sure we are way over the max wait time duration.
+	blockUntil := time.Now().Add(1 * time.Hour).Unix()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set(headerRateReset, strconv.Itoa(int(blockUntil)))
+		w.Header().Set(headerRateRemaining, "1") // set remaining to a value > 0 to distinct from a primary rate limit
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "You have triggered an abuse detection mechanism ...",
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	_, err := client.Do(ctx, req, nil)
+
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	abuseRateLimitErr, ok := err.(*AbuseRateLimitError)
+	if !ok {
+		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+	}
+	if abuseRateLimitErr.RetryAfter == nil {
+		t.Fatalf("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+	}
+	// check that the retry after is set to be the max allowed duration
+	if got, want := *abuseRateLimitErr.RetryAfter, client.MaxSecondaryRateLimitRetryAfterDuration; got != want {
+		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
+	}
+}
+
 func TestDo_noContent(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
@@ -1748,7 +1911,50 @@ func TestDo_noContent(t *testing.T) {
 	}
 }
 
+func TestBareDoUntilFound_redirectLoop(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, baseURLPath, http.StatusMovedPermanently)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	_, _, err := client.bareDoUntilFound(ctx, req, 1)
+
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	var rerr *RedirectionError
+	if !errors.As(err, &rerr) {
+		t.Errorf("Expected a Redirection error; got %#v.", err)
+	}
+}
+
+func TestBareDoUntilFound_UnexpectedRedirection(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, baseURLPath, http.StatusSeeOther)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	_, _, err := client.bareDoUntilFound(ctx, req, 1)
+
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	var rerr *RedirectionError
+	if !errors.As(err, &rerr) {
+		t.Errorf("Expected a Redirection error; got %#v.", err)
+	}
+}
+
 func TestSanitizeURL(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		in, want string
 	}{
@@ -1768,6 +1974,7 @@ func TestSanitizeURL(t *testing.T) {
 }
 
 func TestCheckResponse(t *testing.T) {
+	t.Parallel()
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusBadRequest,
@@ -1796,6 +2003,7 @@ func TestCheckResponse(t *testing.T) {
 }
 
 func TestCheckResponse_RateLimit(t *testing.T) {
+	t.Parallel()
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusForbidden,
@@ -1805,7 +2013,9 @@ func TestCheckResponse_RateLimit(t *testing.T) {
 	}
 	res.Header.Set(headerRateLimit, "60")
 	res.Header.Set(headerRateRemaining, "0")
+	res.Header.Set(headerRateUsed, "1")
 	res.Header.Set(headerRateReset, "243424")
+	res.Header.Set(headerRateResource, "core")
 
 	err := CheckResponse(res).(*RateLimitError)
 
@@ -1824,6 +2034,7 @@ func TestCheckResponse_RateLimit(t *testing.T) {
 }
 
 func TestCheckResponse_AbuseRateLimit(t *testing.T) {
+	t.Parallel()
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusForbidden,
@@ -1845,7 +2056,40 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 	}
 }
 
+func TestCheckResponse_RedirectionError(t *testing.T) {
+	t.Parallel()
+	urlStr := "/foo/bar"
+
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusFound,
+		Header:     http.Header{},
+		Body:       io.NopCloser(strings.NewReader(``)),
+	}
+	res.Header.Set("Location", urlStr)
+	err := CheckResponse(res).(*RedirectionError)
+
+	if err == nil {
+		t.Errorf("Expected error response.")
+	}
+
+	wantedURL, parseErr := url.Parse(urlStr)
+	if parseErr != nil {
+		t.Errorf("Error parsing fixture url: %v", parseErr)
+	}
+
+	want := &RedirectionError{
+		Response:   res,
+		StatusCode: http.StatusFound,
+		Location:   wantedURL,
+	}
+	if !errors.Is(err, want) {
+		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
 func TestCompareHttpResponse(t *testing.T) {
+	t.Parallel()
 	testcases := map[string]struct {
 		h1       *http.Response
 		h2       *http.Response
@@ -1871,7 +2115,9 @@ func TestCompareHttpResponse(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			v := compareHTTPResponse(tc.h1, tc.h2)
 			if tc.expected != v {
 				t.Errorf("Expected %t, got %t for (%#v, %#v)", tc.expected, v, tc.h1, tc.h2)
@@ -1881,6 +2127,7 @@ func TestCompareHttpResponse(t *testing.T) {
 }
 
 func TestErrorResponse_Is(t *testing.T) {
+	t.Parallel()
 	err := &ErrorResponse{
 		Response: &http.Response{},
 		Message:  "m",
@@ -2022,12 +2269,14 @@ func TestErrorResponse_Is(t *testing.T) {
 		},
 		"errors have different types": {
 			wantSame:   false,
-			otherError: errors.New("Github"),
+			otherError: errors.New("github"),
 		},
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", err, tc.otherError)
 			}
@@ -2036,6 +2285,7 @@ func TestErrorResponse_Is(t *testing.T) {
 }
 
 func TestRateLimitError_Is(t *testing.T) {
+	t.Parallel()
 	err := &RateLimitError{
 		Response: &http.Response{},
 		Message:  "Github",
@@ -2089,12 +2339,14 @@ func TestRateLimitError_Is(t *testing.T) {
 		"errors have different types": {
 			wantSame:   false,
 			err:        err,
-			otherError: errors.New("Github"),
+			otherError: errors.New("github"),
 		},
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != tc.err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", tc.err, tc.otherError)
 			}
@@ -2103,6 +2355,7 @@ func TestRateLimitError_Is(t *testing.T) {
 }
 
 func TestAbuseRateLimitError_Is(t *testing.T) {
+	t.Parallel()
 	t1 := 1 * time.Second
 	t2 := 2 * time.Second
 	err := &AbuseRateLimitError{
@@ -2173,12 +2426,14 @@ func TestAbuseRateLimitError_Is(t *testing.T) {
 		"errors have different types": {
 			wantSame:   false,
 			err:        err,
-			otherError: errors.New("Github"),
+			otherError: errors.New("github"),
 		},
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != tc.err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", tc.err, tc.otherError)
 			}
@@ -2187,6 +2442,7 @@ func TestAbuseRateLimitError_Is(t *testing.T) {
 }
 
 func TestAcceptedError_Is(t *testing.T) {
+	t.Parallel()
 	err := &AcceptedError{Raw: []byte("Github")}
 	testcases := map[string]struct {
 		wantSame   bool
@@ -2202,12 +2458,14 @@ func TestAcceptedError_Is(t *testing.T) {
 		},
 		"errors have different types": {
 			wantSame:   false,
-			otherError: errors.New("Github"),
+			otherError: errors.New("github"),
 		},
 	}
 
 	for name, tc := range testcases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			if tc.wantSame != err.Is(tc.otherError) {
 				t.Errorf("Error = %#v, want %#v", err, tc.otherError)
 			}
@@ -2215,8 +2473,9 @@ func TestAcceptedError_Is(t *testing.T) {
 	}
 }
 
-// ensure that we properly handle API errors that do not contain a response body
+// Ensure that we properly handle API errors that do not contain a response body.
 func TestCheckResponse_noBody(t *testing.T) {
+	t.Parallel()
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusBadRequest,
@@ -2237,6 +2496,7 @@ func TestCheckResponse_noBody(t *testing.T) {
 }
 
 func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
+	t.Parallel()
 	httpBody := `{"message":"m", "errors": ["error 1"]}`
 	res := &http.Response{
 		Request:    &http.Request{},
@@ -2267,6 +2527,7 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 }
 
 func TestParseBooleanResponse_true(t *testing.T) {
+	t.Parallel()
 	result, err := parseBoolResponse(nil)
 	if err != nil {
 		t.Errorf("parseBoolResponse returned error: %+v", err)
@@ -2278,6 +2539,7 @@ func TestParseBooleanResponse_true(t *testing.T) {
 }
 
 func TestParseBooleanResponse_false(t *testing.T) {
+	t.Parallel()
 	v := &ErrorResponse{Response: &http.Response{StatusCode: http.StatusNotFound}}
 	result, err := parseBoolResponse(v)
 	if err != nil {
@@ -2290,6 +2552,7 @@ func TestParseBooleanResponse_false(t *testing.T) {
 }
 
 func TestParseBooleanResponse_error(t *testing.T) {
+	t.Parallel()
 	v := &ErrorResponse{Response: &http.Response{StatusCode: http.StatusBadRequest}}
 	result, err := parseBoolResponse(v)
 
@@ -2303,20 +2566,21 @@ func TestParseBooleanResponse_error(t *testing.T) {
 }
 
 func TestErrorResponse_Error(t *testing.T) {
+	t.Parallel()
 	res := &http.Response{Request: &http.Request{}}
 	err := ErrorResponse{Message: "m", Response: res}
 	if err.Error() == "" {
 		t.Errorf("Expected non-empty ErrorResponse.Error()")
 	}
 
-	//dont panic if request is nil
+	// dont panic if request is nil
 	res = &http.Response{}
 	err = ErrorResponse{Message: "m", Response: res}
 	if err.Error() == "" {
 		t.Errorf("Expected non-empty ErrorResponse.Error()")
 	}
 
-	//dont panic if response is nil
+	// dont panic if response is nil
 	err = ErrorResponse{Message: "m"}
 	if err.Error() == "" {
 		t.Errorf("Expected non-empty ErrorResponse.Error()")
@@ -2324,6 +2588,7 @@ func TestErrorResponse_Error(t *testing.T) {
 }
 
 func TestError_Error(t *testing.T) {
+	t.Parallel()
 	err := Error{}
 	if err.Error() == "" {
 		t.Errorf("Expected non-empty Error.Error()")
@@ -2331,6 +2596,7 @@ func TestError_Error(t *testing.T) {
 }
 
 func TestSetCredentialsAsHeaders(t *testing.T) {
+	t.Parallel()
 	req := new(http.Request)
 	id, secret := "id", "secret"
 	modifiedRequest := setCredentialsAsHeaders(req, id, secret)
@@ -2350,8 +2616,8 @@ func TestSetCredentialsAsHeaders(t *testing.T) {
 }
 
 func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	clientID, clientSecret := "id", "secret"
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -2380,6 +2646,7 @@ func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 }
 
 func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
+	t.Parallel()
 	// missing ClientID
 	tp := &UnauthenticatedRateLimitedTransport{
 		ClientSecret: "secret",
@@ -2400,6 +2667,7 @@ func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
 }
 
 func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
+	t.Parallel()
 	// default transport
 	tp := &UnauthenticatedRateLimitedTransport{
 		ClientID:     "id",
@@ -2421,8 +2689,8 @@ func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
 }
 
 func TestBasicAuthTransport(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	username, password, otp := "u", "p", "123456"
 
@@ -2456,6 +2724,7 @@ func TestBasicAuthTransport(t *testing.T) {
 }
 
 func TestBasicAuthTransport_transport(t *testing.T) {
+	t.Parallel()
 	// default transport
 	tp := &BasicAuthTransport{}
 	if tp.transport() != http.DefaultTransport {
@@ -2472,6 +2741,7 @@ func TestBasicAuthTransport_transport(t *testing.T) {
 }
 
 func TestFormatRateReset(t *testing.T) {
+	t.Parallel()
 	d := 120*time.Minute + 12*time.Second
 	got := formatRateReset(d)
 	want := "[rate reset in 120m12s]"
@@ -2509,6 +2779,7 @@ func TestFormatRateReset(t *testing.T) {
 }
 
 func TestNestedStructAccessorNoPanic(t *testing.T) {
+	t.Parallel()
 	issue := &Issue{User: nil}
 	got := issue.GetUser().GetPlan().GetName()
 	want := ""
@@ -2518,6 +2789,7 @@ func TestNestedStructAccessorNoPanic(t *testing.T) {
 }
 
 func TestTwoFactorAuthError(t *testing.T) {
+	t.Parallel()
 	u, err := url.Parse("https://example.com")
 	if err != nil {
 		t.Fatal(err)
@@ -2536,6 +2808,7 @@ func TestTwoFactorAuthError(t *testing.T) {
 }
 
 func TestRateLimitError(t *testing.T) {
+	t.Parallel()
 	u, err := url.Parse("https://example.com")
 	if err != nil {
 		t.Fatal(err)
@@ -2554,6 +2827,7 @@ func TestRateLimitError(t *testing.T) {
 }
 
 func TestAcceptedError(t *testing.T) {
+	t.Parallel()
 	a := &AcceptedError{}
 	if got, want := a.Error(), "try again later"; !strings.Contains(got, want) {
 		t.Errorf("AcceptedError = %q, want %q", got, want)
@@ -2561,6 +2835,7 @@ func TestAcceptedError(t *testing.T) {
 }
 
 func TestAbuseRateLimitError(t *testing.T) {
+	t.Parallel()
 	u, err := url.Parse("https://example.com")
 	if err != nil {
 		t.Fatal(err)
@@ -2579,14 +2854,15 @@ func TestAbuseRateLimitError(t *testing.T) {
 }
 
 func TestAddOptions_QueryValues(t *testing.T) {
+	t.Parallel()
 	if _, err := addOptions("yo", ""); err == nil {
 		t.Error("addOptions err = nil, want error")
 	}
 }
 
 func TestBareDo_returnsOpenBody(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	expectedBody := "Hello from the other side !"
 
@@ -2619,6 +2895,7 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 }
 
 func TestErrorResponse_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ErrorResponse{}, "{}")
 
 	u := &ErrorResponse{
@@ -2659,6 +2936,7 @@ func TestErrorResponse_Marshal(t *testing.T) {
 }
 
 func TestErrorBlock_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ErrorBlock{}, "{}")
 
 	u := &ErrorBlock{
@@ -2675,6 +2953,7 @@ func TestErrorBlock_Marshal(t *testing.T) {
 }
 
 func TestRateLimitError_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RateLimitError{}, "{}")
 
 	u := &RateLimitError{
@@ -2699,6 +2978,7 @@ func TestRateLimitError_Marshal(t *testing.T) {
 }
 
 func TestAbuseRateLimitError_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AbuseRateLimitError{}, "{}")
 
 	u := &AbuseRateLimitError{
@@ -2713,6 +2993,7 @@ func TestAbuseRateLimitError_Marshal(t *testing.T) {
 }
 
 func TestError_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Error{}, "{}")
 
 	u := &Error{
@@ -2733,6 +3014,7 @@ func TestError_Marshal(t *testing.T) {
 }
 
 func TestParseTokenExpiration(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		header string
 		want   Timestamp
@@ -2776,6 +3058,7 @@ func TestParseTokenExpiration(t *testing.T) {
 }
 
 func TestClientCopy_leak_transport(t *testing.T) {
+	t.Parallel()
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		accessToken := r.Header.Get("Authorization")
@@ -2802,4 +3085,58 @@ func TestClientCopy_leak_transport(t *testing.T) {
 	}
 
 	assertNoDiff(t, "Bearer bob", bob.GetLogin())
+}
+
+func TestPtr(t *testing.T) {
+	t.Parallel()
+	equal := func(t *testing.T, want, got any) {
+		t.Helper()
+		if !reflect.DeepEqual(want, got) {
+			t.Errorf("want %#v, got %#v", want, got)
+		}
+	}
+
+	equal(t, true, *Ptr(true))
+	equal(t, int(10), *Ptr(int(10)))
+	equal(t, int64(-10), *Ptr(int64(-10)))
+	equal(t, "str", *Ptr("str"))
+}
+
+func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
+	t.Parallel()
+
+	var want int64 = 123456789
+	url := "https://api.github.com/repos/dummy-org/dummy-repo/actions/runs/123456789/deployment_protection_rule"
+
+	e := DeploymentProtectionRuleEvent{
+		DeploymentCallbackURL: &url,
+	}
+
+	got, _ := e.GetRunID()
+	if got != want {
+		t.Errorf("want %#v, got %#v", want, got)
+	}
+
+	want = 123456789
+	url = "repos/dummy-org/dummy-repo/actions/runs/123456789/deployment_protection_rule"
+
+	e = DeploymentProtectionRuleEvent{
+		DeploymentCallbackURL: &url,
+	}
+
+	got, _ = e.GetRunID()
+	if got != want {
+		t.Errorf("want %#v, got %#v", want, got)
+	}
+
+	want = -1
+	url = "https://api.github.com/repos/dummy-org/dummy-repo/actions/runs/abc123/deployment_protection_rule"
+	got, err := e.GetRunID()
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+
+	if got != want {
+		t.Errorf("want %#v, got %#v", want, got)
+	}
 }

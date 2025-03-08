@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -16,7 +17,9 @@ type CustomProperty struct {
 	// PropertyName is required for most endpoints except when calling CreateOrUpdateCustomProperty;
 	// where this is sent in the path and thus can be omitted.
 	PropertyName *string `json:"property_name,omitempty"`
-	// The type of the value for the property. Can be one of: string, single_select.
+	// SourceType is the source type of the property where it has been created. Can be one of: organization, enterprise.
+	SourceType *string `json:"source_type,omitempty"`
+	// The type of the value for the property. Can be one of: string, single_select, multi_select, true_false.
 	ValueType string `json:"value_type"`
 	// Whether the property is required.
 	Required *bool `json:"required,omitempty"`
@@ -42,7 +45,7 @@ type RepoCustomPropertyValue struct {
 // CustomPropertyValue represents a custom property value.
 type CustomPropertyValue struct {
 	PropertyName string      `json:"property_name"`
-	Value        interface{} `json:"value,omitempty"`
+	Value        interface{} `json:"value"`
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
@@ -66,11 +69,11 @@ func (cpv *CustomPropertyValue) UnmarshalJSON(data []byte) error {
 	case []interface{}:
 		strSlice := make([]string, len(v))
 		for i, item := range v {
-			if str, ok := item.(string); ok {
-				strSlice[i] = str
-			} else {
-				return fmt.Errorf("non-string value in string array")
+			str, ok := item.(string)
+			if !ok {
+				return errors.New("non-string value in string array")
 			}
+			strSlice[i] = str
 		}
 		cpv.Value = strSlice
 	default:

@@ -12,10 +12,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v69/github"
 )
 
-// Fetch and lists all the public topics associated with the specified GitHub topic
+// Fetch and lists all the public topics associated with the specified GitHub topic.
 func fetchTopics(topic string) (*github.TopicsSearchResult, error) {
 	client := github.NewClient(nil)
 	topics, _, err := client.Search.Topics(context.Background(), topic, nil)

@@ -17,8 +17,8 @@ import (
 )
 
 func TestRepositoriesService_ListDeployments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/deployments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -33,7 +33,7 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 		t.Errorf("Repositories.ListDeployments returned error: %v", err)
 	}
 
-	want := []*Deployment{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*Deployment{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if !cmp.Equal(deployments, want) {
 		t.Errorf("Repositories.ListDeployments returned %+v, want %+v", deployments, want)
 	}
@@ -54,8 +54,8 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 }
 
 func TestRepositoriesService_GetDeployment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/deployments/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -68,7 +68,7 @@ func TestRepositoriesService_GetDeployment(t *testing.T) {
 		t.Errorf("Repositories.GetDeployment returned error: %v", err)
 	}
 
-	want := &Deployment{ID: Int64(3)}
+	want := &Deployment{ID: Ptr(int64(3))}
 
 	if !cmp.Equal(deployment, want) {
 		t.Errorf("Repositories.GetDeployment returned %+v, want %+v", deployment, want)
@@ -90,10 +90,10 @@ func TestRepositoriesService_GetDeployment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateDeployment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &DeploymentRequest{Ref: String("1111"), Task: String("deploy"), TransientEnvironment: Bool(true)}
+	input := &DeploymentRequest{Ref: Ptr("1111"), Task: Ptr("deploy"), TransientEnvironment: Ptr(true)}
 
 	mux.HandleFunc("/repos/o/r/deployments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(DeploymentRequest)
@@ -115,7 +115,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 		t.Errorf("Repositories.CreateDeployment returned error: %v", err)
 	}
 
-	want := &Deployment{Ref: String("1111"), Task: String("deploy")}
+	want := &Deployment{Ref: Ptr("1111"), Task: Ptr("deploy")}
 	if !cmp.Equal(deployment, want) {
 		t.Errorf("Repositories.CreateDeployment returned %+v, want %+v", deployment, want)
 	}
@@ -136,8 +136,8 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteDeployment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/deployments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -173,8 +173,8 @@ func TestRepositoriesService_DeleteDeployment(t *testing.T) {
 }
 
 func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
@@ -186,14 +186,14 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 
 	opt := &ListOptions{Page: 2}
 	ctx := context.Background()
-	statutses, _, err := client.Repositories.ListDeploymentStatuses(ctx, "o", "r", 1, opt)
+	statuses, _, err := client.Repositories.ListDeploymentStatuses(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("Repositories.ListDeploymentStatuses returned error: %v", err)
 	}
 
-	want := []*DeploymentStatus{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !cmp.Equal(statutses, want) {
-		t.Errorf("Repositories.ListDeploymentStatuses returned %+v, want %+v", statutses, want)
+	want := []*DeploymentStatus{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	if !cmp.Equal(statuses, want) {
+		t.Errorf("Repositories.ListDeploymentStatuses returned %+v, want %+v", statuses, want)
 	}
 
 	const methodName = "ListDeploymentStatuses"
@@ -212,8 +212,8 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 }
 
 func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 	mux.HandleFunc("/repos/o/r/deployments/3/statuses/4", func(w http.ResponseWriter, r *http.Request) {
@@ -228,7 +228,7 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 		t.Errorf("Repositories.GetDeploymentStatus returned error: %v", err)
 	}
 
-	want := &DeploymentStatus{ID: Int64(4)}
+	want := &DeploymentStatus{ID: Ptr(int64(4))}
 	if !cmp.Equal(deploymentStatus, want) {
 		t.Errorf("Repositories.GetDeploymentStatus returned %+v, want %+v", deploymentStatus, want)
 	}
@@ -249,10 +249,10 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &DeploymentStatusRequest{State: String("inactive"), Description: String("deploy"), AutoInactive: Bool(false)}
+	input := &DeploymentStatusRequest{State: Ptr("inactive"), Description: Ptr("deploy"), AutoInactive: Ptr(false)}
 
 	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
 		v := new(DeploymentStatusRequest)
@@ -274,7 +274,7 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 		t.Errorf("Repositories.CreateDeploymentStatus returned error: %v", err)
 	}
 
-	want := &DeploymentStatus{State: String("inactive"), Description: String("deploy")}
+	want := &DeploymentStatus{State: Ptr("inactive"), Description: Ptr("deploy")}
 	if !cmp.Equal(deploymentStatus, want) {
 		t.Errorf("Repositories.CreateDeploymentStatus returned %+v, want %+v", deploymentStatus, want)
 	}
@@ -295,15 +295,16 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 }
 
 func TestDeploymentStatusRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DeploymentStatusRequest{}, "{}")
 
 	r := &DeploymentStatusRequest{
-		State:          String("state"),
-		LogURL:         String("logurl"),
-		Description:    String("desc"),
-		Environment:    String("env"),
-		EnvironmentURL: String("eurl"),
-		AutoInactive:   Bool(false),
+		State:          Ptr("state"),
+		LogURL:         Ptr("logurl"),
+		Description:    Ptr("desc"),
+		Environment:    Ptr("env"),
+		EnvironmentURL: Ptr("eurl"),
+		AutoInactive:   Ptr(false),
 	}
 
 	want := `{
@@ -319,42 +320,43 @@ func TestDeploymentStatusRequest_Marshal(t *testing.T) {
 }
 
 func TestDeploymentStatus_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DeploymentStatus{}, "{}")
 
 	r := &DeploymentStatus{
-		ID:    Int64(1),
-		State: String("state"),
+		ID:    Ptr(int64(1)),
+		State: Ptr("state"),
 		Creator: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		Description:    String("desc"),
-		Environment:    String("env"),
-		NodeID:         String("nid"),
+		Description:    Ptr("desc"),
+		Environment:    Ptr("env"),
+		NodeID:         Ptr("nid"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		TargetURL:      String("turl"),
-		DeploymentURL:  String("durl"),
-		RepositoryURL:  String("rurl"),
-		EnvironmentURL: String("eurl"),
-		LogURL:         String("lurl"),
-		URL:            String("url"),
+		TargetURL:      Ptr("turl"),
+		DeploymentURL:  Ptr("durl"),
+		RepositoryURL:  Ptr("rurl"),
+		EnvironmentURL: Ptr("eurl"),
+		LogURL:         Ptr("lurl"),
+		URL:            Ptr("url"),
 	}
 
 	want := `{
@@ -397,18 +399,19 @@ func TestDeploymentStatus_Marshal(t *testing.T) {
 }
 
 func TestDeploymentRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DeploymentRequest{}, "{}")
 
 	r := &DeploymentRequest{
-		Ref:                   String("ref"),
-		Task:                  String("task"),
-		AutoMerge:             Bool(false),
+		Ref:                   Ptr("ref"),
+		Task:                  Ptr("task"),
+		AutoMerge:             Ptr(false),
 		RequiredContexts:      &[]string{"s"},
 		Payload:               "payload",
-		Environment:           String("environment"),
-		Description:           String("description"),
-		TransientEnvironment:  Bool(false),
-		ProductionEnvironment: Bool(false),
+		Environment:           Ptr("environment"),
+		Description:           Ptr("description"),
+		TransientEnvironment:  Ptr(false),
+		ProductionEnvironment: Ptr(false),
 	}
 
 	want := `{
@@ -427,45 +430,46 @@ func TestDeploymentRequest_Marshal(t *testing.T) {
 }
 
 func TestDeployment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Deployment{}, "{}")
 
 	str := "s"
 	jsonMsg, _ := json.Marshal(str)
 
 	r := &Deployment{
-		URL:         String("url"),
-		ID:          Int64(1),
-		SHA:         String("sha"),
-		Ref:         String("ref"),
-		Task:        String("task"),
+		URL:         Ptr("url"),
+		ID:          Ptr(int64(1)),
+		SHA:         Ptr("sha"),
+		Ref:         Ptr("ref"),
+		Task:        Ptr("task"),
 		Payload:     jsonMsg,
-		Environment: String("env"),
-		Description: String("desc"),
+		Environment: Ptr("env"),
+		Description: Ptr("desc"),
 		Creator: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
 		CreatedAt:     &Timestamp{referenceTime},
 		UpdatedAt:     &Timestamp{referenceTime},
-		StatusesURL:   String("surl"),
-		RepositoryURL: String("rurl"),
-		NodeID:        String("nid"),
+		StatusesURL:   Ptr("surl"),
+		RepositoryURL: Ptr("rurl"),
+		NodeID:        Ptr("nid"),
 	}
 
 	want := `{

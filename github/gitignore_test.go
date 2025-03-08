@@ -15,8 +15,8 @@ import (
 )
 
 func TestGitignoresService_List(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gitignore/templates", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -45,8 +45,8 @@ func TestGitignoresService_List(t *testing.T) {
 }
 
 func TestGitignoresService_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/gitignore/templates/name", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -59,7 +59,7 @@ func TestGitignoresService_Get(t *testing.T) {
 		t.Errorf("Gitignores.List returned error: %v", err)
 	}
 
-	want := &Gitignore{Name: String("Name"), Source: String("template source")}
+	want := &Gitignore{Name: Ptr("Name"), Source: Ptr("template source")}
 	if !cmp.Equal(gitignore, want) {
 		t.Errorf("Gitignores.Get returned %+v, want %+v", gitignore, want)
 	}
@@ -80,8 +80,8 @@ func TestGitignoresService_Get(t *testing.T) {
 }
 
 func TestGitignoresService_Get_invalidTemplate(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Gitignores.Get(ctx, "%")
@@ -89,11 +89,12 @@ func TestGitignoresService_Get_invalidTemplate(t *testing.T) {
 }
 
 func TestGitignore_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Gitignore{}, "{}")
 
 	u := &Gitignore{
-		Name:   String("name"),
-		Source: String("source"),
+		Name:   Ptr("name"),
+		Source: Ptr("source"),
 	}
 
 	want := `{

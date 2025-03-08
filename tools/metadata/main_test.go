@@ -23,11 +23,13 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v69/github"
 )
 
 func TestUpdateGo(t *testing.T) {
+	t.Parallel()
 	t.Run("valid", func(t *testing.T) {
+		t.Parallel()
 		res := runTest(t, "testdata/update-go/valid", "update-go")
 		res.assertOutput("", "")
 		res.assertNoErr()
@@ -35,6 +37,7 @@ func TestUpdateGo(t *testing.T) {
 	})
 
 	t.Run("invalid", func(t *testing.T) {
+		t.Parallel()
 		res := runTest(t, "testdata/update-go/invalid", "update-go")
 		res.assertOutput("", "")
 		res.assertErr(`
@@ -49,6 +52,7 @@ duplicate operation: GET /a/{a_id}
 }
 
 func TestUnused(t *testing.T) {
+	t.Parallel()
 	res := runTest(t, "testdata/unused", "unused")
 	res.assertOutput(`
 Found 3 unused operations
@@ -63,6 +67,7 @@ GET /undocumented/{undocumented_id}
 `, "")
 }
 
+//nolint:tparallel,paralleltest // cannot use t.Parallel() when helper calls t.Setenv
 func TestUpdateOpenAPI(t *testing.T) {
 	testServer := newTestServer(t, "main", map[string]interface{}{
 		"api.github.com/api.github.com.json": openapi3.T{
@@ -124,6 +129,7 @@ func TestUpdateOpenAPI(t *testing.T) {
 }
 
 func TestFormat(t *testing.T) {
+	t.Parallel()
 	res := runTest(t, "testdata/format", "format")
 	res.assertOutput("", "")
 	res.assertNoErr()
@@ -349,19 +355,19 @@ func newTestServer(t *testing.T, ref string, files map[string]interface{}) *http
 	server := httptest.NewServer(mux)
 	mux.HandleFunc(
 		path.Join(repoPath, "commits", ref),
-		jsonHandler(emptyQuery, &github.RepositoryCommit{SHA: github.String("s")}),
+		jsonHandler(emptyQuery, &github.RepositoryCommit{SHA: github.Ptr("s")}),
 	)
 	var descriptionsContent []*github.RepositoryContent
 	for name, content := range files {
 		descriptionsContent = append(descriptionsContent, &github.RepositoryContent{
-			Name: github.String(path.Base(path.Dir(name))),
+			Name: github.Ptr(path.Base(path.Dir(name))),
 		})
 		mux.HandleFunc(
 			path.Join(repoPath, "contents/descriptions", path.Dir(name)),
 			jsonHandler(refQuery, []*github.RepositoryContent{
 				{
-					Name:        github.String(path.Base(name)),
-					DownloadURL: github.String(server.URL + "/dl/" + name),
+					Name:        github.Ptr(path.Base(name)),
+					DownloadURL: github.Ptr(server.URL + "/dl/" + name),
 				},
 			}),
 		)

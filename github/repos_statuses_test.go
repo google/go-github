@@ -16,8 +16,8 @@ import (
 )
 
 func TestRepositoriesService_ListStatuses(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/r/statuses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -32,7 +32,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 		t.Errorf("Repositories.ListStatuses returned error: %v", err)
 	}
 
-	want := []*RepoStatus{{ID: Int64(1)}}
+	want := []*RepoStatus{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(statuses, want) {
 		t.Errorf("Repositories.ListStatuses returned %+v, want %+v", statuses, want)
 	}
@@ -53,8 +53,8 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 }
 
 func TestRepositoriesService_ListStatuses_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListStatuses(ctx, "%", "r", "r", nil)
@@ -62,10 +62,10 @@ func TestRepositoriesService_ListStatuses_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateStatus(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &RepoStatus{State: String("s"), TargetURL: String("t"), Description: String("d")}
+	input := &RepoStatus{State: Ptr("s"), TargetURL: Ptr("t"), Description: Ptr("d")}
 
 	mux.HandleFunc("/repos/o/r/statuses/r", func(w http.ResponseWriter, r *http.Request) {
 		v := new(RepoStatus)
@@ -84,7 +84,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 		t.Errorf("Repositories.CreateStatus returned error: %v", err)
 	}
 
-	want := &RepoStatus{ID: Int64(1)}
+	want := &RepoStatus{ID: Ptr(int64(1))}
 	if !cmp.Equal(status, want) {
 		t.Errorf("Repositories.CreateStatus returned %+v, want %+v", status, want)
 	}
@@ -105,8 +105,8 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.CreateStatus(ctx, "%", "r", "r", nil)
@@ -114,8 +114,8 @@ func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/r/status", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -130,7 +130,7 @@ func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
 		t.Errorf("Repositories.GetCombinedStatus returned error: %v", err)
 	}
 
-	want := &CombinedStatus{State: String("success"), Statuses: []*RepoStatus{{ID: Int64(1)}}}
+	want := &CombinedStatus{State: Ptr("success"), Statuses: []*RepoStatus{{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(status, want) {
 		t.Errorf("Repositories.GetCombinedStatus returned %+v, want %+v", status, want)
 	}
@@ -151,18 +151,19 @@ func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
 }
 
 func TestRepoStatus_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepoStatus{}, "{}")
 
 	u := &RepoStatus{
-		ID:          Int64(1),
-		NodeID:      String("nid"),
-		URL:         String("url"),
-		State:       String("state"),
-		TargetURL:   String("turl"),
-		Description: String("desc"),
-		Context:     String("ctx"),
-		AvatarURL:   String("aurl"),
-		Creator:     &User{ID: Int64(1)},
+		ID:          Ptr(int64(1)),
+		NodeID:      Ptr("nid"),
+		URL:         Ptr("url"),
+		State:       Ptr("state"),
+		TargetURL:   Ptr("turl"),
+		Description: Ptr("desc"),
+		Context:     Ptr("ctx"),
+		AvatarURL:   Ptr("aurl"),
+		Creator:     &User{ID: Ptr(int64(1))},
 		CreatedAt:   &Timestamp{referenceTime},
 		UpdatedAt:   &Timestamp{referenceTime},
 	}
@@ -187,30 +188,31 @@ func TestRepoStatus_Marshal(t *testing.T) {
 }
 
 func TestCombinedStatus_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CombinedStatus{}, "{}")
 
 	u := &CombinedStatus{
-		State:      String("state"),
-		Name:       String("name"),
-		SHA:        String("sha"),
-		TotalCount: Int(1),
+		State:      Ptr("state"),
+		Name:       Ptr("name"),
+		SHA:        Ptr("sha"),
+		TotalCount: Ptr(1),
 		Statuses: []*RepoStatus{
 			{
-				ID:          Int64(1),
-				NodeID:      String("nid"),
-				URL:         String("url"),
-				State:       String("state"),
-				TargetURL:   String("turl"),
-				Description: String("desc"),
-				Context:     String("ctx"),
-				AvatarURL:   String("aurl"),
-				Creator:     &User{ID: Int64(1)},
+				ID:          Ptr(int64(1)),
+				NodeID:      Ptr("nid"),
+				URL:         Ptr("url"),
+				State:       Ptr("state"),
+				TargetURL:   Ptr("turl"),
+				Description: Ptr("desc"),
+				Context:     Ptr("ctx"),
+				AvatarURL:   Ptr("aurl"),
+				Creator:     &User{ID: Ptr(int64(1))},
 				CreatedAt:   &Timestamp{referenceTime},
 				UpdatedAt:   &Timestamp{referenceTime},
 			},
 		},
-		CommitURL:     String("curl"),
-		RepositoryURL: String("rurl"),
+		CommitURL:     Ptr("curl"),
+		RepositoryURL: Ptr("rurl"),
 	}
 
 	want := `{

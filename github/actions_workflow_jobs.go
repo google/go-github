@@ -150,6 +150,14 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/logs", owner, repo, jobID)
 
+	if s.client.RateLimitRedirectionalEndpoints {
+		return s.getWorkflowJobLogsWithRateLimit(ctx, u, maxRedirects)
+	}
+
+	return s.getWorkflowJobLogsWithoutRateLimit(ctx, u, maxRedirects)
+}
+
+func (s *ActionsService) getWorkflowJobLogsWithoutRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
@@ -157,9 +165,29 @@ func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo str
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusFound {
-		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
 	return parsedURL, newResponse(resp), err
+}
+
+func (s *ActionsService) getWorkflowJobLogsWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	if err != nil {
+		return nil, resp, err
+	}
+	defer resp.Body.Close()
+
+	// If we didn't receive a valid Location in a 302 response
+	if url == nil {
+		return nil, resp, fmt.Errorf("unexpected status code: %v", resp.Status)
+	}
+
+	return url, resp, nil
 }

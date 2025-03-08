@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v69/github"
 )
 
 func ExampleMarkdownService_Render() {
@@ -72,7 +72,7 @@ func ExampleRepositoriesService_CreateFile() {
 	// so you will need to modify the example to provide an oauth client to
 	// github.NewClient() instead of nil. See the following documentation for more
 	// information on how to authenticate with the client:
-	// https://godoc.org/github.com/google/go-github/github#hdr-Authentication
+	// https://pkg.go.dev/github.com/google/go-github/github#hdr-Authentication
 	client := github.NewClient(nil)
 
 	ctx := context.Background()
@@ -81,10 +81,10 @@ func ExampleRepositoriesService_CreateFile() {
 	// Note: the file needs to be absent from the repository as you are not
 	// specifying a SHA reference here.
 	opts := &github.RepositoryContentFileOptions{
-		Message:   github.String("This is my commit message"),
+		Message:   github.Ptr("This is my commit message"),
 		Content:   fileContent,
-		Branch:    github.String("master"),
-		Committer: &github.CommitAuthor{Name: github.String("FirstName LastName"), Email: github.String("user@example.com")},
+		Branch:    github.Ptr("master"),
+		Committer: &github.CommitAuthor{Name: github.Ptr("FirstName LastName"), Email: github.Ptr("user@example.com")},
 	}
 	_, _, err := client.Repositories.CreateFile(ctx, "myOrganization", "myRepository", "myNewFile.md", opts)
 	if err != nil {
@@ -117,15 +117,15 @@ func ExamplePullRequestsService_Create() {
 	// so you will need to modify the example to provide an oauth client to
 	// github.NewClient() instead of nil. See the following documentation for more
 	// information on how to authenticate with the client:
-	// https://godoc.org/github.com/google/go-github/github#hdr-Authentication
+	// https://pkg.go.dev/github.com/google/go-github/github#hdr-Authentication
 	client := github.NewClient(nil)
 
 	newPR := &github.NewPullRequest{
-		Title:               github.String("My awesome pull request"),
-		Head:                github.String("branch_to_merge"),
-		Base:                github.String("master"),
-		Body:                github.String("This is the description of the PR created with the package `github.com/google/go-github/github`"),
-		MaintainerCanModify: github.Bool(true),
+		Title:               github.Ptr("My awesome pull request"),
+		Head:                github.Ptr("branch_to_merge"),
+		Base:                github.Ptr("master"),
+		Body:                github.Ptr("This is the description of the PR created with the package `github.com/google/go-github/github`"),
+		MaintainerCanModify: github.Ptr(true),
 	}
 
 	ctx := context.Background()
@@ -146,7 +146,7 @@ func ExampleTeamsService_ListTeams() {
 	// the example to provide an oauth client to github.NewClient() instead of nil.
 	// See the following documentation for more information on how to authenticate
 	// with the client:
-	// https://godoc.org/github.com/google/go-github/github#hdr-Authentication
+	// https://pkg.go.dev/github.com/google/go-github/github#hdr-Authentication
 	client := github.NewClient(nil)
 
 	teamName := "Developers team"

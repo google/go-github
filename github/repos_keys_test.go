@@ -16,8 +16,8 @@ import (
 )
 
 func TestRepositoriesService_ListKeys(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -32,7 +32,7 @@ func TestRepositoriesService_ListKeys(t *testing.T) {
 		t.Errorf("Repositories.ListKeys returned error: %v", err)
 	}
 
-	want := []*Key{{ID: Int64(1)}}
+	want := []*Key{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Repositories.ListKeys returned %+v, want %+v", keys, want)
 	}
@@ -53,8 +53,8 @@ func TestRepositoriesService_ListKeys(t *testing.T) {
 }
 
 func TestRepositoriesService_ListKeys_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListKeys(ctx, "%", "%", nil)
@@ -62,8 +62,8 @@ func TestRepositoriesService_ListKeys_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_GetKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -76,7 +76,7 @@ func TestRepositoriesService_GetKey(t *testing.T) {
 		t.Errorf("Repositories.GetKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Int64(1)}
+	want := &Key{ID: Ptr(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}
@@ -97,8 +97,8 @@ func TestRepositoriesService_GetKey(t *testing.T) {
 }
 
 func TestRepositoriesService_GetKey_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.GetKey(ctx, "%", "%", 1)
@@ -106,10 +106,10 @@ func TestRepositoriesService_GetKey_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &Key{Key: String("k"), Title: String("t")}
+	input := &Key{Key: Ptr("k"), Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/keys", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Key)
@@ -129,7 +129,7 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 		t.Errorf("Repositories.GetKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Int64(1)}
+	want := &Key{ID: Ptr(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}
@@ -150,8 +150,8 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateKey_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Repositories.CreateKey(ctx, "%", "%", nil)
@@ -159,8 +159,8 @@ func TestRepositoriesService_CreateKey_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -184,8 +184,8 @@ func TestRepositoriesService_DeleteKey(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteKey_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Repositories.DeleteKey(ctx, "%", "%", 1)

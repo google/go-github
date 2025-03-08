@@ -14,3 +14,6 @@ vendor/
 
 # goenv local version. See https://github.com/syndbg/goenv/blob/master/COMMANDS.md#goenv-local for more info.
 .go-version
+
+# golangci-lint -v custom generates the following local file:
+custom-gcl

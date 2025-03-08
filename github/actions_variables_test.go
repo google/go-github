@@ -16,8 +16,8 @@ import (
 )
 
 func TestActionsService_ListRepoVariables(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -59,8 +59,8 @@ func TestActionsService_ListRepoVariables(t *testing.T) {
 }
 
 func TestActionsService_ListRepoOrgVariables(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/organization-variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -102,8 +102,8 @@ func TestActionsService_ListRepoOrgVariables(t *testing.T) {
 }
 
 func TestActionsService_GetRepoVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -142,8 +142,8 @@ func TestActionsService_GetRepoVariable(t *testing.T) {
 }
 
 func TestActionsService_CreateRepoVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -174,8 +174,8 @@ func TestActionsService_CreateRepoVariable(t *testing.T) {
 }
 
 func TestActionsService_UpdateRepoVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -206,8 +206,8 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 }
 
 func TestActionsService_DeleteRepoVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -231,8 +231,8 @@ func TestActionsService_DeleteRepoVariable(t *testing.T) {
 }
 
 func TestActionsService_ListOrgVariables(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -250,9 +250,9 @@ func TestActionsService_ListOrgVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 3,
 		Variables: []*ActionsVariable{
-			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("private")},
-			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("all")},
-			{Name: "C", Value: "CC", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("selected"), SelectedRepositoriesURL: String("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories")},
+			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: Ptr("private")},
+			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: Ptr("all")},
+			{Name: "C", Value: "CC", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: Ptr("selected"), SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories")},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -275,8 +275,8 @@ func TestActionsService_ListOrgVariables(t *testing.T) {
 }
 
 func TestActionsService_GetOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -294,8 +294,8 @@ func TestActionsService_GetOrgVariable(t *testing.T) {
 		Value:                   "VALUE",
 		CreatedAt:               &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt:               &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		Visibility:              String("selected"),
-		SelectedRepositoriesURL: String("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"),
+		Visibility:              Ptr("selected"),
+		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"),
 	}
 	if !cmp.Equal(variable, want) {
 		t.Errorf("Actions.GetOrgVariable returned %+v, want %+v", variable, want)
@@ -317,8 +317,8 @@ func TestActionsService_GetOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_CreateOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -330,7 +330,7 @@ func TestActionsService_CreateOrgVariable(t *testing.T) {
 	input := &ActionsVariable{
 		Name:                  "NAME",
 		Value:                 "VALUE",
-		Visibility:            String("selected"),
+		Visibility:            Ptr("selected"),
 		SelectedRepositoryIDs: &SelectedRepoIDs{1296269, 1269280},
 	}
 	ctx := context.Background()
@@ -351,8 +351,8 @@ func TestActionsService_CreateOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_UpdateOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -364,7 +364,7 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 	input := &ActionsVariable{
 		Name:                  "NAME",
 		Value:                 "VALUE",
-		Visibility:            String("selected"),
+		Visibility:            Ptr("selected"),
 		SelectedRepositoryIDs: &SelectedRepoIDs{1296269, 1269280},
 	}
 	ctx := context.Background()
@@ -385,8 +385,8 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -401,9 +401,9 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 	}
 
 	want := &SelectedReposList{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Repositories: []*Repository{
-			{ID: Int64(1)},
+			{ID: Ptr(int64(1))},
 		},
 	}
 	if !cmp.Equal(repos, want) {
@@ -426,8 +426,8 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_SetSelectedReposForOrgSVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -453,14 +453,14 @@ func TestActionsService_SetSelectedReposForOrgSVariable(t *testing.T) {
 }
 
 func TestActionsService_AddSelectedRepoToOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
-	repo := &Repository{ID: Int64(1234)}
+	repo := &Repository{ID: Ptr(int64(1234))}
 	ctx := context.Background()
 	_, err := client.Actions.AddSelectedRepoToOrgVariable(ctx, "o", "NAME", repo)
 	if err != nil {
@@ -479,14 +479,14 @@ func TestActionsService_AddSelectedRepoToOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_RemoveSelectedRepoFromOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME/repositories/1234", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
-	repo := &Repository{ID: Int64(1234)}
+	repo := &Repository{ID: Ptr(int64(1234))}
 	ctx := context.Background()
 	_, err := client.Actions.RemoveSelectedRepoFromOrgVariable(ctx, "o", "NAME", repo)
 	if err != nil {
@@ -505,8 +505,8 @@ func TestActionsService_RemoveSelectedRepoFromOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_DeleteOrgVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -530,8 +530,8 @@ func TestActionsService_DeleteOrgVariable(t *testing.T) {
 }
 
 func TestActionsService_ListEnvVariables(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/usr/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -573,8 +573,8 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 }
 
 func TestActionsService_GetEnvVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -613,8 +613,8 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 }
 
 func TestActionsService_CreateEnvVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/usr/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -645,8 +645,8 @@ func TestActionsService_CreateEnvVariable(t *testing.T) {
 }
 
 func TestActionsService_UpdateEnvVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -677,8 +677,8 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 }
 
 func TestActionsService_DeleteEnvVariable(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -702,6 +702,7 @@ func TestActionsService_DeleteEnvVariable(t *testing.T) {
 }
 
 func TestActionVariable_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ActionsVariable{}, "{}")
 
 	av := &ActionsVariable{
@@ -709,8 +710,8 @@ func TestActionVariable_Marshal(t *testing.T) {
 		Value:                   "v",
 		CreatedAt:               &Timestamp{referenceTime},
 		UpdatedAt:               &Timestamp{referenceTime},
-		Visibility:              String("v"),
-		SelectedRepositoriesURL: String("s"),
+		Visibility:              Ptr("v"),
+		SelectedRepositoriesURL: Ptr("s"),
 		SelectedRepositoryIDs:   &SelectedRepoIDs{1, 2, 3},
 	}
 

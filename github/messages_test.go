@@ -19,6 +19,7 @@ import (
 )
 
 func TestMessageMAC_BadHashTypePrefix(t *testing.T) {
+	t.Parallel()
 	const signature = "bogus1=1234567"
 	if _, _, err := messageMAC(signature); err == nil {
 		t.Fatal("messageMAC returned nil; wanted error")
@@ -26,6 +27,7 @@ func TestMessageMAC_BadHashTypePrefix(t *testing.T) {
 }
 
 func TestValidatePayload(t *testing.T) {
+	t.Parallel()
 	const defaultBody = `{"yo":true}` // All tests below use the default request body and signature.
 	const defaultSignature = "sha1=126f2c800419c60137ce748d7672e77b65cf16d6"
 	secretKey := []byte("0123456789abcdef")
@@ -99,6 +101,7 @@ func TestValidatePayload(t *testing.T) {
 }
 
 func TestValidatePayload_FormGet(t *testing.T) {
+	t.Parallel()
 	payload := `{"yo":true}`
 	signature := "sha1=3374ef144403e8035423b23b02e2c9d7a4c50368"
 	secretKey := []byte("0123456789abcdef")
@@ -129,6 +132,7 @@ func TestValidatePayload_FormGet(t *testing.T) {
 }
 
 func TestValidatePayload_FormPost(t *testing.T) {
+	t.Parallel()
 	payload := `{"yo":true}`
 	signature := "sha1=3374ef144403e8035423b23b02e2c9d7a4c50368"
 	secretKey := []byte("0123456789abcdef")
@@ -159,6 +163,7 @@ func TestValidatePayload_FormPost(t *testing.T) {
 }
 
 func TestValidatePayload_InvalidContentType(t *testing.T) {
+	t.Parallel()
 	req, err := http.NewRequest("POST", "http://localhost/event", nil)
 	if err != nil {
 		t.Fatalf("NewRequest: %v", err)
@@ -170,6 +175,7 @@ func TestValidatePayload_InvalidContentType(t *testing.T) {
 }
 
 func TestValidatePayload_NoSecretKey(t *testing.T) {
+	t.Parallel()
 	payload := `{"yo":true}`
 
 	form := url.Values{}
@@ -200,6 +206,7 @@ func (b *badReader) Read(p []byte) (int, error) {
 func (b *badReader) Close() error { return errors.New("bad reader") }
 
 func TestValidatePayload_BadRequestBody(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		contentType string
 	}{
@@ -208,7 +215,9 @@ func TestValidatePayload_BadRequestBody(t *testing.T) {
 	}
 
 	for i, tt := range tests {
+		tt := tt
 		t.Run(fmt.Sprintf("test #%v", i), func(t *testing.T) {
+			t.Parallel()
 			req := &http.Request{
 				Header: http.Header{"Content-Type": []string{tt.contentType}},
 				Body:   &badReader{},
@@ -221,6 +230,7 @@ func TestValidatePayload_BadRequestBody(t *testing.T) {
 }
 
 func TestValidatePayload_InvalidContentTypeParams(t *testing.T) {
+	t.Parallel()
 	req, err := http.NewRequest("POST", "http://localhost/event", nil)
 	if err != nil {
 		t.Fatalf("NewRequest: %v", err)
@@ -232,6 +242,7 @@ func TestValidatePayload_InvalidContentTypeParams(t *testing.T) {
 }
 
 func TestValidatePayload_ValidContentTypeParams(t *testing.T) {
+	t.Parallel()
 	var requestBody = `{"yo":true}`
 	buf := bytes.NewBufferString(requestBody)
 
@@ -248,10 +259,15 @@ func TestValidatePayload_ValidContentTypeParams(t *testing.T) {
 }
 
 func TestParseWebHook(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		payload     interface{}
 		messageType string
 	}{
+		{
+			payload:     &BranchProtectionConfigurationEvent{},
+			messageType: "branch_protection_configuration",
+		},
 		{
 			payload:     &BranchProtectionRuleEvent{},
 			messageType: "branch_protection_rule",
@@ -281,6 +297,14 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "create",
 		},
 		{
+			payload:     &CustomPropertyEvent{},
+			messageType: "custom_property",
+		},
+		{
+			payload:     &CustomPropertyValuesEvent{},
+			messageType: "custom_property_values",
+		},
+		{
 			payload:     &DeleteEvent{},
 			messageType: "delete",
 		},
@@ -299,6 +323,10 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &DeploymentProtectionRuleEvent{},
 			messageType: "deployment_protection_rule",
+		},
+		{
+			payload:     &DeploymentReviewEvent{},
+			messageType: "deployment_review",
 		},
 		{
 			payload:     &DeploymentStatusEvent{},
@@ -397,18 +425,6 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "ping",
 		},
 		{
-			payload:     &ProjectEvent{},
-			messageType: "project",
-		},
-		{
-			payload:     &ProjectCardEvent{},
-			messageType: "project_card",
-		},
-		{
-			payload:     &ProjectColumnEvent{},
-			messageType: "project_column",
-		},
-		{
 			payload:     &ProjectV2Event{},
 			messageType: "projects_v2",
 		},
@@ -453,6 +469,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "repository",
 		},
 		{
+			payload:     &RepositoryRulesetEvent{},
+			messageType: "repository_ruleset",
+		},
+		{
 			payload:     &RepositoryVulnerabilityAlertEvent{},
 			messageType: "repository_vulnerability_alert",
 		},
@@ -461,12 +481,20 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "secret_scanning_alert",
 		},
 		{
+			payload:     &SecretScanningAlertLocationEvent{},
+			messageType: "secret_scanning_alert_location",
+		},
+		{
 			payload:     &SecurityAdvisoryEvent{},
 			messageType: "security_advisory",
 		},
 		{
 			payload:     &SecurityAndAnalysisEvent{},
 			messageType: "security_and_analysis",
+		},
+		{
+			payload:     &SponsorshipEvent{},
+			messageType: "sponsorship",
 		},
 		{
 			payload:     &StarEvent{},
@@ -530,6 +558,7 @@ func TestParseWebHook(t *testing.T) {
 }
 
 func TestAllMessageTypesMapped(t *testing.T) {
+	t.Parallel()
 	for _, mt := range MessageTypes() {
 		if obj := EventForType(mt); obj == nil {
 			t.Errorf("messageMap missing message type %q", mt)
@@ -538,6 +567,7 @@ func TestAllMessageTypesMapped(t *testing.T) {
 }
 
 func TestUnknownMessageType(t *testing.T) {
+	t.Parallel()
 	if obj := EventForType("unknown"); obj != nil {
 		t.Errorf("EventForType(unknown) = %#v, want nil", obj)
 	}
@@ -547,24 +577,28 @@ func TestUnknownMessageType(t *testing.T) {
 }
 
 func TestParseWebHook_BadMessageType(t *testing.T) {
+	t.Parallel()
 	if _, err := ParseWebHook("bogus message type", []byte("{}")); err == nil {
 		t.Fatal("ParseWebHook returned nil; wanted error")
 	}
 }
 
 func TestValidatePayloadFromBody_UnableToParseBody(t *testing.T) {
+	t.Parallel()
 	if _, err := ValidatePayloadFromBody("application/x-www-form-urlencoded", bytes.NewReader([]byte(`%`)), "sha1=", []byte{}); err == nil {
 		t.Errorf("ValidatePayloadFromBody returned nil; wanted error")
 	}
 }
 
 func TestValidatePayloadFromBody_UnsupportedContentType(t *testing.T) {
+	t.Parallel()
 	if _, err := ValidatePayloadFromBody("invalid", bytes.NewReader([]byte(`{}`)), "sha1=", []byte{}); err == nil {
 		t.Errorf("ValidatePayloadFromBody returned nil; wanted error")
 	}
 }
 
 func TestDeliveryID(t *testing.T) {
+	t.Parallel()
 	id := "8970a780-244e-11e7-91ca-da3aabcb9793"
 	req, err := http.NewRequest("POST", "http://localhost", nil)
 	if err != nil {
@@ -579,6 +613,7 @@ func TestDeliveryID(t *testing.T) {
 }
 
 func TestWebHookType(t *testing.T) {
+	t.Parallel()
 	want := "yo"
 	req := &http.Request{
 		Header: http.Header{EventTypeHeader: []string{want}},

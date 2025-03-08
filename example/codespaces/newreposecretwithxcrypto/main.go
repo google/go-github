@@ -31,12 +31,13 @@ import (
 	"context"
 	crypto_rand "crypto/rand"
 	"encoding/base64"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v69/github"
 	"golang.org/x/crypto/nacl/box"
 )
 
@@ -84,7 +85,7 @@ func main() {
 func getSecretName() (string, error) {
 	secretName := flag.Arg(0)
 	if secretName == "" {
-		return "", fmt.Errorf("missing argument secret name")
+		return "", errors.New("missing argument secret name")
 	}
 	return secretName, nil
 }
@@ -133,7 +134,7 @@ func addRepoSecret(ctx context.Context, client *github.Client, owner string, rep
 	}
 
 	if _, err := client.Codespaces.CreateOrUpdateRepoSecret(ctx, owner, repo, encryptedSecret); err != nil {
-		return fmt.Errorf("Codespaces.CreateOrUpdateRepoSecret returned error: %v", err)
+		return fmt.Errorf("client.Codespaces.CreateOrUpdateRepoSecret returned error: %v", err)
 	}
 
 	return nil
@@ -142,13 +143,12 @@ func addRepoSecret(ctx context.Context, client *github.Client, owner string, rep
 func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName string, secretValue string) (*github.EncryptedSecret, error) {
 	decodedPublicKey, err := base64.StdEncoding.DecodeString(publicKey.GetKey())
 	if err != nil {
-		return nil, fmt.Errorf("base64.StdEncoding.DecodeString was unable to decode public key: %v", err)
+		return nil, fmt.Errorf("unable to decode public key: %v", err)
 	}
 
 	var boxKey [32]byte
 	copy(boxKey[:], decodedPublicKey)
-	secretBytes := []byte(secretValue)
-	encryptedBytes, err := box.SealAnonymous([]byte{}, secretBytes, &boxKey, crypto_rand.Reader)
+	encryptedBytes, err := box.SealAnonymous([]byte{}, []byte(secretValue), &boxKey, crypto_rand.Reader)
 	if err != nil {
 		return nil, fmt.Errorf("box.SealAnonymous failed with error %w", err)
 	}

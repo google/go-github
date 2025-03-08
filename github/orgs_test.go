@@ -16,29 +16,30 @@ import (
 )
 
 func TestOrganization_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Organization{}, "{}")
 
 	o := &Organization{
-		BillingEmail:                         String("support@github.com"),
-		Blog:                                 String("https://github.com/blog"),
-		Company:                              String("GitHub"),
-		Email:                                String("support@github.com"),
-		TwitterUsername:                      String("github"),
-		Location:                             String("San Francisco"),
-		Name:                                 String("github"),
-		Description:                          String("GitHub, the company."),
-		IsVerified:                           Bool(true),
-		HasOrganizationProjects:              Bool(true),
-		HasRepositoryProjects:                Bool(true),
-		DefaultRepoPermission:                String("read"),
-		MembersCanCreateRepos:                Bool(true),
-		MembersCanCreateInternalRepos:        Bool(true),
-		MembersCanCreatePrivateRepos:         Bool(true),
-		MembersCanCreatePublicRepos:          Bool(false),
-		MembersAllowedRepositoryCreationType: String("all"),
-		MembersCanCreatePages:                Bool(true),
-		MembersCanCreatePublicPages:          Bool(false),
-		MembersCanCreatePrivatePages:         Bool(true),
+		BillingEmail:                         Ptr("support@github.com"),
+		Blog:                                 Ptr("https://github.com/blog"),
+		Company:                              Ptr("GitHub"),
+		Email:                                Ptr("support@github.com"),
+		TwitterUsername:                      Ptr("github"),
+		Location:                             Ptr("San Francisco"),
+		Name:                                 Ptr("github"),
+		Description:                          Ptr("GitHub, the company."),
+		IsVerified:                           Ptr(true),
+		HasOrganizationProjects:              Ptr(true),
+		HasRepositoryProjects:                Ptr(true),
+		DefaultRepoPermission:                Ptr("read"),
+		MembersCanCreateRepos:                Ptr(true),
+		MembersCanCreateInternalRepos:        Ptr(true),
+		MembersCanCreatePrivateRepos:         Ptr(true),
+		MembersCanCreatePublicRepos:          Ptr(false),
+		MembersAllowedRepositoryCreationType: Ptr("all"),
+		MembersCanCreatePages:                Ptr(true),
+		MembersCanCreatePublicPages:          Ptr(false),
+		MembersCanCreatePrivatePages:         Ptr(true),
 	}
 	want := `
 		{
@@ -68,8 +69,8 @@ func TestOrganization_Marshal(t *testing.T) {
 }
 
 func TestOrganizationsService_ListAll(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	since := int64(1342004)
 	mux.HandleFunc("/organizations", func(w http.ResponseWriter, r *http.Request) {
@@ -85,7 +86,7 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 		t.Errorf("Organizations.ListAll returned error: %v", err)
 	}
 
-	want := []*Organization{{ID: Int64(4314092)}}
+	want := []*Organization{{ID: Ptr(int64(4314092))}}
 	if !cmp.Equal(orgs, want) {
 		t.Errorf("Organizations.ListAll returned %+v, want %+v", orgs, want)
 	}
@@ -101,8 +102,8 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 }
 
 func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/orgs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -115,7 +116,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
 
-	want := []*Organization{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*Organization{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if !cmp.Equal(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
@@ -136,8 +137,8 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_List_specifiedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/orgs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -152,7 +153,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
 
-	want := []*Organization{{ID: Int64(1)}, {ID: Int64(2)}}
+	want := []*Organization{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if !cmp.Equal(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
@@ -173,8 +174,8 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_List_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Organizations.List(ctx, "%", nil)
@@ -182,8 +183,8 @@ func TestOrganizationsService_List_invalidUser(t *testing.T) {
 }
 
 func TestOrganizationsService_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -197,7 +198,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 		t.Errorf("Organizations.Get returned error: %v", err)
 	}
 
-	want := &Organization{ID: Int64(1), Login: String("l"), URL: String("u"), AvatarURL: String("a"), Location: String("l")}
+	want := &Organization{ID: Ptr(int64(1)), Login: Ptr("l"), URL: Ptr("u"), AvatarURL: Ptr("a"), Location: Ptr("l")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.Get returned %+v, want %+v", org, want)
 	}
@@ -218,8 +219,8 @@ func TestOrganizationsService_Get(t *testing.T) {
 }
 
 func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Organizations.Get(ctx, "%")
@@ -227,8 +228,8 @@ func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_GetByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/organizations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -241,7 +242,7 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 		t.Fatalf("Organizations.GetByID returned error: %v", err)
 	}
 
-	want := &Organization{ID: Int64(1), Login: String("l"), URL: String("u"), AvatarURL: String("a"), Location: String("l")}
+	want := &Organization{ID: Ptr(int64(1)), Login: Ptr("l"), URL: Ptr("u"), AvatarURL: Ptr("a"), Location: Ptr("l")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.GetByID returned %+v, want %+v", org, want)
 	}
@@ -262,10 +263,10 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 }
 
 func TestOrganizationsService_Edit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &Organization{Login: String("l")}
+	input := &Organization{Login: Ptr("l")}
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Organization)
@@ -286,7 +287,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		t.Errorf("Organizations.Edit returned error: %v", err)
 	}
 
-	want := &Organization{ID: Int64(1)}
+	want := &Organization{ID: Ptr(int64(1))}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.Edit returned %+v, want %+v", org, want)
 	}
@@ -307,8 +308,8 @@ func TestOrganizationsService_Edit(t *testing.T) {
 }
 
 func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Organizations.Edit(ctx, "%", nil)
@@ -316,8 +317,8 @@ func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -341,8 +342,8 @@ func TestOrganizationsService_Delete(t *testing.T) {
 }
 
 func TestOrganizationsService_ListInstallations(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/installations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -355,7 +356,7 @@ func TestOrganizationsService_ListInstallations(t *testing.T) {
 		t.Errorf("Organizations.ListInstallations returned error: %v", err)
 	}
 
-	want := &OrganizationInstallations{TotalCount: Int(1), Installations: []*Installation{{ID: Int64(1), AppID: Int64(5)}}}
+	want := &OrganizationInstallations{TotalCount: Ptr(1), Installations: []*Installation{{ID: Ptr(int64(1)), AppID: Ptr(int64(5))}}}
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListInstallations returned %+v, want %+v", apps, want)
 	}
@@ -376,8 +377,8 @@ func TestOrganizationsService_ListInstallations(t *testing.T) {
 }
 
 func TestOrganizationsService_ListInstallations_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Organizations.ListInstallations(ctx, "%", nil)
@@ -385,8 +386,8 @@ func TestOrganizationsService_ListInstallations_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/installations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -400,7 +401,7 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 		t.Errorf("Organizations.ListInstallations returned error: %v", err)
 	}
 
-	want := &OrganizationInstallations{TotalCount: Int(2), Installations: []*Installation{{ID: Int64(2), AppID: Int64(10)}}}
+	want := &OrganizationInstallations{TotalCount: Ptr(2), Installations: []*Installation{{ID: Ptr(int64(2)), AppID: Ptr(int64(10))}}}
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListInstallations returned %+v, want %+v", apps, want)
 	}
@@ -427,11 +428,12 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 }
 
 func TestOrganizationInstallations_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &OrganizationInstallations{}, "{}")
 
 	o := &OrganizationInstallations{
-		TotalCount:    Int(1),
-		Installations: []*Installation{{ID: Int64(1)}},
+		TotalCount:    Ptr(1),
+		Installations: []*Installation{{ID: Ptr(int64(1))}},
 	}
 	want := `{
 		"total_count": 1,
@@ -446,15 +448,16 @@ func TestOrganizationInstallations_Marshal(t *testing.T) {
 }
 
 func TestPlan_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Plan{}, "{}")
 
 	o := &Plan{
-		Name:          String("name"),
-		Space:         Int(1),
-		Collaborators: Int(1),
-		PrivateRepos:  Int64(1),
-		FilledSeats:   Int(1),
-		Seats:         Int(1),
+		Name:          Ptr("name"),
+		Space:         Ptr(1),
+		Collaborators: Ptr(1),
+		PrivateRepos:  Ptr(int64(1)),
+		FilledSeats:   Ptr(1),
+		Seats:         Ptr(1),
 	}
 	want := `{
 		"name": "name",

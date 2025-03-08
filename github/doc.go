@@ -8,7 +8,7 @@ Package github provides a client for using the GitHub API.
 
 Usage:
 
-	import "github.com/google/go-github/v64/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+	import "github.com/google/go-github/v69/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 	import "github.com/google/go-github/github"     // with go modules disabled
 
 Construct a new GitHub client, then use the various services on the client to
@@ -31,7 +31,7 @@ The services of a client divide the API into logical chunks and correspond to
 the structure of the GitHub API documentation at
 https://docs.github.com/rest .
 
-NOTE: Using the https://godoc.org/context package, one can easily
+NOTE: Using the https://pkg.go.dev/context package, one can easily
 pass cancelation signals and deadlines to various services of the client for
 handling a request. In case there is no context available, then context.Background()
 can be used as a starting point.
@@ -138,11 +138,17 @@ To detect this condition of error, you can check if its type is
 
 # Conditional Requests
 
-The GitHub API has good support for conditional requests which will help
-prevent you from burning through your rate limit, as well as help speed up your
-application. go-github does not handle conditional requests directly, but is
-instead designed to work with a caching http.Transport. We recommend using
-https://github.com/gregjones/httpcache for that.
+The GitHub REST API has good support for conditional HTTP requests
+via the ETag header which will help prevent you from burning through your
+rate limit, as well as help speed up your application. go-github does not
+handle conditional requests directly, but is instead designed to work with a
+caching http.Transport.
+
+Typically, an RFC 7234 compliant HTTP cache such as https://github.com/gregjones/httpcache
+is recommended. Alternatively, the https://github.com/bored-engineer/github-conditional-http-transport
+package relies on (undocumented) GitHub specific cache logic and is
+recommended when making requests using short-lived credentials such as a
+GitHub App installation token.
 
 Learn more about GitHub conditional requests at
 https://docs.github.com/rest/overview/resources-in-the-rest-api#conditional-requests.
@@ -156,8 +162,8 @@ bool, and int values. For example:
 
 	// create a new private repository named "foo"
 	repo := &github.Repository{
-		Name:    github.String("foo"),
-		Private: github.Bool(true),
+		Name:    github.Ptr("foo"),
+		Private: github.Ptr(true),
 	}
 	client.Repositories.Create(ctx, "", repo)
 

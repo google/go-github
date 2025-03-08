@@ -4,7 +4,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build integration
-// +build integration
 
 package integration
 
@@ -12,7 +11,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v69/github"
 )
 
 const (
@@ -94,7 +93,7 @@ func deleteSubscription(t *testing.T) {
 
 func createSubscription(t *testing.T) {
 	// watch the target repository
-	sub := &github.Subscription{Subscribed: github.Bool(true)}
+	sub := &github.Subscription{Subscribed: github.Ptr(true)}
 	_, _, err := client.Activity.SetRepositorySubscription(context.Background(), owner, repo, sub)
 	if err != nil {
 		t.Fatalf("Activity.SetRepositorySubscription returned error: %v", err)

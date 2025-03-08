@@ -16,8 +16,8 @@ import (
 )
 
 func TestAppsService_ListRepos(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{
 		mediaTypeTopicsPreview,
@@ -41,7 +41,7 @@ func TestAppsService_ListRepos(t *testing.T) {
 		t.Errorf("Apps.ListRepos returned error: %v", err)
 	}
 
-	want := &ListRepositories{TotalCount: Int(1), Repositories: []*Repository{{ID: Int64(1)}}}
+	want := &ListRepositories{TotalCount: Ptr(1), Repositories: []*Repository{{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(repositories, want) {
 		t.Errorf("Apps.ListRepos returned %+v, want %+v", repositories, want)
 	}
@@ -57,8 +57,8 @@ func TestAppsService_ListRepos(t *testing.T) {
 }
 
 func TestAppsService_ListUserRepos(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{
 		mediaTypeTopicsPreview,
@@ -82,7 +82,7 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 		t.Errorf("Apps.ListUserRepos returned error: %v", err)
 	}
 
-	want := &ListRepositories{TotalCount: Int(1), Repositories: []*Repository{{ID: Int64(1)}}}
+	want := &ListRepositories{TotalCount: Ptr(1), Repositories: []*Repository{{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(repositories, want) {
 		t.Errorf("Apps.ListUserRepos returned %+v, want %+v", repositories, want)
 	}
@@ -103,8 +103,8 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 }
 
 func TestAppsService_AddRepository(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -117,7 +117,7 @@ func TestAppsService_AddRepository(t *testing.T) {
 		t.Errorf("Apps.AddRepository returned error: %v", err)
 	}
 
-	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
+	want := &Repository{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), Owner: &User{Login: Ptr("l")}, License: &License{Key: Ptr("mit")}}
 	if !cmp.Equal(repo, want) {
 		t.Errorf("AddRepository returned %+v, want %+v", repo, want)
 	}
@@ -133,8 +133,8 @@ func TestAppsService_AddRepository(t *testing.T) {
 }
 
 func TestAppsService_RemoveRepository(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -154,8 +154,8 @@ func TestAppsService_RemoveRepository(t *testing.T) {
 }
 
 func TestAppsService_RevokeInstallationToken(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/installation/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -175,15 +175,16 @@ func TestAppsService_RevokeInstallationToken(t *testing.T) {
 }
 
 func TestListRepositories_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ListRepositories{}, "{}")
 
 	u := &ListRepositories{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Repositories: []*Repository{
 			{
-				ID:   Int64(1),
-				URL:  String("u"),
-				Name: String("n"),
+				ID:   Ptr(int64(1)),
+				URL:  Ptr("u"),
+				Name: Ptr("n"),
 			},
 		},
 	}

@@ -16,8 +16,8 @@ import (
 )
 
 func TestChecksService_GetCheckRun(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -39,12 +39,12 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 	completeAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 
 	want := &CheckRun{
-		ID:          Int64(1),
-		Status:      String("completed"),
-		Conclusion:  String("neutral"),
+		ID:          Ptr(int64(1)),
+		Status:      Ptr("completed"),
+		Conclusion:  Ptr("neutral"),
 		StartedAt:   &Timestamp{startedAt},
 		CompletedAt: &Timestamp{completeAt},
-		Name:        String("testCheckRun"),
+		Name:        Ptr("testCheckRun"),
 	}
 	if !cmp.Equal(checkRun, want) {
 		t.Errorf("Checks.GetCheckRun return %+v, want %+v", checkRun, want)
@@ -66,8 +66,8 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 }
 
 func TestChecksService_GetCheckSuite(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -87,13 +87,13 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 		t.Errorf("Checks.GetCheckSuite return error: %v", err)
 	}
 	want := &CheckSuite{
-		ID:         Int64(1),
-		HeadBranch: String("master"),
-		HeadSHA:    String("deadbeef"),
-		AfterSHA:   String("deadbeefa"),
-		BeforeSHA:  String("deadbeefb"),
-		Status:     String("completed"),
-		Conclusion: String("neutral"),
+		ID:         Ptr(int64(1)),
+		HeadBranch: Ptr("master"),
+		HeadSHA:    Ptr("deadbeef"),
+		AfterSHA:   Ptr("deadbeefa"),
+		BeforeSHA:  Ptr("deadbeefb"),
+		Status:     Ptr("completed"),
+		Conclusion: Ptr("neutral"),
 	}
 	if !cmp.Equal(checkSuite, want) {
 		t.Errorf("Checks.GetCheckSuite return %+v, want %+v", checkSuite, want)
@@ -115,8 +115,8 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 }
 
 func TestChecksService_CreateCheckRun(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -135,12 +135,12 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 	checkRunOpt := CreateCheckRunOptions{
 		Name:      "testCreateCheckRun",
 		HeadSHA:   "deadbeef",
-		Status:    String("in_progress"),
+		Status:    Ptr("in_progress"),
 		StartedAt: &Timestamp{startedAt},
 		Output: &CheckRunOutput{
-			Title:   String("Mighty test report"),
-			Summary: String(""),
-			Text:    String(""),
+			Title:   Ptr("Mighty test report"),
+			Summary: Ptr(""),
+			Text:    Ptr(""),
 		},
 	}
 
@@ -151,15 +151,15 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 	}
 
 	want := &CheckRun{
-		ID:        Int64(1),
-		Status:    String("in_progress"),
+		ID:        Ptr(int64(1)),
+		Status:    Ptr("in_progress"),
 		StartedAt: &Timestamp{startedAt},
-		HeadSHA:   String("deadbeef"),
-		Name:      String("testCreateCheckRun"),
+		HeadSHA:   Ptr("deadbeef"),
+		Name:      Ptr("testCreateCheckRun"),
 		Output: &CheckRunOutput{
-			Title:   String("Mighty test report"),
-			Summary: String(""),
-			Text:    String(""),
+			Title:   Ptr("Mighty test report"),
+			Summary: Ptr(""),
+			Text:    Ptr(""),
 		},
 	}
 	if !cmp.Equal(checkRun, want) {
@@ -182,8 +182,8 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 }
 
 func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1/annotations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -196,7 +196,7 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		                           "start_line": 2,
 		                           "end_line": 2,
 		                           "start_column": 1,
-		                           "end_column": 5,									
+		                           "end_column": 5,
 		                           "annotation_level": "warning",
 		                           "message": "Check your spelling for 'banaas'.",
                                            "title": "Spell check",
@@ -211,15 +211,15 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 	}
 
 	want := []*CheckRunAnnotation{{
-		Path:            String("README.md"),
-		StartLine:       Int(2),
-		EndLine:         Int(2),
-		StartColumn:     Int(1),
-		EndColumn:       Int(5),
-		AnnotationLevel: String("warning"),
-		Message:         String("Check your spelling for 'banaas'."),
-		Title:           String("Spell check"),
-		RawDetails:      String("Do you mean 'bananas' or 'banana'?"),
+		Path:            Ptr("README.md"),
+		StartLine:       Ptr(2),
+		EndLine:         Ptr(2),
+		StartColumn:     Ptr(1),
+		EndColumn:       Ptr(5),
+		AnnotationLevel: Ptr("warning"),
+		Message:         Ptr("Check your spelling for 'banaas'."),
+		Title:           Ptr("Spell check"),
+		RawDetails:      Ptr("Do you mean 'bananas' or 'banana'?"),
 	}}
 
 	if !cmp.Equal(checkRunAnnotations, want) {
@@ -242,8 +242,8 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 }
 
 func TestChecksService_UpdateCheckRun(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -251,7 +251,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 		fmt.Fprint(w, `{
 			"id": 1,
                         "name":"testUpdateCheckRun",
-			"status": "completed",            
+			"status": "completed",
 			"conclusion": "neutral",
 			"started_at": "2018-05-04T01:14:52Z",
 			"completed_at": "2018-05-04T01:14:52Z",
@@ -260,12 +260,12 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 	updateCheckRunOpt := UpdateCheckRunOptions{
 		Name:        "testUpdateCheckRun",
-		Status:      String("completed"),
+		Status:      Ptr("completed"),
 		CompletedAt: &Timestamp{startedAt},
 		Output: &CheckRunOutput{
-			Title:   String("Mighty test report"),
-			Summary: String("There are 0 failures, 2 warnings and 1 notice"),
-			Text:    String("You may have misspelled some words."),
+			Title:   Ptr("Mighty test report"),
+			Summary: Ptr("There are 0 failures, 2 warnings and 1 notice"),
+			Text:    Ptr("You may have misspelled some words."),
 		},
 	}
 
@@ -276,16 +276,16 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 	}
 
 	want := &CheckRun{
-		ID:          Int64(1),
-		Status:      String("completed"),
+		ID:          Ptr(int64(1)),
+		Status:      Ptr("completed"),
 		StartedAt:   &Timestamp{startedAt},
 		CompletedAt: &Timestamp{startedAt},
-		Conclusion:  String("neutral"),
-		Name:        String("testUpdateCheckRun"),
+		Conclusion:  Ptr("neutral"),
+		Name:        Ptr("testUpdateCheckRun"),
 		Output: &CheckRunOutput{
-			Title:   String("Mighty test report"),
-			Summary: String("There are 0 failures, 2 warnings and 1 notice"),
-			Text:    String("You may have misspelled some words."),
+			Title:   Ptr("Mighty test report"),
+			Summary: Ptr("There are 0 failures, 2 warnings and 1 notice"),
+			Text:    Ptr("You may have misspelled some words."),
 		},
 	}
 	if !cmp.Equal(checkRun, want) {
@@ -308,8 +308,8 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 }
 
 func TestChecksService_ListCheckRunsForRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/master/check-runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -335,10 +335,10 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 	})
 
 	opt := &ListCheckRunsOptions{
-		CheckName:   String("testing"),
-		Status:      String("completed"),
-		Filter:      String("all"),
-		AppID:       Int64(1),
+		CheckName:   Ptr("testing"),
+		Status:      Ptr("completed"),
+		Filter:      Ptr("all"),
+		AppID:       Ptr(int64(1)),
 		ListOptions: ListOptions{Page: 1},
 	}
 	ctx := context.Background()
@@ -348,15 +348,15 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 	}
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 	want := &ListCheckRunsResults{
-		Total: Int(1),
+		Total: Ptr(1),
 		CheckRuns: []*CheckRun{{
-			ID:          Int64(1),
-			Status:      String("completed"),
+			ID:          Ptr(int64(1)),
+			Status:      Ptr("completed"),
 			StartedAt:   &Timestamp{startedAt},
 			CompletedAt: &Timestamp{startedAt},
-			Conclusion:  String("neutral"),
-			HeadSHA:     String("deadbeef"),
-			App:         &App{ID: Int64(1)},
+			Conclusion:  Ptr("neutral"),
+			HeadSHA:     Ptr("deadbeef"),
+			App:         &App{ID: Ptr(int64(1))},
 		}},
 	}
 
@@ -380,8 +380,8 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 }
 
 func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/1/check-runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -404,9 +404,9 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 	})
 
 	opt := &ListCheckRunsOptions{
-		CheckName:   String("testing"),
-		Status:      String("completed"),
-		Filter:      String("all"),
+		CheckName:   Ptr("testing"),
+		Status:      Ptr("completed"),
+		Filter:      Ptr("all"),
 		ListOptions: ListOptions{Page: 1},
 	}
 	ctx := context.Background()
@@ -416,14 +416,14 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 	}
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 	want := &ListCheckRunsResults{
-		Total: Int(1),
+		Total: Ptr(1),
 		CheckRuns: []*CheckRun{{
-			ID:          Int64(1),
-			Status:      String("completed"),
+			ID:          Ptr(int64(1)),
+			Status:      Ptr("completed"),
 			StartedAt:   &Timestamp{startedAt},
 			CompletedAt: &Timestamp{startedAt},
-			Conclusion:  String("neutral"),
-			HeadSHA:     String("deadbeef"),
+			Conclusion:  Ptr("neutral"),
+			HeadSHA:     Ptr("deadbeef"),
 		}},
 	}
 
@@ -447,8 +447,8 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 }
 
 func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/master/check-suites", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -471,8 +471,8 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 	})
 
 	opt := &ListCheckSuiteOptions{
-		CheckName:   String("testing"),
-		AppID:       Int(2),
+		CheckName:   Ptr("testing"),
+		AppID:       Ptr(2),
 		ListOptions: ListOptions{Page: 1},
 	}
 	ctx := context.Background()
@@ -481,15 +481,15 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 		t.Errorf("Checks.ListCheckSuitesForRef return error: %v", err)
 	}
 	want := &ListCheckSuiteResults{
-		Total: Int(1),
+		Total: Ptr(1),
 		CheckSuites: []*CheckSuite{{
-			ID:         Int64(1),
-			Status:     String("completed"),
-			Conclusion: String("neutral"),
-			HeadSHA:    String("deadbeef"),
-			HeadBranch: String("master"),
-			BeforeSHA:  String("deadbeefb"),
-			AfterSHA:   String("deadbeefa"),
+			ID:         Ptr(int64(1)),
+			Status:     Ptr("completed"),
+			Conclusion: Ptr("neutral"),
+			HeadSHA:    Ptr("deadbeef"),
+			HeadBranch: Ptr("master"),
+			BeforeSHA:  Ptr("deadbeefb"),
+			AfterSHA:   Ptr("deadbeefa"),
 		}},
 	}
 
@@ -513,8 +513,8 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 }
 
 func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/preferences", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -523,8 +523,8 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 		fmt.Fprint(w, `{"preferences":{"auto_trigger_checks":[{"app_id": 2,"setting": false}]}}`)
 	})
 	a := []*AutoTriggerCheck{{
-		AppID:   Int64(2),
-		Setting: Bool(false),
+		AppID:   Ptr(int64(2)),
+		Setting: Ptr(false),
 	}}
 	opt := CheckSuitePreferenceOptions{AutoTriggerChecks: a}
 	ctx := context.Background()
@@ -560,8 +560,8 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 }
 
 func TestChecksService_CreateCheckSuite(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -578,7 +578,7 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 
 	checkSuiteOpt := CreateCheckSuiteOptions{
 		HeadSHA:    "deadbeef",
-		HeadBranch: String("master"),
+		HeadBranch: Ptr("master"),
 	}
 
 	ctx := context.Background()
@@ -588,13 +588,13 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 	}
 
 	want := &CheckSuite{
-		ID:         Int64(2),
-		Status:     String("completed"),
-		HeadSHA:    String("deadbeef"),
-		HeadBranch: String("master"),
-		Conclusion: String("neutral"),
-		BeforeSHA:  String("deadbeefb"),
-		AfterSHA:   String("deadbeefa"),
+		ID:         Ptr(int64(2)),
+		Status:     Ptr("completed"),
+		HeadSHA:    Ptr("deadbeef"),
+		HeadBranch: Ptr("master"),
+		Conclusion: Ptr("neutral"),
+		BeforeSHA:  Ptr("deadbeefb"),
+		AfterSHA:   Ptr("deadbeefa"),
 	}
 	if !cmp.Equal(checkSuite, want) {
 		t.Errorf("Checks.CreateCheckSuite return %+v, want %+v", checkSuite, want)
@@ -616,8 +616,8 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 }
 
 func TestChecksService_ReRequestCheckSuite(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-suites/1/rerequest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -641,92 +641,93 @@ func TestChecksService_ReRequestCheckSuite(t *testing.T) {
 }
 
 func Test_CheckRunMarshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckRun{}, "{}")
 
 	now := time.Now()
 	ts := now.Format(time.RFC3339Nano)
 
 	c := CheckRun{
-		ID:          Int64(1),
-		NodeID:      String("n"),
-		HeadSHA:     String("h"),
-		ExternalID:  String("1"),
-		URL:         String("u"),
-		HTMLURL:     String("u"),
-		DetailsURL:  String("u"),
-		Status:      String("s"),
-		Conclusion:  String("c"),
+		ID:          Ptr(int64(1)),
+		NodeID:      Ptr("n"),
+		HeadSHA:     Ptr("h"),
+		ExternalID:  Ptr("1"),
+		URL:         Ptr("u"),
+		HTMLURL:     Ptr("u"),
+		DetailsURL:  Ptr("u"),
+		Status:      Ptr("s"),
+		Conclusion:  Ptr("c"),
 		StartedAt:   &Timestamp{Time: now},
 		CompletedAt: &Timestamp{Time: now},
 		Output: &CheckRunOutput{
 			Annotations: []*CheckRunAnnotation{
 				{
-					AnnotationLevel: String("a"),
-					EndLine:         Int(1),
-					Message:         String("m"),
-					Path:            String("p"),
-					RawDetails:      String("r"),
-					StartLine:       Int(1),
-					Title:           String("t"),
+					AnnotationLevel: Ptr("a"),
+					EndLine:         Ptr(1),
+					Message:         Ptr("m"),
+					Path:            Ptr("p"),
+					RawDetails:      Ptr("r"),
+					StartLine:       Ptr(1),
+					Title:           Ptr("t"),
 				},
 			},
-			AnnotationsCount: Int(1),
-			AnnotationsURL:   String("a"),
+			AnnotationsCount: Ptr(1),
+			AnnotationsURL:   Ptr("a"),
 			Images: []*CheckRunImage{
 				{
-					Alt:      String("a"),
-					ImageURL: String("i"),
-					Caption:  String("c"),
+					Alt:      Ptr("a"),
+					ImageURL: Ptr("i"),
+					Caption:  Ptr("c"),
 				},
 			},
-			Title:   String("t"),
-			Summary: String("s"),
-			Text:    String("t"),
+			Title:   Ptr("t"),
+			Summary: Ptr("s"),
+			Text:    Ptr("t"),
 		},
-		Name: String("n"),
+		Name: Ptr("n"),
 		CheckSuite: &CheckSuite{
-			ID: Int64(1),
+			ID: Ptr(int64(1)),
 		},
 		App: &App{
-			ID:     Int64(1),
-			NodeID: String("n"),
+			ID:     Ptr(int64(1)),
+			NodeID: Ptr("n"),
 			Owner: &User{
-				Login:     String("l"),
-				ID:        Int64(1),
-				NodeID:    String("n"),
-				URL:       String("u"),
-				ReposURL:  String("r"),
-				EventsURL: String("e"),
-				AvatarURL: String("a"),
+				Login:     Ptr("l"),
+				ID:        Ptr(int64(1)),
+				NodeID:    Ptr("n"),
+				URL:       Ptr("u"),
+				ReposURL:  Ptr("r"),
+				EventsURL: Ptr("e"),
+				AvatarURL: Ptr("a"),
 			},
-			Name:        String("n"),
-			Description: String("d"),
-			HTMLURL:     String("h"),
-			ExternalURL: String("u"),
+			Name:        Ptr("n"),
+			Description: Ptr("d"),
+			HTMLURL:     Ptr("h"),
+			ExternalURL: Ptr("u"),
 			CreatedAt:   &Timestamp{now},
 			UpdatedAt:   &Timestamp{now},
 		},
 		PullRequests: []*PullRequest{
 			{
-				URL:    String("u"),
-				ID:     Int64(1),
-				Number: Int(1),
+				URL:    Ptr("u"),
+				ID:     Ptr(int64(1)),
+				Number: Ptr(1),
 				Head: &PullRequestBranch{
-					Ref: String("r"),
-					SHA: String("s"),
+					Ref: Ptr("r"),
+					SHA: Ptr("s"),
 					Repo: &Repository{
-						ID:   Int64(1),
-						URL:  String("s"),
-						Name: String("n"),
+						ID:   Ptr(int64(1)),
+						URL:  Ptr("s"),
+						Name: Ptr("n"),
 					},
 				},
 				Base: &PullRequestBranch{
-					Ref: String("r"),
-					SHA: String("s"),
+					Ref: Ptr("r"),
+					SHA: Ptr("s"),
 					Repo: &Repository{
-						ID:   Int64(1),
-						URL:  String("u"),
-						Name: String("n"),
+						ID:   Ptr(int64(1)),
+						URL:  Ptr("u"),
+						Name: Ptr("n"),
 					},
 				},
 			},
@@ -823,71 +824,75 @@ func Test_CheckRunMarshal(t *testing.T) {
 }
 
 func Test_CheckSuiteMarshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckSuite{}, "{}")
 
 	now := time.Now()
 	ts := now.Format(time.RFC3339Nano)
 
 	c := CheckSuite{
-		ID:         Int64(1),
-		NodeID:     String("n"),
-		HeadBranch: String("h"),
-		HeadSHA:    String("h"),
-		URL:        String("u"),
-		BeforeSHA:  String("b"),
-		AfterSHA:   String("a"),
-		Status:     String("s"),
-		Conclusion: String("c"),
+		ID:         Ptr(int64(1)),
+		NodeID:     Ptr("n"),
+		HeadBranch: Ptr("h"),
+		HeadSHA:    Ptr("h"),
+		URL:        Ptr("u"),
+		BeforeSHA:  Ptr("b"),
+		AfterSHA:   Ptr("a"),
+		Status:     Ptr("s"),
+		Conclusion: Ptr("c"),
 		App: &App{
-			ID:     Int64(1),
-			NodeID: String("n"),
+			ID:     Ptr(int64(1)),
+			NodeID: Ptr("n"),
 			Owner: &User{
-				Login:     String("l"),
-				ID:        Int64(1),
-				NodeID:    String("n"),
-				URL:       String("u"),
-				ReposURL:  String("r"),
-				EventsURL: String("e"),
-				AvatarURL: String("a"),
+				Login:     Ptr("l"),
+				ID:        Ptr(int64(1)),
+				NodeID:    Ptr("n"),
+				URL:       Ptr("u"),
+				ReposURL:  Ptr("r"),
+				EventsURL: Ptr("e"),
+				AvatarURL: Ptr("a"),
 			},
-			Name:        String("n"),
-			Description: String("d"),
-			HTMLURL:     String("h"),
-			ExternalURL: String("u"),
+			Name:        Ptr("n"),
+			Description: Ptr("d"),
+			HTMLURL:     Ptr("h"),
+			ExternalURL: Ptr("u"),
 			CreatedAt:   &Timestamp{now},
 			UpdatedAt:   &Timestamp{now},
 		},
 		Repository: &Repository{
-			ID: Int64(1),
+			ID: Ptr(int64(1)),
 		},
 		PullRequests: []*PullRequest{
 			{
-				URL:    String("u"),
-				ID:     Int64(1),
-				Number: Int(1),
+				URL:    Ptr("u"),
+				ID:     Ptr(int64(1)),
+				Number: Ptr(1),
 				Head: &PullRequestBranch{
-					Ref: String("r"),
-					SHA: String("s"),
+					Ref: Ptr("r"),
+					SHA: Ptr("s"),
 					Repo: &Repository{
-						ID:   Int64(1),
-						URL:  String("s"),
-						Name: String("n"),
+						ID:   Ptr(int64(1)),
+						URL:  Ptr("s"),
+						Name: Ptr("n"),
 					},
 				},
 				Base: &PullRequestBranch{
-					Ref: String("r"),
-					SHA: String("s"),
+					Ref: Ptr("r"),
+					SHA: Ptr("s"),
 					Repo: &Repository{
-						ID:   Int64(1),
-						URL:  String("u"),
-						Name: String("n"),
+						ID:   Ptr(int64(1)),
+						URL:  Ptr("u"),
+						Name: Ptr("n"),
 					},
 				},
 			},
 		},
 		HeadCommit: &Commit{
-			SHA: String("s"),
+			SHA: Ptr("s"),
 		},
+		LatestCheckRunsCount: Ptr(int64(1)),
+		Rerequestable:        Ptr(true),
+		RunsRerequestable:    Ptr(true),
 	}
 
 	w := fmt.Sprintf(`{
@@ -949,25 +954,29 @@ func Test_CheckSuiteMarshal(t *testing.T) {
 		],
 		"head_commit": {
 			"sha": "s"
-		}
+		},
+		"latest_check_runs_count": 1,
+		"rerequestable": true,
+		"runs_rerequestable": true
 		}`, ts, ts)
 
 	testJSONMarshal(t, &c, w)
 }
 
 func TestCheckRunAnnotation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckRunAnnotation{}, "{}")
 
 	u := &CheckRunAnnotation{
-		Path:            String("p"),
-		StartLine:       Int(1),
-		EndLine:         Int(1),
-		StartColumn:     Int(1),
-		EndColumn:       Int(1),
-		AnnotationLevel: String("al"),
-		Message:         String("m"),
-		Title:           String("t"),
-		RawDetails:      String("rd"),
+		Path:            Ptr("p"),
+		StartLine:       Ptr(1),
+		EndLine:         Ptr(1),
+		StartColumn:     Ptr(1),
+		EndColumn:       Ptr(1),
+		AnnotationLevel: Ptr("al"),
+		Message:         Ptr("m"),
+		Title:           Ptr("t"),
+		RawDetails:      Ptr("rd"),
 	}
 
 	want := `{
@@ -986,12 +995,13 @@ func TestCheckRunAnnotation_Marshal(t *testing.T) {
 }
 
 func TestCheckRunImage_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckRunImage{}, "{}")
 
 	u := &CheckRunImage{
-		Alt:      String("a"),
-		ImageURL: String("i"),
-		Caption:  String("c"),
+		Alt:      Ptr("a"),
+		ImageURL: Ptr("i"),
+		Caption:  Ptr("c"),
 	}
 
 	want := `{
@@ -1004,6 +1014,7 @@ func TestCheckRunImage_Marshal(t *testing.T) {
 }
 
 func TestCheckRunAction_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckRunAction{}, "{}")
 
 	u := &CheckRunAction{
@@ -1022,11 +1033,12 @@ func TestCheckRunAction_Marshal(t *testing.T) {
 }
 
 func TestAutoTriggerCheck_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AutoTriggerCheck{}, "{}")
 
 	u := &AutoTriggerCheck{
-		AppID:   Int64(1),
-		Setting: Bool(false),
+		AppID:   Ptr(int64(1)),
+		Setting: Ptr(false),
 	}
 
 	want := `{
@@ -1038,11 +1050,12 @@ func TestAutoTriggerCheck_Marshal(t *testing.T) {
 }
 
 func TestCreateCheckSuiteOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateCheckSuiteOptions{}, "{}")
 
 	u := &CreateCheckSuiteOptions{
 		HeadSHA:    "hsha",
-		HeadBranch: String("hb"),
+		HeadBranch: Ptr("hb"),
 	}
 
 	want := `{
@@ -1054,32 +1067,33 @@ func TestCreateCheckSuiteOptions_Marshal(t *testing.T) {
 }
 
 func TestCheckRunOutput_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckRunOutput{}, "{}")
 
 	u := &CheckRunOutput{
-		Title:            String("ti"),
-		Summary:          String("s"),
-		Text:             String("t"),
-		AnnotationsCount: Int(1),
-		AnnotationsURL:   String("au"),
+		Title:            Ptr("ti"),
+		Summary:          Ptr("s"),
+		Text:             Ptr("t"),
+		AnnotationsCount: Ptr(1),
+		AnnotationsURL:   Ptr("au"),
 		Annotations: []*CheckRunAnnotation{
 			{
-				Path:            String("p"),
-				StartLine:       Int(1),
-				EndLine:         Int(1),
-				StartColumn:     Int(1),
-				EndColumn:       Int(1),
-				AnnotationLevel: String("al"),
-				Message:         String("m"),
-				Title:           String("t"),
-				RawDetails:      String("rd"),
+				Path:            Ptr("p"),
+				StartLine:       Ptr(1),
+				EndLine:         Ptr(1),
+				StartColumn:     Ptr(1),
+				EndColumn:       Ptr(1),
+				AnnotationLevel: Ptr("al"),
+				Message:         Ptr("m"),
+				Title:           Ptr("t"),
+				RawDetails:      Ptr("rd"),
 			},
 		},
 		Images: []*CheckRunImage{
 			{
-				Alt:      String("a"),
-				ImageURL: String("i"),
-				Caption:  String("c"),
+				Alt:      Ptr("a"),
+				ImageURL: Ptr("i"),
+				Caption:  Ptr("c"),
 			},
 		},
 	}
@@ -1116,41 +1130,42 @@ func TestCheckRunOutput_Marshal(t *testing.T) {
 }
 
 func TestCreateCheckRunOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateCheckRunOptions{}, "{}")
 
 	u := &CreateCheckRunOptions{
 		Name:        "n",
 		HeadSHA:     "hsha",
-		DetailsURL:  String("durl"),
-		ExternalID:  String("eid"),
-		Status:      String("s"),
-		Conclusion:  String("c"),
+		DetailsURL:  Ptr("durl"),
+		ExternalID:  Ptr("eid"),
+		Status:      Ptr("s"),
+		Conclusion:  Ptr("c"),
 		StartedAt:   &Timestamp{referenceTime},
 		CompletedAt: &Timestamp{referenceTime},
 		Output: &CheckRunOutput{
-			Title:            String("ti"),
-			Summary:          String("s"),
-			Text:             String("t"),
-			AnnotationsCount: Int(1),
-			AnnotationsURL:   String("au"),
+			Title:            Ptr("ti"),
+			Summary:          Ptr("s"),
+			Text:             Ptr("t"),
+			AnnotationsCount: Ptr(1),
+			AnnotationsURL:   Ptr("au"),
 			Annotations: []*CheckRunAnnotation{
 				{
-					Path:            String("p"),
-					StartLine:       Int(1),
-					EndLine:         Int(1),
-					StartColumn:     Int(1),
-					EndColumn:       Int(1),
-					AnnotationLevel: String("al"),
-					Message:         String("m"),
-					Title:           String("t"),
-					RawDetails:      String("rd"),
+					Path:            Ptr("p"),
+					StartLine:       Ptr(1),
+					EndLine:         Ptr(1),
+					StartColumn:     Ptr(1),
+					EndColumn:       Ptr(1),
+					AnnotationLevel: Ptr("al"),
+					Message:         Ptr("m"),
+					Title:           Ptr("t"),
+					RawDetails:      Ptr("rd"),
 				},
 			},
 			Images: []*CheckRunImage{
 				{
-					Alt:      String("a"),
-					ImageURL: String("i"),
-					Caption:  String("c"),
+					Alt:      Ptr("a"),
+					ImageURL: Ptr("i"),
+					Caption:  Ptr("c"),
 				},
 			},
 		},
@@ -1212,39 +1227,40 @@ func TestCreateCheckRunOptions_Marshal(t *testing.T) {
 }
 
 func TestUpdateCheckRunOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UpdateCheckRunOptions{}, "{}")
 
 	u := &UpdateCheckRunOptions{
 		Name:        "n",
-		DetailsURL:  String("durl"),
-		ExternalID:  String("eid"),
-		Status:      String("s"),
-		Conclusion:  String("c"),
+		DetailsURL:  Ptr("durl"),
+		ExternalID:  Ptr("eid"),
+		Status:      Ptr("s"),
+		Conclusion:  Ptr("c"),
 		CompletedAt: &Timestamp{referenceTime},
 		Output: &CheckRunOutput{
-			Title:            String("ti"),
-			Summary:          String("s"),
-			Text:             String("t"),
-			AnnotationsCount: Int(1),
-			AnnotationsURL:   String("au"),
+			Title:            Ptr("ti"),
+			Summary:          Ptr("s"),
+			Text:             Ptr("t"),
+			AnnotationsCount: Ptr(1),
+			AnnotationsURL:   Ptr("au"),
 			Annotations: []*CheckRunAnnotation{
 				{
-					Path:            String("p"),
-					StartLine:       Int(1),
-					EndLine:         Int(1),
-					StartColumn:     Int(1),
-					EndColumn:       Int(1),
-					AnnotationLevel: String("al"),
-					Message:         String("m"),
-					Title:           String("t"),
-					RawDetails:      String("rd"),
+					Path:            Ptr("p"),
+					StartLine:       Ptr(1),
+					EndLine:         Ptr(1),
+					StartColumn:     Ptr(1),
+					EndColumn:       Ptr(1),
+					AnnotationLevel: Ptr("al"),
+					Message:         Ptr("m"),
+					Title:           Ptr("t"),
+					RawDetails:      Ptr("rd"),
 				},
 			},
 			Images: []*CheckRunImage{
 				{
-					Alt:      String("a"),
-					ImageURL: String("i"),
-					Caption:  String("c"),
+					Alt:      Ptr("a"),
+					ImageURL: Ptr("i"),
+					Caption:  Ptr("c"),
 				},
 			},
 		},
@@ -1304,92 +1320,93 @@ func TestUpdateCheckRunOptions_Marshal(t *testing.T) {
 }
 
 func TestListCheckRunsResults_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ListCheckRunsResults{}, "{}")
 
 	l := &ListCheckRunsResults{
-		Total: Int(1),
+		Total: Ptr(1),
 		CheckRuns: []*CheckRun{
 			{
-				ID:          Int64(1),
-				NodeID:      String("n"),
-				HeadSHA:     String("h"),
-				ExternalID:  String("1"),
-				URL:         String("u"),
-				HTMLURL:     String("u"),
-				DetailsURL:  String("u"),
-				Status:      String("s"),
-				Conclusion:  String("c"),
+				ID:          Ptr(int64(1)),
+				NodeID:      Ptr("n"),
+				HeadSHA:     Ptr("h"),
+				ExternalID:  Ptr("1"),
+				URL:         Ptr("u"),
+				HTMLURL:     Ptr("u"),
+				DetailsURL:  Ptr("u"),
+				Status:      Ptr("s"),
+				Conclusion:  Ptr("c"),
 				StartedAt:   &Timestamp{referenceTime},
 				CompletedAt: &Timestamp{referenceTime},
 				Output: &CheckRunOutput{
 					Annotations: []*CheckRunAnnotation{
 						{
-							AnnotationLevel: String("a"),
-							EndLine:         Int(1),
-							Message:         String("m"),
-							Path:            String("p"),
-							RawDetails:      String("r"),
-							StartLine:       Int(1),
-							Title:           String("t"),
+							AnnotationLevel: Ptr("a"),
+							EndLine:         Ptr(1),
+							Message:         Ptr("m"),
+							Path:            Ptr("p"),
+							RawDetails:      Ptr("r"),
+							StartLine:       Ptr(1),
+							Title:           Ptr("t"),
 						},
 					},
-					AnnotationsCount: Int(1),
-					AnnotationsURL:   String("a"),
+					AnnotationsCount: Ptr(1),
+					AnnotationsURL:   Ptr("a"),
 					Images: []*CheckRunImage{
 						{
-							Alt:      String("a"),
-							ImageURL: String("i"),
-							Caption:  String("c"),
+							Alt:      Ptr("a"),
+							ImageURL: Ptr("i"),
+							Caption:  Ptr("c"),
 						},
 					},
-					Title:   String("t"),
-					Summary: String("s"),
-					Text:    String("t"),
+					Title:   Ptr("t"),
+					Summary: Ptr("s"),
+					Text:    Ptr("t"),
 				},
-				Name: String("n"),
+				Name: Ptr("n"),
 				CheckSuite: &CheckSuite{
-					ID: Int64(1),
+					ID: Ptr(int64(1)),
 				},
 				App: &App{
-					ID:     Int64(1),
-					NodeID: String("n"),
+					ID:     Ptr(int64(1)),
+					NodeID: Ptr("n"),
 					Owner: &User{
-						Login:     String("l"),
-						ID:        Int64(1),
-						NodeID:    String("n"),
-						URL:       String("u"),
-						ReposURL:  String("r"),
-						EventsURL: String("e"),
-						AvatarURL: String("a"),
+						Login:     Ptr("l"),
+						ID:        Ptr(int64(1)),
+						NodeID:    Ptr("n"),
+						URL:       Ptr("u"),
+						ReposURL:  Ptr("r"),
+						EventsURL: Ptr("e"),
+						AvatarURL: Ptr("a"),
 					},
-					Name:        String("n"),
-					Description: String("d"),
-					HTMLURL:     String("h"),
-					ExternalURL: String("u"),
+					Name:        Ptr("n"),
+					Description: Ptr("d"),
+					HTMLURL:     Ptr("h"),
+					ExternalURL: Ptr("u"),
 					CreatedAt:   &Timestamp{referenceTime},
 					UpdatedAt:   &Timestamp{referenceTime},
 				},
 				PullRequests: []*PullRequest{
 					{
-						URL:    String("u"),
-						ID:     Int64(1),
-						Number: Int(1),
+						URL:    Ptr("u"),
+						ID:     Ptr(int64(1)),
+						Number: Ptr(1),
 						Head: &PullRequestBranch{
-							Ref: String("r"),
-							SHA: String("s"),
+							Ref: Ptr("r"),
+							SHA: Ptr("s"),
 							Repo: &Repository{
-								ID:   Int64(1),
-								URL:  String("s"),
-								Name: String("n"),
+								ID:   Ptr(int64(1)),
+								URL:  Ptr("s"),
+								Name: Ptr("n"),
 							},
 						},
 						Base: &PullRequestBranch{
-							Ref: String("r"),
-							SHA: String("s"),
+							Ref: Ptr("r"),
+							SHA: Ptr("s"),
 							Repo: &Repository{
-								ID:   Int64(1),
-								URL:  String("u"),
-								Name: String("n"),
+								ID:   Ptr(int64(1)),
+								URL:  Ptr("u"),
+								Name: Ptr("n"),
 							},
 						},
 					},
@@ -1494,70 +1511,71 @@ func TestListCheckRunsResults_Marshal(t *testing.T) {
 }
 
 func TestListCheckSuiteResults_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ListCheckSuiteResults{}, "{}")
 
 	l := &ListCheckSuiteResults{
-		Total: Int(1),
+		Total: Ptr(1),
 		CheckSuites: []*CheckSuite{
 			{
-				ID:         Int64(1),
-				NodeID:     String("n"),
-				HeadBranch: String("h"),
-				HeadSHA:    String("h"),
-				URL:        String("u"),
-				BeforeSHA:  String("b"),
-				AfterSHA:   String("a"),
-				Status:     String("s"),
-				Conclusion: String("c"),
+				ID:         Ptr(int64(1)),
+				NodeID:     Ptr("n"),
+				HeadBranch: Ptr("h"),
+				HeadSHA:    Ptr("h"),
+				URL:        Ptr("u"),
+				BeforeSHA:  Ptr("b"),
+				AfterSHA:   Ptr("a"),
+				Status:     Ptr("s"),
+				Conclusion: Ptr("c"),
 				App: &App{
-					ID:     Int64(1),
-					NodeID: String("n"),
+					ID:     Ptr(int64(1)),
+					NodeID: Ptr("n"),
 					Owner: &User{
-						Login:     String("l"),
-						ID:        Int64(1),
-						NodeID:    String("n"),
-						URL:       String("u"),
-						ReposURL:  String("r"),
-						EventsURL: String("e"),
-						AvatarURL: String("a"),
+						Login:     Ptr("l"),
+						ID:        Ptr(int64(1)),
+						NodeID:    Ptr("n"),
+						URL:       Ptr("u"),
+						ReposURL:  Ptr("r"),
+						EventsURL: Ptr("e"),
+						AvatarURL: Ptr("a"),
 					},
-					Name:        String("n"),
-					Description: String("d"),
-					HTMLURL:     String("h"),
-					ExternalURL: String("u"),
+					Name:        Ptr("n"),
+					Description: Ptr("d"),
+					HTMLURL:     Ptr("h"),
+					ExternalURL: Ptr("u"),
 					CreatedAt:   &Timestamp{referenceTime},
 					UpdatedAt:   &Timestamp{referenceTime},
 				},
 				Repository: &Repository{
-					ID: Int64(1),
+					ID: Ptr(int64(1)),
 				},
 				PullRequests: []*PullRequest{
 					{
-						URL:    String("u"),
-						ID:     Int64(1),
-						Number: Int(1),
+						URL:    Ptr("u"),
+						ID:     Ptr(int64(1)),
+						Number: Ptr(1),
 						Head: &PullRequestBranch{
-							Ref: String("r"),
-							SHA: String("s"),
+							Ref: Ptr("r"),
+							SHA: Ptr("s"),
 							Repo: &Repository{
-								ID:   Int64(1),
-								URL:  String("s"),
-								Name: String("n"),
+								ID:   Ptr(int64(1)),
+								URL:  Ptr("s"),
+								Name: Ptr("n"),
 							},
 						},
 						Base: &PullRequestBranch{
-							Ref: String("r"),
-							SHA: String("s"),
+							Ref: Ptr("r"),
+							SHA: Ptr("s"),
 							Repo: &Repository{
-								ID:   Int64(1),
-								URL:  String("u"),
-								Name: String("n"),
+								ID:   Ptr(int64(1)),
+								URL:  Ptr("u"),
+								Name: Ptr("n"),
 							},
 						},
 					},
 				},
 				HeadCommit: &Commit{
-					SHA: String("s"),
+					SHA: Ptr("s"),
 				},
 			},
 		},
@@ -1634,13 +1652,14 @@ func TestListCheckSuiteResults_Marshal(t *testing.T) {
 }
 
 func TestCheckSuitePreferenceOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckSuitePreferenceOptions{}, "{}")
 
 	u := &CheckSuitePreferenceOptions{
 		AutoTriggerChecks: []*AutoTriggerCheck{
 			{
-				AppID:   Int64(1),
-				Setting: Bool(false),
+				AppID:   Ptr(int64(1)),
+				Setting: Ptr(false),
 			},
 		},
 	}
@@ -1658,13 +1677,14 @@ func TestCheckSuitePreferenceOptions_Marshal(t *testing.T) {
 }
 
 func TestPreferenceList_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PreferenceList{}, "{}")
 
 	u := &PreferenceList{
 		AutoTriggerChecks: []*AutoTriggerCheck{
 			{
-				AppID:   Int64(1),
-				Setting: Bool(false),
+				AppID:   Ptr(int64(1)),
+				Setting: Ptr(false),
 			},
 		},
 	}
@@ -1682,21 +1702,22 @@ func TestPreferenceList_Marshal(t *testing.T) {
 }
 
 func TestCheckSuitePreferenceResults_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CheckSuitePreferenceResults{}, "{}")
 
 	u := &CheckSuitePreferenceResults{
 		Preferences: &PreferenceList{
 			AutoTriggerChecks: []*AutoTriggerCheck{
 				{
-					AppID:   Int64(1),
-					Setting: Bool(false),
+					AppID:   Ptr(int64(1)),
+					Setting: Ptr(false),
 				},
 			},
 		},
 		Repository: &Repository{
-			ID:   Int64(1),
-			URL:  String("u"),
-			Name: String("n"),
+			ID:   Ptr(int64(1)),
+			URL:  Ptr("u"),
+			Name: Ptr("n"),
 		},
 	}
 
@@ -1720,8 +1741,8 @@ func TestCheckSuitePreferenceResults_Marshal(t *testing.T) {
 }
 
 func TestChecksService_ReRequestCheckRun(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/check-runs/1/rerequest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

@@ -85,7 +85,10 @@ type CheckSuite struct {
 	PullRequests []*PullRequest `json:"pull_requests,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	HeadCommit *Commit `json:"head_commit,omitempty"`
+	HeadCommit           *Commit `json:"head_commit,omitempty"`
+	LatestCheckRunsCount *int64  `json:"latest_check_runs_count,omitempty"`
+	Rerequestable        *bool   `json:"rerequestable,omitempty"`
+	RunsRerequestable    *bool   `json:"runs_rerequestable,omitempty"`
 }
 
 func (c CheckRun) String() string {
@@ -398,7 +401,7 @@ type CheckSuitePreferenceResults struct {
 	Repository  *Repository     `json:"repository,omitempty"`
 }
 
-// PreferenceList represents a list of auto trigger checks for repository
+// PreferenceList represents a list of auto trigger checks for repository.
 type PreferenceList struct {
 	AutoTriggerChecks []*AutoTriggerCheck `json:"auto_trigger_checks,omitempty"` // A slice of auto trigger checks that can be set for a check suite in a repository.
 }
@@ -426,7 +429,7 @@ func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, rep
 	return checkSuitePrefResults, resp, nil
 }
 
-// CreateCheckSuiteOptions sets up parameters to manually create a check suites
+// CreateCheckSuiteOptions sets up parameters to manually create a check suites.
 type CreateCheckSuiteOptions struct {
 	HeadSHA    string  `json:"head_sha"`              // The sha of the head commit. (Required.)
 	HeadBranch *string `json:"head_branch,omitempty"` // The name of the head branch where the code changes are implemented.

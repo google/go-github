@@ -49,7 +49,6 @@ type Commit struct {
 	Message      *string                `json:"message,omitempty"`
 	Tree         *Tree                  `json:"tree,omitempty"`
 	Parents      []*Commit              `json:"parents,omitempty"`
-	Stats        *CommitStats           `json:"stats,omitempty"`
 	HTMLURL      *string                `json:"html_url,omitempty"`
 	URL          *string                `json:"url,omitempty"`
 	Verification *SignatureVerification `json:"verification,omitempty"`
@@ -129,7 +128,7 @@ type CreateCommitOptions struct {
 //meta:operation POST /repos/{owner}/{repo}/git/commits
 func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string, commit *Commit, opts *CreateCommitOptions) (*Commit, *Response, error) {
 	if commit == nil {
-		return nil, nil, fmt.Errorf("commit must be provided")
+		return nil, nil, errors.New("commit must be provided")
 	}
 	if opts == nil {
 		opts = &CreateCommitOptions{}

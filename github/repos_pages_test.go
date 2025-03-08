@@ -18,16 +18,16 @@ import (
 )
 
 func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &Pages{
-		BuildType: String("legacy"),
+		BuildType: Ptr("legacy"),
 		Source: &PagesSource{
-			Branch: String("master"),
-			Path:   String("/"),
+			Branch: Ptr("master"),
+			Path:   Ptr("/"),
 		},
-		CNAME: String("www.my-domain.com"), // not passed along.
+		CNAME: Ptr("www.my-domain.com"), // not passed along.
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +36,7 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
-		want := &createPagesRequest{BuildType: String("legacy"), Source: &PagesSource{Branch: String("master"), Path: String("/")}}
+		want := &createPagesRequest{BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("master"), Path: Ptr("/")}}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -50,7 +50,7 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 		t.Errorf("Repositories.EnablePages returned error: %v", err)
 	}
 
-	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), BuildType: String("legacy"), Source: &PagesSource{Branch: String("master"), Path: String("/")}}
+	want := &Pages{URL: Ptr("u"), Status: Ptr("s"), CNAME: Ptr("c"), Custom404: Ptr(false), HTMLURL: Ptr("h"), BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("master"), Path: Ptr("/")}}
 
 	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.EnablePages returned %v, want %v", page, want)
@@ -72,12 +72,12 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 }
 
 func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &Pages{
-		BuildType: String("workflow"),
-		CNAME:     String("www.my-domain.com"), // not passed along.
+		BuildType: Ptr("workflow"),
+		CNAME:     Ptr("www.my-domain.com"), // not passed along.
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -86,7 +86,7 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
-		want := &createPagesRequest{BuildType: String("workflow")}
+		want := &createPagesRequest{BuildType: Ptr("workflow")}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -100,7 +100,7 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 		t.Errorf("Repositories.EnablePages returned error: %v", err)
 	}
 
-	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), BuildType: String("workflow")}
+	want := &Pages{URL: Ptr("u"), Status: Ptr("s"), CNAME: Ptr("c"), Custom404: Ptr(false), HTMLURL: Ptr("h"), BuildType: Ptr("workflow")}
 
 	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.EnablePages returned %v, want %v", page, want)
@@ -122,13 +122,13 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
-		CNAME:     String("www.my-domain.com"),
-		BuildType: String("legacy"),
-		Source:    &PagesSource{Branch: String("gh-pages")},
+		CNAME:     Ptr("www.my-domain.com"),
+		BuildType: Ptr("legacy"),
+		Source:    &PagesSource{Branch: Ptr("gh-pages")},
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -136,7 +136,7 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
-		want := &PagesUpdate{CNAME: String("www.my-domain.com"), BuildType: String("legacy"), Source: &PagesSource{Branch: String("gh-pages")}}
+		want := &PagesUpdate{CNAME: Ptr("www.my-domain.com"), BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("gh-pages")}}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -162,12 +162,12 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
-		CNAME:     String("www.my-domain.com"),
-		BuildType: String("workflow"),
+		CNAME:     Ptr("www.my-domain.com"),
+		BuildType: Ptr("workflow"),
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -175,7 +175,7 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
-		want := &PagesUpdate{CNAME: String("www.my-domain.com"), BuildType: String("workflow")}
+		want := &PagesUpdate{CNAME: Ptr("www.my-domain.com"), BuildType: Ptr("workflow")}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -200,12 +200,50 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_UpdatePagesGHES(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &PagesUpdateWithoutCNAME{
+		BuildType: Ptr("workflow"),
+	}
+
+	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
+		v := new(PagesUpdate)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		want := &PagesUpdate{BuildType: Ptr("workflow")}
+		if !cmp.Equal(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{"build_type":"workflow"}`)
+	})
+
+	ctx := context.Background()
+	_, err := client.Repositories.UpdatePagesGHES(ctx, "o", "r", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdatePagesGHES returned error: %v", err)
+	}
+
+	const methodName = "UpdatePagesGHES"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.UpdatePagesGHES(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.UpdatePagesGHES(ctx, "o", "r", input)
+	})
+}
+
 func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
-		Source: &PagesSource{Branch: String("gh-pages")},
+		Source: &PagesSource{Branch: Ptr("gh-pages")},
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -230,8 +268,8 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 }
 
 func TestRepositoriesService_DisablePages(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -256,8 +294,8 @@ func TestRepositoriesService_DisablePages(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPagesInfo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -270,7 +308,7 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 		t.Errorf("Repositories.GetPagesInfo returned error: %v", err)
 	}
 
-	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), Public: Bool(true), HTTPSCertificate: &PagesHTTPSCertificate{State: String("approved"), Description: String("Certificate is approved"), Domains: []string{"developer.github.com"}, ExpiresAt: String("2021-05-22")}, HTTPSEnforced: Bool(true)}
+	want := &Pages{URL: Ptr("u"), Status: Ptr("s"), CNAME: Ptr("c"), Custom404: Ptr(false), HTMLURL: Ptr("h"), Public: Ptr(true), HTTPSCertificate: &PagesHTTPSCertificate{State: Ptr("approved"), Description: Ptr("Certificate is approved"), Domains: []string{"developer.github.com"}, ExpiresAt: Ptr("2021-05-22")}, HTTPSEnforced: Ptr(true)}
 	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.GetPagesInfo returned %+v, want %+v", page, want)
 	}
@@ -291,8 +329,8 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 }
 
 func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -305,7 +343,7 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
 	}
 
-	want := []*PagesBuild{{URL: String("u"), Status: String("s"), Commit: String("c")}}
+	want := []*PagesBuild{{URL: Ptr("u"), Status: Ptr("s"), Commit: Ptr("c")}}
 	if !cmp.Equal(pages, want) {
 		t.Errorf("Repositories.ListPagesBuilds returned %+v, want %+v", pages, want)
 	}
@@ -326,8 +364,8 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 }
 
 func TestRepositoriesService_ListPagesBuilds_withOptions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -345,8 +383,8 @@ func TestRepositoriesService_ListPagesBuilds_withOptions(t *testing.T) {
 }
 
 func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds/latest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -359,7 +397,7 @@ func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 		t.Errorf("Repositories.GetLatestPagesBuild returned error: %v", err)
 	}
 
-	want := &PagesBuild{URL: String("u"), Status: String("s"), Commit: String("c")}
+	want := &PagesBuild{URL: Ptr("u"), Status: Ptr("s"), Commit: Ptr("c")}
 	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.GetLatestPagesBuild returned %+v, want %+v", build, want)
 	}
@@ -380,8 +418,8 @@ func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPageBuild(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -394,7 +432,7 @@ func TestRepositoriesService_GetPageBuild(t *testing.T) {
 		t.Errorf("Repositories.GetPageBuild returned error: %v", err)
 	}
 
-	want := &PagesBuild{URL: String("u"), Status: String("s"), Commit: String("c")}
+	want := &PagesBuild{URL: Ptr("u"), Status: Ptr("s"), Commit: Ptr("c")}
 	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.GetPageBuild returned %+v, want %+v", build, want)
 	}
@@ -415,8 +453,8 @@ func TestRepositoriesService_GetPageBuild(t *testing.T) {
 }
 
 func TestRepositoriesService_RequestPageBuild(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -429,7 +467,7 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 		t.Errorf("Repositories.RequestPageBuild returned error: %v", err)
 	}
 
-	want := &PagesBuild{URL: String("u"), Status: String("s")}
+	want := &PagesBuild{URL: Ptr("u"), Status: Ptr("s")}
 	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.RequestPageBuild returned %+v, want %+v", build, want)
 	}
@@ -450,8 +488,8 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPageHealthCheck(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pages/health", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -466,16 +504,16 @@ func TestRepositoriesService_GetPageHealthCheck(t *testing.T) {
 
 	want := &PagesHealthCheckResponse{
 		Domain: &PagesDomain{
-			Host:        String("example.com"),
-			URI:         String("http://example.com/"),
-			Nameservers: String("default"),
-			DNSResolves: Bool(true),
+			Host:        Ptr("example.com"),
+			URI:         Ptr("http://example.com/"),
+			Nameservers: Ptr("default"),
+			DNSResolves: Ptr(true),
 		},
 		AltDomain: &PagesDomain{
-			Host:        String("www.example.com"),
-			URI:         String("http://www.example.com/"),
-			Nameservers: String("default"),
-			DNSResolves: Bool(true),
+			Host:        Ptr("www.example.com"),
+			URI:         Ptr("http://www.example.com/"),
+			Nameservers: Ptr("default"),
+			DNSResolves: Ptr(true),
 		},
 	}
 	if !cmp.Equal(healthCheckResponse, want) {
@@ -498,11 +536,12 @@ func TestRepositoriesService_GetPageHealthCheck(t *testing.T) {
 }
 
 func TestPagesSource_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PagesSource{}, "{}")
 
 	u := &PagesSource{
-		Branch: String("branch"),
-		Path:   String("path"),
+		Branch: Ptr("branch"),
+		Path:   Ptr("path"),
 	}
 
 	want := `{
@@ -514,10 +553,11 @@ func TestPagesSource_Marshal(t *testing.T) {
 }
 
 func TestPagesError_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PagesError{}, "{}")
 
 	u := &PagesError{
-		Message: String("message"),
+		Message: Ptr("message"),
 	}
 
 	want := `{
@@ -528,11 +568,12 @@ func TestPagesError_Marshal(t *testing.T) {
 }
 
 func TestPagesUpdate_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PagesUpdate{}, "{}")
 
 	u := &PagesUpdate{
-		CNAME:  String("cname"),
-		Source: &PagesSource{Path: String("src")},
+		CNAME:  Ptr("cname"),
+		Source: &PagesSource{Path: Ptr("src")},
 	}
 
 	want := `{
@@ -544,17 +585,18 @@ func TestPagesUpdate_Marshal(t *testing.T) {
 }
 
 func TestPages_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Pages{}, "{}")
 
 	u := &Pages{
-		URL:       String("url"),
-		Status:    String("status"),
-		CNAME:     String("cname"),
-		Custom404: Bool(false),
-		HTMLURL:   String("hurl"),
+		URL:       Ptr("url"),
+		Status:    Ptr("status"),
+		CNAME:     Ptr("cname"),
+		Custom404: Ptr(false),
+		HTMLURL:   Ptr("hurl"),
 		Source: &PagesSource{
-			Branch: String("branch"),
-			Path:   String("path"),
+			Branch: Ptr("branch"),
+			Path:   Ptr("path"),
 		},
 	}
 
@@ -574,17 +616,18 @@ func TestPages_Marshal(t *testing.T) {
 }
 
 func TestPagesBuild_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PagesBuild{}, "{}")
 
 	u := &PagesBuild{
-		URL:    String("url"),
-		Status: String("status"),
+		URL:    Ptr("url"),
+		Status: Ptr("status"),
 		Error: &PagesError{
-			Message: String("message"),
+			Message: Ptr("message"),
 		},
-		Pusher:    &User{ID: Int64(1)},
-		Commit:    String("commit"),
-		Duration:  Int(1),
+		Pusher:    &User{ID: Ptr(int64(1))},
+		Commit:    Ptr("commit"),
+		Duration:  Ptr(1),
 		CreatedAt: &Timestamp{referenceTime},
 		UpdatedAt: &Timestamp{referenceTime},
 	}
@@ -608,44 +651,45 @@ func TestPagesBuild_Marshal(t *testing.T) {
 }
 
 func TestPagesHealthCheckResponse_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PagesHealthCheckResponse{}, "{}")
 
 	u := &PagesHealthCheckResponse{
 		Domain: &PagesDomain{
-			Host:                          String("example.com"),
-			URI:                           String("http://example.com/"),
-			Nameservers:                   String("default"),
-			DNSResolves:                   Bool(true),
-			IsProxied:                     Bool(false),
-			IsCloudflareIP:                Bool(false),
-			IsFastlyIP:                    Bool(false),
-			IsOldIPAddress:                Bool(false),
-			IsARecord:                     Bool(true),
-			HasCNAMERecord:                Bool(false),
-			HasMXRecordsPresent:           Bool(false),
-			IsValidDomain:                 Bool(true),
-			IsApexDomain:                  Bool(true),
-			ShouldBeARecord:               Bool(true),
-			IsCNAMEToGithubUserDomain:     Bool(false),
-			IsCNAMEToPagesDotGithubDotCom: Bool(false),
-			IsCNAMEToFastly:               Bool(false),
-			IsPointedToGithubPagesIP:      Bool(true),
-			IsNonGithubPagesIPPresent:     Bool(false),
-			IsPagesDomain:                 Bool(false),
-			IsServedByPages:               Bool(true),
-			IsValid:                       Bool(true),
-			Reason:                        String("some reason"),
-			RespondsToHTTPS:               Bool(true),
-			EnforcesHTTPS:                 Bool(true),
-			HTTPSError:                    String("some error"),
-			IsHTTPSEligible:               Bool(true),
-			CAAError:                      String("some error"),
+			Host:                          Ptr("example.com"),
+			URI:                           Ptr("http://example.com/"),
+			Nameservers:                   Ptr("default"),
+			DNSResolves:                   Ptr(true),
+			IsProxied:                     Ptr(false),
+			IsCloudflareIP:                Ptr(false),
+			IsFastlyIP:                    Ptr(false),
+			IsOldIPAddress:                Ptr(false),
+			IsARecord:                     Ptr(true),
+			HasCNAMERecord:                Ptr(false),
+			HasMXRecordsPresent:           Ptr(false),
+			IsValidDomain:                 Ptr(true),
+			IsApexDomain:                  Ptr(true),
+			ShouldBeARecord:               Ptr(true),
+			IsCNAMEToGithubUserDomain:     Ptr(false),
+			IsCNAMEToPagesDotGithubDotCom: Ptr(false),
+			IsCNAMEToFastly:               Ptr(false),
+			IsPointedToGithubPagesIP:      Ptr(true),
+			IsNonGithubPagesIPPresent:     Ptr(false),
+			IsPagesDomain:                 Ptr(false),
+			IsServedByPages:               Ptr(true),
+			IsValid:                       Ptr(true),
+			Reason:                        Ptr("some reason"),
+			RespondsToHTTPS:               Ptr(true),
+			EnforcesHTTPS:                 Ptr(true),
+			HTTPSError:                    Ptr("some error"),
+			IsHTTPSEligible:               Ptr(true),
+			CAAError:                      Ptr("some error"),
 		},
 		AltDomain: &PagesDomain{
-			Host:        String("www.example.com"),
-			URI:         String("http://www.example.com/"),
-			Nameservers: String("default"),
-			DNSResolves: Bool(true),
+			Host:        Ptr("www.example.com"),
+			URI:         Ptr("http://www.example.com/"),
+			Nameservers: Ptr("default"),
+			DNSResolves: Ptr(true),
 		},
 	}
 
@@ -692,12 +736,13 @@ func TestPagesHealthCheckResponse_Marshal(t *testing.T) {
 }
 
 func TestCreatePagesRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &createPagesRequest{}, "{}")
 
 	u := &createPagesRequest{
 		Source: &PagesSource{
-			Branch: String("branch"),
-			Path:   String("path"),
+			Branch: Ptr("branch"),
+			Path:   Ptr("path"),
 		},
 	}
 

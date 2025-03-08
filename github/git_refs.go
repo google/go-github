@@ -127,7 +127,7 @@ func (s *GitService) CreateRef(ctx context.Context, owner string, repo string, r
 	u := fmt.Sprintf("repos/%v/%v/git/refs", owner, repo)
 	req, err := s.client.NewRequest("POST", u, &createRefRequest{
 		// back-compat with previous behavior that didn't require 'refs/' prefix
-		Ref: String("refs/" + strings.TrimPrefix(*ref.Ref, "refs/")),
+		Ref: Ptr("refs/" + strings.TrimPrefix(*ref.Ref, "refs/")),
 		SHA: ref.Object.SHA,
 	})
 	if err != nil {

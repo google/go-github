@@ -17,12 +17,13 @@ import (
 )
 
 func TestMarshalJSON_withNilContentAndSHA(t *testing.T) {
+	t.Parallel()
 	te := &TreeEntry{
-		Path: String("path"),
-		Mode: String("mode"),
-		Type: String("type"),
-		Size: Int(1),
-		URL:  String("url"),
+		Path: Ptr("path"),
+		Mode: Ptr("mode"),
+		Type: Ptr("type"),
+		Size: Ptr(1),
+		URL:  Ptr("url"),
 	}
 
 	got, err := te.MarshalJSON()
@@ -37,8 +38,8 @@ func TestMarshalJSON_withNilContentAndSHA(t *testing.T) {
 }
 
 func TestGitService_GetTree(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/git/trees/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -56,13 +57,13 @@ func TestGitService_GetTree(t *testing.T) {
 	}
 
 	want := Tree{
-		SHA: String("s"),
+		SHA: Ptr("s"),
 		Entries: []*TreeEntry{
 			{
-				Type: String("blob"),
+				Type: Ptr("blob"),
 			},
 		},
-		Truncated: Bool(true),
+		Truncated: Ptr(true),
 	}
 	if !cmp.Equal(*tree, want) {
 		t.Errorf("Tree.Get returned %+v, want %+v", *tree, want)
@@ -84,8 +85,8 @@ func TestGitService_GetTree(t *testing.T) {
 }
 
 func TestGitService_GetTree_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Git.GetTree(ctx, "%", "%", "%", false)
@@ -93,15 +94,15 @@ func TestGitService_GetTree_invalidOwner(t *testing.T) {
 }
 
 func TestGitService_CreateTree(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := []*TreeEntry{
 		{
-			Path: String("file.rb"),
-			Mode: String("100644"),
-			Type: String("blob"),
-			SHA:  String("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
+			Path: Ptr("file.rb"),
+			Mode: Ptr("100644"),
+			Type: Ptr("blob"),
+			SHA:  Ptr("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
 		},
 	}
 
@@ -139,14 +140,14 @@ func TestGitService_CreateTree(t *testing.T) {
 	}
 
 	want := Tree{
-		String("cd8274d15fa3ae2ab983129fb037999f264ba9a7"),
+		Ptr("cd8274d15fa3ae2ab983129fb037999f264ba9a7"),
 		[]*TreeEntry{
 			{
-				Path: String("file.rb"),
-				Mode: String("100644"),
-				Type: String("blob"),
-				Size: Int(132),
-				SHA:  String("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
+				Path: Ptr("file.rb"),
+				Mode: Ptr("100644"),
+				Type: Ptr("blob"),
+				Size: Ptr(132),
+				SHA:  Ptr("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
 			},
 		},
 		nil,
@@ -172,14 +173,14 @@ func TestGitService_CreateTree(t *testing.T) {
 }
 
 func TestGitService_CreateTree_Content(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := []*TreeEntry{
 		{
-			Path:    String("content.md"),
-			Mode:    String("100644"),
-			Content: String("file content"),
+			Path:    Ptr("content.md"),
+			Mode:    Ptr("100644"),
+			Content: Ptr("file content"),
 		},
 	}
 
@@ -219,15 +220,15 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 	}
 
 	want := Tree{
-		String("5c6780ad2c68743383b740fd1dab6f6a33202b11"),
+		Ptr("5c6780ad2c68743383b740fd1dab6f6a33202b11"),
 		[]*TreeEntry{
 			{
-				Path: String("content.md"),
-				Mode: String("100644"),
-				Type: String("blob"),
-				Size: Int(12),
-				SHA:  String("aad8feacf6f8063150476a7b2bd9770f2794c08b"),
-				URL:  String("https://api.github.com/repos/o/r/git/blobs/aad8feacf6f8063150476a7b2bd9770f2794c08b"),
+				Path: Ptr("content.md"),
+				Mode: Ptr("100644"),
+				Type: Ptr("blob"),
+				Size: Ptr(12),
+				SHA:  Ptr("aad8feacf6f8063150476a7b2bd9770f2794c08b"),
+				URL:  Ptr("https://api.github.com/repos/o/r/git/blobs/aad8feacf6f8063150476a7b2bd9770f2794c08b"),
 			},
 		},
 		nil,
@@ -253,13 +254,13 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 }
 
 func TestGitService_CreateTree_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := []*TreeEntry{
 		{
-			Path: String("content.md"),
-			Mode: String("100644"),
+			Path: Ptr("content.md"),
+			Mode: Ptr("100644"),
 		},
 	}
 
@@ -299,15 +300,15 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 	}
 
 	want := Tree{
-		String("5c6780ad2c68743383b740fd1dab6f6a33202b11"),
+		Ptr("5c6780ad2c68743383b740fd1dab6f6a33202b11"),
 		[]*TreeEntry{
 			{
-				Path: String("content.md"),
-				Mode: String("100644"),
-				Type: String("blob"),
-				Size: Int(12),
+				Path: Ptr("content.md"),
+				Mode: Ptr("100644"),
+				Type: Ptr("blob"),
+				Size: Ptr(12),
 				SHA:  nil,
-				URL:  String("https://api.github.com/repos/o/r/git/blobs/aad8feacf6f8063150476a7b2bd9770f2794c08b"),
+				URL:  Ptr("https://api.github.com/repos/o/r/git/blobs/aad8feacf6f8063150476a7b2bd9770f2794c08b"),
 			},
 		},
 		nil,
@@ -333,8 +334,8 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 }
 
 func TestGitService_CreateTree_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Git.CreateTree(ctx, "%", "%", "", nil)
@@ -342,22 +343,23 @@ func TestGitService_CreateTree_invalidOwner(t *testing.T) {
 }
 
 func TestTree_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Tree{}, "{}")
 
 	u := &Tree{
-		SHA: String("sha"),
+		SHA: Ptr("sha"),
 		Entries: []*TreeEntry{
 			{
-				SHA:     String("sha"),
-				Path:    String("path"),
-				Mode:    String("mode"),
-				Type:    String("type"),
-				Size:    Int(1),
-				Content: String("content"),
-				URL:     String("url"),
+				SHA:     Ptr("sha"),
+				Path:    Ptr("path"),
+				Mode:    Ptr("mode"),
+				Type:    Ptr("type"),
+				Size:    Ptr(1),
+				Content: Ptr("content"),
+				URL:     Ptr("url"),
 			},
 		},
-		Truncated: Bool(false),
+		Truncated: Ptr(false),
 	}
 
 	want := `{
@@ -380,16 +382,17 @@ func TestTree_Marshal(t *testing.T) {
 }
 
 func TestTreeEntry_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TreeEntry{}, "{}")
 
 	u := &TreeEntry{
-		SHA:     String("sha"),
-		Path:    String("path"),
-		Mode:    String("mode"),
-		Type:    String("type"),
-		Size:    Int(1),
-		Content: String("content"),
-		URL:     String("url"),
+		SHA:     Ptr("sha"),
+		Path:    Ptr("path"),
+		Mode:    Ptr("mode"),
+		Type:    Ptr("type"),
+		Size:    Ptr(1),
+		Content: Ptr("content"),
+		URL:     Ptr("url"),
 	}
 
 	want := `{
@@ -406,16 +409,17 @@ func TestTreeEntry_Marshal(t *testing.T) {
 }
 
 func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &treeEntryWithFileDelete{}, "{}")
 
 	u := &treeEntryWithFileDelete{
-		SHA:     String("sha"),
-		Path:    String("path"),
-		Mode:    String("mode"),
-		Type:    String("type"),
-		Size:    Int(1),
-		Content: String("content"),
-		URL:     String("url"),
+		SHA:     Ptr("sha"),
+		Path:    Ptr("path"),
+		Mode:    Ptr("mode"),
+		Type:    Ptr("type"),
+		Size:    Ptr(1),
+		Content: Ptr("content"),
+		URL:     Ptr("url"),
 	}
 
 	want := `{
@@ -432,6 +436,7 @@ func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
 }
 
 func TestCreateTree_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &createTree{}, "{}")
 
 	u := &createTree{

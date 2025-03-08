@@ -16,11 +16,11 @@ import (
 )
 
 func TestAdminOrgs_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &Organization{
-		Login: String("github"),
+		Login: Ptr("github"),
 	}
 
 	mux.HandleFunc("/admin/organizations", func(w http.ResponseWriter, r *http.Request) {
@@ -28,7 +28,7 @@ func TestAdminOrgs_Create(t *testing.T) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
-		want := &createOrgRequest{Login: String("github"), Admin: String("ghAdmin")}
+		want := &createOrgRequest{Login: Ptr("github"), Admin: Ptr("ghAdmin")}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -42,7 +42,7 @@ func TestAdminOrgs_Create(t *testing.T) {
 		t.Errorf("Admin.CreateOrg returned error: %v", err)
 	}
 
-	want := &Organization{ID: Int64(1), Login: String("github")}
+	want := &Organization{ID: Ptr(int64(1)), Login: Ptr("github")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Admin.CreateOrg returned %+v, want %+v", org, want)
 	}
@@ -58,11 +58,11 @@ func TestAdminOrgs_Create(t *testing.T) {
 }
 
 func TestAdminOrgs_Rename(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &Organization{
-		Login: String("o"),
+		Login: Ptr("o"),
 	}
 
 	mux.HandleFunc("/admin/organizations/o", func(w http.ResponseWriter, r *http.Request) {
@@ -70,7 +70,7 @@ func TestAdminOrgs_Rename(t *testing.T) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
-		want := &renameOrgRequest{Login: String("the-new-octocats")}
+		want := &renameOrgRequest{Login: Ptr("the-new-octocats")}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -84,7 +84,7 @@ func TestAdminOrgs_Rename(t *testing.T) {
 		t.Errorf("Admin.RenameOrg returned error: %v", err)
 	}
 
-	want := &RenameOrgResponse{Message: String("Job queued to rename organization. It may take a few minutes to complete."), URL: String("https://<hostname>/api/v3/organizations/1")}
+	want := &RenameOrgResponse{Message: Ptr("Job queued to rename organization. It may take a few minutes to complete."), URL: Ptr("https://<hostname>/api/v3/organizations/1")}
 	if !cmp.Equal(resp, want) {
 		t.Errorf("Admin.RenameOrg returned %+v, want %+v", resp, want)
 	}
@@ -100,15 +100,15 @@ func TestAdminOrgs_Rename(t *testing.T) {
 }
 
 func TestAdminOrgs_RenameByName(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/organizations/o", func(w http.ResponseWriter, r *http.Request) {
 		v := new(renameOrgRequest)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
-		want := &renameOrgRequest{Login: String("the-new-octocats")}
+		want := &renameOrgRequest{Login: Ptr("the-new-octocats")}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -122,7 +122,7 @@ func TestAdminOrgs_RenameByName(t *testing.T) {
 		t.Errorf("Admin.RenameOrg returned error: %v", err)
 	}
 
-	want := &RenameOrgResponse{Message: String("Job queued to rename organization. It may take a few minutes to complete."), URL: String("https://<hostname>/api/v3/organizations/1")}
+	want := &RenameOrgResponse{Message: Ptr("Job queued to rename organization. It may take a few minutes to complete."), URL: Ptr("https://<hostname>/api/v3/organizations/1")}
 	if !cmp.Equal(resp, want) {
 		t.Errorf("Admin.RenameOrg returned %+v, want %+v", resp, want)
 	}
@@ -143,11 +143,12 @@ func TestAdminOrgs_RenameByName(t *testing.T) {
 }
 
 func TestCreateOrgRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &createOrgRequest{}, "{}")
 
 	u := &createOrgRequest{
-		Login: String("l"),
-		Admin: String("a"),
+		Login: Ptr("l"),
+		Admin: Ptr("a"),
 	}
 
 	want := `{
@@ -159,10 +160,11 @@ func TestCreateOrgRequest_Marshal(t *testing.T) {
 }
 
 func TestRenameOrgRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &renameOrgRequest{}, "{}")
 
 	u := &renameOrgRequest{
-		Login: String("l"),
+		Login: Ptr("l"),
 	}
 
 	want := `{
@@ -173,11 +175,12 @@ func TestRenameOrgRequest_Marshal(t *testing.T) {
 }
 
 func TestRenameOrgResponse_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &renameOrgRequest{}, "{}")
 
 	u := &RenameOrgResponse{
-		Message: String("m"),
-		URL:     String("u"),
+		Message: Ptr("m"),
+		URL:     Ptr("u"),
 	}
 
 	want := `{

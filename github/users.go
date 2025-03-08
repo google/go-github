@@ -70,6 +70,14 @@ type User struct {
 	// repository. These are only populated when calling Repositories.ListCollaborators.
 	Permissions map[string]bool `json:"permissions,omitempty"`
 	RoleName    *string         `json:"role_name,omitempty"`
+
+	// Assignment identifies how a user was assigned to an organization role. Its
+	// possible values are: "direct", "indirect", "mixed". This is only populated when
+	// calling the ListUsersAssignedToOrgRole method.
+	Assignment *string `json:"assignment,omitempty"`
+	// InheritedFrom identifies the team that a user inherited their organization role
+	// from. This is only populated when calling the ListUsersAssignedToOrgRole method.
+	InheritedFrom []*Team `json:"inherited_from,omitempty"`
 }
 
 func (u User) String() string {
@@ -107,9 +115,9 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 
 // GetByID fetches a user.
 //
-// Note: GetByID uses the undocumented GitHub API endpoint "GET /user/{user_id}".
+// GitHub API docs: https://docs.github.com/rest/users/users#get-a-user-using-their-id
 //
-//meta:operation GET /user/{user_id}
+//meta:operation GET /user/{account_id}
 func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response, error) {
 	u := fmt.Sprintf("user/%d", id)
 	req, err := s.client.NewRequest("GET", u, nil)

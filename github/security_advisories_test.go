@@ -17,8 +17,8 @@ import (
 )
 
 func TestSecurityAdvisoriesService_RequestCVE(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id_ok/cve", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -57,8 +57,8 @@ func TestSecurityAdvisoriesService_RequestCVE(t *testing.T) {
 }
 
 func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -172,49 +172,49 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
 	}
 
 	want := &Repository{
-		ID:     Int64(1),
-		NodeID: String("R_kgDPP3c6pQ"),
+		ID:     Ptr(int64(1)),
+		NodeID: Ptr("R_kgDPP3c6pQ"),
 		Owner: &User{
-			Login:             String("owner"),
-			ID:                Int64(2),
-			NodeID:            String("MDQ6VXFGcjYyMjcyMTQw"),
-			AvatarURL:         String("https://avatars.githubusercontent.com/u/111111?v=4"),
-			HTMLURL:           String("https://github.com/xxxxx"),
-			GravatarID:        String(""),
-			Type:              String("User"),
-			SiteAdmin:         Bool(false),
-			URL:               String("https://api.github.com/users/owner"),
-			EventsURL:         String("https://api.github.com/users/owner/events{/privacy}"),
-			FollowingURL:      String("https://api.github.com/users/owner/following{/other_user}"),
-			FollowersURL:      String("https://api.github.com/users/owner/followers"),
-			GistsURL:          String("https://api.github.com/users/owner/gists{/gist_id}"),
-			OrganizationsURL:  String("https://api.github.com/users/owner/orgs"),
-			ReceivedEventsURL: String("https://api.github.com/users/owner/received_events"),
-			ReposURL:          String("https://api.github.com/users/owner/repos"),
-			StarredURL:        String("https://api.github.com/users/owner/starred{/owner}{/repo}"),
-			SubscriptionsURL:  String("https://api.github.com/users/owner/subscriptions"),
+			Login:             Ptr("owner"),
+			ID:                Ptr(int64(2)),
+			NodeID:            Ptr("MDQ6VXFGcjYyMjcyMTQw"),
+			AvatarURL:         Ptr("https://avatars.githubusercontent.com/u/111111?v=4"),
+			HTMLURL:           Ptr("https://github.com/xxxxx"),
+			GravatarID:        Ptr(""),
+			Type:              Ptr("User"),
+			SiteAdmin:         Ptr(false),
+			URL:               Ptr("https://api.github.com/users/owner"),
+			EventsURL:         Ptr("https://api.github.com/users/owner/events{/privacy}"),
+			FollowingURL:      Ptr("https://api.github.com/users/owner/following{/other_user}"),
+			FollowersURL:      Ptr("https://api.github.com/users/owner/followers"),
+			GistsURL:          Ptr("https://api.github.com/users/owner/gists{/gist_id}"),
+			OrganizationsURL:  Ptr("https://api.github.com/users/owner/orgs"),
+			ReceivedEventsURL: Ptr("https://api.github.com/users/owner/received_events"),
+			ReposURL:          Ptr("https://api.github.com/users/owner/repos"),
+			StarredURL:        Ptr("https://api.github.com/users/owner/starred{/owner}{/repo}"),
+			SubscriptionsURL:  Ptr("https://api.github.com/users/owner/subscriptions"),
 		},
-		Name:             String("repo-ghsa-xxxx-xxxx-xxxx"),
-		FullName:         String("owner/repo-ghsa-xxxx-xxxx-xxxx"),
-		DefaultBranch:    String("master"),
+		Name:             Ptr("repo-ghsa-xxxx-xxxx-xxxx"),
+		FullName:         Ptr("owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		DefaultBranch:    Ptr("master"),
 		CreatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 41, 0, time.UTC)},
 		PushedAt:         &Timestamp{time.Date(2023, time.December, 3, 11, 27, 8, 0, time.UTC)},
 		UpdatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 42, 0, time.UTC)},
-		HTMLURL:          String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
-		CloneURL:         String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
-		GitURL:           String("git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
-		SSHURL:           String("git@github.com:owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
-		SVNURL:           String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
-		Fork:             Bool(false),
-		ForksCount:       Int(0),
-		NetworkCount:     Int(0),
-		OpenIssuesCount:  Int(0),
-		OpenIssues:       Int(0),
-		StargazersCount:  Int(0),
-		SubscribersCount: Int(0),
-		WatchersCount:    Int(0),
-		Watchers:         Int(0),
-		Size:             Int(0),
+		HTMLURL:          Ptr("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		CloneURL:         Ptr("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		GitURL:           Ptr("git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		SSHURL:           Ptr("git@github.com:owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		SVNURL:           Ptr("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		Fork:             Ptr(false),
+		ForksCount:       Ptr(0),
+		NetworkCount:     Ptr(0),
+		OpenIssuesCount:  Ptr(0),
+		OpenIssues:       Ptr(0),
+		StargazersCount:  Ptr(0),
+		SubscribersCount: Ptr(0),
+		WatchersCount:    Ptr(0),
+		Watchers:         Ptr(0),
+		Size:             Ptr(0),
 		Permissions: map[string]bool{
 			"admin":    true,
 			"maintain": true,
@@ -222,55 +222,55 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
 			"push":     true,
 			"triage":   true,
 		},
-		AllowForking:             Bool(true),
-		WebCommitSignoffRequired: Bool(false),
-		Archived:                 Bool(false),
-		Disabled:                 Bool(false),
-		Private:                  Bool(true),
-		HasIssues:                Bool(false),
-		HasWiki:                  Bool(false),
-		HasPages:                 Bool(false),
-		HasProjects:              Bool(false),
-		HasDownloads:             Bool(false),
-		HasDiscussions:           Bool(false),
-		IsTemplate:               Bool(false),
-		URL:                      String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx"),
-		ArchiveURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/{archive_format}{/ref}"),
-		AssigneesURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/assignees{/user}"),
-		BlobsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/blobs{/sha}"),
-		BranchesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/branches{/branch}"),
-		CollaboratorsURL:         String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/collaborators{/collaborator}"),
-		CommentsURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/comments{/number}"),
-		CommitsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/commits{/sha}"),
-		CompareURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/compare/{base}...{head}"),
-		ContentsURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contents/{+path}"),
-		ContributorsURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contributors"),
-		DeploymentsURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/deployments"),
-		DownloadsURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/downloads"),
-		EventsURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/events"),
-		ForksURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/forks"),
-		GitCommitsURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/commits{/sha}"),
-		GitRefsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/refs{/sha}"),
-		GitTagsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/tags{/sha}"),
-		HooksURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/hooks"),
-		IssueCommentURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/comments{/number}"),
-		IssueEventsURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/events{/number}"),
-		IssuesURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues{/number}"),
-		KeysURL:                  String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/keys{/key_id}"),
-		LabelsURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/labels{/name}"),
-		LanguagesURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/languages"),
-		MergesURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/merges"),
-		MilestonesURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/milestones{/number}"),
-		NotificationsURL:         String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/notifications{?since,all,participating}"),
-		PullsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/pulls{/number}"),
-		ReleasesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/releases{/id}"),
-		StargazersURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/stargazers"),
-		StatusesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/statuses/{sha}"),
-		SubscribersURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscribers"),
-		SubscriptionURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscription"),
-		TagsURL:                  String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/tags"),
-		TeamsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/teams"),
-		Visibility:               String("private"),
+		AllowForking:             Ptr(true),
+		WebCommitSignoffRequired: Ptr(false),
+		Archived:                 Ptr(false),
+		Disabled:                 Ptr(false),
+		Private:                  Ptr(true),
+		HasIssues:                Ptr(false),
+		HasWiki:                  Ptr(false),
+		HasPages:                 Ptr(false),
+		HasProjects:              Ptr(false),
+		HasDownloads:             Ptr(false),
+		HasDiscussions:           Ptr(false),
+		IsTemplate:               Ptr(false),
+		URL:                      Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		ArchiveURL:               Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/{archive_format}{/ref}"),
+		AssigneesURL:             Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/assignees{/user}"),
+		BlobsURL:                 Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/blobs{/sha}"),
+		BranchesURL:              Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/branches{/branch}"),
+		CollaboratorsURL:         Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/collaborators{/collaborator}"),
+		CommentsURL:              Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/comments{/number}"),
+		CommitsURL:               Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/commits{/sha}"),
+		CompareURL:               Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/compare/{base}...{head}"),
+		ContentsURL:              Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contents/{+path}"),
+		ContributorsURL:          Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contributors"),
+		DeploymentsURL:           Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/deployments"),
+		DownloadsURL:             Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/downloads"),
+		EventsURL:                Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/events"),
+		ForksURL:                 Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/forks"),
+		GitCommitsURL:            Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/commits{/sha}"),
+		GitRefsURL:               Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/refs{/sha}"),
+		GitTagsURL:               Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/tags{/sha}"),
+		HooksURL:                 Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/hooks"),
+		IssueCommentURL:          Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/comments{/number}"),
+		IssueEventsURL:           Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/events{/number}"),
+		IssuesURL:                Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues{/number}"),
+		KeysURL:                  Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/keys{/key_id}"),
+		LabelsURL:                Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/labels{/name}"),
+		LanguagesURL:             Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/languages"),
+		MergesURL:                Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/merges"),
+		MilestonesURL:            Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/milestones{/number}"),
+		NotificationsURL:         Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/notifications{?since,all,participating}"),
+		PullsURL:                 Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/pulls{/number}"),
+		ReleasesURL:              Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/releases{/id}"),
+		StargazersURL:            Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/stargazers"),
+		StatusesURL:              Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/statuses/{sha}"),
+		SubscribersURL:           Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscribers"),
+		SubscriptionURL:          Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscription"),
+		TagsURL:                  Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/tags"),
+		TeamsURL:                 Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/teams"),
+		Visibility:               Ptr("private"),
 	}
 	if !cmp.Equal(fork, want) {
 		t.Errorf("SecurityAdvisoriesService.CreateTemporaryPrivateFork returned %+v, want %+v", fork, want)
@@ -292,8 +292,8 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
 }
 
 func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -408,49 +408,49 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testin
 	}
 
 	want := &Repository{
-		ID:     Int64(1),
-		NodeID: String("R_kgDPP3c6pQ"),
+		ID:     Ptr(int64(1)),
+		NodeID: Ptr("R_kgDPP3c6pQ"),
 		Owner: &User{
-			Login:             String("owner"),
-			ID:                Int64(2),
-			NodeID:            String("MDQ6VXFGcjYyMjcyMTQw"),
-			AvatarURL:         String("https://avatars.githubusercontent.com/u/111111?v=4"),
-			HTMLURL:           String("https://github.com/xxxxx"),
-			GravatarID:        String(""),
-			Type:              String("User"),
-			SiteAdmin:         Bool(false),
-			URL:               String("https://api.github.com/users/owner"),
-			EventsURL:         String("https://api.github.com/users/owner/events{/privacy}"),
-			FollowingURL:      String("https://api.github.com/users/owner/following{/other_user}"),
-			FollowersURL:      String("https://api.github.com/users/owner/followers"),
-			GistsURL:          String("https://api.github.com/users/owner/gists{/gist_id}"),
-			OrganizationsURL:  String("https://api.github.com/users/owner/orgs"),
-			ReceivedEventsURL: String("https://api.github.com/users/owner/received_events"),
-			ReposURL:          String("https://api.github.com/users/owner/repos"),
-			StarredURL:        String("https://api.github.com/users/owner/starred{/owner}{/repo}"),
-			SubscriptionsURL:  String("https://api.github.com/users/owner/subscriptions"),
+			Login:             Ptr("owner"),
+			ID:                Ptr(int64(2)),
+			NodeID:            Ptr("MDQ6VXFGcjYyMjcyMTQw"),
+			AvatarURL:         Ptr("https://avatars.githubusercontent.com/u/111111?v=4"),
+			HTMLURL:           Ptr("https://github.com/xxxxx"),
+			GravatarID:        Ptr(""),
+			Type:              Ptr("User"),
+			SiteAdmin:         Ptr(false),
+			URL:               Ptr("https://api.github.com/users/owner"),
+			EventsURL:         Ptr("https://api.github.com/users/owner/events{/privacy}"),
+			FollowingURL:      Ptr("https://api.github.com/users/owner/following{/other_user}"),
+			FollowersURL:      Ptr("https://api.github.com/users/owner/followers"),
+			GistsURL:          Ptr("https://api.github.com/users/owner/gists{/gist_id}"),
+			OrganizationsURL:  Ptr("https://api.github.com/users/owner/orgs"),
+			ReceivedEventsURL: Ptr("https://api.github.com/users/owner/received_events"),
+			ReposURL:          Ptr("https://api.github.com/users/owner/repos"),
+			StarredURL:        Ptr("https://api.github.com/users/owner/starred{/owner}{/repo}"),
+			SubscriptionsURL:  Ptr("https://api.github.com/users/owner/subscriptions"),
 		},
-		Name:             String("repo-ghsa-xxxx-xxxx-xxxx"),
-		FullName:         String("owner/repo-ghsa-xxxx-xxxx-xxxx"),
-		DefaultBranch:    String("master"),
+		Name:             Ptr("repo-ghsa-xxxx-xxxx-xxxx"),
+		FullName:         Ptr("owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		DefaultBranch:    Ptr("master"),
 		CreatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 41, 0, time.UTC)},
 		PushedAt:         &Timestamp{time.Date(2023, time.December, 3, 11, 27, 8, 0, time.UTC)},
 		UpdatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 42, 0, time.UTC)},
-		HTMLURL:          String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
-		CloneURL:         String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
-		GitURL:           String("git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
-		SSHURL:           String("git@github.com:owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
-		SVNURL:           String("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
-		Fork:             Bool(false),
-		ForksCount:       Int(0),
-		NetworkCount:     Int(0),
-		OpenIssuesCount:  Int(0),
-		OpenIssues:       Int(0),
-		StargazersCount:  Int(0),
-		SubscribersCount: Int(0),
-		WatchersCount:    Int(0),
-		Watchers:         Int(0),
-		Size:             Int(0),
+		HTMLURL:          Ptr("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		CloneURL:         Ptr("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		GitURL:           Ptr("git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		SSHURL:           Ptr("git@github.com:owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
+		SVNURL:           Ptr("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		Fork:             Ptr(false),
+		ForksCount:       Ptr(0),
+		NetworkCount:     Ptr(0),
+		OpenIssuesCount:  Ptr(0),
+		OpenIssues:       Ptr(0),
+		StargazersCount:  Ptr(0),
+		SubscribersCount: Ptr(0),
+		WatchersCount:    Ptr(0),
+		Watchers:         Ptr(0),
+		Size:             Ptr(0),
 		Permissions: map[string]bool{
 			"admin":    true,
 			"maintain": true,
@@ -458,55 +458,55 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testin
 			"push":     true,
 			"triage":   true,
 		},
-		AllowForking:             Bool(true),
-		WebCommitSignoffRequired: Bool(false),
-		Archived:                 Bool(false),
-		Disabled:                 Bool(false),
-		Private:                  Bool(true),
-		HasIssues:                Bool(false),
-		HasWiki:                  Bool(false),
-		HasPages:                 Bool(false),
-		HasProjects:              Bool(false),
-		HasDownloads:             Bool(false),
-		HasDiscussions:           Bool(false),
-		IsTemplate:               Bool(false),
-		URL:                      String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx"),
-		ArchiveURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/{archive_format}{/ref}"),
-		AssigneesURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/assignees{/user}"),
-		BlobsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/blobs{/sha}"),
-		BranchesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/branches{/branch}"),
-		CollaboratorsURL:         String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/collaborators{/collaborator}"),
-		CommentsURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/comments{/number}"),
-		CommitsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/commits{/sha}"),
-		CompareURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/compare/{base}...{head}"),
-		ContentsURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contents/{+path}"),
-		ContributorsURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contributors"),
-		DeploymentsURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/deployments"),
-		DownloadsURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/downloads"),
-		EventsURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/events"),
-		ForksURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/forks"),
-		GitCommitsURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/commits{/sha}"),
-		GitRefsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/refs{/sha}"),
-		GitTagsURL:               String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/tags{/sha}"),
-		HooksURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/hooks"),
-		IssueCommentURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/comments{/number}"),
-		IssueEventsURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/events{/number}"),
-		IssuesURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues{/number}"),
-		KeysURL:                  String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/keys{/key_id}"),
-		LabelsURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/labels{/name}"),
-		LanguagesURL:             String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/languages"),
-		MergesURL:                String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/merges"),
-		MilestonesURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/milestones{/number}"),
-		NotificationsURL:         String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/notifications{?since,all,participating}"),
-		PullsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/pulls{/number}"),
-		ReleasesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/releases{/id}"),
-		StargazersURL:            String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/stargazers"),
-		StatusesURL:              String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/statuses/{sha}"),
-		SubscribersURL:           String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscribers"),
-		SubscriptionURL:          String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscription"),
-		TagsURL:                  String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/tags"),
-		TeamsURL:                 String("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/teams"),
-		Visibility:               String("private"),
+		AllowForking:             Ptr(true),
+		WebCommitSignoffRequired: Ptr(false),
+		Archived:                 Ptr(false),
+		Disabled:                 Ptr(false),
+		Private:                  Ptr(true),
+		HasIssues:                Ptr(false),
+		HasWiki:                  Ptr(false),
+		HasPages:                 Ptr(false),
+		HasProjects:              Ptr(false),
+		HasDownloads:             Ptr(false),
+		HasDiscussions:           Ptr(false),
+		IsTemplate:               Ptr(false),
+		URL:                      Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx"),
+		ArchiveURL:               Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/{archive_format}{/ref}"),
+		AssigneesURL:             Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/assignees{/user}"),
+		BlobsURL:                 Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/blobs{/sha}"),
+		BranchesURL:              Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/branches{/branch}"),
+		CollaboratorsURL:         Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/collaborators{/collaborator}"),
+		CommentsURL:              Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/comments{/number}"),
+		CommitsURL:               Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/commits{/sha}"),
+		CompareURL:               Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/compare/{base}...{head}"),
+		ContentsURL:              Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contents/{+path}"),
+		ContributorsURL:          Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/contributors"),
+		DeploymentsURL:           Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/deployments"),
+		DownloadsURL:             Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/downloads"),
+		EventsURL:                Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/events"),
+		ForksURL:                 Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/forks"),
+		GitCommitsURL:            Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/commits{/sha}"),
+		GitRefsURL:               Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/refs{/sha}"),
+		GitTagsURL:               Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/git/tags{/sha}"),
+		HooksURL:                 Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/hooks"),
+		IssueCommentURL:          Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/comments{/number}"),
+		IssueEventsURL:           Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues/events{/number}"),
+		IssuesURL:                Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/issues{/number}"),
+		KeysURL:                  Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/keys{/key_id}"),
+		LabelsURL:                Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/labels{/name}"),
+		LanguagesURL:             Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/languages"),
+		MergesURL:                Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/merges"),
+		MilestonesURL:            Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/milestones{/number}"),
+		NotificationsURL:         Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/notifications{?since,all,participating}"),
+		PullsURL:                 Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/pulls{/number}"),
+		ReleasesURL:              Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/releases{/id}"),
+		StargazersURL:            Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/stargazers"),
+		StatusesURL:              Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/statuses/{sha}"),
+		SubscribersURL:           Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscribers"),
+		SubscriptionURL:          Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/subscription"),
+		TagsURL:                  Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/tags"),
+		TeamsURL:                 Ptr("https://api.github.com/repos/owner/repo-ghsa-xxxx-xxxx-xxxx/teams"),
+		Visibility:               Ptr("private"),
 	}
 	if !cmp.Equal(fork, want) {
 		t.Errorf("SecurityAdvisoriesService.CreateTemporaryPrivateFork returned %+v, want %+v", fork, want)
@@ -514,8 +514,8 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testin
 }
 
 func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "%", "r", "ghsa_id")
@@ -523,8 +523,8 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_invalidOwner(t *te
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_BadRequest(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -546,8 +546,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_BadReq
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_NotFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -576,8 +576,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_NotFou
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_UnmarshalError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -602,8 +602,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_Unmars
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -628,8 +628,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *tes
 
 	want := []*SecurityAdvisory{
 		{
-			GHSAID: String("GHSA-abcd-1234-efgh"),
-			CVEID:  String("CVE-2050-00000"),
+			GHSAID: Ptr("GHSA-abcd-1234-efgh"),
+			CVEID:  Ptr("CVE-2050-00000"),
 		},
 	}
 	if !cmp.Equal(advisories, want) {
@@ -654,8 +654,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *tes
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_BadRequest(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -677,8 +677,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_BadRequest(t
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_NotFound(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -707,8 +707,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_NotFound(t *
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_UnmarshalError(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -733,8 +733,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_UnmarshalErr
 }
 
 func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -759,8 +759,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T
 
 	want := []*SecurityAdvisory{
 		{
-			GHSAID: String("GHSA-abcd-1234-efgh"),
-			CVEID:  String("CVE-2050-00000"),
+			GHSAID: Ptr("GHSA-abcd-1234-efgh"),
+			CVEID:  Ptr("CVE-2050-00000"),
 		},
 	}
 	if !cmp.Equal(advisories, want) {
@@ -785,8 +785,8 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T
 }
 
 func TestListGlobalSecurityAdvisories(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -871,7 +871,7 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &ListGlobalSecurityAdvisoriesOptions{CVEID: String("CVE-xoxo-1234")}
+	opts := &ListGlobalSecurityAdvisoriesOptions{CVEID: Ptr("CVE-xoxo-1234")}
 
 	advisories, _, err := client.SecurityAdvisories.ListGlobalSecurityAdvisories(ctx, opts)
 	if err != nil {
@@ -881,36 +881,36 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := []*GlobalSecurityAdvisory{
 		{
-			ID: Int64(1),
+			ID: Ptr(int64(1)),
 			SecurityAdvisory: SecurityAdvisory{
-				GHSAID:      String("GHSA-xoxo-1234-xoxo"),
-				CVEID:       String("CVE-xoxo-1234"),
-				URL:         String("https://api.github.com/advisories/GHSA-xoxo-1234-xoxo"),
-				HTMLURL:     String("https://github.com/advisories/GHSA-xoxo-1234-xoxo"),
-				Severity:    String("high"),
-				Summary:     String("Heartbleed security advisory"),
-				Description: String("This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information."),
+				GHSAID:      Ptr("GHSA-xoxo-1234-xoxo"),
+				CVEID:       Ptr("CVE-xoxo-1234"),
+				URL:         Ptr("https://api.github.com/advisories/GHSA-xoxo-1234-xoxo"),
+				HTMLURL:     Ptr("https://github.com/advisories/GHSA-xoxo-1234-xoxo"),
+				Severity:    Ptr("high"),
+				Summary:     Ptr("Heartbleed security advisory"),
+				Description: Ptr("This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information."),
 				Identifiers: []*AdvisoryIdentifier{
 					{
-						Type:  String("GHSA"),
-						Value: String("GHSA-xoxo-1234-xoxo"),
+						Type:  Ptr("GHSA"),
+						Value: Ptr("GHSA-xoxo-1234-xoxo"),
 					},
 					{
-						Type:  String("CVE"),
-						Value: String("CVE-xoxo-1234"),
+						Type:  Ptr("CVE"),
+						Value: Ptr("CVE-xoxo-1234"),
 					},
 				},
 				PublishedAt: &date,
 				UpdatedAt:   &date,
 				WithdrawnAt: nil,
 				CVSS: &AdvisoryCVSS{
-					VectorString: String("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
-					Score:        Float64(7.6),
+					VectorString: Ptr("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
+					Score:        Ptr(7.6),
 				},
 				CWEs: []*AdvisoryCWEs{
 					{
-						CWEID: String("CWE-400"),
-						Name:  String("Uncontrolled Resource Consumption"),
+						CWEID: Ptr("CWE-400"),
+						Name:  Ptr("Uncontrolled Resource Consumption"),
 					},
 				},
 			},
@@ -918,42 +918,42 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 			Vulnerabilities: []*GlobalSecurityVulnerability{
 				{
 					Package: &VulnerabilityPackage{
-						Ecosystem: String("npm"),
-						Name:      String("a-package"),
+						Ecosystem: Ptr("npm"),
+						Name:      Ptr("a-package"),
 					},
-					FirstPatchedVersion:    String("1.0.3"),
-					VulnerableVersionRange: String("<=1.0.2"),
+					FirstPatchedVersion:    Ptr("1.0.3"),
+					VulnerableVersionRange: Ptr("<=1.0.2"),
 					VulnerableFunctions:    []string{"a_function"},
 				},
 			},
-			RepositoryAdvisoryURL: String("https://api.github.com/repos/project/a-package/security-advisories/GHSA-xoxo-1234-xoxo"),
-			Type:                  String("reviewed"),
-			SourceCodeLocation:    String("https://github.com/project/a-package"),
+			RepositoryAdvisoryURL: Ptr("https://api.github.com/repos/project/a-package/security-advisories/GHSA-xoxo-1234-xoxo"),
+			Type:                  Ptr("reviewed"),
+			SourceCodeLocation:    Ptr("https://github.com/project/a-package"),
 			GithubReviewedAt:      &date,
 			NVDPublishedAt:        &date,
 			Credits: []*Credit{
 				{
 					User: &User{
-						Login:             String("user"),
-						ID:                Int64(1),
-						NodeID:            String("12="),
-						AvatarURL:         String("a"),
-						GravatarID:        String(""),
-						URL:               String("a"),
-						HTMLURL:           String("b"),
-						FollowersURL:      String("b"),
-						FollowingURL:      String("c"),
-						GistsURL:          String("d"),
-						StarredURL:        String("e"),
-						SubscriptionsURL:  String("f"),
-						OrganizationsURL:  String("g"),
-						ReposURL:          String("h"),
-						EventsURL:         String("i"),
-						ReceivedEventsURL: String("j"),
-						Type:              String("User"),
-						SiteAdmin:         Bool(false),
+						Login:             Ptr("user"),
+						ID:                Ptr(int64(1)),
+						NodeID:            Ptr("12="),
+						AvatarURL:         Ptr("a"),
+						GravatarID:        Ptr(""),
+						URL:               Ptr("a"),
+						HTMLURL:           Ptr("b"),
+						FollowersURL:      Ptr("b"),
+						FollowingURL:      Ptr("c"),
+						GistsURL:          Ptr("d"),
+						StarredURL:        Ptr("e"),
+						SubscriptionsURL:  Ptr("f"),
+						OrganizationsURL:  Ptr("g"),
+						ReposURL:          Ptr("h"),
+						EventsURL:         Ptr("i"),
+						ReceivedEventsURL: Ptr("j"),
+						Type:              Ptr("User"),
+						SiteAdmin:         Ptr(false),
 					},
-					Type: String("analyst"),
+					Type: Ptr("analyst"),
 				},
 			},
 		},
@@ -971,8 +971,8 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 }
 
 func TestGetGlobalSecurityAdvisories(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/advisories/GHSA-xoxo-1234-xoxo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1062,42 +1062,42 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := &GlobalSecurityAdvisory{
-		ID: Int64(1),
+		ID: Ptr(int64(1)),
 		SecurityAdvisory: SecurityAdvisory{
-			GHSAID:      String("GHSA-xoxo-1234-xoxo"),
-			CVEID:       String("CVE-xoxo-1234"),
-			URL:         String("https://api.github.com/advisories/GHSA-xoxo-1234-xoxo"),
-			HTMLURL:     String("https://github.com/advisories/GHSA-xoxo-1234-xoxo"),
-			Severity:    String("high"),
-			Summary:     String("Heartbleed security advisory"),
-			Description: String("This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information."),
+			GHSAID:      Ptr("GHSA-xoxo-1234-xoxo"),
+			CVEID:       Ptr("CVE-xoxo-1234"),
+			URL:         Ptr("https://api.github.com/advisories/GHSA-xoxo-1234-xoxo"),
+			HTMLURL:     Ptr("https://github.com/advisories/GHSA-xoxo-1234-xoxo"),
+			Severity:    Ptr("high"),
+			Summary:     Ptr("Heartbleed security advisory"),
+			Description: Ptr("This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information."),
 			Identifiers: []*AdvisoryIdentifier{
 				{
-					Type:  String("GHSA"),
-					Value: String("GHSA-xoxo-1234-xoxo"),
+					Type:  Ptr("GHSA"),
+					Value: Ptr("GHSA-xoxo-1234-xoxo"),
 				},
 				{
-					Type:  String("CVE"),
-					Value: String("CVE-xoxo-1234"),
+					Type:  Ptr("CVE"),
+					Value: Ptr("CVE-xoxo-1234"),
 				},
 			},
 			PublishedAt: &date,
 			UpdatedAt:   &date,
 			WithdrawnAt: nil,
 			CVSS: &AdvisoryCVSS{
-				VectorString: String("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
-				Score:        Float64(7.6),
+				VectorString: Ptr("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
+				Score:        Ptr(7.6),
 			},
 			CWEs: []*AdvisoryCWEs{
 				{
-					CWEID: String("CWE-400"),
-					Name:  String("Uncontrolled Resource Consumption"),
+					CWEID: Ptr("CWE-400"),
+					Name:  Ptr("Uncontrolled Resource Consumption"),
 				},
 			},
 		},
-		RepositoryAdvisoryURL: String("https://api.github.com/repos/project/a-package/security-advisories/GHSA-xoxo-1234-xoxo"),
-		Type:                  String("reviewed"),
-		SourceCodeLocation:    String("https://github.com/project/a-package"),
+		RepositoryAdvisoryURL: Ptr("https://api.github.com/repos/project/a-package/security-advisories/GHSA-xoxo-1234-xoxo"),
+		Type:                  Ptr("reviewed"),
+		SourceCodeLocation:    Ptr("https://github.com/project/a-package"),
 		References:            []string{"https://nvd.nist.gov/vuln/detail/CVE-xoxo-1234"},
 		GithubReviewedAt:      &date,
 		NVDPublishedAt:        &date,
@@ -1105,37 +1105,37 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 		Vulnerabilities: []*GlobalSecurityVulnerability{
 			{
 				Package: &VulnerabilityPackage{
-					Ecosystem: String("npm"),
-					Name:      String("a-package"),
+					Ecosystem: Ptr("npm"),
+					Name:      Ptr("a-package"),
 				},
-				FirstPatchedVersion:    String("1.0.3"),
-				VulnerableVersionRange: String("<=1.0.2"),
+				FirstPatchedVersion:    Ptr("1.0.3"),
+				VulnerableVersionRange: Ptr("<=1.0.2"),
 				VulnerableFunctions:    []string{"a_function"},
 			},
 		},
 		Credits: []*Credit{
 			{
 				User: &User{
-					Login:             String("user"),
-					ID:                Int64(1),
-					NodeID:            String("12="),
-					AvatarURL:         String("a"),
-					GravatarID:        String(""),
-					URL:               String("a"),
-					HTMLURL:           String("b"),
-					FollowersURL:      String("b"),
-					FollowingURL:      String("c"),
-					GistsURL:          String("d"),
-					StarredURL:        String("e"),
-					SubscriptionsURL:  String("f"),
-					OrganizationsURL:  String("g"),
-					ReposURL:          String("h"),
-					EventsURL:         String("i"),
-					ReceivedEventsURL: String("j"),
-					Type:              String("User"),
-					SiteAdmin:         Bool(false),
+					Login:             Ptr("user"),
+					ID:                Ptr(int64(1)),
+					NodeID:            Ptr("12="),
+					AvatarURL:         Ptr("a"),
+					GravatarID:        Ptr(""),
+					URL:               Ptr("a"),
+					HTMLURL:           Ptr("b"),
+					FollowersURL:      Ptr("b"),
+					FollowingURL:      Ptr("c"),
+					GistsURL:          Ptr("d"),
+					StarredURL:        Ptr("e"),
+					SubscriptionsURL:  Ptr("f"),
+					OrganizationsURL:  Ptr("g"),
+					ReposURL:          Ptr("h"),
+					EventsURL:         Ptr("i"),
+					ReceivedEventsURL: Ptr("j"),
+					Type:              Ptr("User"),
+					SiteAdmin:         Ptr(false),
 				},
-				Type: String("analyst"),
+				Type: Ptr("analyst"),
 			},
 		},
 	}
@@ -1161,10 +1161,11 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 }
 
 func TestSecurityAdvisorySubmission_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SecurityAdvisorySubmission{}, `{}`)
 
 	u := &SecurityAdvisorySubmission{
-		Accepted: Bool(true),
+		Accepted: Ptr(true),
 	}
 
 	w := `{
@@ -1175,11 +1176,12 @@ func TestSecurityAdvisorySubmission_Marshal(t *testing.T) {
 }
 
 func TestRepoAdvisoryCredit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepoAdvisoryCredit{}, `{}`)
 
 	u := &RepoAdvisoryCredit{
-		Login: String("l"),
-		Type:  String("t"),
+		Login: Ptr("l"),
+		Type:  Ptr("t"),
 	}
 
 	w := `{
@@ -1191,71 +1193,72 @@ func TestRepoAdvisoryCredit_Marshal(t *testing.T) {
 }
 
 func TestRepoAdvisoryCreditDetailed_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &RepoAdvisoryCreditDetailed{}, `{}`)
 
 	testDate := &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}
 	u := &RepoAdvisoryCreditDetailed{
-		Type:  String("t"),
-		State: String("s"),
+		Type:  Ptr("t"),
+		State: Ptr("s"),
 		User: &User{
-			Name:                    String("u"),
-			Company:                 String("c"),
-			Blog:                    String("b"),
-			Location:                String("l"),
-			Email:                   String("e"),
-			Hireable:                Bool(false),
-			Bio:                     String("bio"),
-			TwitterUsername:         String("tu"),
-			PublicRepos:             Int(1),
-			PublicGists:             Int(1),
-			Followers:               Int(2),
-			Following:               Int(2),
+			Name:                    Ptr("u"),
+			Company:                 Ptr("c"),
+			Blog:                    Ptr("b"),
+			Location:                Ptr("l"),
+			Email:                   Ptr("e"),
+			Hireable:                Ptr(false),
+			Bio:                     Ptr("bio"),
+			TwitterUsername:         Ptr("tu"),
+			PublicRepos:             Ptr(1),
+			PublicGists:             Ptr(1),
+			Followers:               Ptr(2),
+			Following:               Ptr(2),
 			CreatedAt:               testDate,
 			UpdatedAt:               testDate,
 			SuspendedAt:             testDate,
-			Type:                    String("type"),
-			SiteAdmin:               Bool(false),
-			TotalPrivateRepos:       Int64(10),
-			OwnedPrivateRepos:       Int64(10),
-			PrivateGists:            Int(10),
-			DiskUsage:               Int(10),
-			Collaborators:           Int(10),
-			TwoFactorAuthentication: Bool(true),
+			Type:                    Ptr("type"),
+			SiteAdmin:               Ptr(false),
+			TotalPrivateRepos:       Ptr(int64(10)),
+			OwnedPrivateRepos:       Ptr(int64(10)),
+			PrivateGists:            Ptr(10),
+			DiskUsage:               Ptr(10),
+			Collaborators:           Ptr(10),
+			TwoFactorAuthentication: Ptr(true),
 			Plan: &Plan{
-				Name:          String("p"),
-				Space:         Int(2),
-				Collaborators: Int(2),
-				PrivateRepos:  Int64(2),
-				Seats:         Int(2),
-				FilledSeats:   Int(1),
+				Name:          Ptr("p"),
+				Space:         Ptr(2),
+				Collaborators: Ptr(2),
+				PrivateRepos:  Ptr(int64(2)),
+				Seats:         Ptr(2),
+				FilledSeats:   Ptr(1),
 			},
-			LdapDn:            String("l"),
-			URL:               String("url"),
-			EventsURL:         String("e"),
-			FollowingURL:      String("f"),
-			FollowersURL:      String("f"),
-			GistsURL:          String("g"),
-			OrganizationsURL:  String("o"),
-			ReceivedEventsURL: String("r"),
-			ReposURL:          String("rep"),
-			StarredURL:        String("star"),
-			SubscriptionsURL:  String("sub"),
+			LdapDn:            Ptr("l"),
+			URL:               Ptr("url"),
+			EventsURL:         Ptr("e"),
+			FollowingURL:      Ptr("f"),
+			FollowersURL:      Ptr("f"),
+			GistsURL:          Ptr("g"),
+			OrganizationsURL:  Ptr("o"),
+			ReceivedEventsURL: Ptr("r"),
+			ReposURL:          Ptr("rep"),
+			StarredURL:        Ptr("star"),
+			SubscriptionsURL:  Ptr("sub"),
 			TextMatches: []*TextMatch{
 				{
-					ObjectURL:  String("u"),
-					ObjectType: String("t"),
-					Property:   String("p"),
-					Fragment:   String("f"),
+					ObjectURL:  Ptr("u"),
+					ObjectType: Ptr("t"),
+					Property:   Ptr("p"),
+					Fragment:   Ptr("f"),
 					Matches: []*Match{
 						{
-							Text:    String("t"),
+							Text:    Ptr("t"),
 							Indices: []int{1, 2},
 						},
 					},
 				},
 			},
 			Permissions: map[string]bool{"p1": true},
-			RoleName:    String("r"),
+			RoleName:    Ptr("r"),
 		},
 	}
 
@@ -1330,70 +1333,71 @@ func TestRepoAdvisoryCreditDetailed_Marshal(t *testing.T) {
 }
 
 func TestCredit_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Credit{}, `{}`)
 
 	testDate := &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}
 	u := &Credit{
-		Type: String("t"),
+		Type: Ptr("t"),
 		User: &User{
-			Name:                    String("u"),
-			Company:                 String("c"),
-			Blog:                    String("b"),
-			Location:                String("l"),
-			Email:                   String("e"),
-			Hireable:                Bool(false),
-			Bio:                     String("bio"),
-			TwitterUsername:         String("tu"),
-			PublicRepos:             Int(1),
-			PublicGists:             Int(1),
-			Followers:               Int(2),
-			Following:               Int(2),
+			Name:                    Ptr("u"),
+			Company:                 Ptr("c"),
+			Blog:                    Ptr("b"),
+			Location:                Ptr("l"),
+			Email:                   Ptr("e"),
+			Hireable:                Ptr(false),
+			Bio:                     Ptr("bio"),
+			TwitterUsername:         Ptr("tu"),
+			PublicRepos:             Ptr(1),
+			PublicGists:             Ptr(1),
+			Followers:               Ptr(2),
+			Following:               Ptr(2),
 			CreatedAt:               testDate,
 			UpdatedAt:               testDate,
 			SuspendedAt:             testDate,
-			Type:                    String("type"),
-			SiteAdmin:               Bool(false),
-			TotalPrivateRepos:       Int64(10),
-			OwnedPrivateRepos:       Int64(10),
-			PrivateGists:            Int(10),
-			DiskUsage:               Int(10),
-			Collaborators:           Int(10),
-			TwoFactorAuthentication: Bool(true),
+			Type:                    Ptr("type"),
+			SiteAdmin:               Ptr(false),
+			TotalPrivateRepos:       Ptr(int64(10)),
+			OwnedPrivateRepos:       Ptr(int64(10)),
+			PrivateGists:            Ptr(10),
+			DiskUsage:               Ptr(10),
+			Collaborators:           Ptr(10),
+			TwoFactorAuthentication: Ptr(true),
 			Plan: &Plan{
-				Name:          String("p"),
-				Space:         Int(2),
-				Collaborators: Int(2),
-				PrivateRepos:  Int64(2),
-				Seats:         Int(2),
-				FilledSeats:   Int(1),
+				Name:          Ptr("p"),
+				Space:         Ptr(2),
+				Collaborators: Ptr(2),
+				PrivateRepos:  Ptr(int64(2)),
+				Seats:         Ptr(2),
+				FilledSeats:   Ptr(1),
 			},
-			LdapDn:            String("l"),
-			URL:               String("url"),
-			EventsURL:         String("e"),
-			FollowingURL:      String("f"),
-			FollowersURL:      String("f"),
-			GistsURL:          String("g"),
-			OrganizationsURL:  String("o"),
-			ReceivedEventsURL: String("r"),
-			ReposURL:          String("rep"),
-			StarredURL:        String("star"),
-			SubscriptionsURL:  String("sub"),
+			LdapDn:            Ptr("l"),
+			URL:               Ptr("url"),
+			EventsURL:         Ptr("e"),
+			FollowingURL:      Ptr("f"),
+			FollowersURL:      Ptr("f"),
+			GistsURL:          Ptr("g"),
+			OrganizationsURL:  Ptr("o"),
+			ReceivedEventsURL: Ptr("r"),
+			ReposURL:          Ptr("rep"),
+			StarredURL:        Ptr("star"),
+			SubscriptionsURL:  Ptr("sub"),
 			TextMatches: []*TextMatch{
 				{
-					ObjectURL:  String("u"),
-					ObjectType: String("t"),
-					Property:   String("p"),
-					Fragment:   String("f"),
+					ObjectURL:  Ptr("u"),
+					ObjectType: Ptr("t"),
+					Property:   Ptr("p"),
+					Fragment:   Ptr("f"),
 					Matches: []*Match{
 						{
-							Text:    String("t"),
+							Text:    Ptr("t"),
 							Indices: []int{1, 2},
 						},
 					},
 				},
 			},
 			Permissions: map[string]bool{"p1": true},
-			RoleName:    String("r"),
+			RoleName:    Ptr("r"),
 		},
 	}
 
@@ -1467,23 +1471,24 @@ func TestCredit_Marshal(t *testing.T) {
 }
 
 func TestGlobalSecurityAdvisory_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GlobalSecurityAdvisory{}, `{}`)
 
 	testDate := &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}
 	u := &GlobalSecurityAdvisory{
-		ID:                    Int64(1),
-		RepositoryAdvisoryURL: String("r"),
-		Type:                  String("t"),
-		SourceCodeLocation:    String("s"),
+		ID:                    Ptr(int64(1)),
+		RepositoryAdvisoryURL: Ptr("r"),
+		Type:                  Ptr("t"),
+		SourceCodeLocation:    Ptr("s"),
 		References:            []string{"r"},
 		Vulnerabilities: []*GlobalSecurityVulnerability{
 			{
 				Package: &VulnerabilityPackage{
-					Ecosystem: String("npm"),
-					Name:      String("a-package"),
+					Ecosystem: Ptr("npm"),
+					Name:      Ptr("a-package"),
 				},
-				FirstPatchedVersion:    String("1.0.3"),
-				VulnerableVersionRange: String("<=1.0.2"),
+				FirstPatchedVersion:    Ptr("1.0.3"),
+				VulnerableVersionRange: Ptr("<=1.0.2"),
 				VulnerableFunctions:    []string{"a_function"},
 			},
 		},
@@ -1491,98 +1496,98 @@ func TestGlobalSecurityAdvisory_Marshal(t *testing.T) {
 		NVDPublishedAt:   testDate,
 		Credits: []*Credit{
 			{
-				Type: String("t"),
+				Type: Ptr("t"),
 				User: &User{
-					Name:                    String("u"),
-					Company:                 String("c"),
-					Blog:                    String("b"),
-					Location:                String("l"),
-					Email:                   String("e"),
-					Hireable:                Bool(false),
-					Bio:                     String("bio"),
-					TwitterUsername:         String("tu"),
-					PublicRepos:             Int(1),
-					PublicGists:             Int(1),
-					Followers:               Int(2),
-					Following:               Int(2),
+					Name:                    Ptr("u"),
+					Company:                 Ptr("c"),
+					Blog:                    Ptr("b"),
+					Location:                Ptr("l"),
+					Email:                   Ptr("e"),
+					Hireable:                Ptr(false),
+					Bio:                     Ptr("bio"),
+					TwitterUsername:         Ptr("tu"),
+					PublicRepos:             Ptr(1),
+					PublicGists:             Ptr(1),
+					Followers:               Ptr(2),
+					Following:               Ptr(2),
 					CreatedAt:               testDate,
 					UpdatedAt:               testDate,
 					SuspendedAt:             testDate,
-					Type:                    String("type"),
-					SiteAdmin:               Bool(false),
-					TotalPrivateRepos:       Int64(10),
-					OwnedPrivateRepos:       Int64(10),
-					PrivateGists:            Int(10),
-					DiskUsage:               Int(10),
-					Collaborators:           Int(10),
-					TwoFactorAuthentication: Bool(true),
+					Type:                    Ptr("type"),
+					SiteAdmin:               Ptr(false),
+					TotalPrivateRepos:       Ptr(int64(10)),
+					OwnedPrivateRepos:       Ptr(int64(10)),
+					PrivateGists:            Ptr(10),
+					DiskUsage:               Ptr(10),
+					Collaborators:           Ptr(10),
+					TwoFactorAuthentication: Ptr(true),
 					Plan: &Plan{
-						Name:          String("p"),
-						Space:         Int(2),
-						Collaborators: Int(2),
-						PrivateRepos:  Int64(2),
-						Seats:         Int(2),
-						FilledSeats:   Int(1),
+						Name:          Ptr("p"),
+						Space:         Ptr(2),
+						Collaborators: Ptr(2),
+						PrivateRepos:  Ptr(int64(2)),
+						Seats:         Ptr(2),
+						FilledSeats:   Ptr(1),
 					},
-					LdapDn:            String("l"),
-					URL:               String("url"),
-					EventsURL:         String("e"),
-					FollowingURL:      String("f"),
-					FollowersURL:      String("f"),
-					GistsURL:          String("g"),
-					OrganizationsURL:  String("o"),
-					ReceivedEventsURL: String("r"),
-					ReposURL:          String("rep"),
-					StarredURL:        String("star"),
-					SubscriptionsURL:  String("sub"),
+					LdapDn:            Ptr("l"),
+					URL:               Ptr("url"),
+					EventsURL:         Ptr("e"),
+					FollowingURL:      Ptr("f"),
+					FollowersURL:      Ptr("f"),
+					GistsURL:          Ptr("g"),
+					OrganizationsURL:  Ptr("o"),
+					ReceivedEventsURL: Ptr("r"),
+					ReposURL:          Ptr("rep"),
+					StarredURL:        Ptr("star"),
+					SubscriptionsURL:  Ptr("sub"),
 					TextMatches: []*TextMatch{
 						{
-							ObjectURL:  String("u"),
-							ObjectType: String("t"),
-							Property:   String("p"),
-							Fragment:   String("f"),
+							ObjectURL:  Ptr("u"),
+							ObjectType: Ptr("t"),
+							Property:   Ptr("p"),
+							Fragment:   Ptr("f"),
 							Matches: []*Match{
 								{
-									Text:    String("t"),
+									Text:    Ptr("t"),
 									Indices: []int{1, 2},
 								},
 							},
 						},
 					},
 					Permissions: map[string]bool{"p1": true},
-					RoleName:    String("r"),
+					RoleName:    Ptr("r"),
 				},
 			},
 		},
 		SecurityAdvisory: SecurityAdvisory{
-			GHSAID:      String("GHSA-xoxo-1234-xoxo"),
-			CVEID:       String("CVE-xoxo-1234"),
-			URL:         String("https://api.github.com/advisories/GHSA-xoxo-1234-xoxo"),
-			HTMLURL:     String("https://github.com/advisories/GHSA-xoxo-1234-xoxo"),
-			Severity:    String("high"),
-			Summary:     String("Heartbleed security advisory"),
-			Description: String("This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information."),
+			GHSAID:      Ptr("GHSA-xoxo-1234-xoxo"),
+			CVEID:       Ptr("CVE-xoxo-1234"),
+			URL:         Ptr("https://api.github.com/advisories/GHSA-xoxo-1234-xoxo"),
+			HTMLURL:     Ptr("https://github.com/advisories/GHSA-xoxo-1234-xoxo"),
+			Severity:    Ptr("high"),
+			Summary:     Ptr("Heartbleed security advisory"),
+			Description: Ptr("This bug allows an attacker to read portions of the affected server’s memory, potentially disclosing sensitive information."),
 			Identifiers: []*AdvisoryIdentifier{
 				{
-					Type:  String("GHSA"),
-					Value: String("GHSA-xoxo-1234-xoxo"),
+					Type:  Ptr("GHSA"),
+					Value: Ptr("GHSA-xoxo-1234-xoxo"),
 				},
 				{
-					Type:  String("CVE"),
-					Value: String("CVE-xoxo-1234"),
+					Type:  Ptr("CVE"),
+					Value: Ptr("CVE-xoxo-1234"),
 				},
 			},
 			PublishedAt: testDate,
 			UpdatedAt:   testDate,
 			WithdrawnAt: nil,
 			CVSS: &AdvisoryCVSS{
-				VectorString: String("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
-				Score:        Float64(7.6),
+				VectorString: Ptr("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
+				Score:        Ptr(7.6),
 			},
 			CWEs: []*AdvisoryCWEs{
 				{
-					CWEID: String("CWE-400"),
-					Name:  String("Uncontrolled Resource Consumption"),
+					CWEID: Ptr("CWE-400"),
+					Name:  Ptr("Uncontrolled Resource Consumption"),
 				},
 			},
 		},

@@ -16,8 +16,8 @@ import (
 )
 
 func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/gpg_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -32,7 +32,7 @@ func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
 	}
 
-	want := []*GPGKey{{ID: Int64(1), PrimaryKeyID: Int64(2)}}
+	want := []*GPGKey{{ID: Ptr(int64(1)), PrimaryKeyID: Ptr(int64(2))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
@@ -53,8 +53,8 @@ func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/gpg_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -67,15 +67,15 @@ func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
 	}
 
-	want := []*GPGKey{{ID: Int64(1), PrimaryKeyID: Int64(2)}}
+	want := []*GPGKey{{ID: Ptr(int64(1)), PrimaryKeyID: Ptr(int64(2))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
 }
 
 func TestUsersService_ListGPGKeys_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Users.ListGPGKeys(ctx, "%", nil)
@@ -83,8 +83,8 @@ func TestUsersService_ListGPGKeys_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_GetGPGKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/gpg_keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -97,7 +97,7 @@ func TestUsersService_GetGPGKey(t *testing.T) {
 		t.Errorf("Users.GetGPGKey returned error: %v", err)
 	}
 
-	want := &GPGKey{ID: Int64(1)}
+	want := &GPGKey{ID: Ptr(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Users.GetGPGKey = %+v, want %+v", key, want)
 	}
@@ -118,8 +118,8 @@ func TestUsersService_GetGPGKey(t *testing.T) {
 }
 
 func TestUsersService_CreateGPGKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := `
 -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -150,7 +150,7 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 		t.Errorf("Users.GetGPGKey returned error: %v", err)
 	}
 
-	want := &GPGKey{ID: Int64(1)}
+	want := &GPGKey{ID: Ptr(int64(1))}
 	if !cmp.Equal(gpgKey, want) {
 		t.Errorf("Users.GetGPGKey = %+v, want %+v", gpgKey, want)
 	}
@@ -166,8 +166,8 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 }
 
 func TestUsersService_DeleteGPGKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/gpg_keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -191,11 +191,12 @@ func TestUsersService_DeleteGPGKey(t *testing.T) {
 }
 
 func TestGPGEmail_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GPGEmail{}, "{}")
 
 	u := &GPGEmail{
-		Email:    String("email@abc.com"),
-		Verified: Bool(false),
+		Email:    Ptr("email@abc.com"),
+		Verified: Ptr(false),
 	}
 
 	want := `{
@@ -207,29 +208,30 @@ func TestGPGEmail_Marshal(t *testing.T) {
 }
 
 func TestGPGKey_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &GPGKey{}, "{}")
 
 	ti := &Timestamp{}
 
 	g := &GPGKey{
-		ID:           Int64(1),
-		PrimaryKeyID: Int64(1),
-		KeyID:        String("someKeyID"),
-		RawKey:       String("someRawKeyID"),
-		PublicKey:    String("somePublicKey"),
+		ID:           Ptr(int64(1)),
+		PrimaryKeyID: Ptr(int64(1)),
+		KeyID:        Ptr("someKeyID"),
+		RawKey:       Ptr("someRawKeyID"),
+		PublicKey:    Ptr("somePublicKey"),
 		Emails: []*GPGEmail{
 			{
-				Email:    String("someEmail"),
-				Verified: Bool(true),
+				Email:    Ptr("someEmail"),
+				Verified: Ptr(true),
 			},
 		},
 		Subkeys: []*GPGKey{
 			{},
 		},
-		CanSign:           Bool(true),
-		CanEncryptComms:   Bool(true),
-		CanEncryptStorage: Bool(true),
-		CanCertify:        Bool(true),
+		CanSign:           Ptr(true),
+		CanEncryptComms:   Ptr(true),
+		CanEncryptStorage: Ptr(true),
+		CanCertify:        Ptr(true),
 		CreatedAt:         ti,
 		ExpiresAt:         ti,
 	}

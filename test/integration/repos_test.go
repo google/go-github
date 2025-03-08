@@ -4,7 +4,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build integration
-// +build integration
 
 package integration
 
@@ -15,7 +14,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v64/github"
+	"github.com/google/go-github/v69/github"
 )
 
 func TestRepositories_CRUD(t *testing.T) {
@@ -30,7 +29,7 @@ func TestRepositories_CRUD(t *testing.T) {
 	}
 
 	// update the repository description
-	repo.Description = github.String("description")
+	repo.Description = github.Ptr("description")
 	repo.DefaultBranch = nil // FIXME: this shouldn't be necessary
 	_, _, err = client.Repositories.Edit(context.Background(), *repo.Owner.Login, *repo.Name, repo)
 	if err != nil {
@@ -113,9 +112,9 @@ func TestRepositories_EditBranches(t *testing.T) {
 		//       In order to be able to test these Restrictions, need to add support
 		//       for creating temporary organization repositories.
 		Restrictions:     nil,
-		BlockCreations:   github.Bool(false),
-		LockBranch:       github.Bool(false),
-		AllowForkSyncing: github.Bool(false),
+		BlockCreations:   github.Ptr(false),
+		LockBranch:       github.Ptr(false),
+		AllowForkSyncing: github.Ptr(false),
 	}
 
 	protection, _, err := client.Repositories.UpdateBranchProtection(context.Background(), *repo.Owner.Login, *repo.Name, "master", protectionRequest)
@@ -133,18 +132,18 @@ func TestRepositories_EditBranches(t *testing.T) {
 			RequiredApprovingReviewCount: 0,
 		},
 		EnforceAdmins: &github.AdminEnforcement{
-			URL:     github.String("https://api.github.com/repos/" + *repo.Owner.Login + "/" + *repo.Name + "/branches/master/protection/enforce_admins"),
+			URL:     github.Ptr("https://api.github.com/repos/" + *repo.Owner.Login + "/" + *repo.Name + "/branches/master/protection/enforce_admins"),
 			Enabled: true,
 		},
 		Restrictions: nil,
 		BlockCreations: &github.BlockCreations{
-			Enabled: github.Bool(false),
+			Enabled: github.Ptr(false),
 		},
 		LockBranch: &github.LockBranch{
-			Enabled: github.Bool(false),
+			Enabled: github.Ptr(false),
 		},
 		AllowForkSyncing: &github.AllowForkSyncing{
-			Enabled: github.Bool(false),
+			Enabled: github.Ptr(false),
 		},
 	}
 	if !cmp.Equal(protection, want) {
@@ -214,9 +213,9 @@ func TestRepositories_Autolinks(t *testing.T) {
 	}
 
 	opts := &github.AutolinkOptions{
-		KeyPrefix:      github.String("TICKET-"),
-		URLTemplate:    github.String("https://example.com/TICKET?query=<num>"),
-		IsAlphanumeric: github.Bool(false),
+		KeyPrefix:      github.Ptr("TICKET-"),
+		URLTemplate:    github.Ptr("https://example.com/TICKET?query=<num>"),
+		IsAlphanumeric: github.Ptr(false),
 	}
 
 	actionlink, _, err := client.Repositories.AddAutolink(context.Background(), *repo.Owner.Login, *repo.Name, opts)

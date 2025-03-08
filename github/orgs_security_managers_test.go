@@ -15,8 +15,8 @@ import (
 )
 
 func TestOrganizationsService_ListSecurityManagerTeams(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-managers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -29,7 +29,7 @@ func TestOrganizationsService_ListSecurityManagerTeams(t *testing.T) {
 		t.Errorf("Organizations.ListSecurityManagerTeams returned error: %v", err)
 	}
 
-	want := []*Team{{ID: Int64(1)}}
+	want := []*Team{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(teams, want) {
 		t.Errorf("Organizations.ListSecurityManagerTeams returned %+v, want %+v", teams, want)
 	}
@@ -50,8 +50,8 @@ func TestOrganizationsService_ListSecurityManagerTeams(t *testing.T) {
 }
 
 func TestOrganizationsService_ListSecurityManagerTeams_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Organizations.ListSecurityManagerTeams(ctx, "%")
@@ -59,8 +59,8 @@ func TestOrganizationsService_ListSecurityManagerTeams_invalidOrg(t *testing.T) 
 }
 
 func TestOrganizationsService_AddSecurityManagerTeam(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-managers/teams/t", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -84,8 +84,8 @@ func TestOrganizationsService_AddSecurityManagerTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_AddSecurityManagerTeam_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Organizations.AddSecurityManagerTeam(ctx, "%", "t")
@@ -93,8 +93,8 @@ func TestOrganizationsService_AddSecurityManagerTeam_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_AddSecurityManagerTeam_invalidTeam(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Organizations.AddSecurityManagerTeam(ctx, "%", "t")
@@ -102,8 +102,8 @@ func TestOrganizationsService_AddSecurityManagerTeam_invalidTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveSecurityManagerTeam(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/security-managers/teams/t", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -127,8 +127,8 @@ func TestOrganizationsService_RemoveSecurityManagerTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveSecurityManagerTeam_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Organizations.RemoveSecurityManagerTeam(ctx, "%", "t")
@@ -136,8 +136,8 @@ func TestOrganizationsService_RemoveSecurityManagerTeam_invalidOrg(t *testing.T)
 }
 
 func TestOrganizationsService_RemoveSecurityManagerTeam_invalidTeam(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Organizations.RemoveSecurityManagerTeam(ctx, "%", "t")

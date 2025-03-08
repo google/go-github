@@ -16,8 +16,8 @@ import (
 )
 
 func TestUsersService_ListSSHSigningKeys_authenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/ssh_signing_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -32,7 +32,7 @@ func TestUsersService_ListSSHSigningKeys_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.ListSSHSigningKeys returned error: %v", err)
 	}
 
-	want := []*SSHSigningKey{{ID: Int64(1)}}
+	want := []*SSHSigningKey{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListSSHSigningKeys returned %+v, want %+v", keys, want)
 	}
@@ -53,8 +53,8 @@ func TestUsersService_ListSSHSigningKeys_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_ListSSHSigningKeys_specifiedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/ssh_signing_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -67,15 +67,15 @@ func TestUsersService_ListSSHSigningKeys_specifiedUser(t *testing.T) {
 		t.Errorf("Users.ListSSHSigningKeys returned error: %v", err)
 	}
 
-	want := []*SSHSigningKey{{ID: Int64(1)}}
+	want := []*SSHSigningKey{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListSSHSigningKeys returned %+v, want %+v", keys, want)
 	}
 }
 
 func TestUsersService_ListSSHSigningKeys_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Users.ListSSHSigningKeys(ctx, "%", nil)
@@ -83,8 +83,8 @@ func TestUsersService_ListSSHSigningKeys_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_GetSSHSigningKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/ssh_signing_keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -97,7 +97,7 @@ func TestUsersService_GetSSHSigningKey(t *testing.T) {
 		t.Errorf("Users.GetSSHSigningKey returned error: %v", err)
 	}
 
-	want := &SSHSigningKey{ID: Int64(1)}
+	want := &SSHSigningKey{ID: Ptr(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Users.GetSSHSigningKey returned %+v, want %+v", key, want)
 	}
@@ -118,10 +118,10 @@ func TestUsersService_GetSSHSigningKey(t *testing.T) {
 }
 
 func TestUsersService_CreateSSHSigningKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &Key{Key: String("k"), Title: String("t")}
+	input := &Key{Key: Ptr("k"), Title: Ptr("t")}
 
 	mux.HandleFunc("/user/ssh_signing_keys", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Key)
@@ -141,7 +141,7 @@ func TestUsersService_CreateSSHSigningKey(t *testing.T) {
 		t.Errorf("Users.CreateSSHSigningKey returned error: %v", err)
 	}
 
-	want := &SSHSigningKey{ID: Int64(1)}
+	want := &SSHSigningKey{ID: Ptr(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Users.CreateSSHSigningKey returned %+v, want %+v", key, want)
 	}
@@ -157,8 +157,8 @@ func TestUsersService_CreateSSHSigningKey(t *testing.T) {
 }
 
 func TestUsersService_DeleteSSHSigningKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/ssh_signing_keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -182,12 +182,13 @@ func TestUsersService_DeleteSSHSigningKey(t *testing.T) {
 }
 
 func TestSSHSigningKey_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SSHSigningKey{}, "{}")
 
 	u := &Key{
-		ID:        Int64(1),
-		Key:       String("abc"),
-		Title:     String("title"),
+		ID:        Ptr(int64(1)),
+		Key:       Ptr("abc"),
+		Title:     Ptr("title"),
 		CreatedAt: &Timestamp{referenceTime},
 	}
 

@@ -112,6 +112,31 @@ type ReferencedWorkflow struct {
 	Ref  *string `json:"ref,omitempty"`
 }
 
+// PendingDeployment represents the pending_deployments response.
+type PendingDeployment struct {
+	Environment           *PendingDeploymentEnvironment `json:"environment,omitempty"`
+	WaitTimer             *int64                        `json:"wait_timer,omitempty"`
+	WaitTimerStartedAt    *Timestamp                    `json:"wait_timer_started_at,omitempty"`
+	CurrentUserCanApprove *bool                         `json:"current_user_can_approve,omitempty"`
+	Reviewers             []*RequiredReviewer           `json:"reviewers,omitempty"`
+}
+
+// PendingDeploymentEnvironment represents pending deployment environment properties.
+type PendingDeploymentEnvironment struct {
+	ID      *int64  `json:"id,omitempty"`
+	NodeID  *string `json:"node_id,omitempty"`
+	Name    *string `json:"name,omitempty"`
+	URL     *string `json:"url,omitempty"`
+	HTMLURL *string `json:"html_url,omitempty"`
+}
+
+// ReviewCustomDeploymentProtectionRuleRequest specifies the parameters to ReviewCustomDeploymentProtectionRule.
+type ReviewCustomDeploymentProtectionRuleRequest struct {
+	EnvironmentName string `json:"environment_name"`
+	State           string `json:"state"`
+	Comment         string `json:"comment"`
+}
+
 func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u, err := addOptions(endpoint, opts)
 	if err != nil {
@@ -179,6 +204,7 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 }
 
 // GetWorkflowRunByID gets a specific workflow run by ID.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-a-workflow-run
 //
@@ -201,6 +227,7 @@ func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo str
 }
 
 // GetWorkflowRunAttempt gets a specific workflow run attempt.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-a-workflow-run-attempt
 //
@@ -227,6 +254,7 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 }
 
 // GetWorkflowRunAttemptLogs gets a redirect URL to download a plain text file of logs for a workflow run for attempt number.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve a workflow run ID from the DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#download-workflow-run-attempt-logs
 //
@@ -234,6 +262,14 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 func (s *ActionsService) GetWorkflowRunAttemptLogs(ctx context.Context, owner, repo string, runID int64, attemptNumber int, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/attempts/%v/logs", owner, repo, runID, attemptNumber)
 
+	if s.client.RateLimitRedirectionalEndpoints {
+		return s.getWorkflowRunAttemptLogsWithRateLimit(ctx, u, maxRedirects)
+	}
+
+	return s.getWorkflowRunAttemptLogsWithoutRateLimit(ctx, u, maxRedirects)
+}
+
+func (s *ActionsService) getWorkflowRunAttemptLogsWithoutRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
@@ -241,14 +277,35 @@ func (s *ActionsService) GetWorkflowRunAttemptLogs(ctx context.Context, owner, r
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusFound {
-		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
 	return parsedURL, newResponse(resp), err
 }
 
+func (s *ActionsService) getWorkflowRunAttemptLogsWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	if err != nil {
+		return nil, resp, err
+	}
+	defer resp.Body.Close()
+
+	// If we didn't receive a valid Location in a 302 response
+	if url == nil {
+		return nil, resp, fmt.Errorf("unexpected status code: %v", resp.Status)
+	}
+
+	return url, resp, nil
+}
+
 // RerunWorkflowByID re-runs a workflow by ID.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID a the DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-a-workflow
 //
@@ -265,6 +322,7 @@ func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo stri
 }
 
 // RerunFailedJobsByID re-runs all of the failed jobs and their dependent jobs in a workflow run by ID.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-failed-jobs-from-a-workflow-run
 //
@@ -282,6 +340,8 @@ func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo st
 
 // RerunJobByID re-runs a job and its dependent jobs in a workflow run by ID.
 //
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
+//
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-a-job-from-a-workflow-run
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun
@@ -297,6 +357,7 @@ func (s *ActionsService) RerunJobByID(ctx context.Context, owner, repo string, j
 }
 
 // CancelWorkflowRunByID cancels a workflow run by ID.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#cancel-a-workflow-run
 //
@@ -313,6 +374,7 @@ func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo 
 }
 
 // GetWorkflowRunLogs gets a redirect URL to download a plain text file of logs for a workflow run.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#download-workflow-run-logs
 //
@@ -320,6 +382,14 @@ func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo 
 func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
 
+	if s.client.RateLimitRedirectionalEndpoints {
+		return s.getWorkflowRunLogsWithRateLimit(ctx, u, maxRedirects)
+	}
+
+	return s.getWorkflowRunLogsWithoutRateLimit(ctx, u, maxRedirects)
+}
+
+func (s *ActionsService) getWorkflowRunLogsWithoutRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
 	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects)
 	if err != nil {
 		return nil, nil, err
@@ -334,7 +404,28 @@ func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo str
 	return parsedURL, newResponse(resp), err
 }
 
+func (s *ActionsService) getWorkflowRunLogsWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	if err != nil {
+		return nil, resp, err
+	}
+	defer resp.Body.Close()
+
+	// If we didn't receive a valid Location in a 302 response
+	if url == nil {
+		return nil, resp, fmt.Errorf("unexpected status code: %v", resp.Status)
+	}
+
+	return url, resp, nil
+}
+
 // DeleteWorkflowRun deletes a workflow run by ID.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#delete-a-workflow-run
 //
@@ -351,6 +442,7 @@ func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo stri
 }
 
 // DeleteWorkflowRunLogs deletes all logs for a workflow run.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#delete-workflow-run-logs
 //
@@ -367,6 +459,7 @@ func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo 
 }
 
 // GetWorkflowRunUsageByID gets a specific workflow usage run by run ID in the unit of billable milliseconds.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-workflow-run-usage
 //
@@ -388,7 +481,31 @@ func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, rep
 	return workflowRunUsage, resp, nil
 }
 
+// GetPendingDeployments get all deployment environments for a workflow run that are waiting for protection rules to pass.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-pending-deployments-for-a-workflow-run
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments
+func (s *ActionsService) GetPendingDeployments(ctx context.Context, owner, repo string, runID int64) ([]*PendingDeployment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/pending_deployments", owner, repo, runID)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var deployments []*PendingDeployment
+	resp, err := s.client.Do(ctx, req, &deployments)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return deployments, resp, nil
+}
+
 // PendingDeployments approve or reject pending deployments that are waiting on approval by a required reviewer.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#review-pending-deployments-for-a-workflow-run
 //
@@ -408,4 +525,22 @@ func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo str
 	}
 
 	return deployments, resp, nil
+}
+
+// ReviewCustomDeploymentProtectionRule approves or rejects custom deployment protection rules provided by a GitHub App for a workflow run.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#review-custom-deployment-protection-rules-for-a-workflow-run
+//
+//meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/deployment_protection_rule
+func (s *ActionsService) ReviewCustomDeploymentProtectionRule(ctx context.Context, owner, repo string, runID int64, request *ReviewCustomDeploymentProtectionRuleRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/deployment_protection_rule", owner, repo, runID)
+
+	req, err := s.client.NewRequest("POST", u, request)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	return resp, err
 }

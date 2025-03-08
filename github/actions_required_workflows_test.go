@@ -16,8 +16,9 @@ import (
 )
 
 func TestActionsService_ListOrgRequiredWorkflows(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
@@ -55,10 +56,10 @@ func TestActionsService_ListOrgRequiredWorkflows(t *testing.T) {
 	}
 
 	want := &OrgRequiredWorkflows{
-		TotalCount: Int(4),
+		TotalCount: Ptr(4),
 		RequiredWorkflows: []*OrgRequiredWorkflow{
-			{ID: Int64(30433642), Name: String("Required CI"), Path: String(".github/workflows/ci.yml"), Scope: String("selected"), Ref: String("refs/head/main"), State: String("active"), SelectedRepositoriesURL: String("https://api.github.com/organizations/org/actions/required_workflows/1/repositories"), CreatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}},
-			{ID: Int64(30433643), Name: String("Required Linter"), Path: String(".github/workflows/lint.yml"), Scope: String("all"), Ref: String("refs/head/main"), State: String("active"), CreatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}},
+			{ID: Ptr(int64(30433642)), Name: Ptr("Required CI"), Path: Ptr(".github/workflows/ci.yml"), Scope: Ptr("selected"), Ref: Ptr("refs/head/main"), State: Ptr("active"), SelectedRepositoriesURL: Ptr("https://api.github.com/organizations/org/actions/required_workflows/1/repositories"), CreatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}},
+			{ID: Ptr(int64(30433643)), Name: Ptr("Required Linter"), Path: Ptr(".github/workflows/lint.yml"), Scope: Ptr("all"), Ref: Ptr("refs/head/main"), State: Ptr("active"), CreatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(jobs, want) {
@@ -80,8 +81,9 @@ func TestActionsService_ListOrgRequiredWorkflows(t *testing.T) {
 }
 
 func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
@@ -102,9 +104,9 @@ func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
 				"url": "https://api.github.com/repos/o/Hello-World"}}`)
 	})
 	input := &CreateUpdateRequiredWorkflowOptions{
-		WorkflowFilePath:      String(".github/workflows/ci.yaml"),
-		RepositoryID:          Int64(53),
-		Scope:                 String("selected"),
+		WorkflowFilePath:      Ptr(".github/workflows/ci.yaml"),
+		RepositoryID:          Ptr(int64(53)),
+		Scope:                 Ptr("selected"),
 		SelectedRepositoryIDs: &SelectedRepoIDs{32, 91},
 	}
 	ctx := context.Background()
@@ -113,16 +115,16 @@ func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
 		t.Errorf("Actions.CreateRequiredWorkflow returned error: %v", err)
 	}
 	want := &OrgRequiredWorkflow{
-		ID:                      Int64(2),
-		Name:                    String("Required CI"),
-		Path:                    String(".github/workflows/ci.yml"),
-		Scope:                   String("selected"),
-		Ref:                     String("refs/head/main"),
-		State:                   String("active"),
-		SelectedRepositoriesURL: String("https://api.github.com/orgs/octo-org/actions/required_workflows/2/repositories"),
+		ID:                      Ptr(int64(2)),
+		Name:                    Ptr("Required CI"),
+		Path:                    Ptr(".github/workflows/ci.yml"),
+		Scope:                   Ptr("selected"),
+		Ref:                     Ptr("refs/head/main"),
+		State:                   Ptr("active"),
+		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/required_workflows/2/repositories"),
 		CreatedAt:               &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)},
 		UpdatedAt:               &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)},
-		Repository:              &Repository{ID: Int64(53), URL: String("https://api.github.com/repos/o/Hello-World"), Name: String("Hello-World")},
+		Repository:              &Repository{ID: Ptr(int64(53)), URL: Ptr("https://api.github.com/repos/o/Hello-World"), Name: Ptr("Hello-World")},
 	}
 
 	if !cmp.Equal(requiredWokflow, want) {
@@ -145,8 +147,9 @@ func TestActionsService_CreateRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_GetRequiredWorkflowByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
@@ -174,7 +177,7 @@ func TestActionsService_GetRequiredWorkflowByID(t *testing.T) {
 	}
 
 	want := &OrgRequiredWorkflow{
-		ID: Int64(12345), Name: String("Required CI"), Path: String(".github/workflows/ci.yml"), Scope: String("selected"), Ref: String("refs/head/main"), State: String("active"), SelectedRepositoriesURL: String("https://api.github.com/orgs/o/actions/required_workflows/12345/repositories"), CreatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, Repository: &Repository{ID: Int64(1296269), URL: String("https://api.github.com/repos/o/Hello-World"), Name: String("Hello-World")},
+		ID: Ptr(int64(12345)), Name: Ptr("Required CI"), Path: Ptr(".github/workflows/ci.yml"), Scope: Ptr("selected"), Ref: Ptr("refs/head/main"), State: Ptr("active"), SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/o/actions/required_workflows/12345/repositories"), CreatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, Repository: &Repository{ID: Ptr(int64(1296269)), URL: Ptr("https://api.github.com/repos/o/Hello-World"), Name: Ptr("Hello-World")},
 	}
 	if !cmp.Equal(jobs, want) {
 		t.Errorf("Actions.GetRequiredWorkflowByID returned %+v, want %+v", jobs, want)
@@ -195,8 +198,9 @@ func TestActionsService_GetRequiredWorkflowByID(t *testing.T) {
 }
 
 func TestActionsService_UpdateRequiredWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Content-Type", "application/json")
@@ -217,9 +221,9 @@ func TestActionsService_UpdateRequiredWorkflow(t *testing.T) {
 				"url": "https://api.github.com/repos/o/Hello-World"}}`)
 	})
 	input := &CreateUpdateRequiredWorkflowOptions{
-		WorkflowFilePath:      String(".github/workflows/ci.yaml"),
-		RepositoryID:          Int64(53),
-		Scope:                 String("selected"),
+		WorkflowFilePath:      Ptr(".github/workflows/ci.yaml"),
+		RepositoryID:          Ptr(int64(53)),
+		Scope:                 Ptr("selected"),
 		SelectedRepositoryIDs: &SelectedRepoIDs{32, 91},
 	}
 	ctx := context.Background()
@@ -230,16 +234,16 @@ func TestActionsService_UpdateRequiredWorkflow(t *testing.T) {
 		t.Errorf("Actions.UpdateRequiredWorkflow returned error: %v", err)
 	}
 	want := &OrgRequiredWorkflow{
-		ID:                      Int64(12345),
-		Name:                    String("Required CI"),
-		Path:                    String(".github/workflows/ci.yml"),
-		Scope:                   String("selected"),
-		Ref:                     String("refs/head/main"),
-		State:                   String("active"),
-		SelectedRepositoriesURL: String("https://api.github.com/orgs/octo-org/actions/required_workflows/12345/repositories"),
+		ID:                      Ptr(int64(12345)),
+		Name:                    Ptr("Required CI"),
+		Path:                    Ptr(".github/workflows/ci.yml"),
+		Scope:                   Ptr("selected"),
+		Ref:                     Ptr("refs/head/main"),
+		State:                   Ptr("active"),
+		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/required_workflows/12345/repositories"),
 		CreatedAt:               &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)},
 		UpdatedAt:               &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)},
-		Repository:              &Repository{ID: Int64(53), URL: String("https://api.github.com/repos/o/Hello-World"), Name: String("Hello-World")},
+		Repository:              &Repository{ID: Ptr(int64(53)), URL: Ptr("https://api.github.com/repos/o/Hello-World"), Name: Ptr("Hello-World")},
 	}
 
 	if !cmp.Equal(requiredWokflow, want) {
@@ -262,8 +266,9 @@ func TestActionsService_UpdateRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_DeleteRequiredWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
@@ -287,8 +292,9 @@ func TestActionsService_DeleteRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_ListRequiredWorkflowSelectedRepos(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
@@ -309,9 +315,9 @@ func TestActionsService_ListRequiredWorkflowSelectedRepos(t *testing.T) {
 	}
 
 	want := &RequiredWorkflowSelectedRepos{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Repositories: []*Repository{
-			{ID: Int64(1296269), URL: String("https://api.github.com/repos/o/Hello-World"), Name: String("Hello-World")},
+			{ID: Ptr(int64(1296269)), URL: Ptr("https://api.github.com/repos/o/Hello-World"), Name: Ptr("Hello-World")},
 		},
 	}
 	if !cmp.Equal(jobs, want) {
@@ -333,8 +339,9 @@ func TestActionsService_ListRequiredWorkflowSelectedRepos(t *testing.T) {
 }
 
 func TestActionsService_SetRequiredWorkflowSelectedRepos(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
@@ -360,8 +367,9 @@ func TestActionsService_SetRequiredWorkflowSelectedRepos(t *testing.T) {
 }
 
 func TestActionsService_AddRepoToRequiredWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories/32", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		w.WriteHeader(http.StatusNoContent)
@@ -385,8 +393,9 @@ func TestActionsService_AddRepoToRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_RemoveRepoFromRequiredWorkflow(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/orgs/o/actions/required_workflows/12345/repositories/32", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
@@ -410,8 +419,9 @@ func TestActionsService_RemoveRepoFromRequiredWorkflow(t *testing.T) {
 }
 
 func TestActionsService_ListRepoRequiredWorkflows(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/actions/required_workflows", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
@@ -445,9 +455,9 @@ func TestActionsService_ListRepoRequiredWorkflows(t *testing.T) {
 	}
 
 	want := &RepoRequiredWorkflows{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		RequiredWorkflows: []*RepoRequiredWorkflow{
-			{ID: Int64(30433642), NodeID: String("MDg6V29ya2Zsb3cxNjEzMzU="), Name: String("Required CI"), Path: String(".github/workflows/ci.yml"), State: String("active"), CreatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, URL: String("https://api.github.com/repos/o/r/actions/required_workflows/161335"), BadgeURL: String("https://github.com/o/r/workflows/required/o/hello-world/.github/workflows/required_ci.yaml/badge.svg"), HTMLURL: String("https://github.com/o/r/blob/master/o/hello-world/.github/workflows/required_ci.yaml"), SourceRepository: &Repository{ID: Int64(1296269), URL: String("https://api.github.com/repos/o/Hello-World"), Name: String("Hello-World")}},
+			{ID: Ptr(int64(30433642)), NodeID: Ptr("MDg6V29ya2Zsb3cxNjEzMzU="), Name: Ptr("Required CI"), Path: Ptr(".github/workflows/ci.yml"), State: Ptr("active"), CreatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 22, 19, 33, 8, 0, time.UTC)}, URL: Ptr("https://api.github.com/repos/o/r/actions/required_workflows/161335"), BadgeURL: Ptr("https://github.com/o/r/workflows/required/o/hello-world/.github/workflows/required_ci.yaml/badge.svg"), HTMLURL: Ptr("https://github.com/o/r/blob/master/o/hello-world/.github/workflows/required_ci.yaml"), SourceRepository: &Repository{ID: Ptr(int64(1296269)), URL: Ptr("https://api.github.com/repos/o/Hello-World"), Name: Ptr("Hello-World")}},
 		},
 	}
 	if !cmp.Equal(jobs, want) {

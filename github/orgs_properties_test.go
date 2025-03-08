@@ -15,8 +15,8 @@ import (
 )
 
 func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/schema", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -53,22 +53,22 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 
 	want := []*CustomProperty{
 		{
-			PropertyName:     String("name"),
+			PropertyName:     Ptr("name"),
 			ValueType:        "single_select",
-			Required:         Bool(true),
-			DefaultValue:     String("production"),
-			Description:      String("Prod or dev environment"),
+			Required:         Ptr(true),
+			DefaultValue:     Ptr("production"),
+			Description:      Ptr("Prod or dev environment"),
 			AllowedValues:    []string{"production", "development"},
-			ValuesEditableBy: String("org_actors"),
+			ValuesEditableBy: Ptr("org_actors"),
 		},
 		{
-			PropertyName: String("service"),
+			PropertyName: Ptr("service"),
 			ValueType:    "string",
 		},
 		{
-			PropertyName: String("team"),
+			PropertyName: Ptr("team"),
 			ValueType:    "string",
-			Description:  String("Team owning the repository"),
+			Description:  Ptr("Team owning the repository"),
 		},
 	}
 	if !cmp.Equal(properties, want) {
@@ -87,8 +87,8 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/schema", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -109,12 +109,12 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 	ctx := context.Background()
 	properties, _, err := client.Organizations.CreateOrUpdateCustomProperties(ctx, "o", []*CustomProperty{
 		{
-			PropertyName: String("name"),
+			PropertyName: Ptr("name"),
 			ValueType:    "single_select",
-			Required:     Bool(true),
+			Required:     Ptr(true),
 		},
 		{
-			PropertyName: String("service"),
+			PropertyName: Ptr("service"),
 			ValueType:    "string",
 		},
 	})
@@ -124,12 +124,12 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 
 	want := []*CustomProperty{
 		{
-			PropertyName: String("name"),
+			PropertyName: Ptr("name"),
 			ValueType:    "single_select",
-			Required:     Bool(true),
+			Required:     Ptr(true),
 		},
 		{
-			PropertyName: String("service"),
+			PropertyName: Ptr("service"),
 			ValueType:    "string",
 		},
 	}
@@ -150,8 +150,8 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 }
 
 func TestOrganizationsService_GetCustomProperty(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/schema/name", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -176,13 +176,13 @@ func TestOrganizationsService_GetCustomProperty(t *testing.T) {
 	}
 
 	want := &CustomProperty{
-		PropertyName:     String("name"),
+		PropertyName:     Ptr("name"),
 		ValueType:        "single_select",
-		Required:         Bool(true),
-		DefaultValue:     String("production"),
-		Description:      String("Prod or dev environment"),
+		Required:         Ptr(true),
+		DefaultValue:     Ptr("production"),
+		Description:      Ptr("Prod or dev environment"),
 		AllowedValues:    []string{"production", "development"},
-		ValuesEditableBy: String("org_actors"),
+		ValuesEditableBy: Ptr("org_actors"),
 	}
 	if !cmp.Equal(property, want) {
 		t.Errorf("Organizations.GetCustomProperty returned %+v, want %+v", property, want)
@@ -200,8 +200,8 @@ func TestOrganizationsService_GetCustomProperty(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/schema/name", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -222,24 +222,24 @@ func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
 	ctx := context.Background()
 	property, _, err := client.Organizations.CreateOrUpdateCustomProperty(ctx, "o", "name", &CustomProperty{
 		ValueType:        "single_select",
-		Required:         Bool(true),
-		DefaultValue:     String("production"),
-		Description:      String("Prod or dev environment"),
+		Required:         Ptr(true),
+		DefaultValue:     Ptr("production"),
+		Description:      Ptr("Prod or dev environment"),
 		AllowedValues:    []string{"production", "development"},
-		ValuesEditableBy: String("org_actors"),
+		ValuesEditableBy: Ptr("org_actors"),
 	})
 	if err != nil {
 		t.Errorf("Organizations.CreateOrUpdateCustomProperty returned error: %v", err)
 	}
 
 	want := &CustomProperty{
-		PropertyName:     String("name"),
+		PropertyName:     Ptr("name"),
 		ValueType:        "single_select",
-		Required:         Bool(true),
-		DefaultValue:     String("production"),
-		Description:      String("Prod or dev environment"),
+		Required:         Ptr(true),
+		DefaultValue:     Ptr("production"),
+		Description:      Ptr("Prod or dev environment"),
 		AllowedValues:    []string{"production", "development"},
-		ValuesEditableBy: String("org_actors"),
+		ValuesEditableBy: Ptr("org_actors"),
 	}
 	if !cmp.Equal(property, want) {
 		t.Errorf("Organizations.CreateOrUpdateCustomProperty returned %+v, want %+v", property, want)
@@ -257,8 +257,8 @@ func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveCustomProperty(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/schema/name", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -278,8 +278,8 @@ func TestOrganizationsService_RemoveCustomProperty(t *testing.T) {
 }
 
 func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -365,6 +365,7 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 }
 
 func TestCustomPropertyValue_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		data    string
 		want    *CustomPropertyValue
@@ -422,7 +423,9 @@ func TestCustomPropertyValue_UnmarshalJSON(t *testing.T) {
 	}
 
 	for name, tc := range tests {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			cpv := &CustomPropertyValue{}
 			err := cpv.UnmarshalJSON([]byte(tc.data))
 			if (err != nil) != tc.wantErr {
@@ -437,8 +440,8 @@ func TestCustomPropertyValue_UnmarshalJSON(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateOrUpdateRepoCustomPropertyValues(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -449,7 +452,7 @@ func TestOrganizationsService_CreateOrUpdateRepoCustomPropertyValues(t *testing.
 	_, err := client.Organizations.CreateOrUpdateRepoCustomPropertyValues(ctx, "o", []string{"repo"}, []*CustomPropertyValue{
 		{
 			PropertyName: "service",
-			Value:        String("string"),
+			Value:        Ptr("string"),
 		},
 	})
 	if err != nil {

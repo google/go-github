@@ -17,8 +17,8 @@ import (
 )
 
 func TestActionsService_ListWorkflows(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -34,10 +34,10 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 	}
 
 	want := &Workflows{
-		TotalCount: Int(4),
+		TotalCount: Ptr(4),
 		Workflows: []*Workflow{
-			{ID: Int64(72844), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Int64(72845), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(72844)), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(72845)), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(workflows, want) {
@@ -60,8 +60,8 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -75,7 +75,7 @@ func TestActionsService_GetWorkflowByID(t *testing.T) {
 	}
 
 	want := &Workflow{
-		ID:        Int64(72844),
+		ID:        Ptr(int64(72844)),
 		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
@@ -99,8 +99,8 @@ func TestActionsService_GetWorkflowByID(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowByFileName(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -114,7 +114,7 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 	}
 
 	want := &Workflow{
-		ID:        Int64(72844),
+		ID:        Ptr(int64(72844)),
 		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
@@ -138,8 +138,8 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowUsageByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/timing", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -155,13 +155,13 @@ func TestActionsService_GetWorkflowUsageByID(t *testing.T) {
 	want := &WorkflowUsage{
 		Billable: &WorkflowBillMap{
 			"UBUNTU": &WorkflowBill{
-				TotalMS: Int64(180000),
+				TotalMS: Ptr(int64(180000)),
 			},
 			"MACOS": &WorkflowBill{
-				TotalMS: Int64(240000),
+				TotalMS: Ptr(int64(240000)),
 			},
 			"WINDOWS": &WorkflowBill{
-				TotalMS: Int64(300000),
+				TotalMS: Ptr(int64(300000)),
 			},
 		},
 	}
@@ -185,8 +185,8 @@ func TestActionsService_GetWorkflowUsageByID(t *testing.T) {
 }
 
 func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/timing", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -202,13 +202,13 @@ func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
 	want := &WorkflowUsage{
 		Billable: &WorkflowBillMap{
 			"UBUNTU": &WorkflowBill{
-				TotalMS: Int64(180000),
+				TotalMS: Ptr(int64(180000)),
 			},
 			"MACOS": &WorkflowBill{
-				TotalMS: Int64(240000),
+				TotalMS: Ptr(int64(240000)),
 			},
 			"WINDOWS": &WorkflowBill{
-				TotalMS: Int64(300000),
+				TotalMS: Ptr(int64(300000)),
 			},
 		},
 	}
@@ -232,8 +232,8 @@ func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
 }
 
 func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	event := CreateWorkflowDispatchEventRequest{
 		Ref: "d4cfb6e7",
@@ -276,8 +276,8 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 }
 
 func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	event := CreateWorkflowDispatchEventRequest{
 		Ref: "d4cfb6e7",
@@ -320,8 +320,8 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 }
 
 func TestActionsService_EnableWorkflowByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/enable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -355,8 +355,8 @@ func TestActionsService_EnableWorkflowByID(t *testing.T) {
 }
 
 func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/enable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -390,8 +390,8 @@ func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
 }
 
 func TestActionsService_DisableWorkflowByID(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/disable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -425,8 +425,8 @@ func TestActionsService_DisableWorkflowByID(t *testing.T) {
 }
 
 func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/disable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -460,19 +460,20 @@ func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
 }
 
 func TestWorkflow_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Workflow{}, "{}")
 
 	u := &Workflow{
-		ID:        Int64(1),
-		NodeID:    String("nid"),
-		Name:      String("n"),
-		Path:      String("p"),
-		State:     String("s"),
+		ID:        Ptr(int64(1)),
+		NodeID:    Ptr("nid"),
+		Name:      Ptr("n"),
+		Path:      Ptr("p"),
+		State:     Ptr("s"),
 		CreatedAt: &Timestamp{referenceTime},
 		UpdatedAt: &Timestamp{referenceTime},
-		URL:       String("u"),
-		HTMLURL:   String("h"),
-		BadgeURL:  String("b"),
+		URL:       Ptr("u"),
+		HTMLURL:   Ptr("h"),
+		BadgeURL:  Ptr("b"),
 	}
 
 	want := `{
@@ -492,22 +493,23 @@ func TestWorkflow_Marshal(t *testing.T) {
 }
 
 func TestWorkflows_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Workflows{}, "{}")
 
 	u := &Workflows{
-		TotalCount: Int(1),
+		TotalCount: Ptr(1),
 		Workflows: []*Workflow{
 			{
-				ID:        Int64(1),
-				NodeID:    String("nid"),
-				Name:      String("n"),
-				Path:      String("p"),
-				State:     String("s"),
+				ID:        Ptr(int64(1)),
+				NodeID:    Ptr("nid"),
+				Name:      Ptr("n"),
+				Path:      Ptr("p"),
+				State:     Ptr("s"),
 				CreatedAt: &Timestamp{referenceTime},
 				UpdatedAt: &Timestamp{referenceTime},
-				URL:       String("u"),
-				HTMLURL:   String("h"),
-				BadgeURL:  String("b"),
+				URL:       Ptr("u"),
+				HTMLURL:   Ptr("h"),
+				BadgeURL:  Ptr("b"),
 			},
 		},
 	}
@@ -532,10 +534,11 @@ func TestWorkflows_Marshal(t *testing.T) {
 }
 
 func TestWorkflowBill_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowBill{}, "{}")
 
 	u := &WorkflowBill{
-		TotalMS: Int64(1),
+		TotalMS: Ptr(int64(1)),
 	}
 
 	want := `{
@@ -546,17 +549,18 @@ func TestWorkflowBill_Marshal(t *testing.T) {
 }
 
 func TestWorkflowBillMap_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowBillMap{}, "{}")
 
 	u := &WorkflowBillMap{
 		"UBUNTU": &WorkflowBill{
-			TotalMS: Int64(1),
+			TotalMS: Ptr(int64(1)),
 		},
 		"MACOS": &WorkflowBill{
-			TotalMS: Int64(1),
+			TotalMS: Ptr(int64(1)),
 		},
 		"WINDOWS": &WorkflowBill{
-			TotalMS: Int64(1),
+			TotalMS: Ptr(int64(1)),
 		},
 	}
 
@@ -576,18 +580,19 @@ func TestWorkflowBillMap_Marshal(t *testing.T) {
 }
 
 func TestWorkflowUsage_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &WorkflowUsage{}, "{}")
 
 	u := &WorkflowUsage{
 		Billable: &WorkflowBillMap{
 			"UBUNTU": &WorkflowBill{
-				TotalMS: Int64(1),
+				TotalMS: Ptr(int64(1)),
 			},
 			"MACOS": &WorkflowBill{
-				TotalMS: Int64(1),
+				TotalMS: Ptr(int64(1)),
 			},
 			"WINDOWS": &WorkflowBill{
-				TotalMS: Int64(1),
+				TotalMS: Ptr(int64(1)),
 			},
 		},
 	}
@@ -610,6 +615,7 @@ func TestWorkflowUsage_Marshal(t *testing.T) {
 }
 
 func TestCreateWorkflowDispatchEventRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateWorkflowDispatchEventRequest{}, "{}")
 
 	inputs := make(map[string]interface{}, 0)

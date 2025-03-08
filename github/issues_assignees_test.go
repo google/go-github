@@ -16,8 +16,8 @@ import (
 )
 
 func TestIssuesService_ListAssignees(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/assignees", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -32,7 +32,7 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 		t.Errorf("Issues.ListAssignees returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int64(1)}}
+	want := []*User{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(assignees, want) {
 		t.Errorf("Issues.ListAssignees returned %+v, want %+v", assignees, want)
 	}
@@ -53,8 +53,8 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 }
 
 func TestIssuesService_ListAssignees_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.ListAssignees(ctx, "%", "r", nil)
@@ -62,8 +62,8 @@ func TestIssuesService_ListAssignees_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_IsAssignee_true(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/assignees/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -94,8 +94,8 @@ func TestIssuesService_IsAssignee_true(t *testing.T) {
 }
 
 func TestIssuesService_IsAssignee_false(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/assignees/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -127,8 +127,8 @@ func TestIssuesService_IsAssignee_false(t *testing.T) {
 }
 
 func TestIssuesService_IsAssignee_error(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/assignees/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -160,8 +160,8 @@ func TestIssuesService_IsAssignee_error(t *testing.T) {
 }
 
 func TestIssuesService_IsAssignee_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.IsAssignee(ctx, "%", "r", "u")
@@ -169,8 +169,8 @@ func TestIssuesService_IsAssignee_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_AddAssignees(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/assignees", func(w http.ResponseWriter, r *http.Request) {
 		var assignees struct {
@@ -192,7 +192,7 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 		t.Errorf("Issues.AddAssignees returned error: %v", err)
 	}
 
-	want := &Issue{Number: Int(1), Assignees: []*User{{Login: String("user1")}, {Login: String("user2")}}}
+	want := &Issue{Number: Ptr(1), Assignees: []*User{{Login: Ptr("user1")}, {Login: Ptr("user2")}}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Issues.AddAssignees = %+v, want %+v", got, want)
 	}
@@ -213,8 +213,8 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 }
 
 func TestIssuesService_RemoveAssignees(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/assignees", func(w http.ResponseWriter, r *http.Request) {
 		var assignees struct {
@@ -236,7 +236,7 @@ func TestIssuesService_RemoveAssignees(t *testing.T) {
 		t.Errorf("Issues.RemoveAssignees returned error: %v", err)
 	}
 
-	want := &Issue{Number: Int(1), Assignees: []*User{}}
+	want := &Issue{Number: Ptr(1), Assignees: []*User{}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Issues.RemoveAssignees = %+v, want %+v", got, want)
 	}

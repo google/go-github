@@ -17,6 +17,7 @@ import (
 )
 
 func TestCodeScanningService_Alert_ID(t *testing.T) {
+	t.Parallel()
 	// Test: nil Alert ID == 0
 	var a *Alert
 	id := a.ID()
@@ -27,7 +28,7 @@ func TestCodeScanningService_Alert_ID(t *testing.T) {
 
 	// Test: Valid HTMLURL
 	a = &Alert{
-		HTMLURL: String("https://github.com/o/r/security/code-scanning/88"),
+		HTMLURL: Ptr("https://github.com/o/r/security/code-scanning/88"),
 	}
 	id = a.ID()
 	want = 88
@@ -45,7 +46,7 @@ func TestCodeScanningService_Alert_ID(t *testing.T) {
 
 	// Test: ID can't be parsed as an int
 	a = &Alert{
-		HTMLURL: String("https://github.com/o/r/security/code-scanning/bad88"),
+		HTMLURL: Ptr("https://github.com/o/r/security/code-scanning/bad88"),
 	}
 	id = a.ID()
 	want = 0
@@ -55,19 +56,19 @@ func TestCodeScanningService_Alert_ID(t *testing.T) {
 }
 
 func TestCodeScanningService_UploadSarif(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	expectedSarifID := &SarifID{
-		ID:  String("testid"),
-		URL: String("https://example.com/testurl"),
+		ID:  Ptr("testid"),
+		URL: Ptr("https://example.com/testurl"),
 	}
 
 	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
 		v := new(SarifAnalysis)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		testMethod(t, r, "POST")
-		want := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: String("codeql-cli")}
+		want := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -78,7 +79,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	sarifAnalysis := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: String("codeql-cli")}
+	sarifAnalysis := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
 	respSarifID, _, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
 	if err != nil {
 		t.Errorf("CodeScanning.UploadSarif returned error: %v", err)
@@ -100,8 +101,8 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 }
 
 func TestCodeScanningService_GetSARIF(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/sarifs/abc", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -118,8 +119,8 @@ func TestCodeScanningService_GetSARIF(t *testing.T) {
 	}
 
 	want := &SARIFUpload{
-		ProcessingStatus: String("s"),
-		AnalysesURL:      String("u"),
+		ProcessingStatus: Ptr("s"),
+		AnalysesURL:      Ptr("u"),
 	}
 	if !cmp.Equal(sarifUpload, want) {
 		t.Errorf("CodeScanning.GetSARIF returned %+v, want %+v", sarifUpload, want)
@@ -141,12 +142,12 @@ func TestCodeScanningService_GetSARIF(t *testing.T) {
 }
 
 func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "severity": "warning", "tool_name": "CodeQL"})
+		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "severity": "warning", "tool_name": "CodeQL", "tool_guid": "guid", "direction": "asc", "sort": "updated"})
 		fmt.Fprint(w, `[{
 				"repository": {
 					"id": 1,
@@ -158,7 +159,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 				"rule_description":"Useless conditional",
 				"tool": {
 					"name": "CodeQL",
-					"guid": null,
+					"guid": "guid",
 					"version": "1.4.0"
 				},
 				"rule": {
@@ -238,7 +239,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 				}]`)
 	})
 
-	opts := &AlertListOptions{State: "open", Ref: "heads/master", Severity: "warning", ToolName: "CodeQL"}
+	opts := &AlertListOptions{State: "open", Ref: "heads/master", Severity: "warning", ToolName: "CodeQL", ToolGUID: "guid", Direction: "asc", Sort: "updated"}
 	ctx := context.Background()
 	alerts, _, err := client.CodeScanning.ListAlertsForOrg(ctx, "o", opts)
 	if err != nil {
@@ -249,77 +250,77 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 	want := []*Alert{
 		{
 			Repository: &Repository{
-				ID:   Int64(1),
-				URL:  String("url"),
-				Name: String("n"),
+				ID:   Ptr(int64(1)),
+				URL:  Ptr("url"),
+				Name: Ptr("n"),
 			},
-			RuleID:          String("js/trivial-conditional"),
-			RuleSeverity:    String("warning"),
-			RuleDescription: String("Useless conditional"),
-			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
+			RuleID:          Ptr("js/trivial-conditional"),
+			RuleSeverity:    Ptr("warning"),
+			RuleDescription: Ptr("Useless conditional"),
+			Tool:            &Tool{Name: Ptr("CodeQL"), GUID: Ptr("guid"), Version: Ptr("1.4.0")},
 			Rule: &Rule{
-				ID:              String("js/trivial-conditional"),
-				Severity:        String("warning"),
-				Description:     String("Useless conditional"),
-				Name:            String("js/trivial-conditional"),
-				FullDescription: String("Expression has no effect"),
-				Help:            String("Expression has no effect"),
+				ID:              Ptr("js/trivial-conditional"),
+				Severity:        Ptr("warning"),
+				Description:     Ptr("Useless conditional"),
+				Name:            Ptr("js/trivial-conditional"),
+				FullDescription: Ptr("Expression has no effect"),
+				Help:            Ptr("Expression has no effect"),
 			},
 			CreatedAt: &date,
-			State:     String("open"),
+			State:     Ptr("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
-			URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/25"),
-			HTMLURL:   String("https://github.com/o/r/security/code-scanning/25"),
+			URL:       Ptr("https://api.github.com/repos/o/r/code-scanning/alerts/25"),
+			HTMLURL:   Ptr("https://github.com/o/r/security/code-scanning/25"),
 			MostRecentInstance: &MostRecentInstance{
-				Ref:       String("refs/heads/main"),
-				State:     String("open"),
-				CommitSHA: String("abcdefg12345"),
+				Ref:       Ptr("refs/heads/main"),
+				State:     Ptr("open"),
+				CommitSHA: Ptr("abcdefg12345"),
 				Message: &Message{
-					Text: String("This path depends on a user-provided value."),
+					Text: Ptr("This path depends on a user-provided value."),
 				},
 				Location: &Location{
-					Path:        String("spec-main/api-session-spec.ts"),
-					StartLine:   Int(917),
-					EndLine:     Int(917),
-					StartColumn: Int(7),
-					EndColumn:   Int(18),
+					Path:        Ptr("spec-main/api-session-spec.ts"),
+					StartLine:   Ptr(917),
+					EndLine:     Ptr(917),
+					StartColumn: Ptr(7),
+					EndColumn:   Ptr(18),
 				},
 				Classifications: []string{"test"},
 			},
 		},
 		{
-			RuleID:          String("js/useless-expression"),
-			RuleSeverity:    String("warning"),
-			RuleDescription: String("Expression has no effect"),
-			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
+			RuleID:          Ptr("js/useless-expression"),
+			RuleSeverity:    Ptr("warning"),
+			RuleDescription: Ptr("Expression has no effect"),
+			Tool:            &Tool{Name: Ptr("CodeQL"), GUID: nil, Version: Ptr("1.4.0")},
 			Rule: &Rule{
-				ID:              String("js/useless-expression"),
-				Severity:        String("warning"),
-				Description:     String("Expression has no effect"),
-				Name:            String("js/useless-expression"),
-				FullDescription: String("Expression has no effect"),
-				Help:            String("Expression has no effect"),
+				ID:              Ptr("js/useless-expression"),
+				Severity:        Ptr("warning"),
+				Description:     Ptr("Expression has no effect"),
+				Name:            Ptr("js/useless-expression"),
+				FullDescription: Ptr("Expression has no effect"),
+				Help:            Ptr("Expression has no effect"),
 			},
 			CreatedAt: &date,
-			State:     String("open"),
+			State:     Ptr("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
-			URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
-			HTMLURL:   String("https://github.com/o/r/security/code-scanning/88"),
+			URL:       Ptr("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
+			HTMLURL:   Ptr("https://github.com/o/r/security/code-scanning/88"),
 			MostRecentInstance: &MostRecentInstance{
-				Ref:       String("refs/heads/main"),
-				State:     String("open"),
-				CommitSHA: String("abcdefg12345"),
+				Ref:       Ptr("refs/heads/main"),
+				State:     Ptr("open"),
+				CommitSHA: Ptr("abcdefg12345"),
 				Message: &Message{
-					Text: String("This path depends on a user-provided value."),
+					Text: Ptr("This path depends on a user-provided value."),
 				},
 				Location: &Location{
-					Path:        String("spec-main/api-session-spec.ts"),
-					StartLine:   Int(917),
-					EndLine:     Int(917),
-					StartColumn: Int(7),
-					EndColumn:   Int(18),
+					Path:        Ptr("spec-main/api-session-spec.ts"),
+					StartLine:   Ptr(917),
+					EndLine:     Ptr(917),
+					StartColumn: Ptr(7),
+					EndColumn:   Ptr(18),
 				},
 				Classifications: []string{"test"},
 			},
@@ -345,8 +346,8 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 }
 
 func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -411,41 +412,41 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 	want := []*Alert{
 		{
 			Repository: &Repository{
-				ID:   Int64(1),
-				URL:  String("url"),
-				Name: String("n"),
+				ID:   Ptr(int64(1)),
+				URL:  Ptr("url"),
+				Name: Ptr("n"),
 			},
-			RuleID:          String("js/trivial-conditional"),
-			RuleSeverity:    String("warning"),
-			RuleDescription: String("Useless conditional"),
-			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
+			RuleID:          Ptr("js/trivial-conditional"),
+			RuleSeverity:    Ptr("warning"),
+			RuleDescription: Ptr("Useless conditional"),
+			Tool:            &Tool{Name: Ptr("CodeQL"), GUID: nil, Version: Ptr("1.4.0")},
 			Rule: &Rule{
-				ID:              String("js/trivial-conditional"),
-				Severity:        String("warning"),
-				Description:     String("Useless conditional"),
-				Name:            String("js/trivial-conditional"),
-				FullDescription: String("Expression has no effect"),
-				Help:            String("Expression has no effect"),
+				ID:              Ptr("js/trivial-conditional"),
+				Severity:        Ptr("warning"),
+				Description:     Ptr("Useless conditional"),
+				Name:            Ptr("js/trivial-conditional"),
+				FullDescription: Ptr("Expression has no effect"),
+				Help:            Ptr("Expression has no effect"),
 			},
 			CreatedAt: &date,
-			State:     String("open"),
+			State:     Ptr("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
-			URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/25"),
-			HTMLURL:   String("https://github.com/o/r/security/code-scanning/25"),
+			URL:       Ptr("https://api.github.com/repos/o/r/code-scanning/alerts/25"),
+			HTMLURL:   Ptr("https://github.com/o/r/security/code-scanning/25"),
 			MostRecentInstance: &MostRecentInstance{
-				Ref:       String("refs/heads/main"),
-				State:     String("open"),
-				CommitSHA: String("abcdefg12345"),
+				Ref:       Ptr("refs/heads/main"),
+				State:     Ptr("open"),
+				CommitSHA: Ptr("abcdefg12345"),
 				Message: &Message{
-					Text: String("This path depends on a user-provided value."),
+					Text: Ptr("This path depends on a user-provided value."),
 				},
 				Location: &Location{
-					Path:        String("spec-main/api-session-spec.ts"),
-					StartLine:   Int(917),
-					EndLine:     Int(917),
-					StartColumn: Int(7),
-					EndColumn:   Int(18),
+					Path:        Ptr("spec-main/api-session-spec.ts"),
+					StartLine:   Ptr(917),
+					EndLine:     Ptr(917),
+					StartColumn: Ptr(7),
+					EndColumn:   Ptr(18),
 				},
 				Classifications: []string{"test"},
 			},
@@ -471,19 +472,19 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 }
 
 func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "severity": "warning", "tool_name": "CodeQL"})
+		testFormValues(t, r, values{"state": "open", "ref": "heads/master", "severity": "warning", "tool_name": "CodeQL", "tool_guid": "guid", "direction": "asc", "sort": "updated"})
 		fmt.Fprint(w, `[{
 				"rule_id":"js/trivial-conditional",
 				"rule_severity":"warning",
 				"rule_description":"Useless conditional",
 				"tool": {
 					"name": "CodeQL",
-					"guid": null,
+					"guid": "guid",
 					"version": "1.4.0"
 				},
 				"rule": {
@@ -525,7 +526,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 				"rule_description":"Expression has no effect",
 				"tool": {
 					"name": "CodeQL",
-					"guid": null,
+					"guid": "guid",
 					"version": "1.4.0"
 				},
 				"rule": {
@@ -563,7 +564,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 				}]`)
 	})
 
-	opts := &AlertListOptions{State: "open", Ref: "heads/master", Severity: "warning", ToolName: "CodeQL"}
+	opts := &AlertListOptions{State: "open", Ref: "heads/master", Severity: "warning", ToolName: "CodeQL", ToolGUID: "guid", Direction: "asc", Sort: "updated"}
 	ctx := context.Background()
 	alerts, _, err := client.CodeScanning.ListAlertsForRepo(ctx, "o", "r", opts)
 	if err != nil {
@@ -573,73 +574,73 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 	date := Timestamp{time.Date(2020, time.May, 06, 12, 00, 00, 0, time.UTC)}
 	want := []*Alert{
 		{
-			RuleID:          String("js/trivial-conditional"),
-			RuleSeverity:    String("warning"),
-			RuleDescription: String("Useless conditional"),
-			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
+			RuleID:          Ptr("js/trivial-conditional"),
+			RuleSeverity:    Ptr("warning"),
+			RuleDescription: Ptr("Useless conditional"),
+			Tool:            &Tool{Name: Ptr("CodeQL"), GUID: Ptr("guid"), Version: Ptr("1.4.0")},
 			Rule: &Rule{
-				ID:              String("js/trivial-conditional"),
-				Severity:        String("warning"),
-				Description:     String("Useless conditional"),
-				Name:            String("js/trivial-conditional"),
-				FullDescription: String("Expression has no effect"),
-				Help:            String("Expression has no effect"),
+				ID:              Ptr("js/trivial-conditional"),
+				Severity:        Ptr("warning"),
+				Description:     Ptr("Useless conditional"),
+				Name:            Ptr("js/trivial-conditional"),
+				FullDescription: Ptr("Expression has no effect"),
+				Help:            Ptr("Expression has no effect"),
 			},
 			CreatedAt: &date,
-			State:     String("open"),
+			State:     Ptr("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
-			URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/25"),
-			HTMLURL:   String("https://github.com/o/r/security/code-scanning/25"),
+			URL:       Ptr("https://api.github.com/repos/o/r/code-scanning/alerts/25"),
+			HTMLURL:   Ptr("https://github.com/o/r/security/code-scanning/25"),
 			MostRecentInstance: &MostRecentInstance{
-				Ref:       String("refs/heads/main"),
-				State:     String("open"),
-				CommitSHA: String("abcdefg12345"),
+				Ref:       Ptr("refs/heads/main"),
+				State:     Ptr("open"),
+				CommitSHA: Ptr("abcdefg12345"),
 				Message: &Message{
-					Text: String("This path depends on a user-provided value."),
+					Text: Ptr("This path depends on a user-provided value."),
 				},
 				Location: &Location{
-					Path:        String("spec-main/api-session-spec.ts"),
-					StartLine:   Int(917),
-					EndLine:     Int(917),
-					StartColumn: Int(7),
-					EndColumn:   Int(18),
+					Path:        Ptr("spec-main/api-session-spec.ts"),
+					StartLine:   Ptr(917),
+					EndLine:     Ptr(917),
+					StartColumn: Ptr(7),
+					EndColumn:   Ptr(18),
 				},
 				Classifications: []string{"test"},
 			},
 		},
 		{
-			RuleID:          String("js/useless-expression"),
-			RuleSeverity:    String("warning"),
-			RuleDescription: String("Expression has no effect"),
-			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
+			RuleID:          Ptr("js/useless-expression"),
+			RuleSeverity:    Ptr("warning"),
+			RuleDescription: Ptr("Expression has no effect"),
+			Tool:            &Tool{Name: Ptr("CodeQL"), GUID: Ptr("guid"), Version: Ptr("1.4.0")},
 			Rule: &Rule{
-				ID:              String("js/useless-expression"),
-				Severity:        String("warning"),
-				Description:     String("Expression has no effect"),
-				Name:            String("js/useless-expression"),
-				FullDescription: String("Expression has no effect"),
-				Help:            String("Expression has no effect"),
+				ID:              Ptr("js/useless-expression"),
+				Severity:        Ptr("warning"),
+				Description:     Ptr("Expression has no effect"),
+				Name:            Ptr("js/useless-expression"),
+				FullDescription: Ptr("Expression has no effect"),
+				Help:            Ptr("Expression has no effect"),
 			},
 			CreatedAt: &date,
-			State:     String("open"),
+			State:     Ptr("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
-			URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
-			HTMLURL:   String("https://github.com/o/r/security/code-scanning/88"),
+			URL:       Ptr("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
+			HTMLURL:   Ptr("https://github.com/o/r/security/code-scanning/88"),
 			MostRecentInstance: &MostRecentInstance{
-				Ref:       String("refs/heads/main"),
-				State:     String("open"),
-				CommitSHA: String("abcdefg12345"),
+				Ref:       Ptr("refs/heads/main"),
+				State:     Ptr("open"),
+				CommitSHA: Ptr("abcdefg12345"),
 				Message: &Message{
-					Text: String("This path depends on a user-provided value."),
+					Text: Ptr("This path depends on a user-provided value."),
 				},
 				Location: &Location{
-					Path:        String("spec-main/api-session-spec.ts"),
-					StartLine:   Int(917),
-					EndLine:     Int(917),
-					StartColumn: Int(7),
-					EndColumn:   Int(18),
+					Path:        Ptr("spec-main/api-session-spec.ts"),
+					StartLine:   Ptr(917),
+					EndLine:     Ptr(917),
+					StartColumn: Ptr(7),
+					EndColumn:   Ptr(18),
 				},
 				Classifications: []string{"test"},
 			},
@@ -665,8 +666,9 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 }
 
 func TestCodeScanningService_UpdateAlert(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts/88", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"rule_id":"js/useless-expression",
@@ -714,9 +716,9 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	dismissedComment := String("This alert is not actually correct as sanitizer is used")
-	dismissedReason := String("false positive")
-	state := String("dismissed")
+	dismissedComment := Ptr("This alert is not actually correct as sanitizer is used")
+	dismissedReason := Ptr("false positive")
+	state := Ptr("dismissed")
 	stateInfo := &CodeScanningAlertState{State: *state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
 	alert, _, err := client.CodeScanning.UpdateAlert(ctx, "o", "r", 88, stateInfo)
 	if err != nil {
@@ -725,17 +727,17 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 
 	date := Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}
 	want := &Alert{
-		RuleID:          String("js/useless-expression"),
-		RuleSeverity:    String("warning"),
-		RuleDescription: String("Expression has no effect"),
-		Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
+		RuleID:          Ptr("js/useless-expression"),
+		RuleSeverity:    Ptr("warning"),
+		RuleDescription: Ptr("Expression has no effect"),
+		Tool:            &Tool{Name: Ptr("CodeQL"), GUID: nil, Version: Ptr("1.4.0")},
 		Rule: &Rule{
-			ID:              String("useless expression"),
-			Severity:        String("warning"),
-			Description:     String("Expression has no effect"),
-			Name:            String("useless expression"),
-			FullDescription: String("Expression has no effect"),
-			Help:            String("Expression has no effect"),
+			ID:              Ptr("useless expression"),
+			Severity:        Ptr("warning"),
+			Description:     Ptr("Expression has no effect"),
+			Name:            Ptr("useless expression"),
+			FullDescription: Ptr("Expression has no effect"),
+			Help:            Ptr("Expression has no effect"),
 		},
 		CreatedAt:        &date,
 		State:            state,
@@ -743,21 +745,21 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 		DismissedComment: dismissedComment,
 		ClosedBy:         nil,
 		ClosedAt:         nil,
-		URL:              String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
-		HTMLURL:          String("https://github.com/o/r/security/code-scanning/88"),
+		URL:              Ptr("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
+		HTMLURL:          Ptr("https://github.com/o/r/security/code-scanning/88"),
 		MostRecentInstance: &MostRecentInstance{
-			Ref:       String("refs/heads/main"),
-			State:     String("dismissed"),
-			CommitSHA: String("abcdefg12345"),
+			Ref:       Ptr("refs/heads/main"),
+			State:     Ptr("dismissed"),
+			CommitSHA: Ptr("abcdefg12345"),
 			Message: &Message{
-				Text: String("This path depends on a user-provided value."),
+				Text: Ptr("This path depends on a user-provided value."),
 			},
 			Location: &Location{
-				Path:        String("spec-main/api-session-spec.ts"),
-				StartLine:   Int(917),
-				EndLine:     Int(917),
-				StartColumn: Int(7),
-				EndColumn:   Int(18),
+				Path:        Ptr("spec-main/api-session-spec.ts"),
+				StartLine:   Ptr(917),
+				EndLine:     Ptr(917),
+				StartColumn: Ptr(7),
+				EndColumn:   Ptr(18),
 			},
 			Classifications: []string{"test"},
 		},
@@ -782,8 +784,8 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 }
 
 func TestCodeScanningService_ListAlertInstances(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts/88/instances", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -822,21 +824,21 @@ func TestCodeScanningService_ListAlertInstances(t *testing.T) {
 
 	want := []*MostRecentInstance{
 		{
-			Ref:         String("refs/heads/main"),
-			AnalysisKey: String(".github/workflows/codeql-analysis.yml:analyze"),
-			Category:    String(".github/workflows/codeql-analysis.yml:analyze"),
-			Environment: String(""),
-			State:       String("open"),
-			CommitSHA:   String("abcdefg12345"),
+			Ref:         Ptr("refs/heads/main"),
+			AnalysisKey: Ptr(".github/workflows/codeql-analysis.yml:analyze"),
+			Category:    Ptr(".github/workflows/codeql-analysis.yml:analyze"),
+			Environment: Ptr(""),
+			State:       Ptr("open"),
+			CommitSHA:   Ptr("abcdefg12345"),
 			Message: &Message{
-				Text: String("This path depends on a user-provided value."),
+				Text: Ptr("This path depends on a user-provided value."),
 			},
 			Location: &Location{
-				Path:        String("spec-main/api-session-spec.ts"),
-				StartLine:   Int(917),
-				EndLine:     Int(917),
-				StartColumn: Int(7),
-				EndColumn:   Int(18),
+				Path:        Ptr("spec-main/api-session-spec.ts"),
+				StartLine:   Ptr(917),
+				EndLine:     Ptr(917),
+				StartColumn: Ptr(7),
+				EndColumn:   Ptr(18),
 			},
 			Classifications: []string{"test"},
 		},
@@ -861,8 +863,8 @@ func TestCodeScanningService_ListAlertInstances(t *testing.T) {
 }
 
 func TestCodeScanningService_GetAlert(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts/88", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -918,37 +920,37 @@ func TestCodeScanningService_GetAlert(t *testing.T) {
 
 	date := Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}
 	want := &Alert{
-		RuleID:          String("js/useless-expression"),
-		RuleSeverity:    String("warning"),
-		RuleDescription: String("Expression has no effect"),
-		Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
+		RuleID:          Ptr("js/useless-expression"),
+		RuleSeverity:    Ptr("warning"),
+		RuleDescription: Ptr("Expression has no effect"),
+		Tool:            &Tool{Name: Ptr("CodeQL"), GUID: nil, Version: Ptr("1.4.0")},
 		Rule: &Rule{
-			ID:              String("useless expression"),
-			Severity:        String("warning"),
-			Description:     String("Expression has no effect"),
-			Name:            String("useless expression"),
-			FullDescription: String("Expression has no effect"),
-			Help:            String("Expression has no effect"),
+			ID:              Ptr("useless expression"),
+			Severity:        Ptr("warning"),
+			Description:     Ptr("Expression has no effect"),
+			Name:            Ptr("useless expression"),
+			FullDescription: Ptr("Expression has no effect"),
+			Help:            Ptr("Expression has no effect"),
 		},
 		CreatedAt: &date,
-		State:     String("open"),
+		State:     Ptr("open"),
 		ClosedBy:  nil,
 		ClosedAt:  nil,
-		URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
-		HTMLURL:   String("https://github.com/o/r/security/code-scanning/88"),
+		URL:       Ptr("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
+		HTMLURL:   Ptr("https://github.com/o/r/security/code-scanning/88"),
 		MostRecentInstance: &MostRecentInstance{
-			Ref:       String("refs/heads/main"),
-			State:     String("open"),
-			CommitSHA: String("abcdefg12345"),
+			Ref:       Ptr("refs/heads/main"),
+			State:     Ptr("open"),
+			CommitSHA: Ptr("abcdefg12345"),
 			Message: &Message{
-				Text: String("This path depends on a user-provided value."),
+				Text: Ptr("This path depends on a user-provided value."),
 			},
 			Location: &Location{
-				Path:        String("spec-main/api-session-spec.ts"),
-				StartLine:   Int(917),
-				EndLine:     Int(917),
-				StartColumn: Int(7),
-				EndColumn:   Int(18),
+				Path:        Ptr("spec-main/api-session-spec.ts"),
+				StartLine:   Ptr(917),
+				EndLine:     Ptr(917),
+				StartColumn: Ptr(7),
+				EndColumn:   Ptr(18),
 			},
 			Classifications: []string{"test"},
 		},
@@ -973,31 +975,32 @@ func TestCodeScanningService_GetAlert(t *testing.T) {
 }
 
 func TestAlert_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Alert{}, "{}")
 
 	u := &Alert{
-		RuleID:          String("rid"),
-		RuleSeverity:    String("rs"),
-		RuleDescription: String("rd"),
+		RuleID:          Ptr("rid"),
+		RuleSeverity:    Ptr("rs"),
+		RuleDescription: Ptr("rd"),
 		Tool: &Tool{
-			Name:    String("n"),
-			GUID:    String("g"),
-			Version: String("v"),
+			Name:    Ptr("n"),
+			GUID:    Ptr("g"),
+			Version: Ptr("v"),
 		},
 		CreatedAt: &Timestamp{referenceTime},
-		State:     String("fixed"),
+		State:     Ptr("fixed"),
 		ClosedBy: &User{
-			Login:     String("l"),
-			ID:        Int64(1),
-			NodeID:    String("n"),
-			URL:       String("u"),
-			ReposURL:  String("r"),
-			EventsURL: String("e"),
-			AvatarURL: String("a"),
+			Login:     Ptr("l"),
+			ID:        Ptr(int64(1)),
+			NodeID:    Ptr("n"),
+			URL:       Ptr("u"),
+			ReposURL:  Ptr("r"),
+			EventsURL: Ptr("e"),
+			AvatarURL: Ptr("a"),
 		},
 		ClosedAt: &Timestamp{referenceTime},
-		URL:      String("url"),
-		HTMLURL:  String("hurl"),
+		URL:      Ptr("url"),
+		HTMLURL:  Ptr("hurl"),
 	}
 
 	want := `{
@@ -1029,14 +1032,15 @@ func TestAlert_Marshal(t *testing.T) {
 }
 
 func TestLocation_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Location{}, "{}")
 
 	u := &Location{
-		Path:        String("path"),
-		StartLine:   Int(1),
-		EndLine:     Int(2),
-		StartColumn: Int(3),
-		EndColumn:   Int(4),
+		Path:        Ptr("path"),
+		StartLine:   Ptr(1),
+		EndLine:     Ptr(2),
+		StartColumn: Ptr(3),
+		EndColumn:   Ptr(4),
 	}
 
 	want := `{
@@ -1051,17 +1055,18 @@ func TestLocation_Marshal(t *testing.T) {
 }
 
 func TestRule_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Rule{}, "{}")
 
 	u := &Rule{
-		ID:                    String("1"),
-		Severity:              String("3"),
-		Description:           String("description"),
-		Name:                  String("first"),
-		SecuritySeverityLevel: String("2"),
-		FullDescription:       String("summary"),
+		ID:                    Ptr("1"),
+		Severity:              Ptr("3"),
+		Description:           Ptr("description"),
+		Name:                  Ptr("first"),
+		SecuritySeverityLevel: Ptr("2"),
+		FullDescription:       Ptr("summary"),
 		Tags:                  []string{"tag1", "tag2"},
-		Help:                  String("Help Text"),
+		Help:                  Ptr("Help Text"),
 	}
 
 	want := `{
@@ -1079,12 +1084,13 @@ func TestRule_Marshal(t *testing.T) {
 }
 
 func TestTool_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Tool{}, "{}")
 
 	u := &Tool{
-		Name:    String("name"),
-		GUID:    String("guid"),
-		Version: String("ver"),
+		Name:    Ptr("name"),
+		GUID:    Ptr("guid"),
+		Version: Ptr("ver"),
 	}
 
 	want := `{
@@ -1097,10 +1103,11 @@ func TestTool_Marshal(t *testing.T) {
 }
 
 func TestMessage_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Message{}, "{}")
 
 	u := &Message{
-		Text: String("text"),
+		Text: Ptr("text"),
 	}
 
 	want := `{
@@ -1111,8 +1118,8 @@ func TestMessage_Marshal(t *testing.T) {
 }
 
 func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/analyses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1163,7 +1170,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 			]`)
 	})
 
-	opts := &AnalysesListOptions{SarifID: String("8981cd8e-b078-4ac3-a3be-1dad7dbd0b582"), Ref: String("heads/master")}
+	opts := &AnalysesListOptions{SarifID: Ptr("8981cd8e-b078-4ac3-a3be-1dad7dbd0b582"), Ref: Ptr("heads/master")}
 	ctx := context.Background()
 	analyses, _, err := client.CodeScanning.ListAnalysesForRepo(ctx, "o", "r", opts)
 	if err != nil {
@@ -1173,46 +1180,46 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 	date := &Timestamp{time.Date(2020, time.August, 27, 15, 05, 21, 0, time.UTC)}
 	want := []*ScanningAnalysis{
 		{
-			ID:           Int64(201),
-			Ref:          String("refs/heads/main"),
-			CommitSHA:    String("d99612c3e1f2970085cfbaeadf8f010ef69bad83"),
-			AnalysisKey:  String(".github/workflows/codeql-analysis.yml:analyze"),
-			Environment:  String("{\"language\":\"python\"}"),
-			Error:        String(""),
-			Category:     String(".github/workflows/codeql-analysis.yml:analyze/language:python"),
+			ID:           Ptr(int64(201)),
+			Ref:          Ptr("refs/heads/main"),
+			CommitSHA:    Ptr("d99612c3e1f2970085cfbaeadf8f010ef69bad83"),
+			AnalysisKey:  Ptr(".github/workflows/codeql-analysis.yml:analyze"),
+			Environment:  Ptr("{\"language\":\"python\"}"),
+			Error:        Ptr(""),
+			Category:     Ptr(".github/workflows/codeql-analysis.yml:analyze/language:python"),
 			CreatedAt:    date,
-			ResultsCount: Int(17),
-			RulesCount:   Int(49),
-			URL:          String("https://api.github.com/repos/o/r/code-scanning/analyses/201"),
-			SarifID:      String("8981cd8e-b078-4ac3-a3be-1dad7dbd0b582"),
+			ResultsCount: Ptr(17),
+			RulesCount:   Ptr(49),
+			URL:          Ptr("https://api.github.com/repos/o/r/code-scanning/analyses/201"),
+			SarifID:      Ptr("8981cd8e-b078-4ac3-a3be-1dad7dbd0b582"),
 			Tool: &Tool{
-				Name:    String("CodeQL"),
+				Name:    Ptr("CodeQL"),
 				GUID:    nil,
-				Version: String("2.4.0"),
+				Version: Ptr("2.4.0"),
 			},
-			Deletable: Bool(true),
-			Warning:   String(""),
+			Deletable: Ptr(true),
+			Warning:   Ptr(""),
 		},
 		{
-			ID:           Int64(200),
-			Ref:          String("refs/heads/my-branch"),
-			CommitSHA:    String("c8cff6510d4d084fb1b4aa13b64b97ca12b07321"),
-			AnalysisKey:  String(".github/workflows/shiftleft.yml:build"),
-			Environment:  String("{}"),
-			Error:        String(""),
-			Category:     String(".github/workflows/shiftleft.yml:build/"),
+			ID:           Ptr(int64(200)),
+			Ref:          Ptr("refs/heads/my-branch"),
+			CommitSHA:    Ptr("c8cff6510d4d084fb1b4aa13b64b97ca12b07321"),
+			AnalysisKey:  Ptr(".github/workflows/shiftleft.yml:build"),
+			Environment:  Ptr("{}"),
+			Error:        Ptr(""),
+			Category:     Ptr(".github/workflows/shiftleft.yml:build/"),
 			CreatedAt:    date,
-			ResultsCount: Int(17),
-			RulesCount:   Int(32),
-			URL:          String("https://api.github.com/repos/o/r/code-scanning/analyses/200"),
-			SarifID:      String("8981cd8e-b078-4ac3-a3be-1dad7dbd0b582"),
+			ResultsCount: Ptr(17),
+			RulesCount:   Ptr(32),
+			URL:          Ptr("https://api.github.com/repos/o/r/code-scanning/analyses/200"),
+			SarifID:      Ptr("8981cd8e-b078-4ac3-a3be-1dad7dbd0b582"),
 			Tool: &Tool{
-				Name:    String("Python Security ScanningAnalysis"),
+				Name:    Ptr("Python Security ScanningAnalysis"),
 				GUID:    nil,
-				Version: String("1.2.0"),
+				Version: Ptr("1.2.0"),
 			},
-			Deletable: Bool(true),
-			Warning:   String(""),
+			Deletable: Ptr(true),
+			Warning:   Ptr(""),
 		},
 	}
 	if !cmp.Equal(analyses, want) {
@@ -1235,8 +1242,8 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 }
 
 func TestCodeScanningService_GetAnalysis(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/analyses/3602840", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1271,25 +1278,25 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 
 	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
 	want := &ScanningAnalysis{
-		ID:           Int64(3602840),
-		Ref:          String("refs/heads/main"),
-		CommitSHA:    String("c18c69115654ff0166991962832dc2bd7756e655"),
-		AnalysisKey:  String(".github/workflows/codeql-analysis.yml:analyze"),
-		Environment:  String("{\"language\":\"javascript\"}"),
-		Error:        String(""),
-		Category:     String(".github/workflows/codeql-analysis.yml:analyze/language:javascript"),
+		ID:           Ptr(int64(3602840)),
+		Ref:          Ptr("refs/heads/main"),
+		CommitSHA:    Ptr("c18c69115654ff0166991962832dc2bd7756e655"),
+		AnalysisKey:  Ptr(".github/workflows/codeql-analysis.yml:analyze"),
+		Environment:  Ptr("{\"language\":\"javascript\"}"),
+		Error:        Ptr(""),
+		Category:     Ptr(".github/workflows/codeql-analysis.yml:analyze/language:javascript"),
 		CreatedAt:    date,
-		ResultsCount: Int(3),
-		RulesCount:   Int(67),
-		URL:          String("https://api.github.com/repos/o/r/code-scanning/analyses/201"),
-		SarifID:      String("47177e22-5596-11eb-80a1-c1e54ef945c6"),
+		ResultsCount: Ptr(3),
+		RulesCount:   Ptr(67),
+		URL:          Ptr("https://api.github.com/repos/o/r/code-scanning/analyses/201"),
+		SarifID:      Ptr("47177e22-5596-11eb-80a1-c1e54ef945c6"),
 		Tool: &Tool{
-			Name:    String("CodeQL"),
+			Name:    Ptr("CodeQL"),
 			GUID:    nil,
-			Version: String("2.4.0"),
+			Version: Ptr("2.4.0"),
 		},
-		Deletable: Bool(true),
-		Warning:   String(""),
+		Deletable: Ptr(true),
+		Warning:   Ptr(""),
 	}
 	if !cmp.Equal(analysis, want) {
 		t.Errorf("CodeScanning.GetAnalysis returned %+v, want %+v", analysis, want)
@@ -1311,8 +1318,8 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 }
 
 func TestCodeScanningService_DeleteAnalysis(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/analyses/40", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -1329,8 +1336,8 @@ func TestCodeScanningService_DeleteAnalysis(t *testing.T) {
 	}
 
 	want := &DeleteAnalysis{
-		NextAnalysisURL:  String("a"),
-		ConfirmDeleteURL: String("b"),
+		NextAnalysisURL:  Ptr("a"),
+		ConfirmDeleteURL: Ptr("b"),
 	}
 	if !cmp.Equal(analysis, want) {
 		t.Errorf("CodeScanning.DeleteAnalysis returned %+v, want %+v", analysis, want)
@@ -1352,8 +1359,8 @@ func TestCodeScanningService_DeleteAnalysis(t *testing.T) {
 }
 
 func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/codeql/databases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1400,34 +1407,34 @@ func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
 	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
 	want := []*CodeQLDatabase{
 		{
-			ID:       Int64(1),
-			Name:     String("name"),
-			Language: String("language"),
+			ID:       Ptr(int64(1)),
+			Name:     Ptr("name"),
+			Language: Ptr("language"),
 			Uploader: &User{
-				Login:             String("a"),
-				ID:                Int64(1),
-				NodeID:            String("b"),
-				AvatarURL:         String("c"),
-				GravatarID:        String("d"),
-				URL:               String("e"),
-				HTMLURL:           String("f"),
-				FollowersURL:      String("g"),
-				FollowingURL:      String("h"),
-				GistsURL:          String("i"),
-				StarredURL:        String("j"),
-				SubscriptionsURL:  String("k"),
-				OrganizationsURL:  String("l"),
-				ReposURL:          String("m"),
-				EventsURL:         String("n"),
-				ReceivedEventsURL: String("o"),
-				Type:              String("p"),
-				SiteAdmin:         Bool(false),
+				Login:             Ptr("a"),
+				ID:                Ptr(int64(1)),
+				NodeID:            Ptr("b"),
+				AvatarURL:         Ptr("c"),
+				GravatarID:        Ptr("d"),
+				URL:               Ptr("e"),
+				HTMLURL:           Ptr("f"),
+				FollowersURL:      Ptr("g"),
+				FollowingURL:      Ptr("h"),
+				GistsURL:          Ptr("i"),
+				StarredURL:        Ptr("j"),
+				SubscriptionsURL:  Ptr("k"),
+				OrganizationsURL:  Ptr("l"),
+				ReposURL:          Ptr("m"),
+				EventsURL:         Ptr("n"),
+				ReceivedEventsURL: Ptr("o"),
+				Type:              Ptr("p"),
+				SiteAdmin:         Ptr(false),
 			},
-			ContentType: String("r"),
-			Size:        Int64(1024),
+			ContentType: Ptr("r"),
+			Size:        Ptr(int64(1024)),
 			CreatedAt:   date,
 			UpdatedAt:   date,
-			URL:         String("s"),
+			URL:         Ptr("s"),
 		},
 	}
 
@@ -1451,8 +1458,8 @@ func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
 }
 
 func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/codeql/databases/lang", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1496,34 +1503,34 @@ func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
 
 	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
 	want := &CodeQLDatabase{
-		ID:       Int64(1),
-		Name:     String("name"),
-		Language: String("language"),
+		ID:       Ptr(int64(1)),
+		Name:     Ptr("name"),
+		Language: Ptr("language"),
 		Uploader: &User{
-			Login:             String("a"),
-			ID:                Int64(1),
-			NodeID:            String("b"),
-			AvatarURL:         String("c"),
-			GravatarID:        String("d"),
-			URL:               String("e"),
-			HTMLURL:           String("f"),
-			FollowersURL:      String("g"),
-			FollowingURL:      String("h"),
-			GistsURL:          String("i"),
-			StarredURL:        String("j"),
-			SubscriptionsURL:  String("k"),
-			OrganizationsURL:  String("l"),
-			ReposURL:          String("m"),
-			EventsURL:         String("n"),
-			ReceivedEventsURL: String("o"),
-			Type:              String("p"),
-			SiteAdmin:         Bool(false),
+			Login:             Ptr("a"),
+			ID:                Ptr(int64(1)),
+			NodeID:            Ptr("b"),
+			AvatarURL:         Ptr("c"),
+			GravatarID:        Ptr("d"),
+			URL:               Ptr("e"),
+			HTMLURL:           Ptr("f"),
+			FollowersURL:      Ptr("g"),
+			FollowingURL:      Ptr("h"),
+			GistsURL:          Ptr("i"),
+			StarredURL:        Ptr("j"),
+			SubscriptionsURL:  Ptr("k"),
+			OrganizationsURL:  Ptr("l"),
+			ReposURL:          Ptr("m"),
+			EventsURL:         Ptr("n"),
+			ReceivedEventsURL: Ptr("o"),
+			Type:              Ptr("p"),
+			SiteAdmin:         Ptr(false),
 		},
-		ContentType: String("r"),
-		Size:        Int64(1024),
+		ContentType: Ptr("r"),
+		Size:        Ptr(int64(1024)),
 		CreatedAt:   date,
 		UpdatedAt:   date,
-		URL:         String("s"),
+		URL:         Ptr("s"),
 	}
 
 	if !cmp.Equal(database, want) {
@@ -1546,8 +1553,8 @@ func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
 }
 
 func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/default-setup", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -1574,9 +1581,9 @@ func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
 
 	date := &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}
 	want := &DefaultSetupConfiguration{
-		State:      String("configured"),
+		State:      Ptr("configured"),
 		Languages:  []string{"javascript", "javascript-typescript", "typescript"},
-		QuerySuite: String("default"),
+		QuerySuite: Ptr("default"),
 		UpdatedAt:  date,
 	}
 	if !cmp.Equal(cfg, want) {
@@ -1599,8 +1606,8 @@ func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
 }
 
 func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/code-scanning/default-setup", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -1617,7 +1624,7 @@ func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
 	options := &UpdateDefaultSetupConfigurationOptions{
 		State:      "configured",
 		Languages:  []string{"go"},
-		QuerySuite: String("default"),
+		QuerySuite: Ptr("default"),
 	}
 	got, _, err := client.CodeScanning.UpdateDefaultSetupConfiguration(ctx, "o", "r", options)
 	if err != nil {
@@ -1625,8 +1632,8 @@ func TestCodeScanningService_UpdateDefaultSetupConfiguration(t *testing.T) {
 	}
 
 	want := &UpdateDefaultSetupConfigurationResponse{
-		RunID:  Int64(5301214200),
-		RunURL: String("https://api.github.com/repos/o/r/actions/runs/5301214200"),
+		RunID:  Ptr(int64(5301214200)),
+		RunURL: Ptr("https://api.github.com/repos/o/r/actions/runs/5301214200"),
 	}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CodeScanning.UpdateDefaultSetupConfiguration returned %+v, want %+v", got, want)

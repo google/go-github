@@ -44,15 +44,16 @@ type SecretScanningAlertLocation struct {
 
 // SecretScanningAlertLocationDetails represents the location details for a secret scanning alert.
 type SecretScanningAlertLocationDetails struct {
-	Path        *string `json:"path,omitempty"`
-	Startline   *int    `json:"start_line,omitempty"`
-	EndLine     *int    `json:"end_line,omitempty"`
-	StartColumn *int    `json:"start_column,omitempty"`
-	EndColumn   *int    `json:"end_column,omitempty"`
-	BlobSHA     *string `json:"blob_sha,omitempty"`
-	BlobURL     *string `json:"blob_url,omitempty"`
-	CommitSHA   *string `json:"commit_sha,omitempty"`
-	CommitURL   *string `json:"commit_url,omitempty"`
+	Path                  *string `json:"path,omitempty"`
+	Startline             *int    `json:"start_line,omitempty"`
+	EndLine               *int    `json:"end_line,omitempty"`
+	StartColumn           *int    `json:"start_column,omitempty"`
+	EndColumn             *int    `json:"end_column,omitempty"`
+	BlobSHA               *string `json:"blob_sha,omitempty"`
+	BlobURL               *string `json:"blob_url,omitempty"`
+	CommitSHA             *string `json:"commit_sha,omitempty"`
+	CommitURL             *string `json:"commit_url,omitempty"`
+	PullRequestCommentURL *string `json:"pull_request_comment_url,omitempty"`
 }
 
 // SecretScanningAlertListOptions specifies optional parameters to the SecretScanningService.ListAlertsForEnterprise method.
@@ -66,6 +67,12 @@ type SecretScanningAlertListOptions struct {
 	// A comma-separated list of resolutions. Only secret scanning alerts with one of these resolutions are listed.
 	// Valid resolutions are false_positive, wont_fix, revoked, pattern_edited, pattern_deleted or used_in_tests.
 	Resolution string `url:"resolution,omitempty"`
+
+	// The direction to sort the results by. Possible values are: asc, desc. Default: desc.
+	Direction string `url:"direction,omitempty"`
+
+	// The property by which to sort the results. Possible values are: created, updated. Default: created.
+	Sort string `url:"sort,omitempty"`
 
 	ListCursorOptions
 
@@ -88,6 +95,9 @@ type SecretScanningAlertUpdateOptions struct {
 	// Required when the state is "resolved" and represents the reason for resolving the alert.
 	// Can be one of: "false_positive", "wont_fix", "revoked", or "used_in_tests".
 	Resolution *string `json:"resolution,omitempty"`
+
+	// An optional comment when closing an alert.
+	ResolutionComment *string `json:"resolution_comment,omitempty"`
 }
 
 // ListAlertsForEnterprise lists secret scanning alerts for eligible repositories in an enterprise, from newest to oldest.

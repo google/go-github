@@ -97,6 +97,14 @@ type Timeline struct {
 	//     reviewed
 	//       The pull request was reviewed.
 	//
+	//     review_requested
+	//       The actor requested a review from a user or team.
+	//       Reviewer and Requester/RequestedTeam will be populated.
+	//
+	//     review_request_removed
+	//       The actor removed a review request from a user or team.
+	//       Reviewer and Requester/RequestedTeam will be populated.
+	//
 	//     subscribed
 	//       The actor subscribed to receive notifications for an issue.
 	//
@@ -134,8 +142,7 @@ type Timeline struct {
 	Source *Source `json:"source,omitempty"`
 	// An object containing rename details including 'from' and 'to' attributes.
 	// Only provided for 'renamed' events.
-	Rename      *Rename      `json:"rename,omitempty"`
-	ProjectCard *ProjectCard `json:"project_card,omitempty"`
+	Rename *Rename `json:"rename,omitempty"`
 	// The state of a submitted review. Can be one of: 'commented',
 	// 'changes_requested' or 'approved'.
 	// Only provided for 'reviewed' events.

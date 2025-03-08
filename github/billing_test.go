@@ -15,8 +15,8 @@ import (
 )
 
 func TestBillingService_GetActionsBillingOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/settings/billing/actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -68,8 +68,8 @@ func TestBillingService_GetActionsBillingOrg(t *testing.T) {
 }
 
 func TestBillingService_GetActionsBillingOrg_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Billing.GetActionsBillingOrg(ctx, "%")
@@ -77,8 +77,8 @@ func TestBillingService_GetActionsBillingOrg_invalidOrg(t *testing.T) {
 }
 
 func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/settings/billing/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -120,8 +120,8 @@ func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
 }
 
 func TestBillingService_GetPackagesBillingOrg_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Billing.GetPackagesBillingOrg(ctx, "%")
@@ -129,8 +129,8 @@ func TestBillingService_GetPackagesBillingOrg_invalidOrg(t *testing.T) {
 }
 
 func TestBillingService_GetStorageBillingOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/settings/billing/shared-storage", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -172,8 +172,8 @@ func TestBillingService_GetStorageBillingOrg(t *testing.T) {
 }
 
 func TestBillingService_GetStorageBillingOrg_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Billing.GetStorageBillingOrg(ctx, "%")
@@ -181,8 +181,8 @@ func TestBillingService_GetStorageBillingOrg_invalidOrg(t *testing.T) {
 }
 
 func TestBillingService_GetActionsBillingUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/settings/billing/actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -234,8 +234,8 @@ func TestBillingService_GetActionsBillingUser(t *testing.T) {
 }
 
 func TestBillingService_GetActionsBillingUser_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Billing.GetActionsBillingUser(ctx, "%")
@@ -243,8 +243,8 @@ func TestBillingService_GetActionsBillingUser_invalidUser(t *testing.T) {
 }
 
 func TestBillingService_GetPackagesBillingUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/settings/billing/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -286,8 +286,8 @@ func TestBillingService_GetPackagesBillingUser(t *testing.T) {
 }
 
 func TestBillingService_GetPackagesBillingUser_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Billing.GetPackagesBillingUser(ctx, "%")
@@ -295,8 +295,8 @@ func TestBillingService_GetPackagesBillingUser_invalidUser(t *testing.T) {
 }
 
 func TestBillingService_GetStorageBillingUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/settings/billing/shared-storage", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -338,8 +338,8 @@ func TestBillingService_GetStorageBillingUser(t *testing.T) {
 }
 
 func TestBillingService_GetStorageBillingUser_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Billing.GetStorageBillingUser(ctx, "%")
@@ -347,6 +347,7 @@ func TestBillingService_GetStorageBillingUser_invalidUser(t *testing.T) {
 }
 
 func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &MinutesUsedBreakdown{}, "{}")
 
 	u := &MinutesUsedBreakdown{
@@ -365,6 +366,7 @@ func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
 }
 
 func TestActionBilling_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &MinutesUsedBreakdown{}, "{}")
 
 	u := &ActionBilling{
@@ -393,6 +395,7 @@ func TestActionBilling_Marshal(t *testing.T) {
 }
 
 func TestPackageBilling_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PackageBilling{}, "{}")
 
 	u := &PackageBilling{
@@ -411,6 +414,7 @@ func TestPackageBilling_Marshal(t *testing.T) {
 }
 
 func TestStorageBilling_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &StorageBilling{}, "{}")
 
 	u := &StorageBilling{
@@ -429,13 +433,16 @@ func TestStorageBilling_Marshal(t *testing.T) {
 }
 
 func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/settings/billing/advanced-security", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
   "total_advanced_security_committers": 2,
+  "total_count": 2,
+  "maximum_advanced_security_committers": 3,
+  "purchased_advanced_security_committers": 4,
   "repositories": [
     {
       "name": "octocat-org/Hello-World",
@@ -459,15 +466,18 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 	}
 
 	want := &ActiveCommitters{
-		TotalAdvancedSecurityCommitters: 2,
+		TotalAdvancedSecurityCommitters:     2,
+		TotalCount:                          2,
+		MaximumAdvancedSecurityCommitters:   3,
+		PurchasedAdvancedSecurityCommitters: 4,
 		Repositories: []*RepositoryActiveCommitters{
 			{
-				Name:                       String("octocat-org/Hello-World"),
-				AdvancedSecurityCommitters: Int(2),
+				Name:                       Ptr("octocat-org/Hello-World"),
+				AdvancedSecurityCommitters: Ptr(2),
 				AdvancedSecurityCommittersBreakdown: []*AdvancedSecurityCommittersBreakdown{
 					{
-						UserLogin:      String("octokitten"),
-						LastPushedDate: String("2021-10-25"),
+						UserLogin:      Ptr("octokitten"),
+						LastPushedDate: Ptr("2021-10-25"),
 					},
 				},
 			},
@@ -493,8 +503,8 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 }
 
 func TestBillingService_GetAdvancedSecurityActiveCommittersOrg_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "%", nil)

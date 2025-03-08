@@ -16,8 +16,8 @@ import (
 )
 
 func TestIssuesService_ListIssueTimeline(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	wantAcceptHeaders := []string{mediaTypeTimelinePreview, mediaTypeProjectCardDetailsPreview}
 	mux.HandleFunc("/repos/o/r/issues/1/timeline", func(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +37,7 @@ func TestIssuesService_ListIssueTimeline(t *testing.T) {
 		t.Errorf("Issues.ListIssueTimeline returned error: %v", err)
 	}
 
-	want := []*Timeline{{ID: Int64(1)}}
+	want := []*Timeline{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Issues.ListIssueTimeline = %+v, want %+v", events, want)
 	}
@@ -58,22 +58,23 @@ func TestIssuesService_ListIssueTimeline(t *testing.T) {
 }
 
 func TestSource_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Source{}, "{}")
 
 	u := &Source{
-		ID:  Int64(1),
-		URL: String("url"),
+		ID:  Ptr(int64(1)),
+		URL: Ptr("url"),
 		Actor: &User{
-			Login:     String("l"),
-			ID:        Int64(1),
-			NodeID:    String("n"),
-			URL:       String("u"),
-			ReposURL:  String("r"),
-			EventsURL: String("e"),
-			AvatarURL: String("a"),
+			Login:     Ptr("l"),
+			ID:        Ptr(int64(1)),
+			NodeID:    Ptr("n"),
+			URL:       Ptr("u"),
+			ReposURL:  Ptr("r"),
+			EventsURL: Ptr("e"),
+			AvatarURL: Ptr("a"),
 		},
-		Type:  String("type"),
-		Issue: &Issue{ID: Int64(1)},
+		Type:  Ptr("type"),
+		Issue: &Issue{ID: Ptr(int64(1))},
 	}
 
 	want := `{
@@ -98,78 +99,78 @@ func TestSource_Marshal(t *testing.T) {
 }
 
 func TestTimeline_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Timeline{}, "{}")
 
 	u := &Timeline{
-		ID:        Int64(1),
-		URL:       String("url"),
-		CommitURL: String("curl"),
+		ID:        Ptr(int64(1)),
+		URL:       Ptr("url"),
+		CommitURL: Ptr("curl"),
 		Actor: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		Event:     String("event"),
-		CommitID:  String("cid"),
+		Event:     Ptr("event"),
+		CommitID:  Ptr("cid"),
 		CreatedAt: &Timestamp{referenceTime},
-		Label:     &Label{ID: Int64(1)},
+		Label:     &Label{ID: Ptr(int64(1))},
 		Assignee: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		Milestone: &Milestone{ID: Int64(1)},
+		Milestone: &Milestone{ID: Ptr(int64(1))},
 		Source: &Source{
-			ID:  Int64(1),
-			URL: String("url"),
+			ID:  Ptr(int64(1)),
+			URL: Ptr("url"),
 			Actor: &User{
-				Login:     String("l"),
-				ID:        Int64(1),
-				NodeID:    String("n"),
-				URL:       String("u"),
-				ReposURL:  String("r"),
-				EventsURL: String("e"),
-				AvatarURL: String("a"),
+				Login:     Ptr("l"),
+				ID:        Ptr(int64(1)),
+				NodeID:    Ptr("n"),
+				URL:       Ptr("u"),
+				ReposURL:  Ptr("r"),
+				EventsURL: Ptr("e"),
+				AvatarURL: Ptr("a"),
 			},
-			Type:  String("type"),
-			Issue: &Issue{ID: Int64(1)},
+			Type:  Ptr("type"),
+			Issue: &Issue{ID: Ptr(int64(1))},
 		},
 		Rename: &Rename{
-			From: String("from"),
-			To:   String("to"),
+			From: Ptr("from"),
+			To:   Ptr("to"),
 		},
-		ProjectCard: &ProjectCard{ID: Int64(1)},
-		State:       String("state"),
+		State: Ptr("state"),
 	}
 
 	want := `{
@@ -253,4 +254,92 @@ func TestTimeline_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestTimeline_ReviewRequests(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/example-org/example-repo/issues/3/timeline", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{
+		    "id": 1234567890,
+		    "url": "http://example.com/timeline/1",
+		    "actor": {
+			"login": "actor-user",
+			"id": 1
+		    },
+		    "event": "review_requested",
+		    "created_at": "2006-01-02T15:04:05Z",
+		    "requested_reviewer": {
+			"login": "reviewer-user",
+			"id": 2
+		    },
+		    "review_requester": {
+			"login": "requester-user",
+			"id": 1
+		    }
+		},
+		{
+		    "id": 1234567891,
+		    "url": "http://example.com/timeline/2",
+		    "actor": {
+			"login": "actor-user",
+			"id": 1
+		    },
+		    "event": "review_request_removed",
+		    "created_at": "2006-01-02T15:04:05Z",
+		    "requested_reviewer": {
+			"login": "reviewer-user",
+			"id": 2
+		    }
+		}]`)
+	})
+
+	ctx := context.Background()
+	events, _, err := client.Issues.ListIssueTimeline(ctx, "example-org", "example-repo", 3, nil)
+	if err != nil {
+		t.Errorf("Issues.ListIssueTimeline returned error: %v", err)
+	}
+
+	want := []*Timeline{
+		{
+			ID:  Ptr(int64(1234567890)),
+			URL: Ptr("http://example.com/timeline/1"),
+			Actor: &User{
+				Login: Ptr("actor-user"),
+				ID:    Ptr(int64(1)),
+			},
+			Event:     Ptr("review_requested"),
+			CreatedAt: &Timestamp{referenceTime},
+			Reviewer: &User{
+				Login: Ptr("reviewer-user"),
+				ID:    Ptr(int64(2)),
+			},
+			Requester: &User{
+				Login: Ptr("requester-user"),
+				ID:    Ptr(int64(1)),
+			},
+		},
+		{
+			ID:  Ptr(int64(1234567891)),
+			URL: Ptr("http://example.com/timeline/2"),
+			Actor: &User{
+				Login: Ptr("actor-user"),
+				ID:    Ptr(int64(1)),
+			},
+			Event:     Ptr("review_request_removed"),
+			CreatedAt: &Timestamp{referenceTime},
+			Reviewer: &User{
+				Login: Ptr("reviewer-user"),
+				ID:    Ptr(int64(2)),
+			},
+		},
+	}
+
+	if !cmp.Equal(events, want) {
+		t.Errorf("Issues.ListIssueTimeline review request events = %+v, want %+v", events, want)
+		diff := cmp.Diff(events, want)
+		t.Errorf("Difference: %s", diff)
+	}
 }

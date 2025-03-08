@@ -118,13 +118,13 @@ func (s GistStats) String() string {
 	return Stringify(s)
 }
 
-// PullStats represents the number of total, merged, mergable and unmergeable
+// PullStats represents the number of total, merged, mergeable and unmergeable
 // pull-requests.
 type PullStats struct {
-	TotalPulls      *int `json:"total_pulls,omitempty"`
-	MergedPulls     *int `json:"merged_pulls,omitempty"`
-	MergablePulls   *int `json:"mergeable_pulls,omitempty"`
-	UnmergablePulls *int `json:"unmergeable_pulls,omitempty"`
+	TotalPulls       *int `json:"total_pulls,omitempty"`
+	MergedPulls      *int `json:"merged_pulls,omitempty"`
+	MergeablePulls   *int `json:"mergeable_pulls,omitempty"`
+	UnmergeablePulls *int `json:"unmergeable_pulls,omitempty"`
 }
 
 func (s PullStats) String() string {
@@ -152,7 +152,7 @@ func (s RepoStats) String() string {
 // Please note that this is only available to site administrators,
 // otherwise it will error with a 404 not found (instead of 401 or 403).
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.12/rest/enterprise-admin/admin-stats#get-all-statistics
+// GitHub API docs: https://docs.github.com/enterprise-server@3.15/rest/enterprise-admin/admin-stats#get-all-statistics
 //
 //meta:operation GET /enterprise/stats/all
 func (s *AdminService) GetAdminStats(ctx context.Context) (*AdminStats, *Response, error) {

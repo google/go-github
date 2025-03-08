@@ -26,8 +26,8 @@ const (
 )
 
 func TestGetConfig(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/app-manifests/code/conversions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -41,11 +41,11 @@ func TestGetConfig(t *testing.T) {
 	}
 
 	want := &AppConfig{
-		ID:            Int64(1),
-		ClientID:      String("a"),
-		ClientSecret:  String("b"),
-		WebhookSecret: String("c"),
-		PEM:           String("key"),
+		ID:            Ptr(int64(1)),
+		ClientID:      Ptr("a"),
+		ClientSecret:  Ptr("b"),
+		WebhookSecret: Ptr("c"),
+		PEM:           Ptr("key"),
 	}
 
 	if !cmp.Equal(cfg, want) {
@@ -68,42 +68,43 @@ func TestGetConfig(t *testing.T) {
 }
 
 func TestAppConfig_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &AppConfig{}, "{}")
 
 	u := &AppConfig{
-		ID:     Int64(1),
-		Slug:   String("s"),
-		NodeID: String("nid"),
+		ID:     Ptr(int64(1)),
+		Slug:   Ptr("s"),
+		NodeID: Ptr("nid"),
 		Owner: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		Name:          String("n"),
-		Description:   String("d"),
-		ExternalURL:   String("eu"),
-		HTMLURL:       String("hu"),
+		Name:          Ptr("n"),
+		Description:   Ptr("d"),
+		ExternalURL:   Ptr("eu"),
+		HTMLURL:       Ptr("hu"),
 		CreatedAt:     &Timestamp{referenceTime},
 		UpdatedAt:     &Timestamp{referenceTime},
-		ClientID:      String("ci"),
-		ClientSecret:  String("cs"),
-		WebhookSecret: String("ws"),
-		PEM:           String("pem"),
+		ClientID:      Ptr("ci"),
+		ClientSecret:  Ptr("cs"),
+		WebhookSecret: Ptr("ws"),
+		PEM:           Ptr("pem"),
 	}
 
 	want := `{

@@ -17,8 +17,8 @@ import (
 )
 
 func TestIssuesService_ListComments_allIssues(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -34,8 +34,8 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 
 	since := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)
 	opt := &IssueListCommentsOptions{
-		Sort:        String("updated"),
-		Direction:   String("desc"),
+		Sort:        Ptr("updated"),
+		Direction:   Ptr("desc"),
 		Since:       &since,
 		ListOptions: ListOptions{Page: 2},
 	}
@@ -45,7 +45,7 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 		t.Errorf("Issues.ListComments returned error: %v", err)
 	}
 
-	want := []*IssueComment{{ID: Int64(1)}}
+	want := []*IssueComment{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -66,8 +66,8 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 }
 
 func TestIssuesService_ListComments_specificIssue(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -81,7 +81,7 @@ func TestIssuesService_ListComments_specificIssue(t *testing.T) {
 		t.Errorf("Issues.ListComments returned error: %v", err)
 	}
 
-	want := []*IssueComment{{ID: Int64(1)}}
+	want := []*IssueComment{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -102,8 +102,8 @@ func TestIssuesService_ListComments_specificIssue(t *testing.T) {
 }
 
 func TestIssuesService_ListComments_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.ListComments(ctx, "%", "r", 1, nil)
@@ -111,8 +111,8 @@ func TestIssuesService_ListComments_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_GetComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -126,7 +126,7 @@ func TestIssuesService_GetComment(t *testing.T) {
 		t.Errorf("Issues.GetComment returned error: %v", err)
 	}
 
-	want := &IssueComment{ID: Int64(1)}
+	want := &IssueComment{ID: Ptr(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.GetComment returned %+v, want %+v", comment, want)
 	}
@@ -147,8 +147,8 @@ func TestIssuesService_GetComment(t *testing.T) {
 }
 
 func TestIssuesService_GetComment_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.GetComment(ctx, "%", "r", 1)
@@ -156,10 +156,10 @@ func TestIssuesService_GetComment_invalidOrg(t *testing.T) {
 }
 
 func TestIssuesService_CreateComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &IssueComment{Body: String("b")}
+	input := &IssueComment{Body: Ptr("b")}
 
 	mux.HandleFunc("/repos/o/r/issues/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(IssueComment)
@@ -179,7 +179,7 @@ func TestIssuesService_CreateComment(t *testing.T) {
 		t.Errorf("Issues.CreateComment returned error: %v", err)
 	}
 
-	want := &IssueComment{ID: Int64(1)}
+	want := &IssueComment{ID: Ptr(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.CreateComment returned %+v, want %+v", comment, want)
 	}
@@ -200,8 +200,8 @@ func TestIssuesService_CreateComment(t *testing.T) {
 }
 
 func TestIssuesService_CreateComment_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.CreateComment(ctx, "%", "r", 1, nil)
@@ -209,10 +209,10 @@ func TestIssuesService_CreateComment_invalidOrg(t *testing.T) {
 }
 
 func TestIssuesService_EditComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &IssueComment{Body: String("b")}
+	input := &IssueComment{Body: Ptr("b")}
 
 	mux.HandleFunc("/repos/o/r/issues/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(IssueComment)
@@ -232,7 +232,7 @@ func TestIssuesService_EditComment(t *testing.T) {
 		t.Errorf("Issues.EditComment returned error: %v", err)
 	}
 
-	want := &IssueComment{ID: Int64(1)}
+	want := &IssueComment{ID: Ptr(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.EditComment returned %+v, want %+v", comment, want)
 	}
@@ -253,8 +253,8 @@ func TestIssuesService_EditComment(t *testing.T) {
 }
 
 func TestIssuesService_EditComment_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Issues.EditComment(ctx, "%", "r", 1, nil)
@@ -262,8 +262,8 @@ func TestIssuesService_EditComment_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_DeleteComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/issues/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -287,8 +287,8 @@ func TestIssuesService_DeleteComment(t *testing.T) {
 }
 
 func TestIssuesService_DeleteComment_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Issues.DeleteComment(ctx, "%", "r", 1)
@@ -296,39 +296,40 @@ func TestIssuesService_DeleteComment_invalidOwner(t *testing.T) {
 }
 
 func TestIssueComment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &IssueComment{}, "{}")
 
 	u := &IssueComment{
-		ID:     Int64(1),
-		NodeID: String("nid"),
-		Body:   String("body"),
+		ID:     Ptr(int64(1)),
+		NodeID: Ptr("nid"),
+		Body:   Ptr("body"),
 		User: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		Reactions:         &Reactions{TotalCount: Int(1)},
+		Reactions:         &Reactions{TotalCount: Ptr(1)},
 		CreatedAt:         &Timestamp{referenceTime},
 		UpdatedAt:         &Timestamp{referenceTime},
-		AuthorAssociation: String("aa"),
-		URL:               String("url"),
-		HTMLURL:           String("hurl"),
-		IssueURL:          String("iurl"),
+		AuthorAssociation: Ptr("aa"),
+		URL:               Ptr("url"),
+		HTMLURL:           Ptr("hurl"),
+		IssueURL:          Ptr("iurl"),
 	}
 
 	want := `{

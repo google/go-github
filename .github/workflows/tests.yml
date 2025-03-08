@@ -5,10 +5,10 @@ concurrency:
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
     branches:
-    - master
+      - master
 
 name: tests
 env:
@@ -19,12 +19,15 @@ permissions:
 
 jobs:
   test:
+    permissions:
+      contents: read
+      id-token: write
     defaults:
       run:
         shell: bash
     strategy:
       matrix:
-        go-version: [1.x, 1.22.x]
+        go-version: [1.x, 1.23.0] # test with N and the .0 release of N-1
         platform: [ubuntu-latest]
         include:
           # include windows, but only with the latest Go version, since there
@@ -39,38 +42,40 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
-    - uses: actions/setup-go@v5
-      with:
-        go-version: ${{ matrix.go-version }}
-    - uses: actions/checkout@v4
+      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version: ${{ matrix.go-version }}
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-    # Get values for cache paths to be used in later steps
-    - id: cache-paths
-      run: |
-        echo "go-cache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
-        echo "go-mod-cache=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
+      # Get values for cache paths to be used in later steps
+      - id: cache-paths
+        run: |
+          echo "go-cache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
+          echo "go-mod-cache=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
 
-    - name: Cache go modules
-      uses: actions/cache@v4
-      with:
-        path: |
-          ${{ steps.cache-paths.outputs.go-cache }}
-          ${{ steps.cache-paths.outputs.go-mod-cache }}
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-        restore-keys: ${{ runner.os }}-go-
+      - name: Cache go modules
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
+        with:
+          path: |
+            ${{ steps.cache-paths.outputs.go-cache }}
+            ${{ steps.cache-paths.outputs.go-mod-cache }}
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
 
-    - name: Run go test
-      run: |
-        if [ -n "${{ matrix.update-coverage }}" ]; then
-          script/test.sh -race -covermode atomic -coverprofile coverage.txt ./...
-          exit
-        fi
-        script/test.sh -race -covermode atomic ./...
+      - name: Run go test
+        run: |
+          if [ -n "${{ matrix.update-coverage }}" ]; then
+            script/test.sh -race -covermode atomic -coverprofile coverage.txt ./...
+            exit
+          fi
+          script/test.sh -race -covermode atomic ./...
 
-    - name: Ensure integration tests build
-      # don't actually run tests since they hit live GitHub API
-      run: go test -v -tags=integration -run=^$ ./test/integration
+      - name: Ensure integration tests build
+        # don't actually run tests since they hit live GitHub API
+        run: go test -v -tags=integration -run=^$ ./test/integration
 
-    - name: Upload coverage to Codecov
-      if: ${{ matrix.update-coverage }}
-      uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 #v4.5.0
+      - name: Upload coverage to Codecov
+        if: ${{ matrix.update-coverage }}
+        uses: codecov/codecov-action@0565863a31f2c772f9f0395002a31e3f06189574 # v5.4.0
+        with:
+          use_oidc: true

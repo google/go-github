@@ -16,6 +16,7 @@ import (
 )
 
 func TestCodespacesService_ListSecrets(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -24,7 +25,7 @@ func TestCodespacesService_ListSecrets(t *testing.T) {
 		methodName string
 	}
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -76,9 +77,10 @@ func TestCodespacesService_ListSecrets(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			t.Parallel()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -118,6 +120,7 @@ func TestCodespacesService_ListSecrets(t *testing.T) {
 }
 
 func TestCodespacesService_GetSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -125,7 +128,7 @@ func TestCodespacesService_GetSecret(t *testing.T) {
 		badCall    func(context.Context, *Client) (*Secret, *Response, error)
 		methodName string
 	}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -174,9 +177,10 @@ func TestCodespacesService_GetSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			t.Parallel()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -210,6 +214,7 @@ func TestCodespacesService_GetSecret(t *testing.T) {
 }
 
 func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -217,7 +222,7 @@ func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
 		badCall    func(context.Context, *Client, *EncryptedSecret) (*Response, error)
 		methodName string
 	}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -272,9 +277,10 @@ func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			t.Parallel()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -304,6 +310,7 @@ func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
 }
 
 func TestCodespacesService_DeleteSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -311,7 +318,7 @@ func TestCodespacesService_DeleteSecret(t *testing.T) {
 		badCall    func(context.Context, *Client) (*Response, error)
 		methodName string
 	}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -357,9 +364,10 @@ func TestCodespacesService_DeleteSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			t.Parallel()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -384,6 +392,7 @@ func TestCodespacesService_DeleteSecret(t *testing.T) {
 }
 
 func TestCodespacesService_GetPublicKey(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -392,7 +401,7 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 		methodName string
 	}
 
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -441,9 +450,10 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			t.Parallel()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -453,7 +463,7 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 				t.Errorf("Codespaces.%v returned error: %v", tt.methodName, err)
 			}
 
-			want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+			want := &PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 			if !cmp.Equal(key, want) {
 				t.Errorf("Codespaces.%v returned %+v, want %+v", tt.methodName, key, want)
 			}
@@ -477,6 +487,7 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 }
 
 func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -485,7 +496,7 @@ func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
 		methodName string
 	}
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -518,9 +529,10 @@ func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			t.Parallel()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -531,9 +543,9 @@ func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
 			}
 
 			want := &SelectedReposList{
-				TotalCount: Int(1),
+				TotalCount: Ptr(1),
 				Repositories: []*Repository{
-					{ID: Int64(1)},
+					{ID: Ptr(int64(1))},
 				},
 			}
 
@@ -560,6 +572,7 @@ func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
 }
 
 func TestCodespacesService_SetSelectedReposForSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -568,7 +581,7 @@ func TestCodespacesService_SetSelectedReposForSecret(t *testing.T) {
 		methodName string
 	}
 	ids := SelectedRepoIDs{64780797}
-	tests := []test{
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -603,9 +616,10 @@ func TestCodespacesService_SetSelectedReposForSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			t.Parallel()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -630,6 +644,7 @@ func TestCodespacesService_SetSelectedReposForSecret(t *testing.T) {
 }
 
 func TestCodespacesService_AddSelectedReposForSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -637,8 +652,8 @@ func TestCodespacesService_AddSelectedReposForSecret(t *testing.T) {
 		badCall    func(context.Context, *Client) (*Response, error)
 		methodName string
 	}
-	repo := &Repository{ID: Int64(1234)}
-	tests := []test{
+	repo := &Repository{ID: Ptr(int64(1234))}
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -669,9 +684,10 @@ func TestCodespacesService_AddSelectedReposForSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			t.Parallel()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -696,6 +712,7 @@ func TestCodespacesService_AddSelectedReposForSecret(t *testing.T) {
 }
 
 func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
+	t.Parallel()
 	type test struct {
 		name       string
 		handleFunc func(*http.ServeMux)
@@ -703,8 +720,8 @@ func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
 		badCall    func(context.Context, *Client) (*Response, error)
 		methodName string
 	}
-	repo := &Repository{ID: Int64(1234)}
-	tests := []test{
+	repo := &Repository{ID: Ptr(int64(1234))}
+	tests := []*test{
 		{
 			name: "User",
 			handleFunc: func(mux *http.ServeMux) {
@@ -735,9 +752,10 @@ func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			client, mux, _, teardown := setup()
-			defer teardown()
+			t.Parallel()
+			client, mux, _ := setup(t)
 
 			tt.handleFunc(mux)
 
@@ -760,44 +778,3 @@ func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
 		})
 	}
 }
-
-// func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
-// 	client, mux, _, teardown := setup()
-// 	defer teardown()
-
-// 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
-// 		testMethod(t, r, "GET")
-// 		fmt.Fprintf(w, `{"total_count":1,"repositories":[{"id":1}]}`)
-// 	})
-
-// 	opts := &ListOptions{Page: 2, PerPage: 2}
-// 	ctx := context.Background()
-// 	repos, _, err := client.Actions.ListSelectedReposForOrgSecret(ctx, "o", "NAME", opts)
-// 	if err != nil {
-// 		t.Errorf("Actions.ListSelectedReposForOrgSecret returned error: %v", err)
-// 	}
-
-// 	want := &SelectedReposList{
-// 		TotalCount: Int(1),
-// 		Repositories: []*Repository{
-// 			{ID: Int64(1)},
-// 		},
-// 	}
-// 	if !cmp.Equal(repos, want) {
-// 		t.Errorf("Actions.ListSelectedReposForOrgSecret returned %+v, want %+v", repos, want)
-// 	}
-
-// 	const methodName = "ListSelectedReposForOrgSecret"
-// 	testBadOptions(t, methodName, func() (err error) {
-// 		_, _, err = client.Actions.ListSelectedReposForOrgSecret(ctx, "\n", "\n", opts)
-// 		return err
-// 	})
-
-// 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-// 		got, resp, err := client.Actions.ListSelectedReposForOrgSecret(ctx, "o", "NAME", opts)
-// 		if got != nil {
-// 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-// 		}
-// 		return resp, err
-// 	})
-// }

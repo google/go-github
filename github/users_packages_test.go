@@ -15,8 +15,8 @@ import (
 )
 
 func TestUsersService_Authenticated_ListPackages(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -35,19 +35,19 @@ func TestUsersService_Authenticated_ListPackages(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Users.ListPackages(ctx, "", &PackageListOptions{PackageType: String("container"), Visibility: String("private")})
+	packages, _, err := client.Users.ListPackages(ctx, "", &PackageListOptions{PackageType: Ptr("container"), Visibility: Ptr("private")})
 	if err != nil {
 		t.Errorf("Users.Authenticated_ListPackages returned error: %v", err)
 	}
 
 	want := []*Package{{
-		ID:           Int64(197),
-		Name:         String("hello_docker"),
-		PackageType:  String("container"),
-		VersionCount: Int64(1),
-		Visibility:   String("private"),
-		URL:          String("https://api.github.com/orgs/github/packages/container/hello_docker"),
-		HTMLURL:      String("https://github.com/orgs/github/packages/container/package/hello_docker"),
+		ID:           Ptr(int64(197)),
+		Name:         Ptr("hello_docker"),
+		PackageType:  Ptr("container"),
+		VersionCount: Ptr(int64(1)),
+		Visibility:   Ptr("private"),
+		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello_docker"),
+		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 	}}
@@ -71,8 +71,8 @@ func TestUsersService_Authenticated_ListPackages(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_ListPackages(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -91,19 +91,19 @@ func TestUsersService_specifiedUser_ListPackages(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Users.ListPackages(ctx, "u", &PackageListOptions{PackageType: String("container"), Visibility: String("public")})
+	packages, _, err := client.Users.ListPackages(ctx, "u", &PackageListOptions{PackageType: Ptr("container"), Visibility: Ptr("public")})
 	if err != nil {
 		t.Errorf("Users.specifiedUser_ListPackages returned error: %v", err)
 	}
 
 	want := []*Package{{
-		ID:           Int64(197),
-		Name:         String("hello_docker"),
-		PackageType:  String("container"),
-		VersionCount: Int64(1),
-		Visibility:   String("public"),
-		URL:          String("https://api.github.com/orgs/github/packages/container/hello_docker"),
-		HTMLURL:      String("https://github.com/orgs/github/packages/container/package/hello_docker"),
+		ID:           Ptr(int64(197)),
+		Name:         Ptr("hello_docker"),
+		PackageType:  Ptr("container"),
+		VersionCount: Ptr(int64(1)),
+		Visibility:   Ptr("public"),
+		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello_docker"),
+		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 	}}
@@ -127,8 +127,8 @@ func TestUsersService_specifiedUser_ListPackages(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_GetPackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -152,13 +152,13 @@ func TestUsersService_specifiedUser_GetPackage(t *testing.T) {
 	}
 
 	want := &Package{
-		ID:           Int64(197),
-		Name:         String("hello_docker"),
-		PackageType:  String("container"),
-		VersionCount: Int64(1),
-		Visibility:   String("private"),
-		URL:          String("https://api.github.com/orgs/github/packages/container/hello_docker"),
-		HTMLURL:      String("https://github.com/orgs/github/packages/container/package/hello_docker"),
+		ID:           Ptr(int64(197)),
+		Name:         Ptr("hello_docker"),
+		PackageType:  Ptr("container"),
+		VersionCount: Ptr(int64(1)),
+		Visibility:   Ptr("private"),
+		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello_docker"),
+		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 	}
@@ -182,8 +182,8 @@ func TestUsersService_specifiedUser_GetPackage(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_GetPackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -207,13 +207,13 @@ func TestUsersService_Authenticated_GetPackage(t *testing.T) {
 	}
 
 	want := &Package{
-		ID:           Int64(197),
-		Name:         String("hello_docker"),
-		PackageType:  String("container"),
-		VersionCount: Int64(1),
-		Visibility:   String("private"),
-		URL:          String("https://api.github.com/orgs/github/packages/container/hello_docker"),
-		HTMLURL:      String("https://github.com/orgs/github/packages/container/package/hello_docker"),
+		ID:           Ptr(int64(197)),
+		Name:         Ptr("hello_docker"),
+		PackageType:  Ptr("container"),
+		VersionCount: Ptr(int64(1)),
+		Visibility:   Ptr("private"),
+		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello_docker"),
+		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 	}
@@ -237,8 +237,8 @@ func TestUsersService_Authenticated_GetPackage(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_DeletePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -262,8 +262,8 @@ func TestUsersService_Authenticated_DeletePackage(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_DeletePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -287,8 +287,8 @@ func TestUsersService_specifiedUser_DeletePackage(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_RestorePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -312,8 +312,8 @@ func TestUsersService_Authenticated_RestorePackage(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_RestorePackage(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -337,8 +337,8 @@ func TestUsersService_specifiedUser_RestorePackage(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -364,7 +364,7 @@ func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
 
 	ctx := context.Background()
 	opts := &PackageListOptions{
-		String("internal"), String("container"), String("deleted"), ListOptions{Page: 1, PerPage: 2},
+		Ptr("internal"), Ptr("container"), Ptr("deleted"), ListOptions{Page: 1, PerPage: 2},
 	}
 	packages, _, err := client.Users.PackageGetAllVersions(ctx, "", "container", "hello_docker", opts)
 	if err != nil {
@@ -372,15 +372,15 @@ func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
 	}
 
 	want := []*PackageVersion{{
-		ID:             Int64(45763),
-		Name:           String("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            String("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
-		PackageHTMLURL: String("https://github.com/users/octocat/packages/container/package/hello_docker"),
+		ID:             Ptr(int64(45763)),
+		Name:           Ptr("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
+		URL:            Ptr("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
+		PackageHTMLURL: Ptr("https://github.com/users/octocat/packages/container/package/hello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        String("https://github.com/users/octocat/packages/container/hello_docker/45763"),
+		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
 		Metadata: &PackageMetadata{
-			PackageType: String("container"),
+			PackageType: Ptr("container"),
 			Container: &PackageContainerMetadata{
 				Tags: []string{"latest"},
 			},
@@ -406,8 +406,8 @@ func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -433,7 +433,7 @@ func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
 
 	ctx := context.Background()
 	opts := &PackageListOptions{
-		String("internal"), String("container"), String("deleted"), ListOptions{Page: 1, PerPage: 2},
+		Ptr("internal"), Ptr("container"), Ptr("deleted"), ListOptions{Page: 1, PerPage: 2},
 	}
 	packages, _, err := client.Users.PackageGetAllVersions(ctx, "u", "container", "hello_docker", opts)
 	if err != nil {
@@ -441,15 +441,15 @@ func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
 	}
 
 	want := []*PackageVersion{{
-		ID:             Int64(45763),
-		Name:           String("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            String("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
-		PackageHTMLURL: String("https://github.com/users/octocat/packages/container/package/hello_docker"),
+		ID:             Ptr(int64(45763)),
+		Name:           Ptr("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
+		URL:            Ptr("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
+		PackageHTMLURL: Ptr("https://github.com/users/octocat/packages/container/package/hello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        String("https://github.com/users/octocat/packages/container/hello_docker/45763"),
+		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
 		Metadata: &PackageMetadata{
-			PackageType: String("container"),
+			PackageType: Ptr("container"),
 			Container: &PackageContainerMetadata{
 				Tags: []string{"latest"},
 			},
@@ -475,8 +475,8 @@ func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_PackageGetVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -507,15 +507,15 @@ func TestUsersService_Authenticated_PackageGetVersion(t *testing.T) {
 	}
 
 	want := &PackageVersion{
-		ID:             Int64(45763),
-		Name:           String("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            String("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
-		PackageHTMLURL: String("https://github.com/users/octocat/packages/container/package/hello_docker"),
+		ID:             Ptr(int64(45763)),
+		Name:           Ptr("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
+		URL:            Ptr("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
+		PackageHTMLURL: Ptr("https://github.com/users/octocat/packages/container/package/hello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        String("https://github.com/users/octocat/packages/container/hello_docker/45763"),
+		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
 		Metadata: &PackageMetadata{
-			PackageType: String("container"),
+			PackageType: Ptr("container"),
 			Container: &PackageContainerMetadata{
 				Tags: []string{"latest"},
 			},
@@ -541,8 +541,8 @@ func TestUsersService_Authenticated_PackageGetVersion(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_PackageGetVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -573,15 +573,15 @@ func TestUsersService_specifiedUser_PackageGetVersion(t *testing.T) {
 	}
 
 	want := &PackageVersion{
-		ID:             Int64(45763),
-		Name:           String("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            String("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
-		PackageHTMLURL: String("https://github.com/users/octocat/packages/container/package/hello_docker"),
+		ID:             Ptr(int64(45763)),
+		Name:           Ptr("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
+		URL:            Ptr("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
+		PackageHTMLURL: Ptr("https://github.com/users/octocat/packages/container/package/hello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        String("https://github.com/users/octocat/packages/container/hello_docker/45763"),
+		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
 		Metadata: &PackageMetadata{
-			PackageType: String("container"),
+			PackageType: Ptr("container"),
 			Container: &PackageContainerMetadata{
 				Tags: []string{"latest"},
 			},
@@ -607,8 +607,8 @@ func TestUsersService_specifiedUser_PackageGetVersion(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_PackageDeleteVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -632,8 +632,8 @@ func TestUsersService_Authenticated_PackageDeleteVersion(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_PackageDeleteVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -657,8 +657,8 @@ func TestUsersService_specifiedUser_PackageDeleteVersion(t *testing.T) {
 }
 
 func TestUsersService_Authenticated_PackageRestoreVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/packages/container/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -682,8 +682,8 @@ func TestUsersService_Authenticated_PackageRestoreVersion(t *testing.T) {
 }
 
 func TestUsersService_specifiedUser_PackageRestoreVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/packages/container/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

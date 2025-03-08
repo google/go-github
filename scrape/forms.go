@@ -35,7 +35,7 @@ type htmlForm struct {
 //
 // In the future, we might want to allow a custom selector to be passed in to
 // further restrict what forms will be returned.
-func parseForms(node *html.Node) (forms []htmlForm) {
+func parseForms(node *html.Node) (forms []*htmlForm) {
 	if node == nil {
 		return nil
 	}
@@ -71,7 +71,7 @@ func parseForms(node *html.Node) (forms []htmlForm) {
 			value := s.Text()
 			form.Values.Add(name, value)
 		})
-		forms = append(forms, form)
+		forms = append(forms, &form)
 	})
 
 	return forms

@@ -4,7 +4,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build ignore
-// +build ignore
 
 // gen-accessors generates accessor methods for structs with pointer fields.
 //
@@ -23,7 +22,7 @@ import (
 	"go/token"
 	"log"
 	"os"
-	"sort"
+	"slices"
 	"strings"
 	"text/template"
 )
@@ -183,7 +182,9 @@ func (t *templateData) dump() error {
 	}
 
 	// Sort getters by ReceiverType.FieldName.
-	sort.Sort(byName(t.Getters))
+	slices.SortStableFunc(t.Getters, func(a, b *getter) int {
+		return strings.Compare(a.sortVal, b.sortVal)
+	})
 
 	processTemplate := func(tmpl *template.Template, filename string) error {
 		var buf bytes.Buffer
@@ -345,12 +346,6 @@ type getter struct {
 	ArrayType    bool
 }
 
-type byName []*getter
-
-func (b byName) Len() int           { return len(b) }
-func (b byName) Less(i, j int) bool { return b[i].sortVal < b[j].sortVal }
-func (b byName) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
-
 const source = `// Copyright {{.Year}} The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
@@ -418,6 +413,7 @@ import (
 {{range .Getters}}
 {{if .NamedStruct}}
 func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
+  tt.Parallel()
   {{.ReceiverVar}} := &{{.ReceiverType}}{}
   {{.ReceiverVar}}.Get{{.FieldName}}()
   {{.ReceiverVar}} = nil
@@ -425,6 +421,7 @@ func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
 }
 {{else if or .MapType .ArrayType}}
 func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
+  tt.Parallel()
   zeroValue := {{.FieldType}}{}
   {{.ReceiverVar}} := &{{.ReceiverType}}{ {{.FieldName}}: zeroValue }
   {{.ReceiverVar}}.Get{{.FieldName}}()
@@ -435,6 +432,7 @@ func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
 }
 {{else}}
 func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
+  tt.Parallel()
   var zeroValue {{.FieldType}}
   {{.ReceiverVar}} := &{{.ReceiverType}}{ {{.FieldName}}: &zeroValue }
   {{.ReceiverVar}}.Get{{.FieldName}}()

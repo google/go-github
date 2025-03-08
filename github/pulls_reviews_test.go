@@ -16,8 +16,8 @@ import (
 )
 
 func TestPullRequestsService_ListReviews(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -35,8 +35,8 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 	}
 
 	want := []*PullRequestReview{
-		{ID: Int64(1)},
-		{ID: Int64(2)},
+		{ID: Ptr(int64(1))},
+		{ID: Ptr(int64(2))},
 	}
 	if !cmp.Equal(reviews, want) {
 		t.Errorf("PullRequests.ListReviews returned %+v, want %+v", reviews, want)
@@ -58,8 +58,8 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviews_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.ListReviews(ctx, "%", "r", 1, nil)
@@ -67,8 +67,8 @@ func TestPullRequestsService_ListReviews_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_GetReview(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -81,7 +81,7 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 		t.Errorf("PullRequests.GetReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.GetReview returned %+v, want %+v", review, want)
 	}
@@ -102,8 +102,8 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 }
 
 func TestPullRequestsService_GetReview_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.GetReview(ctx, "%", "r", 1, 1)
@@ -111,8 +111,8 @@ func TestPullRequestsService_GetReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_DeletePendingReview(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -125,7 +125,7 @@ func TestPullRequestsService_DeletePendingReview(t *testing.T) {
 		t.Errorf("PullRequests.DeletePendingReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.DeletePendingReview returned %+v, want %+v", review, want)
 	}
@@ -146,8 +146,8 @@ func TestPullRequestsService_DeletePendingReview(t *testing.T) {
 }
 
 func TestPullRequestsService_DeletePendingReview_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.DeletePendingReview(ctx, "%", "r", 1, 1)
@@ -155,8 +155,8 @@ func TestPullRequestsService_DeletePendingReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviewComments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -170,8 +170,8 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 	}
 
 	want := []*PullRequestComment{
-		{ID: Int64(1)},
-		{ID: Int64(2)},
+		{ID: Ptr(int64(1))},
+		{ID: Ptr(int64(2))},
 	}
 	if !cmp.Equal(comments, want) {
 		t.Errorf("PullRequests.ListReviewComments returned %+v, want %+v", comments, want)
@@ -193,8 +193,8 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -226,6 +226,7 @@ func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
 }
 
 func TestPullRequestReviewRequest_isComfortFadePreview(t *testing.T) {
+	t.Parallel()
 	path := "path/to/file.go"
 	body := "this is a comment body"
 	left, right := "LEFT", "RIGHT"
@@ -329,7 +330,9 @@ func TestPullRequestReviewRequest_isComfortFadePreview(t *testing.T) {
 	}}
 
 	for _, tc := range tests {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
 			gotBool, gotErr := tc.review.isComfortFadePreview()
 			if tc.wantErr != nil {
 				if gotErr != tc.wantErr {
@@ -345,8 +348,8 @@ func TestPullRequestReviewRequest_isComfortFadePreview(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviewComments_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.ListReviewComments(ctx, "%", "r", 1, 1, nil)
@@ -354,13 +357,13 @@ func TestPullRequestsService_ListReviewComments_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateReview(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &PullRequestReviewRequest{
-		CommitID: String("commit_id"),
-		Body:     String("b"),
-		Event:    String("APPROVE"),
+		CommitID: Ptr("commit_id"),
+		Body:     Ptr("b"),
+		Event:    Ptr("APPROVE"),
 	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
@@ -381,7 +384,7 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 		t.Errorf("PullRequests.CreateReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.CreateReview returned %+v, want %+v", review, want)
 	}
@@ -402,8 +405,8 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateReview_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.CreateReview(ctx, "%", "r", 1, &PullRequestReviewRequest{})
@@ -411,8 +414,8 @@ func TestPullRequestsService_CreateReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateReview_badReview(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 
@@ -440,8 +443,8 @@ func TestPullRequestsService_CreateReview_badReview(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateReview_addHeader(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	path := "path/to/file.go"
 	body := "this is a comment body"
@@ -487,8 +490,8 @@ func TestPullRequestsService_CreateReview_addHeader(t *testing.T) {
 }
 
 func TestPullRequestsService_UpdateReview(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -501,7 +504,7 @@ func TestPullRequestsService_UpdateReview(t *testing.T) {
 		t.Errorf("PullRequests.UpdateReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("PullRequests.UpdateReview = %+v, want %+v", got, want)
 	}
@@ -522,12 +525,12 @@ func TestPullRequestsService_UpdateReview(t *testing.T) {
 }
 
 func TestPullRequestsService_SubmitReview(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &PullRequestReviewRequest{
-		Body:  String("b"),
-		Event: String("APPROVE"),
+		Body:  Ptr("b"),
+		Event: Ptr("APPROVE"),
 	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/events", func(w http.ResponseWriter, r *http.Request) {
@@ -548,7 +551,7 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 		t.Errorf("PullRequests.SubmitReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.SubmitReview returned %+v, want %+v", review, want)
 	}
@@ -569,8 +572,8 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 }
 
 func TestPullRequestsService_SubmitReview_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.SubmitReview(ctx, "%", "r", 1, 1, &PullRequestReviewRequest{})
@@ -578,10 +581,10 @@ func TestPullRequestsService_SubmitReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_DismissReview(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &PullRequestReviewDismissalRequest{Message: String("m")}
+	input := &PullRequestReviewDismissalRequest{Message: Ptr("m")}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/dismissals", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PullRequestReviewDismissalRequest)
@@ -601,7 +604,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 		t.Errorf("PullRequests.DismissReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int64(1)}
+	want := &PullRequestReview{ID: Ptr(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.DismissReview returned %+v, want %+v", review, want)
 	}
@@ -622,8 +625,8 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 }
 
 func TestPullRequestsService_DismissReview_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.DismissReview(ctx, "%", "r", 1, 1, &PullRequestReviewDismissalRequest{})
@@ -631,10 +634,11 @@ func TestPullRequestsService_DismissReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestReviewDismissalRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestReviewDismissalRequest{}, "{}")
 
 	u := &PullRequestReviewDismissalRequest{
-		Message: String("msg"),
+		Message: Ptr("msg"),
 	}
 
 	want := `{
@@ -645,16 +649,17 @@ func TestPullRequestReviewDismissalRequest_Marshal(t *testing.T) {
 }
 
 func TestDraftReviewComment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DraftReviewComment{}, "{}")
 
 	u := &DraftReviewComment{
-		Path:      String("path"),
-		Position:  Int(1),
-		Body:      String("body"),
-		StartSide: String("ss"),
-		Side:      String("side"),
-		StartLine: Int(1),
-		Line:      Int(1),
+		Path:      Ptr("path"),
+		Position:  Ptr(1),
+		Body:      Ptr("body"),
+		StartSide: Ptr("ss"),
+		Side:      Ptr("side"),
+		StartLine: Ptr(1),
+		Line:      Ptr(1),
 	}
 
 	want := `{
@@ -671,22 +676,23 @@ func TestDraftReviewComment_Marshal(t *testing.T) {
 }
 
 func TestPullRequestReviewRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestReviewRequest{}, "{}")
 
 	u := &PullRequestReviewRequest{
-		NodeID:   String("nodeid"),
-		CommitID: String("cid"),
-		Body:     String("body"),
-		Event:    String("event"),
+		NodeID:   Ptr("nodeid"),
+		CommitID: Ptr("cid"),
+		Body:     Ptr("body"),
+		Event:    Ptr("event"),
 		Comments: []*DraftReviewComment{
 			{
-				Path:      String("path"),
-				Position:  Int(1),
-				Body:      String("body"),
-				StartSide: String("ss"),
-				Side:      String("side"),
-				StartLine: Int(1),
-				Line:      Int(1),
+				Path:      Ptr("path"),
+				Position:  Ptr(1),
+				Body:      Ptr("body"),
+				StartSide: Ptr("ss"),
+				Side:      Ptr("side"),
+				StartLine: Ptr(1),
+				Line:      Ptr(1),
 			},
 		},
 	}
@@ -713,38 +719,39 @@ func TestPullRequestReviewRequest_Marshal(t *testing.T) {
 }
 
 func TestPullRequestReview_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestReview{}, "{}")
 
 	u := &PullRequestReview{
-		ID:     Int64(1),
-		NodeID: String("nid"),
+		ID:     Ptr(int64(1)),
+		NodeID: Ptr("nid"),
 		User: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		Body:              String("body"),
+		Body:              Ptr("body"),
 		SubmittedAt:       &Timestamp{referenceTime},
-		CommitID:          String("cid"),
-		HTMLURL:           String("hurl"),
-		PullRequestURL:    String("prurl"),
-		State:             String("state"),
-		AuthorAssociation: String("aa"),
+		CommitID:          Ptr("cid"),
+		HTMLURL:           Ptr("hurl"),
+		PullRequestURL:    Ptr("prurl"),
+		State:             Ptr("state"),
+		AuthorAssociation: Ptr("aa"),
 	}
 
 	want := `{

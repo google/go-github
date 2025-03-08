@@ -16,8 +16,8 @@ import (
 )
 
 func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -71,35 +71,35 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 	date := Timestamp{time.Date(2018, time.February, 13, 15, 5, 24, 0, time.UTC)}
 	want := SCIMProvisionedIdentities{
 		Schemas:      []string{"urn:ietf:params:scim:api:messages:2.0:ListResponse"},
-		TotalResults: Int(1),
-		ItemsPerPage: Int(1),
-		StartIndex:   Int(1),
+		TotalResults: Ptr(1),
+		ItemsPerPage: Ptr(1),
+		StartIndex:   Ptr(1),
 		Resources: []*SCIMUserAttributes{
 			{
-				ID: String("5fc0c238-1112-11e8-8e45-920c87bdbd75"),
+				ID: Ptr("5fc0c238-1112-11e8-8e45-920c87bdbd75"),
 				Meta: &SCIMMeta{
-					ResourceType: String("User"),
+					ResourceType: Ptr("User"),
 					Created:      &date,
 					LastModified: &date,
-					Location:     String("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"),
+					Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"),
 				},
 				UserName: "octocat@github.com",
 				Name: SCIMUserName{
 					GivenName:  "Mona",
 					FamilyName: "Octocat",
-					Formatted:  String("Mona Octocat"),
+					Formatted:  Ptr("Mona Octocat"),
 				},
-				DisplayName: String("Mona Octocat"),
+				DisplayName: Ptr("Mona Octocat"),
 				Emails: []*SCIMUserEmail{
 					{
 						Value:   "octocat@github.com",
-						Primary: Bool(true),
+						Primary: Ptr(true),
 					},
 				},
 				Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
-				ExternalID: String("00u1dhhb1fkIGP7RL1d8"),
+				ExternalID: Ptr("00u1dhhb1fkIGP7RL1d8"),
 				Groups:     nil,
-				Active:     Bool(true),
+				Active:     Ptr(true),
 			},
 		},
 	}
@@ -121,9 +121,103 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 	})
 }
 
+func TestSCIMService_ListSCIMProvisionedGroups(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/scim/v2/enterprises/o/Groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{
+			"schemas": [
+			  "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+			],
+			"totalResults": 1,
+			"itemsPerPage": 1,
+			"startIndex": 1,
+			"Resources": [
+			  {
+				"schemas": [
+				  "urn:ietf:params:scim:schemas:core:2.0:Group"
+				],
+				"id": "123e4567-e89b-12d3-a456-426614174000",
+				"externalId": "00u1dhhb1fkIGP7RL1d8",
+				"displayName": "Mona Octocat",
+				"meta": {
+				  "resourceType": "Group",
+				  "created": "2018-02-13T15:05:24.000-00:00",
+				  "lastModified": "2018-02-13T15:05:24.000-00:00",
+				  "location": "https://api.github.com/scim/v2/enterprises/octo/Groups/123e4567-e89b-12d3-a456-426614174000"
+				},
+				"members": [
+				  {
+					"value": "5fc0c238-1112-11e8-8e45-920c87bdbd75",
+					"$ref": "https://api.github.com/scim/v2/enterprises/octo/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75",
+					"display": "Mona Octocat"
+				  }
+				]
+			  }
+			]
+		  }`))
+	})
+
+	ctx := context.Background()
+	opts := &ListSCIMProvisionedIdentitiesOptions{}
+	groups, _, err := client.SCIM.ListSCIMProvisionedGroupsForEnterprise(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("SCIM.ListSCIMProvisionedIdentities returned error: %v", err)
+	}
+
+	date := Timestamp{time.Date(2018, time.February, 13, 15, 5, 24, 0, time.UTC)}
+	want := SCIMProvisionedGroups{
+		Schemas:      []string{"urn:ietf:params:scim:api:messages:2.0:ListResponse"},
+		TotalResults: Ptr(1),
+		ItemsPerPage: Ptr(1),
+		StartIndex:   Ptr(1),
+		Resources: []*SCIMGroupAttributes{
+			{
+				ID: Ptr("123e4567-e89b-12d3-a456-426614174000"),
+				Meta: &SCIMMeta{
+					ResourceType: Ptr("Group"),
+					Created:      &date,
+					LastModified: &date,
+					Location:     Ptr("https://api.github.com/scim/v2/enterprises/octo/Groups/123e4567-e89b-12d3-a456-426614174000"),
+				},
+
+				DisplayName: Ptr("Mona Octocat"),
+				Schemas:     []string{"urn:ietf:params:scim:schemas:core:2.0:Group"},
+				ExternalID:  Ptr("00u1dhhb1fkIGP7RL1d8"),
+				Members: []*SCIMDisplayReference{
+					{
+						Value:   "5fc0c238-1112-11e8-8e45-920c87bdbd75",
+						Ref:     "https://api.github.com/scim/v2/enterprises/octo/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75",
+						Display: Ptr("Mona Octocat"),
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(groups, &want) {
+		diff := cmp.Diff(groups, want)
+		t.Errorf("SCIM.ListSCIMProvisionedGroupsForEnterprise returned %+v, want %+v: diff %+v", groups, want, diff)
+	}
+
+	const methodName = "ListSCIMProvisionedGroupsForEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SCIM.ListSCIMProvisionedGroupsForEnterprise(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		_, r, err := client.SCIM.ListSCIMProvisionedGroupsForEnterprise(ctx, "o", opts)
+		return r, err
+	})
+}
+
 func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -150,7 +244,7 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 	}
 
 	want := &SCIMUserAttributes{
-		ID:       String("1234567890"),
+		ID:       Ptr("1234567890"),
 		UserName: "userName",
 	}
 	if !cmp.Equal(user, want) {
@@ -173,8 +267,8 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 }
 
 func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -219,33 +313,33 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 
 	date := Timestamp{time.Date(2017, time.March, 9, 16, 11, 13, 0, time.UTC)}
 	want := SCIMUserAttributes{
-		ID: String("edefdfedf-050c-11e7-8d32"),
+		ID: Ptr("edefdfedf-050c-11e7-8d32"),
 		Meta: &SCIMMeta{
-			ResourceType: String("User"),
+			ResourceType: Ptr("User"),
 			Created:      &date,
 			LastModified: &date,
-			Location:     String("https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"),
+			Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"),
 		},
 		UserName: "mona.octocat@okta.example.com",
 		Name: SCIMUserName{
 			GivenName:  "Mona",
 			FamilyName: "Octocat",
-			Formatted:  String("Mona Octocat"),
+			Formatted:  Ptr("Mona Octocat"),
 		},
-		DisplayName: String("Mona Octocat"),
+		DisplayName: Ptr("Mona Octocat"),
 		Emails: []*SCIMUserEmail{
 			{
 				Value:   "mona.octocat@okta.example.com",
-				Primary: Bool(true),
+				Primary: Ptr(true),
 			},
 			{
 				Value: "mona@octocat.github.com",
 			},
 		},
 		Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
-		ExternalID: String("a7d0f98382"),
+		ExternalID: Ptr("a7d0f98382"),
 		Groups:     nil,
-		Active:     Bool(true),
+		Active:     Ptr(true),
 	}
 
 	if !cmp.Equal(user, &want) {
@@ -266,8 +360,8 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 }
 
 func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -304,8 +398,8 @@ func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
 }
 
 func TestSCIMService_UpdateAttributeForSCIMUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -331,8 +425,8 @@ func TestSCIMService_UpdateAttributeForSCIMUser(t *testing.T) {
 }
 
 func TestSCIMService_DeleteSCIMUserFromOrg(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -357,6 +451,7 @@ func TestSCIMService_DeleteSCIMUserFromOrg(t *testing.T) {
 }
 
 func TestSCIMUserAttributes_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SCIMUserAttributes{}, `{
 		"userName":"","name":{"givenName":"","familyName":""},"emails":null
 	}`)
@@ -366,20 +461,20 @@ func TestSCIMUserAttributes_Marshal(t *testing.T) {
 		Name: SCIMUserName{
 			GivenName:  "Name1",
 			FamilyName: "Fname",
-			Formatted:  String("formatted name"),
+			Formatted:  Ptr("formatted name"),
 		},
-		DisplayName: String("Name"),
+		DisplayName: Ptr("Name"),
 		Emails: []*SCIMUserEmail{
 			{
 				Value:   "value",
-				Primary: Bool(false),
-				Type:    String("type"),
+				Primary: Ptr(false),
+				Type:    Ptr("type"),
 			},
 		},
 		Schemas:    []string{"schema1"},
-		ExternalID: String("id"),
+		ExternalID: Ptr("id"),
 		Groups:     []string{"group1"},
-		Active:     Bool(true),
+		Active:     Ptr(true),
 	}
 
 	want := `{
@@ -405,11 +500,12 @@ func TestSCIMUserAttributes_Marshal(t *testing.T) {
 }
 
 func TestUpdateAttributeForSCIMUserOperations_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UpdateAttributeForSCIMUserOperations{}, `{}`)
 
 	u := &UpdateAttributeForSCIMUserOperations{
 		Op:   "TestOp",
-		Path: String("path"),
+		Path: Ptr("path"),
 	}
 
 	want := `{
@@ -421,13 +517,14 @@ func TestUpdateAttributeForSCIMUserOperations_Marshal(t *testing.T) {
 }
 
 func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UpdateAttributeForSCIMUserOptions{}, `{}`)
 
 	u := &UpdateAttributeForSCIMUserOptions{
 		Schemas: []string{"test", "schema"},
 		Operations: UpdateAttributeForSCIMUserOperations{
 			Op:   "TestOp",
-			Path: String("path"),
+			Path: Ptr("path"),
 		},
 	}
 
@@ -443,6 +540,7 @@ func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 }
 
 func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{
 		"StartIndex": null,
 		"Count": null,
@@ -457,8 +555,8 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 		t,
 		url,
 		&ListSCIMProvisionedIdentitiesOptions{
-			StartIndex: Int(1),
-			Count:      Int(10),
+			StartIndex: Ptr(1),
+			Count:      Ptr(10),
 		},
 		fmt.Sprintf("%s?count=10&startIndex=1", url),
 	)
@@ -467,15 +565,16 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 		t,
 		url,
 		&ListSCIMProvisionedIdentitiesOptions{
-			StartIndex: Int(1),
-			Count:      Int(10),
-			Filter:     String("test"),
+			StartIndex: Ptr(1),
+			Count:      Ptr(10),
+			Filter:     Ptr("test"),
 		},
 		fmt.Sprintf("%s?count=10&filter=test&startIndex=1", url),
 	)
 }
 
 func TestSCIMUserName_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SCIMUserName{}, `{
 		"givenName":"","familyName":""
 	}`)
@@ -483,23 +582,24 @@ func TestSCIMUserName_Marshal(t *testing.T) {
 	u := &SCIMUserName{
 		GivenName:  "Name1",
 		FamilyName: "Fname",
-		Formatted:  String("formatted name"),
+		Formatted:  Ptr("formatted name"),
 	}
 
 	want := `{
 			"givenName": "Name1",
 			"familyName": "Fname",
-			"formatted": "formatted name"	
+			"formatted": "formatted name"
 	}`
 	testJSONMarshal(t, u, want)
 }
 
 func TestSCIMMeta_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SCIMMeta{}, `{}`)
 
 	u := &SCIMMeta{
-		ResourceType: String("test"),
-		Location:     String("test"),
+		ResourceType: Ptr("test"),
+		Location:     Ptr("test"),
 	}
 
 	want := `{
@@ -511,33 +611,34 @@ func TestSCIMMeta_Marshal(t *testing.T) {
 }
 
 func TestSCIMProvisionedIdentities_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &SCIMProvisionedIdentities{}, `{}`)
 
 	u := &SCIMProvisionedIdentities{
 		Schemas:      []string{"test", "schema"},
-		TotalResults: Int(1),
-		ItemsPerPage: Int(2),
-		StartIndex:   Int(1),
+		TotalResults: Ptr(1),
+		ItemsPerPage: Ptr(2),
+		StartIndex:   Ptr(1),
 		Resources: []*SCIMUserAttributes{
 			{
 				UserName: "SCIM",
 				Name: SCIMUserName{
 					GivenName:  "scim",
 					FamilyName: "test",
-					Formatted:  String("SCIM"),
+					Formatted:  Ptr("SCIM"),
 				},
-				DisplayName: String("Test SCIM"),
+				DisplayName: Ptr("Test SCIM"),
 				Emails: []*SCIMUserEmail{
 					{
 						Value:   "test",
-						Primary: Bool(true),
-						Type:    String("test"),
+						Primary: Ptr(true),
+						Type:    Ptr("test"),
 					},
 				},
 				Schemas:    []string{"schema1"},
-				ExternalID: String("id"),
+				ExternalID: Ptr("id"),
 				Groups:     []string{"group1"},
-				Active:     Bool(true),
+				Active:     Ptr(true),
 			},
 		},
 	}

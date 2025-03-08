@@ -17,15 +17,15 @@ import (
 )
 
 func TestAdminUsers_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
 		v := new(CreateUserRequest)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
-		want := &CreateUserRequest{Login: "github", Email: String("email@domain.com"), Suspended: Bool(false)}
+		want := &CreateUserRequest{Login: "github", Email: Ptr("email@domain.com"), Suspended: Ptr(false)}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -36,14 +36,14 @@ func TestAdminUsers_Create(t *testing.T) {
 	ctx := context.Background()
 	org, _, err := client.Admin.CreateUser(ctx, CreateUserRequest{
 		Login:     "github",
-		Email:     String("email@domain.com"),
-		Suspended: Bool(false),
+		Email:     Ptr("email@domain.com"),
+		Suspended: Ptr(false),
 	})
 	if err != nil {
 		t.Errorf("Admin.CreateUser returned error: %v", err)
 	}
 
-	want := &User{ID: Int64(1), Login: String("github")}
+	want := &User{ID: Ptr(int64(1)), Login: Ptr("github")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Admin.CreateUser returned %+v, want %+v", org, want)
 	}
@@ -52,8 +52,8 @@ func TestAdminUsers_Create(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Admin.CreateUser(ctx, CreateUserRequest{
 			Login:     "github",
-			Email:     String("email@domain.com"),
-			Suspended: Bool(false),
+			Email:     Ptr("email@domain.com"),
+			Suspended: Ptr(false),
 		})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -63,8 +63,8 @@ func TestAdminUsers_Create(t *testing.T) {
 }
 
 func TestAdminUsers_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/github", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -88,8 +88,8 @@ func TestAdminUsers_Delete(t *testing.T) {
 }
 
 func TestUserImpersonation_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -123,16 +123,16 @@ func TestUserImpersonation_Create(t *testing.T) {
 
 	date := Timestamp{Time: time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	want := &UserAuthorization{
-		ID:  Int64(1234),
-		URL: String("https://git.company.com/api/v3/authorizations/1234"),
+		ID:  Ptr(int64(1234)),
+		URL: Ptr("https://git.company.com/api/v3/authorizations/1234"),
 		App: &OAuthAPP{
-			Name:     String("GitHub Site Administrator"),
-			URL:      String("https://docs.github.com/en/rest/enterprise/users/"),
-			ClientID: String("1234"),
+			Name:     Ptr("GitHub Site Administrator"),
+			URL:      Ptr("https://docs.github.com/en/rest/enterprise/users/"),
+			ClientID: Ptr("1234"),
 		},
-		Token:          String("1234"),
-		HashedToken:    String("1234"),
-		TokenLastEight: String("1234"),
+		Token:          Ptr("1234"),
+		HashedToken:    Ptr("1234"),
+		TokenLastEight: Ptr("1234"),
 		Note:           nil,
 		NoteURL:        nil,
 		CreatedAt:      &date,
@@ -160,8 +160,8 @@ func TestUserImpersonation_Create(t *testing.T) {
 }
 
 func TestUserImpersonation_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -185,11 +185,12 @@ func TestUserImpersonation_Delete(t *testing.T) {
 }
 
 func TestCreateUserRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CreateUserRequest{}, "{}")
 
 	u := &CreateUserRequest{
 		Login: "l",
-		Email: String("e"),
+		Email: Ptr("e"),
 	}
 
 	want := `{
@@ -201,6 +202,7 @@ func TestCreateUserRequest_Marshal(t *testing.T) {
 }
 
 func TestImpersonateUserOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &ImpersonateUserOptions{}, "{}")
 
 	u := &ImpersonateUserOptions{
@@ -217,12 +219,13 @@ func TestImpersonateUserOptions_Marshal(t *testing.T) {
 }
 
 func TestOAuthAPP_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &OAuthAPP{}, "{}")
 
 	u := &OAuthAPP{
-		URL:      String("u"),
-		Name:     String("n"),
-		ClientID: String("cid"),
+		URL:      Ptr("u"),
+		Name:     Ptr("n"),
+		ClientID: Ptr("cid"),
 	}
 
 	want := `{
@@ -235,27 +238,28 @@ func TestOAuthAPP_Marshal(t *testing.T) {
 }
 
 func TestUserAuthorization_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &UserAuthorization{}, "{}")
 
 	u := &UserAuthorization{
-		ID:  Int64(1),
-		URL: String("u"),
+		ID:  Ptr(int64(1)),
+		URL: Ptr("u"),
 		Scopes: []string{
 			"s",
 		},
-		Token:          String("t"),
-		TokenLastEight: String("tle"),
-		HashedToken:    String("ht"),
+		Token:          Ptr("t"),
+		TokenLastEight: Ptr("tle"),
+		HashedToken:    Ptr("ht"),
 		App: &OAuthAPP{
-			URL:      String("u"),
-			Name:     String("n"),
-			ClientID: String("cid"),
+			URL:      Ptr("u"),
+			Name:     Ptr("n"),
+			ClientID: Ptr("cid"),
 		},
-		Note:        String("n"),
-		NoteURL:     String("nu"),
+		Note:        Ptr("n"),
+		NoteURL:     Ptr("nu"),
 		UpdatedAt:   &Timestamp{referenceTime},
 		CreatedAt:   &Timestamp{referenceTime},
-		Fingerprint: String("f"),
+		Fingerprint: Ptr("f"),
 	}
 
 	want := `{

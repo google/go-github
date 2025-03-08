@@ -8,7 +8,9 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"time"
 )
 
 // CopilotService provides access to the Copilot-related functions
@@ -51,6 +53,7 @@ type CopilotSeatDetails struct {
 	LastActivityEditor      *string     `json:"last_activity_editor,omitempty"`
 	CreatedAt               *Timestamp  `json:"created_at"`
 	UpdatedAt               *Timestamp  `json:"updated_at,omitempty"`
+	PlanType                *string     `json:"plan_type,omitempty"`
 }
 
 // SeatAssignments represents the number of seats assigned.
@@ -61,6 +64,125 @@ type SeatAssignments struct {
 // SeatCancellations represents the number of seats cancelled.
 type SeatCancellations struct {
 	SeatsCancelled int `json:"seats_cancelled"`
+}
+
+// CopilotMetricsListOptions represents the optional parameters to the CopilotService get metrics methods.
+type CopilotMetricsListOptions struct {
+	Since *time.Time `url:"since,omitempty"`
+	Until *time.Time `url:"until,omitempty"`
+
+	ListOptions
+}
+
+// CopilotIDECodeCompletionsLanguage represents Copilot usage metrics for completions in the IDE for a language.
+type CopilotIDECodeCompletionsLanguage struct {
+	Name              string `json:"name"`
+	TotalEngagedUsers int    `json:"total_engaged_users"`
+}
+
+// CopilotIDECodeCompletionsModelLanguage represents Copilot usage metrics for completions in the IDE for a model and language.
+type CopilotIDECodeCompletionsModelLanguage struct {
+	Name                    string `json:"name"`
+	TotalEngagedUsers       int    `json:"total_engaged_users"`
+	TotalCodeSuggestions    int    `json:"total_code_suggestions"`
+	TotalCodeAcceptances    int    `json:"total_code_acceptances"`
+	TotalCodeLinesSuggested int    `json:"total_code_lines_suggested"`
+	TotalCodeLinesAccepted  int    `json:"total_code_lines_accepted"`
+}
+
+// CopilotIDECodeCompletionsModel represents Copilot usage metrics for completions in the IDE for a model.
+type CopilotIDECodeCompletionsModel struct {
+	Name                    string                                    `json:"name"`
+	IsCustomModel           bool                                      `json:"is_custom_model"`
+	CustomModelTrainingDate *string                                   `json:"custom_model_training_date,omitempty"`
+	TotalEngagedUsers       int                                       `json:"total_engaged_users"`
+	Languages               []*CopilotIDECodeCompletionsModelLanguage `json:"languages"`
+}
+
+// CopilotIDECodeCompletionsEditor represents Copilot usage metrics for completions in the IDE for an editor.
+type CopilotIDECodeCompletionsEditor struct {
+	Name              string                            `json:"name"`
+	TotalEngagedUsers int                               `json:"total_engaged_users"`
+	Models            []*CopilotIDECodeCompletionsModel `json:"models"`
+}
+
+// CopilotIDECodeCompletions represents Copilot usage metrics for Copilot code completions in the IDE, categorized by editor, model and language.
+type CopilotIDECodeCompletions struct {
+	TotalEngagedUsers int                                  `json:"total_engaged_users"`
+	Languages         []*CopilotIDECodeCompletionsLanguage `json:"languages"`
+	Editors           []*CopilotIDECodeCompletionsEditor   `json:"editors"`
+}
+
+// CopilotIDEChatModel represents Copilot usage metrics for chatting with a model in the IDE.
+type CopilotIDEChatModel struct {
+	Name                     string  `json:"name"`
+	IsCustomModel            bool    `json:"is_custom_model"`
+	CustomModelTrainingDate  *string `json:"custom_model_training_date,omitempty"`
+	TotalEngagedUsers        int     `json:"total_engaged_users"`
+	TotalChats               int     `json:"total_chats"`
+	TotalChatInsertionEvents int     `json:"total_chat_insertion_events"`
+	TotalChatCopyEvents      int     `json:"total_chat_copy_events"`
+}
+
+// CopilotIDEChatEditor represents Copilot usage metrics for chatting with a model in the IDE, categorized by editor and model.
+type CopilotIDEChatEditor struct {
+	Name              string                 `json:"name"`
+	TotalEngagedUsers int                    `json:"total_engaged_users"`
+	Models            []*CopilotIDEChatModel `json:"models"`
+}
+
+// CopilotIDEChat represents Copilot usage metrics for Copilot Chat in the IDE, categorized by editor and model.
+type CopilotIDEChat struct {
+	TotalEngagedUsers int                     `json:"total_engaged_users"`
+	Editors           []*CopilotIDEChatEditor `json:"editors"`
+}
+
+// CopilotDotcomChatModel represents Copilot usage metrics for chatting with a model in the webbrowser.
+type CopilotDotcomChatModel struct {
+	Name                    string  `json:"name"`
+	IsCustomModel           bool    `json:"is_custom_model"`
+	CustomModelTrainingDate *string `json:"custom_model_training_date,omitempty"`
+	TotalEngagedUsers       int     `json:"total_engaged_users"`
+	TotalChats              int     `json:"total_chats"`
+}
+
+// CopilotDotcomChat represents Copilot usage metrics for Copilot Chat in the webbrowser, categorized by model.
+type CopilotDotcomChat struct {
+	TotalEngagedUsers int                       `json:"total_engaged_users"`
+	Models            []*CopilotDotcomChatModel `json:"models"`
+}
+
+// CopilotDotcomPullRequestsModel represents Copilot usage metrics for pull requests in the webbrowser, categorized by model.
+type CopilotDotcomPullRequestsModel struct {
+	Name                    string  `json:"name"`
+	IsCustomModel           bool    `json:"is_custom_model"`
+	CustomModelTrainingDate *string `json:"custom_model_training_date,omitempty"`
+	TotalPRSummariesCreated int     `json:"total_pr_summaries_created"`
+	TotalEngagedUsers       int     `json:"total_engaged_users"`
+}
+
+// CopilotDotcomPullRequestsRepository represents Copilot usage metrics for pull requests in the webbrowser, categorized by repository.
+type CopilotDotcomPullRequestsRepository struct {
+	Name              string                            `json:"name"`
+	TotalEngagedUsers int                               `json:"total_engaged_users"`
+	Models            []*CopilotDotcomPullRequestsModel `json:"models"`
+}
+
+// CopilotDotcomPullRequests represents Copilot usage metrics for pull requests in the webbrowser, categorized by repository and model.
+type CopilotDotcomPullRequests struct {
+	TotalEngagedUsers int                                    `json:"total_engaged_users"`
+	Repositories      []*CopilotDotcomPullRequestsRepository `json:"repositories"`
+}
+
+// CopilotMetrics represents Copilot usage metrics for a given day.
+type CopilotMetrics struct {
+	Date                      string                     `json:"date"`
+	TotalActiveUsers          *int                       `json:"total_active_users,omitempty"`
+	TotalEngagedUsers         *int                       `json:"total_engaged_users,omitempty"`
+	CopilotIDECodeCompletions *CopilotIDECodeCompletions `json:"copilot_ide_code_completions,omitempty"`
+	CopilotIDEChat            *CopilotIDEChat            `json:"copilot_ide_chat,omitempty"`
+	CopilotDotcomChat         *CopilotDotcomChat         `json:"copilot_dotcom_chat,omitempty"`
+	CopilotDotcomPullRequests *CopilotDotcomPullRequests `json:"copilot_dotcom_pull_requests,omitempty"`
 }
 
 func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
@@ -78,6 +200,7 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 	cp.LastActivityEditor = seatDetail.LastActivityEditor
 	cp.CreatedAt = seatDetail.CreatedAt
 	cp.UpdatedAt = seatDetail.UpdatedAt
+	cp.PlanType = seatDetail.PlanType
 
 	switch v := seatDetail.Assignee.(type) {
 	case map[string]interface{}:
@@ -87,7 +210,7 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 		}
 
 		if v["type"] == nil {
-			return fmt.Errorf("assignee type field is not set")
+			return errors.New("assignee type field is not set")
 		}
 
 		if t, ok := v["type"].(string); ok && t == "User" {
@@ -161,6 +284,34 @@ func (s *CopilotService) GetCopilotBilling(ctx context.Context, org string) (*Co
 //meta:operation GET /orgs/{org}/copilot/billing/seats
 func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string, opts *ListOptions) (*ListCopilotSeatsResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing/seats", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var copilotSeats *ListCopilotSeatsResponse
+	resp, err := s.client.Do(ctx, req, &copilotSeats)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return copilotSeats, resp, nil
+}
+
+// ListCopilotEnterpriseSeats lists Copilot for Business seat assignments for an enterprise.
+//
+// To paginate through all seats, populate 'Page' with the number of the last page.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-user-management#list-all-copilot-seat-assignments-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/copilot/billing/seats
+func (s *CopilotService) ListCopilotEnterpriseSeats(ctx context.Context, enterprise string, opts *ListOptions) (*ListCopilotSeatsResponse, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/copilot/billing/seats", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -312,4 +463,108 @@ func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (
 	}
 
 	return seatDetails, resp, nil
+}
+
+// GetEnterpriseMetrics gets Copilot usage metrics for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/copilot/metrics
+func (s *CopilotService) GetEnterpriseMetrics(ctx context.Context, enterprise string, opts *CopilotMetricsListOptions) ([]*CopilotMetrics, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/copilot/metrics", enterprise)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var metrics []*CopilotMetrics
+	resp, err := s.client.Do(ctx, req, &metrics)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return metrics, resp, nil
+}
+
+// GetEnterpriseTeamMetrics gets Copilot usage metrics for an enterprise team.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise-team
+//
+//meta:operation GET /enterprises/{enterprise}/team/{team_slug}/copilot/metrics
+func (s *CopilotService) GetEnterpriseTeamMetrics(ctx context.Context, enterprise, team string, opts *CopilotMetricsListOptions) ([]*CopilotMetrics, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/team/%v/copilot/metrics", enterprise, team)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var metrics []*CopilotMetrics
+	resp, err := s.client.Do(ctx, req, &metrics)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return metrics, resp, nil
+}
+
+// GetOrganizationMetrics gets Copilot usage metrics for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-organization
+//
+//meta:operation GET /orgs/{org}/copilot/metrics
+func (s *CopilotService) GetOrganizationMetrics(ctx context.Context, org string, opts *CopilotMetricsListOptions) ([]*CopilotMetrics, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/metrics", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var metrics []*CopilotMetrics
+	resp, err := s.client.Do(ctx, req, &metrics)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return metrics, resp, nil
+}
+
+// GetOrganizationTeamMetrics gets Copilot usage metrics for an organization team.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-a-team
+//
+//meta:operation GET /orgs/{org}/team/{team_slug}/copilot/metrics
+func (s *CopilotService) GetOrganizationTeamMetrics(ctx context.Context, org, team string, opts *CopilotMetricsListOptions) ([]*CopilotMetrics, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/team/%v/copilot/metrics", org, team)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var metrics []*CopilotMetrics
+	resp, err := s.client.Do(ctx, req, &metrics)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return metrics, resp, nil
 }

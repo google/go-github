@@ -18,8 +18,8 @@ import (
 )
 
 func TestPullRequestsService_List(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -41,7 +41,7 @@ func TestPullRequestsService_List(t *testing.T) {
 		t.Errorf("PullRequests.List returned error: %v", err)
 	}
 
-	want := []*PullRequest{{Number: Int(1)}}
+	want := []*PullRequest{{Number: Ptr(1)}}
 	if !cmp.Equal(pulls, want) {
 		t.Errorf("PullRequests.List returned %+v, want %+v", pulls, want)
 	}
@@ -62,8 +62,8 @@ func TestPullRequestsService_List(t *testing.T) {
 }
 
 func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/commits/sha/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -81,7 +81,7 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 		t.Errorf("PullRequests.ListPullRequestsWithCommit returned error: %v", err)
 	}
 
-	want := []*PullRequest{{Number: Int(1)}}
+	want := []*PullRequest{{Number: Ptr(1)}}
 	if !cmp.Equal(pulls, want) {
 		t.Errorf("PullRequests.ListPullRequestsWithCommit returned %+v, want %+v", pulls, want)
 	}
@@ -102,8 +102,8 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 }
 
 func TestPullRequestsService_List_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.List(ctx, "%", "r", nil)
@@ -111,8 +111,8 @@ func TestPullRequestsService_List_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -125,7 +125,7 @@ func TestPullRequestsService_Get(t *testing.T) {
 		t.Errorf("PullRequests.Get returned error: %v", err)
 	}
 
-	want := &PullRequest{Number: Int(1)}
+	want := &PullRequest{Number: Ptr(1)}
 	if !cmp.Equal(pull, want) {
 		t.Errorf("PullRequests.Get returned %+v, want %+v", pull, want)
 	}
@@ -146,8 +146,8 @@ func TestPullRequestsService_Get(t *testing.T) {
 }
 
 func TestPullRequestsService_GetRaw_diff(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	const rawStr = "@@diff content"
 
@@ -183,8 +183,8 @@ func TestPullRequestsService_GetRaw_diff(t *testing.T) {
 }
 
 func TestPullRequestsService_GetRaw_patch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	const rawStr = "@@patch content"
 
@@ -206,8 +206,8 @@ func TestPullRequestsService_GetRaw_patch(t *testing.T) {
 }
 
 func TestPullRequestsService_GetRaw_invalid(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.GetRaw(ctx, "o", "r", 1, RawOptions{100})
@@ -220,8 +220,8 @@ func TestPullRequestsService_GetRaw_invalid(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_links(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -247,24 +247,24 @@ func TestPullRequestsService_Get_links(t *testing.T) {
 	}
 
 	want := &PullRequest{
-		Number: Int(1),
+		Number: Ptr(1),
 		Links: &PRLinks{
 			Self: &PRLink{
-				HRef: String("https://api.github.com/repos/octocat/Hello-World/pulls/1347"),
+				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/1347"),
 			}, HTML: &PRLink{
-				HRef: String("https://github.com/octocat/Hello-World/pull/1347"),
+				HRef: Ptr("https://github.com/octocat/Hello-World/pull/1347"),
 			}, Issue: &PRLink{
-				HRef: String("https://api.github.com/repos/octocat/Hello-World/issues/1347"),
+				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/issues/1347"),
 			}, Comments: &PRLink{
-				HRef: String("https://api.github.com/repos/octocat/Hello-World/issues/1347/comments"),
+				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/issues/1347/comments"),
 			}, ReviewComments: &PRLink{
-				HRef: String("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
+				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
 			}, ReviewComment: &PRLink{
-				HRef: String("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
+				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
 			}, Commits: &PRLink{
-				HRef: String("https://api.github.com/repos/octocat/Hello-World/pulls/1347/commits"),
+				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/1347/commits"),
 			}, Statuses: &PRLink{
-				HRef: String("https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"),
 			},
 		},
 	}
@@ -274,8 +274,8 @@ func TestPullRequestsService_Get_links(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_headAndBase(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -289,14 +289,14 @@ func TestPullRequestsService_Get_headAndBase(t *testing.T) {
 	}
 
 	want := &PullRequest{
-		Number: Int(1),
+		Number: Ptr(1),
 		Head: &PullRequestBranch{
-			Ref:  String("r2"),
-			Repo: &Repository{ID: Int64(2)},
+			Ref:  Ptr("r2"),
+			Repo: &Repository{ID: Ptr(int64(2))},
 		},
 		Base: &PullRequestBranch{
-			Ref:  String("r1"),
-			Repo: &Repository{ID: Int64(1)},
+			Ref:  Ptr("r1"),
+			Repo: &Repository{ID: Ptr(int64(1))},
 		},
 	}
 	if !cmp.Equal(pull, want) {
@@ -305,8 +305,8 @@ func TestPullRequestsService_Get_headAndBase(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_urlFields(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -328,15 +328,15 @@ func TestPullRequestsService_Get_urlFields(t *testing.T) {
 	}
 
 	want := &PullRequest{
-		Number:            Int(1),
-		URL:               String("https://api.github.com/repos/octocat/Hello-World/pulls/1347"),
-		HTMLURL:           String("https://github.com/octocat/Hello-World/pull/1347"),
-		IssueURL:          String("https://api.github.com/repos/octocat/Hello-World/issues/1347"),
-		StatusesURL:       String("https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"),
-		DiffURL:           String("https://github.com/octocat/Hello-World/pull/1347.diff"),
-		PatchURL:          String("https://github.com/octocat/Hello-World/pull/1347.patch"),
-		ReviewCommentsURL: String("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
-		ReviewCommentURL:  String("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
+		Number:            Ptr(1),
+		URL:               Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/1347"),
+		HTMLURL:           Ptr("https://github.com/octocat/Hello-World/pull/1347"),
+		IssueURL:          Ptr("https://api.github.com/repos/octocat/Hello-World/issues/1347"),
+		StatusesURL:       Ptr("https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+		DiffURL:           Ptr("https://github.com/octocat/Hello-World/pull/1347.diff"),
+		PatchURL:          Ptr("https://github.com/octocat/Hello-World/pull/1347.patch"),
+		ReviewCommentsURL: Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
+		ReviewCommentURL:  Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
 	}
 
 	if !cmp.Equal(pull, want) {
@@ -345,8 +345,8 @@ func TestPullRequestsService_Get_urlFields(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.Get(ctx, "%", "r", 1)
@@ -354,10 +354,10 @@ func TestPullRequestsService_Get_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := &NewPullRequest{Title: String("t")}
+	input := &NewPullRequest{Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewPullRequest)
@@ -377,7 +377,7 @@ func TestPullRequestsService_Create(t *testing.T) {
 		t.Errorf("PullRequests.Create returned error: %v", err)
 	}
 
-	want := &PullRequest{Number: Int(1)}
+	want := &PullRequest{Number: Ptr(1)}
 	if !cmp.Equal(pull, want) {
 		t.Errorf("PullRequests.Create returned %+v, want %+v", pull, want)
 	}
@@ -398,8 +398,8 @@ func TestPullRequestsService_Create(t *testing.T) {
 }
 
 func TestPullRequestsService_Create_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.Create(ctx, "%", "r", nil)
@@ -407,8 +407,8 @@ func TestPullRequestsService_Create_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_UpdateBranch(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/update-branch", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -421,7 +421,7 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 	})
 
 	opts := &PullRequestBranchUpdateOptions{
-		ExpectedHeadSHA: String("s"),
+		ExpectedHeadSHA: Ptr("s"),
 	}
 
 	ctx := context.Background()
@@ -431,8 +431,8 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 	}
 
 	want := &PullRequestBranchUpdateResponse{
-		Message: String("Updating pull request branch."),
-		URL:     String("https://github.com/repos/o/r/pulls/1"),
+		Message: Ptr("Updating pull request branch."),
+		URL:     Ptr("https://github.com/repos/o/r/pulls/1"),
 	}
 
 	if !cmp.Equal(pull, want) {
@@ -455,8 +455,8 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 }
 
 func TestPullRequestsService_Edit(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	tests := []struct {
 		input        *PullRequest
@@ -466,19 +466,19 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		want       *PullRequest
 	}{
 		{
-			input:        &PullRequest{Title: String("t")},
+			input:        &PullRequest{Title: Ptr("t")},
 			sendResponse: `{"number":1}`,
 			wantUpdate:   `{"title":"t"}`,
-			want:         &PullRequest{Number: Int(1)},
+			want:         &PullRequest{Number: Ptr(1)},
 		},
 		{
 			// base update
-			input:        &PullRequest{Base: &PullRequestBranch{Ref: String("master")}},
+			input:        &PullRequest{Base: &PullRequestBranch{Ref: Ptr("master")}},
 			sendResponse: `{"number":1,"base":{"ref":"master"}}`,
 			wantUpdate:   `{"base":"master"}`,
 			want: &PullRequest{
-				Number: Int(1),
-				Base:   &PullRequestBranch{Ref: String("master")},
+				Number: Ptr(1),
+				Base:   &PullRequestBranch{Ref: Ptr("master")},
 			},
 		},
 	}
@@ -516,8 +516,8 @@ func TestPullRequestsService_Edit(t *testing.T) {
 }
 
 func TestPullRequestsService_Edit_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.PullRequests.Edit(ctx, "%", "r", 1, &PullRequest{})
@@ -525,8 +525,8 @@ func TestPullRequestsService_Edit_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_ListCommits(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -561,18 +561,18 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 
 	want := []*RepositoryCommit{
 		{
-			SHA: String("3"),
+			SHA: Ptr("3"),
 			Parents: []*Commit{
 				{
-					SHA: String("2"),
+					SHA: Ptr("2"),
 				},
 			},
 		},
 		{
-			SHA: String("2"),
+			SHA: Ptr("2"),
 			Parents: []*Commit{
 				{
-					SHA: String("1"),
+					SHA: Ptr("1"),
 				},
 			},
 		},
@@ -597,8 +597,8 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 }
 
 func TestPullRequestsService_ListFiles(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/files", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -635,22 +635,22 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 
 	want := []*CommitFile{
 		{
-			SHA:       String("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
-			Filename:  String("file1.txt"),
-			Additions: Int(103),
-			Deletions: Int(21),
-			Changes:   Int(124),
-			Status:    String("added"),
-			Patch:     String("@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"),
+			SHA:       Ptr("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+			Filename:  Ptr("file1.txt"),
+			Additions: Ptr(103),
+			Deletions: Ptr(21),
+			Changes:   Ptr(124),
+			Status:    Ptr("added"),
+			Patch:     Ptr("@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"),
 		},
 		{
-			SHA:       String("f61aebed695e2e4193db5e6dcb09b5b57875f334"),
-			Filename:  String("file2.txt"),
-			Additions: Int(5),
-			Deletions: Int(3),
-			Changes:   Int(103),
-			Status:    String("modified"),
-			Patch:     String("@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"),
+			SHA:       Ptr("f61aebed695e2e4193db5e6dcb09b5b57875f334"),
+			Filename:  Ptr("file2.txt"),
+			Additions: Ptr(5),
+			Deletions: Ptr(3),
+			Changes:   Ptr(103),
+			Status:    Ptr("modified"),
+			Patch:     Ptr("@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"),
 		},
 	}
 
@@ -674,8 +674,8 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 }
 
 func TestPullRequestsService_IsMerged(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -709,8 +709,8 @@ func TestPullRequestsService_IsMerged(t *testing.T) {
 }
 
 func TestPullRequestsService_Merge(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -730,9 +730,9 @@ func TestPullRequestsService_Merge(t *testing.T) {
 	}
 
 	want := &PullRequestMergeResult{
-		SHA:     String("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
-		Merged:  Bool(true),
-		Message: String("Pull Request successfully merged"),
+		SHA:     Ptr("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+		Merged:  Ptr(true),
+		Message: Ptr("Pull Request successfully merged"),
 	}
 	if !cmp.Equal(merge, want) {
 		t.Errorf("PullRequests.Merge returned %+v, want %+v", merge, want)
@@ -755,8 +755,8 @@ func TestPullRequestsService_Merge(t *testing.T) {
 
 // Test that different merge options produce expected PUT requests. See issue https://github.com/google/go-github/issues/500.
 func TestPullRequestsService_Merge_options(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	tests := []struct {
 		options  *PullRequestOptions
@@ -810,8 +810,9 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 }
 
 func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
+
 	madeRequest := false
 	expectedBody := ""
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
@@ -839,10 +840,11 @@ func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
 }
 
 func TestPullRequestMergeRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &pullRequestMergeRequest{}, "{}")
 
 	u := &pullRequestMergeRequest{
-		CommitMessage: String("cm"),
+		CommitMessage: Ptr("cm"),
 		CommitTitle:   "ct",
 		MergeMethod:   "mm",
 		SHA:           "sha",
@@ -859,12 +861,13 @@ func TestPullRequestMergeRequest_Marshal(t *testing.T) {
 }
 
 func TestPullRequestMergeResult_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestMergeResult{}, "{}")
 
 	u := &PullRequestMergeResult{
-		SHA:     String("sha"),
-		Merged:  Bool(false),
-		Message: String("msg"),
+		SHA:     Ptr("sha"),
+		Merged:  Ptr(false),
+		Message: Ptr("msg"),
 	}
 
 	want := `{
@@ -877,14 +880,15 @@ func TestPullRequestMergeResult_Marshal(t *testing.T) {
 }
 
 func TestPullRequestUpdate_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &pullRequestUpdate{}, "{}")
 
 	u := &pullRequestUpdate{
-		Title:               String("title"),
-		Body:                String("body"),
-		State:               String("state"),
-		Base:                String("base"),
-		MaintainerCanModify: Bool(false),
+		Title:               Ptr("title"),
+		Body:                Ptr("body"),
+		State:               Ptr("state"),
+		Base:                Ptr("base"),
+		MaintainerCanModify: Ptr(false),
 	}
 
 	want := `{
@@ -899,11 +903,12 @@ func TestPullRequestUpdate_Marshal(t *testing.T) {
 }
 
 func TestPullRequestBranchUpdateResponse_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestBranchUpdateResponse{}, "{}")
 
 	u := &PullRequestBranchUpdateResponse{
-		Message: String("message"),
-		URL:     String("url"),
+		Message: Ptr("message"),
+		URL:     Ptr("url"),
 	}
 
 	want := `{
@@ -915,10 +920,11 @@ func TestPullRequestBranchUpdateResponse_Marshal(t *testing.T) {
 }
 
 func TestPullRequestBranchUpdateOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestBranchUpdateOptions{}, "{}")
 
 	u := &PullRequestBranchUpdateOptions{
-		ExpectedHeadSHA: String("eh"),
+		ExpectedHeadSHA: Ptr("eh"),
 	}
 
 	want := `{
@@ -929,17 +935,18 @@ func TestPullRequestBranchUpdateOptions_Marshal(t *testing.T) {
 }
 
 func TestNewPullRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &NewPullRequest{}, "{}")
 
 	u := &NewPullRequest{
-		Title:               String("eh"),
-		Head:                String("eh"),
-		HeadRepo:            String("eh"),
-		Base:                String("eh"),
-		Body:                String("eh"),
-		Issue:               Int(1),
-		MaintainerCanModify: Bool(false),
-		Draft:               Bool(false),
+		Title:               Ptr("eh"),
+		Head:                Ptr("eh"),
+		HeadRepo:            Ptr("eh"),
+		Base:                Ptr("eh"),
+		Body:                Ptr("eh"),
+		Issue:               Ptr(1),
+		MaintainerCanModify: Ptr(false),
+		Draft:               Ptr(false),
 	}
 
 	want := `{
@@ -957,30 +964,31 @@ func TestNewPullRequest_Marshal(t *testing.T) {
 }
 
 func TestPullRequestBranch_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestBranch{}, "{}")
 
 	u := &PullRequestBranch{
-		Label: String("label"),
-		Ref:   String("ref"),
-		SHA:   String("sha"),
-		Repo:  &Repository{ID: Int64(1)},
+		Label: Ptr("label"),
+		Ref:   Ptr("ref"),
+		SHA:   Ptr("sha"),
+		Repo:  &Repository{ID: Ptr(int64(1))},
 		User: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
@@ -1019,10 +1027,11 @@ func TestPullRequestBranch_Marshal(t *testing.T) {
 }
 
 func TestPRLink_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PRLink{}, "{}")
 
 	u := &PRLink{
-		HRef: String("href"),
+		HRef: Ptr("href"),
 	}
 
 	want := `{
@@ -1033,32 +1042,33 @@ func TestPRLink_Marshal(t *testing.T) {
 }
 
 func TestPRLinks_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PRLinks{}, "{}")
 
 	u := &PRLinks{
 		Self: &PRLink{
-			HRef: String("href"),
+			HRef: Ptr("href"),
 		},
 		HTML: &PRLink{
-			HRef: String("href"),
+			HRef: Ptr("href"),
 		},
 		Issue: &PRLink{
-			HRef: String("href"),
+			HRef: Ptr("href"),
 		},
 		Comments: &PRLink{
-			HRef: String("href"),
+			HRef: Ptr("href"),
 		},
 		ReviewComments: &PRLink{
-			HRef: String("href"),
+			HRef: Ptr("href"),
 		},
 		ReviewComment: &PRLink{
-			HRef: String("href"),
+			HRef: Ptr("href"),
 		},
 		Commits: &PRLink{
-			HRef: String("href"),
+			HRef: Ptr("href"),
 		},
 		Statuses: &PRLink{
-			HRef: String("href"),
+			HRef: Ptr("href"),
 		},
 	}
 
@@ -1093,32 +1103,33 @@ func TestPRLinks_Marshal(t *testing.T) {
 }
 
 func TestPullRequestAutoMerge_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequestAutoMerge{}, "{}")
 
 	u := &PullRequestAutoMerge{
 		EnabledBy: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		MergeMethod:   String("mm"),
-		CommitTitle:   String("ct"),
-		CommitMessage: String("cm"),
+		MergeMethod:   Ptr("mm"),
+		CommitTitle:   Ptr("ct"),
+		CommitMessage: Ptr("cm"),
 	}
 
 	want := `{
@@ -1151,211 +1162,212 @@ func TestPullRequestAutoMerge_Marshal(t *testing.T) {
 }
 
 func TestPullRequest_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &PullRequest{}, "{}")
 
 	u := &PullRequest{
-		ID:        Int64(1),
-		Number:    Int(1),
-		State:     String("state"),
-		Locked:    Bool(false),
-		Title:     String("title"),
-		Body:      String("body"),
+		ID:        Ptr(int64(1)),
+		Number:    Ptr(1),
+		State:     Ptr("state"),
+		Locked:    Ptr(false),
+		Title:     Ptr("title"),
+		Body:      Ptr("body"),
 		CreatedAt: &Timestamp{referenceTime},
 		UpdatedAt: &Timestamp{referenceTime},
 		ClosedAt:  &Timestamp{referenceTime},
 		MergedAt:  &Timestamp{referenceTime},
-		Labels:    []*Label{{ID: Int64(1)}},
+		Labels:    []*Label{{ID: Ptr(int64(1))}},
 		User: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		Draft:          Bool(false),
-		Merged:         Bool(false),
-		Mergeable:      Bool(false),
-		MergeableState: String("ms"),
+		Draft:          Ptr(false),
+		Merged:         Ptr(false),
+		Mergeable:      Ptr(false),
+		MergeableState: Ptr("ms"),
 		MergedBy: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
-		MergeCommitSHA:    String("mcs"),
-		Rebaseable:        Bool(false),
-		Comments:          Int(1),
-		Commits:           Int(1),
-		Additions:         Int(1),
-		Deletions:         Int(1),
-		ChangedFiles:      Int(1),
-		URL:               String("url"),
-		HTMLURL:           String("hurl"),
-		IssueURL:          String("iurl"),
-		StatusesURL:       String("surl"),
-		DiffURL:           String("durl"),
-		PatchURL:          String("purl"),
-		CommitsURL:        String("curl"),
-		CommentsURL:       String("comurl"),
-		ReviewCommentsURL: String("rcurls"),
-		ReviewCommentURL:  String("rcurl"),
-		ReviewComments:    Int(1),
+		MergeCommitSHA:    Ptr("mcs"),
+		Rebaseable:        Ptr(false),
+		Comments:          Ptr(1),
+		Commits:           Ptr(1),
+		Additions:         Ptr(1),
+		Deletions:         Ptr(1),
+		ChangedFiles:      Ptr(1),
+		URL:               Ptr("url"),
+		HTMLURL:           Ptr("hurl"),
+		IssueURL:          Ptr("iurl"),
+		StatusesURL:       Ptr("surl"),
+		DiffURL:           Ptr("durl"),
+		PatchURL:          Ptr("purl"),
+		CommitsURL:        Ptr("curl"),
+		CommentsURL:       Ptr("comurl"),
+		ReviewCommentsURL: Ptr("rcurls"),
+		ReviewCommentURL:  Ptr("rcurl"),
+		ReviewComments:    Ptr(1),
 		Assignee: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
 		Assignees: []*User{
 			{
-				Login:           String("l"),
-				ID:              Int64(1),
-				URL:             String("u"),
-				AvatarURL:       String("a"),
-				GravatarID:      String("g"),
-				Name:            String("n"),
-				Company:         String("c"),
-				Blog:            String("b"),
-				Location:        String("l"),
-				Email:           String("e"),
-				Hireable:        Bool(true),
-				Bio:             String("b"),
-				TwitterUsername: String("t"),
-				PublicRepos:     Int(1),
-				Followers:       Int(1),
-				Following:       Int(1),
+				Login:           Ptr("l"),
+				ID:              Ptr(int64(1)),
+				URL:             Ptr("u"),
+				AvatarURL:       Ptr("a"),
+				GravatarID:      Ptr("g"),
+				Name:            Ptr("n"),
+				Company:         Ptr("c"),
+				Blog:            Ptr("b"),
+				Location:        Ptr("l"),
+				Email:           Ptr("e"),
+				Hireable:        Ptr(true),
+				Bio:             Ptr("b"),
+				TwitterUsername: Ptr("t"),
+				PublicRepos:     Ptr(1),
+				Followers:       Ptr(1),
+				Following:       Ptr(1),
 				CreatedAt:       &Timestamp{referenceTime},
 				SuspendedAt:     &Timestamp{referenceTime},
 			},
 		},
-		Milestone:           &Milestone{ID: Int64(1)},
-		MaintainerCanModify: Bool(true),
-		AuthorAssociation:   String("aa"),
-		NodeID:              String("nid"),
+		Milestone:           &Milestone{ID: Ptr(int64(1))},
+		MaintainerCanModify: Ptr(true),
+		AuthorAssociation:   Ptr("aa"),
+		NodeID:              Ptr("nid"),
 		RequestedReviewers: []*User{
 			{
-				Login:           String("l"),
-				ID:              Int64(1),
-				URL:             String("u"),
-				AvatarURL:       String("a"),
-				GravatarID:      String("g"),
-				Name:            String("n"),
-				Company:         String("c"),
-				Blog:            String("b"),
-				Location:        String("l"),
-				Email:           String("e"),
-				Hireable:        Bool(true),
-				Bio:             String("b"),
-				TwitterUsername: String("t"),
-				PublicRepos:     Int(1),
-				Followers:       Int(1),
-				Following:       Int(1),
+				Login:           Ptr("l"),
+				ID:              Ptr(int64(1)),
+				URL:             Ptr("u"),
+				AvatarURL:       Ptr("a"),
+				GravatarID:      Ptr("g"),
+				Name:            Ptr("n"),
+				Company:         Ptr("c"),
+				Blog:            Ptr("b"),
+				Location:        Ptr("l"),
+				Email:           Ptr("e"),
+				Hireable:        Ptr(true),
+				Bio:             Ptr("b"),
+				TwitterUsername: Ptr("t"),
+				PublicRepos:     Ptr(1),
+				Followers:       Ptr(1),
+				Following:       Ptr(1),
 				CreatedAt:       &Timestamp{referenceTime},
 				SuspendedAt:     &Timestamp{referenceTime},
 			},
 		},
 		AutoMerge: &PullRequestAutoMerge{
 			EnabledBy: &User{
-				Login:           String("l"),
-				ID:              Int64(1),
-				URL:             String("u"),
-				AvatarURL:       String("a"),
-				GravatarID:      String("g"),
-				Name:            String("n"),
-				Company:         String("c"),
-				Blog:            String("b"),
-				Location:        String("l"),
-				Email:           String("e"),
-				Hireable:        Bool(true),
-				Bio:             String("b"),
-				TwitterUsername: String("t"),
-				PublicRepos:     Int(1),
-				Followers:       Int(1),
-				Following:       Int(1),
+				Login:           Ptr("l"),
+				ID:              Ptr(int64(1)),
+				URL:             Ptr("u"),
+				AvatarURL:       Ptr("a"),
+				GravatarID:      Ptr("g"),
+				Name:            Ptr("n"),
+				Company:         Ptr("c"),
+				Blog:            Ptr("b"),
+				Location:        Ptr("l"),
+				Email:           Ptr("e"),
+				Hireable:        Ptr(true),
+				Bio:             Ptr("b"),
+				TwitterUsername: Ptr("t"),
+				PublicRepos:     Ptr(1),
+				Followers:       Ptr(1),
+				Following:       Ptr(1),
 				CreatedAt:       &Timestamp{referenceTime},
 				SuspendedAt:     &Timestamp{referenceTime},
 			},
-			MergeMethod:   String("mm"),
-			CommitTitle:   String("ct"),
-			CommitMessage: String("cm"),
+			MergeMethod:   Ptr("mm"),
+			CommitTitle:   Ptr("ct"),
+			CommitMessage: Ptr("cm"),
 		},
-		RequestedTeams: []*Team{{ID: Int64(1)}},
+		RequestedTeams: []*Team{{ID: Ptr(int64(1))}},
 		Links: &PRLinks{
 			Self: &PRLink{
-				HRef: String("href"),
+				HRef: Ptr("href"),
 			},
 			HTML: &PRLink{
-				HRef: String("href"),
+				HRef: Ptr("href"),
 			},
 			Issue: &PRLink{
-				HRef: String("href"),
+				HRef: Ptr("href"),
 			},
 			Comments: &PRLink{
-				HRef: String("href"),
+				HRef: Ptr("href"),
 			},
 			ReviewComments: &PRLink{
-				HRef: String("href"),
+				HRef: Ptr("href"),
 			},
 			ReviewComment: &PRLink{
-				HRef: String("href"),
+				HRef: Ptr("href"),
 			},
 			Commits: &PRLink{
-				HRef: String("href"),
+				HRef: Ptr("href"),
 			},
 			Statuses: &PRLink{
-				HRef: String("href"),
+				HRef: Ptr("href"),
 			},
 		},
 		Head: &PullRequestBranch{
-			Ref:  String("r2"),
-			Repo: &Repository{ID: Int64(2)},
+			Ref:  Ptr("r2"),
+			Repo: &Repository{ID: Ptr(int64(2))},
 		},
 		Base: &PullRequestBranch{
-			Ref:  String("r2"),
-			Repo: &Repository{ID: Int64(2)},
+			Ref:  Ptr("r2"),
+			Repo: &Repository{ID: Ptr(int64(2))},
 		},
-		ActiveLockReason: String("alr"),
+		ActiveLockReason: Ptr("alr"),
 	}
 
 	want := `{

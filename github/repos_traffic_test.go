@@ -16,8 +16,8 @@ import (
 )
 
 func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/traffic/popular/referrers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -34,9 +34,9 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 	}
 
 	want := []*TrafficReferrer{{
-		Referrer: String("Google"),
-		Count:    Int(4),
-		Uniques:  Int(3),
+		Referrer: Ptr("Google"),
+		Count:    Ptr(4),
+		Uniques:  Ptr(3),
 	}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListTrafficReferrers returned %+v, want %+v", got, want)
@@ -58,8 +58,8 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/traffic/popular/paths", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -77,10 +77,10 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 	}
 
 	want := []*TrafficPath{{
-		Path:    String("/github/hubot"),
-		Title:   String("github/hubot: A customizable life embetterment robot."),
-		Count:   Int(3542),
-		Uniques: Int(2225),
+		Path:    Ptr("/github/hubot"),
+		Title:   Ptr("github/hubot: A customizable life embetterment robot."),
+		Count:   Ptr(3542),
+		Uniques: Ptr(2225),
 	}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListTrafficPaths returned %+v, want %+v", got, want)
@@ -102,8 +102,8 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTrafficViews(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/traffic/views", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -125,11 +125,11 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 	want := &TrafficViews{
 		Views: []*TrafficData{{
 			Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
-			Count:     Int(7),
-			Uniques:   Int(6),
+			Count:     Ptr(7),
+			Uniques:   Ptr(6),
 		}},
-		Count:   Int(7),
-		Uniques: Int(6),
+		Count:   Ptr(7),
+		Uniques: Ptr(6),
 	}
 
 	if !cmp.Equal(got, want) {
@@ -152,8 +152,8 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTrafficClones(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/traffic/clones", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -175,11 +175,11 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 	want := &TrafficClones{
 		Clones: []*TrafficData{{
 			Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
-			Count:     Int(7),
-			Uniques:   Int(6),
+			Count:     Ptr(7),
+			Uniques:   Ptr(6),
 		}},
-		Count:   Int(7),
-		Uniques: Int(6),
+		Count:   Ptr(7),
+		Uniques: Ptr(6),
 	}
 
 	if !cmp.Equal(got, want) {
@@ -202,12 +202,13 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 }
 
 func TestTrafficReferrer_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficReferrer{}, "{}")
 
 	u := &TrafficReferrer{
-		Referrer: String("referrer"),
-		Count:    Int(0),
-		Uniques:  Int(0),
+		Referrer: Ptr("referrer"),
+		Count:    Ptr(0),
+		Uniques:  Ptr(0),
 	}
 
 	want := `{
@@ -220,16 +221,17 @@ func TestTrafficReferrer_Marshal(t *testing.T) {
 }
 
 func TestTrafficViews_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficViews{}, "{}")
 
 	u := &TrafficViews{
 		Views: []*TrafficData{{
 			Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
-			Count:     Int(7),
-			Uniques:   Int(6),
+			Count:     Ptr(7),
+			Uniques:   Ptr(6),
 		}},
-		Count:   Int(0),
-		Uniques: Int(0),
+		Count:   Ptr(0),
+		Uniques: Ptr(0),
 	}
 
 	want := `{
@@ -246,16 +248,17 @@ func TestTrafficViews_Marshal(t *testing.T) {
 }
 
 func TestTrafficClones_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficClones{}, "{}")
 
 	u := &TrafficClones{
 		Clones: []*TrafficData{{
 			Timestamp: &Timestamp{time.Date(2021, time.October, 29, 16, 0, 0, 0, time.UTC)},
-			Count:     Int(1),
-			Uniques:   Int(1),
+			Count:     Ptr(1),
+			Uniques:   Ptr(1),
 		}},
-		Count:   Int(0),
-		Uniques: Int(0),
+		Count:   Ptr(0),
+		Uniques: Ptr(0),
 	}
 
 	want := `{
@@ -272,13 +275,14 @@ func TestTrafficClones_Marshal(t *testing.T) {
 }
 
 func TestTrafficPath_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficPath{}, "{}")
 
 	u := &TrafficPath{
-		Path:    String("test/path"),
-		Title:   String("test"),
-		Count:   Int(2),
-		Uniques: Int(3),
+		Path:    Ptr("test/path"),
+		Title:   Ptr("test"),
+		Count:   Ptr(2),
+		Uniques: Ptr(3),
 	}
 
 	want := `{
@@ -292,15 +296,16 @@ func TestTrafficPath_Marshal(t *testing.T) {
 }
 
 func TestTrafficData_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficData{}, "{}")
 
 	u := &TrafficData{
 		Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
-		Count:     Int(7),
-		Uniques:   Int(6),
+		Count:     Ptr(7),
+		Uniques:   Ptr(6),
 	}
 
-	want := `{	
+	want := `{
 			"timestamp": "2016-05-31T16:00:00.000Z",
 			"count": 7,
 			"uniques": 6
@@ -310,6 +315,7 @@ func TestTrafficData_Marshal(t *testing.T) {
 }
 
 func TestTrafficBreakdownOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &TrafficBreakdownOptions{}, "{}")
 
 	u := &TrafficBreakdownOptions{

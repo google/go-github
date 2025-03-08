@@ -17,8 +17,8 @@ import (
 )
 
 func TestActivityService_ListStargazers(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/stargazers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -36,7 +36,7 @@ func TestActivityService_ListStargazers(t *testing.T) {
 		t.Errorf("Activity.ListStargazers returned error: %v", err)
 	}
 
-	want := []*Stargazer{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, User: &User{ID: Int64(1)}}}
+	want := []*Stargazer{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, User: &User{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(stargazers, want) {
 		t.Errorf("Activity.ListStargazers returned %+v, want %+v", stargazers, want)
 	}
@@ -57,8 +57,8 @@ func TestActivityService_ListStargazers(t *testing.T) {
 }
 
 func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/starred", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -72,7 +72,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
 	}
 
-	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Int64(1)}}}
+	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
@@ -93,8 +93,8 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 }
 
 func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/starred", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -114,7 +114,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
 	}
 
-	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Int64(2)}}}
+	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Ptr(int64(2))}}}
 	if !cmp.Equal(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
@@ -135,8 +135,8 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 }
 
 func TestActivityService_ListStarred_invalidUser(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Activity.ListStarred(ctx, "%", nil)
@@ -144,8 +144,8 @@ func TestActivityService_ListStarred_invalidUser(t *testing.T) {
 }
 
 func TestActivityService_IsStarred_hasStar(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -177,8 +177,8 @@ func TestActivityService_IsStarred_hasStar(t *testing.T) {
 }
 
 func TestActivityService_IsStarred_noStar(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -210,8 +210,8 @@ func TestActivityService_IsStarred_noStar(t *testing.T) {
 }
 
 func TestActivityService_IsStarred_invalidID(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, _, err := client.Activity.IsStarred(ctx, "%", "%")
@@ -219,8 +219,8 @@ func TestActivityService_IsStarred_invalidID(t *testing.T) {
 }
 
 func TestActivityService_Star(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -244,8 +244,8 @@ func TestActivityService_Star(t *testing.T) {
 }
 
 func TestActivityService_Star_invalidID(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Activity.Star(ctx, "%", "%")
@@ -253,8 +253,8 @@ func TestActivityService_Star_invalidID(t *testing.T) {
 }
 
 func TestActivityService_Unstar(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -278,8 +278,8 @@ func TestActivityService_Unstar(t *testing.T) {
 }
 
 func TestActivityService_Unstar_invalidID(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, _, _ := setup(t)
 
 	ctx := context.Background()
 	_, err := client.Activity.Unstar(ctx, "%", "%")
@@ -287,14 +287,15 @@ func TestActivityService_Unstar_invalidID(t *testing.T) {
 }
 
 func TestStarredRepository_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &StarredRepository{}, "{}")
 
 	u := &StarredRepository{
 		StarredAt: &Timestamp{referenceTime},
 		Repository: &Repository{
-			ID:   Int64(1),
-			URL:  String("u"),
-			Name: String("n"),
+			ID:   Ptr(int64(1)),
+			URL:  Ptr("u"),
+			Name: Ptr("n"),
 		},
 	}
 
@@ -311,27 +312,28 @@ func TestStarredRepository_Marshal(t *testing.T) {
 }
 
 func TestStargazer_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &Stargazer{}, "{}")
 
 	u := &Stargazer{
 		StarredAt: &Timestamp{referenceTime},
 		User: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
+			Login:           Ptr("l"),
+			ID:              Ptr(int64(1)),
+			URL:             Ptr("u"),
+			AvatarURL:       Ptr("a"),
+			GravatarID:      Ptr("g"),
+			Name:            Ptr("n"),
+			Company:         Ptr("c"),
+			Blog:            Ptr("b"),
+			Location:        Ptr("l"),
+			Email:           Ptr("e"),
+			Hireable:        Ptr(true),
+			Bio:             Ptr("b"),
+			TwitterUsername: Ptr("t"),
+			PublicRepos:     Ptr(1),
+			Followers:       Ptr(1),
+			Following:       Ptr(1),
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},

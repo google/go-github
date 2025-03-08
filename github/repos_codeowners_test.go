@@ -15,8 +15,8 @@ import (
 )
 
 func TestRepositoriesService_GetCodeownersErrors_noRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/codeowners/errors", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -50,7 +50,7 @@ func TestRepositoriesService_GetCodeownersErrors_noRef(t *testing.T) {
 				Column:     1,
 				Kind:       "Invalid pattern",
 				Source:     "***/*.rb @monalisa",
-				Suggestion: String("Did you mean **/*.rb?"),
+				Suggestion: Ptr("Did you mean **/*.rb?"),
 				Message:    "Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^",
 				Path:       ".github/CODEOWNERS",
 			},
@@ -76,8 +76,8 @@ func TestRepositoriesService_GetCodeownersErrors_noRef(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCodeownersErrors_specificRef(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/codeowners/errors", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -113,7 +113,7 @@ func TestRepositoriesService_GetCodeownersErrors_specificRef(t *testing.T) {
 				Column:     1,
 				Kind:       "Invalid pattern",
 				Source:     "***/*.rb @monalisa",
-				Suggestion: String("Did you mean **/*.rb?"),
+				Suggestion: Ptr("Did you mean **/*.rb?"),
 				Message:    "Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^",
 				Path:       ".github/CODEOWNERS",
 			},
@@ -139,6 +139,7 @@ func TestRepositoriesService_GetCodeownersErrors_specificRef(t *testing.T) {
 }
 
 func TestCodeownersErrors_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &CodeownersErrors{}, "{}")
 
 	u := &CodeownersErrors{
@@ -148,7 +149,7 @@ func TestCodeownersErrors_Marshal(t *testing.T) {
 				Column:     1,
 				Kind:       "Invalid pattern",
 				Source:     "***/*.rb @monalisa",
-				Suggestion: String("Did you mean **/*.rb?"),
+				Suggestion: Ptr("Did you mean **/*.rb?"),
 				Message:    "Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^",
 				Path:       ".github/CODEOWNERS",
 			},

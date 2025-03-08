@@ -26,8 +26,8 @@ func tdcEndpointByID(orgID, teamID, discussionNumber, commentNumber string) stri
 }
 
 // "Team Discussion Comments" endpoint, when using a team slug.
-func tdcEndpointBySlug(org, slug, dicsuccionsNumber, commentNumber string) string {
-	out := fmt.Sprintf("/orgs/%v/teams/%v/discussions/%v/comments", org, slug, dicsuccionsNumber)
+func tdcEndpointBySlug(org, slug, discussionNumber, commentNumber string) string {
+	out := fmt.Sprintf("/orgs/%v/teams/%v/discussions/%v/comments", org, slug, discussionNumber)
 	if commentNumber != "" {
 		return fmt.Sprintf("%v/%v", out, commentNumber)
 	}
@@ -35,8 +35,8 @@ func tdcEndpointBySlug(org, slug, dicsuccionsNumber, commentNumber string) strin
 }
 
 func TestTeamsService_ListComments(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	handleFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -83,35 +83,35 @@ func TestTeamsService_ListComments(t *testing.T) {
 	want := []*DiscussionComment{
 		{
 			Author: &User{
-				Login:             String("author"),
-				ID:                Int64(0),
-				AvatarURL:         String("https://avatars1.githubusercontent.com/u/0?v=4"),
-				GravatarID:        String(""),
-				URL:               String("https://api.github.com/users/author"),
-				HTMLURL:           String("https://github.com/author"),
-				FollowersURL:      String("https://api.github.com/users/author/followers"),
-				FollowingURL:      String("https://api.github.com/users/author/following{/other_user}"),
-				GistsURL:          String("https://api.github.com/users/author/gists{/gist_id}"),
-				StarredURL:        String("https://api.github.com/users/author/starred{/owner}{/repo}"),
-				SubscriptionsURL:  String("https://api.github.com/users/author/subscriptions"),
-				OrganizationsURL:  String("https://api.github.com/users/author/orgs"),
-				ReposURL:          String("https://api.github.com/users/author/repos"),
-				EventsURL:         String("https://api.github.com/users/author/events{/privacy}"),
-				ReceivedEventsURL: String("https://api.github.com/users/author/received_events"),
-				Type:              String("User"),
-				SiteAdmin:         Bool(false),
+				Login:             Ptr("author"),
+				ID:                Ptr(int64(0)),
+				AvatarURL:         Ptr("https://avatars1.githubusercontent.com/u/0?v=4"),
+				GravatarID:        Ptr(""),
+				URL:               Ptr("https://api.github.com/users/author"),
+				HTMLURL:           Ptr("https://github.com/author"),
+				FollowersURL:      Ptr("https://api.github.com/users/author/followers"),
+				FollowingURL:      Ptr("https://api.github.com/users/author/following{/other_user}"),
+				GistsURL:          Ptr("https://api.github.com/users/author/gists{/gist_id}"),
+				StarredURL:        Ptr("https://api.github.com/users/author/starred{/owner}{/repo}"),
+				SubscriptionsURL:  Ptr("https://api.github.com/users/author/subscriptions"),
+				OrganizationsURL:  Ptr("https://api.github.com/users/author/orgs"),
+				ReposURL:          Ptr("https://api.github.com/users/author/repos"),
+				EventsURL:         Ptr("https://api.github.com/users/author/events{/privacy}"),
+				ReceivedEventsURL: Ptr("https://api.github.com/users/author/received_events"),
+				Type:              Ptr("User"),
+				SiteAdmin:         Ptr(false),
 			},
-			Body:          String("comment"),
-			BodyHTML:      String("<p>comment</p>"),
-			BodyVersion:   String("version"),
+			Body:          Ptr("comment"),
+			BodyHTML:      Ptr("<p>comment</p>"),
+			BodyVersion:   Ptr("version"),
 			CreatedAt:     &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
 			LastEditedAt:  nil,
-			DiscussionURL: String("https://api.github.com/teams/2/discussions/3"),
-			HTMLURL:       String("https://github.com/orgs/1/teams/2/discussions/3/comments/4"),
-			NodeID:        String("node"),
-			Number:        Int(4),
+			DiscussionURL: Ptr("https://api.github.com/teams/2/discussions/3"),
+			HTMLURL:       Ptr("https://github.com/orgs/1/teams/2/discussions/3/comments/4"),
+			NodeID:        Ptr("node"),
+			Number:        Ptr(4),
 			UpdatedAt:     &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
-			URL:           String("https://api.github.com/teams/2/discussions/3/comments/4"),
+			URL:           Ptr("https://api.github.com/teams/2/discussions/3/comments/4"),
 		},
 	}
 
@@ -176,14 +176,14 @@ func TestTeamsService_ListComments(t *testing.T) {
 }
 
 func TestTeamsService_GetComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"number":4}`)
 	}
-	want := &DiscussionComment{Number: Int(4)}
+	want := &DiscussionComment{Number: Ptr(4)}
 
 	e := tdcEndpointByID("1", "2", "3", "4")
 	mux.HandleFunc(e, handlerFunc)
@@ -240,10 +240,10 @@ func TestTeamsService_GetComment(t *testing.T) {
 }
 
 func TestTeamsService_CreateComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := DiscussionComment{Body: String("c")}
+	input := DiscussionComment{Body: Ptr("c")}
 
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		v := new(DiscussionComment)
@@ -256,7 +256,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 
 		fmt.Fprint(w, `{"number":4}`)
 	}
-	want := &DiscussionComment{Number: Int(4)}
+	want := &DiscussionComment{Number: Ptr(4)}
 
 	e := tdcEndpointByID("1", "2", "3", "")
 	mux.HandleFunc(e, handlerFunc)
@@ -313,10 +313,10 @@ func TestTeamsService_CreateComment(t *testing.T) {
 }
 
 func TestTeamsService_EditComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-	input := DiscussionComment{Body: String("e")}
+	input := DiscussionComment{Body: Ptr("e")}
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		v := new(DiscussionComment)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
@@ -328,7 +328,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 
 		fmt.Fprint(w, `{"number":4}`)
 	}
-	want := &DiscussionComment{Number: Int(4)}
+	want := &DiscussionComment{Number: Ptr(4)}
 
 	e := tdcEndpointByID("1", "2", "3", "4")
 	mux.HandleFunc(e, handlerFunc)
@@ -385,8 +385,8 @@ func TestTeamsService_EditComment(t *testing.T) {
 }
 
 func TestTeamsService_DeleteComment(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -433,32 +433,33 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 }
 
 func TestDiscussionComment_Marshal(t *testing.T) {
+	t.Parallel()
 	testJSONMarshal(t, &DiscussionComment{}, "{}")
 
 	u := &DiscussionComment{
 		Author:        &User{},
-		Body:          String("body"),
-		BodyHTML:      String("body html"),
-		BodyVersion:   String("body version"),
+		Body:          Ptr("body"),
+		BodyHTML:      Ptr("body html"),
+		BodyVersion:   Ptr("body version"),
 		CreatedAt:     &Timestamp{referenceTime},
 		LastEditedAt:  &Timestamp{referenceTime},
-		DiscussionURL: String("url"),
-		HTMLURL:       String("html url"),
-		NodeID:        String("node"),
-		Number:        Int(1),
+		DiscussionURL: Ptr("url"),
+		HTMLURL:       Ptr("html url"),
+		NodeID:        Ptr("node"),
+		Number:        Ptr(1),
 		UpdatedAt:     &Timestamp{referenceTime},
-		URL:           String("url"),
+		URL:           Ptr("url"),
 		Reactions: &Reactions{
-			TotalCount: Int(10),
-			PlusOne:    Int(1),
-			MinusOne:   Int(1),
-			Laugh:      Int(1),
-			Confused:   Int(1),
-			Heart:      Int(2),
-			Hooray:     Int(5),
-			Rocket:     Int(3),
-			Eyes:       Int(9),
-			URL:        String("url"),
+			TotalCount: Ptr(10),
+			PlusOne:    Ptr(1),
+			MinusOne:   Ptr(1),
+			Laugh:      Ptr(1),
+			Confused:   Ptr(1),
+			Heart:      Ptr(2),
+			Hooray:     Ptr(5),
+			Rocket:     Ptr(3),
+			Eyes:       Ptr(9),
+			URL:        Ptr("url"),
 		},
 	}
 
