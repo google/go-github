@@ -352,7 +352,7 @@ For complete usage of `enrichman/gh-iter`, see the full [package docs](https://g
 You can use [gofri/go-github-pagination](https://github.com/gofri/go-github-pagination) to handle
 pagination for you. It supports both sync and async modes, as well as customizations.  
 By default, the middleware automatically paginates through all pages, aggregates results, and returns them as an array.  
-
+See `example/ratelimit/main.go` for usage.
 
 ### Webhooks ###
 
