@@ -233,7 +233,7 @@ repos, _, err := client.Repositories.List(context.WithValue(ctx, github.SleepUnt
 ```
 
 You can use [gofri/go-github-ratelimit](https://github.com/gofri/go-github-ratelimit) to handle
-secondary rate limit sleep-and-retry for you, as well as primary rate limit abuse-prevention and callback trigerring.
+secondary rate limit sleep-and-retry for you, as well as primary rate limit abuse-prevention and callback triggering.
 
 Learn more about GitHub secondary rate limiting in
 ["About secondary rate limits"](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits).
