@@ -8,7 +8,7 @@ CDPATH="" cd -- "$(dirname -- "$0")/.."
 
 # force 1.22.0 default and "auto" toolchain (i.e., use the toolchain directive)
 # when running generate and mod tidy
-GOTOOLCHAIN="go1.22.0+auto"
+export GOTOOLCHAIN="go1.22.0+auto"
 export GOTOOLCHAIN
 
 if [ "$1" = "--check" ]; then
