@@ -10746,6 +10746,7 @@ func TestMergeGroupEvent_Marshal(t *testing.T) {
 
 	u := &MergeGroupEvent{
 		Action: Ptr("a"),
+		Reason: Ptr("r"),
 		MergeGroup: &MergeGroup{
 			HeadSHA:    Ptr("hs"),
 			HeadRef:    Ptr("hr"),
@@ -10886,6 +10887,7 @@ func TestMergeGroupEvent_Marshal(t *testing.T) {
 
 	want := `{
 		"action": "a",
+		"reason": "r",
 		"merge_group": {
 			"head_sha": "hs",
 			"head_ref": "hr",
