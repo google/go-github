@@ -14806,6 +14806,94 @@ func (m *MostRecentInstance) GetState() string {
 	return *m.State
 }
 
+// GetComputeService returns the ComputeService field.
+func (n *NetworkConfiguration) GetComputeService() *ComputeService {
+	if n == nil {
+		return nil
+	}
+	return n.ComputeService
+}
+
+// GetCreatedOn returns the CreatedOn field if it's non-nil, zero value otherwise.
+func (n *NetworkConfiguration) GetCreatedOn() Timestamp {
+	if n == nil || n.CreatedOn == nil {
+		return Timestamp{}
+	}
+	return *n.CreatedOn
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (n *NetworkConfiguration) GetID() string {
+	if n == nil || n.ID == nil {
+		return ""
+	}
+	return *n.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (n *NetworkConfiguration) GetName() string {
+	if n == nil || n.Name == nil {
+		return ""
+	}
+	return *n.Name
+}
+
+// GetComputeService returns the ComputeService field.
+func (n *NetworkConfigurationRequest) GetComputeService() *ComputeService {
+	if n == nil {
+		return nil
+	}
+	return n.ComputeService
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (n *NetworkConfigurationRequest) GetName() string {
+	if n == nil || n.Name == nil {
+		return ""
+	}
+	return *n.Name
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (n *NetworkSettingsResource) GetID() string {
+	if n == nil || n.ID == nil {
+		return ""
+	}
+	return *n.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (n *NetworkSettingsResource) GetName() string {
+	if n == nil || n.Name == nil {
+		return ""
+	}
+	return *n.Name
+}
+
+// GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
+func (n *NetworkSettingsResource) GetNetworkConfigurationID() string {
+	if n == nil || n.NetworkConfigurationID == nil {
+		return ""
+	}
+	return *n.NetworkConfigurationID
+}
+
+// GetRegion returns the Region field if it's non-nil, zero value otherwise.
+func (n *NetworkSettingsResource) GetRegion() string {
+	if n == nil || n.Region == nil {
+		return ""
+	}
+	return *n.Region
+}
+
+// GetSubnetID returns the SubnetID field if it's non-nil, zero value otherwise.
+func (n *NetworkSettingsResource) GetSubnetID() string {
+	if n == nil || n.SubnetID == nil {
+		return ""
+	}
+	return *n.SubnetID
+}
+
 // GetBase returns the Base field if it's non-nil, zero value otherwise.
 func (n *NewPullRequest) GetBase() string {
 	if n == nil || n.Base == nil {

@@ -19172,6 +19172,121 @@ func TestMostRecentInstance_GetState(tt *testing.T) {
 	m.GetState()
 }
 
+func TestNetworkConfiguration_GetComputeService(tt *testing.T) {
+	tt.Parallel()
+	n := &NetworkConfiguration{}
+	n.GetComputeService()
+	n = nil
+	n.GetComputeService()
+}
+
+func TestNetworkConfiguration_GetCreatedOn(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	n := &NetworkConfiguration{CreatedOn: &zeroValue}
+	n.GetCreatedOn()
+	n = &NetworkConfiguration{}
+	n.GetCreatedOn()
+	n = nil
+	n.GetCreatedOn()
+}
+
+func TestNetworkConfiguration_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	n := &NetworkConfiguration{ID: &zeroValue}
+	n.GetID()
+	n = &NetworkConfiguration{}
+	n.GetID()
+	n = nil
+	n.GetID()
+}
+
+func TestNetworkConfiguration_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	n := &NetworkConfiguration{Name: &zeroValue}
+	n.GetName()
+	n = &NetworkConfiguration{}
+	n.GetName()
+	n = nil
+	n.GetName()
+}
+
+func TestNetworkConfigurationRequest_GetComputeService(tt *testing.T) {
+	tt.Parallel()
+	n := &NetworkConfigurationRequest{}
+	n.GetComputeService()
+	n = nil
+	n.GetComputeService()
+}
+
+func TestNetworkConfigurationRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	n := &NetworkConfigurationRequest{Name: &zeroValue}
+	n.GetName()
+	n = &NetworkConfigurationRequest{}
+	n.GetName()
+	n = nil
+	n.GetName()
+}
+
+func TestNetworkSettingsResource_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	n := &NetworkSettingsResource{ID: &zeroValue}
+	n.GetID()
+	n = &NetworkSettingsResource{}
+	n.GetID()
+	n = nil
+	n.GetID()
+}
+
+func TestNetworkSettingsResource_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	n := &NetworkSettingsResource{Name: &zeroValue}
+	n.GetName()
+	n = &NetworkSettingsResource{}
+	n.GetName()
+	n = nil
+	n.GetName()
+}
+
+func TestNetworkSettingsResource_GetNetworkConfigurationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	n := &NetworkSettingsResource{NetworkConfigurationID: &zeroValue}
+	n.GetNetworkConfigurationID()
+	n = &NetworkSettingsResource{}
+	n.GetNetworkConfigurationID()
+	n = nil
+	n.GetNetworkConfigurationID()
+}
+
+func TestNetworkSettingsResource_GetRegion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	n := &NetworkSettingsResource{Region: &zeroValue}
+	n.GetRegion()
+	n = &NetworkSettingsResource{}
+	n.GetRegion()
+	n = nil
+	n.GetRegion()
+}
+
+func TestNetworkSettingsResource_GetSubnetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	n := &NetworkSettingsResource{SubnetID: &zeroValue}
+	n.GetSubnetID()
+	n = &NetworkSettingsResource{}
+	n.GetSubnetID()
+	n = nil
+	n.GetSubnetID()
+}
+
 func TestNewPullRequest_GetBase(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
