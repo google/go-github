@@ -858,8 +858,10 @@ type MergeGroup struct {
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#merge_group
 type MergeGroupEvent struct {
-	// The action that was performed. Currently, can only be checks_requested.
+	// The action that was performed. Possible values are: "checks_requested", "destroyed".
 	Action *string `json:"action,omitempty"`
+	// Reason is populated when the action is "destroyed". Possible values: "merged", "invalidated", "dequeued".
+	Reason *string `json:"reason,omitempty"`
 	// The merge group.
 	MergeGroup *MergeGroup `json:"merge_group,omitempty"`
 
