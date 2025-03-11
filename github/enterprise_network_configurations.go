@@ -10,52 +10,12 @@ import (
 	"fmt"
 )
 
-// ComputeService represents a hosted compute service the network configuration supports.
-type ComputeService string
-
-const (
-	ComputeServiceNone       ComputeService = "none"
-	ComputeServiceActions    ComputeService = "actions"
-	ComputeServiceCodespaces ComputeService = "codespaces"
-)
-
-// EnterpriseNetworkConfiguration represents a hosted compute network configuration.
-type EnterpriseNetworkConfiguration struct {
-	ID                 *string         `json:"id,omitempty"`
-	Name               *string         `json:"name,omitempty"`
-	ComputeService     *ComputeService `json:"compute_service,omitempty"`
-	NetworkSettingsIDs []string        `json:"network_settings_ids,omitempty"`
-	CreatedOn          *Timestamp      `json:"created_on,omitempty"`
-}
-
-// EnterpriseNetworkConfigurations represents a hosted compute network configurations.
-type EnterpriseNetworkConfigurations struct {
-	TotalCount            *int64                            `json:"total_count,omitempty"`
-	NetworkConfigurations []*EnterpriseNetworkConfiguration `json:"network_configurations,omitempty"`
-}
-
-// EnterpriseNetworkSettingsResource represents a hosted compute network settings resource.
-type EnterpriseNetworkSettingsResource struct {
-	ID                     *string `json:"id,omitempty"`
-	Name                   *string `json:"name,omitempty"`
-	NetworkConfigurationID *string `json:"network_configuration_id,omitempty"`
-	SubnetID               *string `json:"subnet_id,omitempty"`
-	Region                 *string `json:"region,omitempty"`
-}
-
-// EnterpriseNetworkConfigurationRequest represents a request to create or update a network configuration for an enterprise.
-type EnterpriseNetworkConfigurationRequest struct {
-	Name               *string         `json:"name,omitempty"`
-	ComputeService     *ComputeService `json:"compute_service,omitempty"`
-	NetworkSettingsIDs []string        `json:"network_settings_ids,omitempty"`
-}
-
 // ListEnterpriseNetworkConfigurations lists all hosted compute network configurations configured in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#list-hosted-compute-network-configurations-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/network-configurations
-func (s *EnterpriseService) ListEnterpriseNetworkConfigurations(ctx context.Context, enterprise string, opts *ListOptions) (*EnterpriseNetworkConfigurations, *Response, error) {
+func (s *EnterpriseService) ListEnterpriseNetworkConfigurations(ctx context.Context, enterprise string, opts *ListOptions) (*NetworkConfigurations, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/network-configurations", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -67,7 +27,7 @@ func (s *EnterpriseService) ListEnterpriseNetworkConfigurations(ctx context.Cont
 		return nil, nil, err
 	}
 
-	networks := &EnterpriseNetworkConfigurations{}
+	networks := &NetworkConfigurations{}
 	resp, err := s.client.Do(ctx, req, networks)
 	if err != nil {
 		return nil, resp, err
@@ -80,14 +40,14 @@ func (s *EnterpriseService) ListEnterpriseNetworkConfigurations(ctx context.Cont
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#create-a-hosted-compute-network-configuration-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/network-configurations
-func (s *EnterpriseService) CreateEnterpriseNetworkConfiguration(ctx context.Context, enterprise string, createReq EnterpriseNetworkConfigurationRequest) (*EnterpriseNetworkConfiguration, *Response, error) {
+func (s *EnterpriseService) CreateEnterpriseNetworkConfiguration(ctx context.Context, enterprise string, createReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/network-configurations", enterprise)
 	req, err := s.client.NewRequest("POST", u, createReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	network := &EnterpriseNetworkConfiguration{}
+	network := &NetworkConfiguration{}
 	resp, err := s.client.Do(ctx, req, network)
 	if err != nil {
 		return nil, resp, err
@@ -101,14 +61,14 @@ func (s *EnterpriseService) CreateEnterpriseNetworkConfiguration(ctx context.Con
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#get-a-hosted-compute-network-configuration-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/network-configurations/{network_configuration_id}
-func (s *EnterpriseService) GetEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string) (*EnterpriseNetworkConfiguration, *Response, error) {
+func (s *EnterpriseService) GetEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string) (*NetworkConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/network-configurations/%v", enterprise, networkID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	network := &EnterpriseNetworkConfiguration{}
+	network := &NetworkConfiguration{}
 	resp, err := s.client.Do(ctx, req, network)
 	if err != nil {
 		return nil, resp, err
@@ -121,14 +81,14 @@ func (s *EnterpriseService) GetEnterpriseNetworkConfiguration(ctx context.Contex
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#update-a-hosted-compute-network-configuration-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/network-configurations/{network_configuration_id}
-func (s *EnterpriseService) UpdateEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string, updateReq EnterpriseNetworkConfigurationRequest) (*EnterpriseNetworkConfiguration, *Response, error) {
+func (s *EnterpriseService) UpdateEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string, updateReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/network-configurations/%v", enterprise, networkID)
 	req, err := s.client.NewRequest("PATCH", u, updateReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	network := &EnterpriseNetworkConfiguration{}
+	network := &NetworkConfiguration{}
 	resp, err := s.client.Do(ctx, req, network)
 	if err != nil {
 		return nil, resp, err
@@ -155,14 +115,14 @@ func (s *EnterpriseService) DeleteEnterpriseNetworkConfiguration(ctx context.Con
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#get-a-hosted-compute-network-settings-resource-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/network-settings/{network_settings_id}
-func (s *EnterpriseService) GetEnterpriseNetworkSettingsResource(ctx context.Context, enterprise, networkID string) (*EnterpriseNetworkSettingsResource, *Response, error) {
+func (s *EnterpriseService) GetEnterpriseNetworkSettingsResource(ctx context.Context, enterprise, networkID string) (*NetworkSettingsResource, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/network-settings/%v", enterprise, networkID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	resource := &EnterpriseNetworkSettingsResource{}
+	resource := &NetworkSettingsResource{}
 	resp, err := s.client.Do(ctx, req, resource)
 	if err != nil {
 		return nil, resp, err

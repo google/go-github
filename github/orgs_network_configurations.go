@@ -12,13 +12,24 @@ import (
 	"regexp"
 )
 
-// NetworkConfigurations represents a hosted compute network configuration.
+// ComputeService represents a hosted compute service the network configuration supports.
+type ComputeService string
+
+const (
+	ComputeServiceNone       ComputeService = "none"
+	ComputeServiceActions    ComputeService = "actions"
+	ComputeServiceCodespaces ComputeService = "codespaces"
+)
+
+// NetworkConfigurations represents a hosted compute network configuration. This type is identical
+// for enterprise and organization endpoints.
 type NetworkConfigurations struct {
 	TotalCount            *int64                  `json:"total_count,omitempty"`
 	NetworkConfigurations []*NetworkConfiguration `json:"network_configurations,omitempty"`
 }
 
-// NetworkConfiguration represents a hosted compute network configurations.
+// NetworkConfiguration represents a hosted compute network configurations. This type is identical
+// for enterprise and organization endpoints.
 type NetworkConfiguration struct {
 	ID                 *string         `json:"id,omitempty"`
 	Name               *string         `json:"name,omitempty"`
@@ -27,7 +38,8 @@ type NetworkConfiguration struct {
 	CreatedOn          *Timestamp      `json:"created_on"`
 }
 
-// NetworkSettingsResource represents a hosted compute network settings resource.
+// NetworkSettingsResource represents a hosted compute network settings resource. This type is identical
+// for enterprise and organization endpoints.
 type NetworkSettingsResource struct {
 	ID                     *string `json:"id,omitempty"`
 	NetworkConfigurationID *string `json:"network_configuration_id,omitempty"`

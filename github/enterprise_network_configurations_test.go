@@ -57,9 +57,9 @@ func TestEnterpriseService_ListEnterpriseNetworkConfigurations(t *testing.T) {
 		t.Errorf("Enterprise.ListEnterpriseNetworkConfigurations returned error: %v", err)
 	}
 
-	want := &EnterpriseNetworkConfigurations{
+	want := &NetworkConfigurations{
 		TotalCount: Ptr(int64(2)),
-		NetworkConfigurations: []*EnterpriseNetworkConfiguration{
+		NetworkConfigurations: []*NetworkConfiguration{
 			{
 				ID:                 Ptr("123456789ABCDEF"),
 				Name:               Ptr("configuration_one"),
@@ -115,7 +115,7 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 
 	ctx := context.Background()
 
-	req := EnterpriseNetworkConfigurationRequest{
+	req := NetworkConfigurationRequest{
 		Name:           Ptr("configuration_one"),
 		ComputeService: Ptr(ComputeService("actions")),
 		NetworkSettingsIDs: []string{
@@ -128,7 +128,7 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 		t.Errorf("Enterprise.CreateEnterpriseNetworkConfiguration returned error: %v", err)
 	}
 
-	want := &EnterpriseNetworkConfiguration{
+	want := &NetworkConfiguration{
 		ID:                 Ptr("123456789ABCDEF"),
 		Name:               Ptr("configuration_one"),
 		ComputeService:     Ptr(ComputeService("actions")),
@@ -178,7 +178,7 @@ func TestEnterpriseService_GetEnterpriseNetworkConfiguration(t *testing.T) {
 		t.Errorf("Enterprise.GetEnterpriseNetworkConfiguration returned err: %v", err)
 	}
 
-	want := &EnterpriseNetworkConfiguration{
+	want := &NetworkConfiguration{
 		ID:                 Ptr("123456789ABCDEF"),
 		Name:               Ptr("configuration_one"),
 		ComputeService:     Ptr(ComputeService("actions")),
@@ -223,7 +223,7 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	req := EnterpriseNetworkConfigurationRequest{
+	req := NetworkConfigurationRequest{
 		Name: Ptr("updated_configuration_one"),
 		NetworkSettingsIDs: []string{
 			"456789ABDCEF123",
@@ -236,7 +236,7 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 		t.Errorf("Enterprise.UpdateEnterpriseNetworkConfiguration returned error %v", err)
 	}
 
-	want := &EnterpriseNetworkConfiguration{
+	want := &NetworkConfiguration{
 		ID:                 Ptr("123456789ABCDEF"),
 		Name:               Ptr("updated_configuration_one"),
 		ComputeService:     Ptr(ComputeService("none")),
@@ -308,7 +308,7 @@ func TestEnterpriseService_GetEnterpriseNetworkSettingsResource(t *testing.T) {
 		t.Errorf("Enterprise.GetEnterpriseNetworkSettingsResource returned error %v", err)
 	}
 
-	want := &EnterpriseNetworkSettingsResource{
+	want := &NetworkSettingsResource{
 		ID:                     Ptr("220F78DACB92BBFBC5E6F22DE1CCF52309D"),
 		NetworkConfigurationID: Ptr("934E208B3EE0BD60CF5F752C426BFB53562"),
 		Name:                   Ptr("my_network_settings"),
