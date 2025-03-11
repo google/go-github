@@ -75,8 +75,8 @@ func validateNetworkConfigurationRequest(req NetworkConfigurationRequest) error 
 		return err
 	}
 
-	networkIDS := req.NetworkSettingsIDs
-	if err := validateNetworkSettingsID(networkIDS); err != nil {
+	networkIDs := req.NetworkSettingsIDs
+	if err := validateNetworkSettingsID(networkIDs); err != nil {
 		return err
 	}
 	return nil
