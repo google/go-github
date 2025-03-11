@@ -25204,6 +25204,17 @@ func TestPullRequestReviewThreadEvent_GetThread(tt *testing.T) {
 	p.GetThread()
 }
 
+func TestPullRequestRuleParameters_GetAutomaticCopilotCodeReviewEnabled(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &PullRequestRuleParameters{AutomaticCopilotCodeReviewEnabled: &zeroValue}
+	p.GetAutomaticCopilotCodeReviewEnabled()
+	p = &PullRequestRuleParameters{}
+	p.GetAutomaticCopilotCodeReviewEnabled()
+	p = nil
+	p.GetAutomaticCopilotCodeReviewEnabled()
+}
+
 func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

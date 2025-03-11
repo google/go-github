@@ -19566,6 +19566,14 @@ func (p *PullRequestReviewThreadEvent) GetThread() *PullRequestThread {
 	return p.Thread
 }
 
+// GetAutomaticCopilotCodeReviewEnabled returns the AutomaticCopilotCodeReviewEnabled field if it's non-nil, zero value otherwise.
+func (p *PullRequestRuleParameters) GetAutomaticCopilotCodeReviewEnabled() bool {
+	if p == nil || p.AutomaticCopilotCodeReviewEnabled == nil {
+		return false
+	}
+	return *p.AutomaticCopilotCodeReviewEnabled
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *PullRequestTargetEvent) GetAction() string {
 	if p == nil || p.Action == nil {
