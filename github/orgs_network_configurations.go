@@ -108,20 +108,20 @@ type NetworkConfigurationRequest struct {
 // GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#list-hosted-compute-network-configurations-for-an-organization
 //
 //meta:operation GET /orgs/{org}/settings/network-configurations
-func (o *OrganizationsService) ListNetworkConfigurations(ctx context.Context, org string, opts *ListOptions) (*NetworkConfigurations, *Response, error) {
+func (s *OrganizationsService) ListNetworkConfigurations(ctx context.Context, org string, opts *ListOptions) (*NetworkConfigurations, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	req, err := o.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	configurations := &NetworkConfigurations{}
-	resp, err := o.client.Do(ctx, req, configurations)
+	resp, err := s.client.Do(ctx, req, configurations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -133,19 +133,19 @@ func (o *OrganizationsService) ListNetworkConfigurations(ctx context.Context, or
 // GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#create-a-hosted-compute-network-configuration-for-an-organization
 //
 //meta:operation POST /orgs/{org}/settings/network-configurations
-func (o *OrganizationsService) CreateNetworkConfiguration(ctx context.Context, org string, createReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
+func (s *OrganizationsService) CreateNetworkConfiguration(ctx context.Context, org string, createReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
 	if err := validateNetworkConfigurationRequest(createReq); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations", org)
-	req, err := o.client.NewRequest("POST", u, createReq)
+	req, err := s.client.NewRequest("POST", u, createReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	configuration := &NetworkConfiguration{}
-	resp, err := o.client.Do(ctx, req, configuration)
+	resp, err := s.client.Do(ctx, req, configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -157,14 +157,14 @@ func (o *OrganizationsService) CreateNetworkConfiguration(ctx context.Context, o
 // GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#get-a-hosted-compute-network-configuration-for-an-organization
 //
 //meta:operation GET /orgs/{org}/settings/network-configurations/{network_configuration_id}
-func (o *OrganizationsService) GetNetworkConfiguration(ctx context.Context, org, networkID string) (*NetworkConfiguration, *Response, error) {
+func (s *OrganizationsService) GetNetworkConfiguration(ctx context.Context, org, networkID string) (*NetworkConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations/%v", org, networkID)
-	req, err := o.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 	configuration := &NetworkConfiguration{}
-	resp, err := o.client.Do(ctx, req, configuration)
+	resp, err := s.client.Do(ctx, req, configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -176,19 +176,19 @@ func (o *OrganizationsService) GetNetworkConfiguration(ctx context.Context, org,
 // GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#update-a-hosted-compute-network-configuration-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/settings/network-configurations/{network_configuration_id}
-func (o *OrganizationsService) UpdateNetworkConfiguration(ctx context.Context, org, networkID string, updateReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
+func (s *OrganizationsService) UpdateNetworkConfiguration(ctx context.Context, org, networkID string, updateReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
 	if err := validateNetworkConfigurationRequest(updateReq); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations/%v", org, networkID)
-	req, err := o.client.NewRequest("PATCH", u, updateReq)
+	req, err := s.client.NewRequest("PATCH", u, updateReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	configuration := &NetworkConfiguration{}
-	resp, err := o.client.Do(ctx, req, configuration)
+	resp, err := s.client.Do(ctx, req, configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -200,15 +200,15 @@ func (o *OrganizationsService) UpdateNetworkConfiguration(ctx context.Context, o
 // GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#delete-a-hosted-compute-network-configuration-from-an-organization
 //
 //meta:operation DELETE /orgs/{org}/settings/network-configurations/{network_configuration_id}
-func (o *OrganizationsService) DeleteNetworkConfigurations(ctx context.Context, org, networkID string) (*Response, error) {
+func (s *OrganizationsService) DeleteNetworkConfigurations(ctx context.Context, org, networkID string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations/%v", org, networkID)
-	req, err := o.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	configuration := &NetworkConfiguration{}
-	resp, err := o.client.Do(ctx, req, configuration)
+	resp, err := s.client.Do(ctx, req, configuration)
 	if err != nil {
 		return resp, err
 	}
@@ -220,15 +220,15 @@ func (o *OrganizationsService) DeleteNetworkConfigurations(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#get-a-hosted-compute-network-settings-resource-for-an-organization
 //
 //meta:operation GET /orgs/{org}/settings/network-settings/{network_settings_id}
-func (o *OrganizationsService) GetNetworkConfigurationResource(ctx context.Context, org, networkID string) (*NetworkSettingsResource, *Response, error) {
+func (s *OrganizationsService) GetNetworkConfigurationResource(ctx context.Context, org, networkID string) (*NetworkSettingsResource, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/network-settings/%v", org, networkID)
-	req, err := o.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	resource := &NetworkSettingsResource{}
-	resp, err := o.client.Do(ctx, req, resource)
+	resp, err := s.client.Do(ctx, req, resource)
 	if err != nil {
 		return nil, resp, err
 	}
