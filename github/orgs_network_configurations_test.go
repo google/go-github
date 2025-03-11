@@ -67,7 +67,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 		t.Errorf("Organizations.ListNetworkConfigurations returned error %v", err)
 	}
 	want := &NetworkConfigurations{
-		TotalCount: 3,
+		TotalCount: Ptr(int64(3)),
 		NetworkConfigurations: []*NetworkConfiguration{
 			{
 				ID:             Ptr("123456789ABCDEF"),
@@ -128,7 +128,7 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 		testMethod(t, r, "POST")
 		fmt.Fprintf(w, `{
 		  "id": "456789ABDCEF123",
-		  "name": "Network Configuration Two",
+		  "name": "network-configuration-two",
 		  "compute_service": "none",
 		  "network_settings_ids": [
 			"56789ABDCEF1234"
@@ -140,7 +140,7 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 	ctx := context.Background()
 
 	req := NetworkConfigurationRequest{
-		Name:           Ptr("Network Configuration Two"),
+		Name:           Ptr("network-configuration-two"),
 		ComputeService: Ptr(ComputeService("none")),
 		NetworkSettingsIDs: []string{
 			"56789ABDCEF1234",
@@ -154,7 +154,7 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 
 	want := &NetworkConfiguration{
 		ID:             Ptr("456789ABDCEF123"),
-		Name:           Ptr("Network Configuration Two"),
+		Name:           Ptr("network-configuration-two"),
 		ComputeService: Ptr(ComputeService("none")),
 		NetworkSettingsIDs: []string{
 			"56789ABDCEF1234",
@@ -164,6 +164,65 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 
 	if !cmp.Equal(want, configuration) {
 		t.Errorf("Organizations.CreateNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
+	}
+
+	validationTests := []struct {
+		name    string
+		request NetworkConfigurationRequest
+		want    string
+	}{
+		{
+			name: "invalid network configuration name length",
+			request: NetworkConfigurationRequest{
+				Name:           Ptr(""),
+				ComputeService: Ptr(ComputeService("none")),
+				NetworkSettingsIDs: []string{
+					"56789ABDCEF1234",
+				},
+			},
+			want: "validation failed: must be between 1 and 100 characters",
+		},
+		{
+			name: "invalid network configuration name",
+			// may only contain upper and lowercase letters a-z, numbers 0-9, '.', '-', and '_'.
+			request: NetworkConfigurationRequest{
+				Name: Ptr("network configuration two"),
+				NetworkSettingsIDs: []string{
+					"56789ABDCEF1234",
+				},
+			},
+			want: "validation failed: may only contain upper and lowercase letters a-z, numbers 0-9, '.', '-', and '_'",
+		},
+		{
+			name: "invalid network settings ids",
+			request: NetworkConfigurationRequest{
+				Name:           Ptr("network-configuration-two"),
+				ComputeService: Ptr(ComputeService("none")),
+				NetworkSettingsIDs: []string{
+					"56789ABDCEF1234",
+					"3456789ABDCEF12",
+				},
+			},
+			want: "validation failed: exactly one network settings id must be specified",
+		},
+		{
+			name: "invalid compute service",
+			request: NetworkConfigurationRequest{
+				Name:           Ptr("network-configuration-two"),
+				ComputeService: Ptr(ComputeService("codespaces")),
+				NetworkSettingsIDs: []string{
+					"56789ABDCEF1234",
+				},
+			},
+			want: "validation failed: compute service can only be one of: none, actions",
+		},
+	}
+
+	for _, tc := range validationTests {
+		_, _, err := client.Organizations.CreateNetworkConfiguration(ctx, "o", tc.request)
+		if err == nil || err.Error() != tc.want {
+			t.Errorf("expected error to be %v, got %v", tc.want, err)
+		}
 	}
 
 	const methodName = "CreateNetworkConfiguration"
@@ -255,8 +314,11 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 	ctx := context.Background()
 
 	req := NetworkConfigurationRequest{
-		Name:           Ptr("Network Configuration Three Update"),
+		Name:           Ptr("network-configuration-three-update"),
 		ComputeService: Ptr(ComputeService("actions")),
+		NetworkSettingsIDs: []string{
+			"56789ABDCEF1234",
+		},
 	}
 	configuration, _, err := client.Organizations.UpdateNetworkConfiguration(ctx, "o", "789ABDCEF123456", req)
 	if err != nil {
@@ -275,6 +337,65 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 	}
 	if !cmp.Equal(want, configuration) {
 		t.Errorf("Organizations.UpdateNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
+	}
+
+	validationTests := []struct {
+		name    string
+		request NetworkConfigurationRequest
+		want    string
+	}{
+		{
+			name: "invalid network configuration name length",
+			request: NetworkConfigurationRequest{
+				Name:           Ptr(""),
+				ComputeService: Ptr(ComputeService("none")),
+				NetworkSettingsIDs: []string{
+					"56789ABDCEF1234",
+				},
+			},
+			want: "validation failed: must be between 1 and 100 characters",
+		},
+		{
+			name: "invalid network configuration name",
+			// may only contain upper and lowercase letters a-z, numbers 0-9, '.', '-', and '_'.
+			request: NetworkConfigurationRequest{
+				Name: Ptr("network configuration three update"),
+				NetworkSettingsIDs: []string{
+					"56789ABDCEF1234",
+				},
+			},
+			want: "validation failed: may only contain upper and lowercase letters a-z, numbers 0-9, '.', '-', and '_'",
+		},
+		{
+			name: "invalid network settings ids",
+			request: NetworkConfigurationRequest{
+				Name:           Ptr("network-configuration-three-update"),
+				ComputeService: Ptr(ComputeService("none")),
+				NetworkSettingsIDs: []string{
+					"56789ABDCEF1234",
+					"3456789ABDCEF12",
+				},
+			},
+			want: "validation failed: exactly one network settings id must be specified",
+		},
+		{
+			name: "invalid compute service",
+			request: NetworkConfigurationRequest{
+				Name:           Ptr("network-configuration-three-update"),
+				ComputeService: Ptr(ComputeService("codespaces")),
+				NetworkSettingsIDs: []string{
+					"56789ABDCEF1234",
+				},
+			},
+			want: "validation failed: compute service can only be one of: none, actions",
+		},
+	}
+
+	for _, tc := range validationTests {
+		_, _, err := client.Organizations.UpdateNetworkConfiguration(ctx, "o", "789ABDCEF123456", tc.request)
+		if err == nil || err.Error() != tc.want {
+			t.Errorf("expected error to be %v, got %v", tc.want, err)
+		}
 	}
 
 	const methodName = "UpdateNetworkConfiguration"

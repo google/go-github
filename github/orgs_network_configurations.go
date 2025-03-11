@@ -7,12 +7,14 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"regexp"
 )
 
 // NetworkConfigurations represents a hosted compute network configuration.
 type NetworkConfigurations struct {
-	TotalCount            int                     `json:"total_count,omitempty"`
+	TotalCount            *int64                  `json:"total_count,omitempty"`
 	NetworkConfigurations []*NetworkConfiguration `json:"network_configurations,omitempty"`
 }
 
@@ -32,6 +34,52 @@ type NetworkSettingsResource struct {
 	Name                   *string `json:"name,omitempty"`
 	SubnetID               *string `json:"subnet_id,omitempty"`
 	Region                 *string `json:"region,omitempty"`
+}
+
+func validateComputeService(compute *ComputeService) error {
+	if compute == nil {
+		return nil
+	}
+	if *compute == ComputeServiceCodespaces {
+		return errors.New("compute service can only be one of: none, actions")
+	}
+	return nil
+}
+
+func validateNetworkName(name string) error {
+	if len(name) < 1 || len(name) > 100 {
+		return errors.New("must be between 1 and 100 characters")
+	}
+	validName := regexp.MustCompile(`^[a-zA-Z0-9._-]+$`)
+	if !validName.MatchString(name) {
+		return errors.New("may only contain upper and lowercase letters a-z, numbers 0-9, '.', '-', and '_'")
+	}
+	return nil
+}
+
+func validateNetworkSettingsID(settingsID []string) error {
+	if len(settingsID) != 1 {
+		return errors.New("exactly one network settings id must be specified")
+	}
+	return nil
+}
+
+func validateNetworkConfigurationRequest(req NetworkConfigurationRequest) error {
+	networkName := req.GetName()
+	if err := validateNetworkName(networkName); err != nil {
+		return err
+	}
+
+	computeService := req.GetComputeService()
+	if err := validateComputeService(computeService); err != nil {
+		return err
+	}
+
+	networkIDS := req.NetworkSettingsIDs
+	if err := validateNetworkSettingsID(networkIDS); err != nil {
+		return err
+	}
+	return nil
 }
 
 // NetworkConfigurationRequest represents a request to create or update a network configuration for an organization.
@@ -74,6 +122,10 @@ func (o *OrganizationsService) ListNetworkConfigurations(ctx context.Context, or
 //
 //meta:operation POST /orgs/{org}/settings/network-configurations
 func (o *OrganizationsService) CreateNetworkConfiguration(ctx context.Context, org string, createReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
+	if err := validateNetworkConfigurationRequest(createReq); err != nil {
+		return nil, nil, fmt.Errorf("validation failed: %w", err)
+	}
+
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations", org)
 	req, err := o.client.NewRequest("POST", u, createReq)
 	if err != nil {
@@ -113,6 +165,10 @@ func (o *OrganizationsService) GetNetworkConfiguration(ctx context.Context, org,
 //
 //meta:operation PATCH /orgs/{org}/settings/network-configurations/{network_configuration_id}
 func (o *OrganizationsService) UpdateNetworkConfiguration(ctx context.Context, org, networkID string, updateReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
+	if err := validateNetworkConfigurationRequest(updateReq); err != nil {
+		return nil, nil, fmt.Errorf("validation failed: %w", err)
+	}
+
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations/%v", org, networkID)
 	req, err := o.client.NewRequest("PATCH", u, updateReq)
 	if err != nil {
