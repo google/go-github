@@ -102,7 +102,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var b *bundle.ProtobufBundle
+	var b *bundle.Bundle
 	for _, attestation := range attestations.Attestations {
 		if err := json.Unmarshal(attestation.Bundle, &b); err != nil {
 			log.Fatal(err)
@@ -180,7 +180,7 @@ func getPolicyBuilder() (*verify.PolicyBuilder, error) {
 	return &pb, nil
 }
 
-func runVerification(sev *verify.SignedEntityVerifier, pb *verify.PolicyBuilder, b *bundle.ProtobufBundle) error {
+func runVerification(sev *verify.SignedEntityVerifier, pb *verify.PolicyBuilder, b *bundle.Bundle) error {
 	res, err := sev.Verify(b, *pb)
 	if err != nil {
 		return err
