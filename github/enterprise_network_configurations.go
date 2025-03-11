@@ -14,8 +14,9 @@ import (
 type ComputeService string
 
 const (
-	ComputeServiceNone    ComputeService = "none"
-	ComputeServiceActions ComputeService = "actions"
+	ComputeServiceNone       ComputeService = "none"
+	ComputeServiceActions    ComputeService = "actions"
+	ComputeServiceCodespaces ComputeService = "codespaces"
 )
 
 // EnterpriseNetworkConfiguration represents a hosted compute network configuration.
