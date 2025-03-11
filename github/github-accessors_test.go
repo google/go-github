@@ -19232,6 +19232,17 @@ func TestNetworkConfigurationRequest_GetName(tt *testing.T) {
 	n.GetName()
 }
 
+func TestNetworkConfigurations_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	n := &NetworkConfigurations{TotalCount: &zeroValue}
+	n.GetTotalCount()
+	n = &NetworkConfigurations{}
+	n.GetTotalCount()
+	n = nil
+	n.GetTotalCount()
+}
+
 func TestNetworkSettingsResource_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

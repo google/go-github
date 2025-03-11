@@ -14854,6 +14854,14 @@ func (n *NetworkConfigurationRequest) GetName() string {
 	return *n.Name
 }
 
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (n *NetworkConfigurations) GetTotalCount() int64 {
+	if n == nil || n.TotalCount == nil {
+		return 0
+	}
+	return *n.TotalCount
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (n *NetworkSettingsResource) GetID() string {
 	if n == nil || n.ID == nil {
