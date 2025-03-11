@@ -41,6 +41,10 @@ func (s *EnterpriseService) ListEnterpriseNetworkConfigurations(ctx context.Cont
 //
 //meta:operation POST /enterprises/{enterprise}/network-configurations
 func (s *EnterpriseService) CreateEnterpriseNetworkConfiguration(ctx context.Context, enterprise string, createReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
+	if err := validateNetworkConfigurationRequest(createReq); err != nil {
+		return nil, nil, fmt.Errorf("validation failed: %w", err)
+	}
+
 	u := fmt.Sprintf("enterprises/%v/network-configurations", enterprise)
 	req, err := s.client.NewRequest("POST", u, createReq)
 	if err != nil {
@@ -82,6 +86,10 @@ func (s *EnterpriseService) GetEnterpriseNetworkConfiguration(ctx context.Contex
 //
 //meta:operation PATCH /enterprises/{enterprise}/network-configurations/{network_configuration_id}
 func (s *EnterpriseService) UpdateEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string, updateReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
+	if err := validateNetworkConfigurationRequest(updateReq); err != nil {
+		return nil, nil, fmt.Errorf("validation failed: %w", err)
+	}
+
 	u := fmt.Sprintf("enterprises/%v/network-configurations/%v", enterprise, networkID)
 	req, err := s.client.NewRequest("PATCH", u, updateReq)
 	if err != nil {
