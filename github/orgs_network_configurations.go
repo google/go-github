@@ -52,7 +52,7 @@ func validateComputeService(compute *ComputeService) error {
 	if compute == nil {
 		return nil
 	}
-	if *compute == ComputeServiceCodespaces {
+	if *compute != ComputeServiceNone && *compute != ComputeServiceActions {
 		return errors.New("compute service can only be one of: none, actions")
 	}
 	return nil
