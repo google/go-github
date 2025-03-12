@@ -430,34 +430,46 @@ func TestAuditEntry_Getters(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name         string
-		entry        *AuditEntry
-		wantOrg      string
-		wantOrgOk    bool
-		wantRawOrg   json.RawMessage
-		wantOrgID    int64
-		wantOrgIDOk  bool
-		wantRawOrgID json.RawMessage
+		name             string
+		entry            *AuditEntry
+		wantOrg          string
+		wantOrgOk        bool
+		wantRawOrg       json.RawMessage
+		wantOrgID        int64
+		wantOrgIDOk      bool
+		wantRawOrgID     json.RawMessage
+		wantOrgSlice     []string
+		wantOrgSliceOk   bool
+		wantOrgIDSlice   []int64
+		wantOrgIDSliceOk bool
 	}{
 		{
-			name:         "nil entry",
-			entry:        nil,
-			wantOrg:      "",
-			wantOrgOk:    false,
-			wantRawOrg:   json.RawMessage{},
-			wantOrgID:    0,
-			wantOrgIDOk:  false,
-			wantRawOrgID: json.RawMessage{},
+			name:             "nil entry",
+			entry:            nil,
+			wantOrg:          "",
+			wantOrgOk:        false,
+			wantRawOrg:       json.RawMessage{},
+			wantOrgID:        0,
+			wantOrgIDOk:      false,
+			wantRawOrgID:     json.RawMessage{},
+			wantOrgSlice:     []string{},
+			wantOrgSliceOk:   false,
+			wantOrgIDSlice:   []int64{},
+			wantOrgIDSliceOk: false,
 		},
 		{
-			name:         "nil Org field",
-			entry:        &AuditEntry{},
-			wantOrg:      "",
-			wantOrgOk:    false,
-			wantRawOrg:   json.RawMessage{},
-			wantOrgID:    0,
-			wantOrgIDOk:  false,
-			wantRawOrgID: json.RawMessage{},
+			name:             "nil Org field",
+			entry:            &AuditEntry{},
+			wantOrg:          "",
+			wantOrgOk:        false,
+			wantRawOrg:       json.RawMessage{},
+			wantOrgID:        0,
+			wantOrgIDOk:      false,
+			wantRawOrgID:     json.RawMessage{},
+			wantOrgSlice:     []string{},
+			wantOrgSliceOk:   false,
+			wantOrgIDSlice:   []int64{},
+			wantOrgIDSliceOk: false,
 		},
 		{
 			name: "valid Org field",
@@ -465,12 +477,16 @@ func TestAuditEntry_Getters(t *testing.T) {
 				Org:   json.RawMessage(`"testorg"`),
 				OrgID: json.RawMessage(`1`),
 			},
-			wantOrg:      "testorg",
-			wantOrgOk:    true,
-			wantRawOrg:   json.RawMessage(`"testorg"`),
-			wantOrgID:    1,
-			wantOrgIDOk:  true,
-			wantRawOrgID: json.RawMessage(`1`),
+			wantOrg:          "testorg",
+			wantOrgOk:        true,
+			wantRawOrg:       json.RawMessage(`"testorg"`),
+			wantOrgID:        1,
+			wantOrgIDOk:      true,
+			wantRawOrgID:     json.RawMessage(`1`),
+			wantOrgSlice:     []string{},
+			wantOrgSliceOk:   false,
+			wantOrgIDSlice:   []int64{},
+			wantOrgIDSliceOk: false,
 		},
 		{
 			name: "invalid Org field",
@@ -478,12 +494,48 @@ func TestAuditEntry_Getters(t *testing.T) {
 				Org:   json.RawMessage(`{"invalid": "json"}`),
 				OrgID: json.RawMessage(`"invalid"`),
 			},
-			wantOrg:      "",
-			wantOrgOk:    false,
-			wantRawOrg:   json.RawMessage(`{"invalid": "json"}`),
-			wantOrgID:    0,
-			wantOrgIDOk:  false,
-			wantRawOrgID: json.RawMessage(`"invalid"`),
+			wantOrg:          "",
+			wantOrgOk:        false,
+			wantRawOrg:       json.RawMessage(`{"invalid": "json"}`),
+			wantOrgID:        0,
+			wantOrgIDOk:      false,
+			wantRawOrgID:     json.RawMessage(`"invalid"`),
+			wantOrgSlice:     []string{},
+			wantOrgSliceOk:   false,
+			wantOrgIDSlice:   []int64{},
+			wantOrgIDSliceOk: false,
+		},
+		{
+			name: "valid OrgID slice",
+			entry: &AuditEntry{
+				OrgID: json.RawMessage(`["1", "2", "3"]`),
+			},
+			wantOrg:          "",
+			wantOrgOk:        false,
+			wantRawOrg:       json.RawMessage{},
+			wantOrgID:        0,
+			wantOrgIDOk:      false,
+			wantRawOrgID:     json.RawMessage(`["1", "2", "3"]`),
+			wantOrgSlice:     []string{"1", "2", "3"},
+			wantOrgSliceOk:   true,
+			wantOrgIDSlice:   []int64{},
+			wantOrgIDSliceOk: false,
+		},
+		{
+			name: "valid OrgID field",
+			entry: &AuditEntry{
+				OrgID: json.RawMessage(`[1, 2, 3]`),
+			},
+			wantOrg:          "",
+			wantOrgOk:        false,
+			wantRawOrg:       json.RawMessage{},
+			wantOrgID:        0,
+			wantOrgIDOk:      false,
+			wantRawOrgID:     json.RawMessage(`[1, 2, 3]`),
+			wantOrgSlice:     []string{},
+			wantOrgSliceOk:   false,
+			wantOrgIDSlice:   []int64{1, 2, 3},
+			wantOrgIDSliceOk: true,
 		},
 	}
 
@@ -509,6 +561,42 @@ func TestAuditEntry_Getters(t *testing.T) {
 			if string(gotRawOrgID) != string(tt.wantRawOrgID) {
 				t.Errorf("GetRawOrgID() = %v; want %v", string(gotRawOrgID), string(tt.wantRawOrgID))
 			}
+
+			gotOrgSlice, gotOrgSliceOk := tt.entry.GetOrgSlice()
+			if !equalStringSlices(gotOrgSlice, tt.wantOrgSlice) || gotOrgSliceOk != tt.wantOrgSliceOk {
+				t.Errorf("GetOrgSlice() = %v, %v; want %v, %v", gotOrgSlice, gotOrgSliceOk, tt.wantOrgSlice, tt.wantOrgSliceOk)
+			}
+
+			gotOrgIDSlice, gotOrgIDSliceOk := tt.entry.GetOrgIDSlice()
+			if !equalInt64Slices(gotOrgIDSlice, tt.wantOrgIDSlice) || gotOrgIDSliceOk != tt.wantOrgIDSliceOk {
+				t.Errorf("GetOrgIDSlice() = %v, %v; want %v, %v", gotOrgIDSlice, gotOrgIDSliceOk, tt.wantOrgIDSlice, tt.wantOrgIDSliceOk)
+			}
 		})
 	}
+}
+
+// equalStringSlices is a testing helper function and returns true if the two slices are equal.
+func equalStringSlices(actual, expected []string) bool {
+	if len(actual) != len(expected) {
+		return false
+	}
+	for i := range actual {
+		if actual[i] != expected[i] {
+			return false
+		}
+	}
+	return true
+}
+
+// equalInt64Slices is a testing helper function and returns true if the two slices are equal.
+func equalInt64Slices(actual, expected []int64) bool {
+	if len(actual) != len(expected) {
+		return false
+	}
+	for i := range actual {
+		if actual[i] != expected[i] {
+			return false
+		}
+	}
+	return true
 }
