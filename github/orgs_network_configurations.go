@@ -58,12 +58,13 @@ func validateComputeService(compute *ComputeService) error {
 	return nil
 }
 
+var validNetworkNameRE = regexp.MustCompile(`^[a-zA-Z0-9._-]+$`)
+
 func validateNetworkName(name string) error {
 	if len(name) < 1 || len(name) > 100 {
 		return errors.New("must be between 1 and 100 characters")
 	}
-	validName := regexp.MustCompile(`^[a-zA-Z0-9._-]+$`)
-	if !validName.MatchString(name) {
+	if !validNetworkNameRE.MatchString(name) {
 		return errors.New("may only contain upper and lowercase letters a-z, numbers 0-9, '.', '-', and '_'")
 	}
 	return nil
@@ -163,6 +164,7 @@ func (s *OrganizationsService) GetNetworkConfiguration(ctx context.Context, org,
 	if err != nil {
 		return nil, nil, err
 	}
+
 	configuration := &NetworkConfiguration{}
 	resp, err := s.client.Do(ctx, req, configuration)
 	if err != nil {
