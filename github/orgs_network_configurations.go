@@ -104,8 +104,6 @@ type NetworkConfigurationRequest struct {
 
 // ListNetworkConfigurations lists all hosted compute network configurations configured in an organization.
 //
-// GitHub API-docs: https://docs.github.com/rest/orgs/network-configurations#list-hosted-compute-network-configurations-for-an-organization
-//
 // GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#list-hosted-compute-network-configurations-for-an-organization
 //
 //meta:operation GET /orgs/{org}/settings/network-configurations
