@@ -506,17 +506,17 @@ func TestAuditEntry_Getters(t *testing.T) {
 			wantOrgIDSliceOk: false,
 		},
 		{
-			name: "valid OrgID slice",
+			name: "valid Org field",
 			entry: &AuditEntry{
-				OrgID: json.RawMessage(`["1", "2", "3"]`),
+				Org: json.RawMessage(`["testOrg1", "testOrg2", "testOrg3"]`),
 			},
 			wantOrg:          "",
 			wantOrgOk:        false,
-			wantRawOrg:       json.RawMessage{},
+			wantRawOrg:       json.RawMessage(`["testOrg1", "testOrg2", "testOrg3"]`),
 			wantOrgID:        0,
 			wantOrgIDOk:      false,
-			wantRawOrgID:     json.RawMessage(`["1", "2", "3"]`),
-			wantOrgSlice:     []string{"1", "2", "3"},
+			wantRawOrgID:     json.RawMessage{},
+			wantOrgSlice:     []string{"testOrg1", "testOrg2", "testOrg3"},
 			wantOrgSliceOk:   true,
 			wantOrgIDSlice:   []int64{},
 			wantOrgIDSliceOk: false,
@@ -562,12 +562,12 @@ func TestAuditEntry_Getters(t *testing.T) {
 				t.Errorf("GetRawOrgID() = %v; want %v", string(gotRawOrgID), string(tt.wantRawOrgID))
 			}
 
-			gotOrgSlice, gotOrgSliceOk := tt.entry.GetOrgSlice()
+			gotOrgSlice, gotOrgSliceOk := tt.entry.GetOrgStrings()
 			if !equalStringSlices(gotOrgSlice, tt.wantOrgSlice) || gotOrgSliceOk != tt.wantOrgSliceOk {
 				t.Errorf("GetOrgSlice() = %v, %v; want %v, %v", gotOrgSlice, gotOrgSliceOk, tt.wantOrgSlice, tt.wantOrgSliceOk)
 			}
 
-			gotOrgIDSlice, gotOrgIDSliceOk := tt.entry.GetOrgIDSlice()
+			gotOrgIDSlice, gotOrgIDSliceOk := tt.entry.GetOrgIDInt64s()
 			if !equalInt64Slices(gotOrgIDSlice, tt.wantOrgIDSlice) || gotOrgIDSliceOk != tt.wantOrgIDSliceOk {
 				t.Errorf("GetOrgIDSlice() = %v, %v; want %v, %v", gotOrgIDSlice, gotOrgIDSliceOk, tt.wantOrgIDSlice, tt.wantOrgIDSliceOk)
 			}
