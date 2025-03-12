@@ -27,7 +27,7 @@ func TestEnterpriseService_ListEnterpriseNetworkConfigurations(t *testing.T) {
 		  "network_configurations": [
 			{
 			  "id": "123456789ABCDEF",
-			  "name": "configuration_one",
+			  "name": "configuration one",
 			  "compute_service": "actions",
 			  "network_settings_ids": [
 				"23456789ABDCEF1",
@@ -37,7 +37,7 @@ func TestEnterpriseService_ListEnterpriseNetworkConfigurations(t *testing.T) {
 			},
 			{
 			  "id": "456789ABDCEF123",
-			  "name": "configuration_two",
+			  "name": "configuration two",
 			  "compute_service": "none",
 			  "network_settings_ids": [
 				"56789ABDCEF1234",
@@ -57,19 +57,19 @@ func TestEnterpriseService_ListEnterpriseNetworkConfigurations(t *testing.T) {
 		t.Errorf("Enterprise.ListEnterpriseNetworkConfigurations returned error: %v", err)
 	}
 
-	want := &EnterpriseNetworkConfigurations{
+	want := &NetworkConfigurations{
 		TotalCount: Ptr(int64(2)),
-		NetworkConfigurations: []*EnterpriseNetworkConfiguration{
+		NetworkConfigurations: []*NetworkConfiguration{
 			{
 				ID:                 Ptr("123456789ABCDEF"),
-				Name:               Ptr("configuration_one"),
+				Name:               Ptr("configuration one"),
 				ComputeService:     Ptr(ComputeService("actions")),
 				NetworkSettingsIDs: []string{"23456789ABDCEF1", "3456789ABDCEF12"},
 				CreatedOn:          &Timestamp{time.Date(2024, 4, 9, 17, 30, 15, 0, time.UTC)},
 			},
 			{
 				ID:                 Ptr("456789ABDCEF123"),
-				Name:               Ptr("configuration_two"),
+				Name:               Ptr("configuration two"),
 				ComputeService:     Ptr(ComputeService("none")),
 				NetworkSettingsIDs: []string{"56789ABDCEF1234", "6789ABDCEF12345"},
 				CreatedOn:          &Timestamp{time.Date(2024, 11, 2, 12, 30, 30, 0, time.UTC)},
@@ -103,11 +103,10 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 		testMethod(t, r, "POST")
 		fmt.Fprintf(w, `{
 		  "id": "123456789ABCDEF",
-		  "name": "configuration_one",
+		  "name": "configuration one",
 		  "compute_service": "actions",
 		  "network_settings_ids": [
-			"23456789ABDCEF1",
-			"3456789ABDCEF12"
+			"23456789ABDCEF1"
 		  ],
 		  "created_on": "2024-04-09T17:30:15Z"
 		}`)
@@ -115,12 +114,11 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 
 	ctx := context.Background()
 
-	req := EnterpriseNetworkConfigurationRequest{
-		Name:           Ptr("configuration_one"),
+	req := NetworkConfigurationRequest{
+		Name:           Ptr("configuration-one"),
 		ComputeService: Ptr(ComputeService("actions")),
 		NetworkSettingsIDs: []string{
 			"23456789ABDCEF1",
-			"3456789ABDCEF12",
 		},
 	}
 	configuration, _, err := client.Enterprise.CreateEnterpriseNetworkConfiguration(ctx, "e", req)
@@ -128,15 +126,52 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 		t.Errorf("Enterprise.CreateEnterpriseNetworkConfiguration returned error: %v", err)
 	}
 
-	want := &EnterpriseNetworkConfiguration{
+	want := &NetworkConfiguration{
 		ID:                 Ptr("123456789ABCDEF"),
-		Name:               Ptr("configuration_one"),
+		Name:               Ptr("configuration one"),
 		ComputeService:     Ptr(ComputeService("actions")),
-		NetworkSettingsIDs: []string{"23456789ABDCEF1", "3456789ABDCEF12"},
+		NetworkSettingsIDs: []string{"23456789ABDCEF1"},
 		CreatedOn:          &Timestamp{time.Date(2024, 4, 9, 17, 30, 15, 0, time.UTC)},
 	}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Enterprise.CreateEnterpriseNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
+	}
+
+	validationTest := []struct {
+		name    string
+		request NetworkConfigurationRequest
+		want    string
+	}{
+		{
+			name: "invalid network settings id",
+			request: NetworkConfigurationRequest{
+				Name:               Ptr(""),
+				NetworkSettingsIDs: []string{"56789ABDCEF1234"},
+			},
+			want: "validation failed: must be between 1 and 100 characters",
+		},
+		{
+			name: "invalid network settings id",
+			request: NetworkConfigurationRequest{
+				Name: Ptr("updated-configuration-one"),
+			},
+			want: "validation failed: exactly one network settings id must be specified",
+		},
+		{
+			name: "invalid compute service",
+			request: NetworkConfigurationRequest{
+				Name:               Ptr("updated-configuration-one"),
+				ComputeService:     Ptr(ComputeService("")),
+				NetworkSettingsIDs: []string{"56789ABDCEF1234"},
+			},
+			want: "validation failed: compute service can only be one of: none, actions",
+		},
+	}
+	for _, tc := range validationTest {
+		_, _, err = client.Enterprise.CreateEnterpriseNetworkConfiguration(ctx, "e", tc.request)
+		if err == nil || err.Error() != tc.want {
+			t.Errorf("expected error to be %v, got %v", tc.want, err)
+		}
 	}
 
 	const methodName = "CreateEnterpriseNetworkConfiguration"
@@ -162,7 +197,7 @@ func TestEnterpriseService_GetEnterpriseNetworkConfiguration(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprintf(w, `{
 		  "id": "123456789ABCDEF",
-		  "name": "configuration_one",
+		  "name": "configuration one",
 		  "compute_service": "actions",
 		  "network_settings_ids": [
 			"23456789ABDCEF1",
@@ -178,9 +213,9 @@ func TestEnterpriseService_GetEnterpriseNetworkConfiguration(t *testing.T) {
 		t.Errorf("Enterprise.GetEnterpriseNetworkConfiguration returned err: %v", err)
 	}
 
-	want := &EnterpriseNetworkConfiguration{
+	want := &NetworkConfiguration{
 		ID:                 Ptr("123456789ABCDEF"),
-		Name:               Ptr("configuration_one"),
+		Name:               Ptr("configuration one"),
 		ComputeService:     Ptr(ComputeService("actions")),
 		NetworkSettingsIDs: []string{"23456789ABDCEF1", "3456789ABDCEF12"},
 		CreatedOn:          &Timestamp{time.Date(2024, 12, 10, 19, 00, 15, 0, time.UTC)},
@@ -212,22 +247,20 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprintf(w, `{
 		  "id": "123456789ABCDEF",
-		  "name": "updated_configuration_one",
+		  "name": "updated configuration one",
 		  "compute_service": "none",
 		  "network_settings_ids": [
-			"456789ABDCEF123",
-			"56789ABDCEF1234"
+			"456789ABDCEF123"
 		  ],
 		  "created_on": "2024-12-10T19:00:15Z"
 		}`)
 	})
 
 	ctx := context.Background()
-	req := EnterpriseNetworkConfigurationRequest{
-		Name: Ptr("updated_configuration_one"),
+	req := NetworkConfigurationRequest{
+		Name: Ptr("updated-configuration-one"),
 		NetworkSettingsIDs: []string{
 			"456789ABDCEF123",
-			"56789ABDCEF1234",
 		},
 		ComputeService: Ptr(ComputeService("none")),
 	}
@@ -236,15 +269,52 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 		t.Errorf("Enterprise.UpdateEnterpriseNetworkConfiguration returned error %v", err)
 	}
 
-	want := &EnterpriseNetworkConfiguration{
+	want := &NetworkConfiguration{
 		ID:                 Ptr("123456789ABCDEF"),
-		Name:               Ptr("updated_configuration_one"),
+		Name:               Ptr("updated configuration one"),
 		ComputeService:     Ptr(ComputeService("none")),
-		NetworkSettingsIDs: []string{"456789ABDCEF123", "56789ABDCEF1234"},
+		NetworkSettingsIDs: []string{"456789ABDCEF123"},
 		CreatedOn:          &Timestamp{time.Date(2024, 12, 10, 19, 00, 15, 0, time.UTC)},
 	}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Enterprise.UpdateEnterpriseNetworkConfiguration mismatch (-want +get)\n%s", cmp.Diff(want, configuration))
+	}
+
+	validationTest := []struct {
+		name    string
+		request NetworkConfigurationRequest
+		want    string
+	}{
+		{
+			name: "invalid network settings id",
+			request: NetworkConfigurationRequest{
+				Name:               Ptr(""),
+				NetworkSettingsIDs: []string{"56789ABDCEF1234"},
+			},
+			want: "validation failed: must be between 1 and 100 characters",
+		},
+		{
+			name: "invalid network settings id",
+			request: NetworkConfigurationRequest{
+				Name: Ptr("updated-configuration-one"),
+			},
+			want: "validation failed: exactly one network settings id must be specified",
+		},
+		{
+			name: "invalid compute service",
+			request: NetworkConfigurationRequest{
+				Name:               Ptr("updated-configuration-one"),
+				ComputeService:     Ptr(ComputeService("something")),
+				NetworkSettingsIDs: []string{"56789ABDCEF1234"},
+			},
+			want: "validation failed: compute service can only be one of: none, actions",
+		},
+	}
+	for _, tc := range validationTest {
+		_, _, err = client.Enterprise.UpdateEnterpriseNetworkConfiguration(ctx, "e", "123456789ABCDEF", tc.request)
+		if err == nil || err.Error() != tc.want {
+			t.Errorf("expected error to be %v, got %v", tc.want, err)
+		}
 	}
 
 	const methodName = "UpdateEnterpriseNetworkConfiguration"
@@ -308,7 +378,7 @@ func TestEnterpriseService_GetEnterpriseNetworkSettingsResource(t *testing.T) {
 		t.Errorf("Enterprise.GetEnterpriseNetworkSettingsResource returned error %v", err)
 	}
 
-	want := &EnterpriseNetworkSettingsResource{
+	want := &NetworkSettingsResource{
 		ID:                     Ptr("220F78DACB92BBFBC5E6F22DE1CCF52309D"),
 		NetworkConfigurationID: Ptr("934E208B3EE0BD60CF5F752C426BFB53562"),
 		Name:                   Ptr("my_network_settings"),
