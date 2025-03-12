@@ -2,8 +2,6 @@ module github.com/google/go-github/v69/example
 
 go 1.23.1
 
-toolchain go1.23.5
-
 require (
 	github.com/ProtonMail/go-crypto v0.0.0-20230828082145-3c4c8a2d2371
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.4
