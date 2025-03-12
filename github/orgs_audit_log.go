@@ -68,16 +68,16 @@ func (a *AuditEntry) GetOrg() (org string, ok bool) {
 	return org, true
 }
 
-// GetOrgStrings returns the Org field, as a slice of strings, if it's valid.
-func (a *AuditEntry) GetOrgStrings() (org []string, ok bool) {
+// GetOrgNames returns the Org field, as a slice of strings, if it's valid.
+func (a *AuditEntry) GetOrgNames() (names []string, ok bool) {
 	if a == nil || a.Org == nil {
 		return nil, false
 	}
-	if err := json.Unmarshal([]byte(a.Org), &org); err != nil {
+	if err := json.Unmarshal([]byte(a.Org), &names); err != nil {
 		return nil, false
 	}
 
-	return org, true
+	return names, true
 }
 
 // GetRawOrg returns the Org field as a json.RawMessage.
@@ -101,8 +101,8 @@ func (a *AuditEntry) GetOrgID() (orgID int64, ok bool) {
 	return orgID, true
 }
 
-// GetOrgIDInt64s returns the OrgID field, as a slice of int64, if it's valid.
-func (a *AuditEntry) GetOrgIDInt64s() (orgIDs []int64, ok bool) {
+// GetOrgIDs returns the OrgID field, as a slice of int64, if it's valid.
+func (a *AuditEntry) GetOrgIDs() (orgIDs []int64, ok bool) {
 	if a == nil || a.OrgID == nil {
 		return nil, false
 	}

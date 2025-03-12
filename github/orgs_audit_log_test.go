@@ -562,12 +562,12 @@ func TestAuditEntry_Getters(t *testing.T) {
 				t.Errorf("GetRawOrgID() = %v; want %v", string(gotRawOrgID), string(tt.wantRawOrgID))
 			}
 
-			gotOrgSlice, gotOrgSliceOk := tt.entry.GetOrgStrings()
+			gotOrgSlice, gotOrgSliceOk := tt.entry.GetOrgNames()
 			if !equalStringSlices(gotOrgSlice, tt.wantOrgSlice) || gotOrgSliceOk != tt.wantOrgSliceOk {
 				t.Errorf("GetOrgSlice() = %v, %v; want %v, %v", gotOrgSlice, gotOrgSliceOk, tt.wantOrgSlice, tt.wantOrgSliceOk)
 			}
 
-			gotOrgIDSlice, gotOrgIDSliceOk := tt.entry.GetOrgIDInt64s()
+			gotOrgIDSlice, gotOrgIDSliceOk := tt.entry.GetOrgIDs()
 			if !equalInt64Slices(gotOrgIDSlice, tt.wantOrgIDSlice) || gotOrgIDSliceOk != tt.wantOrgIDSliceOk {
 				t.Errorf("GetOrgIDSlice() = %v, %v; want %v, %v", gotOrgIDSlice, gotOrgIDSliceOk, tt.wantOrgIDSlice, tt.wantOrgIDSliceOk)
 			}
