@@ -30,30 +30,96 @@ type ActorLocation struct {
 // in AdditionalFields.
 // For a list of actions see - https://docs.github.com/github/setting-up-and-managing-organizations-and-teams/reviewing-the-audit-log-for-your-organization#audit-log-actions
 type AuditEntry struct {
-	Action                   *string        `json:"action,omitempty"` // The name of the action that was performed, for example `user.login` or `repo.create`.
-	Actor                    *string        `json:"actor,omitempty"`  // The actor who performed the action.
-	ActorID                  *int64         `json:"actor_id,omitempty"`
-	ActorLocation            *ActorLocation `json:"actor_location,omitempty"`
-	Business                 *string        `json:"business,omitempty"`
-	BusinessID               *int64         `json:"business_id,omitempty"`
-	CreatedAt                *Timestamp     `json:"created_at,omitempty"`
-	DocumentID               *string        `json:"_document_id,omitempty"`
-	ExternalIdentityNameID   *string        `json:"external_identity_nameid,omitempty"`
-	ExternalIdentityUsername *string        `json:"external_identity_username,omitempty"`
-	HashedToken              *string        `json:"hashed_token,omitempty"`
-	Org                      *string        `json:"org,omitempty"`
-	OrgID                    *int64         `json:"org_id,omitempty"`
-	Timestamp                *Timestamp     `json:"@timestamp,omitempty"` // The time the audit log event occurred, given as a [Unix timestamp](http://en.wikipedia.org/wiki/Unix_time).
-	TokenID                  *int64         `json:"token_id,omitempty"`
-	TokenScopes              *string        `json:"token_scopes,omitempty"`
-	User                     *string        `json:"user,omitempty"` // The user that was affected by the action performed (if available).
-	UserID                   *int64         `json:"user_id,omitempty"`
+	Action                   *string         `json:"action,omitempty"` // The name of the action that was performed, for example `user.login` or `repo.create`.
+	Actor                    *string         `json:"actor,omitempty"`  // The actor who performed the action.
+	ActorID                  *int64          `json:"actor_id,omitempty"`
+	ActorLocation            *ActorLocation  `json:"actor_location,omitempty"`
+	Business                 *string         `json:"business,omitempty"`
+	BusinessID               *int64          `json:"business_id,omitempty"`
+	CreatedAt                *Timestamp      `json:"created_at,omitempty"`
+	DocumentID               *string         `json:"_document_id,omitempty"`
+	ExternalIdentityNameID   *string         `json:"external_identity_nameid,omitempty"`
+	ExternalIdentityUsername *string         `json:"external_identity_username,omitempty"`
+	HashedToken              *string         `json:"hashed_token,omitempty"`
+	Org                      json.RawMessage `json:"org,omitempty"`
+	OrgID                    json.RawMessage `json:"org_id,omitempty"`
+	Timestamp                *Timestamp      `json:"@timestamp,omitempty"` // The time the audit log event occurred, given as a [Unix timestamp](http://en.wikipedia.org/wiki/Unix_time).
+	TokenID                  *int64          `json:"token_id,omitempty"`
+	TokenScopes              *string         `json:"token_scopes,omitempty"`
+	User                     *string         `json:"user,omitempty"` // The user that was affected by the action performed (if available).
+	UserID                   *int64          `json:"user_id,omitempty"`
 
 	// Some events types have a data field that contains additional information about the event.
 	Data map[string]interface{} `json:"data,omitempty"`
 
 	// All fields that are not explicitly defined in the struct are captured here.
 	AdditionalFields map[string]interface{} `json:"-"`
+}
+
+// GetOrg returns the Org field, as a string, if it's valid.
+func (a *AuditEntry) GetOrg() (org string, ok bool) {
+	if a == nil || a.Org == nil {
+		return "", false
+	}
+	if err := json.Unmarshal([]byte(a.Org), &org); err != nil {
+		return "", false
+	}
+
+	return org, true
+}
+
+// GetOrgNames returns the Org field, as a slice of strings, if it's valid.
+func (a *AuditEntry) GetOrgNames() (names []string, ok bool) {
+	if a == nil || a.Org == nil {
+		return nil, false
+	}
+	if err := json.Unmarshal([]byte(a.Org), &names); err != nil {
+		return nil, false
+	}
+
+	return names, true
+}
+
+// GetRawOrg returns the Org field as a json.RawMessage.
+func (a *AuditEntry) GetRawOrg() json.RawMessage {
+	if a == nil || a.Org == nil {
+		return json.RawMessage{}
+	}
+
+	return a.Org
+}
+
+// GetOrgID returns the OrgID field, as an int64, if it's valid.
+func (a *AuditEntry) GetOrgID() (orgID int64, ok bool) {
+	if a == nil || a.OrgID == nil {
+		return 0, false
+	}
+	if err := json.Unmarshal([]byte(a.OrgID), &orgID); err != nil {
+		return 0, false
+	}
+
+	return orgID, true
+}
+
+// GetOrgIDs returns the OrgID field, as a slice of int64, if it's valid.
+func (a *AuditEntry) GetOrgIDs() (orgIDs []int64, ok bool) {
+	if a == nil || a.OrgID == nil {
+		return nil, false
+	}
+	if err := json.Unmarshal([]byte(a.OrgID), &orgIDs); err != nil {
+		return nil, false
+	}
+
+	return orgIDs, true
+}
+
+// GetRawOrgID returns the OrgID field as a json.RawMessage.
+func (a *AuditEntry) GetRawOrgID() json.RawMessage {
+	if a == nil || a.OrgID == nil {
+		return json.RawMessage{}
+	}
+
+	return a.OrgID
 }
 
 func (a *AuditEntry) UnmarshalJSON(data []byte) error {

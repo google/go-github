@@ -1518,28 +1518,6 @@ func TestAuditEntry_GetHashedToken(tt *testing.T) {
 	a.GetHashedToken()
 }
 
-func TestAuditEntry_GetOrg(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &AuditEntry{Org: &zeroValue}
-	a.GetOrg()
-	a = &AuditEntry{}
-	a.GetOrg()
-	a = nil
-	a.GetOrg()
-}
-
-func TestAuditEntry_GetOrgID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	a := &AuditEntry{OrgID: &zeroValue}
-	a.GetOrgID()
-	a = &AuditEntry{}
-	a.GetOrgID()
-	a = nil
-	a.GetOrgID()
-}
-
 func TestAuditEntry_GetTimestamp(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
