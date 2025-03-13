@@ -21595,8 +21595,8 @@ func TestPackageVersion_GetRelease(tt *testing.T) {
 
 func TestPackageVersion_GetRubyMetadata(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := map[string]any{}
-	p := &PackageVersion{RubyMetadata: zeroValue}
+	var zeroValue map[string]any
+	p := &PackageVersion{RubyMetadata: &zeroValue}
 	p.GetRubyMetadata()
 	p = &PackageVersion{}
 	p.GetRubyMetadata()

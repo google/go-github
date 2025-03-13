@@ -62,10 +62,10 @@ type PackageVersion struct {
 	Draft               *bool                          `json:"draft,omitempty"`
 	Prerelease          *bool                          `json:"prerelease,omitempty"`
 	ContainerMetadata   *PackageEventContainerMetadata `json:"container_metadata,omitempty"`
-	DockerMetadata      []interface{}                  `json:"docker_metadata,omitempty"`
+	DockerMetadata      *[]interface{}                 `json:"docker_metadata,omitempty"`
 	NPMMetadata         *PackageNPMMetadata            `json:"npm_metadata,omitempty"`
 	NugetMetadata       *[]PackageNugetMetadata        `json:"nuget_metadata,omitempty"`
-	RubyMetadata        map[string]any                 `json:"ruby_metadata,omitempty"`
+	RubyMetadata        *map[string]any                `json:"ruby_metadata,omitempty"`
 	PackageFiles        *[]PackageFile                 `json:"package_files,omitempty"`
 	PackageURL          *string                        `json:"package_url,omitempty"`
 	Author              *User                          `json:"author,omitempty"`

@@ -203,14 +203,14 @@ func TestPackageVersion_Marshal(t *testing.T) {
 		ContainerMetadata: &PackageEventContainerMetadata{
 			Labels: map[string]any{"l1": true, "l2": "a"},
 		},
-		DockerMetadata: []interface{}{"a", "b"},
+		DockerMetadata: Ptr([]interface{}{"a", "b"}),
 		NPMMetadata: Ptr(PackageNPMMetadata{
 			Name: Ptr("n"),
 		}),
 		NugetMetadata: Ptr([]PackageNugetMetadata{
 			{Name: Ptr("n")},
 		}),
-		RubyMetadata: map[string]any{"k1": "v1", "k2": "v2"},
+		RubyMetadata: Ptr(map[string]any{"k1": "v1", "k2": "v2"}),
 		PackageFiles: Ptr([]PackageFile{
 			{
 				DownloadURL: Ptr("durl"),

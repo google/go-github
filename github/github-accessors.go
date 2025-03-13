@@ -16630,12 +16630,12 @@ func (p *PackageVersion) GetRelease() *PackageRelease {
 	return p.Release
 }
 
-// GetRubyMetadata returns the RubyMetadata map if it's non-nil, an empty map otherwise.
+// GetRubyMetadata returns the RubyMetadata field if it's non-nil, zero value otherwise.
 func (p *PackageVersion) GetRubyMetadata() map[string]any {
 	if p == nil || p.RubyMetadata == nil {
 		return map[string]any{}
 	}
-	return p.RubyMetadata
+	return *p.RubyMetadata
 }
 
 // GetSourceURL returns the SourceURL field if it's non-nil, zero value otherwise.
