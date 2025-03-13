@@ -20796,8 +20796,8 @@ func TestPackageMetadata_GetPackageType(tt *testing.T) {
 
 func TestPackageNPMMetadata_GetAuthor(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]string
-	p := &PackageNPMMetadata{Author: &zeroValue}
+	zeroValue := map[string]string{}
+	p := &PackageNPMMetadata{Author: zeroValue}
 	p.GetAuthor()
 	p = &PackageNPMMetadata{}
 	p.GetAuthor()
@@ -20807,8 +20807,8 @@ func TestPackageNPMMetadata_GetAuthor(tt *testing.T) {
 
 func TestPackageNPMMetadata_GetBin(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]any
-	p := &PackageNPMMetadata{Bin: &zeroValue}
+	zeroValue := map[string]any{}
+	p := &PackageNPMMetadata{Bin: zeroValue}
 	p.GetBin()
 	p = &PackageNPMMetadata{}
 	p.GetBin()
@@ -20818,8 +20818,8 @@ func TestPackageNPMMetadata_GetBin(tt *testing.T) {
 
 func TestPackageNPMMetadata_GetBugs(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]string
-	p := &PackageNPMMetadata{Bugs: &zeroValue}
+	zeroValue := map[string]string{}
+	p := &PackageNPMMetadata{Bugs: zeroValue}
 	p.GetBugs()
 	p = &PackageNPMMetadata{}
 	p.GetBugs()
@@ -20838,28 +20838,6 @@ func TestPackageNPMMetadata_GetCommitOID(tt *testing.T) {
 	p.GetCommitOID()
 }
 
-func TestPackageNPMMetadata_GetContributors(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue []any
-	p := &PackageNPMMetadata{Contributors: &zeroValue}
-	p.GetContributors()
-	p = &PackageNPMMetadata{}
-	p.GetContributors()
-	p = nil
-	p.GetContributors()
-}
-
-func TestPackageNPMMetadata_GetCPU(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue []string
-	p := &PackageNPMMetadata{CPU: &zeroValue}
-	p.GetCPU()
-	p = &PackageNPMMetadata{}
-	p.GetCPU()
-	p = nil
-	p.GetCPU()
-}
-
 func TestPackageNPMMetadata_GetDeletedByID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -20873,8 +20851,8 @@ func TestPackageNPMMetadata_GetDeletedByID(tt *testing.T) {
 
 func TestPackageNPMMetadata_GetDependencies(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]string
-	p := &PackageNPMMetadata{Dependencies: &zeroValue}
+	zeroValue := map[string]string{}
+	p := &PackageNPMMetadata{Dependencies: zeroValue}
 	p.GetDependencies()
 	p = &PackageNPMMetadata{}
 	p.GetDependencies()
@@ -20895,8 +20873,8 @@ func TestPackageNPMMetadata_GetDescription(tt *testing.T) {
 
 func TestPackageNPMMetadata_GetDevDependencies(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]string
-	p := &PackageNPMMetadata{DevDependencies: &zeroValue}
+	zeroValue := map[string]string{}
+	p := &PackageNPMMetadata{DevDependencies: zeroValue}
 	p.GetDevDependencies()
 	p = &PackageNPMMetadata{}
 	p.GetDevDependencies()
@@ -20906,8 +20884,8 @@ func TestPackageNPMMetadata_GetDevDependencies(tt *testing.T) {
 
 func TestPackageNPMMetadata_GetDirectories(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]string
-	p := &PackageNPMMetadata{Directories: &zeroValue}
+	zeroValue := map[string]string{}
+	p := &PackageNPMMetadata{Directories: zeroValue}
 	p.GetDirectories()
 	p = &PackageNPMMetadata{}
 	p.GetDirectories()
@@ -20917,8 +20895,8 @@ func TestPackageNPMMetadata_GetDirectories(tt *testing.T) {
 
 func TestPackageNPMMetadata_GetDist(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]string
-	p := &PackageNPMMetadata{Dist: &zeroValue}
+	zeroValue := map[string]string{}
+	p := &PackageNPMMetadata{Dist: zeroValue}
 	p.GetDist()
 	p = &PackageNPMMetadata{}
 	p.GetDist()
@@ -20928,24 +20906,13 @@ func TestPackageNPMMetadata_GetDist(tt *testing.T) {
 
 func TestPackageNPMMetadata_GetEngines(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]string
-	p := &PackageNPMMetadata{Engines: &zeroValue}
+	zeroValue := map[string]string{}
+	p := &PackageNPMMetadata{Engines: zeroValue}
 	p.GetEngines()
 	p = &PackageNPMMetadata{}
 	p.GetEngines()
 	p = nil
 	p.GetEngines()
-}
-
-func TestPackageNPMMetadata_GetFiles(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue []string
-	p := &PackageNPMMetadata{Files: &zeroValue}
-	p.GetFiles()
-	p = &PackageNPMMetadata{}
-	p.GetFiles()
-	p = nil
-	p.GetFiles()
 }
 
 func TestPackageNPMMetadata_GetGitHead(tt *testing.T) {
@@ -21003,17 +20970,6 @@ func TestPackageNPMMetadata_GetInstallationCommand(tt *testing.T) {
 	p.GetInstallationCommand()
 }
 
-func TestPackageNPMMetadata_GetKeywords(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue []string
-	p := &PackageNPMMetadata{Keywords: &zeroValue}
-	p.GetKeywords()
-	p = &PackageNPMMetadata{}
-	p.GetKeywords()
-	p = nil
-	p.GetKeywords()
-}
-
 func TestPackageNPMMetadata_GetLicense(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -21036,21 +20992,10 @@ func TestPackageNPMMetadata_GetMain(tt *testing.T) {
 	p.GetMain()
 }
 
-func TestPackageNPMMetadata_GetMaintainers(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue []any
-	p := &PackageNPMMetadata{Maintainers: &zeroValue}
-	p.GetMaintainers()
-	p = &PackageNPMMetadata{}
-	p.GetMaintainers()
-	p = nil
-	p.GetMaintainers()
-}
-
 func TestPackageNPMMetadata_GetMan(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]any
-	p := &PackageNPMMetadata{Man: &zeroValue}
+	zeroValue := map[string]any{}
+	p := &PackageNPMMetadata{Man: zeroValue}
 	p.GetMan()
 	p = &PackageNPMMetadata{}
 	p.GetMan()
@@ -21104,30 +21049,19 @@ func TestPackageNPMMetadata_GetNPMVersion(tt *testing.T) {
 
 func TestPackageNPMMetadata_GetOptionalDependencies(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]string
-	p := &PackageNPMMetadata{OptionalDependencies: &zeroValue}
+	zeroValue := map[string]string{}
+	p := &PackageNPMMetadata{OptionalDependencies: zeroValue}
 	p.GetOptionalDependencies()
 	p = &PackageNPMMetadata{}
 	p.GetOptionalDependencies()
 	p = nil
 	p.GetOptionalDependencies()
-}
-
-func TestPackageNPMMetadata_GetOS(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue []string
-	p := &PackageNPMMetadata{OS: &zeroValue}
-	p.GetOS()
-	p = &PackageNPMMetadata{}
-	p.GetOS()
-	p = nil
-	p.GetOS()
 }
 
 func TestPackageNPMMetadata_GetPeerDependencies(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]string
-	p := &PackageNPMMetadata{PeerDependencies: &zeroValue}
+	zeroValue := map[string]string{}
+	p := &PackageNPMMetadata{PeerDependencies: zeroValue}
 	p.GetPeerDependencies()
 	p = &PackageNPMMetadata{}
 	p.GetPeerDependencies()
@@ -21170,8 +21104,8 @@ func TestPackageNPMMetadata_GetReleaseID(tt *testing.T) {
 
 func TestPackageNPMMetadata_GetRepository(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]string
-	p := &PackageNPMMetadata{Repository: &zeroValue}
+	zeroValue := map[string]string{}
+	p := &PackageNPMMetadata{Repository: zeroValue}
 	p.GetRepository()
 	p = &PackageNPMMetadata{}
 	p.GetRepository()
@@ -21181,8 +21115,8 @@ func TestPackageNPMMetadata_GetRepository(tt *testing.T) {
 
 func TestPackageNPMMetadata_GetScripts(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]any
-	p := &PackageNPMMetadata{Scripts: &zeroValue}
+	zeroValue := map[string]any{}
+	p := &PackageNPMMetadata{Scripts: zeroValue}
 	p.GetScripts()
 	p = &PackageNPMMetadata{}
 	p.GetScripts()
@@ -21530,28 +21464,6 @@ func TestPackageVersion_GetNPMMetadata(tt *testing.T) {
 	p.GetNPMMetadata()
 }
 
-func TestPackageVersion_GetNugetMetadata(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue []PackageNugetMetadata
-	p := &PackageVersion{NugetMetadata: &zeroValue}
-	p.GetNugetMetadata()
-	p = &PackageVersion{}
-	p.GetNugetMetadata()
-	p = nil
-	p.GetNugetMetadata()
-}
-
-func TestPackageVersion_GetPackageFiles(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue []PackageFile
-	p := &PackageVersion{PackageFiles: &zeroValue}
-	p.GetPackageFiles()
-	p = &PackageVersion{}
-	p.GetPackageFiles()
-	p = nil
-	p.GetPackageFiles()
-}
-
 func TestPackageVersion_GetPackageHTMLURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -21595,8 +21507,8 @@ func TestPackageVersion_GetRelease(tt *testing.T) {
 
 func TestPackageVersion_GetRubyMetadata(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]any
-	p := &PackageVersion{RubyMetadata: &zeroValue}
+	zeroValue := map[string]any{}
+	p := &PackageVersion{RubyMetadata: zeroValue}
 	p.GetRubyMetadata()
 	p = &PackageVersion{}
 	p.GetRubyMetadata()

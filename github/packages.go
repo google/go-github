@@ -294,8 +294,8 @@ type PackageNPMMetadata struct {
 	NodeVersion          *string           `json:"node_version,omitempty"`
 	NPMVersion           *string           `json:"npm_version,omitempty"`
 	HasShrinkwrap        *bool             `json:"has_shrinkwrap,omitempty"`
-	Maintainers          []any             `json:"maintainers,omitempty"`
-	Contributors         []any             `json:"contributors,omitempty"`
+	Maintainers          []interface{}     `json:"maintainers,omitempty"`
+	Contributors         []interface{}     `json:"contributors,omitempty"`
 	Engines              map[string]string `json:"engines,omitempty"`
 	Keywords             []string          `json:"keywords,omitempty"`
 	Files                []string          `json:"files,omitempty"`

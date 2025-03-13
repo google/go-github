@@ -1236,6 +1236,10 @@ func TestPackageNPMMetadata_String(t *testing.T) {
 		NodeVersion:         Ptr(""),
 		NPMVersion:          Ptr(""),
 		HasShrinkwrap:       Ptr(false),
+		Keywords:            []string{""},
+		Files:               []string{""},
+		OS:                  []string{""},
+		CPU:                 []string{""},
 		Readme:              Ptr(""),
 		InstallationCommand: Ptr(""),
 		ReleaseID:           Ptr(int64(0)),
@@ -1243,7 +1247,7 @@ func TestPackageNPMMetadata_String(t *testing.T) {
 		PublishedViaActions: Ptr(false),
 		DeletedByID:         Ptr(int64(0)),
 	}
-	want := `github.PackageNPMMetadata{Name:"", Version:"", NPMUser:"", Description:"", GitHead:"", Homepage:"", License:"", Main:"", ID:"", NodeVersion:"", NPMVersion:"", HasShrinkwrap:false, Readme:"", InstallationCommand:"", ReleaseID:0, CommitOID:"", PublishedViaActions:false, DeletedByID:0}`
+	want := `github.PackageNPMMetadata{Name:"", Version:"", NPMUser:"", Description:"", GitHead:"", Homepage:"", License:"", Main:"", ID:"", NodeVersion:"", NPMVersion:"", HasShrinkwrap:false, Keywords:[""], Files:[""], OS:[""], CPU:[""], Readme:"", InstallationCommand:"", ReleaseID:0, CommitOID:"", PublishedViaActions:false, DeletedByID:0}`
 	if got := v.String(); got != want {
 		t.Errorf("PackageNPMMetadata.String = %v, want %v", got, want)
 	}

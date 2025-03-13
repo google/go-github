@@ -203,15 +203,15 @@ func TestPackageVersion_Marshal(t *testing.T) {
 		ContainerMetadata: &PackageEventContainerMetadata{
 			Labels: map[string]any{"l1": true, "l2": "a"},
 		},
-		DockerMetadata: Ptr([]interface{}{"a", "b"}),
+		DockerMetadata: []interface{}{"a", "b"},
 		NPMMetadata: Ptr(PackageNPMMetadata{
 			Name: Ptr("n"),
 		}),
-		NugetMetadata: Ptr([]PackageNugetMetadata{
+		NugetMetadata: []*PackageNugetMetadata{
 			{Name: Ptr("n")},
-		}),
-		RubyMetadata: Ptr(map[string]any{"k1": "v1", "k2": "v2"}),
-		PackageFiles: Ptr([]PackageFile{
+		},
+		RubyMetadata: map[string]any{"k1": "v1", "k2": "v2"},
+		PackageFiles: []*PackageFile{
 			{
 				DownloadURL: Ptr("durl"),
 				ID:          Ptr(int64(1)),
@@ -225,7 +225,7 @@ func TestPackageVersion_Marshal(t *testing.T) {
 				CreatedAt:   &Timestamp{referenceTime},
 				UpdatedAt:   &Timestamp{referenceTime},
 			},
-		}),
+		},
 		PackageURL: Ptr("purl"),
 		Author: &User{
 			Login:           Ptr("l"),
@@ -387,16 +387,20 @@ func TestPackageVersion_Marshal(t *testing.T) {
 func TestPackageVersion_GetBody(t *testing.T) {
 	tests := map[string]struct {
 		pv        *PackageVersion
-		wantValue *string
+		wantValue string
 		wantOk    bool
 	}{
-		"pv nil": {pv: nil, wantValue: nil, wantOk: true},
+		"pv nil": {
+			pv:        nil,
+			wantValue: "",
+			wantOk:    false,
+		},
 		"body nil": {
 			pv: &PackageVersion{
 				Body: nil,
 			},
-			wantValue: nil,
-			wantOk:    true,
+			wantValue: "",
+			wantOk:    false,
 		},
 		"invalid body": {
 			pv: &PackageVersion{
@@ -409,14 +413,14 @@ func TestPackageVersion_GetBody(t *testing.T) {
 					}
 				}`),
 			},
-			wantValue: nil,
+			wantValue: "",
 			wantOk:    false,
 		},
 		"valid body": {
 			pv: &PackageVersion{
 				Body: json.RawMessage(`"body"`),
 			},
-			wantValue: Ptr("body"),
+			wantValue: "body",
 			wantOk:    true,
 		},
 	}
@@ -427,7 +431,7 @@ func TestPackageVersion_GetBody(t *testing.T) {
 
 			resValue, resOk := test.pv.GetBody()
 
-			if !reflect.DeepEqual(resValue, test.wantValue) || resOk != test.wantOk {
+			if resValue != test.wantValue || resOk != test.wantOk {
 				t.Errorf("PackageVersion.GetBody() - got: %v, %v; want: %v, %v", resValue, resOk, test.wantValue, test.wantOk)
 			}
 		})
@@ -440,13 +444,17 @@ func TestPackageVersion_GetBodyAsPackageVersionBody(t *testing.T) {
 		wantValue *PackageVersionBody
 		wantOk    bool
 	}{
-		"pv nil": {pv: nil, wantValue: nil, wantOk: true},
+		"pv nil": {
+			pv:        nil,
+			wantValue: nil,
+			wantOk:    false,
+		},
 		"body nil": {
 			pv: &PackageVersion{
 				Body: nil,
 			},
 			wantValue: nil,
-			wantOk:    true,
+			wantOk:    false,
 		},
 		"invalid body": {
 			pv: &PackageVersion{
@@ -497,13 +505,17 @@ func TestPackageVersion_GetMetadata(t *testing.T) {
 		wantValue *PackageMetadata
 		wantOk    bool
 	}{
-		"pv nil": {pv: nil, wantValue: nil, wantOk: true},
+		"pv nil": {
+			pv:        nil,
+			wantValue: nil,
+			wantOk:    false,
+		},
 		"metadata nil": {
 			pv: &PackageVersion{
 				Metadata: nil,
 			},
 			wantValue: nil,
-			wantOk:    true,
+			wantOk:    false,
 		},
 		"invalid metadata": {
 			pv: &PackageVersion{
@@ -549,12 +561,15 @@ func TestPackageVersion_GetRawMetadata(t *testing.T) {
 		pv   *PackageVersion
 		want json.RawMessage
 	}{
-		"pv nil": {pv: nil, want: nil},
+		"pv nil": {
+			pv:   nil,
+			want: nil,
+		},
 		"metadata nil": {
 			pv: &PackageVersion{
 				Metadata: nil,
 			},
-			want: nil,
+			want: json.RawMessage{},
 		},
 		"valid metadata": {
 			pv: &PackageVersion{
@@ -659,7 +674,7 @@ func TestPackage_Marshal(t *testing.T) {
 			Prerelease:      Ptr(true),
 			CreatedAt:       &Timestamp{referenceTime},
 			UpdatedAt:       &Timestamp{referenceTime},
-			PackageFiles: Ptr([]PackageFile{
+			PackageFiles: []*PackageFile{
 				{
 					DownloadURL: Ptr("durl"),
 					ID:          Ptr(int64(1)),
@@ -673,7 +688,7 @@ func TestPackage_Marshal(t *testing.T) {
 					CreatedAt:   &Timestamp{referenceTime},
 					UpdatedAt:   &Timestamp{referenceTime},
 				},
-			}),
+			},
 			Author: &User{
 				Login:           Ptr("l"),
 				ID:              Ptr(int64(1)),
@@ -1088,25 +1103,25 @@ func TestPackageNPMMetadata_Marshal(t *testing.T) {
 				PublishedViaActions:  Ptr(true),
 				ReleaseID:            Ptr(int64(1)),
 				DeletedByID:          Ptr(int64(1)),
-				Author:               Ptr(map[string]string{"k1": "v1"}),
-				Bugs:                 Ptr(map[string]string{"k1": "v1"}),
-				Dependencies:         Ptr(map[string]string{"k1": "v1"}),
-				DevDependencies:      Ptr(map[string]string{"k1": "v1"}),
-				PeerDependencies:     Ptr(map[string]string{"k1": "v1"}),
-				OptionalDependencies: Ptr(map[string]string{"k1": "v1"}),
-				Dist:                 Ptr(map[string]string{"k1": "v1"}),
-				Repository:           Ptr(map[string]string{"k1": "v1"}),
-				Engines:              Ptr(map[string]string{"k1": "v1"}),
-				Directories:          Ptr(map[string]string{"k1": "v1"}),
-				Scripts:              Ptr(map[string]interface{}{"k1": 1}),
-				Bin:                  Ptr(map[string]interface{}{"k1": true}),
-				Man:                  Ptr(map[string]interface{}{"k1": "v1"}),
-				Keywords:             Ptr([]string{"kw1", "kw2"}),
-				Files:                Ptr([]string{"f1", "f2"}),
-				OS:                   Ptr([]string{"os1", "os2"}),
-				CPU:                  Ptr([]string{"cpu1", "cpu2"}),
-				Maintainers:          Ptr([]interface{}{"m1", "m2"}),
-				Contributors:         Ptr([]interface{}{"c1", "c2"}),
+				Author:               map[string]string{"k1": "v1"},
+				Bugs:                 map[string]string{"k1": "v1"},
+				Dependencies:         map[string]string{"k1": "v1"},
+				DevDependencies:      map[string]string{"k1": "v1"},
+				PeerDependencies:     map[string]string{"k1": "v1"},
+				OptionalDependencies: map[string]string{"k1": "v1"},
+				Dist:                 map[string]string{"k1": "v1"},
+				Repository:           map[string]string{"k1": "v1"},
+				Engines:              map[string]string{"k1": "v1"},
+				Directories:          map[string]string{"k1": "v1"},
+				Scripts:              map[string]interface{}{"k1": 1},
+				Bin:                  map[string]interface{}{"k1": true},
+				Man:                  map[string]interface{}{"k1": "v1"},
+				Keywords:             []string{"kw1", "kw2"},
+				Files:                []string{"f1", "f2"},
+				OS:                   []string{"os1", "os2"},
+				CPU:                  []string{"cpu1", "cpu2"},
+				Maintainers:          []interface{}{"m1", "m2"},
+				Contributors:         []interface{}{"c1", "c2"},
 			},
 			want: `{
 				"name": "n",
@@ -1183,16 +1198,3 @@ func TestPackageNPMMetadata_Marshal(t *testing.T) {
 		})
 	}
 }
-
-// func TestXXX_Marshal(t *testing.T) {
-// 	t.Parallel()
-// 	testJSONMarshal(t, &XXX{}, "{}")
-
-// 	o := &XXX{}
-
-// 	want := `{
-// 		"": ,
-// }`
-
-// 	testJSONMarshal(t, o, want)
-// }
