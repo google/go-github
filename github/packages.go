@@ -21,9 +21,9 @@ type Package struct {
 	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
 
 	// The following are only populated for webhook events
-	Namespace      *string          `json:",omitempty"`
-	Description    *string          `json:",omitempty"`
-	Ecosystem      *string          `json:",omitempty"`
+	Namespace      *string          `json:"namespace,omitempty"`
+	Description    *string          `json:"description,omitempty"`
+	Ecosystem      *string          `json:"ecosystem,omitempty"`
 	PackageVersion *PackageVersion  `json:"package_version,omitempty"`
 	Registry       *PackageRegistry `json:"registry,omitempty"`
 
@@ -62,11 +62,11 @@ type PackageVersion struct {
 	Draft               *bool                          `json:"draft,omitempty"`
 	Prerelease          *bool                          `json:"prerelease,omitempty"`
 	ContainerMetadata   *PackageEventContainerMetadata `json:"container_metadata,omitempty"`
-	DockerMetadata      *[]interface{}                 `json:"docker_metadata,omitempty"`
+	DockerMetadata      []interface{}                  `json:"docker_metadata,omitempty"`
 	NPMMetadata         *PackageNPMMetadata            `json:"npm_metadata,omitempty"`
-	NugetMetadata       *[]PackageNugetMetadata        `json:"nuget_metadata,omitempty"`
-	RubyMetadata        *map[string]any                `json:"ruby_metadata,omitempty"`
-	PackageFiles        *[]PackageFile                 `json:"package_files,omitempty"`
+	NugetMetadata       []*PackageNugetMetadata        `json:"nuget_metadata,omitempty"`
+	RubyMetadata        map[string]any                 `json:"ruby_metadata,omitempty"`
+	PackageFiles        []*PackageFile                 `json:"package_files,omitempty"`
 	PackageURL          *string                        `json:"package_url,omitempty"`
 	Author              *User                          `json:"author,omitempty"`
 	SourceURL           *string                        `json:"source_url,omitempty"`
@@ -77,13 +77,13 @@ type PackageVersion struct {
 }
 
 // GetBody returns the body field as a string if it's valid
-func (pv *PackageVersion) GetBody() (body *string, ok bool) {
+func (pv *PackageVersion) GetBody() (body string, ok bool) {
 	if pv == nil || pv.Body == nil {
-		return nil, true
+		return "", false
 	}
 
 	if err := json.Unmarshal(pv.Body, &body); err != nil {
-		return nil, false
+		return "", false
 	}
 
 	return body, true
@@ -92,7 +92,7 @@ func (pv *PackageVersion) GetBody() (body *string, ok bool) {
 // GetBodyAsPackageVersionBody returns the body field as a PackageVersionBody if it's valid
 func (pv *PackageVersion) GetBodyAsPackageVersionBody() (body *PackageVersionBody, ok bool) {
 	if pv == nil || pv.Body == nil {
-		return nil, true
+		return nil, false
 	}
 
 	if err := json.Unmarshal(pv.Body, &body); err != nil {
@@ -105,7 +105,7 @@ func (pv *PackageVersion) GetBodyAsPackageVersionBody() (body *PackageVersionBod
 // GetMetadata returns the metadata field as PackageMetadata if it's valid
 func (pv *PackageVersion) GetMetadata() (metadata *PackageMetadata, ok bool) {
 	if pv == nil || pv.Metadata == nil {
-		return nil, true
+		return nil, false
 	}
 
 	if err := json.Unmarshal(pv.Metadata, &metadata); err != nil {
@@ -273,43 +273,43 @@ func (nm PackageNugetMetadata) String() string {
 
 // PackageNPMMetadata represents NPM metadata for a GitHub package
 type PackageNPMMetadata struct {
-	Name                 *string            `json:"name,omitempty"`
-	Version              *string            `json:"version,omitempty"`
-	NPMUser              *string            `json:"npm_user,omitempty"`
-	Author               *map[string]string `json:"author,omitempty"`
-	Bugs                 *map[string]string `json:"bugs,omitempty"`
-	Dependencies         *map[string]string `json:"dependencies,omitempty"`
-	DevDependencies      *map[string]string `json:"dev_dependencies,omitempty"`
-	PeerDependencies     *map[string]string `json:"peer_dependencies,omitempty"`
-	OptionalDependencies *map[string]string `json:"optional_dependencies,omitempty"`
-	Description          *string            `json:"description,omitempty"`
-	Dist                 *map[string]string `json:"dist,omitempty"`
-	GitHead              *string            `json:"git_head,omitempty"`
-	Homepage             *string            `json:"homepage,omitempty"`
-	License              *string            `json:"license,omitempty"`
-	Main                 *string            `json:"main,omitempty"`
-	Repository           *map[string]string `json:"repository,omitempty"`
-	Scripts              *map[string]any    `json:"scripts,omitempty"`
-	ID                   *string            `json:"id,omitempty"`
-	NodeVersion          *string            `json:"node_version,omitempty"`
-	NPMVersion           *string            `json:"npm_version,omitempty"`
-	HasShrinkwrap        *bool              `json:"has_shrinkwrap,omitempty"`
-	Maintainers          *[]any             `json:"maintainers,omitempty"`
-	Contributors         *[]any             `json:"contributors,omitempty"`
-	Engines              *map[string]string `json:"engines,omitempty"`
-	Keywords             *[]string          `json:"keywords,omitempty"`
-	Files                *[]string          `json:"files,omitempty"`
-	Bin                  *map[string]any    `json:"bin,omitempty"`
-	Man                  *map[string]any    `json:"man,omitempty"`
-	Directories          *map[string]string `json:"directories,omitempty"`
-	OS                   *[]string          `json:"os,omitempty"`
-	CPU                  *[]string          `json:"cpu,omitempty"`
-	Readme               *string            `json:"readme,omitempty"`
-	InstallationCommand  *string            `json:"installation_command,omitempty"`
-	ReleaseID            *int64             `json:"release_id,omitempty"`
-	CommitOID            *string            `json:"commit_oid,omitempty"`
-	PublishedViaActions  *bool              `json:"published_via_actions,omitempty"`
-	DeletedByID          *int64             `json:"deleted_by_id,omitempty"`
+	Name                 *string           `json:"name,omitempty"`
+	Version              *string           `json:"version,omitempty"`
+	NPMUser              *string           `json:"npm_user,omitempty"`
+	Author               map[string]string `json:"author,omitempty"`
+	Bugs                 map[string]string `json:"bugs,omitempty"`
+	Dependencies         map[string]string `json:"dependencies,omitempty"`
+	DevDependencies      map[string]string `json:"dev_dependencies,omitempty"`
+	PeerDependencies     map[string]string `json:"peer_dependencies,omitempty"`
+	OptionalDependencies map[string]string `json:"optional_dependencies,omitempty"`
+	Description          *string           `json:"description,omitempty"`
+	Dist                 map[string]string `json:"dist,omitempty"`
+	GitHead              *string           `json:"git_head,omitempty"`
+	Homepage             *string           `json:"homepage,omitempty"`
+	License              *string           `json:"license,omitempty"`
+	Main                 *string           `json:"main,omitempty"`
+	Repository           map[string]string `json:"repository,omitempty"`
+	Scripts              map[string]any    `json:"scripts,omitempty"`
+	ID                   *string           `json:"id,omitempty"`
+	NodeVersion          *string           `json:"node_version,omitempty"`
+	NPMVersion           *string           `json:"npm_version,omitempty"`
+	HasShrinkwrap        *bool             `json:"has_shrinkwrap,omitempty"`
+	Maintainers          []any             `json:"maintainers,omitempty"`
+	Contributors         []any             `json:"contributors,omitempty"`
+	Engines              map[string]string `json:"engines,omitempty"`
+	Keywords             []string          `json:"keywords,omitempty"`
+	Files                []string          `json:"files,omitempty"`
+	Bin                  map[string]any    `json:"bin,omitempty"`
+	Man                  map[string]any    `json:"man,omitempty"`
+	Directories          map[string]string `json:"directories,omitempty"`
+	OS                   []string          `json:"os,omitempty"`
+	CPU                  []string          `json:"cpu,omitempty"`
+	Readme               *string           `json:"readme,omitempty"`
+	InstallationCommand  *string           `json:"installation_command,omitempty"`
+	ReleaseID            *int64            `json:"release_id,omitempty"`
+	CommitOID            *string           `json:"commit_oid,omitempty"`
+	PublishedViaActions  *bool             `json:"published_via_actions,omitempty"`
+	DeletedByID          *int64            `json:"deleted_by_id,omitempty"`
 }
 
 func (nm PackageNPMMetadata) String() string {
