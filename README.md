@@ -233,7 +233,7 @@ repos, _, err := client.Repositories.List(context.WithValue(ctx, github.SleepUnt
 ```
 
 You can use [gofri/go-github-ratelimit](https://github.com/gofri/go-github-ratelimit) to handle
-secondary rate limit sleep-and-retry for you.
+secondary rate limit sleep-and-retry for you, as well as primary rate limit abuse-prevention and callback triggering.
 
 Learn more about GitHub secondary rate limiting in
 ["About secondary rate limits"](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits).
@@ -346,6 +346,13 @@ for repo := range repos.All() {
 ```
 
 For complete usage of `enrichman/gh-iter`, see the full [package docs](https://github.com/enrichman/gh-iter).
+
+#### Middleware ####
+
+You can use [gofri/go-github-pagination](https://github.com/gofri/go-github-pagination) to handle
+pagination for you. It supports both sync and async modes, as well as customizations.  
+By default, the middleware automatically paginates through all pages, aggregates results, and returns them as an array.  
+See `example/ratelimit/main.go` for usage.
 
 ### Webhooks ###
 
