@@ -76,7 +76,7 @@ type PackageVersion struct {
 	DeletedAt *Timestamp `json:"deleted_at,omitempty"`
 }
 
-// GetBody returns the body field as a string if it's valid
+// GetBody returns the body field as a string if it's valid.
 func (pv *PackageVersion) GetBody() (body string, ok bool) {
 	if pv == nil || pv.Body == nil {
 		return "", false
@@ -89,7 +89,7 @@ func (pv *PackageVersion) GetBody() (body string, ok bool) {
 	return body, true
 }
 
-// GetBodyAsPackageVersionBody returns the body field as a PackageVersionBody if it's valid
+// GetBodyAsPackageVersionBody returns the body field as a PackageVersionBody if it's valid.
 func (pv *PackageVersion) GetBodyAsPackageVersionBody() (body *PackageVersionBody, ok bool) {
 	if pv == nil || pv.Body == nil {
 		return nil, false
@@ -102,7 +102,7 @@ func (pv *PackageVersion) GetBodyAsPackageVersionBody() (body *PackageVersionBod
 	return body, true
 }
 
-// GetMetadata returns the metadata field as PackageMetadata if it's valid
+// GetMetadata returns the metadata field as PackageMetadata if it's valid.
 func (pv *PackageVersion) GetMetadata() (metadata *PackageMetadata, ok bool) {
 	if pv == nil || pv.Metadata == nil {
 		return nil, false
@@ -115,7 +115,7 @@ func (pv *PackageVersion) GetMetadata() (metadata *PackageMetadata, ok bool) {
 	return metadata, true
 }
 
-// GetRawMetadata returns the metadata field as a json.RawMessage
+// GetRawMetadata returns the metadata field as a json.RawMessage.
 func (pv *PackageVersion) GetRawMetadata() json.RawMessage {
 	if pv == nil || pv.Metadata == nil {
 		return json.RawMessage{}
@@ -213,7 +213,7 @@ func (r PackageContainerMetadata) String() string {
 	return Stringify(r)
 }
 
-// PackageVersionBody represents the body field of a package version
+// PackageVersionBody represents the body field of a package version.
 type PackageVersionBody struct {
 	Repo *Repository             `json:"repository,omitempty"`
 	Info *PackageVersionBodyInfo `json:"info,omitempty"`
@@ -223,7 +223,7 @@ func (b PackageVersionBody) String() string {
 	return Stringify(b)
 }
 
-// PackageVersionBodyInfo represents the info field of a PackageVersionBody
+// PackageVersionBodyInfo represents the info field of a PackageVersionBody.
 type PackageVersionBodyInfo struct {
 	Type       *string `json:"type,omitempty"`
 	OID        *string `json:"oid,omitempty"`
@@ -238,8 +238,8 @@ func (bi PackageVersionBodyInfo) String() string {
 	return Stringify(bi)
 }
 
-// PackageEventContainerMetadata represents container metadata for docker container packages. as part of a webhook event
-// See also PackageContainerMetadata
+// PackageEventContainerMetadata represents metadata for container packages as part of a webhook event.
+// See also PackageContainerMetadata.
 type PackageEventContainerMetadata struct {
 	Labels   map[string]any                    `json:"labels,omitempty"`
 	Manifest map[string]any                    `json:"manifest,omitempty"`
@@ -250,7 +250,7 @@ func (m PackageEventContainerMetadata) String() string {
 	return Stringify(m)
 }
 
-// PackageEventContainerMetadataTag represents a tag of a GitHub container package
+// PackageEventContainerMetadataTag represents a tag of a GitHub container package.
 type PackageEventContainerMetadataTag struct {
 	Name   *string `json:"name,omitempty"`
 	Digest *string `json:"digest,omitempty"`
@@ -260,7 +260,7 @@ func (mt PackageEventContainerMetadataTag) String() string {
 	return Stringify(mt)
 }
 
-// PackageNugetMetadata represents nuget metadata for a GitHub package
+// PackageNugetMetadata represents nuget metadata for a GitHub package.
 type PackageNugetMetadata struct {
 	ID    json.RawMessage `json:"id,omitempty"` // Can either be a int64 or string
 	Name  *string         `json:"name,omitempty"`
@@ -271,7 +271,7 @@ func (nm PackageNugetMetadata) String() string {
 	return Stringify(nm)
 }
 
-// PackageNPMMetadata represents NPM metadata for a GitHub package
+// PackageNPMMetadata represents NPM metadata for a GitHub package.
 type PackageNPMMetadata struct {
 	Name                 *string           `json:"name,omitempty"`
 	Version              *string           `json:"version,omitempty"`

@@ -385,6 +385,8 @@ func TestPackageVersion_Marshal(t *testing.T) {
 }
 
 func TestPackageVersion_GetBody(t *testing.T) {
+	t.Parallel()
+
 	tests := map[string]struct {
 		pv        *PackageVersion
 		wantValue string
@@ -439,6 +441,8 @@ func TestPackageVersion_GetBody(t *testing.T) {
 }
 
 func TestPackageVersion_GetBodyAsPackageVersionBody(t *testing.T) {
+	t.Parallel()
+
 	tests := map[string]struct {
 		pv        *PackageVersion
 		wantValue *PackageVersionBody
@@ -500,6 +504,8 @@ func TestPackageVersion_GetBodyAsPackageVersionBody(t *testing.T) {
 }
 
 func TestPackageVersion_GetMetadata(t *testing.T) {
+	t.Parallel()
+
 	tests := map[string]struct {
 		pv        *PackageVersion
 		wantValue *PackageMetadata
@@ -557,6 +563,8 @@ func TestPackageVersion_GetMetadata(t *testing.T) {
 }
 
 func TestPackageVersion_GetRawMetadata(t *testing.T) {
+	t.Parallel()
+
 	tests := map[string]struct {
 		pv   *PackageVersion
 		want json.RawMessage
@@ -1008,10 +1016,11 @@ func TestPackageEventContainerMetadataTag_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, o, want)
-
 }
 
 func TestPackageNugetMetadata_Marshal(t *testing.T) {
+	t.Parallel()
+
 	o, _ := json.Marshal(map[string]string{
 		"k1": "v1",
 		"k2": "v2",
@@ -1075,6 +1084,8 @@ func TestPackageNugetMetadata_Marshal(t *testing.T) {
 }
 
 func TestPackageNPMMetadata_Marshal(t *testing.T) {
+	t.Parallel()
+
 	tests := map[string]struct {
 		input *PackageNPMMetadata
 		want  string
