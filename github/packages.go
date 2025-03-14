@@ -157,6 +157,7 @@ type PackageFile struct {
 	MD5         *string    `json:"md5,omitempty"`
 	ContentType *string    `json:"content_type,omitempty"`
 	State       *string    `json:"state,omitempty"`
+	Author      *User      `json:"author,omitempty"`
 	Size        *int64     `json:"size,omitempty"`
 	CreatedAt   *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`

@@ -15910,6 +15910,14 @@ func (p *PackageEventContainerMetadataTag) GetName() string {
 	return *p.Name
 }
 
+// GetAuthor returns the Author field.
+func (p *PackageFile) GetAuthor() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Author
+}
+
 // GetContentType returns the ContentType field if it's non-nil, zero value otherwise.
 func (p *PackageFile) GetContentType() string {
 	if p == nil || p.ContentType == nil {

@@ -20621,6 +20621,14 @@ func TestPackageEventContainerMetadataTag_GetName(tt *testing.T) {
 	p.GetName()
 }
 
+func TestPackageFile_GetAuthor(tt *testing.T) {
+	tt.Parallel()
+	p := &PackageFile{}
+	p.GetAuthor()
+	p = nil
+	p.GetAuthor()
+}
+
 func TestPackageFile_GetContentType(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
