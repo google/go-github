@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"io"
 	"net/http"
 	"testing"
@@ -232,6 +233,15 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	m := `{
+		"package_type": "container",
+		"container": {
+			"tags": [
+			"latest"
+			]
+		}
+	}`
+
 	// don't url escape the package name here since mux will convert it to a slash automatically
 	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -245,14 +255,7 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 			  "created_at": `+referenceTimeStr+`,
 			  "updated_at": `+referenceTimeStr+`,
 			  "html_url": "https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763",
-			  "metadata": {
-				"package_type": "container",
-				"container": {
-				  "tags": [
-					"latest"
-				  ]
-				}
-			  }
+			  "metadata": `+m+`
 			}]`)
 		if err != nil {
 			t.Fatal("Failed to write test response: ", err)
@@ -276,12 +279,7 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
 		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763"),
-		Metadata: &PackageMetadata{
-			PackageType: Ptr("container"),
-			Container: &PackageContainerMetadata{
-				Tags: []string{"latest"},
-			},
-		},
+		Metadata:       json.RawMessage(m),
 	}}
 	if !cmp.Equal(packages, want) {
 		t.Errorf("Organizations.PackageGetAllVersions returned %+v, want %+v", packages, want)
@@ -306,6 +304,15 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	m := `{
+		"package_type": "container",
+		"container": {
+			"tags": [
+			"latest"
+			]
+		}
+	}`
+
 	// don't url escape the package name here since mux will convert it to a slash automatically
 	mux.HandleFunc("/orgs/o/packages/container/hello%2Fhello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -318,14 +325,7 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 			  "created_at": `+referenceTimeStr+`,
 			  "updated_at": `+referenceTimeStr+`,
 			  "html_url": "https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763",
-			  "metadata": {
-				"package_type": "container",
-				"container": {
-				  "tags": [
-					"latest"
-				  ]
-				}
-			  }
+			  "metadata": `+m+`
 			}`)
 		if err != nil {
 			t.Fatal("Failed to write test response: ", err)
@@ -346,12 +346,7 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
 		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello%2Fhello_docker/45763"),
-		Metadata: &PackageMetadata{
-			PackageType: Ptr("container"),
-			Container: &PackageContainerMetadata{
-				Tags: []string{"latest"},
-			},
-		},
+		Metadata:       json.RawMessage(m),
 	}
 	if !cmp.Equal(packages, want) {
 		t.Errorf("Organizations.PackageGetVersion returned %+v, want %+v", packages, want)

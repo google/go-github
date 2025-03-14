@@ -45,6 +45,8 @@ var (
 		"ErrorResponse.GetResponse":       true,
 		"RateLimitError.GetResponse":      true,
 		"AbuseRateLimitError.GetResponse": true,
+		"PackageVersion.GetBody":          true,
+		"PackageVersion.GetMetadata":      true,
 	}
 	// skipStructs lists structs to skip.
 	skipStructs = map[string]bool{
