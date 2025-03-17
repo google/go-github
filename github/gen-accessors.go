@@ -45,6 +45,8 @@ var (
 		"ErrorResponse.GetResponse":       true,
 		"RateLimitError.GetResponse":      true,
 		"AbuseRateLimitError.GetResponse": true,
+		"AuditEntry.GetOrgID":             true,
+		"AuditEntry.GetOrg":               true,
 	}
 	// skipStructs lists structs to skip.
 	skipStructs = map[string]bool{
