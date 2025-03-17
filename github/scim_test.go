@@ -518,7 +518,7 @@ func TestUpdateAttributeForSCIMUserOperations_Marshal(t *testing.T) {
 
 func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &UpdateAttributeForSCIMUserOptions{}, `{}`)
+	testJSONMarshal(t, &UpdateAttributeForSCIMUserOptions{}, `{"operations":{"op": ""}}`)
 
 	u := &UpdateAttributeForSCIMUserOptions{
 		Schemas: []string{"test", "schema"},
