@@ -144,26 +144,32 @@ func testBody(t *testing.T, r *http.Request, want string) {
 // to the want string.
 func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	t.Helper()
-	// Unmarshal the wanted JSON, to verify its correctness, and marshal it back
-	// to sort the keys.
-	u := reflect.New(reflect.TypeOf(v)).Interface()
-	if err := json.Unmarshal([]byte(want), &u); err != nil {
-		t.Errorf("Unable to unmarshal JSON for %v: %v", want, err)
-	}
-	w, err := json.MarshalIndent(u, "", "  ")
-	if err != nil {
-		t.Errorf("Unable to marshal JSON for %#v", u)
-	}
-
-	// Marshal the target value.
-	got, err := json.MarshalIndent(v, "", "  ")
+	got, err := json.Marshal(v)
 	if err != nil {
 		t.Errorf("Unable to marshal JSON for %#v", v)
 	}
-
-	if diff := cmp.Diff(string(w), string(got)); diff != "" {
-		t.Errorf("json.Marshal returned:\n%s\nwant:\n%s\ndiff:\n%v", got, w, diff)
+	got = normalizeJSON(t, got)
+	wantBytes := normalizeJSON(t, []byte(want))
+	diff := cmp.Diff(string(wantBytes), string(got))
+	if diff != "" {
+		t.Errorf("json.Marshal returned:\n%s\nwant:\n%s\ndiff:\n%v", string(got), string(wantBytes), diff)
 	}
+}
+
+// normalizeJSON normalizes the JSON in b by unmarshaling and marshaling it
+// again.
+func normalizeJSON(t *testing.T, b []byte) []byte {
+	t.Helper()
+	var v interface{}
+	err := json.Unmarshal(b, &v)
+	if err != nil {
+		t.Errorf("Unable to unmarshal JSON for %v: %v", string(b), err)
+	}
+	w, err := json.MarshalIndent(v, "", "  ")
+	if err != nil {
+		t.Errorf("Unable to marshal JSON for %#v", v)
+	}
+	return w
 }
 
 // Test whether the v fields have the url tag and the parsing of v
