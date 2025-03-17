@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -340,6 +341,15 @@ func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	m := `{
+		"package_type": "container",
+		"container": {
+			"tags": [
+			"latest"
+			]
+		}
+	}`
+
 	mux.HandleFunc("/user/packages/container/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[
@@ -351,14 +361,7 @@ func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
 			  "created_at": `+referenceTimeStr+`,
 			  "updated_at": `+referenceTimeStr+`,
 			  "html_url": "https://github.com/users/octocat/packages/container/hello_docker/45763",
-			  "metadata": {
-				"package_type": "container",
-				"container": {
-				  "tags": [
-					"latest"
-				  ]
-				}
-			  }
+			  "metadata": `+m+`
 			}]`)
 	})
 
@@ -379,12 +382,7 @@ func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
 		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
-		Metadata: &PackageMetadata{
-			PackageType: Ptr("container"),
-			Container: &PackageContainerMetadata{
-				Tags: []string{"latest"},
-			},
-		},
+		Metadata:       json.RawMessage(m),
 	}}
 	if !cmp.Equal(packages, want) {
 		t.Errorf("Users.PackageGetAllVersions returned %+v, want %+v", packages, want)
@@ -409,6 +407,15 @@ func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	m := `{
+		"package_type": "container",
+		"container": {
+			"tags": [
+			"latest"
+			]
+		}
+	}`
+
 	mux.HandleFunc("/users/u/packages/container/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[
@@ -420,14 +427,7 @@ func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
 			  "created_at": `+referenceTimeStr+`,
 			  "updated_at": `+referenceTimeStr+`,
 			  "html_url": "https://github.com/users/octocat/packages/container/hello_docker/45763",
-			  "metadata": {
-				"package_type": "container",
-				"container": {
-				  "tags": [
-					"latest"
-				  ]
-				}
-			  }
+			  "metadata": `+m+`
 			}]`)
 	})
 
@@ -448,12 +448,7 @@ func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
 		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
-		Metadata: &PackageMetadata{
-			PackageType: Ptr("container"),
-			Container: &PackageContainerMetadata{
-				Tags: []string{"latest"},
-			},
-		},
+		Metadata:       json.RawMessage(m),
 	}}
 	if !cmp.Equal(packages, want) {
 		t.Errorf("Users.specifiedUser_PackageGetAllVersions returned %+v, want %+v", packages, want)
@@ -478,6 +473,15 @@ func TestUsersService_Authenticated_PackageGetVersion(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	m := `{
+		"package_type": "container",
+		"container": {
+		"tags": [
+			"latest"
+		]
+		}
+	}`
+
 	mux.HandleFunc("/user/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `
@@ -489,14 +493,7 @@ func TestUsersService_Authenticated_PackageGetVersion(t *testing.T) {
 			  "created_at": `+referenceTimeStr+`,
 			  "updated_at": `+referenceTimeStr+`,
 			  "html_url": "https://github.com/users/octocat/packages/container/hello_docker/45763",
-			  "metadata": {
-				"package_type": "container",
-				"container": {
-				  "tags": [
-					"latest"
-				  ]
-				}
-			  }
+			  "metadata": `+m+`
 			}`)
 	})
 
@@ -514,12 +511,7 @@ func TestUsersService_Authenticated_PackageGetVersion(t *testing.T) {
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
 		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
-		Metadata: &PackageMetadata{
-			PackageType: Ptr("container"),
-			Container: &PackageContainerMetadata{
-				Tags: []string{"latest"},
-			},
-		},
+		Metadata:       json.RawMessage(m),
 	}
 	if !cmp.Equal(packages, want) {
 		t.Errorf("Users.Authenticated_PackageGetVersion returned %+v, want %+v", packages, want)
@@ -544,6 +536,15 @@ func TestUsersService_specifiedUser_PackageGetVersion(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	m := `{
+		"package_type": "container",
+		"container": {
+			"tags": [
+			"latest"
+			]
+		}
+	}`
+
 	mux.HandleFunc("/users/u/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `
@@ -555,14 +556,7 @@ func TestUsersService_specifiedUser_PackageGetVersion(t *testing.T) {
 			  "created_at": `+referenceTimeStr+`,
 			  "updated_at": `+referenceTimeStr+`,
 			  "html_url": "https://github.com/users/octocat/packages/container/hello_docker/45763",
-			  "metadata": {
-				"package_type": "container",
-				"container": {
-				  "tags": [
-					"latest"
-				  ]
-				}
-			  }
+			  "metadata": `+m+`
 			}`)
 	})
 
@@ -580,12 +574,7 @@ func TestUsersService_specifiedUser_PackageGetVersion(t *testing.T) {
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
 		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
-		Metadata: &PackageMetadata{
-			PackageType: Ptr("container"),
-			Container: &PackageContainerMetadata{
-				Tags: []string{"latest"},
-			},
-		},
+		Metadata:       json.RawMessage(m),
 	}
 	if !cmp.Equal(packages, want) {
 		t.Errorf("Users.specifiedUser_PackageGetVersion returned %+v, want %+v", packages, want)
