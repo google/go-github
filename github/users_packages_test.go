@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"testing"
 
@@ -131,42 +132,44 @@ func TestUsersService_specifiedUser_GetPackage(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/users/u/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/users/u/packages/container/hello%2fhello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
+		_, err := io.WriteString(w, `{
 			"id": 197,
-			"name": "hello_docker",
+			"name": "hello/hello_docker",
 			"package_type": "container",
 			"version_count": 1,
 			"visibility": "private",
-			"url": "https://api.github.com/orgs/github/packages/container/hello_docker",
+			"url": "https://api.github.com/orgs/github/packages/container/hello%2Fhello_docker",
 			"created_at": `+referenceTimeStr+`,
 			"updated_at": `+referenceTimeStr+`,
-			"html_url": "https://github.com/orgs/github/packages/container/package/hello_docker"
+			"html_url": "https://github.com/orgs/github/packages/container/package/hello%2Fhello_docker"
 		  }`)
+		if err != nil {
+			t.Fatal("Failed to write test response: ", err)
+		}
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Users.GetPackage(ctx, "u", "container", "hello_docker")
+	packages, _, err := client.Users.GetPackage(ctx, "u", "container", "hello/hello_docker")
 	if err != nil {
 		t.Errorf("Users.GetPackage returned error: %v", err)
 	}
 
 	want := &Package{
 		ID:           Ptr(int64(197)),
-		Name:         Ptr("hello_docker"),
+		Name:         Ptr("hello/hello_docker"),
 		PackageType:  Ptr("container"),
 		VersionCount: Ptr(int64(1)),
 		Visibility:   Ptr("private"),
-		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello_docker"),
-		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello_docker"),
+		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello%2Fhello_docker"),
+		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello%2Fhello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 	}
 	if !cmp.Equal(packages, want) {
 		t.Errorf("Users.specifiedUser_GetPackage returned %+v, want %+v", packages, want)
 	}
-
 	const methodName = "GetPackage"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Users.GetPackage(ctx, "\n", "\n", "\n")
