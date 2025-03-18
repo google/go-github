@@ -239,6 +239,8 @@ func TestAuditEntry_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &AuditEntry{}, "{}")
 
+	testJSONMarshal(t, &AuditEntry{AdditionalFields: map[string]interface{}{}}, "{}")
+
 	u := &AuditEntry{
 		Action:                   Ptr("a"),
 		Actor:                    Ptr("ac"),
