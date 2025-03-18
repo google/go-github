@@ -496,7 +496,11 @@ func TestHovercard_Marshal(t *testing.T) {
 
 func TestUserListOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &UserListOptions{}, "{}")
+	testJSONMarshal(t, &UserListOptions{}, `{
+		"Page": 0,
+		"PerPage": 0,
+		"Since": 0
+	}`)
 
 	u := &UserListOptions{
 		Since: int64(1900),
@@ -507,9 +511,9 @@ func TestUserListOptions_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"since" : 1900,
-		"page": 1,
-		"perPage": 10
+		"Since" : 1900,
+		"Page": 1,
+		"PerPage": 10
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -517,7 +521,10 @@ func TestUserListOptions_Marshal(t *testing.T) {
 
 func TestHovercardOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &HovercardOptions{}, "{}")
+	testJSONMarshal(t, &HovercardOptions{}, `{
+		"SubjectType" : "",
+		"SubjectID" : ""
+	}`)
 
 	u := &HovercardOptions{
 		SubjectType: "subjectType",

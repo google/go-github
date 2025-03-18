@@ -2902,7 +2902,7 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 
 func TestErrorResponse_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ErrorResponse{}, "{}")
+	testJSONMarshal(t, &ErrorResponse{}, `{"errors": null, "message": ""}`)
 
 	u := &ErrorResponse{
 		Message: "msg",
@@ -2960,7 +2960,16 @@ func TestErrorBlock_Marshal(t *testing.T) {
 
 func TestRateLimitError_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RateLimitError{}, "{}")
+	testJSONMarshal(t, &RateLimitError{}, `{
+		"Rate": {
+			"limit": 0,
+			"remaining": 0,
+			"reset": `+emptyTimeStr+`,
+			"used": 0
+		},
+		"Response": null,
+		"message": ""
+	}`)
 
 	u := &RateLimitError{
 		Rate: Rate{
@@ -2975,8 +2984,10 @@ func TestRateLimitError_Marshal(t *testing.T) {
 		"Rate": {
 			"limit": 1,
 			"remaining": 1,
-			"reset": ` + referenceTimeStr + `
+			"reset": ` + referenceTimeStr + `,
+			"used": 0
 		},
+		"Response": null,
 		"message": "msg"
 	}`
 
@@ -2985,13 +2996,19 @@ func TestRateLimitError_Marshal(t *testing.T) {
 
 func TestAbuseRateLimitError_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &AbuseRateLimitError{}, "{}")
+	testJSONMarshal(t, &AbuseRateLimitError{}, `{
+		"Response": null,
+		"RetryAfter": null,
+		"message": ""
+	}`)
 
 	u := &AbuseRateLimitError{
 		Message: "msg",
 	}
 
 	want := `{
+		"Response": null,
+		"RetryAfter": null,
 		"message": "msg"
 	}`
 
@@ -3000,7 +3017,12 @@ func TestAbuseRateLimitError_Marshal(t *testing.T) {
 
 func TestError_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Error{}, "{}")
+	testJSONMarshal(t, &Error{}, `{
+		"code": "",
+		"field": "",
+		"message": "",
+		"resource": ""
+	}`)
 
 	u := &Error{
 		Resource: "res",

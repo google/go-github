@@ -755,7 +755,13 @@ func TestLabelResult_Marshal(t *testing.T) {
 
 func TestSearchOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &SearchOptions{}, "{}")
+	testJSONMarshal(t, &SearchOptions{}, `{
+		"Order": "",
+		"Page": 0,
+		"PerPage": 0,
+		"Sort": "",
+		"TextMatch": false
+	}`)
 
 	u := &SearchOptions{
 		Sort:      "author-date",
@@ -768,11 +774,12 @@ func TestSearchOptions_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"sort": "author-date",
-		"order": "asc",
-		"page": 1,
-		"perPage": 10
-      }`
+		"Order": "asc",
+		"Page": 1,
+		"PerPage": 10,
+		"Sort": "author-date",
+		"TextMatch": false
+	}`
 
 	testJSONMarshal(t, u, want)
 }

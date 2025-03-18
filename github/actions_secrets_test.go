@@ -859,7 +859,10 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 
 func TestPublicKey_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &PublicKey{}, "{}")
+	testJSONMarshal(t, &PublicKey{}, `{
+		"key": null,
+		"key_id": null
+	}`)
 
 	u := &PublicKey{
 		KeyID: Ptr("kid"),
@@ -876,7 +879,11 @@ func TestPublicKey_Marshal(t *testing.T) {
 
 func TestSecret_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Secret{}, "{}")
+	testJSONMarshal(t, &Secret{}, `{
+		"created_at": `+emptyTimeStr+`,
+		"name": "",
+		"updated_at": `+emptyTimeStr+`
+	}`)
 
 	u := &Secret{
 		Name:                    "n",
@@ -899,7 +906,7 @@ func TestSecret_Marshal(t *testing.T) {
 
 func TestSecrets_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Secrets{}, "{}")
+	testJSONMarshal(t, &Secrets{}, `{"secrets": null, "total_count": 0}`)
 
 	u := &Secrets{
 		TotalCount: 1,
@@ -931,7 +938,7 @@ func TestSecrets_Marshal(t *testing.T) {
 
 func TestEncryptedSecret_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &EncryptedSecret{}, "{}")
+	testJSONMarshal(t, &EncryptedSecret{}, `{"encrypted_value": "", "key_id": ""}`)
 
 	u := &EncryptedSecret{
 		Name:                  "n",

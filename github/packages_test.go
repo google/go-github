@@ -1223,7 +1223,7 @@ func TestPackageNPMMetadata_Marshal(t *testing.T) {
 				"homepage": "h",
 				"license": "l",
 				"main": "m",
-				"ID": "id",
+				"id": "id",
 				"node_version": "nv",
 				"npm_version": "npmv",
 				"readme": "r",

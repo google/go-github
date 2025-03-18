@@ -1579,7 +1579,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug_empty(t *testing.T
 
 func TestNewTeam_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &NewTeam{}, "{}")
+	testJSONMarshal(t, &NewTeam{}, `{"name": ""}`)
 
 	u := &NewTeam{
 		Name:                "n",
@@ -2171,7 +2171,7 @@ func TestTeamsService_RemoveConnectedExternalGroup_notFound(t *testing.T) {
 
 func TestIDPGroupList_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &IDPGroupList{}, "{}")
+	testJSONMarshal(t, &IDPGroupList{}, `{"groups": null}`)
 
 	u := &IDPGroupList{
 		Groups: []*IDPGroup{
@@ -2301,7 +2301,11 @@ func TestExternalGroupTeam_Marshal(t *testing.T) {
 
 func TestListExternalGroupsOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ListExternalGroupsOptions{}, "{}")
+	testJSONMarshal(t, &ListExternalGroupsOptions{}, `{
+		"DisplayName": null,
+		"Page": 0,
+		"PerPage": 0
+	}`)
 
 	u := &ListExternalGroupsOptions{
 		DisplayName: Ptr("test"),
@@ -2313,7 +2317,7 @@ func TestListExternalGroupsOptions_Marshal(t *testing.T) {
 
 	want := `{
 		"DisplayName": "test",
-		"page":	1,
+		"Page":	1,
 		"PerPage":	2
 	}`
 

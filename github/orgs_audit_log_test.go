@@ -175,7 +175,18 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 
 func TestGetAuditLogOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &GetAuditLogOptions{}, "{}")
+	testJSONMarshal(t, &GetAuditLogOptions{}, `{
+		"After": "",
+		"Before": "",
+		"Cursor": "",
+		"First": 0,
+		"Include": null,
+		"Last": 0,
+		"Order": null,
+		"Page": "",
+		"PerPage": 0,
+		"Phrase": null
+	}`)
 
 	u := &GetAuditLogOptions{
 		Phrase:  Ptr("p"),
@@ -190,13 +201,16 @@ func TestGetAuditLogOptions_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"phrase": "p",
-		"include": "i",
-		"order": "o",
+		"Phrase": "p",
+		"Include": "i",
+		"Order": "o",
 		"Page": "p",
 		"PerPage": 1,
 		"After": "a",
-		"Before": "b"
+		"Before": "b",
+		"Cursor": "",
+    	"First": 0,
+		"Last": 0
 	}`
 
 	testJSONMarshal(t, u, want)

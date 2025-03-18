@@ -557,8 +557,7 @@ func TestRunnerGroup_Marshal(t *testing.T) {
 		"runners_url": "r",
 		"inherited": true,
 		"allows_public_repositories": true,
-		"restricted_to_workflows": false,
-		"selected_workflows": []
+		"restricted_to_workflows": false
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -566,7 +565,7 @@ func TestRunnerGroup_Marshal(t *testing.T) {
 
 func TestRunnerGroups_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RunnerGroups{}, "{}")
+	testJSONMarshal(t, &RunnerGroups{}, `{"runner_groups": null, "total_count": 0}`)
 
 	u := &RunnerGroups{
 		TotalCount: int(1),
@@ -597,8 +596,7 @@ func TestRunnerGroups_Marshal(t *testing.T) {
 			"runners_url": "r",
 			"inherited": true,
 			"allows_public_repositories": true,
-			"restricted_to_workflows": false,
-			"selected_workflows": []
+			"restricted_to_workflows": false
 		}]
 	}`
 
@@ -648,8 +646,7 @@ func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
 		"name": "n",
 		"visibility": "v",
 		"allows_public_repositories": true,
-		"restricted_to_workflows": false,
-		"selected_workflows": []
+		"restricted_to_workflows": false
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -657,7 +654,7 @@ func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
 
 func TestSetRepoAccessRunnerGroupRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &SetRepoAccessRunnerGroupRequest{}, "{}")
+	testJSONMarshal(t, &SetRepoAccessRunnerGroupRequest{}, `{"selected_repository_ids": null}`)
 
 	u := &SetRepoAccessRunnerGroupRequest{
 		SelectedRepositoryIDs: []int64{1},
@@ -672,7 +669,7 @@ func TestSetRepoAccessRunnerGroupRequest_Marshal(t *testing.T) {
 
 func TestSetRunnerGroupRunnersRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &SetRunnerGroupRunnersRequest{}, "{}")
+	testJSONMarshal(t, &SetRunnerGroupRunnersRequest{}, `{"runners": null}`)
 
 	u := &SetRunnerGroupRunnersRequest{
 		Runners: []int64{1},
