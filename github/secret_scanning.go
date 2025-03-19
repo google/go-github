@@ -68,6 +68,10 @@ type SecretScanningAlertListOptions struct {
 	// Valid resolutions are false_positive, wont_fix, revoked, pattern_edited, pattern_deleted or used_in_tests.
 	Resolution string `url:"resolution,omitempty"`
 
+	// A comma-separated list of validities that, when present, will return alerts that match the validities in this list.
+	// Valid options are active, inactive, and unknown.
+	Validity string `url:"validity,omitempty"`
+
 	// The direction to sort the results by. Possible values are: asc, desc. Default: desc.
 	Direction string `url:"direction,omitempty"`
 
