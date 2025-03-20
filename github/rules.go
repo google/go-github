@@ -395,12 +395,13 @@ type RequiredDeploymentsRuleParameters struct {
 
 // PullRequestRuleParameters represents the pull_request rule parameters.
 type PullRequestRuleParameters struct {
-	AllowedMergeMethods            []MergeMethod `json:"allowed_merge_methods"`
-	DismissStaleReviewsOnPush      bool          `json:"dismiss_stale_reviews_on_push"`
-	RequireCodeOwnerReview         bool          `json:"require_code_owner_review"`
-	RequireLastPushApproval        bool          `json:"require_last_push_approval"`
-	RequiredApprovingReviewCount   int           `json:"required_approving_review_count"`
-	RequiredReviewThreadResolution bool          `json:"required_review_thread_resolution"`
+	AllowedMergeMethods               []MergeMethod `json:"allowed_merge_methods"`
+	AutomaticCopilotCodeReviewEnabled *bool         `json:"automatic_copilot_code_review_enabled,omitempty"`
+	DismissStaleReviewsOnPush         bool          `json:"dismiss_stale_reviews_on_push"`
+	RequireCodeOwnerReview            bool          `json:"require_code_owner_review"`
+	RequireLastPushApproval           bool          `json:"require_last_push_approval"`
+	RequiredApprovingReviewCount      int           `json:"required_approving_review_count"`
+	RequiredReviewThreadResolution    bool          `json:"required_review_thread_resolution"`
 }
 
 // RequiredStatusChecksRuleParameters represents the required status checks rule parameters.

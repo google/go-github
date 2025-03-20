@@ -9637,11 +9637,12 @@ func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 								MergeMethodRebase,
 								MergeMethodMerge,
 							},
-							DismissStaleReviewsOnPush:      false,
-							RequireCodeOwnerReview:         false,
-							RequireLastPushApproval:        false,
-							RequiredApprovingReviewCount:   2,
-							RequiredReviewThreadResolution: false,
+							AutomaticCopilotCodeReviewEnabled: Ptr(false),
+							DismissStaleReviewsOnPush:         false,
+							RequireCodeOwnerReview:            false,
+							RequireLastPushApproval:           false,
+							RequiredApprovingReviewCount:      2,
+							RequiredReviewThreadResolution:    false,
 						},
 						CodeScanning: &CodeScanningRuleParameters{
 							CodeScanningTools: []*RuleCodeScanningTool{
@@ -9699,11 +9700,12 @@ func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 								MergeMethodSquash,
 								MergeMethodRebase,
 							},
-							DismissStaleReviewsOnPush:      false,
-							RequireCodeOwnerReview:         false,
-							RequireLastPushApproval:        false,
-							RequiredApprovingReviewCount:   2,
-							RequiredReviewThreadResolution: false,
+							AutomaticCopilotCodeReviewEnabled: Ptr(false),
+							DismissStaleReviewsOnPush:         false,
+							RequireCodeOwnerReview:            false,
+							RequireLastPushApproval:           false,
+							RequiredApprovingReviewCount:      2,
+							RequiredReviewThreadResolution:    false,
 						},
 						CodeScanning: &CodeScanningRuleParameters{
 							CodeScanningTools: []*RuleCodeScanningTool{
@@ -9753,11 +9755,12 @@ func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 											MergeMethodSquash,
 											MergeMethodRebase,
 										},
-										DismissStaleReviewsOnPush:      false,
-										RequireCodeOwnerReview:         false,
-										RequireLastPushApproval:        false,
-										RequiredApprovingReviewCount:   2,
-										RequiredReviewThreadResolution: false,
+										AutomaticCopilotCodeReviewEnabled: Ptr(false),
+										DismissStaleReviewsOnPush:         false,
+										RequireCodeOwnerReview:            false,
+										RequireLastPushApproval:           false,
+										RequiredApprovingReviewCount:      2,
+										RequiredReviewThreadResolution:    false,
 									},
 								},
 								Changes: &RepositoryRulesetChangedRule{
@@ -10746,6 +10749,7 @@ func TestMergeGroupEvent_Marshal(t *testing.T) {
 
 	u := &MergeGroupEvent{
 		Action: Ptr("a"),
+		Reason: Ptr("r"),
 		MergeGroup: &MergeGroup{
 			HeadSHA:    Ptr("hs"),
 			HeadRef:    Ptr("hr"),
@@ -10886,6 +10890,7 @@ func TestMergeGroupEvent_Marshal(t *testing.T) {
 
 	want := `{
 		"action": "a",
+		"reason": "r",
 		"merge_group": {
 			"head_sha": "hs",
 			"head_ref": "hr",

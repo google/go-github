@@ -47,7 +47,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: fd8b14666d8a4e34411bee8dbd103edc8b81d0e3
+openapi_commit: 2320d61e4c805300787f8551fda53076bb4fae8b
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -503,7 +503,7 @@ openapi_operations:
   - name: PATCH /enterprises/{enterprise}/actions/cache/usage-policy
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/actions/cache#set-github-actions-cache-usage-policy-for-an-enterprise
     openapi_files:
-      - descriptions/ghes-3.16/ghes-3.16.json
+      - descriptions/ghes-3.15/ghes-3.15.json
   - name: GET /enterprises/{enterprise}/actions/hosted-runners
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/hosted-runners#list-github-hosted-runners-for-an-enterprise
     openapi_files:
@@ -769,7 +769,6 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/audit-log#update-an-existing-audit-log-stream-configuration
     openapi_files:
       - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.16/ghes-3.16.json
   - name: GET /enterprises/{enterprise}/bypass-requests/push-rules
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/bypass-requests#list-push-rule-bypass-requests-within-an-enterprise
     openapi_files:
@@ -1390,7 +1389,7 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.16/ghes-3.16.json
+      - descriptions/ghes-3.15/ghes-3.15.json
   - name: GET /orgs/{org}/actions/hosted-runners
     documentation_url: https://docs.github.com/rest/actions/hosted-runners#list-github-hosted-runners-for-an-organization
     openapi_files:
@@ -1542,7 +1541,7 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.16/ghes-3.16.json
+      - descriptions/ghes-3.15/ghes-3.15.json
   - name: GET /orgs/{org}/actions/runner-groups/{runner_group_id}/hosted-runners
     documentation_url: https://docs.github.com/rest/actions/self-hosted-runner-groups#list-github-hosted-runners-in-a-group-for-an-organization
     openapi_files:
@@ -2804,7 +2803,7 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.16/ghes-3.16.json
+      - descriptions/ghes-3.15/ghes-3.15.json
   - name: GET /orgs/{org}/rulesets/{ruleset_id}/history
     documentation_url: https://docs.github.com/rest/orgs/rules#get-organization-ruleset-history
     openapi_files:
@@ -5757,7 +5756,7 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.16/ghes-3.16.json
+      - descriptions/ghes-3.15/ghes-3.15.json
   - name: GET /repos/{owner}/{repo}/rulesets/{ruleset_id}/history
     documentation_url: https://docs.github.com/rest/repos/rules#get-repository-ruleset-history
     openapi_files:

@@ -1,7 +1,7 @@
 # go-github #
 
 [![go-github release (latest SemVer)](https://img.shields.io/github/v/release/google/go-github?sort=semver)](https://github.com/google/go-github/releases)
-[![Go Reference](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v69/github)
+[![Go Reference](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v70/github)
 [![Test Status](https://github.com/google/go-github/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/google/go-github/actions/workflows/tests.yml)
 [![Test Coverage](https://codecov.io/gh/google/go-github/branch/master/graph/badge.svg)](https://codecov.io/gh/google/go-github)
 [![Discuss at go-github@googlegroups.com](https://img.shields.io/badge/discuss-go--github%40googlegroups.com-blue.svg)](https://groups.google.com/group/go-github)
@@ -30,7 +30,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 go-github is compatible with modern Go releases in module mode, with Go installed:
 
 ```bash
-go get github.com/google/go-github/v69
+go get github.com/google/go-github/v70
 ```
 
 will resolve and add the package to the current development module, along with its dependencies.
@@ -38,7 +38,7 @@ will resolve and add the package to the current development module, along with i
 Alternatively the same can be achieved if you use import in a package:
 
 ```go
-import "github.com/google/go-github/v69/github"
+import "github.com/google/go-github/v70/github"
 ```
 
 and run `go get` without parameters.
@@ -46,13 +46,13 @@ and run `go get` without parameters.
 Finally, to use the top-of-trunk version of this repo, use the following command:
 
 ```bash
-go get github.com/google/go-github/v69@master
+go get github.com/google/go-github/v70@master
 ```
 
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v69/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+import "github.com/google/go-github/v70/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 import "github.com/google/go-github/github" // with go modules disabled
 ```
 
@@ -125,7 +125,7 @@ import (
 	"net/http"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v69/github"
+	"github.com/google/go-github/v70/github"
 )
 
 func main() {
@@ -159,7 +159,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/google/go-github/v69/github"
+	"github.com/google/go-github/v70/github"
 	"github.com/jferrl/go-githubauth"
 	"golang.org/x/oauth2"
 )
@@ -233,7 +233,7 @@ repos, _, err := client.Repositories.List(context.WithValue(ctx, github.SleepUnt
 ```
 
 You can use [gofri/go-github-ratelimit](https://github.com/gofri/go-github-ratelimit) to handle
-secondary rate limit sleep-and-retry for you.
+secondary rate limit sleep-and-retry for you, as well as primary rate limit abuse-prevention and callback triggering.
 
 Learn more about GitHub secondary rate limiting in
 ["About secondary rate limits"](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits).
@@ -347,6 +347,13 @@ for repo := range repos.All() {
 
 For complete usage of `enrichman/gh-iter`, see the full [package docs](https://github.com/enrichman/gh-iter).
 
+#### Middleware ####
+
+You can use [gofri/go-github-pagination](https://github.com/gofri/go-github-pagination) to handle
+pagination for you. It supports both sync and async modes, as well as customizations.  
+By default, the middleware automatically paginates through all pages, aggregates results, and returns them as an array.  
+See `example/ratelimit/main.go` for usage.
+
 ### Webhooks ###
 
 `go-github` provides structs for almost all [GitHub webhook events][] as well as functions to validate them and unmarshal JSON payloads from `http.Request` structs.
@@ -373,7 +380,7 @@ For complete usage of go-github, see the full [package docs][].
 
 [GitHub API v3]: https://docs.github.com/en/rest
 [personal access token]: https://github.com/blog/1509-personal-api-tokens
-[package docs]: https://pkg.go.dev/github.com/google/go-github/v69/github
+[package docs]: https://pkg.go.dev/github.com/google/go-github/v70/github
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4
 [GitHub webhook events]: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads
@@ -447,7 +454,7 @@ Versions prior to 48.2.0 are not listed.
 
 | go-github Version | GitHub v3 API Version |
 | ----------------- | --------------------- |
-| 69.x.0            | 2022-11-28            |
+| 70.0.0            | 2022-11-28            |
 | ...               | 2022-11-28            |
 | 48.2.0            | 2022-11-28            |
 
