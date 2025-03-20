@@ -12,8 +12,8 @@ import (
 
 // CreateOrUpdateIssueTypesOptions represents the parameters for creating or updating an issue type.
 type CreateOrUpdateIssueTypesOptions struct {
-	Name        *string `json:"name"`                  // Name of the issue type. (Required.)
-	IsEnabled   *bool   `json:"is_enabled"`            // Whether or not the issue type is enabled at the organization level. (Required.)
+	Name        string  `json:"name"`                  // Name of the issue type. (Required.)
+	IsEnabled   bool    `json:"is_enabled"`            // Whether or not the issue type is enabled at the organization level. (Required.)
 	IsPrivate   *bool   `json:"is_private,omitempty"`  // Whether or not the issue type is restricted to issues in private repositories. (Optional.)
 	Description *string `json:"description,omitempty"` // Description of the issue type. (Optional.)
 	Color       *string `json:"color,omitempty"`       // Color for the issue type. Can be one of "gray", "blue", green "orange", "red", "pink", "purple", "null". (Optional.)

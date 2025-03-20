@@ -7710,17 +7710,6 @@ func TestCreateOrUpdateIssueTypesOptions_GetDescription(tt *testing.T) {
 	c.GetDescription()
 }
 
-func TestCreateOrUpdateIssueTypesOptions_GetIsEnabled(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	c := &CreateOrUpdateIssueTypesOptions{IsEnabled: &zeroValue}
-	c.GetIsEnabled()
-	c = &CreateOrUpdateIssueTypesOptions{}
-	c.GetIsEnabled()
-	c = nil
-	c.GetIsEnabled()
-}
-
 func TestCreateOrUpdateIssueTypesOptions_GetIsPrivate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -7730,17 +7719,6 @@ func TestCreateOrUpdateIssueTypesOptions_GetIsPrivate(tt *testing.T) {
 	c.GetIsPrivate()
 	c = nil
 	c.GetIsPrivate()
-}
-
-func TestCreateOrUpdateIssueTypesOptions_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateOrUpdateIssueTypesOptions{Name: &zeroValue}
-	c.GetName()
-	c = &CreateOrUpdateIssueTypesOptions{}
-	c.GetName()
-	c = nil
-	c.GetName()
 }
 
 func TestCreateOrUpdateOrgRoleOptions_GetBaseRole(tt *testing.T) {

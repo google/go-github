@@ -89,9 +89,9 @@ func TestOrganizationsService_CreateIssueType(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &CreateOrUpdateIssueTypesOptions{
-		Name:        Ptr("Epic"),
+		Name:        "Epic",
 		Description: Ptr("An issue type for a multi-week tracking of work"),
-		IsEnabled:   Ptr(true),
+		IsEnabled:   true,
 		Color:       Ptr("green"),
 		IsPrivate:   Ptr(true),
 	}
@@ -153,9 +153,9 @@ func TestOrganizationsService_UpdateIssueType(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &CreateOrUpdateIssueTypesOptions{
-		Name:        Ptr("Epic"),
+		Name:        "Epic",
 		Description: Ptr("An issue type for a multi-week tracking of work"),
-		IsEnabled:   Ptr(true),
+		IsEnabled:   true,
 		Color:       Ptr("green"),
 		IsPrivate:   Ptr(true),
 	}

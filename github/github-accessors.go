@@ -5918,28 +5918,12 @@ func (c *CreateOrUpdateIssueTypesOptions) GetDescription() string {
 	return *c.Description
 }
 
-// GetIsEnabled returns the IsEnabled field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateIssueTypesOptions) GetIsEnabled() bool {
-	if c == nil || c.IsEnabled == nil {
-		return false
-	}
-	return *c.IsEnabled
-}
-
 // GetIsPrivate returns the IsPrivate field if it's non-nil, zero value otherwise.
 func (c *CreateOrUpdateIssueTypesOptions) GetIsPrivate() bool {
 	if c == nil || c.IsPrivate == nil {
 		return false
 	}
 	return *c.IsPrivate
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateIssueTypesOptions) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
