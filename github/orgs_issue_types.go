@@ -10,6 +10,7 @@ import (
 	"fmt"
 )
 
+// CreateOrUpdateIssueTypesOptions represents the parameters for creating or updating an issue type.
 type CreateOrUpdateIssueTypesOptions struct {
 	Name        *string `json:"name"`                  // Name of the issue type. (Required.)
 	IsEnabled   *bool   `json:"is_enabled"`            // Whether or not the issue type is enabled at the organization level. (Required.)
