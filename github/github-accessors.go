@@ -5902,6 +5902,30 @@ func (c *CreateOrUpdateCustomRepoRoleOptions) GetName() string {
 	return *c.Name
 }
 
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (c *CreateOrUpdateIssueTypesOptions) GetColor() string {
+	if c == nil || c.Color == nil {
+		return ""
+	}
+	return *c.Color
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateOrUpdateIssueTypesOptions) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetIsPrivate returns the IsPrivate field if it's non-nil, zero value otherwise.
+func (c *CreateOrUpdateIssueTypesOptions) GetIsPrivate() bool {
+	if c == nil || c.IsPrivate == nil {
+		return false
+	}
+	return *c.IsPrivate
+}
+
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
 func (c *CreateOrUpdateOrgRoleOptions) GetBaseRole() string {
 	if c == nil || c.BaseRole == nil {
