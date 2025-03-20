@@ -223,7 +223,7 @@ func TestOrganizationsService_DeleteIssueType(t *testing.T) {
 	ctx := context.Background()
 	_, err := client.Organizations.DeleteIssueType(ctx, "o", 410)
 	if err != nil {
-		t.Errorf("Organizations.DeleteHook returned error: %v", err)
+		t.Errorf("Organizations.DeleteIssueType returned error: %v", err)
 	}
 
 	const methodName = "DeleteIssueType"
