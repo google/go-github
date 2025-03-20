@@ -7688,6 +7688,39 @@ func TestCreateOrUpdateCustomRepoRoleOptions_GetName(tt *testing.T) {
 	c.GetName()
 }
 
+func TestCreateOrUpdateIssueTypesOptions_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrUpdateIssueTypesOptions{Color: &zeroValue}
+	c.GetColor()
+	c = &CreateOrUpdateIssueTypesOptions{}
+	c.GetColor()
+	c = nil
+	c.GetColor()
+}
+
+func TestCreateOrUpdateIssueTypesOptions_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrUpdateIssueTypesOptions{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateOrUpdateIssueTypesOptions{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateOrUpdateIssueTypesOptions_GetIsPrivate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateOrUpdateIssueTypesOptions{IsPrivate: &zeroValue}
+	c.GetIsPrivate()
+	c = &CreateOrUpdateIssueTypesOptions{}
+	c.GetIsPrivate()
+	c = nil
+	c.GetIsPrivate()
+}
+
 func TestCreateOrUpdateOrgRoleOptions_GetBaseRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
