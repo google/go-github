@@ -918,3 +918,103 @@ func TestReactionService_CreateReleaseReaction(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestReactionsService_ListReleaseReactions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/releases/1/reactions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testFormValues(t, r, values{"content": "+1"})
+
+		w.WriteHeader(http.StatusOK)
+		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
+	})
+
+	opt := &ListReactionOptions{Content: "+1"}
+	ctx := context.Background()
+	got, _, err := client.Reactions.ListReleaseReactions(ctx, "o", "r", 1, opt)
+	if err != nil {
+		t.Errorf("ListReleaseReactions returned error: %v", err)
+	}
+	want := []*Reaction{{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}}
+	if !cmp.Equal(got, want) {
+		t.Errorf("ListReleaseReactions = %+v, want %+v", got, want)
+	}
+}
+
+func TestReactionsService_ListReleaseReactions_coverage(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := context.Background()
+
+	const methodName = "ListReleaseReactions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Reactions.ListReleaseReactions(ctx, "\n", "\n", -1, &ListReactionOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Reactions.ListReleaseReactions(ctx, "o", "r", 1, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestReactionsService_DeleteReleaseReaction(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/releases/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteReleaseReaction(ctx, "o", "r", 1, 2); err != nil {
+		t.Errorf("DeleteReleaseReaction returned error: %v", err)
+	}
+
+	const methodName = "DeleteReleaseReaction"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Reactions.DeleteReleaseReaction(ctx, "\n", "\n", -1, -2)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Reactions.DeleteReleaseReaction(ctx, "o", "r", 1, 2)
+	})
+}
+
+func TestReactionsService_DeleteReleaseReactionByRepoID(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repositories/1/releases/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteReleaseReactionByID(ctx, 1, 2, 3); err != nil {
+		t.Errorf("DeleteReleaseReactionByRepoID returned error: %v", err)
+	}
+
+	const methodName = "DeleteReleaseReactionByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Reactions.DeleteIssueReactionByID(ctx, -1, -2, -3)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Reactions.DeleteIssueReactionByID(ctx, 1, 2, 3)
+	})
+}

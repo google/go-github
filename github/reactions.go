@@ -568,3 +568,54 @@ func (s *ReactionsService) CreateReleaseReaction(ctx context.Context, owner, rep
 
 	return m, resp, nil
 }
+
+// ListReleaseReactions lists the reactions for an release.
+//
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions#list-reactions-for-a-release
+//
+//meta:operation GET /repos/{owner}/{repo}/releases/{release_id}/reactions
+func (s *ReactionsService) ListReleaseReactions(ctx context.Context, owner, repo string, releaseID int64, opts *ListReactionOptions) ([]*Reaction, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/releases/%v/reactions", owner, repo, releaseID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept headers when APIs fully launch.
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
+
+	var m []*Reaction
+	resp, err := s.client.Do(ctx, req, &m)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return m, resp, nil
+}
+
+// DeleteReleaseReaction deletes the reaction for a commit release.
+//
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-a-release-reaction
+//
+//meta:operation DELETE /repos/{owner}/{repo}/releases/{release_id}/reactions/{reaction_id}
+func (s *ReactionsService) DeleteReleaseReaction(ctx context.Context, owner, repo string, releaseID, reactionID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/releases/%v/reactions/%v", owner, repo, releaseID, reactionID)
+
+	return s.deleteReaction(ctx, u)
+}
+
+// DeleteReleaseReactionByID deletes the reaction for a commit release by repository ID.
+//
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-a-release-reaction
+//
+//meta:operation DELETE /repos/{owner}/{repo}/releases/{release_id}/reactions/{reaction_id}
+func (s *ReactionsService) DeleteReleaseReactionByID(ctx context.Context, repoID, releaseID, reactionID int64) (*Response, error) {
+	u := fmt.Sprintf("repositories/%v/releases/%v/reactions/%v", repoID, releaseID, reactionID)
+
+	return s.deleteReaction(ctx, u)
+}
