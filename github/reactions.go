@@ -569,7 +569,7 @@ func (s *ReactionsService) CreateReleaseReaction(ctx context.Context, owner, rep
 	return m, resp, nil
 }
 
-// ListReleaseReactions lists the reactions for an release.
+// ListReleaseReactions lists the reactions for a release.
 //
 // GitHub API docs: https://docs.github.com/rest/reactions/reactions#list-reactions-for-a-release
 //
@@ -598,7 +598,7 @@ func (s *ReactionsService) ListReleaseReactions(ctx context.Context, owner, repo
 	return m, resp, nil
 }
 
-// DeleteReleaseReaction deletes the reaction for a commit release.
+// DeleteReleaseReaction deletes the reaction for a release.
 //
 // GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-a-release-reaction
 //
@@ -609,7 +609,7 @@ func (s *ReactionsService) DeleteReleaseReaction(ctx context.Context, owner, rep
 	return s.deleteReaction(ctx, u)
 }
 
-// DeleteReleaseReactionByID deletes the reaction for a commit release by repository ID.
+// DeleteReleaseReactionByID deletes the reaction for a release by repository ID.
 //
 // GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-a-release-reaction
 //
