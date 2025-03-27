@@ -57,9 +57,29 @@ func setup(t *testing.T) (client *Client, mux *http.ServeMux, serverURL string) 
 	// server is a test HTTP server used to provide mock API responses.
 	server := httptest.NewServer(apiHandler)
 
+	// Create a custom transport with isolated connection pool
+	transport := &http.Transport{
+		// Controls connection reuse - false allows reuse, true forces new connections for each request
+		DisableKeepAlives: false,
+		// Maximum concurrent connections per host (active + idle)
+		MaxConnsPerHost: 10,
+		// Maximum idle connections maintained per host for reuse
+		MaxIdleConnsPerHost: 5,
+		// Maximum total idle connections across all hosts
+		MaxIdleConns: 20,
+		// How long an idle connection remains in the pool before being closed
+		IdleConnTimeout: 20 * time.Second,
+	}
+
+	// Create HTTP client with the isolated transport
+	httpClient := &http.Client{
+		Transport: transport,
+		Timeout:   30 * time.Second,
+	}
 	// client is the GitHub client being tested and is
 	// configured to use test server.
-	client = NewClient(nil)
+	client = NewClient(httpClient)
+
 	url, _ := url.Parse(server.URL + baseURLPath + "/")
 	client.BaseURL = url
 	client.UploadURL = url
