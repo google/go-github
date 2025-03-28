@@ -26,6 +26,7 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		Importer:                         []string{"i"},
 		GithubEnterpriseImporter:         []string{"gei"},
 		Actions:                          []string{"a"},
+		ActionsMacos:                     []string{"192.0.2.1/32", "198.51.100.0/24"},
 		Dependabot:                       []string{"d"},
 		SSHKeyFingerprints:               map[string]string{"a": "f"},
 		SSHKeys:                          []string{"k"},
@@ -58,6 +59,7 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		"importer":["i"],
 		"github_enterprise_importer":["gei"],
 		"actions":["a"],
+    "actions_macos":["192.0.2.1/32", "198.51.100.0/24"],
 		"dependabot":["d"],
 		"ssh_key_fingerprints":{"a":"f"},
 		"ssh_keys":["k"],
@@ -75,7 +77,7 @@ func TestMetaService_Get(t *testing.T) {
 
 	mux.HandleFunc("/meta", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"web":["w"],"api":["a"],"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "github_enterprise_importer": ["gei"], "actions":["a"], "dependabot":["d"], "verifiable_password_authentication": true, "domains":{"website":["*.github.com","*.github.dev","*.github.io","*.githubassets.com","*.githubusercontent.com"],"artifact_attestations":{"trust_domain":"","services":["*.actions.githubusercontent.com","tuf-repo.github.com","fulcio.githubapp.com","timestamp.githubapp.com"]}}}`)
+		fmt.Fprint(w, `{"web":["w"],"api":["a"],"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "github_enterprise_importer": ["gei"], "actions":["a"], "actions_macos": ["192.0.2.1/32", "198.51.100.0/24"], "dependabot":["d"], "verifiable_password_authentication": true, "domains":{"website":["*.github.com","*.github.dev","*.github.io","*.githubassets.com","*.githubusercontent.com"],"artifact_attestations":{"trust_domain":"","services":["*.actions.githubusercontent.com","tuf-repo.github.com","fulcio.githubapp.com","timestamp.githubapp.com"]}}}`)
 	})
 
 	ctx := context.Background()
@@ -91,6 +93,7 @@ func TestMetaService_Get(t *testing.T) {
 		Importer:                 []string{"i"},
 		GithubEnterpriseImporter: []string{"gei"},
 		Actions:                  []string{"a"},
+		ActionsMacos:             []string{"192.0.2.1/32", "198.51.100.0/24"},
 		Dependabot:               []string{"d"},
 		API:                      []string{"a"},
 		Web:                      []string{"w"},
