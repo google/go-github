@@ -199,7 +199,7 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 
 func TestReviewPersonalAccessTokenRequestOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ReviewPersonalAccessTokenRequestOptions{}, "{}")
+	testJSONMarshal(t, &ReviewPersonalAccessTokenRequestOptions{}, `{"action": ""}`)
 
 	u := &ReviewPersonalAccessTokenRequestOptions{
 		Action: "a",

@@ -366,7 +366,19 @@ func TestRateLimits_overQuota(t *testing.T) {
 
 func TestRateLimits_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RateLimits{}, "{}")
+	testJSONMarshal(t, &RateLimits{}, `{
+		"actions_runner_registration": null,
+		"audit_log": null,
+		"code_scanning_upload": null,
+		"code_search": null,
+		"core": null,
+		"dependency_snapshots": null,
+		"graphql": null,
+		"integration_manifest": null,
+		"scim": null,
+		"search": null,
+		"source_import": null
+	}`)
 
 	u := &RateLimits{
 		Core: &Rate{
@@ -511,7 +523,12 @@ func TestRateLimits_Marshal(t *testing.T) {
 
 func TestRate_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Rate{}, "{}")
+	testJSONMarshal(t, &Rate{}, `{
+		"limit": 0,
+		"remaining": 0,
+		"reset": "0001-01-01T00:00:00Z",
+		"used": 0
+	}`)
 
 	u := &Rate{
 		Limit:     1,
