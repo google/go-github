@@ -910,7 +910,7 @@ func TestRepositoryContent_Marshal(t *testing.T) {
 
 func TestRepositoryContentResponse_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RepositoryContentResponse{}, "{}")
+	testJSONMarshal(t, &RepositoryContentResponse{}, `{"commit": {}}`)
 
 	r := &RepositoryContentResponse{
 		Content: &RepositoryContent{
@@ -1034,7 +1034,7 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 
 func TestRepositoryContentFileOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RepositoryContentFileOptions{}, "{}")
+	testJSONMarshal(t, &RepositoryContentFileOptions{}, `{"content": null}`)
 
 	r := &RepositoryContentFileOptions{
 		Message: Ptr("type"),
