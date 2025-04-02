@@ -289,7 +289,6 @@ func TestActionsService_DownloadArtifact(t *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -351,7 +350,6 @@ func TestActionsService_DownloadArtifact_invalidOwner(t *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, _, _ := setup(t)
@@ -381,7 +379,6 @@ func TestActionsService_DownloadArtifact_invalidRepo(t *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, _, _ := setup(t)
@@ -411,7 +408,6 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_dontFollowRedire
 	}
 
 	for _, tc := range tcs {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -448,7 +444,6 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 	}
 
 	for _, tc := range tcs {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
@@ -497,7 +492,6 @@ func TestActionsService_DownloadArtifact_unexpectedCode(t *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)

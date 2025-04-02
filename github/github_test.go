@@ -465,7 +465,6 @@ func TestWithEnterpriseURLs(t *testing.T) {
 			wantUploadURL: "https://cloud-api.custom-upload-url/api/uploads/",
 		},
 	} {
-		test := test
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 			validate := func(c *Client, err error) {
@@ -2115,7 +2114,6 @@ func TestCompareHttpResponse(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
-		tc := tc
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			v := compareHTTPResponse(tc.h1, tc.h2)
@@ -2274,7 +2272,6 @@ func TestErrorResponse_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
-		tc := tc
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			if tc.wantSame != err.Is(tc.otherError) {
@@ -2344,7 +2341,6 @@ func TestRateLimitError_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
-		tc := tc
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			if tc.wantSame != tc.err.Is(tc.otherError) {
@@ -2431,7 +2427,6 @@ func TestAbuseRateLimitError_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
-		tc := tc
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			if tc.wantSame != tc.err.Is(tc.otherError) {
@@ -2463,7 +2458,6 @@ func TestAcceptedError_Is(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
-		tc := tc
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			if tc.wantSame != err.Is(tc.otherError) {
