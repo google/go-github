@@ -77,7 +77,6 @@ func TestCodespacesService_ListSecrets(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -177,7 +176,6 @@ func TestCodespacesService_GetSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -277,7 +275,6 @@ func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -364,7 +361,6 @@ func TestCodespacesService_DeleteSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -450,7 +446,6 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -529,7 +524,6 @@ func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -616,7 +610,6 @@ func TestCodespacesService_SetSelectedReposForSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -684,7 +677,6 @@ func TestCodespacesService_AddSelectedReposForSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -752,7 +744,6 @@ func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)

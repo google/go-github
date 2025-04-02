@@ -205,7 +205,6 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 func TestHookDelivery_ParsePayload(t *testing.T) {
 	t.Parallel()
 	for evt, obj := range hookDeliveryPayloadTypeToStruct {
-		evt, obj := evt, obj
 		t.Run(evt, func(t *testing.T) {
 			t.Parallel()
 			bs, err := json.Marshal(obj)

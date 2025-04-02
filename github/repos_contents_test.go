@@ -722,7 +722,6 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -780,7 +779,6 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRed
 	}
 
 	for _, tc := range tcs {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -816,7 +814,6 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 	}
 
 	for _, tc := range tcs {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)

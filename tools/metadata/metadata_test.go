@@ -19,7 +19,6 @@ func Test_normalizedOpName(t *testing.T) {
 		{name: "get /foo/{id}", want: "GET /foo/*"},
 		{name: "get foo", want: "GET /foo"},
 	} {
-		td := td
 		t.Run(td.name, func(t *testing.T) {
 			t.Parallel()
 			got := normalizedOpName(td.name)
