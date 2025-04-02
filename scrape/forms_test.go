@@ -76,7 +76,6 @@ func Test_ParseForms(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.description, func(t *testing.T) {
 			t.Parallel()
 			node, err := html.Parse(strings.NewReader(tt.html))
