@@ -1138,6 +1138,7 @@ func TestPackage_String(t *testing.T) {
 		HTMLURL:        Ptr(""),
 		Visibility:     Ptr(""),
 		Owner:          &User{},
+		Repository:     &Repository{},
 		CreatedAt:      &Timestamp{},
 		UpdatedAt:      &Timestamp{},
 		Namespace:      Ptr(""),
@@ -1148,7 +1149,7 @@ func TestPackage_String(t *testing.T) {
 		URL:            Ptr(""),
 		VersionCount:   Ptr(int64(0)),
 	}
-	want := `github.Package{ID:0, Name:"", PackageType:"", HTMLURL:"", Visibility:"", Owner:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Namespace:"", Description:"", Ecosystem:"", PackageVersion:github.PackageVersion{}, Registry:github.PackageRegistry{}, URL:"", VersionCount:0}`
+	want := `github.Package{ID:0, Name:"", PackageType:"", HTMLURL:"", Visibility:"", Owner:github.User{}, Repository:github.Repository{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Namespace:"", Description:"", Ecosystem:"", PackageVersion:github.PackageVersion{}, Registry:github.PackageRegistry{}, URL:"", VersionCount:0}`
 	if got := v.String(); got != want {
 		t.Errorf("Package.String = %v, want %v", got, want)
 	}
