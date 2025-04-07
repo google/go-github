@@ -2,26 +2,6 @@ operations:
   - name: POST /hub
     documentation_url: https://docs.github.com/webhooks/about-webhooks-for-repositories#pubsubhubbub
   - name: GET /organizations/{organization_id}
-  - name: GET /orgs/{org}/actions/required_workflows
-    documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
-  - name: POST /orgs/{org}/actions/required_workflows
-    documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
-  - name: DELETE /orgs/{org}/actions/required_workflows/{workflow_id}
-    documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
-  - name: GET /orgs/{org}/actions/required_workflows/{workflow_id}
-    documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
-  - name: PATCH /orgs/{org}/actions/required_workflows/{workflow_id}
-    documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
-  - name: GET /orgs/{org}/actions/required_workflows/{workflow_id}/repositories
-    documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
-  - name: PUT /orgs/{org}/actions/required_workflows/{workflow_id}/repositories
-    documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
-  - name: DELETE /orgs/{org}/actions/required_workflows/{workflow_id}/repositories/{repository_id}
-    documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
-  - name: PUT /orgs/{org}/actions/required_workflows/{workflow_id}/repositories/{repository_id}
-    documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
-  - name: GET /repos/{owner}/{repo}/actions/required_workflows
-    documentation_url: https://docs.github.com/actions/using-workflows/required-workflows
   - name: GET /repos/{owner}/{repo}/import/issues
     documentation_url: https://gist.github.com/jonmagic/5282384165e0f86ef105#check-status-of-multiple-issues
   - name: POST /repos/{owner}/{repo}/import/issues
