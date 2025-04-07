@@ -20644,6 +20644,14 @@ func TestPackage_GetRegistry(tt *testing.T) {
 	p.GetRegistry()
 }
 
+func TestPackage_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	p := &Package{}
+	p.GetRepository()
+	p = nil
+	p.GetRepository()
+}
+
 func TestPackage_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
