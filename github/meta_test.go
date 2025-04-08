@@ -65,7 +65,7 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		"ssh_keys":["k"],
 		"api":["a"],
 		"web":["w"],
-		"domains":{"website":["*.github.com","*.github.dev","*.github.io","*.githubassets.com","*.githubusercontent.com"],"artifact_attestations":{"trust_domain":"","services":["*.actions.githubusercontent.com","tuf-repo.github.com","fulcio.githubapp.com","timestamp.githubapp.com"]}}
+		"domains":{"website":["*.github.com","*.github.dev","*.github.io","*.githubassets.com","*.githubusercontent.com"],"artifact_attestations":{"services":["*.actions.githubusercontent.com","tuf-repo.github.com","fulcio.githubapp.com","timestamp.githubapp.com"]}}
 	}`
 
 	testJSONMarshal(t, a, want)

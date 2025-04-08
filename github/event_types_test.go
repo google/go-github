@@ -8536,7 +8536,8 @@ func TestPingEvent_Marshal(t *testing.T) {
 			"events": [
 				"a"
 			],
-			"active": true
+			"active": true,
+			"config": {}
 		},
 		"installation": {
 			"id": 1,
@@ -13269,7 +13270,7 @@ func TestMetaEvent_Marshal(t *testing.T) {
 
 func TestRequestedAction_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RequestedAction{}, "{}")
+	testJSONMarshal(t, &RequestedAction{}, `{"identifier": ""}`)
 
 	r := &RequestedAction{
 		Identifier: "i",
@@ -13658,11 +13659,6 @@ func TestCustomPropertyEvent_Marshal(t *testing.T) {
           	],
           	"values_editable_by": "org_actors"
         },
-		"repository": {
-			"id": 1,
-			"name": "n",
-			"url": "s"
-		},
 		"sender": {
 			"login": "l",
 			"id": 1,
@@ -13694,8 +13690,8 @@ func TestCustomPropertyEvent_Marshal(t *testing.T) {
 				"public_repos": 1,
 				"followers": 1,
 				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"suspended_at": ` + referenceTimeStr + `,
+				"created_at": "2006-01-02T15:04:05Z",
+				"suspended_at": "2006-01-02T15:04:05Z",
 				"url": "u"
 			},
 			"access_tokens_url": "atu",
@@ -13744,8 +13740,8 @@ func TestCustomPropertyEvent_Marshal(t *testing.T) {
 				"vulnerability_alerts": "va",
 				"workflows": "w"
 			},
-			"created_at": ` + referenceTimeStr + `,
-			"updated_at": ` + referenceTimeStr + `,
+			"created_at": "2006-01-02T15:04:05Z",
+			"updated_at": "2006-01-02T15:04:05Z",
 			"has_multiple_single_files": false,
 			"suspended_by": {
 				"login": "l",
@@ -13763,11 +13759,11 @@ func TestCustomPropertyEvent_Marshal(t *testing.T) {
 				"public_repos": 1,
 				"followers": 1,
 				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"suspended_at": ` + referenceTimeStr + `,
+				"created_at": "2006-01-02T15:04:05Z",
+				"suspended_at": "2006-01-02T15:04:05Z",
 				"url": "u"
 			},
-			"suspended_at": ` + referenceTimeStr + `
+			"suspended_at": "2006-01-02T15:04:05Z"
 		}
 	}`
 
@@ -17810,7 +17806,6 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 		  ],
 		  "published_at": ` + referenceTimeStr + `,
 		  "updated_at": ` + referenceTimeStr + `,
-		  "withdrawn_at": null,
 		  "vulnerabilities": [
 			{
 			  "package": {
@@ -18304,8 +18299,7 @@ func TestSecurityAndAnalysisEvent_Marshal(t *testing.T) {
 			"url": "u",
 			"events_url": "e",
 			"repos_url": "r"
-		},
-		"target_type": "running"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -18497,10 +18491,6 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 			}
 		  ],
 		  "state": "open",
-		  "fixed_at": null,
-		  "dismissed_by": null,
-		  "dismissed_at": null,
-		  "dismissed_reason": null,
 		  "rule": {
 			"id": "Style/FrozenStringLiteralComment",
 			"severity": "note",
@@ -18512,8 +18502,7 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 			"help": "help"
 		  },
 		  "tool": {
-			"name": "Rubocop",
-			"version": null
+			"name": "Rubocop"
 		  }
 		},
 		"ref": "refs/heads/main",
@@ -18545,7 +18534,6 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 			"site_admin": false
 		  },
 		  "html_url": "a",
-		  "description": null,
 		  "fork": false,
 		  "url": "a",
 		  "forks_url": "a",
@@ -18591,23 +18579,18 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 		  "ssh_url": "a",
 		  "clone_url": "a",
 		  "svn_url": "a",
-		  "homepage": null,
 		  "size": 0,
 		  "stargazers_count": 0,
 		  "watchers_count": 0,
-		  "language": null,
 		  "has_issues": true,
 		  "has_projects": true,
 		  "has_downloads": true,
 		  "has_wiki": true,
 		  "has_pages": true,
 		  "forks_count": 0,
-		  "mirror_url": null,
 		  "archived": false,
 		  "disabled": false,
 		  "open_issues_count": 2,
-		  "license": null,
-		  "forks": 0,
 		  "open_issues": 2,
 		  "watchers": 0,
 		  "default_branch": "main"
