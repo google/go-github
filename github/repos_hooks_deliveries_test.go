@@ -184,6 +184,7 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"pull_request_target":            &PullRequestTargetEvent{},
 	"push":                           &PushEvent{},
 	"release":                        &ReleaseEvent{},
+	"registry_package":               &RegistryPackageEvent{},
 	"repository":                     &RepositoryEvent{},
 	"repository_dispatch":            &RepositoryDispatchEvent{},
 	"repository_import":              &RepositoryImportEvent{},

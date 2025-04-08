@@ -539,6 +539,11 @@ func TestParseWebHook(t *testing.T) {
 			payload:     &WorkflowRunEvent{},
 			messageType: "workflow_run",
 		},
+
+		{
+			payload:     &RegistryPackageEvent{},
+			messageType: "registry_package",
+		},
 	}
 
 	for _, test := range tests {

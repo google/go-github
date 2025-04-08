@@ -26887,6 +26887,65 @@ func TestRegistrationToken_GetToken(tt *testing.T) {
 	r.GetToken()
 }
 
+func TestRegistryPackageEvent_GetAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RegistryPackageEvent{Action: &zeroValue}
+	r.GetAction()
+	r = &RegistryPackageEvent{}
+	r.GetAction()
+	r = nil
+	r.GetAction()
+}
+
+func TestRegistryPackageEvent_GetEnterprise(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetEnterprise()
+	r = nil
+	r.GetEnterprise()
+}
+
+func TestRegistryPackageEvent_GetInstallation(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetInstallation()
+	r = nil
+	r.GetInstallation()
+}
+
+func TestRegistryPackageEvent_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetOrganization()
+	r = nil
+	r.GetOrganization()
+}
+
+func TestRegistryPackageEvent_GetRegistryPackage(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetRegistryPackage()
+	r = nil
+	r.GetRegistryPackage()
+}
+
+func TestRegistryPackageEvent_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetRepository()
+	r = nil
+	r.GetRepository()
+}
+
+func TestRegistryPackageEvent_GetSender(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetSender()
+	r = nil
+	r.GetSender()
+}
+
 func TestReleaseAsset_GetBrowserDownloadURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
