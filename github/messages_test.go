@@ -460,6 +460,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "push",
 		},
 		{
+			payload:     &RegistryPackageEvent{},
+			messageType: "registry_package",
+		},
+		{
 			payload:     &ReleaseEvent{},
 			messageType: "release",
 		},
@@ -538,11 +542,6 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &WorkflowRunEvent{},
 			messageType: "workflow_run",
-		},
-
-		{
-			payload:     &RegistryPackageEvent{},
-			messageType: "registry_package",
 		},
 	}
 

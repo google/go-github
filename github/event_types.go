@@ -1446,6 +1446,26 @@ type PushEventRepoOwner struct {
 	Email *string `json:"email,omitempty"`
 }
 
+// RegistryPackageEvent represents activity related to GitHub Packages.
+// The Webhook event name is "registry_package".
+//
+// This event is triggered when a GitHub Package is published or updated.
+//
+// GitHub API docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#registry_package
+type RegistryPackageEvent struct {
+	// Action is the action that was performed.
+	// Can be "published" or "updated".
+	Action          *string       `json:"action,omitempty"`
+	RegistryPackage *Package      `json:"registry_package,omitempty"`
+	Repository      *Repository   `json:"repository,omitempty"`
+	Organization    *Organization `json:"organization,omitempty"`
+	Enterprise      *Enterprise   `json:"enterprise,omitempty"`
+	Sender          *User         `json:"sender,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Installation *Installation `json:"installation,omitempty"`
+}
+
 // ReleaseEvent is triggered when a release is published, unpublished, created,
 // edited, deleted, or prereleased.
 // The Webhook event name is "release".
@@ -1465,26 +1485,6 @@ type ReleaseEvent struct {
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
 	Org *Organization `json:"organization,omitempty"`
-}
-
-// RegistryPackageEvent represents activity related to GitHub Packages.
-// The Webhook event name is "registry_package".
-//
-// This event is triggered when a GitHub Package is published or updated.
-//
-// GitHub API docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#registry_package
-type RegistryPackageEvent struct {
-	// Action is the action that was performed.
-	// Can be "published" or "updated".
-	Action          *string       `json:"action,omitempty"`
-	RegistryPackage *Package      `json:"registry_package,omitempty"`
-	Repository      *Repository   `json:"repository,omitempty"`
-	Organization    *Organization `json:"organization,omitempty"`
-	Enterprise      *Enterprise   `json:"enterprise,omitempty"`
-	Sender          *User         `json:"sender,omitempty"`
-
-	// The following fields are only populated by Webhook events.
-	Installation *Installation `json:"installation,omitempty"`
 }
 
 // RepositoryEvent is triggered when a repository is created, archived, unarchived,
