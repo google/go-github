@@ -20862,6 +20862,62 @@ func (r *RegistrationToken) GetToken() string {
 	return *r.Token
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (r *RegistryPackageEvent) GetAction() string {
+	if r == nil || r.Action == nil {
+		return ""
+	}
+	return *r.Action
+}
+
+// GetEnterprise returns the Enterprise field.
+func (r *RegistryPackageEvent) GetEnterprise() *Enterprise {
+	if r == nil {
+		return nil
+	}
+	return r.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (r *RegistryPackageEvent) GetInstallation() *Installation {
+	if r == nil {
+		return nil
+	}
+	return r.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (r *RegistryPackageEvent) GetOrganization() *Organization {
+	if r == nil {
+		return nil
+	}
+	return r.Organization
+}
+
+// GetRegistryPackage returns the RegistryPackage field.
+func (r *RegistryPackageEvent) GetRegistryPackage() *Package {
+	if r == nil {
+		return nil
+	}
+	return r.RegistryPackage
+}
+
+// GetRepository returns the Repository field.
+func (r *RegistryPackageEvent) GetRepository() *Repository {
+	if r == nil {
+		return nil
+	}
+	return r.Repository
+}
+
+// GetSender returns the Sender field.
+func (r *RegistryPackageEvent) GetSender() *User {
+	if r == nil {
+		return nil
+	}
+	return r.Sender
+}
+
 // GetBrowserDownloadURL returns the BrowserDownloadURL field if it's non-nil, zero value otherwise.
 func (r *ReleaseAsset) GetBrowserDownloadURL() string {
 	if r == nil || r.BrowserDownloadURL == nil {
