@@ -29,6 +29,12 @@ type AdvisoryCWEs struct {
 	Name  *string `json:"name,omitempty"`
 }
 
+// AdvisoryEPSS represents the advisory pertaining to the Exploit Prediction Scoring System.
+type AdvisoryEPSS struct {
+	Percentage *float64 `json:"percentage,omitempty"`
+	Percentile *float64 `json:"percentile,omitempty"`
+}
+
 // DependabotSecurityAdvisory represents the GitHub Security Advisory.
 type DependabotSecurityAdvisory struct {
 	GHSAID          *string                  `json:"ghsa_id,omitempty"`
@@ -39,6 +45,7 @@ type DependabotSecurityAdvisory struct {
 	Severity        *string                  `json:"severity,omitempty"`
 	CVSS            *AdvisoryCVSS            `json:"cvss,omitempty"`
 	CWEs            []*AdvisoryCWEs          `json:"cwes,omitempty"`
+	EPSS            *AdvisoryEPSS            `json:"epss,omitempty"`
 	Identifiers     []*AdvisoryIdentifier    `json:"identifiers,omitempty"`
 	References      []*AdvisoryReference     `json:"references,omitempty"`
 	PublishedAt     *Timestamp               `json:"published_at,omitempty"`

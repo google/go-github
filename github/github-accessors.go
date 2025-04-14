@@ -398,6 +398,22 @@ func (a *AdvisoryCWEs) GetName() string {
 	return *a.Name
 }
 
+// GetPercentage returns the Percentage field.
+func (a *AdvisoryEPSS) GetPercentage() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.Percentage
+}
+
+// GetPercentile returns the Percentile field.
+func (a *AdvisoryEPSS) GetPercentile() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.Percentile
+}
+
 // GetType returns the Type field if it's non-nil, zero value otherwise.
 func (a *AdvisoryIdentifier) GetType() string {
 	if a == nil || a.Type == nil {
@@ -6852,6 +6868,14 @@ func (d *DependabotSecurityAdvisory) GetDescription() string {
 		return ""
 	}
 	return *d.Description
+}
+
+// GetEPSS returns the EPSS field.
+func (d *DependabotSecurityAdvisory) GetEPSS() *AdvisoryEPSS {
+	if d == nil {
+		return nil
+	}
+	return d.EPSS
 }
 
 // GetGHSAID returns the GHSAID field if it's non-nil, zero value otherwise.
