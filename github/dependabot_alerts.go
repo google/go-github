@@ -30,6 +30,9 @@ type AdvisoryCWEs struct {
 }
 
 // AdvisoryEPSS represents the advisory pertaining to the Exploit Prediction Scoring System.
+//
+// For more information, see:
+// https://github.blog/changelog/2024-10-10-epss-scores-in-the-github-advisory-database/
 type AdvisoryEPSS struct {
 	Percentage *float64 `json:"percentage,omitempty"`
 	Percentile *float64 `json:"percentile,omitempty"`
