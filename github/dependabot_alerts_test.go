@@ -357,7 +357,7 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
           "name": "Exposure of Sensitive Information to an Unauthorized Actor"
         }
       ],
-	  "epss": {
+      "epss": {
         "percentage": 0.05,
         "percentile": 0.5
       },
