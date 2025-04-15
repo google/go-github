@@ -6854,6 +6854,14 @@ func (d *DependabotSecurityAdvisory) GetDescription() string {
 	return *d.Description
 }
 
+// GetEPSS returns the EPSS field.
+func (d *DependabotSecurityAdvisory) GetEPSS() *AdvisoryEPSS {
+	if d == nil {
+		return nil
+	}
+	return d.EPSS
+}
+
 // GetGHSAID returns the GHSAID field if it's non-nil, zero value otherwise.
 func (d *DependabotSecurityAdvisory) GetGHSAID() string {
 	if d == nil || d.GHSAID == nil {
