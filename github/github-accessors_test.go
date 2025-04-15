@@ -31785,6 +31785,17 @@ func TestSecretScanningAlert_GetHTMLURL(tt *testing.T) {
 	s.GetHTMLURL()
 }
 
+func TestSecretScanningAlert_GetIsBase64Encoded(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SecretScanningAlert{IsBase64Encoded: &zeroValue}
+	s.GetIsBase64Encoded()
+	s = &SecretScanningAlert{}
+	s.GetIsBase64Encoded()
+	s = nil
+	s.GetIsBase64Encoded()
+}
+
 func TestSecretScanningAlert_GetLocationsURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -31796,6 +31807,17 @@ func TestSecretScanningAlert_GetLocationsURL(tt *testing.T) {
 	s.GetLocationsURL()
 }
 
+func TestSecretScanningAlert_GetMultiRepo(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SecretScanningAlert{MultiRepo: &zeroValue}
+	s.GetMultiRepo()
+	s = &SecretScanningAlert{}
+	s.GetMultiRepo()
+	s = nil
+	s.GetMultiRepo()
+}
+
 func TestSecretScanningAlert_GetNumber(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -31805,6 +31827,17 @@ func TestSecretScanningAlert_GetNumber(tt *testing.T) {
 	s.GetNumber()
 	s = nil
 	s.GetNumber()
+}
+
+func TestSecretScanningAlert_GetPubliclyLeaked(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SecretScanningAlert{PubliclyLeaked: &zeroValue}
+	s.GetPubliclyLeaked()
+	s = &SecretScanningAlert{}
+	s.GetPubliclyLeaked()
+	s = nil
+	s.GetPubliclyLeaked()
 }
 
 func TestSecretScanningAlert_GetPushProtectionBypassed(tt *testing.T) {
@@ -31835,6 +31868,47 @@ func TestSecretScanningAlert_GetPushProtectionBypassedBy(tt *testing.T) {
 	s.GetPushProtectionBypassedBy()
 	s = nil
 	s.GetPushProtectionBypassedBy()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassRequestComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{PushProtectionBypassRequestComment: &zeroValue}
+	s.GetPushProtectionBypassRequestComment()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassRequestComment()
+	s = nil
+	s.GetPushProtectionBypassRequestComment()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassRequestHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{PushProtectionBypassRequestHTMLURL: &zeroValue}
+	s.GetPushProtectionBypassRequestHTMLURL()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassRequestHTMLURL()
+	s = nil
+	s.GetPushProtectionBypassRequestHTMLURL()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassRequestReviewer(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlert{}
+	s.GetPushProtectionBypassRequestReviewer()
+	s = nil
+	s.GetPushProtectionBypassRequestReviewer()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassRequestReviewerComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{PushProtectionBypassRequestReviewerComment: &zeroValue}
+	s.GetPushProtectionBypassRequestReviewerComment()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassRequestReviewerComment()
+	s = nil
+	s.GetPushProtectionBypassRequestReviewerComment()
 }
 
 func TestSecretScanningAlert_GetRepository(tt *testing.T) {
@@ -31950,6 +32024,17 @@ func TestSecretScanningAlert_GetURL(tt *testing.T) {
 	s.GetURL()
 	s = nil
 	s.GetURL()
+}
+
+func TestSecretScanningAlert_GetValidity(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{Validity: &zeroValue}
+	s.GetValidity()
+	s = &SecretScanningAlert{}
+	s.GetValidity()
+	s = nil
+	s.GetValidity()
 }
 
 func TestSecretScanningAlertEvent_GetAction(tt *testing.T) {

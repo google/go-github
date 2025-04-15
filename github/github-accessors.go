@@ -24686,6 +24686,14 @@ func (s *SecretScanningAlert) GetHTMLURL() string {
 	return *s.HTMLURL
 }
 
+// GetIsBase64Encoded returns the IsBase64Encoded field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetIsBase64Encoded() bool {
+	if s == nil || s.IsBase64Encoded == nil {
+		return false
+	}
+	return *s.IsBase64Encoded
+}
+
 // GetLocationsURL returns the LocationsURL field if it's non-nil, zero value otherwise.
 func (s *SecretScanningAlert) GetLocationsURL() string {
 	if s == nil || s.LocationsURL == nil {
@@ -24694,12 +24702,28 @@ func (s *SecretScanningAlert) GetLocationsURL() string {
 	return *s.LocationsURL
 }
 
+// GetMultiRepo returns the MultiRepo field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetMultiRepo() bool {
+	if s == nil || s.MultiRepo == nil {
+		return false
+	}
+	return *s.MultiRepo
+}
+
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
 func (s *SecretScanningAlert) GetNumber() int {
 	if s == nil || s.Number == nil {
 		return 0
 	}
 	return *s.Number
+}
+
+// GetPubliclyLeaked returns the PubliclyLeaked field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetPubliclyLeaked() bool {
+	if s == nil || s.PubliclyLeaked == nil {
+		return false
+	}
+	return *s.PubliclyLeaked
 }
 
 // GetPushProtectionBypassed returns the PushProtectionBypassed field if it's non-nil, zero value otherwise.
@@ -24724,6 +24748,38 @@ func (s *SecretScanningAlert) GetPushProtectionBypassedBy() *User {
 		return nil
 	}
 	return s.PushProtectionBypassedBy
+}
+
+// GetPushProtectionBypassRequestComment returns the PushProtectionBypassRequestComment field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetPushProtectionBypassRequestComment() string {
+	if s == nil || s.PushProtectionBypassRequestComment == nil {
+		return ""
+	}
+	return *s.PushProtectionBypassRequestComment
+}
+
+// GetPushProtectionBypassRequestHTMLURL returns the PushProtectionBypassRequestHTMLURL field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetPushProtectionBypassRequestHTMLURL() string {
+	if s == nil || s.PushProtectionBypassRequestHTMLURL == nil {
+		return ""
+	}
+	return *s.PushProtectionBypassRequestHTMLURL
+}
+
+// GetPushProtectionBypassRequestReviewer returns the PushProtectionBypassRequestReviewer field.
+func (s *SecretScanningAlert) GetPushProtectionBypassRequestReviewer() *User {
+	if s == nil {
+		return nil
+	}
+	return s.PushProtectionBypassRequestReviewer
+}
+
+// GetPushProtectionBypassRequestReviewerComment returns the PushProtectionBypassRequestReviewerComment field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetPushProtectionBypassRequestReviewerComment() string {
+	if s == nil || s.PushProtectionBypassRequestReviewerComment == nil {
+		return ""
+	}
+	return *s.PushProtectionBypassRequestReviewerComment
 }
 
 // GetRepository returns the Repository field.
@@ -24812,6 +24868,14 @@ func (s *SecretScanningAlert) GetURL() string {
 		return ""
 	}
 	return *s.URL
+}
+
+// GetValidity returns the Validity field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetValidity() string {
+	if s == nil || s.Validity == nil {
+		return ""
+	}
+	return *s.Validity
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
