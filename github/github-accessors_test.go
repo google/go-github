@@ -8904,6 +8904,14 @@ func TestDependabotSecurityAdvisory_GetDescription(tt *testing.T) {
 	d.GetDescription()
 }
 
+func TestDependabotSecurityAdvisory_GetEPSS(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotSecurityAdvisory{}
+	d.GetEPSS()
+	d = nil
+	d.GetEPSS()
+}
+
 func TestDependabotSecurityAdvisory_GetGHSAID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
