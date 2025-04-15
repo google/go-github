@@ -84,7 +84,7 @@ type SecretScanningAlertListOptions struct {
 	IsPubliclyLeaked bool `url:"is_publicly_leaked,omitempty"`
 
 	// A boolean value representing whether or not to filter alerts by the multi-repo tag being present. Default: false.
-	MultiRepo bool `url:"is_multi_repo,omitempty"`
+	IsMultiRepo bool `url:"is_multi_repo,omitempty"`
 
 	// The direction to sort the results by. Possible values are: asc, desc. Default: desc.
 	Direction string `url:"direction,omitempty"`
