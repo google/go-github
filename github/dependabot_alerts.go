@@ -34,8 +34,8 @@ type AdvisoryCWEs struct {
 // For more information, see:
 // https://github.blog/changelog/2024-10-10-epss-scores-in-the-github-advisory-database/
 type AdvisoryEPSS struct {
-	Percentage *float64 `json:"percentage"`
-	Percentile *float64 `json:"percentile"`
+	Percentage float64 `json:"percentage"`
+	Percentile float64 `json:"percentile"`
 }
 
 // DependabotSecurityAdvisory represents the GitHub Security Advisory.
