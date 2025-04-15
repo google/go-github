@@ -507,22 +507,6 @@ func TestAdvisoryCWEs_GetName(tt *testing.T) {
 	a.GetName()
 }
 
-func TestAdvisoryEPSS_GetPercentage(tt *testing.T) {
-	tt.Parallel()
-	a := &AdvisoryEPSS{}
-	a.GetPercentage()
-	a = nil
-	a.GetPercentage()
-}
-
-func TestAdvisoryEPSS_GetPercentile(tt *testing.T) {
-	tt.Parallel()
-	a := &AdvisoryEPSS{}
-	a.GetPercentile()
-	a = nil
-	a.GetPercentile()
-}
-
 func TestAdvisoryIdentifier_GetType(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
