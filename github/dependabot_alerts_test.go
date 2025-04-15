@@ -282,8 +282,8 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
 			},
 		},
 		EPSS: &AdvisoryEPSS{
-			Percentage: Ptr(0.05),
-			Percentile: Ptr(0.5),
+			Percentage: 0.05,
+			Percentile: 0.5,
 		},
 		Identifiers: []*AdvisoryIdentifier{
 			{
