@@ -30,7 +30,7 @@ type SecretScanningAlert struct {
 	Secret                                     *string     `json:"secret,omitempty"`
 	Repository                                 *Repository `json:"repository,omitempty"`
 	UpdatedAt                                  *Timestamp  `json:"updated_at,omitempty"`
-	Base64Encoded                              *bool       `json:"is_base64_encoded"`
+	IsBase64Encoded                              *bool       `json:"is_base64_encoded,omitempty"`
 	MultiRepo                                  *bool       `json:"multi_repo"`
 	PubliclyLeaked                             *bool       `json:"publicly_leaked"`
 	PushProtectionBypassed                     *bool       `json:"push_protection_bypassed,omitempty"`
