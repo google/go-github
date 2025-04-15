@@ -281,6 +281,10 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
 				Name:  Ptr("Exposure of Sensitive Information to an Unauthorized Actor"),
 			},
 		},
+		EPSS: &AdvisoryEPSS{
+			Percentage: 0.05,
+			Percentile: 0.5,
+		},
 		Identifiers: []*AdvisoryIdentifier{
 			{
 				Type:  Ptr("GHSA"),
@@ -353,6 +357,10 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
           "name": "Exposure of Sensitive Information to an Unauthorized Actor"
         }
       ],
+      "epss": {
+        "percentage": 0.05,
+        "percentile": 0.5
+      },
       "identifiers": [
         {
           "type": "GHSA",
