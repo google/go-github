@@ -24670,14 +24670,6 @@ func (s *SecretScanning) GetStatus() string {
 	return *s.Status
 }
 
-// GetBase64Encoded returns the Base64Encoded field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlert) GetBase64Encoded() bool {
-	if s == nil || s.Base64Encoded == nil {
-		return false
-	}
-	return *s.Base64Encoded
-}
-
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (s *SecretScanningAlert) GetCreatedAt() Timestamp {
 	if s == nil || s.CreatedAt == nil {
@@ -24692,6 +24684,14 @@ func (s *SecretScanningAlert) GetHTMLURL() string {
 		return ""
 	}
 	return *s.HTMLURL
+}
+
+// GetIsBase64Encoded returns the IsBase64Encoded field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetIsBase64Encoded() bool {
+	if s == nil || s.IsBase64Encoded == nil {
+		return false
+	}
+	return *s.IsBase64Encoded
 }
 
 // GetLocationsURL returns the LocationsURL field if it's non-nil, zero value otherwise.
@@ -24758,12 +24758,12 @@ func (s *SecretScanningAlert) GetPushProtectionBypassRequestComment() string {
 	return *s.PushProtectionBypassRequestComment
 }
 
-// GetPushProtectionBypassRequestHtmlUrl returns the PushProtectionBypassRequestHtmlUrl field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlert) GetPushProtectionBypassRequestHtmlUrl() string {
-	if s == nil || s.PushProtectionBypassRequestHtmlUrl == nil {
+// GetPushProtectionBypassRequestHTMLURL returns the PushProtectionBypassRequestHTMLURL field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetPushProtectionBypassRequestHTMLURL() string {
+	if s == nil || s.PushProtectionBypassRequestHTMLURL == nil {
 		return ""
 	}
-	return *s.PushProtectionBypassRequestHtmlUrl
+	return *s.PushProtectionBypassRequestHTMLURL
 }
 
 // GetPushProtectionBypassRequestReviewer returns the PushProtectionBypassRequestReviewer field.

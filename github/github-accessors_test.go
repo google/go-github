@@ -31763,17 +31763,6 @@ func TestSecretScanning_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
-func TestSecretScanningAlert_GetBase64Encoded(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	s := &SecretScanningAlert{Base64Encoded: &zeroValue}
-	s.GetBase64Encoded()
-	s = &SecretScanningAlert{}
-	s.GetBase64Encoded()
-	s = nil
-	s.GetBase64Encoded()
-}
-
 func TestSecretScanningAlert_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -31794,6 +31783,17 @@ func TestSecretScanningAlert_GetHTMLURL(tt *testing.T) {
 	s.GetHTMLURL()
 	s = nil
 	s.GetHTMLURL()
+}
+
+func TestSecretScanningAlert_GetIsBase64Encoded(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SecretScanningAlert{IsBase64Encoded: &zeroValue}
+	s.GetIsBase64Encoded()
+	s = &SecretScanningAlert{}
+	s.GetIsBase64Encoded()
+	s = nil
+	s.GetIsBase64Encoded()
 }
 
 func TestSecretScanningAlert_GetLocationsURL(tt *testing.T) {
@@ -31881,15 +31881,15 @@ func TestSecretScanningAlert_GetPushProtectionBypassRequestComment(tt *testing.T
 	s.GetPushProtectionBypassRequestComment()
 }
 
-func TestSecretScanningAlert_GetPushProtectionBypassRequestHtmlUrl(tt *testing.T) {
+func TestSecretScanningAlert_GetPushProtectionBypassRequestHTMLURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	s := &SecretScanningAlert{PushProtectionBypassRequestHtmlUrl: &zeroValue}
-	s.GetPushProtectionBypassRequestHtmlUrl()
+	s := &SecretScanningAlert{PushProtectionBypassRequestHTMLURL: &zeroValue}
+	s.GetPushProtectionBypassRequestHTMLURL()
 	s = &SecretScanningAlert{}
-	s.GetPushProtectionBypassRequestHtmlUrl()
+	s.GetPushProtectionBypassRequestHTMLURL()
 	s = nil
-	s.GetPushProtectionBypassRequestHtmlUrl()
+	s.GetPushProtectionBypassRequestHTMLURL()
 }
 
 func TestSecretScanningAlert_GetPushProtectionBypassRequestReviewer(tt *testing.T) {
