@@ -81,7 +81,7 @@ type SecretScanningAlertListOptions struct {
 	Validity string `url:"validity,omitempty"`
 
 	// A boolean value representing whether or not to filter alerts by the publicly-leaked tag being present. Default: false.
-	PubliclyLeaked bool `url:"is_publicly_leaked,omitempty"`
+	IsPubliclyLeaked bool `url:"is_publicly_leaked,omitempty"`
 
 	// A boolean value representing whether or not to filter alerts by the multi-repo tag being present. Default: false.
 	MultiRepo bool `url:"is_multi_repo,omitempty"`
