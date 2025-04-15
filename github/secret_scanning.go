@@ -37,11 +37,11 @@ type SecretScanningAlert struct {
 	PushProtectionBypassedBy                   *User       `json:"push_protection_bypassed_by,omitempty"`
 	PushProtectionBypassedAt                   *Timestamp  `json:"push_protection_bypassed_at,omitempty"`
 	ResolutionComment                          *string     `json:"resolution_comment,omitempty"`
-	PushProtectionBypassRequestComment         *string     `json:"push_protection_bypass_request_comment"`
-	PushProtectionBypassRequestHtmlUrl         *string     `json:"push_protection_bypass_request_html_url"`
-	PushProtectionBypassRequestReviewer        *User       `json:"push_protection_bypass_request_reviewer"`
-	PushProtectionBypassRequestReviewerComment *string     `json:"push_protection_bypass_request_reviewer_comment"`
-	Validity                                   *string     `json:"validity"`
+	PushProtectionBypassRequestComment         *string     `json:"push_protection_bypass_request_comment,omitempty"`
+	PushProtectionBypassRequestHTMLURL         *string     `json:"push_protection_bypass_request_html_url,omitempty"`
+	PushProtectionBypassRequestReviewer        *User       `json:"push_protection_bypass_request_reviewer,omitempty"`
+	PushProtectionBypassRequestReviewerComment *string     `json:"push_protection_bypass_request_reviewer_comment,omitempty"`
+	Validity                                   *string     `json:"validity,omitempty"`
 }
 
 // SecretScanningAlertLocation represents the location for a secret scanning alert.
