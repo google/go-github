@@ -307,6 +307,7 @@ func TestHookRequest_GetHeader(t *testing.T) {
 		Headers: header,
 	}
 
+	// Checking positive cases
 	testPrefixes := []string{"key", "Key", "kEy", "KEY"}
 	for hdrKey, hdrValue := range header {
 		for _, prefix := range testPrefixes {
@@ -315,6 +316,16 @@ func TestHookRequest_GetHeader(t *testing.T) {
 				t.Errorf("GetHeader(%q) is not working: %q != %q", key, val, hdrValue)
 			}
 		}
+	}
+
+	// Checking negative case
+	key := "asd"
+	if val := r.GetHeader(key); val != "" {
+		t.Errorf("GetHeader(%q) should return empty value: %q != %q", key, val, "")
+	}
+	key = "kay1"
+	if val := r.GetHeader(key); val != "" {
+		t.Errorf("GetHeader(%q) should return empty value: %q != %q", key, val, "")
 	}
 }
 
@@ -357,6 +368,7 @@ func TestHookResponse_GetHeader(t *testing.T) {
 		Headers: header,
 	}
 
+	// Checking positive cases
 	testPrefixes := []string{"key", "Key", "kEy", "KEY"}
 	for hdrKey, hdrValue := range header {
 		for _, prefix := range testPrefixes {
@@ -365,6 +377,16 @@ func TestHookResponse_GetHeader(t *testing.T) {
 				t.Errorf("GetHeader(%q) is not working: %q != %q", key, val, hdrValue)
 			}
 		}
+	}
+
+	// Checking negative case
+	key := "asd"
+	if val := r.GetHeader(key); val != "" {
+		t.Errorf("GetHeader(%q) should return empty value: %q != %q", key, val, "")
+	}
+	key = "kay1"
+	if val := r.GetHeader(key); val != "" {
+		t.Errorf("GetHeader(%q) should return empty value: %q != %q", key, val, "")
 	}
 }
 
