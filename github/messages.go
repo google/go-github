@@ -321,7 +321,7 @@ func DeliveryID(r *http.Request) string {
 func ParseWebHook(messageType string, payload []byte) (interface{}, error) {
 	eventType, ok := messageToTypeName[messageType]
 	if !ok {
-		return nil, fmt.Errorf("unknown X-Github-Event in message: %v", messageType)
+		return nil, fmt.Errorf("unknown X-GitHub-Event in message: %v", messageType)
 	}
 
 	event := Event{
