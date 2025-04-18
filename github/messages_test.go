@@ -607,7 +607,7 @@ func TestDeliveryID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("DeliveryID: %v", err)
 	}
-	req.Header.Set("X-Github-Delivery", id)
+	req.Header.Set("X-GitHub-Delivery", id)
 
 	got := DeliveryID(req)
 	if got != id {
