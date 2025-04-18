@@ -294,6 +294,41 @@ func TestHookRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, r, want)
 }
 
+func TestHookRequest_GetHeader(t *testing.T) {
+	t.Parallel()
+
+	header := make(map[string]string)
+	header["key1"] = "value1"
+	header["Key+2"] = "value2"
+	header["kEy-3"] = "value3"
+	header["KEY_4"] = "value4"
+
+	r := &HookRequest{
+		Headers: header,
+	}
+
+	// Checking positive cases
+	testPrefixes := []string{"key", "Key", "kEy", "KEY"}
+	for hdrKey, hdrValue := range header {
+		for _, prefix := range testPrefixes {
+			key := prefix + hdrKey[3:]
+			if val := r.GetHeader(key); val != hdrValue {
+				t.Errorf("GetHeader(%q) is not working: %q != %q", key, val, hdrValue)
+			}
+		}
+	}
+
+	// Checking negative case
+	key := "asd"
+	if val := r.GetHeader(key); val != "" {
+		t.Errorf("GetHeader(%q) should return empty value: %q != %q", key, val, "")
+	}
+	key = "kay1"
+	if val := r.GetHeader(key); val != "" {
+		t.Errorf("GetHeader(%q) should return empty value: %q != %q", key, val, "")
+	}
+}
+
 func TestHookResponse_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &HookResponse{}, "{}")
@@ -318,6 +353,41 @@ func TestHookResponse_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, r, want)
+}
+
+func TestHookResponse_GetHeader(t *testing.T) {
+	t.Parallel()
+
+	header := make(map[string]string)
+	header["key1"] = "value1"
+	header["Key+2"] = "value2"
+	header["kEy-3"] = "value3"
+	header["KEY_4"] = "value4"
+
+	r := &HookResponse{
+		Headers: header,
+	}
+
+	// Checking positive cases
+	testPrefixes := []string{"key", "Key", "kEy", "KEY"}
+	for hdrKey, hdrValue := range header {
+		for _, prefix := range testPrefixes {
+			key := prefix + hdrKey[3:]
+			if val := r.GetHeader(key); val != hdrValue {
+				t.Errorf("GetHeader(%q) is not working: %q != %q", key, val, hdrValue)
+			}
+		}
+	}
+
+	// Checking negative case
+	key := "asd"
+	if val := r.GetHeader(key); val != "" {
+		t.Errorf("GetHeader(%q) should return empty value: %q != %q", key, val, "")
+	}
+	key = "kay1"
+	if val := r.GetHeader(key); val != "" {
+		t.Errorf("GetHeader(%q) should return empty value: %q != %q", key, val, "")
+	}
 }
 
 func TestHookDelivery_Marshal(t *testing.T) {
