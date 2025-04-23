@@ -9761,10 +9761,10 @@ func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 						Deletion:              &EmptyRuleParameters{},
 						RequiredLinearHistory: &EmptyRuleParameters{},
 						PullRequest: &PullRequestRuleParameters{
-							AllowedMergeMethods: []MergeMethod{
-								MergeMethodSquash,
-								MergeMethodRebase,
-								MergeMethodMerge,
+							AllowedMergeMethods: []PullRequestMergeMethod{
+								PullRequestMergeMethodSquash,
+								PullRequestMergeMethodRebase,
+								PullRequestMergeMethodMerge,
 							},
 							AutomaticCopilotCodeReviewEnabled: Ptr(false),
 							DismissStaleReviewsOnPush:         false,
@@ -9825,9 +9825,9 @@ func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 						Deletion:           &EmptyRuleParameters{},
 						RequiredSignatures: &EmptyRuleParameters{},
 						PullRequest: &PullRequestRuleParameters{
-							AllowedMergeMethods: []MergeMethod{
-								MergeMethodSquash,
-								MergeMethodRebase,
+							AllowedMergeMethods: []PullRequestMergeMethod{
+								PullRequestMergeMethodSquash,
+								PullRequestMergeMethodRebase,
 							},
 							AutomaticCopilotCodeReviewEnabled: Ptr(false),
 							DismissStaleReviewsOnPush:         false,
@@ -9880,9 +9880,9 @@ func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 								Rule: &RepositoryRule{
 									Type: RulesetRuleTypePullRequest,
 									Parameters: &PullRequestRuleParameters{
-										AllowedMergeMethods: []MergeMethod{
-											MergeMethodSquash,
-											MergeMethodRebase,
+										AllowedMergeMethods: []PullRequestMergeMethod{
+											PullRequestMergeMethodSquash,
+											PullRequestMergeMethodRebase,
 										},
 										AutomaticCopilotCodeReviewEnabled: Ptr(false),
 										DismissStaleReviewsOnPush:         false,
