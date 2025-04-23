@@ -7688,6 +7688,39 @@ func TestCreateOrUpdateCustomRepoRoleOptions_GetName(tt *testing.T) {
 	c.GetName()
 }
 
+func TestCreateOrUpdateIssueTypesOptions_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrUpdateIssueTypesOptions{Color: &zeroValue}
+	c.GetColor()
+	c = &CreateOrUpdateIssueTypesOptions{}
+	c.GetColor()
+	c = nil
+	c.GetColor()
+}
+
+func TestCreateOrUpdateIssueTypesOptions_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrUpdateIssueTypesOptions{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateOrUpdateIssueTypesOptions{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateOrUpdateIssueTypesOptions_GetIsPrivate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateOrUpdateIssueTypesOptions{IsPrivate: &zeroValue}
+	c.GetIsPrivate()
+	c = &CreateOrUpdateIssueTypesOptions{}
+	c.GetIsPrivate()
+	c = nil
+	c.GetIsPrivate()
+}
+
 func TestCreateOrUpdateOrgRoleOptions_GetBaseRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -7815,47 +7848,6 @@ func TestCreateUpdateEnvironment_GetWaitTimer(tt *testing.T) {
 	c.GetWaitTimer()
 	c = nil
 	c.GetWaitTimer()
-}
-
-func TestCreateUpdateRequiredWorkflowOptions_GetRepositoryID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	c := &CreateUpdateRequiredWorkflowOptions{RepositoryID: &zeroValue}
-	c.GetRepositoryID()
-	c = &CreateUpdateRequiredWorkflowOptions{}
-	c.GetRepositoryID()
-	c = nil
-	c.GetRepositoryID()
-}
-
-func TestCreateUpdateRequiredWorkflowOptions_GetScope(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateUpdateRequiredWorkflowOptions{Scope: &zeroValue}
-	c.GetScope()
-	c = &CreateUpdateRequiredWorkflowOptions{}
-	c.GetScope()
-	c = nil
-	c.GetScope()
-}
-
-func TestCreateUpdateRequiredWorkflowOptions_GetSelectedRepositoryIDs(tt *testing.T) {
-	tt.Parallel()
-	c := &CreateUpdateRequiredWorkflowOptions{}
-	c.GetSelectedRepositoryIDs()
-	c = nil
-	c.GetSelectedRepositoryIDs()
-}
-
-func TestCreateUpdateRequiredWorkflowOptions_GetWorkflowFilePath(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateUpdateRequiredWorkflowOptions{WorkflowFilePath: &zeroValue}
-	c.GetWorkflowFilePath()
-	c = &CreateUpdateRequiredWorkflowOptions{}
-	c.GetWorkflowFilePath()
-	c = nil
-	c.GetWorkflowFilePath()
 }
 
 func TestCreateUserRequest_GetEmail(tt *testing.T) {
@@ -8910,6 +8902,14 @@ func TestDependabotSecurityAdvisory_GetDescription(tt *testing.T) {
 	d.GetDescription()
 	d = nil
 	d.GetDescription()
+}
+
+func TestDependabotSecurityAdvisory_GetEPSS(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotSecurityAdvisory{}
+	d.GetEPSS()
+	d = nil
+	d.GetEPSS()
 }
 
 func TestDependabotSecurityAdvisory_GetGHSAID(tt *testing.T) {
@@ -20321,124 +20321,6 @@ func TestOrgBlockEvent_GetSender(tt *testing.T) {
 	o.GetSender()
 }
 
-func TestOrgRequiredWorkflow_GetCreatedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	o := &OrgRequiredWorkflow{CreatedAt: &zeroValue}
-	o.GetCreatedAt()
-	o = &OrgRequiredWorkflow{}
-	o.GetCreatedAt()
-	o = nil
-	o.GetCreatedAt()
-}
-
-func TestOrgRequiredWorkflow_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	o := &OrgRequiredWorkflow{ID: &zeroValue}
-	o.GetID()
-	o = &OrgRequiredWorkflow{}
-	o.GetID()
-	o = nil
-	o.GetID()
-}
-
-func TestOrgRequiredWorkflow_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	o := &OrgRequiredWorkflow{Name: &zeroValue}
-	o.GetName()
-	o = &OrgRequiredWorkflow{}
-	o.GetName()
-	o = nil
-	o.GetName()
-}
-
-func TestOrgRequiredWorkflow_GetPath(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	o := &OrgRequiredWorkflow{Path: &zeroValue}
-	o.GetPath()
-	o = &OrgRequiredWorkflow{}
-	o.GetPath()
-	o = nil
-	o.GetPath()
-}
-
-func TestOrgRequiredWorkflow_GetRef(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	o := &OrgRequiredWorkflow{Ref: &zeroValue}
-	o.GetRef()
-	o = &OrgRequiredWorkflow{}
-	o.GetRef()
-	o = nil
-	o.GetRef()
-}
-
-func TestOrgRequiredWorkflow_GetRepository(tt *testing.T) {
-	tt.Parallel()
-	o := &OrgRequiredWorkflow{}
-	o.GetRepository()
-	o = nil
-	o.GetRepository()
-}
-
-func TestOrgRequiredWorkflow_GetScope(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	o := &OrgRequiredWorkflow{Scope: &zeroValue}
-	o.GetScope()
-	o = &OrgRequiredWorkflow{}
-	o.GetScope()
-	o = nil
-	o.GetScope()
-}
-
-func TestOrgRequiredWorkflow_GetSelectedRepositoriesURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	o := &OrgRequiredWorkflow{SelectedRepositoriesURL: &zeroValue}
-	o.GetSelectedRepositoriesURL()
-	o = &OrgRequiredWorkflow{}
-	o.GetSelectedRepositoriesURL()
-	o = nil
-	o.GetSelectedRepositoriesURL()
-}
-
-func TestOrgRequiredWorkflow_GetState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	o := &OrgRequiredWorkflow{State: &zeroValue}
-	o.GetState()
-	o = &OrgRequiredWorkflow{}
-	o.GetState()
-	o = nil
-	o.GetState()
-}
-
-func TestOrgRequiredWorkflow_GetUpdatedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	o := &OrgRequiredWorkflow{UpdatedAt: &zeroValue}
-	o.GetUpdatedAt()
-	o = &OrgRequiredWorkflow{}
-	o.GetUpdatedAt()
-	o = nil
-	o.GetUpdatedAt()
-}
-
-func TestOrgRequiredWorkflows_GetTotalCount(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	o := &OrgRequiredWorkflows{TotalCount: &zeroValue}
-	o.GetTotalCount()
-	o = &OrgRequiredWorkflows{}
-	o.GetTotalCount()
-	o = nil
-	o.GetTotalCount()
-}
-
 func TestOrgStats_GetDisabledOrgs(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -20609,6 +20491,14 @@ func TestPackage_GetRegistry(tt *testing.T) {
 	p.GetRegistry()
 	p = nil
 	p.GetRegistry()
+}
+
+func TestPackage_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	p := &Package{}
+	p.GetRepository()
+	p = nil
+	p.GetRepository()
 }
 
 func TestPackage_GetUpdatedAt(tt *testing.T) {
@@ -27005,6 +26895,65 @@ func TestRegistrationToken_GetToken(tt *testing.T) {
 	r.GetToken()
 }
 
+func TestRegistryPackageEvent_GetAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RegistryPackageEvent{Action: &zeroValue}
+	r.GetAction()
+	r = &RegistryPackageEvent{}
+	r.GetAction()
+	r = nil
+	r.GetAction()
+}
+
+func TestRegistryPackageEvent_GetEnterprise(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetEnterprise()
+	r = nil
+	r.GetEnterprise()
+}
+
+func TestRegistryPackageEvent_GetInstallation(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetInstallation()
+	r = nil
+	r.GetInstallation()
+}
+
+func TestRegistryPackageEvent_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetOrganization()
+	r = nil
+	r.GetOrganization()
+}
+
+func TestRegistryPackageEvent_GetRegistryPackage(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetRegistryPackage()
+	r = nil
+	r.GetRegistryPackage()
+}
+
+func TestRegistryPackageEvent_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetRepository()
+	r = nil
+	r.GetRepository()
+}
+
+func TestRegistryPackageEvent_GetSender(tt *testing.T) {
+	tt.Parallel()
+	r := &RegistryPackageEvent{}
+	r.GetSender()
+	r = nil
+	r.GetSender()
+}
+
 func TestReleaseAsset_GetBrowserDownloadURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -27488,135 +27437,6 @@ func TestRepoName_GetFrom(tt *testing.T) {
 	r.GetFrom()
 	r = nil
 	r.GetFrom()
-}
-
-func TestRepoRequiredWorkflow_GetBadgeURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepoRequiredWorkflow{BadgeURL: &zeroValue}
-	r.GetBadgeURL()
-	r = &RepoRequiredWorkflow{}
-	r.GetBadgeURL()
-	r = nil
-	r.GetBadgeURL()
-}
-
-func TestRepoRequiredWorkflow_GetCreatedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	r := &RepoRequiredWorkflow{CreatedAt: &zeroValue}
-	r.GetCreatedAt()
-	r = &RepoRequiredWorkflow{}
-	r.GetCreatedAt()
-	r = nil
-	r.GetCreatedAt()
-}
-
-func TestRepoRequiredWorkflow_GetHTMLURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepoRequiredWorkflow{HTMLURL: &zeroValue}
-	r.GetHTMLURL()
-	r = &RepoRequiredWorkflow{}
-	r.GetHTMLURL()
-	r = nil
-	r.GetHTMLURL()
-}
-
-func TestRepoRequiredWorkflow_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	r := &RepoRequiredWorkflow{ID: &zeroValue}
-	r.GetID()
-	r = &RepoRequiredWorkflow{}
-	r.GetID()
-	r = nil
-	r.GetID()
-}
-
-func TestRepoRequiredWorkflow_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepoRequiredWorkflow{Name: &zeroValue}
-	r.GetName()
-	r = &RepoRequiredWorkflow{}
-	r.GetName()
-	r = nil
-	r.GetName()
-}
-
-func TestRepoRequiredWorkflow_GetNodeID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepoRequiredWorkflow{NodeID: &zeroValue}
-	r.GetNodeID()
-	r = &RepoRequiredWorkflow{}
-	r.GetNodeID()
-	r = nil
-	r.GetNodeID()
-}
-
-func TestRepoRequiredWorkflow_GetPath(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepoRequiredWorkflow{Path: &zeroValue}
-	r.GetPath()
-	r = &RepoRequiredWorkflow{}
-	r.GetPath()
-	r = nil
-	r.GetPath()
-}
-
-func TestRepoRequiredWorkflow_GetSourceRepository(tt *testing.T) {
-	tt.Parallel()
-	r := &RepoRequiredWorkflow{}
-	r.GetSourceRepository()
-	r = nil
-	r.GetSourceRepository()
-}
-
-func TestRepoRequiredWorkflow_GetState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepoRequiredWorkflow{State: &zeroValue}
-	r.GetState()
-	r = &RepoRequiredWorkflow{}
-	r.GetState()
-	r = nil
-	r.GetState()
-}
-
-func TestRepoRequiredWorkflow_GetUpdatedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	r := &RepoRequiredWorkflow{UpdatedAt: &zeroValue}
-	r.GetUpdatedAt()
-	r = &RepoRequiredWorkflow{}
-	r.GetUpdatedAt()
-	r = nil
-	r.GetUpdatedAt()
-}
-
-func TestRepoRequiredWorkflow_GetURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepoRequiredWorkflow{URL: &zeroValue}
-	r.GetURL()
-	r = &RepoRequiredWorkflow{}
-	r.GetURL()
-	r = nil
-	r.GetURL()
-}
-
-func TestRepoRequiredWorkflows_GetTotalCount(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	r := &RepoRequiredWorkflows{TotalCount: &zeroValue}
-	r.GetTotalCount()
-	r = &RepoRequiredWorkflows{}
-	r.GetTotalCount()
-	r = nil
-	r.GetTotalCount()
 }
 
 func TestRepositoriesSearchResult_GetIncompleteResults(tt *testing.T) {
@@ -30935,17 +30755,6 @@ func TestRequiredStatusChecksRuleParameters_GetDoNotEnforceOnCreate(tt *testing.
 	r.GetDoNotEnforceOnCreate()
 }
 
-func TestRequiredWorkflowSelectedRepos_GetTotalCount(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	r := &RequiredWorkflowSelectedRepos{TotalCount: &zeroValue}
-	r.GetTotalCount()
-	r = &RequiredWorkflowSelectedRepos{}
-	r.GetTotalCount()
-	r = nil
-	r.GetTotalCount()
-}
-
 func TestReviewersRequest_GetNodeID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -31976,6 +31785,17 @@ func TestSecretScanningAlert_GetHTMLURL(tt *testing.T) {
 	s.GetHTMLURL()
 }
 
+func TestSecretScanningAlert_GetIsBase64Encoded(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SecretScanningAlert{IsBase64Encoded: &zeroValue}
+	s.GetIsBase64Encoded()
+	s = &SecretScanningAlert{}
+	s.GetIsBase64Encoded()
+	s = nil
+	s.GetIsBase64Encoded()
+}
+
 func TestSecretScanningAlert_GetLocationsURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -31987,6 +31807,17 @@ func TestSecretScanningAlert_GetLocationsURL(tt *testing.T) {
 	s.GetLocationsURL()
 }
 
+func TestSecretScanningAlert_GetMultiRepo(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SecretScanningAlert{MultiRepo: &zeroValue}
+	s.GetMultiRepo()
+	s = &SecretScanningAlert{}
+	s.GetMultiRepo()
+	s = nil
+	s.GetMultiRepo()
+}
+
 func TestSecretScanningAlert_GetNumber(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -31996,6 +31827,17 @@ func TestSecretScanningAlert_GetNumber(tt *testing.T) {
 	s.GetNumber()
 	s = nil
 	s.GetNumber()
+}
+
+func TestSecretScanningAlert_GetPubliclyLeaked(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SecretScanningAlert{PubliclyLeaked: &zeroValue}
+	s.GetPubliclyLeaked()
+	s = &SecretScanningAlert{}
+	s.GetPubliclyLeaked()
+	s = nil
+	s.GetPubliclyLeaked()
 }
 
 func TestSecretScanningAlert_GetPushProtectionBypassed(tt *testing.T) {
@@ -32026,6 +31868,47 @@ func TestSecretScanningAlert_GetPushProtectionBypassedBy(tt *testing.T) {
 	s.GetPushProtectionBypassedBy()
 	s = nil
 	s.GetPushProtectionBypassedBy()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassRequestComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{PushProtectionBypassRequestComment: &zeroValue}
+	s.GetPushProtectionBypassRequestComment()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassRequestComment()
+	s = nil
+	s.GetPushProtectionBypassRequestComment()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassRequestHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{PushProtectionBypassRequestHTMLURL: &zeroValue}
+	s.GetPushProtectionBypassRequestHTMLURL()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassRequestHTMLURL()
+	s = nil
+	s.GetPushProtectionBypassRequestHTMLURL()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassRequestReviewer(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlert{}
+	s.GetPushProtectionBypassRequestReviewer()
+	s = nil
+	s.GetPushProtectionBypassRequestReviewer()
+}
+
+func TestSecretScanningAlert_GetPushProtectionBypassRequestReviewerComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{PushProtectionBypassRequestReviewerComment: &zeroValue}
+	s.GetPushProtectionBypassRequestReviewerComment()
+	s = &SecretScanningAlert{}
+	s.GetPushProtectionBypassRequestReviewerComment()
+	s = nil
+	s.GetPushProtectionBypassRequestReviewerComment()
 }
 
 func TestSecretScanningAlert_GetRepository(tt *testing.T) {
@@ -32141,6 +32024,17 @@ func TestSecretScanningAlert_GetURL(tt *testing.T) {
 	s.GetURL()
 	s = nil
 	s.GetURL()
+}
+
+func TestSecretScanningAlert_GetValidity(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{Validity: &zeroValue}
+	s.GetValidity()
+	s = &SecretScanningAlert{}
+	s.GetValidity()
+	s = nil
+	s.GetValidity()
 }
 
 func TestSecretScanningAlertEvent_GetAction(tt *testing.T) {

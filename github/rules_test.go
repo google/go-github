@@ -46,7 +46,7 @@ func TestRulesetRules(t *testing.T) {
 					GroupingStrategy:             MergeGroupingStrategyAllGreen,
 					MaxEntriesToBuild:            10,
 					MaxEntriesToMerge:            20,
-					MergeMethod:                  MergeMethodSquash,
+					MergeMethod:                  MergeQueueMergeMethodSquash,
 					MinEntriesToMerge:            1,
 					MinEntriesToMergeWaitMinutes: 15,
 				},
@@ -55,9 +55,9 @@ func TestRulesetRules(t *testing.T) {
 				},
 				RequiredSignatures: &EmptyRuleParameters{},
 				PullRequest: &PullRequestRuleParameters{
-					AllowedMergeMethods: []MergeMethod{
-						MergeMethodSquash,
-						MergeMethodRebase,
+					AllowedMergeMethods: []PullRequestMergeMethod{
+						PullRequestMergeMethodSquash,
+						PullRequestMergeMethodRebase,
 					},
 					AutomaticCopilotCodeReviewEnabled: nil,
 					DismissStaleReviewsOnPush:         true,
@@ -123,7 +123,7 @@ func TestRulesetRules(t *testing.T) {
 					},
 				},
 			},
-			`[{"type":"creation"},{"type":"update"},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"squash","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test1"},{"context":"test2"}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"workflows":[{"path":".github/workflows/test1.yaml"},{"path":".github/workflows/test2.yaml"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}}]`,
+			`[{"type":"creation"},{"type":"update"},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test1"},{"context":"test2"}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"workflows":[{"path":".github/workflows/test1.yaml"},{"path":".github/workflows/test2.yaml"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}}]`,
 		},
 		{
 			"all_rules_with_all_params",
@@ -137,7 +137,7 @@ func TestRulesetRules(t *testing.T) {
 					GroupingStrategy:             MergeGroupingStrategyAllGreen,
 					MaxEntriesToBuild:            10,
 					MaxEntriesToMerge:            20,
-					MergeMethod:                  MergeMethodSquash,
+					MergeMethod:                  MergeQueueMergeMethodSquash,
 					MinEntriesToMerge:            1,
 					MinEntriesToMergeWaitMinutes: 15,
 				},
@@ -146,9 +146,9 @@ func TestRulesetRules(t *testing.T) {
 				},
 				RequiredSignatures: &EmptyRuleParameters{},
 				PullRequest: &PullRequestRuleParameters{
-					AllowedMergeMethods: []MergeMethod{
-						MergeMethodSquash,
-						MergeMethodRebase,
+					AllowedMergeMethods: []PullRequestMergeMethod{
+						PullRequestMergeMethodSquash,
+						PullRequestMergeMethodRebase,
 					},
 					AutomaticCopilotCodeReviewEnabled: Ptr(false),
 					DismissStaleReviewsOnPush:         true,
@@ -236,7 +236,7 @@ func TestRulesetRules(t *testing.T) {
 					},
 				},
 			},
-			`[{"type":"creation"},{"type":"update","parameters":{"update_allows_fetch_and_merge":true}},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"squash","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"automatic_copilot_code_review_enabled":false,"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"do_not_enforce_on_create":true,"required_status_checks":[{"context":"test1","integration_id":1},{"context":"test2","integration_id":2}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"name":"cmp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"name":"caep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"name":"cep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"name":"bp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"name":"tp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"do_not_enforce_on_create":true,"workflows":[{"path":".github/workflows/test1.yaml","ref":"main","repository_id":1,"sha":"aaaa"},{"path":".github/workflows/test2.yaml","ref":"main","repository_id":2,"sha":"bbbb"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}}]`,
+			`[{"type":"creation"},{"type":"update","parameters":{"update_allows_fetch_and_merge":true}},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"automatic_copilot_code_review_enabled":false,"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"do_not_enforce_on_create":true,"required_status_checks":[{"context":"test1","integration_id":1},{"context":"test2","integration_id":2}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"name":"cmp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"name":"caep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"name":"cep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"name":"bp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"name":"tp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"do_not_enforce_on_create":true,"workflows":[{"path":".github/workflows/test1.yaml","ref":"main","repository_id":1,"sha":"aaaa"},{"path":".github/workflows/test2.yaml","ref":"main","repository_id":2,"sha":"bbbb"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}}]`,
 		},
 	}
 
@@ -373,7 +373,7 @@ func TestBranchRules(t *testing.T) {
 							GroupingStrategy:             MergeGroupingStrategyAllGreen,
 							MaxEntriesToBuild:            10,
 							MaxEntriesToMerge:            20,
-							MergeMethod:                  MergeMethodSquash,
+							MergeMethod:                  MergeQueueMergeMethodSquash,
 							MinEntriesToMerge:            1,
 							MinEntriesToMergeWaitMinutes: 15,
 						},
@@ -406,9 +406,9 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: PullRequestRuleParameters{
-							AllowedMergeMethods: []MergeMethod{
-								MergeMethodSquash,
-								MergeMethodRebase,
+							AllowedMergeMethods: []PullRequestMergeMethod{
+								PullRequestMergeMethodSquash,
+								PullRequestMergeMethodRebase,
 							},
 							DismissStaleReviewsOnPush:      true,
 							RequireCodeOwnerReview:         true,
@@ -611,7 +611,7 @@ func TestBranchRules(t *testing.T) {
 					},
 				},
 			},
-			`[{"type":"creation","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"update","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"update_allows_fetch_and_merge":true}},{"type":"deletion","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"required_linear_history","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"merge_queue","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"squash","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"pull_request","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"do_not_enforce_on_create":true,"required_status_checks":[{"context":"test1","integration_id":1},{"context":"test2","integration_id":2}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"commit_message_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"cmp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"caep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"cep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"bp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"tp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"max_file_size":1024}},{"type":"workflows","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"do_not_enforce_on_create":true,"workflows":[{"path":".github/workflows/test1.yaml","ref":"main","repository_id":1,"sha":"aaaa"},{"path":".github/workflows/test2.yaml","ref":"main","repository_id":2,"sha":"bbbb"}]}},{"type":"code_scanning","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}}]`,
+			`[{"type":"creation","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"update","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"update_allows_fetch_and_merge":true}},{"type":"deletion","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"required_linear_history","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"merge_queue","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"pull_request","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"do_not_enforce_on_create":true,"required_status_checks":[{"context":"test1","integration_id":1},{"context":"test2","integration_id":2}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1},{"type":"commit_message_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"cmp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"caep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"cep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"bp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"name":"tp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"max_file_size":1024}},{"type":"workflows","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"do_not_enforce_on_create":true,"workflows":[{"path":".github/workflows/test1.yaml","ref":"main","repository_id":1,"sha":"aaaa"},{"path":".github/workflows/test2.yaml","ref":"main","repository_id":2,"sha":"bbbb"}]}},{"type":"code_scanning","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}}]`,
 		},
 	}
 
@@ -695,12 +695,12 @@ func TestRepositoryRule(t *testing.T) {
 					GroupingStrategy:             MergeGroupingStrategyAllGreen,
 					MaxEntriesToBuild:            10,
 					MaxEntriesToMerge:            20,
-					MergeMethod:                  MergeMethodSquash,
+					MergeMethod:                  MergeQueueMergeMethodSquash,
 					MinEntriesToMerge:            1,
 					MinEntriesToMergeWaitMinutes: 15,
 				},
 			},
-			`{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"squash","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}}`,
+			`{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}}`,
 		},
 		{
 			"required_deployments",
@@ -722,9 +722,9 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypePullRequest,
 				Parameters: &PullRequestRuleParameters{
-					AllowedMergeMethods: []MergeMethod{
-						MergeMethodSquash,
-						MergeMethodRebase,
+					AllowedMergeMethods: []PullRequestMergeMethod{
+						PullRequestMergeMethodSquash,
+						PullRequestMergeMethodRebase,
 					},
 					AutomaticCopilotCodeReviewEnabled: Ptr(true),
 					DismissStaleReviewsOnPush:         true,

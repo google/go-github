@@ -79,7 +79,7 @@ func TestReactionsService_ListCommentReactions(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`)
 	})
 
-	opt := &ListCommentReactionOptions{Content: "+1"}
+	opt := &ListReactionOptions{Content: "+1"}
 	ctx := context.Background()
 	reactions, _, err := client.Reactions.ListCommentReactions(ctx, "o", "r", 1, opt)
 	if err != nil {
@@ -149,13 +149,15 @@ func TestReactionsService_ListIssueReactions(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/issues/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testFormValues(t, r, values{"content": "+1"})
 
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
+	opt := &ListReactionOptions{Content: "+1"}
 	ctx := context.Background()
-	got, _, err := client.Reactions.ListIssueReactions(ctx, "o", "r", 1, nil)
+	got, _, err := client.Reactions.ListIssueReactions(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("ListIssueReactions returned error: %v", err)
 	}
@@ -173,7 +175,7 @@ func TestReactionsService_ListIssueReactions_coverage(t *testing.T) {
 
 	const methodName = "ListIssueReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListIssueReactions(ctx, "\n", "\n", -1, &ListOptions{})
+		_, _, err = client.Reactions.ListIssueReactions(ctx, "\n", "\n", -1, &ListReactionOptions{})
 		return err
 	})
 
@@ -230,13 +232,15 @@ func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/issues/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testFormValues(t, r, values{"content": "+1"})
 
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
+	opt := &ListReactionOptions{Content: "+1"}
 	ctx := context.Background()
-	got, _, err := client.Reactions.ListIssueCommentReactions(ctx, "o", "r", 1, nil)
+	got, _, err := client.Reactions.ListIssueCommentReactions(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("ListIssueCommentReactions returned error: %v", err)
 	}
@@ -254,7 +258,7 @@ func TestReactionsService_ListIssueCommentReactions_coverage(t *testing.T) {
 
 	const methodName = "ListIssueCommentReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListIssueCommentReactions(ctx, "\n", "\n", -1, &ListOptions{})
+		_, _, err = client.Reactions.ListIssueCommentReactions(ctx, "\n", "\n", -1, &ListReactionOptions{})
 		return err
 	})
 
@@ -311,13 +315,15 @@ func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testFormValues(t, r, values{"content": "+1"})
 
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
+	opt := &ListReactionOptions{Content: "+1"}
 	ctx := context.Background()
-	got, _, err := client.Reactions.ListPullRequestCommentReactions(ctx, "o", "r", 1, nil)
+	got, _, err := client.Reactions.ListPullRequestCommentReactions(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("ListPullRequestCommentReactions returned error: %v", err)
 	}
@@ -335,7 +341,7 @@ func TestReactionsService_ListPullRequestCommentReactions_coverage(t *testing.T)
 
 	const methodName = "ListPullRequestCommentReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListPullRequestCommentReactions(ctx, "\n", "\n", -1, &ListOptions{})
+		_, _, err = client.Reactions.ListPullRequestCommentReactions(ctx, "\n", "\n", -1, &ListReactionOptions{})
 		return err
 	})
 
@@ -392,13 +398,15 @@ func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
 	mux.HandleFunc("/teams/1/discussions/2/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testFormValues(t, r, values{"content": "+1"})
 
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
+	opt := &ListReactionOptions{Content: "+1"}
 	ctx := context.Background()
-	got, _, err := client.Reactions.ListTeamDiscussionReactions(ctx, 1, 2, nil)
+	got, _, err := client.Reactions.ListTeamDiscussionReactions(ctx, 1, 2, opt)
 	if err != nil {
 		t.Errorf("ListTeamDiscussionReactions returned error: %v", err)
 	}
@@ -416,7 +424,7 @@ func TestReactionsService_ListTeamDiscussionReactions_coverage(t *testing.T) {
 
 	const methodName = "ListTeamDiscussionReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListTeamDiscussionReactions(ctx, -1, -2, &ListOptions{})
+		_, _, err = client.Reactions.ListTeamDiscussionReactions(ctx, -1, -2, &ListReactionOptions{})
 		return err
 	})
 
@@ -473,13 +481,15 @@ func TestReactionService_ListTeamDiscussionCommentReactions(t *testing.T) {
 	mux.HandleFunc("/teams/1/discussions/2/comments/3/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testFormValues(t, r, values{"content": "+1"})
 
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
+	opt := &ListReactionOptions{Content: "+1"}
 	ctx := context.Background()
-	got, _, err := client.Reactions.ListTeamDiscussionCommentReactions(ctx, 1, 2, 3, nil)
+	got, _, err := client.Reactions.ListTeamDiscussionCommentReactions(ctx, 1, 2, 3, opt)
 	if err != nil {
 		t.Errorf("ListTeamDiscussionCommentReactions returned error: %v", err)
 	}
@@ -497,7 +507,7 @@ func TestReactionService_ListTeamDiscussionCommentReactions_coverage(t *testing.
 
 	const methodName = "ListTeamDiscussionCommentReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListTeamDiscussionCommentReactions(ctx, -1, -2, -3, &ListOptions{})
+		_, _, err = client.Reactions.ListTeamDiscussionCommentReactions(ctx, -1, -2, -3, &ListReactionOptions{})
 		return err
 	})
 
@@ -906,5 +916,105 @@ func TestReactionService_CreateReleaseReaction(t *testing.T) {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
+	})
+}
+
+func TestReactionsService_ListReleaseReactions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/releases/1/reactions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testFormValues(t, r, values{"content": "+1"})
+
+		w.WriteHeader(http.StatusOK)
+		assertWrite(t, w, []byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
+	})
+
+	opt := &ListReactionOptions{Content: "+1"}
+	ctx := context.Background()
+	got, _, err := client.Reactions.ListReleaseReactions(ctx, "o", "r", 1, opt)
+	if err != nil {
+		t.Errorf("ListReleaseReactions returned error: %v", err)
+	}
+	want := []*Reaction{{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}}
+	if !cmp.Equal(got, want) {
+		t.Errorf("ListReleaseReactions = %+v, want %+v", got, want)
+	}
+}
+
+func TestReactionsService_ListReleaseReactions_coverage(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := context.Background()
+
+	const methodName = "ListReleaseReactions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Reactions.ListReleaseReactions(ctx, "\n", "\n", -1, &ListReactionOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Reactions.ListReleaseReactions(ctx, "o", "r", 1, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestReactionsService_DeleteReleaseReaction(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/releases/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteReleaseReaction(ctx, "o", "r", 1, 2); err != nil {
+		t.Errorf("DeleteReleaseReaction returned error: %v", err)
+	}
+
+	const methodName = "DeleteReleaseReaction"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Reactions.DeleteReleaseReaction(ctx, "\n", "\n", -1, -2)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Reactions.DeleteReleaseReaction(ctx, "o", "r", 1, 2)
+	})
+}
+
+func TestReactionsService_DeleteReleaseReactionByRepoID(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repositories/1/releases/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteReleaseReactionByID(ctx, 1, 2, 3); err != nil {
+		t.Errorf("DeleteReleaseReactionByRepoID returned error: %v", err)
+	}
+
+	const methodName = "DeleteReleaseReactionByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Reactions.DeleteIssueReactionByID(ctx, -1, -2, -3)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Reactions.DeleteIssueReactionByID(ctx, 1, 2, 3)
 	})
 }

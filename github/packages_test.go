@@ -690,6 +690,7 @@ func TestPackage_Marshal(t *testing.T) {
 			CreatedAt:       &Timestamp{referenceTime},
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
+		Repository:  &Repository{ID: Ptr(int64(1))},
 		CreatedAt:   &Timestamp{referenceTime},
 		UpdatedAt:   &Timestamp{referenceTime},
 		Namespace:   Ptr("n"),
@@ -835,6 +836,9 @@ func TestPackage_Marshal(t *testing.T) {
 			"created_at": ` + referenceTimeStr + `,
 			"suspended_at": ` + referenceTimeStr + `,
 			"url": "u"
+		},
+		"repository": {
+			"id": 1
 		},
 		"created_at": ` + referenceTimeStr + `,
 		"updated_at": ` + referenceTimeStr + `,

@@ -114,7 +114,6 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		tc := tc
 		seatDetails := &CopilotSeatDetails{}
 
 		t.Run(tc.name, func(t *testing.T) {

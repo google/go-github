@@ -979,7 +979,6 @@ func TestRepositoriesService_GetBranch_BadJSONResponse(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -1050,7 +1049,6 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -1093,7 +1091,6 @@ func TestRepositoriesService_RenameBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -1153,7 +1150,6 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -1396,7 +1392,6 @@ func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -1436,7 +1431,6 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -1626,7 +1620,6 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -1806,7 +1799,6 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -1965,7 +1957,6 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2110,7 +2101,6 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2254,7 +2244,6 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2310,7 +2299,6 @@ func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2405,7 +2393,6 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2485,7 +2472,6 @@ func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testi
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2525,7 +2511,6 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2603,7 +2588,6 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2696,7 +2680,6 @@ func TestRepositoriesService_RemoveRequiredStatusChecks(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2737,7 +2720,6 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2786,7 +2768,6 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2826,7 +2807,6 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2902,7 +2882,6 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -2991,7 +2970,6 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3048,7 +3026,6 @@ func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3088,7 +3065,6 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3141,7 +3117,6 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3193,7 +3168,6 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3233,7 +3207,6 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3287,7 +3260,6 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3341,7 +3313,6 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3570,7 +3541,6 @@ func TestRepositoriesService_ListAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3613,7 +3583,6 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3665,7 +3634,6 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3717,7 +3685,6 @@ func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3765,7 +3732,6 @@ func TestRepositoriesService_ListTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3808,7 +3774,6 @@ func TestRepositoriesService_ReplaceTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3860,7 +3825,6 @@ func TestRepositoriesService_AddTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3912,7 +3876,6 @@ func TestRepositoriesService_RemoveTeamRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -3960,7 +3923,6 @@ func TestRepositoriesService_ListUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -4003,7 +3965,6 @@ func TestRepositoriesService_ReplaceUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -4055,7 +4016,6 @@ func TestRepositoriesService_AddUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -4107,7 +4067,6 @@ func TestRepositoriesService_RemoveUserRestrictions(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.branch, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
@@ -4588,7 +4547,6 @@ func TestRepository_UnmarshalJSON(t *testing.T) {
 	}
 
 	for name, tt := range testCases {
-		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			pk := Repository{}
