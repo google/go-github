@@ -212,7 +212,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoName(t *testing.T)
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -313,7 +313,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoName(t *testing.T)
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -602,7 +602,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -713,7 +713,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -976,7 +976,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoName(t *testing.T) {
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -1076,7 +1076,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoName(t *testing.T) {
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -1358,7 +1358,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -1468,7 +1468,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,

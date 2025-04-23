@@ -255,7 +255,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -352,7 +352,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -615,7 +615,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -718,7 +718,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -966,7 +966,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoIDs(t *testing.T) {
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
@@ -1061,7 +1061,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoIDs(t *testing.T) {
 			},
 			RequiredSignatures: &EmptyRuleParameters{},
 			PullRequest: &PullRequestRuleParameters{
-				AllowedMergeMethods:            []MergeMethod{MergeMethodRebase, MergeMethodSquash},
+				AllowedMergeMethods:            []PullRequestMergeMethod{PullRequestMergeMethodRebase, PullRequestMergeMethodSquash},
 				DismissStaleReviewsOnPush:      true,
 				RequireCodeOwnerReview:         true,
 				RequireLastPushApproval:        true,
