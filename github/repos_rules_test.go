@@ -20,6 +20,10 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/repo/rules/branches/branch", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page":     "2",
+			"per_page": "35",
+		})
 		fmt.Fprint(w, `[
 			{
 			  "ruleset_id": 42069,
@@ -39,8 +43,9 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 		]`)
 	})
 
+	opts := &ListOptions{Page: 2, PerPage: 35}
 	ctx := context.Background()
-	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch")
+	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", opts)
 	if err != nil {
 		t.Errorf("Repositories.GetRulesForBranch returned error: %v", err)
 	}
@@ -57,7 +62,7 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 	const methodName = "GetRulesForBranch"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch")
+		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -71,6 +76,11 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/repo/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"includes_parents": "false",
+			"page":             "2",
+			"per_page":         "35",
+		})
 		fmt.Fprintf(w, `[
 			{
 			  "id": 42,
@@ -93,8 +103,15 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 		]`, referenceTimeStr)
 	})
 
+	opts := &RepositoryListRulesetsOptions{
+		IncludesParents: Ptr(false),
+		ListOptions: ListOptions{
+			Page:    2,
+			PerPage: 35,
+		},
+	}
 	ctx := context.Background()
-	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", false)
+	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", opts)
 	if err != nil {
 		t.Errorf("Repositories.GetAllRulesets returned error: %v", err)
 	}
@@ -126,7 +143,7 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 	const methodName = "GetAllRulesets"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", false)
+		got, resp, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

@@ -20,6 +20,10 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page":     "2",
+			"per_page": "35",
+		})
 		fmt.Fprint(w, `[{
 			"id": 21,
 			"name": "test ruleset",
@@ -37,8 +41,9 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 		}]`)
 	})
 
+	opts := &ListOptions{Page: 2, PerPage: 35}
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o")
+	rulesets, _, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Organizations.GetAllRepositoryRulesets returned error: %v", err)
 	}
@@ -62,7 +67,7 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 	const methodName = "GetAllRepositoryRulesets"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o")
+		got, resp, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
