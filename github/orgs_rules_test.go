@@ -65,6 +65,10 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 	}
 
 	const methodName = "GetAllRepositoryRulesets"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetAllRepositoryRulesets(ctx, "\n", opts)
+		return err
+	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", opts)

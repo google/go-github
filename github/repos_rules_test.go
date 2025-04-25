@@ -60,6 +60,10 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 	}
 
 	const methodName = "GetRulesForBranch"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetRulesForBranch(ctx, "\n", "\n", "\n", opts)
+		return err
+	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", opts)
@@ -141,6 +145,10 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 	}
 
 	const methodName = "GetAllRulesets"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetAllRulesets(ctx, "\n", "\n", opts)
+		return err
+	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", opts)
