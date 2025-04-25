@@ -20,10 +20,6 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/repo/rules/branches/branch", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{
-			"page":     "2",
-			"per_page": "35",
-		})
 		fmt.Fprint(w, `[
 			{
 			  "ruleset_id": 42069,
@@ -43,6 +39,49 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 		]`)
 	})
 
+	ctx := context.Background()
+	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", nil)
+	if err != nil {
+		t.Errorf("Repositories.GetRulesForBranch returned error: %v", err)
+	}
+
+	want := &BranchRules{
+		Creation: []*BranchRuleMetadata{{RulesetSourceType: RulesetSourceTypeRepository, RulesetSource: "google/a", RulesetID: 42069}},
+		Update:   []*UpdateBranchRule{{BranchRuleMetadata: BranchRuleMetadata{RulesetSourceType: RulesetSourceTypeOrganization, RulesetSource: "google", RulesetID: 42069}, Parameters: UpdateRuleParameters{UpdateAllowsFetchAndMerge: true}}},
+	}
+
+	if !cmp.Equal(rules, want) {
+		t.Errorf("Repositories.GetRulesForBranch returned %+v, want %+v", rules, want)
+	}
+
+	const methodName = "GetRulesForBranch"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_GetRulesForBranch_ListOptions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/repo/rules/branches/branch", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page":     "2",
+			"per_page": "35",
+		})
+		fmt.Fprint(w, `[
+			{
+			  "ruleset_id": 42069,
+			  "type": "creation"
+			}
+		]`)
+	})
+
 	opts := &ListOptions{Page: 2, PerPage: 35}
 	ctx := context.Background()
 	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", opts)
@@ -51,8 +90,7 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 	}
 
 	want := &BranchRules{
-		Creation: []*BranchRuleMetadata{{RulesetSourceType: RulesetSourceTypeRepository, RulesetSource: "google/a", RulesetID: 42069}},
-		Update:   []*UpdateBranchRule{{BranchRuleMetadata: BranchRuleMetadata{RulesetSourceType: RulesetSourceTypeOrganization, RulesetSource: "google", RulesetID: 42069}, Parameters: UpdateRuleParameters{UpdateAllowsFetchAndMerge: true}}},
+		Creation: []*BranchRuleMetadata{{RulesetID: 42069}},
 	}
 
 	if !cmp.Equal(rules, want) {
@@ -80,11 +118,6 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/repo/rulesets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{
-			"includes_parents": "false",
-			"page":             "2",
-			"per_page":         "35",
-		})
 		fmt.Fprintf(w, `[
 			{
 			  "id": 42,
@@ -107,15 +140,8 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 		]`, referenceTimeStr)
 	})
 
-	opts := &RepositoryListRulesetsOptions{
-		IncludesParents: Ptr(false),
-		ListOptions: ListOptions{
-			Page:    2,
-			PerPage: 35,
-		},
-	}
 	ctx := context.Background()
-	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", opts)
+	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", nil)
 	if err != nil {
 		t.Errorf("Repositories.GetAllRulesets returned error: %v", err)
 	}
@@ -138,6 +164,56 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 			Enforcement: RulesetEnforcementActive,
 			CreatedAt:   &Timestamp{referenceTime},
 			UpdatedAt:   &Timestamp{referenceTime},
+		},
+	}
+	if !cmp.Equal(ruleSet, want) {
+		t.Errorf("Repositories.GetAllRulesets returned %+v, want %+v", ruleSet, want)
+	}
+
+	const methodName = "GetAllRulesets"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_GetAllRulesets_ListOptions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/repo/rulesets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"includes_parents": "false",
+			"page":             "2",
+			"per_page":         "35",
+		})
+		fmt.Fprint(w, `[
+			{
+			  "id": 42
+			}
+		]`)
+	})
+
+	opts := &RepositoryListRulesetsOptions{
+		IncludesParents: Ptr(false),
+		ListOptions: ListOptions{
+			Page:    2,
+			PerPage: 35,
+		},
+	}
+	ctx := context.Background()
+	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", opts)
+	if err != nil {
+		t.Errorf("Repositories.GetAllRulesets returned error: %v", err)
+	}
+
+	want := []*RepositoryRuleset{
+		{
+			ID: Ptr(int64(42)),
 		},
 	}
 	if !cmp.Equal(ruleSet, want) {
