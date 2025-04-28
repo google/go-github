@@ -22782,6 +22782,14 @@ func (r *RepositoryLicense) GetURL() string {
 	return *r.URL
 }
 
+// GetIncludesParents returns the IncludesParents field if it's non-nil, zero value otherwise.
+func (r *RepositoryListRulesetsOptions) GetIncludesParents() bool {
+	if r == nil || r.IncludesParents == nil {
+		return false
+	}
+	return *r.IncludesParents
+}
+
 // GetBase returns the Base field if it's non-nil, zero value otherwise.
 func (r *RepositoryMergeRequest) GetBase() string {
 	if r == nil || r.Base == nil {

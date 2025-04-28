@@ -29383,6 +29383,17 @@ func TestRepositoryLicense_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRepositoryListRulesetsOptions_GetIncludesParents(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepositoryListRulesetsOptions{IncludesParents: &zeroValue}
+	r.GetIncludesParents()
+	r = &RepositoryListRulesetsOptions{}
+	r.GetIncludesParents()
+	r = nil
+	r.GetIncludesParents()
+}
+
 func TestRepositoryMergeRequest_GetBase(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
