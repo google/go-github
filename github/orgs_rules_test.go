@@ -38,7 +38,7 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	rulesets, _, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o")
+	rulesets, _, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", nil)
 	if err != nil {
 		t.Errorf("Organizations.GetAllRepositoryRulesets returned error: %v", err)
 	}
@@ -60,9 +60,52 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 	}
 
 	const methodName = "GetAllRepositoryRulesets"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestOrganizationsService_GetAllRepositoryRulesets_ListOptions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/rulesets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page":     "2",
+			"per_page": "35",
+		})
+		fmt.Fprint(w, `[{
+			"id": 21
+		}]`)
+	})
+
+	opts := &ListOptions{Page: 2, PerPage: 35}
+	ctx := context.Background()
+	rulesets, _, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Organizations.GetAllRepositoryRulesets returned error: %v", err)
+	}
+
+	want := []*RepositoryRuleset{{
+		ID: Ptr(int64(21)),
+	}}
+	if !cmp.Equal(rulesets, want) {
+		t.Errorf("Organizations.GetAllRepositoryRulesets returned %+v, want %+v", rulesets, want)
+	}
+
+	const methodName = "GetAllRepositoryRulesets"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetAllRepositoryRulesets(ctx, "\n", opts)
+		return err
+	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o")
+		got, resp, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
