@@ -90,6 +90,7 @@ type IssueRequest struct {
 	StateReason *string   `json:"state_reason,omitempty"`
 	Milestone   *int      `json:"milestone,omitempty"`
 	Assignees   *[]string `json:"assignees,omitempty"`
+	Type        *string   `json:"type,omitempty"`
 }
 
 // IssueListOptions specifies the optional parameters to the IssuesService.List

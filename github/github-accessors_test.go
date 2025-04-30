@@ -16064,6 +16064,17 @@ func TestIssueRequest_GetTitle(tt *testing.T) {
 	i.GetTitle()
 }
 
+func TestIssueRequest_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueRequest{Type: &zeroValue}
+	i.GetType()
+	i = &IssueRequest{}
+	i.GetType()
+	i = nil
+	i.GetType()
+}
+
 func TestIssuesEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
