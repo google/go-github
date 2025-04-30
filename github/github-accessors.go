@@ -12406,6 +12406,14 @@ func (i *IssueRequest) GetTitle() string {
 	return *i.Title
 }
 
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (i *IssueRequest) GetType() string {
+	if i == nil || i.Type == nil {
+		return ""
+	}
+	return *i.Type
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (i *IssuesEvent) GetAction() string {
 	if i == nil || i.Action == nil {

@@ -314,7 +314,7 @@ func TestIssuesService_Edit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &IssueRequest{Title: Ptr("t")}
+	input := &IssueRequest{Title: Ptr("t"), Type: Ptr("bug")}
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(IssueRequest)
@@ -325,7 +325,7 @@ func TestIssuesService_Edit(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
-		fmt.Fprint(w, `{"number":1}`)
+		fmt.Fprint(w, `{"number":1, "type": {"name": "bug"}}`)
 	})
 
 	ctx := context.Background()
@@ -334,7 +334,7 @@ func TestIssuesService_Edit(t *testing.T) {
 		t.Errorf("Issues.Edit returned error: %v", err)
 	}
 
-	want := &Issue{Number: Ptr(1)}
+	want := &Issue{Number: Ptr(1), Type: &IssueType{Name: Ptr("bug")}}
 	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.Edit returned %+v, want %+v", issue, want)
 	}
@@ -529,6 +529,7 @@ func TestIssueRequest_Marshal(t *testing.T) {
 		State:     Ptr("url"),
 		Milestone: Ptr(1),
 		Assignees: &[]string{"a"},
+		Type:      Ptr("issue_type"),
 	}
 
 	want := `{
@@ -542,7 +543,8 @@ func TestIssueRequest_Marshal(t *testing.T) {
 		"milestone": 1,
 		"assignees": [
 			"a"
-		]
+		],
+		"type": "issue_type"
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -582,6 +584,7 @@ func TestIssue_Marshal(t *testing.T) {
 		NodeID:            Ptr("nid"),
 		TextMatches:       []*TextMatch{{ObjectURL: Ptr("ourl")}},
 		ActiveLockReason:  Ptr("alr"),
+		Type:              &IssueType{Name: Ptr("bug")},
 	}
 
 	want := `{
@@ -639,7 +642,10 @@ func TestIssue_Marshal(t *testing.T) {
 				"object_url": "ourl"
 			}
 		],
-		"active_lock_reason": "alr"
+		"active_lock_reason": "alr",
+		"type": {
+			"name": "bug"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
