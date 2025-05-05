@@ -4,7 +4,7 @@ go 1.23.0
 
 require (
 	github.com/alecthomas/kong v1.10.0
-	github.com/getkin/kin-openapi v0.131.0
+	github.com/getkin/kin-openapi v0.132.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v71 v71.0.0
 	golang.org/x/sync v0.14.0
