@@ -36,7 +36,7 @@ import (
 	"os"
 
 	sodium "github.com/GoKillers/libsodium-go/cryptobox"
-	"github.com/google/go-github/v71/github"
+	"github.com/google/go-github/v72/github"
 )
 
 var (
