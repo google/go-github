@@ -18,7 +18,7 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/google/go-github/v71/github"
+	"github.com/google/go-github/v72/github"
 )
 
 // AppRestrictionsEnabled returns whether the specified organization has

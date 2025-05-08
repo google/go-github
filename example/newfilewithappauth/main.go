@@ -16,7 +16,7 @@ import (
 	"time"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v71/github"
+	"github.com/google/go-github/v72/github"
 )
 
 func main() {
