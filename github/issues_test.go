@@ -32,6 +32,8 @@ func TestIssuesService_List_all(t *testing.T) {
 			"since":     "2002-02-10T15:30:00Z",
 			"page":      "1",
 			"per_page":  "2",
+			"before":    "foo",
+			"after":     "bar",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
@@ -39,7 +41,7 @@ func TestIssuesService_List_all(t *testing.T) {
 	opt := &IssueListOptions{
 		"all", "closed", []string{"a", "b"}, "updated", "asc",
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
-		ListOptions{Page: 1, PerPage: 2},
+		ListCursorOptions{Before: "foo", After: "bar"}, ListOptions{Page: 1, PerPage: 2},
 	}
 	ctx := context.Background()
 	issues, _, err := client.Issues.List(ctx, true, opt)
@@ -155,6 +157,9 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 			"sort":      "updated",
 			"direction": "asc",
 			"since":     "2002-02-10T15:30:00Z",
+			"per_page":  "1",
+			"before":    "foo",
+			"after":     "bar",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
@@ -162,7 +167,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	opt := &IssueListByRepoOptions{
 		"*", "closed", "a", "c", "m", []string{"a", "b"}, "updated", "asc",
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
-		ListOptions{0, 0},
+		ListCursorOptions{PerPage: 1, Before: "foo", After: "bar"}, ListOptions{0, 0},
 	}
 	ctx := context.Background()
 	issues, _, err := client.Issues.ListByRepo(ctx, "o", "r", opt)
