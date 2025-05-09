@@ -191,21 +191,30 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 		if err == nil && content != "" {
 			return io.NopCloser(strings.NewReader(content)), fileContent, resp, nil
 		}
+	}
 
-		if fileContent.DownloadURL == nil || *fileContent.DownloadURL == "" {
-			return nil, fileContent, resp, fmt.Errorf("no download link found for %s", filepath)
-		}
+	_, dirContents, resp, err := s.GetContents(ctx, owner, repo, dir, opts)
+	if err != nil {
+		return nil, nil, resp, err
+	}
 
-		dlReq, err := http.NewRequestWithContext(ctx, http.MethodGet, *fileContent.DownloadURL, nil)
-		if err != nil {
-			return nil, fileContent, resp, err
-		}
-		dlResp, err := s.client.client.Do(dlReq)
-		if err != nil {
-			return nil, fileContent, &Response{Response: dlResp}, err
-		}
+	for _, contents := range dirContents {
+		if contents.GetName() == filename {
+			if contents.GetDownloadURL() == "" {
+				return nil, contents, resp, fmt.Errorf("no download link found for %s", filepath)
+			}
 
-		return dlResp.Body, fileContent, &Response{Response: dlResp}, nil
+			dlReq, err := http.NewRequestWithContext(ctx, http.MethodGet, *contents.DownloadURL, nil)
+			if err != nil {
+				return nil, contents, resp, err
+			}
+			dlResp, err := s.client.client.Do(dlReq)
+			if err != nil {
+				return nil, contents, &Response{Response: dlResp}, err
+			}
+
+			return dlResp.Body, contents, &Response{Response: dlResp}, nil
+		}
 	}
 
 	return nil, nil, resp, fmt.Errorf("no file named %s found in %s", filename, dir)
