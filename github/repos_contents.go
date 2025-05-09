@@ -139,14 +139,26 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *Response, error) {
 	dir := path.Dir(filepath)
 	filename := path.Base(filepath)
+	fileContent, _, resp, err := s.GetContents(ctx, owner, repo, filepath, opts)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	if fileContent != nil {
+		content, err := fileContent.GetContent()
+		if err == nil && content != "" {
+			return io.NopCloser(strings.NewReader(content)), resp, nil
+		}
+	}
+
 	_, dirContents, resp, err := s.GetContents(ctx, owner, repo, dir, opts)
 	if err != nil {
 		return nil, resp, err
 	}
 
 	for _, contents := range dirContents {
-		if *contents.Name == filename {
-			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
+		if contents.GetName() == filename {
+			if contents.GetDownloadURL() == "" {
 				return nil, resp, fmt.Errorf("no download link found for %s", filepath)
 			}
 
