@@ -140,11 +140,8 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 	dir := path.Dir(filepath)
 	filename := path.Base(filepath)
 	fileContent, _, resp, err := s.GetContents(ctx, owner, repo, filepath, opts)
-	if err != nil {
-		return nil, resp, err
-	}
 
-	if fileContent != nil {
+	if err == nil && fileContent != nil {
 		content, err := fileContent.GetContent()
 		if err == nil && content != "" {
 			return io.NopCloser(strings.NewReader(content)), resp, nil
@@ -194,11 +191,8 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 	dir := path.Dir(filepath)
 	filename := path.Base(filepath)
 	fileContent, _, resp, err := s.GetContents(ctx, owner, repo, filepath, opts)
-	if err != nil {
-		return nil, nil, resp, err
-	}
 
-	if fileContent != nil {
+	if err == nil && fileContent != nil {
 		content, err := fileContent.GetContent()
 		if err == nil && content != "" {
 			return io.NopCloser(strings.NewReader(content)), fileContent, resp, nil
