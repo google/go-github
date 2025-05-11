@@ -303,13 +303,17 @@ func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
+	reader, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err == nil {
 		t.Errorf("Repositories.DownloadContents did not return expected error")
 	}
 
 	if resp == nil {
 		t.Errorf("Repositories.DownloadContents did not return expected response")
+	}
+
+	if reader != nil {
+		t.Errorf("Repositories.DownloadContents did not return expected reader")
 	}
 }
 
@@ -332,13 +336,17 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
+	reader, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err == nil {
 		t.Errorf("Repositories.DownloadContents did not return expected error")
 	}
 
 	if resp == nil {
 		t.Errorf("Repositories.DownloadContents did not return expected response")
+	}
+
+	if reader != nil {
+		t.Errorf("Repositories.DownloadContents did not return expected reader")
 	}
 }
 
@@ -516,23 +524,31 @@ func TestRepositoriesService_DownloadContentsWithMeta_NoDownloadURL(t *testing.T
 		  "name": "f",
 		}`)
 	})
-
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{
 		  "type": "file",
 		  "name": "f",
+		  "content": ""
 		}]`)
 	})
 
 	ctx := context.Background()
-	_, _, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
+	reader, contents, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
 	if err == nil {
 		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected error")
 	}
 
+	if reader != nil {
+		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected reader")
+	}
+
 	if resp == nil {
 		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected response")
+	}
+
+	if contents == nil {
+		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected content")
 	}
 }
 
