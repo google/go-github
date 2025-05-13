@@ -410,9 +410,12 @@ func (c *Client) initialize() {
 	c.clientIgnoreRedirects.Transport = c.client.Transport
 	c.clientIgnoreRedirects.Timeout = c.client.Timeout
 	c.clientIgnoreRedirects.Jar = c.client.Jar
-	c.clientIgnoreRedirects.CheckRedirect = func(req *http.Request, via []*http.Request) error {
-		return http.ErrUseLastResponse
-	}
+
+	// NOTE: removed for tiny-go compat
+	//c.clientIgnoreRedirects.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+	//	return http.ErrUseLastResponse
+	//}
+
 	if c.BaseURL == nil {
 		c.BaseURL, _ = url.Parse(defaultBaseURL)
 	}
@@ -477,7 +480,10 @@ func (c *Client) copy() *Client {
 	c.clientMu.Unlock()
 	if c.client != nil {
 		clone.client.Transport = c.client.Transport
-		clone.client.CheckRedirect = c.client.CheckRedirect
+
+		// NOTE: removed for tiny-go compat
+		// clone.client.CheckRedirect = c.client.CheckRedirect
+
 		clone.client.Jar = c.client.Jar
 		clone.client.Timeout = c.client.Timeout
 	}
@@ -487,10 +493,12 @@ func (c *Client) copy() *Client {
 	return &clone
 }
 
+// NOTE: removed for tiny-go compat
+
 // NewClientWithEnvProxy enhances NewClient with the HttpProxy env.
-func NewClientWithEnvProxy() *Client {
-	return NewClient(&http.Client{Transport: &http.Transport{Proxy: http.ProxyFromEnvironment}})
-}
+//func NewClientWithEnvProxy() *Client {
+//	return NewClient(&http.Client{Transport: &http.Transport{Proxy: http.ProxyFromEnvironment}})
+//}
 
 // NewTokenClient returns a new GitHub API client authenticated with the provided token.
 // Deprecated: Use NewClient(nil).WithAuthToken(token) instead.

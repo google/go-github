@@ -7,9 +7,7 @@ package github
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
 )
 
 // UserMigration represents a GitHub migration (archival).
@@ -151,41 +149,42 @@ func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*
 	return m, resp, nil
 }
 
+// NOTE: removed for tiny-go compat
 // UserMigrationArchiveURL gets the URL for a specific migration archive.
 // id is the migration ID.
 //
 // GitHub API docs: https://docs.github.com/rest/migrations/users#download-a-user-migration-archive
 //
 //meta:operation GET /user/migrations/{migration_id}/archive
-func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64) (string, error) {
-	url := fmt.Sprintf("user/migrations/%v/archive", id)
-
-	req, err := s.client.NewRequest("GET", url, nil)
-	if err != nil {
-		return "", err
-	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
-
-	m := &UserMigration{}
-
-	var loc string
-	originalRedirect := s.client.client.CheckRedirect
-	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
-		loc = req.URL.String()
-		return http.ErrUseLastResponse
-	}
-	defer func() {
-		s.client.client.CheckRedirect = originalRedirect
-	}()
-	resp, err := s.client.Do(ctx, req, m)
-	if err == nil {
-		return "", errors.New("expected redirect, none provided")
-	}
-	loc = resp.Header.Get("Location")
-	return loc, nil
-}
+//func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64) (string, error) {
+//	url := fmt.Sprintf("user/migrations/%v/archive", id)
+//
+//	req, err := s.client.NewRequest("GET", url, nil)
+//	if err != nil {
+//		return "", err
+//	}
+//
+//	// TODO: remove custom Accept header when this API fully launches.
+//	req.Header.Set("Accept", mediaTypeMigrationsPreview)
+//
+//	m := &UserMigration{}
+//
+//	var loc string
+//	originalRedirect := s.client.client.CheckRedirect
+//	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+//		loc = req.URL.String()
+//		return http.ErrUseLastResponse
+//	}
+//	defer func() {
+//		s.client.client.CheckRedirect = originalRedirect
+//	}()
+//	resp, err := s.client.Do(ctx, req, m)
+//	if err == nil {
+//		return "", errors.New("expected redirect, none provided")
+//	}
+//	loc = resp.Header.Get("Location")
+//	return loc, nil
+//}
 
 // DeleteUserMigration will delete a previous migration archive.
 // id is the migration ID.

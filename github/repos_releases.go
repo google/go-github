@@ -14,7 +14,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 // RepositoryRelease represents a GitHub release in a repository.
@@ -325,6 +324,7 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 	return asset, resp, nil
 }
 
+// NOTE: removed for tiny-go compat
 // DownloadReleaseAsset downloads a release asset or returns a redirect URL.
 //
 // DownloadReleaseAsset returns an io.ReadCloser that reads the contents of the
@@ -341,46 +341,46 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 // GitHub API docs: https://docs.github.com/rest/releases/assets#get-a-release-asset
 //
 //meta:operation GET /repos/{owner}/{repo}/releases/assets/{asset_id}
-func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, repo string, id int64, followRedirectsClient *http.Client) (rc io.ReadCloser, redirectURL string, err error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
-
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, "", err
-	}
-	req.Header.Set("Accept", defaultMediaType)
-
-	s.client.clientMu.Lock()
-	defer s.client.clientMu.Unlock()
-
-	var loc string
-	saveRedirect := s.client.client.CheckRedirect
-	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
-		loc = req.URL.String()
-		return errors.New("disable redirect")
-	}
-	defer func() { s.client.client.CheckRedirect = saveRedirect }()
-
-	req = withContext(ctx, req)
-	resp, err := s.client.client.Do(req)
-	if err != nil {
-		if !strings.Contains(err.Error(), "disable redirect") {
-			return nil, "", err
-		}
-		if followRedirectsClient != nil {
-			rc, err := s.downloadReleaseAssetFromURL(ctx, followRedirectsClient, loc)
-			return rc, "", err
-		}
-		return nil, loc, nil // Intentionally return no error with valid redirect URL.
-	}
-
-	if err := CheckResponse(resp); err != nil {
-		_ = resp.Body.Close()
-		return nil, "", err
-	}
-
-	return resp.Body, "", nil
-}
+//func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, repo string, id int64, followRedirectsClient *http.Client) (rc io.ReadCloser, redirectURL string, err error) {
+//	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
+//
+//	req, err := s.client.NewRequest("GET", u, nil)
+//	if err != nil {
+//		return nil, "", err
+//	}
+//	req.Header.Set("Accept", defaultMediaType)
+//
+//	s.client.clientMu.Lock()
+//	defer s.client.clientMu.Unlock()
+//
+//	var loc string
+//	saveRedirect := s.client.client.CheckRedirect
+//	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+//		loc = req.URL.String()
+//		return errors.New("disable redirect")
+//	}
+//	defer func() { s.client.client.CheckRedirect = saveRedirect }()
+//
+//	req = withContext(ctx, req)
+//	resp, err := s.client.client.Do(req)
+//	if err != nil {
+//		if !strings.Contains(err.Error(), "disable redirect") {
+//			return nil, "", err
+//		}
+//		if followRedirectsClient != nil {
+//			rc, err := s.downloadReleaseAssetFromURL(ctx, followRedirectsClient, loc)
+//			return rc, "", err
+//		}
+//		return nil, loc, nil // Intentionally return no error with valid redirect URL.
+//	}
+//
+//	if err := CheckResponse(resp); err != nil {
+//		_ = resp.Body.Close()
+//		return nil, "", err
+//	}
+//
+//	return resp.Body, "", nil
+//}
 
 func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, followRedirectsClient *http.Client, url string) (rc io.ReadCloser, err error) {
 	req, err := http.NewRequest("GET", url, nil)

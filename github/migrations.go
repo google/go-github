@@ -7,10 +7,7 @@ package github
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
-	"strings"
 )
 
 // MigrationService provides access to the migration related functions
@@ -158,44 +155,46 @@ func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id i
 	return m, resp, nil
 }
 
-// MigrationArchiveURL fetches a migration archive URL.
+// NOTE: removed for tiny-go compat
+
+//MigrationArchiveURL fetches a migration archive URL.
 // id is the migration ID.
 //
 // GitHub API docs: https://docs.github.com/rest/migrations/orgs#download-an-organization-migration-archive
 //
 //meta:operation GET /orgs/{org}/migrations/{migration_id}/archive
-func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, id int64) (url string, err error) {
-	u := fmt.Sprintf("orgs/%v/migrations/%v/archive", org, id)
-
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return "", err
-	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
-
-	s.client.clientMu.Lock()
-	defer s.client.clientMu.Unlock()
-
-	// Disable the redirect mechanism because AWS fails if the GitHub auth token is provided.
-	var loc string
-	saveRedirect := s.client.client.CheckRedirect
-	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
-		loc = req.URL.String()
-		return errors.New("disable redirect")
-	}
-	defer func() { s.client.client.CheckRedirect = saveRedirect }()
-
-	_, err = s.client.Do(ctx, req, nil) // expect error from disable redirect
-	if err == nil {
-		return "", errors.New("expected redirect, none provided")
-	}
-	if !strings.Contains(err.Error(), "disable redirect") {
-		return "", err
-	}
-	return loc, nil
-}
+//func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, id int64) (url string, err error) {
+//	u := fmt.Sprintf("orgs/%v/migrations/%v/archive", org, id)
+//
+//	req, err := s.client.NewRequest("GET", u, nil)
+//	if err != nil {
+//		return "", err
+//	}
+//
+//	// TODO: remove custom Accept header when this API fully launches.
+//	req.Header.Set("Accept", mediaTypeMigrationsPreview)
+//
+//	s.client.clientMu.Lock()
+//	defer s.client.clientMu.Unlock()
+//
+//	// Disable the redirect mechanism because AWS fails if the GitHub auth token is provided.
+//	var loc string
+//	saveRedirect := s.client.client.CheckRedirect
+//	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+//		loc = req.URL.String()
+//		return errors.New("disable redirect")
+//	}
+//	defer func() { s.client.client.CheckRedirect = saveRedirect }()
+//
+//	_, err = s.client.Do(ctx, req, nil) // expect error from disable redirect
+//	if err == nil {
+//		return "", errors.New("expected redirect, none provided")
+//	}
+//	if !strings.Contains(err.Error(), "disable redirect") {
+//		return "", err
+//	}
+//	return loc, nil
+//}
 
 // DeleteMigration deletes a previous migration archive.
 // id is the migration ID.
