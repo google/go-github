@@ -4257,7 +4257,7 @@ func TestAuthorizedActorsOnly_Marshal(t *testing.T) {
 
 func TestDispatchRequestOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &DispatchRequestOptions{}, "{}")
+	testJSONMarshal(t, &DispatchRequestOptions{}, `{"event_type": ""}`)
 
 	cp := json.RawMessage(`{"testKey":"testValue"}`)
 	u := &DispatchRequestOptions{
@@ -4277,7 +4277,7 @@ func TestDispatchRequestOptions_Marshal(t *testing.T) {
 
 func TestTransferRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &TransferRequest{}, "{}")
+	testJSONMarshal(t, &TransferRequest{}, `{"new_owner": ""}`)
 
 	u := &TransferRequest{
 		NewOwner: "testOwner",
@@ -4344,7 +4344,7 @@ func TestDismissalRestrictionsRequest_Marshal(t *testing.T) {
 
 func TestAdminEnforcement_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &AdminEnforcement{}, "{}")
+	testJSONMarshal(t, &AdminEnforcement{}, `{"enabled": false}`)
 
 	u := &AdminEnforcement{
 		URL:     Ptr("https://www.test-url.in"),
@@ -4361,7 +4361,7 @@ func TestAdminEnforcement_Marshal(t *testing.T) {
 
 func TestPullRequestReviewsEnforcementUpdate_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &PullRequestReviewsEnforcementUpdate{}, "{}")
+	testJSONMarshal(t, &PullRequestReviewsEnforcementUpdate{}, `{"required_approving_review_count": 0}`)
 
 	u := &PullRequestReviewsEnforcementUpdate{
 		BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
@@ -4390,7 +4390,7 @@ func TestPullRequestReviewsEnforcementUpdate_Marshal(t *testing.T) {
 
 func TestRequiredStatusCheck_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RequiredStatusCheck{}, "{}")
+	testJSONMarshal(t, &RequiredStatusCheck{}, `{"context": ""}`)
 
 	u := &RequiredStatusCheck{
 		Context: "ctx",
