@@ -50,7 +50,7 @@ type SubIssueRequest struct {
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/sub_issue
 func (s *SubIssueService) Remove(ctx context.Context, owner, repo string, subIssueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues", owner, repo, subIssueNumber)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issues", owner, repo, subIssueNumber)
 
 	req, err := s.client.NewRequest("DELETE", u, subIssue)
 	if err != nil {
