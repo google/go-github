@@ -43,6 +43,15 @@ func TestSubIssuesService_Add(t *testing.T) {
 	if !cmp.Equal(got, want) {
 		t.Errorf("SubIssues.Add = %+v, want %+v", got, want)
 	}
+
+	const methodName = "Add"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.SubIssue.Add(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestSubIssuesService_ListByIssue(t *testing.T) {
@@ -67,6 +76,20 @@ func TestSubIssuesService_ListByIssue(t *testing.T) {
 	if !cmp.Equal(issues, want) {
 		t.Errorf("SubIssues.ListByIssue = %+v, want %+v", issues, want)
 	}
+
+	const methodName = "ListByIssue"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SubIssue.ListByIssue(ctx, "\n", "\n", 1, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.SubIssue.ListByIssue(ctx, "o", "r", 1, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestSubIssuesService_Remove(t *testing.T) {
@@ -99,13 +122,22 @@ func TestSubIssuesService_Remove(t *testing.T) {
 	if !cmp.Equal(got, want) {
 		t.Errorf("SubIssues.Remove = %+v, want %+v", got, want)
 	}
+
+	const methodName = "Remove"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.SubIssue.Remove(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestSubIssuesService_Reprioritize(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SubIssueRequest{SubIssueID: 42, AfterID: 5}
+	input := &SubIssueRequest{SubIssueID: 42, AfterID: Int64(5)}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues/priority", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -132,4 +164,14 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 	if !cmp.Equal(got, want) {
 		t.Errorf("SubIssues.Reprioritize = %+v, want %+v", got, want)
 	}
+
+	const methodName = "Reprioritize"
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.SubIssue.Reprioritize(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }

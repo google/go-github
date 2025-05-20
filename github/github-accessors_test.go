@@ -33332,6 +33332,39 @@ func TestStatusEvent_GetUpdatedAt(tt *testing.T) {
 	s.GetUpdatedAt()
 }
 
+func TestSubIssueRequest_GetAfterID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	s := &SubIssueRequest{AfterID: &zeroValue}
+	s.GetAfterID()
+	s = &SubIssueRequest{}
+	s.GetAfterID()
+	s = nil
+	s.GetAfterID()
+}
+
+func TestSubIssueRequest_GetBeforeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	s := &SubIssueRequest{BeforeID: &zeroValue}
+	s.GetBeforeID()
+	s = &SubIssueRequest{}
+	s.GetBeforeID()
+	s = nil
+	s.GetBeforeID()
+}
+
+func TestSubIssueRequest_GetReplaceParent(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SubIssueRequest{ReplaceParent: &zeroValue}
+	s.GetReplaceParent()
+	s = &SubIssueRequest{}
+	s.GetReplaceParent()
+	s = nil
+	s.GetReplaceParent()
+}
+
 func TestSubscription_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
