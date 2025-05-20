@@ -8,14 +8,15 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
-// IssuesService handles communication with the issue related
+// SubIssueService handles communication with the sub-issue related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/
-type SubIssuesService service
+// Sub-issues help you group and manage your issues with a parent/child relationship.
+//
+// GitHub API docs: https://docs.github.com/rest/issues/sub-issues
+type SubIssueService service
 
 // Issue represents a GitHub issue on a repository.
 //
@@ -24,226 +25,58 @@ type SubIssuesService service
 // may also return pull requests via this struct. If PullRequestLinks is nil,
 // this is an issue, and if PullRequestLinks is not nil, this is a pull request.
 // The IsPullRequest helper method can be used to check that.
-type SubIssue struct {
-	ID     *int64  `json:"id,omitempty"`
-	Number *int    `json:"number,omitempty"`
-	State  *string `json:"state,omitempty"`
-	// StateReason can be one of: "completed", "not_planned", "reopened".
-	Issue             *Issue     `json:"issue,omitempty"`
-	StateReason       *string    `json:"state_reason,omitempty"`
-	Locked            *bool      `json:"locked,omitempty"`
-	Title             *string    `json:"title,omitempty"`
-	Body              *string    `json:"body,omitempty"`
-	AuthorAssociation *string    `json:"author_association,omitempty"`
-	User              *User      `json:"user,omitempty"`
-	Labels            []*Label   `json:"labels,omitempty"`
-	Assignee          *User      `json:"assignee,omitempty"`
-	Comments          *int       `json:"comments,omitempty"`
-	ClosedAt          *Timestamp `json:"closed_at,omitempty"`
-	CreatedAt         *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt         *Timestamp `json:"updated_at,omitempty"`
-	ClosedBy          *User      `json:"closed_by,omitempty"`
-	URL               *string    `json:"url,omitempty"`
-	HTMLURL           *string    `json:"html_url,omitempty"`
-	CommentsURL       *string    `json:"comments_url,omitempty"`
-	EventsURL         *string    `json:"events_url,omitempty"`
-	LabelsURL         *string    `json:"labels_url,omitempty"`
-	RepositoryURL     *string    `json:"repository_url,omitempty"`
-	Milestone         *Milestone `json:"milestone,omitempty"`
-	// PullRequestLinks  *PullRequestLinks `json:"pull_request,omitempty"`
-	Repository *Repository `json:"repository,omitempty"`
-	Reactions  *Reactions  `json:"reactions,omitempty"`
-	Assignees  []*User     `json:"assignees,omitempty"`
-	NodeID     *string     `json:"node_id,omitempty"`
-	Draft      *bool       `json:"draft,omitempty"`
-	Type       *IssueType  `json:"type,omitempty"`
-
-	// TextMatches is only populated from search results that request text matches
-	// See: search.go and https://docs.github.com/rest/search/#text-match-metadata
-	TextMatches []*TextMatch `json:"text_matches,omitempty"`
-
-	// ActiveLockReason is populated only when LockReason is provided while locking the issue.
-	// Possible values are: "off-topic", "too heated", "resolved", and "spam".
-	ActiveLockReason *string `json:"active_lock_reason,omitempty"`
-}
+type SubIssue Issue
 
 func (i SubIssue) String() string {
 	return Stringify(i)
 }
 
-// // IsPullRequest reports whether the issue is also a pull request. It uses the
-// // method recommended by GitHub's API documentation, which is to check whether
-// // PullRequestLinks is non-nil.
-// func (i SubIssue) IsPullRequest() bool {
-// 	return i.PullRequestLinks != nil
-// }
+// SubIssueListByIssueOptions specifies the optional parameters to the
+// SubIssueService.ListByIssue method.
+type SubIssueListByIssueOptions struct {
+	IssueListByRepoOptions
+}
 
-// IssueRequest represents a request to create/edit an issue.
-// It is separate from Issue above because otherwise Labels
-// and Assignee fail to serialize to the correct JSON.
+// SubIssueRequest represents a request to add, remove, or reprioritize sub-issues.
 type SubIssueRequest struct {
-	Title    *string   `json:"title,omitempty"`
-	Body     *string   `json:"body,omitempty"`
-	Labels   *[]string `json:"labels,omitempty"`
-	Assignee *string   `json:"assignee,omitempty"`
-	State    *string   `json:"state,omitempty"`
-	// StateReason can be 'completed' or 'not_planned'.
-	StateReason *string   `json:"state_reason,omitempty"`
-	Milestone   *int      `json:"milestone,omitempty"`
-	Assignees   *[]string `json:"assignees,omitempty"`
+	SubIssueId    int  `json:"sub_issue_id,omitempty"`   // Required: The ID of the sub-issue
+	AfterId       int  `json:"after_id,omitempty"`       // Optional: Position after this sub-issue ID
+	BeforeId      int  `json:"before_id,omitempty"`      // Optional: Position before this sub-issue ID
+	ReplaceParent bool `json:"replace_parent,omitempty"` // Optional: Whether to replace the existing parent
 }
 
-// IssueListOptions specifies the optional parameters to the IssuesService.List
-// and IssuesService.ListByOrg methods.
-type SubIssueListOptions struct {
-	// Filter specifies which issues to list. Possible values are: assigned,
-	// created, mentioned, subscribed, all. Default is "assigned".
-	Filter string `url:"filter,omitempty"`
-
-	// State filters issues based on their state. Possible values are: open,
-	// closed, all. Default is "open".
-	State string `url:"state,omitempty"`
-
-	// Labels filters issues based on their label.
-	Labels []string `url:"labels,comma,omitempty"`
-
-	// Sort specifies how to sort issues. Possible values are: created, updated,
-	// and comments. Default value is "created".
-	Sort string `url:"sort,omitempty"`
-
-	// Direction in which to sort issues. Possible values are: asc, desc.
-	// Default is "desc".
-	Direction string `url:"direction,omitempty"`
-
-	// Since filters issues by time.
-	Since time.Time `url:"since,omitempty"`
-
-	ListOptions
-}
-
-// PullRequestLinks object is added to the Issue object when it's an issue included
-// in the IssueCommentEvent webhook payload, if the webhook is fired by a comment on a PR.
-// type PullRequestLinks struct {
-// 	URL      *string    `json:"url,omitempty"`
-// 	HTMLURL  *string    `json:"html_url,omitempty"`
-// 	DiffURL  *string    `json:"diff_url,omitempty"`
-// 	PatchURL *string    `json:"patch_url,omitempty"`
-// 	MergedAt *Timestamp `json:"merged_at,omitempty"`
-// }
-
-// IssueType represents the type of issue.
-// For now it shows up when receiveing an Issue event.
-type SubIssueType struct {
-	ID          *int64     `json:"id,omitempty"`
-	NodeID      *string    `json:"node_id,omitempty"`
-	Name        *string    `json:"name,omitempty"`
-	Description *string    `json:"description,omitempty"`
-	Color       *string    `json:"color,omitempty"`
-	CreatedAt   *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
-}
-
-// List the issues for the authenticated user. If all is true, list issues
-// across all the user's visible repositories including owned, member, and
-// organization repositories; if false, list only owned and member
-// repositories.
+// Remove a sub-issue from the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#list-issues-assigned-to-the-authenticated-user
-// GitHub API docs: https://docs.github.com/rest/issues/issues#list-user-account-issues-assigned-to-the-authenticated-user
-//
-//meta:operation GET /issues
-//meta:operation GET /user/issues
-func (s *SubIssuesService) List(ctx context.Context, all bool, opts *SubIssueListOptions) ([]*SubIssue, *Response, error) {
-	var u string
-	if all {
-		u = "issues"
-	} else {
-		u = "user/issues"
-	}
-	return s.listSubIssues(ctx, u, opts)
-}
+// GitHub API docs: https://docs.github.com/en/rest/issues/sub-issues?apiVersion=2022-11-28#remove-sub-issue
 
-// ListByOrg fetches the issues in the specified organization for the
-// authenticated user.
-//
-// GitHub API docs: https://docs.github.com/rest/issues/issues#list-organization-issues-assigned-to-the-authenticated-user
-//
-//meta:operation GET /orgs/{org}/issues
-func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueListOptions) ([]*Issue, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/issues", org)
-	return s.listIssues(ctx, u, opts)
-}
+//meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
+func (s *SubIssueService) Remove(ctx context.Context, owner string, repo string, subIssueNumber int, subIssue *SubIssueRequest) (*SubIssue, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues", owner, repo, subIssueNumber)
 
-func (s *IssuesService) listSubIssues(ctx context.Context, u string, opts *IssueListOptions) ([]*Issue, *Response, error) {
-	u, err := addOptions(u, opts)
+	req, err := s.client.NewRequest("DELETE", u, subIssue)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeV3)
 
-	// TODO: remove custom Accept header when this API fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
-	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	si := new(SubIssue)
+	resp, err := s.client.Do(ctx, req, si)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return issues, resp, nil
+	return si, resp, nil
 }
 
-// IssueListByRepoOptions specifies the optional parameters to the
-// IssuesService.ListByRepo method.
-type IssueListByRepoOptions struct {
-	// Milestone limits issues for the specified milestone. Possible values are
-	// a milestone number, "none" for issues with no milestone, "*" for issues
-	// with any milestone.
-	Milestone string `url:"milestone,omitempty"`
-
-	// State filters issues based on their state. Possible values are: open,
-	// closed, all. Default is "open".
-	State string `url:"state,omitempty"`
-
-	// Assignee filters issues based on their assignee. Possible values are a
-	// user name, "none" for issues that are not assigned, "*" for issues with
-	// any assigned user.
-	Assignee string `url:"assignee,omitempty"`
-
-	// Creator filters issues based on their creator.
-	Creator string `url:"creator,omitempty"`
-
-	// Mentioned filters issues to those mentioned a specific user.
-	Mentioned string `url:"mentioned,omitempty"`
-
-	// Labels filters issues based on their label.
-	Labels []string `url:"labels,omitempty,comma"`
-
-	// Sort specifies how to sort issues. Possible values are: created, updated,
-	// and comments. Default value is "created".
-	Sort string `url:"sort,omitempty"`
-
-	// Direction in which to sort issues. Possible values are: asc, desc.
-	// Default is "desc".
-	Direction string `url:"direction,omitempty"`
-
-	// Since filters issues by time.
-	Since time.Time `url:"since,omitempty"`
-
-	ListOptions
-}
-
-// ListByRepo lists the issues for the specified repository.
+// ListByIssue lists all sub-issues for the specified issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#list-repository-issues
-//
-//meta:operation GET /repos/{owner}/{repo}/issues
-func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo string, opts *IssueListByRepoOptions) ([]*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
+// GitHub API docs: https://docs.github.com/en/rest/issues/sub-issues?apiVersion=2022-11-28#list-sub-issues
+
+//meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
+func (s *SubIssueService) ListByIssue(ctx context.Context, owner string, repo string, issueNumber int, opts *IssueListOptions) ([]*SubIssue, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues", owner, repo, issueNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -255,143 +88,60 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo strin
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
-	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	var subIssues []*SubIssue
+	resp, err := s.client.Do(ctx, req, &subIssues)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return issues, resp, nil
+	return subIssues, resp, nil
 }
 
-// Get a single issue.
+// Add adds a sub-issue to the specified issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#get-an-issue
+// The sub-issue to be added must belong to the same repository owner as the parent issue.
+// To replace the existing parent of a sub-issue, set replaceParent to true.
 //
-//meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}
-func (s *IssuesService) Get(ctx context.Context, owner string, repo string, number int) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
-	req, err := s.client.NewRequest("GET", u, nil)
+// GitHub API docs: https://docs.github.com/en/rest/issues/sub-issues?apiVersion=2022-11-28#add-sub-issue
+//
+//meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
+func (s *SubIssueService) Add(ctx context.Context, owner string, repo string, issueNumber int, subIssue *SubIssueRequest) (*SubIssue, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues", owner, repo, issueNumber)
+	req, err := s.client.NewRequest("POST", u, subIssue)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
-	issue := new(Issue)
-	resp, err := s.client.Do(ctx, req, issue)
+	si := new(SubIssue)
+	resp, err := s.client.Do(ctx, req, si)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return issue, resp, nil
+	return si, resp, nil
 }
 
-// Create a new issue on the specified repository.
+// Reprioritize changes a sub-issue's priority to a different position in the parent list.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#create-an-issue
+// Either afterId or beforeId must be specified to determine the new position of the sub-issue.
 //
-//meta:operation POST /repos/{owner}/{repo}/issues
-func (s *IssuesService) Create(ctx context.Context, owner string, repo string, issue *IssueRequest) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
-	req, err := s.client.NewRequest("POST", u, issue)
+// GitHub API docs: https://docs.github.com/en/rest/issues/sub-issues?apiVersion=2022-11-28#reprioritize-sub-issue
+//
+//meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority
+func (s *SubIssueService) Reprioritize(ctx context.Context, owner string, repo string, issueNumber int, subIssue *SubIssueRequest) (*SubIssue, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues/priority", owner, repo, issueNumber)
+	req, err := s.client.NewRequest("POST", u, subIssue)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	i := new(Issue)
-	resp, err := s.client.Do(ctx, req, i)
+	si := new(SubIssue)
+	resp, err := s.client.Do(ctx, req, si)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return i, resp, nil
-}
-
-// Edit (update) an issue.
-//
-// GitHub API docs: https://docs.github.com/rest/issues/issues#update-an-issue
-//
-//meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}
-func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
-	req, err := s.client.NewRequest("PATCH", u, issue)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	i := new(Issue)
-	resp, err := s.client.Do(ctx, req, i)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return i, resp, nil
-}
-
-// RemoveMilestone removes a milestone from an issue.
-//
-// This is a helper method to explicitly update an issue with a `null` milestone, thereby removing it.
-//
-// GitHub API docs: https://docs.github.com/rest/issues/issues#update-an-issue
-//
-//meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}
-func (s *IssuesService) RemoveMilestone(ctx context.Context, owner, repo string, issueNumber int) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, issueNumber)
-	req, err := s.client.NewRequest("PATCH", u, &struct {
-		Milestone *Milestone `json:"milestone"`
-	}{})
-	if err != nil {
-		return nil, nil, err
-	}
-
-	i := new(Issue)
-	resp, err := s.client.Do(ctx, req, i)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return i, resp, nil
-}
-
-// LockIssueOptions specifies the optional parameters to the
-// IssuesService.Lock method.
-type LockIssueOptions struct {
-	// LockReason specifies the reason to lock this issue.
-	// Providing a lock reason can help make it clearer to contributors why an issue
-	// was locked. Possible values are: "off-topic", "too heated", "resolved", and "spam".
-	LockReason string `json:"lock_reason,omitempty"`
-}
-
-// Lock an issue's conversation.
-//
-// GitHub API docs: https://docs.github.com/rest/issues/issues#lock-an-issue
-//
-//meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/lock
-func (s *IssuesService) Lock(ctx context.Context, owner string, repo string, number int, opts *LockIssueOptions) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
-	req, err := s.client.NewRequest("PUT", u, opts)
-	if err != nil {
-		return nil, err
-	}
-
-	return s.client.Do(ctx, req, nil)
-}
-
-// Unlock an issue's conversation.
-//
-// GitHub API docs: https://docs.github.com/rest/issues/issues#unlock-an-issue
-//
-//meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock
-func (s *IssuesService) Unlock(ctx context.Context, owner string, repo string, number int) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
-	req, err := s.client.NewRequest("DELETE", u, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return s.client.Do(ctx, req, nil)
+	return si, resp, nil
 }
