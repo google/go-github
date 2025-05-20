@@ -38,10 +38,10 @@ type SubIssueListByIssueOptions struct {
 
 // SubIssueRequest represents a request to add, remove, or reprioritize sub-issues.
 type SubIssueRequest struct {
-	SubIssueID    int  `json:"sub_issue_id,omitempty"`   // Required: The ID of the sub-issue
-	AfterID       int  `json:"after_id,omitempty"`       // Optional: Position after this sub-issue ID
-	BeforeID      int  `json:"before_id,omitempty"`      // Optional: Position before this sub-issue ID
-	ReplaceParent bool `json:"replace_parent,omitempty"` // Optional: Whether to replace the existing parent
+	SubIssueID    int64  `json:"sub_issue_id"`   // Required: The ID of the sub-issue
+	AfterID       *int64  `json:"after_id,omitempty"`       // Optional: Position after this sub-issue ID
+	BeforeID      *int64  `json:"before_id,omitempty"`      // Optional: Position before this sub-issue ID
+	ReplaceParent *bool `json:"replace_parent,omitempty"` // Optional: Whether to replace the existing parent
 }
 
 // Remove a sub-issue from the specified repository.
