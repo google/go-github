@@ -107,7 +107,7 @@ func (s *SubIssueService) ListByIssue(ctx context.Context, owner, repo string, i
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
 func (s *SubIssueService) Add(ctx context.Context, owner string, repo string, issueNumber int, subIssue *SubIssueRequest) (*SubIssue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues", owner, repo, issueNumber)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issues", owner, repo, issueNumber)
 	req, err := s.client.NewRequest("POST", u, subIssue)
 	if err != nil {
 		return nil, nil, err
