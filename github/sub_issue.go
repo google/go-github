@@ -49,7 +49,7 @@ type SubIssueRequest struct {
 // GitHub API docs: https://docs.github.com/rest/issues/sub-issues#remove-sub-issue
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/sub_issue
-func (s *SubIssueService) Remove(ctx context.Context, owner, repo string, subIssueNumber int64, subIssue *SubIssueRequest) (*SubIssue, *Response, error) {
+func (s *SubIssueService) Remove(ctx context.Context, owner, repo string, subIssueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issues", owner, repo, subIssueNumber)
 
 	req, err := s.client.NewRequest("DELETE", u, subIssue)
@@ -75,7 +75,7 @@ func (s *SubIssueService) Remove(ctx context.Context, owner, repo string, subIss
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
 func (s *SubIssueService) ListByIssue(ctx context.Context, owner, repo string, issueNumber int64, opts *IssueListOptions) ([]*SubIssue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues", owner, repo, issueNumber)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issues", owner, repo, issueNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -106,7 +106,7 @@ func (s *SubIssueService) ListByIssue(ctx context.Context, owner, repo string, i
 // GitHub API docs: https://docs.github.com/rest/issues/sub-issues#add-sub-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
-func (s *SubIssueService) Add(ctx context.Context, owner string, repo string, issueNumber int, subIssue *SubIssueRequest) (*SubIssue, *Response, error) {
+func (s *SubIssueService) Add(ctx context.Context, owner, repo string, issueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issues", owner, repo, issueNumber)
 	req, err := s.client.NewRequest("POST", u, subIssue)
 	if err != nil {
@@ -129,8 +129,8 @@ func (s *SubIssueService) Add(ctx context.Context, owner string, repo string, is
 // GitHub API docs: https://docs.github.com/rest/issues/sub-issues#reprioritize-sub-issue
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority
-func (s *SubIssueService) Reprioritize(ctx context.Context, owner, repo string, issueNumber int64, subIssue *SubIssueRequest) (*SubIssue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues/priority", owner, repo, issueNumber)
+func (s *SubIssueService) Reprioritize(ctx context.Context, owner, repo string, issueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issues/priority", owner, repo, issueNumber)
 	req, err := s.client.NewRequest("PATCH", u, subIssue)
 	if err != nil {
 		return nil, nil, err
