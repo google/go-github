@@ -129,7 +129,7 @@ func (s *SubIssueService) Add(ctx context.Context, owner string, repo string, is
 // GitHub API docs: https://docs.github.com/rest/issues/sub-issues#reprioritize-sub-issue
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority
-func (s *SubIssueService) Reprioritize(ctx context.Context, owner string, repo string, issueNumber int, subIssue *SubIssueRequest) (*SubIssue, *Response, error) {
+func (s *SubIssueService) Reprioritize(ctx context.Context, owner, repo string, issueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues/priority", owner, repo, issueNumber)
 	req, err := s.client.NewRequest("PATCH", u, subIssue)
 	if err != nil {
