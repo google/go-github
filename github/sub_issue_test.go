@@ -19,7 +19,7 @@ func TestSubIssuesService_Add(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SubIssueRequest{SubIssueId: 42}
+	input := &SubIssueRequest{SubIssueID: 42}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues", func(w http.ResponseWriter, r *http.Request) {
 		v := new(SubIssueRequest)
@@ -73,7 +73,7 @@ func TestSubIssuesService_Remove(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SubIssueRequest{SubIssueId: 42}
+	input := &SubIssueRequest{SubIssueID: 42}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues", func(w http.ResponseWriter, r *http.Request) {
 		testHeader(t, r, "Accept", mediaTypeV3)
@@ -105,16 +105,16 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SubIssueRequest{SubIssueId: 42, AfterId: 5}
+	input := &SubIssueRequest{SubIssueID: 42, AfterID: 5}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues/priority", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
+		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeV3)
 
 		v := new(SubIssueRequest)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-		testMethod(t, r, "POST")
+		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}

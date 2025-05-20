@@ -18,8 +18,7 @@ import (
 // GitHub API docs: https://docs.github.com/rest/issues/sub-issues
 type SubIssueService service
 
-// Issue represents a GitHub issue on a repository.
-//
+// SubIssue represents a GitHub sub-issue on a repository.
 // Note: As far as the GitHub API is concerned, every pull request is an issue,
 // but not every issue is a pull request. Some endpoints, events, and webhooks
 // may also return pull requests via this struct. If PullRequestLinks is nil,
@@ -39,17 +38,17 @@ type SubIssueListByIssueOptions struct {
 
 // SubIssueRequest represents a request to add, remove, or reprioritize sub-issues.
 type SubIssueRequest struct {
-	SubIssueId    int  `json:"sub_issue_id,omitempty"`   // Required: The ID of the sub-issue
-	AfterId       int  `json:"after_id,omitempty"`       // Optional: Position after this sub-issue ID
-	BeforeId      int  `json:"before_id,omitempty"`      // Optional: Position before this sub-issue ID
+	SubIssueID    int  `json:"sub_issue_id,omitempty"`   // Required: The ID of the sub-issue
+	AfterID       int  `json:"after_id,omitempty"`       // Optional: Position after this sub-issue ID
+	BeforeID      int  `json:"before_id,omitempty"`      // Optional: Position before this sub-issue ID
 	ReplaceParent bool `json:"replace_parent,omitempty"` // Optional: Whether to replace the existing parent
 }
 
 // Remove a sub-issue from the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/issues/sub-issues?apiVersion=2022-11-28#remove-sub-issue
-
-//meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
+// GitHub API docs: https://docs.github.com/rest/issues/sub-issues#remove-sub-issue
+//
+//meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/sub_issue
 func (s *SubIssueService) Remove(ctx context.Context, owner string, repo string, subIssueNumber int, subIssue *SubIssueRequest) (*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues", owner, repo, subIssueNumber)
 
@@ -72,8 +71,8 @@ func (s *SubIssueService) Remove(ctx context.Context, owner string, repo string,
 
 // ListByIssue lists all sub-issues for the specified issue.
 //
-// GitHub API docs: https://docs.github.com/en/rest/issues/sub-issues?apiVersion=2022-11-28#list-sub-issues
-
+// GitHub API docs: https://docs.github.com/rest/issues/sub-issues#list-sub-issues
+//
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
 func (s *SubIssueService) ListByIssue(ctx context.Context, owner string, repo string, issueNumber int, opts *IssueListOptions) ([]*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues", owner, repo, issueNumber)
@@ -104,7 +103,7 @@ func (s *SubIssueService) ListByIssue(ctx context.Context, owner string, repo st
 // The sub-issue to be added must belong to the same repository owner as the parent issue.
 // To replace the existing parent of a sub-issue, set replaceParent to true.
 //
-// GitHub API docs: https://docs.github.com/en/rest/issues/sub-issues?apiVersion=2022-11-28#add-sub-issue
+// GitHub API docs: https://docs.github.com/rest/issues/sub-issues#add-sub-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
 func (s *SubIssueService) Add(ctx context.Context, owner string, repo string, issueNumber int, subIssue *SubIssueRequest) (*SubIssue, *Response, error) {
@@ -127,12 +126,12 @@ func (s *SubIssueService) Add(ctx context.Context, owner string, repo string, is
 //
 // Either afterId or beforeId must be specified to determine the new position of the sub-issue.
 //
-// GitHub API docs: https://docs.github.com/en/rest/issues/sub-issues?apiVersion=2022-11-28#reprioritize-sub-issue
+// GitHub API docs: https://docs.github.com/rest/issues/sub-issues#reprioritize-sub-issue
 //
-//meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority
+//meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority
 func (s *SubIssueService) Reprioritize(ctx context.Context, owner string, repo string, issueNumber int, subIssue *SubIssueRequest) (*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/sub_issues/priority", owner, repo, issueNumber)
-	req, err := s.client.NewRequest("POST", u, subIssue)
+	req, err := s.client.NewRequest("PATCH", u, subIssue)
 	if err != nil {
 		return nil, nil, err
 	}
