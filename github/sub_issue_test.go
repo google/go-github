@@ -60,7 +60,6 @@ func TestSubIssuesService_ListByIssue(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeV3)
 
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
@@ -99,7 +98,6 @@ func TestSubIssuesService_Remove(t *testing.T) {
 	input := &SubIssueRequest{SubIssueID: 42}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues", func(w http.ResponseWriter, r *http.Request) {
-		testHeader(t, r, "Accept", mediaTypeV3)
 
 		v := new(SubIssueRequest)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
@@ -141,7 +139,6 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues/priority", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeV3)
 
 		v := new(SubIssueRequest)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))

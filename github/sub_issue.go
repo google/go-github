@@ -57,9 +57,6 @@ func (s *SubIssueService) Remove(ctx context.Context, owner, repo string, subIss
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeV3)
-
 	si := new(SubIssue)
 	resp, err := s.client.Do(ctx, req, si)
 	if err != nil {
@@ -85,9 +82,6 @@ func (s *SubIssueService) ListByIssue(ctx context.Context, owner, repo string, i
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeV3)
 
 	var subIssues []*SubIssue
 	resp, err := s.client.Do(ctx, req, &subIssues)
