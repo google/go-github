@@ -34,7 +34,7 @@ func TestSubIssuesService_Add(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.SubIssue.Add(ctx, "o", "r", 1, input)
+	got, _, err := client.SubIssue.Add(ctx, "o", "r", 1, *input)
 	if err != nil {
 		t.Errorf("SubIssues.Add returned error: %v", err)
 	}
@@ -46,7 +46,7 @@ func TestSubIssuesService_Add(t *testing.T) {
 
 	const methodName = "Add"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.SubIssue.Add(ctx, "o", "r", 1, input)
+		got, resp, err := client.SubIssue.Add(ctx, "o", "r", 1, *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -113,7 +113,7 @@ func TestSubIssuesService_Remove(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.SubIssue.Remove(ctx, "o", "r", 1, input)
+	got, _, err := client.SubIssue.Remove(ctx, "o", "r", 1, *input)
 	if err != nil {
 		t.Errorf("SubIssues.Remove returned error: %v", err)
 	}
@@ -125,7 +125,7 @@ func TestSubIssuesService_Remove(t *testing.T) {
 
 	const methodName = "Remove"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.SubIssue.Remove(ctx, "o", "r", 1, input)
+		got, resp, err := client.SubIssue.Remove(ctx, "o", "r", 1, *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -155,7 +155,7 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.SubIssue.Reprioritize(ctx, "o", "r", 1, input)
+	got, _, err := client.SubIssue.Reprioritize(ctx, "o", "r", 1, *input)
 	if err != nil {
 		t.Errorf("SubIssues.Reprioritize returned error: %v", err)
 	}
@@ -168,7 +168,7 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 	const methodName = "Reprioritize"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.SubIssue.Reprioritize(ctx, "o", "r", 1, input)
+		got, resp, err := client.SubIssue.Reprioritize(ctx, "o", "r", 1, *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
