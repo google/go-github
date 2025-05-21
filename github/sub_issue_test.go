@@ -98,7 +98,6 @@ func TestSubIssuesService_Remove(t *testing.T) {
 	input := &SubIssueRequest{SubIssueID: 42}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues", func(w http.ResponseWriter, r *http.Request) {
-
 		v := new(SubIssueRequest)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
