@@ -25942,6 +25942,30 @@ func (s *StatusEvent) GetUpdatedAt() Timestamp {
 	return *s.UpdatedAt
 }
 
+// GetAfterID returns the AfterID field if it's non-nil, zero value otherwise.
+func (s *SubIssueRequest) GetAfterID() int64 {
+	if s == nil || s.AfterID == nil {
+		return 0
+	}
+	return *s.AfterID
+}
+
+// GetBeforeID returns the BeforeID field if it's non-nil, zero value otherwise.
+func (s *SubIssueRequest) GetBeforeID() int64 {
+	if s == nil || s.BeforeID == nil {
+		return 0
+	}
+	return *s.BeforeID
+}
+
+// GetReplaceParent returns the ReplaceParent field if it's non-nil, zero value otherwise.
+func (s *SubIssueRequest) GetReplaceParent() bool {
+	if s == nil || s.ReplaceParent == nil {
+		return false
+	}
+	return *s.ReplaceParent
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (s *Subscription) GetCreatedAt() Timestamp {
 	if s == nil || s.CreatedAt == nil {
