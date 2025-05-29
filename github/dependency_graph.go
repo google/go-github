@@ -47,7 +47,7 @@ type ExternalRef struct {
 // Relationship represents a relationship between two packages in the SBOM.
 type Relationship struct {
 	// Element ID
-	SpdxElementId *string `json:"spdxElementId,omitempty"`
+	SpdxElementID *string `json:"spdxElementId,omitempty"`
 
 	// Related Element ID
 	RelatedSpdxElement *string `json:"relatedSpdxElement,omitempty"`

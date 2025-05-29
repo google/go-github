@@ -26965,6 +26965,39 @@ func TestRegistryPackageEvent_GetSender(tt *testing.T) {
 	r.GetSender()
 }
 
+func TestRelationship_GetRelatedSpdxElement(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &Relationship{RelatedSpdxElement: &zeroValue}
+	r.GetRelatedSpdxElement()
+	r = &Relationship{}
+	r.GetRelatedSpdxElement()
+	r = nil
+	r.GetRelatedSpdxElement()
+}
+
+func TestRelationship_GetRelationshipType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &Relationship{RelationshipType: &zeroValue}
+	r.GetRelationshipType()
+	r = &Relationship{}
+	r.GetRelationshipType()
+	r = nil
+	r.GetRelationshipType()
+}
+
+func TestRelationship_GetSpdxElementID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &Relationship{SpdxElementID: &zeroValue}
+	r.GetSpdxElementID()
+	r = &Relationship{}
+	r.GetSpdxElementID()
+	r = nil
+	r.GetSpdxElementID()
+}
+
 func TestReleaseAsset_GetBrowserDownloadURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
