@@ -28,12 +28,32 @@ type CreationInfo struct {
 type RepoDependencies struct {
 	SPDXID *string `json:"SPDXID,omitempty"`
 	// Package name
-	Name             *string `json:"name,omitempty"`
-	VersionInfo      *string `json:"versionInfo,omitempty"`
-	DownloadLocation *string `json:"downloadLocation,omitempty"`
-	FilesAnalyzed    *bool   `json:"filesAnalyzed,omitempty"`
-	LicenseConcluded *string `json:"licenseConcluded,omitempty"`
-	LicenseDeclared  *string `json:"licenseDeclared,omitempty"`
+	Name             *string        `json:"name,omitempty"`
+	VersionInfo      *string        `json:"versionInfo,omitempty"`
+	DownloadLocation *string        `json:"downloadLocation,omitempty"`
+	FilesAnalyzed    *bool          `json:"filesAnalyzed,omitempty"`
+	LicenseConcluded *string        `json:"licenseConcluded,omitempty"`
+	LicenseDeclared  *string        `json:"licenseDeclared,omitempty"`
+	ExternalRefs     []*ExternalRef `json:"externalRefs"`
+}
+
+// ExternalRef represents an external reference (e.g., PURL/SWID/CPE) for a package in the SBOM.
+type ExternalRef struct {
+	ReferenceCategory string `json:"referenceCategory"`
+	ReferenceType     string `json:"referenceType"`
+	ReferenceLocator  string `json:"referenceLocator"`
+}
+
+// Relationship represents a relationship between two packages in the SBOM.
+type Relationship struct {
+	// Element ID
+	SpdxElementId *string `json:"spdxElementId,omitempty"`
+
+	// Related Element ID
+	RelatedSpdxElement *string `json:"relatedSpdxElement,omitempty"`
+
+	// Relationship type, e.g., "DEPENDS_ON", "CONTAINS", etc.
+	RelationshipType *string `json:"relationshipType,omitempty"`
 }
 
 // SBOMInfo represents a software bill of materials (SBOM) using SPDX.
@@ -53,6 +73,9 @@ type SBOMInfo struct {
 
 	// List of packages dependencies
 	Packages []*RepoDependencies `json:"packages,omitempty"`
+
+	// List of relationships between packages
+	Relationships []*Relationship `json:"relationships,omitempty"`
 }
 
 func (s SBOM) String() string {
