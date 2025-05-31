@@ -20934,30 +20934,6 @@ func (r *RegistryPackageEvent) GetSender() *User {
 	return r.Sender
 }
 
-// GetRelatedSpdxElement returns the RelatedSpdxElement field if it's non-nil, zero value otherwise.
-func (r *Relationship) GetRelatedSpdxElement() string {
-	if r == nil || r.RelatedSpdxElement == nil {
-		return ""
-	}
-	return *r.RelatedSpdxElement
-}
-
-// GetRelationshipType returns the RelationshipType field if it's non-nil, zero value otherwise.
-func (r *Relationship) GetRelationshipType() string {
-	if r == nil || r.RelationshipType == nil {
-		return ""
-	}
-	return *r.RelationshipType
-}
-
-// GetSpdxElementID returns the SpdxElementID field if it's non-nil, zero value otherwise.
-func (r *Relationship) GetSpdxElementID() string {
-	if r == nil || r.SpdxElementID == nil {
-		return ""
-	}
-	return *r.SpdxElementID
-}
-
 // GetBrowserDownloadURL returns the BrowserDownloadURL field if it's non-nil, zero value otherwise.
 func (r *ReleaseAsset) GetBrowserDownloadURL() string {
 	if r == nil || r.BrowserDownloadURL == nil {

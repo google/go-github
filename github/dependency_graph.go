@@ -64,16 +64,16 @@ type PackageExternalRef struct {
 type SBOMRelationship struct {
 	// SPDXElementID is the identifier of the SPDX element that has a relationship.
 	// Example: "SPDXRef-github-interlynk-io-sbomqs-main-f43c98"
-	SPDXElementID *string `json:"spdxElementId"`
+	SPDXElementID string `json:"spdxElementId"`
 
 	// RelatedSpdxElement is the identifier of the related SPDX element.
 	// Example: "SPDXRef-golang-github.comspf13-cobra-1.8.1-75c946"
-	RelatedSPDXElement *string `json:"relatedSpdxElement"`
+	RelatedSPDXElement string `json:"relatedSpdxElement"`
 
 	// RelationshipType describes the type of relationship between the two elements.
 	// Such as "DEPENDS_ON", "DESCRIBES", "CONTAINS", etc., as defined by SPDX 2.3.
 	// Example: "DEPENDS_ON", "CONTAINS", "DESCRIBES", etc.
-	RelationshipType *string `json:"relationshipType"`
+	RelationshipType string `json:"relationshipType"`
 }
 
 // SBOMInfo represents a software bill of materials (SBOM) using SPDX.
