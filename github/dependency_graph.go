@@ -37,7 +37,7 @@ type RepoDependencies struct {
 	ExternalRefs     []*PackageExternalRef `json:"externalRefs,omitempty"`
 }
 
-// ExternalRef allows an Package to reference an external sources of additional information,
+// PackageExternalRef allows an Package to reference an external sources of additional information,
 // like asset identifiers, or downloadable content that are relevant to the package,
 // Example for identifiers (e.g., PURL/SWID/CPE) for a package in the SBOM.
 // https://spdx.github.io/spdx-spec/v2.3/package-information/#721-external-reference-field
