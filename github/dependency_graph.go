@@ -28,20 +28,20 @@ type CreationInfo struct {
 type RepoDependencies struct {
 	SPDXID *string `json:"SPDXID,omitempty"`
 	// Package name
-	Name             *string        `json:"name,omitempty"`
-	VersionInfo      *string        `json:"versionInfo,omitempty"`
-	DownloadLocation *string        `json:"downloadLocation,omitempty"`
-	FilesAnalyzed    *bool          `json:"filesAnalyzed,omitempty"`
-	LicenseConcluded *string        `json:"licenseConcluded,omitempty"`
-	LicenseDeclared  *string        `json:"licenseDeclared,omitempty"`
-	ExternalRefs     []*ExternalRef `json:"externalRefs,omitempty"`
+	Name             *string               `json:"name,omitempty"`
+	VersionInfo      *string               `json:"versionInfo,omitempty"`
+	DownloadLocation *string               `json:"downloadLocation,omitempty"`
+	FilesAnalyzed    *bool                 `json:"filesAnalyzed,omitempty"`
+	LicenseConcluded *string               `json:"licenseConcluded,omitempty"`
+	LicenseDeclared  *string               `json:"licenseDeclared,omitempty"`
+	ExternalRefs     []*PackageExternalRef `json:"externalRefs,omitempty"`
 }
 
 // ExternalRef allows an Package to reference an external sources of additional information,
 // like asset identifiers, or downloadable content that are relevant to the package,
 // Example for identifiers (e.g., PURL/SWID/CPE) for a package in the SBOM.
 // https://spdx.github.io/spdx-spec/v2.3/package-information/#721-external-reference-field
-type ExternalRef struct {
+type PackageExternalRef struct {
 	// ReferenceCategory specifies the external reference categories such
 	// SECURITY", "PACKAGE-MANAGER", "PERSISTENT-ID", or "OTHER"
 	// Example: "PACKAGE-MANAGER"
