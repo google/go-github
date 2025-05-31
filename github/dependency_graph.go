@@ -34,26 +34,46 @@ type RepoDependencies struct {
 	FilesAnalyzed    *bool          `json:"filesAnalyzed,omitempty"`
 	LicenseConcluded *string        `json:"licenseConcluded,omitempty"`
 	LicenseDeclared  *string        `json:"licenseDeclared,omitempty"`
-	ExternalRefs     []*ExternalRef `json:"externalRefs"`
+	ExternalRefs     []*ExternalRef `json:"externalRefs,omitempty"`
 }
 
-// ExternalRef represents an external reference (e.g., PURL/SWID/CPE) for a package in the SBOM.
+// ExternalRef allows an Package to reference an external sources of additional information,
+// like asset identifiers, or downloadable content that are relevant to the package,
+// Example for identifiers (e.g., PURL/SWID/CPE) for a package in the SBOM.
+// https://spdx.github.io/spdx-spec/v2.3/package-information/#721-external-reference-field
 type ExternalRef struct {
+	// ReferenceCategory specifies the external reference categories such
+	// SECURITY", "PACKAGE-MANAGER", "PERSISTENT-ID", or "OTHER"
+	// Example: "PACKAGE-MANAGER"
 	ReferenceCategory string `json:"referenceCategory"`
-	ReferenceType     string `json:"referenceType"`
-	ReferenceLocator  string `json:"referenceLocator"`
+
+	// ReferenceType specifies the type of external reference.
+	// For PACKAGE-MANAGER, it could be "purl"; other types include "cpe22Type", "swid", etc.
+	ReferenceType string `json:"referenceType"`
+
+	// ReferenceLocator is the actual unique identifier or URI for the external reference.
+	// Example: "pkg:golang/github.com/spf13/cobra@1.8.1"
+	ReferenceLocator string `json:"referenceLocator"`
 }
 
-// Relationship represents a relationship between two packages in the SBOM.
+// Relationship provides information about the relationship between two SPDX elements.
+// Element could be packages or files in the SBOM.
+// For example, to represent a relationship between two different Files, between a Package and a File,
+// between two Packages, or between one SPDXDocument and another SPDXDocument.
+// https://spdx.github.io/spdx-spec/v2.3/relationships-between-SPDX-elements/
 type Relationship struct {
-	// Element ID
-	SpdxElementID *string `json:"spdxElementId,omitempty"`
+	// SpdxElementId is the identifier of the SPDX element that has a relationship.
+	// Example: "SPDXRef-github-interlynk-io-sbomqs-main-f43c98"
+	SpdxElementID *string `json:"spdxElementId"`
 
-	// Related Element ID
-	RelatedSpdxElement *string `json:"relatedSpdxElement,omitempty"`
+	// RelatedSpdxElement is the identifier of the related SPDX element.
+	// Example: "SPDXRef-golang-github.comspf13-cobra-1.8.1-75c946"
+	RelatedSpdxElement *string `json:"relatedSpdxElement"`
 
-	// Relationship type, e.g., "DEPENDS_ON", "CONTAINS", etc.
-	RelationshipType *string `json:"relationshipType,omitempty"`
+	// RelationshipType describes the type of relationship between the two elements.
+	// Such as "DEPENDS_ON", "DESCRIBES", "CONTAINS", etc., as defined by SPDX 2.3.
+	// Example: "DEPENDS_ON", "CONTAINS", "DESCRIBES", etc.
+	RelationshipType *string `json:"relationshipType"`
 }
 
 // SBOMInfo represents a software bill of materials (SBOM) using SPDX.
