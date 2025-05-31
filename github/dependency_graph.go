@@ -56,19 +56,19 @@ type ExternalRef struct {
 	ReferenceLocator string `json:"referenceLocator"`
 }
 
-// Relationship provides information about the relationship between two SPDX elements.
+// SBOMRelationship provides information about the relationship between two SPDX elements.
 // Element could be packages or files in the SBOM.
 // For example, to represent a relationship between two different Files, between a Package and a File,
 // between two Packages, or between one SPDXDocument and another SPDXDocument.
 // https://spdx.github.io/spdx-spec/v2.3/relationships-between-SPDX-elements/
-type Relationship struct {
-	// SpdxElementId is the identifier of the SPDX element that has a relationship.
+type SBOMRelationship struct {
+	// SPDXElementID is the identifier of the SPDX element that has a relationship.
 	// Example: "SPDXRef-github-interlynk-io-sbomqs-main-f43c98"
-	SpdxElementID *string `json:"spdxElementId"`
+	SPDXElementID *string `json:"spdxElementId"`
 
 	// RelatedSpdxElement is the identifier of the related SPDX element.
 	// Example: "SPDXRef-golang-github.comspf13-cobra-1.8.1-75c946"
-	RelatedSpdxElement *string `json:"relatedSpdxElement"`
+	RelatedSPDXElement *string `json:"relatedSpdxElement"`
 
 	// RelationshipType describes the type of relationship between the two elements.
 	// Such as "DEPENDS_ON", "DESCRIBES", "CONTAINS", etc., as defined by SPDX 2.3.
@@ -95,7 +95,7 @@ type SBOMInfo struct {
 	Packages []*RepoDependencies `json:"packages,omitempty"`
 
 	// List of relationships between packages
-	Relationships []*Relationship `json:"relationships,omitempty"`
+	Relationships []*SBOMRelationship `json:"relationships,omitempty"`
 }
 
 func (s SBOM) String() string {
