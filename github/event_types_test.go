@@ -5644,7 +5644,7 @@ func TestDeploymentEvent_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &DeploymentEvent{}, "{}")
 
-	l := make(map[string]interface{})
+	l := make(map[string]any)
 	l["key"] = "value"
 
 	jsonMsg, _ := json.Marshal(&l)
@@ -6114,7 +6114,7 @@ func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &DeploymentProtectionRuleEvent{}, "{}")
 
-	l := make(map[string]interface{})
+	l := make(map[string]any)
 	l["key"] = "value"
 
 	jsonMsg, _ := json.Marshal(&l)
@@ -7099,7 +7099,7 @@ func TestDeploymentStatusEvent_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &DeploymentStatusEvent{}, "{}")
 
-	l := make(map[string]interface{})
+	l := make(map[string]any)
 	l["key"] = "value"
 
 	jsonMsg, _ := json.Marshal(&l)
@@ -8399,7 +8399,7 @@ func TestPingEvent_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &PingEvent{}, "{}")
 
-	l := make(map[string]interface{})
+	l := make(map[string]any)
 	l["key"] = "value"
 	hookConfig := new(HookConfig)
 
@@ -8773,7 +8773,7 @@ func TestRepositoryDispatchEvent_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &RepositoryDispatchEvent{}, "{}")
 
-	l := make(map[string]interface{})
+	l := make(map[string]any)
 	l["key"] = "value"
 
 	jsonMsg, _ := json.Marshal(&l)
@@ -11978,7 +11978,7 @@ func TestWorkflowDispatchEvent_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &WorkflowDispatchEvent{}, "{}")
 
-	i := make(map[string]interface{})
+	i := make(map[string]any)
 	i["key"] = "value"
 
 	jsonMsg, _ := json.Marshal(i)
@@ -13343,7 +13343,7 @@ func TestMetaEvent_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &MetaEvent{}, "{}")
 
-	v := make(map[string]interface{})
+	v := make(map[string]any)
 	v["a"] = "b"
 	hookConfig := &HookConfig{
 		ContentType: Ptr("json"),

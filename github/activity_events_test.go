@@ -437,7 +437,7 @@ func TestActivityService_EventParsePayload_typed(t *testing.T) {
 }
 
 // TestEvent_Payload_untyped checks that unrecognized events are parsed to an
-// interface{} value (instead of being discarded or throwing an error), for
+// any value (instead of being discarded or throwing an error), for
 // forward compatibility with new event types.
 func TestActivityService_EventParsePayload_untyped(t *testing.T) {
 	t.Parallel()
@@ -447,7 +447,7 @@ func TestActivityService_EventParsePayload_untyped(t *testing.T) {
 		t.Fatalf("Unmarshal Event returned error: %v", err)
 	}
 
-	want := map[string]interface{}{"field": "val"}
+	want := map[string]any{"field": "val"}
 	got, err := event.ParsePayload()
 	if err != nil {
 		t.Fatalf("ParsePayload returned unexpected error: %v", err)

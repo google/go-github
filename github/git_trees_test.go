@@ -441,7 +441,7 @@ func TestCreateTree_Marshal(t *testing.T) {
 
 	u := &createTree{
 		BaseTree: "bt",
-		Entries:  []interface{}{"e"},
+		Entries:  []any{"e"},
 	}
 
 	want := `{

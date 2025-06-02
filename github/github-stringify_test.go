@@ -1238,6 +1238,8 @@ func TestPackageNPMMetadata_String(t *testing.T) {
 		NodeVersion:         Ptr(""),
 		NPMVersion:          Ptr(""),
 		HasShrinkwrap:       Ptr(false),
+		Maintainers:         []any{nil},
+		Contributors:        []any{nil},
 		Keywords:            []string{""},
 		Files:               []string{""},
 		OS:                  []string{""},
@@ -1249,7 +1251,7 @@ func TestPackageNPMMetadata_String(t *testing.T) {
 		PublishedViaActions: Ptr(false),
 		DeletedByID:         Ptr(int64(0)),
 	}
-	want := `github.PackageNPMMetadata{Name:"", Version:"", NPMUser:"", Description:"", GitHead:"", Homepage:"", License:"", Main:"", ID:"", NodeVersion:"", NPMVersion:"", HasShrinkwrap:false, Keywords:[""], Files:[""], OS:[""], CPU:[""], Readme:"", InstallationCommand:"", ReleaseID:0, CommitOID:"", PublishedViaActions:false, DeletedByID:0}`
+	want := `github.PackageNPMMetadata{Name:"", Version:"", NPMUser:"", Description:"", GitHead:"", Homepage:"", License:"", Main:"", ID:"", NodeVersion:"", NPMVersion:"", HasShrinkwrap:false, Maintainers:[<nil>], Contributors:[<nil>], Keywords:[""], Files:[""], OS:[""], CPU:[""], Readme:"", InstallationCommand:"", ReleaseID:0, CommitOID:"", PublishedViaActions:false, DeletedByID:0}`
 	if got := v.String(); got != want {
 		t.Errorf("PackageNPMMetadata.String = %v, want %v", got, want)
 	}
@@ -1325,6 +1327,7 @@ func TestPackageVersion_String(t *testing.T) {
 		Draft:               Ptr(false),
 		Prerelease:          Ptr(false),
 		ContainerMetadata:   &PackageEventContainerMetadata{},
+		DockerMetadata:      []any{nil},
 		NPMMetadata:         &PackageNPMMetadata{},
 		PackageURL:          Ptr(""),
 		Author:              &User{},
@@ -1332,7 +1335,7 @@ func TestPackageVersion_String(t *testing.T) {
 		InstallationCommand: Ptr(""),
 		DeletedAt:           &Timestamp{},
 	}
-	want := `github.PackageVersion{ID:0, Name:"", URL:"", PackageHTMLURL:"", License:"", Description:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Version:"", Summary:"", BodyHTML:"", Release:github.PackageRelease{}, Manifest:"", HTMLURL:"", TagName:"", TargetCommitish:"", TargetOID:"", Draft:false, Prerelease:false, ContainerMetadata:github.PackageEventContainerMetadata{}, NPMMetadata:github.PackageNPMMetadata{}, PackageURL:"", Author:github.User{}, SourceURL:"", InstallationCommand:"", DeletedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.PackageVersion{ID:0, Name:"", URL:"", PackageHTMLURL:"", License:"", Description:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Version:"", Summary:"", BodyHTML:"", Release:github.PackageRelease{}, Manifest:"", HTMLURL:"", TagName:"", TargetCommitish:"", TargetOID:"", Draft:false, Prerelease:false, ContainerMetadata:github.PackageEventContainerMetadata{}, DockerMetadata:[<nil>], NPMMetadata:github.PackageNPMMetadata{}, PackageURL:"", Author:github.User{}, SourceURL:"", InstallationCommand:"", DeletedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("PackageVersion.String = %v, want %v", got, want)
 	}

@@ -300,7 +300,7 @@ func (s *SearchService) Labels(ctx context.Context, repoID int64, query string, 
 //
 // If searchParameters.Query includes multiple condition, it MUST NOT include "+" as condition separator.
 // For example, querying with "language:c++" and "leveldb", then searchParameters.Query should be "language:c++ leveldb" but not "language:c+++leveldb".
-func (s *SearchService) search(ctx context.Context, searchType string, parameters *searchParameters, opts *SearchOptions, result interface{}) (*Response, error) {
+func (s *SearchService) search(ctx context.Context, searchType string, parameters *searchParameters, opts *SearchOptions, result any) (*Response, error) {
 	params, err := qs.Values(opts)
 	if err != nil {
 		return nil, err

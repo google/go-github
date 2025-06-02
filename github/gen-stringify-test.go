@@ -72,6 +72,8 @@ var (
 				return `[""]`
 			case "[]Scope{ScopeNone}":
 				return `["(no scope)"]`
+			case "[]any{nil}":
+				return "[<nil>]"
 			}
 			log.Fatalf("Unhandled zero value: %q", v)
 			return ""
@@ -311,6 +313,8 @@ func (t *templateData) addIdentSlice(x *ast.Ident, receiverType, fieldName strin
 		zeroValue = "[]bool{false}"
 	case "Scope":
 		zeroValue = "[]Scope{ScopeNone}"
+	case "any":
+		zeroValue = "[]any{nil}"
 	// case "Timestamp":
 	// 	zeroValue = "&Timestamp{}"
 	default:
@@ -377,7 +381,7 @@ func newStructField(receiverType, fieldName, fieldType, zeroValue string, namedS
 	}
 }
 
-func logf(fmt string, args ...interface{}) {
+func logf(fmt string, args ...any) {
 	if *verbose {
 		log.Printf(fmt, args...)
 	}

@@ -1441,6 +1441,17 @@ func TestAuditEntry_GetActorLocation(tt *testing.T) {
 	a.GetActorLocation()
 }
 
+func TestAuditEntry_GetAdditionalFields(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	a := &AuditEntry{AdditionalFields: zeroValue}
+	a.GetAdditionalFields()
+	a = &AuditEntry{}
+	a.GetAdditionalFields()
+	a = nil
+	a.GetAdditionalFields()
+}
+
 func TestAuditEntry_GetBusiness(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -1472,6 +1483,17 @@ func TestAuditEntry_GetCreatedAt(tt *testing.T) {
 	a.GetCreatedAt()
 	a = nil
 	a.GetCreatedAt()
+}
+
+func TestAuditEntry_GetData(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	a := &AuditEntry{Data: zeroValue}
+	a.GetData()
+	a = &AuditEntry{}
+	a.GetData()
+	a = nil
+	a.GetData()
 }
 
 func TestAuditEntry_GetDocumentID(tt *testing.T) {
@@ -7872,6 +7894,17 @@ func TestCreateUserRequest_GetSuspended(tt *testing.T) {
 	c.GetSuspended()
 }
 
+func TestCreateWorkflowDispatchEventRequest_GetInputs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	c := &CreateWorkflowDispatchEventRequest{Inputs: zeroValue}
+	c.GetInputs()
+	c = &CreateWorkflowDispatchEventRequest{}
+	c.GetInputs()
+	c = nil
+	c.GetInputs()
+}
+
 func TestCreationInfo_GetCreated(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -12857,6 +12890,17 @@ func TestHook_GetID(tt *testing.T) {
 	h.GetID()
 	h = nil
 	h.GetID()
+}
+
+func TestHook_GetLastResponse(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	h := &Hook{LastResponse: zeroValue}
+	h.GetLastResponse()
+	h = &Hook{}
+	h.GetLastResponse()
+	h = nil
+	h.GetLastResponse()
 }
 
 func TestHook_GetName(tt *testing.T) {
@@ -26211,6 +26255,17 @@ func TestPushEventRepository_GetCreatedAt(tt *testing.T) {
 	p.GetCreatedAt()
 }
 
+func TestPushEventRepository_GetCustomProperties(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	p := &PushEventRepository{CustomProperties: zeroValue}
+	p.GetCustomProperties()
+	p = &PushEventRepository{}
+	p.GetCustomProperties()
+	p = nil
+	p.GetCustomProperties()
+}
+
 func TestPushEventRepository_GetDefaultBranch(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -27698,6 +27753,17 @@ func TestRepository_GetCreatedAt(tt *testing.T) {
 	r.GetCreatedAt()
 	r = nil
 	r.GetCreatedAt()
+}
+
+func TestRepository_GetCustomProperties(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	r := &Repository{CustomProperties: zeroValue}
+	r.GetCustomProperties()
+	r = &Repository{}
+	r.GetCustomProperties()
+	r = nil
+	r.GetCustomProperties()
 }
 
 func TestRepository_GetDefaultBranch(tt *testing.T) {

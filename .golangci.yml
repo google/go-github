@@ -106,6 +106,7 @@ linters-settings:
       - name: unexported-naming
       - name: unexported-return
       - name: unreachable-code
+      - name: use-any
       - name: var-declaration
       - name: var-naming
 issues:

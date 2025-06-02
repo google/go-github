@@ -536,7 +536,7 @@ func TestBranchHook_Marshal(t *testing.T) {
 		Name:      Ptr("name"),
 		TestURL:   Ptr("testurl"),
 		PingURL:   Ptr("pingurl"),
-		LastResponse: map[string]interface{}{
+		LastResponse: map[string]any{
 			"item": "item",
 		},
 		Config: &HookConfig{ContentType: Ptr("json")},

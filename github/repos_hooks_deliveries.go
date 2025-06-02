@@ -152,7 +152,7 @@ func (s *RepositoriesService) RedeliverHookDelivery(ctx context.Context, owner, 
 
 // ParseRequestPayload parses the request payload. For recognized event types,
 // a value of the corresponding struct type will be returned.
-func (d *HookDelivery) ParseRequestPayload() (interface{}, error) {
+func (d *HookDelivery) ParseRequestPayload() (any, error) {
 	eType, ok := messageToTypeName[d.GetEvent()]
 	if !ok {
 		return nil, fmt.Errorf("unsupported event type %q", d.GetEvent())
