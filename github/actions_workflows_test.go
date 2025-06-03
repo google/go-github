@@ -237,7 +237,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 
 	event := CreateWorkflowDispatchEventRequest{
 		Ref: "d4cfb6e7",
-		Inputs: map[string]interface{}{
+		Inputs: map[string]any{
 			"key": "value",
 		},
 	}
@@ -281,7 +281,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 
 	event := CreateWorkflowDispatchEventRequest{
 		Ref: "d4cfb6e7",
-		Inputs: map[string]interface{}{
+		Inputs: map[string]any{
 			"key": "value",
 		},
 	}
@@ -618,7 +618,7 @@ func TestCreateWorkflowDispatchEventRequest_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &CreateWorkflowDispatchEventRequest{}, "{}")
 
-	inputs := make(map[string]interface{}, 0)
+	inputs := make(map[string]any, 0)
 	inputs["key"] = "value"
 
 	u := &CreateWorkflowDispatchEventRequest{

@@ -1110,6 +1110,14 @@ func (a *AuditEntry) GetActorLocation() *ActorLocation {
 	return a.ActorLocation
 }
 
+// GetAdditionalFields returns the AdditionalFields map if it's non-nil, an empty map otherwise.
+func (a *AuditEntry) GetAdditionalFields() map[string]any {
+	if a == nil || a.AdditionalFields == nil {
+		return map[string]any{}
+	}
+	return a.AdditionalFields
+}
+
 // GetBusiness returns the Business field if it's non-nil, zero value otherwise.
 func (a *AuditEntry) GetBusiness() string {
 	if a == nil || a.Business == nil {
@@ -1132,6 +1140,14 @@ func (a *AuditEntry) GetCreatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *a.CreatedAt
+}
+
+// GetData returns the Data map if it's non-nil, an empty map otherwise.
+func (a *AuditEntry) GetData() map[string]any {
+	if a == nil || a.Data == nil {
+		return map[string]any{}
+	}
+	return a.Data
 }
 
 // GetDocumentID returns the DocumentID field if it's non-nil, zero value otherwise.
@@ -6038,6 +6054,14 @@ func (c *CreateUserRequest) GetSuspended() bool {
 	return *c.Suspended
 }
 
+// GetInputs returns the Inputs map if it's non-nil, an empty map otherwise.
+func (c *CreateWorkflowDispatchEventRequest) GetInputs() map[string]any {
+	if c == nil || c.Inputs == nil {
+		return map[string]any{}
+	}
+	return c.Inputs
+}
+
 // GetCreated returns the Created field if it's non-nil, zero value otherwise.
 func (c *CreationInfo) GetCreated() Timestamp {
 	if c == nil || c.Created == nil {
@@ -9940,6 +9964,14 @@ func (h *Hook) GetID() int64 {
 		return 0
 	}
 	return *h.ID
+}
+
+// GetLastResponse returns the LastResponse map if it's non-nil, an empty map otherwise.
+func (h *Hook) GetLastResponse() map[string]any {
+	if h == nil || h.LastResponse == nil {
+		return map[string]any{}
+	}
+	return h.LastResponse
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -20342,6 +20374,14 @@ func (p *PushEventRepository) GetCreatedAt() Timestamp {
 	return *p.CreatedAt
 }
 
+// GetCustomProperties returns the CustomProperties map if it's non-nil, an empty map otherwise.
+func (p *PushEventRepository) GetCustomProperties() map[string]any {
+	if p == nil || p.CustomProperties == nil {
+		return map[string]any{}
+	}
+	return p.CustomProperties
+}
+
 // GetDefaultBranch returns the DefaultBranch field if it's non-nil, zero value otherwise.
 func (p *PushEventRepository) GetDefaultBranch() string {
 	if p == nil || p.DefaultBranch == nil {
@@ -21484,6 +21524,14 @@ func (r *Repository) GetCreatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *r.CreatedAt
+}
+
+// GetCustomProperties returns the CustomProperties map if it's non-nil, an empty map otherwise.
+func (r *Repository) GetCustomProperties() map[string]any {
+	if r == nil || r.CustomProperties == nil {
+		return map[string]any{}
+	}
+	return r.CustomProperties
 }
 
 // GetDefaultBranch returns the DefaultBranch field if it's non-nil, zero value otherwise.

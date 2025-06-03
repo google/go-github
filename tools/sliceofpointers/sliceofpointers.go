@@ -42,7 +42,7 @@ func (f *SliceOfPointersPlugin) GetLoadMode() string {
 	return register.LoadModeSyntax
 }
 
-func run(pass *analysis.Pass) (interface{}, error) {
+func run(pass *analysis.Pass) (any, error) {
 	for _, file := range pass.Files {
 		ast.Inspect(file, func(n ast.Node) bool {
 			if n == nil {

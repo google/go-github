@@ -61,7 +61,7 @@ func TestEnterpriseService_GetAuditLog(t *testing.T) {
 			Actor:      Ptr("testactor"),
 			CreatedAt:  &Timestamp{timestamp},
 			Org:        Ptr("o"),
-			AdditionalFields: map[string]interface{}{
+			AdditionalFields: map[string]any{
 				"completed_at":    "2021-03-07T00:35:08.000Z",
 				"conclusion":      "success",
 				"event":           "schedule",

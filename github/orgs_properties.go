@@ -44,8 +44,8 @@ type RepoCustomPropertyValue struct {
 
 // CustomPropertyValue represents a custom property value.
 type CustomPropertyValue struct {
-	PropertyName string      `json:"property_name"`
-	Value        interface{} `json:"value"`
+	PropertyName string `json:"property_name"`
+	Value        any    `json:"value"`
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
@@ -66,7 +66,7 @@ func (cpv *CustomPropertyValue) UnmarshalJSON(data []byte) error {
 		cpv.Value = nil
 	case string:
 		cpv.Value = v
-	case []interface{}:
+	case []any:
 		strSlice := make([]string, len(v))
 		for i, item := range v {
 			str, ok := item.(string)

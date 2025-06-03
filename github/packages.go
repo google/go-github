@@ -63,7 +63,7 @@ type PackageVersion struct {
 	Draft               *bool                          `json:"draft,omitempty"`
 	Prerelease          *bool                          `json:"prerelease,omitempty"`
 	ContainerMetadata   *PackageEventContainerMetadata `json:"container_metadata,omitempty"`
-	DockerMetadata      []interface{}                  `json:"docker_metadata,omitempty"`
+	DockerMetadata      []any                          `json:"docker_metadata,omitempty"`
 	NPMMetadata         *PackageNPMMetadata            `json:"npm_metadata,omitempty"`
 	NugetMetadata       []*PackageNugetMetadata        `json:"nuget_metadata,omitempty"`
 	RubyMetadata        map[string]any                 `json:"ruby_metadata,omitempty"`
@@ -296,8 +296,8 @@ type PackageNPMMetadata struct {
 	NodeVersion          *string           `json:"node_version,omitempty"`
 	NPMVersion           *string           `json:"npm_version,omitempty"`
 	HasShrinkwrap        *bool             `json:"has_shrinkwrap,omitempty"`
-	Maintainers          []interface{}     `json:"maintainers,omitempty"`
-	Contributors         []interface{}     `json:"contributors,omitempty"`
+	Maintainers          []any             `json:"maintainers,omitempty"`
+	Contributors         []any             `json:"contributors,omitempty"`
 	Engines              map[string]string `json:"engines,omitempty"`
 	Keywords             []string          `json:"keywords,omitempty"`
 	Files                []string          `json:"files,omitempty"`

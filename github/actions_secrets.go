@@ -23,8 +23,8 @@ type PublicKey struct {
 // do not error out when unmarshaling.
 func (p *PublicKey) UnmarshalJSON(data []byte) error {
 	var pk struct {
-		KeyID interface{} `json:"key_id"`
-		Key   *string     `json:"key"`
+		KeyID any     `json:"key_id"`
+		Key   *string `json:"key"`
 	}
 
 	if err := json.Unmarshal(data, &pk); err != nil {

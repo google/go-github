@@ -260,7 +260,7 @@ func TestValidatePayload_ValidContentTypeParams(t *testing.T) {
 func TestParseWebHook(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
-		payload     interface{}
+		payload     any
 		messageType string
 	}{
 		{

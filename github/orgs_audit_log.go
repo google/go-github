@@ -50,10 +50,10 @@ type AuditEntry struct {
 	UserID                   *int64         `json:"user_id,omitempty"`
 
 	// Some events types have a data field that contains additional information about the event.
-	Data map[string]interface{} `json:"data,omitempty"`
+	Data map[string]any `json:"data,omitempty"`
 
 	// All fields that are not explicitly defined in the struct are captured here.
-	AdditionalFields map[string]interface{} `json:"-"`
+	AdditionalFields map[string]any `json:"-"`
 }
 
 func (a *AuditEntry) UnmarshalJSON(data []byte) error {
@@ -67,7 +67,7 @@ func (a *AuditEntry) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	definedFields := map[string]interface{}{}
+	definedFields := map[string]any{}
 	if err := json.Unmarshal(rawDefinedFields, &definedFields); err != nil {
 		return err
 	}
@@ -99,7 +99,7 @@ func (a *AuditEntry) MarshalJSON() ([]byte, error) {
 	if len(a.AdditionalFields) == 0 {
 		return defBytes, err
 	}
-	resMap := map[string]interface{}{}
+	resMap := map[string]any{}
 	if err := json.Unmarshal(defBytes, &resMap); err != nil {
 		return nil, err
 	}

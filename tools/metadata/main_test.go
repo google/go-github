@@ -69,7 +69,7 @@ GET /undocumented/{undocumented_id}
 
 //nolint:tparallel,paralleltest // cannot use t.Parallel() when helper calls t.Setenv
 func TestUpdateOpenAPI(t *testing.T) {
-	testServer := newTestServer(t, "main", map[string]interface{}{
+	testServer := newTestServer(t, "main", map[string]any{
 		"api.github.com/api.github.com.json": openapi3.T{
 			Paths: openapi3.NewPaths(
 				openapi3.WithPath("/a/{a_id}", &openapi3.PathItem{
@@ -332,9 +332,9 @@ func runTest(t *testing.T, srcDir string, args ...string) testRun {
 	return res
 }
 
-func newTestServer(t *testing.T, ref string, files map[string]interface{}) *httptest.Server {
+func newTestServer(t *testing.T, ref string, files map[string]any) *httptest.Server {
 	t.Helper()
-	jsonHandler := func(wantQuery url.Values, val interface{}) http.HandlerFunc {
+	jsonHandler := func(wantQuery url.Values, val any) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			gotQuery := r.URL.Query()
 			queryDiff := cmp.Diff(wantQuery, gotQuery)
