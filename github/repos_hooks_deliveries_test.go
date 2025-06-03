@@ -142,7 +142,7 @@ func TestRepositoriesService_RedeliverHookDelivery(t *testing.T) {
 	})
 }
 
-var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
+var hookDeliveryPayloadTypeToStruct = map[string]any{
 	"check_run":                      &CheckRunEvent{},
 	"check_suite":                    &CheckSuiteEvent{},
 	"code_scanning_alert":            &CodeScanningAlertEvent{},

@@ -108,7 +108,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 			OrgID:       Ptr(int64(1)),
 			TokenID:     Ptr(int64(1)),
 			TokenScopes: Ptr("gist,repo:read"),
-			AdditionalFields: map[string]interface{}{
+			AdditionalFields: map[string]any{
 				"actor_ip":                 "10.0.0.1",
 				"active":                   true,
 				"cancelled_at":             "2021-03-07T00:35:08.000Z",
@@ -121,13 +121,13 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 				"name":                     "Code scanning - action",
 				"oauth_application_id":     float64(1),
 				"old_permission":           "read",
-				"overridden_codes":         []interface{}{"review_policy_not_satisfied"},
+				"overridden_codes":         []any{"review_policy_not_satisfied"},
 				"permission":               "admin",
 				"programmatic_access_type": "GitHub App server-to-server token",
 				"pull_request_id":          float64(1),
 				"pull_request_title":       "a pr title",
 				"pull_request_url":         "https://github.com/testorg/testrepo/pull/1",
-				"reasons": []interface{}{map[string]interface{}{
+				"reasons": []any{map[string]any{
 					"code":    "a code",
 					"message": "a message",
 				}},
@@ -140,8 +140,8 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 				"user_agent":      "a user agent",
 				"workflow_id":     float64(123456),
 				"workflow_run_id": float64(628312345),
-				"events":          []interface{}{"code_scanning_alert"},
-				"config": map[string]interface{}{
+				"events":          []any{"code_scanning_alert"},
+				"config": map[string]any{
 					"content_type": "json",
 					"insecure_ssl": "0",
 					"url":          "https://example.com/deadbeef-new-hook",
@@ -241,11 +241,11 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		TokenID:                  Ptr(int64(1)),
 		TokenScopes:              Ptr("ts"),
 		User:                     Ptr("u"),
-		Data: map[string]interface{}{
+		Data: map[string]any{
 			"old_name":  "on",
 			"old_login": "ol",
 		},
-		AdditionalFields: map[string]interface{}{
+		AdditionalFields: map[string]any{
 			"active":       false,
 			"active_was":   false,
 			"actor_ip":     "aip",
@@ -253,10 +253,10 @@ func TestAuditEntry_Marshal(t *testing.T) {
 			"cancelled_at": "2021-03-07T00:35:08.000Z",
 			"completed_at": "2021-03-07T00:35:08.000Z",
 			"conclusion":   "c",
-			"config": map[string]interface{}{
+			"config": map[string]any{
 				"url": "s",
 			},
-			"config_was": map[string]interface{}{
+			"config_was": map[string]any{
 				"url": "s",
 			},
 			"content_type":             "ct",
@@ -264,8 +264,8 @@ func TestAuditEntry_Marshal(t *testing.T) {
 			"emoji":                    "e",
 			"environment_name":         "en",
 			"event":                    "e",
-			"events":                   []interface{}{"s"},
-			"events_were":              []interface{}{"s"},
+			"events":                   []any{"s"},
+			"events_were":              []any{"s"},
 			"explanation":              "e",
 			"fingerprint":              "f",
 			"head_branch":              "hb",
@@ -286,8 +286,8 @@ func TestAuditEntry_Marshal(t *testing.T) {
 			"pull_request_title":       "prt",
 			"pull_request_url":         "pru",
 			"read_only":                "ro",
-			"reasons": []interface{}{
-				map[string]interface{}{
+			"reasons": []any{
+				map[string]any{
 					"code":    "c",
 					"message": "m",
 				},
@@ -300,9 +300,9 @@ func TestAuditEntry_Marshal(t *testing.T) {
 			"runner_group_id":         1,
 			"runner_group_name":       "rgn",
 			"runner_id":               1,
-			"runner_labels":           []interface{}{"s"},
+			"runner_labels":           []any{"s"},
 			"runner_name":             "rn",
-			"secrets_passed":          []interface{}{"s"},
+			"secrets_passed":          []any{"s"},
 			"source_version":          "sv",
 			"started_at":              "2006-01-02T15:04:05Z",
 			"target_login":            "tl",

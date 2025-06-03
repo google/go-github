@@ -59,7 +59,7 @@ var (
 	}
 )
 
-func logf(fmt string, args ...interface{}) {
+func logf(fmt string, args ...any) {
 	if *verbose {
 		log.Printf(fmt, args...)
 	}

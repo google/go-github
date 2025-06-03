@@ -47,7 +47,7 @@ func main() {
 
 	for _, tt := range []struct {
 		url string
-		typ interface{}
+		typ any
 	}{
 		{"users/octocat", &github.User{}},
 		{"user", &github.User{}},
@@ -66,7 +66,7 @@ func main() {
 
 // testType fetches the JSON resource at urlStr and compares its keys to the
 // struct fields of typ.
-func testType(urlStr string, typ interface{}) error {
+func testType(urlStr string, typ any) error {
 	slice := reflect.Indirect(reflect.ValueOf(typ)).Kind() == reflect.Slice
 
 	req, err := client.NewRequest("GET", urlStr, nil)
@@ -82,9 +82,9 @@ func testType(urlStr string, typ interface{}) error {
 	}
 
 	// unmarshal directly to a map
-	var m1 map[string]interface{}
+	var m1 map[string]any
 	if slice {
-		var s []map[string]interface{}
+		var s []map[string]any
 		err = json.Unmarshal(*raw, &s)
 		if err != nil {
 			return err
@@ -118,7 +118,7 @@ func testType(urlStr string, typ interface{}) error {
 		}
 	}
 
-	var m2 map[string]interface{}
+	var m2 map[string]any
 	err = json.Unmarshal(byt, &m2)
 	if err != nil {
 		return err

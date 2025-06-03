@@ -49,7 +49,7 @@ func TestEvent_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &Event{}, "{}")
 
-	l := make(map[string]interface{})
+	l := make(map[string]any)
 	l["key"] = "value"
 
 	jsonMsg, _ := json.Marshal(&l)

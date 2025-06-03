@@ -39,15 +39,15 @@ type WebHookAuthor = CommitAuthor
 
 // Hook represents a GitHub (web and service) hook for a repository.
 type Hook struct {
-	CreatedAt    *Timestamp             `json:"created_at,omitempty"`
-	UpdatedAt    *Timestamp             `json:"updated_at,omitempty"`
-	URL          *string                `json:"url,omitempty"`
-	ID           *int64                 `json:"id,omitempty"`
-	Type         *string                `json:"type,omitempty"`
-	Name         *string                `json:"name,omitempty"`
-	TestURL      *string                `json:"test_url,omitempty"`
-	PingURL      *string                `json:"ping_url,omitempty"`
-	LastResponse map[string]interface{} `json:"last_response,omitempty"`
+	CreatedAt    *Timestamp     `json:"created_at,omitempty"`
+	UpdatedAt    *Timestamp     `json:"updated_at,omitempty"`
+	URL          *string        `json:"url,omitempty"`
+	ID           *int64         `json:"id,omitempty"`
+	Type         *string        `json:"type,omitempty"`
+	Name         *string        `json:"name,omitempty"`
+	TestURL      *string        `json:"test_url,omitempty"`
+	PingURL      *string        `json:"ping_url,omitempty"`
+	LastResponse map[string]any `json:"last_response,omitempty"`
 
 	// Only the following fields are used when creating a hook.
 	// Config is required.

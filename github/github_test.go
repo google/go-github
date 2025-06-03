@@ -162,7 +162,7 @@ func testBody(t *testing.T, r *http.Request, want string) {
 
 // Test whether the marshaling of v produces JSON that corresponds
 // to the want string.
-func testJSONMarshal(t *testing.T, v interface{}, want string) {
+func testJSONMarshal(t *testing.T, v any, want string) {
 	t.Helper()
 	// Unmarshal the wanted JSON, to verify its correctness, and marshal it back
 	// to sort the keys.
@@ -188,7 +188,7 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 
 // Test whether the v fields have the url tag and the parsing of v
 // produces query parameters that corresponds to the want string.
-func testAddURLOptions(t *testing.T, url string, v interface{}, want string) {
+func testAddURLOptions(t *testing.T, url string, v any, want string) {
 	t.Helper()
 
 	vt := reflect.Indirect(reflect.ValueOf(v)).Type()
@@ -291,7 +291,7 @@ func testErrorResponseForStatusCode(t *testing.T, code int) {
 	}
 }
 
-func assertNoDiff(t *testing.T, want, got interface{}) {
+func assertNoDiff(t *testing.T, want, got any) {
 	t.Helper()
 	if diff := cmp.Diff(want, got); diff != "" {
 		t.Errorf("diff mismatch (-want +got):\n%v", diff)
@@ -567,7 +567,7 @@ func TestNewRequest_invalidJSON(t *testing.T) {
 	c := NewClient(nil)
 
 	type T struct {
-		A map[interface{}]interface{}
+		A map[any]any
 	}
 	_, err := c.NewRequest("GET", ".", &T{})
 
@@ -1140,7 +1140,7 @@ func TestDo_preservesResponseInHTTPError(t *testing.T) {
 
 	req, _ := client.NewRequest("GET", ".", nil)
 	var resp *Response
-	var data interface{}
+	var data any
 	resp, err := client.Do(context.Background(), req, &data)
 
 	if err == nil {

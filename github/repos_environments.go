@@ -62,8 +62,8 @@ type ProtectionRule struct {
 
 // RequiredReviewer represents a required reviewer.
 type RequiredReviewer struct {
-	Type     *string     `json:"type,omitempty"`
-	Reviewer interface{} `json:"reviewer,omitempty"`
+	Type     *string `json:"type,omitempty"`
+	Reviewer any     `json:"reviewer,omitempty"`
 }
 
 // EnvironmentListOptions specifies the optional parameters to the

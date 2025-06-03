@@ -45,7 +45,7 @@ const (
 
 var (
 	// eventTypeMapping maps webhooks types to their corresponding go-github struct types.
-	eventTypeMapping = map[string]interface{}{
+	eventTypeMapping = map[string]any{
 		"branch_protection_configuration": &BranchProtectionConfigurationEvent{},
 		"branch_protection_rule":          &BranchProtectionRuleEvent{},
 		"check_run":                       &CheckRunEvent{},
@@ -318,7 +318,7 @@ func DeliveryID(r *http.Request) string {
 //	  ...
 //	  }
 //	}
-func ParseWebHook(messageType string, payload []byte) (interface{}, error) {
+func ParseWebHook(messageType string, payload []byte) (any, error) {
 	eventType, ok := messageToTypeName[messageType]
 	if !ok {
 		return nil, fmt.Errorf("unknown X-Github-Event in message: %v", messageType)
@@ -344,7 +344,7 @@ func MessageTypes() []string {
 
 // EventForType returns an empty struct matching the specified GitHub event type.
 // If messageType does not match any known event types, it returns nil.
-func EventForType(messageType string) interface{} {
+func EventForType(messageType string) any {
 	prototype := eventTypeMapping[messageType]
 	if prototype == nil {
 		return nil

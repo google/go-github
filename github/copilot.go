@@ -46,14 +46,14 @@ type ListCopilotSeatsResponse struct {
 // CopilotSeatDetails represents the details of a Copilot for Business seat.
 type CopilotSeatDetails struct {
 	// Assignee can either be a User, Team, or Organization.
-	Assignee                interface{} `json:"assignee"`
-	AssigningTeam           *Team       `json:"assigning_team,omitempty"`
-	PendingCancellationDate *string     `json:"pending_cancellation_date,omitempty"`
-	LastActivityAt          *Timestamp  `json:"last_activity_at,omitempty"`
-	LastActivityEditor      *string     `json:"last_activity_editor,omitempty"`
-	CreatedAt               *Timestamp  `json:"created_at"`
-	UpdatedAt               *Timestamp  `json:"updated_at,omitempty"`
-	PlanType                *string     `json:"plan_type,omitempty"`
+	Assignee                any        `json:"assignee"`
+	AssigningTeam           *Team      `json:"assigning_team,omitempty"`
+	PendingCancellationDate *string    `json:"pending_cancellation_date,omitempty"`
+	LastActivityAt          *Timestamp `json:"last_activity_at,omitempty"`
+	LastActivityEditor      *string    `json:"last_activity_editor,omitempty"`
+	CreatedAt               *Timestamp `json:"created_at"`
+	UpdatedAt               *Timestamp `json:"updated_at,omitempty"`
+	PlanType                *string    `json:"plan_type,omitempty"`
 }
 
 // SeatAssignments represents the number of seats assigned.
@@ -203,7 +203,7 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 	cp.PlanType = seatDetail.PlanType
 
 	switch v := seatDetail.Assignee.(type) {
-	case map[string]interface{}:
+	case map[string]any:
 		jsonData, err := json.Marshal(seatDetail.Assignee)
 		if err != nil {
 			return err
