@@ -5,7 +5,7 @@
 
 set -e
 
-GOLANGCI_LINT_VERSION="1.63.4"
+GOLANGCI_LINT_VERSION="2.1.6"
 
 CDPATH="" cd -- "$(dirname -- "$0")/.."
 BIN="$(pwd -P)"/bin
@@ -21,7 +21,7 @@ fail() {
 
 # install golangci-lint and custom-gcl in ./bin if they don't exist with the correct version
 if ! "$BIN"/custom-gcl --version 2> /dev/null | grep -q "$GOLANGCI_LINT_VERSION"; then
-  GOBIN="$BIN" go install "github.com/golangci/golangci-lint/cmd/golangci-lint@v$GOLANGCI_LINT_VERSION"
+  GOBIN="$BIN" go install "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$GOLANGCI_LINT_VERSION"
   "$BIN"/golangci-lint custom && mv ./custom-gcl "$BIN"
 fi
 
@@ -32,12 +32,7 @@ for dir in $MOD_DIRS; do
   echo linting "$dir"
   (
     cd "$dir"
-    # github actions output when running in an action
-    if [ -n "$GITHUB_ACTIONS" ]; then
-      "$BIN"/custom-gcl run --path-prefix "$dir" --out-format colored-line-number
-    else
-      "$BIN"/custom-gcl run --path-prefix "$dir"
-    fi
+    "$BIN"/custom-gcl run --path-prefix "$dir"
   ) || fail "failed linting $dir"
 done
 

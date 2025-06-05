@@ -1,4 +1,4 @@
-version: v1.62.0
+version: v2.1.6
 plugins:
   - module: "github.com/google/go-github/v68/tools/sliceofpointers"
     path: ./tools/sliceofpointers
