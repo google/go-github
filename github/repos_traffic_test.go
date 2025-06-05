@@ -226,7 +226,7 @@ func TestTrafficViews_Marshal(t *testing.T) {
 
 	u := &TrafficViews{
 		Views: []*TrafficData{{
-			Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
+			Timestamp: &Timestamp{referenceTime},
 			Count:     Ptr(7),
 			Uniques:   Ptr(6),
 		}},
@@ -236,7 +236,7 @@ func TestTrafficViews_Marshal(t *testing.T) {
 
 	want := `{
 		"views": [{
-			"timestamp": "2016-05-31T16:00:00.000Z",
+			"timestamp": ` + referenceTimeStr + `,
 			"count": 7,
 			"uniques": 6
 		}],
@@ -253,7 +253,7 @@ func TestTrafficClones_Marshal(t *testing.T) {
 
 	u := &TrafficClones{
 		Clones: []*TrafficData{{
-			Timestamp: &Timestamp{time.Date(2021, time.October, 29, 16, 0, 0, 0, time.UTC)},
+			Timestamp: &Timestamp{referenceTime},
 			Count:     Ptr(1),
 			Uniques:   Ptr(1),
 		}},
@@ -263,7 +263,7 @@ func TestTrafficClones_Marshal(t *testing.T) {
 
 	want := `{
 		"clones": [{
-			"timestamp": "2021-10-29T16:00:00.000Z",
+			"timestamp": ` + referenceTimeStr + `,
 			"count": 1,
 			"uniques": 1
 		}],
@@ -300,13 +300,13 @@ func TestTrafficData_Marshal(t *testing.T) {
 	testJSONMarshal(t, &TrafficData{}, "{}")
 
 	u := &TrafficData{
-		Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
+		Timestamp: &Timestamp{referenceTime},
 		Count:     Ptr(7),
 		Uniques:   Ptr(6),
 	}
 
 	want := `{
-			"timestamp": "2016-05-31T16:00:00.000Z",
+			"timestamp": ` + referenceTimeStr + `,
 			"count": 7,
 			"uniques": 6
       }`
@@ -316,14 +316,14 @@ func TestTrafficData_Marshal(t *testing.T) {
 
 func TestTrafficBreakdownOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &TrafficBreakdownOptions{}, "{}")
+	testJSONMarshal(t, &TrafficBreakdownOptions{}, `{"Per": ""}`)
 
 	u := &TrafficBreakdownOptions{
 		Per: "day",
 	}
 
 	want := `{
-		"per": "day"
+		"Per": "day"
 	}`
 
 	testJSONMarshal(t, u, want)
