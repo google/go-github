@@ -1391,12 +1391,12 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 // present. A response is considered an error if it has a status code outside
 // the 200 range or equal to 202 Accepted.
 // API error responses are expected to have response
-// body, and a JSON response body that maps to ErrorResponse.
+// body, and a JSON response body that maps to [ErrorResponse].
 //
-// The error type will be *RateLimitError for rate limit exceeded errors,
-// *AcceptedError for 202 Accepted status codes,
-// *TwoFactorAuthError for two-factor authentication errors,
-// and *RedirectionError for redirect status codes (only happens when ignoring redirections).
+// The error type will be *[RateLimitError] for rate limit exceeded errors,
+// *[AcceptedError] for 202 Accepted status codes,
+// *[TwoFactorAuthError] for two-factor authentication errors,
+// and *[RedirectionError] for redirect status codes (only happens when ignoring redirections).
 func CheckResponse(r *http.Response) error {
 	if r.StatusCode == http.StatusAccepted {
 		return &AcceptedError{}
