@@ -40,8 +40,7 @@ func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeStarringPreview)
+	req.Header.Set("Accept", mediaTypeStarring)
 
 	var stargazers []*Stargazer
 	resp, err := s.client.Do(ctx, req, &stargazers)
@@ -91,8 +90,7 @@ func (s *ActivityService) ListStarred(ctx context.Context, user string, opts *Ac
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when APIs fully launch
-	acceptHeaders := []string{mediaTypeStarringPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeStarring, mediaTypeTopicsPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var repos []*StarredRepository
