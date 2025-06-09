@@ -54,6 +54,7 @@ const (
 	mediaTypeV3Patch           = "application/vnd.github.v3.patch"
 	mediaTypeOrgPermissionRepo = "application/vnd.github.v3.repository+json"
 	mediaTypeIssueImportAPI    = "application/vnd.github.golden-comet-preview+json"
+	mediaTypeStarring          = "application/vnd.github.star+json"
 
 	// Media Type values to access preview APIs
 	// These media types will be added to the API request as headers
@@ -71,9 +72,6 @@ const (
 	// on GitHub Cloud version.
 	//
 	// See https://github.com/google/go-github/pull/2125 for full context.
-
-	// https://developer.github.com/changes/2014-12-09-new-attributes-for-stars-api/
-	mediaTypeStarringPreview = "application/vnd.github.v3.star+json"
 
 	// https://help.github.com/enterprise/2.4/admin/guides/migrations/exporting-the-github-com-organization-s-repositories/
 	mediaTypeMigrationsPreview = "application/vnd.github.wyandotte-preview+json"
