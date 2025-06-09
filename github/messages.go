@@ -186,11 +186,11 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 // Example usage:
 //
 //	func (s *GitHubEventMonitor) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-//	  // read signature from request
-//	  signature := ""
-//	  payload, err := github.ValidatePayloadFromBody(r.Header.Get("Content-Type"), r.Body, signature, s.webhookSecretKey)
-//	  if err != nil { ... }
-//	  // Process payload...
+//		// read signature from request
+//		signature := ""
+//		payload, err := github.ValidatePayloadFromBody(r.Header.Get("Content-Type"), r.Body, signature, s.webhookSecretKey)
+//		if err != nil { ... }
+//		// Process payload...
 //	}
 func ValidatePayloadFromBody(contentType string, readable io.Reader, signature string, secretToken []byte) (payload []byte, err error) {
 	var body []byte // Raw body that GitHub uses to calculate the signature.
@@ -249,9 +249,9 @@ func ValidatePayloadFromBody(contentType string, readable io.Reader, signature s
 // Example usage:
 //
 //	func (s *GitHubEventMonitor) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-//	  payload, err := github.ValidatePayload(r, s.webhookSecretKey)
-//	  if err != nil { ... }
-//	  // Process payload...
+//		payload, err := github.ValidatePayload(r, s.webhookSecretKey)
+//		if err != nil { ... }
+//		// Process payload...
 //	}
 func ValidatePayload(r *http.Request, secretToken []byte) (payload []byte, err error) {
 	signature := r.Header.Get(SHA256SignatureHeader)
@@ -300,23 +300,23 @@ func DeliveryID(r *http.Request) string {
 
 // ParseWebHook parses the event payload. For recognized event types, a
 // value of the corresponding struct type will be returned (as returned
-// by Event.ParsePayload()). An error will be returned for unrecognized event
+// by [Event.ParsePayload]). An error will be returned for unrecognized event
 // types.
 //
 // Example usage:
 //
 //	func (s *GitHubEventMonitor) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-//	  payload, err := github.ValidatePayload(r, s.webhookSecretKey)
-//	  if err != nil { ... }
-//	  event, err := github.ParseWebHook(github.WebHookType(r), payload)
-//	  if err != nil { ... }
-//	  switch event := event.(type) {
-//	  case *github.CommitCommentEvent:
-//	      processCommitCommentEvent(event)
-//	  case *github.CreateEvent:
-//	      processCreateEvent(event)
-//	  ...
-//	  }
+//		payload, err := github.ValidatePayload(r, s.webhookSecretKey)
+//		if err != nil { ... }
+//		event, err := github.ParseWebHook(github.WebHookType(r), payload)
+//		if err != nil { ... }
+//		switch event := event.(type) {
+//		case *github.CommitCommentEvent:
+//			processCommitCommentEvent(event)
+//		case *github.CreateEvent:
+//			processCreateEvent(event)
+//		...
+//		}
 //	}
 func ParseWebHook(messageType string, payload []byte) (any, error) {
 	eventType, ok := messageToTypeName[messageType]
