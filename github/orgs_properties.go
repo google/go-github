@@ -50,7 +50,7 @@ type CustomPropertyValue struct {
 
 // CustomPropertyValuesListOptions specifies the optional parameters to the
 // OrganizationsService.ListCustomPropertyValues method.
-type CustomPropertyValuesListOptions struct {
+type ListCustomPropertyValuesOptions struct {
 	RepositoryQuery string `url:"repository_query,omitempty"`
 	ListOptions
 }
