@@ -48,7 +48,7 @@ type CustomPropertyValue struct {
 	Value        any    `json:"value"`
 }
 
-// CustomPropertyValuesListOptions specifies the optional parameters to the
+// ListCustomPropertyValuesOptions specifies the optional parameters to the
 // OrganizationsService.ListCustomPropertyValues method.
 type ListCustomPropertyValuesOptions struct {
 	RepositoryQuery string `url:"repository_query,omitempty"`
@@ -204,7 +204,7 @@ func (s *OrganizationsService) RemoveCustomProperty(ctx context.Context, org, cu
 // GitHub API docs: https://docs.github.com/rest/orgs/custom-properties#list-custom-property-values-for-organization-repositories
 //
 //meta:operation GET /orgs/{org}/properties/values
-func (s *OrganizationsService) ListCustomPropertyValues(ctx context.Context, org string, opts *CustomPropertyValuesListOptions) ([]*RepoCustomPropertyValue, *Response, error) {
+func (s *OrganizationsService) ListCustomPropertyValues(ctx context.Context, org string, opts *ListCustomPropertyValuesOptions) ([]*RepoCustomPropertyValue, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/properties/values", org)
 	u, err := addOptions(u, opts)
 	if err != nil {

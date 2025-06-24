@@ -314,7 +314,7 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	repoPropertyValues, _, err := client.Organizations.ListCustomPropertyValues(ctx, "o", &CustomPropertyValuesListOptions{
+	repoPropertyValues, _, err := client.Organizations.ListCustomPropertyValues(ctx, "o", &ListCustomPropertyValuesOptions{
 		ListOptions: ListOptions{
 			Page:    1,
 			PerPage: 100,
@@ -358,7 +358,7 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 	const methodName = "ListCustomPropertyValues"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.ListCustomPropertyValues(ctx, "\n", &CustomPropertyValuesListOptions{})
+		_, _, err = client.Organizations.ListCustomPropertyValues(ctx, "\n", &ListCustomPropertyValuesOptions{})
 		return err
 	})
 
