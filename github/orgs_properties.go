@@ -48,6 +48,13 @@ type CustomPropertyValue struct {
 	Value        any    `json:"value"`
 }
 
+// ListCustomPropertyValuesOptions specifies the optional parameters to the
+// OrganizationsService.ListCustomPropertyValues method.
+type ListCustomPropertyValuesOptions struct {
+	RepositoryQuery string `url:"repository_query,omitempty"`
+	ListOptions
+}
+
 // UnmarshalJSON implements the json.Unmarshaler interface.
 // This helps us handle the fact that Value can be either a string, []string, or nil.
 func (cpv *CustomPropertyValue) UnmarshalJSON(data []byte) error {
@@ -197,7 +204,7 @@ func (s *OrganizationsService) RemoveCustomProperty(ctx context.Context, org, cu
 // GitHub API docs: https://docs.github.com/rest/orgs/custom-properties#list-custom-property-values-for-organization-repositories
 //
 //meta:operation GET /orgs/{org}/properties/values
-func (s *OrganizationsService) ListCustomPropertyValues(ctx context.Context, org string, opts *ListOptions) ([]*RepoCustomPropertyValue, *Response, error) {
+func (s *OrganizationsService) ListCustomPropertyValues(ctx context.Context, org string, opts *ListCustomPropertyValuesOptions) ([]*RepoCustomPropertyValue, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/properties/values", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
