@@ -23,7 +23,7 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v72/github"
+	"github.com/google/go-github/v73/github"
 )
 
 func TestUpdateGo(t *testing.T) {
