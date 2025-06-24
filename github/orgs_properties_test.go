@@ -283,7 +283,11 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"page": "1", "per_page": "100"})
+		testFormValues(t, r, values{
+			"page":             "1",
+			"per_page":         "100",
+			"repository_query": "repo:octocat/Hello-World",
+		})
 		fmt.Fprint(w, `[{
 		"repository_id": 1296269,
 		"repository_name": "Hello-World",
@@ -310,9 +314,12 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	repoPropertyValues, _, err := client.Organizations.ListCustomPropertyValues(ctx, "o", &ListOptions{
-		Page:    1,
-		PerPage: 100,
+	repoPropertyValues, _, err := client.Organizations.ListCustomPropertyValues(ctx, "o", &ListCustomPropertyValuesOptions{
+		ListOptions: ListOptions{
+			Page:    1,
+			PerPage: 100,
+		},
+		RepositoryQuery: "repo:octocat/Hello-World",
 	})
 	if err != nil {
 		t.Errorf("Organizations.ListCustomPropertyValues returned error: %v", err)
@@ -351,7 +358,7 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
 	const methodName = "ListCustomPropertyValues"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.ListCustomPropertyValues(ctx, "\n", &ListOptions{})
+		_, _, err = client.Organizations.ListCustomPropertyValues(ctx, "\n", &ListCustomPropertyValuesOptions{})
 		return err
 	})
 
