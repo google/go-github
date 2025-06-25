@@ -355,7 +355,7 @@ func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, r
 
 	var loc string
 	saveRedirect := s.client.client.CheckRedirect
-	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+	s.client.client.CheckRedirect = func(req *http.Request, _ []*http.Request) error {
 		loc = req.URL.String()
 		return errors.New("disable redirect")
 	}

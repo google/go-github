@@ -66,7 +66,7 @@ func TestAdminUsers_Delete(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/admin/users/github", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/admin/users/github", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -163,7 +163,7 @@ func TestUserImpersonation_Delete(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/admin/users/github/authorizations", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

@@ -222,7 +222,7 @@ func TestActivityService_Star(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/starred/o/r", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -256,7 +256,7 @@ func TestActivityService_Unstar(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/starred/o/r", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

@@ -230,7 +230,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 			})
 
 			// Add custom round tripper
-			client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+			client.client.Transport = roundTripperFunc(func(*http.Request) (*http.Response, error) {
 				return nil, errors.New("failed to get workflow logs")
 			})
 			// propagate custom round tripper to client without CheckRedirect

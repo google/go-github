@@ -160,7 +160,7 @@ func TestUsersService_DeleteSSHSigningKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/ssh_signing_keys/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/ssh_signing_keys/1", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

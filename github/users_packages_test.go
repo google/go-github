@@ -244,7 +244,7 @@ func TestUsersService_Authenticated_DeletePackage(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/packages/container/hello_docker", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -269,7 +269,7 @@ func TestUsersService_specifiedUser_DeletePackage(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/users/u/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/users/u/packages/container/hello_docker", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -294,7 +294,7 @@ func TestUsersService_Authenticated_RestorePackage(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/packages/container/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/packages/container/hello_docker/restore", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 
@@ -319,7 +319,7 @@ func TestUsersService_specifiedUser_RestorePackage(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/users/u/packages/container/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/users/u/packages/container/hello_docker/restore", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 
@@ -602,7 +602,7 @@ func TestUsersService_Authenticated_PackageDeleteVersion(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/packages/container/hello_docker/versions/45763", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -627,7 +627,7 @@ func TestUsersService_specifiedUser_PackageDeleteVersion(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/users/u/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/users/u/packages/container/hello_docker/versions/45763", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -652,7 +652,7 @@ func TestUsersService_Authenticated_PackageRestoreVersion(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/packages/container/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/packages/container/hello_docker/versions/45763/restore", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 
@@ -677,7 +677,7 @@ func TestUsersService_specifiedUser_PackageRestoreVersion(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/users/u/packages/container/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/users/u/packages/container/hello_docker/versions/45763/restore", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 

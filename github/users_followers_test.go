@@ -321,7 +321,7 @@ func TestUsersService_Follow(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/following/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/following/u", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -355,7 +355,7 @@ func TestUsersService_Unfollow(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/following/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/following/u", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

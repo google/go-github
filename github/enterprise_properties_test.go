@@ -260,7 +260,7 @@ func TestEnterpriseService_RemoveCustomProperty(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/e/properties/schema/name", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/properties/schema/name", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

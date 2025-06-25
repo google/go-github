@@ -32,7 +32,7 @@ func mockSigner(t *testing.T, signature string, emitErr error, wantMessage strin
 }
 
 func uncalledSigner(t *testing.T) MessageSignerFunc {
-	return func(w io.Writer, r io.Reader) error {
+	return func(io.Writer, io.Reader) error {
 		t.Error("MessageSignerFunc should not be called")
 		return nil
 	}

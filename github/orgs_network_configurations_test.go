@@ -417,7 +417,7 @@ func TestOrganizationsService_DeleteOrgsNetworkConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/settings/network-configurations/789ABDCEF123456", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/settings/network-configurations/789ABDCEF123456", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
