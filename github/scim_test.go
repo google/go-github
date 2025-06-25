@@ -127,6 +127,12 @@ func TestSCIMService_ListSCIMProvisionedGroups(t *testing.T) {
 
 	mux.HandleFunc("/scim/v2/enterprises/o/Groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"startIndex":         "1",
+			"excludedAttributes": "members,meta",
+			"count":              "3",
+			"filter":             `externalId eq "00u1dhhb1fkIGP7RL1d8"`,
+		})
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte(`{
 			"schemas": [
@@ -162,7 +168,12 @@ func TestSCIMService_ListSCIMProvisionedGroups(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &ListSCIMProvisionedIdentitiesOptions{}
+	opts := &ListSCIMProvisionedGroupsForEnterpriseOptions{
+		StartIndex:         Ptr(1),
+		ExcludedAttributes: Ptr("members,meta"),
+		Count:              Ptr(3),
+		Filter:             Ptr(`externalId eq "00u1dhhb1fkIGP7RL1d8"`),
+	}
 	groups, _, err := client.SCIM.ListSCIMProvisionedGroupsForEnterprise(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("SCIM.ListSCIMProvisionedIdentities returned error: %v", err)
