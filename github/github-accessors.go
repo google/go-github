@@ -13455,6 +13455,38 @@ func (l *ListRunnersOptions) GetName() string {
 }
 
 // GetCount returns the Count field if it's non-nil, zero value otherwise.
+func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetCount() int {
+	if l == nil || l.Count == nil {
+		return 0
+	}
+	return *l.Count
+}
+
+// GetExcludedAttributes returns the ExcludedAttributes field if it's non-nil, zero value otherwise.
+func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetExcludedAttributes() string {
+	if l == nil || l.ExcludedAttributes == nil {
+		return ""
+	}
+	return *l.ExcludedAttributes
+}
+
+// GetFilter returns the Filter field if it's non-nil, zero value otherwise.
+func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetFilter() string {
+	if l == nil || l.Filter == nil {
+		return ""
+	}
+	return *l.Filter
+}
+
+// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
+func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetStartIndex() int {
+	if l == nil || l.StartIndex == nil {
+		return 0
+	}
+	return *l.StartIndex
+}
+
+// GetCount returns the Count field if it's non-nil, zero value otherwise.
 func (l *ListSCIMProvisionedIdentitiesOptions) GetCount() int {
 	if l == nil || l.Count == nil {
 		return 0

@@ -17454,6 +17454,50 @@ func TestListRunnersOptions_GetName(tt *testing.T) {
 	l.GetName()
 }
 
+func TestListSCIMProvisionedGroupsForEnterpriseOptions_GetCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	l := &ListSCIMProvisionedGroupsForEnterpriseOptions{Count: &zeroValue}
+	l.GetCount()
+	l = &ListSCIMProvisionedGroupsForEnterpriseOptions{}
+	l.GetCount()
+	l = nil
+	l.GetCount()
+}
+
+func TestListSCIMProvisionedGroupsForEnterpriseOptions_GetExcludedAttributes(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListSCIMProvisionedGroupsForEnterpriseOptions{ExcludedAttributes: &zeroValue}
+	l.GetExcludedAttributes()
+	l = &ListSCIMProvisionedGroupsForEnterpriseOptions{}
+	l.GetExcludedAttributes()
+	l = nil
+	l.GetExcludedAttributes()
+}
+
+func TestListSCIMProvisionedGroupsForEnterpriseOptions_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListSCIMProvisionedGroupsForEnterpriseOptions{Filter: &zeroValue}
+	l.GetFilter()
+	l = &ListSCIMProvisionedGroupsForEnterpriseOptions{}
+	l.GetFilter()
+	l = nil
+	l.GetFilter()
+}
+
+func TestListSCIMProvisionedGroupsForEnterpriseOptions_GetStartIndex(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	l := &ListSCIMProvisionedGroupsForEnterpriseOptions{StartIndex: &zeroValue}
+	l.GetStartIndex()
+	l = &ListSCIMProvisionedGroupsForEnterpriseOptions{}
+	l.GetStartIndex()
+	l = nil
+	l.GetStartIndex()
+}
+
 func TestListSCIMProvisionedIdentitiesOptions_GetCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
