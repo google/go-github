@@ -111,10 +111,7 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
 		v := new(CodeSecurityConfiguration)
-		err := json.NewDecoder(r.Body).Decode(v)
-		if err != nil {
-			t.Errorf("Organizations.CreateCodeSecurityConfiguration request body decode failed: %v", err)
-		}
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Organizations.CreateCodeSecurityConfiguration request body = %+v, want %+v", v, input)
@@ -244,10 +241,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(CodeSecurityConfiguration)
-		err := json.NewDecoder(r.Body).Decode(v)
-		if err != nil {
-			t.Errorf("Organizations.UpdateCodeSecurityConfiguration request body decode failed: %v", err)
-		}
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Organizations.UpdateCodeSecurityConfiguration request body = %+v, want %+v", v, input)
@@ -329,10 +323,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 			SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
 		}
 		v := new(request)
-		err := json.NewDecoder(r.Body).Decode(v)
-		if err != nil {
-			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body decode failed: %v", err)
-		}
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		if v.Scope != "selected" {
 			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body scope = %s, want selected", v.Scope)
 		}
