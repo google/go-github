@@ -38,7 +38,7 @@ func Test_AppRestrictionsEnabled(t *testing.T) {
 			t.Parallel()
 			client, mux := setup(t)
 
-			mux.HandleFunc("/organizations/o/settings/oauth_application_policy", func(w http.ResponseWriter, r *http.Request) {
+			mux.HandleFunc("/organizations/o/settings/oauth_application_policy", func(w http.ResponseWriter, _ *http.Request) {
 				copyTestFile(t, w, tt.testFile)
 			})
 
@@ -57,7 +57,7 @@ func Test_ListOAuthApps(t *testing.T) {
 	t.Parallel()
 	client, mux := setup(t)
 
-	mux.HandleFunc("/organizations/e/settings/oauth_application_policy", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/organizations/e/settings/oauth_application_policy", func(w http.ResponseWriter, _ *http.Request) {
 		copyTestFile(t, w, "access-restrictions-enabled.html")
 	})
 
@@ -94,7 +94,7 @@ func Test_CreateApp(t *testing.T) {
 	t.Parallel()
 	client, mux := setup(t)
 
-	mux.HandleFunc("/apps/settings/new", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/apps/settings/new", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -112,7 +112,7 @@ func Test_CreateAppWithOrg(t *testing.T) {
 	t.Parallel()
 	client, mux := setup(t)
 
-	mux.HandleFunc("/organizations/example/apps/settings/new", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/organizations/example/apps/settings/new", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusCreated)
 	})
 

@@ -218,7 +218,7 @@ func TestRepositoriesService_DeleteHook(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/hooks/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/hooks/1", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -252,7 +252,7 @@ func TestRepositoriesService_PingHook(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/hooks/1/pings", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/hooks/1/pings", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 
@@ -277,7 +277,7 @@ func TestRepositoriesService_TestHook(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/hooks/1/tests", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/hooks/1/tests", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 
@@ -570,7 +570,7 @@ func TestRepositoriesService_Subscribe(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/hub", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/hub", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
 		testHeader(t, r, "Content-Type", "application/x-www-form-urlencoded")
 		testFormValues(t, r, values{
@@ -603,7 +603,7 @@ func TestRepositoriesService_Unsubscribe(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/hub", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/hub", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
 		testHeader(t, r, "Content-Type", "application/x-www-form-urlencoded")
 		testFormValues(t, r, values{

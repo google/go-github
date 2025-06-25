@@ -555,7 +555,7 @@ func TestRepositoriesService_DeleteRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/repo/rulesets/42", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

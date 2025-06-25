@@ -336,7 +336,7 @@ func TestEnterpriseService_DeleteEnterpriseNetworkConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/e/network-configurations/123456789ABCDEF", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/network-configurations/123456789ABCDEF", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

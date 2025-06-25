@@ -98,6 +98,7 @@ linters:
         - name: unexported-naming
         - name: unexported-return
         - name: unreachable-code
+        - name: unused-parameter
         - name: use-any
         - name: var-declaration
         - name: var-naming

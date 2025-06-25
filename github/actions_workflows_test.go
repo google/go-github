@@ -241,7 +241,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 			"key": "value",
 		},
 	}
-	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(_ http.ResponseWriter, r *http.Request) {
 		var v CreateWorkflowDispatchEventRequest
 		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
@@ -285,7 +285,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 			"key": "value",
 		},
 	}
-	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(_ http.ResponseWriter, r *http.Request) {
 		var v CreateWorkflowDispatchEventRequest
 		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
@@ -323,7 +323,7 @@ func TestActionsService_EnableWorkflowByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/workflows/72844/enable", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/workflows/72844/enable", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		if r.Body != http.NoBody {
 			t.Errorf("Request body = %+v, want %+v", r.Body, http.NoBody)
@@ -358,7 +358,7 @@ func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/enable", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/enable", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		if r.Body != http.NoBody {
 			t.Errorf("Request body = %+v, want %+v", r.Body, http.NoBody)
@@ -393,7 +393,7 @@ func TestActionsService_DisableWorkflowByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/workflows/72844/disable", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/workflows/72844/disable", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		if r.Body != http.NoBody {
 			t.Errorf("Request body = %+v, want %+v", r.Body, http.NoBody)
@@ -428,7 +428,7 @@ func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/disable", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/disable", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		if r.Body != http.NoBody {
 			t.Errorf("Request body = %+v, want %+v", r.Body, http.NoBody)

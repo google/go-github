@@ -1634,7 +1634,7 @@ func TestOrganizationsService_DeleteRepositoryRuleset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/rulesets/21", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/rulesets/21", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

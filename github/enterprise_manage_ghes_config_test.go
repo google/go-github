@@ -603,7 +603,7 @@ func TestEnterpriseService_InitialConfig(t *testing.T) {
 		Password: "password",
 	}
 
-	mux.HandleFunc("/manage/v1/config/init", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/manage/v1/config/init", func(_ http.ResponseWriter, r *http.Request) {
 		v := new(InitialConfigOptions)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 

@@ -263,7 +263,7 @@ func TestOrganizationsService_RemoveMember(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/members/u", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -323,7 +323,7 @@ func TestOrganizationsService_PublicizeMembership(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/public_members/u", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -348,7 +348,7 @@ func TestOrganizationsService_ConcealMembership(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/public_members/u", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

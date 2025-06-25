@@ -186,7 +186,7 @@ func TestEnterpriseService_RemoveRunner(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runners/21", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/o/actions/runners/21", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
