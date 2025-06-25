@@ -24,10 +24,7 @@ func TestEnterpriseService_GenerateEnterpriseJITConfig(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		v := new(GenerateJITConfigRequest)
-		err := json.NewDecoder(r.Body).Decode(v)
-		if err != nil {
-			t.Errorf("Request body decode failed: %v", err)
-		}
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
