@@ -676,7 +676,7 @@ func TestRepositoriesService_GetAutomatedSecurityFixes(t *testing.T) {
 	ctx := context.Background()
 	fixes, _, err := client.Repositories.GetAutomatedSecurityFixes(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("Repositories.GetAutomatedSecurityFixes returned errpr: #{err}")
+		t.Errorf("Repositories.GetAutomatedSecurityFixes returned error: #{err}")
 	}
 
 	want := &AutomatedSecurityFixes{
@@ -3342,7 +3342,7 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 	}
 }
 
-func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctions(t *testing.T) {
+func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestrictions(t *testing.T) {
 	t.Parallel()
 	req := PullRequestReviewsEnforcementRequest{}
 
