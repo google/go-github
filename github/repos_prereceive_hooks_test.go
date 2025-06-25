@@ -165,7 +165,7 @@ func TestRepositoriesService_DeletePreReceiveHook(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/pre-receive-hooks/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/pre-receive-hooks/1", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

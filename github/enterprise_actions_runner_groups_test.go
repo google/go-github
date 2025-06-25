@@ -153,7 +153,7 @@ func TestEnterpriseService_DeleteRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/o/actions/runner-groups/2", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -328,7 +328,7 @@ func TestEnterpriseService_SetOrganizationAccessRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -360,7 +360,7 @@ func TestEnterpriseService_AddOrganizationAccessRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations/42", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -385,7 +385,7 @@ func TestEnterpriseService_RemoveOrganizationAccessRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/organizations/42", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -453,7 +453,7 @@ func TestEnterpriseService_SetEnterpriseRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -485,7 +485,7 @@ func TestEnterpriseService_AddEnterpriseRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners/42", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -510,7 +510,7 @@ func TestEnterpriseService_RemoveEnterpriseRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/o/actions/runner-groups/2/runners/42", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

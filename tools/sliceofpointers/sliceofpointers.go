@@ -24,7 +24,7 @@ func init() {
 type SliceOfPointersPlugin struct{}
 
 // New returns an analysis.Analyzer to use with golangci-lint.
-func New(settings any) (register.LinterPlugin, error) {
+func New(_ any) (register.LinterPlugin, error) {
 	return &SliceOfPointersPlugin{}, nil
 }
 

@@ -724,7 +724,7 @@ func TestGistsService_Delete(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/gists/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/gists/1", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -758,7 +758,7 @@ func TestGistsService_Star(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/gists/1/star", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/gists/1/star", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -792,7 +792,7 @@ func TestGistsService_Unstar(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/gists/1/star", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/gists/1/star", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

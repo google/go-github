@@ -252,7 +252,7 @@ func (s *SCIMService) DeleteSCIMUserFromOrg(ctx context.Context, org, scimUserID
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Groups
-func (s *SCIMService) ListSCIMProvisionedGroupsForEnterprise(ctx context.Context, enterprise string, opts *ListSCIMProvisionedIdentitiesOptions) (*SCIMProvisionedGroups, *Response, error) {
+func (s *SCIMService) ListSCIMProvisionedGroupsForEnterprise(ctx context.Context, enterprise string, _ *ListSCIMProvisionedIdentitiesOptions) (*SCIMProvisionedGroups, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups", enterprise)
 
 	req, err := s.client.NewRequest("GET", u, nil)

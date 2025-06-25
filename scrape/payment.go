@@ -23,7 +23,7 @@ func (c *Client) OrgPaymentInformation(org string) (PaymentInformation, error) {
 		return info, err
 	}
 
-	doc.Find("main h4.mb-1").Each(func(i int, s *goquery.Selection) {
+	doc.Find("main h4.mb-1").Each(func(_ int, s *goquery.Selection) {
 		name := strings.TrimSpace(strings.ToLower(s.Text()))
 		value := strings.Join(strings.Fields(strings.TrimSpace(s.NextFiltered("p").Text())), " ")
 

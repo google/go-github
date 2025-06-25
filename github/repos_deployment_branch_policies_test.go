@@ -17,7 +17,7 @@ func TestRepositoriesService_ListDeploymentBranchPolicies(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies", func(w http.ResponseWriter, _ *http.Request) {
 		fmt.Fprint(w, `{"total_count":2, "branch_policies":[{"id":1}, {"id": 2}]}`)
 	})
 
@@ -52,7 +52,7 @@ func TestRepositoriesService_GetDeploymentBranchPolicy(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies/1", func(w http.ResponseWriter, _ *http.Request) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -141,7 +141,7 @@ func TestRepositoriesService_DeleteDeploymentBranchPolicy(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies/1", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

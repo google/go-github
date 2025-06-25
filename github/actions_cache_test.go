@@ -100,7 +100,7 @@ func TestActionsService_DeleteCachesByKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/caches", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/caches", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testFormValues(t, r, values{"key": "1", "ref": "main"})
 	})
@@ -162,7 +162,7 @@ func TestActionsService_DeleteCachesByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/caches/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/caches/1", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

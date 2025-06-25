@@ -94,13 +94,13 @@ func Test_FetchAndSumbitForm(t *testing.T) {
 	client, mux := setup(t)
 	var submitted bool
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		fmt.Fprint(w, `<html><form action="/submit">
 		  <input type="hidden" name="hidden" value="h">
 		  <input type="text" name="name">
 		</form></html>`)
 	})
-	mux.HandleFunc("/submit", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/submit", func(_ http.ResponseWriter, r *http.Request) {
 		err := r.ParseForm()
 		if err != nil {
 			t.Fatalf("error parsing form: %v", err)

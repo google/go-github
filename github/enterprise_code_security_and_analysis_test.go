@@ -78,7 +78,7 @@ func TestEnterpriseService_UpdateCodeSecurityAndAnalysis(t *testing.T) {
 		SecretScanningValidityChecksEnabled:                   Ptr(true),
 	}
 
-	mux.HandleFunc("/enterprises/e/code_security_and_analysis", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/code_security_and_analysis", func(_ http.ResponseWriter, r *http.Request) {
 		v := new(EnterpriseSecurityAnalysisSettings)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
@@ -111,7 +111,7 @@ func TestEnterpriseService_EnableAdvancedSecurity(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/e/advanced_security/enable_all", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/enterprises/e/advanced_security/enable_all", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 

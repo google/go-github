@@ -409,7 +409,7 @@ func (c *Client) initialize() {
 	c.clientIgnoreRedirects.Transport = c.client.Transport
 	c.clientIgnoreRedirects.Timeout = c.client.Timeout
 	c.clientIgnoreRedirects.Jar = c.client.Jar
-	c.clientIgnoreRedirects.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+	c.clientIgnoreRedirects.CheckRedirect = func(*http.Request, []*http.Request) error {
 		return http.ErrUseLastResponse
 	}
 	if c.BaseURL == nil {

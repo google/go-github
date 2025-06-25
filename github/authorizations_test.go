@@ -120,7 +120,7 @@ func TestDeleteGrant(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/applications/id/grant", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/applications/id/grant", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testBody(t, r, `{"access_token":"a"}`+"\n")
 		testHeader(t, r, "Accept", mediaTypeOAuthAppPreview)
@@ -183,7 +183,7 @@ func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/admin/users/u/authorizations", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

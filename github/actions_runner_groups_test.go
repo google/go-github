@@ -153,7 +153,7 @@ func TestActionsService_DeleteOrganizationRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/actions/runner-groups/2", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -328,7 +328,7 @@ func TestActionsService_SetRepositoryAccessRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -360,7 +360,7 @@ func TestActionsService_AddRepositoryAccessRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories/42", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -385,7 +385,7 @@ func TestActionsService_RemoveRepositoryAccessRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories/42", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -453,7 +453,7 @@ func TestActionsService_SetRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -485,7 +485,7 @@ func TestActionsService_AddRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners/42", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -510,7 +510,7 @@ func TestActionsService_RemoveRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners/42", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/actions/runner-groups/2/runners/42", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

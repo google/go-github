@@ -65,7 +65,7 @@ func TestIssuesService_IsAssignee_true(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/assignees/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/assignees/u", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 	})
 

@@ -388,7 +388,7 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
+	handlerFunc := func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	}
 

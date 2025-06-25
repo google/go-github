@@ -62,7 +62,7 @@ func TestOrganizationsService_AddSecurityManagerTeam(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/security-managers/teams/t", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/security-managers/teams/t", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	})
 
@@ -105,7 +105,7 @@ func TestOrganizationsService_RemoveSecurityManagerTeam(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/security-managers/teams/t", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/security-managers/teams/t", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

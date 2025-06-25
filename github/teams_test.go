@@ -411,7 +411,7 @@ func TestTeamsService_DeleteTeamByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/organizations/1/team/1", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -436,7 +436,7 @@ func TestTeamsService_DeleteTeamBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

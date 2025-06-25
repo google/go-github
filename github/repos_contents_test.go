@@ -298,7 +298,7 @@ func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
 		fmt.Fprint(w, `[{
 		  "type": "file",
 		  "name": "f",
-		  "content": ""	
+		  "content": ""
 		}]`)
 	})
 
@@ -909,7 +909,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 			})
 
 			// Add custom round tripper
-			client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+			client.client.Transport = roundTripperFunc(func(*http.Request) (*http.Response, error) {
 				return nil, errors.New("failed to get archive link")
 			})
 			testBadOptions(t, methodName, func() (err error) {

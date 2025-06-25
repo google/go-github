@@ -70,7 +70,7 @@ func TestOrganizationsService_RemoveOutsideCollaborator(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	handler := func(w http.ResponseWriter, r *http.Request) {
+	handler := func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
@@ -134,7 +134,7 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	handler := func(w http.ResponseWriter, r *http.Request) {
+	handler := func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)

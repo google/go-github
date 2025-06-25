@@ -272,7 +272,7 @@ func TestGistsService_DeleteComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/gists/1/comments/2", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

@@ -796,7 +796,7 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 
 	for i, test := range tests {
 		madeRequest := false
-		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%d/merge", i), func(w http.ResponseWriter, r *http.Request) {
+		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%d/merge", i), func(_ http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PUT")
 			testBody(t, r, test.wantBody+"\n")
 			madeRequest = true
@@ -815,7 +815,7 @@ func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
 
 	madeRequest := false
 	expectedBody := ""
-	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testBody(t, r, expectedBody+"\n")
 		madeRequest = true

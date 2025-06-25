@@ -260,7 +260,7 @@ func TestOrganizationsService_RemoveCustomProperty(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/properties/schema/name", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/properties/schema/name", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -449,7 +449,7 @@ func TestOrganizationsService_CreateOrUpdateRepoCustomPropertyValues(t *testing.
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/properties/values", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/properties/values", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testBody(t, r, `{"repository_names":["repo"],"properties":[{"property_name":"service","value":"string"}]}`+"\n")
 	})

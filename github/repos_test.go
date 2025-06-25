@@ -519,7 +519,7 @@ func TestRepositoriesService_Delete(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -1067,7 +1067,7 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 			}
 
 			// Add custom round tripper
-			client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+			client.client.Transport = roundTripperFunc(func(*http.Request) (*http.Response, error) {
 				return nil, errors.New("failed to get branch")
 			})
 
@@ -3545,7 +3545,7 @@ func TestRepositoriesService_ListAppRestrictions(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
 
-			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+			mux.HandleFunc(test.urlPath, func(_ http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
 			})
 
@@ -3736,7 +3736,7 @@ func TestRepositoriesService_ListTeamRestrictions(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
 
-			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+			mux.HandleFunc(test.urlPath, func(_ http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
 			})
 
@@ -3927,7 +3927,7 @@ func TestRepositoriesService_ListUserRestrictions(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
 
-			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+			mux.HandleFunc(test.urlPath, func(_ http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
 			})
 

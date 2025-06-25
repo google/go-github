@@ -214,7 +214,7 @@ func TestRateLimits_overQuota(t *testing.T) {
 		Used:      1,
 		Reset:     Timestamp{time.Now().Add(time.Hour).Local()},
 	}
-	mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, _ *http.Request) {
 		fmt.Fprint(w, `{"resources":{
 			"core": {"limit":2,"remaining":1,"used":1,"reset":1372700873},
 			"search": {"limit":3,"remaining":2,"used":1,"reset":1372700874},

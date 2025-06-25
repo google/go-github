@@ -172,7 +172,7 @@ func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64
 
 	var loc string
 	originalRedirect := s.client.client.CheckRedirect
-	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+	s.client.client.CheckRedirect = func(req *http.Request, _ []*http.Request) error {
 		loc = req.URL.String()
 		return http.ErrUseLastResponse
 	}

@@ -99,7 +99,7 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 
 	input := []string{"user@example.com"}
 
-	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/emails", func(_ http.ResponseWriter, r *http.Request) {
 		var v []string
 		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 

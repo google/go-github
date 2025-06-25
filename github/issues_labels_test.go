@@ -215,7 +215,7 @@ func TestIssuesService_DeleteLabel(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/labels/n", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/labels/n", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -351,7 +351,7 @@ func TestIssuesService_RemoveLabelForIssue(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/issues/1/labels/l", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/issues/1/labels/l", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
@@ -438,7 +438,7 @@ func TestIssuesService_RemoveLabelsForIssue(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/issues/1/labels", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
