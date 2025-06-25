@@ -89,7 +89,7 @@ func Test_ParseForms(t *testing.T) {
 	}
 }
 
-func Test_FetchAndSumbitForm(t *testing.T) {
+func Test_FetchAndSubmitForm(t *testing.T) {
 	t.Parallel()
 	client, mux := setup(t)
 	var submitted bool
