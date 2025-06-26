@@ -65,32 +65,37 @@ type AdvancedSecurityCommittersBreakdown struct {
 
 // UsageReportOptions specifies optional parameters for the enhanced billing platform usage report.
 type UsageReportOptions struct {
-	// If specified, only return results for a single year. The value of year is an integer with four digits representing a year.
+	// If specified, only return results for a single year. The value of year is an integer with four digits representing a year. For example, 2025. Default value is the current year.
+
 	Year *int `url:"year,omitempty"`
 
-	// If specified, only return results for a single month. The value of month is an integer between 1 and 12.
+	// If specified, only return results for a single month. The value of month is an integer between 1 and 12. If no year is specified the default year is used.
+
 	Month *int `url:"month,omitempty"`
 
-	// If specified, only return results for a single day. The value of day is an integer between 1 and 31.
+	// If specified, only return results for a single day. The value of day is an integer between 1 and 31. If no year or month is specified, the default year and month are used.
+
 	Day *int `url:"day,omitempty"`
 
-	// If specified, only return results for a single hour. The value of hour is an integer between 0 and 23.
+	// If specified, only return results for a single hour. The value of hour is an integer between 0 and 23. If no year, month, or day is specified, the default year, month, and day are used.
+
 	Hour *int `url:"hour,omitempty"`
 }
 
 // UsageItem represents a single usage item in the enhanced billing platform report.
 type UsageItem struct {
-	Date             *string  `json:"date"`
-	Product          *string  `json:"product"`
-	SKU              *string  `json:"sku"`
-	Quantity         *int     `json:"quantity"`
-	UnitType         *string  `json:"unitType"`
-	PricePerUnit     *float64 `json:"pricePerUnit"`
-	GrossAmount      *float64 `json:"grossAmount"`
-	DiscountAmount   *float64 `json:"discountAmount"`
-	NetAmount        *float64 `json:"netAmount"`
-	OrganizationName *string  `json:"organizationName"`
-	RepositoryName   *string  `json:"repositoryName,omitempty"`
+	Date           *string  `json:"date"`
+	Product        *string  `json:"product"`
+	SKU            *string  `json:"sku"`
+	Quantity       *int     `json:"quantity"`
+	UnitType       *string  `json:"unitType"`
+	PricePerUnit   *float64 `json:"pricePerUnit"`
+	GrossAmount    *float64 `json:"grossAmount"`
+	DiscountAmount *float64 `json:"discountAmount"`
+	NetAmount      *float64 `json:"netAmount"`
+	RepositoryName *string  `json:"repositoryName,omitempty"`
+	// Organization name is only used for organization-level reports.
+	OrganizationName *string `json:"organizationName,omitempty"`
 }
 
 // UsageReport represents the enhanced billing platform usage report response.
