@@ -80,16 +80,16 @@ type UsageReportOptions struct {
 
 // UsageItem represents a single usage item in the enhanced billing platform report.
 type UsageItem struct {
-	Date             *string  `json:"date,omitempty"`
-	Product          *string  `json:"product,omitempty"`
-	SKU              *string  `json:"sku,omitempty"`
-	Quantity         *int     `json:"quantity,omitempty"`
-	UnitType         *string  `json:"unitType,omitempty"`
-	PricePerUnit     *float64 `json:"pricePerUnit,omitempty"`
-	GrossAmount      *float64 `json:"grossAmount,omitempty"`
-	DiscountAmount   *float64 `json:"discountAmount,omitempty"`
-	NetAmount        *float64 `json:"netAmount,omitempty"`
-	OrganizationName *string  `json:"organizationName,omitempty"`
+	Date             *string  `json:"date"`
+	Product          *string  `json:"product"`
+	SKU              *string  `json:"sku"`
+	Quantity         *int     `json:"quantity"`
+	UnitType         *string  `json:"unitType"`
+	PricePerUnit     *float64 `json:"pricePerUnit"`
+	GrossAmount      *float64 `json:"grossAmount"`
+	DiscountAmount   *float64 `json:"discountAmount"`
+	NetAmount        *float64 `json:"netAmount"`
+	OrganizationName *string  `json:"organizationName"`
 	RepositoryName   *string  `json:"repositoryName,omitempty"`
 }
 
