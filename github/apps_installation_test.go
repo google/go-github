@@ -9,7 +9,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -19,14 +18,8 @@ func TestAppsService_ListRepos(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	wantAcceptHeaders := []string{
-		mediaTypeTopicsPreview,
-		mediaTypeRepositoryVisibilityPreview,
-		mediaTypeRepositoryTemplatePreview,
-	}
 	mux.HandleFunc("/installation/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{
 			"page":     "1",
 			"per_page": "2",
@@ -60,14 +53,8 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	wantAcceptHeaders := []string{
-		mediaTypeTopicsPreview,
-		mediaTypeRepositoryVisibilityPreview,
-		mediaTypeRepositoryTemplatePreview,
-	}
 	mux.HandleFunc("/user/installations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{
 			"page":     "1",
 			"per_page": "2",
