@@ -55,6 +55,14 @@ type MigrationOptions struct {
 	// ExcludeAttachments indicates whether attachments should be excluded from
 	// the migration (to reduce migration archive file size).
 	ExcludeAttachments bool
+
+	// ExcludeReleases indicates whether releases should be excluded from
+	// the migration (to reduce migration archive file size).
+	ExcludeReleases bool
+
+	// Exclude is a slice of related items to exclude from the response in order
+	// to improve performance of the request. Supported values are: "repositories"
+	Exclude []string
 }
 
 // startMigration represents the body of a StartMigration request.
@@ -69,6 +77,14 @@ type startMigration struct {
 	// ExcludeAttachments indicates whether attachments should be excluded from
 	// the migration (to reduce migration archive file size).
 	ExcludeAttachments *bool `json:"exclude_attachments,omitempty"`
+
+	// ExcludeReleases indicates whether releases should be excluded from
+	// the migration (to reduce migration archive file size).
+	ExcludeReleases *bool `json:"exclude_releases,omitempty"`
+
+	// Exclude is a slice of related items to exclude from the response in order
+	// to improve performance of the request. Supported values are: "repositories"
+	Exclude []string `json:"exclude,omitempty"`
 }
 
 // StartMigration starts the generation of a migration archive.
@@ -84,6 +100,8 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 	if opts != nil {
 		body.LockRepositories = Ptr(opts.LockRepositories)
 		body.ExcludeAttachments = Ptr(opts.ExcludeAttachments)
+		body.ExcludeReleases = Ptr(opts.ExcludeReleases)
+		body.Exclude = append(body.Exclude, opts.Exclude...)
 	}
 
 	req, err := s.client.NewRequest("POST", u, body)
