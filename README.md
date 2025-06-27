@@ -263,15 +263,18 @@ rate limit, as well as help speed up your application. `go-github` does not
 handle conditional requests directly, but is instead designed to work with a
 caching `http.Transport`.
 
-Typically, an [RFC 7234](https://datatracker.ietf.org/doc/html/rfc7234)
-compliant HTTP cache such as [gregjones/httpcache](https://github.com/gregjones/httpcache)
+Typically, an [RFC 9111](https://datatracker.ietf.org/doc/html/rfc9111)
+compliant HTTP cache such as [bartventer/httpcache](https://github.com/bartventer/httpcache)
 is recommended, ex:
 
 ```go
-import "github.com/gregjones/httpcache"
+import (
+	"github.com/bartventer/httpcache"
+	_ "github.com/bartventer/httpcache/store/memcache" //  Register the in-memory backend
+)
 
 client := github.NewClient(
-	httpcache.NewMemoryCacheTransport().Client()
+	httpcache.NewClient("memcache://"),
 ).WithAuthToken(os.Getenv("GITHUB_TOKEN"))
 ```
 
