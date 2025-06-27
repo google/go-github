@@ -573,7 +573,7 @@ func TestBillingService_GetUsageReportOrg(t *testing.T) {
 
 	const methodName = "GetUsageReportOrg"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetUsageReportOrg(ctx, "\n", nil)
+		_, _, err = client.Billing.GetUsageReportOrg(ctx, "\n", opts)
 		return err
 	})
 
@@ -653,7 +653,7 @@ func TestBillingService_GetUsageReportUser(t *testing.T) {
 
 	const methodName = "GetUsageReportUser"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetUsageReportUser(ctx, "\n", nil)
+		_, _, err = client.Billing.GetUsageReportUser(ctx, "\n", opts)
 		return err
 	})
 
