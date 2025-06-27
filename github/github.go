@@ -895,7 +895,7 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 	}
 
 	// Don't update the rate limits if this was a cached response.
-	// X-From-Cache is set by https://github.com/gregjones/httpcache
+	// X-From-Cache is set by https://github.com/bartventer/httpcache
 	if response.Header.Get("X-From-Cache") == "" {
 		c.rateMu.Lock()
 		c.rateLimits[rateLimitCategory] = response.Rate
