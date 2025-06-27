@@ -30,6 +30,8 @@ func TestMigrationService_StartMigration(t *testing.T) {
 	opt := &MigrationOptions{
 		LockRepositories:   true,
 		ExcludeAttachments: false,
+		ExcludeReleases:    true,
+		Exclude:            []string{"repositories"},
 	}
 	ctx := context.Background()
 	got, _, err := client.Migrations.StartMigration(ctx, "o", []string{"r"}, opt)
