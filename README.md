@@ -219,7 +219,7 @@ if errors.As(err, &rateError) {
 }
 ```
 
-To detect an API secondary rate limit error, you can check if the error is a
+To detect an API secondary rate limit error, you can check if the error is an
 `AbuseRateLimitError`.
 
 ```go
