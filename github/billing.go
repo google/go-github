@@ -87,7 +87,7 @@ type UsageItem struct {
 	Date           *string  `json:"date"`
 	Product        *string  `json:"product"`
 	SKU            *string  `json:"sku"`
-	Quantity       *int     `json:"quantity"`
+	Quantity       *float64 `json:"quantity"`
 	UnitType       *string  `json:"unitType"`
 	PricePerUnit   *float64 `json:"pricePerUnit"`
 	GrossAmount    *float64 `json:"grossAmount"`
