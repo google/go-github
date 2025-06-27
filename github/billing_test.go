@@ -510,3 +510,167 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg_invalidOrg(t *tes
 	_, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "%", nil)
 	testURLParseError(t, err)
 }
+
+func TestBillingService_GetUsageReportOrg(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/organizations/o/settings/billing/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"year":  "2023",
+			"month": "8",
+		})
+		fmt.Fprint(w, `{
+			"usageItems": [
+				{
+					"date": "2023-08-01",
+					"product": "Actions",
+					"sku": "Actions Linux",
+					"quantity": 100,
+					"unitType": "minutes",
+					"pricePerUnit": 0.008,
+					"grossAmount": 0.8,
+					"discountAmount": 0,
+					"netAmount": 0.8,
+					"organizationName": "GitHub",
+					"repositoryName": "github/example"
+				}
+			]
+		}`)
+	})
+
+	ctx := context.Background()
+	opts := &UsageReportOptions{
+		Year:  Ptr(2023),
+		Month: Ptr(8),
+	}
+	report, _, err := client.Billing.GetUsageReportOrg(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Billing.GetUsageReportOrg returned error: %v", err)
+	}
+
+	want := &UsageReport{
+		UsageItems: []*UsageItem{
+			{
+				Date:             Ptr("2023-08-01"),
+				Product:          Ptr("Actions"),
+				SKU:              Ptr("Actions Linux"),
+				Quantity:         Ptr(100),
+				UnitType:         Ptr("minutes"),
+				PricePerUnit:     Ptr(0.008),
+				GrossAmount:      Ptr(0.8),
+				DiscountAmount:   Ptr(0.0),
+				NetAmount:        Ptr(0.8),
+				OrganizationName: Ptr("GitHub"),
+				RepositoryName:   Ptr("github/example"),
+			},
+		},
+	}
+	if !cmp.Equal(report, want) {
+		t.Errorf("Billing.GetUsageReportOrg returned %+v, want %+v", report, want)
+	}
+
+	const methodName = "GetUsageReportOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Billing.GetUsageReportOrg(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetUsageReportOrg(ctx, "o", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestBillingService_GetUsageReportOrg_invalidOrg(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := context.Background()
+	_, _, err := client.Billing.GetUsageReportOrg(ctx, "%", nil)
+	testURLParseError(t, err)
+}
+
+func TestBillingService_GetUsageReportUser(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/users/u/settings/billing/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"day": "15",
+		})
+		fmt.Fprint(w, `{
+			"usageItems": [
+				{
+					"date": "2023-08-15",
+					"product": "Codespaces",
+					"sku": "Codespaces Linux",
+					"quantity": 50,
+					"unitType": "hours",
+					"pricePerUnit": 0.18,
+					"grossAmount": 9.0,
+					"discountAmount": 1.0,
+					"netAmount": 8.0,
+					"repositoryName": "user/example"
+				}
+			]
+		}`)
+	})
+
+	ctx := context.Background()
+	opts := &UsageReportOptions{
+		Day: Ptr(15),
+	}
+	report, _, err := client.Billing.GetUsageReportUser(ctx, "u", opts)
+	if err != nil {
+		t.Errorf("Billing.GetUsageReportUser returned error: %v", err)
+	}
+
+	want := &UsageReport{
+		UsageItems: []*UsageItem{
+			{
+				Date:           Ptr("2023-08-15"),
+				Product:        Ptr("Codespaces"),
+				SKU:            Ptr("Codespaces Linux"),
+				Quantity:       Ptr(50),
+				UnitType:       Ptr("hours"),
+				PricePerUnit:   Ptr(0.18),
+				GrossAmount:    Ptr(9.0),
+				DiscountAmount: Ptr(1.0),
+				NetAmount:      Ptr(8.0),
+				RepositoryName: Ptr("user/example"),
+			},
+		},
+	}
+	if !cmp.Equal(report, want) {
+		t.Errorf("Billing.GetUsageReportUser returned %+v, want %+v", report, want)
+	}
+
+	const methodName = "GetUsageReportUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Billing.GetUsageReportUser(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetUsageReportUser(ctx, "u", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestBillingService_GetUsageReportUser_invalidUser(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := context.Background()
+	_, _, err := client.Billing.GetUsageReportUser(ctx, "%", nil)
+	testURLParseError(t, err)
+}
