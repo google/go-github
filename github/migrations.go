@@ -82,7 +82,7 @@ type startMigration struct {
 	// the migration (to reduce migration archive file size).
 	ExcludeReleases *bool `json:"exclude_releases,omitempty"`
 
-	// Exclude related items from being returned in the response in order
+	// Exclude is a slice of related items to exclude from the response in order
 	// to improve performance of the request. Supported values are: "repositories"
 	Exclude []string `json:"exclude,omitempty"`
 }
