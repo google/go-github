@@ -35456,6 +35456,156 @@ func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 }
 
+func TestUsageItem_GetDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageItem{Date: &zeroValue}
+	u.GetDate()
+	u = &UsageItem{}
+	u.GetDate()
+	u = nil
+	u.GetDate()
+}
+
+func TestUsageItem_GetDiscountAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetDiscountAmount()
+	u = nil
+	u.GetDiscountAmount()
+}
+
+func TestUsageItem_GetGrossAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetGrossAmount()
+	u = nil
+	u.GetGrossAmount()
+}
+
+func TestUsageItem_GetNetAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetNetAmount()
+	u = nil
+	u.GetNetAmount()
+}
+
+func TestUsageItem_GetOrganizationName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageItem{OrganizationName: &zeroValue}
+	u.GetOrganizationName()
+	u = &UsageItem{}
+	u.GetOrganizationName()
+	u = nil
+	u.GetOrganizationName()
+}
+
+func TestUsageItem_GetPricePerUnit(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetPricePerUnit()
+	u = nil
+	u.GetPricePerUnit()
+}
+
+func TestUsageItem_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageItem{Product: &zeroValue}
+	u.GetProduct()
+	u = &UsageItem{}
+	u.GetProduct()
+	u = nil
+	u.GetProduct()
+}
+
+func TestUsageItem_GetQuantity(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetQuantity()
+	u = nil
+	u.GetQuantity()
+}
+
+func TestUsageItem_GetRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageItem{RepositoryName: &zeroValue}
+	u.GetRepositoryName()
+	u = &UsageItem{}
+	u.GetRepositoryName()
+	u = nil
+	u.GetRepositoryName()
+}
+
+func TestUsageItem_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageItem{SKU: &zeroValue}
+	u.GetSKU()
+	u = &UsageItem{}
+	u.GetSKU()
+	u = nil
+	u.GetSKU()
+}
+
+func TestUsageItem_GetUnitType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageItem{UnitType: &zeroValue}
+	u.GetUnitType()
+	u = &UsageItem{}
+	u.GetUnitType()
+	u = nil
+	u.GetUnitType()
+}
+
+func TestUsageReportOptions_GetDay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UsageReportOptions{Day: &zeroValue}
+	u.GetDay()
+	u = &UsageReportOptions{}
+	u.GetDay()
+	u = nil
+	u.GetDay()
+}
+
+func TestUsageReportOptions_GetHour(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UsageReportOptions{Hour: &zeroValue}
+	u.GetHour()
+	u = &UsageReportOptions{}
+	u.GetHour()
+	u = nil
+	u.GetHour()
+}
+
+func TestUsageReportOptions_GetMonth(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UsageReportOptions{Month: &zeroValue}
+	u.GetMonth()
+	u = &UsageReportOptions{}
+	u.GetMonth()
+	u = nil
+	u.GetMonth()
+}
+
+func TestUsageReportOptions_GetYear(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UsageReportOptions{Year: &zeroValue}
+	u.GetYear()
+	u = &UsageReportOptions{}
+	u.GetYear()
+	u = nil
+	u.GetYear()
+}
+
 func TestUser_GetAssignment(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
