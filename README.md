@@ -215,7 +215,7 @@ To detect a primary API rate limit error, you can check if the error is a
 repos, _, err := client.Repositories.List(ctx, "", nil)
 var rateErr *github.RateLimitError
 if errors.As(err, &rateError) {
-  log.Printf("hit primary rate limit, used %d of %d\n", rateErr.Rate.Used, rateErr.rate.Limit)
+	log.Printf("hit primary rate limit, used %d of %d\n", rateErr.Rate.Used, rateErr.rate.Limit)
 }
 ```
 
@@ -225,12 +225,12 @@ To detect an API secondary rate limit error, you can check if the error is an
 ```go
 repos, _, err := client.Repositories.List(ctx, "", nil)
 var rateErr *github.AbuseRateLimitError
-if errors.As(err, &rateError) {
-  log.Printf("hit secondary rate limit, retry after %v\n", rateErr.RetryAfter)
+if errors.As(err, &rateErr) {
+	log.Printf("hit secondary rate limit, retry after %v\n", rateErr.RetryAfter)
 }
 ```
 
-If you hit the primary rate limit, you can use the `SleepUntilPrimaryRateLimitReset`
+If you hit the primary rate limit, you can use the `SleepUntilPrimaryRateLimitResetWhenRateLimited`
 method to block until the rate limit is reset.
 
 ```go

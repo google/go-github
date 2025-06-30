@@ -251,6 +251,9 @@ func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client 
 	client.BaseURL.Path = "/api-v3/"
 	client.rateLimits[category].Reset.Time = time.Now().Add(10 * time.Minute)
 	resp, err = f()
+	if client.DisableRateLimitCheck {
+		return
+	}
 	if bypass := resp.Request.Context().Value(BypassRateLimitCheck); bypass != nil {
 		return
 	}
@@ -1909,6 +1912,79 @@ func TestDo_rateLimit_abuseRateLimitError_maxDuration(t *testing.T) {
 	// check that the retry after is set to be the max allowed duration
 	if got, want := *abuseRateLimitErr.RetryAfter, client.MaxSecondaryRateLimitRetryAfterDuration; got != want {
 		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
+	}
+}
+
+// Make network call if client has disabled the rate limit check.
+func TestDo_rateLimit_disableRateLimitCheck(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	client.DisableRateLimitCheck = true
+
+	reset := time.Now().UTC().Add(60 * time.Second)
+	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
+	requestCount := 0
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		requestCount++
+		w.Header().Set(headerRateLimit, "5000")
+		w.Header().Set(headerRateRemaining, "5000")
+		w.Header().Set(headerRateUsed, "0")
+		w.Header().Set(headerRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(headerRateResource, "core")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, `{}`)
+	})
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	resp, err := client.Do(ctx, req, nil)
+	if err != nil {
+		t.Errorf("Do returned unexpected error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("Response status code = %v, want %v", got, want)
+	}
+	if got, want := requestCount, 1; got != want {
+		t.Errorf("Expected 1 request, got %d", got)
+	}
+	if got, want := client.rateLimits[CoreCategory].Remaining, 0; got != want {
+		t.Errorf("Expected 0 requests remaining, got %d", got)
+	}
+}
+
+// Make network call if client has bypassed the rate limit check.
+func TestDo_rateLimit_bypassRateLimitCheck(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	reset := time.Now().UTC().Add(60 * time.Second)
+	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
+	requestCount := 0
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		requestCount++
+		w.Header().Set(headerRateLimit, "5000")
+		w.Header().Set(headerRateRemaining, "5000")
+		w.Header().Set(headerRateUsed, "0")
+		w.Header().Set(headerRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(headerRateResource, "core")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, `{}`)
+	})
+	req, _ := client.NewRequest("GET", ".", nil)
+	ctx := context.Background()
+	resp, err := client.Do(context.WithValue(ctx, BypassRateLimitCheck, true), req, nil)
+	if err != nil {
+		t.Errorf("Do returned unexpected error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("Response status code = %v, want %v", got, want)
+	}
+	if got, want := requestCount, 1; got != want {
+		t.Errorf("Expected 1 request, got %d", got)
+	}
+	if got, want := client.rateLimits[CoreCategory].Remaining, 5000; got != want {
+		t.Errorf("Expected 5000 requests remaining, got %d", got)
 	}
 }
 
