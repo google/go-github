@@ -27630,12 +27630,12 @@ func (u *UsageItem) GetProduct() string {
 	return *u.Product
 }
 
-// GetQuantity returns the Quantity field if it's non-nil, zero value otherwise.
-func (u *UsageItem) GetQuantity() int {
-	if u == nil || u.Quantity == nil {
-		return 0
+// GetQuantity returns the Quantity field.
+func (u *UsageItem) GetQuantity() *float64 {
+	if u == nil {
+		return nil
 	}
-	return *u.Quantity
+	return u.Quantity
 }
 
 // GetRepositoryName returns the RepositoryName field if it's non-nil, zero value otherwise.
