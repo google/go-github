@@ -35523,10 +35523,7 @@ func TestUsageItem_GetProduct(tt *testing.T) {
 
 func TestUsageItem_GetQuantity(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	u := &UsageItem{Quantity: &zeroValue}
-	u.GetQuantity()
-	u = &UsageItem{}
+	u := &UsageItem{}
 	u.GetQuantity()
 	u = nil
 	u.GetQuantity()
