@@ -189,54 +189,71 @@ using the installation ID of the GitHub app and authenticate with the OAuth meth
 
 ### Rate Limiting ###
 
-GitHub imposes a rate limit on all API clients. Unauthenticated clients are
-limited to 60 requests per hour, while authenticated clients can make up to
-5,000 requests per hour. The Search API has a custom rate limit. Unauthenticated
-clients are limited to 10 requests per minute, while authenticated clients
-can make up to 30 requests per minute. To receive the higher rate limit when
-making calls that are not issued on behalf of a user,
-use `UnauthenticatedRateLimitedTransport`.
+GitHub imposes rate limits on all API clients. The [primary rate limit](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-primary-rate-limits)
+is the limit to the number of REST API requests that a client can make within a
+specific amount of time. This limit helps prevent abuse and denial-of-service
+attacks, and ensures that the API remains available for all users. Some
+endpoints, like the search endpoints, have more restrictive limits.
+Unauthenticated clients may request public data but have a low rate limit,
+while authenticated clients have rate limits based on the client
+identity.
 
-The returned `Response.Rate` value contains the rate limit information
+In addition to primary rate limits, GitHub enforces [secondary rate limits](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits)
+in order to prevent abuse and keep the API available for all users.
+Secondary rate limits generally limit the number of concurrent requests that a
+client can make.
+
+The client returned `Response.Rate` value contains the rate limit information
 from the most recent API call. If a recent enough response isn't
-available, you can use `RateLimits` to fetch the most up-to-date rate
-limit data for the client.
+available, you can use the client `RateLimits` service to fetch the most
+up-to-date rate limit data for the client.
 
-To detect an API rate limit error, you can check if its type is `*github.RateLimitError`:
-
-```go
-repos, _, err := client.Repositories.List(ctx, "", nil)
-if _, ok := err.(*github.RateLimitError); ok {
-	log.Println("hit rate limit")
-}
-```
-
-Learn more about GitHub rate limiting in
-["REST API endpoints for rate limits"](https://docs.github.com/en/rest/rate-limit).
-
-In addition to these rate limits, GitHub imposes a secondary rate limit on all API clients.
-This rate limit prevents clients from making too many concurrent requests.
-
-To detect an API secondary rate limit error, you can check if its type is `*github.AbuseRateLimitError`:
+To detect a primary API rate limit error, you can check if the error is a
+`RateLimitError`.
 
 ```go
 repos, _, err := client.Repositories.List(ctx, "", nil)
-if _, ok := err.(*github.AbuseRateLimitError); ok {
-	log.Println("hit secondary rate limit")
+var rateErr *github.RateLimitError
+if errors.As(err, &rateError) {
+	log.Printf("hit primary rate limit, used %d of %d\n", rateErr.Rate.Used, rateErr.rate.Limit)
 }
 ```
 
-Alternatively, you can block until the rate limit is reset by using the `context.WithValue` method:
+To detect an API secondary rate limit error, you can check if the error is an
+`AbuseRateLimitError`.
+
+```go
+repos, _, err := client.Repositories.List(ctx, "", nil)
+var rateErr *github.AbuseRateLimitError
+if errors.As(err, &rateErr) {
+	log.Printf("hit secondary rate limit, retry after %v\n", rateErr.RetryAfter)
+}
+```
+
+If you hit the primary rate limit, you can use the `SleepUntilPrimaryRateLimitResetWhenRateLimited`
+method to block until the rate limit is reset.
 
 ```go
 repos, _, err := client.Repositories.List(context.WithValue(ctx, github.SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "", nil)
 ```
 
-You can use [gofri/go-github-ratelimit](https://github.com/gofri/go-github-ratelimit) to handle
-secondary rate limit sleep-and-retry for you, as well as primary rate limit abuse-prevention and callback triggering.
+If you need to make a request even if the rate limit has been hit you can use
+the `BypassRateLimitCheck` method to bypass the rate limit check and make the
+request anyway.
 
-Learn more about GitHub secondary rate limiting in
-["About secondary rate limits"](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits).
+```go
+repos, _, err := client.Repositories.List(context.WithValue(ctx, github.BypassRateLimitCheck, true), "", nil)
+```
+
+For more advanced use cases, you can use [gofri/go-github-ratelimit](https://github.com/gofri/go-github-ratelimit)
+which provides a middleware (`http.RoundTripper`) that handles both the primary
+rate limit and secondary rate limit for the GitHub API. In this case you can
+set the client `DisableRateLimitCheck` to `true` so the client doesn't track the rate limit usage.
+
+If the client is an [OAuth app](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#primary-rate-limit-for-oauth-apps)
+you can use the apps higher rate limit to request public data by using the
+`UnauthenticatedRateLimitedTransport` to make calls as the app instead of as
+the user.
 
 ### Accepted Status ###
 
