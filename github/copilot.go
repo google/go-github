@@ -203,6 +203,9 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 	cp.PlanType = seatDetail.PlanType
 
 	switch v := seatDetail.Assignee.(type) {
+	case nil:
+		// Assignee can be null according to GitHub API specification
+		cp.Assignee = nil
 	case map[string]any:
 		jsonData, err := json.Marshal(seatDetail.Assignee)
 		if err != nil {
