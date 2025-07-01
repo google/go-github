@@ -204,7 +204,9 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 
 	switch v := seatDetail.Assignee.(type) {
 	case nil:
-		// Assignee can be null according to GitHub API specification
+		// Assignee can be null according to GitHub API specification.
+		// See: https://docs.github.com/en/rest/copilot/copilot-user-management?apiVersion=2022-11-28#list-all-copilot-seat-assignments-for-an-organization
+		// Note: Copilot API is in public preview and subject to change.
 		cp.Assignee = nil
 	case map[string]any:
 		jsonData, err := json.Marshal(seatDetail.Assignee)
