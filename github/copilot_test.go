@@ -59,6 +59,16 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "Null Assignee",
+			data: `{
+					"assignee": null
+				}`,
+			want: &CopilotSeatDetails{
+				Assignee: nil,
+			},
+			wantErr: false,
+		},
+		{
 			name: "Invalid Assignee Field Type",
 			data: `{
 					"assignee": "test"
