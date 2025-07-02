@@ -1010,7 +1010,8 @@ type Branch struct {
 	// such as 'List branches'. In such cases, if branch protection is
 	// enabled, Protected will be `true` but this will be nil, and
 	// additional protection details can be obtained by calling GetBranch().
-	Protection *Protection `json:"protection,omitempty"`
+	Protection    *Protection `json:"protection,omitempty"`
+	ProtectionURL *string     `json:"protection_url,omitempty"`
 }
 
 // Protection represents a repository branch's protection.

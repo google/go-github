@@ -1614,6 +1614,14 @@ func (b *Branch) GetProtection() *Protection {
 	return b.Protection
 }
 
+// GetProtectionURL returns the ProtectionURL field if it's non-nil, zero value otherwise.
+func (b *Branch) GetProtectionURL() string {
+	if b == nil || b.ProtectionURL == nil {
+		return ""
+	}
+	return *b.ProtectionURL
+}
+
 // GetCommit returns the Commit field.
 func (b *BranchCommit) GetCommit() *Commit {
 	if b == nil {
