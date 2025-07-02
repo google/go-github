@@ -135,7 +135,14 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 
 func TestMetric_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Metric{}, "{}")
+	testJSONMarshal(t, &Metric{}, `{
+		"html_url": null,
+		"key": null,
+		"name": null,
+		"node_id": null,
+		"spdx_id": null,
+		"url": null
+	}`)
 
 	r := &Metric{
 		Name:    Ptr("name"),
@@ -160,7 +167,15 @@ func TestMetric_Marshal(t *testing.T) {
 
 func TestCommunityHealthFiles_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &CommunityHealthFiles{}, "{}")
+	testJSONMarshal(t, &CommunityHealthFiles{}, `{
+		"code_of_conduct": null,
+		"code_of_conduct_file": null,
+		"contributing": null,
+		"issue_template": null,
+		"license": null,
+		"pull_request_template": null,
+		"readme": null
+	}`)
 
 	r := &CommunityHealthFiles{
 		CodeOfConduct: &Metric{
@@ -214,31 +229,41 @@ func TestCommunityHealthFiles_Marshal(t *testing.T) {
 			"name": "name",
 			"key": "key",
 			"url": "url",
-			"html_url": "hurl"
+			"html_url": "hurl",
+			"node_id": null,
+			"spdx_id": null
 		},
 		"code_of_conduct_file": {
 			"name": "name",
 			"key": "key",
-                        "url": "url",
-                        "html_url": "hurl"
-                },
+			"url": "url",
+			"html_url": "hurl",
+			"node_id": null,
+			"spdx_id": null
+		},
 		"contributing": {
 			"name": "name",
 			"key": "key",
 			"url": "url",
-			"html_url": "hurl"
+			"html_url": "hurl",
+			"node_id": null,
+			"spdx_id": null
 		},
 		"issue_template": {
 			"name": "name",
 			"key": "key",
 			"url": "url",
-			"html_url": "hurl"
+			"html_url": "hurl",
+			"node_id": null,
+			"spdx_id": null
 		},
 		"pull_request_template": {
 			"name": "name",
 			"key": "key",
 			"url": "url",
-			"html_url": "hurl"
+			"html_url": "hurl",
+			"node_id": null,
+			"spdx_id": null
 		},
 		"license": {
 			"name": "name",
@@ -252,7 +277,9 @@ func TestCommunityHealthFiles_Marshal(t *testing.T) {
 			"name": "name",
 			"key": "key",
 			"url": "url",
-			"html_url": "hurl"
+			"html_url": "hurl",
+			"node_id": null,
+			"spdx_id": null
 		}
 	}`
 
@@ -261,7 +288,14 @@ func TestCommunityHealthFiles_Marshal(t *testing.T) {
 
 func TestCommunityHealthMetrics_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &CommunityHealthMetrics{}, "{}")
+	testJSONMarshal(t, &CommunityHealthMetrics{}, `{
+		"content_reports_enabled": null,
+		"description": null,
+		"documentation": null,
+		"files": null,
+		"health_percentage": null,
+		"updated_at": null
+	}`)
 
 	r := &CommunityHealthMetrics{
 		HealthPercentage: Ptr(1),
@@ -326,31 +360,41 @@ func TestCommunityHealthMetrics_Marshal(t *testing.T) {
 				"name": "name",
 				"key": "key",
 				"url": "url",
-				"html_url": "hurl"
+				"html_url": "hurl",
+				"node_id": null,
+              	"spdx_id": null
 			},
 			"code_of_conduct_file": {
-                                "name": "name",
-                                "key": "key",
-                                "url": "url",
-                                "html_url": "hurl"
-                        },
+				"name": "name",
+				"key": "key",
+				"url": "url",
+				"html_url": "hurl",
+				"node_id": null,
+              	"spdx_id": null
+			},
 			"contributing": {
 				"name": "name",
 				"key": "key",
 				"url": "url",
-				"html_url": "hurl"
+				"html_url": "hurl",
+				"node_id": null,
+              	"spdx_id": null
 			},
 			"issue_template": {
 				"name": "name",
 				"key": "key",
 				"url": "url",
-				"html_url": "hurl"
+				"html_url": "hurl",
+				"node_id": null,
+              	"spdx_id": null
 			},
 			"pull_request_template": {
 				"name": "name",
 				"key": "key",
 				"url": "url",
-				"html_url": "hurl"
+				"html_url": "hurl",
+				"node_id": null,
+              	"spdx_id": null
 			},
 			"license": {
 				"name": "name",
@@ -364,7 +408,9 @@ func TestCommunityHealthMetrics_Marshal(t *testing.T) {
 				"name": "name",
 				"key": "key",
 				"url": "url",
-				"html_url": "hurl"
+				"html_url": "hurl",
+				"node_id": null,
+              	"spdx_id": null
 			}
 		},
 		"updated_at": ` + referenceTimeStr + `,
