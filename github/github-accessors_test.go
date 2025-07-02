@@ -2122,6 +2122,17 @@ func TestBranch_GetProtection(tt *testing.T) {
 	b.GetProtection()
 }
 
+func TestBranch_GetProtectionURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &Branch{ProtectionURL: &zeroValue}
+	b.GetProtectionURL()
+	b = &Branch{}
+	b.GetProtectionURL()
+	b = nil
+	b.GetProtectionURL()
+}
+
 func TestBranchCommit_GetCommit(tt *testing.T) {
 	tt.Parallel()
 	b := &BranchCommit{}
