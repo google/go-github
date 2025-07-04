@@ -1205,6 +1205,17 @@ func TestArtifact_GetCreatedAt(tt *testing.T) {
 	a.GetCreatedAt()
 }
 
+func TestArtifact_GetDigest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &Artifact{Digest: &zeroValue}
+	a.GetDigest()
+	a = &Artifact{}
+	a.GetDigest()
+	a = nil
+	a.GetDigest()
+}
+
 func TestArtifact_GetExpired(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
