@@ -934,6 +934,14 @@ func (a *Artifact) GetCreatedAt() Timestamp {
 	return *a.CreatedAt
 }
 
+// GetDigest returns the Digest field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetDigest() string {
+	if a == nil || a.Digest == nil {
+		return ""
+	}
+	return *a.Digest
+}
+
 // GetExpired returns the Expired field if it's non-nil, zero value otherwise.
 func (a *Artifact) GetExpired() bool {
 	if a == nil || a.Expired == nil {
