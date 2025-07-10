@@ -1878,6 +1878,14 @@ func (b *BranchProtectionRule) GetRequiredStatusChecksEnforcementLevel() string 
 	return *b.RequiredStatusChecksEnforcementLevel
 }
 
+// GetRequireLastPushApproval returns the RequireLastPushApproval field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetRequireLastPushApproval() bool {
+	if b == nil || b.RequireLastPushApproval == nil {
+		return false
+	}
+	return *b.RequireLastPushApproval
+}
+
 // GetSignatureRequirementEnforcementLevel returns the SignatureRequirementEnforcementLevel field if it's non-nil, zero value otherwise.
 func (b *BranchProtectionRule) GetSignatureRequirementEnforcementLevel() string {
 	if b == nil || b.SignatureRequirementEnforcementLevel == nil {
@@ -18614,6 +18622,14 @@ func (p *ProtectionChanges) GetRequiredStatusChecksEnforcementLevel() *RequiredS
 	return p.RequiredStatusChecksEnforcementLevel
 }
 
+// GetRequireLastPushApproval returns the RequireLastPushApproval field.
+func (p *ProtectionChanges) GetRequireLastPushApproval() *RequireLastPushApprovalChanges {
+	if p == nil {
+		return nil
+	}
+	return p.RequireLastPushApproval
+}
+
 // GetSignatureRequirementEnforcementLevel returns the SignatureRequirementEnforcementLevel field.
 func (p *ProtectionChanges) GetSignatureRequirementEnforcementLevel() *SignatureRequirementEnforcementLevelChanges {
 	if p == nil {
@@ -24036,6 +24052,14 @@ func (r *RequiredStatusChecksRuleParameters) GetDoNotEnforceOnCreate() bool {
 		return false
 	}
 	return *r.DoNotEnforceOnCreate
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (r *RequireLastPushApprovalChanges) GetFrom() bool {
+	if r == nil || r.From == nil {
+		return false
+	}
+	return *r.From
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.

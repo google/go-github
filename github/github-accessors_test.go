@@ -2467,6 +2467,17 @@ func TestBranchProtectionRule_GetRequiredStatusChecksEnforcementLevel(tt *testin
 	b.GetRequiredStatusChecksEnforcementLevel()
 }
 
+func TestBranchProtectionRule_GetRequireLastPushApproval(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	b := &BranchProtectionRule{RequireLastPushApproval: &zeroValue}
+	b.GetRequireLastPushApproval()
+	b = &BranchProtectionRule{}
+	b.GetRequireLastPushApproval()
+	b = nil
+	b.GetRequireLastPushApproval()
+}
+
 func TestBranchProtectionRule_GetSignatureRequirementEnforcementLevel(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -24060,6 +24071,14 @@ func TestProtectionChanges_GetRequiredStatusChecksEnforcementLevel(tt *testing.T
 	p.GetRequiredStatusChecksEnforcementLevel()
 }
 
+func TestProtectionChanges_GetRequireLastPushApproval(tt *testing.T) {
+	tt.Parallel()
+	p := &ProtectionChanges{}
+	p.GetRequireLastPushApproval()
+	p = nil
+	p.GetRequireLastPushApproval()
+}
+
 func TestProtectionChanges_GetSignatureRequirementEnforcementLevel(tt *testing.T) {
 	tt.Parallel()
 	p := &ProtectionChanges{}
@@ -30907,6 +30926,17 @@ func TestRequiredStatusChecksRuleParameters_GetDoNotEnforceOnCreate(tt *testing.
 	r.GetDoNotEnforceOnCreate()
 	r = nil
 	r.GetDoNotEnforceOnCreate()
+}
+
+func TestRequireLastPushApprovalChanges_GetFrom(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RequireLastPushApprovalChanges{From: &zeroValue}
+	r.GetFrom()
+	r = &RequireLastPushApprovalChanges{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
 }
 
 func TestReviewersRequest_GetNodeID(tt *testing.T) {
