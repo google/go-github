@@ -1074,6 +1074,7 @@ type BranchProtectionRule struct {
 	RequiredConversationResolutionLevel      *string    `json:"required_conversation_resolution_level,omitempty"`
 	AuthorizedActorsOnly                     *bool      `json:"authorized_actors_only,omitempty"`
 	AuthorizedActorNames                     []string   `json:"authorized_actor_names,omitempty"`
+	RequireLastPushApproval                  *bool      `json:"require_last_push_approval,omitempty"`
 }
 
 // ProtectionChanges represents the changes to the rule if the BranchProtection was edited.
@@ -1093,6 +1094,7 @@ type ProtectionChanges struct {
 	RequiredStatusChecks                     *RequiredStatusChecksChanges                     `json:"required_status_checks,omitempty"`
 	RequiredStatusChecksEnforcementLevel     *RequiredStatusChecksEnforcementLevelChanges     `json:"required_status_checks_enforcement_level,omitempty"`
 	SignatureRequirementEnforcementLevel     *SignatureRequirementEnforcementLevelChanges     `json:"signature_requirement_enforcement_level,omitempty"`
+	RequireLastPushApproval                  *RequireLastPushApprovalChanges                  `json:"require_last_push_approval,omitempty"`
 }
 
 // AdminEnforcedChanges represents the changes made to the AdminEnforced policy.
@@ -1168,6 +1170,11 @@ type RequiredStatusChecksEnforcementLevelChanges struct {
 // SignatureRequirementEnforcementLevelChanges represents the changes made to the SignatureRequirementEnforcementLevel policy.
 type SignatureRequirementEnforcementLevelChanges struct {
 	From *string `json:"from,omitempty"`
+}
+
+// RequireLastPushApprovalChanges represents the changes made to the RequireLastPushApproval policy.
+type RequireLastPushApprovalChanges struct {
+	From *bool `json:"from,omitempty"`
 }
 
 // ProtectionRequest represents a request to create/edit a branch's protection.
