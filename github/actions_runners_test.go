@@ -577,7 +577,10 @@ func TestRunnerApplicationDownload_Marshal(t *testing.T) {
 
 func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ActionsEnabledOnOrgRepos{}, "{}")
+	testJSONMarshal(t, &ActionsEnabledOnOrgRepos{}, `{
+		"repositories": null,
+		"total_count": 0
+	}`)
 
 	u := &ActionsEnabledOnOrgRepos{
 		TotalCount: 1,
@@ -679,7 +682,7 @@ func TestRunner_Marshal(t *testing.T) {
 
 func TestRunners_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Runners{}, "{}")
+	testJSONMarshal(t, &Runners{}, `{"runners": null, "total_count": 0}`)
 
 	u := &Runners{
 		TotalCount: 1,
