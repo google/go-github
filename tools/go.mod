@@ -7,7 +7,7 @@ require (
 	github.com/getkin/kin-openapi v0.132.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v73 v73.0.0
-	golang.org/x/sync v0.15.0
+	golang.org/x/sync v0.16.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
