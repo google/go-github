@@ -21062,6 +21062,14 @@ func (r *ReleaseAsset) GetCreatedAt() Timestamp {
 	return *r.CreatedAt
 }
 
+// GetDigest returns the Digest field if it's non-nil, zero value otherwise.
+func (r *ReleaseAsset) GetDigest() string {
+	if r == nil || r.Digest == nil {
+		return ""
+	}
+	return *r.Digest
+}
+
 // GetDownloadCount returns the DownloadCount field if it's non-nil, zero value otherwise.
 func (r *ReleaseAsset) GetDownloadCount() int {
 	if r == nil || r.DownloadCount == nil {
@@ -21140,14 +21148,6 @@ func (r *ReleaseAsset) GetURL() string {
 		return ""
 	}
 	return *r.URL
-}
-
-// GetDigest returns the digest if it's non-nil, zero value otherwise.
-func (r *ReleaseAsset) GetDigest() string {
-	if r == nil || r.Digest == nil {
-		return ""
-	}
-	return *r.Digest
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
