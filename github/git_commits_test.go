@@ -294,7 +294,7 @@ func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
 	opts := CreateCommitOptions{Signer: uncalledSigner(t)}
 	_, _, err := client.Git.CreateCommit(ctx, "o", "r", input, &opts)
 	if err == nil {
-		t.Errorf("Expected error to be returned because invalid params were passed")
+		t.Error("Expected error to be returned because invalid params were passed")
 	}
 }
 
@@ -305,7 +305,7 @@ func TestGitService_CreateCommitWithNilCommit(t *testing.T) {
 	ctx := context.Background()
 	_, _, err := client.Git.CreateCommit(ctx, "o", "r", nil, nil)
 	if err == nil {
-		t.Errorf("Expected error to be returned because commit=nil")
+		t.Error("Expected error to be returned because commit=nil")
 	}
 }
 
@@ -371,7 +371,7 @@ func TestGitService_createSignature_nilSigner(t *testing.T) {
 	_, err := createSignature(nil, a)
 
 	if err == nil {
-		t.Errorf("Expected error to be returned because no author was passed")
+		t.Error("Expected error to be returned because no author was passed")
 	}
 }
 
@@ -380,7 +380,7 @@ func TestGitService_createSignature_nilCommit(t *testing.T) {
 	_, err := createSignature(uncalledSigner(t), nil)
 
 	if err == nil {
-		t.Errorf("Expected error to be returned because no author was passed")
+		t.Error("Expected error to be returned because no author was passed")
 	}
 }
 
@@ -397,7 +397,7 @@ func TestGitService_createSignature_signerError(t *testing.T) {
 	_, err := createSignature(signer, a)
 
 	if err == nil {
-		t.Errorf("Expected error to be returned because signer returned an error")
+		t.Error("Expected error to be returned because signer returned an error")
 	}
 }
 
@@ -405,7 +405,7 @@ func TestGitService_createSignatureMessage_nilCommit(t *testing.T) {
 	t.Parallel()
 	_, err := createSignatureMessage(nil)
 	if err == nil {
-		t.Errorf("Expected error to be returned due to nil key")
+		t.Error("Expected error to be returned due to nil key")
 	}
 }
 
@@ -423,7 +423,7 @@ func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
 		},
 	})
 	if err == nil {
-		t.Errorf("Expected error to be returned due to nil key")
+		t.Error("Expected error to be returned due to nil key")
 	}
 }
 
@@ -441,7 +441,7 @@ func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
 		},
 	})
 	if err == nil {
-		t.Errorf("Expected error to be returned due to nil key")
+		t.Error("Expected error to be returned due to nil key")
 	}
 }
 
@@ -453,7 +453,7 @@ func TestGitService_createSignatureMessage_nilAuthor(t *testing.T) {
 		Author:  nil,
 	})
 	if err == nil {
-		t.Errorf("Expected error to be returned due to nil key")
+		t.Error("Expected error to be returned due to nil key")
 	}
 }
 

@@ -81,7 +81,7 @@ func TestPublicKey_UnmarshalJSON(t *testing.T) {
 			pk := PublicKey{}
 			err := json.Unmarshal(tt.data, &pk)
 			if err == nil && tt.wantErr {
-				t.Errorf("PublicKey.UnmarshalJSON returned nil instead of an error")
+				t.Error("PublicKey.UnmarshalJSON returned nil instead of an error")
 			}
 			if err != nil && !tt.wantErr {
 				t.Errorf("PublicKey.UnmarshalJSON returned an unexpected error: %+v", err)
@@ -507,7 +507,7 @@ func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{"total_count":1,"repositories":[{"id":1}]}`)
+		fmt.Fprint(w, `{"total_count":1,"repositories":[{"id":1}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}

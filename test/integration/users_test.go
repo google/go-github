@@ -24,7 +24,7 @@ func TestUsers_Get(t *testing.T) {
 	}
 
 	if len(users) == 0 {
-		t.Errorf("Users.ListAll returned no users")
+		t.Error("Users.ListAll returned no users")
 	}
 
 	// mojombo is user #1
@@ -57,7 +57,7 @@ func TestUsers_Update(t *testing.T) {
 	}
 
 	if *u.Login == "" {
-		t.Errorf("wanted non-empty values for user.Login")
+		t.Error("wanted non-empty values for user.Login")
 	}
 
 	// save original location
@@ -166,7 +166,7 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	if len(keys) == 0 {
-		t.Errorf("Users.ListKeys('willnorris') returned no keys")
+		t.Error("Users.ListKeys('willnorris') returned no keys")
 	}
 
 	// the rest of the tests requires auth
@@ -184,7 +184,7 @@ func TestUsers_Keys(t *testing.T) {
 	key := "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCy/RIqaMFj2wjkOEjx9EAU0ReLAIhodga82/feo5nnT9UUkHLbL9xrIavfdLHx28lD3xYgPfAoSicUMaAeNwuQhmuerr2c2LFGxzrdXP8pVsQ+Ol7y7OdmFPfe0KrzoZaLJs9aSiZ4VKyY4z5Se/k2UgcJTdgQVlLfw/P96aqCx8yUu94BiWqkDqYEvgWKRNHrTiIo1EXeVBCCcfgNZe1suFfNJUJSUU2T3EG2bpwBbSOCjE3FyH8+Lz3K3BOGzm3df8E7Regj9j4YIcD8cWJYO86jLJoGgQ0L5MSOq+ishNaHQXech22Ix03D1lVMjCvDT7S/C94Z1LzhI2lhvyff"
 	for _, k := range keys {
 		if k.Key != nil && *k.Key == key {
-			t.Fatalf("Test key already exists for user. Please manually remove it first.")
+			t.Fatal("Test key already exists for user. Please manually remove it first.")
 		}
 	}
 
@@ -212,7 +212,7 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	if id == 0 {
-		t.Fatalf("Users.ListKeys('') does not contain added test key")
+		t.Fatal("Users.ListKeys('') does not contain added test key")
 	}
 
 	// Verify that fetching individual key works
@@ -238,7 +238,7 @@ func TestUsers_Keys(t *testing.T) {
 
 	for _, k := range keys {
 		if k.Key != nil && *k.Key == key {
-			t.Fatalf("Users.ListKeys('') still contains test key after removing it")
+			t.Fatal("Users.ListKeys('') still contains test key after removing it")
 		}
 	}
 }

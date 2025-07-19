@@ -22,7 +22,7 @@ func TestEnterpriseService_ListEnterpriseNetworkConfigurations(t *testing.T) {
 	mux.HandleFunc(" /enterprises/e/network-configurations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "3", "per_page": "2"})
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 		  "total_count": 2,
 		  "network_configurations": [
 			{
@@ -101,7 +101,7 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/network-configurations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 		  "id": "123456789ABCDEF",
 		  "name": "configuration one",
 		  "compute_service": "actions",
@@ -195,7 +195,7 @@ func TestEnterpriseService_GetEnterpriseNetworkConfiguration(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/network-configurations/123456789ABCDEF", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 		  "id": "123456789ABCDEF",
 		  "name": "configuration one",
 		  "compute_service": "actions",
@@ -245,7 +245,7 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/network-configurations/123456789ABCDEF", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 		  "id": "123456789ABCDEF",
 		  "name": "updated configuration one",
 		  "compute_service": "none",
@@ -363,7 +363,7 @@ func TestEnterpriseService_GetEnterpriseNetworkSettingsResource(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/network-settings/123456789ABCDEF", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 			"id": "220F78DACB92BBFBC5E6F22DE1CCF52309D",
 			"network_configuration_id": "934E208B3EE0BD60CF5F752C426BFB53562",
 			"name": "my_network_settings",

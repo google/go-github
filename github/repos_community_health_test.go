@@ -21,7 +21,7 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/community/profile", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 				"health_percentage": 100,
 				"description": "My first repository on GitHub!",
 				"documentation": null,

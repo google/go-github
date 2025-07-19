@@ -184,7 +184,7 @@ func TestActivityService_GetRepositorySubscription_error(t *testing.T) {
 	ctx := context.Background()
 	_, _, err := client.Activity.GetRepositorySubscription(ctx, "o", "r")
 	if err == nil {
-		t.Errorf("Expected HTTP 400 response")
+		t.Error("Expected HTTP 400 response")
 	}
 }
 

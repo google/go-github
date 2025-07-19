@@ -19,7 +19,7 @@ func TestIssueEvents(t *testing.T) {
 	}
 
 	if len(events) == 0 {
-		t.Errorf("ListRepositoryEvents returned no events")
+		t.Error("ListRepositoryEvents returned no events")
 	}
 
 	events, _, err = client.Issues.ListIssueEvents(context.Background(), "google", "go-github", 1, nil)
@@ -28,7 +28,7 @@ func TestIssueEvents(t *testing.T) {
 	}
 
 	if len(events) == 0 {
-		t.Errorf("ListIssueEvents returned no events")
+		t.Error("ListIssueEvents returned no events")
 	}
 
 	event, _, err := client.Issues.GetEvent(context.Background(), "google", "go-github", *events[0].ID)

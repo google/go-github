@@ -105,9 +105,9 @@ func TestOrganizationsService_RemoveOutsideCollaborator_NonMember(t *testing.T) 
 	ctx := context.Background()
 	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
 	if err, ok := err.(*ErrorResponse); !ok {
-		t.Errorf("Organizations.RemoveOutsideCollaborator did not return an error")
+		t.Error("Organizations.RemoveOutsideCollaborator did not return an error")
 	} else if err.Response.StatusCode != http.StatusNotFound {
-		t.Errorf("Organizations.RemoveOutsideCollaborator did not return 404 status code")
+		t.Error("Organizations.RemoveOutsideCollaborator did not return 404 status code")
 	}
 }
 
@@ -124,9 +124,9 @@ func TestOrganizationsService_RemoveOutsideCollaborator_Member(t *testing.T) {
 	ctx := context.Background()
 	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
 	if err, ok := err.(*ErrorResponse); !ok {
-		t.Errorf("Organizations.RemoveOutsideCollaborator did not return an error")
+		t.Error("Organizations.RemoveOutsideCollaborator did not return an error")
 	} else if err.Response.StatusCode != http.StatusUnprocessableEntity {
-		t.Errorf("Organizations.RemoveOutsideCollaborator did not return 422 status code")
+		t.Error("Organizations.RemoveOutsideCollaborator did not return 422 status code")
 	}
 }
 
@@ -169,8 +169,8 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator_NonMemberOrLast
 	ctx := context.Background()
 	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(ctx, "o", "u")
 	if err, ok := err.(*ErrorResponse); !ok {
-		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator did not return an error")
+		t.Error("Organizations.ConvertMemberToOutsideCollaborator did not return an error")
 	} else if err.Response.StatusCode != http.StatusForbidden {
-		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator did not return 403 status code")
+		t.Error("Organizations.ConvertMemberToOutsideCollaborator did not return 403 status code")
 	}
 }

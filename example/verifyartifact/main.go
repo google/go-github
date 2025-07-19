@@ -186,7 +186,7 @@ func runVerification(sev *verify.SignedEntityVerifier, pb *verify.PolicyBuilder,
 		return err
 	}
 
-	fmt.Fprintf(os.Stderr, "Verification successful!\n")
+	fmt.Fprint(os.Stderr, "Verification successful!\n")
 
 	marshaled, err := json.MarshalIndent(res, "", "  ")
 	if err != nil {

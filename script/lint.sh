@@ -5,7 +5,7 @@
 
 set -e
 
-GOLANGCI_LINT_VERSION="2.1.6"
+GOLANGCI_LINT_VERSION="2.2.2"
 
 CDPATH="" cd -- "$(dirname -- "$0")/.."
 BIN="$(pwd -P)"/bin

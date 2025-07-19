@@ -14,7 +14,7 @@ func TestPayload_Panic(t *testing.T) {
 	t.Parallel()
 	defer func() {
 		if r := recover(); r == nil {
-			t.Errorf("Payload did not panic but should have")
+			t.Error("Payload did not panic but should have")
 		}
 	}()
 

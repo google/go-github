@@ -22,7 +22,7 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2"})
-		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
 	opt := &ListCollaboratorsOptions{
@@ -61,7 +61,7 @@ func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"affiliation": "all", "page": "2"})
-		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
 	opt := &ListCollaboratorsOptions{
@@ -101,7 +101,7 @@ func TestRepositoriesService_ListCollaborators_withPermission(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"permission": "pull", "page": "2"})
-		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
 	opt := &ListCollaboratorsOptions{
@@ -159,7 +159,7 @@ func TestRepositoriesService_IsCollaborator_True(t *testing.T) {
 	}
 
 	if !isCollab {
-		t.Errorf("Repositories.IsCollaborator returned false, want true")
+		t.Error("Repositories.IsCollaborator returned false, want true")
 	}
 
 	const methodName = "IsCollaborator"
@@ -193,7 +193,7 @@ func TestRepositoriesService_IsCollaborator_False(t *testing.T) {
 	}
 
 	if isCollab {
-		t.Errorf("Repositories.IsCollaborator returned true, want false")
+		t.Error("Repositories.IsCollaborator returned true, want false")
 	}
 
 	const methodName = "IsCollaborator"
@@ -226,7 +226,7 @@ func TestRepositoryService_GetPermissionLevel(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/collaborators/u/permission", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{"permission":"admin","user":{"login":"u"}}`)
+		fmt.Fprint(w, `{"permission":"admin","user":{"login":"u"}}`)
 	})
 
 	ctx := context.Background()

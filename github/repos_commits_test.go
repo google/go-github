@@ -32,7 +32,7 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 				"since":  "2013-08-01T00:00:00Z",
 				"until":  "2013-09-03T00:00:00Z",
 			})
-		fmt.Fprintf(w, `[{"sha": "s"}]`)
+		fmt.Fprint(w, `[{"sha": "s"}]`)
 	})
 
 	opt := &CommitsListOptions{
@@ -75,7 +75,7 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/commits/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 		  "sha": "s",
 		  "commit": { "message": "m" },
 		  "author": { "login": "l" },
@@ -267,7 +267,7 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 
 	got, _, err = client.Repositories.GetCommitSHA1(ctx, "o", "r", "tag", sha1)
 	if err == nil {
-		t.Errorf("Expected HTTP 304 response")
+		t.Error("Expected HTTP 304 response")
 	}
 
 	want = ""
@@ -323,7 +323,7 @@ func TestRepositoriesService_NonAlphabetCharacter_GetCommitSHA1(t *testing.T) {
 
 	got, _, err = client.Repositories.GetCommitSHA1(ctx, "o", "r", "tag", sha1)
 	if err == nil {
-		t.Errorf("Expected HTTP 304 response")
+		t.Error("Expected HTTP 304 response")
 	}
 
 	if want := ""; got != want {
@@ -364,7 +364,7 @@ func TestRepositoriesService_TrailingPercent_GetCommitSHA1(t *testing.T) {
 
 	got, _, err = client.Repositories.GetCommitSHA1(ctx, "o", "r", "tag", sha1)
 	if err == nil {
-		t.Errorf("Expected HTTP 304 response")
+		t.Error("Expected HTTP 304 response")
 	}
 
 	if want := ""; got != want {
@@ -649,7 +649,7 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/s/branches-where-head", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `[{"name": "b","commit":{"sha":"2e90302801c870f17b6152327d9b9a03c8eca0e2","url":"https://api.github.com/repos/google/go-github/commits/2e90302801c870f17b6152327d9b9a03c8eca0e2"},"protected":true}]`)
+		fmt.Fprint(w, `[{"name": "b","commit":{"sha":"2e90302801c870f17b6152327d9b9a03c8eca0e2","url":"https://api.github.com/repos/google/go-github/commits/2e90302801c870f17b6152327d9b9a03c8eca0e2"},"protected":true}]`)
 	})
 
 	ctx := context.Background()

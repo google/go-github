@@ -22,7 +22,7 @@ func TestRepositoriesService_ListAutolinks(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2"})
-		fmt.Fprintf(w, `[{"id":1, "key_prefix": "TICKET-", "url_template": "https://example.com/TICKET?query=<num>"}, {"id":2, "key_prefix": "STORY-", "url_template": "https://example.com/STORY?query=<num>"}]`)
+		fmt.Fprint(w, `[{"id":1, "key_prefix": "TICKET-", "url_template": "https://example.com/TICKET?query=<num>"}, {"id":2, "key_prefix": "STORY-", "url_template": "https://example.com/STORY?query=<num>"}]`)
 	})
 
 	opt := &ListOptions{
@@ -119,7 +119,7 @@ func TestRepositoriesService_GetAutolink(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/autolinks/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{"id":1, "key_prefix": "TICKET-", "url_template": "https://example.com/TICKET?query=<num>"}`)
+		fmt.Fprint(w, `{"id":1, "key_prefix": "TICKET-", "url_template": "https://example.com/TICKET?query=<num>"}`)
 	})
 
 	ctx := context.Background()
