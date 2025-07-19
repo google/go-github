@@ -27138,6 +27138,17 @@ func TestReleaseAsset_GetCreatedAt(tt *testing.T) {
 	r.GetCreatedAt()
 }
 
+func TestReleaseAsset_GetDigest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &ReleaseAsset{Digest: &zeroValue}
+	r.GetDigest()
+	r = &ReleaseAsset{}
+	r.GetDigest()
+	r = nil
+	r.GetDigest()
+}
+
 func TestReleaseAsset_GetDownloadCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
