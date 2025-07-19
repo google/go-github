@@ -1661,8 +1661,9 @@ func TestReleaseAsset_String(t *testing.T) {
 		BrowserDownloadURL: Ptr(""),
 		Uploader:           &User{},
 		NodeID:             Ptr(""),
+		Digest:             Ptr(""),
 	}
-	want := `github.ReleaseAsset{ID:0, URL:"", Name:"", Label:"", State:"", ContentType:"", Size:0, DownloadCount:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, BrowserDownloadURL:"", Uploader:github.User{}, NodeID:""}`
+	want := `github.ReleaseAsset{ID:0, URL:"", Name:"", Label:"", State:"", ContentType:"", Size:0, DownloadCount:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, BrowserDownloadURL:"", Uploader:github.User{}, NodeID:"", Digest:""}`
 	if got := v.String(); got != want {
 		t.Errorf("ReleaseAsset.String = %v, want %v", got, want)
 	}
