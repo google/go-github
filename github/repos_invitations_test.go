@@ -21,7 +21,7 @@ func TestRepositoriesService_ListInvitations(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2"})
-		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
 	opt := &ListOptions{Page: 2}
@@ -83,7 +83,7 @@ func TestRepositoriesService_UpdateInvitation(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/invitations/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		fmt.Fprintf(w, `{"id":1}`)
+		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	ctx := context.Background()

@@ -369,7 +369,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_unexpectedCode(t *testing.T) {
 			ctx := context.Background()
 			url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 1)
 			if err == nil {
-				t.Fatalf("Actions.GetWorkflowRunAttemptLogs should return error on unexpected code")
+				t.Fatal("Actions.GetWorkflowRunAttemptLogs should return error on unexpected code")
 			}
 			if !strings.Contains(err.Error(), "unexpected status code") {
 				t.Error("Actions.GetWorkflowRunAttemptLogs should return unexpected status code")
@@ -680,7 +680,7 @@ func TestActionsService_GetWorkflowRunLogs_unexpectedCode(t *testing.T) {
 			ctx := context.Background()
 			url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 1)
 			if err == nil {
-				t.Fatalf("Actions.GetWorkflowRunLogs should return error on unexpected code")
+				t.Fatal("Actions.GetWorkflowRunLogs should return error on unexpected code")
 			}
 			if !strings.Contains(err.Error(), "unexpected status code") {
 				t.Error("Actions.GetWorkflowRunLogs should return unexpected status code")

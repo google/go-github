@@ -45,7 +45,7 @@ func TestRepositories_CRUD(t *testing.T) {
 	// verify that the repository was deleted
 	_, resp, err := client.Repositories.Get(context.Background(), *repo.Owner.Login, *repo.Name)
 	if err == nil {
-		t.Fatalf("Test repository still exists after deleting it.")
+		t.Fatal("Test repository still exists after deleting it.")
 	}
 	if err != nil && resp.StatusCode != http.StatusNotFound {
 		t.Fatalf("Repositories.Get() returned error: %v", err)
@@ -60,7 +60,7 @@ func TestRepositories_BranchesTags(t *testing.T) {
 	}
 
 	if len(branches) == 0 {
-		t.Fatalf("Repositories.ListBranches('git', 'git') returned no branches")
+		t.Fatal("Repositories.ListBranches('git', 'git') returned no branches")
 	}
 
 	_, _, err = client.Repositories.GetBranch(context.Background(), "git", "git", *branches[0].Name, 0)
@@ -75,7 +75,7 @@ func TestRepositories_BranchesTags(t *testing.T) {
 	}
 
 	if len(tags) == 0 {
-		t.Fatalf("Repositories.ListTags('git', 'git') returned no tags")
+		t.Fatal("Repositories.ListTags('git', 'git') returned no tags")
 	}
 }
 
@@ -180,7 +180,7 @@ func TestRepositories_ListByUser(t *testing.T) {
 	}
 	for i, repo := range repos {
 		if i > 0 && (*repos[i-1].CreatedAt).Time.Before((*repo.CreatedAt).Time) {
-			t.Fatalf("Repositories.ListByUser('google') with default descending Sort returned incorrect order")
+			t.Fatal("Repositories.ListByUser('google') with default descending Sort returned incorrect order")
 		}
 	}
 }

@@ -142,7 +142,7 @@ func testHeader(t *testing.T, r *http.Request, header string, want string) {
 func testURLParseError(t *testing.T, err error) {
 	t.Helper()
 	if err == nil {
-		t.Errorf("Expected error to be returned")
+		t.Error("Expected error to be returned")
 	}
 	if err, ok := err.(*url.Error); !ok || err.Op != "parse" {
 		t.Errorf("Expected URL parse error, got %+v", err)
@@ -626,7 +626,7 @@ func TestNewRequest_emptyBody(t *testing.T) {
 		t.Fatalf("NewRequest returned unexpected error: %v", err)
 	}
 	if req.Body != nil {
-		t.Fatalf("constructed request contains a non-nil Body")
+		t.Fatal("constructed request contains a non-nil Body")
 	}
 }
 
@@ -647,7 +647,7 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 		}
 		c.BaseURL = u
 		if _, err := c.NewRequest(http.MethodGet, "test", nil); test.wantError && err == nil {
-			t.Fatalf("Expected error to be returned.")
+			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewRequest returned unexpected error: %v.", err)
 		}
@@ -720,7 +720,7 @@ func TestNewFormRequest_emptyBody(t *testing.T) {
 		t.Fatalf("NewFormRequest returned unexpected error: %v", err)
 	}
 	if req.Body != nil {
-		t.Fatalf("constructed request contains a non-nil Body")
+		t.Fatal("constructed request contains a non-nil Body")
 	}
 }
 
@@ -741,7 +741,7 @@ func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
 		}
 		c.BaseURL = u
 		if _, err := c.NewFormRequest("test", nil); test.wantError && err == nil {
-			t.Fatalf("Expected error to be returned.")
+			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewFormRequest returned unexpected error: %v.", err)
 		}
@@ -795,7 +795,7 @@ func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
 		}
 		c.UploadURL = u
 		if _, err = c.NewUploadRequest("test", nil, 0, ""); test.wantError && err == nil {
-			t.Fatalf("Expected error to be returned.")
+			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewUploadRequest returned unexpected error: %v.", err)
 		}
@@ -1081,7 +1081,7 @@ func TestDo_nilContext(t *testing.T) {
 	_, err := client.Do(nil, req, nil)
 
 	if !errors.Is(err, errNonNilContext) {
-		t.Errorf("Expected context must be non-nil error")
+		t.Error("Expected context must be non-nil error")
 	}
 }
 
@@ -1135,7 +1135,7 @@ func TestDo_preservesResponseInHTTPError(t *testing.T) {
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 			"message": "Resource not found",
 			"documentation_url": "https://docs.github.com/rest/reference/repos#get-a-repository"
 		}`)
@@ -1790,7 +1790,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
-		t.Fatalf("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+		t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
 	}
 	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; got != want {
 		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
@@ -1805,7 +1805,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
-		t.Fatalf("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+		t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
 	}
 	// the saved duration might be a bit smaller than Retry-After because the duration is calculated from the expected end-of-cooldown time
 	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; want-got > 1*time.Second {
@@ -1847,7 +1847,7 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
-		t.Fatalf("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+		t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
 	}
 	// the retry after value might be a bit smaller than the original duration because the duration is calculated from the expected end-of-cooldown time
 	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; want-got > 1*time.Second {
@@ -1863,7 +1863,7 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
-		t.Fatalf("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+		t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
 	}
 	// the saved duration might be a bit smaller than Retry-After because the duration is calculated from the expected end-of-cooldown time
 	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; want-got > 1*time.Second {
@@ -1907,7 +1907,7 @@ func TestDo_rateLimit_abuseRateLimitError_maxDuration(t *testing.T) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
-		t.Fatalf("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+		t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
 	}
 	// check that the retry after is set to be the max allowed duration
 	if got, want := *abuseRateLimitErr.RetryAfter, client.MaxSecondaryRateLimitRetryAfterDuration; got != want {
@@ -2080,7 +2080,7 @@ func TestCheckResponse(t *testing.T) {
 	err := CheckResponse(res).(*ErrorResponse)
 
 	if err == nil {
-		t.Errorf("Expected error response.")
+		t.Error("Expected error response.")
 	}
 
 	want := &ErrorResponse{
@@ -2115,7 +2115,7 @@ func TestCheckResponse_RateLimit(t *testing.T) {
 	err := CheckResponse(res).(*RateLimitError)
 
 	if err == nil {
-		t.Errorf("Expected error response.")
+		t.Error("Expected error response.")
 	}
 
 	want := &RateLimitError{
@@ -2139,7 +2139,7 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 	err := CheckResponse(res).(*AbuseRateLimitError)
 
 	if err == nil {
-		t.Errorf("Expected error response.")
+		t.Error("Expected error response.")
 	}
 
 	want := &AbuseRateLimitError{
@@ -2165,7 +2165,7 @@ func TestCheckResponse_RedirectionError(t *testing.T) {
 	err := CheckResponse(res).(*RedirectionError)
 
 	if err == nil {
-		t.Errorf("Expected error response.")
+		t.Error("Expected error response.")
 	}
 
 	wantedURL, parseErr := url.Parse(urlStr)
@@ -2574,7 +2574,7 @@ func TestCheckResponse_noBody(t *testing.T) {
 	err := CheckResponse(res).(*ErrorResponse)
 
 	if err == nil {
-		t.Errorf("Expected error response.")
+		t.Error("Expected error response.")
 	}
 
 	want := &ErrorResponse{
@@ -2596,7 +2596,7 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 	err := CheckResponse(res).(*ErrorResponse)
 
 	if err == nil {
-		t.Errorf("Expected error response.")
+		t.Error("Expected error response.")
 	}
 
 	want := &ErrorResponse{
@@ -2647,7 +2647,7 @@ func TestParseBooleanResponse_error(t *testing.T) {
 	result, err := parseBoolResponse(v)
 
 	if err == nil {
-		t.Errorf("Expected error to be returned.")
+		t.Error("Expected error to be returned.")
 	}
 
 	if want := false; result != want {
@@ -2660,20 +2660,20 @@ func TestErrorResponse_Error(t *testing.T) {
 	res := &http.Response{Request: &http.Request{}}
 	err := ErrorResponse{Message: "m", Response: res}
 	if err.Error() == "" {
-		t.Errorf("Expected non-empty ErrorResponse.Error()")
+		t.Error("Expected non-empty ErrorResponse.Error()")
 	}
 
 	// dont panic if request is nil
 	res = &http.Response{}
 	err = ErrorResponse{Message: "m", Response: res}
 	if err.Error() == "" {
-		t.Errorf("Expected non-empty ErrorResponse.Error()")
+		t.Error("Expected non-empty ErrorResponse.Error()")
 	}
 
 	// dont panic if response is nil
 	err = ErrorResponse{Message: "m"}
 	if err.Error() == "" {
-		t.Errorf("Expected non-empty ErrorResponse.Error()")
+		t.Error("Expected non-empty ErrorResponse.Error()")
 	}
 }
 
@@ -2681,7 +2681,7 @@ func TestError_Error(t *testing.T) {
 	t.Parallel()
 	err := Error{}
 	if err.Error() == "" {
-		t.Errorf("Expected non-empty Error.Error()")
+		t.Error("Expected non-empty Error.Error()")
 	}
 }
 
@@ -2693,7 +2693,7 @@ func TestSetCredentialsAsHeaders(t *testing.T) {
 
 	actualID, actualSecret, ok := modifiedRequest.BasicAuth()
 	if !ok {
-		t.Errorf("request does not contain basic credentials")
+		t.Error("request does not contain basic credentials")
 	}
 
 	if actualID != id {
@@ -2713,7 +2713,7 @@ func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 	mux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
 		id, secret, ok := r.BasicAuth()
 		if !ok {
-			t.Errorf("request does not contain basic auth credentials")
+			t.Error("request does not contain basic auth credentials")
 		}
 		if id != clientID {
 			t.Errorf("request contained basic auth username %q, want %q", id, clientID)
@@ -2743,7 +2743,7 @@ func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
 	}
 	_, err := tp.RoundTrip(nil)
 	if err == nil {
-		t.Errorf("Expected error to be returned")
+		t.Error("Expected error to be returned")
 	}
 
 	// missing ClientSecret
@@ -2752,7 +2752,7 @@ func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
 	}
 	_, err = tp.RoundTrip(nil)
 	if err == nil {
-		t.Errorf("Expected error to be returned")
+		t.Error("Expected error to be returned")
 	}
 }
 
@@ -2764,7 +2764,7 @@ func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
 		ClientSecret: "secret",
 	}
 	if tp.transport() != http.DefaultTransport {
-		t.Errorf("Expected http.DefaultTransport to be used.")
+		t.Error("Expected http.DefaultTransport to be used.")
 	}
 
 	// custom transport
@@ -2774,7 +2774,7 @@ func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
 		Transport:    &http.Transport{},
 	}
 	if tp.transport() == http.DefaultTransport {
-		t.Errorf("Expected custom transport to be used.")
+		t.Error("Expected custom transport to be used.")
 	}
 }
 
@@ -2787,7 +2787,7 @@ func TestBasicAuthTransport(t *testing.T) {
 	mux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
 		u, p, ok := r.BasicAuth()
 		if !ok {
-			t.Errorf("request does not contain basic auth credentials")
+			t.Error("request does not contain basic auth credentials")
 		}
 		if u != username {
 			t.Errorf("request contained basic auth username %q, want %q", u, username)
@@ -2818,7 +2818,7 @@ func TestBasicAuthTransport_transport(t *testing.T) {
 	// default transport
 	tp := &BasicAuthTransport{}
 	if tp.transport() != http.DefaultTransport {
-		t.Errorf("Expected http.DefaultTransport to be used.")
+		t.Error("Expected http.DefaultTransport to be used.")
 	}
 
 	// custom transport
@@ -2826,7 +2826,7 @@ func TestBasicAuthTransport_transport(t *testing.T) {
 		Transport: &http.Transport{},
 	}
 	if tp.transport() == http.DefaultTransport {
-		t.Errorf("Expected custom transport to be used.")
+		t.Error("Expected custom transport to be used.")
 	}
 }
 
@@ -3223,7 +3223,7 @@ func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 	url = "https://api.github.com/repos/dummy-org/dummy-repo/actions/runs/abc123/deployment_protection_rule"
 	got, err := e.GetRunID()
 	if err == nil {
-		t.Errorf("Expected error to be returned")
+		t.Error("Expected error to be returned")
 	}
 
 	if got != want {

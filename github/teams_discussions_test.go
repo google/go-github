@@ -26,7 +26,7 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 			"direction": "desc",
 			"page":      "2",
 		})
-		fmt.Fprintf(w,
+		fmt.Fprint(w,
 			`[
 				{
 					"author": {
@@ -141,7 +141,7 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 			"direction": "desc",
 			"page":      "2",
 		})
-		fmt.Fprintf(w,
+		fmt.Fprint(w,
 			`[
 				{
 					"author": {

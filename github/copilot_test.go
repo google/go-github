@@ -130,7 +130,7 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 			t.Parallel()
 			err := json.Unmarshal([]byte(tc.data), seatDetails)
 			if err == nil && tc.wantErr {
-				t.Errorf("CopilotSeatDetails.UnmarshalJSON returned nil instead of an error")
+				t.Error("CopilotSeatDetails.UnmarshalJSON returned nil instead of an error")
 			}
 			if err != nil && !tc.wantErr {
 				t.Errorf("CopilotSeatDetails.UnmarshalJSON returned an unexpected error: %v", err)
@@ -166,7 +166,7 @@ func TestCopilotService_GetSeatDetailsUser(t *testing.T) {
 	if got, ok := seatDetails.GetUser(); ok && !cmp.Equal(got, want) {
 		t.Errorf("CopilotSeatDetails.GetTeam returned %+v, want %+v", got, want)
 	} else if !ok {
-		t.Errorf("CopilotSeatDetails.GetUser returned false, expected true")
+		t.Error("CopilotSeatDetails.GetUser returned false, expected true")
 	}
 
 	data = `{
@@ -214,7 +214,7 @@ func TestCopilotService_GetSeatDetailsTeam(t *testing.T) {
 	if got, ok := seatDetails.GetTeam(); ok && !cmp.Equal(got, want) {
 		t.Errorf("CopilotSeatDetails.GetTeam returned %+v, want %+v", got, want)
 	} else if !ok {
-		t.Errorf("CopilotSeatDetails.GetTeam returned false, expected true")
+		t.Error("CopilotSeatDetails.GetTeam returned false, expected true")
 	}
 
 	data = `{
@@ -263,7 +263,7 @@ func TestCopilotService_GetSeatDetailsOrganization(t *testing.T) {
 	if got, ok := seatDetails.GetOrganization(); ok && !cmp.Equal(got, want) {
 		t.Errorf("CopilotSeatDetails.GetOrganization returned %+v, want %+v", got, want)
 	} else if !ok {
-		t.Errorf("CopilotSeatDetails.GetOrganization returned false, expected true")
+		t.Error("CopilotSeatDetails.GetOrganization returned false, expected true")
 	}
 
 	data = `{

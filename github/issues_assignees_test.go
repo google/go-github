@@ -138,7 +138,7 @@ func TestIssuesService_IsAssignee_error(t *testing.T) {
 	ctx := context.Background()
 	assignee, _, err := client.Issues.IsAssignee(ctx, "o", "r", "u")
 	if err == nil {
-		t.Errorf("Expected HTTP 400 response")
+		t.Error("Expected HTTP 400 response")
 	}
 	if want := false; assignee != want {
 		t.Errorf("Issues.IsAssignee returned %+v, want %+v", assignee, want)

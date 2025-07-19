@@ -362,7 +362,7 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/defaults", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		fmt.Fprintf(w, `
+		fmt.Fprint(w, `
 		{
 			"default_for_new_repos": "all",
 			"configuration":
