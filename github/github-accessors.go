@@ -21142,6 +21142,14 @@ func (r *ReleaseAsset) GetURL() string {
 	return *r.URL
 }
 
+// GetDigest returns the digest if it's non-nil, zero value otherwise.
+func (r *ReleaseAsset) GetDigest() string {
+	if r == nil || r.Digest == nil {
+		return ""
+	}
+	return *r.Digest
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (r *ReleaseEvent) GetAction() string {
 	if r == nil || r.Action == nil {

@@ -79,6 +79,7 @@ type ReleaseAsset struct {
 	BrowserDownloadURL *string    `json:"browser_download_url,omitempty"`
 	Uploader           *User      `json:"uploader,omitempty"`
 	NodeID             *string    `json:"node_id,omitempty"`
+	Digest             *string    `json:"digest,omitempty"`
 }
 
 func (r ReleaseAsset) String() string {
