@@ -75,10 +75,10 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 			rule := []*RequiredReviewer{}
 			err := json.Unmarshal(test.data, &rule)
 			if err != nil && !test.wantError {
-				t.Errorf("RequiredReviewer.UnmarshalJSON returned an error when we expected nil")
+				t.Error("RequiredReviewer.UnmarshalJSON returned an error when we expected nil")
 			}
 			if err == nil && test.wantError {
-				t.Errorf("RequiredReviewer.UnmarshalJSON returned no error when we expected one")
+				t.Error("RequiredReviewer.UnmarshalJSON returned no error when we expected one")
 			}
 			if !cmp.Equal(test.wantRule, rule) {
 				t.Errorf("RequiredReviewer.UnmarshalJSON expected rule %+v, got %+v", test.wantRule, rule)

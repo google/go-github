@@ -368,7 +368,7 @@ func TestActionsService_GetWorkflowJobLogs_unexpectedCode(t *testing.T) {
 			ctx := context.Background()
 			url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
 			if err == nil {
-				t.Fatalf("Actions.GetWorkflowJobLogs should return error on unexpected code")
+				t.Fatal("Actions.GetWorkflowJobLogs should return error on unexpected code")
 			}
 			if !strings.Contains(err.Error(), "unexpected status code") {
 				t.Error("Actions.GetWorkflowJobLogs should return unexpected status code")

@@ -43,7 +43,7 @@ func TestTeamsService_ListComments(t *testing.T) {
 		testFormValues(t, r, values{
 			"direction": "desc",
 		})
-		fmt.Fprintf(w,
+		fmt.Fprint(w,
 			`[
 				{
 					"author": {

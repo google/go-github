@@ -160,7 +160,7 @@ func TestOrganizationsService_IsMember_error(t *testing.T) {
 	ctx := context.Background()
 	member, _, err := client.Organizations.IsMember(ctx, "o", "u")
 	if err == nil {
-		t.Errorf("Expected HTTP 400 response")
+		t.Error("Expected HTTP 400 response")
 	}
 	if want := false; member != want {
 		t.Errorf("Organizations.IsMember returned %+v, want %+v", member, want)
@@ -243,7 +243,7 @@ func TestOrganizationsService_IsPublicMember_error(t *testing.T) {
 	ctx := context.Background()
 	member, _, err := client.Organizations.IsPublicMember(ctx, "o", "u")
 	if err == nil {
-		t.Errorf("Expected HTTP 400 response")
+		t.Error("Expected HTTP 400 response")
 	}
 	if want := false; member != want {
 		t.Errorf("Organizations.IsPublicMember returned %+v, want %+v", member, want)

@@ -85,7 +85,7 @@ func TestGitService_GetRef_noRefs(t *testing.T) {
 	ctx := context.Background()
 	ref, resp, err := client.Git.GetRef(ctx, "o", "r", "refs/heads/b")
 	if err == nil {
-		t.Errorf("Expected HTTP 404 response")
+		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
 		t.Errorf("Git.GetRef returned status %d, want %d", got, want)

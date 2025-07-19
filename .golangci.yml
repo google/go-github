@@ -97,6 +97,7 @@ linters:
         - name: time-naming
         - name: unexported-naming
         - name: unexported-return
+        - name: unnecessary-format
         - name: unreachable-code
         - name: unused-parameter
         - name: use-any

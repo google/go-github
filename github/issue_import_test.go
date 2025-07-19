@@ -266,7 +266,7 @@ func TestIssueImportService_CheckStatusSince_badResponse(t *testing.T) {
 
 	ctx := context.Background()
 	if _, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", Timestamp{time.Now()}); err == nil {
-		t.Errorf("CheckStatusSince returned no error, want JSON err")
+		t.Error("CheckStatusSince returned no error, want JSON err")
 	}
 }
 

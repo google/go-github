@@ -745,7 +745,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 			testFormValues(t, r, test.expectedFormValues)
 			testBody(t, r, "Upload me !\n")
 
-			fmt.Fprintf(w, `{"id":1}`)
+			fmt.Fprint(w, `{"id":1}`)
 		})
 
 		file := openTestFile(t, test.fileName, "Upload me !\n")

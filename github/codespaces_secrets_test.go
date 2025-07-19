@@ -497,7 +497,7 @@ func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
 			handleFunc: func(mux *http.ServeMux) {
 				mux.HandleFunc("/user/codespaces/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "GET")
-					fmt.Fprintf(w, `{"total_count":1,"repositories":[{"id":1}]}`)
+					fmt.Fprint(w, `{"total_count":1,"repositories":[{"id":1}]}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*SelectedReposList, *Response, error) {
@@ -510,7 +510,7 @@ func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
 			handleFunc: func(mux *http.ServeMux) {
 				mux.HandleFunc("/orgs/o/codespaces/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "GET")
-					fmt.Fprintf(w, `{"total_count":1,"repositories":[{"id":1}]}`)
+					fmt.Fprint(w, `{"total_count":1,"repositories":[{"id":1}]}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*SelectedReposList, *Response, error) {

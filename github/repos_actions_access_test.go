@@ -21,7 +21,7 @@ func TestRepositoriesService_GetActionsAccessLevel(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/access", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{"access_level": "none"}`)
+		fmt.Fprint(w, `{"access_level": "none"}`)
 	})
 
 	ctx := context.Background()
