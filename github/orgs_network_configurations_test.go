@@ -22,7 +22,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 	mux.HandleFunc("/orgs/o/settings/network-configurations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "1", "per_page": "3"})
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 		  "total_count": 3,
 		  "network_configurations": [
 			{
@@ -126,7 +126,7 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/settings/network-configurations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 		  "id": "456789ABDCEF123",
 		  "name": "network-configuration-two",
 		  "compute_service": "none",
@@ -246,7 +246,7 @@ func TestOrganizationsService_GetOrgsNetworkConfiguration(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/settings/network-configurations/789ABDCEF123456", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 			 "id": "789ABDCEF123456",
 			  "name": "Network Configuration Three",
 			  "compute_service": "codespaces",
@@ -299,7 +299,7 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/settings/network-configurations/789ABDCEF123456", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 		  "id": "789ABDCEF123456",
 		  "name": "Network Configuration Three Update",
 		  "compute_service": "actions",
@@ -444,7 +444,7 @@ func TestOrganizationsService_GetOrgsNetworkConfigurationResource(t *testing.T) 
 
 	mux.HandleFunc("/orgs/o/settings/network-settings/789ABDCEF123456", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{
+		fmt.Fprint(w, `{
 		  "id": "220F78DACB92BBFBC5E6F22DE1CCF52309D",
 		  "network_configuration_id": "934E208B3EE0BD60CF5F752C426BFB53562",
 		  "name": "my_network_settings",

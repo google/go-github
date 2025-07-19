@@ -535,7 +535,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_BadReq
 	ctx := context.Background()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrg(ctx, "o", nil)
 	if err == nil {
-		t.Errorf("Expected HTTP 400 response")
+		t.Error("Expected HTTP 400 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusBadRequest; got != want {
 		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return status %d, want %d", got, want)
@@ -565,7 +565,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_NotFou
 		State: "draft",
 	})
 	if err == nil {
-		t.Errorf("Expected HTTP 404 response")
+		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
 		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return status %d, want %d", got, want)
@@ -589,7 +589,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_Unmars
 	ctx := context.Background()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrg(ctx, "o", nil)
 	if err == nil {
-		t.Errorf("Expected unmarshal error")
+		t.Error("Expected unmarshal error")
 	} else if !strings.Contains(err.Error(), "json: cannot unmarshal number into Go struct field SecurityAdvisory.ghsa_id of type string") {
 		t.Errorf("ListRepositorySecurityAdvisoriesForOrg returned unexpected error: %v", err)
 	}
@@ -666,7 +666,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_BadRequest(t
 	ctx := context.Background()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisories(ctx, "o", "r", nil)
 	if err == nil {
-		t.Errorf("Expected HTTP 400 response")
+		t.Error("Expected HTTP 400 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusBadRequest; got != want {
 		t.Errorf("ListRepositorySecurityAdvisories return status %d, want %d", got, want)
@@ -696,7 +696,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_NotFound(t *
 		State: "draft",
 	})
 	if err == nil {
-		t.Errorf("Expected HTTP 404 response")
+		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
 		t.Errorf("ListRepositorySecurityAdvisories return status %d, want %d", got, want)
@@ -720,7 +720,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_UnmarshalErr
 	ctx := context.Background()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisories(ctx, "o", "r", nil)
 	if err == nil {
-		t.Errorf("Expected unmarshal error")
+		t.Error("Expected unmarshal error")
 	} else if !strings.Contains(err.Error(), "json: cannot unmarshal number into Go struct field SecurityAdvisory.ghsa_id of type string") {
 		t.Errorf("ListRepositorySecurityAdvisories returned unexpected error: %v", err)
 	}

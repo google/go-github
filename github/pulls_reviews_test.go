@@ -437,7 +437,7 @@ func TestPullRequestsService_CreateReview_badReview(t *testing.T) {
 
 	_, _, err := client.PullRequests.CreateReview(ctx, "o", "r", 1, badReview)
 	if err == nil {
-		t.Errorf("CreateReview badReview err = nil, want err")
+		t.Error("CreateReview badReview err = nil, want err")
 	}
 }
 
@@ -494,7 +494,7 @@ func TestPullRequestsService_UpdateReview(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		fmt.Fprintf(w, `{"id":1}`)
+		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	ctx := context.Background()

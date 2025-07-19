@@ -287,7 +287,7 @@ func TestUsersService_IsFollowing_error(t *testing.T) {
 	ctx := context.Background()
 	following, _, err := client.Users.IsFollowing(ctx, "u", "t")
 	if err == nil {
-		t.Errorf("Expected HTTP 400 response")
+		t.Error("Expected HTTP 400 response")
 	}
 	if want := false; following != want {
 		t.Errorf("Users.IsFollowing returned %+v, want %+v", following, want)

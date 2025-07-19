@@ -218,7 +218,7 @@ func main() {
 		log.Fatalf("Unable to get/create the commit reference: %s\n", err)
 	}
 	if ref == nil {
-		log.Fatalf("No error where returned but the reference is nil")
+		log.Fatal("No error where returned but the reference is nil")
 	}
 
 	tree, err := getTree(ref)

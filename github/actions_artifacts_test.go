@@ -92,7 +92,7 @@ func TestActionsService_ListArtifacts_notFound(t *testing.T) {
 	ctx := context.Background()
 	artifacts, resp, err := client.Actions.ListArtifacts(ctx, "o", "r", nil)
 	if err == nil {
-		t.Errorf("Expected HTTP 404 response")
+		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
 		t.Errorf("Actions.ListArtifacts return status %d, want %d", got, want)
@@ -174,7 +174,7 @@ func TestActionsService_ListWorkflowRunArtifacts_notFound(t *testing.T) {
 	ctx := context.Background()
 	artifacts, resp, err := client.Actions.ListWorkflowRunArtifacts(ctx, "o", "r", 1, nil)
 	if err == nil {
-		t.Errorf("Expected HTTP 404 response")
+		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
 		t.Errorf("Actions.ListWorkflowRunArtifacts return status %d, want %d", got, want)
@@ -261,7 +261,7 @@ func TestActionsService_GetArtifact_notFound(t *testing.T) {
 	ctx := context.Background()
 	artifact, resp, err := client.Actions.GetArtifact(ctx, "o", "r", 1)
 	if err == nil {
-		t.Errorf("Expected HTTP 404 response")
+		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
 		t.Errorf("Actions.GetArtifact return status %d, want %d", got, want)
@@ -510,7 +510,7 @@ func TestActionsService_DownloadArtifact_unexpectedCode(t *testing.T) {
 			ctx := context.Background()
 			url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
 			if err == nil {
-				t.Fatalf("Actions.DownloadArtifact should return error on unexpected code")
+				t.Fatal("Actions.DownloadArtifact should return error on unexpected code")
 			}
 			if !strings.Contains(err.Error(), "unexpected status code") {
 				t.Error("Actions.DownloadArtifact should return unexpected status code")
@@ -580,7 +580,7 @@ func TestActionsService_DeleteArtifact_notFound(t *testing.T) {
 	ctx := context.Background()
 	resp, err := client.Actions.DeleteArtifact(ctx, "o", "r", 1)
 	if err == nil {
-		t.Errorf("Expected HTTP 404 response")
+		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
 		t.Errorf("Actions.DeleteArtifact return status %d, want %d", got, want)

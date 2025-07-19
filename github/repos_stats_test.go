@@ -302,7 +302,7 @@ func TestRepositoriesService_AcceptedError(t *testing.T) {
 	ctx := context.Background()
 	stats, _, err := client.Repositories.ListContributorsStats(ctx, "o", "r")
 	if err == nil {
-		t.Errorf("RepositoriesService.AcceptedError should have returned an error")
+		t.Error("RepositoriesService.AcceptedError should have returned an error")
 	}
 
 	if _, ok := err.(*AcceptedError); !ok {

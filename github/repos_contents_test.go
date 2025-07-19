@@ -305,15 +305,15 @@ func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
 	ctx := context.Background()
 	reader, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err == nil {
-		t.Errorf("Repositories.DownloadContents did not return expected error")
+		t.Error("Repositories.DownloadContents did not return expected error")
 	}
 
 	if resp == nil {
-		t.Errorf("Repositories.DownloadContents did not return expected response")
+		t.Error("Repositories.DownloadContents did not return expected response")
 	}
 
 	if reader != nil {
-		t.Errorf("Repositories.DownloadContents did not return expected reader")
+		t.Error("Repositories.DownloadContents did not return expected reader")
 	}
 }
 
@@ -338,15 +338,15 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 	ctx := context.Background()
 	reader, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err == nil {
-		t.Errorf("Repositories.DownloadContents did not return expected error")
+		t.Error("Repositories.DownloadContents did not return expected error")
 	}
 
 	if resp == nil {
-		t.Errorf("Repositories.DownloadContents did not return expected response")
+		t.Error("Repositories.DownloadContents did not return expected response")
 	}
 
 	if reader != nil {
-		t.Errorf("Repositories.DownloadContents did not return expected reader")
+		t.Error("Repositories.DownloadContents did not return expected reader")
 	}
 }
 
@@ -389,7 +389,7 @@ func TestRepositoriesService_DownloadContentsWithMeta_SuccessForFile(t *testing.
 			t.Errorf("Repositories.DownloadContentsWithMeta returned content name %v, want %v", got, want)
 		}
 	} else {
-		t.Errorf("Returned RepositoryContent is null")
+		t.Error("Returned RepositoryContent is null")
 	}
 
 	const methodName = "DownloadContentsWithMeta"
@@ -452,7 +452,7 @@ func TestRepositoriesService_DownloadContentsWithMeta_SuccessForDirectory(t *tes
 			t.Errorf("Repositories.DownloadContentsWithMeta returned content name %v, want %v", got, want)
 		}
 	} else {
-		t.Errorf("Returned RepositoryContent is null")
+		t.Error("Returned RepositoryContent is null")
 	}
 }
 
@@ -509,7 +509,7 @@ func TestRepositoriesService_DownloadContentsWithMeta_FailedResponse(t *testing.
 			t.Errorf("Repositories.DownloadContentsWithMeta returned content name %v, want %v", got, want)
 		}
 	} else {
-		t.Errorf("Returned RepositoryContent is null")
+		t.Error("Returned RepositoryContent is null")
 	}
 }
 
@@ -536,19 +536,19 @@ func TestRepositoriesService_DownloadContentsWithMeta_NoDownloadURL(t *testing.T
 	ctx := context.Background()
 	reader, contents, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
 	if err == nil {
-		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected error")
+		t.Error("Repositories.DownloadContentsWithMeta did not return expected error")
 	}
 
 	if reader != nil {
-		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected reader")
+		t.Error("Repositories.DownloadContentsWithMeta did not return expected reader")
 	}
 
 	if resp == nil {
-		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected response")
+		t.Error("Repositories.DownloadContentsWithMeta did not return expected response")
 	}
 
 	if contents == nil {
-		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected content")
+		t.Error("Repositories.DownloadContentsWithMeta did not return expected content")
 	}
 }
 
@@ -564,11 +564,11 @@ func TestRepositoriesService_DownloadContentsWithMeta_NoFile(t *testing.T) {
 	ctx := context.Background()
 	_, _, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
 	if err == nil {
-		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected error")
+		t.Error("Repositories.DownloadContentsWithMeta did not return expected error")
 	}
 
 	if resp == nil {
-		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected response")
+		t.Error("Repositories.DownloadContentsWithMeta did not return expected response")
 	}
 }
 

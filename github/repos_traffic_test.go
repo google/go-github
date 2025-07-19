@@ -21,7 +21,7 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/traffic/popular/referrers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `[{
+		fmt.Fprint(w, `[{
 			"referrer": "Google",
 			"count": 4,
 			"uniques": 3
@@ -63,7 +63,7 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/traffic/popular/paths", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `[{
+		fmt.Fprint(w, `[{
 			"path": "/github/hubot",
 			"title": "github/hubot: A customizable life embetterment robot.",
 			"count": 3542,
@@ -107,7 +107,7 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/traffic/views", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{"count": 7,
+		fmt.Fprint(w, `{"count": 7,
 			"uniques": 6,
 			"views": [{
 				"timestamp": "2016-05-31T16:00:00.000Z",
@@ -157,7 +157,7 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/traffic/clones", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `{"count": 7,
+		fmt.Fprint(w, `{"count": 7,
 			"uniques": 6,
 			"clones": [{
 				"timestamp": "2016-05-31T16:00:00.00Z",

@@ -23,7 +23,7 @@ func TestOrganizationAuditLog(t *testing.T) {
 	}
 
 	if len(entries) == 0 {
-		t.Errorf("No AuditLog events returned for org")
+		t.Error("No AuditLog events returned for org")
 	}
 
 	for _, e := range entries {

@@ -359,7 +359,7 @@ func TestUsersService_ListInvitations(t *testing.T) {
 
 	mux.HandleFunc("/user/repository_invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
 	ctx := context.Background()
@@ -392,7 +392,7 @@ func TestUsersService_ListInvitations_withOptions(t *testing.T) {
 		testFormValues(t, r, values{
 			"page": "2",
 		})
-		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
 	ctx := context.Background()

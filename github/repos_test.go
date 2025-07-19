@@ -676,7 +676,7 @@ func TestRepositoriesService_GetAutomatedSecurityFixes(t *testing.T) {
 	ctx := context.Background()
 	fixes, _, err := client.Repositories.GetAutomatedSecurityFixes(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("Repositories.GetAutomatedSecurityFixes returned error: #{err}")
+		t.Errorf("Repositories.GetAutomatedSecurityFixes returned error: %v", err)
 	}
 
 	want := &AutomatedSecurityFixes{
@@ -684,7 +684,7 @@ func TestRepositoriesService_GetAutomatedSecurityFixes(t *testing.T) {
 		Paused:  Ptr(false),
 	}
 	if !cmp.Equal(fixes, want) {
-		t.Errorf("Repositories.GetAutomatedSecurityFixes returned #{fixes}, want #{want}")
+		t.Errorf("Repositories.GetAutomatedSecurityFixes returned %#v, want %#v", fixes, want)
 	}
 
 	const methodName = "GetAutomatedSecurityFixes"
@@ -1410,7 +1410,7 @@ func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T
 			protection, _, err := client.Repositories.GetBranchProtection(ctx, "o", "r", test.branch)
 
 			if protection != nil {
-				t.Errorf("Repositories.GetBranchProtection returned non-nil protection data")
+				t.Error("Repositories.GetBranchProtection returned non-nil protection data")
 			}
 
 			if err != ErrBranchNotProtected {
@@ -1474,7 +1474,7 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 
 				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				fmt.Fprintf(w, `{
+				fmt.Fprint(w, `{
 					"required_status_checks":{
 						"strict":true,
 						"contexts":["continuous-integration"],
@@ -1663,7 +1663,7 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 
 				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				fmt.Fprintf(w, `{
+				fmt.Fprint(w, `{
 					"required_status_checks":{
 						"strict":true,
 						"contexts":[],
@@ -1843,7 +1843,7 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 
 				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				fmt.Fprintf(w, `{
+				fmt.Fprint(w, `{
 					"required_status_checks":{
 						"strict":true,
 						"contexts":["continuous-integration"],
@@ -1997,7 +1997,7 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 
 				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				fmt.Fprintf(w, `{
+				fmt.Fprint(w, `{
 					"required_status_checks":{
 						"strict":true,
 						"contexts":null,
@@ -2140,7 +2140,7 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 
 				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				fmt.Fprintf(w, `{
+				fmt.Fprint(w, `{
 					"required_status_checks":{
 						"strict":true,
 						"contexts":[]
@@ -2263,7 +2263,7 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 					t.Errorf("Request body = %+v, want %+v", v, input)
 				}
 
-				fmt.Fprintf(w, `{
+				fmt.Fprint(w, `{
 					"required_pull_request_reviews":{
 						"require_last_push_approval":true
 					}
@@ -2490,7 +2490,7 @@ func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testi
 			checks, _, err := client.Repositories.GetRequiredStatusChecks(ctx, "o", "r", test.branch)
 
 			if checks != nil {
-				t.Errorf("Repositories.GetRequiredStatusChecks returned non-nil status-checks data")
+				t.Error("Repositories.GetRequiredStatusChecks returned non-nil status-checks data")
 			}
 
 			if err != ErrBranchNotProtected {
@@ -2529,7 +2529,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 					t.Errorf("Request body = %+v, want %+v", v, input)
 				}
 				testHeader(t, r, "Accept", mediaTypeV3)
-				fmt.Fprintf(w, `{
+				fmt.Fprint(w, `{
 					"strict":true,
 					"contexts":["continuous-integration"],
 					"checks": [
@@ -2620,7 +2620,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 					t.Errorf("Request body = %+v, want %+v", v, input)
 				}
 				testHeader(t, r, "Accept", mediaTypeV3)
-				fmt.Fprintf(w, `{
+				fmt.Fprint(w, `{
 					"strict":true,
 					"contexts":["continuous-integration"],
 					"checks": [
@@ -2786,7 +2786,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected
 			contexts, _, err := client.Repositories.ListRequiredStatusChecksContexts(ctx, "o", "r", test.branch)
 
 			if contexts != nil {
-				t.Errorf("Repositories.ListRequiredStatusChecksContexts returned non-nil contexts data")
+				t.Error("Repositories.ListRequiredStatusChecksContexts returned non-nil contexts data")
 			}
 
 			if err != ErrBranchNotProtected {
@@ -2815,7 +2815,7 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 				testMethod(t, r, "GET")
 				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				fmt.Fprintf(w, `{
+				fmt.Fprint(w, `{
 			"dismissal_restrictions":{
 				"users":[{"id":1,"login":"u"}],
 				"teams":[{"id":2,"slug":"t"}],
@@ -2904,7 +2904,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 				}
 				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				fmt.Fprintf(w, `{
+				fmt.Fprint(w, `{
 					"dismissal_restrictions":{
 						"users":[{"id":1,"login":"u"}],
 						"teams":[{"id":2,"slug":"t"}],
@@ -2979,7 +2979,7 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				testBody(t, r, `{"dismissal_restrictions":{}}`+"\n")
-				fmt.Fprintf(w, `{"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
+				fmt.Fprint(w, `{"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
 			})
 
 			ctx := context.Background()
@@ -3071,7 +3071,7 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
+				fmt.Fprint(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
 			})
 
 			ctx := context.Background()
@@ -3123,7 +3123,7 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "POST")
-				fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
+				fmt.Fprint(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
 			})
 
 			ctx := context.Background()
@@ -3214,7 +3214,7 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
 				testHeader(t, r, "Accept", mediaTypeSignaturePreview)
-				fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":false}`)
+				fmt.Fprint(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":false}`)
 			})
 
 			ctx := context.Background()
@@ -3267,7 +3267,7 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "POST")
 				testHeader(t, r, "Accept", mediaTypeSignaturePreview)
-				fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":true}`)
+				fmt.Fprint(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":true}`)
 			})
 
 			ctx := context.Background()
@@ -4552,7 +4552,7 @@ func TestRepository_UnmarshalJSON(t *testing.T) {
 			pk := Repository{}
 			err := json.Unmarshal(tt.data, &pk)
 			if err == nil && tt.wantErr {
-				t.Errorf("Repository.UnmarshalJSON returned nil instead of an error")
+				t.Error("Repository.UnmarshalJSON returned nil instead of an error")
 			}
 			if err != nil && !tt.wantErr {
 				t.Errorf("Repository.UnmarshalJSON returned an unexpected error: %+v", err)
