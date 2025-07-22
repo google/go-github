@@ -17269,7 +17269,7 @@ func TestListCheckRunsResults_GetTotal(tt *testing.T) {
 
 func TestListCheckSuiteOptions_GetAppID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
+	var zeroValue int64
 	l := &ListCheckSuiteOptions{AppID: &zeroValue}
 	l.GetAppID()
 	l = &ListCheckSuiteOptions{}

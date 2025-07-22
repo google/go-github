@@ -472,7 +472,7 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 
 	opt := &ListCheckSuiteOptions{
 		CheckName:   Ptr("testing"),
-		AppID:       Ptr(2),
+		AppID:       Ptr(int64(2)),
 		ListOptions: ListOptions{Page: 1},
 	}
 	ctx := context.Background()
