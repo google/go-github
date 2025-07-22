@@ -13319,7 +13319,7 @@ func (l *ListCheckRunsResults) GetTotal() int {
 }
 
 // GetAppID returns the AppID field if it's non-nil, zero value otherwise.
-func (l *ListCheckSuiteOptions) GetAppID() int {
+func (l *ListCheckSuiteOptions) GetAppID() int64 {
 	if l == nil || l.AppID == nil {
 		return 0
 	}
