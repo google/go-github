@@ -72,6 +72,7 @@ type DependencyGraphSnapshot struct {
 	Job       *DependencyGraphSnapshotJob                 `json:"job,omitempty"`
 	Detector  *DependencyGraphSnapshotDetector            `json:"detector,omitempty"`
 	Scanned   *Timestamp                                  `json:"scanned,omitempty"`
+	Metadata  map[string]any                              `json:"metadata,omitempty"`
 	Manifests map[string]*DependencyGraphSnapshotManifest `json:"manifests,omitempty"`
 }
 
