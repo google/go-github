@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
 
@@ -187,6 +188,10 @@ func (s *CodespacesService) getSecret(ctx context.Context, url string) (*Secret,
 //
 //meta:operation PUT /user/codespaces/secrets/{secret_name}
 func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, eSecret *EncryptedSecret) (*Response, error) {
+	if eSecret == nil {
+		return nil, errors.New("encrypted secret must be provided")
+	}
+
 	u := fmt.Sprintf("user/codespaces/secrets/%v", eSecret.Name)
 	return s.createOrUpdateSecret(ctx, u, eSecret)
 }
@@ -199,6 +204,10 @@ func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, eSecre
 //
 //meta:operation PUT /orgs/{org}/codespaces/secrets/{secret_name}
 func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error) {
+	if eSecret == nil {
+		return nil, errors.New("encrypted secret must be provided")
+	}
+
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v", org, eSecret.Name)
 	return s.createOrUpdateSecret(ctx, u, eSecret)
 }
@@ -211,6 +220,10 @@ func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org str
 //
 //meta:operation PUT /repos/{owner}/{repo}/codespaces/secrets/{secret_name}
 func (s *CodespacesService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
+	if eSecret == nil {
+		return nil, errors.New("encrypted secret must be provided")
+	}
+
 	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets/%v", owner, repo, eSecret.Name)
 	return s.createOrUpdateSecret(ctx, u, eSecret)
 }
@@ -382,6 +395,13 @@ func (s *CodespacesService) setSelectedRepoForSecret(ctx context.Context, url st
 //
 //meta:operation PUT /user/codespaces/secrets/{secret_name}/repositories/{repository_id}
 func (s *CodespacesService) AddSelectedRepoToUserSecret(ctx context.Context, name string, repo *Repository) (*Response, error) {
+	if repo == nil {
+		return nil, errors.New("repository must be provided")
+	}
+	if repo.ID == nil {
+		return nil, errors.New("id must be provided")
+	}
+
 	u := fmt.Sprintf("user/codespaces/secrets/%v/repositories/%v", name, *repo.ID)
 	return s.addSelectedRepoToSecret(ctx, u)
 }
@@ -394,6 +414,13 @@ func (s *CodespacesService) AddSelectedRepoToUserSecret(ctx context.Context, nam
 //
 //meta:operation PUT /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}
 func (s *CodespacesService) AddSelectedRepoToOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
+	if repo == nil {
+		return nil, errors.New("repository must be provided")
+	}
+	if repo.ID == nil {
+		return nil, errors.New("id must be provided")
+	}
+
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v/repositories/%v", org, name, *repo.ID)
 	return s.addSelectedRepoToSecret(ctx, u)
 }
@@ -420,6 +447,13 @@ func (s *CodespacesService) addSelectedRepoToSecret(ctx context.Context, url str
 //
 //meta:operation DELETE /user/codespaces/secrets/{secret_name}/repositories/{repository_id}
 func (s *CodespacesService) RemoveSelectedRepoFromUserSecret(ctx context.Context, name string, repo *Repository) (*Response, error) {
+	if repo == nil {
+		return nil, errors.New("repository must be provided")
+	}
+	if repo.ID == nil {
+		return nil, errors.New("id must be provided")
+	}
+
 	u := fmt.Sprintf("user/codespaces/secrets/%v/repositories/%v", name, *repo.ID)
 	return s.removeSelectedRepoFromSecret(ctx, u)
 }
@@ -432,6 +466,13 @@ func (s *CodespacesService) RemoveSelectedRepoFromUserSecret(ctx context.Context
 //
 //meta:operation DELETE /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}
 func (s *CodespacesService) RemoveSelectedRepoFromOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
+	if repo == nil {
+		return nil, errors.New("repository must be provided")
+	}
+	if repo.ID == nil {
+		return nil, errors.New("id must be provided")
+	}
+
 	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v/repositories/%v", org, name, *repo.ID)
 	return s.removeSelectedRepoFromSecret(ctx, u)
 }

@@ -142,6 +142,10 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 
 	const methodName = "ListFineGrainedPersonalAccessTokens"
 	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListFineGrainedPersonalAccessTokens(ctx, "o", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Organizations.ListFineGrainedPersonalAccessTokens(ctx, "\n", opts)
 		return err
 	})

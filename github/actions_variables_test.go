@@ -196,6 +196,10 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 
 	const methodName = "UpdateRepoVariable"
 	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.UpdateRepoVariable(ctx, "o", "r", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.UpdateRepoVariable(ctx, "\n", "\n", input)
 		return err
 	})
@@ -375,6 +379,10 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 
 	const methodName = "UpdateOrgVariable"
 	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.UpdateOrgVariable(ctx, "o", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.UpdateOrgVariable(ctx, "\n", input)
 		return err
 	})
@@ -469,6 +477,14 @@ func TestActionsService_AddSelectedRepoToOrgVariable(t *testing.T) {
 
 	const methodName = "AddSelectedRepoToOrgVariable"
 	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.AddSelectedRepoToOrgVariable(ctx, "o", "NAME", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.AddSelectedRepoToOrgVariable(ctx, "o", "NAME", &Repository{ID: nil})
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.AddSelectedRepoToOrgVariable(ctx, "\n", "\n", repo)
 		return err
 	})
@@ -494,6 +510,14 @@ func TestActionsService_RemoveSelectedRepoFromOrgVariable(t *testing.T) {
 	}
 
 	const methodName = "RemoveSelectedRepoFromOrgVariable"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RemoveSelectedRepoFromOrgVariable(ctx, "o", "NAME", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RemoveSelectedRepoFromOrgVariable(ctx, "o", "NAME", &Repository{ID: nil})
+		return err
+	})
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.RemoveSelectedRepoFromOrgVariable(ctx, "\n", "\n", repo)
 		return err
@@ -666,6 +690,10 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 	}
 
 	const methodName = "UpdateEnvVariable"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.UpdateEnvVariable(ctx, "usr", "1", "e", nil)
+		return err
+	})
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.UpdateEnvVariable(ctx, "usr", "1", "\n", input)
 		return err
