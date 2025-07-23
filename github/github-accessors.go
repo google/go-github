@@ -7014,6 +7014,14 @@ func (d *DependencyGraphSnapshot) GetJob() *DependencyGraphSnapshotJob {
 	return d.Job
 }
 
+// GetMetadata returns the Metadata map if it's non-nil, an empty map otherwise.
+func (d *DependencyGraphSnapshot) GetMetadata() map[string]any {
+	if d == nil || d.Metadata == nil {
+		return map[string]any{}
+	}
+	return d.Metadata
+}
+
 // GetRef returns the Ref field if it's non-nil, zero value otherwise.
 func (d *DependencyGraphSnapshot) GetRef() string {
 	if d == nil || d.Ref == nil {
