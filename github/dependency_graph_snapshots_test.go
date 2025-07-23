@@ -21,7 +21,7 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/dependency-graph/snapshots", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"version":0,"sha":"ce587453ced02b1526dfb4cb910479d431683101","ref":"refs/heads/main","job":{"correlator":"yourworkflowname_youractionname","id":"yourrunid","html_url":"https://example.com"},"detector":{"name":"octo-detector","version":"0.0.1","url":"https://github.com/octo-org/octo-repo"},"scanned":"2022-06-14T20:25:00Z","manifests":{"package-lock.json":{"name":"package-lock.json","file":{"source_location":"src/package-lock.json"},"resolved":{"@actions/core":{"package_url":"pkg:/npm/%40actions/core@1.1.9","relationship":"direct","scope":"runtime","dependencies":["@actions/http-client"]},"@actions/http-client":{"package_url":"pkg:/npm/%40actions/http-client@1.0.7","relationship":"indirect","scope":"runtime","dependencies":["tunnel"]},"tunnel":{"package_url":"pkg:/npm/tunnel@0.0.6","relationship":"indirect","scope":"runtime"}}}}}`+"\n")
+		testBody(t, r, `{"version":0,"sha":"ce587453ced02b1526dfb4cb910479d431683101","ref":"refs/heads/main","job":{"correlator":"yourworkflowname_youractionname","id":"yourrunid","html_url":"https://example.com"},"detector":{"name":"octo-detector","version":"0.0.1","url":"https://github.com/octo-org/octo-repo"},"scanned":"2022-06-14T20:25:00Z","metadata":{"key1":"value1","key2":"value2"},"manifests":{"package-lock.json":{"name":"package-lock.json","file":{"source_location":"src/package-lock.json"},"resolved":{"@actions/core":{"package_url":"pkg:/npm/%40actions/core@1.1.9","relationship":"direct","scope":"runtime","dependencies":["@actions/http-client"]},"@actions/http-client":{"package_url":"pkg:/npm/%40actions/http-client@1.0.7","relationship":"indirect","scope":"runtime","dependencies":["tunnel"]},"tunnel":{"package_url":"pkg:/npm/tunnel@0.0.6","relationship":"indirect","scope":"runtime"}}}}}`+"\n")
 		fmt.Fprint(w, `{"id":12345,"created_at":"2022-06-14T20:25:01Z","message":"Dependency results for the repo have been successfully updated.","result":"SUCCESS"}`)
 	})
 
@@ -41,6 +41,10 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 			URL:     Ptr("https://github.com/octo-org/octo-repo"),
 		},
 		Scanned: &Timestamp{time.Date(2022, time.June, 14, 20, 25, 00, 0, time.UTC)},
+		Metadata: map[string]any{
+			"key1": "value1",
+			"key2": "value2",
+		},
 		Manifests: map[string]*DependencyGraphSnapshotManifest{
 			"package-lock.json": {
 				Name: Ptr("package-lock.json"),

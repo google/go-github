@@ -9112,6 +9112,17 @@ func TestDependencyGraphSnapshot_GetJob(tt *testing.T) {
 	d.GetJob()
 }
 
+func TestDependencyGraphSnapshot_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	d := &DependencyGraphSnapshot{Metadata: zeroValue}
+	d.GetMetadata()
+	d = &DependencyGraphSnapshot{}
+	d.GetMetadata()
+	d = nil
+	d.GetMetadata()
+}
+
 func TestDependencyGraphSnapshot_GetRef(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
