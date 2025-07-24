@@ -15286,6 +15286,14 @@ func (o *Organization) GetDefaultRepoSettings() string {
 	return *o.DefaultRepoSettings
 }
 
+// GetDefaultRepositoryBranch returns the DefaultRepositoryBranch field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDefaultRepositoryBranch() string {
+	if o == nil || o.DefaultRepositoryBranch == nil {
+		return ""
+	}
+	return *o.DefaultRepositoryBranch
+}
+
 // GetDependabotAlertsEnabledForNewRepos returns the DependabotAlertsEnabledForNewRepos field if it's non-nil, zero value otherwise.
 func (o *Organization) GetDependabotAlertsEnabledForNewRepos() bool {
 	if o == nil || o.DependabotAlertsEnabledForNewRepos == nil {
@@ -15324,6 +15332,14 @@ func (o *Organization) GetDiskUsage() int {
 		return 0
 	}
 	return *o.DiskUsage
+}
+
+// GetDisplayCommenterFullNameSettingEnabled returns the DisplayCommenterFullNameSettingEnabled field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDisplayCommenterFullNameSettingEnabled() bool {
+	if o == nil || o.DisplayCommenterFullNameSettingEnabled == nil {
+		return false
+	}
+	return *o.DisplayCommenterFullNameSettingEnabled
 }
 
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
@@ -15438,6 +15454,14 @@ func (o *Organization) GetMembersAllowedRepositoryCreationType() string {
 	return *o.MembersAllowedRepositoryCreationType
 }
 
+// GetMembersCanChangeRepoVisibility returns the MembersCanChangeRepoVisibility field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanChangeRepoVisibility() bool {
+	if o == nil || o.MembersCanChangeRepoVisibility == nil {
+		return false
+	}
+	return *o.MembersCanChangeRepoVisibility
+}
+
 // GetMembersCanCreateInternalRepos returns the MembersCanCreateInternalRepos field if it's non-nil, zero value otherwise.
 func (o *Organization) GetMembersCanCreateInternalRepos() bool {
 	if o == nil || o.MembersCanCreateInternalRepos == nil {
@@ -15494,12 +15518,52 @@ func (o *Organization) GetMembersCanCreateRepos() bool {
 	return *o.MembersCanCreateRepos
 }
 
+// GetMembersCanCreateTeams returns the MembersCanCreateTeams field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanCreateTeams() bool {
+	if o == nil || o.MembersCanCreateTeams == nil {
+		return false
+	}
+	return *o.MembersCanCreateTeams
+}
+
+// GetMembersCanDeleteIssues returns the MembersCanDeleteIssues field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanDeleteIssues() bool {
+	if o == nil || o.MembersCanDeleteIssues == nil {
+		return false
+	}
+	return *o.MembersCanDeleteIssues
+}
+
+// GetMembersCanDeleteRepositories returns the MembersCanDeleteRepositories field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanDeleteRepositories() bool {
+	if o == nil || o.MembersCanDeleteRepositories == nil {
+		return false
+	}
+	return *o.MembersCanDeleteRepositories
+}
+
 // GetMembersCanForkPrivateRepos returns the MembersCanForkPrivateRepos field if it's non-nil, zero value otherwise.
 func (o *Organization) GetMembersCanForkPrivateRepos() bool {
 	if o == nil || o.MembersCanForkPrivateRepos == nil {
 		return false
 	}
 	return *o.MembersCanForkPrivateRepos
+}
+
+// GetMembersCanInviteOutsideCollaborators returns the MembersCanInviteOutsideCollaborators field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanInviteOutsideCollaborators() bool {
+	if o == nil || o.MembersCanInviteOutsideCollaborators == nil {
+		return false
+	}
+	return *o.MembersCanInviteOutsideCollaborators
+}
+
+// GetMembersCanViewDependencyInsights returns the MembersCanViewDependencyInsights field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanViewDependencyInsights() bool {
+	if o == nil || o.MembersCanViewDependencyInsights == nil {
+		return false
+	}
+	return *o.MembersCanViewDependencyInsights
 }
 
 // GetMembersURL returns the MembersURL field if it's non-nil, zero value otherwise.
@@ -15572,6 +15636,14 @@ func (o *Organization) GetPublicRepos() int {
 		return 0
 	}
 	return *o.PublicRepos
+}
+
+// GetReadersCanCreateDiscussions returns the ReadersCanCreateDiscussions field if it's non-nil, zero value otherwise.
+func (o *Organization) GetReadersCanCreateDiscussions() bool {
+	if o == nil || o.ReadersCanCreateDiscussions == nil {
+		return false
+	}
+	return *o.ReadersCanCreateDiscussions
 }
 
 // GetReposURL returns the ReposURL field if it's non-nil, zero value otherwise.
