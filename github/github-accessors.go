@@ -24902,12 +24902,12 @@ func (s *SecretScanningAlert) GetCreatedAt() Timestamp {
 	return *s.CreatedAt
 }
 
-// GetFirstLocation returns the FirstLocation field.
-func (s *SecretScanningAlert) GetFirstLocation() *SecretScanningAlertLocationDetails {
+// GetFirstLocationDetected returns the FirstLocationDetected field.
+func (s *SecretScanningAlert) GetFirstLocationDetected() *SecretScanningAlertLocationDetails {
 	if s == nil {
 		return nil
 	}
-	return s.FirstLocation
+	return s.FirstLocationDetected
 }
 
 // GetHasMoreLocations returns the HasMoreLocations field if it's non-nil, zero value otherwise.

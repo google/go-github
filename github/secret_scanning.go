@@ -21,7 +21,7 @@ type SecretScanningAlert struct {
 	URL                                        *string                             `json:"url,omitempty"`
 	HTMLURL                                    *string                             `json:"html_url,omitempty"`
 	LocationsURL                               *string                             `json:"locations_url,omitempty"`
-	FirstLocation                              *SecretScanningAlertLocationDetails `json:"first_location_detected,omitempty"`
+	FirstLocationDetected                      *SecretScanningAlertLocationDetails `json:"first_location_detected,omitempty"`
 	HasMoreLocations                           *bool                               `json:"has_more_locations,omitempty"`
 	State                                      *string                             `json:"state,omitempty"`
 	Resolution                                 *string                             `json:"resolution,omitempty"`

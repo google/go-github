@@ -32079,12 +32079,12 @@ func TestSecretScanningAlert_GetCreatedAt(tt *testing.T) {
 	s.GetCreatedAt()
 }
 
-func TestSecretScanningAlert_GetFirstLocation(tt *testing.T) {
+func TestSecretScanningAlert_GetFirstLocationDetected(tt *testing.T) {
 	tt.Parallel()
 	s := &SecretScanningAlert{}
-	s.GetFirstLocation()
+	s.GetFirstLocationDetected()
 	s = nil
-	s.GetFirstLocation()
+	s.GetFirstLocationDetected()
 }
 
 func TestSecretScanningAlert_GetHasMoreLocations(tt *testing.T) {
