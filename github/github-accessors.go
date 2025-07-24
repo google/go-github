@@ -24830,6 +24830,22 @@ func (s *SecretScanningAlert) GetCreatedAt() Timestamp {
 	return *s.CreatedAt
 }
 
+// GetFirstLocation returns the FirstLocation field.
+func (s *SecretScanningAlert) GetFirstLocation() *SecretScanningAlertLocationDetails {
+	if s == nil {
+		return nil
+	}
+	return s.FirstLocation
+}
+
+// GetHasMoreLocations returns the HasMoreLocations field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetHasMoreLocations() bool {
+	if s == nil || s.HasMoreLocations == nil {
+		return false
+	}
+	return *s.HasMoreLocations
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (s *SecretScanningAlert) GetHTMLURL() string {
 	if s == nil || s.HTMLURL == nil {

@@ -31980,6 +31980,25 @@ func TestSecretScanningAlert_GetCreatedAt(tt *testing.T) {
 	s.GetCreatedAt()
 }
 
+func TestSecretScanningAlert_GetFirstLocation(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlert{}
+	s.GetFirstLocation()
+	s = nil
+	s.GetFirstLocation()
+}
+
+func TestSecretScanningAlert_GetHasMoreLocations(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SecretScanningAlert{HasMoreLocations: &zeroValue}
+	s.GetHasMoreLocations()
+	s = &SecretScanningAlert{}
+	s.GetHasMoreLocations()
+	s = nil
+	s.GetHasMoreLocations()
+}
+
 func TestSecretScanningAlert_GetHTMLURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
