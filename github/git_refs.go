@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/url"
 	"strings"
@@ -127,6 +128,13 @@ func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo string, o
 //
 //meta:operation POST /repos/{owner}/{repo}/git/refs
 func (s *GitService) CreateRef(ctx context.Context, owner string, repo string, ref *Reference) (*Reference, *Response, error) {
+	if ref == nil {
+		return nil, nil, errors.New("reference must be provided")
+	}
+	if ref.Ref == nil {
+		return nil, nil, errors.New("ref must be provided")
+	}
+
 	u := fmt.Sprintf("repos/%v/%v/git/refs", owner, repo)
 	req, err := s.client.NewRequest("POST", u, &createRefRequest{
 		// back-compat with previous behavior that didn't require 'refs/' prefix
@@ -152,6 +160,13 @@ func (s *GitService) CreateRef(ctx context.Context, owner string, repo string, r
 //
 //meta:operation PATCH /repos/{owner}/{repo}/git/refs/{ref}
 func (s *GitService) UpdateRef(ctx context.Context, owner string, repo string, ref *Reference, force bool) (*Reference, *Response, error) {
+	if ref == nil {
+		return nil, nil, errors.New("reference must be provided")
+	}
+	if ref.Ref == nil {
+		return nil, nil, errors.New("ref must be provided")
+	}
+
 	refPath := strings.TrimPrefix(*ref.Ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, refURLEscape(refPath))
 	req, err := s.client.NewRequest("PATCH", u, &updateRefRequest{

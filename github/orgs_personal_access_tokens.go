@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -153,6 +154,10 @@ func addListFineGrainedPATOptions(s string, opts *ListFineGrainedPATOptions) (st
 	u, err := addOptions(s, opts)
 	if err != nil {
 		return s, err
+	}
+
+	if opts == nil {
+		return "", errors.New("opts must be provided")
 	}
 
 	if len(opts.Owner) > 0 {

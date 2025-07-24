@@ -250,6 +250,11 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 		expectedError string
 	}{
 		{
+			name:          "Missing Request",
+			request:       nil,
+			expectedError: "validation failed: request is required for creating a hosted runner",
+		},
+		{
 			name: "Missing Size",
 			request: &HostedRunnerRequest{
 				Name: "My Hosted runner",
