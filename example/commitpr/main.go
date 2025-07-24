@@ -63,7 +63,7 @@ var ctx = context.Background()
 // getRef returns the commit branch reference object if it exists or creates it
 // from the base branch before returning it.
 func getRef() (ref *github.Reference, err error) {
-	if ref, _, err = client.Git.GetRef(ctx, *sourceOwner, *sourceRepo, "refs/heads/"+*commitBranch); err == nil {
+	if ref, _, err = client.Git.GetRef(ctx, *sourceOwner, *sourceRepo, branchRef(*commitBranch)); err == nil {
 		return ref, nil
 	}
 
@@ -78,12 +78,17 @@ func getRef() (ref *github.Reference, err error) {
 	}
 
 	var baseRef *github.Reference
-	if baseRef, _, err = client.Git.GetRef(ctx, *sourceOwner, *sourceRepo, "refs/heads/"+*baseBranch); err != nil {
+	if baseRef, _, err = client.Git.GetRef(ctx, *sourceOwner, *sourceRepo, branchRef(*baseBranch)); err != nil {
 		return nil, err
 	}
-	newRef := &github.Reference{Ref: github.Ptr("refs/heads/" + *commitBranch), Object: &github.GitObject{SHA: baseRef.Object.SHA}}
+	newRef := &github.Reference{Ref: github.Ptr(branchRef(*commitBranch)), Object: &github.GitObject{SHA: baseRef.Object.SHA}}
 	ref, _, err = client.Git.CreateRef(ctx, *sourceOwner, *sourceRepo, newRef)
 	return ref, err
+}
+
+// branchRef generates the fully qualified git reference for the given branch name.
+func branchRef(name string) string {
+	return "refs/heads/" + name
 }
 
 // getTree generates the tree to commit based on the given files and the commit

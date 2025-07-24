@@ -49,7 +49,7 @@ type DeploymentsListOptions struct {
 	// SHA of the Deployment.
 	SHA string `url:"sha,omitempty"`
 
-	// List deployments for a given ref.
+	// List deployments for a given ref. This can be a branch, tag, or SHA.
 	Ref string `url:"ref,omitempty"`
 
 	// List deployments for a given task.

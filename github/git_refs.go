@@ -14,6 +14,7 @@ import (
 
 // Reference represents a GitHub reference.
 type Reference struct {
+	// The name of the fully qualified reference, i.e.: `refs/heads/master`.
 	Ref    *string    `json:"ref"`
 	URL    *string    `json:"url"`
 	Object *GitObject `json:"object"`
@@ -48,6 +49,7 @@ type updateRefRequest struct {
 }
 
 // GetRef fetches a single reference in a repository.
+// The ref must be formatted as `heads/<branch name>` for branches and `tags/<tag name>` for tags.
 //
 // GitHub API docs: https://docs.github.com/rest/git/refs#get-a-reference
 //
@@ -82,6 +84,7 @@ func refURLEscape(ref string) string {
 // ReferenceListOptions specifies optional parameters to the
 // GitService.ListMatchingRefs method.
 type ReferenceListOptions struct {
+	// The ref must be formatted as `heads/<branch name>` for branches and `tags/<tag name>` for tags.
 	Ref string `url:"-"`
 
 	ListOptions
