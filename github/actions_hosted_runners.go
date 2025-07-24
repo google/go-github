@@ -107,6 +107,9 @@ type HostedRunnerRequest struct {
 // If any of these conditions are violated, an appropriate error message is returned.
 // Otherwise, nil is returned, indicating the request is valid.
 func validateCreateHostedRunnerRequest(request *HostedRunnerRequest) error {
+	if request == nil {
+		return errors.New("request is required for creating a hosted runner")
+	}
 	if request.Size == "" {
 		return errors.New("size is required for creating a hosted runner")
 	}

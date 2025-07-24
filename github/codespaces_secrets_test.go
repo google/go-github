@@ -234,6 +234,9 @@ func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
 			call: func(ctx context.Context, client *Client, e *EncryptedSecret) (*Response, error) {
 				return client.Codespaces.CreateOrUpdateUserSecret(ctx, e)
 			},
+			badCall: func(ctx context.Context, client *Client, _ *EncryptedSecret) (*Response, error) {
+				return client.Codespaces.CreateOrUpdateUserSecret(ctx, nil)
+			},
 			methodName: "CreateOrUpdateUserSecret",
 		},
 		{
@@ -657,6 +660,9 @@ func TestCodespacesService_AddSelectedReposForSecret(t *testing.T) {
 			call: func(ctx context.Context, client *Client) (*Response, error) {
 				return client.Codespaces.AddSelectedRepoToUserSecret(ctx, "NAME", repo)
 			},
+			badCall: func(ctx context.Context, client *Client) (*Response, error) {
+				return client.Codespaces.AddSelectedRepoToUserSecret(ctx, "NAME", &Repository{ID: nil})
+			},
 			methodName: "AddSelectedRepoToUserSecret",
 		},
 		{
@@ -723,6 +729,9 @@ func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
 			},
 			call: func(ctx context.Context, client *Client) (*Response, error) {
 				return client.Codespaces.RemoveSelectedRepoFromUserSecret(ctx, "NAME", repo)
+			},
+			badCall: func(ctx context.Context, client *Client) (*Response, error) {
+				return client.Codespaces.RemoveSelectedRepoFromUserSecret(ctx, "NAME", nil)
 			},
 			methodName: "RemoveSelectedRepoFromUserSecret",
 		},

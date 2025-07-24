@@ -191,6 +191,10 @@ func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
 
 	const methodName = "CreateOrUpdateRepoSecret"
 	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Dependabot.CreateOrUpdateRepoSecret(ctx, "o", "r", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Dependabot.CreateOrUpdateRepoSecret(ctx, "\n", "\n", input)
 		return err
 	})
@@ -371,6 +375,10 @@ func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
 
 	const methodName = "CreateOrUpdateOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Dependabot.CreateOrUpdateOrgSecret(ctx, "o", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Dependabot.CreateOrUpdateOrgSecret(ctx, "\n", input)
 		return err
 	})
@@ -465,6 +473,14 @@ func TestDependabotService_AddSelectedRepoToOrgSecret(t *testing.T) {
 
 	const methodName = "AddSelectedRepoToOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", &Repository{ID: nil})
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "\n", "\n", repo)
 		return err
 	})
@@ -490,6 +506,14 @@ func TestDependabotService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 	}
 
 	const methodName = "RemoveSelectedRepoFromOrgSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", &Repository{ID: nil})
+		return err
+	})
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "\n", "\n", repo)
 		return err

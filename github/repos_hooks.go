@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -83,6 +84,10 @@ type createHookRequest struct {
 //
 //meta:operation POST /repos/{owner}/{repo}/hooks
 func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string, hook *Hook) (*Hook, *Response, error) {
+	if hook == nil {
+		return nil, nil, errors.New("hook must be provided")
+	}
+
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
 
 	hookReq := &createHookRequest{

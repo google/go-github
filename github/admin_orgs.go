@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
 
@@ -65,6 +66,13 @@ type RenameOrgResponse struct {
 //
 //meta:operation PATCH /admin/organizations/{org}
 func (s *AdminService) RenameOrg(ctx context.Context, org *Organization, newName string) (*RenameOrgResponse, *Response, error) {
+	if org == nil {
+		return nil, nil, errors.New("organization must be provided")
+	}
+	if org.Login == nil {
+		return nil, nil, errors.New("login must be provided")
+	}
+
 	return s.RenameOrgByName(ctx, *org.Login, newName)
 }
 

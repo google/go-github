@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
 
@@ -67,6 +68,10 @@ func (s *OrganizationsService) GetHook(ctx context.Context, org string, id int64
 //
 //meta:operation POST /orgs/{org}/hooks
 func (s *OrganizationsService) CreateHook(ctx context.Context, org string, hook *Hook) (*Hook, *Response, error) {
+	if hook == nil {
+		return nil, nil, errors.New("hook must be provided")
+	}
+
 	u := fmt.Sprintf("orgs/%v/hooks", org)
 
 	hookReq := &createHookRequest{

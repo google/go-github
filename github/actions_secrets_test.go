@@ -312,6 +312,10 @@ func TestActionsService_CreateOrUpdateRepoSecret(t *testing.T) {
 
 	const methodName = "CreateOrUpdateRepoSecret"
 	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.CreateOrUpdateRepoSecret(ctx, "o", "r", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.CreateOrUpdateRepoSecret(ctx, "\n", "\n", input)
 		return err
 	})
@@ -492,6 +496,10 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 
 	const methodName = "CreateOrUpdateOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.CreateOrUpdateOrgSecret(ctx, "o", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.CreateOrUpdateOrgSecret(ctx, "\n", input)
 		return err
 	})
@@ -586,6 +594,10 @@ func TestActionsService_AddSelectedRepoToOrgSecret(t *testing.T) {
 
 	const methodName = "AddSelectedRepoToOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.AddSelectedRepoToOrgSecret(ctx, "\n", "\n", repo)
 		return err
 	})
@@ -611,6 +623,10 @@ func TestActionsService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 	}
 
 	const methodName = "RemoveSelectedRepoFromOrgSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", nil)
+		return err
+	})
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "\n", "\n", repo)
 		return err
@@ -821,6 +837,10 @@ func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
 	}
 
 	const methodName = "CreateOrUpdateEnvSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.CreateOrUpdateEnvSecret(ctx, 1, "e", nil)
+		return err
+	})
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.CreateOrUpdateEnvSecret(ctx, 0.0, "\n", input)
 		return err

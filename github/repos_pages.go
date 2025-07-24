@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
 
@@ -107,6 +108,10 @@ type createPagesRequest struct {
 //
 //meta:operation POST /repos/{owner}/{repo}/pages
 func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo string, pages *Pages) (*Pages, *Response, error) {
+	if pages == nil {
+		return nil, nil, errors.New("pages must be provided")
+	}
+
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
 	pagesReq := &createPagesRequest{

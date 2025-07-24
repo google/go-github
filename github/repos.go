@@ -536,6 +536,10 @@ type createRepoRequest struct {
 //meta:operation POST /orgs/{org}/repos
 //meta:operation POST /user/repos
 func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repository) (*Repository, *Response, error) {
+	if repo == nil {
+		return nil, nil, errors.New("repository must be provided")
+	}
+
 	var u string
 	if org != "" {
 		u = fmt.Sprintf("orgs/%v/repos", org)

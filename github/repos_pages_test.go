@@ -58,6 +58,10 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 
 	const methodName = "EnablePages"
 	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.EnablePages(ctx, "o", "r", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Repositories.EnablePages(ctx, "\n", "\n", input)
 		return err
 	})

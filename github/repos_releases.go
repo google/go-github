@@ -203,6 +203,10 @@ type repositoryReleaseRequest struct {
 //
 //meta:operation POST /repos/{owner}/{repo}/releases
 func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
+	if release == nil {
+		return nil, nil, errors.New("release must be provided")
+	}
+
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
 
 	releaseReq := &repositoryReleaseRequest{
@@ -239,6 +243,10 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 //
 //meta:operation PATCH /repos/{owner}/{repo}/releases/{release_id}
 func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo string, id int64, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
+	if release == nil {
+		return nil, nil, errors.New("release must be provided")
+	}
+
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 
 	releaseReq := &repositoryReleaseRequest{
@@ -444,6 +452,10 @@ func (s *RepositoriesService) DeleteReleaseAsset(ctx context.Context, owner, rep
 //
 //meta:operation POST /repos/{owner}/{repo}/releases/{release_id}/assets
 func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, repo string, id int64, opts *UploadOptions, file *os.File) (*ReleaseAsset, *Response, error) {
+	if file == nil {
+		return nil, nil, errors.New("file must be provided")
+	}
+
 	u := fmt.Sprintf("repos/%s/%s/releases/%d/assets", owner, repo, id)
 	u, err := addOptions(u, opts)
 	if err != nil {

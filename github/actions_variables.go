@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
 
@@ -186,6 +187,10 @@ func (s *ActionsService) patchVariable(ctx context.Context, url string, variable
 //
 //meta:operation PATCH /repos/{owner}/{repo}/actions/variables/{name}
 func (s *ActionsService) UpdateRepoVariable(ctx context.Context, owner, repo string, variable *ActionsVariable) (*Response, error) {
+	if variable == nil {
+		return nil, errors.New("variable must be provided")
+	}
+
 	url := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, variable.Name)
 	return s.patchVariable(ctx, url, variable)
 }
@@ -196,6 +201,10 @@ func (s *ActionsService) UpdateRepoVariable(ctx context.Context, owner, repo str
 //
 //meta:operation PATCH /orgs/{org}/actions/variables/{name}
 func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org string, variable *ActionsVariable) (*Response, error) {
+	if variable == nil {
+		return nil, errors.New("variable must be provided")
+	}
+
 	url := fmt.Sprintf("orgs/%v/actions/variables/%v", org, variable.Name)
 	return s.patchVariable(ctx, url, variable)
 }
@@ -206,6 +215,10 @@ func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org string, vari
 //
 //meta:operation PATCH /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}
 func (s *ActionsService) UpdateEnvVariable(ctx context.Context, owner, repo, env string, variable *ActionsVariable) (*Response, error) {
+	if variable == nil {
+		return nil, errors.New("variable must be provided")
+	}
+
 	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", owner, repo, env, variable.Name)
 	return s.patchVariable(ctx, url, variable)
 }
@@ -317,6 +330,13 @@ func (s *ActionsService) addSelectedRepoToVariable(ctx context.Context, url stri
 //
 //meta:operation PUT /orgs/{org}/actions/variables/{name}/repositories/{repository_id}
 func (s *ActionsService) AddSelectedRepoToOrgVariable(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
+	if repo == nil {
+		return nil, errors.New("repository must be provided")
+	}
+	if repo.ID == nil {
+		return nil, errors.New("id must be provided")
+	}
+
 	url := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories/%v", org, name, *repo.ID)
 	return s.addSelectedRepoToVariable(ctx, url)
 }
@@ -336,6 +356,13 @@ func (s *ActionsService) removeSelectedRepoFromVariable(ctx context.Context, url
 //
 //meta:operation DELETE /orgs/{org}/actions/variables/{name}/repositories/{repository_id}
 func (s *ActionsService) RemoveSelectedRepoFromOrgVariable(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
+	if repo == nil {
+		return nil, errors.New("repository must be provided")
+	}
+	if repo.ID == nil {
+		return nil, errors.New("id must be provided")
+	}
+
 	url := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories/%v", org, name, *repo.ID)
 	return s.removeSelectedRepoFromVariable(ctx, url)
 }

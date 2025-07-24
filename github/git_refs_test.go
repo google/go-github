@@ -448,6 +448,14 @@ func TestGitService_CreateRef(t *testing.T) {
 
 	const methodName = "CreateRef"
 	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.CreateRef(ctx, "o", "r", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.CreateRef(ctx, "o", "r", &Reference{Ref: nil})
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Git.CreateRef(ctx, "\n", "\n", &Reference{
 			Ref: Ptr("refs/heads/b"),
 			Object: &GitObject{
@@ -532,6 +540,14 @@ func TestGitService_UpdateRef(t *testing.T) {
 	}
 
 	const methodName = "UpdateRef"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.UpdateRef(ctx, "o", "r", nil, true)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.UpdateRef(ctx, "o", "r", &Reference{Ref: nil}, true)
+		return err
+	})
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Git.UpdateRef(ctx, "\n", "\n", &Reference{
 			Ref:    Ptr("refs/heads/b"),

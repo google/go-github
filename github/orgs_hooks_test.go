@@ -94,6 +94,10 @@ func TestOrganizationsService_CreateHook(t *testing.T) {
 
 	const methodName = "CreateHook"
 	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.CreateHook(ctx, "o", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Organizations.CreateHook(ctx, "\n", input)
 		return err
 	})

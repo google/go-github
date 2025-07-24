@@ -256,6 +256,10 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 
 	const methodName = "Create"
 	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.Create(ctx, "", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Repositories.Create(ctx, "\n", input)
 		return err
 	})

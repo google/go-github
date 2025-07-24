@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
 
@@ -150,6 +151,10 @@ func (s *DependabotService) putSecret(ctx context.Context, url string, eSecret *
 //
 //meta:operation PUT /repos/{owner}/{repo}/dependabot/secrets/{secret_name}
 func (s *DependabotService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *DependabotEncryptedSecret) (*Response, error) {
+	if eSecret == nil {
+		return nil, errors.New("dependabot encrypted secret must be provided")
+	}
+
 	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets/%v", owner, repo, eSecret.Name)
 	return s.putSecret(ctx, url, eSecret)
 }
@@ -160,6 +165,10 @@ func (s *DependabotService) CreateOrUpdateRepoSecret(ctx context.Context, owner,
 //
 //meta:operation PUT /orgs/{org}/dependabot/secrets/{secret_name}
 func (s *DependabotService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *DependabotEncryptedSecret) (*Response, error) {
+	if eSecret == nil {
+		return nil, errors.New("dependabot encrypted secret must be provided")
+	}
+
 	repoIDs := make([]string, len(eSecret.SelectedRepositoryIDs))
 	for i, secret := range eSecret.SelectedRepositoryIDs {
 		repoIDs[i] = fmt.Sprintf("%v", secret)
@@ -264,6 +273,13 @@ func (s *DependabotService) SetSelectedReposForOrgSecret(ctx context.Context, or
 //
 //meta:operation PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}
 func (s *DependabotService) AddSelectedRepoToOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
+	if repo == nil {
+		return nil, errors.New("repository must be provided")
+	}
+	if repo.ID == nil {
+		return nil, errors.New("id must be provided")
+	}
+
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories/%v", org, name, *repo.ID)
 	req, err := s.client.NewRequest("PUT", url, nil)
 	if err != nil {
@@ -279,6 +295,13 @@ func (s *DependabotService) AddSelectedRepoToOrgSecret(ctx context.Context, org,
 //
 //meta:operation DELETE /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}
 func (s *DependabotService) RemoveSelectedRepoFromOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
+	if repo == nil {
+		return nil, errors.New("repository must be provided")
+	}
+	if repo.ID == nil {
+		return nil, errors.New("id must be provided")
+	}
+
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories/%v", org, name, *repo.ID)
 	req, err := s.client.NewRequest("DELETE", url, nil)
 	if err != nil {
