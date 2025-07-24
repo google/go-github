@@ -269,6 +269,8 @@ type ListCheckRunsResults struct {
 }
 
 // ListCheckRunsForRef lists check runs for a specific ref.
+// The ref can be a commit SHA, branch name `heads/<branch name>`, or tag name `tags/<tag name>`.
+// For more information, see "Git References" in the Git documentation https://git-scm.com/book/en/v2/Git-Internals-Git-References.
 //
 // GitHub API docs: https://docs.github.com/rest/checks/runs#list-check-runs-for-a-git-reference
 //
@@ -357,6 +359,8 @@ type ListCheckSuiteResults struct {
 }
 
 // ListCheckSuitesForRef lists check suite for a specific ref.
+// The ref can be a commit SHA, branch name `heads/<branch name>`, or tag name `tags/<tag name>`.
+// For more information, see "Git References" in the Git documentation https://git-scm.com/book/en/v2/Git-Internals-Git-References.
 //
 // GitHub API docs: https://docs.github.com/rest/checks/suites#list-check-suites-for-a-git-reference
 //
