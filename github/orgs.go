@@ -115,7 +115,7 @@ type Organization struct {
 	MembersCanViewDependencyInsights *bool `json:"members_can_view_dependency_insights,omitempty"`
 	// DefaultRepositoryBranch is the default branch for new repositories in the organization.
 	DefaultRepositoryBranch *string `json:"default_repository_branch,omitempty"`
-	
+
 	// API URLs
 	URL              *string `json:"url,omitempty"`
 	EventsURL        *string `json:"events_url,omitempty"`
