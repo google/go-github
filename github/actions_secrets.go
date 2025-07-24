@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strconv"
 )
@@ -246,6 +247,10 @@ func (s *ActionsService) putSecret(ctx context.Context, url string, eSecret *Enc
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}
 func (s *ActionsService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
+	if eSecret == nil {
+		return nil, errors.New("encrypted secret must be provided")
+	}
+
 	url := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, eSecret.Name)
 	return s.putSecret(ctx, url, eSecret)
 }
@@ -256,6 +261,10 @@ func (s *ActionsService) CreateOrUpdateRepoSecret(ctx context.Context, owner, re
 //
 //meta:operation PUT /orgs/{org}/actions/secrets/{secret_name}
 func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error) {
+	if eSecret == nil {
+		return nil, errors.New("encrypted secret must be provided")
+	}
+
 	url := fmt.Sprintf("orgs/%v/actions/secrets/%v", org, eSecret.Name)
 	return s.putSecret(ctx, url, eSecret)
 }
@@ -266,6 +275,10 @@ func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org string
 //
 //meta:operation PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}
 func (s *ActionsService) CreateOrUpdateEnvSecret(ctx context.Context, repoID int, env string, eSecret *EncryptedSecret) (*Response, error) {
+	if eSecret == nil {
+		return nil, errors.New("encrypted secret must be provided")
+	}
+
 	url := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, eSecret.Name)
 	return s.putSecret(ctx, url, eSecret)
 }
@@ -383,6 +396,10 @@ func (s *ActionsService) addSelectedRepoToSecret(ctx context.Context, url string
 //
 //meta:operation PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}
 func (s *ActionsService) AddSelectedRepoToOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
+	if repo == nil {
+		return nil, errors.New("repository must be provided")
+	}
+
 	url := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories/%v", org, name, *repo.ID)
 	return s.addSelectedRepoToSecret(ctx, url)
 }
@@ -402,6 +419,10 @@ func (s *ActionsService) removeSelectedRepoFromSecret(ctx context.Context, url s
 //
 //meta:operation DELETE /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}
 func (s *ActionsService) RemoveSelectedRepoFromOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
+	if repo == nil {
+		return nil, errors.New("repository must be provided")
+	}
+
 	url := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories/%v", org, name, *repo.ID)
 	return s.removeSelectedRepoFromSecret(ctx, url)
 }

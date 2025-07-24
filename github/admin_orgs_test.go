@@ -90,6 +90,15 @@ func TestAdminOrgs_Rename(t *testing.T) {
 	}
 
 	const methodName = "RenameOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Admin.RenameOrg(ctx, nil, "the-new-octocats")
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Admin.RenameOrg(ctx, &Organization{Login: nil}, "the-new-octocats")
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Admin.RenameOrg(ctx, input, "the-new-octocats")
 		if got != nil {

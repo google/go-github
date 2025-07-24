@@ -85,6 +85,10 @@ func TestGitService_CreateTag(t *testing.T) {
 
 	const methodName = "CreateTag"
 	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.CreateTag(ctx, "o", "r", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Git.CreateTag(ctx, "\n", "\n", inputTag)
 		return err
 	})

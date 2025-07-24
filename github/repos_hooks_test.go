@@ -47,6 +47,10 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 
 	const methodName = "CreateHook"
 	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CreateHook(ctx, "o", "r", nil)
+		return err
+	})
+	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Repositories.CreateHook(ctx, "\n", "\n", input)
 		return err
 	})
