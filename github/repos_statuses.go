@@ -43,7 +43,7 @@ func (r RepoStatus) String() string {
 }
 
 // ListStatuses lists the statuses of a repository at the specified
-// reference. ref can be a SHA, a branch name, or a tag name.
+// reference. The ref can be a SHA, a branch name, or a tag name.
 //
 // GitHub API docs: https://docs.github.com/rest/commits/statuses#list-commit-statuses-for-a-reference
 //
@@ -70,7 +70,7 @@ func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref
 }
 
 // CreateStatus creates a new status for a repository at the specified
-// reference. Ref can be a SHA, a branch name, or a tag name.
+// reference. The ref can be a SHA, a branch name, or a tag name.
 //
 // GitHub API docs: https://docs.github.com/rest/commits/statuses#create-a-commit-status
 //
@@ -111,7 +111,7 @@ func (s CombinedStatus) String() string {
 }
 
 // GetCombinedStatus returns the combined status of a repository at the specified
-// reference. ref can be a SHA, a branch name, or a tag name.
+// reference. The ref can be a SHA, a branch name, or a tag name.
 //
 // GitHub API docs: https://docs.github.com/rest/commits/statuses#get-the-combined-status-for-a-specific-reference
 //

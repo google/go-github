@@ -19823,6 +19823,17 @@ func TestOrganization_GetDefaultRepoSettings(tt *testing.T) {
 	o.GetDefaultRepoSettings()
 }
 
+func TestOrganization_GetDefaultRepositoryBranch(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	o := &Organization{DefaultRepositoryBranch: &zeroValue}
+	o.GetDefaultRepositoryBranch()
+	o = &Organization{}
+	o.GetDefaultRepositoryBranch()
+	o = nil
+	o.GetDefaultRepositoryBranch()
+}
+
 func TestOrganization_GetDependabotAlertsEnabledForNewRepos(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -19876,6 +19887,17 @@ func TestOrganization_GetDiskUsage(tt *testing.T) {
 	o.GetDiskUsage()
 	o = nil
 	o.GetDiskUsage()
+}
+
+func TestOrganization_GetDisplayCommenterFullNameSettingEnabled(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &Organization{DisplayCommenterFullNameSettingEnabled: &zeroValue}
+	o.GetDisplayCommenterFullNameSettingEnabled()
+	o = &Organization{}
+	o.GetDisplayCommenterFullNameSettingEnabled()
+	o = nil
+	o.GetDisplayCommenterFullNameSettingEnabled()
 }
 
 func TestOrganization_GetEmail(tt *testing.T) {
@@ -20032,6 +20054,17 @@ func TestOrganization_GetMembersAllowedRepositoryCreationType(tt *testing.T) {
 	o.GetMembersAllowedRepositoryCreationType()
 }
 
+func TestOrganization_GetMembersCanChangeRepoVisibility(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &Organization{MembersCanChangeRepoVisibility: &zeroValue}
+	o.GetMembersCanChangeRepoVisibility()
+	o = &Organization{}
+	o.GetMembersCanChangeRepoVisibility()
+	o = nil
+	o.GetMembersCanChangeRepoVisibility()
+}
+
 func TestOrganization_GetMembersCanCreateInternalRepos(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -20109,6 +20142,39 @@ func TestOrganization_GetMembersCanCreateRepos(tt *testing.T) {
 	o.GetMembersCanCreateRepos()
 }
 
+func TestOrganization_GetMembersCanCreateTeams(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &Organization{MembersCanCreateTeams: &zeroValue}
+	o.GetMembersCanCreateTeams()
+	o = &Organization{}
+	o.GetMembersCanCreateTeams()
+	o = nil
+	o.GetMembersCanCreateTeams()
+}
+
+func TestOrganization_GetMembersCanDeleteIssues(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &Organization{MembersCanDeleteIssues: &zeroValue}
+	o.GetMembersCanDeleteIssues()
+	o = &Organization{}
+	o.GetMembersCanDeleteIssues()
+	o = nil
+	o.GetMembersCanDeleteIssues()
+}
+
+func TestOrganization_GetMembersCanDeleteRepositories(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &Organization{MembersCanDeleteRepositories: &zeroValue}
+	o.GetMembersCanDeleteRepositories()
+	o = &Organization{}
+	o.GetMembersCanDeleteRepositories()
+	o = nil
+	o.GetMembersCanDeleteRepositories()
+}
+
 func TestOrganization_GetMembersCanForkPrivateRepos(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -20118,6 +20184,28 @@ func TestOrganization_GetMembersCanForkPrivateRepos(tt *testing.T) {
 	o.GetMembersCanForkPrivateRepos()
 	o = nil
 	o.GetMembersCanForkPrivateRepos()
+}
+
+func TestOrganization_GetMembersCanInviteOutsideCollaborators(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &Organization{MembersCanInviteOutsideCollaborators: &zeroValue}
+	o.GetMembersCanInviteOutsideCollaborators()
+	o = &Organization{}
+	o.GetMembersCanInviteOutsideCollaborators()
+	o = nil
+	o.GetMembersCanInviteOutsideCollaborators()
+}
+
+func TestOrganization_GetMembersCanViewDependencyInsights(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &Organization{MembersCanViewDependencyInsights: &zeroValue}
+	o.GetMembersCanViewDependencyInsights()
+	o = &Organization{}
+	o.GetMembersCanViewDependencyInsights()
+	o = nil
+	o.GetMembersCanViewDependencyInsights()
 }
 
 func TestOrganization_GetMembersURL(tt *testing.T) {
@@ -20214,6 +20302,17 @@ func TestOrganization_GetPublicRepos(tt *testing.T) {
 	o.GetPublicRepos()
 	o = nil
 	o.GetPublicRepos()
+}
+
+func TestOrganization_GetReadersCanCreateDiscussions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &Organization{ReadersCanCreateDiscussions: &zeroValue}
+	o.GetReadersCanCreateDiscussions()
+	o = &Organization{}
+	o.GetReadersCanCreateDiscussions()
+	o = nil
+	o.GetReadersCanCreateDiscussions()
 }
 
 func TestOrganization_GetReposURL(tt *testing.T) {

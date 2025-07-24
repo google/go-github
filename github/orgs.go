@@ -97,6 +97,24 @@ type Organization struct {
 	SecretScanningPushProtectionEnabledForNewRepos *bool `json:"secret_scanning_push_protection_enabled_for_new_repositories,omitempty"`
 	// SecretScanningValidityChecksEnabled toggles whether secret scanning validity check is enabled.
 	SecretScanningValidityChecksEnabled *bool `json:"secret_scanning_validity_checks_enabled,omitempty"`
+	// MembersCanDeleteRepositories toggles whether members with admin permissions can delete a repository.
+	MembersCanDeleteRepositories *bool `json:"members_can_delete_repositories,omitempty"`
+	// MembersCanChangeRepoVisibility toggles whether members with admin permissions can change the visibility for a repository.
+	MembersCanChangeRepoVisibility *bool `json:"members_can_change_repo_visiblilty,omitempty"`
+	// MembersCanInviteOutsideCollaborators toggles whether members with admin permissions can invite outside collaborators.
+	MembersCanInviteOutsideCollaborators *bool `json:"members_can_invite_outside_collaborators,omitempty"`
+	// MembersCanDeleteIssues toggles whether members with admin permissions can delete issues.
+	MembersCanDeleteIssues *bool `json:"members_can_delete_issues,omitempty"`
+	// DisplayCommenterFullNameSettingEnabled toggles whether members can see the comment author's profile name in private repositories.
+	DisplayCommenterFullNameSettingEnabled *bool `json:"display_commenter_full_name_setting_enabled,omitempty"`
+	// ReadersCanCreateDiscussions toggles whether users with read access can create and comment on discussions.
+	ReadersCanCreateDiscussions *bool `json:"readers_can_create_discussions,omitempty"`
+	// MembersCanCreateTeams toggles whether members of an organization can create new teams.
+	MembersCanCreateTeams *bool `json:"members_can_create_teams,omitempty"`
+	// MembersCanViewDependencyInsights toggles whether members may view dependency insights.
+	MembersCanViewDependencyInsights *bool `json:"members_can_view_dependency_insights,omitempty"`
+	// DefaultRepositoryBranch is the default branch for new repositories in the organization.
+	DefaultRepositoryBranch *string `json:"default_repository_branch,omitempty"`
 
 	// API URLs
 	URL              *string `json:"url,omitempty"`
