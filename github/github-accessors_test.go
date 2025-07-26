@@ -11885,6 +11885,50 @@ func TestFeeds_GetUserURL(tt *testing.T) {
 	f.GetUserURL()
 }
 
+func TestFieldValue_GetFieldName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	f := &FieldValue{FieldName: &zeroValue}
+	f.GetFieldName()
+	f = &FieldValue{}
+	f.GetFieldName()
+	f = nil
+	f.GetFieldName()
+}
+
+func TestFieldValue_GetFieldNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	f := &FieldValue{FieldNodeID: &zeroValue}
+	f.GetFieldNodeID()
+	f = &FieldValue{}
+	f.GetFieldNodeID()
+	f = nil
+	f.GetFieldNodeID()
+}
+
+func TestFieldValue_GetFieldType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	f := &FieldValue{FieldType: &zeroValue}
+	f.GetFieldType()
+	f = &FieldValue{}
+	f.GetFieldType()
+	f = nil
+	f.GetFieldType()
+}
+
+func TestFieldValue_GetProjectNumber(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	f := &FieldValue{ProjectNumber: &zeroValue}
+	f.GetProjectNumber()
+	f = &FieldValue{}
+	f.GetProjectNumber()
+	f = nil
+	f.GetProjectNumber()
+}
+
 func TestFirstPatchedVersion_GetIdentifier(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -23909,6 +23953,14 @@ func TestProjectV2ItemChange_GetArchivedAt(tt *testing.T) {
 	p.GetArchivedAt()
 	p = nil
 	p.GetArchivedAt()
+}
+
+func TestProjectV2ItemChange_GetFieldValue(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2ItemChange{}
+	p.GetFieldValue()
+	p = nil
+	p.GetFieldValue()
 }
 
 func TestProjectV2ItemEvent_GetAction(tt *testing.T) {
