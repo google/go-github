@@ -9190,6 +9190,38 @@ func (f *Feeds) GetUserURL() string {
 	return *f.UserURL
 }
 
+// GetFieldName returns the FieldName field if it's non-nil, zero value otherwise.
+func (f *FieldValue) GetFieldName() string {
+	if f == nil || f.FieldName == nil {
+		return ""
+	}
+	return *f.FieldName
+}
+
+// GetFieldNodeID returns the FieldNodeID field if it's non-nil, zero value otherwise.
+func (f *FieldValue) GetFieldNodeID() string {
+	if f == nil || f.FieldNodeID == nil {
+		return ""
+	}
+	return *f.FieldNodeID
+}
+
+// GetFieldType returns the FieldType field if it's non-nil, zero value otherwise.
+func (f *FieldValue) GetFieldType() string {
+	if f == nil || f.FieldType == nil {
+		return ""
+	}
+	return *f.FieldType
+}
+
+// GetProjectNumber returns the ProjectNumber field if it's non-nil, zero value otherwise.
+func (f *FieldValue) GetProjectNumber() int64 {
+	if f == nil || f.ProjectNumber == nil {
+		return 0
+	}
+	return *f.ProjectNumber
+}
+
 // GetIdentifier returns the Identifier field if it's non-nil, zero value otherwise.
 func (f *FirstPatchedVersion) GetIdentifier() string {
 	if f == nil || f.Identifier == nil {
@@ -18436,6 +18468,14 @@ func (p *ProjectV2ItemChange) GetArchivedAt() *ArchivedAt {
 		return nil
 	}
 	return p.ArchivedAt
+}
+
+// GetFieldValue returns the FieldValue field.
+func (p *ProjectV2ItemChange) GetFieldValue() *FieldValue {
+	if p == nil {
+		return nil
+	}
+	return p.FieldValue
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.

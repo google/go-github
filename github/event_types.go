@@ -1146,12 +1146,23 @@ type ProjectV2ItemEvent struct {
 // ProjectV2ItemChange represents a project v2 item change.
 type ProjectV2ItemChange struct {
 	ArchivedAt *ArchivedAt `json:"archived_at,omitempty"`
+	FieldValue *FieldValue `json:"field_value,omitempty"`
 }
 
 // ArchivedAt represents an archiving date change.
 type ArchivedAt struct {
 	From *Timestamp `json:"from,omitempty"`
 	To   *Timestamp `json:"to,omitempty"`
+}
+
+// FieldValue represents an editing field value change.
+type FieldValue struct {
+	FieldNodeID   *string         `json:"field_node_id,omitempty"`
+	FieldType     *string         `json:"field_type,omitempty"`
+	FieldName     *string         `json:"field_name,omitempty"`
+	ProjectNumber *int64          `json:"project_number,omitempty"`
+	From          json.RawMessage `json:"from,omitempty"`
+	To            json.RawMessage `json:"to,omitempty"`
 }
 
 // ProjectV2Item represents an item belonging to a project.
