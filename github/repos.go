@@ -2438,3 +2438,75 @@ func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, own
 	resp, err := s.client.Do(ctx, req, privateReporting)
 	return privateReporting.Enabled, resp, err
 }
+
+type RepositoryActivityOptions struct {
+	Direction    string `url:"direction,omitempty"`
+	Before       string `url:"before,omitempty"`
+	After        string `url:"after,omitempty"`
+	Ref          string `url:"ref,omitempty"`
+	Actor        string `url:"actor,omitempty"`
+	TimePeriod   string `url:"time_period,omitempty"`
+	ActivityType string `url:"activity_type,omitempty"`
+
+	ListOptions
+}
+
+// Actor represents a repository actor.
+type Actor struct {
+	Login             *string `json:"login,omitempty"`
+	ID                *int64  `json:"id,omitempty"`
+	NodeID            *string `json:"node_id,omitempty"`
+	AvatarURL         *string `json:"avatar_url,omitempty"`
+	GravatarID        *string `json:"gravatar_id,omitempty"`
+	URL               *string `json:"url,omitempty"`
+	HTMLURL           *string `json:"html_url,omitempty"`
+	FollowersURL      *string `json:"followers_url,omitempty"`
+	FollowingURL      *string `json:"following_url,omitempty"`
+	GistsURL          *string `json:"gists_url,omitempty"`
+	StarredURL        *string `json:"starred_url,omitempty"`
+	SubscriptionsURL  *string `json:"subscriptions_url,omitempty"`
+	OrganizationsURL  *string `json:"organizations_url,omitempty"`
+	ReposURL          *string `json:"repos_url,omitempty"`
+	EventsURL         *string `json:"events_url,omitempty"`
+	ReceivedEventsURL *string `json:"received_events_url,omitempty"`
+	Type              *string `json:"type,omitempty"`
+	UserViewType      *string `json:"user_view_type,omitempty"`
+	SiteAdmin         *bool   `json:"site_admin,omitempty"`
+}
+
+type RepositoryActivity struct {
+	ID           int64      `json:"id"`
+	NodeID       string     `json:"node_id"`
+	Before       string     `json:"before"`
+	After        string     `json:"after"`
+	Ref          string     `json:"ref"`
+	Timestamp    *Timestamp `json:"timestamp"`
+	ActivityType string     `json:"activity_type"`
+	Actor        *Actor     `json:"actor"`
+}
+
+// ListRespositoryActivities lists the activities for a repository.
+//
+// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-activities
+//
+//meta:operation GET /repos/{owner}/{repo}/activities
+func (s *RepositoriesService) ListRespositoryActivities(ctx context.Context, owner, repo string, opts *RepositoryActivityOptions) ([]*RepositoryActivity, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/activities", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var activities []*RepositoryActivity
+	resp, err := s.client.Do(ctx, req, &activities)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return activities, resp, nil
+}
