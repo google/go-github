@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -175,7 +176,18 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 
 func TestGetAuditLogOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &GetAuditLogOptions{}, "{}")
+	testJSONMarshal(t, &GetAuditLogOptions{}, `{
+		"After": "",
+		"Before": "",
+		"Cursor": "",
+		"First": 0,
+		"Include": null,
+		"Last": 0,
+		"Order": null,
+		"Page": "",
+		"PerPage": 0,
+		"Phrase": null
+	}`)
 
 	u := &GetAuditLogOptions{
 		Phrase:  Ptr("p"),
@@ -190,13 +202,16 @@ func TestGetAuditLogOptions_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"phrase": "p",
-		"include": "i",
-		"order": "o",
+		"Phrase": "p",
+		"Include": "i",
+		"Order": "o",
 		"Page": "p",
 		"PerPage": 1,
 		"After": "a",
-		"Before": "b"
+		"Before": "b",
+		"Cursor": "",
+    	"First": 0,
+		"Last": 0
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -420,4 +435,129 @@ func TestAuditEntry_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestAuditEntry_Unmarshal(t *testing.T) {
+	t.Parallel()
+
+	// Test case 1: JSON with both defined fields and additional fields
+	jsonData := `{
+		"action": "org.update_member",
+		"actor": "testuser",
+		"actor_location": {
+			"country_code": "US"
+		},
+		"created_at": "2021-03-07T00:35:08.000Z",
+		"org": "testorg",
+		"org_id": 12345,
+		"user": "memberuser",
+		"user_id": 67890,
+		"custom_field": "custom_value",
+		"another_field": 42,
+		"nested_field": {
+			"key": "value"
+		},
+		"array_field": ["item1", "item2"]
+	}`
+
+	var entry AuditEntry
+	err := json.Unmarshal([]byte(jsonData), &entry)
+	if err != nil {
+		t.Errorf("Error unmarshaling JSON: %v", err)
+	}
+
+	// Check defined fields
+	if *entry.Action != "org.update_member" {
+		t.Errorf("Action = %v, want %v", *entry.Action, "org.update_member")
+	}
+	if *entry.Actor != "testuser" {
+		t.Errorf("Actor = %v, want %v", *entry.Actor, "testuser")
+	}
+	if *entry.ActorLocation.CountryCode != "US" {
+		t.Errorf("ActorLocation.CountryCode = %v, want %v", *entry.ActorLocation.CountryCode, "US")
+	}
+	if *entry.Org != "testorg" {
+		t.Errorf("Org = %v, want %v", *entry.Org, "testorg")
+	}
+	if *entry.OrgID != 12345 {
+		t.Errorf("OrgID = %v, want %v", *entry.OrgID, 12345)
+	}
+	if *entry.User != "memberuser" {
+		t.Errorf("User = %v, want %v", *entry.User, "memberuser")
+	}
+	if *entry.UserID != 67890 {
+		t.Errorf("UserID = %v, want %v", *entry.UserID, 67890)
+	}
+
+	// Check additional fields
+	if entry.AdditionalFields["custom_field"] != "custom_value" {
+		t.Errorf("AdditionalFields[\"custom_field\"] = %v, want %v", entry.AdditionalFields["custom_field"], "custom_value")
+	}
+	if entry.AdditionalFields["another_field"] != float64(42) {
+		t.Errorf("AdditionalFields[\"another_field\"] = %v, want %v", entry.AdditionalFields["another_field"], float64(42))
+	}
+
+	// Check nested fields
+	nestedField, ok := entry.AdditionalFields["nested_field"].(map[string]interface{})
+	if !ok {
+		t.Errorf("AdditionalFields[\"nested_field\"] is not a map")
+	} else if nestedField["key"] != "value" {
+		t.Errorf("AdditionalFields[\"nested_field\"][\"key\"] = %v, want %v", nestedField["key"], "value")
+	}
+
+	// Check array fields
+	arrayField, ok := entry.AdditionalFields["array_field"].([]interface{})
+	if !ok {
+		t.Errorf("AdditionalFields[\"array_field\"] is not an array")
+	} else {
+		if len(arrayField) != 2 {
+			t.Errorf("len(AdditionalFields[\"array_field\"]) = %v, want %v", len(arrayField), 2)
+		}
+		if arrayField[0] != "item1" {
+			t.Errorf("AdditionalFields[\"array_field\"][0] = %v, want %v", arrayField[0], "item1")
+		}
+		if arrayField[1] != "item2" {
+			t.Errorf("AdditionalFields[\"array_field\"][1] = %v, want %v", arrayField[1], "item2")
+		}
+	}
+
+	// Test case 2: Empty JSON
+	err = json.Unmarshal([]byte("{}"), &entry)
+	if err != nil {
+		t.Errorf("Error unmarshaling empty JSON: %v", err)
+	}
+	if entry.AdditionalFields != nil {
+		t.Errorf("AdditionalFields = %v, want nil", entry.AdditionalFields)
+	}
+
+	// Test case 3: JSON with only additional fields
+	jsonData = `{
+		"custom_field": "custom_value",
+		"another_field": 42
+	}`
+
+	err = json.Unmarshal([]byte(jsonData), &entry)
+	if err != nil {
+		t.Errorf("Error unmarshaling JSON with only additional fields: %v", err)
+	}
+	if entry.AdditionalFields["custom_field"] != "custom_value" {
+		t.Errorf("AdditionalFields[\"custom_field\"] = %v, want %v", entry.AdditionalFields["custom_field"], "custom_value")
+	}
+	if entry.AdditionalFields["another_field"] != float64(42) {
+		t.Errorf("AdditionalFields[\"another_field\"] = %v, want %v", entry.AdditionalFields["another_field"], float64(42))
+	}
+
+	// Test case 4: Test that nil values in AdditionalFields are removed
+	jsonData = `{
+		"action": "org.update_member",
+		"null_field": null
+	}`
+
+	err = json.Unmarshal([]byte(jsonData), &entry)
+	if err != nil {
+		t.Errorf("Error unmarshaling JSON with null field: %v", err)
+	}
+	if _, exists := entry.AdditionalFields["null_field"]; exists {
+		t.Errorf("AdditionalFields contains null_field, but it should have been removed")
+	}
 }

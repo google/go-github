@@ -1015,7 +1015,11 @@ func TestCheckRunImage_Marshal(t *testing.T) {
 
 func TestCheckRunAction_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &CheckRunAction{}, "{}")
+	testJSONMarshal(t, &CheckRunAction{}, `{
+		"description": "",
+		"identifier": "",
+		"label": ""
+	}`)
 
 	u := &CheckRunAction{
 		Label:       "l",
@@ -1051,7 +1055,7 @@ func TestAutoTriggerCheck_Marshal(t *testing.T) {
 
 func TestCreateCheckSuiteOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &CreateCheckSuiteOptions{}, "{}")
+	testJSONMarshal(t, &CreateCheckSuiteOptions{}, `{"head_sha": ""}`)
 
 	u := &CreateCheckSuiteOptions{
 		HeadSHA:    "hsha",
@@ -1131,7 +1135,7 @@ func TestCheckRunOutput_Marshal(t *testing.T) {
 
 func TestCreateCheckRunOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &CreateCheckRunOptions{}, "{}")
+	testJSONMarshal(t, &CreateCheckRunOptions{}, `{"head_sha": "", "name": ""}`)
 
 	u := &CreateCheckRunOptions{
 		Name:        "n",
@@ -1228,7 +1232,7 @@ func TestCreateCheckRunOptions_Marshal(t *testing.T) {
 
 func TestUpdateCheckRunOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &UpdateCheckRunOptions{}, "{}")
+	testJSONMarshal(t, &UpdateCheckRunOptions{}, `{"name": ""}`)
 
 	u := &UpdateCheckRunOptions{
 		Name:        "n",
