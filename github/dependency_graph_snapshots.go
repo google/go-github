@@ -15,7 +15,7 @@ import (
 // GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshotResolvedDependency struct {
 	PackageURL *string `json:"package_url,omitempty"`
-	// User-defined metadata to store domain-specific information limited to 8 keys with scalar values..
+	// User-defined metadata to store domain-specific information limited to 8 keys with scalar values.
 	// This metadata overrides auto-detected values from the package URL and GitHub's database.
 	// Common fields include:
 	//   - "licenses": license information (e.g., "MIT", "Apache-2.0")
