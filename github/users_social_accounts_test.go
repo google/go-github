@@ -93,3 +93,33 @@ func TestUsersService_AddSocialAccounts(t *testing.T) {
 		return resp, err
 	})
 }
+
+
+func TestUsersService_DeleteSocialAccounts(t *testing.T) {
+	t.Parallel()
+
+	client, mux, _ := setup(t)
+
+	input := []string{"https://twitter.com/github"}
+
+	mux.HandleFunc("/user/social_accounts", func(w http.ResponseWriter, r *http.Request) {
+		var v []string
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
+
+		testMethod(t, r, "DELETE")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+	})
+
+	ctx := context.Background()
+	_, err := client.Users.DeleteSocialAccounts(ctx, input)
+	if err != nil {
+		t.Errorf("Users.DeleteSocialAccounts returned error: %v", err)
+	}
+
+	const methodName = "DeleteSocialAccounts"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.DeleteSocialAccounts(ctx, input)
+	})
+}
