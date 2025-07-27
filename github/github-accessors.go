@@ -7126,6 +7126,14 @@ func (d *DependencyGraphSnapshotManifest) GetFile() *DependencyGraphSnapshotMani
 	return d.File
 }
 
+// GetMetadata returns the Metadata map if it's non-nil, an empty map otherwise.
+func (d *DependencyGraphSnapshotManifest) GetMetadata() map[string]any {
+	if d == nil || d.Metadata == nil {
+		return map[string]any{}
+	}
+	return d.Metadata
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (d *DependencyGraphSnapshotManifest) GetName() string {
 	if d == nil || d.Name == nil {
@@ -7140,6 +7148,14 @@ func (d *DependencyGraphSnapshotManifestFile) GetSourceLocation() string {
 		return ""
 	}
 	return *d.SourceLocation
+}
+
+// GetMetadata returns the Metadata map if it's non-nil, an empty map otherwise.
+func (d *DependencyGraphSnapshotResolvedDependency) GetMetadata() map[string]any {
+	if d == nil || d.Metadata == nil {
+		return map[string]any{}
+	}
+	return d.Metadata
 }
 
 // GetPackageURL returns the PackageURL field if it's non-nil, zero value otherwise.

@@ -15,6 +15,15 @@ import (
 // GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshotResolvedDependency struct {
 	PackageURL *string `json:"package_url,omitempty"`
+	// User-defined metadata to store domain-specific information limited to 8 keys with scalar values.
+	// This metadata overrides auto-detected values from the package URL and GitHub's database.
+	// Common fields include:
+	//   - "licenses": license information (e.g., "MIT", "Apache-2.0")
+	//   - "name": package name
+	//   - "version": package version
+	//   - "manager": package manager (e.g., "npm", "pip", "maven")
+	//   - "description": package description
+	Metadata map[string]any `json:"metadata,omitempty"`
 	// Represents whether the dependency is requested directly by the manifest or is a dependency of another dependency.
 	// Can have the following values:
 	//   - "direct": indicates that the dependency is requested directly by the manifest.
@@ -59,6 +68,7 @@ type DependencyGraphSnapshotManifestFile struct {
 type DependencyGraphSnapshotManifest struct {
 	Name     *string                                               `json:"name,omitempty"`
 	File     *DependencyGraphSnapshotManifestFile                  `json:"file,omitempty"`
+	Metadata map[string]any                                        `json:"metadata,omitempty"`
 	Resolved map[string]*DependencyGraphSnapshotResolvedDependency `json:"resolved,omitempty"`
 }
 
