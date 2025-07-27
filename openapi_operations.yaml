@@ -3823,12 +3823,6 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
-  - name: GET /repos/{owner}/{repo}/activities
-    documentation_url: https://docs.github.com/rest/repos/repos#list-repository-activities
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /repos/{owner}/{repo}/assignees
     documentation_url: https://docs.github.com/rest/issues/assignees#list-assignees
     openapi_files:

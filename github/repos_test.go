@@ -4572,7 +4572,7 @@ func TestRepositoriesService_ListRespositoryActivities(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/activities", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/activity", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"per_page": "100",
@@ -4641,7 +4641,7 @@ func TestRepositoriesService_ListRespositoryActivities(t *testing.T) {
 		]`)
 	})
 
-	opts := &RepositoryActivityOptions{ListOptions: ListOptions{PerPage: 100}}
+	opts := &RepositoryActivityOptions{PerPage: 100}
 	ctx := context.Background()
 	activities, _, err := client.Repositories.ListRespositoryActivities(ctx, "o", "r", opts)
 	if err != nil {
@@ -4657,7 +4657,7 @@ func TestRepositoriesService_ListRespositoryActivities(t *testing.T) {
 			Ref:          "refs/heads/main",
 			Timestamp:    &Timestamp{Time: time.Date(2023, 1, 1, 12, 0, 0, 0, time.UTC)},
 			ActivityType: "push",
-			Actor: &Actor{
+			Actor: &RepositoryActor{
 				Login:             Ptr("testuser1"),
 				ID:                Ptr(int64(111111)),
 				NodeID:            Ptr("MDQ6VXNlcjExMTExMQ=="),
@@ -4687,7 +4687,7 @@ func TestRepositoriesService_ListRespositoryActivities(t *testing.T) {
 			Ref:          "refs/heads/feature",
 			Timestamp:    &Timestamp{Time: time.Date(2023, 1, 1, 11, 30, 0, 0, time.UTC)},
 			ActivityType: "branch_deletion",
-			Actor: &Actor{
+			Actor: &RepositoryActor{
 				Login:             Ptr("testuser2"),
 				ID:                Ptr(int64(222222)),
 				NodeID:            Ptr("MDQ6VXNlcjIyMjIyMg=="),
@@ -4734,7 +4734,7 @@ func TestRepositoriesService_ListRespositoryActivities_withOptions(t *testing.T)
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/activities", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/activity", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"direction":     "desc",
@@ -4744,7 +4744,6 @@ func TestRepositoriesService_ListRespositoryActivities_withOptions(t *testing.T)
 			"actor":         "testuser1",
 			"time_period":   "day",
 			"activity_type": "push",
-			"page":          "2",
 			"per_page":      "50",
 		})
 		fmt.Fprint(w, `[
@@ -4789,7 +4788,7 @@ func TestRepositoriesService_ListRespositoryActivities_withOptions(t *testing.T)
 		Actor:        "testuser1",
 		TimePeriod:   "day",
 		ActivityType: "push",
-		ListOptions:  ListOptions{Page: 2, PerPage: 50},
+		PerPage:      50,
 	}
 	ctx := context.Background()
 	activities, _, err := client.Repositories.ListRespositoryActivities(ctx, "o", "r", opts)
@@ -4806,7 +4805,7 @@ func TestRepositoriesService_ListRespositoryActivities_withOptions(t *testing.T)
 			Ref:          "refs/heads/main",
 			Timestamp:    &Timestamp{Time: time.Date(2023, 1, 1, 12, 0, 0, 0, time.UTC)},
 			ActivityType: "push",
-			Actor: &Actor{
+			Actor: &RepositoryActor{
 				Login:             Ptr("testuser1"),
 				ID:                Ptr(int64(111111)),
 				NodeID:            Ptr("MDQ6VXNlcjExMTExMQ=="),
@@ -4839,7 +4838,7 @@ func TestRepositoriesService_ListRespositoryActivities_emptyResponse(t *testing.
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/activities", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/activity", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[]`)
 	})

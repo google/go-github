@@ -320,215 +320,6 @@ func TestActionsVariable_GetVisibility(tt *testing.T) {
 	a.GetVisibility()
 }
 
-func TestActor_GetAvatarURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{AvatarURL: &zeroValue}
-	a.GetAvatarURL()
-	a = &Actor{}
-	a.GetAvatarURL()
-	a = nil
-	a.GetAvatarURL()
-}
-
-func TestActor_GetEventsURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{EventsURL: &zeroValue}
-	a.GetEventsURL()
-	a = &Actor{}
-	a.GetEventsURL()
-	a = nil
-	a.GetEventsURL()
-}
-
-func TestActor_GetFollowersURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{FollowersURL: &zeroValue}
-	a.GetFollowersURL()
-	a = &Actor{}
-	a.GetFollowersURL()
-	a = nil
-	a.GetFollowersURL()
-}
-
-func TestActor_GetFollowingURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{FollowingURL: &zeroValue}
-	a.GetFollowingURL()
-	a = &Actor{}
-	a.GetFollowingURL()
-	a = nil
-	a.GetFollowingURL()
-}
-
-func TestActor_GetGistsURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{GistsURL: &zeroValue}
-	a.GetGistsURL()
-	a = &Actor{}
-	a.GetGistsURL()
-	a = nil
-	a.GetGistsURL()
-}
-
-func TestActor_GetGravatarID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{GravatarID: &zeroValue}
-	a.GetGravatarID()
-	a = &Actor{}
-	a.GetGravatarID()
-	a = nil
-	a.GetGravatarID()
-}
-
-func TestActor_GetHTMLURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{HTMLURL: &zeroValue}
-	a.GetHTMLURL()
-	a = &Actor{}
-	a.GetHTMLURL()
-	a = nil
-	a.GetHTMLURL()
-}
-
-func TestActor_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	a := &Actor{ID: &zeroValue}
-	a.GetID()
-	a = &Actor{}
-	a.GetID()
-	a = nil
-	a.GetID()
-}
-
-func TestActor_GetLogin(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{Login: &zeroValue}
-	a.GetLogin()
-	a = &Actor{}
-	a.GetLogin()
-	a = nil
-	a.GetLogin()
-}
-
-func TestActor_GetNodeID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{NodeID: &zeroValue}
-	a.GetNodeID()
-	a = &Actor{}
-	a.GetNodeID()
-	a = nil
-	a.GetNodeID()
-}
-
-func TestActor_GetOrganizationsURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{OrganizationsURL: &zeroValue}
-	a.GetOrganizationsURL()
-	a = &Actor{}
-	a.GetOrganizationsURL()
-	a = nil
-	a.GetOrganizationsURL()
-}
-
-func TestActor_GetReceivedEventsURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{ReceivedEventsURL: &zeroValue}
-	a.GetReceivedEventsURL()
-	a = &Actor{}
-	a.GetReceivedEventsURL()
-	a = nil
-	a.GetReceivedEventsURL()
-}
-
-func TestActor_GetReposURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{ReposURL: &zeroValue}
-	a.GetReposURL()
-	a = &Actor{}
-	a.GetReposURL()
-	a = nil
-	a.GetReposURL()
-}
-
-func TestActor_GetSiteAdmin(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	a := &Actor{SiteAdmin: &zeroValue}
-	a.GetSiteAdmin()
-	a = &Actor{}
-	a.GetSiteAdmin()
-	a = nil
-	a.GetSiteAdmin()
-}
-
-func TestActor_GetStarredURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{StarredURL: &zeroValue}
-	a.GetStarredURL()
-	a = &Actor{}
-	a.GetStarredURL()
-	a = nil
-	a.GetStarredURL()
-}
-
-func TestActor_GetSubscriptionsURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{SubscriptionsURL: &zeroValue}
-	a.GetSubscriptionsURL()
-	a = &Actor{}
-	a.GetSubscriptionsURL()
-	a = nil
-	a.GetSubscriptionsURL()
-}
-
-func TestActor_GetType(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{Type: &zeroValue}
-	a.GetType()
-	a = &Actor{}
-	a.GetType()
-	a = nil
-	a.GetType()
-}
-
-func TestActor_GetURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{URL: &zeroValue}
-	a.GetURL()
-	a = &Actor{}
-	a.GetURL()
-	a = nil
-	a.GetURL()
-}
-
-func TestActor_GetUserViewType(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &Actor{UserViewType: &zeroValue}
-	a.GetUserViewType()
-	a = &Actor{}
-	a.GetUserViewType()
-	a = nil
-	a.GetUserViewType()
-}
-
 func TestActorLocation_GetCountryCode(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -29164,6 +28955,215 @@ func TestRepositoryActivity_GetTimestamp(tt *testing.T) {
 	r.GetTimestamp()
 	r = nil
 	r.GetTimestamp()
+}
+
+func TestRepositoryActor_GetAvatarURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{AvatarURL: &zeroValue}
+	r.GetAvatarURL()
+	r = &RepositoryActor{}
+	r.GetAvatarURL()
+	r = nil
+	r.GetAvatarURL()
+}
+
+func TestRepositoryActor_GetEventsURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{EventsURL: &zeroValue}
+	r.GetEventsURL()
+	r = &RepositoryActor{}
+	r.GetEventsURL()
+	r = nil
+	r.GetEventsURL()
+}
+
+func TestRepositoryActor_GetFollowersURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{FollowersURL: &zeroValue}
+	r.GetFollowersURL()
+	r = &RepositoryActor{}
+	r.GetFollowersURL()
+	r = nil
+	r.GetFollowersURL()
+}
+
+func TestRepositoryActor_GetFollowingURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{FollowingURL: &zeroValue}
+	r.GetFollowingURL()
+	r = &RepositoryActor{}
+	r.GetFollowingURL()
+	r = nil
+	r.GetFollowingURL()
+}
+
+func TestRepositoryActor_GetGistsURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{GistsURL: &zeroValue}
+	r.GetGistsURL()
+	r = &RepositoryActor{}
+	r.GetGistsURL()
+	r = nil
+	r.GetGistsURL()
+}
+
+func TestRepositoryActor_GetGravatarID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{GravatarID: &zeroValue}
+	r.GetGravatarID()
+	r = &RepositoryActor{}
+	r.GetGravatarID()
+	r = nil
+	r.GetGravatarID()
+}
+
+func TestRepositoryActor_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{HTMLURL: &zeroValue}
+	r.GetHTMLURL()
+	r = &RepositoryActor{}
+	r.GetHTMLURL()
+	r = nil
+	r.GetHTMLURL()
+}
+
+func TestRepositoryActor_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RepositoryActor{ID: &zeroValue}
+	r.GetID()
+	r = &RepositoryActor{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRepositoryActor_GetLogin(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{Login: &zeroValue}
+	r.GetLogin()
+	r = &RepositoryActor{}
+	r.GetLogin()
+	r = nil
+	r.GetLogin()
+}
+
+func TestRepositoryActor_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{NodeID: &zeroValue}
+	r.GetNodeID()
+	r = &RepositoryActor{}
+	r.GetNodeID()
+	r = nil
+	r.GetNodeID()
+}
+
+func TestRepositoryActor_GetOrganizationsURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{OrganizationsURL: &zeroValue}
+	r.GetOrganizationsURL()
+	r = &RepositoryActor{}
+	r.GetOrganizationsURL()
+	r = nil
+	r.GetOrganizationsURL()
+}
+
+func TestRepositoryActor_GetReceivedEventsURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{ReceivedEventsURL: &zeroValue}
+	r.GetReceivedEventsURL()
+	r = &RepositoryActor{}
+	r.GetReceivedEventsURL()
+	r = nil
+	r.GetReceivedEventsURL()
+}
+
+func TestRepositoryActor_GetReposURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{ReposURL: &zeroValue}
+	r.GetReposURL()
+	r = &RepositoryActor{}
+	r.GetReposURL()
+	r = nil
+	r.GetReposURL()
+}
+
+func TestRepositoryActor_GetSiteAdmin(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepositoryActor{SiteAdmin: &zeroValue}
+	r.GetSiteAdmin()
+	r = &RepositoryActor{}
+	r.GetSiteAdmin()
+	r = nil
+	r.GetSiteAdmin()
+}
+
+func TestRepositoryActor_GetStarredURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{StarredURL: &zeroValue}
+	r.GetStarredURL()
+	r = &RepositoryActor{}
+	r.GetStarredURL()
+	r = nil
+	r.GetStarredURL()
+}
+
+func TestRepositoryActor_GetSubscriptionsURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{SubscriptionsURL: &zeroValue}
+	r.GetSubscriptionsURL()
+	r = &RepositoryActor{}
+	r.GetSubscriptionsURL()
+	r = nil
+	r.GetSubscriptionsURL()
+}
+
+func TestRepositoryActor_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{Type: &zeroValue}
+	r.GetType()
+	r = &RepositoryActor{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepositoryActor_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{URL: &zeroValue}
+	r.GetURL()
+	r = &RepositoryActor{}
+	r.GetURL()
+	r = nil
+	r.GetURL()
+}
+
+func TestRepositoryActor_GetUserViewType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryActor{UserViewType: &zeroValue}
+	r.GetUserViewType()
+	r = &RepositoryActor{}
+	r.GetUserViewType()
+	r = nil
+	r.GetUserViewType()
 }
 
 func TestRepositoryCodeSecurityConfiguration_GetConfiguration(tt *testing.T) {

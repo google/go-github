@@ -2439,20 +2439,40 @@ func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, own
 	return privateReporting.Enabled, resp, err
 }
 
+// RepositoryActivityOptions specifies the optional parameters to the
+// RepositoriesService.ListRespositoryActivities method.
 type RepositoryActivityOptions struct {
-	Direction    string `url:"direction,omitempty"`
-	Before       string `url:"before,omitempty"`
-	After        string `url:"after,omitempty"`
-	Ref          string `url:"ref,omitempty"`
-	Actor        string `url:"actor,omitempty"`
-	TimePeriod   string `url:"time_period,omitempty"`
-	ActivityType string `url:"activity_type,omitempty"`
+	// The direction to sort the results
+	Direction string `url:"direction,omitempty"`
 
-	ListOptions
+	// For paginated result sets, the number of results to include per page.
+	PerPage int `url:"per_page,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
+	Before string `url:"before,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query only searches for events after this cursor.
+	After string `url:"after,omitempty"`
+
+	// The Git reference for the activities you want to list.
+	Ref string `url:"ref,omitempty"`
+
+	// The GitHub username to use to filter by the actor who performed the activity.
+	Actor string `url:"actor,omitempty"`
+
+	// The time period to filter by.
+	// For example, day will filter for activity that occurred in the past 24 hours, and week will filter for activity that occurred in the past 7 days (168 hours).
+	// Can be one of: day, week, month, quarter, year
+	TimePeriod string `url:"time_period,omitempty"`
+
+	// The activity type to filter by.
+	// For example, you can choose to filter by "force_push", to see all force pushes to the repository.
+	// Can be one of: push, force_push, branch_creation, branch_deletion, pr_merge, merge_queue_merge
+	ActivityType string `url:"activity_type,omitempty"`
 }
 
-// Actor represents a repository actor.
-type Actor struct {
+// RepositoryActor represents a repository actor.
+type RepositoryActor struct {
 	Login             *string `json:"login,omitempty"`
 	ID                *int64  `json:"id,omitempty"`
 	NodeID            *string `json:"node_id,omitempty"`
@@ -2474,24 +2494,25 @@ type Actor struct {
 	SiteAdmin         *bool   `json:"site_admin,omitempty"`
 }
 
+// RepositoryActivity represents a repository activity.
 type RepositoryActivity struct {
-	ID           int64      `json:"id"`
-	NodeID       string     `json:"node_id"`
-	Before       string     `json:"before"`
-	After        string     `json:"after"`
-	Ref          string     `json:"ref"`
-	Timestamp    *Timestamp `json:"timestamp"`
-	ActivityType string     `json:"activity_type"`
-	Actor        *Actor     `json:"actor"`
+	ID           int64            `json:"id"`
+	NodeID       string           `json:"node_id"`
+	Before       string           `json:"before"`
+	After        string           `json:"after"`
+	Ref          string           `json:"ref"`
+	Timestamp    *Timestamp       `json:"timestamp"`
+	ActivityType string           `json:"activity_type"`
+	Actor        *RepositoryActor `json:"actor"`
 }
 
 // ListRespositoryActivities lists the activities for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-activities
 //
-//meta:operation GET /repos/{owner}/{repo}/activities
+//meta:operation GET /repos/{owner}/{repo}/activity
 func (s *RepositoriesService) ListRespositoryActivities(ctx context.Context, owner, repo string, opts *RepositoryActivityOptions) ([]*RepositoryActivity, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/activities", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/activity", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
