@@ -69,7 +69,7 @@ func TestGitService_CreateTag(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	inputTag := &Tag{
+	inputTag := Tag{
 		Tag:    input.Tag,
 		Object: &GitObject{SHA: input.Object},
 	}
@@ -84,10 +84,6 @@ func TestGitService_CreateTag(t *testing.T) {
 	}
 
 	const methodName = "CreateTag"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.CreateTag(ctx, "o", "r", nil)
-		return err
-	})
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Git.CreateTag(ctx, "\n", "\n", inputTag)
 		return err

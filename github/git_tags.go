@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"errors"
 	"fmt"
 )
 
@@ -60,11 +59,7 @@ func (s *GitService) GetTag(ctx context.Context, owner string, repo string, sha 
 // GitHub API docs: https://docs.github.com/rest/git/tags#create-a-tag-object
 //
 //meta:operation POST /repos/{owner}/{repo}/git/tags
-func (s *GitService) CreateTag(ctx context.Context, owner string, repo string, tag *Tag) (*Tag, *Response, error) {
-	if tag == nil {
-		return nil, nil, errors.New("tag must be provided")
-	}
-
+func (s *GitService) CreateTag(ctx context.Context, owner string, repo string, tag Tag) (*Tag, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/tags", owner, repo)
 
 	// convert Tag into a createTagRequest

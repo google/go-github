@@ -176,7 +176,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Commit{
+	input := Commit{
 		Message: Ptr("Commit Message."),
 		Tree:    &Tree{SHA: Ptr("t")},
 		Parents: []*Commit{{SHA: Ptr("p")}},
@@ -231,7 +231,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 
 	signature := "----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"
 
-	input := &Commit{
+	input := Commit{
 		Message: Ptr("Commit Message."),
 		Tree:    &Tree{SHA: Ptr("t")},
 		Parents: []*Commit{{SHA: Ptr("p")}},
@@ -288,24 +288,13 @@ func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	input := &Commit{}
+	input := Commit{}
 
 	ctx := context.Background()
 	opts := CreateCommitOptions{Signer: uncalledSigner(t)}
 	_, _, err := client.Git.CreateCommit(ctx, "o", "r", input, &opts)
 	if err == nil {
 		t.Error("Expected error to be returned because invalid params were passed")
-	}
-}
-
-func TestGitService_CreateCommitWithNilCommit(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-
-	ctx := context.Background()
-	_, _, err := client.Git.CreateCommit(ctx, "o", "r", nil, nil)
-	if err == nil {
-		t.Error("Expected error to be returned because commit=nil")
 	}
 }
 
@@ -327,7 +316,7 @@ committer go-github <go-github@github.com> 1493849023 +0200
 
 Commit Message.`
 	sha := "commitSha"
-	input := &Commit{
+	input := Commit{
 		SHA:     &sha,
 		Message: Ptr("Commit Message."),
 		Tree:    &Tree{SHA: Ptr("t")},
@@ -513,7 +502,7 @@ func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
-	_, _, err := client.Git.CreateCommit(ctx, "%", "%", &Commit{}, nil)
+	_, _, err := client.Git.CreateCommit(ctx, "%", "%", Commit{}, nil)
 	testURLParseError(t, err)
 }
 
