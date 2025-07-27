@@ -47,9 +47,9 @@ func (s *UsersService) ListSocialAccounts(ctx context.Context, opts *ListOptions
 // GitHub API docs: https://docs.github.com/rest/users/social-accounts#add-social-accounts-for-the-authenticated-user
 //
 //meta:operation POST /user/social_accounts
-func (s *UsersService) AddSocialAccounts(ctx context.Context, accountUrlsToAdd []string) ([]*SocialAccount, *Response, error) {
+func (s *UsersService) AddSocialAccounts(ctx context.Context, accountURLsToAdd []string) ([]*SocialAccount, *Response, error) {
 	u := "user/social_accounts"
-	req, err := s.client.NewRequest("POST", u, accountUrlsToAdd)
+	req, err := s.client.NewRequest("POST", u, accountURLsToAdd)
 	if err != nil {
 		return nil, nil, err
 	}
