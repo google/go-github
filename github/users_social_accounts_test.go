@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -43,6 +44,49 @@ func TestUsersService_ListSocialAccounts(t *testing.T) {
 	const methodName = "ListSocialAccounts"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Users.ListSocialAccounts(ctx, opt)
+		if (got != nil) {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestUsersService_AddSocialAccounts(t *testing.T) {
+	t.Parallel()
+
+	client, mux, _ := setup(t)
+
+	input := []string{"https://twitter.com/github"}
+
+	mux.HandleFunc("/user/social_accounts", func(w http.ResponseWriter, r *http.Request) {
+		var v []string
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
+
+		testMethod(t, r, "POST")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `[{"provider":"twitter","url":"https://twitter.com/github"},{"provider":"facebook","url":"https://facebook.com/github"}]`)
+	})
+
+	ctx := context.Background()
+	accounts, _, err := client.Users.AddSocialAccounts(ctx, input)
+	if err != nil {
+		t.Errorf("Users.AddSocialAccounts returned error: %v", err)
+	}
+
+	want := []*SocialAccount{
+		{Provider: Ptr("twitter"), URL: Ptr("https://twitter.com/github")},
+		{Provider: Ptr("facebook"), URL: Ptr("https://facebook.com/github")},
+	}
+	if !cmp.Equal(accounts, want) {
+		t.Errorf("Users.AddSocialAccounts returned %#v, want %#v", accounts, want)
+	}
+
+	const methodName = "AddSocialAccounts"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.AddSocialAccounts(ctx, input)
 		if (got != nil) {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
