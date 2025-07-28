@@ -32,7 +32,7 @@ for dir in $MOD_DIRS; do
   echo linting "$dir"
   (
     cd "$dir"
-    "$BIN"/custom-gcl run --path-prefix "$dir"
+    "$BIN"/custom-gcl run
   ) || fail "failed linting $dir"
 done
 
