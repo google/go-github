@@ -123,3 +123,40 @@ func TestUsersService_DeleteSocialAccounts(t *testing.T) {
 		return client.Users.DeleteSocialAccounts(ctx, input)
 	})
 }
+
+
+func TestUsersService_ListUserSocialAccounts(t *testing.T) {
+	t.Parallel()
+
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/users/u/social_accounts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
+		fmt.Fprint(w, `[{
+			"provider": "twitter",
+			"url": "https://twitter.com/github"
+		}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	ctx := context.Background()
+	accounts, _, err := client.Users.ListUserSocialAccounts(ctx, "u", opt)
+	if err != nil {
+		t.Errorf("Users.ListUserSocialAccounts returned error: %v", err)
+	}
+
+	want := []*SocialAccount{{Provider: Ptr("twitter"), URL: Ptr("https://twitter.com/github")}}
+	if !cmp.Equal(accounts, want) {
+		t.Errorf("Users.ListUserSocialAccounts returned %#v, want %#v", accounts, want)
+	}
+
+	const methodName = "ListUserSocialAccounts"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListUserSocialAccounts(ctx, "u", opt)
+		if (got != nil) {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
