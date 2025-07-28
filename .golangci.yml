@@ -29,6 +29,7 @@ linters:
       enabled-checks:
         - commentedOutCode
         - commentFormatting
+        - paramTypeCombine
     goheader:
       values:
         regexp:

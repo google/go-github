@@ -118,7 +118,7 @@ func getSecretValue(secretName string) (string, error) {
 //
 // Finally, the github.EncodedSecret is passed into the GitHub client.Actions.CreateOrUpdateRepoSecret method to
 // populate the secret in the GitHub repo.
-func addRepoSecret(ctx context.Context, client *github.Client, owner string, repo, secretName string, secretValue string) error {
+func addRepoSecret(ctx context.Context, client *github.Client, owner, repo, secretName, secretValue string) error {
 	publicKey, _, err := client.Actions.GetRepoPublicKey(ctx, owner, repo)
 	if err != nil {
 		return err
@@ -136,7 +136,7 @@ func addRepoSecret(ctx context.Context, client *github.Client, owner string, rep
 	return nil
 }
 
-func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName string, secretValue string) (*github.EncryptedSecret, error) {
+func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName, secretValue string) (*github.EncryptedSecret, error) {
 	decodedPublicKey, err := base64.StdEncoding.DecodeString(publicKey.GetKey())
 	if err != nil {
 		return nil, fmt.Errorf("base64.StdEncoding.DecodeString was unable to decode public key: %v", err)

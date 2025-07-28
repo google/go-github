@@ -55,7 +55,7 @@ type updateRefRequest struct {
 // GitHub API docs: https://docs.github.com/rest/git/refs#get-a-reference
 //
 //meta:operation GET /repos/{owner}/{repo}/git/ref/{ref}
-func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref string) (*Reference, *Response, error) {
+func (s *GitService) GetRef(ctx context.Context, owner, repo, ref string) (*Reference, *Response, error) {
 	ref = strings.TrimPrefix(ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/ref/%v", owner, repo, refURLEscape(ref))
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -127,7 +127,7 @@ func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo string, o
 // GitHub API docs: https://docs.github.com/rest/git/refs#create-a-reference
 //
 //meta:operation POST /repos/{owner}/{repo}/git/refs
-func (s *GitService) CreateRef(ctx context.Context, owner string, repo string, ref *Reference) (*Reference, *Response, error) {
+func (s *GitService) CreateRef(ctx context.Context, owner, repo string, ref *Reference) (*Reference, *Response, error) {
 	if ref == nil {
 		return nil, nil, errors.New("reference must be provided")
 	}
@@ -159,7 +159,7 @@ func (s *GitService) CreateRef(ctx context.Context, owner string, repo string, r
 // GitHub API docs: https://docs.github.com/rest/git/refs#update-a-reference
 //
 //meta:operation PATCH /repos/{owner}/{repo}/git/refs/{ref}
-func (s *GitService) UpdateRef(ctx context.Context, owner string, repo string, ref *Reference, force bool) (*Reference, *Response, error) {
+func (s *GitService) UpdateRef(ctx context.Context, owner, repo string, ref *Reference, force bool) (*Reference, *Response, error) {
 	if ref == nil {
 		return nil, nil, errors.New("reference must be provided")
 	}
@@ -191,7 +191,7 @@ func (s *GitService) UpdateRef(ctx context.Context, owner string, repo string, r
 // GitHub API docs: https://docs.github.com/rest/git/refs#delete-a-reference
 //
 //meta:operation DELETE /repos/{owner}/{repo}/git/refs/{ref}
-func (s *GitService) DeleteRef(ctx context.Context, owner string, repo string, ref string) (*Response, error) {
+func (s *GitService) DeleteRef(ctx context.Context, owner, repo, ref string) (*Response, error) {
 	ref = strings.TrimPrefix(ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, refURLEscape(ref))
 	req, err := s.client.NewRequest("DELETE", u, nil)
