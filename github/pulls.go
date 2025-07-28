@@ -148,7 +148,7 @@ type PullRequestListOptions struct {
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls#list-pull-requests
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls
-func (s *PullRequestsService) List(ctx context.Context, owner string, repo string, opts *PullRequestListOptions) ([]*PullRequest, *Response, error) {
+func (s *PullRequestsService) List(ctx context.Context, owner, repo string, opts *PullRequestListOptions) ([]*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -207,7 +207,7 @@ func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, ow
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls#get-a-pull-request
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}
-func (s *PullRequestsService) Get(ctx context.Context, owner string, repo string, number int) (*PullRequest, *Response, error) {
+func (s *PullRequestsService) Get(ctx context.Context, owner, repo string, number int) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func (s *PullRequestsService) Get(ctx context.Context, owner string, repo string
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls#get-a-pull-request
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}
-func (s *PullRequestsService) GetRaw(ctx context.Context, owner string, repo string, number int, opts RawOptions) (string, *Response, error) {
+func (s *PullRequestsService) GetRaw(ctx context.Context, owner, repo string, number int, opts RawOptions) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -277,7 +277,7 @@ type NewPullRequest struct {
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls#create-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls
-func (s *PullRequestsService) Create(ctx context.Context, owner string, repo string, pull *NewPullRequest) (*PullRequest, *Response, error) {
+func (s *PullRequestsService) Create(ctx context.Context, owner, repo string, pull *NewPullRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
 	req, err := s.client.NewRequest("POST", u, pull)
 	if err != nil {
@@ -355,7 +355,7 @@ type pullRequestUpdate struct {
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls#update-a-pull-request
 //
 //meta:operation PATCH /repos/{owner}/{repo}/pulls/{pull_number}
-func (s *PullRequestsService) Edit(ctx context.Context, owner string, repo string, number int, pull *PullRequest) (*PullRequest, *Response, error) {
+func (s *PullRequestsService) Edit(ctx context.Context, owner, repo string, number int, pull *PullRequest) (*PullRequest, *Response, error) {
 	if pull == nil {
 		return nil, nil, errors.New("pull must be provided")
 	}
@@ -394,7 +394,7 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner string, repo strin
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls#list-commits-on-a-pull-request
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/commits
-func (s *PullRequestsService) ListCommits(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*RepositoryCommit, *Response, error) {
+func (s *PullRequestsService) ListCommits(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/commits", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -420,7 +420,7 @@ func (s *PullRequestsService) ListCommits(ctx context.Context, owner string, rep
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls#list-pull-requests-files
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/files
-func (s *PullRequestsService) ListFiles(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*CommitFile, *Response, error) {
+func (s *PullRequestsService) ListFiles(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*CommitFile, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/files", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -446,7 +446,7 @@ func (s *PullRequestsService) ListFiles(ctx context.Context, owner string, repo 
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls#check-if-a-pull-request-has-been-merged
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/merge
-func (s *PullRequestsService) IsMerged(ctx context.Context, owner string, repo string, number int) (bool, *Response, error) {
+func (s *PullRequestsService) IsMerged(ctx context.Context, owner, repo string, number int) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -490,7 +490,7 @@ type pullRequestMergeRequest struct {
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge
-func (s *PullRequestsService) Merge(ctx context.Context, owner string, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
+func (s *PullRequestsService) Merge(ctx context.Context, owner, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 
 	pullRequestBody := &pullRequestMergeRequest{}
