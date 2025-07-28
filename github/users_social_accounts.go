@@ -47,20 +47,20 @@ func (s *UsersService) ListSocialAccounts(ctx context.Context, opts *ListOptions
 // GitHub API docs: https://docs.github.com/rest/users/social-accounts#add-social-accounts-for-the-authenticated-user
 //
 //meta:operation POST /user/social_accounts
-func (s *UsersService) AddSocialAccounts(ctx context.Context, accountURLsToAdd []string) ([]*SocialAccount, *Response, error) {
+func (s *UsersService) AddSocialAccounts(ctx context.Context, accountURLs []string) ([]*SocialAccount, *Response, error) {
 	u := "user/social_accounts"
-	req, err := s.client.NewRequest("POST", u, accountURLsToAdd)
+	req, err := s.client.NewRequest("POST", u, accountURLs)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var addedAccounts []*SocialAccount
-	resp, err := s.client.Do(ctx, req, &addedAccounts)
+	var accounts []*SocialAccount
+	resp, err := s.client.Do(ctx, req, &accounts)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return addedAccounts, resp, nil
+	return accounts, resp, nil
 }
 
 // DeleteSocialAccounts deletes social accounts for the authenticated user.
@@ -68,9 +68,9 @@ func (s *UsersService) AddSocialAccounts(ctx context.Context, accountURLsToAdd [
 // GitHub API docs: https://docs.github.com/rest/users/social-accounts#delete-social-accounts-for-the-authenticated-user
 //
 //meta:operation DELETE /user/social_accounts
-func (s *UsersService) DeleteSocialAccounts(ctx context.Context, accountsToDelete []string) (*Response, error) {
+func (s *UsersService) DeleteSocialAccounts(ctx context.Context, accountURLs []string) (*Response, error) {
 	u := "user/social_accounts"
-	req, err := s.client.NewRequest("DELETE", u, accountsToDelete)
+	req, err := s.client.NewRequest("DELETE", u, accountURLs)
 	if err != nil {
 		return nil, err
 	}
