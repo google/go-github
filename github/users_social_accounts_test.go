@@ -44,7 +44,7 @@ func TestUsersService_ListSocialAccounts(t *testing.T) {
 	const methodName = "ListSocialAccounts"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Users.ListSocialAccounts(ctx, opt)
-		if (got != nil) {
+		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
@@ -87,13 +87,12 @@ func TestUsersService_AddSocialAccounts(t *testing.T) {
 	const methodName = "AddSocialAccounts"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Users.AddSocialAccounts(ctx, input)
-		if (got != nil) {
+		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
 }
-
 
 func TestUsersService_DeleteSocialAccounts(t *testing.T) {
 	t.Parallel()
@@ -102,7 +101,7 @@ func TestUsersService_DeleteSocialAccounts(t *testing.T) {
 
 	input := []string{"https://twitter.com/github"}
 
-	mux.HandleFunc("/user/social_accounts", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/social_accounts", func(_ http.ResponseWriter, r *http.Request) {
 		var v []string
 		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
@@ -123,7 +122,6 @@ func TestUsersService_DeleteSocialAccounts(t *testing.T) {
 		return client.Users.DeleteSocialAccounts(ctx, input)
 	})
 }
-
 
 func TestUsersService_ListUserSocialAccounts(t *testing.T) {
 	t.Parallel()
@@ -154,7 +152,7 @@ func TestUsersService_ListUserSocialAccounts(t *testing.T) {
 	const methodName = "ListUserSocialAccounts"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Users.ListUserSocialAccounts(ctx, "u", opt)
-		if (got != nil) {
+		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
