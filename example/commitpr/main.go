@@ -82,7 +82,7 @@ func getRef() (ref *github.Reference, err error) {
 		return nil, err
 	}
 	newRef := &github.Reference{Ref: github.Ptr(branchRef(*commitBranch)), Object: &github.GitObject{SHA: baseRef.Object.SHA}}
-	ref, _, err = client.Git.CreateRef(ctx, *sourceOwner, *sourceRepo, newRef)
+	ref, _, err = client.Git.CreateRef(ctx, *sourceOwner, *sourceRepo, *newRef)
 	return ref, err
 }
 
@@ -162,14 +162,14 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 			return openpgp.ArmoredDetachSign(w, key, r, nil)
 		})
 	}
-	newCommit, _, err := client.Git.CreateCommit(ctx, *sourceOwner, *sourceRepo, commit, &opts)
+	newCommit, _, err := client.Git.CreateCommit(ctx, *sourceOwner, *sourceRepo, *commit, &opts)
 	if err != nil {
 		return err
 	}
 
 	// Attach the commit to the master branch.
 	ref.Object.SHA = newCommit.SHA
-	_, _, err = client.Git.UpdateRef(ctx, *sourceOwner, *sourceRepo, ref, false)
+	_, _, err = client.Git.UpdateRef(ctx, *sourceOwner, *sourceRepo, *ref, false)
 	return err
 }
 

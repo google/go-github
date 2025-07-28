@@ -412,7 +412,7 @@ func TestGitService_CreateRef(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ref, _, err := client.Git.CreateRef(ctx, "o", "r", &Reference{
+	ref, _, err := client.Git.CreateRef(ctx, "o", "r", Reference{
 		Ref: Ptr("refs/heads/b"),
 		Object: &GitObject{
 			SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
@@ -436,7 +436,7 @@ func TestGitService_CreateRef(t *testing.T) {
 	}
 
 	// without 'refs/' prefix
-	_, _, err = client.Git.CreateRef(ctx, "o", "r", &Reference{
+	_, _, err = client.Git.CreateRef(ctx, "o", "r", Reference{
 		Ref: Ptr("heads/b"),
 		Object: &GitObject{
 			SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
@@ -448,15 +448,11 @@ func TestGitService_CreateRef(t *testing.T) {
 
 	const methodName = "CreateRef"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.CreateRef(ctx, "o", "r", nil)
+		_, _, err = client.Git.CreateRef(ctx, "o", "r", Reference{Ref: nil})
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.CreateRef(ctx, "o", "r", &Reference{Ref: nil})
-		return err
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.CreateRef(ctx, "\n", "\n", &Reference{
+		_, _, err = client.Git.CreateRef(ctx, "\n", "\n", Reference{
 			Ref: Ptr("refs/heads/b"),
 			Object: &GitObject{
 				SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
@@ -466,7 +462,7 @@ func TestGitService_CreateRef(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Git.CreateRef(ctx, "o", "r", &Reference{
+		got, resp, err := client.Git.CreateRef(ctx, "o", "r", Reference{
 			Ref: Ptr("refs/heads/b"),
 			Object: &GitObject{
 				SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
@@ -509,7 +505,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", &Reference{
+	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", Reference{
 		Ref:    Ptr("refs/heads/b"),
 		Object: &GitObject{SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd")},
 	}, true)
@@ -531,7 +527,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 	}
 
 	// without 'refs/' prefix
-	_, _, err = client.Git.UpdateRef(ctx, "o", "r", &Reference{
+	_, _, err = client.Git.UpdateRef(ctx, "o", "r", Reference{
 		Ref:    Ptr("heads/b"),
 		Object: &GitObject{SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd")},
 	}, true)
@@ -541,15 +537,11 @@ func TestGitService_UpdateRef(t *testing.T) {
 
 	const methodName = "UpdateRef"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.UpdateRef(ctx, "o", "r", nil, true)
+		_, _, err = client.Git.UpdateRef(ctx, "o", "r", Reference{Ref: nil}, true)
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.UpdateRef(ctx, "o", "r", &Reference{Ref: nil}, true)
-		return err
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.UpdateRef(ctx, "\n", "\n", &Reference{
+		_, _, err = client.Git.UpdateRef(ctx, "\n", "\n", Reference{
 			Ref:    Ptr("refs/heads/b"),
 			Object: &GitObject{SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd")},
 		}, true)
@@ -557,7 +549,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Git.UpdateRef(ctx, "o", "r", &Reference{
+		got, resp, err := client.Git.UpdateRef(ctx, "o", "r", Reference{
 			Ref:    Ptr("refs/heads/b"),
 			Object: &GitObject{SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd")},
 		}, true)
@@ -670,7 +662,7 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", &Reference{
+	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", Reference{
 		Ref:    Ptr("refs/heads/b#1"),
 		Object: &GitObject{SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd")},
 	}, true)

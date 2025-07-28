@@ -127,10 +127,7 @@ func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo string, o
 // GitHub API docs: https://docs.github.com/rest/git/refs#create-a-reference
 //
 //meta:operation POST /repos/{owner}/{repo}/git/refs
-func (s *GitService) CreateRef(ctx context.Context, owner string, repo string, ref *Reference) (*Reference, *Response, error) {
-	if ref == nil {
-		return nil, nil, errors.New("reference must be provided")
-	}
+func (s *GitService) CreateRef(ctx context.Context, owner string, repo string, ref Reference) (*Reference, *Response, error) {
 	if ref.Ref == nil {
 		return nil, nil, errors.New("ref must be provided")
 	}
@@ -159,10 +156,7 @@ func (s *GitService) CreateRef(ctx context.Context, owner string, repo string, r
 // GitHub API docs: https://docs.github.com/rest/git/refs#update-a-reference
 //
 //meta:operation PATCH /repos/{owner}/{repo}/git/refs/{ref}
-func (s *GitService) UpdateRef(ctx context.Context, owner string, repo string, ref *Reference, force bool) (*Reference, *Response, error) {
-	if ref == nil {
-		return nil, nil, errors.New("reference must be provided")
-	}
+func (s *GitService) UpdateRef(ctx context.Context, owner string, repo string, ref Reference, force bool) (*Reference, *Response, error) {
 	if ref.Ref == nil {
 		return nil, nil, errors.New("ref must be provided")
 	}
