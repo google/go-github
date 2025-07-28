@@ -10,7 +10,7 @@ package main
 import (
 	"context"
 	"fmt"
-
+	"log"
 	"github.com/google/go-github/v74/github"
 )
 
@@ -28,18 +28,18 @@ func main() {
 
 	accounts, err := fetchSocialAccounts(username)
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
+		log.Fatalf("Error: %v\n", err)
 		return
 	}
 
 	if len(accounts) == 0 {
-		fmt.Printf("No social accounts found for %s\n", username)
+		fmt.Printf("No social accounts found for %v\n", username)
 		return
 	}
 
 	fmt.Printf("Social accounts for %s:\n", username)
 	for i, account := range accounts {
-		fmt.Printf("%v. Provider: %s, URL: %s\n",
+		fmt.Printf("%v. Provider: %v, URL: %v\n",
 			i+1,
 			*account.Provider,
 			*account.URL)
