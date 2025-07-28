@@ -30,7 +30,6 @@ func main() {
 	accounts, err := fetchSocialAccounts(username)
 	if err != nil {
 		log.Fatalf("Error: %v\n", err)
-		return
 	}
 
 	if len(accounts) == 0 {
