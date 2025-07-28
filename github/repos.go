@@ -893,7 +893,7 @@ func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context,
 // GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-contributors
 //
 //meta:operation GET /repos/{owner}/{repo}/contributors
-func (s *RepositoriesService) ListContributors(ctx context.Context, owner string, repository string, opts *ListContributorsOptions) ([]*Contributor, *Response, error) {
+func (s *RepositoriesService) ListContributors(ctx context.Context, owner, repository string, opts *ListContributorsOptions) ([]*Contributor, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/contributors", owner, repository)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -926,7 +926,7 @@ func (s *RepositoriesService) ListContributors(ctx context.Context, owner string
 // GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-languages
 //
 //meta:operation GET /repos/{owner}/{repo}/languages
-func (s *RepositoriesService) ListLanguages(ctx context.Context, owner string, repo string) (map[string]int, *Response, error) {
+func (s *RepositoriesService) ListLanguages(ctx context.Context, owner, repo string) (map[string]int, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/languages", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -947,7 +947,7 @@ func (s *RepositoriesService) ListLanguages(ctx context.Context, owner string, r
 // GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-teams
 //
 //meta:operation GET /repos/{owner}/{repo}/teams
-func (s *RepositoriesService) ListTeams(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Team, *Response, error) {
+func (s *RepositoriesService) ListTeams(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/teams", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -981,7 +981,7 @@ type RepositoryTag struct {
 // GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-tags
 //
 //meta:operation GET /repos/{owner}/{repo}/tags
-func (s *RepositoriesService) ListTags(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*RepositoryTag, *Response, error) {
+func (s *RepositoriesService) ListTags(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryTag, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/tags", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -1415,7 +1415,7 @@ type AutomatedSecurityFixes struct {
 // GitHub API docs: https://docs.github.com/rest/branches/branches#list-branches
 //
 //meta:operation GET /repos/{owner}/{repo}/branches
-func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, repo string, opts *BranchListOptions) ([]*Branch, *Response, error) {
+func (s *RepositoriesService) ListBranches(ctx context.Context, owner, repo string, opts *BranchListOptions) ([]*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {

@@ -39,7 +39,7 @@ type createTagRequest struct {
 // GitHub API docs: https://docs.github.com/rest/git/tags#get-a-tag
 //
 //meta:operation GET /repos/{owner}/{repo}/git/tags/{tag_sha}
-func (s *GitService) GetTag(ctx context.Context, owner string, repo string, sha string) (*Tag, *Response, error) {
+func (s *GitService) GetTag(ctx context.Context, owner, repo, sha string) (*Tag, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/tags/%v", owner, repo, sha)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func (s *GitService) GetTag(ctx context.Context, owner string, repo string, sha 
 // GitHub API docs: https://docs.github.com/rest/git/tags#create-a-tag-object
 //
 //meta:operation POST /repos/{owner}/{repo}/git/tags
-func (s *GitService) CreateTag(ctx context.Context, owner string, repo string, tag *Tag) (*Tag, *Response, error) {
+func (s *GitService) CreateTag(ctx context.Context, owner, repo string, tag *Tag) (*Tag, *Response, error) {
 	if tag == nil {
 		return nil, nil, errors.New("tag must be provided")
 	}

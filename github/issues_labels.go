@@ -30,7 +30,7 @@ func (l Label) String() string {
 // GitHub API docs: https://docs.github.com/rest/issues/labels#list-labels-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/labels
-func (s *IssuesService) ListLabels(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Label, *Response, error) {
+func (s *IssuesService) ListLabels(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -56,7 +56,7 @@ func (s *IssuesService) ListLabels(ctx context.Context, owner string, repo strin
 // GitHub API docs: https://docs.github.com/rest/issues/labels#get-a-label
 //
 //meta:operation GET /repos/{owner}/{repo}/labels/{name}
-func (s *IssuesService) GetLabel(ctx context.Context, owner string, repo string, name string) (*Label, *Response, error) {
+func (s *IssuesService) GetLabel(ctx context.Context, owner, repo, name string) (*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func (s *IssuesService) GetLabel(ctx context.Context, owner string, repo string,
 // GitHub API docs: https://docs.github.com/rest/issues/labels#create-a-label
 //
 //meta:operation POST /repos/{owner}/{repo}/labels
-func (s *IssuesService) CreateLabel(ctx context.Context, owner string, repo string, label *Label) (*Label, *Response, error) {
+func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, label *Label) (*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels", owner, repo)
 	req, err := s.client.NewRequest("POST", u, label)
 	if err != nil {
@@ -98,7 +98,7 @@ func (s *IssuesService) CreateLabel(ctx context.Context, owner string, repo stri
 // GitHub API docs: https://docs.github.com/rest/issues/labels#update-a-label
 //
 //meta:operation PATCH /repos/{owner}/{repo}/labels/{name}
-func (s *IssuesService) EditLabel(ctx context.Context, owner string, repo string, name string, label *Label) (*Label, *Response, error) {
+func (s *IssuesService) EditLabel(ctx context.Context, owner, repo, name string, label *Label) (*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
 	req, err := s.client.NewRequest("PATCH", u, label)
 	if err != nil {
@@ -119,7 +119,7 @@ func (s *IssuesService) EditLabel(ctx context.Context, owner string, repo string
 // GitHub API docs: https://docs.github.com/rest/issues/labels#delete-a-label
 //
 //meta:operation DELETE /repos/{owner}/{repo}/labels/{name}
-func (s *IssuesService) DeleteLabel(ctx context.Context, owner string, repo string, name string) (*Response, error) {
+func (s *IssuesService) DeleteLabel(ctx context.Context, owner, repo, name string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func (s *IssuesService) DeleteLabel(ctx context.Context, owner string, repo stri
 // GitHub API docs: https://docs.github.com/rest/issues/labels#list-labels-for-an-issue
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/labels
-func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*Label, *Response, error) {
+func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -159,7 +159,7 @@ func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner string, rep
 // GitHub API docs: https://docs.github.com/rest/issues/labels#add-labels-to-an-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/labels
-func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner string, repo string, number int, labels []string) ([]*Label, *Response, error) {
+func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner, repo string, number int, labels []string) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels", owner, repo, number)
 	req, err := s.client.NewRequest("POST", u, labels)
 	if err != nil {
@@ -180,7 +180,7 @@ func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner string, repo
 // GitHub API docs: https://docs.github.com/rest/issues/labels#remove-a-label-from-an-issue
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}
-func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner string, repo string, number int, label string) (*Response, error) {
+func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner, repo string, number int, label string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels/%v", owner, repo, number, label)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner string, r
 // GitHub API docs: https://docs.github.com/rest/issues/labels#set-labels-for-an-issue
 //
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/labels
-func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner string, repo string, number int, labels []string) ([]*Label, *Response, error) {
+func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner, repo string, number int, labels []string) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels", owner, repo, number)
 	req, err := s.client.NewRequest("PUT", u, labels)
 	if err != nil {
@@ -216,7 +216,7 @@ func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner string,
 // GitHub API docs: https://docs.github.com/rest/issues/labels#remove-all-labels-from-an-issue
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels
-func (s *IssuesService) RemoveLabelsForIssue(ctx context.Context, owner string, repo string, number int) (*Response, error) {
+func (s *IssuesService) RemoveLabelsForIssue(ctx context.Context, owner, repo string, number int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels", owner, repo, number)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func (s *IssuesService) RemoveLabelsForIssue(ctx context.Context, owner string, 
 // GitHub API docs: https://docs.github.com/rest/issues/labels#list-labels-for-issues-in-a-milestone
 //
 //meta:operation GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels
-func (s *IssuesService) ListLabelsForMilestone(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*Label, *Response, error) {
+func (s *IssuesService) ListLabelsForMilestone(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/milestones/%d/labels", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {

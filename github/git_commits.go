@@ -84,7 +84,7 @@ func (c CommitAuthor) String() string {
 // GitHub API docs: https://docs.github.com/rest/git/commits#get-a-commit-object
 //
 //meta:operation GET /repos/{owner}/{repo}/git/commits/{commit_sha}
-func (s *GitService) GetCommit(ctx context.Context, owner string, repo string, sha string) (*Commit, *Response, error) {
+func (s *GitService) GetCommit(ctx context.Context, owner, repo, sha string) (*Commit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/commits/%v", owner, repo, sha)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -126,7 +126,7 @@ type CreateCommitOptions struct {
 // GitHub API docs: https://docs.github.com/rest/git/commits#create-a-commit
 //
 //meta:operation POST /repos/{owner}/{repo}/git/commits
-func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string, commit *Commit, opts *CreateCommitOptions) (*Commit, *Response, error) {
+func (s *GitService) CreateCommit(ctx context.Context, owner, repo string, commit *Commit, opts *CreateCommitOptions) (*Commit, *Response, error) {
 	if commit == nil {
 		return nil, nil, errors.New("commit must be provided")
 	}
