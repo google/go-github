@@ -9263,6 +9263,17 @@ func TestDependencyGraphSnapshotManifest_GetFile(tt *testing.T) {
 	d.GetFile()
 }
 
+func TestDependencyGraphSnapshotManifest_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	d := &DependencyGraphSnapshotManifest{Metadata: zeroValue}
+	d.GetMetadata()
+	d = &DependencyGraphSnapshotManifest{}
+	d.GetMetadata()
+	d = nil
+	d.GetMetadata()
+}
+
 func TestDependencyGraphSnapshotManifest_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -9283,6 +9294,17 @@ func TestDependencyGraphSnapshotManifestFile_GetSourceLocation(tt *testing.T) {
 	d.GetSourceLocation()
 	d = nil
 	d.GetSourceLocation()
+}
+
+func TestDependencyGraphSnapshotResolvedDependency_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	d := &DependencyGraphSnapshotResolvedDependency{Metadata: zeroValue}
+	d.GetMetadata()
+	d = &DependencyGraphSnapshotResolvedDependency{}
+	d.GetMetadata()
+	d = nil
+	d.GetMetadata()
 }
 
 func TestDependencyGraphSnapshotResolvedDependency_GetPackageURL(tt *testing.T) {
