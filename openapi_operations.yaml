@@ -27,7 +27,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: ecbe0df804f3f85f8a68f48d6e9711d05da6f201
+openapi_commit: 0956844c50850685dce43634d73a69f4dac7989e
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -720,42 +720,6 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/announcement-banners/enterprises#set-announcement-banner-for-enterprise
     openapi_files:
       - descriptions/ghec/ghec.json
-  - name: GET /enterprises/{enterprise}/apps/installable_organizations
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/organization-installations#get-enterprise-owned-organizations-that-can-have-github-apps-installed
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: GET /enterprises/{enterprise}/apps/installable_organizations/{org}/accessible_repositories
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/organization-installations#get-repositories-belonging-to-an-enterprise-owned-organization
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: GET /enterprises/{enterprise}/apps/organizations/{org}/installations
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/organization-installations#list-github-apps-installed-on-an-enterprise-owned-organization
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: POST /enterprises/{enterprise}/apps/organizations/{org}/installations
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/organization-installations#install-a-github-app-on-an-enterprise-owned-organization
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: DELETE /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/organization-installations#uninstall-a-github-app-from-an-enterprise-owned-organization
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: GET /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/organization-installations#get-the-repositories-accessible-to-a-given-github-app-installation
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/organization-installations#toggle-installation-repository-access-between-selected-and-all-repositories
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories/add
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/organization-installations#grant-repository-access-to-an-organization-installation
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories/remove
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/organization-installations#remove-repository-access-from-an-organization-installation
-    openapi_files:
-      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/audit-log
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/audit-log#get-the-audit-log-for-an-enterprise
     openapi_files:
@@ -886,10 +850,6 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/license#get-a-license-sync-status
     openapi_files:
       - descriptions/ghec/ghec.json
-  - name: GET /enterprises/{enterprise}/members/{username}/copilot
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-user-management#get-copilot-seat-assignment-details-for-an-enterprise-user
-    openapi_files:
-      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/network-configurations
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/network-configurations#list-hosted-compute-network-configurations-for-an-enterprise
     openapi_files:
@@ -981,28 +941,12 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#get-all-cost-centers-for-an-enterprise
     openapi_files:
       - descriptions/ghec/ghec.json
-  - name: POST /enterprises/{enterprise}/settings/billing/cost-centers
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#create-a-new-cost-center
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: DELETE /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#delete-a-cost-center
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: GET /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#get-a-cost-center-by-id
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: PATCH /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#update-a-cost-center-name
-    openapi_files:
-      - descriptions/ghec/ghec.json
   - name: DELETE /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}/resource
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#remove-resources-from-a-cost-center
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#remove-users-from-a-cost-center
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: POST /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}/resource
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#add-resources-to-a-cost-center
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#add-users-to-a-cost-center
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/settings/billing/packages
@@ -1389,21 +1333,6 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
-  - name: GET /organizations/{org}/dependabot/repository-access
-    documentation_url: https://docs.github.com/rest/dependabot/repository-access#lists-the-repositories-dependabot-can-access-in-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: PATCH /organizations/{org}/dependabot/repository-access
-    documentation_url: https://docs.github.com/rest/dependabot/repository-access#updates-dependabots-repository-access-list-for-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: PUT /organizations/{org}/dependabot/repository-access/default-level
-    documentation_url: https://docs.github.com/rest/dependabot/repository-access#set-the-default-repository-access-level-for-dependabot
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
   - name: GET /organizations/{org}/settings/billing/usage
     documentation_url: https://docs.github.com/rest/billing/enhanced-billing#get-billing-usage-report-for-an-organization
     openapi_files:
@@ -1839,26 +1768,6 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
-  - name: POST /orgs/{org}/attestations/bulk-list
-    documentation_url: https://docs.github.com/rest/orgs/orgs#list-attestations-by-bulk-subject-digests
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: POST /orgs/{org}/attestations/delete-request
-    documentation_url: https://docs.github.com/rest/orgs/attestations#delete-attestations-in-bulk
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: DELETE /orgs/{org}/attestations/digest/{subject_digest}
-    documentation_url: https://docs.github.com/rest/orgs/attestations#delete-attestations-by-subject-digest
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: DELETE /orgs/{org}/attestations/{attestation_id}
-    documentation_url: https://docs.github.com/rest/orgs/attestations#delete-attestations-by-id
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/attestations/{subject_digest}
     documentation_url: https://docs.github.com/rest/orgs/orgs#list-attestations
     openapi_files:
@@ -2199,10 +2108,6 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
-  - name: GET /orgs/{org}/dismissal-requests/code-scanning
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/code-scanning/alert-dismissal-requests#list-dismissal-requests-for-code-scanning-alerts-for-an-organization
-    openapi_files:
-      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/dismissal-requests/secret-scanning
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/secret-scanning/alert-dismissal-requests#list-alert-dismissal-requests-for-secret-scanning-for-an-org
     openapi_files:
@@ -2741,6 +2646,7 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+      - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /orgs/{org}/private-registries/public-key
     documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#get-private-registries-public-key-for-an-organization
     openapi_files:
@@ -2766,13 +2672,13 @@ openapi_operations:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /orgs/{org}/projects
-    documentation_url: https://docs.github.com/rest/projects-classic/projects#list-organization-projects
+    documentation_url: https://docs.github.com/rest/projects/projects#list-organization-projects
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: POST /orgs/{org}/projects
-    documentation_url: https://docs.github.com/rest/projects-classic/projects#create-an-organization-project
+    documentation_url: https://docs.github.com/rest/projects/projects#create-an-organization-project
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -3239,115 +3145,115 @@ openapi_operations:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: DELETE /projects/columns/cards/{card_id}
-    documentation_url: https://docs.github.com/rest/projects-classic/cards#delete-a-project-card
+    documentation_url: https://docs.github.com/rest/projects/cards#delete-a-project-card
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /projects/columns/cards/{card_id}
-    documentation_url: https://docs.github.com/rest/projects-classic/cards#get-a-project-card
+    documentation_url: https://docs.github.com/rest/projects/cards#get-a-project-card
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: PATCH /projects/columns/cards/{card_id}
-    documentation_url: https://docs.github.com/rest/projects-classic/cards#update-an-existing-project-card
+    documentation_url: https://docs.github.com/rest/projects/cards#update-an-existing-project-card
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: POST /projects/columns/cards/{card_id}/moves
-    documentation_url: https://docs.github.com/rest/projects-classic/cards#move-a-project-card
+    documentation_url: https://docs.github.com/rest/projects/cards#move-a-project-card
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: DELETE /projects/columns/{column_id}
-    documentation_url: https://docs.github.com/rest/projects-classic/columns#delete-a-project-column
+    documentation_url: https://docs.github.com/rest/projects/columns#delete-a-project-column
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /projects/columns/{column_id}
-    documentation_url: https://docs.github.com/rest/projects-classic/columns#get-a-project-column
+    documentation_url: https://docs.github.com/rest/projects/columns#get-a-project-column
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: PATCH /projects/columns/{column_id}
-    documentation_url: https://docs.github.com/rest/projects-classic/columns#update-an-existing-project-column
+    documentation_url: https://docs.github.com/rest/projects/columns#update-an-existing-project-column
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /projects/columns/{column_id}/cards
-    documentation_url: https://docs.github.com/rest/projects-classic/cards#list-project-cards
+    documentation_url: https://docs.github.com/rest/projects/cards#list-project-cards
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: POST /projects/columns/{column_id}/cards
-    documentation_url: https://docs.github.com/rest/projects-classic/cards#create-a-project-card
+    documentation_url: https://docs.github.com/rest/projects/cards#create-a-project-card
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: POST /projects/columns/{column_id}/moves
-    documentation_url: https://docs.github.com/rest/projects-classic/columns#move-a-project-column
+    documentation_url: https://docs.github.com/rest/projects/columns#move-a-project-column
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: DELETE /projects/{project_id}
-    documentation_url: https://docs.github.com/rest/projects-classic/projects#delete-a-project
+    documentation_url: https://docs.github.com/rest/projects/projects#delete-a-project
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /projects/{project_id}
-    documentation_url: https://docs.github.com/rest/projects-classic/projects#get-a-project
+    documentation_url: https://docs.github.com/rest/projects/projects#get-a-project
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: PATCH /projects/{project_id}
-    documentation_url: https://docs.github.com/rest/projects-classic/projects#update-a-project
+    documentation_url: https://docs.github.com/rest/projects/projects#update-a-project
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /projects/{project_id}/collaborators
-    documentation_url: https://docs.github.com/rest/projects-classic/collaborators#list-project-collaborators
+    documentation_url: https://docs.github.com/rest/projects/collaborators#list-project-collaborators
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: DELETE /projects/{project_id}/collaborators/{username}
-    documentation_url: https://docs.github.com/rest/projects-classic/collaborators#remove-user-as-a-collaborator
+    documentation_url: https://docs.github.com/rest/projects/collaborators#remove-user-as-a-collaborator
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: PUT /projects/{project_id}/collaborators/{username}
-    documentation_url: https://docs.github.com/rest/projects-classic/collaborators#add-project-collaborator
+    documentation_url: https://docs.github.com/rest/projects/collaborators#add-project-collaborator
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /projects/{project_id}/collaborators/{username}/permission
-    documentation_url: https://docs.github.com/rest/projects-classic/collaborators#get-project-permission-for-a-user
+    documentation_url: https://docs.github.com/rest/projects/collaborators#get-project-permission-for-a-user
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /projects/{project_id}/columns
-    documentation_url: https://docs.github.com/rest/projects-classic/columns#list-project-columns
+    documentation_url: https://docs.github.com/rest/projects/columns#list-project-columns
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: POST /projects/{project_id}/columns
-    documentation_url: https://docs.github.com/rest/projects-classic/columns#create-a-project-column
+    documentation_url: https://docs.github.com/rest/projects/columns#create-a-project-column
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -4648,18 +4554,6 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
-  - name: GET /repos/{owner}/{repo}/dismissal-requests/code-scanning
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/code-scanning/alert-dismissal-requests#list-dismissal-requests-for-code-scanning-alerts-for-a-repository
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: GET /repos/{owner}/{repo}/dismissal-requests/code-scanning/{alert_number}
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/code-scanning/alert-dismissal-requests#get-a-dismissal-request-for-a-code-scanning-alert-for-a-repository
-    openapi_files:
-      - descriptions/ghec/ghec.json
-  - name: PATCH /repos/{owner}/{repo}/dismissal-requests/code-scanning/{alert_number}
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/code-scanning/alert-dismissal-requests#review-a-dismissal-request-for-a-code-scanning-alert-for-a-repository
-    openapi_files:
-      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/dismissal-requests/secret-scanning
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/secret-scanning/alert-dismissal-requests#list-alert-dismissal-requests-for-secret-scanning-for-a-repository
     openapi_files:
@@ -5512,13 +5406,13 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/projects
-    documentation_url: https://docs.github.com/rest/projects-classic/projects#list-repository-projects
+    documentation_url: https://docs.github.com/rest/projects/projects#list-repository-projects
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: POST /repos/{owner}/{repo}/projects
-    documentation_url: https://docs.github.com/rest/projects-classic/projects#create-a-repository-project
+    documentation_url: https://docs.github.com/rest/projects/projects#create-a-repository-project
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -6992,7 +6886,7 @@ openapi_operations:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: POST /user/projects
-    documentation_url: https://docs.github.com/rest/projects-classic/projects#create-a-user-project
+    documentation_url: https://docs.github.com/rest/projects/projects#create-a-user-project
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -7129,26 +7023,6 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
-  - name: POST /users/{username}/attestations/bulk-list
-    documentation_url: https://docs.github.com/rest/users/attestations#list-attestations-by-bulk-subject-digests
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: POST /users/{username}/attestations/delete-request
-    documentation_url: https://docs.github.com/rest/users/attestations#delete-attestations-in-bulk
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: DELETE /users/{username}/attestations/digest/{subject_digest}
-    documentation_url: https://docs.github.com/rest/users/attestations#delete-attestations-by-subject-digest
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: DELETE /users/{username}/attestations/{attestation_id}
-    documentation_url: https://docs.github.com/rest/users/attestations#delete-attestations-by-id
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
   - name: GET /users/{username}/attestations/{subject_digest}
     documentation_url: https://docs.github.com/rest/users/attestations#list-attestations
     openapi_files:
@@ -7281,7 +7155,7 @@ openapi_operations:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /users/{username}/projects
-    documentation_url: https://docs.github.com/rest/projects-classic/projects#list-user-projects
+    documentation_url: https://docs.github.com/rest/projects/projects#list-user-projects
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json

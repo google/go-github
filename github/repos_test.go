@@ -4568,7 +4568,7 @@ func TestRepository_UnmarshalJSON(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_ListRespositoryActivities(t *testing.T) {
+func TestRepositoriesService_ListRepositoryActivities(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -4643,9 +4643,9 @@ func TestRepositoriesService_ListRespositoryActivities(t *testing.T) {
 
 	opts := &RepositoryActivityOptions{PerPage: 100}
 	ctx := context.Background()
-	activities, _, err := client.Repositories.ListRespositoryActivities(ctx, "o", "r", opts)
+	activities, _, err := client.Repositories.ListRepositoryActivities(ctx, "o", "r", opts)
 	if err != nil {
-		t.Errorf("Repositories.ListRespositoryActivities returned error: %v", err)
+		t.Errorf("Repositories.ListRepositoryActivities returned error: %v", err)
 	}
 
 	want := []*RepositoryActivity{
@@ -4712,17 +4712,17 @@ func TestRepositoriesService_ListRespositoryActivities(t *testing.T) {
 	}
 
 	if !cmp.Equal(activities, want) {
-		t.Errorf("Repositories.ListRespositoryActivities returned %+v, want %+v", activities, want)
+		t.Errorf("Repositories.ListRepositoryActivities returned %+v, want %+v", activities, want)
 	}
 
-	const methodName = "ListRespositoryActivities"
+	const methodName = "ListRepositoryActivities"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListRespositoryActivities(ctx, "\n", "\n", opts)
+		_, _, err = client.Repositories.ListRepositoryActivities(ctx, "\n", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListRespositoryActivities(ctx, "o", "r", opts)
+		got, resp, err := client.Repositories.ListRepositoryActivities(ctx, "o", "r", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -4730,7 +4730,7 @@ func TestRepositoriesService_ListRespositoryActivities(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_ListRespositoryActivities_withOptions(t *testing.T) {
+func TestRepositoriesService_ListRepositoryActivities_withOptions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -4791,9 +4791,9 @@ func TestRepositoriesService_ListRespositoryActivities_withOptions(t *testing.T)
 		PerPage:      50,
 	}
 	ctx := context.Background()
-	activities, _, err := client.Repositories.ListRespositoryActivities(ctx, "o", "r", opts)
+	activities, _, err := client.Repositories.ListRepositoryActivities(ctx, "o", "r", opts)
 	if err != nil {
-		t.Errorf("Repositories.ListRespositoryActivities returned error: %v", err)
+		t.Errorf("Repositories.ListRepositoryActivities returned error: %v", err)
 	}
 
 	want := []*RepositoryActivity{
@@ -4830,11 +4830,11 @@ func TestRepositoriesService_ListRespositoryActivities_withOptions(t *testing.T)
 	}
 
 	if !cmp.Equal(activities, want) {
-		t.Errorf("Repositories.ListRespositoryActivities returned %+v, want %+v", activities, want)
+		t.Errorf("Repositories.ListRepositoryActivities returned %+v, want %+v", activities, want)
 	}
 }
 
-func TestRepositoriesService_ListRespositoryActivities_emptyResponse(t *testing.T) {
+func TestRepositoriesService_ListRepositoryActivities_emptyResponse(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -4844,34 +4844,34 @@ func TestRepositoriesService_ListRespositoryActivities_emptyResponse(t *testing.
 	})
 
 	ctx := context.Background()
-	activities, _, err := client.Repositories.ListRespositoryActivities(ctx, "o", "r", nil)
+	activities, _, err := client.Repositories.ListRepositoryActivities(ctx, "o", "r", nil)
 	if err != nil {
-		t.Errorf("Repositories.ListRespositoryActivities returned error: %v", err)
+		t.Errorf("Repositories.ListRepositoryActivities returned error: %v", err)
 	}
 
 	want := []*RepositoryActivity{}
 	if !cmp.Equal(activities, want) {
-		t.Errorf("Repositories.ListRespositoryActivities returned %+v, want %+v", activities, want)
+		t.Errorf("Repositories.ListRepositoryActivities returned %+v, want %+v", activities, want)
 	}
 }
 
-func TestRepositoriesService_ListRespositoryActivities_invalidOwner(t *testing.T) {
+func TestRepositoriesService_ListRepositoryActivities_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
-	_, _, err := client.Repositories.ListRespositoryActivities(ctx, "%", "r", nil)
+	_, _, err := client.Repositories.ListRepositoryActivities(ctx, "%", "r", nil)
 	if err == nil {
 		t.Error("Expected error to be returned")
 	}
 }
 
-func TestRepositoriesService_ListRespositoryActivities_invalidRepo(t *testing.T) {
+func TestRepositoriesService_ListRepositoryActivities_invalidRepo(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
-	_, _, err := client.Repositories.ListRespositoryActivities(ctx, "o", "%", nil)
+	_, _, err := client.Repositories.ListRepositoryActivities(ctx, "o", "%", nil)
 	if err == nil {
 		t.Error("Expected error to be returned")
 	}

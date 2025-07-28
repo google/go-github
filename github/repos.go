@@ -2440,12 +2440,14 @@ func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, own
 }
 
 // RepositoryActivityOptions specifies the optional parameters to the
-// RepositoriesService.ListRespositoryActivities method.
+// RepositoriesService.ListRepositoryActivities method.
 type RepositoryActivityOptions struct {
-	// The direction to sort the results
+	// The direction to sort the results by.
+	// Default: desc
+	// Can be one of: asc, desc
 	Direction string `url:"direction,omitempty"`
 
-	// For paginated result sets, the number of results to include per page.
+	// For paginated result sets, The number of results per page (max 100).
 	PerPage int `url:"per_page,omitempty"`
 
 	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
@@ -2455,6 +2457,7 @@ type RepositoryActivityOptions struct {
 	After string `url:"after,omitempty"`
 
 	// The Git reference for the activities you want to list.
+	// The ref for a branch can be formatted either as refs/heads/BRANCH_NAME or BRANCH_NAME, where BRANCH_NAME is the name of your branch.
 	Ref string `url:"ref,omitempty"`
 
 	// The GitHub username to use to filter by the actor who performed the activity.
@@ -2503,15 +2506,15 @@ type RepositoryActivity struct {
 	Ref          string           `json:"ref"`
 	Timestamp    *Timestamp       `json:"timestamp"`
 	ActivityType string           `json:"activity_type"`
-	Actor        *RepositoryActor `json:"actor"`
+	Actor        *RepositoryActor `json:"actor,omitempty"`
 }
 
-// ListRespositoryActivities lists the activities for a repository.
+// ListRepositoryActivities lists the activities for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-activities
 //
 //meta:operation GET /repos/{owner}/{repo}/activity
-func (s *RepositoriesService) ListRespositoryActivities(ctx context.Context, owner, repo string, opts *RepositoryActivityOptions) ([]*RepositoryActivity, *Response, error) {
+func (s *RepositoriesService) ListRepositoryActivities(ctx context.Context, owner, repo string, opts *RepositoryActivityOptions) ([]*RepositoryActivity, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/activity", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
