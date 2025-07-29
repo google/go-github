@@ -57,7 +57,7 @@ func (s *OrganizationsService) ListOutsideCollaborators(ctx context.Context, org
 // GitHub API docs: https://docs.github.com/rest/orgs/outside-collaborators#remove-outside-collaborator-from-an-organization
 //
 //meta:operation DELETE /orgs/{org}/outside_collaborators/{username}
-func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, org string, user string) (*Response, error) {
+func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/outside_collaborators/%v", org, user)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, or
 // GitHub API docs: https://docs.github.com/rest/orgs/outside-collaborators#convert-an-organization-member-to-outside-collaborator
 //
 //meta:operation PUT /orgs/{org}/outside_collaborators/{username}
-func (s *OrganizationsService) ConvertMemberToOutsideCollaborator(ctx context.Context, org string, user string) (*Response, error) {
+func (s *OrganizationsService) ConvertMemberToOutsideCollaborator(ctx context.Context, org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/outside_collaborators/%v", org, user)
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
