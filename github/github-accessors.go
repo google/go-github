@@ -25790,6 +25790,22 @@ func (s *SignatureVerification) GetVerified() bool {
 	return *s.Verified
 }
 
+// GetProvider returns the Provider field if it's non-nil, zero value otherwise.
+func (s *SocialAccount) GetProvider() string {
+	if s == nil || s.Provider == nil {
+		return ""
+	}
+	return *s.Provider
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (s *SocialAccount) GetURL() string {
+	if s == nil || s.URL == nil {
+		return ""
+	}
+	return *s.URL
+}
+
 // GetActor returns the Actor field.
 func (s *Source) GetActor() *User {
 	if s == nil {
