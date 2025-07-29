@@ -4567,3 +4567,312 @@ func TestRepository_UnmarshalJSON(t *testing.T) {
 		})
 	}
 }
+
+func TestRepositoriesService_ListRepositoryActivities(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/activity", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"per_page": "100",
+		})
+		fmt.Fprint(w, `[
+			{
+				"id": 123456789,
+				"node_id": "PSH_test123",
+				"before": "abc123def456",
+				"after": "def456ghi789",
+				"ref": "refs/heads/main",
+				"timestamp": "2023-01-01T12:00:00Z",
+				"activity_type": "push",
+				"actor": {
+					"login": "testuser1",
+					"id": 111111,
+					"node_id": "MDQ6VXNlcjExMTExMQ==",
+					"avatar_url": "https://avatars.githubusercontent.com/u/111111?v=4",
+					"gravatar_id": "",
+					"url": "https://api.github.com/users/testuser1",
+					"html_url": "https://github.com/testuser1",
+					"followers_url": "https://api.github.com/users/testuser1/followers",
+					"following_url": "https://api.github.com/users/testuser1/following{/other_user}",
+					"gists_url": "https://api.github.com/users/testuser1/gists{/gist_id}",
+					"starred_url": "https://api.github.com/users/testuser1/starred{/owner}{/repo}",
+					"subscriptions_url": "https://api.github.com/users/testuser1/subscriptions",
+					"organizations_url": "https://api.github.com/users/testuser1/orgs",
+					"repos_url": "https://api.github.com/users/testuser1/repos",
+					"events_url": "https://api.github.com/users/testuser1/events{/privacy}",
+					"received_events_url": "https://api.github.com/users/testuser1/received_events",
+					"type": "User",
+					"user_view_type": "public",
+					"site_admin": false
+				}
+			},
+			{
+				"id": 123456788,
+				"node_id": "PSH_test124",
+				"before": "def456ghi789",
+				"after": "ghi789jkl012",
+				"ref": "refs/heads/feature",
+				"timestamp": "2023-01-01T11:30:00Z",
+				"activity_type": "branch_deletion",
+				"actor": {
+					"login": "testuser2",
+					"id": 222222,
+					"node_id": "MDQ6VXNlcjIyMjIyMg==",
+					"avatar_url": "https://avatars.githubusercontent.com/u/222222?v=4",
+					"gravatar_id": "",
+					"url": "https://api.github.com/users/testuser2",
+					"html_url": "https://github.com/testuser2",
+					"followers_url": "https://api.github.com/users/testuser2/followers",
+					"following_url": "https://api.github.com/users/testuser2/following{/other_user}",
+					"gists_url": "https://api.github.com/users/testuser2/gists{/gist_id}",
+					"starred_url": "https://api.github.com/users/testuser2/starred{/owner}{/repo}",
+					"subscriptions_url": "https://api.github.com/users/testuser2/subscriptions",
+					"organizations_url": "https://api.github.com/users/testuser2/orgs",
+					"repos_url": "https://api.github.com/users/testuser2/repos",
+					"events_url": "https://api.github.com/users/testuser2/events{/privacy}",
+					"received_events_url": "https://api.github.com/users/testuser2/received_events",
+					"type": "User",
+					"user_view_type": "public",
+					"site_admin": false
+				}
+			}
+		]`)
+	})
+
+	opts := &ListRepositoryActivityOptions{PerPage: 100}
+	ctx := context.Background()
+	activities, _, err := client.Repositories.ListRepositoryActivities(ctx, "o", "r", opts)
+	if err != nil {
+		t.Errorf("Repositories.ListRepositoryActivities returned error: %v", err)
+	}
+
+	want := []*RepositoryActivity{
+		{
+			ID:           123456789,
+			NodeID:       "PSH_test123",
+			Before:       "abc123def456",
+			After:        "def456ghi789",
+			Ref:          "refs/heads/main",
+			Timestamp:    &Timestamp{Time: time.Date(2023, 1, 1, 12, 0, 0, 0, time.UTC)},
+			ActivityType: "push",
+			Actor: &RepositoryActor{
+				Login:             Ptr("testuser1"),
+				ID:                Ptr(int64(111111)),
+				NodeID:            Ptr("MDQ6VXNlcjExMTExMQ=="),
+				AvatarURL:         Ptr("https://avatars.githubusercontent.com/u/111111?v=4"),
+				GravatarID:        Ptr(""),
+				URL:               Ptr("https://api.github.com/users/testuser1"),
+				HTMLURL:           Ptr("https://github.com/testuser1"),
+				FollowersURL:      Ptr("https://api.github.com/users/testuser1/followers"),
+				FollowingURL:      Ptr("https://api.github.com/users/testuser1/following{/other_user}"),
+				GistsURL:          Ptr("https://api.github.com/users/testuser1/gists{/gist_id}"),
+				StarredURL:        Ptr("https://api.github.com/users/testuser1/starred{/owner}{/repo}"),
+				SubscriptionsURL:  Ptr("https://api.github.com/users/testuser1/subscriptions"),
+				OrganizationsURL:  Ptr("https://api.github.com/users/testuser1/orgs"),
+				ReposURL:          Ptr("https://api.github.com/users/testuser1/repos"),
+				EventsURL:         Ptr("https://api.github.com/users/testuser1/events{/privacy}"),
+				ReceivedEventsURL: Ptr("https://api.github.com/users/testuser1/received_events"),
+				Type:              Ptr("User"),
+				UserViewType:      Ptr("public"),
+				SiteAdmin:         Ptr(false),
+			},
+		},
+		{
+			ID:           123456788,
+			NodeID:       "PSH_test124",
+			Before:       "def456ghi789",
+			After:        "ghi789jkl012",
+			Ref:          "refs/heads/feature",
+			Timestamp:    &Timestamp{Time: time.Date(2023, 1, 1, 11, 30, 0, 0, time.UTC)},
+			ActivityType: "branch_deletion",
+			Actor: &RepositoryActor{
+				Login:             Ptr("testuser2"),
+				ID:                Ptr(int64(222222)),
+				NodeID:            Ptr("MDQ6VXNlcjIyMjIyMg=="),
+				AvatarURL:         Ptr("https://avatars.githubusercontent.com/u/222222?v=4"),
+				GravatarID:        Ptr(""),
+				URL:               Ptr("https://api.github.com/users/testuser2"),
+				HTMLURL:           Ptr("https://github.com/testuser2"),
+				FollowersURL:      Ptr("https://api.github.com/users/testuser2/followers"),
+				FollowingURL:      Ptr("https://api.github.com/users/testuser2/following{/other_user}"),
+				GistsURL:          Ptr("https://api.github.com/users/testuser2/gists{/gist_id}"),
+				StarredURL:        Ptr("https://api.github.com/users/testuser2/starred{/owner}{/repo}"),
+				SubscriptionsURL:  Ptr("https://api.github.com/users/testuser2/subscriptions"),
+				OrganizationsURL:  Ptr("https://api.github.com/users/testuser2/orgs"),
+				ReposURL:          Ptr("https://api.github.com/users/testuser2/repos"),
+				EventsURL:         Ptr("https://api.github.com/users/testuser2/events{/privacy}"),
+				ReceivedEventsURL: Ptr("https://api.github.com/users/testuser2/received_events"),
+				Type:              Ptr("User"),
+				UserViewType:      Ptr("public"),
+				SiteAdmin:         Ptr(false),
+			},
+		},
+	}
+
+	if !cmp.Equal(activities, want) {
+		t.Errorf("Repositories.ListRepositoryActivities returned %+v, want %+v", activities, want)
+	}
+
+	const methodName = "ListRepositoryActivities"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListRepositoryActivities(ctx, "\n", "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListRepositoryActivities(ctx, "o", "r", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_ListRepositoryActivities_withOptions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/activity", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"direction":     "desc",
+			"before":        "2023-01-01T12:00:00Z",
+			"after":         "2023-01-01T11:30:00Z",
+			"ref":           "refs/heads/main",
+			"actor":         "testuser1",
+			"time_period":   "day",
+			"activity_type": "push",
+			"per_page":      "50",
+		})
+		fmt.Fprint(w, `[
+			{
+				"id": 123456789,
+				"node_id": "PSH_test123",
+				"before": "abc123def456",
+				"after": "def456ghi789",
+				"ref": "refs/heads/main",
+				"timestamp": "2023-01-01T12:00:00Z",
+				"activity_type": "push",
+				"actor": {
+					"login": "testuser1",
+					"id": 111111,
+					"node_id": "MDQ6VXNlcjExMTExMQ==",
+					"avatar_url": "https://avatars.githubusercontent.com/u/111111?v=4",
+					"gravatar_id": "",
+					"url": "https://api.github.com/users/testuser1",
+					"html_url": "https://github.com/testuser1",
+					"followers_url": "https://api.github.com/users/testuser1/followers",
+					"following_url": "https://api.github.com/users/testuser1/following{/other_user}",
+					"gists_url": "https://api.github.com/users/testuser1/gists{/gist_id}",
+					"starred_url": "https://api.github.com/users/testuser1/starred{/owner}{/repo}",
+					"subscriptions_url": "https://api.github.com/users/testuser1/subscriptions",
+					"organizations_url": "https://api.github.com/users/testuser1/orgs",
+					"repos_url": "https://api.github.com/users/testuser1/repos",
+					"events_url": "https://api.github.com/users/testuser1/events{/privacy}",
+					"received_events_url": "https://api.github.com/users/testuser1/received_events",
+					"type": "User",
+					"user_view_type": "public",
+					"site_admin": false
+				}
+			}
+		]`)
+	})
+
+	opts := &ListRepositoryActivityOptions{
+		Direction:    "desc",
+		Before:       "2023-01-01T12:00:00Z",
+		After:        "2023-01-01T11:30:00Z",
+		Ref:          "refs/heads/main",
+		Actor:        "testuser1",
+		TimePeriod:   "day",
+		ActivityType: "push",
+		PerPage:      50,
+	}
+	ctx := context.Background()
+	activities, _, err := client.Repositories.ListRepositoryActivities(ctx, "o", "r", opts)
+	if err != nil {
+		t.Errorf("Repositories.ListRepositoryActivities returned error: %v", err)
+	}
+
+	want := []*RepositoryActivity{
+		{
+			ID:           123456789,
+			NodeID:       "PSH_test123",
+			Before:       "abc123def456",
+			After:        "def456ghi789",
+			Ref:          "refs/heads/main",
+			Timestamp:    &Timestamp{Time: time.Date(2023, 1, 1, 12, 0, 0, 0, time.UTC)},
+			ActivityType: "push",
+			Actor: &RepositoryActor{
+				Login:             Ptr("testuser1"),
+				ID:                Ptr(int64(111111)),
+				NodeID:            Ptr("MDQ6VXNlcjExMTExMQ=="),
+				AvatarURL:         Ptr("https://avatars.githubusercontent.com/u/111111?v=4"),
+				GravatarID:        Ptr(""),
+				URL:               Ptr("https://api.github.com/users/testuser1"),
+				HTMLURL:           Ptr("https://github.com/testuser1"),
+				FollowersURL:      Ptr("https://api.github.com/users/testuser1/followers"),
+				FollowingURL:      Ptr("https://api.github.com/users/testuser1/following{/other_user}"),
+				GistsURL:          Ptr("https://api.github.com/users/testuser1/gists{/gist_id}"),
+				StarredURL:        Ptr("https://api.github.com/users/testuser1/starred{/owner}{/repo}"),
+				SubscriptionsURL:  Ptr("https://api.github.com/users/testuser1/subscriptions"),
+				OrganizationsURL:  Ptr("https://api.github.com/users/testuser1/orgs"),
+				ReposURL:          Ptr("https://api.github.com/users/testuser1/repos"),
+				EventsURL:         Ptr("https://api.github.com/users/testuser1/events{/privacy}"),
+				ReceivedEventsURL: Ptr("https://api.github.com/users/testuser1/received_events"),
+				Type:              Ptr("User"),
+				UserViewType:      Ptr("public"),
+				SiteAdmin:         Ptr(false),
+			},
+		},
+	}
+
+	if !cmp.Equal(activities, want) {
+		t.Errorf("Repositories.ListRepositoryActivities returned %+v, want %+v", activities, want)
+	}
+}
+
+func TestRepositoriesService_ListRepositoryActivities_emptyResponse(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/activity", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[]`)
+	})
+
+	ctx := context.Background()
+	activities, _, err := client.Repositories.ListRepositoryActivities(ctx, "o", "r", nil)
+	if err != nil {
+		t.Errorf("Repositories.ListRepositoryActivities returned error: %v", err)
+	}
+
+	want := []*RepositoryActivity{}
+	if !cmp.Equal(activities, want) {
+		t.Errorf("Repositories.ListRepositoryActivities returned %+v, want %+v", activities, want)
+	}
+}
+
+func TestRepositoriesService_ListRepositoryActivities_invalidOwner(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListRepositoryActivities(ctx, "%", "r", nil)
+	if err == nil {
+		t.Error("Expected error to be returned")
+	}
+}
+
+func TestRepositoriesService_ListRepositoryActivities_invalidRepo(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListRepositoryActivities(ctx, "o", "%", nil)
+	if err == nil {
+		t.Error("Expected error to be returned")
+	}
+}
