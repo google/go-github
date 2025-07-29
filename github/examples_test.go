@@ -173,3 +173,19 @@ func ExampleTeamsService_ListTeams() {
 
 	fmt.Printf("Team %q was not found\n", teamName)
 }
+
+func ExampleUsersService_ListUserSocialAccounts() {
+	client := github.NewClient(nil)
+	ctx := context.Background()
+	opts := &github.ListOptions{}
+	for {
+		accounts, resp, err := client.Users.ListUserSocialAccounts(ctx, "shreyjain13", opts)
+		if err != nil {
+			log.Fatalf("Failed to list user social accounts: %v", err)
+		}
+		if resp.NextPage == 0 || len(accounts) == 0 {
+			break
+		}
+		opts.Page = resp.NextPage
+	}
+}

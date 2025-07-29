@@ -33171,6 +33171,28 @@ func TestSignatureVerification_GetVerified(tt *testing.T) {
 	s.GetVerified()
 }
 
+func TestSocialAccount_GetProvider(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SocialAccount{Provider: &zeroValue}
+	s.GetProvider()
+	s = &SocialAccount{}
+	s.GetProvider()
+	s = nil
+	s.GetProvider()
+}
+
+func TestSocialAccount_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SocialAccount{URL: &zeroValue}
+	s.GetURL()
+	s = &SocialAccount{}
+	s.GetURL()
+	s = nil
+	s.GetURL()
+}
+
 func TestSource_GetActor(tt *testing.T) {
 	tt.Parallel()
 	s := &Source{}
