@@ -2439,9 +2439,9 @@ func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, own
 	return privateReporting.Enabled, resp, err
 }
 
-// RepositoryActivityOptions specifies the optional parameters to the
+// ListRepositoryActivityOptions specifies the optional parameters to the
 // RepositoriesService.ListRepositoryActivities method.
-type RepositoryActivityOptions struct {
+type ListRepositoryActivityOptions struct {
 	// The direction to sort the results by.
 	// Default: desc
 	// Can be one of: asc, desc
@@ -2514,7 +2514,7 @@ type RepositoryActivity struct {
 // GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-activities
 //
 //meta:operation GET /repos/{owner}/{repo}/activity
-func (s *RepositoriesService) ListRepositoryActivities(ctx context.Context, owner, repo string, opts *RepositoryActivityOptions) ([]*RepositoryActivity, *Response, error) {
+func (s *RepositoriesService) ListRepositoryActivities(ctx context.Context, owner, repo string, opts *ListRepositoryActivityOptions) ([]*RepositoryActivity, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/activity", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {

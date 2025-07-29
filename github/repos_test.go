@@ -4641,7 +4641,7 @@ func TestRepositoriesService_ListRepositoryActivities(t *testing.T) {
 		]`)
 	})
 
-	opts := &RepositoryActivityOptions{PerPage: 100}
+	opts := &ListRepositoryActivityOptions{PerPage: 100}
 	ctx := context.Background()
 	activities, _, err := client.Repositories.ListRepositoryActivities(ctx, "o", "r", opts)
 	if err != nil {
@@ -4780,7 +4780,7 @@ func TestRepositoriesService_ListRepositoryActivities_withOptions(t *testing.T) 
 		]`)
 	})
 
-	opts := &RepositoryActivityOptions{
+	opts := &ListRepositoryActivityOptions{
 		Direction:    "desc",
 		Before:       "2023-01-01T12:00:00Z",
 		After:        "2023-01-01T11:30:00Z",
