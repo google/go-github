@@ -22422,6 +22422,174 @@ func (r *RepositoryActiveCommitters) GetName() string {
 	return *r.Name
 }
 
+// GetActor returns the Actor field.
+func (r *RepositoryActivity) GetActor() *RepositoryActor {
+	if r == nil {
+		return nil
+	}
+	return r.Actor
+}
+
+// GetTimestamp returns the Timestamp field if it's non-nil, zero value otherwise.
+func (r *RepositoryActivity) GetTimestamp() Timestamp {
+	if r == nil || r.Timestamp == nil {
+		return Timestamp{}
+	}
+	return *r.Timestamp
+}
+
+// GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetAvatarURL() string {
+	if r == nil || r.AvatarURL == nil {
+		return ""
+	}
+	return *r.AvatarURL
+}
+
+// GetEventsURL returns the EventsURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetEventsURL() string {
+	if r == nil || r.EventsURL == nil {
+		return ""
+	}
+	return *r.EventsURL
+}
+
+// GetFollowersURL returns the FollowersURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetFollowersURL() string {
+	if r == nil || r.FollowersURL == nil {
+		return ""
+	}
+	return *r.FollowersURL
+}
+
+// GetFollowingURL returns the FollowingURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetFollowingURL() string {
+	if r == nil || r.FollowingURL == nil {
+		return ""
+	}
+	return *r.FollowingURL
+}
+
+// GetGistsURL returns the GistsURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetGistsURL() string {
+	if r == nil || r.GistsURL == nil {
+		return ""
+	}
+	return *r.GistsURL
+}
+
+// GetGravatarID returns the GravatarID field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetGravatarID() string {
+	if r == nil || r.GravatarID == nil {
+		return ""
+	}
+	return *r.GravatarID
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetHTMLURL() string {
+	if r == nil || r.HTMLURL == nil {
+		return ""
+	}
+	return *r.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetLogin returns the Login field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetLogin() string {
+	if r == nil || r.Login == nil {
+		return ""
+	}
+	return *r.Login
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
+// GetOrganizationsURL returns the OrganizationsURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetOrganizationsURL() string {
+	if r == nil || r.OrganizationsURL == nil {
+		return ""
+	}
+	return *r.OrganizationsURL
+}
+
+// GetReceivedEventsURL returns the ReceivedEventsURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetReceivedEventsURL() string {
+	if r == nil || r.ReceivedEventsURL == nil {
+		return ""
+	}
+	return *r.ReceivedEventsURL
+}
+
+// GetReposURL returns the ReposURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetReposURL() string {
+	if r == nil || r.ReposURL == nil {
+		return ""
+	}
+	return *r.ReposURL
+}
+
+// GetSiteAdmin returns the SiteAdmin field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetSiteAdmin() bool {
+	if r == nil || r.SiteAdmin == nil {
+		return false
+	}
+	return *r.SiteAdmin
+}
+
+// GetStarredURL returns the StarredURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetStarredURL() string {
+	if r == nil || r.StarredURL == nil {
+		return ""
+	}
+	return *r.StarredURL
+}
+
+// GetSubscriptionsURL returns the SubscriptionsURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetSubscriptionsURL() string {
+	if r == nil || r.SubscriptionsURL == nil {
+		return ""
+	}
+	return *r.SubscriptionsURL
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetType() string {
+	if r == nil || r.Type == nil {
+		return ""
+	}
+	return *r.Type
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetURL() string {
+	if r == nil || r.URL == nil {
+		return ""
+	}
+	return *r.URL
+}
+
+// GetUserViewType returns the UserViewType field if it's non-nil, zero value otherwise.
+func (r *RepositoryActor) GetUserViewType() string {
+	if r == nil || r.UserViewType == nil {
+		return ""
+	}
+	return *r.UserViewType
+}
+
 // GetConfiguration returns the Configuration field.
 func (r *RepositoryCodeSecurityConfiguration) GetConfiguration() *CodeSecurityConfiguration {
 	if r == nil {
