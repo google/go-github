@@ -887,7 +887,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 
 			mux.HandleFunc("/repos/o/r/tarball/yo", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
 			ctx := context.Background()
 			url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{Ref: "yo"}, 1)
@@ -897,7 +897,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 			if resp.StatusCode != http.StatusFound {
 				t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusFound)
 			}
-			want := "http://github.com/a"
+			want := "https://github.com/a"
 			if url.String() != want {
 				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
 			}
@@ -944,7 +944,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRed
 
 			mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
+				http.Redirect(w, r, "https://github.com/a", http.StatusMovedPermanently)
 			})
 			ctx := context.Background()
 			_, resp, _ := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 0)
@@ -985,7 +985,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 			})
 			mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
 			ctx := context.Background()
 			url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 1)
@@ -995,7 +995,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 			if resp.StatusCode != http.StatusFound {
 				t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusFound)
 			}
-			want := "http://github.com/a"
+			want := "https://github.com/a"
 			if url.String() != want {
 				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
 			}

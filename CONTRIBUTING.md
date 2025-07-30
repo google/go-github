@@ -85,7 +85,7 @@ file.
      [REVIEWERS][] takes a look by mentioning them in a PR comment.
 
 [forking]: https://help.github.com/articles/fork-a-repo
-[well-formed commit messages]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+[well-formed commit messages]: https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 [pull request]: https://help.github.com/articles/creating-a-pull-request
 [monitored by codecov.io]: https://codecov.io/gh/google/go-github
 [REVIEWERS]: ./REVIEWERS
