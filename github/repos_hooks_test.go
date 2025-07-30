@@ -580,7 +580,7 @@ func TestRepositoriesService_Subscribe(t *testing.T) {
 		testFormValues(t, r, values{
 			"hub.mode":     "subscribe",
 			"hub.topic":    "https://github.com/o/r/events/push",
-			"hub.callback": "http://postbin.org/123",
+			"hub.callback": "https://postbin.org/123",
 			"hub.secret":   "test secret",
 		})
 	})
@@ -591,7 +591,7 @@ func TestRepositoriesService_Subscribe(t *testing.T) {
 		"o",
 		"r",
 		"push",
-		"http://postbin.org/123",
+		"https://postbin.org/123",
 		[]byte("test secret"),
 	)
 	if err != nil {
@@ -599,7 +599,7 @@ func TestRepositoriesService_Subscribe(t *testing.T) {
 	}
 
 	testNewRequestAndDoFailure(t, "Subscribe", client, func() (*Response, error) {
-		return client.Repositories.Subscribe(ctx, "o", "r", "push", "http://postbin.org/123", nil)
+		return client.Repositories.Subscribe(ctx, "o", "r", "push", "https://postbin.org/123", nil)
 	})
 }
 
@@ -613,7 +613,7 @@ func TestRepositoriesService_Unsubscribe(t *testing.T) {
 		testFormValues(t, r, values{
 			"hub.mode":     "unsubscribe",
 			"hub.topic":    "https://github.com/o/r/events/push",
-			"hub.callback": "http://postbin.org/123",
+			"hub.callback": "https://postbin.org/123",
 			"hub.secret":   "test secret",
 		})
 	})
@@ -624,7 +624,7 @@ func TestRepositoriesService_Unsubscribe(t *testing.T) {
 		"o",
 		"r",
 		"push",
-		"http://postbin.org/123",
+		"https://postbin.org/123",
 		[]byte("test secret"),
 	)
 	if err != nil {
@@ -632,6 +632,6 @@ func TestRepositoriesService_Unsubscribe(t *testing.T) {
 	}
 
 	testNewRequestAndDoFailure(t, "Unsubscribe", client, func() (*Response, error) {
-		return client.Repositories.Unsubscribe(ctx, "o", "r", "push", "http://postbin.org/123", nil)
+		return client.Repositories.Unsubscribe(ctx, "o", "r", "push", "https://postbin.org/123", nil)
 	})
 }

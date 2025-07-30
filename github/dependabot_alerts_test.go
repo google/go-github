@@ -309,7 +309,7 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
 				URL: Ptr("https://www.djangoproject.com/weblog/2018/feb/01/security-releases/"),
 			},
 			{
-				URL: Ptr("http://www.securitytracker.com/id/1040422"),
+				URL: Ptr("https://www.securitytracker.com/id/1040422"),
 			},
 		},
 		PublishedAt: &Timestamp{publishedAt},
@@ -385,7 +385,7 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
           "url": "https://www.djangoproject.com/weblog/2018/feb/01/security-releases/"
         },
         {
-          "url": "http://www.securitytracker.com/id/1040422"
+          "url": "https://www.securitytracker.com/id/1040422"
         }
       ],
       "published_at": "2018-10-03T21:13:54Z",

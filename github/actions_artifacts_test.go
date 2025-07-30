@@ -456,7 +456,7 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 			})
 			mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				http.Redirect(w, r, "http://github.com/artifact", http.StatusFound)
+				http.Redirect(w, r, "https://github.com/artifact", http.StatusFound)
 			})
 
 			ctx := context.Background()
@@ -467,7 +467,7 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 			if resp.StatusCode != http.StatusFound {
 				t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusFound)
 			}
-			want := "http://github.com/artifact"
+			want := "https://github.com/artifact"
 			if url.String() != want {
 				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
 			}

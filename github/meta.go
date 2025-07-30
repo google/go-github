@@ -160,7 +160,7 @@ func (c *Client) Octocat(ctx context.Context, message string) (string, *Response
 
 // Zen returns a random line from The Zen of GitHub.
 //
-// See also: http://warpspire.com/posts/taste/
+// See also: https://warpspire.com/posts/taste/
 //
 // GitHub API docs: https://docs.github.com/rest/meta/meta#get-the-zen-of-github
 //
