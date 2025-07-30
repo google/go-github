@@ -213,7 +213,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
 
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
 
 			ctx := context.Background()
@@ -224,7 +224,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
 			if resp.StatusCode != http.StatusFound {
 				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
 			}
-			want := "http://github.com/a"
+			want := "https://github.com/a"
 			if url.String() != want {
 				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url.String(), want)
 			}
@@ -262,7 +262,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_dontFol
 
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
+				http.Redirect(w, r, "https://github.com/a", http.StatusMovedPermanently)
 			})
 
 			ctx := context.Background()
@@ -305,7 +305,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followR
 
 			mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
 
 			ctx := context.Background()
@@ -318,7 +318,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followR
 				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
 			}
 
-			want := "http://github.com/a"
+			want := "https://github.com/a"
 			if url.String() != want {
 				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url.String(), want)
 			}
@@ -524,7 +524,7 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
 
 			ctx := context.Background()
@@ -535,7 +535,7 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 			if resp.StatusCode != http.StatusFound {
 				t.Errorf("Actions.GetWorkflowRunLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
 			}
-			want := "http://github.com/a"
+			want := "https://github.com/a"
 			if url.String() != want {
 				t.Errorf("Actions.GetWorkflowRunLogs returned %+v, want %+v", url.String(), want)
 			}
@@ -573,7 +573,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedi
 
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
+				http.Redirect(w, r, "https://github.com/a", http.StatusMovedPermanently)
 			})
 
 			ctx := context.Background()
@@ -616,7 +616,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 
 			mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
 
 			ctx := context.Background()
@@ -629,7 +629,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 				t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
 			}
 
-			want := "http://github.com/a"
+			want := "https://github.com/a"
 			if url.String() != want {
 				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
 			}
