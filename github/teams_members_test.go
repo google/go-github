@@ -807,7 +807,11 @@ func TestTeamAddTeamMembershipOptions_Marshal(t *testing.T) {
 
 func TestTeamListTeamMembersOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &TeamListTeamMembersOptions{}, "{}")
+	testJSONMarshal(t, &TeamListTeamMembersOptions{}, `{
+		"Page": 0,
+		"PerPage": 0,
+		"Role": ""
+	}`)
 
 	u := &TeamListTeamMembersOptions{
 		Role: "role",
@@ -818,7 +822,7 @@ func TestTeamListTeamMembersOptions_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"role": "role",
+		"Role": "role",
 		"Page": 1,
 		"PerPage": 2
 	}`

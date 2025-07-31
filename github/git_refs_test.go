@@ -694,7 +694,11 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 
 func TestReference_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Reference{}, "{}")
+	testJSONMarshal(t, &Reference{}, `{
+		"object": null,
+		"ref": null,
+		"url": null
+	}`)
 
 	u := &Reference{
 		Ref: Ptr("ref"),
@@ -723,7 +727,11 @@ func TestReference_Marshal(t *testing.T) {
 
 func TestGitObject_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &GitObject{}, "{}")
+	testJSONMarshal(t, &GitObject{}, `{
+		"sha": null,
+		"type": null,
+		"url": null
+	}`)
 
 	u := &GitObject{
 		Type: Ptr("type"),
@@ -742,7 +750,10 @@ func TestGitObject_Marshal(t *testing.T) {
 
 func TestCreateRefRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &createRefRequest{}, "{}")
+	testJSONMarshal(t, &createRefRequest{}, `{
+		"ref": null,
+		"sha": null
+	}`)
 
 	u := &createRefRequest{
 		Ref: Ptr("ref"),
@@ -759,7 +770,7 @@ func TestCreateRefRequest_Marshal(t *testing.T) {
 
 func TestUpdateRefRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &updateRefRequest{}, "{}")
+	testJSONMarshal(t, &updateRefRequest{}, `{"force": null, "sha": null}`)
 
 	u := &updateRefRequest{
 		SHA:   Ptr("sha"),

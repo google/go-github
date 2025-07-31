@@ -889,7 +889,11 @@ func TestActionsService_ReviewCustomDeploymentProtectionRule(t *testing.T) {
 
 func TestReviewCustomDeploymentProtectionRuleRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ReviewCustomDeploymentProtectionRuleRequest{}, "{}")
+	testJSONMarshal(t, &ReviewCustomDeploymentProtectionRuleRequest{}, `{
+		"comment": "",
+		"environment_name": "",
+		"state": ""
+	}`)
 
 	r := &ReviewCustomDeploymentProtectionRuleRequest{
 		EnvironmentName: "e",
