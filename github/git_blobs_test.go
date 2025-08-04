@@ -109,7 +109,7 @@ func TestGitService_CreateBlob(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Blob{
+	input := Blob{
 		SHA:      Ptr("s"),
 		Content:  Ptr("blob content"),
 		Encoding: Ptr("utf-8"),
@@ -123,8 +123,8 @@ func TestGitService_CreateBlob(t *testing.T) {
 		testMethod(t, r, "POST")
 
 		want := input
-		if !cmp.Equal(v, want) {
-			t.Errorf("Git.CreateBlob request body: %+v, want %+v", v, want)
+		if !cmp.Equal(*v, want) {
+			t.Errorf("Git.CreateBlob request body: %+v, want %+v", *v, want)
 		}
 
 		fmt.Fprint(w, `{
@@ -143,8 +143,8 @@ func TestGitService_CreateBlob(t *testing.T) {
 
 	want := input
 
-	if !cmp.Equal(*blob, *want) {
-		t.Errorf("Git.CreateBlob returned %+v, want %+v", *blob, *want)
+	if !cmp.Equal(*blob, want) {
+		t.Errorf("Git.CreateBlob returned %+v, want %+v", *blob, want)
 	}
 
 	const methodName = "CreateBlob"
@@ -167,7 +167,7 @@ func TestGitService_CreateBlob_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
-	_, _, err := client.Git.CreateBlob(ctx, "%", "%", &Blob{})
+	_, _, err := client.Git.CreateBlob(ctx, "%", "%", Blob{})
 	testURLParseError(t, err)
 }
 

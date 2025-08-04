@@ -6030,6 +6030,14 @@ func (c *CreateRunnerGroupRequest) GetVisibility() string {
 	return *c.Visibility
 }
 
+// GetTagger returns the Tagger field.
+func (c *CreateTag) GetTagger() *CommitAuthor {
+	if c == nil {
+		return nil
+	}
+	return c.Tagger
+}
+
 // GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
 func (c *CreateUpdateEnvironment) GetCanAdminsBypass() bool {
 	if c == nil || c.CanAdminsBypass == nil {
@@ -27924,6 +27932,14 @@ func (u *UpdateEnterpriseRunnerGroupRequest) GetVisibility() string {
 		return ""
 	}
 	return *u.Visibility
+}
+
+// GetForce returns the Force field if it's non-nil, zero value otherwise.
+func (u *UpdateRef) GetForce() bool {
+	if u == nil || u.Force == nil {
+		return false
+	}
+	return *u.Force
 }
 
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.

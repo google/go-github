@@ -126,10 +126,7 @@ type CreateCommitOptions struct {
 // GitHub API docs: https://docs.github.com/rest/git/commits#create-a-commit
 //
 //meta:operation POST /repos/{owner}/{repo}/git/commits
-func (s *GitService) CreateCommit(ctx context.Context, owner, repo string, commit *Commit, opts *CreateCommitOptions) (*Commit, *Response, error) {
-	if commit == nil {
-		return nil, nil, errors.New("commit must be provided")
-	}
+func (s *GitService) CreateCommit(ctx context.Context, owner, repo string, commit Commit, opts *CreateCommitOptions) (*Commit, *Response, error) {
 	if opts == nil {
 		opts = &CreateCommitOptions{}
 	}
