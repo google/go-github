@@ -54,25 +54,26 @@ func TestGitService_CreateTag(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &createTagRequest{Tag: Ptr("t"), Object: Ptr("s")}
+	inputTag := CreateTag{
+		Tag:     "t",
+		Object:  "s",
+		Type:    "commit",
+		Message: "test message",
+	}
 
 	mux.HandleFunc("/repos/o/r/git/tags", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createTagRequest)
+		v := new(CreateTag)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
+		if !cmp.Equal(*v, inputTag) {
+			t.Errorf("Request body = %+v, want %+v", *v, inputTag)
 		}
 
 		fmt.Fprint(w, `{"tag": "t"}`)
 	})
 
 	ctx := context.Background()
-	inputTag := &Tag{
-		Tag:    input.Tag,
-		Object: &GitObject{SHA: input.Object},
-	}
 	tag, _, err := client.Git.CreateTag(ctx, "o", "r", inputTag)
 	if err != nil {
 		t.Errorf("Git.CreateTag returned error: %v", err)
@@ -84,10 +85,6 @@ func TestGitService_CreateTag(t *testing.T) {
 	}
 
 	const methodName = "CreateTag"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.CreateTag(ctx, "o", "r", nil)
-		return err
-	})
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Git.CreateTag(ctx, "\n", "\n", inputTag)
 		return err
@@ -159,15 +156,15 @@ func TestTag_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestCreateTagRequest_Marshal(t *testing.T) {
+func TestCreateTag_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &createTagRequest{}, "{}")
+	testJSONMarshal(t, CreateTag{}, "{}")
 
-	u := &createTagRequest{
-		Tag:     Ptr("tag"),
-		Message: Ptr("msg"),
-		Object:  Ptr("obj"),
-		Type:    Ptr("type"),
+	u := CreateTag{
+		Tag:     "tag",
+		Message: "msg",
+		Object:  "obj",
+		Type:    "type",
 		Tagger: &CommitAuthor{
 			Date:  &Timestamp{referenceTime},
 			Name:  Ptr("name"),

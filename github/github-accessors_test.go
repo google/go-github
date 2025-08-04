@@ -7864,6 +7864,14 @@ func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	c.GetVisibility()
 }
 
+func TestCreateTag_GetTagger(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateTag{}
+	c.GetTagger()
+	c = nil
+	c.GetTagger()
+}
+
 func TestCreateUpdateEnvironment_GetCanAdminsBypass(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -35926,6 +35934,17 @@ func TestUpdateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()
+}
+
+func TestUpdateRef_GetForce(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateRef{Force: &zeroValue}
+	u.GetForce()
+	u = &UpdateRef{}
+	u.GetForce()
+	u = nil
+	u.GetForce()
 }
 
 func TestUpdateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {

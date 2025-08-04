@@ -386,18 +386,18 @@ func TestGitService_CreateRef(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	args := &createRefRequest{
-		Ref: Ptr("refs/heads/b"),
-		SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+	args := CreateRef{
+		Ref: "refs/heads/b",
+		SHA: "aa218f56b14c9653891f9e74264a383fa43fefbd",
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createRefRequest)
+		v := new(CreateRef)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, args) {
-			t.Errorf("Request body = %+v, want %+v", v, args)
+		if !cmp.Equal(*v, args) {
+			t.Errorf("Request body = %+v, want %+v", *v, args)
 		}
 		fmt.Fprint(w, `
 		  {
@@ -412,11 +412,9 @@ func TestGitService_CreateRef(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ref, _, err := client.Git.CreateRef(ctx, "o", "r", &Reference{
-		Ref: Ptr("refs/heads/b"),
-		Object: &GitObject{
-			SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-		},
+	ref, _, err := client.Git.CreateRef(ctx, "o", "r", CreateRef{
+		Ref: "refs/heads/b",
+		SHA: "aa218f56b14c9653891f9e74264a383fa43fefbd",
 	})
 	if err != nil {
 		t.Errorf("Git.CreateRef returned error: %v", err)
@@ -436,11 +434,9 @@ func TestGitService_CreateRef(t *testing.T) {
 	}
 
 	// without 'refs/' prefix
-	_, _, err = client.Git.CreateRef(ctx, "o", "r", &Reference{
-		Ref: Ptr("heads/b"),
-		Object: &GitObject{
-			SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-		},
+	_, _, err = client.Git.CreateRef(ctx, "o", "r", CreateRef{
+		Ref: "heads/b",
+		SHA: "aa218f56b14c9653891f9e74264a383fa43fefbd",
 	})
 	if err != nil {
 		t.Errorf("Git.CreateRef returned error: %v", err)
@@ -448,29 +444,21 @@ func TestGitService_CreateRef(t *testing.T) {
 
 	const methodName = "CreateRef"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.CreateRef(ctx, "o", "r", nil)
+		_, _, err = client.Git.CreateRef(ctx, "o", "r", CreateRef{Ref: ""})
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.CreateRef(ctx, "o", "r", &Reference{Ref: nil})
-		return err
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.CreateRef(ctx, "\n", "\n", &Reference{
-			Ref: Ptr("refs/heads/b"),
-			Object: &GitObject{
-				SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-			},
+		_, _, err = client.Git.CreateRef(ctx, "\n", "\n", CreateRef{
+			Ref: "refs/heads/b",
+			SHA: "aa218f56b14c9653891f9e74264a383fa43fefbd",
 		})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Git.CreateRef(ctx, "o", "r", &Reference{
-			Ref: Ptr("refs/heads/b"),
-			Object: &GitObject{
-				SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-			},
+		got, resp, err := client.Git.CreateRef(ctx, "o", "r", CreateRef{
+			Ref: "refs/heads/b",
+			SHA: "aa218f56b14c9653891f9e74264a383fa43fefbd",
 		})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -483,18 +471,18 @@ func TestGitService_UpdateRef(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	args := &updateRefRequest{
-		SHA:   Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+	args := UpdateRef{
+		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
 		Force: Ptr(true),
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
-		v := new(updateRefRequest)
+		v := new(UpdateRef)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, args) {
-			t.Errorf("Request body = %+v, want %+v", v, args)
+		if !cmp.Equal(*v, args) {
+			t.Errorf("Request body = %+v, want %+v", *v, args)
 		}
 		fmt.Fprint(w, `
 		  {
@@ -509,10 +497,10 @@ func TestGitService_UpdateRef(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", &Reference{
-		Ref:    Ptr("refs/heads/b"),
-		Object: &GitObject{SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd")},
-	}, true)
+	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", "refs/heads/b", UpdateRef{
+		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
+		Force: Ptr(true),
+	})
 	if err != nil {
 		t.Errorf("Git.UpdateRef returned error: %v", err)
 	}
@@ -531,36 +519,36 @@ func TestGitService_UpdateRef(t *testing.T) {
 	}
 
 	// without 'refs/' prefix
-	_, _, err = client.Git.UpdateRef(ctx, "o", "r", &Reference{
-		Ref:    Ptr("heads/b"),
-		Object: &GitObject{SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd")},
-	}, true)
+	_, _, err = client.Git.UpdateRef(ctx, "o", "r", "heads/b", UpdateRef{
+		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
+		Force: Ptr(true),
+	})
 	if err != nil {
 		t.Errorf("Git.UpdateRef returned error: %v", err)
 	}
 
 	const methodName = "UpdateRef"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.UpdateRef(ctx, "o", "r", nil, true)
+		_, _, err = client.Git.UpdateRef(ctx, "o", "r", "", UpdateRef{SHA: "aa218f56b14c9653891f9e74264a383fa43fefbd"})
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.UpdateRef(ctx, "o", "r", &Reference{Ref: nil}, true)
+		_, _, err = client.Git.UpdateRef(ctx, "o", "r", "refs/heads/b", UpdateRef{SHA: ""})
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.UpdateRef(ctx, "\n", "\n", &Reference{
-			Ref:    Ptr("refs/heads/b"),
-			Object: &GitObject{SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd")},
-		}, true)
+		_, _, err = client.Git.UpdateRef(ctx, "\n", "\n", "refs/heads/b", UpdateRef{
+			SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
+			Force: Ptr(true),
+		})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Git.UpdateRef(ctx, "o", "r", &Reference{
-			Ref:    Ptr("refs/heads/b"),
-			Object: &GitObject{SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd")},
-		}, true)
+		got, resp, err := client.Git.UpdateRef(ctx, "o", "r", "refs/heads/b", UpdateRef{
+			SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
+			Force: Ptr(true),
+		})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -644,18 +632,18 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	args := &updateRefRequest{
-		SHA:   Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+	args := UpdateRef{
+		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
 		Force: Ptr(true),
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b#1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(updateRefRequest)
+		v := new(UpdateRef)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, args) {
-			t.Errorf("Request body = %+v, want %+v", v, args)
+		if !cmp.Equal(*v, args) {
+			t.Errorf("Request body = %+v, want %+v", *v, args)
 		}
 		fmt.Fprint(w, `
 		  {
@@ -670,10 +658,10 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", &Reference{
-		Ref:    Ptr("refs/heads/b#1"),
-		Object: &GitObject{SHA: Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd")},
-	}, true)
+	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", "refs/heads/b#1", UpdateRef{
+		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
+		Force: Ptr(true),
+	})
 	if err != nil {
 		t.Errorf("Git.UpdateRef returned error: %v", err)
 	}
@@ -740,13 +728,13 @@ func TestGitObject_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestCreateRefRequest_Marshal(t *testing.T) {
+func TestCreateRef_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &createRefRequest{}, "{}")
+	testJSONMarshal(t, CreateRef{}, `{"ref":"","sha":""}`)
 
-	u := &createRefRequest{
-		Ref: Ptr("ref"),
-		SHA: Ptr("sha"),
+	u := CreateRef{
+		Ref: "ref",
+		SHA: "sha",
 	}
 
 	want := `{
@@ -757,12 +745,12 @@ func TestCreateRefRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestUpdateRefRequest_Marshal(t *testing.T) {
+func TestUpdateRef_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &updateRefRequest{}, "{}")
+	testJSONMarshal(t, UpdateRef{}, `{"sha":""}`)
 
-	u := &updateRefRequest{
-		SHA:   Ptr("sha"),
+	u := UpdateRef{
+		SHA:   "sha",
 		Force: Ptr(true),
 	}
 

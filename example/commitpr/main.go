@@ -81,7 +81,7 @@ func getRef() (ref *github.Reference, err error) {
 	if baseRef, _, err = client.Git.GetRef(ctx, *sourceOwner, *sourceRepo, branchRef(*baseBranch)); err != nil {
 		return nil, err
 	}
-	newRef := &github.Reference{Ref: github.Ptr(branchRef(*commitBranch)), Object: &github.GitObject{SHA: baseRef.Object.SHA}}
+	newRef := github.CreateRef{Ref: branchRef(*commitBranch), SHA: *baseRef.Object.SHA}
 	ref, _, err = client.Git.CreateRef(ctx, *sourceOwner, *sourceRepo, newRef)
 	return ref, err
 }
@@ -143,7 +143,7 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 	// Create the commit using the tree.
 	date := time.Now()
 	author := &github.CommitAuthor{Date: &github.Timestamp{Time: date}, Name: authorName, Email: authorEmail}
-	commit := &github.Commit{Author: author, Message: commitMessage, Tree: tree, Parents: []*github.Commit{parent.Commit}}
+	commit := github.Commit{Author: author, Message: commitMessage, Tree: tree, Parents: []*github.Commit{parent.Commit}}
 	opts := github.CreateCommitOptions{}
 	if *privateKey != "" {
 		armoredBlock, e := os.ReadFile(*privateKey)
@@ -169,7 +169,10 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 
 	// Attach the commit to the master branch.
 	ref.Object.SHA = newCommit.SHA
-	_, _, err = client.Git.UpdateRef(ctx, *sourceOwner, *sourceRepo, ref, false)
+	_, _, err = client.Git.UpdateRef(ctx, *sourceOwner, *sourceRepo, *ref.Ref, github.UpdateRef{
+		SHA:   *newCommit.SHA,
+		Force: github.Ptr(false),
+	})
 	return err
 }
 

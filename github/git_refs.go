@@ -37,16 +37,16 @@ func (o GitObject) String() string {
 	return Stringify(o)
 }
 
-// createRefRequest represents the payload for creating a reference.
-type createRefRequest struct {
-	Ref *string `json:"ref"`
-	SHA *string `json:"sha"`
+// CreateRef represents the payload for creating a reference.
+type CreateRef struct {
+	Ref string `json:"ref"`
+	SHA string `json:"sha"`
 }
 
-// updateRefRequest represents the payload for updating a reference.
-type updateRefRequest struct {
-	SHA   *string `json:"sha"`
-	Force *bool   `json:"force"`
+// UpdateRef represents the payload for updating a reference.
+type UpdateRef struct {
+	SHA   string `json:"sha"`
+	Force *bool  `json:"force,omitempty"`
 }
 
 // GetRef fetches a single reference in a repository.
@@ -127,20 +127,20 @@ func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo string, o
 // GitHub API docs: https://docs.github.com/rest/git/refs#create-a-reference
 //
 //meta:operation POST /repos/{owner}/{repo}/git/refs
-func (s *GitService) CreateRef(ctx context.Context, owner, repo string, ref *Reference) (*Reference, *Response, error) {
-	if ref == nil {
-		return nil, nil, errors.New("reference must be provided")
-	}
-	if ref.Ref == nil {
+func (s *GitService) CreateRef(ctx context.Context, owner, repo string, ref CreateRef) (*Reference, *Response, error) {
+	if ref.Ref == "" {
 		return nil, nil, errors.New("ref must be provided")
 	}
 
+	if ref.SHA == "" {
+		return nil, nil, errors.New("sha must be provided")
+	}
+
+	// ensure the 'refs/' prefix is present
+	ref.Ref = "refs/" + strings.TrimPrefix(ref.Ref, "refs/")
+
 	u := fmt.Sprintf("repos/%v/%v/git/refs", owner, repo)
-	req, err := s.client.NewRequest("POST", u, &createRefRequest{
-		// back-compat with previous behavior that didn't require 'refs/' prefix
-		Ref: Ptr("refs/" + strings.TrimPrefix(*ref.Ref, "refs/")),
-		SHA: ref.Object.SHA,
-	})
+	req, err := s.client.NewRequest("POST", u, ref)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -159,20 +159,18 @@ func (s *GitService) CreateRef(ctx context.Context, owner, repo string, ref *Ref
 // GitHub API docs: https://docs.github.com/rest/git/refs#update-a-reference
 //
 //meta:operation PATCH /repos/{owner}/{repo}/git/refs/{ref}
-func (s *GitService) UpdateRef(ctx context.Context, owner, repo string, ref *Reference, force bool) (*Reference, *Response, error) {
-	if ref == nil {
-		return nil, nil, errors.New("reference must be provided")
-	}
-	if ref.Ref == nil {
+func (s *GitService) UpdateRef(ctx context.Context, owner, repo, ref string, updateRef UpdateRef) (*Reference, *Response, error) {
+	if ref == "" {
 		return nil, nil, errors.New("ref must be provided")
 	}
 
-	refPath := strings.TrimPrefix(*ref.Ref, "refs/")
+	if updateRef.SHA == "" {
+		return nil, nil, errors.New("sha must be provided")
+	}
+
+	refPath := strings.TrimPrefix(ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, refURLEscape(refPath))
-	req, err := s.client.NewRequest("PATCH", u, &updateRefRequest{
-		SHA:   ref.Object.SHA,
-		Force: &force,
-	})
+	req, err := s.client.NewRequest("PATCH", u, updateRef)
 	if err != nil {
 		return nil, nil, err
 	}
