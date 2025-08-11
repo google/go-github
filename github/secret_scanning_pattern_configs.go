@@ -5,7 +5,10 @@
 
 package github
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 // SecretScanningPatternConfigs represents a collection of GitHub secret scanning patterns
 // and their settings related to push protection.
@@ -77,18 +80,20 @@ type SecretScanningCustomPatternSetting struct {
 //
 //meta:operation GET /enterprises/{enterprise}/secret-scanning/pattern-configurations
 func (s *SecretScanningService) ListPatternConfigsForEnterprise(ctx context.Context, enterprise string) (*SecretScanningPatternConfigs, *Response, error) {
-	//TODO:
-	return nil, nil, nil
-}
+	u := fmt.Sprintf("enterprises/%v/secret-scanning/pattern-configurations", enterprise)
 
-// UpdatePatternConfigsForEnterprise updates the secret scanning pattern configurations for an enterprise.
-//
-// Github API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/push-protection?apiVersion=2022-11-28#update-enterprise-pattern-configurations
-//
-//meta:operation PATCH /enterprises/{enterprise}/secret-scanning/pattern-configurations
-func (s *SecretScanningService) UpdatePatternConfigsForEnterprise(ctx context.Context, enterprise string, opts *SecretScanningPatternConfigsUpdateOptions) (*SecretScanningPatternConfigsUpdate, *Response, error) {
-	//TODO:
-	return nil, nil, nil
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var patternConfigs *SecretScanningPatternConfigs
+	resp, err := s.client.Do(ctx, req, &patternConfigs)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return patternConfigs, resp, nil
 }
 
 // ListPatternConfigsForOrg lists the secret scanning pattern configurations for an organization.
@@ -97,8 +102,42 @@ func (s *SecretScanningService) UpdatePatternConfigsForEnterprise(ctx context.Co
 //
 //meta:operation GET /orgs/{org}/secret-scanning/pattern-configurations
 func (s *SecretScanningService) ListPatternConfigsForOrg(ctx context.Context, org string) (*SecretScanningPatternConfigs, *Response, error) {
-	//TODO:
-	return nil, nil, nil
+	u := fmt.Sprintf("orgs/%v/secret-scanning/pattern-configurations", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var patternConfigs *SecretScanningPatternConfigs
+	resp, err := s.client.Do(ctx, req, &patternConfigs)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return patternConfigs, resp, nil
+}
+
+// UpdatePatternConfigsForEnterprise updates the secret scanning pattern configurations for an enterprise.
+//
+// Github API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/push-protection?apiVersion=2022-11-28#update-enterprise-pattern-configurations
+//
+//meta:operation PATCH /enterprises/{enterprise}/secret-scanning/pattern-configurations
+func (s *SecretScanningService) UpdatePatternConfigsForEnterprise(ctx context.Context, enterprise string, opts *SecretScanningPatternConfigsUpdateOptions) (*SecretScanningPatternConfigsUpdate, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/secret-scanning/pattern-configurations", enterprise)
+
+	req, err := s.client.NewRequest("PATCH", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var patternConfigsUpdate *SecretScanningPatternConfigsUpdate
+	resp, err := s.client.Do(ctx, req, &patternConfigsUpdate)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return patternConfigsUpdate, resp, nil
 }
 
 // UpdatePatternConfigsForOrg updates the secret scanning pattern configurations for an organization.
@@ -107,6 +146,18 @@ func (s *SecretScanningService) ListPatternConfigsForOrg(ctx context.Context, or
 //
 //meta:operation PATCH /orgs/{org}/secret-scanning/pattern-configurations
 func (s *SecretScanningService) UpdatePatternConfigsForOrg(ctx context.Context, org string, opts *SecretScanningPatternConfigsUpdateOptions) (*SecretScanningPatternConfigsUpdate, *Response, error) {
-	//TODO:
-	return nil, nil, nil
+	u := fmt.Sprintf("orgs/%v/secret-scanning/pattern-configurations", org)
+
+	req, err := s.client.NewRequest("PATCH", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var patternConfigsUpdate *SecretScanningPatternConfigsUpdate
+	resp, err := s.client.Do(ctx, req, &patternConfigsUpdate)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return patternConfigsUpdate, resp, nil
 }
