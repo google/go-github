@@ -354,6 +354,12 @@ type DiscussionCommentEvent struct {
 
 // CommentDiscussion represents a comment in a GitHub DiscussionCommentEvent.
 type CommentDiscussion struct {
+	// AuthorAssociation is the comment author's relationship to the repository.
+	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
+	//
+	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
+	// Use the Discussions REST API endpoint to retrieve this information.
+	// See: https://docs.github.com/rest/discussions/comments#get-a-discussion-comment
 	AuthorAssociation *string    `json:"author_association,omitempty"`
 	Body              *string    `json:"body,omitempty"`
 	ChildCommentCount *int       `json:"child_comment_count,omitempty"`
@@ -403,9 +409,15 @@ type Discussion struct {
 	Comments           *int                `json:"comments,omitempty"`
 	CreatedAt          *Timestamp          `json:"created_at,omitempty"`
 	UpdatedAt          *Timestamp          `json:"updated_at,omitempty"`
-	AuthorAssociation  *string             `json:"author_association,omitempty"`
-	ActiveLockReason   *string             `json:"active_lock_reason,omitempty"`
-	Body               *string             `json:"body,omitempty"`
+	// AuthorAssociation is the discussion author's relationship to the repository.
+	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
+	//
+	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
+	// Use the Discussions REST API endpoint to retrieve this information.
+	// See: https://docs.github.com/rest/discussions/discussions#get-a-discussion
+	AuthorAssociation *string `json:"author_association,omitempty"`
+	ActiveLockReason  *string `json:"active_lock_reason,omitempty"`
+	Body              *string `json:"body,omitempty"`
 }
 
 // DiscussionCategory represents a discussion category in a GitHub DiscussionEvent.
@@ -1354,13 +1366,28 @@ type PullRequestTargetEvent struct {
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#push
 type PushEvent struct {
-	PushID       *int64        `json:"push_id,omitempty"`
-	Head         *string       `json:"head,omitempty"`
-	Ref          *string       `json:"ref,omitempty"`
-	Size         *int          `json:"size,omitempty"`
-	Commits      []*HeadCommit `json:"commits,omitempty"`
-	Before       *string       `json:"before,omitempty"`
-	DistinctSize *int          `json:"distinct_size,omitempty"`
+	PushID *int64  `json:"push_id,omitempty"`
+	Head   *string `json:"head,omitempty"`
+	Ref    *string `json:"ref,omitempty"`
+	// Size is the number of commits in the push.
+	//
+	// Deprecated: GitHub will remove commit counts from Events API payloads on October 7, 2025.
+	// Use the Commits REST API endpoint to get commit information.
+	// See: https://docs.github.com/rest/commits/commits#list-commits
+	Size *int `json:"size,omitempty"`
+	// Commits is the list of commits in the push event.
+	//
+	// Deprecated: GitHub will remove commit summaries from Events API payloads on October 7, 2025.
+	// Use the Commits REST API endpoint to get detailed commit information.
+	// See: https://docs.github.com/rest/commits/commits#list-commits
+	Commits []*HeadCommit `json:"commits,omitempty"`
+	Before  *string       `json:"before,omitempty"`
+	// DistinctSize is the number of distinct commits in the push.
+	//
+	// Deprecated: GitHub will remove commit counts from Events API payloads on October 7, 2025.
+	// Use the Compare REST API endpoint to get detailed comparison information.
+	// See: https://docs.github.com/rest/commits/commits#compare-two-commits
+	DistinctSize *int `json:"distinct_size,omitempty"`
 
 	// The following fields are only populated by Webhook events.
 	Action       *string              `json:"action,omitempty"`

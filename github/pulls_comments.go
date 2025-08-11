@@ -37,6 +37,10 @@ type PullRequestComment struct {
 	UpdatedAt           *Timestamp `json:"updated_at,omitempty"`
 	// AuthorAssociation is the comment author's relationship to the pull request's repository.
 	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
+	//
+	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
+	// Use the Pull Request Comments REST API endpoint to retrieve this information.
+	// See: https://docs.github.com/rest/pulls/comments#get-a-review-comment-for-a-pull-request
 	AuthorAssociation *string `json:"author_association,omitempty"`
 	URL               *string `json:"url,omitempty"`
 	HTMLURL           *string `json:"html_url,omitempty"`
