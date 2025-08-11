@@ -29,10 +29,16 @@ type Issue struct {
 	Number *int    `json:"number,omitempty"`
 	State  *string `json:"state,omitempty"`
 	// StateReason can be one of: "completed", "not_planned", "reopened".
-	StateReason       *string           `json:"state_reason,omitempty"`
-	Locked            *bool             `json:"locked,omitempty"`
-	Title             *string           `json:"title,omitempty"`
-	Body              *string           `json:"body,omitempty"`
+	StateReason *string `json:"state_reason,omitempty"`
+	Locked      *bool   `json:"locked,omitempty"`
+	Title       *string `json:"title,omitempty"`
+	Body        *string `json:"body,omitempty"`
+	// AuthorAssociation is the issue author's relationship to the repository.
+	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
+	//
+	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
+	// Use the Issues REST API endpoint to retrieve this information.
+	// See: https://docs.github.com/rest/issues/issues#get-an-issue
 	AuthorAssociation *string           `json:"author_association,omitempty"`
 	User              *User             `json:"user,omitempty"`
 	Labels            []*Label          `json:"labels,omitempty"`
