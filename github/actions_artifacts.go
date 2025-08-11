@@ -64,6 +64,15 @@ type ListArtifactsOptions struct {
 	ListOptions
 }
 
+type ArtifactPeriod struct {
+	Days               *int `json:"days,omitempty"`
+	MaximumAllowedDays *int `json:"maximum_allowed_days,omitempty"`
+}
+
+type ArtifactPeriodOpt struct {
+	Days *int `json:"days,omitempty"`
+}
+
 // ListArtifacts lists all artifacts that belong to a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/artifacts#list-artifacts-for-a-repository
