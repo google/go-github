@@ -64,6 +64,8 @@ type ListArtifactsOptions struct {
 	ListOptions
 }
 
+// ArtifactPeriod represents the period for which the artifact and
+// log of a workflow run is retained.
 type ArtifactPeriod struct {
 	Days               *int `json:"days,omitempty"`
 	MaximumAllowedDays *int `json:"maximum_allowed_days,omitempty"`
@@ -71,6 +73,8 @@ type ArtifactPeriod struct {
 
 func (a ArtifactPeriod) String() string { return Stringify(a) }
 
+// ArtifactPeriodOpt is used to specify the retention period of
+// artifacts and logs in a workflow run.
 type ArtifactPeriodOpt struct {
 	Days *int `json:"days,omitempty"`
 }
