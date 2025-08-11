@@ -216,19 +216,120 @@ func TestSecretScanningService_ListPatternConfigsForOrg(t *testing.T) {
 			return resp, err
 		})
 	})
-	//TODO:
 }
 
 func TestSecretScanningService_UpdatePatternConfigsForEnterprise(t *testing.T) {
 	t.Parallel()
-	// client, mux, _ := setup(t)
-	//TODO:
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/secret-scanning/pattern-configurations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+
+		fmt.Fprint(w, `{
+			"pattern_config_version": "0ujsswThIGTUYm2K8FjOOfXtY1K"
+		}`)
+
+		ctx := context.Background()
+
+		opts := &SecretScanningPatternConfigsUpdateOptions{
+			PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+			ProviderPatternSettings: []*SecretScanningProviderPatternSetting{
+				{
+					TokenType:             "GITHUB_PERSONAL_ACCESS_TOKEN",
+					PushProtectionSetting: "enabled",
+				},
+			},
+			CustomPatternSettings: []*SecretScanningCustomPatternSetting{
+				{
+					TokenType:             "cp_2",
+					CustomPatternVersion:  Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+					PushProtectionSetting: "enabled",
+				},
+			},
+		}
+
+		configsUpdate, _, err := client.SecretScanning.UpdatePatternConfigsForEnterprise(ctx, "e", opts)
+		if err != nil {
+			t.Errorf("SecretScanning.UpdatePatternConfigsForEnterprise returned error: %v", err)
+		}
+
+		want := &SecretScanningPatternConfigsUpdate{
+			PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+		}
+
+		if !cmp.Equal(configsUpdate, want) {
+			t.Errorf("SecretScanning.UpdatePatternConfigsForEnterprise returned %+v, want %+v", configsUpdate, want)
+		}
+
+		const methodName = "UpdatePatternConfigsForEnterprise"
+
+		testBadOptions(t, methodName, func() (err error) {
+			_, _, err = client.SecretScanning.UpdatePatternConfigsForEnterprise(ctx, "\n", opts)
+			return err
+		})
+
+		testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+			_, resp, err := client.SecretScanning.UpdatePatternConfigsForEnterprise(ctx, "o", opts)
+			return resp, err
+		})
+	})
 }
 
 func TestSecretScanningService_UpdatePatternConfigsForOrg(t *testing.T) {
 	t.Parallel()
-	// client, mux, _ := setup(t)
-	//TODO:
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/secret-scanning/pattern-configurations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+
+		fmt.Fprint(w, `{
+			"pattern_config_version": "0ujsswThIGTUYm2K8FjOOfXtY1K"
+		}`)
+
+		ctx := context.Background()
+
+		opts := &SecretScanningPatternConfigsUpdateOptions{
+			PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+			ProviderPatternSettings: []*SecretScanningProviderPatternSetting{
+				{
+					TokenType:             "GITHUB_PERSONAL_ACCESS_TOKEN",
+					PushProtectionSetting: "enabled",
+				},
+			},
+			CustomPatternSettings: []*SecretScanningCustomPatternSetting{
+				{
+					TokenType:             "cp_2",
+					CustomPatternVersion:  Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+					PushProtectionSetting: "enabled",
+				},
+			},
+		}
+
+		configsUpdate, _, err := client.SecretScanning.UpdatePatternConfigsForOrg(ctx, "o", opts)
+		if err != nil {
+			t.Errorf("SecretScanning.UpdatePatternConfigsForOrg returned err: %v", err)
+		}
+
+		want := &SecretScanningPatternConfigsUpdate{
+			PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+		}
+
+		if !cmp.Equal(configsUpdate, want) {
+			t.Errorf("SecretScanning.UpdatePatternConfigsForOrg returned %+v, want %+v", configsUpdate, want)
+		}
+
+		const methodName = "UpdatePatternConfigsForOrg"
+
+		testBadOptions(t, methodName, func() (err error) {
+			_, _, err = client.SecretScanning.UpdatePatternConfigsForOrg(ctx, "\n", opts)
+			return err
+		})
+
+		testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+			_, resp, err := client.SecretScanning.UpdatePatternConfigsForOrg(ctx, "o", opts)
+			return resp, err
+		})
+	})
 }
 
 func TestSecretScanningPatternConfigs_Marshal(t *testing.T) {
