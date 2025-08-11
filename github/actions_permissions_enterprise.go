@@ -256,3 +256,40 @@ func (s *ActionsService) EditDefaultWorkflowPermissionsInEnterprise(ctx context.
 
 	return p, resp, nil
 }
+
+// GetArtifactAndLogRetentionPeriodInEnterprise gets the artifact and log retention period for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-artifact-and-log-retention-settings-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/permissions/artifact-and-log-retention
+func (s *ActionsService) GetArtifactAndLogRetentionPeriodInEnterprise(ctx context.Context, enterprise string) (*ArtifactPeriod, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/artifact-and-log-retention", enterprise)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	arp := new(ArtifactPeriod)
+	resp, err := s.client.Do(ctx, req, arp)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return arp, resp, nil
+}
+
+// EditArtifactAndLogRetentionPeriodInEnterprise sets the artifact and log retention period for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-artifact-and-log-retention-settings-for-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/actions/permissions/artifact-and-log-retention
+func (s *ActionsService) EditArtifactAndLogRetentionPeriodInEnterprise(ctx context.Context, enterprise string, period ArtifactPeriodOpt) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/artifact-and-log-retention", enterprise)
+	req, err := s.client.NewRequest("PUT", u, period)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

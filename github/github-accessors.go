@@ -1022,6 +1022,30 @@ func (a *ArtifactList) GetTotalCount() int64 {
 	return *a.TotalCount
 }
 
+// GetDays returns the Days field if it's non-nil, zero value otherwise.
+func (a *ArtifactPeriod) GetDays() int {
+	if a == nil || a.Days == nil {
+		return 0
+	}
+	return *a.Days
+}
+
+// GetMaximumAllowedDays returns the MaximumAllowedDays field if it's non-nil, zero value otherwise.
+func (a *ArtifactPeriod) GetMaximumAllowedDays() int {
+	if a == nil || a.MaximumAllowedDays == nil {
+		return 0
+	}
+	return *a.MaximumAllowedDays
+}
+
+// GetDays returns the Days field if it's non-nil, zero value otherwise.
+func (a *ArtifactPeriodOpt) GetDays() int {
+	if a == nil || a.Days == nil {
+		return 0
+	}
+	return *a.Days
+}
+
 // GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
 func (a *ArtifactWorkflowRun) GetHeadBranch() string {
 	if a == nil || a.HeadBranch == nil {
