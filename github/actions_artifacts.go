@@ -69,6 +69,8 @@ type ArtifactPeriod struct {
 	MaximumAllowedDays *int `json:"maximum_allowed_days,omitempty"`
 }
 
+func (a ArtifactPeriod) String() string { return Stringify(a) }
+
 type ArtifactPeriodOpt struct {
 	Days *int `json:"days,omitempty"`
 }
