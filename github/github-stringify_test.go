@@ -96,6 +96,18 @@ func TestAdvancedSecurity_String(t *testing.T) {
 	}
 }
 
+func TestArtifactPeriod_String(t *testing.T) {
+	t.Parallel()
+	v := ArtifactPeriod{
+		Days:               Ptr(0),
+		MaximumAllowedDays: Ptr(0),
+	}
+	want := `github.ArtifactPeriod{Days:0, MaximumAllowedDays:0}`
+	if got := v.String(); got != want {
+		t.Errorf("ArtifactPeriod.String = %v, want %v", got, want)
+	}
+}
+
 func TestAuthorization_String(t *testing.T) {
 	t.Parallel()
 	v := Authorization{

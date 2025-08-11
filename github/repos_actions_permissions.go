@@ -116,3 +116,40 @@ func (s *RepositoriesService) EditDefaultWorkflowPermissions(ctx context.Context
 
 	return p, resp, nil
 }
+
+// GetArtifactAndLogRetentionPeriod gets the artifact and log retention period for a repository.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-artifact-and-log-retention-settings-for-a-repository
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/permissions/artifact-and-log-retention
+func (s *RepositoriesService) GetArtifactAndLogRetentionPeriod(ctx context.Context, owner, repo string) (*ArtifactPeriod, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/permissions/artifact-and-log-retention", owner, repo)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	arp := new(ArtifactPeriod)
+	resp, err := s.client.Do(ctx, req, arp)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return arp, resp, nil
+}
+
+// EditArtifactAndLogRetentionPeriod sets the artifact and log retention period for a repository.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-artifact-and-log-retention-settings-for-a-repository
+//
+//meta:operation PUT /repos/{owner}/{repo}/actions/permissions/artifact-and-log-retention
+func (s *RepositoriesService) EditArtifactAndLogRetentionPeriod(ctx context.Context, owner, repo string, period ArtifactPeriodOpt) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/permissions/artifact-and-log-retention", owner, repo)
+	req, err := s.client.NewRequest("PUT", u, period)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

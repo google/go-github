@@ -1323,6 +1323,39 @@ func TestArtifactList_GetTotalCount(tt *testing.T) {
 	a.GetTotalCount()
 }
 
+func TestArtifactPeriod_GetDays(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ArtifactPeriod{Days: &zeroValue}
+	a.GetDays()
+	a = &ArtifactPeriod{}
+	a.GetDays()
+	a = nil
+	a.GetDays()
+}
+
+func TestArtifactPeriod_GetMaximumAllowedDays(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ArtifactPeriod{MaximumAllowedDays: &zeroValue}
+	a.GetMaximumAllowedDays()
+	a = &ArtifactPeriod{}
+	a.GetMaximumAllowedDays()
+	a = nil
+	a.GetMaximumAllowedDays()
+}
+
+func TestArtifactPeriodOpt_GetDays(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ArtifactPeriodOpt{Days: &zeroValue}
+	a.GetDays()
+	a = &ArtifactPeriodOpt{}
+	a.GetDays()
+	a = nil
+	a.GetDays()
+}
+
 func TestArtifactWorkflowRun_GetHeadBranch(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
