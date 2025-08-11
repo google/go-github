@@ -415,3 +415,79 @@ func TestActionsService_EditDefaultWorkflowPermissionsInOrganization(t *testing.
 		return resp, err
 	})
 }
+
+func TestActionsService_GetArtifactAndLogRetentionPeriodInOrganization(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/organizations/o/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"days": 90, "maximum_allowed_days": 365}`)
+	})
+
+	ctx := context.Background()
+	period, _, err := client.Actions.GetArtifactAndLogRetentionPeriodInOrganization(ctx, "o")
+	if err != nil {
+		t.Errorf("Actions.GetArtifactAndLogRetentionPeriodInOrganization returned error: %v", err)
+	}
+
+	want := &ArtifactPeriod{
+		Days:               Ptr(90),
+		MaximumAllowedDays: Ptr(365),
+	}
+	if !cmp.Equal(period, want) {
+		t.Errorf("Actions.GetArtifactAndLogRetentionPeriodInOrganization = %+v, want %+v", period, want)
+	}
+
+	const methodName = "GetArtifactAndLogRetentionPeriodInOrganization"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetArtifactAndLogRetentionPeriodInOrganization(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetArtifactAndLogRetentionPeriodInOrganization(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_EditArtifactAndLogRetentionPeriodInOrganization(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &ArtifactPeriodOpt{Days: Ptr(90)}
+
+	mux.HandleFunc("/organizations/o/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ArtifactPeriodOpt)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Actions.EditArtifactAndLogRetentionPeriodInOrganization(ctx, "o", *input)
+	if err != nil {
+		t.Errorf("Actions.EditArtifactAndLogRetentionPeriodInOrganization returned error: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusNoContent {
+		t.Errorf("Actions.EditArtifactAndLogRetentionPeriodInOrganization = %d, want %d", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "EditArtifactAndLogRetentionPeriodInOrganization"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.EditArtifactAndLogRetentionPeriodInOrganization(ctx, "\n", *input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.EditArtifactAndLogRetentionPeriodInOrganization(ctx, "o", *input)
+	})
+}
