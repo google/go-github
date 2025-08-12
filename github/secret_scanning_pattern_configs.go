@@ -63,7 +63,7 @@ type SecretScanningProviderPatternSetting struct {
 	PushProtectionSetting string `json:"push_protection_setting"`
 }
 
-// SecretScanningCustomPatternSetting defines an optional pattern setting for custom patterns
+// SecretScanningCustomPatternSetting defines an optional pattern setting for custom patterns.
 type SecretScanningCustomPatternSetting struct {
 	// The ID of the pattern to configure.
 	TokenType string `json:"token_type"`
