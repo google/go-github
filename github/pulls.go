@@ -28,32 +28,38 @@ type PullRequestAutoMerge struct {
 
 // PullRequest represents a GitHub pull request on a repository.
 type PullRequest struct {
-	ID                 *int64                `json:"id,omitempty"`
-	Number             *int                  `json:"number,omitempty"`
-	State              *string               `json:"state,omitempty"`
-	Locked             *bool                 `json:"locked,omitempty"`
-	Title              *string               `json:"title,omitempty"`
-	Body               *string               `json:"body,omitempty"`
-	CreatedAt          *Timestamp            `json:"created_at,omitempty"`
-	UpdatedAt          *Timestamp            `json:"updated_at,omitempty"`
-	ClosedAt           *Timestamp            `json:"closed_at,omitempty"`
-	MergedAt           *Timestamp            `json:"merged_at,omitempty"`
-	Labels             []*Label              `json:"labels,omitempty"`
-	User               *User                 `json:"user,omitempty"`
-	Draft              *bool                 `json:"draft,omitempty"`
-	URL                *string               `json:"url,omitempty"`
-	HTMLURL            *string               `json:"html_url,omitempty"`
-	IssueURL           *string               `json:"issue_url,omitempty"`
-	StatusesURL        *string               `json:"statuses_url,omitempty"`
-	DiffURL            *string               `json:"diff_url,omitempty"`
-	PatchURL           *string               `json:"patch_url,omitempty"`
-	CommitsURL         *string               `json:"commits_url,omitempty"`
-	CommentsURL        *string               `json:"comments_url,omitempty"`
-	ReviewCommentsURL  *string               `json:"review_comments_url,omitempty"`
-	ReviewCommentURL   *string               `json:"review_comment_url,omitempty"`
-	Assignee           *User                 `json:"assignee,omitempty"`
-	Assignees          []*User               `json:"assignees,omitempty"`
-	Milestone          *Milestone            `json:"milestone,omitempty"`
+	ID                *int64     `json:"id,omitempty"`
+	Number            *int       `json:"number,omitempty"`
+	State             *string    `json:"state,omitempty"`
+	Locked            *bool      `json:"locked,omitempty"`
+	Title             *string    `json:"title,omitempty"`
+	Body              *string    `json:"body,omitempty"`
+	CreatedAt         *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt         *Timestamp `json:"updated_at,omitempty"`
+	ClosedAt          *Timestamp `json:"closed_at,omitempty"`
+	MergedAt          *Timestamp `json:"merged_at,omitempty"`
+	Labels            []*Label   `json:"labels,omitempty"`
+	User              *User      `json:"user,omitempty"`
+	Draft             *bool      `json:"draft,omitempty"`
+	URL               *string    `json:"url,omitempty"`
+	HTMLURL           *string    `json:"html_url,omitempty"`
+	IssueURL          *string    `json:"issue_url,omitempty"`
+	StatusesURL       *string    `json:"statuses_url,omitempty"`
+	DiffURL           *string    `json:"diff_url,omitempty"`
+	PatchURL          *string    `json:"patch_url,omitempty"`
+	CommitsURL        *string    `json:"commits_url,omitempty"`
+	CommentsURL       *string    `json:"comments_url,omitempty"`
+	ReviewCommentsURL *string    `json:"review_comments_url,omitempty"`
+	ReviewCommentURL  *string    `json:"review_comment_url,omitempty"`
+	Assignee          *User      `json:"assignee,omitempty"`
+	Assignees         []*User    `json:"assignees,omitempty"`
+	Milestone         *Milestone `json:"milestone,omitempty"`
+	// AuthorAssociation is the pull request author's relationship to the repository.
+	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
+	//
+	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
+	// Use the Pull Requests REST API endpoint to retrieve this information.
+	// See: https://docs.github.com/rest/pulls/pulls#get-a-pull-request
 	AuthorAssociation  *string               `json:"author_association,omitempty"`
 	NodeID             *string               `json:"node_id,omitempty"`
 	RequestedReviewers []*User               `json:"requested_reviewers,omitempty"`
