@@ -37,7 +37,7 @@ type DefaultWorkflowPermissionEnterprise struct {
 	CanApprovePullRequestReviews *bool   `json:"can_approve_pull_request_reviews,omitempty"`
 }
 
-// SelfHostRunnerPermissionsEnterprise represents the settings for whether organizations in the enterprise are allowed to manage self-hosted runners at the repository level
+// SelfHostRunnerPermissionsEnterprise represents the settings for whether organizations in the enterprise are allowed to manage self-hosted runners at the repository level.
 type SelfHostRunnerPermissionsEnterprise struct {
 	DisableSelfHostedRunnersForAllOrgs *bool `json:"disable_self_hosted_runners_for_all_orgs,omitempty"`
 }
