@@ -420,7 +420,7 @@ func TestActionsService_GetArtifactAndLogRetentionPeriodInOrganization(t *testin
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/organizations/o/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"days": 90, "maximum_allowed_days": 365}`)
 	})
@@ -460,7 +460,7 @@ func TestActionsService_EditArtifactAndLogRetentionPeriodInOrganization(t *testi
 
 	input := &ArtifactPeriodOpt{Days: Ptr(90)}
 
-	mux.HandleFunc("/organizations/o/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ArtifactPeriodOpt)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
