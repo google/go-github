@@ -1459,32 +1459,32 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
-  - name: GET /orgs{org}/actions/permissions/self-hosted-runners
+  - name: GET /orgs/{org}/actions/permissions/self-hosted-runners
     documentation_url: https://docs.github.com/rest/actions/permissions#get-self-hosted-runners-settings-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
-  - name: PUT /orgs{org}/actions/permissions/self-hosted-runners
+  - name: PUT /orgs/{org}/actions/permissions/self-hosted-runners
     documentation_url: https://docs.github.com/rest/actions/permissions#set-self-hosted-runners-settings-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
-  - name: GET /orgs{org}/actions/permissions/self-hosted-runners/repositories
+  - name: GET /orgs/{org}/actions/permissions/self-hosted-runners/repositories
     documentation_url: https://docs.github.com/rest/actions/permissions#list-repositories-allowed-to-use-self-hosted-runners-in-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
-  - name: PUT /orgs{org}/actions/permissions/self-hosted-runners/repositories
+  - name: PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories
     documentation_url: https://docs.github.com/rest/actions/permissions#set-repositories-allowed-to-use-self-hosted-runners-in-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
-  - name: DELETE /orgs{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}
+  - name: DELETE /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}
     documentation_url: https://docs.github.com/rest/actions/permissions#remove-a-repository-from-the-list-of-repositories-allowed-to-use-self-hosted-runners-in-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
-  - name: PUT /orgs{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}
+  - name: PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}
     documentation_url: https://docs.github.com/rest/actions/permissions#add-a-repository-to-the-list-of-repositories-allowed-to-use-self-hosted-runners-in-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
