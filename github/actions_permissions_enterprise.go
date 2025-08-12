@@ -42,6 +42,10 @@ type SelfHostRunnerPermissionsEnterprise struct {
 	DisableSelfHostedRunnersForAllOrgs *bool `json:"disable_self_hosted_runners_for_all_orgs,omitempty"`
 }
 
+func (a SelfHostRunnerPermissionsEnterprise) String() string {
+	return Stringify(a)
+}
+
 // GetActionsPermissionsInEnterprise gets the GitHub Actions permissions policy for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-github-actions-permissions-for-an-enterprise
