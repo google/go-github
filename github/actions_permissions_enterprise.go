@@ -37,6 +37,11 @@ type DefaultWorkflowPermissionEnterprise struct {
 	CanApprovePullRequestReviews *bool   `json:"can_approve_pull_request_reviews,omitempty"`
 }
 
+// SelfHostRunnerPermissionsEnterprise represents the settings for whether organizations in the enterprise are allowed to manage self-hosted runners at the repository level
+type SelfHostRunnerPermissionsEnterprise struct {
+	DisableSelfHostedRunnersForAllOrgs *bool `json:"disable_self_hosted_runners_for_all_orgs,omitempty"`
+}
+
 // GetActionsPermissionsInEnterprise gets the GitHub Actions permissions policy for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-github-actions-permissions-for-an-enterprise
@@ -287,6 +292,42 @@ func (s *ActionsService) GetArtifactAndLogRetentionPeriodInEnterprise(ctx contex
 func (s *ActionsService) EditArtifactAndLogRetentionPeriodInEnterprise(ctx context.Context, enterprise string, period ArtifactPeriodOpt) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/artifact-and-log-retention", enterprise)
 	req, err := s.client.NewRequest("PUT", u, period)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// GetSelfHostedRunnerPermissionsInEnterprise gets the self-hosted runner permissions for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-self-hosted-runners-permissions-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/permissions/self-hosted-runners
+func (s *ActionsService) GetSelfHostedRunnerPermissionsInEnterprise(ctx context.Context, enterprise string) (*SelfHostRunnerPermissionsEnterprise, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/self-hosted-runners", enterprise)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	permissions := new(SelfHostRunnerPermissionsEnterprise)
+	resp, err := s.client.Do(ctx, req, permissions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return permissions, resp, nil
+}
+
+// EditSelfHostedRunnerPermissionsInEnterprise gets the self-hosted runner permissions for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-self-hosted-runners-permissions-for-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/actions/permissions/self-hosted-runners
+func (s *ActionsService) EditSelfHostedRunnerPermissionsInEnterprise(ctx context.Context, enterprise string, permissions SelfHostRunnerPermissionsEnterprise) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/self-hosted-runners", enterprise)
+	req, err := s.client.NewRequest("PUT", u, permissions)
 	if err != nil {
 		return nil, err
 	}

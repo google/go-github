@@ -451,3 +451,75 @@ func TestActionsService_EditArtifactAndLogRetentionPeriodInEnterprise(t *testing
 		return client.Actions.EditArtifactAndLogRetentionPeriodInEnterprise(ctx, "e", *input)
 	})
 }
+
+func TestActionsService_GetSelfHostedRunnerPermissionsInEnterprise(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/actions/permissions/self-hosted-runners", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"disable_self_hosted_runners_for_all_orgs": true}`)
+	})
+
+	ctx := context.Background()
+	permissions, _, err := client.Actions.GetSelfHostedRunnerPermissionsInEnterprise(ctx, "e")
+	if err != nil {
+		t.Errorf("Actions.GetSelfHostedRunnerPermissionsInEnterprise returned error: %v", err)
+	}
+	want := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: Ptr(true)}
+	if !cmp.Equal(permissions, want) {
+		t.Errorf("Actions.GetSelfHostedRunnerPermissionsInEnterprise returned %+v, want %+v", permissions, want)
+	}
+
+	const methodName = "GetSelfHostedRunnerPermissionsInEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetSelfHostedRunnerPermissionsInEnterprise(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetSelfHostedRunnerPermissionsInEnterprise(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_EditSelfHostedRunnerPermissionsInEnterprise(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: Ptr(false)}
+
+	mux.HandleFunc("/enterprises/e/actions/permissions/self-hosted-runners", func(w http.ResponseWriter, r *http.Request) {
+		v := new(SelfHostRunnerPermissionsEnterprise)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Actions.EditSelfHostedRunnerPermissionsInEnterprise(ctx, "e", *input)
+	if err != nil {
+		t.Errorf("Actions.EditSelfHostedRunnerPermissionsInEnterprise returned error: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusNoContent {
+		t.Errorf("Actions.EditSelfHostedRunnerPermissionsInEnterprise = %d, want %d", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "EditSelfHostedRunnerPermissionsInEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.EditSelfHostedRunnerPermissionsInEnterprise(ctx, "\n", *input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.EditSelfHostedRunnerPermissionsInEnterprise(ctx, "e", *input)
+	})
+}
