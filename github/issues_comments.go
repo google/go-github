@@ -22,6 +22,10 @@ type IssueComment struct {
 	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
 	// AuthorAssociation is the comment author's relationship to the issue's repository.
 	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
+	//
+	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
+	// Use the Issue Comments REST API endpoint to retrieve this information.
+	// See: https://docs.github.com/rest/issues/comments#get-an-issue-comment
 	AuthorAssociation *string `json:"author_association,omitempty"`
 	URL               *string `json:"url,omitempty"`
 	HTMLURL           *string `json:"html_url,omitempty"`
