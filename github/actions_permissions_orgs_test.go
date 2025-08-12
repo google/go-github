@@ -491,3 +491,78 @@ func TestActionsService_EditArtifactAndLogRetentionPeriodInOrganization(t *testi
 		return client.Actions.EditArtifactAndLogRetentionPeriodInOrganization(ctx, "o", *input)
 	})
 }
+
+func TestActionsService_GetSelfHostedRunnersSettingsInOrganization(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/permissions/self-hosted-runners", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"enabled_repositories": "all", "selected_repositories_url": "https://api.github.com/orgs/octo-org/actions/permissions/self-hosted-runners/repositories"}`)
+	})
+
+	ctx := context.Background()
+	settings, _, err := client.Actions.GetSelfHostedRunnersSettingsInOrganization(ctx, "o")
+	if err != nil {
+		t.Errorf("Actions.GetSelfHostedRunnersSettingsInOrganization returned error: %v", err)
+	}
+	want := &SelfHostedRunnersSettingsOrganization{
+		EnabledRepositories:     Ptr("all"),
+		SelectedRepositoriesUrl: Ptr("https://api.github.com/orgs/octo-org/actions/permissions/self-hosted-runners/repositories"),
+	}
+	if !cmp.Equal(settings, want) {
+		t.Errorf("Actions.GetSelfHostedRunnersSettingsInOrganization returned %+v, want %+v", settings, want)
+	}
+
+	const methodName = "GetSelfHostedRunnersSettingsInOrganization"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetSelfHostedRunnersSettingsInOrganization(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetSelfHostedRunnersSettingsInOrganization(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_EditSelfHostedRunnersSettingsInOrganization(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &SelfHostedRunnersSettingsOrganizationOpt{EnabledRepositories: Ptr("selected")}
+
+	mux.HandleFunc("/orgs/o/actions/permissions/self-hosted-runners", func(w http.ResponseWriter, r *http.Request) {
+		v := new(SelfHostedRunnersSettingsOrganizationOpt)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Actions.EditSelfHostedRunnersSettingsInOrganization(ctx, "o", *input)
+	if err != nil {
+		t.Errorf("Actions.EditSelfHostedRunnersSettingsInOrganization returned error: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusNoContent {
+		t.Errorf("Actions.EditSelfHostedRunnersSettingsInOrganization = %d, want %d", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "EditSelfHostedRunnersSettingsInOrganization"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.EditSelfHostedRunnersSettingsInOrganization(ctx, "\n", *input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.EditSelfHostedRunnersSettingsInOrganization(ctx, "o", *input)
+	})
+}

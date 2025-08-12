@@ -50,6 +50,21 @@ type DefaultWorkflowPermissionOrganization struct {
 	CanApprovePullRequestReviews *bool   `json:"can_approve_pull_request_reviews,omitempty"`
 }
 
+// SelfHostedRunnersSettingsOrganization represents the self-hosted runners permissions settings for repositories in an organization.
+type SelfHostedRunnersSettingsOrganization struct {
+	EnabledRepositories     *string `json:"enabled_repositories,omitempty"`
+	SelectedRepositoriesUrl *string `json:"selected_repositories_url,omitempty"`
+}
+
+func (s SelfHostedRunnersSettingsOrganization) String() string {
+	return Stringify(s)
+}
+
+// SelfHostedRunnersSettingsOrganizationOpt specifies the self-hosted runners permissions settings for repositories in an organization.
+type SelfHostedRunnersSettingsOrganizationOpt struct {
+	EnabledRepositories *string `json:"enabled_repositories,omitempty"`
+}
+
 // GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#get-github-actions-permissions-for-an-organization
@@ -300,6 +315,44 @@ func (s *ActionsService) GetArtifactAndLogRetentionPeriodInOrganization(ctx cont
 func (s *ActionsService) EditArtifactAndLogRetentionPeriodInOrganization(ctx context.Context, org string, period ArtifactPeriodOpt) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/actions/permissions/artifact-and-log-retention", org)
 	req, err := s.client.NewRequest("PUT", u, period)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// GetSelfHostedRunnersSettingsInOrganization gets the self-hosted runners permissions settings for repositories in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-self-hosted-runners-settings-for-an-organization
+//
+//meta:operation GET /orgs/{orgs}/actions/permissions/self-hosted-runners
+func (s *ActionsService) GetSelfHostedRunnersSettingsInOrganization(ctx context.Context, org string) (*SelfHostedRunnersSettingsOrganization, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	settings := new(SelfHostedRunnersSettingsOrganization)
+	resp, err := s.client.Do(ctx, req, settings)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return settings, resp, nil
+}
+
+// EditSelfHostedRunnersSettingsInOrganization sets the self-hosted runners permissions settings for repositories in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-self-hosted-runners-settings-for-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/self-hosted-runners
+func (s *ActionsService) EditSelfHostedRunnersSettingsInOrganization(ctx context.Context, org string, opt SelfHostedRunnersSettingsOrganizationOpt) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners", org)
+
+	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, err
 	}
