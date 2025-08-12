@@ -639,3 +639,57 @@ func TestActionsService_SetRepositoriesSelfHostedRunnersAllowedInOrganization(t 
 		return client.Actions.SetRepositoriesSelfHostedRunnersAllowedInOrganization(ctx, "o", []int64{123, 1234})
 	})
 }
+
+func TestActionsService_AddRepositorySelfHostedRunnersAllowedInOrganization(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/permissions/self-hosted-runners/repositories/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.AddRepositorySelfHostedRunnersAllowedInOrganization(ctx, "o", 123)
+	if err != nil {
+		t.Errorf("Actions.AddRepositorySelfHostedRunnersAllowedInOrganization returned error: %v", err)
+	}
+
+	const methodName = "AddRepositorySelfHostedRunnersAllowedInOrganization"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.AddRepositorySelfHostedRunnersAllowedInOrganization(ctx, "\n", 123)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.AddRepositorySelfHostedRunnersAllowedInOrganization(ctx, "o", 123)
+	})
+}
+
+func TestActionsService_RemoveRepositorySelfHostedRunnersAllowedInOrganization(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/permissions/self-hosted-runners/repositories/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.RemoveRepositorySelfHostedRunnersAllowedInOrganization(ctx, "o", 123)
+	if err != nil {
+		t.Errorf("Actions.RemoveRepositorySelfHostedRunnersAllowedInOrganization returned error: %v", err)
+	}
+
+	const methodName = "RemoveRepositorySelfHostedRunnersAllowedInOrganization"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RemoveRepositorySelfHostedRunnersAllowedInOrganization(ctx, "\n", 123)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.RemoveRepositorySelfHostedRunnersAllowedInOrganization(ctx, "o", 123)
+	})
+}
