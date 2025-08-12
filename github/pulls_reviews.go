@@ -24,8 +24,12 @@ type PullRequestReview struct {
 	HTMLURL        *string    `json:"html_url,omitempty"`
 	PullRequestURL *string    `json:"pull_request_url,omitempty"`
 	State          *string    `json:"state,omitempty"`
-	// AuthorAssociation is the comment author's relationship to the issue's repository.
+	// AuthorAssociation is the review author's relationship to the repository.
 	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
+	//
+	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
+	// Use the Pull Request Reviews REST API endpoint to retrieve this information.
+	// See: https://docs.github.com/rest/pulls/reviews#get-a-review-for-a-pull-request
 	AuthorAssociation *string `json:"author_association,omitempty"`
 }
 
