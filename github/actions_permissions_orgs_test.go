@@ -508,7 +508,7 @@ func TestActionsService_GetSelfHostedRunnersSettingsInOrganization(t *testing.T)
 	}
 	want := &SelfHostedRunnersSettingsOrganization{
 		EnabledRepositories:     Ptr("all"),
-		SelectedRepositoriesUrl: Ptr("https://api.github.com/orgs/octo-org/actions/permissions/self-hosted-runners/repositories"),
+		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/permissions/self-hosted-runners/repositories"),
 	}
 	if !cmp.Equal(settings, want) {
 		t.Errorf("Actions.GetSelfHostedRunnersSettingsInOrganization returned %+v, want %+v", settings, want)

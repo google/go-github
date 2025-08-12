@@ -33363,6 +33363,50 @@ func TestSelectedReposList_GetTotalCount(tt *testing.T) {
 	s.GetTotalCount()
 }
 
+func TestSelfHostedRunnersSettingsOrganization_GetEnabledRepositories(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SelfHostedRunnersSettingsOrganization{EnabledRepositories: &zeroValue}
+	s.GetEnabledRepositories()
+	s = &SelfHostedRunnersSettingsOrganization{}
+	s.GetEnabledRepositories()
+	s = nil
+	s.GetEnabledRepositories()
+}
+
+func TestSelfHostedRunnersSettingsOrganization_GetSelectedRepositoriesURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SelfHostedRunnersSettingsOrganization{SelectedRepositoriesURL: &zeroValue}
+	s.GetSelectedRepositoriesURL()
+	s = &SelfHostedRunnersSettingsOrganization{}
+	s.GetSelectedRepositoriesURL()
+	s = nil
+	s.GetSelectedRepositoriesURL()
+}
+
+func TestSelfHostedRunnersSettingsOrganizationOpt_GetEnabledRepositories(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SelfHostedRunnersSettingsOrganizationOpt{EnabledRepositories: &zeroValue}
+	s.GetEnabledRepositories()
+	s = &SelfHostedRunnersSettingsOrganizationOpt{}
+	s.GetEnabledRepositories()
+	s = nil
+	s.GetEnabledRepositories()
+}
+
+func TestSelfHostRunnerPermissionsEnterprise_GetDisableSelfHostedRunnersForAllOrgs(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: &zeroValue}
+	s.GetDisableSelfHostedRunnersForAllOrgs()
+	s = &SelfHostRunnerPermissionsEnterprise{}
+	s.GetDisableSelfHostedRunnersForAllOrgs()
+	s = nil
+	s.GetDisableSelfHostedRunnersForAllOrgs()
+}
+
 func TestSignatureRequirementEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

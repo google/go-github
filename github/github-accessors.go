@@ -25934,6 +25934,38 @@ func (s *SelectedReposList) GetTotalCount() int {
 	return *s.TotalCount
 }
 
+// GetEnabledRepositories returns the EnabledRepositories field if it's non-nil, zero value otherwise.
+func (s *SelfHostedRunnersSettingsOrganization) GetEnabledRepositories() string {
+	if s == nil || s.EnabledRepositories == nil {
+		return ""
+	}
+	return *s.EnabledRepositories
+}
+
+// GetSelectedRepositoriesURL returns the SelectedRepositoriesURL field if it's non-nil, zero value otherwise.
+func (s *SelfHostedRunnersSettingsOrganization) GetSelectedRepositoriesURL() string {
+	if s == nil || s.SelectedRepositoriesURL == nil {
+		return ""
+	}
+	return *s.SelectedRepositoriesURL
+}
+
+// GetEnabledRepositories returns the EnabledRepositories field if it's non-nil, zero value otherwise.
+func (s *SelfHostedRunnersSettingsOrganizationOpt) GetEnabledRepositories() string {
+	if s == nil || s.EnabledRepositories == nil {
+		return ""
+	}
+	return *s.EnabledRepositories
+}
+
+// GetDisableSelfHostedRunnersForAllOrgs returns the DisableSelfHostedRunnersForAllOrgs field if it's non-nil, zero value otherwise.
+func (s *SelfHostRunnerPermissionsEnterprise) GetDisableSelfHostedRunnersForAllOrgs() bool {
+	if s == nil || s.DisableSelfHostedRunnersForAllOrgs == nil {
+		return false
+	}
+	return *s.DisableSelfHostedRunnersForAllOrgs
+}
+
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
 func (s *SignatureRequirementEnforcementLevelChanges) GetFrom() string {
 	if s == nil || s.From == nil {

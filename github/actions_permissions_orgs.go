@@ -53,7 +53,7 @@ type DefaultWorkflowPermissionOrganization struct {
 // SelfHostedRunnersSettingsOrganization represents the self-hosted runners permissions settings for repositories in an organization.
 type SelfHostedRunnersSettingsOrganization struct {
 	EnabledRepositories     *string `json:"enabled_repositories,omitempty"`
-	SelectedRepositoriesUrl *string `json:"selected_repositories_url,omitempty"`
+	SelectedRepositoriesURL *string `json:"selected_repositories_url,omitempty"`
 }
 
 func (s SelfHostedRunnersSettingsOrganization) String() string {
@@ -326,7 +326,7 @@ func (s *ActionsService) EditArtifactAndLogRetentionPeriodInOrganization(ctx con
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#get-self-hosted-runners-settings-for-an-organization
 //
-//meta:operation GET /orgs/{orgs}/actions/permissions/self-hosted-runners
+//meta:operation GET /orgs/{org}/actions/permissions/self-hosted-runners
 func (s *ActionsService) GetSelfHostedRunnersSettingsInOrganization(ctx context.Context, org string) (*SelfHostedRunnersSettingsOrganization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners", org)
 
