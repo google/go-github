@@ -359,3 +359,53 @@ func (s *ActionsService) EditSelfHostedRunnersSettingsInOrganization(ctx context
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// SelfHostedRunnersAllowedRepos represents the repositories that are allowed to use self-hosted runners in an organization.
+type SelfHostedRunnersAllowedRepos struct {
+	TotalCount   int           `json:"total_count"`
+	Repositories []*Repository `json:"repositories"`
+}
+
+// ListRepositoriesSelfHostedRunnersAllowedInOrganization lists the repositories that are allowed to use self-hosted runners in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#list-repositories-allowed-to-use-self-hosted-runners-in-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/permissions/self-hosted-runners/repositories
+func (s *ActionsService) ListRepositoriesSelfHostedRunnersAllowedInOrganization(ctx context.Context, org string, opts *ListOptions) (*SelfHostedRunnersAllowedRepos, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners/repositories", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	settings := new(SelfHostedRunnersAllowedRepos)
+	resp, err := s.client.Do(ctx, req, settings)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return settings, resp, nil
+}
+
+// SetRepositoriesSelfHostedRunnersAllowedInOrganization allows the list of repositories to use self-hosted runners in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-repositories-allowed-to-use-self-hosted-runners-in-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories
+func (s *ActionsService) SetRepositoriesSelfHostedRunnersAllowedInOrganization(ctx context.Context, org string, repositoryIDs []int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners/repositories", org)
+
+	req, err := s.client.NewRequest("PUT", u, struct {
+		IDs []int64 `json:"selected_repository_ids"`
+	}{IDs: repositoryIDs})
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

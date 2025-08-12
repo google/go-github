@@ -566,3 +566,76 @@ func TestActionsService_EditSelfHostedRunnersSettingsInOrganization(t *testing.T
 		return client.Actions.EditSelfHostedRunnersSettingsInOrganization(ctx, "o", *input)
 	})
 }
+
+func TestActionsService_ListRepositoriesSelfHostedRunnersAllowedInOrganization(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/permissions/self-hosted-runners/repositories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "1",
+		})
+		fmt.Fprint(w, `{"total_count":2,"repositories":[{"id":2}, {"id": 3}]}`)
+	})
+
+	ctx := context.Background()
+	opt := &ListOptions{
+		Page: 1,
+	}
+	got, _, err := client.Actions.ListRepositoriesSelfHostedRunnersAllowedInOrganization(ctx, "o", opt)
+	if err != nil {
+		t.Errorf("Actions.ListRepositoriesSelfHostedRunnersAllowedInOrganization returned error: %v", err)
+	}
+
+	want := &SelfHostedRunnersAllowedRepos{TotalCount: int(2), Repositories: []*Repository{
+		{ID: Ptr(int64(2))},
+		{ID: Ptr(int64(3))},
+	}}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Actions.ListRepositoriesSelfHostedRunnersAllowedInOrganization returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "ListRepositoriesSelfHostedRunnersAllowedInOrganization"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListRepositoriesSelfHostedRunnersAllowedInOrganization(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListRepositoriesSelfHostedRunnersAllowedInOrganization(ctx, "o", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_SetRepositoriesSelfHostedRunnersAllowedInOrganization(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/permissions/self-hosted-runners/repositories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		testBody(t, r, `{"selected_repository_ids":[123,1234]}`+"\n")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.SetRepositoriesSelfHostedRunnersAllowedInOrganization(ctx, "o", []int64{123, 1234})
+	if err != nil {
+		t.Errorf("Actions.SetRepositoriesSelfHostedRunnersAllowedInOrganization returned error: %v", err)
+	}
+
+	const methodName = "SetRepositoriesSelfHostedRunnersAllowedInOrganization"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetRepositoriesSelfHostedRunnersAllowedInOrganization(ctx, "\n", []int64{123, 1234})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetRepositoriesSelfHostedRunnersAllowedInOrganization(ctx, "o", []int64{123, 1234})
+	})
+}
