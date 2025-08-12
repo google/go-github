@@ -25574,6 +25574,134 @@ func (s *SecretScanningAlertUpdateOptions) GetResolutionComment() string {
 	return *s.ResolutionComment
 }
 
+// GetCustomPatternVersion returns the CustomPatternVersion field if it's non-nil, zero value otherwise.
+func (s *SecretScanningCustomPatternSetting) GetCustomPatternVersion() string {
+	if s == nil || s.CustomPatternVersion == nil {
+		return ""
+	}
+	return *s.CustomPatternVersion
+}
+
+// GetPatternConfigVersion returns the PatternConfigVersion field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternConfigs) GetPatternConfigVersion() string {
+	if s == nil || s.PatternConfigVersion == nil {
+		return ""
+	}
+	return *s.PatternConfigVersion
+}
+
+// GetPatternConfigVersion returns the PatternConfigVersion field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternConfigsUpdate) GetPatternConfigVersion() string {
+	if s == nil || s.PatternConfigVersion == nil {
+		return ""
+	}
+	return *s.PatternConfigVersion
+}
+
+// GetPatternConfigVersion returns the PatternConfigVersion field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternConfigsUpdateOptions) GetPatternConfigVersion() string {
+	if s == nil || s.PatternConfigVersion == nil {
+		return ""
+	}
+	return *s.PatternConfigVersion
+}
+
+// GetAlertTotal returns the AlertTotal field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetAlertTotal() int {
+	if s == nil || s.AlertTotal == nil {
+		return 0
+	}
+	return *s.AlertTotal
+}
+
+// GetAlertTotalPercentage returns the AlertTotalPercentage field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetAlertTotalPercentage() int {
+	if s == nil || s.AlertTotalPercentage == nil {
+		return 0
+	}
+	return *s.AlertTotalPercentage
+}
+
+// GetBypassrate returns the Bypassrate field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetBypassrate() int {
+	if s == nil || s.Bypassrate == nil {
+		return 0
+	}
+	return *s.Bypassrate
+}
+
+// GetCustomPatternVersion returns the CustomPatternVersion field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetCustomPatternVersion() string {
+	if s == nil || s.CustomPatternVersion == nil {
+		return ""
+	}
+	return *s.CustomPatternVersion
+}
+
+// GetDefaultSetting returns the DefaultSetting field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetDefaultSetting() string {
+	if s == nil || s.DefaultSetting == nil {
+		return ""
+	}
+	return *s.DefaultSetting
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetDisplayName() string {
+	if s == nil || s.DisplayName == nil {
+		return ""
+	}
+	return *s.DisplayName
+}
+
+// GetEnterpriseSetting returns the EnterpriseSetting field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetEnterpriseSetting() string {
+	if s == nil || s.EnterpriseSetting == nil {
+		return ""
+	}
+	return *s.EnterpriseSetting
+}
+
+// GetFalsePositiveRate returns the FalsePositiveRate field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetFalsePositiveRate() int {
+	if s == nil || s.FalsePositiveRate == nil {
+		return 0
+	}
+	return *s.FalsePositiveRate
+}
+
+// GetFalsePositives returns the FalsePositives field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetFalsePositives() int {
+	if s == nil || s.FalsePositives == nil {
+		return 0
+	}
+	return *s.FalsePositives
+}
+
+// GetSetting returns the Setting field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetSetting() string {
+	if s == nil || s.Setting == nil {
+		return ""
+	}
+	return *s.Setting
+}
+
+// GetSlug returns the Slug field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetSlug() string {
+	if s == nil || s.Slug == nil {
+		return ""
+	}
+	return *s.Slug
+}
+
+// GetTokenType returns the TokenType field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPatternOverride) GetTokenType() string {
+	if s == nil || s.TokenType == nil {
+		return ""
+	}
+	return *s.TokenType
+}
+
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
 func (s *SecretScanningPushProtection) GetStatus() string {
 	if s == nil || s.Status == nil {

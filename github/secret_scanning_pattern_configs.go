@@ -76,7 +76,7 @@ type SecretScanningCustomPatternSetting struct {
 
 // ListPatternConfigsForEnterprise lists the secret scanning pattern configurations for an enterprise.
 //
-// Github API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/push-protection?apiVersion=2022-11-28#list-enterprise-pattern-configurations
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/push-protection#list-enterprise-pattern-configurations
 //
 //meta:operation GET /enterprises/{enterprise}/secret-scanning/pattern-configurations
 func (s *SecretScanningService) ListPatternConfigsForEnterprise(ctx context.Context, enterprise string) (*SecretScanningPatternConfigs, *Response, error) {
@@ -98,7 +98,7 @@ func (s *SecretScanningService) ListPatternConfigsForEnterprise(ctx context.Cont
 
 // ListPatternConfigsForOrg lists the secret scanning pattern configurations for an organization.
 //
-// Github API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/push-protection?apiVersion=2022-11-28#list-organization-pattern-configurations
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/push-protection#list-organization-pattern-configurations
 //
 //meta:operation GET /orgs/{org}/secret-scanning/pattern-configurations
 func (s *SecretScanningService) ListPatternConfigsForOrg(ctx context.Context, org string) (*SecretScanningPatternConfigs, *Response, error) {
@@ -120,7 +120,7 @@ func (s *SecretScanningService) ListPatternConfigsForOrg(ctx context.Context, or
 
 // UpdatePatternConfigsForEnterprise updates the secret scanning pattern configurations for an enterprise.
 //
-// Github API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/push-protection?apiVersion=2022-11-28#update-enterprise-pattern-configurations
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/push-protection#update-enterprise-pattern-configurations
 //
 //meta:operation PATCH /enterprises/{enterprise}/secret-scanning/pattern-configurations
 func (s *SecretScanningService) UpdatePatternConfigsForEnterprise(ctx context.Context, enterprise string, opts *SecretScanningPatternConfigsUpdateOptions) (*SecretScanningPatternConfigsUpdate, *Response, error) {
@@ -142,7 +142,7 @@ func (s *SecretScanningService) UpdatePatternConfigsForEnterprise(ctx context.Co
 
 // UpdatePatternConfigsForOrg updates the secret scanning pattern configurations for an organization.
 //
-// Github API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/push-protection?apiVersion=2022-11-28#update-organization-pattern-configurations
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/push-protection#update-organization-pattern-configurations
 //
 //meta:operation PATCH /orgs/{org}/secret-scanning/pattern-configurations
 func (s *SecretScanningService) UpdatePatternConfigsForOrg(ctx context.Context, org string, opts *SecretScanningPatternConfigsUpdateOptions) (*SecretScanningPatternConfigsUpdate, *Response, error) {

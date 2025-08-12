@@ -32940,6 +32940,182 @@ func TestSecretScanningAlertUpdateOptions_GetResolutionComment(tt *testing.T) {
 	s.GetResolutionComment()
 }
 
+func TestSecretScanningCustomPatternSetting_GetCustomPatternVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPatternSetting{CustomPatternVersion: &zeroValue}
+	s.GetCustomPatternVersion()
+	s = &SecretScanningCustomPatternSetting{}
+	s.GetCustomPatternVersion()
+	s = nil
+	s.GetCustomPatternVersion()
+}
+
+func TestSecretScanningPatternConfigs_GetPatternConfigVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningPatternConfigs{PatternConfigVersion: &zeroValue}
+	s.GetPatternConfigVersion()
+	s = &SecretScanningPatternConfigs{}
+	s.GetPatternConfigVersion()
+	s = nil
+	s.GetPatternConfigVersion()
+}
+
+func TestSecretScanningPatternConfigsUpdate_GetPatternConfigVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningPatternConfigsUpdate{PatternConfigVersion: &zeroValue}
+	s.GetPatternConfigVersion()
+	s = &SecretScanningPatternConfigsUpdate{}
+	s.GetPatternConfigVersion()
+	s = nil
+	s.GetPatternConfigVersion()
+}
+
+func TestSecretScanningPatternConfigsUpdateOptions_GetPatternConfigVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningPatternConfigsUpdateOptions{PatternConfigVersion: &zeroValue}
+	s.GetPatternConfigVersion()
+	s = &SecretScanningPatternConfigsUpdateOptions{}
+	s.GetPatternConfigVersion()
+	s = nil
+	s.GetPatternConfigVersion()
+}
+
+func TestSecretScanningPatternOverride_GetAlertTotal(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SecretScanningPatternOverride{AlertTotal: &zeroValue}
+	s.GetAlertTotal()
+	s = &SecretScanningPatternOverride{}
+	s.GetAlertTotal()
+	s = nil
+	s.GetAlertTotal()
+}
+
+func TestSecretScanningPatternOverride_GetAlertTotalPercentage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SecretScanningPatternOverride{AlertTotalPercentage: &zeroValue}
+	s.GetAlertTotalPercentage()
+	s = &SecretScanningPatternOverride{}
+	s.GetAlertTotalPercentage()
+	s = nil
+	s.GetAlertTotalPercentage()
+}
+
+func TestSecretScanningPatternOverride_GetBypassrate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SecretScanningPatternOverride{Bypassrate: &zeroValue}
+	s.GetBypassrate()
+	s = &SecretScanningPatternOverride{}
+	s.GetBypassrate()
+	s = nil
+	s.GetBypassrate()
+}
+
+func TestSecretScanningPatternOverride_GetCustomPatternVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningPatternOverride{CustomPatternVersion: &zeroValue}
+	s.GetCustomPatternVersion()
+	s = &SecretScanningPatternOverride{}
+	s.GetCustomPatternVersion()
+	s = nil
+	s.GetCustomPatternVersion()
+}
+
+func TestSecretScanningPatternOverride_GetDefaultSetting(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningPatternOverride{DefaultSetting: &zeroValue}
+	s.GetDefaultSetting()
+	s = &SecretScanningPatternOverride{}
+	s.GetDefaultSetting()
+	s = nil
+	s.GetDefaultSetting()
+}
+
+func TestSecretScanningPatternOverride_GetDisplayName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningPatternOverride{DisplayName: &zeroValue}
+	s.GetDisplayName()
+	s = &SecretScanningPatternOverride{}
+	s.GetDisplayName()
+	s = nil
+	s.GetDisplayName()
+}
+
+func TestSecretScanningPatternOverride_GetEnterpriseSetting(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningPatternOverride{EnterpriseSetting: &zeroValue}
+	s.GetEnterpriseSetting()
+	s = &SecretScanningPatternOverride{}
+	s.GetEnterpriseSetting()
+	s = nil
+	s.GetEnterpriseSetting()
+}
+
+func TestSecretScanningPatternOverride_GetFalsePositiveRate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SecretScanningPatternOverride{FalsePositiveRate: &zeroValue}
+	s.GetFalsePositiveRate()
+	s = &SecretScanningPatternOverride{}
+	s.GetFalsePositiveRate()
+	s = nil
+	s.GetFalsePositiveRate()
+}
+
+func TestSecretScanningPatternOverride_GetFalsePositives(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SecretScanningPatternOverride{FalsePositives: &zeroValue}
+	s.GetFalsePositives()
+	s = &SecretScanningPatternOverride{}
+	s.GetFalsePositives()
+	s = nil
+	s.GetFalsePositives()
+}
+
+func TestSecretScanningPatternOverride_GetSetting(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningPatternOverride{Setting: &zeroValue}
+	s.GetSetting()
+	s = &SecretScanningPatternOverride{}
+	s.GetSetting()
+	s = nil
+	s.GetSetting()
+}
+
+func TestSecretScanningPatternOverride_GetSlug(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningPatternOverride{Slug: &zeroValue}
+	s.GetSlug()
+	s = &SecretScanningPatternOverride{}
+	s.GetSlug()
+	s = nil
+	s.GetSlug()
+}
+
+func TestSecretScanningPatternOverride_GetTokenType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningPatternOverride{TokenType: &zeroValue}
+	s.GetTokenType()
+	s = &SecretScanningPatternOverride{}
+	s.GetTokenType()
+	s = nil
+	s.GetTokenType()
+}
+
 func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
