@@ -27,7 +27,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 7187214c51f81537dd0b72ccc8c1af762d73f2c6
+openapi_commit: 30ab35c5db4a05519ceed2e41292cdb7af182f1c
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -1429,66 +1429,6 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
-  - name: GET /organizations/{org}/actions/permissions/artifact-and-log-retention
-    documentation_url: https://docs.github.com/rest/actions/permissions#get-artifact-and-log-retention-settings-for-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: PUT /organizations/{org}/actions/permissions/artifact-and-log-retention
-    documentation_url: https://docs.github.com/rest/actions/permissions#set-artifact-and-log-retention-settings-for-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: GET /organizations/{org}/actions/permissions/fork-pr-contributor-approval
-    documentation_url: https://docs.github.com/rest/actions/permissions#get-fork-pr-contributor-approval-permissions-for-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: PUT /organizations/{org}/actions/permissions/fork-pr-contributor-approval
-    documentation_url: https://docs.github.com/rest/actions/permissions#set-fork-pr-contributor-approval-permissions-for-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: GET /organizations/{org}/actions/permissions/fork-pr-workflows-private-repos
-    documentation_url: https://docs.github.com/rest/actions/permissions#get-private-repo-fork-pr-workflow-settings-for-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: PUT /organizations/{org}/actions/permissions/fork-pr-workflows-private-repos
-    documentation_url: https://docs.github.com/rest/actions/permissions#set-private-repo-fork-pr-workflow-settings-for-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: GET /organizations/{org}/actions/permissions/self-hosted-runners
-    documentation_url: https://docs.github.com/rest/actions/permissions#get-self-hosted-runners-settings-for-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: PUT /organizations/{org}/actions/permissions/self-hosted-runners
-    documentation_url: https://docs.github.com/rest/actions/permissions#set-self-hosted-runners-settings-for-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: GET /organizations/{org}/actions/permissions/self-hosted-runners/repositories
-    documentation_url: https://docs.github.com/rest/actions/permissions#list-repositories-allowed-to-use-self-hosted-runners-in-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: PUT /organizations/{org}/actions/permissions/self-hosted-runners/repositories
-    documentation_url: https://docs.github.com/rest/actions/permissions#set-repositories-allowed-to-use-self-hosted-runners-in-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: DELETE /organizations/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}
-    documentation_url: https://docs.github.com/rest/actions/permissions#remove-a-repository-from-the-list-of-repositories-allowed-to-use-self-hosted-runners-in-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: PUT /organizations/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}
-    documentation_url: https://docs.github.com/rest/actions/permissions#add-a-repository-to-the-list-of-repositories-allowed-to-use-self-hosted-runners-in-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
   - name: GET /organizations/{org}/dependabot/repository-access
     documentation_url: https://docs.github.com/rest/dependabot/repository-access#lists-the-repositories-dependabot-can-access-in-an-organization
     openapi_files:
@@ -1613,6 +1553,36 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
+  - name: GET /orgs/{org}/actions/permissions/artifact-and-log-retention
+    documentation_url: https://docs.github.com/rest/actions/permissions#get-artifact-and-log-retention-settings-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/actions/permissions/artifact-and-log-retention
+    documentation_url: https://docs.github.com/rest/actions/permissions#set-artifact-and-log-retention-settings-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/actions/permissions/fork-pr-contributor-approval
+    documentation_url: https://docs.github.com/rest/actions/permissions#get-fork-pr-contributor-approval-permissions-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/actions/permissions/fork-pr-contributor-approval
+    documentation_url: https://docs.github.com/rest/actions/permissions#set-fork-pr-contributor-approval-permissions-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos
+    documentation_url: https://docs.github.com/rest/actions/permissions#get-private-repo-fork-pr-workflow-settings-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos
+    documentation_url: https://docs.github.com/rest/actions/permissions#set-private-repo-fork-pr-workflow-settings-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/actions/permissions/repositories
     documentation_url: https://docs.github.com/rest/actions/permissions#list-selected-repositories-enabled-for-github-actions-in-an-organization
     openapi_files:
@@ -1649,6 +1619,36 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
+  - name: GET /orgs/{org}/actions/permissions/self-hosted-runners
+    documentation_url: https://docs.github.com/rest/actions/permissions#get-self-hosted-runners-settings-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/actions/permissions/self-hosted-runners
+    documentation_url: https://docs.github.com/rest/actions/permissions#set-self-hosted-runners-settings-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/actions/permissions/self-hosted-runners/repositories
+    documentation_url: https://docs.github.com/rest/actions/permissions#list-repositories-allowed-to-use-self-hosted-runners-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories
+    documentation_url: https://docs.github.com/rest/actions/permissions#set-repositories-allowed-to-use-self-hosted-runners-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}
+    documentation_url: https://docs.github.com/rest/actions/permissions#remove-a-repository-from-the-list-of-repositories-allowed-to-use-self-hosted-runners-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}
+    documentation_url: https://docs.github.com/rest/actions/permissions#add-a-repository-to-the-list-of-repositories-allowed-to-use-self-hosted-runners-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/actions/permissions/workflow
     documentation_url: https://docs.github.com/rest/actions/permissions#get-default-workflow-permissions-for-an-organization
     openapi_files:
