@@ -324,7 +324,7 @@ func (s *ActionsService) GetSelfHostedRunnerPermissionsInEnterprise(ctx context.
 	return permissions, resp, nil
 }
 
-// EditSelfHostedRunnerPermissionsInEnterprise gets the self-hosted runner permissions for an enterprise.
+// EditSelfHostedRunnerPermissionsInEnterprise sets the self-hosted runner permissions for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-self-hosted-runners-permissions-for-an-enterprise
 //
