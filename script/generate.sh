@@ -47,6 +47,6 @@ for dir in $MOD_DIRS; do
   (
     cd "$dir"
     go generate ./...
-    go mod tidy
+    go mod tidy -diff
   )
 done

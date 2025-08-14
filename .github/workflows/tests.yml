@@ -30,10 +30,13 @@ jobs:
         go-version: [1.x, 1.23.0] # test with N and the .0 release of N-1
         platform: [ubuntu-latest]
         include:
-          # include windows, but only with the latest Go version, since there
+          # include Windows and macOS, but only with the latest Go version, since there
           # is very little in the library that is platform specific
           - go-version: 1.x
             platform: windows-latest
+
+          - go-version: 1.x
+            platform: macos-latest
 
           # only update test coverage stats with the most recent go version on linux
           - go-version: 1.x
@@ -42,25 +45,11 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
         with:
           go-version: ${{ matrix.go-version }}
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-
-      # Get values for cache paths to be used in later steps
-      - id: cache-paths
-        run: |
-          echo "go-cache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
-          echo "go-mod-cache=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
-
-      - name: Cache go modules
-        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
-        with:
-          path: |
-            ${{ steps.cache-paths.outputs.go-cache }}
-            ${{ steps.cache-paths.outputs.go-mod-cache }}
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: ${{ runner.os }}-go-
+          cache-dependency-path: "**/*.sum"
 
       - name: Run go test
         run: |
