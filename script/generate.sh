@@ -6,10 +6,6 @@ set -e
 
 CDPATH="" cd -- "$(dirname -- "$0")/.."
 
-# force 1.22.0 default and "auto" toolchain (i.e., use the toolchain directive)
-# when running generate and mod tidy
-export GOTOOLCHAIN="go1.22.0+auto"
-
 if [ "$1" = "--check" ]; then
   GENTEMP="$(mktemp -d)"
   git worktree add -q --detach "$GENTEMP"
