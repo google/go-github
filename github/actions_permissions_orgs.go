@@ -50,6 +50,21 @@ type DefaultWorkflowPermissionOrganization struct {
 	CanApprovePullRequestReviews *bool   `json:"can_approve_pull_request_reviews,omitempty"`
 }
 
+// SelfHostedRunnersSettingsOrganization represents the self-hosted runners permissions settings for repositories in an organization.
+type SelfHostedRunnersSettingsOrganization struct {
+	EnabledRepositories     *string `json:"enabled_repositories,omitempty"`
+	SelectedRepositoriesURL *string `json:"selected_repositories_url,omitempty"`
+}
+
+func (s SelfHostedRunnersSettingsOrganization) String() string {
+	return Stringify(s)
+}
+
+// SelfHostedRunnersSettingsOrganizationOpt specifies the self-hosted runners permissions settings for repositories in an organization.
+type SelfHostedRunnersSettingsOrganizationOpt struct {
+	EnabledRepositories *string `json:"enabled_repositories,omitempty"`
+}
+
 // GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#get-github-actions-permissions-for-an-organization
@@ -305,4 +320,129 @@ func (s *ActionsService) EditArtifactAndLogRetentionPeriodInOrganization(ctx con
 	}
 
 	return s.client.Do(ctx, req, nil)
+}
+
+// GetSelfHostedRunnersSettingsInOrganization gets the self-hosted runners permissions settings for repositories in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-self-hosted-runners-settings-for-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/permissions/self-hosted-runners
+func (s *ActionsService) GetSelfHostedRunnersSettingsInOrganization(ctx context.Context, org string) (*SelfHostedRunnersSettingsOrganization, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	settings := new(SelfHostedRunnersSettingsOrganization)
+	resp, err := s.client.Do(ctx, req, settings)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return settings, resp, nil
+}
+
+// EditSelfHostedRunnersSettingsInOrganization sets the self-hosted runners permissions settings for repositories in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-self-hosted-runners-settings-for-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/self-hosted-runners
+func (s *ActionsService) EditSelfHostedRunnersSettingsInOrganization(ctx context.Context, org string, opt SelfHostedRunnersSettingsOrganizationOpt) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners", org)
+
+	req, err := s.client.NewRequest("PUT", u, opt)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// SelfHostedRunnersAllowedRepos represents the repositories that are allowed to use self-hosted runners in an organization.
+type SelfHostedRunnersAllowedRepos struct {
+	TotalCount   int           `json:"total_count"`
+	Repositories []*Repository `json:"repositories"`
+}
+
+// ListRepositoriesSelfHostedRunnersAllowedInOrganization lists the repositories that are allowed to use self-hosted runners in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#list-repositories-allowed-to-use-self-hosted-runners-in-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/permissions/self-hosted-runners/repositories
+func (s *ActionsService) ListRepositoriesSelfHostedRunnersAllowedInOrganization(ctx context.Context, org string, opts *ListOptions) (*SelfHostedRunnersAllowedRepos, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners/repositories", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	settings := new(SelfHostedRunnersAllowedRepos)
+	resp, err := s.client.Do(ctx, req, settings)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return settings, resp, nil
+}
+
+// SetRepositoriesSelfHostedRunnersAllowedInOrganization allows the list of repositories to use self-hosted runners in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-repositories-allowed-to-use-self-hosted-runners-in-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories
+func (s *ActionsService) SetRepositoriesSelfHostedRunnersAllowedInOrganization(ctx context.Context, org string, repositoryIDs []int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners/repositories", org)
+
+	req, err := s.client.NewRequest("PUT", u, struct {
+		IDs []int64 `json:"selected_repository_ids"`
+	}{IDs: repositoryIDs})
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// AddRepositorySelfHostedRunnersAllowedInOrganization adds a repository to the list of repositories that are allowed to use self-hosted runners in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#add-a-repository-to-the-list-of-repositories-allowed-to-use-self-hosted-runners-in-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}
+func (s *ActionsService) AddRepositorySelfHostedRunnersAllowedInOrganization(ctx context.Context, org string, repositoryID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners/repositories/%v", org, repositoryID)
+
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// RemoveRepositorySelfHostedRunnersAllowedInOrganization removes a repository from the list of repositories that are allowed to use self-hosted runners in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#remove-a-repository-from-the-list-of-repositories-allowed-to-use-self-hosted-runners-in-an-organization
+//
+//meta:operation DELETE /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}
+func (s *ActionsService) RemoveRepositorySelfHostedRunnersAllowedInOrganization(ctx context.Context, org string, repositoryID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners/repositories/%v", org, repositoryID)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
 }

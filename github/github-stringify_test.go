@@ -2042,6 +2042,29 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 	}
 }
 
+func TestSelfHostRunnerPermissionsEnterprise_String(t *testing.T) {
+	t.Parallel()
+	v := SelfHostRunnerPermissionsEnterprise{
+		DisableSelfHostedRunnersForAllOrgs: Ptr(false),
+	}
+	want := `github.SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs:false}`
+	if got := v.String(); got != want {
+		t.Errorf("SelfHostRunnerPermissionsEnterprise.String = %v, want %v", got, want)
+	}
+}
+
+func TestSelfHostedRunnersSettingsOrganization_String(t *testing.T) {
+	t.Parallel()
+	v := SelfHostedRunnersSettingsOrganization{
+		EnabledRepositories:     Ptr(""),
+		SelectedRepositoriesURL: Ptr(""),
+	}
+	want := `github.SelfHostedRunnersSettingsOrganization{EnabledRepositories:"", SelectedRepositoriesURL:""}`
+	if got := v.String(); got != want {
+		t.Errorf("SelfHostedRunnersSettingsOrganization.String = %v, want %v", got, want)
+	}
+}
+
 func TestSourceImportAuthor_String(t *testing.T) {
 	t.Parallel()
 	v := SourceImportAuthor{
