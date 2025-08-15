@@ -56,6 +56,14 @@ type CreateWorkflowDispatchEventRequest struct {
 	Inputs map[string]any `json:"inputs,omitempty"`
 }
 
+// WorkflowsPermissions represents the permissions for workflows in a repository.
+type WorkflowsPermissions struct {
+	RunWorkflowsFromForkPullRequests  bool `json:"run_workflows_from_fork_pull_requests"`
+	SendWriteTokensToWorkflows        bool `json:"send_write_tokens_to_workflows"`
+	SendSecretsAndVariables           bool `json:"send_secrets_and_variables"`
+	RequireApprovalForForkPrWorkflows bool `json:"require_approval_for_fork_pr_workflows"`
+}
+
 // ListWorkflows lists all workflows in a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflows#list-repository-workflows
