@@ -38630,15 +38630,15 @@ func TestWorkflows_GetTotalCount(tt *testing.T) {
 	w.GetTotalCount()
 }
 
-func TestWorkflowsPermissions_GetRequireApprovalForForkPrWorkflows(tt *testing.T) {
+func TestWorkflowsPermissions_GetRequireApprovalForForkPRWorkflows(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	w := &WorkflowsPermissions{RequireApprovalForForkPrWorkflows: &zeroValue}
-	w.GetRequireApprovalForForkPrWorkflows()
+	w := &WorkflowsPermissions{RequireApprovalForForkPRWorkflows: &zeroValue}
+	w.GetRequireApprovalForForkPRWorkflows()
 	w = &WorkflowsPermissions{}
-	w.GetRequireApprovalForForkPrWorkflows()
+	w.GetRequireApprovalForForkPRWorkflows()
 	w = nil
-	w.GetRequireApprovalForForkPrWorkflows()
+	w.GetRequireApprovalForForkPRWorkflows()
 }
 
 func TestWorkflowsPermissions_GetRunWorkflowsFromForkPullRequests(tt *testing.T) {

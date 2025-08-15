@@ -61,7 +61,7 @@ type WorkflowsPermissions struct {
 	RunWorkflowsFromForkPullRequests  *bool `json:"run_workflows_from_fork_pull_requests,omitempty"`
 	SendWriteTokensToWorkflows        *bool `json:"send_write_tokens_to_workflows,omitempty"`
 	SendSecretsAndVariables           *bool `json:"send_secrets_and_variables,omitempty"`
-	RequireApprovalForForkPrWorkflows *bool `json:"require_approval_for_fork_pr_workflows,omitempty"`
+	RequireApprovalForForkPRWorkflows *bool `json:"require_approval_for_fork_pr_workflows,omitempty"`
 }
 
 func (w WorkflowsPermissions) String() string {

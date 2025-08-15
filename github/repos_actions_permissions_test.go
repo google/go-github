@@ -284,7 +284,7 @@ func TestRepositoriesService_GetPrivateRepoForkPRWorkflowSettings(t *testing.T) 
 		RunWorkflowsFromForkPullRequests:  Ptr(true),
 		SendWriteTokensToWorkflows:        Ptr(false),
 		SendSecretsAndVariables:           Ptr(true),
-		RequireApprovalForForkPrWorkflows: Ptr(false),
+		RequireApprovalForForkPRWorkflows: Ptr(false),
 	}
 	if !cmp.Equal(permissions, want) {
 		t.Errorf("Repositories.GetPrivateRepoForkPRWorkflowSettings returned %+v, want %+v", permissions, want)
@@ -313,7 +313,7 @@ func TestRepositoriesService_EditPrivateRepoForkPRWorkflowSettings(t *testing.T)
 		RunWorkflowsFromForkPullRequests:  Ptr(true),
 		SendWriteTokensToWorkflows:        Ptr(false),
 		SendSecretsAndVariables:           Ptr(true),
-		RequireApprovalForForkPrWorkflows: Ptr(false),
+		RequireApprovalForForkPRWorkflows: Ptr(false),
 	}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {

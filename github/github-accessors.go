@@ -29974,12 +29974,12 @@ func (w *Workflows) GetTotalCount() int {
 	return *w.TotalCount
 }
 
-// GetRequireApprovalForForkPrWorkflows returns the RequireApprovalForForkPrWorkflows field if it's non-nil, zero value otherwise.
-func (w *WorkflowsPermissions) GetRequireApprovalForForkPrWorkflows() bool {
-	if w == nil || w.RequireApprovalForForkPrWorkflows == nil {
+// GetRequireApprovalForForkPRWorkflows returns the RequireApprovalForForkPRWorkflows field if it's non-nil, zero value otherwise.
+func (w *WorkflowsPermissions) GetRequireApprovalForForkPRWorkflows() bool {
+	if w == nil || w.RequireApprovalForForkPRWorkflows == nil {
 		return false
 	}
-	return *w.RequireApprovalForForkPrWorkflows
+	return *w.RequireApprovalForForkPRWorkflows
 }
 
 // GetRunWorkflowsFromForkPullRequests returns the RunWorkflowsFromForkPullRequests field if it's non-nil, zero value otherwise.

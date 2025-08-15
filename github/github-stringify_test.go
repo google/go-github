@@ -2345,9 +2345,9 @@ func TestWorkflowsPermissions_String(t *testing.T) {
 		RunWorkflowsFromForkPullRequests:  Ptr(false),
 		SendWriteTokensToWorkflows:        Ptr(false),
 		SendSecretsAndVariables:           Ptr(false),
-		RequireApprovalForForkPrWorkflows: Ptr(false),
+		RequireApprovalForForkPRWorkflows: Ptr(false),
 	}
-	want := `github.WorkflowsPermissions{RunWorkflowsFromForkPullRequests:false, SendWriteTokensToWorkflows:false, SendSecretsAndVariables:false, RequireApprovalForForkPrWorkflows:false}`
+	want := `github.WorkflowsPermissions{RunWorkflowsFromForkPullRequests:false, SendWriteTokensToWorkflows:false, SendSecretsAndVariables:false, RequireApprovalForForkPRWorkflows:false}`
 	if got := v.String(); got != want {
 		t.Errorf("WorkflowsPermissions.String = %v, want %v", got, want)
 	}
