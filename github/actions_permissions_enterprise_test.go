@@ -567,15 +567,14 @@ func TestActionsService_EditPrivateRepoForkPRWorkflowSettingsInEnterprise(t *tes
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &WorkflowsPermissions{
-		RunWorkflowsFromForkPullRequests:  Ptr(true),
-		SendWriteTokensToWorkflows:        Ptr(false),
-		SendSecretsAndVariables:           Ptr(true),
-		RequireApprovalForForkPRWorkflows: Ptr(false),
+	input := &WorkflowsPermissionsOpt{
+		RunWorkflowsFromForkPullRequests: true,
+		SendWriteTokensToWorkflows:       Ptr(false),
+		SendSecretsAndVariables:          Ptr(true),
 	}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {
-		v := new(WorkflowsPermissions)
+		v := new(WorkflowsPermissionsOpt)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
@@ -586,7 +585,7 @@ func TestActionsService_EditPrivateRepoForkPRWorkflowSettingsInEnterprise(t *tes
 	})
 
 	ctx := context.Background()
-	resp, err := client.Actions.EditPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx, "e", *input)
+	resp, err := client.Actions.EditPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx, "e", input)
 	if err != nil {
 		t.Errorf("Actions.EditPrivateRepoForkPRWorkflowSettingsInEnterprise returned error: %v", err)
 	}
@@ -597,11 +596,11 @@ func TestActionsService_EditPrivateRepoForkPRWorkflowSettingsInEnterprise(t *tes
 
 	const methodName = "EditPrivateRepoForkPRWorkflowSettingsInEnterprise"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.EditPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx, "\n", *input)
+		_, err = client.Actions.EditPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.EditPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx, "e", *input)
+		return client.Actions.EditPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx, "e", input)
 	})
 }

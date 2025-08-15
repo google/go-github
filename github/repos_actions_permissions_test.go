@@ -309,15 +309,14 @@ func TestRepositoriesService_EditPrivateRepoForkPRWorkflowSettings(t *testing.T)
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &WorkflowsPermissions{
-		RunWorkflowsFromForkPullRequests:  Ptr(true),
-		SendWriteTokensToWorkflows:        Ptr(false),
-		SendSecretsAndVariables:           Ptr(true),
-		RequireApprovalForForkPRWorkflows: Ptr(false),
+	input := &WorkflowsPermissionsOpt{
+		RunWorkflowsFromForkPullRequests: true,
+		SendWriteTokensToWorkflows:       Ptr(false),
+		SendSecretsAndVariables:          Ptr(true),
 	}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {
-		v := new(WorkflowsPermissions)
+		v := new(WorkflowsPermissionsOpt)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
@@ -328,7 +327,7 @@ func TestRepositoriesService_EditPrivateRepoForkPRWorkflowSettings(t *testing.T)
 	})
 
 	ctx := context.Background()
-	resp, err := client.Repositories.EditPrivateRepoForkPRWorkflowSettings(ctx, "o", "r", *input)
+	resp, err := client.Repositories.EditPrivateRepoForkPRWorkflowSettings(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.EditPrivateRepoForkPRWorkflowSettings returned error: %v", err)
 	}
@@ -339,11 +338,11 @@ func TestRepositoriesService_EditPrivateRepoForkPRWorkflowSettings(t *testing.T)
 
 	const methodName = "EditPrivateRepoForkPRWorkflowSettings"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Repositories.EditPrivateRepoForkPRWorkflowSettings(ctx, "\n", "\n", *input)
+		_, err = client.Repositories.EditPrivateRepoForkPRWorkflowSettings(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.EditPrivateRepoForkPRWorkflowSettings(ctx, "o", "r", *input)
+		return client.Repositories.EditPrivateRepoForkPRWorkflowSettings(ctx, "o", "r", input)
 	})
 }
