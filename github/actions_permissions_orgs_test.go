@@ -709,10 +709,10 @@ func TestActionsService_GetPrivateRepoForkPRWorkflowSettingsInOrganization(t *te
 		t.Errorf("Actions.GetPrivateRepoForkPRWorkflowSettingsInOrganization returned error: %v", err)
 	}
 	want := &WorkflowsPermissions{
-		RunWorkflowsFromForkPullRequests:  true,
-		SendWriteTokensToWorkflows:        false,
-		SendSecretsAndVariables:           true,
-		RequireApprovalForForkPrWorkflows: false,
+		RunWorkflowsFromForkPullRequests:  Ptr(true),
+		SendWriteTokensToWorkflows:        Ptr(false),
+		SendSecretsAndVariables:           Ptr(true),
+		RequireApprovalForForkPrWorkflows: Ptr(false),
 	}
 	if !cmp.Equal(permissions, want) {
 		t.Errorf("Actions.GetPrivateRepoForkPRWorkflowSettingsInOrganization returned %+v, want %+v", permissions, want)
@@ -738,10 +738,10 @@ func TestActionsService_EditPrivateRepoForkPRWorkflowSettingsInOrganization(t *t
 	client, mux, _ := setup(t)
 
 	input := &WorkflowsPermissions{
-		RunWorkflowsFromForkPullRequests:  true,
-		SendWriteTokensToWorkflows:        false,
-		SendSecretsAndVariables:           true,
-		RequireApprovalForForkPrWorkflows: false,
+		RunWorkflowsFromForkPullRequests:  Ptr(true),
+		SendWriteTokensToWorkflows:        Ptr(false),
+		SendSecretsAndVariables:           Ptr(true),
+		RequireApprovalForForkPrWorkflows: Ptr(false),
 	}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {
