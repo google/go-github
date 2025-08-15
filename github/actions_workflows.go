@@ -64,6 +64,10 @@ type WorkflowsPermissions struct {
 	RequireApprovalForForkPrWorkflows bool `json:"require_approval_for_fork_pr_workflows"`
 }
 
+func (w WorkflowsPermissions) String() string {
+	return Stringify(w)
+}
+
 // ListWorkflows lists all workflows in a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflows#list-repository-workflows
