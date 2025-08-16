@@ -1024,10 +1024,9 @@ func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRed
 	return nil, response, err
 }
 
-// WithCallback assigns a callback function to the Client instance.
-// The callback can be executed later jsut before Client.bareDo
+// The callback can be executed later just before Client.bareDo
 // Returns the same Client instance to allow method chaining.
-// Callback function must return a func()
+// Callback function must return a func().
 func (c *Client) WithCallback(callbackfunction func()) *Client {
 	c.Callback = callbackfunction
 	return c
