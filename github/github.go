@@ -228,6 +228,7 @@ type Client struct {
 	SubIssue           *SubIssueService
 	Teams              *TeamsService
 	Users              *UsersService
+	Callback           func()
 }
 
 type service struct {
@@ -465,6 +466,7 @@ func (c *Client) initialize() {
 	c.SubIssue = (*SubIssueService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
+	c.Callback = nil
 }
 
 // copy returns a copy of the current client. It must be initialized before use.
@@ -1022,6 +1024,15 @@ func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRed
 	return nil, response, err
 }
 
+// WithCallback assigns a callback function to the Client instance.
+// The callback can be executed later jsut before Client.bareDo
+// Returns the same Client instance to allow method chaining.
+// Callback function must return a func()
+func (c *Client) WithCallback(callbackfunction func()) *Client {
+	c.Callback = callbackfunction
+	return c
+}
+
 // Do sends an API request and returns the API response. The API response is
 // JSON decoded and stored in the value pointed to by v, or returned as an
 // error if an API error has occurred. If v implements the io.Writer interface,
@@ -1033,6 +1044,10 @@ func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRed
 // The provided ctx must be non-nil, if it is nil an error is returned. If it
 // is canceled or times out, ctx.Err() will be returned.
 func (c *Client) Do(ctx context.Context, req *http.Request, v any) (*Response, error) {
+	// run callback function if passed, during Client.bareDo
+	if c.Callback != nil {
+		c.Callback()
+	}
 	resp, err := c.BareDo(ctx, req)
 	if err != nil {
 		return resp, err
