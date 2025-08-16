@@ -1024,7 +1024,7 @@ func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRed
 	return nil, response, err
 }
 
-// The callback can be executed later just before Client.bareDo
+// WithCallback schedules a callback that can be executed later just before Client.bareDo.
 // Returns the same Client instance to allow method chaining.
 // Callback function must return a func().
 func (c *Client) WithCallback(callbackfunction func()) *Client {
