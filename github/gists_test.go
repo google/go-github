@@ -509,7 +509,7 @@ func TestGistsService_Create(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	gist, _, err := client.Gists.Create(ctx, input)
+	gist, _, err := client.Gists.CreateFromGist(ctx, input)
 	if err != nil {
 		t.Errorf("Gists.Create returned error: %v", err)
 	}
@@ -528,12 +528,48 @@ func TestGistsService_Create(t *testing.T) {
 
 	const methodName = "Create"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Gists.Create(ctx, input)
+		got, resp, err := client.Gists.CreateFromGist(ctx, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
+}
+
+func TestGistsService_Create_ValueParameter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := CreateGistRequest{
+		Description: Ptr("Gist description"),
+		Public:      Ptr(false),
+		Files: map[GistFilename]GistFile{
+			"test.txt": {Content: Ptr("Hello World")},
+		},
+	}
+
+	mux.HandleFunc("/gists", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		v := new(CreateGistRequest)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		if !cmp.Equal(v, &input) {
+			t.Errorf("Request body = %+v, want %+v", v, &input)
+		}
+
+		fmt.Fprint(w, `{"id":"1"}`)
+	})
+
+	ctx := context.Background()
+	gist, _, err := client.Gists.Create(ctx, input)
+	if err != nil {
+		t.Errorf("Gists.Create returned error: %v", err)
+	}
+
+	want := &Gist{ID: Ptr("1")}
+	if !cmp.Equal(gist, want) {
+		t.Errorf("Gists.Create returned %+v, want %+v", gist, want)
+	}
 }
 
 func TestGistsService_Edit(t *testing.T) {
@@ -574,7 +610,7 @@ func TestGistsService_Edit(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	gist, _, err := client.Gists.Edit(ctx, "1", input)
+	gist, _, err := client.Gists.EditFromGist(ctx, "1", input)
 	if err != nil {
 		t.Errorf("Gists.Edit returned error: %v", err)
 	}
@@ -594,12 +630,12 @@ func TestGistsService_Edit(t *testing.T) {
 
 	const methodName = "Edit"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Gists.Edit(ctx, "\n", input)
+		_, _, err = client.Gists.EditFromGist(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Gists.Edit(ctx, "1", input)
+		got, resp, err := client.Gists.EditFromGist(ctx, "1", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -612,8 +648,43 @@ func TestGistsService_Edit_invalidID(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
-	_, _, err := client.Gists.Edit(ctx, "%", nil)
+	_, _, err := client.Gists.EditFromGist(ctx, "%", nil)
 	testURLParseError(t, err)
+}
+
+func TestGistsService_Edit_ValueParameter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := UpdateGistRequest{
+		Description: Ptr("Updated description"),
+		Files: map[GistFilename]GistFile{
+			"test.txt": {Content: Ptr("Updated content")},
+		},
+	}
+
+	mux.HandleFunc("/gists/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		v := new(UpdateGistRequest)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		if !cmp.Equal(v, &input) {
+			t.Errorf("Request body = %+v, want %+v", v, &input)
+		}
+
+		fmt.Fprint(w, `{"id":"1"}`)
+	})
+
+	ctx := context.Background()
+	gist, _, err := client.Gists.Edit(ctx, "1", input)
+	if err != nil {
+		t.Errorf("Gists.Edit returned error: %v", err)
+	}
+
+	want := &Gist{ID: Ptr("1")}
+	if !cmp.Equal(gist, want) {
+		t.Errorf("Gists.Edit returned %+v, want %+v", gist, want)
+	}
 }
 
 func TestGistsService_ListCommits(t *testing.T) {
