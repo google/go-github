@@ -33,6 +33,19 @@ type Gist struct {
 	NodeID      *string                   `json:"node_id,omitempty"`
 }
 
+// CreateGistRequest represents the input for creating a gist.
+type CreateGistRequest struct {
+	Description *string                   `json:"description,omitempty"`
+	Public      *bool                     `json:"public,omitempty"`
+	Files       map[GistFilename]GistFile `json:"files,omitempty"`
+}
+
+// UpdateGistRequest represents the input for updating a gist.
+type UpdateGistRequest struct {
+	Description *string                   `json:"description,omitempty"`
+	Files       map[GistFilename]GistFile `json:"files,omitempty"`
+}
+
 func (g Gist) String() string {
 	return Stringify(g)
 }
@@ -224,7 +237,7 @@ func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, 
 // GitHub API docs: https://docs.github.com/rest/gists/gists#create-a-gist
 //
 //meta:operation POST /gists
-func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response, error) {
+func (s *GistsService) Create(ctx context.Context, gist CreateGistRequest) (*Gist, *Response, error) {
 	u := "gists"
 	req, err := s.client.NewRequest("POST", u, gist)
 	if err != nil {
@@ -240,12 +253,33 @@ func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response
 	return g, resp, nil
 }
 
+// CreateFromGist creates a gist for the authenticated user using a Gist struct.
+//
+// Deprecated: Use Create with CreateGistRequest instead.
+//
+// GitHub API docs: https://docs.github.com/rest/gists/gists#create-a-gist
+//
+//meta:operation POST /gists
+func (s *GistsService) CreateFromGist(ctx context.Context, gist *Gist) (*Gist, *Response, error) {
+	var req CreateGistRequest
+
+	if gist != nil {
+		req = CreateGistRequest{
+			Description: gist.Description,
+			Public:      gist.Public,
+			Files:       gist.Files,
+		}
+	}
+
+	return s.Create(ctx, req)
+}
+
 // Edit a gist.
 //
 // GitHub API docs: https://docs.github.com/rest/gists/gists#update-a-gist
 //
 //meta:operation PATCH /gists/{gist_id}
-func (s *GistsService) Edit(ctx context.Context, id string, gist *Gist) (*Gist, *Response, error) {
+func (s *GistsService) Edit(ctx context.Context, id string, gist UpdateGistRequest) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v", id)
 	req, err := s.client.NewRequest("PATCH", u, gist)
 	if err != nil {
@@ -259,6 +293,26 @@ func (s *GistsService) Edit(ctx context.Context, id string, gist *Gist) (*Gist, 
 	}
 
 	return g, resp, nil
+}
+
+// EditFromGist updates a gist using a Gist struct.
+//
+// Deprecated: Use Edit with UpdateGistRequest instead.
+//
+// GitHub API docs: https://docs.github.com/rest/gists/gists#update-a-gist
+//
+//meta:operation PATCH /gists/{gist_id}
+func (s *GistsService) EditFromGist(ctx context.Context, id string, gist *Gist) (*Gist, *Response, error) {
+	var req UpdateGistRequest
+
+	if gist != nil {
+		req = UpdateGistRequest{
+			Description: gist.Description,
+			Files:       gist.Files,
+		}
+	}
+
+	return s.Edit(ctx, id, req)
 }
 
 // ListCommits lists commits of a gist.
