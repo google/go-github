@@ -56,6 +56,8 @@ type InstallationTokenOptions struct {
 	Permissions *InstallationPermissions `json:"permissions,omitempty"`
 }
 
+// InstallationTokenListRepoOptions allow restricting a token's access to a list of all repositories in an installation.
+// It differs from InstallationTokenOptions as a parameter which does not omit RepositoryIDs if that field is nil or an empty array.
 type InstallationTokenListRepoOptions struct {
 	// The IDs of the repositories that the installation token can access.
 	// Providing repository IDs restricts the access of an installation token to specific repositories.

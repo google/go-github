@@ -1390,6 +1390,7 @@ func (e *Error) Error() string {
 		e.Code, e.Field, e.Resource)
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface.
 func (e *Error) UnmarshalJSON(data []byte) error {
 	type aliasError Error // avoid infinite recursion by using type alias.
 	if err := json.Unmarshal(data, (*aliasError)(e)); err != nil {
@@ -1492,6 +1493,7 @@ func parseBoolResponse(err error) (bool, error) {
 	return false, err
 }
 
+// RateLimitCategory represents the enumeration of rate limit categories.
 type RateLimitCategory uint8
 
 const (

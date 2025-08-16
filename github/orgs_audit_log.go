@@ -56,6 +56,7 @@ type AuditEntry struct {
 	AdditionalFields map[string]any `json:"-"`
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface.
 func (a *AuditEntry) UnmarshalJSON(data []byte) error {
 	type entryAlias AuditEntry
 	var v entryAlias
@@ -89,6 +90,7 @@ func (a *AuditEntry) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaler interface.
 func (a *AuditEntry) MarshalJSON() ([]byte, error) {
 	type entryAlias AuditEntry
 	v := entryAlias(*a)

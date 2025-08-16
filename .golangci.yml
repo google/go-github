@@ -84,6 +84,11 @@ linters:
         - name: error-return
         - name: error-strings
         - name: errorf
+        - name: exported
+          arguments:
+            - disableChecksOnConstants
+            - disableChecksOnVariables
+            - disableStutteringCheck
         - name: filename-format
           arguments:
             - ^[_a-z][_a-z0-9]*.go$

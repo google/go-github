@@ -92,6 +92,7 @@ type TopicsSearchResult struct {
 	Topics            []*TopicResult `json:"items,omitempty"`
 }
 
+// TopicResult represents a topic search result.
 type TopicResult struct {
 	Name             *string    `json:"name,omitempty"`
 	DisplayName      *string    `json:"display_name,omitempty"`
