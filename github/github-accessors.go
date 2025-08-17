@@ -1086,6 +1086,158 @@ func (a *ArtifactWorkflowRun) GetRepositoryID() int64 {
 	return *a.RepositoryID
 }
 
+// GetAccepted returns the Accepted field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetAccepted() int {
+	if a == nil || a.Accepted == nil {
+		return 0
+	}
+	return *a.Accepted
+}
+
+// GetClassroom returns the Classroom field.
+func (a *Assignment) GetClassroom() *Classroom {
+	if a == nil {
+		return nil
+	}
+	return a.Classroom
+}
+
+// GetDeadline returns the Deadline field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetDeadline() Timestamp {
+	if a == nil || a.Deadline == nil {
+		return Timestamp{}
+	}
+	return *a.Deadline
+}
+
+// GetEditor returns the Editor field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetEditor() string {
+	if a == nil || a.Editor == nil {
+		return ""
+	}
+	return *a.Editor
+}
+
+// GetFeedbackPullRequestsEnabled returns the FeedbackPullRequestsEnabled field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetFeedbackPullRequestsEnabled() bool {
+	if a == nil || a.FeedbackPullRequestsEnabled == nil {
+		return false
+	}
+	return *a.FeedbackPullRequestsEnabled
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetInvitationsEnabled returns the InvitationsEnabled field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetInvitationsEnabled() bool {
+	if a == nil || a.InvitationsEnabled == nil {
+		return false
+	}
+	return *a.InvitationsEnabled
+}
+
+// GetInviteLink returns the InviteLink field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetInviteLink() string {
+	if a == nil || a.InviteLink == nil {
+		return ""
+	}
+	return *a.InviteLink
+}
+
+// GetLanguage returns the Language field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetLanguage() string {
+	if a == nil || a.Language == nil {
+		return ""
+	}
+	return *a.Language
+}
+
+// GetMaxMembers returns the MaxMembers field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetMaxMembers() int {
+	if a == nil || a.MaxMembers == nil {
+		return 0
+	}
+	return *a.MaxMembers
+}
+
+// GetMaxTeams returns the MaxTeams field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetMaxTeams() int {
+	if a == nil || a.MaxTeams == nil {
+		return 0
+	}
+	return *a.MaxTeams
+}
+
+// GetPassing returns the Passing field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetPassing() int {
+	if a == nil || a.Passing == nil {
+		return 0
+	}
+	return *a.Passing
+}
+
+// GetPublicRepo returns the PublicRepo field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetPublicRepo() bool {
+	if a == nil || a.PublicRepo == nil {
+		return false
+	}
+	return *a.PublicRepo
+}
+
+// GetSlug returns the Slug field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetSlug() string {
+	if a == nil || a.Slug == nil {
+		return ""
+	}
+	return *a.Slug
+}
+
+// GetStarterCodeRepository returns the StarterCodeRepository field.
+func (a *Assignment) GetStarterCodeRepository() *Repository {
+	if a == nil {
+		return nil
+	}
+	return a.StarterCodeRepository
+}
+
+// GetStudentsAreRepoAdmins returns the StudentsAreRepoAdmins field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetStudentsAreRepoAdmins() bool {
+	if a == nil || a.StudentsAreRepoAdmins == nil {
+		return false
+	}
+	return *a.StudentsAreRepoAdmins
+}
+
+// GetSubmitted returns the Submitted field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetSubmitted() int {
+	if a == nil || a.Submitted == nil {
+		return 0
+	}
+	return *a.Submitted
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetTitle() string {
+	if a == nil || a.Title == nil {
+		return ""
+	}
+	return *a.Title
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (a *Assignment) GetType() string {
+	if a == nil || a.Type == nil {
+		return ""
+	}
+	return *a.Type
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (a *Attachment) GetBody() string {
 	if a == nil || a.Body == nil {
@@ -2524,6 +2676,46 @@ func (c *CheckSuitePreferenceResults) GetRepository() *Repository {
 		return nil
 	}
 	return c.Repository
+}
+
+// GetArchived returns the Archived field if it's non-nil, zero value otherwise.
+func (c *Classroom) GetArchived() bool {
+	if c == nil || c.Archived == nil {
+		return false
+	}
+	return *c.Archived
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *Classroom) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *Classroom) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetOrganization returns the Organization field.
+func (c *Classroom) GetOrganization() *Organization {
+	if c == nil {
+		return nil
+	}
+	return c.Organization
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *Classroom) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
 }
 
 // GetFingerprint returns the Fingerprint field if it's non-nil, zero value otherwise.

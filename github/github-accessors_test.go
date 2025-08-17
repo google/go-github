@@ -1411,6 +1411,209 @@ func TestArtifactWorkflowRun_GetRepositoryID(tt *testing.T) {
 	a.GetRepositoryID()
 }
 
+func TestAssignment_GetAccepted(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &Assignment{Accepted: &zeroValue}
+	a.GetAccepted()
+	a = &Assignment{}
+	a.GetAccepted()
+	a = nil
+	a.GetAccepted()
+}
+
+func TestAssignment_GetClassroom(tt *testing.T) {
+	tt.Parallel()
+	a := &Assignment{}
+	a.GetClassroom()
+	a = nil
+	a.GetClassroom()
+}
+
+func TestAssignment_GetDeadline(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &Assignment{Deadline: &zeroValue}
+	a.GetDeadline()
+	a = &Assignment{}
+	a.GetDeadline()
+	a = nil
+	a.GetDeadline()
+}
+
+func TestAssignment_GetEditor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &Assignment{Editor: &zeroValue}
+	a.GetEditor()
+	a = &Assignment{}
+	a.GetEditor()
+	a = nil
+	a.GetEditor()
+}
+
+func TestAssignment_GetFeedbackPullRequestsEnabled(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &Assignment{FeedbackPullRequestsEnabled: &zeroValue}
+	a.GetFeedbackPullRequestsEnabled()
+	a = &Assignment{}
+	a.GetFeedbackPullRequestsEnabled()
+	a = nil
+	a.GetFeedbackPullRequestsEnabled()
+}
+
+func TestAssignment_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &Assignment{ID: &zeroValue}
+	a.GetID()
+	a = &Assignment{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAssignment_GetInvitationsEnabled(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &Assignment{InvitationsEnabled: &zeroValue}
+	a.GetInvitationsEnabled()
+	a = &Assignment{}
+	a.GetInvitationsEnabled()
+	a = nil
+	a.GetInvitationsEnabled()
+}
+
+func TestAssignment_GetInviteLink(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &Assignment{InviteLink: &zeroValue}
+	a.GetInviteLink()
+	a = &Assignment{}
+	a.GetInviteLink()
+	a = nil
+	a.GetInviteLink()
+}
+
+func TestAssignment_GetLanguage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &Assignment{Language: &zeroValue}
+	a.GetLanguage()
+	a = &Assignment{}
+	a.GetLanguage()
+	a = nil
+	a.GetLanguage()
+}
+
+func TestAssignment_GetMaxMembers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &Assignment{MaxMembers: &zeroValue}
+	a.GetMaxMembers()
+	a = &Assignment{}
+	a.GetMaxMembers()
+	a = nil
+	a.GetMaxMembers()
+}
+
+func TestAssignment_GetMaxTeams(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &Assignment{MaxTeams: &zeroValue}
+	a.GetMaxTeams()
+	a = &Assignment{}
+	a.GetMaxTeams()
+	a = nil
+	a.GetMaxTeams()
+}
+
+func TestAssignment_GetPassing(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &Assignment{Passing: &zeroValue}
+	a.GetPassing()
+	a = &Assignment{}
+	a.GetPassing()
+	a = nil
+	a.GetPassing()
+}
+
+func TestAssignment_GetPublicRepo(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &Assignment{PublicRepo: &zeroValue}
+	a.GetPublicRepo()
+	a = &Assignment{}
+	a.GetPublicRepo()
+	a = nil
+	a.GetPublicRepo()
+}
+
+func TestAssignment_GetSlug(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &Assignment{Slug: &zeroValue}
+	a.GetSlug()
+	a = &Assignment{}
+	a.GetSlug()
+	a = nil
+	a.GetSlug()
+}
+
+func TestAssignment_GetStarterCodeRepository(tt *testing.T) {
+	tt.Parallel()
+	a := &Assignment{}
+	a.GetStarterCodeRepository()
+	a = nil
+	a.GetStarterCodeRepository()
+}
+
+func TestAssignment_GetStudentsAreRepoAdmins(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &Assignment{StudentsAreRepoAdmins: &zeroValue}
+	a.GetStudentsAreRepoAdmins()
+	a = &Assignment{}
+	a.GetStudentsAreRepoAdmins()
+	a = nil
+	a.GetStudentsAreRepoAdmins()
+}
+
+func TestAssignment_GetSubmitted(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &Assignment{Submitted: &zeroValue}
+	a.GetSubmitted()
+	a = &Assignment{}
+	a.GetSubmitted()
+	a = nil
+	a.GetSubmitted()
+}
+
+func TestAssignment_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &Assignment{Title: &zeroValue}
+	a.GetTitle()
+	a = &Assignment{}
+	a.GetTitle()
+	a = nil
+	a.GetTitle()
+}
+
+func TestAssignment_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &Assignment{Type: &zeroValue}
+	a.GetType()
+	a = &Assignment{}
+	a.GetType()
+	a = nil
+	a.GetType()
+}
+
 func TestAttachment_GetBody(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -3275,6 +3478,58 @@ func TestCheckSuitePreferenceResults_GetRepository(tt *testing.T) {
 	c.GetRepository()
 	c = nil
 	c.GetRepository()
+}
+
+func TestClassroom_GetArchived(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &Classroom{Archived: &zeroValue}
+	c.GetArchived()
+	c = &Classroom{}
+	c.GetArchived()
+	c = nil
+	c.GetArchived()
+}
+
+func TestClassroom_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &Classroom{ID: &zeroValue}
+	c.GetID()
+	c = &Classroom{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestClassroom_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &Classroom{Name: &zeroValue}
+	c.GetName()
+	c = &Classroom{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestClassroom_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	c := &Classroom{}
+	c.GetOrganization()
+	c = nil
+	c.GetOrganization()
+}
+
+func TestClassroom_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &Classroom{URL: &zeroValue}
+	c.GetURL()
+	c = &Classroom{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
 }
 
 func TestClusterSSHKey_GetFingerprint(tt *testing.T) {
