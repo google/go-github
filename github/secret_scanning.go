@@ -120,13 +120,13 @@ type SecretScanningAlertUpdateOptions struct {
 	ResolutionComment *string `json:"resolution_comment,omitempty"`
 }
 
-// CreatePushProtectionBypass represents the parameters for PushProtectionBypasses.
-type CreatePushProtectionBypass struct {
+// CreatePushProtectionBypass represents the parameters for CreatePushProtectionBypass.
+type PushProtectionBypassRequest struct {
 	Reason        string `json:"reason"`
 	PlaceholderID string `json:"placeholder_id"`
 }
 
-// PushProtectionBypass represents the responses from PushProtectionBypasses.
+// PushProtectionBypass represents the responses from CreatePushProtectionBypass.
 type PushProtectionBypass struct {
 	Reason    string     `json:"reason"`
 	ExpireAt  *Timestamp `json:"expire_at"`
@@ -322,7 +322,7 @@ func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner
 	return locations, resp, nil
 }
 
-// PushProtectionBypasses creates a push protection bypass for a given repository.
+// CreatePushProtectionBypass creates a push protection bypass for a given repository.
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
@@ -330,7 +330,7 @@ func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner
 // GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#create-a-push-protection-bypass
 //
 //meta:operation POST /repos/{owner}/{repo}/secret-scanning/push-protection-bypasses
-func (s *SecretScanningService) PushProtectionBypasses(ctx context.Context, owner, repo string, opts *CreatePushProtectionBypass) (*PushProtectionBypass, *Response, error) {
+func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, owner, repo string, opts *PushProtectionBypassRequest) (*PushProtectionBypass, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo)
 
 	req, err := s.client.NewRequest("POST", u, opts)
@@ -345,7 +345,7 @@ func (s *SecretScanningService) PushProtectionBypasses(ctx context.Context, owne
 	return reponsePushProtectionBypass, resp, nil
 }
 
-// ScanHistory fetches the secret scanning history for a given repository.
+// GetScanHistory fetches the secret scanning history for a given repository.
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope and gitHub advanced security or secret scanning must be enabled.
@@ -353,7 +353,7 @@ func (s *SecretScanningService) PushProtectionBypasses(ctx context.Context, owne
 // GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#get-secret-scanning-scan-history-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/secret-scanning/scan-history
-func (s *SecretScanningService) ScanHistory(ctx context.Context, owner, repo string) (*SecretScanningResponse, *Response, error) {
+func (s *SecretScanningService) GetScanHistory(ctx context.Context, owner, repo string) (*SecretScanningResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/scan-history", owner, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)

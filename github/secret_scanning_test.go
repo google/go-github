@@ -617,7 +617,7 @@ func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
-func TestSecretScanningService_PushProtectionBypasses(t *testing.T) {
+func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -626,9 +626,9 @@ func TestSecretScanningService_PushProtectionBypasses(t *testing.T) {
 
 	mux.HandleFunc(fmt.Sprintf("/repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		var v *CreatePushProtectionBypass
+		var v *PushProtectionBypassRequest
 		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-		want := &CreatePushProtectionBypass{Reason: "valid reason", PlaceholderID: "bypass-123"}
+		want := &PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -641,11 +641,11 @@ func TestSecretScanningService_PushProtectionBypasses(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &CreatePushProtectionBypass{Reason: "valid reason", PlaceholderID: "bypass-123"}
+	opts := &PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
 
-	bypass, _, err := client.SecretScanning.PushProtectionBypasses(ctx, owner, repo, opts)
+	bypass, _, err := client.SecretScanning.CreatePushProtectionBypass(ctx, owner, repo, opts)
 	if err != nil {
-		t.Errorf("SecretScanning.PushProtectionBypasses returned error: %v", err)
+		t.Errorf("SecretScanning.CreatePushProtectionBypass returned error: %v", err)
 	}
 
 	expireTime := Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
@@ -656,19 +656,19 @@ func TestSecretScanningService_PushProtectionBypasses(t *testing.T) {
 	}
 
 	if !cmp.Equal(bypass, want) {
-		t.Errorf("SecretScanning.PushProtectionBypasses returned %+v, want %+v", bypass, want)
+		t.Errorf("SecretScanning.CreatePushProtectionBypass returned %+v, want %+v", bypass, want)
 	}
-	const methodName = "PushProtectionBypasses"
+	const methodName = "CreatePushProtectionBypass"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.SecretScanning.PushProtectionBypasses(ctx, "\n", "\n", opts)
+		_, _, err = client.SecretScanning.CreatePushProtectionBypass(ctx, "\n", "\n", opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, resp, err := client.SecretScanning.PushProtectionBypasses(ctx, "o", "r", opts)
+		_, resp, err := client.SecretScanning.CreatePushProtectionBypass(ctx, "o", "r", opts)
 		return resp, err
 	})
 }
-func TestSecretScanningService_ScanHistory(t *testing.T) {
+func TestSecretScanningService_GetScanHistory(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -703,9 +703,9 @@ func TestSecretScanningService_ScanHistory(t *testing.T) {
 
 	ctx := context.Background()
 
-	history, _, err := client.SecretScanning.ScanHistory(ctx, owner, repo)
+	history, _, err := client.SecretScanning.GetScanHistory(ctx, owner, repo)
 	if err != nil {
-		t.Errorf("SecretScanning.ScanHistory returned error: %v", err)
+		t.Errorf("SecretScanning.GetScanHistory returned error: %v", err)
 	}
 
 	startAt1 := Timestamp{time.Date(2025, time.July, 29, 9, 55, 0, 0, time.UTC)}
@@ -728,15 +728,15 @@ func TestSecretScanningService_ScanHistory(t *testing.T) {
 	}
 
 	if !cmp.Equal(history, want) {
-		t.Errorf("SecretScanning.ScanHistory returned %+v, want %+v", history, want)
+		t.Errorf("SecretScanning.GetScanHistory returned %+v, want %+v", history, want)
 	}
-	const methodName = "ScanHistory"
+	const methodName = "GetScanHistory"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.SecretScanning.ScanHistory(ctx, "\n", "\n")
+		_, _, err = client.SecretScanning.GetScanHistory(ctx, "\n", "\n")
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, resp, err := client.SecretScanning.ScanHistory(ctx, "o", "r")
+		_, resp, err := client.SecretScanning.GetScanHistory(ctx, "o", "r")
 		return resp, err
 	})
 }
