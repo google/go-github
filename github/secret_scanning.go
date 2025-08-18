@@ -347,12 +347,12 @@ func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, 
 	if err != nil {
 		return nil, nil, err
 	}
-	var reponsePushProtectionBypass *PushProtectionBypass
-	resp, err := s.client.Do(ctx, req, &reponsePushProtectionBypass)
+	var responsePushProtectionBypass *PushProtectionBypass
+	resp, err := s.client.Do(ctx, req, &responsePushProtectionBypass)
 	if err != nil {
 		return nil, resp, err
 	}
-	return reponsePushProtectionBypass, resp, nil
+	return responsePushProtectionBypass, resp, nil
 }
 
 // GetScanHistory fetches the secret scanning history for a given repository.
