@@ -139,8 +139,8 @@ type PushProtectionBypass struct {
 	TokenType string `json:"token_type"`
 }
 
-// Scan represents the common fields for a secret scanning scan.
-type Scan struct {
+// SecretsScan represents the common fields for a secret scanning scan.
+type SecretsScan struct {
 	Type        string     `json:"type"`
 	Status      string     `json:"status"`
 	CompletedAt *Timestamp `json:"completed_at,omitempty"`
@@ -149,21 +149,21 @@ type Scan struct {
 
 // CustomPatternScan represents a scan with an associated custom pattern.
 type CustomPatternScan struct {
-	Scan
-	PatternSlug  string `json:"pattern_slug,omitempty"`
-	PatternScope string `json:"pattern_scope,omitempty"`
+	SecretsScan
+	PatternSlug  *string `json:"pattern_slug,omitempty"`
+	PatternScope *string `json:"pattern_scope,omitempty"`
 }
 
 // SecretScanningHistory is the top-level struct for the secret scanning API response.
 type SecretScanningHistory struct {
 	// Information on incremental scan performed by secret scanning on the repository.
-	IncrementalScans []*Scan `json:"incremental_scans"`
+	IncrementalScans []*SecretsScan `json:"incremental_scans,omitempty"`
 	// Information on backfill scan performed by secret scanning on the repository.
-	BackfillScans []*Scan `json:"backfill_scans"`
+	BackfillScans []*SecretsScan `json:"backfill_scans,omitempty"`
 	// Information on pattern update scan performed by secret scanning on the repository.
-	PatternUpdateScans []*Scan `json:"pattern_update_scans"`
+	PatternUpdateScans []*SecretsScan `json:"pattern_update_scans,omitempty"`
 	// Information on custom pattern backfill scan performed by secret scanning on the repository.
-	CustomPatternBackfills []*CustomPatternScan `json:"custom_pattern_backfill_scans"`
+	CustomPatternBackfillScans []*CustomPatternScan `json:"custom_pattern_backfill_scans,omitempty"`
 }
 
 // ListAlertsForEnterprise lists secret scanning alerts for eligible repositories in an enterprise, from newest to oldest.

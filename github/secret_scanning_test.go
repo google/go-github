@@ -617,6 +617,7 @@ func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
 func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -668,6 +669,7 @@ func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 		return resp, err
 	})
 }
+
 func TestSecretScanningService_GetScanHistory(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -713,16 +715,16 @@ func TestSecretScanningService_GetScanHistory(t *testing.T) {
 	startAt2 := Timestamp{time.Date(2025, time.July, 29, 9, 0, 0, 0, time.UTC)}
 
 	want := &SecretScanningHistory{
-		IncrementalScans: []*Scan{
+		IncrementalScans: []*SecretsScan{
 			{Type: "incremental", Status: "success", CompletedAt: &completeAt1, StartedAt: &startAt1},
 		},
-		BackfillScans:      []*Scan{},
-		PatternUpdateScans: []*Scan{},
-		CustomPatternBackfills: []*CustomPatternScan{
+		BackfillScans:      []*SecretsScan{},
+		PatternUpdateScans: []*SecretsScan{},
+		CustomPatternBackfillScans: []*CustomPatternScan{
 			{
-				Scan:         Scan{Type: "custom_backfill", Status: "in_progress", CompletedAt: nil, StartedAt: &startAt2},
-				PatternSlug:  "my-custom-pattern",
-				PatternScope: "organization",
+				SecretsScan:  SecretsScan{Type: "custom_backfill", Status: "in_progress", CompletedAt: nil, StartedAt: &startAt2},
+				PatternSlug:  Ptr("my-custom-pattern"),
+				PatternScope: Ptr("organization"),
 			},
 		},
 	}

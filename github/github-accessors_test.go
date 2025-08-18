@@ -8566,6 +8566,28 @@ func TestCustomOrgRoles_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
+func TestCustomPatternScan_GetPatternScope(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CustomPatternScan{PatternScope: &zeroValue}
+	c.GetPatternScope()
+	c = &CustomPatternScan{}
+	c.GetPatternScope()
+	c = nil
+	c.GetPatternScope()
+}
+
+func TestCustomPatternScan_GetPatternSlug(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CustomPatternScan{PatternSlug: &zeroValue}
+	c.GetPatternSlug()
+	c = &CustomPatternScan{}
+	c.GetPatternSlug()
+	c = nil
+	c.GetPatternSlug()
+}
+
 func TestCustomProperty_GetDefaultValue(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -32257,28 +32279,6 @@ func TestSBOMInfo_GetSPDXVersion(tt *testing.T) {
 	s.GetSPDXVersion()
 }
 
-func TestScan_GetCompletedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	s := &Scan{CompletedAt: &zeroValue}
-	s.GetCompletedAt()
-	s = &Scan{}
-	s.GetCompletedAt()
-	s = nil
-	s.GetCompletedAt()
-}
-
-func TestScan_GetStartedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	s := &Scan{StartedAt: &zeroValue}
-	s.GetStartedAt()
-	s = &Scan{}
-	s.GetStartedAt()
-	s = nil
-	s.GetStartedAt()
-}
-
 func TestScanningAnalysis_GetAnalysisKey(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -33457,6 +33457,28 @@ func TestSecretScanningValidityChecks_GetStatus(tt *testing.T) {
 	s.GetStatus()
 	s = nil
 	s.GetStatus()
+}
+
+func TestSecretsScan_GetCompletedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	s := &SecretsScan{CompletedAt: &zeroValue}
+	s.GetCompletedAt()
+	s = &SecretsScan{}
+	s.GetCompletedAt()
+	s = nil
+	s.GetCompletedAt()
+}
+
+func TestSecretsScan_GetStartedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	s := &SecretsScan{StartedAt: &zeroValue}
+	s.GetStartedAt()
+	s = &SecretsScan{}
+	s.GetStartedAt()
+	s = nil
+	s.GetStartedAt()
 }
 
 func TestSecurityAdvisory_GetAuthor(tt *testing.T) {
