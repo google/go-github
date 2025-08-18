@@ -80,3 +80,26 @@ func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64
 
 	return assignment, resp, nil
 }
+
+// GetClassroom gets a GitHub Classroom classroom for the current user. Classroom will only be
+// returned if the current user is an administrator of the GitHub Classroom.
+//
+// GitHub API docs: https://docs.github.com/rest/classroom/classroom#get-a-classroom
+//
+//meta:operation GET /classrooms/{classroom_id}
+func (s *ClassroomService) GetClassroom(ctx context.Context, classroomID int64) (*Classroom, *Response, error) {
+	u := fmt.Sprintf("classrooms/%v", classroomID)
+
+	req, err := s.client.NewRequest(http.MethodGet, u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	classroom := new(Classroom)
+	resp, err := s.client.Do(ctx, req, classroom)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return classroom, resp, nil
+}

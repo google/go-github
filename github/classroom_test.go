@@ -209,3 +209,60 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestClassroomService_GetClassroom(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/classrooms/1296269", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"id": 1296269,
+			"name": "Programming Elixir",
+			"archived": false,
+			"organization": {
+				"id": 1,
+				"login": "programming-elixir",
+				"node_id": "MDEyOk9yZ2FuaXphdGlvbjE=",
+				"html_url": "https://github.com/programming-elixir",
+				"name": "Learn how to build fault tolerant applications",
+				"avatar_url": "https://avatars.githubusercontent.com/u/9919?v=4"
+			},
+			"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+		}`)
+	})
+
+	ctx := context.Background()
+	classroom, _, err := client.Classroom.GetClassroom(ctx, 1296269)
+	if err != nil {
+		t.Errorf("Classroom.GetClassroom returned error: %v", err)
+	}
+
+	want := &Classroom{
+		ID:       Ptr(int64(1296269)),
+		Name:     Ptr("Programming Elixir"),
+		Archived: Ptr(false),
+		Organization: &Organization{
+			ID:        Ptr(int64(1)),
+			Login:     Ptr("programming-elixir"),
+			NodeID:    Ptr("MDEyOk9yZ2FuaXphdGlvbjE="),
+			HTMLURL:   Ptr("https://github.com/programming-elixir"),
+			Name:      Ptr("Learn how to build fault tolerant applications"),
+			AvatarURL: Ptr("https://avatars.githubusercontent.com/u/9919?v=4"),
+		},
+		URL: Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+	}
+
+	if !cmp.Equal(classroom, want) {
+		t.Errorf("Classroom.GetClassroom returned %+v, want %+v", classroom, want)
+	}
+
+	const methodName = "GetClassroom"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Classroom.GetClassroom(ctx, 1296269)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
