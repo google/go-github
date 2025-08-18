@@ -131,11 +131,11 @@ type PushProtectionBypassRequest struct {
 
 // PushProtectionBypass represents the response from CreatePushProtectionBypass.
 type PushProtectionBypass struct {
-	//The reason for bypassing push protection.
+	// The reason for bypassing push protection.
 	Reason string `json:"reason"`
-	//The time that the bypass will expire in ISO 8601 format.
+	// The time that the bypass will expire in ISO 8601 format.
 	ExpireAt *Timestamp `json:"expire_at"`
-	//The token type this bypass is for.
+	// The token type this bypass is for.
 	TokenType string `json:"token_type"`
 }
 
