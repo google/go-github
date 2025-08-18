@@ -325,3 +325,138 @@ func TestClassroomService_ListClassrooms(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestClassroomService_ListClassroomAssignments(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/classrooms/1296269/assignments", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		testFormValues(t, r, values{"page": "2", "per_page": "2"})
+		fmt.Fprint(w, `[
+			{
+				"id": 12,
+				"public_repo": false,
+				"title": "Intro to Binaries",
+				"type": "individual",
+				"invite_link": "https://classroom.github.com/a/Lx7jiUgx",
+				"invitations_enabled": true,
+				"slug": "intro-to-binaries",
+				"students_are_repo_admins": false,
+				"feedback_pull_requests_enabled": true,
+				"max_teams": 0,
+				"max_members": 0,
+				"editor": "codespaces",
+				"accepted": 100,
+				"submitted": 40,
+				"passing": 10,
+				"language": "ruby",
+				"deadline": "2011-01-26T19:06:43Z",
+				"classroom": {
+					"id": 1296269,
+					"name": "Programming Elixir",
+					"archived": false,
+					"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+				}
+			},
+			{
+				"id": 13,
+				"public_repo": true,
+				"title": "Advanced Programming",
+				"type": "group",
+				"invite_link": "https://classroom.github.com/a/AdvancedProg",
+				"invitations_enabled": true,
+				"slug": "advanced-programming",
+				"students_are_repo_admins": true,
+				"feedback_pull_requests_enabled": false,
+				"max_teams": 5,
+				"max_members": 3,
+				"editor": "vscode",
+				"accepted": 50,
+				"submitted": 25,
+				"passing": 20,
+				"language": "python",
+				"deadline": "2020-01-11T11:59:22Z",
+				"classroom": {
+					"id": 1296269,
+					"name": "Programming Elixir",
+					"archived": false,
+					"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+				}
+			}
+		]`)
+	})
+
+	opt := &ListOptions{Page: 2, PerPage: 2}
+	ctx := context.Background()
+	assignments, _, err := client.Classroom.ListClassroomAssignments(ctx, 1296269, opt)
+	if err != nil {
+		t.Errorf("Classroom.ListClassroomAssignments returned error: %v", err)
+	}
+
+	want := []*ClassroomAssignment{
+		{
+			ID:                          Ptr(int64(12)),
+			PublicRepo:                  Ptr(false),
+			Title:                       Ptr("Intro to Binaries"),
+			Type:                        Ptr("individual"),
+			InviteLink:                  Ptr("https://classroom.github.com/a/Lx7jiUgx"),
+			InvitationsEnabled:          Ptr(true),
+			Slug:                        Ptr("intro-to-binaries"),
+			StudentsAreRepoAdmins:       Ptr(false),
+			FeedbackPullRequestsEnabled: Ptr(true),
+			MaxTeams:                    Ptr(0),
+			MaxMembers:                  Ptr(0),
+			Editor:                      Ptr("codespaces"),
+			Accepted:                    Ptr(100),
+			Submitted:                   Ptr(40),
+			Passing:                     Ptr(10),
+			Language:                    Ptr("ruby"),
+			Deadline:                    func() *Timestamp { t, _ := time.Parse(time.RFC3339, "2011-01-26T19:06:43Z"); return &Timestamp{t} }(),
+			Classroom: &Classroom{
+				ID:       Ptr(int64(1296269)),
+				Name:     Ptr("Programming Elixir"),
+				Archived: Ptr(false),
+				URL:      Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+			},
+		},
+		{
+			ID:                          Ptr(int64(13)),
+			PublicRepo:                  Ptr(true),
+			Title:                       Ptr("Advanced Programming"),
+			Type:                        Ptr("group"),
+			InviteLink:                  Ptr("https://classroom.github.com/a/AdvancedProg"),
+			InvitationsEnabled:          Ptr(true),
+			Slug:                        Ptr("advanced-programming"),
+			StudentsAreRepoAdmins:       Ptr(true),
+			FeedbackPullRequestsEnabled: Ptr(false),
+			MaxTeams:                    Ptr(5),
+			MaxMembers:                  Ptr(3),
+			Editor:                      Ptr("vscode"),
+			Accepted:                    Ptr(50),
+			Submitted:                   Ptr(25),
+			Passing:                     Ptr(20),
+			Language:                    Ptr("python"),
+			Deadline:                    func() *Timestamp { t, _ := time.Parse(time.RFC3339, "2020-01-11T11:59:22Z"); return &Timestamp{t} }(),
+			Classroom: &Classroom{
+				ID:       Ptr(int64(1296269)),
+				Name:     Ptr("Programming Elixir"),
+				Archived: Ptr(false),
+				URL:      Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+			},
+		},
+	}
+
+	if !cmp.Equal(assignments, want) {
+		t.Errorf("Classroom.ListClassroomAssignments returned %+v, want %+v", assignments, want)
+	}
+
+	const methodName = "ListClassroomAssignments"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Classroom.ListClassroomAssignments(ctx, 1296269, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
