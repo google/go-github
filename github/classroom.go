@@ -30,8 +30,8 @@ func (c Classroom) String() string {
 	return Stringify(c)
 }
 
-// Assignment represents a GitHub Classroom assignment.
-type Assignment struct {
+// ClassroomAssignment represents a GitHub Classroom assignment.
+type ClassroomAssignment struct {
 	ID                          *int64      `json:"id,omitempty"`
 	PublicRepo                  *bool       `json:"public_repo,omitempty"`
 	Title                       *string     `json:"title,omitempty"`
@@ -53,7 +53,7 @@ type Assignment struct {
 	Classroom                   *Classroom  `json:"classroom,omitempty"`
 }
 
-func (a Assignment) String() string {
+func (a ClassroomAssignment) String() string {
 	return Stringify(a)
 }
 
@@ -64,7 +64,7 @@ func (a Assignment) String() string {
 // GitHub API docs: https://docs.github.com/rest/classroom/classroom#get-an-assignment
 //
 //meta:operation GET /assignments/{assignment_id}
-func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64) (*Assignment, *Response, error) {
+func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64) (*ClassroomAssignment, *Response, error) {
 	u := fmt.Sprintf("assignments/%v", assignmentID)
 
 	req, err := s.client.NewRequest(http.MethodGet, u, nil)
@@ -72,7 +72,7 @@ func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64
 		return nil, nil, err
 	}
 
-	assignment := new(Assignment)
+	assignment := new(ClassroomAssignment)
 	resp, err := s.client.Do(ctx, req, assignment)
 	if err != nil {
 		return nil, resp, err

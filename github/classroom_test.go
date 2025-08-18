@@ -52,11 +52,11 @@ func TestClassroom_Marshal(t *testing.T) {
 	testJSONMarshal(t, c, want)
 }
 
-func TestAssignment_Marshal(t *testing.T) {
+func TestClassroomAssignment_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Assignment{}, "{}")
+	testJSONMarshal(t, &ClassroomAssignment{}, "{}")
 
-	a := &Assignment{
+	a := &ClassroomAssignment{
 		ID:                          Ptr(int64(12)),
 		PublicRepo:                  Ptr(false),
 		Title:                       Ptr("Intro to Binaries"),
@@ -162,7 +162,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 		t.Errorf("Classroom.GetAssignment returned error: %v", err)
 	}
 
-	want := &Assignment{
+	want := &ClassroomAssignment{
 		ID:                          Ptr(int64(12)),
 		PublicRepo:                  Ptr(false),
 		Title:                       Ptr("Intro to Binaries"),
