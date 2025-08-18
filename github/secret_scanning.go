@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"time"
 )
 
 // SecretScanningService handles communication with the secret scanning related
@@ -118,6 +119,42 @@ type SecretScanningAlertUpdateOptions struct {
 
 	// An optional comment when closing an alert.
 	ResolutionComment *string `json:"resolution_comment,omitempty"`
+}
+
+// CreatePushProtectionBypass represents the parameters for PushProtectionBypasses.
+type CreatePushProtectionBypass struct {
+	Reason        string `json:"reason"`
+	PlaceholderID string `json:"placeholder_id"`
+}
+
+// PushProtectionBypass represents the responses from PushProtectionBypasses.
+type PushProtectionBypass struct {
+	Reason    string     `json:"reason"`
+	ExpireAt  *time.Time `json:"expire_at"`
+	TokenType string     `json:"token_type"`
+}
+
+// Scan represents the common fields for a secret scanning scan.
+type Scan struct {
+	Type        string     `json:"type"`
+	Status      string     `json:"status"`
+	CompletedAt *time.Time `json:"completed_at"`
+	StartedAt   *time.Time `json:"started_at"`
+}
+
+// CustomPatternScan represents a scan with an associated custom pattern.
+type CustomPatternScan struct {
+	Scan
+	PatternSlug  string `json:"pattern_slug,omitempty"`
+	PatternScope string `json:"pattern_scope,omitempty"`
+}
+
+// SecretScanningResponse is the top-level struct for the secret scanning API response.
+type SecretScanningResponse struct {
+	IncrementalScans       []*Scan              `json:"incremental_scans"`
+	BackfillScans          []*Scan              `json:"backfill_scans"`
+	PatternUpdateScans     []*Scan              `json:"pattern_update_scans"`
+	CustomPatternBackfills []*CustomPatternScan `json:"custom_pattern_backfill_scans"`
 }
 
 // ListAlertsForEnterprise lists secret scanning alerts for eligible repositories in an enterprise, from newest to oldest.
@@ -284,4 +321,52 @@ func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner
 	}
 
 	return locations, resp, nil
+}
+
+// PushProtectionBypasses creates a push protection bypass for a given repository.
+//
+// To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
+// the repo scope or security_events scope.
+//
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#create-a-push-protection-bypass
+//
+//meta:operation POST /repos/{owner}/{repo}/secret-scanning/push-protection-bypasses
+func (s *SecretScanningService) PushProtectionBypasses(ctx context.Context, owner, repo string, opts *CreatePushProtectionBypass) (*PushProtectionBypass, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	var reponsePushProtectionBypass *PushProtectionBypass
+	resp, err := s.client.Do(ctx, req, &reponsePushProtectionBypass)
+	if err != nil {
+		return nil, resp, err
+	}
+	return reponsePushProtectionBypass, resp, nil
+}
+
+// ScanHistory fetches the secret scanning history for a given repository.
+//
+// To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
+// the repo scope or security_events scope and gitHub advanced security or secret scanning must be enabled.
+//
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#get-secret-scanning-scan-history-for-a-repository
+//
+//meta:operation GET /repos/{owner}/{repo}/secret-scanning/scan-history
+func (s *SecretScanningService) ScanHistory(ctx context.Context, owner, repo string) (*SecretScanningResponse, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/secret-scanning/scan-history", owner, repo)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var secretScanningHistory *SecretScanningResponse
+	resp, err := s.client.Do(ctx, req, &secretScanningHistory)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return secretScanningHistory, resp, nil
 }

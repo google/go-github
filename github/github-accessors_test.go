@@ -26925,6 +26925,17 @@ func TestPushEventRepository_GetWatchersCount(tt *testing.T) {
 	p.GetWatchersCount()
 }
 
+func TestPushProtectionBypass_GetExpireAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue time.Time
+	p := &PushProtectionBypass{ExpireAt: &zeroValue}
+	p.GetExpireAt()
+	p = &PushProtectionBypass{}
+	p.GetExpireAt()
+	p = nil
+	p.GetExpireAt()
+}
+
 func TestRateLimits_GetActionsRunnerRegistration(tt *testing.T) {
 	tt.Parallel()
 	r := &RateLimits{}
@@ -31989,6 +32000,28 @@ func TestSBOMInfo_GetSPDXVersion(tt *testing.T) {
 	s.GetSPDXVersion()
 	s = nil
 	s.GetSPDXVersion()
+}
+
+func TestScan_GetCompletedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue time.Time
+	s := &Scan{CompletedAt: &zeroValue}
+	s.GetCompletedAt()
+	s = &Scan{}
+	s.GetCompletedAt()
+	s = nil
+	s.GetCompletedAt()
+}
+
+func TestScan_GetStartedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue time.Time
+	s := &Scan{StartedAt: &zeroValue}
+	s.GetStartedAt()
+	s = &Scan{}
+	s.GetStartedAt()
+	s = nil
+	s.GetStartedAt()
 }
 
 func TestScanningAnalysis_GetAnalysisKey(tt *testing.T) {

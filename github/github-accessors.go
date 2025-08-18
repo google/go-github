@@ -20870,6 +20870,14 @@ func (p *PushEventRepository) GetWatchersCount() int {
 	return *p.WatchersCount
 }
 
+// GetExpireAt returns the ExpireAt field if it's non-nil, zero value otherwise.
+func (p *PushProtectionBypass) GetExpireAt() time.Time {
+	if p == nil || p.ExpireAt == nil {
+		return time.Time{}
+	}
+	return *p.ExpireAt
+}
+
 // GetActionsRunnerRegistration returns the ActionsRunnerRegistration field.
 func (r *RateLimits) GetActionsRunnerRegistration() *Rate {
 	if r == nil {
@@ -24836,6 +24844,22 @@ func (s *SBOMInfo) GetSPDXVersion() string {
 		return ""
 	}
 	return *s.SPDXVersion
+}
+
+// GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
+func (s *Scan) GetCompletedAt() time.Time {
+	if s == nil || s.CompletedAt == nil {
+		return time.Time{}
+	}
+	return *s.CompletedAt
+}
+
+// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
+func (s *Scan) GetStartedAt() time.Time {
+	if s == nil || s.StartedAt == nil {
+		return time.Time{}
+	}
+	return *s.StartedAt
 }
 
 // GetAnalysisKey returns the AnalysisKey field if it's non-nil, zero value otherwise.

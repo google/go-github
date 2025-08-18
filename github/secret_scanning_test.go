@@ -617,3 +617,126 @@ func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+func TestSecretScanningService_PushProtectionBypasses(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	owner := "o"
+	repo := "r"
+
+	mux.HandleFunc(fmt.Sprintf("/repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		var v *CreatePushProtectionBypass
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
+		want := &CreatePushProtectionBypass{Reason: "valid reason", PlaceholderID: "bypass-123"}
+		if !cmp.Equal(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{
+			"reason": "valid reason",
+			"expire_at": "2025-07-29T10:00:00Z",
+			"token_type": "github_token"
+		}`)
+	})
+
+	ctx := context.Background()
+	opts := &CreatePushProtectionBypass{Reason: "valid reason", PlaceholderID: "bypass-123"}
+
+	bypass, _, err := client.SecretScanning.PushProtectionBypasses(ctx, owner, repo, opts)
+	if err != nil {
+		t.Errorf("SecretScanning.PushProtectionBypasses returned error: %v", err)
+	}
+
+	expireTime, _ := time.Parse(time.RFC3339, "2025-07-29T10:00:00Z")
+	want := &PushProtectionBypass{
+		Reason:    "valid reason",
+		ExpireAt:  &expireTime,
+		TokenType: "github_token",
+	}
+
+	if !cmp.Equal(bypass, want) {
+		t.Errorf("SecretScanning.PushProtectionBypasses returned %+v, want %+v", bypass, want)
+	}
+	const methodName = "PushProtectionBypasses"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SecretScanning.PushProtectionBypasses(ctx, "\n", "\n", opts)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		_, resp, err := client.SecretScanning.PushProtectionBypasses(ctx, "o", "r", opts)
+		return resp, err
+	})
+}
+func TestSecretScanningService_ScanHistory(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	owner := "o"
+	repo := "r"
+
+	mux.HandleFunc(fmt.Sprintf("/repos/%v/%v/secret-scanning/scan-history", owner, repo), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"incremental_scans": [
+				{
+					"type": "incremental",
+					"status": "success",
+					"completed_at": "2025-07-29T10:00:00Z",
+					"started_at": "2025-07-29T09:55:00Z"
+				}
+			],
+			"backfill_scans": [],
+			"pattern_update_scans": [],
+			"custom_pattern_backfill_scans": [
+				{
+					"type": "custom_backfill",
+					"status": "in_progress",
+					"completed_at": null,
+					"started_at": "2025-07-29T09:00:00Z",
+					"pattern_slug": "my-custom-pattern",
+					"pattern_scope": "organization"
+				}
+			]
+		}`)
+	})
+
+	ctx := context.Background()
+
+	history, _, err := client.SecretScanning.ScanHistory(ctx, owner, repo)
+	if err != nil {
+		t.Errorf("SecretScanning.ScanHistory returned error: %v", err)
+	}
+
+	startAt1, _ := time.Parse(time.RFC3339, "2025-07-29T09:55:00Z")
+	completeAt1, _ := time.Parse(time.RFC3339, "2025-07-29T10:00:00Z")
+	startAt2, _ := time.Parse(time.RFC3339, "2025-07-29T09:00:00Z")
+
+	want := &SecretScanningResponse{
+		IncrementalScans: []*Scan{
+			{Type: "incremental", Status: "success", CompletedAt: &completeAt1, StartedAt: &startAt1},
+		},
+		BackfillScans:      []*Scan{},
+		PatternUpdateScans: []*Scan{},
+		CustomPatternBackfills: []*CustomPatternScan{
+			{
+				Scan:         Scan{Type: "custom_backfill", Status: "in_progress", CompletedAt: nil, StartedAt: &startAt2},
+				PatternSlug:  "my-custom-pattern",
+				PatternScope: "organization",
+			},
+		},
+	}
+
+	if !cmp.Equal(history, want) {
+		t.Errorf("SecretScanning.ScanHistory returned %+v, want %+v", history, want)
+	}
+	const methodName = "ScanHistory"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SecretScanning.ScanHistory(ctx, "\n", "\n")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		_, resp, err := client.SecretScanning.ScanHistory(ctx, "o", "r")
+		return resp, err
+	})
+}
