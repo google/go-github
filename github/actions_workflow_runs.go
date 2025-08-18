@@ -106,6 +106,7 @@ type PendingDeploymentsRequest struct {
 	Comment string `json:"comment"`
 }
 
+// ReferencedWorkflow represents a referenced workflow in a workflow run.
 type ReferencedWorkflow struct {
 	Path *string `json:"path,omitempty"`
 	SHA  *string `json:"sha,omitempty"`

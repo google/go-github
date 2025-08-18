@@ -10,6 +10,10 @@ import (
 	"fmt"
 )
 
+// DependencyGraphService handles communication with the dependency graph
+// related methods of the GitHub API.
+//
+// GitHub API docs: https://docs.github.com/rest/dependency-graph
 type DependencyGraphService service
 
 // SBOM represents a software bill of materials, which describes the
