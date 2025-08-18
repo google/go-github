@@ -120,7 +120,7 @@ type SecretScanningAlertUpdateOptions struct {
 	ResolutionComment *string `json:"resolution_comment,omitempty"`
 }
 
-// CreatePushProtectionBypass represents the parameters for CreatePushProtectionBypass.
+// PushProtectionBypassRequest represents the parameters for CreatePushProtectionBypass.
 type PushProtectionBypassRequest struct {
 	Reason        string `json:"reason"`
 	PlaceholderID string `json:"placeholder_id"`
