@@ -143,8 +143,8 @@ type PushProtectionBypass struct {
 type Scan struct {
 	Type        string     `json:"type"`
 	Status      string     `json:"status"`
-	CompletedAt *Timestamp `json:"completed_at"`
-	StartedAt   *Timestamp `json:"started_at"`
+	CompletedAt *Timestamp `json:"completed_at,omitempty"`
+	StartedAt   *Timestamp `json:"started_at,omitempty"`
 }
 
 // CustomPatternScan represents a scan with an associated custom pattern.
