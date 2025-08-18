@@ -20871,9 +20871,9 @@ func (p *PushEventRepository) GetWatchersCount() int {
 }
 
 // GetExpireAt returns the ExpireAt field if it's non-nil, zero value otherwise.
-func (p *PushProtectionBypass) GetExpireAt() time.Time {
+func (p *PushProtectionBypass) GetExpireAt() Timestamp {
 	if p == nil || p.ExpireAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *p.ExpireAt
 }
@@ -24847,17 +24847,17 @@ func (s *SBOMInfo) GetSPDXVersion() string {
 }
 
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
-func (s *Scan) GetCompletedAt() time.Time {
+func (s *Scan) GetCompletedAt() Timestamp {
 	if s == nil || s.CompletedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *s.CompletedAt
 }
 
 // GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
-func (s *Scan) GetStartedAt() time.Time {
+func (s *Scan) GetStartedAt() Timestamp {
 	if s == nil || s.StartedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *s.StartedAt
 }

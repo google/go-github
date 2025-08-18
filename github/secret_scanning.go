@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // SecretScanningService handles communication with the secret scanning related
@@ -130,7 +129,7 @@ type CreatePushProtectionBypass struct {
 // PushProtectionBypass represents the responses from PushProtectionBypasses.
 type PushProtectionBypass struct {
 	Reason    string     `json:"reason"`
-	ExpireAt  *time.Time `json:"expire_at"`
+	ExpireAt  *Timestamp `json:"expire_at"`
 	TokenType string     `json:"token_type"`
 }
 
@@ -138,8 +137,8 @@ type PushProtectionBypass struct {
 type Scan struct {
 	Type        string     `json:"type"`
 	Status      string     `json:"status"`
-	CompletedAt *time.Time `json:"completed_at"`
-	StartedAt   *time.Time `json:"started_at"`
+	CompletedAt *Timestamp `json:"completed_at"`
+	StartedAt   *Timestamp `json:"started_at"`
 }
 
 // CustomPatternScan represents a scan with an associated custom pattern.

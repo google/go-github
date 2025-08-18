@@ -26927,7 +26927,7 @@ func TestPushEventRepository_GetWatchersCount(tt *testing.T) {
 
 func TestPushProtectionBypass_GetExpireAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PushProtectionBypass{ExpireAt: &zeroValue}
 	p.GetExpireAt()
 	p = &PushProtectionBypass{}
@@ -32004,7 +32004,7 @@ func TestSBOMInfo_GetSPDXVersion(tt *testing.T) {
 
 func TestScan_GetCompletedAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	s := &Scan{CompletedAt: &zeroValue}
 	s.GetCompletedAt()
 	s = &Scan{}
@@ -32015,7 +32015,7 @@ func TestScan_GetCompletedAt(tt *testing.T) {
 
 func TestScan_GetStartedAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	s := &Scan{StartedAt: &zeroValue}
 	s.GetStartedAt()
 	s = &Scan{}

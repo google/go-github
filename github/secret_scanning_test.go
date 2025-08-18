@@ -635,7 +635,7 @@ func TestSecretScanningService_PushProtectionBypasses(t *testing.T) {
 
 		fmt.Fprint(w, `{
 			"reason": "valid reason",
-			"expire_at": "2025-07-29T10:00:00Z",
+			"expire_at": "2018-01-01T00:00:00Z",
 			"token_type": "github_token"
 		}`)
 	})
@@ -648,7 +648,7 @@ func TestSecretScanningService_PushProtectionBypasses(t *testing.T) {
 		t.Errorf("SecretScanning.PushProtectionBypasses returned error: %v", err)
 	}
 
-	expireTime, _ := time.Parse(time.RFC3339, "2025-07-29T10:00:00Z")
+	expireTime := Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	want := &PushProtectionBypass{
 		Reason:    "valid reason",
 		ExpireAt:  &expireTime,
@@ -708,9 +708,9 @@ func TestSecretScanningService_ScanHistory(t *testing.T) {
 		t.Errorf("SecretScanning.ScanHistory returned error: %v", err)
 	}
 
-	startAt1, _ := time.Parse(time.RFC3339, "2025-07-29T09:55:00Z")
-	completeAt1, _ := time.Parse(time.RFC3339, "2025-07-29T10:00:00Z")
-	startAt2, _ := time.Parse(time.RFC3339, "2025-07-29T09:00:00Z")
+	startAt1 := Timestamp{time.Date(2025, time.July, 29, 9, 55, 0, 0, time.UTC)}
+	completeAt1 := Timestamp{time.Date(2025, time.July, 29, 10, 0, 0, 0, time.UTC)}
+	startAt2 := Timestamp{time.Date(2025, time.July, 29, 9, 0, 0, 0, time.UTC)}
 
 	want := &SecretScanningResponse{
 		IncrementalScans: []*Scan{
