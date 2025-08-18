@@ -37,6 +37,7 @@ type MessageSigner interface {
 // MessageSignerFunc is a single function implementation of MessageSigner.
 type MessageSignerFunc func(w io.Writer, r io.Reader) error
 
+// Sign implements the MessageSigner interface for MessageSignerFunc.
 func (f MessageSignerFunc) Sign(w io.Writer, r io.Reader) error {
 	return f(w, r)
 }
@@ -110,6 +111,8 @@ type createCommit struct {
 	Signature *string       `json:"signature,omitempty"`
 }
 
+// CreateCommitOptions specifies optional parameters to creates
+// a new commit in a repository.
 type CreateCommitOptions struct {
 	// CreateCommit will sign the commit with this signer. See MessageSigner doc for more details.
 	// Ignored on commits where Verification.Signature is defined.

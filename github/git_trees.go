@@ -58,6 +58,7 @@ type treeEntryWithFileDelete struct {
 	URL     *string `json:"url,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaler interface.
 func (t *TreeEntry) MarshalJSON() ([]byte, error) {
 	if t.SHA == nil && t.Content == nil {
 		return json.Marshal(struct {

@@ -21,6 +21,7 @@ func init() {
 	register.Plugin("sliceofpointers", New)
 }
 
+// SliceOfPointersPlugin is a custom linter plugin for golangci-lint.
 type SliceOfPointersPlugin struct{}
 
 // New returns an analysis.Analyzer to use with golangci-lint.
@@ -28,6 +29,7 @@ func New(_ any) (register.LinterPlugin, error) {
 	return &SliceOfPointersPlugin{}, nil
 }
 
+// BuildAnalyzers builds the analyzers for the SliceOfPointersPlugin.
 func (f *SliceOfPointersPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 	return []*analysis.Analyzer{
 		{
@@ -38,6 +40,7 @@ func (f *SliceOfPointersPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 	}, nil
 }
 
+// GetLoadMode returns the load mode for the SliceOfPointersPlugin.
 func (f *SliceOfPointersPlugin) GetLoadMode() string {
 	return register.LoadModeSyntax
 }
