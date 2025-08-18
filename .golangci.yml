@@ -29,6 +29,7 @@ linters:
       enabled-checks:
         - commentedOutCode
         - commentFormatting
+        - deprecatedComment
         - paramTypeCombine
     goheader:
       values:
