@@ -641,7 +641,7 @@ func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
+	opts := PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
 
 	bypass, _, err := client.SecretScanning.CreatePushProtectionBypass(ctx, owner, repo, opts)
 	if err != nil {
@@ -712,7 +712,7 @@ func TestSecretScanningService_GetScanHistory(t *testing.T) {
 	completeAt1 := Timestamp{time.Date(2025, time.July, 29, 10, 0, 0, 0, time.UTC)}
 	startAt2 := Timestamp{time.Date(2025, time.July, 29, 9, 0, 0, 0, time.UTC)}
 
-	want := &SecretScanningResponse{
+	want := &SecretScanningHistory{
 		IncrementalScans: []*Scan{
 			{Type: "incremental", Status: "success", CompletedAt: &completeAt1, StartedAt: &startAt1},
 		},

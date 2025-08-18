@@ -122,15 +122,21 @@ type SecretScanningAlertUpdateOptions struct {
 
 // PushProtectionBypassRequest represents the parameters for CreatePushProtectionBypass.
 type PushProtectionBypassRequest struct {
-	Reason        string `json:"reason"`
+	// Reason provides a justification for the push protection bypass.
+	Reason string `json:"reason"`
+	// PlaceholderID is an identifier used for the bypass request.
+	// GitHub Secret Scanning provides you with a unique PlaceholderID associated with that specific blocked push.
 	PlaceholderID string `json:"placeholder_id"`
 }
 
-// PushProtectionBypass represents the responses from CreatePushProtectionBypass.
+// PushProtectionBypass represents the response from CreatePushProtectionBypass.
 type PushProtectionBypass struct {
-	Reason    string     `json:"reason"`
-	ExpireAt  *Timestamp `json:"expire_at"`
-	TokenType string     `json:"token_type"`
+	//The reason for bypassing push protection.
+	Reason string `json:"reason"`
+	//The time that the bypass will expire in ISO 8601 format.
+	ExpireAt *Timestamp `json:"expire_at"`
+	//The token type this bypass is for.
+	TokenType string `json:"token_type"`
 }
 
 // Scan represents the common fields for a secret scanning scan.
@@ -148,11 +154,15 @@ type CustomPatternScan struct {
 	PatternScope string `json:"pattern_scope,omitempty"`
 }
 
-// SecretScanningResponse is the top-level struct for the secret scanning API response.
-type SecretScanningResponse struct {
-	IncrementalScans       []*Scan              `json:"incremental_scans"`
-	BackfillScans          []*Scan              `json:"backfill_scans"`
-	PatternUpdateScans     []*Scan              `json:"pattern_update_scans"`
+// SecretScanningHistory is the top-level struct for the secret scanning API response.
+type SecretScanningHistory struct {
+	//Information on incremental scan performed by secret scanning on the repository.
+	IncrementalScans []*Scan `json:"incremental_scans"`
+	//Information on backfill scan performed by secret scanning on the repository.
+	BackfillScans []*Scan `json:"backfill_scans"`
+	//Information on pattern update scan performed by secret scanning on the repository.
+	PatternUpdateScans []*Scan `json:"pattern_update_scans"`
+	//Information on custom pattern backfill scan performed by secret scanning on the repository.
 	CustomPatternBackfills []*CustomPatternScan `json:"custom_pattern_backfill_scans"`
 }
 
@@ -330,10 +340,10 @@ func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner
 // GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#create-a-push-protection-bypass
 //
 //meta:operation POST /repos/{owner}/{repo}/secret-scanning/push-protection-bypasses
-func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, owner, repo string, opts *PushProtectionBypassRequest) (*PushProtectionBypass, *Response, error) {
+func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, owner, repo string, request PushProtectionBypassRequest) (*PushProtectionBypass, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -353,7 +363,7 @@ func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#get-secret-scanning-scan-history-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/secret-scanning/scan-history
-func (s *SecretScanningService) GetScanHistory(ctx context.Context, owner, repo string) (*SecretScanningResponse, *Response, error) {
+func (s *SecretScanningService) GetScanHistory(ctx context.Context, owner, repo string) (*SecretScanningHistory, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/scan-history", owner, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -361,7 +371,7 @@ func (s *SecretScanningService) GetScanHistory(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	var secretScanningHistory *SecretScanningResponse
+	var secretScanningHistory *SecretScanningHistory
 	resp, err := s.client.Do(ctx, req, &secretScanningHistory)
 	if err != nil {
 		return nil, resp, err
