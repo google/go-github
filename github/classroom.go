@@ -103,3 +103,29 @@ func (s *ClassroomService) GetClassroom(ctx context.Context, classroomID int64) 
 
 	return classroom, resp, nil
 }
+
+// ListClassrooms lists GitHub Classroom classrooms for the current user. Classrooms will only be
+// returned if the current user is an administrator of one or more GitHub Classrooms.
+//
+// GitHub API docs: https://docs.github.com/rest/classroom/classroom#list-classrooms
+//
+//meta:operation GET /classrooms
+func (s *ClassroomService) ListClassrooms(ctx context.Context, opts *ListOptions) ([]*Classroom, *Response, error) {
+	u, err := addOptions("classrooms", opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(http.MethodGet, u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var classrooms []*Classroom
+	resp, err := s.client.Do(ctx, req, &classrooms)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return classrooms, resp, nil
+}

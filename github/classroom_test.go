@@ -120,7 +120,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/assignments/12", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
+		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			"id": 12,
 			"public_repo": false,
@@ -215,7 +215,7 @@ func TestClassroomService_GetClassroom(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/classrooms/1296269", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
+		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			"id": 1296269,
 			"name": "Programming Elixir",
@@ -260,6 +260,65 @@ func TestClassroomService_GetClassroom(t *testing.T) {
 	const methodName = "GetClassroom"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Classroom.GetClassroom(ctx, 1296269)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestClassroomService_ListClassrooms(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/classrooms", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		testFormValues(t, r, values{"page": "2", "per_page": "2"})
+		fmt.Fprint(w, `[
+			{
+				"id": 1296269,
+				"name": "Programming Elixir",
+				"archived": false,
+				"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+			},
+			{
+				"id": 1296270,
+				"name": "Advanced Programming",
+				"archived": true,
+				"url": "https://classroom.github.com/classrooms/2-advanced-programming"
+			}
+		]`)
+	})
+
+	opt := &ListOptions{Page: 2, PerPage: 2}
+	ctx := context.Background()
+	classrooms, _, err := client.Classroom.ListClassrooms(ctx, opt)
+	if err != nil {
+		t.Errorf("Classroom.ListClassrooms returned error: %v", err)
+	}
+
+	want := []*Classroom{
+		{
+			ID:       Ptr(int64(1296269)),
+			Name:     Ptr("Programming Elixir"),
+			Archived: Ptr(false),
+			URL:      Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+		},
+		{
+			ID:       Ptr(int64(1296270)),
+			Name:     Ptr("Advanced Programming"),
+			Archived: Ptr(true),
+			URL:      Ptr("https://classroom.github.com/classrooms/2-advanced-programming"),
+		},
+	}
+
+	if !cmp.Equal(classrooms, want) {
+		t.Errorf("Classroom.ListClassrooms returned %+v, want %+v", classrooms, want)
+	}
+
+	const methodName = "ListClassrooms"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Classroom.ListClassrooms(ctx, opt)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
