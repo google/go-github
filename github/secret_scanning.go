@@ -156,13 +156,13 @@ type CustomPatternScan struct {
 
 // SecretScanningHistory is the top-level struct for the secret scanning API response.
 type SecretScanningHistory struct {
-	//Information on incremental scan performed by secret scanning on the repository.
+	// Information on incremental scan performed by secret scanning on the repository.
 	IncrementalScans []*Scan `json:"incremental_scans"`
-	//Information on backfill scan performed by secret scanning on the repository.
+	// Information on backfill scan performed by secret scanning on the repository.
 	BackfillScans []*Scan `json:"backfill_scans"`
-	//Information on pattern update scan performed by secret scanning on the repository.
+	// Information on pattern update scan performed by secret scanning on the repository.
 	PatternUpdateScans []*Scan `json:"pattern_update_scans"`
-	//Information on custom pattern backfill scan performed by secret scanning on the repository.
+	// Information on custom pattern backfill scan performed by secret scanning on the repository.
 	CustomPatternBackfills []*CustomPatternScan `json:"custom_pattern_backfill_scans"`
 }
 
