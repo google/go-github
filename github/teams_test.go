@@ -1523,6 +1523,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug(t *testing.T) {
 		return resp, err
 	})
 }
+
 func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID_empty(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

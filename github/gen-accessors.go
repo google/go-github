@@ -199,15 +199,15 @@ func (t *templateData) dump() error {
 		}
 
 		logf("Writing %v...", filename)
-		if err := os.Chmod(filename, 0644); err != nil {
+		if err := os.Chmod(filename, 0o644); err != nil {
 			return fmt.Errorf("os.Chmod(%q, 0644): %v", filename, err)
 		}
 
-		if err := os.WriteFile(filename, clean, 0444); err != nil {
+		if err := os.WriteFile(filename, clean, 0o444); err != nil {
 			return err
 		}
 
-		if err := os.Chmod(filename, 0444); err != nil {
+		if err := os.Chmod(filename, 0o444); err != nil {
 			return fmt.Errorf("os.Chmod(%q, 0444): %v", filename, err)
 		}
 
@@ -256,7 +256,7 @@ func (t *templateData) addArrayType(x *ast.ArrayType, receiverType, fieldName st
 
 func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 	var zeroValue string
-	var namedStruct = false
+	var namedStruct bool
 	switch x.String() {
 	case "int", "int64":
 		zeroValue = "0"

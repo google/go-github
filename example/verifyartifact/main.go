@@ -109,7 +109,6 @@ func main() {
 		}
 
 		err := runVerification(sev, pb, b)
-
 		if err != nil {
 			log.Fatal(err)
 		}

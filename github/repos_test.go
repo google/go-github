@@ -4523,7 +4523,7 @@ func TestRepositoriesService_IsPrivateReportingEnabled(t *testing.T) {
 
 func TestRepository_UnmarshalJSON(t *testing.T) {
 	t.Parallel()
-	var testCases = map[string]struct {
+	testCases := map[string]struct {
 		data           []byte
 		wantRepository Repository
 		wantErr        bool

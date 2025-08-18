@@ -40,7 +40,6 @@ func main() {
 			Timeout:   time.Second * 30,
 		},
 	).WithEnterpriseURLs(gitHost, gitHost)
-
 	if err != nil {
 		log.Fatalf("failed to create git client for app: %v\n", err)
 	}

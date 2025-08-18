@@ -68,7 +68,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 		v := new(SarifAnalysis)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		testMethod(t, r, "POST")
-		want := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
+		want := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -79,7 +79,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	sarifAnalysis := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
+	sarifAnalysis := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
 	respSarifID, _, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
 	if err != nil {
 		t.Errorf("CodeScanning.UploadSarif returned error: %v", err)
@@ -246,7 +246,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 		t.Errorf("CodeScanning.ListAlertsForOrg returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2020, time.May, 06, 12, 00, 00, 0, time.UTC)}
+	date := Timestamp{time.Date(2020, time.May, 6, 12, 0, 0, 0, time.UTC)}
 	want := []*Alert{
 		{
 			Repository: &Repository{
@@ -408,7 +408,7 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 		t.Errorf("CodeScanning.ListAlertsForOrg returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2020, time.May, 06, 12, 00, 00, 0, time.UTC)}
+	date := Timestamp{time.Date(2020, time.May, 6, 12, 0, 0, 0, time.UTC)}
 	want := []*Alert{
 		{
 			Repository: &Repository{
@@ -571,7 +571,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 		t.Errorf("CodeScanning.ListAlertsForRepo returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2020, time.May, 06, 12, 00, 00, 0, time.UTC)}
+	date := Timestamp{time.Date(2020, time.May, 6, 12, 0, 0, 0, time.UTC)}
 	want := []*Alert{
 		{
 			RuleID:          Ptr("js/trivial-conditional"),
@@ -725,7 +725,7 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 		t.Errorf("CodeScanning.UpdateAlert returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}
+	date := Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}
 	want := &Alert{
 		RuleID:          Ptr("js/useless-expression"),
 		RuleSeverity:    Ptr("warning"),
@@ -918,7 +918,7 @@ func TestCodeScanningService_GetAlert(t *testing.T) {
 		t.Errorf("CodeScanning.GetAlert returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}
+	date := Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}
 	want := &Alert{
 		RuleID:          Ptr("js/useless-expression"),
 		RuleSeverity:    Ptr("warning"),
@@ -1177,7 +1177,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 		t.Errorf("CodeScanning.ListAnalysesForRepo returned error: %v", err)
 	}
 
-	date := &Timestamp{time.Date(2020, time.August, 27, 15, 05, 21, 0, time.UTC)}
+	date := &Timestamp{time.Date(2020, time.August, 27, 15, 5, 21, 0, time.UTC)}
 	want := []*ScanningAnalysis{
 		{
 			ID:           Ptr(int64(201)),
@@ -1579,7 +1579,7 @@ func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
 		t.Errorf("CodeScanning.GetDefaultSetupConfiguration returned error: %v", err)
 	}
 
-	date := &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}
+	date := &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}
 	want := &DefaultSetupConfiguration{
 		State:      Ptr("configured"),
 		Languages:  []string{"javascript", "javascript-typescript", "typescript"},

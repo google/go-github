@@ -57,8 +57,10 @@ Example: README.md,main.go:github/examples/commitpr/main.go`)
 	privateKey  = flag.String("private-key", "", "Path to the private key to use to sign the commit.")
 )
 
-var client *github.Client
-var ctx = context.Background()
+var (
+	client *github.Client
+	ctx    = context.Background()
+)
 
 // getRef returns the commit branch reference object if it exists or creates it
 // from the base branch before returning it.

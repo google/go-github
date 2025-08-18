@@ -694,8 +694,10 @@ func TestRepositoriesService_GetContents_Directory(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetContents returned error: %v", err)
 	}
-	want := []*RepositoryContent{{Type: Ptr("dir"), Name: Ptr("lib"), Path: Ptr("lib")},
-		{Type: Ptr("file"), Name: Ptr("LICENSE"), Size: Ptr(20678), Path: Ptr("LICENSE")}}
+	want := []*RepositoryContent{
+		{Type: Ptr("dir"), Name: Ptr("lib"), Path: Ptr("lib")},
+		{Type: Ptr("file"), Name: Ptr("LICENSE"), Size: Ptr(20678), Path: Ptr("LICENSE")},
+	}
 	if !cmp.Equal(directoryContents, want) {
 		t.Errorf("Repositories.GetContents_Directory returned %+v, want %+v", directoryContents, want)
 	}

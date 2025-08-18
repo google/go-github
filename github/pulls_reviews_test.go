@@ -433,7 +433,8 @@ func TestPullRequestsService_CreateReview_badReview(t *testing.T) {
 			Path:     &path,
 			Body:     &body,
 			Position: &pos1,
-		}}}
+		}},
+	}
 
 	_, _, err := client.PullRequests.CreateReview(ctx, "o", "r", 1, badReview)
 	if err == nil {

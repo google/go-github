@@ -17,7 +17,7 @@ import (
 
 func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 	t.Parallel()
-	var testCases = map[string]struct {
+	testCases := map[string]struct {
 		data      []byte
 		wantRule  []*RequiredReviewer
 		wantError bool

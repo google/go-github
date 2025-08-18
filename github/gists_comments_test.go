@@ -72,6 +72,7 @@ func TestGistComments_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
 func TestGistsService_ListComments(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

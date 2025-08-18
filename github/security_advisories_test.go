@@ -878,7 +878,7 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 		t.Errorf("SecurityAdvisories.ListGlobalSecurityAdvisories returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
+	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := []*GlobalSecurityAdvisory{
 		{
 			ID: Ptr(int64(1)),
@@ -1060,7 +1060,7 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 		t.Errorf("SecurityAdvisories.GetGlobalSecurityAdvisories returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
+	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := &GlobalSecurityAdvisory{
 		ID: Ptr(int64(1)),
 		SecurityAdvisory: SecurityAdvisory{

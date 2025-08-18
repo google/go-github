@@ -15,7 +15,7 @@ func TestStringify(t *testing.T) {
 	t.Parallel()
 	var nilPointer *string
 
-	var tests = []struct {
+	tests := []struct {
 		in  any
 		out string
 	}{
@@ -56,11 +56,11 @@ func TestStringify(t *testing.T) {
 
 		// actual GitHub structs
 		{
-			Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)},
+			Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)},
 			`github.Timestamp{2006-01-02 15:04:05 +0000 UTC}`,
 		},
 		{
-			&Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)},
+			&Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)},
 			`github.Timestamp{2006-01-02 15:04:05 +0000 UTC}`,
 		},
 		{
@@ -88,7 +88,7 @@ func TestStringify(t *testing.T) {
 // stringified as their underlying value.
 func TestString(t *testing.T) {
 	t.Parallel()
-	var tests = []struct {
+	tests := []struct {
 		in  any
 		out string
 	}{

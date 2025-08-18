@@ -63,7 +63,8 @@ func TestOrganizationsService_ListIssueTypes(t *testing.T) {
 			Name:        Ptr("Bug"),
 			Description: Ptr("An unexpected problem or behavior"),
 			CreatedAt:   Ptr(Timestamp{time.Date(2024, 12, 11, 14, 39, 9, 0, time.UTC)}),
-			UpdatedAt:   Ptr(Timestamp{time.Date(2024, 12, 11, 14, 39, 9, 0, time.UTC)})},
+			UpdatedAt:   Ptr(Timestamp{time.Date(2024, 12, 11, 14, 39, 9, 0, time.UTC)}),
+		},
 	}
 	if !cmp.Equal(issueTypes, want) {
 		t.Errorf("Organizations.ListIssueTypes returned %+v, want %+v", issueTypes, want)

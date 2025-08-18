@@ -35,8 +35,8 @@ func TestActivityService_ListNotification(t *testing.T) {
 	opt := &NotificationListOptions{
 		All:           true,
 		Participating: true,
-		Since:         time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC),
-		Before:        time.Date(2007, time.March, 04, 15, 04, 05, 0, time.UTC),
+		Since:         time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC),
+		Before:        time.Date(2007, time.March, 4, 15, 4, 5, 0, time.UTC),
 	}
 	ctx := context.Background()
 	notifications, _, err := client.Activity.ListNotifications(ctx, opt)
@@ -107,14 +107,14 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Activity.MarkNotificationsRead(ctx, Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)})
+	_, err := client.Activity.MarkNotificationsRead(ctx, Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)})
 	if err != nil {
 		t.Errorf("Activity.MarkNotificationsRead returned error: %v", err)
 	}
 
 	const methodName = "MarkNotificationsRead"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Activity.MarkNotificationsRead(ctx, Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)})
+		return client.Activity.MarkNotificationsRead(ctx, Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)})
 	})
 }
 
@@ -131,19 +131,19 @@ func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)})
+	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)})
 	if err != nil {
 		t.Errorf("Activity.MarkRepositoryNotificationsRead returned error: %v", err)
 	}
 
 	const methodName = "MarkRepositoryNotificationsRead"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Activity.MarkRepositoryNotificationsRead(ctx, "\n", "\n", Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)})
+		_, err = client.Activity.MarkRepositoryNotificationsRead(ctx, "\n", "\n", Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)})
+		return client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)})
 	})
 }
 
