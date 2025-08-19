@@ -305,7 +305,7 @@ func TestRepositoriesService_GetPrivateRepoForkPRWorkflowSettings(t *testing.T) 
 	})
 }
 
-func TestRepositoriesService_EditPrivateRepoForkPRWorkflowSettings(t *testing.T) {
+func TestRepositoriesService_UpdatePrivateRepoForkPRWorkflowSettings(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 

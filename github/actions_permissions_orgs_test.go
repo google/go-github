@@ -733,7 +733,7 @@ func TestActionsService_GetPrivateRepoForkPRWorkflowSettingsInOrganization(t *te
 	})
 }
 
-func TestActionsService_EditPrivateRepoForkPRWorkflowSettingsInOrganization(t *testing.T) {
+func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
