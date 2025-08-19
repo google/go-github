@@ -338,3 +338,40 @@ func (s *ActionsService) EditSelfHostedRunnerPermissionsInEnterprise(ctx context
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// GetPrivateRepoForkPRWorkflowSettingsInEnterprise gets the settings for whether workflows from fork pull requests can run on private repositories in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-private-repo-fork-pr-workflow-settings-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/permissions/fork-pr-workflows-private-repos
+func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx context.Context, enterprise string) (*WorkflowsPermissions, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/fork-pr-workflows-private-repos", enterprise)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	permissions := new(WorkflowsPermissions)
+	resp, err := s.client.Do(ctx, req, permissions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return permissions, resp, nil
+}
+
+// UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise sets the settings for whether workflows from fork pull requests can run on private repositories in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-private-repo-fork-pr-workflow-settings-for-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/actions/permissions/fork-pr-workflows-private-repos
+func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(ctx context.Context, enterprise string, permissions *WorkflowsPermissionsOpt) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/fork-pr-workflows-private-repos", enterprise)
+	req, err := s.client.NewRequest("PUT", u, permissions)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

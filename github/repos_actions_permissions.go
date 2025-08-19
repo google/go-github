@@ -153,3 +153,40 @@ func (s *RepositoriesService) EditArtifactAndLogRetentionPeriod(ctx context.Cont
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// GetPrivateRepoForkPRWorkflowSettings gets the settings for whether workflows from fork pull requests can run on a private repository.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-private-repo-fork-pr-workflow-settings-for-a-repository
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos
+func (s *RepositoriesService) GetPrivateRepoForkPRWorkflowSettings(ctx context.Context, owner, repo string) (*WorkflowsPermissions, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/permissions/fork-pr-workflows-private-repos", owner, repo)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	permissions := new(WorkflowsPermissions)
+	resp, err := s.client.Do(ctx, req, permissions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return permissions, resp, nil
+}
+
+// UpdatePrivateRepoForkPRWorkflowSettings sets the settings for whether workflows from fork pull requests can run on a private repository.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-private-repo-fork-pr-workflow-settings-for-a-repository
+//
+//meta:operation PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos
+func (s *RepositoriesService) UpdatePrivateRepoForkPRWorkflowSettings(ctx context.Context, owner, repo string, permissions *WorkflowsPermissionsOpt) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/permissions/fork-pr-workflows-private-repos", owner, repo)
+	req, err := s.client.NewRequest("PUT", u, permissions)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
