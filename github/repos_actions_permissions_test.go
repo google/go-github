@@ -327,22 +327,22 @@ func TestRepositoriesService_EditPrivateRepoForkPRWorkflowSettings(t *testing.T)
 	})
 
 	ctx := context.Background()
-	resp, err := client.Repositories.EditPrivateRepoForkPRWorkflowSettings(ctx, "o", "r", input)
+	resp, err := client.Repositories.UpdatePrivateRepoForkPRWorkflowSettings(ctx, "o", "r", input)
 	if err != nil {
-		t.Errorf("Repositories.EditPrivateRepoForkPRWorkflowSettings returned error: %v", err)
+		t.Errorf("Repositories.UpdatePrivateRepoForkPRWorkflowSettings returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Repositories.EditPrivateRepoForkPRWorkflowSettings = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Repositories.UpdatePrivateRepoForkPRWorkflowSettings = %d, want %d", resp.StatusCode, http.StatusNoContent)
 	}
 
-	const methodName = "EditPrivateRepoForkPRWorkflowSettings"
+	const methodName = "UpdatePrivateRepoForkPRWorkflowSettings"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Repositories.EditPrivateRepoForkPRWorkflowSettings(ctx, "\n", "\n", input)
+		_, err = client.Repositories.UpdatePrivateRepoForkPRWorkflowSettings(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.EditPrivateRepoForkPRWorkflowSettings(ctx, "o", "r", input)
+		return client.Repositories.UpdatePrivateRepoForkPRWorkflowSettings(ctx, "o", "r", input)
 	})
 }

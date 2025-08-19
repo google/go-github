@@ -469,12 +469,12 @@ func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInOrganization(ctx 
 	return permissions, resp, nil
 }
 
-// EditPrivateRepoForkPRWorkflowSettingsInOrganization sets the settings for whether workflows from fork pull requests can run on private repositories in an organization.
+// UpdatePrivateRepoForkPRWorkflowSettingsInOrganization sets the settings for whether workflows from fork pull requests can run on private repositories in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-private-repo-fork-pr-workflow-settings-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos
-func (s *ActionsService) EditPrivateRepoForkPRWorkflowSettingsInOrganization(ctx context.Context, org string, permissions *WorkflowsPermissionsOpt) (*Response, error) {
+func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(ctx context.Context, org string, permissions *WorkflowsPermissionsOpt) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-workflows-private-repos", org)
 	req, err := s.client.NewRequest("PUT", u, permissions)
 	if err != nil {
