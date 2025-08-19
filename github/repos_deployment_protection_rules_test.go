@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -38,7 +37,7 @@ func TestRepositoriesService_GetAllDeploymentProtectionRules(t *testing.T) {
 		},
 		TotalCount: Ptr(2),
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.GetAllDeploymentProtectionRules = %+v, want %+v", got, want)
 	}
 
@@ -66,7 +65,7 @@ func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) 
 
 		testMethod(t, r, "POST")
 		want := input
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -90,7 +89,7 @@ func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) 
 			IntegrationURL: Ptr("https://api.github.com/apps/a-custom-app"),
 		},
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.CreateCustomDeploymentProtectionRule = %+v, want %+v", got, want)
 	}
 
@@ -131,7 +130,7 @@ func TestRepositoriesService_ListCustomDeploymentRuleIntegrations(t *testing.T) 
 			{ID: Ptr(int64(2)), NodeID: Ptr("UHVE67RlcGxveW1lbnRTdTY!jfeuy"), Slug: Ptr("another-custom-app"), IntegrationURL: Ptr("https://api.github.com/apps/another-custom-app")},
 		},
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListCustomDeploymentRuleIntegrations = %+v, want %+v", got, want)
 	}
 
@@ -172,7 +171,7 @@ func TestRepositoriesService_GetCustomDeploymentProtectionRule(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.GetCustomDeploymentProtectionRule = %+v, want %+v", got, want)
 	}
 
