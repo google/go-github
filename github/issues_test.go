@@ -151,6 +151,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 			"milestone": "*",
 			"state":     "closed",
 			"assignee":  "a",
+			"type":      "bug",
 			"creator":   "c",
 			"mentioned": "m",
 			"labels":    "a,b",
@@ -165,14 +166,14 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	})
 
 	opt := &IssueListByRepoOptions{
-		"*", "closed", "a", "c", "m", []string{"a", "b"}, "updated", "asc",
+		"*", "closed", "a", "bug", "c", "m", []string{"a", "b"}, "updated", "asc",
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 		ListCursorOptions{PerPage: 1, Before: "foo", After: "bar"}, ListOptions{0, 0},
 	}
 	ctx := context.Background()
 	issues, _, err := client.Issues.ListByRepo(ctx, "o", "r", opt)
 	if err != nil {
-		t.Errorf("Issues.ListByOrg returned error: %v", err)
+		t.Errorf("Issues.ListByRepo returned error: %v", err)
 	}
 
 	want := []*Issue{{Number: Ptr(1)}}
