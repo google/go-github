@@ -120,7 +120,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/assignments/12", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, http.MethodGet)
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"id": 12,
 			"public_repo": false,
@@ -215,7 +215,7 @@ func TestClassroomService_GetClassroom(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/classrooms/1296269", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, http.MethodGet)
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"id": 1296269,
 			"name": "Programming Elixir",
@@ -272,7 +272,7 @@ func TestClassroomService_ListClassrooms(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/classrooms", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, http.MethodGet)
+		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2", "per_page": "2"})
 		fmt.Fprint(w, `[
 			{
@@ -331,7 +331,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/classrooms/1296269/assignments", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, http.MethodGet)
+		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2", "per_page": "2"})
 		fmt.Fprint(w, `[
 			{
