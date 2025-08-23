@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"net/http"
 )
 
 // ClassroomService handles communication with the GitHub Classroom related
@@ -67,7 +66,7 @@ func (a ClassroomAssignment) String() string {
 func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64) (*ClassroomAssignment, *Response, error) {
 	u := fmt.Sprintf("assignments/%v", assignmentID)
 
-	req, err := s.client.NewRequest(http.MethodGet, u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}

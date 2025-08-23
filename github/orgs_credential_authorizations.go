@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"net/http"
 )
 
 // CredentialAuthorization represents a credential authorized through SAML SSO.
@@ -78,7 +77,7 @@ func (s *OrganizationsService) ListCredentialAuthorizations(ctx context.Context,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest(http.MethodGet, u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -100,7 +99,7 @@ func (s *OrganizationsService) ListCredentialAuthorizations(ctx context.Context,
 //meta:operation DELETE /orgs/{org}/credential-authorizations/{credential_id}
 func (s *OrganizationsService) RemoveCredentialAuthorization(ctx context.Context, org string, credentialID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/credential-authorizations/%v", org, credentialID)
-	req, err := s.client.NewRequest(http.MethodDelete, u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
