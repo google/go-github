@@ -172,7 +172,7 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 		v := new(ReviewPersonalAccessTokenRequestOptions)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-		testMethod(t, r, http.MethodPost)
+		testMethod(t, r, "POST")
 		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}

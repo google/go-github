@@ -8,6 +8,7 @@ linters:
     - copyloopvar
     - dogsled
     - dupl
+    - forbidigo
     - gocritic
     - godot
     - goheader
@@ -114,6 +115,10 @@ linters:
       checks:
         - "all"
         - "-QF1008" # allow embedded field in selector
+    forbidigo:
+      forbid:
+        - pattern: "^http\\.Method[A-Z][a-z]*$"
+          msg: "Use string literals instead of http.Method constants (https://pkg.go.dev/net/http#pkg-constants)"
     custom:
       sliceofpointers:
         type: module
