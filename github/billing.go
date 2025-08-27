@@ -39,20 +39,20 @@ type ActiveCommitters struct {
 	TotalCount                          int                           `json:"total_count"`
 	MaximumAdvancedSecurityCommitters   int                           `json:"maximum_advanced_security_committers"`
 	PurchasedAdvancedSecurityCommitters int                           `json:"purchased_advanced_security_committers"`
-	Repositories                        []*RepositoryActiveCommitters `json:"repositories,omitempty"`
+	Repositories                        []RepositoryActiveCommitters `json:"repositories,omitempty"`
 }
 
 // RepositoryActiveCommitters represents active committers on each repository.
 type RepositoryActiveCommitters struct {
-	Name                                string                                `json:"name,omitempty"`
-	AdvancedSecurityCommitters          int                                   `json:"advanced_security_committers,omitempty"`
+	Name                                *string                                 `json:"name,omitempty"`
+	AdvancedSecurityCommitters          *int                                    `json:"advanced_security_committers,omitempty"`
 	AdvancedSecurityCommittersBreakdown []*AdvancedSecurityCommittersBreakdown `json:"advanced_security_committers_breakdown,omitempty"`
 }
 
 // AdvancedSecurityCommittersBreakdown represents the user activity breakdown for ActiveCommitters.
 type AdvancedSecurityCommittersBreakdown struct {
-	UserLogin      string `json:"user_login,omitempty"`
-	LastPushedDate string `json:"last_pushed_date,omitempty"`
+	UserLogin      *string `json:"user_login,omitempty"`
+	LastPushedDate *string `json:"last_pushed_date,omitempty"`
 }
 
 // UsageReportOptions specifies optional parameters for the enhanced billing platform usage report.
@@ -76,18 +76,18 @@ type UsageReportOptions struct {
 
 // UsageItem represents a single usage item in the enhanced billing platform report.
 type UsageItem struct {
-	Date           string  `json:"date"`
-	Product        string  `json:"product"`
-	SKU            string  `json:"sku"`
-	Quantity       float64 `json:"quantity"`
-	UnitType       string  `json:"unitType"`
-	PricePerUnit   float64 `json:"pricePerUnit"`
-	GrossAmount    float64 `json:"grossAmount"`
-	DiscountAmount float64 `json:"discountAmount"`
-	NetAmount      float64 `json:"netAmount"`
-	RepositoryName string  `json:"repositoryName,omitempty"`
+	Date           *string  `json:"date"`
+	Product        *string  `json:"product"`
+	SKU            *string  `json:"sku"`
+	Quantity       *float64 `json:"quantity"`
+	UnitType       *string  `json:"unitType"`
+	PricePerUnit   *float64 `json:"pricePerUnit"`
+	GrossAmount    *float64 `json:"grossAmount"`
+	DiscountAmount *float64 `json:"discountAmount"`
+	NetAmount      *float64 `json:"netAmount"`
+	RepositoryName *string  `json:"repositoryName,omitempty"`
 	// Organization name is only used for organization-level reports.
-	OrganizationName string `json:"organizationName,omitempty"`
+	OrganizationName *string `json:"organizationName,omitempty"`
 }
 
 // UsageReport represents the enhanced billing platform usage report response.
@@ -162,27 +162,6 @@ func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Cont
 	}
 
 	return activeOrgCommitters, resp, nil
-}
-
-// GetActionsBillingUser returns the summary of the free and paid GitHub Actions minutes used for a user.
-//
-// GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-actions-billing-for-a-user
-//
-//meta:operation GET /users/{username}/settings/billing/actions
-func (s *BillingService) GetActionsBillingUser(ctx context.Context, user string) (*ActionBilling, *Response, error) {
-	u := fmt.Sprintf("users/%v/settings/billing/actions", user)
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	actionsUserBilling := new(ActionBilling)
-	resp, err := s.client.Do(ctx, req, actionsUserBilling)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return actionsUserBilling, resp, nil
 }
 
 // GetPackagesBillingUser returns the free and paid storage used for GitHub Packages in gigabytes for a user.

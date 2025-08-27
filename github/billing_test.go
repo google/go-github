@@ -14,6 +14,111 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+func TestBillingService_GetActionsBillingOrg(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/settings/billing/actions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+				"total_minutes_used": 305.0,
+				"total_paid_minutes_used": 0.0,
+				"included_minutes": 3000.0,
+				"minutes_used_breakdown": {
+					"UBUNTU": 205,
+					"MACOS": 10,
+					"WINDOWS": 90
+				}
+			}`)
+	})
+
+	ctx := context.Background()
+	hook, _, err := client.Billing.GetActionsBillingOrg(ctx, "o")
+	if err != nil {
+		t.Errorf("Billing.GetActionsBillingOrg returned error: %v", err)
+	}
+
+	want := &ActionBilling{
+		TotalMinutesUsed:     305.0,
+		TotalPaidMinutesUsed: 0.0,
+		IncludedMinutes:      3000.0,
+		MinutesUsedBreakdown: MinutesUsedBreakdown{
+			"UBUNTU":  205,
+			"MACOS":   10,
+			"WINDOWS": 90,
+		},
+	}
+	if !cmp.Equal(hook, want) {
+		t.Errorf("Billing.GetActionsBillingOrg returned %+v, want %+v", hook, want)
+	}
+
+	const methodName = "GetActionsBillingOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Billing.GetActionsBillingOrg(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetActionsBillingOrg(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestBillingService_GetActionsBillingOrg_invalidOrg(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := context.Background()
+	_, _, err := client.Billing.GetActionsBillingOrg(ctx, "%")
+	testURLParseError(t, err)
+}
+
+func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/settings/billing/packages", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+				"total_gigabytes_bandwidth_used": 50,
+				"total_paid_gigabytes_bandwidth_used": 40,
+				"included_gigabytes_bandwidth": 10
+			}`)
+	})
+
+	ctx := context.Background()
+	hook, _, err := client.Billing.GetPackagesBillingOrg(ctx, "o")
+	if err != nil {
+		t.Errorf("Billing.GetPackagesBillingOrg returned error: %v", err)
+	}
+
+	want := &PackageBilling{
+		TotalGigabytesBandwidthUsed:     50,
+		TotalPaidGigabytesBandwidthUsed: 40,
+		IncludedGigabytesBandwidth:      10,
+	}
+	if !cmp.Equal(hook, want) {
+		t.Errorf("Billing.GetPackagesBillingOrg returned %+v, want %+v", hook, want)
+	}
+
+	const methodName = "GetPackagesBillingOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Billing.GetPackagesBillingOrg(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetPackagesBillingOrg(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestBillingService_GetPackagesBillingOrg_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
@@ -72,6 +177,68 @@ func TestBillingService_GetStorageBillingOrg_invalidOrg(t *testing.T) {
 
 	ctx := context.Background()
 	_, _, err := client.Billing.GetStorageBillingOrg(ctx, "%")
+	testURLParseError(t, err)
+}
+
+func TestBillingService_GetActionsBillingUser(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/users/u/settings/billing/actions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+				"total_minutes_used": 10,
+				"total_paid_minutes_used": 0,
+				"included_minutes": 3000,
+				"minutes_used_breakdown": {
+					"UBUNTU": 205,
+					"MACOS": 10,
+					"WINDOWS": 90
+				}
+			}`)
+	})
+
+	ctx := context.Background()
+	hook, _, err := client.Billing.GetActionsBillingUser(ctx, "u")
+	if err != nil {
+		t.Errorf("Billing.GetActionsBillingUser returned error: %v", err)
+	}
+
+	want := &ActionBilling{
+		TotalMinutesUsed:     10,
+		TotalPaidMinutesUsed: 0,
+		IncludedMinutes:      3000,
+		MinutesUsedBreakdown: MinutesUsedBreakdown{
+			"UBUNTU":  205,
+			"MACOS":   10,
+			"WINDOWS": 90,
+		},
+	}
+	if !cmp.Equal(hook, want) {
+		t.Errorf("Billing.GetActionsBillingUser returned %+v, want %+v", hook, want)
+	}
+
+	const methodName = "GetActionsBillingUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Billing.GetActionsBillingOrg(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetActionsBillingUser(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestBillingService_GetActionsBillingUser_invalidUser(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := context.Background()
+	_, _, err := client.Billing.GetActionsBillingUser(ctx, "%")
 	testURLParseError(t, err)
 }
 
@@ -386,17 +553,17 @@ func TestBillingService_GetUsageReportOrg(t *testing.T) {
 	want := &UsageReport{
 		UsageItems: []*UsageItem{
 			{
-				Date:             "2023-08-01",
-				Product:          "Actions",
-				SKU:              "Actions Linux",
-				Quantity:         100.0,
-				UnitType:         "minutes",
-				PricePerUnit:     0.008,
-				GrossAmount:      0.8,
-				DiscountAmount:   0.0,
-				NetAmount:        0.8,
-				OrganizationName: "GitHub",
-				RepositoryName:   "github/example",
+				Date:             Ptr("2023-08-01"),
+				Product:          Ptr("Actions"),
+				SKU:              Ptr("Actions Linux"),
+				Quantity:         Ptr(100.0),
+				UnitType:         Ptr("minutes"),
+				PricePerUnit:     Ptr(0.008),
+				GrossAmount:      Ptr(0.8),
+				DiscountAmount:   Ptr(0.0),
+				NetAmount:        Ptr(0.8),
+				OrganizationName: Ptr("GitHub"),
+				RepositoryName:   Ptr("github/example"),
 			},
 		},
 	}
@@ -467,16 +634,16 @@ func TestBillingService_GetUsageReportUser(t *testing.T) {
 	want := &UsageReport{
 		UsageItems: []*UsageItem{
 			{
-				Date:           "2023-08-15",
-				Product:        "Codespaces",
-				SKU:            "Codespaces Linux",
-				Quantity:       50.0,
-				UnitType:       "hours",
-				PricePerUnit:   0.18,
-				GrossAmount:    9.0,
-				DiscountAmount: 1.0,
-				NetAmount:      8.0,
-				RepositoryName: "user/example",
+				Date:           Ptr("2023-08-15"),
+				Product:        Ptr("Codespaces"),
+				SKU:            Ptr("Codespaces Linux"),
+				Quantity:       Ptr(50.0),
+				UnitType:       Ptr("hours"),
+				PricePerUnit:   Ptr(0.18),
+				GrossAmount:    Ptr(9.0),
+				DiscountAmount: Ptr(1.0),
+				NetAmount:      Ptr(8.0),
+				RepositoryName: Ptr("user/example"),
 			},
 		},
 	}
