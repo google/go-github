@@ -241,35 +241,6 @@ func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestActionBilling_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &MinutesUsedBreakdown{}, "{}")
-
-	u := &ActionBilling{
-		TotalMinutesUsed:     1,
-		TotalPaidMinutesUsed: 1,
-		IncludedMinutes:      1,
-		MinutesUsedBreakdown: MinutesUsedBreakdown{
-			"UBUNTU":  1,
-			"MACOS":   1,
-			"WINDOWS": 1,
-		},
-	}
-
-	want := `{
-		"total_minutes_used": 1,
-		"total_paid_minutes_used": 1,
-		"included_minutes": 1,
-		"minutes_used_breakdown": {
-			"UBUNTU": 1,
-			"MACOS": 1,
-			"WINDOWS": 1
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestPackageBilling_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &PackageBilling{}, "{}")

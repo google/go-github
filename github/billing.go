@@ -39,13 +39,13 @@ type ActiveCommitters struct {
 	TotalCount                          int                           `json:"total_count"`
 	MaximumAdvancedSecurityCommitters   int                           `json:"maximum_advanced_security_committers"`
 	PurchasedAdvancedSecurityCommitters int                           `json:"purchased_advanced_security_committers"`
-	Repositories                        []RepositoryActiveCommitters `json:"repositories,omitempty"`
+	Repositories                        []*RepositoryActiveCommitters `json:"repositories,omitempty"`
 }
 
 // RepositoryActiveCommitters represents active committers on each repository.
 type RepositoryActiveCommitters struct {
-	Name                                *string                                 `json:"name,omitempty"`
-	AdvancedSecurityCommitters          *int                                    `json:"advanced_security_committers,omitempty"`
+	Name                                *string                                `json:"name,omitempty"`
+	AdvancedSecurityCommitters          *int                                   `json:"advanced_security_committers,omitempty"`
 	AdvancedSecurityCommittersBreakdown []*AdvancedSecurityCommittersBreakdown `json:"advanced_security_committers_breakdown,omitempty"`
 }
 
@@ -59,19 +59,19 @@ type AdvancedSecurityCommittersBreakdown struct {
 type UsageReportOptions struct {
 	// If specified, only return results for a single year. The value of year is an integer with four digits representing a year. For example, 2025.
 	// Default value is the current year.
-	Year int `url:"year,omitempty"`
+	Year *int `url:"year,omitempty"`
 
 	// If specified, only return results for a single month. The value of month is an integer between 1 and 12.
 	// If no year is specified the default year is used.
-	Month int `url:"month,omitempty"`
+	Month *int `url:"month,omitempty"`
 
 	// If specified, only return results for a single day. The value of day is an integer between 1 and 31.
 	// If no year or month is specified, the default year and month are used.
-	Day int `url:"day,omitempty"`
+	Day *int `url:"day,omitempty"`
 
 	// If specified, only return results for a single hour. The value of hour is an integer between 0 and 23.
 	// If no year, month, or day is specified, the default year, month, and day are used.
-	Hour int `url:"hour,omitempty"`
+	Hour *int `url:"hour,omitempty"`
 }
 
 // UsageItem represents a single usage item in the enhanced billing platform report.
