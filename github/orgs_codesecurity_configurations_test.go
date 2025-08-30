@@ -415,26 +415,32 @@ func TestOrganizationsService_GetRepositoriesForCodeSecurityConfiguration(t *tes
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[
 		{
-			"id":8,
-			"name":"repo8"
+			"status": "attached",
+			"repository": {
+				"id":8,
+				"name":"repo8"
+			}
 		},
 		{
-			"id":42,
-			"name":"repo42"
-		}]`)
+			"status": "attached",
+			"repository": {
+				"id":42,
+				"name":"repo42"
+			}
+		}
+	]`)
 	})
 
-	repositories, _, err := client.Organizations.GetRepositoriesForCodeSecurityConfiguration(ctx, "o", 1)
+	attachments, _, err := client.Organizations.GetRepositoriesForCodeSecurityConfiguration(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.GetRepositoriesForCodeSecurityConfiguration returned error: %v", err)
 	}
-
-	want := []*Repository{
-		{ID: Ptr(int64(8)), Name: Ptr("repo8")},
-		{ID: Ptr(int64(42)), Name: Ptr("repo42")},
+	want := []*RepositoryAttachment{
+		{Status: Ptr("attached"), Repository: &Repository{ID: Ptr(int64(8)), Name: Ptr("repo8")}},
+		{Status: Ptr("attached"), Repository: &Repository{ID: Ptr(int64(42)), Name: Ptr("repo42")}},
 	}
-	if !reflect.DeepEqual(repositories, want) {
-		t.Errorf("Organizations.GetRepositoriesForCodeSecurityConfiguration returned %+v, want %+v", repositories, want)
+	if !reflect.DeepEqual(attachments, want) {
+		t.Errorf("Organizations.GetRepositoriesForCodeSecurityConfiguration returned %+v, want %+v", attachments, want)
 	}
 
 	const methodName = "GetRepositoriesForCodeSecurityConfiguration"
