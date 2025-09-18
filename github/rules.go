@@ -59,6 +59,7 @@ type BypassMode string
 const (
 	BypassModeAlways      BypassMode = "always"
 	BypassModePullRequest BypassMode = "pull_request"
+	BypassModeExempt      BypassMode = "exempt"
 	BypassModeNever       BypassMode = "never"
 )
 
