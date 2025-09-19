@@ -58,9 +58,9 @@ type BypassMode string
 // This is the set of GitHub ruleset bypass modes.
 const (
 	BypassModeAlways      BypassMode = "always"
-	BypassModePullRequest BypassMode = "pull_request"
 	BypassModeExempt      BypassMode = "exempt"
 	BypassModeNever       BypassMode = "never"
+	BypassModePullRequest BypassMode = "pull_request"
 )
 
 // RepositoryRuleType represents a GitHub ruleset rule type.
