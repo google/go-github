@@ -196,7 +196,6 @@ func (s *RepositoriesService) UpdatePagesGHES(ctx context.Context, owner, repo s
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
 	req, err := s.client.NewRequest("PUT", u, opts)
-
 	if err != nil {
 		return nil, err
 	}
