@@ -228,6 +228,50 @@ func TestCheckSuite_String(t *testing.T) {
 	}
 }
 
+func TestClassroom_String(t *testing.T) {
+	t.Parallel()
+	v := Classroom{
+		ID:           Ptr(int64(0)),
+		Name:         Ptr(""),
+		Archived:     Ptr(false),
+		Organization: &Organization{},
+		URL:          Ptr(""),
+	}
+	want := `github.Classroom{ID:0, Name:"", Archived:false, Organization:github.Organization{}, URL:""}`
+	if got := v.String(); got != want {
+		t.Errorf("Classroom.String = %v, want %v", got, want)
+	}
+}
+
+func TestClassroomAssignment_String(t *testing.T) {
+	t.Parallel()
+	v := ClassroomAssignment{
+		ID:                          Ptr(int64(0)),
+		PublicRepo:                  Ptr(false),
+		Title:                       Ptr(""),
+		Type:                        Ptr(""),
+		InviteLink:                  Ptr(""),
+		InvitationsEnabled:          Ptr(false),
+		Slug:                        Ptr(""),
+		StudentsAreRepoAdmins:       Ptr(false),
+		FeedbackPullRequestsEnabled: Ptr(false),
+		MaxTeams:                    Ptr(0),
+		MaxMembers:                  Ptr(0),
+		Editor:                      Ptr(""),
+		Accepted:                    Ptr(0),
+		Submitted:                   Ptr(0),
+		Passing:                     Ptr(0),
+		Language:                    Ptr(""),
+		Deadline:                    &Timestamp{},
+		StarterCodeRepository:       &Repository{},
+		Classroom:                   &Classroom{},
+	}
+	want := `github.ClassroomAssignment{ID:0, PublicRepo:false, Title:"", Type:"", InviteLink:"", InvitationsEnabled:false, Slug:"", StudentsAreRepoAdmins:false, FeedbackPullRequestsEnabled:false, MaxTeams:0, MaxMembers:0, Editor:"", Accepted:0, Submitted:0, Passing:0, Language:"", Deadline:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, StarterCodeRepository:github.Repository{}, Classroom:github.Classroom{}}`
+	if got := v.String(); got != want {
+		t.Errorf("ClassroomAssignment.String = %v, want %v", got, want)
+	}
+}
+
 func TestCodeOfConduct_String(t *testing.T) {
 	t.Parallel()
 	v := CodeOfConduct{
@@ -2336,5 +2380,19 @@ func TestWeeklyStats_String(t *testing.T) {
 	want := `github.WeeklyStats{Week:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Additions:0, Deletions:0, Commits:0}`
 	if got := v.String(); got != want {
 		t.Errorf("WeeklyStats.String = %v, want %v", got, want)
+	}
+}
+
+func TestWorkflowsPermissions_String(t *testing.T) {
+	t.Parallel()
+	v := WorkflowsPermissions{
+		RunWorkflowsFromForkPullRequests:  Ptr(false),
+		SendWriteTokensToWorkflows:        Ptr(false),
+		SendSecretsAndVariables:           Ptr(false),
+		RequireApprovalForForkPRWorkflows: Ptr(false),
+	}
+	want := `github.WorkflowsPermissions{RunWorkflowsFromForkPullRequests:false, SendWriteTokensToWorkflows:false, SendSecretsAndVariables:false, RequireApprovalForForkPRWorkflows:false}`
+	if got := v.String(); got != want {
+		t.Errorf("WorkflowsPermissions.String = %v, want %v", got, want)
 	}
 }

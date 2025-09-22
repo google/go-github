@@ -18,7 +18,7 @@ import (
 //
 //meta:operation GET /users/{username}/attestations/{subject_digest}
 func (s *UsersService) ListAttestations(ctx context.Context, user, subjectDigest string, opts *ListOptions) (*AttestationsResponse, *Response, error) {
-	var u = fmt.Sprintf("users/%v/attestations/%v", user, subjectDigest)
+	u := fmt.Sprintf("users/%v/attestations/%v", user, subjectDigest)
 
 	u, err := addOptions(u, opts)
 	if err != nil {

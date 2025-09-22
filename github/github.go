@@ -197,6 +197,7 @@ type Client struct {
 	Authorizations     *AuthorizationsService
 	Billing            *BillingService
 	Checks             *ChecksService
+	Classroom          *ClassroomService
 	CodeScanning       *CodeScanningService
 	CodesOfConduct     *CodesOfConductService
 	Codespaces         *CodespacesService
@@ -434,6 +435,7 @@ func (c *Client) initialize() {
 	c.Authorizations = (*AuthorizationsService)(&c.common)
 	c.Billing = (*BillingService)(&c.common)
 	c.Checks = (*ChecksService)(&c.common)
+	c.Classroom = (*ClassroomService)(&c.common)
 	c.CodeScanning = (*CodeScanningService)(&c.common)
 	c.Codespaces = (*CodespacesService)(&c.common)
 	c.CodesOfConduct = (*CodesOfConductService)(&c.common)
@@ -1390,6 +1392,7 @@ func (e *Error) Error() string {
 		e.Code, e.Field, e.Resource)
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface.
 func (e *Error) UnmarshalJSON(data []byte) error {
 	type aliasError Error // avoid infinite recursion by using type alias.
 	if err := json.Unmarshal(data, (*aliasError)(e)); err != nil {
@@ -1492,6 +1495,7 @@ func parseBoolResponse(err error) (bool, error) {
 	return false, err
 }
 
+// RateLimitCategory represents the enumeration of rate limit categories.
 type RateLimitCategory uint8
 
 const (

@@ -185,6 +185,7 @@ type CopilotMetrics struct {
 	CopilotDotcomPullRequests *CopilotDotcomPullRequests `json:"copilot_dotcom_pull_requests,omitempty"`
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface.
 func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 	// Using an alias to avoid infinite recursion when calling json.Unmarshal
 	type alias CopilotSeatDetails
