@@ -30445,6 +30445,17 @@ func TestRepositoryRelease_GetID(tt *testing.T) {
 	r.GetID()
 }
 
+func TestRepositoryRelease_GetImmutable(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepositoryRelease{Immutable: &zeroValue}
+	r.GetImmutable()
+	r = &RepositoryRelease{}
+	r.GetImmutable()
+	r = nil
+	r.GetImmutable()
+}
+
 func TestRepositoryRelease_GetMakeLatest(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

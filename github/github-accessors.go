@@ -23574,6 +23574,14 @@ func (r *RepositoryRelease) GetID() int64 {
 	return *r.ID
 }
 
+// GetImmutable returns the Immutable field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetImmutable() bool {
+	if r == nil || r.Immutable == nil {
+		return false
+	}
+	return *r.Immutable
+}
+
 // GetMakeLatest returns the MakeLatest field if it's non-nil, zero value otherwise.
 func (r *RepositoryRelease) GetMakeLatest() string {
 	if r == nil || r.MakeLatest == nil {
