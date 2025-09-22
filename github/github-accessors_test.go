@@ -38896,6 +38896,83 @@ func TestWorkflows_GetTotalCount(tt *testing.T) {
 	w.GetTotalCount()
 }
 
+func TestWorkflowsPermissions_GetRequireApprovalForForkPRWorkflows(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	w := &WorkflowsPermissions{RequireApprovalForForkPRWorkflows: &zeroValue}
+	w.GetRequireApprovalForForkPRWorkflows()
+	w = &WorkflowsPermissions{}
+	w.GetRequireApprovalForForkPRWorkflows()
+	w = nil
+	w.GetRequireApprovalForForkPRWorkflows()
+}
+
+func TestWorkflowsPermissions_GetRunWorkflowsFromForkPullRequests(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	w := &WorkflowsPermissions{RunWorkflowsFromForkPullRequests: &zeroValue}
+	w.GetRunWorkflowsFromForkPullRequests()
+	w = &WorkflowsPermissions{}
+	w.GetRunWorkflowsFromForkPullRequests()
+	w = nil
+	w.GetRunWorkflowsFromForkPullRequests()
+}
+
+func TestWorkflowsPermissions_GetSendSecretsAndVariables(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	w := &WorkflowsPermissions{SendSecretsAndVariables: &zeroValue}
+	w.GetSendSecretsAndVariables()
+	w = &WorkflowsPermissions{}
+	w.GetSendSecretsAndVariables()
+	w = nil
+	w.GetSendSecretsAndVariables()
+}
+
+func TestWorkflowsPermissions_GetSendWriteTokensToWorkflows(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	w := &WorkflowsPermissions{SendWriteTokensToWorkflows: &zeroValue}
+	w.GetSendWriteTokensToWorkflows()
+	w = &WorkflowsPermissions{}
+	w.GetSendWriteTokensToWorkflows()
+	w = nil
+	w.GetSendWriteTokensToWorkflows()
+}
+
+func TestWorkflowsPermissionsOpt_GetRequireApprovalForForkPRWorkflows(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	w := &WorkflowsPermissionsOpt{RequireApprovalForForkPRWorkflows: &zeroValue}
+	w.GetRequireApprovalForForkPRWorkflows()
+	w = &WorkflowsPermissionsOpt{}
+	w.GetRequireApprovalForForkPRWorkflows()
+	w = nil
+	w.GetRequireApprovalForForkPRWorkflows()
+}
+
+func TestWorkflowsPermissionsOpt_GetSendSecretsAndVariables(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	w := &WorkflowsPermissionsOpt{SendSecretsAndVariables: &zeroValue}
+	w.GetSendSecretsAndVariables()
+	w = &WorkflowsPermissionsOpt{}
+	w.GetSendSecretsAndVariables()
+	w = nil
+	w.GetSendSecretsAndVariables()
+}
+
+func TestWorkflowsPermissionsOpt_GetSendWriteTokensToWorkflows(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	w := &WorkflowsPermissionsOpt{SendWriteTokensToWorkflows: &zeroValue}
+	w.GetSendWriteTokensToWorkflows()
+	w = &WorkflowsPermissionsOpt{}
+	w.GetSendWriteTokensToWorkflows()
+	w = nil
+	w.GetSendWriteTokensToWorkflows()
+}
+
 func TestWorkflowsRuleParameters_GetDoNotEnforceOnCreate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool

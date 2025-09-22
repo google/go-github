@@ -2383,3 +2383,17 @@ func TestWeeklyStats_String(t *testing.T) {
 		t.Errorf("WeeklyStats.String = %v, want %v", got, want)
 	}
 }
+
+func TestWorkflowsPermissions_String(t *testing.T) {
+	t.Parallel()
+	v := WorkflowsPermissions{
+		RunWorkflowsFromForkPullRequests:  Ptr(false),
+		SendWriteTokensToWorkflows:        Ptr(false),
+		SendSecretsAndVariables:           Ptr(false),
+		RequireApprovalForForkPRWorkflows: Ptr(false),
+	}
+	want := `github.WorkflowsPermissions{RunWorkflowsFromForkPullRequests:false, SendWriteTokensToWorkflows:false, SendSecretsAndVariables:false, RequireApprovalForForkPRWorkflows:false}`
+	if got := v.String(); got != want {
+		t.Errorf("WorkflowsPermissions.String = %v, want %v", got, want)
+	}
+}
