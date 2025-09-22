@@ -11,6 +11,10 @@ import (
 	"fmt"
 )
 
+// SecurityAdvisoriesService handles communication with the security advisories
+// related methods of the GitHub API.
+//
+// GitHub API docs: https://docs.github.com/rest/security-advisories
 type SecurityAdvisoriesService service
 
 // SecurityAdvisorySubmission represents the Security Advisory Submission.

@@ -35,8 +35,8 @@ func TestActionsService_ListRepoVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 4,
 		Variables: []*ActionsVariable{
-			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
+			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -78,8 +78,8 @@ func TestActionsService_ListRepoOrgVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 4,
 		Variables: []*ActionsVariable{
-			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
+			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -119,8 +119,8 @@ func TestActionsService_GetRepoVariable(t *testing.T) {
 	want := &ActionsVariable{
 		Name:      "NAME",
 		Value:     "VALUE",
-		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
 	}
 	if !cmp.Equal(variable, want) {
 		t.Errorf("Actions.GetRepoVariable returned %+v, want %+v", variable, want)
@@ -296,8 +296,8 @@ func TestActionsService_GetOrgVariable(t *testing.T) {
 	want := &ActionsVariable{
 		Name:                    "NAME",
 		Value:                   "VALUE",
-		CreatedAt:               &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt:               &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CreatedAt:               &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
+		UpdatedAt:               &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
 		Visibility:              Ptr("selected"),
 		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"),
 	}
@@ -573,8 +573,8 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 4,
 		Variables: []*ActionsVariable{
-			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
+			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -614,8 +614,8 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 	want := &ActionsVariable{
 		Name:      "variable",
 		Value:     "VAR",
-		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
 	}
 	if !cmp.Equal(variable, want) {
 		t.Errorf("Actions.GetEnvVariable returned %+v, want %+v", variable, want)

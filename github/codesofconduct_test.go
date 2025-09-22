@@ -37,7 +37,8 @@ func TestCodesOfConductService_List(t *testing.T) {
 			Key:  Ptr("key"),
 			Name: Ptr("name"),
 			URL:  Ptr("url"),
-		}}
+		},
+	}
 	if !cmp.Equal(want, cs) {
 		t.Errorf("returned %+v, want %+v", cs, want)
 	}
