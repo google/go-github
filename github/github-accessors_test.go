@@ -14113,6 +14113,17 @@ func TestInstallation_GetAppSlug(tt *testing.T) {
 	i.GetAppSlug()
 }
 
+func TestInstallation_GetClientID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &Installation{ClientID: &zeroValue}
+	i.GetClientID()
+	i = &Installation{}
+	i.GetClientID()
+	i = nil
+	i.GetClientID()
+}
+
 func TestInstallation_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp

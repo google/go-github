@@ -168,6 +168,7 @@ type InstallationRequest struct {
 type Installation struct {
 	ID                     *int64                   `json:"id,omitempty"`
 	NodeID                 *string                  `json:"node_id,omitempty"`
+	ClientID               *string                  `json:"client_id,omitempty"`
 	AppID                  *int64                   `json:"app_id,omitempty"`
 	AppSlug                *string                  `json:"app_slug,omitempty"`
 	TargetID               *int64                   `json:"target_id,omitempty"`

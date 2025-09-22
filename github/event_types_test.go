@@ -406,6 +406,7 @@ func TestTeamAddEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -577,6 +578,7 @@ func TestTeamAddEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -869,6 +871,7 @@ func TestTeamEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -1061,6 +1064,7 @@ func TestTeamEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -1193,6 +1197,7 @@ func TestInstallationRepositoriesEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -1314,6 +1319,7 @@ func TestInstallationRepositoriesEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -1451,6 +1457,7 @@ func TestInstallationTargetEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -1614,6 +1621,7 @@ func TestInstallationTargetEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -2171,6 +2179,7 @@ func TestIssueCommentEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -2326,6 +2335,7 @@ func TestIssueCommentEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -2497,6 +2507,7 @@ func TestIssuesEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -2639,6 +2650,7 @@ func TestIssuesEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -2791,6 +2803,7 @@ func TestLabelEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -2934,6 +2947,7 @@ func TestLabelEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -3095,6 +3109,7 @@ func TestMilestoneEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -3247,6 +3262,7 @@ func TestMilestoneEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -3368,6 +3384,7 @@ func TestPublicEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -3478,6 +3495,7 @@ func TestPublicEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -3602,6 +3620,7 @@ func TestPullRequestReviewEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -3741,6 +3760,7 @@ func TestPullRequestReviewEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -3902,6 +3922,7 @@ func TestPushEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -4058,6 +4079,7 @@ func TestPushEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -4213,6 +4235,7 @@ func TestStatusEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -4339,6 +4362,7 @@ func TestStatusEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -4503,6 +4527,7 @@ func TestMarketplacePurchaseEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -4660,6 +4685,7 @@ func TestMarketplacePurchaseEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -4837,6 +4863,7 @@ func TestOrganizationEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -5005,6 +5032,7 @@ func TestOrganizationEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -5128,6 +5156,7 @@ func TestPageBuildEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -5242,6 +5271,7 @@ func TestPageBuildEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -5397,6 +5427,7 @@ func TestCommitCommentEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -5541,6 +5572,7 @@ func TestCommitCommentEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -5691,6 +5723,7 @@ func TestDeploymentEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -5919,6 +5952,7 @@ func TestDeploymentEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -6211,6 +6245,7 @@ func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -6397,6 +6432,7 @@ func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -6575,6 +6611,7 @@ func TestDeploymentReviewEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -6905,6 +6942,7 @@ func TestDeploymentReviewEvent_Marshal(t *testing.T) {
         "installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -7170,6 +7208,7 @@ func TestDeploymentStatusEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -7330,6 +7369,7 @@ func TestDeploymentStatusEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -7543,6 +7583,7 @@ func TestDiscussionCommentEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -7745,6 +7786,7 @@ func TestDiscussionCommentEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -7924,6 +7966,7 @@ func TestDiscussionEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -8092,6 +8135,7 @@ func TestDiscussionEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -8423,6 +8467,7 @@ func TestPingEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -8541,6 +8586,7 @@ func TestPingEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -8821,6 +8867,7 @@ func TestRepositoryDispatchEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -8958,6 +9005,7 @@ func TestRepositoryDispatchEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -9189,6 +9237,7 @@ func TestRepositoryEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -9322,6 +9371,7 @@ func TestRepositoryEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -9460,6 +9510,7 @@ func TestReleaseEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -9593,6 +9644,7 @@ func TestReleaseEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -10021,6 +10073,7 @@ func TestContentReferenceEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -10137,6 +10190,7 @@ func TestContentReferenceEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -10278,6 +10332,7 @@ func TestMemberEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -10408,6 +10463,7 @@ func TestMemberEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -10596,6 +10652,7 @@ func TestMembershipEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -10773,6 +10830,7 @@ func TestMembershipEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -10925,6 +10983,7 @@ func TestMergeGroupEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -11068,6 +11127,7 @@ func TestMergeGroupEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -11216,6 +11276,7 @@ func TestOrgBlockEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -11353,6 +11414,7 @@ func TestOrgBlockEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -11484,6 +11546,7 @@ func TestGollumEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -11604,6 +11667,7 @@ func TestGollumEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -12094,6 +12158,7 @@ func TestWatchEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -12205,6 +12270,7 @@ func TestWatchEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -12511,6 +12577,7 @@ func TestCheckRunEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -12733,6 +12800,7 @@ func TestCheckRunEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -12941,6 +13009,7 @@ func TestCheckSuiteEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -13135,6 +13204,7 @@ func TestCheckSuiteEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -13438,6 +13508,7 @@ func TestCreateEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -13553,6 +13624,7 @@ func TestCreateEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -13680,6 +13752,7 @@ func TestCustomPropertyEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -13804,6 +13877,7 @@ func TestCustomPropertyEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -13933,6 +14007,7 @@ func TestCustomPropertyValuesEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -14047,6 +14122,7 @@ func TestCustomPropertyValuesEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -14171,6 +14247,7 @@ func TestDeleteEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -14284,6 +14361,7 @@ func TestDeleteEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -14521,6 +14599,7 @@ func TestDependabotAlertEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -14746,6 +14825,7 @@ func TestDependabotAlertEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -14872,6 +14952,7 @@ func TestForkEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -14987,6 +15068,7 @@ func TestForkEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -15144,6 +15226,7 @@ func TestInstallationEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -15257,6 +15340,7 @@ func TestInstallationEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -15635,6 +15719,7 @@ func TestProjectV2Event_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -15737,6 +15822,7 @@ func TestProjectV2Event_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -15831,6 +15917,7 @@ func TestProjectV2ItemEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -15918,6 +16005,7 @@ func TestProjectV2ItemEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -16041,6 +16129,7 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -16229,6 +16318,7 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -16369,6 +16459,7 @@ func TestPullRequestReviewCommentEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -16502,6 +16593,7 @@ func TestPullRequestReviewCommentEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -16628,6 +16720,7 @@ func TestPullRequestReviewThreadEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -16752,6 +16845,7 @@ func TestPullRequestReviewThreadEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -16945,6 +17039,7 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -17133,6 +17228,7 @@ func TestPullRequestTargetEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -17367,6 +17463,7 @@ func TestSecretScanningAlertEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -17527,6 +17624,7 @@ func TestSecretScanningAlertEvent_Marshal(t *testing.T) {
         "installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -17781,6 +17879,7 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -17969,6 +18068,7 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
@@ -18142,6 +18242,7 @@ func TestSecurityAndAnalysisEvent_Marshal(t *testing.T) {
 		Installation: &Installation{
 			ID:       Ptr(int64(1)),
 			NodeID:   Ptr("nid"),
+			ClientID: Ptr("cid"),
 			AppID:    Ptr(int64(1)),
 			AppSlug:  Ptr("as"),
 			TargetID: Ptr(int64(1)),
@@ -18304,6 +18405,7 @@ func TestSecurityAndAnalysisEvent_Marshal(t *testing.T) {
 		"installation": {
 			"id": 1,
 			"node_id": "nid",
+			"client_id": "cid",
 			"app_id": 1,
 			"app_slug": "as",
 			"target_id": 1,
