@@ -18,7 +18,7 @@ import (
 //
 //meta:operation GET /orgs/{org}/attestations/{subject_digest}
 func (s *OrganizationsService) ListAttestations(ctx context.Context, org, subjectDigest string, opts *ListOptions) (*AttestationsResponse, *Response, error) {
-	var u = fmt.Sprintf("orgs/%v/attestations/%v", org, subjectDigest)
+	u := fmt.Sprintf("orgs/%v/attestations/%v", org, subjectDigest)
 
 	u, err := addOptions(u, opts)
 	if err != nil {
