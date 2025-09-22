@@ -33,7 +33,7 @@ type ListProjectsOptions struct {
 	Query string `url:"q,omitempty"`
 }
 
-// ListOrganizationProjects lists Projects V2 for an organization.
+// ListProjectsForOrganization lists Projects V2 for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/projects#list-organization-projects
 //
@@ -58,7 +58,7 @@ func (s *ProjectsService) ListProjectsForOrganization(ctx context.Context, org s
 	return projects, resp, nil
 }
 
-// ListByUser lists Projects V2 for a user.
+// ListProjectsForUser lists Projects V2 for a user.
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/projects#list-projects-for-user
 //
@@ -82,7 +82,7 @@ func (s *ProjectsService) ListProjectsForUser(ctx context.Context, username stri
 	return projects, resp, nil
 }
 
-// GetUserProject gets a Projects V2 project for a user by ID.
+// GetProjectForUser gets a Projects V2 project for a user by ID.
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/projects#get-project-for-user
 //
@@ -102,7 +102,7 @@ func (s *ProjectsService) GetProjectForUser(ctx context.Context, username string
 	return project, resp, nil
 }
 
-// GetByOrg gets a Projects V2 project for an organization by ID.
+// GetProjectForOrg gets a Projects V2 project for an organization by ID.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/projects#get-project-for-organization
 //
