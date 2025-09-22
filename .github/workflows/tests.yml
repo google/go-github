@@ -27,7 +27,7 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        go-version: [1.x, 1.23.0] # test with N and the .0 release of N-1
+        go-version: [1.x, 1.24.0] # test with N and the .0 release of N-1
         platform: [ubuntu-latest]
         include:
           # include windows, but only with the latest Go version, since there
@@ -42,7 +42,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
-      - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
           go-version: ${{ matrix.go-version }}
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -76,6 +76,6 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: ${{ matrix.update-coverage }}
-        uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24 # v5.4.3
+        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
         with:
           use_oidc: true
