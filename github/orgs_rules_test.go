@@ -130,6 +130,11 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 			  {
 				"actor_id": 234,
 				"actor_type": "Team"
+			  },
+			  {
+			  	"actor_id": 345,
+				"actor_type": "Team",
+				"bypass_mode": "exempt"
 			  }
 			],
 			"conditions": {
@@ -274,6 +279,11 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
 			},
+			{
+				ActorID:    Ptr(int64(345)),
+				ActorType:  Ptr(BypassActorTypeTeam),
+				BypassMode: Ptr(BypassModeExempt),
+			},
 		},
 		Conditions: &RepositoryRulesetConditions{
 			RefName: &RepositoryRulesetRefConditionParameters{
@@ -370,6 +380,11 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 			{
 				ActorID:   Ptr(int64(234)),
 				ActorType: Ptr(BypassActorTypeTeam),
+			},
+			{
+				ActorID:    Ptr(int64(345)),
+				ActorType:  Ptr(BypassActorTypeTeam),
+				BypassMode: Ptr(BypassModeExempt),
 			},
 		},
 		Conditions: &RepositoryRulesetConditions{
