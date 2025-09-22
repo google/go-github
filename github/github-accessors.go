@@ -10910,6 +10910,14 @@ func (i *Installation) GetAppSlug() string {
 	return *i.AppSlug
 }
 
+// GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
+func (i *Installation) GetClientID() string {
+	if i == nil || i.ClientID == nil {
+		return ""
+	}
+	return *i.ClientID
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (i *Installation) GetCreatedAt() Timestamp {
 	if i == nil || i.CreatedAt == nil {
