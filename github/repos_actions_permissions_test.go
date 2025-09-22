@@ -265,3 +265,84 @@ func TestRepositoriesService_EditArtifactAndLogRetentionPeriod(t *testing.T) {
 		return client.Repositories.EditArtifactAndLogRetentionPeriod(ctx, "o", "r", *input)
 	})
 }
+
+func TestRepositoriesService_GetPrivateRepoForkPRWorkflowSettings(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"run_workflows_from_fork_pull_requests": true, "send_write_tokens_to_workflows": false, "send_secrets_and_variables": true, "require_approval_for_fork_pr_workflows": false}`)
+	})
+
+	ctx := context.Background()
+	permissions, _, err := client.Repositories.GetPrivateRepoForkPRWorkflowSettings(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("Repositories.GetPrivateRepoForkPRWorkflowSettings returned error: %v", err)
+	}
+	want := &WorkflowsPermissions{
+		RunWorkflowsFromForkPullRequests:  Ptr(true),
+		SendWriteTokensToWorkflows:        Ptr(false),
+		SendSecretsAndVariables:           Ptr(true),
+		RequireApprovalForForkPRWorkflows: Ptr(false),
+	}
+	if !cmp.Equal(permissions, want) {
+		t.Errorf("Repositories.GetPrivateRepoForkPRWorkflowSettings returned %+v, want %+v", permissions, want)
+	}
+
+	const methodName = "GetPrivateRepoForkPRWorkflowSettings"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetPrivateRepoForkPRWorkflowSettings(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetPrivateRepoForkPRWorkflowSettings(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_UpdatePrivateRepoForkPRWorkflowSettings(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &WorkflowsPermissionsOpt{
+		RunWorkflowsFromForkPullRequests: true,
+		SendWriteTokensToWorkflows:       Ptr(false),
+		SendSecretsAndVariables:          Ptr(true),
+	}
+
+	mux.HandleFunc("/repos/o/r/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {
+		v := new(WorkflowsPermissionsOpt)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Repositories.UpdatePrivateRepoForkPRWorkflowSettings(ctx, "o", "r", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdatePrivateRepoForkPRWorkflowSettings returned error: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusNoContent {
+		t.Errorf("Repositories.UpdatePrivateRepoForkPRWorkflowSettings = %d, want %d", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "UpdatePrivateRepoForkPRWorkflowSettings"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.UpdatePrivateRepoForkPRWorkflowSettings(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.UpdatePrivateRepoForkPRWorkflowSettings(ctx, "o", "r", input)
+	})
+}

@@ -124,10 +124,11 @@ func TestSearchService_RepositoriesTextMatch(t *testing.T) {
 
 	wantedRepoResult := &Repository{
 		Name: Ptr("gopher1"),
-		TextMatches: []*TextMatch{{
-			Fragment: Ptr("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
-			Matches:  []*Match{{Text: Ptr("gopher"), Indices: []int{14, 21}}},
-		},
+		TextMatches: []*TextMatch{
+			{
+				Fragment: Ptr("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
+				Matches:  []*Match{{Text: Ptr("gopher"), Indices: []int{14, 21}}},
+			},
 		},
 	}
 
@@ -494,10 +495,11 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 
 	wantedCodeResult := &CodeResult{
 		Name: Ptr("gopher1"),
-		TextMatches: []*TextMatch{{
-			Fragment: Ptr("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
-			Matches:  []*Match{{Text: Ptr("gopher"), Indices: []int{14, 21}}},
-		},
+		TextMatches: []*TextMatch{
+			{
+				Fragment: Ptr("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
+				Matches:  []*Match{{Text: Ptr("gopher"), Indices: []int{14, 21}}},
+			},
 		},
 	}
 
