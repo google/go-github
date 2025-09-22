@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -227,7 +226,7 @@ func TestHookDelivery_ParsePayload(t *testing.T) {
 				t.Error(err)
 			}
 
-			if !reflect.DeepEqual(obj, got) {
+			if !cmp.Equal(obj, got) {
 				t.Errorf("want %T %v, got %T %v", obj, obj, got, got)
 			}
 		})

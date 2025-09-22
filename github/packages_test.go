@@ -7,8 +7,9 @@ package github
 
 import (
 	"encoding/json"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestPackageRegistry_Marshal(t *testing.T) {
@@ -556,7 +557,7 @@ func TestPackageVersion_GetBodyAsPackageVersionBody(t *testing.T) {
 
 			resValue, resOk := test.pv.GetBodyAsPackageVersionBody()
 
-			if !reflect.DeepEqual(resValue, test.wantValue) || resOk != test.wantOk {
+			if !cmp.Equal(resValue, test.wantValue) || resOk != test.wantOk {
 				t.Errorf("PackageVersion.GetBodyAsPackageVersionBody() - got: %v, %v; want: %v, %v", resValue, resOk, test.wantValue, test.wantOk)
 			}
 		})
@@ -615,7 +616,7 @@ func TestPackageVersion_GetMetadata(t *testing.T) {
 
 			resValue, resOk := test.pv.GetMetadata()
 
-			if !reflect.DeepEqual(resValue, test.wantValue) || resOk != test.wantOk {
+			if !cmp.Equal(resValue, test.wantValue) || resOk != test.wantOk {
 				t.Errorf("PackageVersion.GetMetadata() - got: %v, %v; want: %v, %v", resValue, resOk, test.wantValue, test.wantOk)
 			}
 		})
