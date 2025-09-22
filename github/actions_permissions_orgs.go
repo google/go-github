@@ -446,3 +446,40 @@ func (s *ActionsService) RemoveRepositorySelfHostedRunnersAllowedInOrganization(
 
 	return resp, nil
 }
+
+// GetPrivateRepoForkPRWorkflowSettingsInOrganization gets the settings for whether workflows from fork pull requests can run on private repositories in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-private-repo-fork-pr-workflow-settings-for-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos
+func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInOrganization(ctx context.Context, org string) (*WorkflowsPermissions, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-workflows-private-repos", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	permissions := new(WorkflowsPermissions)
+	resp, err := s.client.Do(ctx, req, permissions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return permissions, resp, nil
+}
+
+// UpdatePrivateRepoForkPRWorkflowSettingsInOrganization sets the settings for whether workflows from fork pull requests can run on private repositories in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-private-repo-fork-pr-workflow-settings-for-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos
+func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(ctx context.Context, org string, permissions *WorkflowsPermissionsOpt) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-workflows-private-repos", org)
+	req, err := s.client.NewRequest("PUT", u, permissions)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

@@ -652,12 +652,13 @@ func TestGistsService_ListCommits(t *testing.T) {
 		URL:         Ptr("https://api.github.com/gists/1/1"),
 		Version:     Ptr("1"),
 		User:        &User{ID: Ptr(int64(1))},
-		CommittedAt: &Timestamp{time.Date(2010, time.January, 1, 00, 00, 00, 0, time.UTC)},
+		CommittedAt: &Timestamp{time.Date(2010, time.January, 1, 0, 0, 0, 0, time.UTC)},
 		ChangeStatus: &CommitStats{
 			Additions: Ptr(180),
 			Deletions: Ptr(0),
 			Total:     Ptr(180),
-		}}}
+		},
+	}}
 
 	if !cmp.Equal(gistCommits, want) {
 		t.Errorf("Gists.ListCommits returned %+v, want %+v", gistCommits, want)
@@ -961,8 +962,9 @@ func TestGistsService_ListForks(t *testing.T) {
 		URL:       Ptr("https://api.github.com/gists/1"),
 		ID:        Ptr("1"),
 		User:      &User{ID: Ptr(int64(1))},
-		CreatedAt: &Timestamp{time.Date(2010, time.January, 1, 00, 00, 00, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2013, time.January, 1, 00, 00, 00, 0, time.UTC)}}}
+		CreatedAt: &Timestamp{time.Date(2010, time.January, 1, 0, 0, 0, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)},
+	}}
 
 	if !cmp.Equal(gistForks, want) {
 		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
