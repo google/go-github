@@ -38,8 +38,8 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 	want := &Jobs{
 		TotalCount: Ptr(4),
 		Jobs: []*WorkflowJob{
-			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
+			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(jobs, want) {
@@ -81,8 +81,8 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 	want := &Jobs{
 		TotalCount: Ptr(4),
 		Jobs: []*WorkflowJob{
-			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
+			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(jobs, want) {
@@ -112,15 +112,15 @@ func TestActionsService_ListWorkflowJobsAttempt(t *testing.T) {
 			{
 				ID:          Ptr(int64(399444496)),
 				RunID:       Ptr(int64(29679449)),
-				StartedAt:   &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-				CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+				StartedAt:   &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
+				CompletedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
 				RunAttempt:  Ptr(int64(2)),
 			},
 			{
 				ID:          Ptr(int64(399444497)),
 				RunID:       Ptr(int64(29679449)),
-				StartedAt:   &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-				CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+				StartedAt:   &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
+				CompletedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
 				RunAttempt:  Ptr(int64(2)),
 			},
 		},
@@ -161,8 +161,8 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 
 	want := &WorkflowJob{
 		ID:          Ptr(int64(399444496)),
-		StartedAt:   &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		StartedAt:   &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
+		CompletedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
 	}
 	if !cmp.Equal(job, want) {
 		t.Errorf("Actions.GetWorkflowJobByID returned %+v, want %+v", job, want)

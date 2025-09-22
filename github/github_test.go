@@ -96,7 +96,7 @@ func setup(t *testing.T) (client *Client, mux *http.ServeMux, serverURL string) 
 func openTestFile(t *testing.T, name, content string) *os.File {
 	t.Helper()
 	fname := filepath.Join(t.TempDir(), name)
-	err := os.WriteFile(fname, []byte(content), 0600)
+	err := os.WriteFile(fname, []byte(content), 0o600)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -806,10 +806,11 @@ func TestResponse_populatePageValues(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?page=1>; rel="first",` +
-				` <https://api.github.com/?page=2>; rel="prev",` +
-				` <https://api.github.com/?page=4>; rel="next",` +
-				` <https://api.github.com/?page=5>; rel="last"`,
+			"Link": {
+				`<https://api.github.com/?page=1>; rel="first",` +
+					` <https://api.github.com/?page=2>; rel="prev",` +
+					` <https://api.github.com/?page=4>; rel="next",` +
+					` <https://api.github.com/?page=5>; rel="last"`,
 			},
 		},
 	}
@@ -836,10 +837,11 @@ func TestResponse_populateSinceValues(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?since=1>; rel="first",` +
-				` <https://api.github.com/?since=2>; rel="prev",` +
-				` <https://api.github.com/?since=4>; rel="next",` +
-				` <https://api.github.com/?since=5>; rel="last"`,
+			"Link": {
+				`<https://api.github.com/?since=1>; rel="first",` +
+					` <https://api.github.com/?since=2>; rel="prev",` +
+					` <https://api.github.com/?since=4>; rel="next",` +
+					` <https://api.github.com/?since=5>; rel="last"`,
 			},
 		},
 	}
@@ -866,10 +868,11 @@ func TestResponse_SinceWithPage(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=1>; rel="first",` +
-				` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=2>; rel="prev",` +
-				` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=4>; rel="next",` +
-				` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=5>; rel="last"`,
+			"Link": {
+				`<https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=1>; rel="first",` +
+					` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=2>; rel="prev",` +
+					` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=4>; rel="next",` +
+					` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=5>; rel="last"`,
 			},
 		},
 	}
@@ -937,9 +940,10 @@ func TestResponse_beforeAfterPagination(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?after=a1b2c3&before=>; rel="next",` +
-				` <https://api.github.com/?after=&before=>; rel="first",` +
-				` <https://api.github.com/?after=&before=d4e5f6>; rel="prev",`,
+			"Link": {
+				`<https://api.github.com/?after=a1b2c3&before=>; rel="next",` +
+					` <https://api.github.com/?after=&before=>; rel="first",` +
+					` <https://api.github.com/?after=&before=d4e5f6>; rel="prev",`,
 			},
 		},
 	}
@@ -972,11 +976,12 @@ func TestResponse_populatePageValues_invalid(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?page=1>,` +
-				`<https://api.github.com/?page=abc>; rel="first",` +
-				`https://api.github.com/?page=2; rel="prev",` +
-				`<https://api.github.com/>; rel="next",` +
-				`<https://api.github.com/?page=>; rel="last"`,
+			"Link": {
+				`<https://api.github.com/?page=1>,` +
+					`<https://api.github.com/?page=abc>; rel="first",` +
+					`https://api.github.com/?page=2; rel="prev",` +
+					`<https://api.github.com/>; rel="next",` +
+					`<https://api.github.com/?page=>; rel="last"`,
 			},
 		},
 	}
@@ -1012,11 +1017,12 @@ func TestResponse_populateSinceValues_invalid(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?since=1>,` +
-				`<https://api.github.com/?since=abc>; rel="first",` +
-				`https://api.github.com/?since=2; rel="prev",` +
-				`<https://api.github.com/>; rel="next",` +
-				`<https://api.github.com/?since=>; rel="last"`,
+			"Link": {
+				`<https://api.github.com/?since=1>,` +
+					`<https://api.github.com/?since=abc>; rel="first",` +
+					`https://api.github.com/?since=2; rel="prev",` +
+					`<https://api.github.com/>; rel="next",` +
+					`<https://api.github.com/?since=>; rel="last"`,
 			},
 		},
 	}
@@ -1504,7 +1510,6 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 	// Second request should not by hindered by rate limits.
 	req, _ = client.NewRequest("GET", "second", nil)
 	_, err = client.Do(ctx, req, nil)
-
 	if err != nil {
 		t.Fatalf("Second request failed, even though the rate limits from the cache should've been ignored: %v", err)
 	}
@@ -1520,7 +1525,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 
 	reset := time.Now().UTC().Add(time.Second)
 
-	var firstRequest = true
+	firstRequest := true
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		if firstRequest {
 			firstRequest = false
@@ -3181,7 +3186,7 @@ func TestPtr(t *testing.T) {
 	t.Parallel()
 	equal := func(t *testing.T, want, got any) {
 		t.Helper()
-		if !reflect.DeepEqual(want, got) {
+		if !cmp.Equal(want, got) {
 			t.Errorf("want %#v, got %#v", want, got)
 		}
 	}

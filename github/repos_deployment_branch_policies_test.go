@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListDeploymentBranchPolicies(t *testing.T) {
@@ -34,7 +35,7 @@ func TestRepositoriesService_ListDeploymentBranchPolicies(t *testing.T) {
 		},
 		TotalCount: Ptr(2),
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListDeploymentBranchPolicies = %+v, want %+v", got, want)
 	}
 
@@ -63,7 +64,7 @@ func TestRepositoriesService_GetDeploymentBranchPolicy(t *testing.T) {
 	}
 
 	want := &DeploymentBranchPolicy{ID: Ptr(int64(1))}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.GetDeploymentBranchPolicy = %+v, want %+v", got, want)
 	}
 
@@ -93,7 +94,7 @@ func TestRepositoriesService_CreateDeploymentBranchPolicy(t *testing.T) {
 	}
 
 	want := &DeploymentBranchPolicy{ID: Ptr(int64(1)), Type: Ptr("branch")}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.CreateDeploymentBranchPolicy = %+v, want %+v", got, want)
 	}
 
@@ -123,7 +124,7 @@ func TestRepositoriesService_UpdateDeploymentBranchPolicy(t *testing.T) {
 	}
 
 	want := &DeploymentBranchPolicy{ID: Ptr(int64(1))}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.UpdateDeploymentBranchPolicy = %+v, want %+v", got, want)
 	}
 
