@@ -7,36 +7,35 @@ import (
 	"testing"
 )
 
-func TestProjectsService_ListOrganizationProjects(t *testing.T) {
+func TestProjectsService_ListProjectsForOrganizations(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/projectsV2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
-		// Expect query params q, page, per_page when provided
-		testFormValues(t, r, values{"q": "alpha", "page": "2", "per_page": "1"})
+		// Expect query params q, after, before when provided
+		testFormValues(t, r, values{"q": "alpha", "after": "2", "before": "1"})
 		fmt.Fprint(w, `[{"id":1,"title":"T1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 	})
 
 	opts := &ListProjectsOptions{Query: "alpha", After: "2", Before: "1"}
 	ctx := context.Background()
-	projects, _, err := client.Projects.ListOrganizationProjects(ctx, "o", opts)
+	projects, _, err := client.Projects.ListProjectsForOrganization(ctx, "o", opts)
 	if err != nil {
-		t.Fatalf("Projects.ListOrganizationProjects returned error: %v", err)
+		t.Fatalf("Projects.ListProjectsForOrganization returned error: %v", err)
 	}
 	if len(projects) != 1 || projects[0].GetID() != 1 || projects[0].GetTitle() != "T1" {
-		t.Fatalf("Projects.ListOrganizationProjects returned %+v", projects)
+		t.Fatalf("Projects.ListProjectsForOrganization returned %+v", projects)
 	}
 
-	const methodName = "ListOrganizationProjects"
+	const methodName = "ListProjectsForOrganization"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListOrganizationProjects(ctx, "\n", opts)
+		_, _, err = client.Projects.ListProjectsForOrganization(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListOrganizationProjects(ctx, "o", opts)
+		got, resp, err := client.Projects.ListProjectsForOrganization(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -44,28 +43,27 @@ func TestProjectsService_ListOrganizationProjects(t *testing.T) {
 	})
 }
 
-func TestProjectsService_GetOrganizationProject(t *testing.T) {
+func TestProjectsService_GetProjectForOrg(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/projectsV2/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1,"title":"OrgProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}`)
 	})
 
 	ctx := context.Background()
-	project, _, err := client.Projects.GetByOrg(ctx, "o", 1)
+	project, _, err := client.Projects.GetProjectForOrg(ctx, "o", 1)
 	if err != nil {
-		t.Fatalf("Projects.GetByOrg returned error: %v", err)
+		t.Fatalf("Projects.GetProjectForOrg returned error: %v", err)
 	}
 	if project.GetID() != 1 || project.GetTitle() != "OrgProj" {
-		t.Fatalf("Projects.GetByOrg returned %+v", project)
+		t.Fatalf("Projects.GetProjectForOrg returned %+v", project)
 	}
 
-	const methodName = "GetByOrg"
+	const methodName = "GetProjectForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.GetByOrg(ctx, "o", 1)
+		got, resp, err := client.Projects.GetProjectForOrg(ctx, "o", 1)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -79,29 +77,28 @@ func TestProjectsService_ListUserProjects(t *testing.T) {
 
 	mux.HandleFunc("/users/u/projectsV2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{"q": "beta", "before": "1", "after": "2", "per_page": "2"})
 		fmt.Fprint(w, `[{"id":2,"title":"UProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 	})
 
 	opts := &ListProjectsOptions{Query: "beta", Before: "1", After: "2", PerPage: 2}
 	ctx := context.Background()
-	projects, _, err := client.Projects.ListByUser(ctx, "u", opts)
+	projects, _, err := client.Projects.ListProjectsForUser(ctx, "u", opts)
 	if err != nil {
-		t.Fatalf("Projects.ListByUser returned error: %v", err)
+		t.Fatalf("Projects.ListProjectsForUser returned error: %v", err)
 	}
 	if len(projects) != 1 || projects[0].GetID() != 2 || projects[0].GetTitle() != "UProj" {
-		t.Fatalf("Projects.ListByUser returned %+v", projects)
+		t.Fatalf("Projects.ListProjectsForUser returned %+v", projects)
 	}
 
-	const methodName = "ListByUser"
+	const methodName = "ListProjectsForUser"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListByUser(ctx, "\n", opts)
+		_, _, err = client.Projects.ListProjectsForUser(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListByUser(ctx, "u", opts)
+		got, resp, err := client.Projects.ListProjectsForUser(ctx, "u", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -109,28 +106,27 @@ func TestProjectsService_ListUserProjects(t *testing.T) {
 	})
 }
 
-func TestProjectsService_GetUserProject(t *testing.T) {
+func TestProjectsService_GetProjectForUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/projectsV2/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":2,"title":"UProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}`)
 	})
 
 	ctx := context.Background()
-	project, _, err := client.Projects.GetUserProject(ctx, "u", 2)
+	project, _, err := client.Projects.GetProjectForUser(ctx, "u", 2)
 	if err != nil {
-		t.Fatalf("Projects.GetUserProject returned error: %v", err)
+		t.Fatalf("Projects.GetProjectForUser returned error: %v", err)
 	}
 	if project.GetID() != 2 || project.GetTitle() != "UProj" {
-		t.Fatalf("Projects.GetUserProject returned %+v", project)
+		t.Fatalf("Projects.GetProjectForUser returned %+v", project)
 	}
 
-	const methodName = "GetUserProject"
+	const methodName = "GetProjectForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.GetUserProject(ctx, "u", 2)
+		got, resp, err := client.Projects.GetProjectForUser(ctx, "u", 2)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

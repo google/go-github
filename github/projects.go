@@ -38,7 +38,7 @@ type ListProjectsOptions struct {
 // GitHub API docs: https://docs.github.com/rest/projects/projects#list-organization-projects
 //
 //meta:operation GET /orgs/{org}/projectsV2
-func (s *ProjectsService) ListOrganizationProjects(ctx context.Context, org string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
+func (s *ProjectsService) ListProjectsForOrganization(ctx context.Context, org string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -49,7 +49,6 @@ func (s *ProjectsService) ListOrganizationProjects(ctx context.Context, org stri
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	var projects []*ProjectV2
 	resp, err := s.client.Do(ctx, req, &projects)
@@ -59,33 +58,12 @@ func (s *ProjectsService) ListOrganizationProjects(ctx context.Context, org stri
 	return projects, resp, nil
 }
 
-// GetByOrg gets a Projects V2 project for an organization by ID.
-//
-// GitHub API docs: https://docs.github.com/rest/projects/projects#get-project-for-organization
-//
-//meta:operation GET /orgs/{org}/projectsV2/{project_id}
-func (s *ProjectsService) GetByOrg(ctx context.Context, org string, projectID int64) (*ProjectV2, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/projectsV2/%v", org, projectID)
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
-	project := new(ProjectV2)
-	resp, err := s.client.Do(ctx, req, project)
-	if err != nil {
-		return nil, resp, err
-	}
-	return project, resp, nil
-}
-
 // ListByUser lists Projects V2 for a user.
 //
 // GitHub API docs: https://docs.github.com/en/rest/projects/projects#list-projects-for-user
 //
 //meta:operation GET /users/{username}/projectsV2
-func (s *ProjectsService) ListByUser(ctx context.Context, username string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
+func (s *ProjectsService) ListProjectsForUser(ctx context.Context, username string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2", username)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -95,7 +73,6 @@ func (s *ProjectsService) ListByUser(ctx context.Context, username string, opts 
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	var projects []*ProjectV2
 	resp, err := s.client.Do(ctx, req, &projects)
@@ -110,13 +87,32 @@ func (s *ProjectsService) ListByUser(ctx context.Context, username string, opts 
 // GitHub API docs: https://docs.github.com/en/rest/projects/projects#get-project-for-user
 //
 //meta:operation GET /users/{username}/projectsV2/{project_id}
-func (s *ProjectsService) GetUserProject(ctx context.Context, username string, projectID int64) (*ProjectV2, *Response, error) {
+func (s *ProjectsService) GetProjectForUser(ctx context.Context, username string, projectID int64) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v", username, projectID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
+
+	project := new(ProjectV2)
+	resp, err := s.client.Do(ctx, req, project)
+	if err != nil {
+		return nil, resp, err
+	}
+	return project, resp, nil
+}
+
+// GetByOrg gets a Projects V2 project for an organization by ID.
+//
+// GitHub API docs: https://docs.github.com/rest/projects/projects#get-project-for-organization
+//
+//meta:operation GET /orgs/{org}/projectsV2/{project_id}
+func (s *ProjectsService) GetProjectForOrg(ctx context.Context, org string, projectID int64) (*ProjectV2, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/projectsV2/%v", org, projectID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	project := new(ProjectV2)
 	resp, err := s.client.Do(ctx, req, project)
