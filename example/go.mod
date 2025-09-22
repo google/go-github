@@ -1,6 +1,6 @@
 module github.com/google/go-github/v74/example
 
-go 1.23.0
+go 1.24.0
 
 require (
 	github.com/ProtonMail/go-crypto v0.0.0-20230828082145-3c4c8a2d2371
