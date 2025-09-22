@@ -41,6 +41,10 @@ linters:
 
         Use of this source code is governed by a BSD-style
         license that can be found in the LICENSE file.
+    forbidigo:
+      forbid:
+        - pattern: ^reflect\.DeepEqual$
+          msg: "Use cmp.Equal instead of reflect.DeepEqual"
     gosec:
       excludes:
         # duplicates errcheck

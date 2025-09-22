@@ -3186,7 +3186,7 @@ func TestPtr(t *testing.T) {
 	t.Parallel()
 	equal := func(t *testing.T, want, got any) {
 		t.Helper()
-		if !reflect.DeepEqual(want, got) {
+		if !cmp.Equal(want, got) {
 			t.Errorf("want %#v, got %#v", want, got)
 		}
 	}
