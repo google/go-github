@@ -242,7 +242,7 @@ func TestValidatePayload_InvalidContentTypeParams(t *testing.T) {
 
 func TestValidatePayload_ValidContentTypeParams(t *testing.T) {
 	t.Parallel()
-	var requestBody = `{"yo":true}`
+	requestBody := `{"yo":true}`
 	buf := bytes.NewBufferString(requestBody)
 
 	req, err := http.NewRequest("POST", "http://localhost/event", buf)

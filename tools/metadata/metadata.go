@@ -431,7 +431,7 @@ func visitFileMethods(updateFile bool, filename string, visit nodeVisitor) error
 	if bytes.Equal(content, updatedContent) {
 		return nil
 	}
-	return os.WriteFile(filename, updatedContent, 0600)
+	return os.WriteFile(filename, updatedContent, 0o600)
 }
 
 var (

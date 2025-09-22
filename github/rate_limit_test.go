@@ -110,7 +110,7 @@ func TestRateLimits(t *testing.T) {
 			Limit:     9,
 			Remaining: 8,
 			Used:      1,
-			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 00, 0, time.UTC).Local()},
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 0, 0, time.UTC).Local()},
 		},
 		DependencySnapshots: &Rate{
 			Limit:     10,
@@ -283,7 +283,7 @@ func TestRateLimits_overQuota(t *testing.T) {
 			Limit:     9,
 			Remaining: 8,
 			Used:      1,
-			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 00, 0, time.UTC).Local()},
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 0, 0, time.UTC).Local()},
 		},
 		DependencySnapshots: &Rate{
 			Limit:     10,

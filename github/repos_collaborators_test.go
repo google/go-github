@@ -439,7 +439,6 @@ func TestCollaboratorInvitation_Marshal(t *testing.T) {
 	r := &CollaboratorInvitation{
 		ID: Ptr(int64(1)),
 		Repo: &Repository{
-
 			ID:   Ptr(int64(1)),
 			URL:  Ptr("url"),
 			Name: Ptr("n"),

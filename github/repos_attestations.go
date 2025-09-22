@@ -17,7 +17,7 @@ import (
 //
 //meta:operation GET /repos/{owner}/{repo}/attestations/{subject_digest}
 func (s *RepositoriesService) ListAttestations(ctx context.Context, owner, repo, subjectDigest string, opts *ListOptions) (*AttestationsResponse, *Response, error) {
-	var u = fmt.Sprintf("repos/%v/%v/attestations/%v", owner, repo, subjectDigest)
+	u := fmt.Sprintf("repos/%v/%v/attestations/%v", owner, repo, subjectDigest)
 
 	u, err := addOptions(u, opts)
 	if err != nil {

@@ -52,7 +52,7 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 		t.Errorf("SecretScanning.ListAlertsForEnterprise returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
+	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
@@ -122,7 +122,7 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 		t.Errorf("SecretScanning.ListAlertsForOrg returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
+	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
@@ -189,7 +189,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 		t.Errorf("SecretScanning.ListAlertsForOrg returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
+	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
@@ -254,7 +254,7 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 		t.Errorf("SecretScanning.ListAlertsForRepo returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
+	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
@@ -317,7 +317,7 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 		t.Errorf("SecretScanning.GetAlert returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
+	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := &SecretScanningAlert{
 		Number:       Ptr(1),
 		CreatedAt:    &date,
@@ -389,7 +389,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		t.Errorf("SecretScanning.UpdateAlert returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
+	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := &SecretScanningAlert{
 		Number:            Ptr(1),
 		CreatedAt:         &date,

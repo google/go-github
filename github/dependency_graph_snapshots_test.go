@@ -40,7 +40,7 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 			Version: Ptr("0.0.1"),
 			URL:     Ptr("https://github.com/octo-org/octo-repo"),
 		},
-		Scanned: &Timestamp{time.Date(2022, time.June, 14, 20, 25, 00, 0, time.UTC)},
+		Scanned: &Timestamp{time.Date(2022, time.June, 14, 20, 25, 0, 0, time.UTC)},
 		Metadata: map[string]any{
 			"key1": "value1",
 			"key2": "value2",
@@ -86,7 +86,7 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 
 	want := &DependencyGraphSnapshotCreationData{
 		ID:        12345,
-		CreatedAt: &Timestamp{time.Date(2022, time.June, 14, 20, 25, 01, 0, time.UTC)},
+		CreatedAt: &Timestamp{time.Date(2022, time.June, 14, 20, 25, 1, 0, time.UTC)},
 		Message:   Ptr("Dependency results for the repo have been successfully updated."),
 		Result:    Ptr("SUCCESS"),
 	}

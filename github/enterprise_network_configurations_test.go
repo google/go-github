@@ -218,7 +218,7 @@ func TestEnterpriseService_GetEnterpriseNetworkConfiguration(t *testing.T) {
 		Name:               Ptr("configuration one"),
 		ComputeService:     Ptr(ComputeService("actions")),
 		NetworkSettingsIDs: []string{"23456789ABDCEF1", "3456789ABDCEF12"},
-		CreatedOn:          &Timestamp{time.Date(2024, 12, 10, 19, 00, 15, 0, time.UTC)},
+		CreatedOn:          &Timestamp{time.Date(2024, 12, 10, 19, 0, 15, 0, time.UTC)},
 	}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Enterprise.GetEnterpriseNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
@@ -274,7 +274,7 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 		Name:               Ptr("updated configuration one"),
 		ComputeService:     Ptr(ComputeService("none")),
 		NetworkSettingsIDs: []string{"456789ABDCEF123"},
-		CreatedOn:          &Timestamp{time.Date(2024, 12, 10, 19, 00, 15, 0, time.UTC)},
+		CreatedOn:          &Timestamp{time.Date(2024, 12, 10, 19, 0, 15, 0, time.UTC)},
 	}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Enterprise.UpdateEnterpriseNetworkConfiguration mismatch (-want +get)\n%s", cmp.Diff(want, configuration))

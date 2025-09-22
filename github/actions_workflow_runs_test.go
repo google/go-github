@@ -38,8 +38,8 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 	want := &WorkflowRuns{
 		TotalCount: Ptr(4),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
+			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(runs, want) {
@@ -81,8 +81,8 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 	want := &WorkflowRuns{
 		TotalCount: Ptr(4),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
+			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(runs, want) {
@@ -122,8 +122,8 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 	want := &WorkflowRun{
 		ID:        Ptr(int64(399444496)),
 		RunNumber: Ptr(296),
-		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
 	}
 
 	if !cmp.Equal(runs, want) {
@@ -166,8 +166,8 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 		ID:         Ptr(int64(399444496)),
 		RunNumber:  Ptr(296),
 		RunAttempt: Ptr(3),
-		CreatedAt:  &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt:  &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CreatedAt:  &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
+		UpdatedAt:  &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
 	}
 
 	if !cmp.Equal(runs, want) {
