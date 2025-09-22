@@ -18,12 +18,19 @@ type ProjectsService service
 
 func (p ProjectV2) String() string { return Stringify(p) }
 
-// ListProjectsOptions specifies optional parameters to list organization projects.
+// ListProjectsOptions specifies optional parameters to list projects for user / organization.
 type ListProjectsOptions struct {
+	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
+	Before string `url:"before,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query only searches for events after this cursor.
+	After string `url:"after,omitempty"`
+
+	// For paginated result sets, the number of results to include per page.
+	PerPage int `url:"per_page,omitempty"`
+
 	// Q is an optional query string to filter/search projects (when supported).
-	Q string `url:"q,omitempty"`
-	ListOptions
-	ListCursorOptions
+	Query string `url:"q,omitempty"`
 }
 
 // ListOrganizationProjects lists Projects V2 for an organization.

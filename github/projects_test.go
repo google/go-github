@@ -19,7 +19,7 @@ func TestProjectsService_ListOrganizationProjects(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1,"title":"T1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 	})
 
-	opts := &ListProjectsOptions{Q: "alpha", ListOptions: ListOptions{Page: 2, PerPage: 1}}
+	opts := &ListProjectsOptions{Query: "alpha", After: "2", Before: "1"}
 	ctx := context.Background()
 	projects, _, err := client.Projects.ListOrganizationProjects(ctx, "o", opts)
 	if err != nil {
@@ -80,11 +80,11 @@ func TestProjectsService_ListUserProjects(t *testing.T) {
 	mux.HandleFunc("/users/u/projectsV2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
-		testFormValues(t, r, values{"q": "beta", "page": "1", "per_page": "2"})
+		testFormValues(t, r, values{"q": "beta", "before": "1", "after": "2", "per_page": "2"})
 		fmt.Fprint(w, `[{"id":2,"title":"UProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 	})
 
-	opts := &ListProjectsOptions{Q: "beta", ListOptions: ListOptions{Page: 1, PerPage: 2}}
+	opts := &ListProjectsOptions{Query: "beta", Before: "1", After: "2", PerPage: 2}
 	ctx := context.Background()
 	projects, _, err := client.Projects.ListByUser(ctx, "u", opts)
 	if err != nil {
