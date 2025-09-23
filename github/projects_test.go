@@ -265,6 +265,162 @@ func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 	}
 }
 
+func TestProjectsService_ListProjectFieldsForOrganization(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	// Combined handler: supports initial test case and dual before/after validation scenario.
+	mux.HandleFunc("/orgs/o/projectsV2/1/fields", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		q := r.URL.Query()
+		if q.Get("before") == "b" && q.Get("after") == "a" {
+			fmt.Fprint(w, `[]`)
+			return
+		}
+		// default expectation for main part of test
+		testFormValues(t, r, values{"q": "text", "after": "2", "before": "1"})
+		fmt.Fprint(w, `[
+			{
+				"id": "field1",
+				"node_id": "node_1",
+				"name": "Status",
+				"dataType": "single_select",
+				"url": "https://api.github.com/projects/1/fields/field1",
+				"options": [
+					{
+						"id": "option1",
+						"name": "Todo",
+						"color": "blue",
+						"description": "Tasks to be done"
+					},
+					{
+						"id": "option2",
+						"name": "In Progress",
+						"color": "yellow"
+					}
+				],
+				"created_at": "2011-01-02T15:04:05Z",
+				"updated_at": "2012-01-02T15:04:05Z"
+			},
+			{
+				"id": "field2",
+				"node_id": "node_2",
+				"name": "Priority",
+				"dataType": "text",
+				"url": "https://api.github.com/projects/1/fields/field2",
+				"created_at": "2011-01-02T15:04:05Z",
+				"updated_at": "2012-01-02T15:04:05Z"
+			}
+		]`)
+	})
+
+	opts := &ListProjectsOptions{Query: "text", After: "2", Before: "1"}
+	ctx := context.Background()
+	fields, _, err := client.Projects.ListProjectFieldsForOrganization(ctx, "o", 1, opts)
+	if err != nil {
+		t.Fatalf("Projects.ListProjectFieldsForOrganization returned error: %v", err)
+	}
+
+	if len(fields) != 2 {
+		t.Fatalf("Projects.ListProjectFieldsForOrganization returned %d fields, want 2", len(fields))
+	}
+
+	// Validate first field (with options)
+	field1 := fields[0]
+	if field1.ID != "field1" || field1.Name != "Status" || field1.DataType != "single_select" {
+		t.Errorf("First field: got ID=%s, Name=%s, DataType=%s; want field1, Status, single_select",
+			field1.ID, field1.Name, field1.DataType)
+	}
+	if len(field1.Options) != 2 {
+		t.Errorf("First field options: got %d, want 2", len(field1.Options))
+	}
+	if field1.Options[0].Name != "Todo" || field1.Options[1].Name != "In Progress" {
+		t.Errorf("First field option names: got %s, %s; want Todo, In Progress",
+			field1.Options[0].Name, field1.Options[1].Name)
+	}
+
+	// Validate second field (without options)
+	field2 := fields[1]
+	if field2.ID != "field2" || field2.Name != "Priority" || field2.DataType != "text" {
+		t.Errorf("Second field: got ID=%s, Name=%s, DataType=%s; want field2, Priority, text",
+			field2.ID, field2.Name, field2.DataType)
+	}
+	if len(field2.Options) != 0 {
+		t.Errorf("Second field options: got %d, want 0", len(field2.Options))
+	}
+
+	const methodName = "ListProjectFieldsForOrganization"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListProjectFieldsForOrganization(ctx, "\n", 1, opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.ListProjectFieldsForOrganization(ctx, "o", 1, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+
+	// still allow both set (no validation enforced) – ensure it does not error
+	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
+	if _, _, err = client.Projects.ListProjectFieldsForOrganization(ctxBypass, "o", 1, &ListProjectsOptions{Before: "b", After: "a"}); err != nil {
+		t.Fatalf("unexpected error when both before/after set: %v", err)
+	}
+}
+
+func TestProjectsService_ListProjectFieldsForOrganization_pagination(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	// First page returns a Link header with rel="next" containing an after cursor
+	mux.HandleFunc("/orgs/o/projectsV2/1/fields", func(w http.ResponseWriter, r *http.Request) {
+		q := r.URL.Query()
+		after := q.Get("after")
+		before := q.Get("before")
+		if after == "" && before == "" {
+			// first request
+			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2/1/fields?after=cursor2>; rel=\"next\"")
+			fmt.Fprint(w, `[{"id":"field1","name":"Status","dataType":"single_select","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			return
+		}
+		if after == "cursor2" {
+			// second request simulates a previous link
+			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2/1/fields?before=cursor2>; rel=\"prev\"")
+			fmt.Fprint(w, `[{"id":"field2","name":"Priority","dataType":"text","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			return
+		}
+		// unexpected state
+		http.Error(w, "unexpected query", http.StatusBadRequest)
+	})
+
+	ctx := context.Background()
+	first, resp, err := client.Projects.ListProjectFieldsForOrganization(ctx, "o", 1, nil)
+	if err != nil {
+		t.Fatalf("first page error: %v", err)
+	}
+	if len(first) != 1 || first[0].ID != "field1" {
+		t.Fatalf("unexpected first page %+v", first)
+	}
+	if resp.After != "cursor2" {
+		t.Fatalf("expected resp.After=cursor2 got %q", resp.After)
+	}
+
+	// Use resp.After as opts.After for next page
+	opts := &ListProjectsOptions{After: resp.After}
+	second, resp2, err := client.Projects.ListProjectFieldsForOrganization(ctx, "o", 1, opts)
+	if err != nil {
+		t.Fatalf("second page error: %v", err)
+	}
+	if len(second) != 1 || second[0].ID != "field2" {
+		t.Fatalf("unexpected second page %+v", second)
+	}
+	if resp2.Before != "cursor2" {
+		t.Fatalf("expected resp2.Before=cursor2 got %q", resp2.Before)
+	}
+}
+
 // Marshal test ensures V2 fields marshal correctly.
 func TestProjectV2_Marshal(t *testing.T) {
 	t.Parallel()
@@ -289,4 +445,49 @@ func TestProjectV2_Marshal(t *testing.T) {
     }`
 
 	testJSONMarshal(t, p, want)
+}
+
+// Marshal test ensures V2 field structures marshal correctly.
+func TestProjectV2Field_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ProjectV2Field{}, "{}")
+	testJSONMarshal(t, &ProjectV2FieldOption{}, "{}")
+
+	field := &ProjectV2Field{
+		ID:         "field1",
+		NodeID:     "node_1",
+		Name:       "Status",
+		DataType:   "single_select",
+		ProjectURL: "https://api.github.com/projects/1/fields/field1",
+		Options: []*ProjectV2FieldOption{
+			{
+				ID:          "option1",
+				Name:        "Todo",
+				Color:       "blue",
+				Description: "Tasks to be done",
+			},
+		},
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+        "id": "field1",
+        "node_id": "node_1",
+        "name": "Status",
+        "dataType": "single_select",
+        "url": "https://api.github.com/projects/1/fields/field1",
+        "options": [
+            {
+                "id": "option1",
+                "name": "Todo",
+                "color": "blue",
+                "description": "Tasks to be done"
+            }
+        ],
+        "created_at": ` + referenceTimeStr + `,
+        "updated_at": ` + referenceTimeStr + `
+    }`
+
+	testJSONMarshal(t, field, want)
 }

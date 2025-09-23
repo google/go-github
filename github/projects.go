@@ -40,6 +40,32 @@ type ListProjectsOptions struct {
 	Query string `url:"q,omitempty"`
 }
 
+// ProjectV2FieldOption represents an option for a project field of type single_select or multi_select.
+// It defines the available choices that can be selected for dropdown-style fields.
+//
+// GitHub API docs: https://docs.github.com/rest/projects/fields
+type ProjectV2FieldOption struct {
+	ID          string `json:"id,omitempty"`          // The unique identifier for this option.
+	Name        string `json:"name,omitempty"`        // The display name of the option.
+	Color       string `json:"color,omitempty"`       // The color associated with this option (e.g., "blue", "red").
+	Description string `json:"description,omitempty"` // An optional description for this option.
+}
+
+// ProjectV2Field represents a field in a GitHub Projects V2 project.
+// Fields define the structure and data types for project items.
+//
+// GitHub API docs: https://docs.github.com/rest/projects/fields
+type ProjectV2Field struct {
+	ID         string                  `json:"id,omitempty"`         // The unique identifier for this field.
+	NodeID     string                  `json:"node_id,omitempty"`    // The GraphQL node ID for this field.
+	Name       string                  `json:"name,omitempty"`       // The display name of the field.
+	DataType   string                  `json:"dataType,omitempty"`   // The data type of the field (e.g., "text", "number", "date", "single_select", "multi_select").
+	ProjectURL string                  `json:"url,omitempty"`        // The API URL for this field.
+	Options    []*ProjectV2FieldOption `json:"options,omitempty"`    // Available options for single_select and multi_select fields.
+	CreatedAt  *Timestamp              `json:"created_at,omitempty"` // The time when this field was created.
+	UpdatedAt  *Timestamp              `json:"updated_at,omitempty"` // The time when this field was last updated.
+}
+
 // ListProjectsForOrganization lists Projects V2 for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/projects#list-projects-for-organization
@@ -127,4 +153,29 @@ func (s *ProjectsService) GetProjectForUser(ctx context.Context, username string
 		return nil, resp, err
 	}
 	return project, resp, nil
+}
+
+// ListProjectFieldsForOrganization lists Projects V2 for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/projects/fields#list-project-fields-for-organization
+//
+//meta:operation GET /orgs/{org}/projectsV2/{project_number}/fields
+func (s *ProjectsService) ListProjectFieldsForOrganization(ctx context.Context, org string, projectNumber int64, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/projectsV2/%v/fields", org, projectNumber)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var fields []*ProjectV2Field
+	resp, err := s.client.Do(ctx, req, &fields)
+	if err != nil {
+		return nil, resp, err
+	}
+	return fields, resp, nil
 }

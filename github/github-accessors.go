@@ -18638,6 +18638,22 @@ func (p *ProjectV2Event) GetSender() *User {
 	return p.Sender
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetUpdatedAt() Timestamp {
+	if p == nil || p.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.UpdatedAt
+}
+
 // GetArchivedAt returns the ArchivedAt field if it's non-nil, zero value otherwise.
 func (p *ProjectV2Item) GetArchivedAt() Timestamp {
 	if p == nil || p.ArchivedAt == nil {
