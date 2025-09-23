@@ -454,11 +454,11 @@ func TestProjectV2Field_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectV2FieldOption{}, "{}")
 
 	field := &ProjectV2Field{
-		ID:         "field1",
-		NodeID:     "node_1",
-		Name:       "Status",
-		DataType:   "single_select",
-		ProjectURL: "https://api.github.com/projects/1/fields/field1",
+		ID:       "field1",
+		NodeID:   "node_1",
+		Name:     "Status",
+		DataType: "single_select",
+		URL:      "https://api.github.com/projects/1/fields/field1",
 		Options: []*ProjectV2FieldOption{
 			{
 				ID:          "option1",
