@@ -32666,6 +32666,39 @@ func TestSCIMUserName_GetFormatted(tt *testing.T) {
 	s.GetFormatted()
 }
 
+func TestSCIMUserRole_GetDisplay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMUserRole{Display: &zeroValue}
+	s.GetDisplay()
+	s = &SCIMUserRole{}
+	s.GetDisplay()
+	s = nil
+	s.GetDisplay()
+}
+
+func TestSCIMUserRole_GetPrimary(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SCIMUserRole{Primary: &zeroValue}
+	s.GetPrimary()
+	s = &SCIMUserRole{}
+	s.GetPrimary()
+	s = nil
+	s.GetPrimary()
+}
+
+func TestSCIMUserRole_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMUserRole{Type: &zeroValue}
+	s.GetType()
+	s = &SCIMUserRole{}
+	s.GetType()
+	s = nil
+	s.GetType()
+}
+
 func TestSecretScanning_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
