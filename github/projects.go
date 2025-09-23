@@ -19,6 +19,13 @@ type ProjectsService service
 func (p ProjectV2) String() string { return Stringify(p) }
 
 // ListProjectsOptions specifies optional parameters to list projects for user / organization.
+//
+// Note: Pagination is powered by before/after cursor-style pagination. After the initial call,
+// inspect the returned *Response. Use resp.After as the opts.After value to request
+// the next page, and resp.Before as the opts.Before value to request the previous
+// page. Set either Before or After for a request; if both are
+// supplied GitHub API will return an error. PerPage controls the number of items
+// per page (max 100 per GitHub API docs).
 type ListProjectsOptions struct {
 	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
 	Before string `url:"before,omitempty"`
@@ -29,13 +36,13 @@ type ListProjectsOptions struct {
 	// For paginated result sets, the number of results to include per page.
 	PerPage int `url:"per_page,omitempty"`
 
-	// Q is an optional query string to filter/search projects (when supported).
+	// Q is an optional query string to limit results to projects of the specified type.
 	Query string `url:"q,omitempty"`
 }
 
 // ListProjectsForOrganization lists Projects V2 for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/projects#list-organization-projects
+// GitHub API docs: https://docs.github.com/rest/projects/projects#list-projects-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2
 func (s *ProjectsService) ListProjectsForOrganization(ctx context.Context, org string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
@@ -58,9 +65,29 @@ func (s *ProjectsService) ListProjectsForOrganization(ctx context.Context, org s
 	return projects, resp, nil
 }
 
+// GetProjectForOrg gets a Projects V2 project for an organization by ID.
+//
+// GitHub API docs: https://docs.github.com/rest/projects/projects#get-project-for-organization
+//
+//meta:operation GET /orgs/{org}/projectsV2/{project_id}
+func (s *ProjectsService) GetProjectForOrg(ctx context.Context, org string, projectID int64) (*ProjectV2, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/projectsV2/%v", org, projectID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	project := new(ProjectV2)
+	resp, err := s.client.Do(ctx, req, project)
+	if err != nil {
+		return nil, resp, err
+	}
+	return project, resp, nil
+}
+
 // ListProjectsForUser lists Projects V2 for a user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/projects#list-projects-for-user
+// GitHub API docs: https://docs.github.com/rest/projects/projects#list-projects-for-user
 //
 //meta:operation GET /users/{username}/projectsV2
 func (s *ProjectsService) ListProjectsForUser(ctx context.Context, username string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
@@ -89,26 +116,6 @@ func (s *ProjectsService) ListProjectsForUser(ctx context.Context, username stri
 //meta:operation GET /users/{username}/projectsV2/{project_id}
 func (s *ProjectsService) GetProjectForUser(ctx context.Context, username string, projectID int64) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v", username, projectID)
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	project := new(ProjectV2)
-	resp, err := s.client.Do(ctx, req, project)
-	if err != nil {
-		return nil, resp, err
-	}
-	return project, resp, nil
-}
-
-// GetProjectForOrg gets a Projects V2 project for an organization by ID.
-//
-// GitHub API docs: https://docs.github.com/rest/projects/projects#get-project-for-organization
-//
-//meta:operation GET /orgs/{org}/projectsV2/{project_id}
-func (s *ProjectsService) GetProjectForOrg(ctx context.Context, org string, projectID int64) (*ProjectV2, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/projectsV2/%v", org, projectID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
