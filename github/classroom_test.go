@@ -27,11 +27,11 @@ func TestClassroom_Marshal(t *testing.T) {
 			ID:        Ptr(int64(1)),
 			Login:     Ptr("programming-elixir"),
 			NodeID:    Ptr("MDEyOk9yZ2FuaXphdGlvbjE="),
-			HTMLURL:   Ptr("https://github.com/programming-elixir"),
+			HTMLURL:   Ptr("https://example.com/programming-elixir"),
 			Name:      Ptr("Learn how to build fault tolerant applications"),
-			AvatarURL: Ptr("https://avatars.githubusercontent.com/u/9919?v=4"),
+			AvatarURL: Ptr("https://example.com/avatars/u/9919?v=4"),
 		},
-		URL: Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+		URL: Ptr("https://example.com/classrooms/programming"),
 	}
 
 	want := `{
@@ -42,11 +42,11 @@ func TestClassroom_Marshal(t *testing.T) {
 			"id": 1,
 			"login": "programming-elixir",
 			"node_id": "MDEyOk9yZ2FuaXphdGlvbjE=",
-			"html_url": "https://github.com/programming-elixir",
+			"html_url": "https://example.com/programming-elixir",
 			"name": "Learn how to build fault tolerant applications",
-			"avatar_url": "https://avatars.githubusercontent.com/u/9919?v=4"
+			"avatar_url": "https://example.com/avatars/u/9919?v=4"
 		},
-		"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+		"url": "https://example.com/classrooms/programming"
 	}`
 
 	testJSONMarshal(t, c, want)
@@ -61,7 +61,7 @@ func TestClassroomAssignment_Marshal(t *testing.T) {
 		PublicRepo:                  Ptr(false),
 		Title:                       Ptr("Intro to Binaries"),
 		Type:                        Ptr("individual"),
-		InviteLink:                  Ptr("https://classroom.github.com/a/Lx7jiUgx"),
+		InviteLink:                  Ptr("https://example.com/a/Lx7jiUgx"),
 		InvitationsEnabled:          Ptr(true),
 		Slug:                        Ptr("intro-to-binaries"),
 		StudentsAreRepoAdmins:       Ptr(false),
@@ -89,7 +89,7 @@ func TestClassroomAssignment_Marshal(t *testing.T) {
 		"public_repo": false,
 		"title": "Intro to Binaries",
 		"type": "individual",
-		"invite_link": "https://classroom.github.com/a/Lx7jiUgx",
+		"invite_link": "https://example.com/a/Lx7jiUgx",
 		"invitations_enabled": true,
 		"slug": "intro-to-binaries",
 		"students_are_repo_admins": false,
@@ -126,7 +126,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 			"public_repo": false,
 			"title": "Intro to Binaries",
 			"type": "individual",
-			"invite_link": "https://classroom.github.com/a/Lx7jiUgx",
+			"invite_link": "https://example.com/a/Lx7jiUgx",
 			"invitations_enabled": true,
 			"slug": "intro-to-binaries",
 			"students_are_repo_admins": false,
@@ -142,7 +142,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 			"starter_code_repository": {
 				"id": 1296269,
 				"full_name": "octocat/Hello-World",
-				"html_url": "https://github.com/octocat/Hello-World",
+				"html_url": "https://example.com/octocat/Hello-World",
 				"node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5",
 				"private": false,
 				"default_branch": "main"
@@ -151,7 +151,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 				"id": 1296269,
 				"name": "Programming Elixir",
 				"archived": false,
-				"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+				"url": "https://example.com/classrooms/programming"
 			}
 		}`)
 	})
@@ -167,7 +167,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 		PublicRepo:                  Ptr(false),
 		Title:                       Ptr("Intro to Binaries"),
 		Type:                        Ptr("individual"),
-		InviteLink:                  Ptr("https://classroom.github.com/a/Lx7jiUgx"),
+		InviteLink:                  Ptr("https://example.com/a/Lx7jiUgx"),
 		InvitationsEnabled:          Ptr(true),
 		Slug:                        Ptr("intro-to-binaries"),
 		StudentsAreRepoAdmins:       Ptr(false),
@@ -183,7 +183,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 		StarterCodeRepository: &Repository{
 			ID:            Ptr(int64(1296269)),
 			FullName:      Ptr("octocat/Hello-World"),
-			HTMLURL:       Ptr("https://github.com/octocat/Hello-World"),
+			HTMLURL:       Ptr("https://example.com/octocat/Hello-World"),
 			NodeID:        Ptr("MDEwOlJlcG9zaXRvcnkxMjk2MjY5"),
 			Private:       Ptr(false),
 			DefaultBranch: Ptr("main"),
@@ -192,7 +192,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 			ID:       Ptr(int64(1296269)),
 			Name:     Ptr("Programming Elixir"),
 			Archived: Ptr(false),
-			URL:      Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+			URL:      Ptr("https://example.com/classrooms/programming"),
 		},
 	}
 
@@ -201,8 +201,274 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 	}
 
 	const methodName = "GetAssignment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Classroom.GetAssignment(ctx, -1)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Classroom.GetAssignment(ctx, 12)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestClassroomService_GetClassroom(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/classrooms/1296269", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"id": 1296269,
+			"name": "Programming Elixir",
+			"archived": false,
+			"organization": {
+				"id": 1,
+				"login": "programming-elixir",
+				"node_id": "MDEyOk9yZ2FuaXphdGlvbjE=",
+				"html_url": "https://example.com/programming-elixir",
+				"name": "Learn how to build fault tolerant applications",
+				"avatar_url": "https://example.com/avatars/u/9919?v=4"
+			},
+			"url": "https://example.com/classrooms/programming"
+		}`)
+	})
+
+	ctx := context.Background()
+	classroom, _, err := client.Classroom.GetClassroom(ctx, 1296269)
+	if err != nil {
+		t.Errorf("Classroom.GetClassroom returned error: %v", err)
+	}
+
+	want := &Classroom{
+		ID:       Ptr(int64(1296269)),
+		Name:     Ptr("Programming Elixir"),
+		Archived: Ptr(false),
+		Organization: &Organization{
+			ID:        Ptr(int64(1)),
+			Login:     Ptr("programming-elixir"),
+			NodeID:    Ptr("MDEyOk9yZ2FuaXphdGlvbjE="),
+			HTMLURL:   Ptr("https://example.com/programming-elixir"),
+			Name:      Ptr("Learn how to build fault tolerant applications"),
+			AvatarURL: Ptr("https://example.com/avatars/u/9919?v=4"),
+		},
+		URL: Ptr("https://example.com/classrooms/programming"),
+	}
+
+	if !cmp.Equal(classroom, want) {
+		t.Errorf("Classroom.GetClassroom returned %+v, want %+v", classroom, want)
+	}
+
+	const methodName = "GetClassroom"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Classroom.GetClassroom(ctx, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Classroom.GetClassroom(ctx, 1296269)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestClassroomService_ListClassrooms(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/classrooms", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2", "per_page": "2"})
+		fmt.Fprint(w, `[
+			{
+				"id": 1296269,
+				"name": "Programming Elixir",
+				"archived": false,
+				"url": "https://example.com/classrooms/programming"
+			},
+			{
+				"id": 1296270,
+				"name": "Advanced Programming",
+				"archived": true,
+				"url": "https://example.com/classrooms/2-advanced-programming"
+			}
+		]`)
+	})
+
+	opt := &ListOptions{Page: 2, PerPage: 2}
+	ctx := context.Background()
+	classrooms, _, err := client.Classroom.ListClassrooms(ctx, opt)
+	if err != nil {
+		t.Errorf("Classroom.ListClassrooms returned error: %v", err)
+	}
+
+	want := []*Classroom{
+		{
+			ID:       Ptr(int64(1296269)),
+			Name:     Ptr("Programming Elixir"),
+			Archived: Ptr(false),
+			URL:      Ptr("https://example.com/classrooms/programming"),
+		},
+		{
+			ID:       Ptr(int64(1296270)),
+			Name:     Ptr("Advanced Programming"),
+			Archived: Ptr(true),
+			URL:      Ptr("https://example.com/classrooms/2-advanced-programming"),
+		},
+	}
+
+	if !cmp.Equal(classrooms, want) {
+		t.Errorf("Classroom.ListClassrooms returned %+v, want %+v", classrooms, want)
+	}
+
+	const methodName = "ListClassrooms"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Classroom.ListClassrooms(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestClassroomService_ListClassroomAssignments(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/classrooms/1296269/assignments", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2", "per_page": "2"})
+		fmt.Fprint(w, `[
+			{
+				"id": 12,
+				"public_repo": false,
+				"title": "Intro to Binaries",
+				"type": "individual",
+				"invite_link": "https://example.com/a/Lx7jiUgx",
+				"invitations_enabled": true,
+				"slug": "intro-to-binaries",
+				"students_are_repo_admins": false,
+				"feedback_pull_requests_enabled": true,
+				"max_teams": 0,
+				"max_members": 0,
+				"editor": "codespaces",
+				"accepted": 100,
+				"submitted": 40,
+				"passing": 10,
+				"language": "ruby",
+				"deadline": "2011-01-26T19:06:43Z",
+				"classroom": {
+					"id": 1296269,
+					"name": "Programming Elixir",
+					"archived": false,
+					"url": "https://example.com/classrooms/programming"
+				}
+			},
+			{
+				"id": 13,
+				"public_repo": true,
+				"title": "Advanced Programming",
+				"type": "group",
+				"invite_link": "https://example.com/a/AdvancedProg",
+				"invitations_enabled": true,
+				"slug": "advanced-programming",
+				"students_are_repo_admins": true,
+				"feedback_pull_requests_enabled": false,
+				"max_teams": 5,
+				"max_members": 3,
+				"editor": "vscode",
+				"accepted": 50,
+				"submitted": 25,
+				"passing": 20,
+				"language": "python",
+				"deadline": "2020-01-11T11:59:22Z",
+				"classroom": {
+					"id": 1296269,
+					"name": "Programming Elixir",
+					"archived": false,
+					"url": "https://example.com/classrooms/programming"
+				}
+			}
+		]`)
+	})
+
+	opt := &ListOptions{Page: 2, PerPage: 2}
+	ctx := context.Background()
+	assignments, _, err := client.Classroom.ListClassroomAssignments(ctx, 1296269, opt)
+	if err != nil {
+		t.Errorf("Classroom.ListClassroomAssignments returned error: %v", err)
+	}
+
+	want := []*ClassroomAssignment{
+		{
+			ID:                          Ptr(int64(12)),
+			PublicRepo:                  Ptr(false),
+			Title:                       Ptr("Intro to Binaries"),
+			Type:                        Ptr("individual"),
+			InviteLink:                  Ptr("https://example.com/a/Lx7jiUgx"),
+			InvitationsEnabled:          Ptr(true),
+			Slug:                        Ptr("intro-to-binaries"),
+			StudentsAreRepoAdmins:       Ptr(false),
+			FeedbackPullRequestsEnabled: Ptr(true),
+			MaxTeams:                    Ptr(0),
+			MaxMembers:                  Ptr(0),
+			Editor:                      Ptr("codespaces"),
+			Accepted:                    Ptr(100),
+			Submitted:                   Ptr(40),
+			Passing:                     Ptr(10),
+			Language:                    Ptr("ruby"),
+			Deadline:                    func() *Timestamp { t, _ := time.Parse(time.RFC3339, "2011-01-26T19:06:43Z"); return &Timestamp{t} }(),
+			Classroom: &Classroom{
+				ID:       Ptr(int64(1296269)),
+				Name:     Ptr("Programming Elixir"),
+				Archived: Ptr(false),
+				URL:      Ptr("https://example.com/classrooms/programming"),
+			},
+		},
+		{
+			ID:                          Ptr(int64(13)),
+			PublicRepo:                  Ptr(true),
+			Title:                       Ptr("Advanced Programming"),
+			Type:                        Ptr("group"),
+			InviteLink:                  Ptr("https://example.com/a/AdvancedProg"),
+			InvitationsEnabled:          Ptr(true),
+			Slug:                        Ptr("advanced-programming"),
+			StudentsAreRepoAdmins:       Ptr(true),
+			FeedbackPullRequestsEnabled: Ptr(false),
+			MaxTeams:                    Ptr(5),
+			MaxMembers:                  Ptr(3),
+			Editor:                      Ptr("vscode"),
+			Accepted:                    Ptr(50),
+			Submitted:                   Ptr(25),
+			Passing:                     Ptr(20),
+			Language:                    Ptr("python"),
+			Deadline:                    func() *Timestamp { t, _ := time.Parse(time.RFC3339, "2020-01-11T11:59:22Z"); return &Timestamp{t} }(),
+			Classroom: &Classroom{
+				ID:       Ptr(int64(1296269)),
+				Name:     Ptr("Programming Elixir"),
+				Archived: Ptr(false),
+				URL:      Ptr("https://example.com/classrooms/programming"),
+			},
+		},
+	}
+
+	if !cmp.Equal(assignments, want) {
+		t.Errorf("Classroom.ListClassroomAssignments returned %+v, want %+v", assignments, want)
+	}
+
+	const methodName = "ListClassroomAssignments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Classroom.ListClassroomAssignments(ctx, -1, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Classroom.ListClassroomAssignments(ctx, 1296269, opt)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
