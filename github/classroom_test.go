@@ -27,11 +27,11 @@ func TestClassroom_Marshal(t *testing.T) {
 			ID:        Ptr(int64(1)),
 			Login:     Ptr("programming-elixir"),
 			NodeID:    Ptr("MDEyOk9yZ2FuaXphdGlvbjE="),
-			HTMLURL:   Ptr("https://github.com/programming-elixir"),
+			HTMLURL:   Ptr("https://example.com/programming-elixir"),
 			Name:      Ptr("Learn how to build fault tolerant applications"),
-			AvatarURL: Ptr("https://avatars.githubusercontent.com/u/9919?v=4"),
+			AvatarURL: Ptr("https://example.com/avatars/u/9919?v=4"),
 		},
-		URL: Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+		URL: Ptr("https://example.com/classrooms/programming"),
 	}
 
 	want := `{
@@ -42,11 +42,11 @@ func TestClassroom_Marshal(t *testing.T) {
 			"id": 1,
 			"login": "programming-elixir",
 			"node_id": "MDEyOk9yZ2FuaXphdGlvbjE=",
-			"html_url": "https://github.com/programming-elixir",
+			"html_url": "https://example.com/programming-elixir",
 			"name": "Learn how to build fault tolerant applications",
-			"avatar_url": "https://avatars.githubusercontent.com/u/9919?v=4"
+			"avatar_url": "https://example.com/avatars/u/9919?v=4"
 		},
-		"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+		"url": "https://example.com/classrooms/programming"
 	}`
 
 	testJSONMarshal(t, c, want)
@@ -61,7 +61,7 @@ func TestClassroomAssignment_Marshal(t *testing.T) {
 		PublicRepo:                  Ptr(false),
 		Title:                       Ptr("Intro to Binaries"),
 		Type:                        Ptr("individual"),
-		InviteLink:                  Ptr("https://classroom.github.com/a/Lx7jiUgx"),
+		InviteLink:                  Ptr("https://example.com/a/Lx7jiUgx"),
 		InvitationsEnabled:          Ptr(true),
 		Slug:                        Ptr("intro-to-binaries"),
 		StudentsAreRepoAdmins:       Ptr(false),
@@ -89,7 +89,7 @@ func TestClassroomAssignment_Marshal(t *testing.T) {
 		"public_repo": false,
 		"title": "Intro to Binaries",
 		"type": "individual",
-		"invite_link": "https://classroom.github.com/a/Lx7jiUgx",
+		"invite_link": "https://example.com/a/Lx7jiUgx",
 		"invitations_enabled": true,
 		"slug": "intro-to-binaries",
 		"students_are_repo_admins": false,
@@ -126,7 +126,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 			"public_repo": false,
 			"title": "Intro to Binaries",
 			"type": "individual",
-			"invite_link": "https://classroom.github.com/a/Lx7jiUgx",
+			"invite_link": "https://example.com/a/Lx7jiUgx",
 			"invitations_enabled": true,
 			"slug": "intro-to-binaries",
 			"students_are_repo_admins": false,
@@ -142,7 +142,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 			"starter_code_repository": {
 				"id": 1296269,
 				"full_name": "octocat/Hello-World",
-				"html_url": "https://github.com/octocat/Hello-World",
+				"html_url": "https://example.com/octocat/Hello-World",
 				"node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5",
 				"private": false,
 				"default_branch": "main"
@@ -151,7 +151,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 				"id": 1296269,
 				"name": "Programming Elixir",
 				"archived": false,
-				"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+				"url": "https://example.com/classrooms/programming"
 			}
 		}`)
 	})
@@ -167,7 +167,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 		PublicRepo:                  Ptr(false),
 		Title:                       Ptr("Intro to Binaries"),
 		Type:                        Ptr("individual"),
-		InviteLink:                  Ptr("https://classroom.github.com/a/Lx7jiUgx"),
+		InviteLink:                  Ptr("https://example.com/a/Lx7jiUgx"),
 		InvitationsEnabled:          Ptr(true),
 		Slug:                        Ptr("intro-to-binaries"),
 		StudentsAreRepoAdmins:       Ptr(false),
@@ -183,7 +183,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 		StarterCodeRepository: &Repository{
 			ID:            Ptr(int64(1296269)),
 			FullName:      Ptr("octocat/Hello-World"),
-			HTMLURL:       Ptr("https://github.com/octocat/Hello-World"),
+			HTMLURL:       Ptr("https://example.com/octocat/Hello-World"),
 			NodeID:        Ptr("MDEwOlJlcG9zaXRvcnkxMjk2MjY5"),
 			Private:       Ptr(false),
 			DefaultBranch: Ptr("main"),
@@ -192,7 +192,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 			ID:       Ptr(int64(1296269)),
 			Name:     Ptr("Programming Elixir"),
 			Archived: Ptr(false),
-			URL:      Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+			URL:      Ptr("https://example.com/classrooms/programming"),
 		},
 	}
 
@@ -224,11 +224,11 @@ func TestClassroomService_GetClassroom(t *testing.T) {
 				"id": 1,
 				"login": "programming-elixir",
 				"node_id": "MDEyOk9yZ2FuaXphdGlvbjE=",
-				"html_url": "https://github.com/programming-elixir",
+				"html_url": "https://example.com/programming-elixir",
 				"name": "Learn how to build fault tolerant applications",
-				"avatar_url": "https://avatars.githubusercontent.com/u/9919?v=4"
+				"avatar_url": "https://example.com/avatars/u/9919?v=4"
 			},
-			"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+			"url": "https://example.com/classrooms/programming"
 		}`)
 	})
 
@@ -246,11 +246,11 @@ func TestClassroomService_GetClassroom(t *testing.T) {
 			ID:        Ptr(int64(1)),
 			Login:     Ptr("programming-elixir"),
 			NodeID:    Ptr("MDEyOk9yZ2FuaXphdGlvbjE="),
-			HTMLURL:   Ptr("https://github.com/programming-elixir"),
+			HTMLURL:   Ptr("https://example.com/programming-elixir"),
 			Name:      Ptr("Learn how to build fault tolerant applications"),
-			AvatarURL: Ptr("https://avatars.githubusercontent.com/u/9919?v=4"),
+			AvatarURL: Ptr("https://example.com/avatars/u/9919?v=4"),
 		},
-		URL: Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+		URL: Ptr("https://example.com/classrooms/programming"),
 	}
 
 	if !cmp.Equal(classroom, want) {
@@ -279,13 +279,13 @@ func TestClassroomService_ListClassrooms(t *testing.T) {
 				"id": 1296269,
 				"name": "Programming Elixir",
 				"archived": false,
-				"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+				"url": "https://example.com/classrooms/programming"
 			},
 			{
 				"id": 1296270,
 				"name": "Advanced Programming",
 				"archived": true,
-				"url": "https://classroom.github.com/classrooms/2-advanced-programming"
+				"url": "https://example.com/classrooms/2-advanced-programming"
 			}
 		]`)
 	})
@@ -302,13 +302,13 @@ func TestClassroomService_ListClassrooms(t *testing.T) {
 			ID:       Ptr(int64(1296269)),
 			Name:     Ptr("Programming Elixir"),
 			Archived: Ptr(false),
-			URL:      Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+			URL:      Ptr("https://example.com/classrooms/programming"),
 		},
 		{
 			ID:       Ptr(int64(1296270)),
 			Name:     Ptr("Advanced Programming"),
 			Archived: Ptr(true),
-			URL:      Ptr("https://classroom.github.com/classrooms/2-advanced-programming"),
+			URL:      Ptr("https://example.com/classrooms/2-advanced-programming"),
 		},
 	}
 
@@ -339,7 +339,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 				"public_repo": false,
 				"title": "Intro to Binaries",
 				"type": "individual",
-				"invite_link": "https://classroom.github.com/a/Lx7jiUgx",
+				"invite_link": "https://example.com/a/Lx7jiUgx",
 				"invitations_enabled": true,
 				"slug": "intro-to-binaries",
 				"students_are_repo_admins": false,
@@ -356,7 +356,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 					"id": 1296269,
 					"name": "Programming Elixir",
 					"archived": false,
-					"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+					"url": "https://example.com/classrooms/programming"
 				}
 			},
 			{
@@ -364,7 +364,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 				"public_repo": true,
 				"title": "Advanced Programming",
 				"type": "group",
-				"invite_link": "https://classroom.github.com/a/AdvancedProg",
+				"invite_link": "https://example.com/a/AdvancedProg",
 				"invitations_enabled": true,
 				"slug": "advanced-programming",
 				"students_are_repo_admins": true,
@@ -381,7 +381,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 					"id": 1296269,
 					"name": "Programming Elixir",
 					"archived": false,
-					"url": "https://classroom.github.com/classrooms/1-programming-elixir"
+					"url": "https://example.com/classrooms/programming"
 				}
 			}
 		]`)
@@ -400,7 +400,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 			PublicRepo:                  Ptr(false),
 			Title:                       Ptr("Intro to Binaries"),
 			Type:                        Ptr("individual"),
-			InviteLink:                  Ptr("https://classroom.github.com/a/Lx7jiUgx"),
+			InviteLink:                  Ptr("https://example.com/a/Lx7jiUgx"),
 			InvitationsEnabled:          Ptr(true),
 			Slug:                        Ptr("intro-to-binaries"),
 			StudentsAreRepoAdmins:       Ptr(false),
@@ -417,7 +417,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 				ID:       Ptr(int64(1296269)),
 				Name:     Ptr("Programming Elixir"),
 				Archived: Ptr(false),
-				URL:      Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+				URL:      Ptr("https://example.com/classrooms/programming"),
 			},
 		},
 		{
@@ -425,7 +425,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 			PublicRepo:                  Ptr(true),
 			Title:                       Ptr("Advanced Programming"),
 			Type:                        Ptr("group"),
-			InviteLink:                  Ptr("https://classroom.github.com/a/AdvancedProg"),
+			InviteLink:                  Ptr("https://example.com/a/AdvancedProg"),
 			InvitationsEnabled:          Ptr(true),
 			Slug:                        Ptr("advanced-programming"),
 			StudentsAreRepoAdmins:       Ptr(true),
@@ -442,7 +442,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 				ID:       Ptr(int64(1296269)),
 				Name:     Ptr("Programming Elixir"),
 				Archived: Ptr(false),
-				URL:      Ptr("https://classroom.github.com/classrooms/1-programming-elixir"),
+				URL:      Ptr("https://example.com/classrooms/programming"),
 			},
 		},
 	}
