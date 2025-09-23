@@ -25,6 +25,12 @@ linters:
     - unparam
     - whitespace
   settings:
+    forbidigo:
+      forbid:
+        - pattern: ^reflect\.DeepEqual$
+          msg: "Use cmp.Equal instead of reflect.DeepEqual"
+        - pattern: "^http\\.Method[A-Z][a-z]*$"
+          msg: "Use string literals instead of http.Method constants (https://pkg.go.dev/net/http#pkg-constants)"
     gocritic:
       disable-all: true
       enabled-checks:
@@ -41,10 +47,6 @@ linters:
 
         Use of this source code is governed by a BSD-style
         license that can be found in the LICENSE file.
-    forbidigo:
-      forbid:
-        - pattern: ^reflect\.DeepEqual$
-          msg: "Use cmp.Equal instead of reflect.DeepEqual"
     gosec:
       excludes:
         # duplicates errcheck
@@ -119,10 +121,6 @@ linters:
       checks:
         - "all"
         - "-QF1008" # allow embedded field in selector
-    forbidigo:
-      forbid:
-        - pattern: "^http\\.Method[A-Z][a-z]*$"
-          msg: "Use string literals instead of http.Method constants (https://pkg.go.dev/net/http#pkg-constants)"
     custom:
       sliceofpointers:
         type: module
