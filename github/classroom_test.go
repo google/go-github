@@ -201,6 +201,11 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 	}
 
 	const methodName = "GetAssignment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Classroom.GetAssignment(ctx, -1)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Classroom.GetAssignment(ctx, 12)
 		if got != nil {
@@ -258,6 +263,11 @@ func TestClassroomService_GetClassroom(t *testing.T) {
 	}
 
 	const methodName = "GetClassroom"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Classroom.GetClassroom(ctx, -1)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Classroom.GetClassroom(ctx, 1296269)
 		if got != nil {
@@ -452,6 +462,11 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 	}
 
 	const methodName = "ListClassroomAssignments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Classroom.ListClassroomAssignments(ctx, -1, opt)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Classroom.ListClassroomAssignments(ctx, 1296269, opt)
 		if got != nil {
