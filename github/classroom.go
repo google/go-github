@@ -80,7 +80,7 @@ func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64
 	return assignment, resp, nil
 }
 
-// GetClassroom gets a GitHub Classroom classroom for the current user. Classroom will only be
+// GetClassroom gets a GitHub Classroom for the current user. Classroom will only be
 // returned if the current user is an administrator of the GitHub Classroom.
 //
 // GitHub API docs: https://docs.github.com/rest/classroom/classroom#get-a-classroom
@@ -103,7 +103,7 @@ func (s *ClassroomService) GetClassroom(ctx context.Context, classroomID int64) 
 	return classroom, resp, nil
 }
 
-// ListClassrooms lists GitHub Classroom classrooms for the current user. Classrooms will only be
+// ListClassrooms lists GitHub Classrooms for the current user. Classrooms will only be
 // returned if the current user is an administrator of one or more GitHub Classrooms.
 //
 // GitHub API docs: https://docs.github.com/rest/classroom/classroom#list-classrooms
