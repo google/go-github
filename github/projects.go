@@ -60,7 +60,7 @@ type ProjectV2Field struct {
 	NodeID     string                  `json:"node_id,omitempty"`    // The GraphQL node ID for this field.
 	Name       string                  `json:"name,omitempty"`       // The display name of the field.
 	DataType   string                  `json:"dataType,omitempty"`   // The data type of the field (e.g., "text", "number", "date", "single_select", "multi_select").
-	ProjectURL string                  `json:"url,omitempty"`        // The API URL for this field.
+	URL string                  `json:"url,omitempty"`        // The API URL for this field.
 	Options    []*ProjectV2FieldOption `json:"options,omitempty"`    // Available options for single_select and multi_select fields.
 	CreatedAt  *Timestamp              `json:"created_at,omitempty"` // The time when this field was created.
 	UpdatedAt  *Timestamp              `json:"updated_at,omitempty"` // The time when this field was last updated.
