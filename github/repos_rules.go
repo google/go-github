@@ -174,7 +174,9 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 func (s *RepositoriesService) UpdateRulesetClearBypassActor(ctx context.Context, owner, repo string, rulesetID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 
-	rsClearBypassActor := rulesetClearBypassActors{}
+	rsClearBypassActor := rulesetClearBypassActors{
+		BypassActors: []*BypassActor{},
+	}
 
 	req, err := s.client.NewRequest("PUT", u, rsClearBypassActor)
 	if err != nil {
