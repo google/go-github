@@ -646,7 +646,7 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 			t.Fatalf("url.Parse returned unexpected error: %v.", err)
 		}
 		c.BaseURL = u
-		if _, err := c.NewRequest(http.MethodGet, "test", nil); test.wantError && err == nil {
+		if _, err := c.NewRequest("GET", "test", nil); test.wantError && err == nil {
 			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewRequest returned unexpected error: %v.", err)
@@ -1247,62 +1247,62 @@ func TestDo_rateLimitCategory(t *testing.T) {
 		category RateLimitCategory
 	}{
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/",
 			category: CoreCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/search/issues?q=rate",
 			category: SearchCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/graphql",
 			category: GraphqlCategory,
 		},
 		{
-			method:   http.MethodPost,
+			method:   "POST",
 			url:      "/app-manifests/code/conversions",
 			category: IntegrationManifestCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/app-manifests/code/conversions",
 			category: CoreCategory, // only POST requests are in the integration manifest category
 		},
 		{
-			method:   http.MethodPut,
+			method:   "PUT",
 			url:      "/repos/google/go-github/import",
 			category: SourceImportCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/repos/google/go-github/import",
 			category: CoreCategory, // only PUT requests are in the source import category
 		},
 		{
-			method:   http.MethodPost,
+			method:   "POST",
 			url:      "/repos/google/go-github/code-scanning/sarifs",
 			category: CodeScanningUploadCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/scim/v2/organizations/ORG/Users",
 			category: ScimCategory,
 		},
 		{
-			method:   http.MethodPost,
+			method:   "POST",
 			url:      "/repos/google/go-github/dependency-graph/snapshots",
 			category: DependencySnapshotsCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/search/code?q=rate",
 			category: CodeSearchCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/orgs/google/audit-log",
 			category: AuditLogCategory,
 		},

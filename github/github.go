@@ -589,7 +589,7 @@ func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOp
 		return nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPost, u.String(), body)
+	req, err := http.NewRequest("POST", u.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -1527,7 +1527,7 @@ func GetRateLimitCategory(method, path string) RateLimitCategory {
 
 	// https://docs.github.com/en/rest/search/search#search-code
 	case strings.HasPrefix(path, "/search/code") &&
-		method == http.MethodGet:
+		method == "GET":
 		return CodeSearchCategory
 
 	case strings.HasPrefix(path, "/search/"):
@@ -1536,13 +1536,13 @@ func GetRateLimitCategory(method, path string) RateLimitCategory {
 		return GraphqlCategory
 	case strings.HasPrefix(path, "/app-manifests/") &&
 		strings.HasSuffix(path, "/conversions") &&
-		method == http.MethodPost:
+		method == "POST":
 		return IntegrationManifestCategory
 
 	// https://docs.github.com/rest/migrations/source-imports#start-an-import
 	case strings.HasPrefix(path, "/repos/") &&
 		strings.HasSuffix(path, "/import") &&
-		method == http.MethodPut:
+		method == "PUT":
 		return SourceImportCategory
 
 	// https://docs.github.com/rest/code-scanning#upload-an-analysis-as-sarif-data
@@ -1556,7 +1556,7 @@ func GetRateLimitCategory(method, path string) RateLimitCategory {
 	// https://docs.github.com/en/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
 	case strings.HasPrefix(path, "/repos/") &&
 		strings.HasSuffix(path, "/dependency-graph/snapshots") &&
-		method == http.MethodPost:
+		method == "POST":
 		return DependencySnapshotsCategory
 
 	// https://docs.github.com/en/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#get-the-audit-log-for-an-organization
