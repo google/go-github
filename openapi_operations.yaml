@@ -2877,6 +2877,61 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
+  - name: GET /orgs/{org}/projectsV2
+    documentation_url: https://docs.github.com/rest/projects/projects#list-projects-for-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /users/{username}/projectsV2
+    documentation_url: https://docs.github.com/rest/projects/projects#list-projects-for-user
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/projectsV2/{project_number}
+    documentation_url: https://docs.github.com/rest/projects/projects#get-project-for-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /users/{username}/projectsV2/{project_number}
+    documentation_url: https://docs.github.com/rest/projects/projects#get-project-for-user
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/projectsV2/{project_number}/fields
+    documentation_url: https://docs.github.com/rest/projects/fields#list-project-fields-for-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/projectsV2/{project_number}/fields/{field_id}
+    documentation_url: https://docs.github.com/rest/projects/fields#get-project-field-for-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/projectsV2/{project_number}/items
+    documentation_url: https://docs.github.com/rest/projects/items#list-items-for-an-organization-owned-project
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /orgs/{org}/projectsV2/{project_number}/items
+    documentation_url: https://docs.github.com/rest/projects/items#add-item-to-organization-owned-project
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/projectsV2/{project_number}/items/{item_id}
+    documentation_url: https://docs.github.com/rest/projects/items#delete-project-item-for-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/projectsV2/{project_number}/items/{item_id}
+    documentation_url: https://docs.github.com/rest/projects/items#get-an-item-for-an-organization-owned-project
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/projectsV2/{project_number}/items/{item_id}
+    documentation_url: https://docs.github.com/rest/projects/items#update-project-item-for-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/properties/schema
     documentation_url: https://docs.github.com/rest/orgs/custom-properties#get-all-custom-properties-for-an-organization
     openapi_files:
