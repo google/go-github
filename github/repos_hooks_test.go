@@ -575,7 +575,7 @@ func TestRepositoriesService_Subscribe(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/hub", func(_ http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, http.MethodPost)
+		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/x-www-form-urlencoded")
 		testFormValues(t, r, values{
 			"hub.mode":     "subscribe",
@@ -608,7 +608,7 @@ func TestRepositoriesService_Unsubscribe(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/hub", func(_ http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, http.MethodPost)
+		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/x-www-form-urlencoded")
 		testFormValues(t, r, values{
 			"hub.mode":     "unsubscribe",

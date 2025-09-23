@@ -9,7 +9,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strings"
 )
@@ -101,7 +100,7 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokens(ctx context.C
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest(http.MethodGet, u, opts)
+	req, err := s.client.NewRequest("GET", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -132,7 +131,7 @@ type ReviewPersonalAccessTokenRequestOptions struct {
 func (s *OrganizationsService) ReviewPersonalAccessTokenRequest(ctx context.Context, org string, requestID int64, opts ReviewPersonalAccessTokenRequestOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/personal-access-token-requests/%v", org, requestID)
 
-	req, err := s.client.NewRequest(http.MethodPost, u, &opts)
+	req, err := s.client.NewRequest("POST", u, &opts)
 	if err != nil {
 		return nil, err
 	}

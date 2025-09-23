@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"net/http"
 )
 
 // ReactionsService provides access to the reactions-related functions in the
@@ -530,7 +529,7 @@ func (s *ReactionsService) DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(c
 }
 
 func (s *ReactionsService) deleteReaction(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest(http.MethodDelete, url, nil)
+	req, err := s.client.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}

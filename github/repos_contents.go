@@ -157,7 +157,7 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 			if contents.GetDownloadURL() == "" {
 				return nil, resp, fmt.Errorf("no download link found for %s", filepath)
 			}
-			dlReq, err := http.NewRequestWithContext(ctx, http.MethodGet, *contents.DownloadURL, nil)
+			dlReq, err := http.NewRequestWithContext(ctx, "GET", *contents.DownloadURL, nil)
 			if err != nil {
 				return nil, resp, err
 			}
@@ -206,7 +206,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 			if contents.GetDownloadURL() == "" {
 				return nil, contents, resp, fmt.Errorf("no download link found for %s", filepath)
 			}
-			dlReq, err := http.NewRequestWithContext(ctx, http.MethodGet, *contents.DownloadURL, nil)
+			dlReq, err := http.NewRequestWithContext(ctx, "GET", *contents.DownloadURL, nil)
 			if err != nil {
 				return nil, contents, resp, err
 			}
