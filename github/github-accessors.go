@@ -22822,6 +22822,22 @@ func (r *RepositoryActor) GetUserViewType() string {
 	return *r.UserViewType
 }
 
+// GetRepository returns the Repository field.
+func (r *RepositoryAttachment) GetRepository() *Repository {
+	if r == nil {
+		return nil
+	}
+	return r.Repository
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (r *RepositoryAttachment) GetStatus() string {
+	if r == nil || r.Status == nil {
+		return ""
+	}
+	return *r.Status
+}
+
 // GetConfiguration returns the Configuration field.
 func (r *RepositoryCodeSecurityConfiguration) GetConfiguration() *CodeSecurityConfiguration {
 	if r == nil {

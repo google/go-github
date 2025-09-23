@@ -29495,6 +29495,25 @@ func TestRepositoryActor_GetUserViewType(tt *testing.T) {
 	r.GetUserViewType()
 }
 
+func TestRepositoryAttachment_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryAttachment{}
+	r.GetRepository()
+	r = nil
+	r.GetRepository()
+}
+
+func TestRepositoryAttachment_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryAttachment{Status: &zeroValue}
+	r.GetStatus()
+	r = &RepositoryAttachment{}
+	r.GetStatus()
+	r = nil
+	r.GetStatus()
+}
+
 func TestRepositoryCodeSecurityConfiguration_GetConfiguration(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryCodeSecurityConfiguration{}
