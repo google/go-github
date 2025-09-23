@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"net/http"
 )
 
 // ClassroomService handles communication with the GitHub Classroom related
@@ -67,7 +66,7 @@ func (a ClassroomAssignment) String() string {
 func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64) (*ClassroomAssignment, *Response, error) {
 	u := fmt.Sprintf("assignments/%v", assignmentID)
 
-	req, err := s.client.NewRequest(http.MethodGet, u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -79,4 +78,80 @@ func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64
 	}
 
 	return assignment, resp, nil
+}
+
+// GetClassroom gets a GitHub Classroom for the current user. Classroom will only be
+// returned if the current user is an administrator of the GitHub Classroom.
+//
+// GitHub API docs: https://docs.github.com/rest/classroom/classroom#get-a-classroom
+//
+//meta:operation GET /classrooms/{classroom_id}
+func (s *ClassroomService) GetClassroom(ctx context.Context, classroomID int64) (*Classroom, *Response, error) {
+	u := fmt.Sprintf("classrooms/%v", classroomID)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	classroom := new(Classroom)
+	resp, err := s.client.Do(ctx, req, classroom)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return classroom, resp, nil
+}
+
+// ListClassrooms lists GitHub Classrooms for the current user. Classrooms will only be
+// returned if the current user is an administrator of one or more GitHub Classrooms.
+//
+// GitHub API docs: https://docs.github.com/rest/classroom/classroom#list-classrooms
+//
+//meta:operation GET /classrooms
+func (s *ClassroomService) ListClassrooms(ctx context.Context, opts *ListOptions) ([]*Classroom, *Response, error) {
+	u, err := addOptions("classrooms", opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var classrooms []*Classroom
+	resp, err := s.client.Do(ctx, req, &classrooms)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return classrooms, resp, nil
+}
+
+// ListClassroomAssignments lists GitHub Classroom assignments for a classroom. Assignments will only be
+// returned if the current user is an administrator of the GitHub Classroom.
+//
+// GitHub API docs: https://docs.github.com/rest/classroom/classroom#list-assignments-for-a-classroom
+//
+//meta:operation GET /classrooms/{classroom_id}/assignments
+func (s *ClassroomService) ListClassroomAssignments(ctx context.Context, classroomID int64, opts *ListOptions) ([]*ClassroomAssignment, *Response, error) {
+	u := fmt.Sprintf("classrooms/%v/assignments", classroomID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var assignments []*ClassroomAssignment
+	resp, err := s.client.Do(ctx, req, &assignments)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return assignments, resp, nil
 }

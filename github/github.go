@@ -309,7 +309,7 @@ type RawOptions struct {
 // must be a struct whose fields may contain "url" tags.
 func addOptions(s string, opts any) (string, error) {
 	v := reflect.ValueOf(opts)
-	if v.Kind() == reflect.Ptr && v.IsNil() {
+	if v.Kind() == reflect.Pointer && v.IsNil() {
 		return s, nil
 	}
 
