@@ -39,9 +39,12 @@ func TestIssuesService_List_all(t *testing.T) {
 	})
 
 	opt := &IssueListOptions{
-		"all", "closed", []string{"a", "b"}, "updated", "asc",
+		"all", "closed",
+		[]string{"a", "b"},
+		"updated", "asc",
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
-		ListCursorOptions{Before: "foo", After: "bar"}, ListOptions{Page: 1, PerPage: 2},
+		ListCursorOptions{Before: "foo", After: "bar"},
+		ListOptions{Page: 1, PerPage: 2},
 	}
 	ctx := context.Background()
 	issues, _, err := client.Issues.List(ctx, true, opt)
@@ -165,9 +168,12 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	})
 
 	opt := &IssueListByRepoOptions{
-		"*", "closed", "a", "c", "m", []string{"a", "b"}, "updated", "asc",
+		"*", "closed", "a", "c", "m",
+		[]string{"a", "b"},
+		"updated", "asc",
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
-		ListCursorOptions{PerPage: 1, Before: "foo", After: "bar"}, ListOptions{0, 0},
+		ListCursorOptions{PerPage: 1, Before: "foo", After: "bar"},
+		ListOptions{0, 0},
 	}
 	ctx := context.Background()
 	issues, _, err := client.Issues.ListByRepo(ctx, "o", "r", opt)

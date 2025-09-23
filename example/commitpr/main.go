@@ -13,7 +13,7 @@
 //
 // Note, if you want to push a single file, you probably prefer to use the
 // content API. An example is available here:
-// https://pkg.go.dev/github.com/google/go-github/v74/github#example-RepositoriesService-CreateFile
+// https://pkg.go.dev/github.com/google/go-github/v75/github#example-RepositoriesService-CreateFile
 //
 // Note, for this to work at least 1 commit is needed, so you if you use this
 // after creating a repository you might want to make sure you set `AutoInit` to
@@ -33,7 +33,7 @@ import (
 	"time"
 
 	"github.com/ProtonMail/go-crypto/openpgp"
-	"github.com/google/go-github/v74/github"
+	"github.com/google/go-github/v75/github"
 )
 
 var (
@@ -57,8 +57,10 @@ Example: README.md,main.go:github/examples/commitpr/main.go`)
 	privateKey  = flag.String("private-key", "", "Path to the private key to use to sign the commit.")
 )
 
-var client *github.Client
-var ctx = context.Background()
+var (
+	client *github.Client
+	ctx    = context.Background()
+)
 
 // getRef returns the commit branch reference object if it exists or creates it
 // from the base branch before returning it.
@@ -176,7 +178,7 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 	return err
 }
 
-// createPR creates a pull request. Based on: https://pkg.go.dev/github.com/google/go-github/v74/github#example-PullRequestsService-Create
+// createPR creates a pull request. Based on: https://pkg.go.dev/github.com/google/go-github/v75/github#example-PullRequestsService-Create
 func createPR() (err error) {
 	if *prSubject == "" {
 		return errors.New("missing `-pr-title` flag; skipping PR creation")

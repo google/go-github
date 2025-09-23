@@ -18,7 +18,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v74/github"
+	"github.com/google/go-github/v75/github"
 	"github.com/sigstore/sigstore-go/pkg/bundle"
 	"github.com/sigstore/sigstore-go/pkg/root"
 	"github.com/sigstore/sigstore-go/pkg/verify"
@@ -109,7 +109,6 @@ func main() {
 		}
 
 		err := runVerification(sev, pb, b)
-
 		if err != nil {
 			log.Fatal(err)
 		}

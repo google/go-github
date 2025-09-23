@@ -14,14 +14,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-github/v74/github"
+	"github.com/google/go-github/v75/github"
 )
 
-const msgEnvMissing = "Skipping test because the required environment variable (%v) is not present."
-const envKeyClientID = "GITHUB_CLIENT_ID"
-const envKeyClientSecret = "GITHUB_CLIENT_SECRET"
-const envKeyAccessToken = "GITHUB_ACCESS_TOKEN"
-const InvalidTokenValue = "iamnotacroken"
+const (
+	msgEnvMissing      = "Skipping test because the required environment variable (%v) is not present."
+	envKeyClientID     = "GITHUB_CLIENT_ID"
+	envKeyClientSecret = "GITHUB_CLIENT_SECRET"
+	envKeyAccessToken  = "GITHUB_ACCESS_TOKEN"
+	InvalidTokenValue  = "iamnotacroken"
+)
 
 // TestAuthorizationsAppOperations tests the application/token related operations, such
 // as creating, testing, resetting and revoking application OAuth tokens.

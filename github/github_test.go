@@ -96,7 +96,7 @@ func setup(t *testing.T) (client *Client, mux *http.ServeMux, serverURL string) 
 func openTestFile(t *testing.T, name, content string) *os.File {
 	t.Helper()
 	fname := filepath.Join(t.TempDir(), name)
-	err := os.WriteFile(fname, []byte(content), 0600)
+	err := os.WriteFile(fname, []byte(content), 0o600)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -646,7 +646,7 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 			t.Fatalf("url.Parse returned unexpected error: %v.", err)
 		}
 		c.BaseURL = u
-		if _, err := c.NewRequest(http.MethodGet, "test", nil); test.wantError && err == nil {
+		if _, err := c.NewRequest("GET", "test", nil); test.wantError && err == nil {
 			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewRequest returned unexpected error: %v.", err)
@@ -806,10 +806,11 @@ func TestResponse_populatePageValues(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?page=1>; rel="first",` +
-				` <https://api.github.com/?page=2>; rel="prev",` +
-				` <https://api.github.com/?page=4>; rel="next",` +
-				` <https://api.github.com/?page=5>; rel="last"`,
+			"Link": {
+				`<https://api.github.com/?page=1>; rel="first",` +
+					` <https://api.github.com/?page=2>; rel="prev",` +
+					` <https://api.github.com/?page=4>; rel="next",` +
+					` <https://api.github.com/?page=5>; rel="last"`,
 			},
 		},
 	}
@@ -836,10 +837,11 @@ func TestResponse_populateSinceValues(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?since=1>; rel="first",` +
-				` <https://api.github.com/?since=2>; rel="prev",` +
-				` <https://api.github.com/?since=4>; rel="next",` +
-				` <https://api.github.com/?since=5>; rel="last"`,
+			"Link": {
+				`<https://api.github.com/?since=1>; rel="first",` +
+					` <https://api.github.com/?since=2>; rel="prev",` +
+					` <https://api.github.com/?since=4>; rel="next",` +
+					` <https://api.github.com/?since=5>; rel="last"`,
 			},
 		},
 	}
@@ -866,10 +868,11 @@ func TestResponse_SinceWithPage(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=1>; rel="first",` +
-				` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=2>; rel="prev",` +
-				` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=4>; rel="next",` +
-				` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=5>; rel="last"`,
+			"Link": {
+				`<https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=1>; rel="first",` +
+					` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=2>; rel="prev",` +
+					` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=4>; rel="next",` +
+					` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=5>; rel="last"`,
 			},
 		},
 	}
@@ -937,9 +940,10 @@ func TestResponse_beforeAfterPagination(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?after=a1b2c3&before=>; rel="next",` +
-				` <https://api.github.com/?after=&before=>; rel="first",` +
-				` <https://api.github.com/?after=&before=d4e5f6>; rel="prev",`,
+			"Link": {
+				`<https://api.github.com/?after=a1b2c3&before=>; rel="next",` +
+					` <https://api.github.com/?after=&before=>; rel="first",` +
+					` <https://api.github.com/?after=&before=d4e5f6>; rel="prev",`,
 			},
 		},
 	}
@@ -972,11 +976,12 @@ func TestResponse_populatePageValues_invalid(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?page=1>,` +
-				`<https://api.github.com/?page=abc>; rel="first",` +
-				`https://api.github.com/?page=2; rel="prev",` +
-				`<https://api.github.com/>; rel="next",` +
-				`<https://api.github.com/?page=>; rel="last"`,
+			"Link": {
+				`<https://api.github.com/?page=1>,` +
+					`<https://api.github.com/?page=abc>; rel="first",` +
+					`https://api.github.com/?page=2; rel="prev",` +
+					`<https://api.github.com/>; rel="next",` +
+					`<https://api.github.com/?page=>; rel="last"`,
 			},
 		},
 	}
@@ -1012,11 +1017,12 @@ func TestResponse_populateSinceValues_invalid(t *testing.T) {
 	t.Parallel()
 	r := http.Response{
 		Header: http.Header{
-			"Link": {`<https://api.github.com/?since=1>,` +
-				`<https://api.github.com/?since=abc>; rel="first",` +
-				`https://api.github.com/?since=2; rel="prev",` +
-				`<https://api.github.com/>; rel="next",` +
-				`<https://api.github.com/?since=>; rel="last"`,
+			"Link": {
+				`<https://api.github.com/?since=1>,` +
+					`<https://api.github.com/?since=abc>; rel="first",` +
+					`https://api.github.com/?since=2; rel="prev",` +
+					`<https://api.github.com/>; rel="next",` +
+					`<https://api.github.com/?since=>; rel="last"`,
 			},
 		},
 	}
@@ -1241,62 +1247,62 @@ func TestDo_rateLimitCategory(t *testing.T) {
 		category RateLimitCategory
 	}{
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/",
 			category: CoreCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/search/issues?q=rate",
 			category: SearchCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/graphql",
 			category: GraphqlCategory,
 		},
 		{
-			method:   http.MethodPost,
+			method:   "POST",
 			url:      "/app-manifests/code/conversions",
 			category: IntegrationManifestCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/app-manifests/code/conversions",
 			category: CoreCategory, // only POST requests are in the integration manifest category
 		},
 		{
-			method:   http.MethodPut,
+			method:   "PUT",
 			url:      "/repos/google/go-github/import",
 			category: SourceImportCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/repos/google/go-github/import",
 			category: CoreCategory, // only PUT requests are in the source import category
 		},
 		{
-			method:   http.MethodPost,
+			method:   "POST",
 			url:      "/repos/google/go-github/code-scanning/sarifs",
 			category: CodeScanningUploadCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/scim/v2/organizations/ORG/Users",
 			category: ScimCategory,
 		},
 		{
-			method:   http.MethodPost,
+			method:   "POST",
 			url:      "/repos/google/go-github/dependency-graph/snapshots",
 			category: DependencySnapshotsCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/search/code?q=rate",
 			category: CodeSearchCategory,
 		},
 		{
-			method:   http.MethodGet,
+			method:   "GET",
 			url:      "/orgs/google/audit-log",
 			category: AuditLogCategory,
 		},
@@ -1504,7 +1510,6 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 	// Second request should not by hindered by rate limits.
 	req, _ = client.NewRequest("GET", "second", nil)
 	_, err = client.Do(ctx, req, nil)
-
 	if err != nil {
 		t.Fatalf("Second request failed, even though the rate limits from the cache should've been ignored: %v", err)
 	}
@@ -1520,7 +1525,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 
 	reset := time.Now().UTC().Add(time.Second)
 
-	var firstRequest = true
+	firstRequest := true
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		if firstRequest {
 			firstRequest = false
@@ -3181,7 +3186,7 @@ func TestPtr(t *testing.T) {
 	t.Parallel()
 	equal := func(t *testing.T, want, got any) {
 		t.Helper()
-		if !reflect.DeepEqual(want, got) {
+		if !cmp.Equal(want, got) {
 			t.Errorf("want %#v, got %#v", want, got)
 		}
 	}

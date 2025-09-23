@@ -1,13 +1,13 @@
-module github.com/google/go-github/v74/example
+module github.com/google/go-github/v75/example
 
-go 1.23.0
+go 1.24.0
 
 require (
 	github.com/ProtonMail/go-crypto v0.0.0-20230828082145-3c4c8a2d2371
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.4
 	github.com/gofri/go-github-pagination v1.0.0
 	github.com/gofri/go-github-ratelimit/v2 v2.0.2
-	github.com/google/go-github/v74 v74.0.0
+	github.com/google/go-github/v75 v75.0.0
 	github.com/sigstore/sigstore-go v0.6.1
 	golang.org/x/crypto v0.36.0
 	golang.org/x/term v0.30.0
@@ -100,4 +100,4 @@ require (
 )
 
 // Use version at HEAD, not the latest published.
-replace github.com/google/go-github/v74 => ../
+replace github.com/google/go-github/v75 => ../

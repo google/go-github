@@ -16,7 +16,7 @@ import (
 	"time"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v74/github"
+	"github.com/google/go-github/v75/github"
 )
 
 func main() {
@@ -40,7 +40,6 @@ func main() {
 			Timeout:   time.Second * 30,
 		},
 	).WithEnterpriseURLs(gitHost, gitHost)
-
 	if err != nil {
 		log.Fatalf("failed to create git client for app: %v\n", err)
 	}

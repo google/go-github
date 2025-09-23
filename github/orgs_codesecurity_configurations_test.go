@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
@@ -43,7 +44,7 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 		{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")},
 		{ID: Ptr(int64(2)), Name: Ptr("config2"), PrivateVulnerabilityReporting: Ptr("enabled")},
 	}
-	if !reflect.DeepEqual(configurations, want) {
+	if !cmp.Equal(configurations, want) {
 		t.Errorf("Organizations.GetCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
 	}
 	const methodName = "GetCodeSecurityConfigurations"
@@ -80,7 +81,7 @@ func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
 	}
 
 	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")}
-	if !reflect.DeepEqual(configuration, want) {
+	if !cmp.Equal(configuration, want) {
 		t.Errorf("Organizations.GetCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
 
@@ -113,7 +114,7 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 		v := new(CodeSecurityConfiguration)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Organizations.CreateCodeSecurityConfiguration request body = %+v, want %+v", v, input)
 		}
 
@@ -130,7 +131,7 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 	}
 
 	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")}
-	if !reflect.DeepEqual(configuration, want) {
+	if !cmp.Equal(configuration, want) {
 		t.Errorf("Organizations.CreateCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
 
@@ -178,7 +179,7 @@ func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T)
 		{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")},
 		{ID: Ptr(int64(2)), Name: Ptr("config2"), PrivateVulnerabilityReporting: Ptr("enabled")},
 	}
-	if !reflect.DeepEqual(configurations, want) {
+	if !cmp.Equal(configurations, want) {
 		t.Errorf("Organizations.GetDefaultCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
 	}
 
@@ -243,7 +244,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 		v := new(CodeSecurityConfiguration)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Organizations.UpdateCodeSecurityConfiguration request body = %+v, want %+v", v, input)
 		}
 
@@ -260,7 +261,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	}
 
 	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")}
-	if !reflect.DeepEqual(configuration, want) {
+	if !cmp.Equal(configuration, want) {
 		t.Errorf("Organizations.UpdateCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
 
@@ -327,7 +328,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 		if v.Scope != "selected" {
 			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body scope = %s, want selected", v.Scope)
 		}
-		if !reflect.DeepEqual(v.SelectedRepositoryIDs, []int64{5, 20}) {
+		if !cmp.Equal(v.SelectedRepositoryIDs, []int64{5, 20}) {
 			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body selected_repository_ids = %+v, want %+v", v.SelectedRepositoryIDs, []int64{5, 20})
 		}
 		w.WriteHeader(http.StatusAccepted)
@@ -387,7 +388,7 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 			ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled"),
 		},
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Organizations.SetDefaultCodeSecurityConfiguration returned %+v, want %+v", got, want)
 	}
 
@@ -439,8 +440,8 @@ func TestOrganizationsService_GetRepositoriesForCodeSecurityConfiguration(t *tes
 		{Status: Ptr("attached"), Repository: &Repository{ID: Ptr(int64(8)), Name: Ptr("repo8")}},
 		{Status: Ptr("attached"), Repository: &Repository{ID: Ptr(int64(42)), Name: Ptr("repo42")}},
 	}
-	if !reflect.DeepEqual(attachments, want) {
-		t.Errorf("Organizations.GetRepositoriesForCodeSecurityConfiguration returned %+v, want %+v", attachments, want)
+	if !cmp.Equal(repositories, want) {
+		t.Errorf("Organizations.GetRepositoriesForCodeSecurityConfiguration returned %+v, want %+v", repositories, want)
 	}
 
 	const methodName = "GetRepositoriesForCodeSecurityConfiguration"
@@ -484,7 +485,7 @@ func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testi
 		State:         Ptr("attached"),
 		Configuration: c,
 	}
-	if !reflect.DeepEqual(rc, want) {
+	if !cmp.Equal(rc, want) {
 		t.Errorf("Organizations.GetCodeSecurityConfigurationForRepository returned %+v, want %+v", rc, want)
 	}
 

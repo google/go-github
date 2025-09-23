@@ -10878,6 +10878,14 @@ func (i *Installation) GetAppSlug() string {
 	return *i.AppSlug
 }
 
+// GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
+func (i *Installation) GetClientID() string {
+	if i == nil || i.ClientID == nil {
+		return ""
+	}
+	return *i.ClientID
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (i *Installation) GetCreatedAt() Timestamp {
 	if i == nil || i.CreatedAt == nil {
@@ -30164,6 +30172,62 @@ func (w *Workflows) GetTotalCount() int {
 		return 0
 	}
 	return *w.TotalCount
+}
+
+// GetRequireApprovalForForkPRWorkflows returns the RequireApprovalForForkPRWorkflows field if it's non-nil, zero value otherwise.
+func (w *WorkflowsPermissions) GetRequireApprovalForForkPRWorkflows() bool {
+	if w == nil || w.RequireApprovalForForkPRWorkflows == nil {
+		return false
+	}
+	return *w.RequireApprovalForForkPRWorkflows
+}
+
+// GetRunWorkflowsFromForkPullRequests returns the RunWorkflowsFromForkPullRequests field if it's non-nil, zero value otherwise.
+func (w *WorkflowsPermissions) GetRunWorkflowsFromForkPullRequests() bool {
+	if w == nil || w.RunWorkflowsFromForkPullRequests == nil {
+		return false
+	}
+	return *w.RunWorkflowsFromForkPullRequests
+}
+
+// GetSendSecretsAndVariables returns the SendSecretsAndVariables field if it's non-nil, zero value otherwise.
+func (w *WorkflowsPermissions) GetSendSecretsAndVariables() bool {
+	if w == nil || w.SendSecretsAndVariables == nil {
+		return false
+	}
+	return *w.SendSecretsAndVariables
+}
+
+// GetSendWriteTokensToWorkflows returns the SendWriteTokensToWorkflows field if it's non-nil, zero value otherwise.
+func (w *WorkflowsPermissions) GetSendWriteTokensToWorkflows() bool {
+	if w == nil || w.SendWriteTokensToWorkflows == nil {
+		return false
+	}
+	return *w.SendWriteTokensToWorkflows
+}
+
+// GetRequireApprovalForForkPRWorkflows returns the RequireApprovalForForkPRWorkflows field if it's non-nil, zero value otherwise.
+func (w *WorkflowsPermissionsOpt) GetRequireApprovalForForkPRWorkflows() bool {
+	if w == nil || w.RequireApprovalForForkPRWorkflows == nil {
+		return false
+	}
+	return *w.RequireApprovalForForkPRWorkflows
+}
+
+// GetSendSecretsAndVariables returns the SendSecretsAndVariables field if it's non-nil, zero value otherwise.
+func (w *WorkflowsPermissionsOpt) GetSendSecretsAndVariables() bool {
+	if w == nil || w.SendSecretsAndVariables == nil {
+		return false
+	}
+	return *w.SendSecretsAndVariables
+}
+
+// GetSendWriteTokensToWorkflows returns the SendWriteTokensToWorkflows field if it's non-nil, zero value otherwise.
+func (w *WorkflowsPermissionsOpt) GetSendWriteTokensToWorkflows() bool {
+	if w == nil || w.SendWriteTokensToWorkflows == nil {
+		return false
+	}
+	return *w.SendWriteTokensToWorkflows
 }
 
 // GetDoNotEnforceOnCreate returns the DoNotEnforceOnCreate field if it's non-nil, zero value otherwise.

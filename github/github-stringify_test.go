@@ -795,6 +795,7 @@ func TestInstallation_String(t *testing.T) {
 	v := Installation{
 		ID:                     Ptr(int64(0)),
 		NodeID:                 Ptr(""),
+		ClientID:               Ptr(""),
 		AppID:                  Ptr(int64(0)),
 		AppSlug:                Ptr(""),
 		TargetID:               Ptr(int64(0)),
@@ -814,7 +815,7 @@ func TestInstallation_String(t *testing.T) {
 		SuspendedBy:            &User{},
 		SuspendedAt:            &Timestamp{},
 	}
-	want := `github.Installation{ID:0, NodeID:"", AppID:0, AppSlug:"", TargetID:0, Account:github.User{}, AccessTokensURL:"", RepositoriesURL:"", HTMLURL:"", TargetType:"", SingleFileName:"", RepositorySelection:"", Events:[""], SingleFilePaths:[""], Permissions:github.InstallationPermissions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HasMultipleSingleFiles:false, SuspendedBy:github.User{}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.Installation{ID:0, NodeID:"", ClientID:"", AppID:0, AppSlug:"", TargetID:0, Account:github.User{}, AccessTokensURL:"", RepositoriesURL:"", HTMLURL:"", TargetType:"", SingleFileName:"", RepositorySelection:"", Events:[""], SingleFilePaths:[""], Permissions:github.InstallationPermissions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HasMultipleSingleFiles:false, SuspendedBy:github.User{}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("Installation.String = %v, want %v", got, want)
 	}
@@ -2380,5 +2381,19 @@ func TestWeeklyStats_String(t *testing.T) {
 	want := `github.WeeklyStats{Week:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Additions:0, Deletions:0, Commits:0}`
 	if got := v.String(); got != want {
 		t.Errorf("WeeklyStats.String = %v, want %v", got, want)
+	}
+}
+
+func TestWorkflowsPermissions_String(t *testing.T) {
+	t.Parallel()
+	v := WorkflowsPermissions{
+		RunWorkflowsFromForkPullRequests:  Ptr(false),
+		SendWriteTokensToWorkflows:        Ptr(false),
+		SendSecretsAndVariables:           Ptr(false),
+		RequireApprovalForForkPRWorkflows: Ptr(false),
+	}
+	want := `github.WorkflowsPermissions{RunWorkflowsFromForkPullRequests:false, SendWriteTokensToWorkflows:false, SendSecretsAndVariables:false, RequireApprovalForForkPRWorkflows:false}`
+	if got := v.String(); got != want {
+		t.Errorf("WorkflowsPermissions.String = %v, want %v", got, want)
 	}
 }
