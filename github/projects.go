@@ -18,7 +18,7 @@ type ProjectsService service
 
 func (p ProjectV2) String() string { return Stringify(p) }
 
-// ListProjectsOptions specifies optional parameters to list projects for user / organization.
+// ListProjectsPaginationOptions specifies optional parameters to list projects for user / organization.
 //
 // Note: Pagination is powered by before/after cursor-style pagination. After the initial call,
 // inspect the returned *Response. Use resp.After as the opts.After value to request
@@ -26,7 +26,7 @@ func (p ProjectV2) String() string { return Stringify(p) }
 // page. Set either Before or After for a request; if both are
 // supplied GitHub API will return an error. PerPage controls the number of items
 // per page (max 100 per GitHub API docs).
-type ListProjectsOptions struct {
+type ListProjectsPaginationOptions struct {
 	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
 	Before string `url:"before,omitempty"`
 
@@ -35,6 +35,11 @@ type ListProjectsOptions struct {
 
 	// For paginated result sets, the number of results to include per page.
 	PerPage int `url:"per_page,omitempty"`
+}
+
+// ListProjectsOptions specifies optional parameters to list projects for user / organization.
+type ListProjectsOptions struct {
+	ListProjectsPaginationOptions
 
 	// Q is an optional query string to limit results to projects of the specified type.
 	Query string `url:"q,omitempty"`

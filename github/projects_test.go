@@ -29,7 +29,7 @@ func TestProjectsService_ListProjectsForOrg(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1,"title":"T1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 	})
 
-	opts := &ListProjectsOptions{Query: "alpha", After: "2", Before: "1"}
+	opts := &ListProjectsOptions{Query: "alpha", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
 	ctx := context.Background()
 	projects, _, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
 	if err != nil {
@@ -55,7 +55,7 @@ func TestProjectsService_ListProjectsForOrg(t *testing.T) {
 
 	// still allow both set (no validation enforced) – ensure it does not error
 	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectsForOrg(ctxBypass, "o", &ListProjectsOptions{Before: "b", After: "a"}); err != nil {
+	if _, _, err = client.Projects.ListProjectsForOrg(ctxBypass, "o", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
@@ -104,7 +104,7 @@ func TestProjectsService_ListUserProjects(t *testing.T) {
 		fmt.Fprint(w, `[{"id":2,"title":"UProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 	})
 
-	opts := &ListProjectsOptions{Query: "beta", Before: "1", After: "2", PerPage: 2}
+	opts := &ListProjectsOptions{Query: "beta", ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "1", After: "2", PerPage: 2}}
 	ctx := context.Background()
 	var ctxBypass context.Context
 	projects, _, err := client.Projects.ListProjectsForUser(ctx, "u", opts)
@@ -131,7 +131,7 @@ func TestProjectsService_ListUserProjects(t *testing.T) {
 
 	// still allow both set (no validation enforced) – ensure it does not error
 	ctxBypass = context.WithValue(context.Background(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectsForUser(ctxBypass, "u", &ListProjectsOptions{Before: "b", After: "a"}); err != nil {
+	if _, _, err = client.Projects.ListProjectsForUser(ctxBypass, "u", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
@@ -204,7 +204,7 @@ func TestProjectsService_ListProjectsForOrg_pagination(t *testing.T) {
 	}
 
 	// Use resp.After as opts.After for next page
-	opts := &ListProjectsOptions{After: resp.After}
+	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: resp.After}}
 	second, resp2, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
 	if err != nil {
 		t.Fatalf("second page error: %v", err)
@@ -252,7 +252,7 @@ func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 		t.Fatalf("expected resp.After=ucursor2 got %q", resp.After)
 	}
 
-	opts := &ListProjectsOptions{After: resp.After}
+	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: resp.After}}
 	second, resp2, err := client.Projects.ListProjectsForUser(ctx, "u", opts)
 	if err != nil {
 		t.Fatalf("second page error: %v", err)
@@ -314,7 +314,7 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 		]`)
 	})
 
-	opts := &ListProjectsOptions{Query: "text", After: "2", Before: "1"}
+	opts := &ListProjectsOptions{Query: "text", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
 	ctx := context.Background()
 	fields, _, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
 	if err != nil {
@@ -365,7 +365,7 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 
 	// still allow both set (no validation enforced) – ensure it does not error
 	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectFieldsForOrg(ctxBypass, "o", 1, &ListProjectsOptions{Before: "b", After: "a"}); err != nil {
+	if _, _, err = client.Projects.ListProjectFieldsForOrg(ctxBypass, "o", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
@@ -408,7 +408,7 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 	}
 
 	// Use resp.After as opts.After for next page
-	opts := &ListProjectsOptions{After: resp.After}
+	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: resp.After}}
 	second, resp2, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
 	if err != nil {
 		t.Fatalf("second page error: %v", err)
