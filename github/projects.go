@@ -66,12 +66,12 @@ type ProjectV2Field struct {
 	UpdatedAt *Timestamp              `json:"updated_at,omitempty"` // The time when this field was last updated.
 }
 
-// ListProjectsForOrganization lists Projects V2 for an organization.
+// ListProjectsForOrg lists Projects V2 for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/projects#list-projects-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2
-func (s *ProjectsService) ListProjectsForOrganization(ctx context.Context, org string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
+func (s *ProjectsService) ListProjectsForOrg(ctx context.Context, org string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -155,12 +155,12 @@ func (s *ProjectsService) GetProjectForUser(ctx context.Context, username string
 	return project, resp, nil
 }
 
-// ListProjectFieldsForOrganization lists Projects V2 for an organization.
+// ListProjectFieldsForOrg lists Projects V2 for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields#list-project-fields-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/fields
-func (s *ProjectsService) ListProjectFieldsForOrganization(ctx context.Context, org string, projectNumber int64, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
+func (s *ProjectsService) ListProjectFieldsForOrg(ctx context.Context, org string, projectNumber int64, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/fields", org, projectNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {

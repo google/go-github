@@ -12,7 +12,7 @@ import (
 	"testing"
 )
 
-func TestProjectsService_ListProjectsForOrganizations(t *testing.T) {
+func TestProjectsService_ListProjectsForOrg(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -31,22 +31,22 @@ func TestProjectsService_ListProjectsForOrganizations(t *testing.T) {
 
 	opts := &ListProjectsOptions{Query: "alpha", After: "2", Before: "1"}
 	ctx := context.Background()
-	projects, _, err := client.Projects.ListProjectsForOrganization(ctx, "o", opts)
+	projects, _, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectsForOrganization returned error: %v", err)
+		t.Fatalf("Projects.ListProjectsForOrg returned error: %v", err)
 	}
 	if len(projects) != 1 || projects[0].GetID() != 1 || projects[0].GetTitle() != "T1" {
-		t.Fatalf("Projects.ListProjectsForOrganization returned %+v", projects)
+		t.Fatalf("Projects.ListProjectsForOrg returned %+v", projects)
 	}
 
-	const methodName = "ListProjectsForOrganization"
+	const methodName = "ListProjectsForOrg"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListProjectsForOrganization(ctx, "\n", opts)
+		_, _, err = client.Projects.ListProjectsForOrg(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListProjectsForOrganization(ctx, "o", opts)
+		got, resp, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -55,7 +55,7 @@ func TestProjectsService_ListProjectsForOrganizations(t *testing.T) {
 
 	// still allow both set (no validation enforced) – ensure it does not error
 	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectsForOrganization(ctxBypass, "o", &ListProjectsOptions{Before: "b", After: "a"}); err != nil {
+	if _, _, err = client.Projects.ListProjectsForOrg(ctxBypass, "o", &ListProjectsOptions{Before: "b", After: "a"}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
@@ -164,9 +164,9 @@ func TestProjectsService_GetProjectForUser(t *testing.T) {
 	})
 }
 
-// TestProjectsService_ListProjectsForOrganization_pagination clarifies how callers should
+// TestProjectsService_ListProjectsForOrg_pagination clarifies how callers should
 // use resp.After to request the next page and resp.Before for previous pages when supported.
-func TestProjectsService_ListProjectsForOrganization_pagination(t *testing.T) {
+func TestProjectsService_ListProjectsForOrg_pagination(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -192,7 +192,7 @@ func TestProjectsService_ListProjectsForOrganization_pagination(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	first, resp, err := client.Projects.ListProjectsForOrganization(ctx, "o", nil)
+	first, resp, err := client.Projects.ListProjectsForOrg(ctx, "o", nil)
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
 	}
@@ -205,7 +205,7 @@ func TestProjectsService_ListProjectsForOrganization_pagination(t *testing.T) {
 
 	// Use resp.After as opts.After for next page
 	opts := &ListProjectsOptions{After: resp.After}
-	second, resp2, err := client.Projects.ListProjectsForOrganization(ctx, "o", opts)
+	second, resp2, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
 	if err != nil {
 		t.Fatalf("second page error: %v", err)
 	}
@@ -265,7 +265,7 @@ func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 	}
 }
 
-func TestProjectsService_ListProjectFieldsForOrganization(t *testing.T) {
+func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -316,13 +316,13 @@ func TestProjectsService_ListProjectFieldsForOrganization(t *testing.T) {
 
 	opts := &ListProjectsOptions{Query: "text", After: "2", Before: "1"}
 	ctx := context.Background()
-	fields, _, err := client.Projects.ListProjectFieldsForOrganization(ctx, "o", 1, opts)
+	fields, _, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectFieldsForOrganization returned error: %v", err)
+		t.Fatalf("Projects.ListProjectFieldsForOrg returned error: %v", err)
 	}
 
 	if len(fields) != 2 {
-		t.Fatalf("Projects.ListProjectFieldsForOrganization returned %d fields, want 2", len(fields))
+		t.Fatalf("Projects.ListProjectFieldsForOrg returned %d fields, want 2", len(fields))
 	}
 
 	// Validate first field (with options)
@@ -349,14 +349,14 @@ func TestProjectsService_ListProjectFieldsForOrganization(t *testing.T) {
 		t.Errorf("Second field options: got %d, want 0", len(field2.Options))
 	}
 
-	const methodName = "ListProjectFieldsForOrganization"
+	const methodName = "ListProjectFieldsForOrg"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListProjectFieldsForOrganization(ctx, "\n", 1, opts)
+		_, _, err = client.Projects.ListProjectFieldsForOrg(ctx, "\n", 1, opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListProjectFieldsForOrganization(ctx, "o", 1, opts)
+		got, resp, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -365,12 +365,12 @@ func TestProjectsService_ListProjectFieldsForOrganization(t *testing.T) {
 
 	// still allow both set (no validation enforced) – ensure it does not error
 	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectFieldsForOrganization(ctxBypass, "o", 1, &ListProjectsOptions{Before: "b", After: "a"}); err != nil {
+	if _, _, err = client.Projects.ListProjectFieldsForOrg(ctxBypass, "o", 1, &ListProjectsOptions{Before: "b", After: "a"}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
 
-func TestProjectsService_ListProjectFieldsForOrganization_pagination(t *testing.T) {
+func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -396,7 +396,7 @@ func TestProjectsService_ListProjectFieldsForOrganization_pagination(t *testing.
 	})
 
 	ctx := context.Background()
-	first, resp, err := client.Projects.ListProjectFieldsForOrganization(ctx, "o", 1, nil)
+	first, resp, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, nil)
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
 	}
@@ -409,7 +409,7 @@ func TestProjectsService_ListProjectFieldsForOrganization_pagination(t *testing.
 
 	// Use resp.After as opts.After for next page
 	opts := &ListProjectsOptions{After: resp.After}
-	second, resp2, err := client.Projects.ListProjectFieldsForOrganization(ctx, "o", 1, opts)
+	second, resp2, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
 	if err != nil {
 		t.Fatalf("second page error: %v", err)
 	}
