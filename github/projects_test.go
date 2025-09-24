@@ -89,7 +89,6 @@ func TestProjectsService_GetProjectForOrg(t *testing.T) {
 	})
 }
 
-// TestProjectsService_ListProjectFieldsForOrg lists fields for an org project.
 func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
