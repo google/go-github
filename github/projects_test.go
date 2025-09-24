@@ -89,6 +89,34 @@ func TestProjectsService_GetProjectForOrg(t *testing.T) {
 	})
 }
 
+func TestProjectsService_GetProjectForUser(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/users/u/projectsV2/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":3,"title":"UserProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}`)
+	})
+
+	ctx := context.Background()
+	project, _, err := client.Projects.GetProjectForUser(ctx, "u", 3)
+	if err != nil {
+		t.Fatalf("Projects.GetProjectForUser returned error: %v", err)
+	}
+	if project.GetID() != 3 || project.GetTitle() != "UserProj" {
+		t.Fatalf("Projects.GetProjectForUser returned %+v", project)
+	}
+
+	const methodName = "GetProjectForUser"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.GetProjectForUser(ctx, "u", 3)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -249,6 +277,52 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 	}
 	if resp2.Before != "cursor2" {
 		t.Fatalf("expected resp2.Before=cursor2 got %q", resp2.Before)
+	}
+}
+
+func TestProjectsService_ListProjectsForOrg_pagination(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/projectsV2", func(w http.ResponseWriter, r *http.Request) {
+		q := r.URL.Query()
+		after := q.Get("after")
+		before := q.Get("before")
+		if after == "" && before == "" {
+			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2?after=ocursor2>; rel=\"next\"")
+			fmt.Fprint(w, `[{"id":20,"title":"OP1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			return
+		}
+		if after == "ocursor2" {
+			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2?before=ocursor2>; rel=\"prev\"")
+			fmt.Fprint(w, `[{"id":21,"title":"OP2","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			return
+		}
+		http.Error(w, "unexpected query", http.StatusBadRequest)
+	})
+
+	ctx := context.Background()
+	first, resp, err := client.Projects.ListProjectsForOrg(ctx, "o", nil)
+	if err != nil {
+		t.Fatalf("first page error: %v", err)
+	}
+	if len(first) != 1 || first[0].GetID() != 20 {
+		t.Fatalf("unexpected first page %+v", first)
+	}
+	if resp.After != "ocursor2" {
+		t.Fatalf("expected resp.After=ocursor2 got %q", resp.After)
+	}
+
+	opts := &ListProjectsOptions{After: resp.After}
+	second, resp2, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
+	if err != nil {
+		t.Fatalf("second page error: %v", err)
+	}
+	if len(second) != 1 || second[0].GetID() != 21 {
+		t.Fatalf("unexpected second page %+v", second)
+	}
+	if resp2.Before != "ocursor2" {
+		t.Fatalf("expected resp2.Before=ocursor2 got %q", resp2.Before)
 	}
 }
 
