@@ -164,8 +164,6 @@ func TestProjectsService_GetProjectForUser(t *testing.T) {
 	})
 }
 
-// TestProjectsService_ListProjectsForOrg_pagination clarifies how callers should
-// use resp.After to request the next page and resp.Before for previous pages when supported.
 func TestProjectsService_ListProjectsForOrg_pagination(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -217,8 +215,6 @@ func TestProjectsService_ListProjectsForOrg_pagination(t *testing.T) {
 	}
 }
 
-// TestProjectsService_ListProjectsForUser_pagination mirrors the org pagination test
-// but exercises the user endpoint to ensure Before/After cursor handling works identically.
 func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
