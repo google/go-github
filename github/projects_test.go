@@ -229,6 +229,29 @@ func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 	}
 }
 
+func TestProjectsService_ListProjectsForUser_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[]`)
+	})
+	ctx := context.Background()
+	const methodName = "ListProjectsForUser"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.ListProjectsForUser(ctx, "u", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+	// bad options (bad username) should error
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListProjectsForUser(ctx, "\n", nil)
+		return err
+	})
+}
+
 func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -466,6 +489,25 @@ func TestProjectsService_AddProjectItemForOrg(t *testing.T) {
 	}
 }
 
+func TestProjectsService_AddProjectItemForOrg_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, `{"id":1}`)
+	})
+	ctx := context.Background()
+	const methodName = "AddProjectItemForOrg"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.AddProjectItemForOrg(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 1})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestProjectsService_GetProjectItemForOrg(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -482,6 +524,24 @@ func TestProjectsService_GetProjectItemForOrg(t *testing.T) {
 	if item.GetID() != 17 {
 		t.Fatalf("unexpected item: %+v", item)
 	}
+}
+
+func TestProjectsService_GetProjectItemForOrg_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":17}`)
+	})
+	ctx := context.Background()
+	const methodName = "GetProjectItemForOrg"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.GetProjectItemForOrg(ctx, "o", 1, 17, &GetProjectItemOptions{})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestProjectsService_UpdateProjectItemForOrg(t *testing.T) {
@@ -507,6 +567,25 @@ func TestProjectsService_UpdateProjectItemForOrg(t *testing.T) {
 	}
 }
 
+func TestProjectsService_UpdateProjectItemForOrg_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"id":17}`)
+	})
+	archived := true
+	ctx := context.Background()
+	const methodName = "UpdateProjectItemForOrg"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.UpdateProjectItemForOrg(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestProjectsService_DeleteProjectItemForOrg(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -518,6 +597,20 @@ func TestProjectsService_DeleteProjectItemForOrg(t *testing.T) {
 	if _, err := client.Projects.DeleteProjectItemForOrg(ctx, "o", 1, 17); err != nil {
 		t.Fatalf("DeleteProjectItemForOrg error: %v", err)
 	}
+}
+
+func TestProjectsService_DeleteProjectItemForOrg_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+	ctx := context.Background()
+	const methodName = "DeleteProjectItemForOrg"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Projects.DeleteProjectItemForOrg(ctx, "o", 1, 17)
+	})
 }
 
 func TestProjectsService_ListProjectItemsForUser(t *testing.T) {
@@ -536,6 +629,28 @@ func TestProjectsService_ListProjectItemsForUser(t *testing.T) {
 	if len(items) != 1 || items[0].GetID() != 7 {
 		t.Fatalf("unexpected items: %+v", items)
 	}
+}
+
+func TestProjectsService_ListProjectItemsForUser_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[]`)
+	})
+	ctx := context.Background()
+	const methodName = "ListProjectItemsForUser"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.ListProjectItemsForUser(ctx, "u", 2, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListProjectItemsForUser(ctx, "\n", 2, nil)
+		return err
+	})
 }
 
 func TestProjectsService_AddProjectItemForUser(t *testing.T) {
@@ -560,6 +675,24 @@ func TestProjectsService_AddProjectItemForUser(t *testing.T) {
 	}
 }
 
+func TestProjectsService_AddProjectItemForUser_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{"id":5}`)
+	})
+	ctx := context.Background()
+	const methodName = "AddProjectItemForUser"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.AddProjectItemForUser(ctx, "u", 2, &AddProjectItemOptions{Type: "Issue", ID: 5})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestProjectsService_GetProjectItemForUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -576,6 +709,24 @@ func TestProjectsService_GetProjectItemForUser(t *testing.T) {
 	if item.GetID() != 55 {
 		t.Fatalf("unexpected item: %+v", item)
 	}
+}
+
+func TestProjectsService_GetProjectItemForUser_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":55}`)
+	})
+	ctx := context.Background()
+	const methodName = "GetProjectItemForUser"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.GetProjectItemForUser(ctx, "u", 2, 55, &GetProjectItemOptions{})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestProjectsService_UpdateProjectItemForUser(t *testing.T) {
@@ -601,6 +752,25 @@ func TestProjectsService_UpdateProjectItemForUser(t *testing.T) {
 	}
 }
 
+func TestProjectsService_UpdateProjectItemForUser_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"id":55}`)
+	})
+	archived := false
+	ctx := context.Background()
+	const methodName = "UpdateProjectItemForUser"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.UpdateProjectItemForUser(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestProjectsService_DeleteProjectItemForUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -612,4 +782,18 @@ func TestProjectsService_DeleteProjectItemForUser(t *testing.T) {
 	if _, err := client.Projects.DeleteProjectItemForUser(ctx, "u", 2, 55); err != nil {
 		t.Fatalf("DeleteProjectItemForUser error: %v", err)
 	}
+}
+
+func TestProjectsService_DeleteProjectItemForUser_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+	ctx := context.Background()
+	const methodName = "DeleteProjectItemForUser"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Projects.DeleteProjectItemForUser(ctx, "u", 2, 55)
+	})
 }
