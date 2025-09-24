@@ -25828,6 +25828,17 @@ func TestPullRequestEvent_GetPullRequest(tt *testing.T) {
 	p.GetPullRequest()
 }
 
+func TestPullRequestEvent_GetReason(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestEvent{Reason: &zeroValue}
+	p.GetReason()
+	p = &PullRequestEvent{}
+	p.GetReason()
+	p = nil
+	p.GetReason()
+}
+
 func TestPullRequestEvent_GetRepo(tt *testing.T) {
 	tt.Parallel()
 	p := &PullRequestEvent{}

@@ -19974,6 +19974,14 @@ func (p *PullRequestEvent) GetPullRequest() *PullRequest {
 	return p.PullRequest
 }
 
+// GetReason returns the Reason field if it's non-nil, zero value otherwise.
+func (p *PullRequestEvent) GetReason() string {
+	if p == nil || p.Reason == nil {
+		return ""
+	}
+	return *p.Reason
+}
+
 // GetRepo returns the Repo field.
 func (p *PullRequestEvent) GetRepo() *Repository {
 	if p == nil {
