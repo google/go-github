@@ -1179,15 +1179,18 @@ type FieldValue struct {
 
 // ProjectV2Item represents an item belonging to a project.
 type ProjectV2Item struct {
-	ID            *int64     `json:"id,omitempty"`
-	NodeID        *string    `json:"node_id,omitempty"`
-	ProjectNodeID *string    `json:"project_node_id,omitempty"`
-	ContentNodeID *string    `json:"content_node_id,omitempty"`
-	ContentType   *string    `json:"content_type,omitempty"`
-	Creator       *User      `json:"creator,omitempty"`
-	CreatedAt     *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
-	ArchivedAt    *Timestamp `json:"archived_at,omitempty"`
+	ID            *int64            `json:"id,omitempty"`
+	NodeID        *string           `json:"node_id,omitempty"`
+	ProjectNodeID *string           `json:"project_node_id,omitempty"`
+	ContentNodeID *string           `json:"content_node_id,omitempty"`
+	ProjectURL    *string           `json:"project_url,omitempty"`
+	ContentType   *string           `json:"content_type,omitempty"`
+	Creator       *User             `json:"creator,omitempty"`
+	CreatedAt     *Timestamp        `json:"created_at,omitempty"`
+	UpdatedAt     *Timestamp        `json:"updated_at,omitempty"`
+	ArchivedAt    *Timestamp        `json:"archived_at,omitempty"`
+	ItemURL       *string           `json:"item_url,omitempty"`
+	Fields        []*ProjectV2Field `json:"fields,omitempty"`
 }
 
 // PublicEvent is triggered when a private repository is open sourced.

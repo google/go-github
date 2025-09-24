@@ -19699,6 +19699,17 @@ func TestNetworkSettingsResource_GetSubnetID(tt *testing.T) {
 	n.GetSubnetID()
 }
 
+func TestNewProjectV2Field_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	n := &NewProjectV2Field{ID: &zeroValue}
+	n.GetID()
+	n = &NewProjectV2Field{}
+	n.GetID()
+	n = nil
+	n.GetID()
+}
+
 func TestNewPullRequest_GetBase(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -24191,6 +24202,17 @@ func TestProjectV2Field_GetCreatedAt(tt *testing.T) {
 	p.GetCreatedAt()
 }
 
+func TestProjectV2Field_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &ProjectV2Field{ID: &zeroValue}
+	p.GetID()
+	p = &ProjectV2Field{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
 func TestProjectV2Field_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -24200,6 +24222,17 @@ func TestProjectV2Field_GetUpdatedAt(tt *testing.T) {
 	p.GetUpdatedAt()
 	p = nil
 	p.GetUpdatedAt()
+}
+
+func TestProjectV2FieldOption_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &ProjectV2FieldOption{ID: &zeroValue}
+	p.GetID()
+	p = &ProjectV2FieldOption{}
+	p.GetID()
+	p = nil
+	p.GetID()
 }
 
 func TestProjectV2Item_GetArchivedAt(tt *testing.T) {
@@ -24265,6 +24298,17 @@ func TestProjectV2Item_GetID(tt *testing.T) {
 	p.GetID()
 }
 
+func TestProjectV2Item_GetItemURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2Item{ItemURL: &zeroValue}
+	p.GetItemURL()
+	p = &ProjectV2Item{}
+	p.GetItemURL()
+	p = nil
+	p.GetItemURL()
+}
+
 func TestProjectV2Item_GetNodeID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -24285,6 +24329,17 @@ func TestProjectV2Item_GetProjectNodeID(tt *testing.T) {
 	p.GetProjectNodeID()
 	p = nil
 	p.GetProjectNodeID()
+}
+
+func TestProjectV2Item_GetProjectURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2Item{ProjectURL: &zeroValue}
+	p.GetProjectURL()
+	p = &ProjectV2Item{}
+	p.GetProjectURL()
+	p = nil
+	p.GetProjectURL()
 }
 
 func TestProjectV2Item_GetUpdatedAt(tt *testing.T) {
@@ -36475,6 +36530,17 @@ func TestUpdateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()
+}
+
+func TestUpdateProjectItemOptions_GetArchived(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateProjectItemOptions{Archived: &zeroValue}
+	u.GetArchived()
+	u = &UpdateProjectItemOptions{}
+	u.GetArchived()
+	u = nil
+	u.GetArchived()
 }
 
 func TestUpdateRef_GetForce(tt *testing.T) {

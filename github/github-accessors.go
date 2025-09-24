@@ -15198,6 +15198,14 @@ func (n *NetworkSettingsResource) GetSubnetID() string {
 	return *n.SubnetID
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (n *NewProjectV2Field) GetID() int64 {
+	if n == nil || n.ID == nil {
+		return 0
+	}
+	return *n.ID
+}
+
 // GetBase returns the Base field if it's non-nil, zero value otherwise.
 func (n *NewPullRequest) GetBase() string {
 	if n == nil || n.Base == nil {
@@ -18646,12 +18654,28 @@ func (p *ProjectV2Field) GetCreatedAt() Timestamp {
 	return *p.CreatedAt
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (p *ProjectV2Field) GetUpdatedAt() Timestamp {
 	if p == nil || p.UpdatedAt == nil {
 		return Timestamp{}
 	}
 	return *p.UpdatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldOption) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
 }
 
 // GetArchivedAt returns the ArchivedAt field if it's non-nil, zero value otherwise.
@@ -18702,6 +18726,14 @@ func (p *ProjectV2Item) GetID() int64 {
 	return *p.ID
 }
 
+// GetItemURL returns the ItemURL field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Item) GetItemURL() string {
+	if p == nil || p.ItemURL == nil {
+		return ""
+	}
+	return *p.ItemURL
+}
+
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
 func (p *ProjectV2Item) GetNodeID() string {
 	if p == nil || p.NodeID == nil {
@@ -18716,6 +18748,14 @@ func (p *ProjectV2Item) GetProjectNodeID() string {
 		return ""
 	}
 	return *p.ProjectNodeID
+}
+
+// GetProjectURL returns the ProjectURL field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Item) GetProjectURL() string {
+	if p == nil || p.ProjectURL == nil {
+		return ""
+	}
+	return *p.ProjectURL
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
@@ -28332,6 +28372,14 @@ func (u *UpdateEnterpriseRunnerGroupRequest) GetVisibility() string {
 		return ""
 	}
 	return *u.Visibility
+}
+
+// GetArchived returns the Archived field if it's non-nil, zero value otherwise.
+func (u *UpdateProjectItemOptions) GetArchived() bool {
+	if u == nil || u.Archived == nil {
+		return false
+	}
+	return *u.Archived
 }
 
 // GetForce returns the Force field if it's non-nil, zero value otherwise.
