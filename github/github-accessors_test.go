@@ -26,6 +26,77 @@ func TestAbuseRateLimitError_GetRetryAfter(tt *testing.T) {
 	a.GetRetryAfter()
 }
 
+func TestAcceptedAssignment_GetAssignment(tt *testing.T) {
+	tt.Parallel()
+	a := &AcceptedAssignment{}
+	a.GetAssignment()
+	a = nil
+	a.GetAssignment()
+}
+
+func TestAcceptedAssignment_GetCommitCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AcceptedAssignment{CommitCount: &zeroValue}
+	a.GetCommitCount()
+	a = &AcceptedAssignment{}
+	a.GetCommitCount()
+	a = nil
+	a.GetCommitCount()
+}
+
+func TestAcceptedAssignment_GetGrade(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AcceptedAssignment{Grade: &zeroValue}
+	a.GetGrade()
+	a = &AcceptedAssignment{}
+	a.GetGrade()
+	a = nil
+	a.GetGrade()
+}
+
+func TestAcceptedAssignment_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AcceptedAssignment{ID: &zeroValue}
+	a.GetID()
+	a = &AcceptedAssignment{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAcceptedAssignment_GetPassing(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &AcceptedAssignment{Passing: &zeroValue}
+	a.GetPassing()
+	a = &AcceptedAssignment{}
+	a.GetPassing()
+	a = nil
+	a.GetPassing()
+}
+
+func TestAcceptedAssignment_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	a := &AcceptedAssignment{}
+	a.GetRepository()
+	a = nil
+	a.GetRepository()
+}
+
+func TestAcceptedAssignment_GetSubmitted(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &AcceptedAssignment{Submitted: &zeroValue}
+	a.GetSubmitted()
+	a = &AcceptedAssignment{}
+	a.GetSubmitted()
+	a = nil
+	a.GetSubmitted()
+}
+
 func TestActionsAllowed_GetGithubOwnedAllowed(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -1409,6 +1480,127 @@ func TestArtifactWorkflowRun_GetRepositoryID(tt *testing.T) {
 	a.GetRepositoryID()
 	a = nil
 	a.GetRepositoryID()
+}
+
+func TestAssignmentGrade_GetAssignmentName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AssignmentGrade{AssignmentName: &zeroValue}
+	a.GetAssignmentName()
+	a = &AssignmentGrade{}
+	a.GetAssignmentName()
+	a = nil
+	a.GetAssignmentName()
+}
+
+func TestAssignmentGrade_GetAssignmentURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AssignmentGrade{AssignmentURL: &zeroValue}
+	a.GetAssignmentURL()
+	a = &AssignmentGrade{}
+	a.GetAssignmentURL()
+	a = nil
+	a.GetAssignmentURL()
+}
+
+func TestAssignmentGrade_GetGithubUsername(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AssignmentGrade{GithubUsername: &zeroValue}
+	a.GetGithubUsername()
+	a = &AssignmentGrade{}
+	a.GetGithubUsername()
+	a = nil
+	a.GetGithubUsername()
+}
+
+func TestAssignmentGrade_GetGroupName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AssignmentGrade{GroupName: &zeroValue}
+	a.GetGroupName()
+	a = &AssignmentGrade{}
+	a.GetGroupName()
+	a = nil
+	a.GetGroupName()
+}
+
+func TestAssignmentGrade_GetPointsAvailable(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AssignmentGrade{PointsAvailable: &zeroValue}
+	a.GetPointsAvailable()
+	a = &AssignmentGrade{}
+	a.GetPointsAvailable()
+	a = nil
+	a.GetPointsAvailable()
+}
+
+func TestAssignmentGrade_GetPointsAwarded(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AssignmentGrade{PointsAwarded: &zeroValue}
+	a.GetPointsAwarded()
+	a = &AssignmentGrade{}
+	a.GetPointsAwarded()
+	a = nil
+	a.GetPointsAwarded()
+}
+
+func TestAssignmentGrade_GetRosterIdentifier(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AssignmentGrade{RosterIdentifier: &zeroValue}
+	a.GetRosterIdentifier()
+	a = &AssignmentGrade{}
+	a.GetRosterIdentifier()
+	a = nil
+	a.GetRosterIdentifier()
+}
+
+func TestAssignmentGrade_GetStarterCodeURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AssignmentGrade{StarterCodeURL: &zeroValue}
+	a.GetStarterCodeURL()
+	a = &AssignmentGrade{}
+	a.GetStarterCodeURL()
+	a = nil
+	a.GetStarterCodeURL()
+}
+
+func TestAssignmentGrade_GetStudentRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AssignmentGrade{StudentRepositoryName: &zeroValue}
+	a.GetStudentRepositoryName()
+	a = &AssignmentGrade{}
+	a.GetStudentRepositoryName()
+	a = nil
+	a.GetStudentRepositoryName()
+}
+
+func TestAssignmentGrade_GetStudentRepositoryURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AssignmentGrade{StudentRepositoryURL: &zeroValue}
+	a.GetStudentRepositoryURL()
+	a = &AssignmentGrade{}
+	a.GetStudentRepositoryURL()
+	a = nil
+	a.GetStudentRepositoryURL()
+}
+
+func TestAssignmentGrade_GetSubmissionTimestamp(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AssignmentGrade{SubmissionTimestamp: &zeroValue}
+	a.GetSubmissionTimestamp()
+	a = &AssignmentGrade{}
+	a.GetSubmissionTimestamp()
+	a = nil
+	a.GetSubmissionTimestamp()
 }
 
 func TestAttachment_GetBody(tt *testing.T) {

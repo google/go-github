@@ -22,6 +22,62 @@ func (a *AbuseRateLimitError) GetRetryAfter() time.Duration {
 	return *a.RetryAfter
 }
 
+// GetAssignment returns the Assignment field.
+func (a *AcceptedAssignment) GetAssignment() *ClassroomAssignment {
+	if a == nil {
+		return nil
+	}
+	return a.Assignment
+}
+
+// GetCommitCount returns the CommitCount field if it's non-nil, zero value otherwise.
+func (a *AcceptedAssignment) GetCommitCount() int {
+	if a == nil || a.CommitCount == nil {
+		return 0
+	}
+	return *a.CommitCount
+}
+
+// GetGrade returns the Grade field if it's non-nil, zero value otherwise.
+func (a *AcceptedAssignment) GetGrade() string {
+	if a == nil || a.Grade == nil {
+		return ""
+	}
+	return *a.Grade
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AcceptedAssignment) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetPassing returns the Passing field if it's non-nil, zero value otherwise.
+func (a *AcceptedAssignment) GetPassing() bool {
+	if a == nil || a.Passing == nil {
+		return false
+	}
+	return *a.Passing
+}
+
+// GetRepository returns the Repository field.
+func (a *AcceptedAssignment) GetRepository() *Repository {
+	if a == nil {
+		return nil
+	}
+	return a.Repository
+}
+
+// GetSubmitted returns the Submitted field if it's non-nil, zero value otherwise.
+func (a *AcceptedAssignment) GetSubmitted() bool {
+	if a == nil || a.Submitted == nil {
+		return false
+	}
+	return *a.Submitted
+}
+
 // GetGithubOwnedAllowed returns the GithubOwnedAllowed field if it's non-nil, zero value otherwise.
 func (a *ActionsAllowed) GetGithubOwnedAllowed() bool {
 	if a == nil || a.GithubOwnedAllowed == nil {
@@ -1084,6 +1140,94 @@ func (a *ArtifactWorkflowRun) GetRepositoryID() int64 {
 		return 0
 	}
 	return *a.RepositoryID
+}
+
+// GetAssignmentName returns the AssignmentName field if it's non-nil, zero value otherwise.
+func (a *AssignmentGrade) GetAssignmentName() string {
+	if a == nil || a.AssignmentName == nil {
+		return ""
+	}
+	return *a.AssignmentName
+}
+
+// GetAssignmentURL returns the AssignmentURL field if it's non-nil, zero value otherwise.
+func (a *AssignmentGrade) GetAssignmentURL() string {
+	if a == nil || a.AssignmentURL == nil {
+		return ""
+	}
+	return *a.AssignmentURL
+}
+
+// GetGithubUsername returns the GithubUsername field if it's non-nil, zero value otherwise.
+func (a *AssignmentGrade) GetGithubUsername() string {
+	if a == nil || a.GithubUsername == nil {
+		return ""
+	}
+	return *a.GithubUsername
+}
+
+// GetGroupName returns the GroupName field if it's non-nil, zero value otherwise.
+func (a *AssignmentGrade) GetGroupName() string {
+	if a == nil || a.GroupName == nil {
+		return ""
+	}
+	return *a.GroupName
+}
+
+// GetPointsAvailable returns the PointsAvailable field if it's non-nil, zero value otherwise.
+func (a *AssignmentGrade) GetPointsAvailable() int {
+	if a == nil || a.PointsAvailable == nil {
+		return 0
+	}
+	return *a.PointsAvailable
+}
+
+// GetPointsAwarded returns the PointsAwarded field if it's non-nil, zero value otherwise.
+func (a *AssignmentGrade) GetPointsAwarded() int {
+	if a == nil || a.PointsAwarded == nil {
+		return 0
+	}
+	return *a.PointsAwarded
+}
+
+// GetRosterIdentifier returns the RosterIdentifier field if it's non-nil, zero value otherwise.
+func (a *AssignmentGrade) GetRosterIdentifier() string {
+	if a == nil || a.RosterIdentifier == nil {
+		return ""
+	}
+	return *a.RosterIdentifier
+}
+
+// GetStarterCodeURL returns the StarterCodeURL field if it's non-nil, zero value otherwise.
+func (a *AssignmentGrade) GetStarterCodeURL() string {
+	if a == nil || a.StarterCodeURL == nil {
+		return ""
+	}
+	return *a.StarterCodeURL
+}
+
+// GetStudentRepositoryName returns the StudentRepositoryName field if it's non-nil, zero value otherwise.
+func (a *AssignmentGrade) GetStudentRepositoryName() string {
+	if a == nil || a.StudentRepositoryName == nil {
+		return ""
+	}
+	return *a.StudentRepositoryName
+}
+
+// GetStudentRepositoryURL returns the StudentRepositoryURL field if it's non-nil, zero value otherwise.
+func (a *AssignmentGrade) GetStudentRepositoryURL() string {
+	if a == nil || a.StudentRepositoryURL == nil {
+		return ""
+	}
+	return *a.StudentRepositoryURL
+}
+
+// GetSubmissionTimestamp returns the SubmissionTimestamp field if it's non-nil, zero value otherwise.
+func (a *AssignmentGrade) GetSubmissionTimestamp() Timestamp {
+	if a == nil || a.SubmissionTimestamp == nil {
+		return Timestamp{}
+	}
+	return *a.SubmissionTimestamp
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
