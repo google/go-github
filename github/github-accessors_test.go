@@ -24191,6 +24191,17 @@ func TestProjectV2Field_GetCreatedAt(tt *testing.T) {
 	p.GetCreatedAt()
 }
 
+func TestProjectV2Field_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &ProjectV2Field{ID: &zeroValue}
+	p.GetID()
+	p = &ProjectV2Field{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
 func TestProjectV2Field_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp

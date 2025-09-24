@@ -281,7 +281,7 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 		testFormValues(t, r, values{"q": "text", "after": "2", "before": "1"})
 		fmt.Fprint(w, `[
 			{
-				"id": "field1",
+				"id": 1,
 				"node_id": "node_1",
 				"name": "Status",
 				"dataType": "single_select",
@@ -303,7 +303,7 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 				"updated_at": "2012-01-02T15:04:05Z"
 			},
 			{
-				"id": "field2",
+				"id": 2,
 				"node_id": "node_2",
 				"name": "Priority",
 				"dataType": "text",
@@ -327,8 +327,8 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 
 	// Validate first field (with options)
 	field1 := fields[0]
-	if field1.ID != "field1" || field1.Name != "Status" || field1.DataType != "single_select" {
-		t.Errorf("First field: got ID=%s, Name=%s, DataType=%s; want field1, Status, single_select",
+	if field1.ID == nil || *field1.ID != 1 || field1.Name != "Status" || field1.DataType != "single_select" {
+		t.Errorf("First field: got ID=%v, Name=%s, DataType=%s; want 1, Status, single_select",
 			field1.ID, field1.Name, field1.DataType)
 	}
 	if len(field1.Options) != 2 {
@@ -341,8 +341,8 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 
 	// Validate second field (without options)
 	field2 := fields[1]
-	if field2.ID != "field2" || field2.Name != "Priority" || field2.DataType != "text" {
-		t.Errorf("Second field: got ID=%s, Name=%s, DataType=%s; want field2, Priority, text",
+	if field2.ID == nil || *field2.ID != 2 || field2.Name != "Priority" || field2.DataType != "text" {
+		t.Errorf("Second field: got ID=%v, Name=%s, DataType=%s; want 2, Priority, text",
 			field2.ID, field2.Name, field2.DataType)
 	}
 	if len(field2.Options) != 0 {
@@ -382,13 +382,13 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 		if after == "" && before == "" {
 			// first request
 			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2/1/fields?after=cursor2>; rel=\"next\"")
-			fmt.Fprint(w, `[{"id":"field1","name":"Status","dataType":"single_select","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":1,"name":"Status","dataType":"single_select","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 			return
 		}
 		if after == "cursor2" {
 			// second request simulates a previous link
 			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2/1/fields?before=cursor2>; rel=\"prev\"")
-			fmt.Fprint(w, `[{"id":"field2","name":"Priority","dataType":"text","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":2,"name":"Priority","dataType":"text","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 			return
 		}
 		// unexpected state
@@ -400,7 +400,7 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
 	}
-	if len(first) != 1 || first[0].ID != "field1" {
+	if len(first) != 1 || first[0].ID == nil || *first[0].ID != 1 {
 		t.Fatalf("unexpected first page %+v", first)
 	}
 	if resp.After != "cursor2" {
@@ -413,7 +413,7 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 	if err != nil {
 		t.Fatalf("second page error: %v", err)
 	}
-	if len(second) != 1 || second[0].ID != "field2" {
+	if len(second) != 1 || second[0].ID == nil || *second[0].ID != 2 {
 		t.Fatalf("unexpected second page %+v", second)
 	}
 	if resp2.Before != "cursor2" {
@@ -454,7 +454,7 @@ func TestProjectV2Field_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectV2FieldOption{}, "{}")
 
 	field := &ProjectV2Field{
-		ID:       "field1",
+		ID:       Ptr(int64(1)),
 		NodeID:   "node_1",
 		Name:     "Status",
 		DataType: "single_select",
@@ -472,14 +472,14 @@ func TestProjectV2Field_Marshal(t *testing.T) {
 	}
 
 	want := `{
-        "id": "field1",
+			"id": 1,
         "node_id": "node_1",
         "name": "Status",
         "dataType": "single_select",
         "url": "https://api.github.com/projects/1/fields/field1",
         "options": [
             {
-                "id": "option1",
+					"id": "option1",
                 "name": "Todo",
                 "color": "blue",
                 "description": "Tasks to be done"

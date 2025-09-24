@@ -56,7 +56,7 @@ type ProjectV2FieldOption struct {
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2Field struct {
-	ID        string                  `json:"id,omitempty"`         // The unique identifier for this field.
+	ID        *int64                  `json:"id,omitempty"`         // The unique identifier for this field.
 	NodeID    string                  `json:"node_id,omitempty"`    // The GraphQL node ID for this field.
 	Name      string                  `json:"name,omitempty"`       // The display name of the field.
 	DataType  string                  `json:"dataType,omitempty"`   // The data type of the field (e.g., "text", "number", "date", "single_select", "multi_select").
