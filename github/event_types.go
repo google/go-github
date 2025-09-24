@@ -1237,7 +1237,8 @@ type PullRequestEvent struct {
 	Repo          *Repository   `json:"repository,omitempty"`
 	Sender        *User         `json:"sender,omitempty"`
 	Installation  *Installation `json:"installation,omitempty"`
-	Label         *Label        `json:"label,omitempty"` // Populated in "labeled" event deliveries.
+	Label         *Label        `json:"label,omitempty"`  // Populated in "labeled" event deliveries.
+	Reason        *string       `json:"reason,omitempty"` // Populated in "dequeued" event deliveries.
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
