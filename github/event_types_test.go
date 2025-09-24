@@ -16079,6 +16079,7 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 		},
 		RequestedTeam: &Team{ID: Ptr(int64(1))},
 		Label:         &Label{ID: Ptr(int64(1))},
+		Reason:        Ptr("CI_FAILURE"),
 		Before:        Ptr("before"),
 		After:         Ptr("after"),
 		Repo: &Repository{
@@ -16268,6 +16269,7 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 		"label": {
 			"id": 1
 		},
+		"reason": "CI_FAILURE",
 		"before": "before",
 		"after": "after",
 		"repository": {
