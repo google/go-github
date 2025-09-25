@@ -2862,6 +2862,38 @@ func (c *ClassroomAssignment) GetType() string {
 	return *c.Type
 }
 
+// GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
+func (c *ClassroomUser) GetAvatarURL() string {
+	if c == nil || c.AvatarURL == nil {
+		return ""
+	}
+	return *c.AvatarURL
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (c *ClassroomUser) GetHTMLURL() string {
+	if c == nil || c.HTMLURL == nil {
+		return ""
+	}
+	return *c.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *ClassroomUser) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetLogin returns the Login field if it's non-nil, zero value otherwise.
+func (c *ClassroomUser) GetLogin() string {
+	if c == nil || c.Login == nil {
+		return ""
+	}
+	return *c.Login
+}
+
 // GetFingerprint returns the Fingerprint field if it's non-nil, zero value otherwise.
 func (c *ClusterSSHKey) GetFingerprint() string {
 	if c == nil || c.Fingerprint == nil {

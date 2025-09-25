@@ -16,6 +16,18 @@ import (
 // GitHub API docs: https://docs.github.com/rest/classroom/classroom
 type ClassroomService service
 
+// ClassroomUser represents a GitHub user simplified for Classroom.
+type ClassroomUser struct {
+	ID        *int64  `json:"id,omitempty"`
+	Login     *string `json:"login,omitempty"`
+	AvatarURL *string `json:"avatar_url,omitempty"`
+	HTMLURL   *string `json:"html_url,omitempty"`
+}
+
+func (u ClassroomUser) String() string {
+	return Stringify(u)
+}
+
 // Classroom represents a GitHub Classroom.
 type Classroom struct {
 	ID           *int64        `json:"id,omitempty"`
@@ -63,7 +75,7 @@ type AcceptedAssignment struct {
 	Passing     *bool                `json:"passing,omitempty"`
 	CommitCount *int                 `json:"commit_count,omitempty"`
 	Grade       *string              `json:"grade,omitempty"`
-	Students    []*User              `json:"students,omitempty"`
+	Students    []*ClassroomUser     `json:"students,omitempty"`
 	Repository  *Repository          `json:"repository,omitempty"`
 	Assignment  *ClassroomAssignment `json:"assignment,omitempty"`
 }

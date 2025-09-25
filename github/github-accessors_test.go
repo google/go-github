@@ -3724,6 +3724,50 @@ func TestClassroomAssignment_GetType(tt *testing.T) {
 	c.GetType()
 }
 
+func TestClassroomUser_GetAvatarURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ClassroomUser{AvatarURL: &zeroValue}
+	c.GetAvatarURL()
+	c = &ClassroomUser{}
+	c.GetAvatarURL()
+	c = nil
+	c.GetAvatarURL()
+}
+
+func TestClassroomUser_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ClassroomUser{HTMLURL: &zeroValue}
+	c.GetHTMLURL()
+	c = &ClassroomUser{}
+	c.GetHTMLURL()
+	c = nil
+	c.GetHTMLURL()
+}
+
+func TestClassroomUser_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &ClassroomUser{ID: &zeroValue}
+	c.GetID()
+	c = &ClassroomUser{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestClassroomUser_GetLogin(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ClassroomUser{Login: &zeroValue}
+	c.GetLogin()
+	c = &ClassroomUser{}
+	c.GetLogin()
+	c = nil
+	c.GetLogin()
+}
+
 func TestClusterSSHKey_GetFingerprint(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

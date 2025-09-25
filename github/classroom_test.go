@@ -125,7 +125,7 @@ func TestAcceptedAssignment_Marshal(t *testing.T) {
 		Passing:     Ptr(true),
 		CommitCount: Ptr(5),
 		Grade:       Ptr("10/10"),
-		Students: []*User{
+		Students: []*ClassroomUser{
 			{
 				ID:        Ptr(int64(1)),
 				Login:     Ptr("octocat"),
@@ -737,7 +737,7 @@ func TestClassroomService_ListAcceptedAssignments(t *testing.T) {
 			Passing:     Ptr(true),
 			CommitCount: Ptr(5),
 			Grade:       Ptr("10/10"),
-			Students: []*User{
+			Students: []*ClassroomUser{
 				{
 					ID:        Ptr(int64(1)),
 					Login:     Ptr("octocat"),
@@ -785,7 +785,7 @@ func TestClassroomService_ListAcceptedAssignments(t *testing.T) {
 			Passing:     Ptr(false),
 			CommitCount: Ptr(2),
 			Grade:       Ptr("5/10"),
-			Students: []*User{
+			Students: []*ClassroomUser{
 				{
 					ID:        Ptr(int64(2)),
 					Login:     Ptr("monalisa"),

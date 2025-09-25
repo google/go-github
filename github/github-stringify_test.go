@@ -310,6 +310,20 @@ func TestClassroomAssignment_String(t *testing.T) {
 	}
 }
 
+func TestClassroomUser_String(t *testing.T) {
+	t.Parallel()
+	v := ClassroomUser{
+		ID:        Ptr(int64(0)),
+		Login:     Ptr(""),
+		AvatarURL: Ptr(""),
+		HTMLURL:   Ptr(""),
+	}
+	want := `github.ClassroomUser{ID:0, Login:"", AvatarURL:"", HTMLURL:""}`
+	if got := v.String(); got != want {
+		t.Errorf("ClassroomUser.String = %v, want %v", got, want)
+	}
+}
+
 func TestCodeOfConduct_String(t *testing.T) {
 	t.Parallel()
 	v := CodeOfConduct{
