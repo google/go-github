@@ -1018,7 +1018,7 @@ type ListExternalGroupsOptions struct {
 
 // ListExternalGroups lists external groups in an organization on GitHub.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#list-external-groups-in-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#list-external-groups-available-to-an-organization
 //
 //meta:operation GET /orgs/{org}/external-groups
 func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts *ListExternalGroupsOptions) (*ExternalGroupList, *Response, error) {
