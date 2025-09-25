@@ -16,6 +16,12 @@ type DependencyGraphAutosubmitActionOptions struct {
 	LabeledRunners *bool `json:"labeled_runners,omitempty"`
 }
 
+// RepositoryAttachment represents a repository attachment to a code security configuration.
+type RepositoryAttachment struct {
+	Status     *string     `json:"status"`
+	Repository *Repository `json:"repository"`
+}
+
 // CodeSecurityConfiguration represents a code security configuration.
 type CodeSecurityConfiguration struct {
 	ID                                     *int64                                  `json:"id,omitempty"`
@@ -247,7 +253,7 @@ func (s *OrganizationsService) SetDefaultCodeSecurityConfiguration(ctx context.C
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-repositories-associated-with-a-code-security-configuration
 //
 //meta:operation GET /orgs/{org}/code-security/configurations/{configuration_id}/repositories
-func (s *OrganizationsService) GetRepositoriesForCodeSecurityConfiguration(ctx context.Context, org string, id int64) ([]*Repository, *Response, error) {
+func (s *OrganizationsService) GetRepositoriesForCodeSecurityConfiguration(ctx context.Context, org string, id int64) ([]*RepositoryAttachment, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/%v/repositories", org, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -255,12 +261,13 @@ func (s *OrganizationsService) GetRepositoriesForCodeSecurityConfiguration(ctx c
 		return nil, nil, err
 	}
 
-	var repositories []*Repository
-	resp, err := s.client.Do(ctx, req, &repositories)
+	var attachments []*RepositoryAttachment
+	resp, err := s.client.Do(ctx, req, &attachments)
 	if err != nil {
 		return nil, resp, err
 	}
-	return repositories, resp, nil
+
+	return attachments, resp, nil
 }
 
 // GetCodeSecurityConfigurationForRepository gets code security configuration that manages a repository's code security settings.
