@@ -39,7 +39,8 @@ type SCIMDisplayReference struct {
 
 // SCIMUserAttributes represents supported SCIM User attributes.
 //
-// GitHub API docs: https://docs.github.com/rest/scim#supported-scim-user-attributes
+// GitHub Enterprise Cloud API docs: https://docs.github.com/rest/scim#supported-scim-user-attributes
+// GitHub Enterprise Server API docs: https://docs.github.com/en/enterprise-server@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#supported-scim-user-attributes
 type SCIMUserAttributes struct {
 	UserName    string           `json:"userName"`              // Configured by the admin. Could be an email, login, or username. (Required.)
 	Name        SCIMUserName     `json:"name"`                  // (Required.)
@@ -48,6 +49,7 @@ type SCIMUserAttributes struct {
 	Schemas     []string         `json:"schemas,omitempty"`     // (Optional.)
 	ExternalID  *string          `json:"externalId,omitempty"`  // (Optional.)
 	Groups      []string         `json:"groups,omitempty"`      // (Optional.)
+	Roles       []*SCIMUserRole  `json:"roles,omitempty"`       // (Optional, GHES only.)
 	Active      *bool            `json:"active,omitempty"`      // (Optional.)
 	// Only populated as a result of calling ListSCIMProvisionedIdentitiesOptions or GetSCIMProvisioningInfoForUser:
 	ID   *string   `json:"id,omitempty"`
@@ -66,6 +68,18 @@ type SCIMUserEmail struct {
 	Value   string  `json:"value"`             // (Required.)
 	Primary *bool   `json:"primary,omitempty"` // (Optional.)
 	Type    *string `json:"type,omitempty"`    // (Optional.)
+}
+
+// SCIMUserRole is an enterprise-wide role granted to the user. This is only
+// supported in GitHub Enterprise Server, and not GitHub Enterprise Cloud.
+// See the docs for allowed role names.
+//
+// https://docs.github.com/en/enterprise-server@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#provision-a-scim-enterprise-user
+type SCIMUserRole struct {
+	Value   string  `json:"value"`             // (Required.)
+	Display *string `json:"display,omitempty"` // (Optional.)
+	Type    *string `json:"type,omitempty"`    // (Optional.)
+	Primary *bool   `json:"primary,omitempty"` // (Optional.)
 }
 
 // SCIMMeta represents metadata about the SCIM resource.
