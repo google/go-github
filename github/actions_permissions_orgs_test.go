@@ -49,7 +49,7 @@ func TestActionsService_GetActionsPermissions(t *testing.T) {
 	})
 }
 
-func TestActionsService_EditActionsPermissions(t *testing.T) {
+func TestActionsService_UpdateActionsPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -68,24 +68,24 @@ func TestActionsService_EditActionsPermissions(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Actions.EditActionsPermissions(ctx, "o", *input)
+	org, _, err := client.Actions.UpdateActionsPermissions(ctx, "o", *input)
 	if err != nil {
-		t.Errorf("Actions.EditActionsPermissions returned error: %v", err)
+		t.Errorf("Actions.UpdateActionsPermissions returned error: %v", err)
 	}
 
 	want := &ActionsPermissions{EnabledRepositories: Ptr("all"), AllowedActions: Ptr("selected")}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Actions.EditActionsPermissions returned %+v, want %+v", org, want)
+		t.Errorf("Actions.UpdateActionsPermissions returned %+v, want %+v", org, want)
 	}
 
-	const methodName = "EditActionsPermissions"
+	const methodName = "UpdateActionsPermissions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.EditActionsPermissions(ctx, "\n", *input)
+		_, _, err = client.Actions.UpdateActionsPermissions(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.EditActionsPermissions(ctx, "o", *input)
+		got, resp, err := client.Actions.UpdateActionsPermissions(ctx, "o", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -254,7 +254,7 @@ func TestActionsService_GetActionsAllowed(t *testing.T) {
 	})
 }
 
-func TestActionsService_EditActionsAllowed(t *testing.T) {
+func TestActionsService_UpdateActionsAllowed(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -273,24 +273,24 @@ func TestActionsService_EditActionsAllowed(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Actions.EditActionsAllowed(ctx, "o", *input)
+	org, _, err := client.Actions.UpdateActionsAllowed(ctx, "o", *input)
 	if err != nil {
-		t.Errorf("Actions.EditActionsAllowed returned error: %v", err)
+		t.Errorf("Actions.UpdateActionsAllowed returned error: %v", err)
 	}
 
 	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Actions.EditActionsAllowed returned %+v, want %+v", org, want)
+		t.Errorf("Actions.UpdateActionsAllowed returned %+v, want %+v", org, want)
 	}
 
-	const methodName = "EditActionsAllowed"
+	const methodName = "UpdateActionsAllowed"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.EditActionsAllowed(ctx, "\n", *input)
+		_, _, err = client.Actions.UpdateActionsAllowed(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.EditActionsAllowed(ctx, "o", *input)
+		got, resp, err := client.Actions.UpdateActionsAllowed(ctx, "o", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -372,7 +372,7 @@ func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T
 	})
 }
 
-func TestActionsService_EditDefaultWorkflowPermissionsInOrganization(t *testing.T) {
+func TestActionsService_UpdateDefaultWorkflowPermissionsInOrganization(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -391,24 +391,24 @@ func TestActionsService_EditDefaultWorkflowPermissionsInOrganization(t *testing.
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Actions.EditDefaultWorkflowPermissionsInOrganization(ctx, "o", *input)
+	org, _, err := client.Actions.UpdateDefaultWorkflowPermissionsInOrganization(ctx, "o", *input)
 	if err != nil {
-		t.Errorf("Actions.EditDefaultWorkflowPermissionsInOrganization returned error: %v", err)
+		t.Errorf("Actions.UpdateDefaultWorkflowPermissionsInOrganization returned error: %v", err)
 	}
 
 	want := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Actions.EditDefaultWorkflowPermissionsInOrganization returned %+v, want %+v", org, want)
+		t.Errorf("Actions.UpdateDefaultWorkflowPermissionsInOrganization returned %+v, want %+v", org, want)
 	}
 
-	const methodName = "EditDefaultWorkflowPermissionsInOrganization"
+	const methodName = "UpdateDefaultWorkflowPermissionsInOrganization"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.EditDefaultWorkflowPermissionsInOrganization(ctx, "\n", *input)
+		_, _, err = client.Actions.UpdateDefaultWorkflowPermissionsInOrganization(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.EditDefaultWorkflowPermissionsInOrganization(ctx, "o", *input)
+		got, resp, err := client.Actions.UpdateDefaultWorkflowPermissionsInOrganization(ctx, "o", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -454,7 +454,7 @@ func TestActionsService_GetArtifactAndLogRetentionPeriodInOrganization(t *testin
 	})
 }
 
-func TestActionsService_EditArtifactAndLogRetentionPeriodInOrganization(t *testing.T) {
+func TestActionsService_UpdateArtifactAndLogRetentionPeriodInOrganization(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -472,23 +472,23 @@ func TestActionsService_EditArtifactAndLogRetentionPeriodInOrganization(t *testi
 	})
 
 	ctx := context.Background()
-	resp, err := client.Actions.EditArtifactAndLogRetentionPeriodInOrganization(ctx, "o", *input)
+	resp, err := client.Actions.UpdateArtifactAndLogRetentionPeriodInOrganization(ctx, "o", *input)
 	if err != nil {
-		t.Errorf("Actions.EditArtifactAndLogRetentionPeriodInOrganization returned error: %v", err)
+		t.Errorf("Actions.UpdateArtifactAndLogRetentionPeriodInOrganization returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.EditArtifactAndLogRetentionPeriodInOrganization = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdateArtifactAndLogRetentionPeriodInOrganization = %d, want %d", resp.StatusCode, http.StatusNoContent)
 	}
 
-	const methodName = "EditArtifactAndLogRetentionPeriodInOrganization"
+	const methodName = "UpdateArtifactAndLogRetentionPeriodInOrganization"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.EditArtifactAndLogRetentionPeriodInOrganization(ctx, "\n", *input)
+		_, err = client.Actions.UpdateArtifactAndLogRetentionPeriodInOrganization(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.EditArtifactAndLogRetentionPeriodInOrganization(ctx, "o", *input)
+		return client.Actions.UpdateArtifactAndLogRetentionPeriodInOrganization(ctx, "o", *input)
 	})
 }
 
@@ -529,7 +529,7 @@ func TestActionsService_GetSelfHostedRunnersSettingsInOrganization(t *testing.T)
 	})
 }
 
-func TestActionsService_EditSelfHostedRunnersSettingsInOrganization(t *testing.T) {
+func TestActionsService_UpdateSelfHostedRunnersSettingsInOrganization(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -547,23 +547,23 @@ func TestActionsService_EditSelfHostedRunnersSettingsInOrganization(t *testing.T
 	})
 
 	ctx := context.Background()
-	resp, err := client.Actions.EditSelfHostedRunnersSettingsInOrganization(ctx, "o", *input)
+	resp, err := client.Actions.UpdateSelfHostedRunnersSettingsInOrganization(ctx, "o", *input)
 	if err != nil {
-		t.Errorf("Actions.EditSelfHostedRunnersSettingsInOrganization returned error: %v", err)
+		t.Errorf("Actions.UpdateSelfHostedRunnersSettingsInOrganization returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.EditSelfHostedRunnersSettingsInOrganization = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdateSelfHostedRunnersSettingsInOrganization = %d, want %d", resp.StatusCode, http.StatusNoContent)
 	}
 
-	const methodName = "EditSelfHostedRunnersSettingsInOrganization"
+	const methodName = "UpdateSelfHostedRunnersSettingsInOrganization"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.EditSelfHostedRunnersSettingsInOrganization(ctx, "\n", *input)
+		_, err = client.Actions.UpdateSelfHostedRunnersSettingsInOrganization(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.EditSelfHostedRunnersSettingsInOrganization(ctx, "o", *input)
+		return client.Actions.UpdateSelfHostedRunnersSettingsInOrganization(ctx, "o", *input)
 	})
 }
 

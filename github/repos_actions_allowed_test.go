@@ -49,7 +49,7 @@ func TestRepositoryService_GetActionsAllowed(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_EditActionsAllowed(t *testing.T) {
+func TestRepositoriesService_UpdateActionsAllowed(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -70,15 +70,15 @@ func TestRepositoriesService_EditActionsAllowed(t *testing.T) {
 	ctx := context.Background()
 	org, _, err := client.Repositories.EditActionsAllowed(ctx, "o", "r", *input)
 	if err != nil {
-		t.Errorf("Repositories.EditActionsAllowed returned error: %v", err)
+		t.Errorf("Repositories.UpdateActionsAllowed returned error: %v", err)
 	}
 
 	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Repositories.EditActionsAllowed returned %+v, want %+v", org, want)
+		t.Errorf("Repositories.UpdateActionsAllowed returned %+v, want %+v", org, want)
 	}
 
-	const methodName = "EditActionsAllowed"
+	const methodName = "UpdateActionsAllowed"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Repositories.EditActionsAllowed(ctx, "\n", "\n", *input)
 		return err

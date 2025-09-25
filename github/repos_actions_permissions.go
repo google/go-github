@@ -53,12 +53,12 @@ func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner, 
 	return permissions, resp, nil
 }
 
-// EditActionsPermissions sets the permissions policy for repositories and allowed actions in a repository.
+// UpdateActionsPermissions sets the permissions policy for repositories and allowed actions in a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-github-actions-permissions-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions
-func (s *RepositoriesService) EditActionsPermissions(ctx context.Context, owner, repo string, actionsPermissionsRepository ActionsPermissionsRepository) (*ActionsPermissionsRepository, *Response, error) {
+func (s *RepositoriesService) UpdateActionsPermissions(ctx context.Context, owner, repo string, actionsPermissionsRepository ActionsPermissionsRepository) (*ActionsPermissionsRepository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, actionsPermissionsRepository)
 	if err != nil {
@@ -96,12 +96,12 @@ func (s *RepositoriesService) GetDefaultWorkflowPermissions(ctx context.Context,
 	return permissions, resp, nil
 }
 
-// EditDefaultWorkflowPermissions sets the GitHub Actions default workflow permissions in a repository.
+// UpdateDefaultWorkflowPermissions sets the GitHub Actions default workflow permissions in a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-default-workflow-permissions-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/workflow
-func (s *RepositoriesService) EditDefaultWorkflowPermissions(ctx context.Context, owner, repo string, permissions DefaultWorkflowPermissionRepository) (*DefaultWorkflowPermissionRepository, *Response, error) {
+func (s *RepositoriesService) UpdateDefaultWorkflowPermissions(ctx context.Context, owner, repo string, permissions DefaultWorkflowPermissionRepository) (*DefaultWorkflowPermissionRepository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/workflow", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, permissions)
 	if err != nil {
@@ -139,12 +139,12 @@ func (s *RepositoriesService) GetArtifactAndLogRetentionPeriod(ctx context.Conte
 	return arp, resp, nil
 }
 
-// EditArtifactAndLogRetentionPeriod sets the artifact and log retention period for a repository.
+// UpdateArtifactAndLogRetentionPeriod sets the artifact and log retention period for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-artifact-and-log-retention-settings-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/artifact-and-log-retention
-func (s *RepositoriesService) EditArtifactAndLogRetentionPeriod(ctx context.Context, owner, repo string, period ArtifactPeriodOpt) (*Response, error) {
+func (s *RepositoriesService) UpdateArtifactAndLogRetentionPeriod(ctx context.Context, owner, repo string, period ArtifactPeriodOpt) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/artifact-and-log-retention", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, period)
 	if err != nil {
