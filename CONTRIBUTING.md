@@ -181,6 +181,11 @@ may be useful to know what it is. Its sections are:
 - `operation_overrides` - is where we override the documentation_url for 
   operations where the link in the OpenAPI descriptions is wrong.
 
+Please note that if your PR unit tests are failing due to an out-of-date
+`openapi_operations.yaml` file, simply ask the maintainer(s) of this repo
+to update it for you so that your PR doesn't need to include changes
+to this auto-generated file.
+
 ### tools/metadata
 
 The `tools/metadata` package is a command-line tool for working with metadata.
