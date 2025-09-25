@@ -14,7 +14,7 @@ import (
 // with a given subject digest that are associated with repositories
 // owned by an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/orgs#list-attestations
+// GitHub API docs: https://docs.github.com/rest/orgs/attestations#list-attestations
 //
 //meta:operation GET /orgs/{org}/attestations/{subject_digest}
 func (s *OrganizationsService) ListAttestations(ctx context.Context, org, subjectDigest string, opts *ListOptions) (*AttestationsResponse, *Response, error) {
