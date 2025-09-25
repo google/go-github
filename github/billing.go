@@ -16,14 +16,6 @@ import (
 // GitHub API docs: https://docs.github.com/rest/billing
 type BillingService service
 
-// ActionBilling represents a GitHub Action billing.
-type ActionBilling struct {
-	TotalMinutesUsed     float64              `json:"total_minutes_used"`
-	TotalPaidMinutesUsed float64              `json:"total_paid_minutes_used"`
-	IncludedMinutes      float64              `json:"included_minutes"`
-	MinutesUsedBreakdown MinutesUsedBreakdown `json:"minutes_used_breakdown"`
-}
-
 // MinutesUsedBreakdown counts the actions minutes used by machine type (e.g. UBUNTU, WINDOWS, MACOS).
 type MinutesUsedBreakdown = map[string]int
 
@@ -103,27 +95,6 @@ type UsageReport struct {
 	UsageItems []*UsageItem `json:"usageItems,omitempty"`
 }
 
-// GetActionsBillingOrg returns the summary of the free and paid GitHub Actions minutes used for an Org.
-//
-// GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-actions-billing-for-an-organization
-//
-//meta:operation GET /orgs/{org}/settings/billing/actions
-func (s *BillingService) GetActionsBillingOrg(ctx context.Context, org string) (*ActionBilling, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/settings/billing/actions", org)
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	actionsOrgBilling := new(ActionBilling)
-	resp, err := s.client.Do(ctx, req, actionsOrgBilling)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return actionsOrgBilling, resp, nil
-}
-
 // GetPackagesBillingOrg returns the free and paid storage used for GitHub Packages in gigabytes for an Org.
 //
 // GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-packages-billing-for-an-organization
@@ -191,27 +162,6 @@ func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Cont
 	}
 
 	return activeOrgCommitters, resp, nil
-}
-
-// GetActionsBillingUser returns the summary of the free and paid GitHub Actions minutes used for a user.
-//
-// GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-actions-billing-for-a-user
-//
-//meta:operation GET /users/{username}/settings/billing/actions
-func (s *BillingService) GetActionsBillingUser(ctx context.Context, user string) (*ActionBilling, *Response, error) {
-	u := fmt.Sprintf("users/%v/settings/billing/actions", user)
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	actionsUserBilling := new(ActionBilling)
-	resp, err := s.client.Do(ctx, req, actionsUserBilling)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return actionsUserBilling, resp, nil
 }
 
 // GetPackagesBillingUser returns the free and paid storage used for GitHub Packages in gigabytes for a user.
