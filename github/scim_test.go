@@ -621,6 +621,24 @@ func TestSCIMMeta_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestSCIMUserRole_Marshal(t *testing.T) {
+	t.Parallel()
+
+	testJSONMarshal(t, &SCIMUserRole{
+		Value:   "enterprise_owner",
+		Primary: Bool(true),
+	}, `{
+		"value": "enterprise_owner",
+		"primary": true
+	}`)
+
+	r := &SCIMUserRole{
+		Value: "billing_manager",
+	}
+	want := `{"value": "billing_manager"}`
+	testJSONMarshal(t, r, want)
+}
+
 func TestSCIMProvisionedIdentities_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &SCIMProvisionedIdentities{}, `{}`)
