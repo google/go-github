@@ -29539,6 +29539,25 @@ func TestRepositoryActor_GetUserViewType(tt *testing.T) {
 	r.GetUserViewType()
 }
 
+func TestRepositoryAttachment_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryAttachment{}
+	r.GetRepository()
+	r = nil
+	r.GetRepository()
+}
+
+func TestRepositoryAttachment_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryAttachment{Status: &zeroValue}
+	r.GetStatus()
+	r = &RepositoryAttachment{}
+	r.GetStatus()
+	r = nil
+	r.GetStatus()
+}
+
 func TestRepositoryCodeSecurityConfiguration_GetConfiguration(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryCodeSecurityConfiguration{}
@@ -32708,6 +32727,39 @@ func TestSCIMUserName_GetFormatted(tt *testing.T) {
 	s.GetFormatted()
 	s = nil
 	s.GetFormatted()
+}
+
+func TestSCIMUserRole_GetDisplay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMUserRole{Display: &zeroValue}
+	s.GetDisplay()
+	s = &SCIMUserRole{}
+	s.GetDisplay()
+	s = nil
+	s.GetDisplay()
+}
+
+func TestSCIMUserRole_GetPrimary(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SCIMUserRole{Primary: &zeroValue}
+	s.GetPrimary()
+	s = &SCIMUserRole{}
+	s.GetPrimary()
+	s = nil
+	s.GetPrimary()
+}
+
+func TestSCIMUserRole_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMUserRole{Type: &zeroValue}
+	s.GetType()
+	s = &SCIMUserRole{}
+	s.GetType()
+	s = nil
+	s.GetType()
 }
 
 func TestSecretScanning_GetStatus(tt *testing.T) {

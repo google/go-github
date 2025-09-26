@@ -49,7 +49,7 @@ func TestOrganizationsService_GetActionsAllowed(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_EditActionsAllowed(t *testing.T) {
+func TestOrganizationsService_UpdateActionsAllowed(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -68,24 +68,24 @@ func TestOrganizationsService_EditActionsAllowed(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Organizations.EditActionsAllowed(ctx, "o", *input)
+	org, _, err := client.Organizations.UpdateActionsAllowed(ctx, "o", *input)
 	if err != nil {
-		t.Errorf("Organizations.EditActionsAllowed returned error: %v", err)
+		t.Errorf("Organizations.UpdateActionsAllowed returned error: %v", err)
 	}
 
 	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Organizations.EditActionsAllowed returned %+v, want %+v", org, want)
+		t.Errorf("Organizations.UpdateActionsAllowed returned %+v, want %+v", org, want)
 	}
 
-	const methodName = "EditActionsAllowed"
+	const methodName = "UpdateActionsAllowed"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.EditActionsAllowed(ctx, "\n", *input)
+		_, _, err = client.Organizations.UpdateActionsAllowed(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.EditActionsAllowed(ctx, "o", *input)
+		got, resp, err := client.Organizations.UpdateActionsAllowed(ctx, "o", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

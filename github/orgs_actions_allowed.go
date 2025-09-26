@@ -21,14 +21,14 @@ func (s *OrganizationsService) GetActionsAllowed(ctx context.Context, org string
 	return s2.GetActionsAllowed(ctx, org)
 }
 
-// EditActionsAllowed sets the actions that are allowed in an organization.
+// UpdateActionsAllowed sets the actions that are allowed in an organization.
 //
-// Deprecated: please use `client.Actions.EditActionsAllowed` instead.
+// Deprecated: please use `client.Actions.UpdateActionsAllowed` instead.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/selected-actions
-func (s *OrganizationsService) EditActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
+func (s *OrganizationsService) UpdateActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	s2 := (*ActionsService)(s)
-	return s2.EditActionsAllowed(ctx, org, actionsAllowed)
+	return s2.UpdateActionsAllowed(ctx, org, actionsAllowed)
 }

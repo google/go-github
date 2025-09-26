@@ -22854,6 +22854,22 @@ func (r *RepositoryActor) GetUserViewType() string {
 	return *r.UserViewType
 }
 
+// GetRepository returns the Repository field.
+func (r *RepositoryAttachment) GetRepository() *Repository {
+	if r == nil {
+		return nil
+	}
+	return r.Repository
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (r *RepositoryAttachment) GetStatus() string {
+	if r == nil || r.Status == nil {
+		return ""
+	}
+	return *r.Status
+}
+
 // GetConfiguration returns the Configuration field.
 func (r *RepositoryCodeSecurityConfiguration) GetConfiguration() *CodeSecurityConfiguration {
 	if r == nil {
@@ -25372,6 +25388,30 @@ func (s *SCIMUserName) GetFormatted() string {
 		return ""
 	}
 	return *s.Formatted
+}
+
+// GetDisplay returns the Display field if it's non-nil, zero value otherwise.
+func (s *SCIMUserRole) GetDisplay() string {
+	if s == nil || s.Display == nil {
+		return ""
+	}
+	return *s.Display
+}
+
+// GetPrimary returns the Primary field if it's non-nil, zero value otherwise.
+func (s *SCIMUserRole) GetPrimary() bool {
+	if s == nil || s.Primary == nil {
+		return false
+	}
+	return *s.Primary
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (s *SCIMUserRole) GetType() string {
+	if s == nil || s.Type == nil {
+		return ""
+	}
+	return *s.Type
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
