@@ -2384,6 +2384,17 @@ func TestWeeklyStats_String(t *testing.T) {
 	}
 }
 
+func TestWorkflowApprovalPolicy_String(t *testing.T) {
+	t.Parallel()
+	v := WorkflowApprovalPolicy{
+		ApprovalPolicy: "",
+	}
+	want := `github.WorkflowApprovalPolicy{ApprovalPolicy:""}`
+	if got := v.String(); got != want {
+		t.Errorf("WorkflowApprovalPolicy.String = %v, want %v", got, want)
+	}
+}
+
 func TestWorkflowsPermissions_String(t *testing.T) {
 	t.Parallel()
 	v := WorkflowsPermissions{

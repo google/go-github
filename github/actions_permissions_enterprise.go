@@ -400,7 +400,7 @@ func (s *ActionsService) GetForkPRContributorApprovalPermissionsInEnterprise(ctx
 
 // UpdateForkPRContributorApprovalPermissionsInEnterprise sets the settings for whether workflows from fork pull requests can run on private repositories in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/ja/enterprise-cloud@latest/rest/actions/permissions?apiVersion=2022-11-28#set-fork-pr-contributor-approval-permissions-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-fork-pr-contributor-approval-permissions-for-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/actions/permissions/fork-pr-contributor-approval
 func (s *ActionsService) UpdateForkPRContributorApprovalPermissionsInEnterprise(ctx context.Context, enterprise string, policy WorkflowApprovalPolicy) (*Response, error) {
