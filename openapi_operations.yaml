@@ -27,7 +27,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 44dd20c107ca46d1dbcaf4aa522d9039e96e631c
+openapi_commit: 5efe9a47bbe583fdc512c811f92b779b0715b95c
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -2418,7 +2418,7 @@ openapi_operations:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
   - name: GET /orgs/{org}/external-groups
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/teams/external-groups#list-external-groups-in-an-organization
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/teams/external-groups#list-external-groups-available-to-an-organization
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
