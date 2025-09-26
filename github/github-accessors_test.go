@@ -8201,6 +8201,50 @@ func TestCreateEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 }
 
+func TestCreateGistCommentRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateGistCommentRequest{Body: &zeroValue}
+	c.GetBody()
+	c = &CreateGistCommentRequest{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCreateGistRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateGistRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateGistRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateGistRequest_GetFiles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[GistFilename]GistFile{}
+	c := &CreateGistRequest{Files: zeroValue}
+	c.GetFiles()
+	c = &CreateGistRequest{}
+	c.GetFiles()
+	c = nil
+	c.GetFiles()
+}
+
+func TestCreateGistRequest_GetPublic(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateGistRequest{Public: &zeroValue}
+	c.GetPublic()
+	c = &CreateGistRequest{}
+	c.GetPublic()
+	c = nil
+	c.GetPublic()
+}
+
 func TestCreateOrgInvitationOptions_GetEmail(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -36763,6 +36807,39 @@ func TestUpdateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()
+}
+
+func TestUpdateGistCommentRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateGistCommentRequest{Body: &zeroValue}
+	u.GetBody()
+	u = &UpdateGistCommentRequest{}
+	u.GetBody()
+	u = nil
+	u.GetBody()
+}
+
+func TestUpdateGistRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateGistRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateGistRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateGistRequest_GetFiles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[GistFilename]GistFile{}
+	u := &UpdateGistRequest{Files: zeroValue}
+	u.GetFiles()
+	u = &UpdateGistRequest{}
+	u.GetFiles()
+	u = nil
+	u.GetFiles()
 }
 
 func TestUpdateRef_GetForce(tt *testing.T) {
