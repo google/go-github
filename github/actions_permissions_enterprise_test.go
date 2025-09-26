@@ -604,3 +604,75 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(t *t
 		return client.Actions.UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(ctx, "e", input)
 	})
 }
+
+func TestActionsService_GetForkPRContributorApprovalPermissionsInEnterprise(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"approval_policy": "require_approval"}`)
+	})
+
+	ctx := context.Background()
+	policy, _, err := client.Actions.GetForkPRContributorApprovalPermissionsInEnterprise(ctx, "e")
+	if err != nil {
+		t.Errorf("Actions.GetForkPRContributorApprovalPermissionsInEnterprise returned error: %v", err)
+	}
+	want := &WorkflowApprovalPolicy{ApprovalPolicy: "require_approval"}
+	if !cmp.Equal(policy, want) {
+		t.Errorf("Actions.GetForkPRContributorApprovalPermissionsInEnterprise returned %+v, want %+v", policy, want)
+	}
+
+	const methodName = "GetForkPRContributorApprovalPermissionsInEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetForkPRContributorApprovalPermissionsInEnterprise(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetForkPRContributorApprovalPermissionsInEnterprise(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_UpdateForkPRContributorApprovalPermissionsInEnterprise(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := WorkflowApprovalPolicy{ApprovalPolicy: "require_approval"}
+
+	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
+		v := new(WorkflowApprovalPolicy)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, &input) {
+			t.Errorf("Request body = %+v, want %+v", v, &input)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Actions.UpdateForkPRContributorApprovalPermissionsInEnterprise(ctx, "e", input)
+	if err != nil {
+		t.Errorf("Actions.UpdateForkPRContributorApprovalPermissionsInEnterprise returned error: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusNoContent {
+		t.Errorf("Actions.UpdateForkPRContributorApprovalPermissionsInEnterprise = %d, want %d", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "UpdateForkPRContributorApprovalPermissionsInEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.UpdateForkPRContributorApprovalPermissionsInEnterprise(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.UpdateForkPRContributorApprovalPermissionsInEnterprise(ctx, "e", input)
+	})
+}

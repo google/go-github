@@ -483,3 +483,40 @@ func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(c
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// GetForkPRContributorApprovalPermissionsInOrganization gets the settings for whether workflows from fork pull requests can run without approval from contributors in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-fork-pr-contributor-approval-permissions-for-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/permissions/fork-pr-contributor-approval
+func (s *ActionsService) GetForkPRContributorApprovalPermissionsInOrganization(ctx context.Context, org string) (*WorkflowApprovalPolicy, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-contributor-approval", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	settings := new(WorkflowApprovalPolicy)
+	resp, err := s.client.Do(ctx, req, settings)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return settings, resp, nil
+}
+
+// UpdateForkPRContributorApprovalPermissionsInOrganization sets the settings for whether workflows from fork pull requests can run without approval from contributors in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-fork-pr-contributor-approval-permissions-for-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/fork-pr-contributor-approval
+func (s *ActionsService) UpdateForkPRContributorApprovalPermissionsInOrganization(ctx context.Context, org string, policy WorkflowApprovalPolicy) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-contributor-approval", org)
+	req, err := s.client.NewRequest("PUT", u, policy)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

@@ -76,6 +76,15 @@ type WorkflowsPermissionsOpt struct {
 	RequireApprovalForForkPRWorkflows *bool `json:"require_approval_for_fork_pr_workflows,omitempty"`
 }
 
+// WorkflowApprovalPolicy represents the approval policy for workflows in a repository.
+type WorkflowApprovalPolicy struct {
+	ApprovalPolicy string `json:"approval_policy"`
+}
+
+func (p WorkflowApprovalPolicy) String() string {
+	return Stringify(p)
+}
+
 // ListWorkflows lists all workflows in a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflows#list-repository-workflows
