@@ -265,7 +265,6 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	// Combined handler: supports initial test case and dual before/after validation scenario.
 	mux.HandleFunc("/orgs/o/projectsV2/1/fields", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		q := r.URL.Query()
@@ -273,7 +272,6 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 			fmt.Fprint(w, `[]`)
 			return
 		}
-		// default expectation for main part of test
 		testFormValues(t, r, values{"q": "text", "after": "2", "before": "1"})
 		fmt.Fprint(w, `[
 			{
@@ -321,25 +319,37 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 		t.Fatalf("Projects.ListProjectFieldsForOrg returned %d fields, want 2", len(fields))
 	}
 
-	// Validate first field (with options)
 	field1 := fields[0]
 	if field1.ID == nil || *field1.ID != 1 || field1.Name != "Status" || field1.DataType != "single_select" {
-		t.Errorf("First field: got ID=%v, Name=%s, DataType=%s; want 1, Status, single_select",
-			field1.ID, field1.Name, field1.DataType)
+		t.Errorf("First field: got ID=%v, Name=%s, DataType=%s; want 1, Status, single_select", field1.ID, field1.Name, field1.DataType)
 	}
 	if len(field1.Options) != 2 {
 		t.Errorf("First field options: got %d, want 2", len(field1.Options))
-	}
-	if field1.Options[0].Name != "Todo" || field1.Options[1].Name != "In Progress" {
-		t.Errorf("First field option names: got %s, %s; want Todo, In Progress",
-			field1.Options[0].Name, field1.Options[1].Name)
+	} else {
+		getName := func(o *any) string {
+			if o == nil || *o == nil {
+				return ""
+			}
+			switch v := (*o).(type) {
+			case map[string]any:
+				if n, ok := v["name"].(string); ok {
+					return n
+				}
+			default:
+				// fall back to fmt for debug; reflection can be added if needed.
+			}
+			return ""
+		}
+		name0, name1 := getName(field1.Options[0]), getName(field1.Options[1])
+		if name0 != "Todo" || name1 != "In Progress" {
+			t.Errorf("First field option names: got %q, %q; want Todo, In Progress", name0, name1)
+		}
 	}
 
 	// Validate second field (without options)
 	field2 := fields[1]
 	if field2.ID == nil || *field2.ID != 2 || field2.Name != "Priority" || field2.DataType != "text" {
-		t.Errorf("Second field: got ID=%v, Name=%s, DataType=%s; want 2, Priority, text",
-			field2.ID, field2.Name, field2.DataType)
+		t.Errorf("Second field: got ID=%v, Name=%s, DataType=%s; want 2, Priority, text", field2.ID, field2.Name, field2.DataType)
 	}
 	if len(field2.Options) != 0 {
 		t.Errorf("Second field options: got %d, want 0", len(field2.Options))
@@ -403,7 +413,6 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 		t.Fatalf("expected resp.After=cursor2 got %q", resp.After)
 	}
 
-	// Use resp.After as opts.After for next page
 	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: resp.After}}
 	second, resp2, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
 	if err != nil {
@@ -417,7 +426,6 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 	}
 }
 
-// Marshal test ensures V2 fields marshal correctly.
 func TestProjectV2_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &ProjectV2{}, "{}")
@@ -443,47 +451,48 @@ func TestProjectV2_Marshal(t *testing.T) {
 	testJSONMarshal(t, p, want)
 }
 
-// Marshal test ensures V2 field structures marshal correctly.
 func TestProjectV2Field_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ProjectV2Field{}, "{}")
-	testJSONMarshal(t, &ProjectV2FieldOption{}, "{}")
+	testJSONMarshal(t, &ProjectV2Field{}, "{}")       // empty struct
+	testJSONMarshal(t, &ProjectV2FieldOption{}, "{}") // option struct still individually testable
+
+	type optStruct struct {
+		Color       string `json:"color,omitempty"`
+		Description string `json:"description,omitempty"`
+		ID          string `json:"id,omitempty"`
+		Name        string `json:"name,omitempty"`
+	}
+	optVal := &optStruct{Color: "blue", Description: "Tasks to be done", ID: "option1", Name: "Todo"}
+	var optAny any = optVal
 
 	field := &ProjectV2Field{
-		ID:       Ptr(int64(1)),
-		NodeID:   "node_1",
-		Name:     "Status",
-		DataType: "single_select",
-		URL:      "https://api.github.com/projects/1/fields/field1",
-		Options: []*ProjectV2FieldOption{
-			{
-				ID:          "option1",
-				Name:        "Todo",
-				Color:       "blue",
-				Description: "Tasks to be done",
-			},
-		},
+		ID:        Ptr(int64(1)),
+		NodeID:    "node_1",
+		Name:      "Status",
+		DataType:  "single_select",
+		URL:       "https://api.github.com/projects/1/fields/field1",
+		Options:   []*any{&optAny},
 		CreatedAt: &Timestamp{referenceTime},
 		UpdatedAt: &Timestamp{referenceTime},
 	}
 
 	want := `{
 			"id": 1,
-        "node_id": "node_1",
-        "name": "Status",
-        "dataType": "single_select",
-        "url": "https://api.github.com/projects/1/fields/field1",
-        "options": [
-            {
-					"id": "option1",
-                "name": "Todo",
-                "color": "blue",
-                "description": "Tasks to be done"
-            }
-        ],
-        "created_at": ` + referenceTimeStr + `,
-        "updated_at": ` + referenceTimeStr + `
-    }`
+	        "node_id": "node_1",
+	        "name": "Status",
+	        "dataType": "single_select",
+	        "url": "https://api.github.com/projects/1/fields/field1",
+	        "options": [
+	            {
+	                "id": "option1",
+	                "name": "Todo",
+	                "color": "blue",
+	                "description": "Tasks to be done"
+	            }
+	        ],
+	        "created_at": ` + referenceTimeStr + `,
+	        "updated_at": ` + referenceTimeStr + `
+	    }`
 
 	testJSONMarshal(t, field, want)
 }

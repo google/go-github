@@ -93,14 +93,14 @@ type ProjectV2FieldOption struct {
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2Field struct {
-	ID        *int64                  `json:"id,omitempty"`
-	NodeID    string                  `json:"node_id,omitempty"`
-	Name      string                  `json:"name,omitempty"`
-	DataType  string                  `json:"dataType,omitempty"`
-	URL       string                  `json:"url,omitempty"`
-	Options   []*ProjectV2FieldOption `json:"options,omitempty"`
-	CreatedAt *Timestamp              `json:"created_at,omitempty"`
-	UpdatedAt *Timestamp              `json:"updated_at,omitempty"`
+	ID        *int64     `json:"id,omitempty"`
+	NodeID    string     `json:"node_id,omitempty"`
+	Name      string     `json:"name,omitempty"`
+	DataType  string     `json:"dataType,omitempty"`
+	URL       string     `json:"url,omitempty"`
+	Options   []*any     `json:"options,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
 }
 
 // ListProjectsForOrg lists Projects V2 for an organization.
