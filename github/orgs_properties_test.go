@@ -41,6 +41,11 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
           "property_name": "team",
           "value_type": "string",
           "description": "Team owning the repository"
+        },
+		{
+          "property_name": "multi_select_property",
+		  "value_type": "multi_select",
+          "default_value": ["production", "development"]
         }
         ]`)
 	})
@@ -56,7 +61,7 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 			PropertyName:     Ptr("name"),
 			ValueType:        "single_select",
 			Required:         Ptr(true),
-			DefaultValue:     Ptr("production"),
+			DefaultValue:     "production",
 			Description:      Ptr("Prod or dev environment"),
 			AllowedValues:    []string{"production", "development"},
 			ValuesEditableBy: Ptr("org_actors"),
@@ -69,6 +74,11 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 			PropertyName: Ptr("team"),
 			ValueType:    "string",
 			Description:  Ptr("Team owning the repository"),
+		},
+		{
+			PropertyName: Ptr("multi_select_property"),
+			ValueType:    "multi_select",
+			DefaultValue: []any{"production", "development"},
 		},
 	}
 	if !cmp.Equal(properties, want) {
@@ -179,7 +189,7 @@ func TestOrganizationsService_GetCustomProperty(t *testing.T) {
 		PropertyName:     Ptr("name"),
 		ValueType:        "single_select",
 		Required:         Ptr(true),
-		DefaultValue:     Ptr("production"),
+		DefaultValue:     "production",
 		Description:      Ptr("Prod or dev environment"),
 		AllowedValues:    []string{"production", "development"},
 		ValuesEditableBy: Ptr("org_actors"),
@@ -223,7 +233,7 @@ func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
 	property, _, err := client.Organizations.CreateOrUpdateCustomProperty(ctx, "o", "name", &CustomProperty{
 		ValueType:        "single_select",
 		Required:         Ptr(true),
-		DefaultValue:     Ptr("production"),
+		DefaultValue:     "production",
 		Description:      Ptr("Prod or dev environment"),
 		AllowedValues:    []string{"production", "development"},
 		ValuesEditableBy: Ptr("org_actors"),
@@ -236,7 +246,7 @@ func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
 		PropertyName:     Ptr("name"),
 		ValueType:        "single_select",
 		Required:         Ptr(true),
-		DefaultValue:     Ptr("production"),
+		DefaultValue:     "production",
 		Description:      Ptr("Prod or dev environment"),
 		AllowedValues:    []string{"production", "development"},
 		ValuesEditableBy: Ptr("org_actors"),

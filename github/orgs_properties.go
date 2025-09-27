@@ -23,8 +23,8 @@ type CustomProperty struct {
 	ValueType string `json:"value_type"`
 	// Whether the property is required.
 	Required *bool `json:"required,omitempty"`
-	// Default value of the property.
-	DefaultValue *string `json:"default_value,omitempty"`
+	// Default value of the property. Can be null, string or array of strings.
+	DefaultValue any `json:"default_value,omitempty"`
 	// Short description of the property.
 	Description *string `json:"description,omitempty"`
 	// An ordered list of the allowed values of the property. The property can have up to 200
