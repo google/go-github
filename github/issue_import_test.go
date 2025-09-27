@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
@@ -110,7 +111,8 @@ func TestIssueImportService_Create_deferred(t *testing.T) {
 	ctx := context.Background()
 	got, _, err := client.IssueImport.Create(ctx, "o", "r", input)
 
-	if _, ok := err.(*AcceptedError); !ok {
+	var aerr *AcceptedError
+	if !errors.As(err, &aerr) {
 		t.Errorf("Create returned error: %v (want AcceptedError)", err)
 	}
 

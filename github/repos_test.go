@@ -1417,7 +1417,7 @@ func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T
 				t.Error("Repositories.GetBranchProtection returned non-nil protection data")
 			}
 
-			if err != ErrBranchNotProtected {
+			if !errors.Is(err, ErrBranchNotProtected) {
 				t.Errorf("Repositories.GetBranchProtection returned an invalid error: %v", err)
 			}
 		})
@@ -2497,7 +2497,7 @@ func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testi
 				t.Error("Repositories.GetRequiredStatusChecks returned non-nil status-checks data")
 			}
 
-			if err != ErrBranchNotProtected {
+			if !errors.Is(err, ErrBranchNotProtected) {
 				t.Errorf("Repositories.GetRequiredStatusChecks returned an invalid error: %v", err)
 			}
 		})
@@ -2793,7 +2793,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected
 				t.Error("Repositories.ListRequiredStatusChecksContexts returned non-nil contexts data")
 			}
 
-			if err != ErrBranchNotProtected {
+			if !errors.Is(err, ErrBranchNotProtected) {
 				t.Errorf("Repositories.ListRequiredStatusChecksContexts returned an invalid error: %v", err)
 			}
 		})

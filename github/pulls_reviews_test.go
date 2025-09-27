@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
@@ -334,7 +335,7 @@ func TestPullRequestReviewRequest_isComfortFadePreview(t *testing.T) {
 			t.Parallel()
 			gotBool, gotErr := tc.review.isComfortFadePreview()
 			if tc.wantErr != nil {
-				if gotErr != tc.wantErr {
+				if !errors.Is(gotErr, tc.wantErr) {
 					t.Errorf("isComfortFadePreview() = %v, wanted %v", gotErr, tc.wantErr)
 				}
 			} else {
