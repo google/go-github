@@ -102,7 +102,11 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/properties/schema", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"properties":[{"property_name":"name","value_type":"single_select","required":true,"default_value":null},{"property_name":"service","value_type":"string","default_value":null},{"property_name":"multi_select_property","value_type":"multi_select","default_value":["production","development"]},{"property_name":"multi_select_property_null","value_type":"multi_select","default_value":null}]}`+"\n")
+		testBody(t, r, fmt.Sprintf(`{"properties":[%s,%s,%s,%s]}`+"\n",
+			`{"property_name":"name","value_type":"single_select","required":true,"default_value":null}`,
+			`{"property_name":"service","value_type":"string","default_value":null}`,
+			`{"property_name":"multi_select_property","value_type":"multi_select","default_value":["production","development"]}`,
+			`{"property_name":"multi_select_property_null","value_type":"multi_select","default_value":null}`))
 		fmt.Fprint(w, `[
 		{
           "property_name": "name",
