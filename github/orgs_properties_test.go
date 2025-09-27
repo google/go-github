@@ -102,7 +102,7 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/properties/schema", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"properties":[{"property_name":"name","value_type":"single_select","required":true},{"property_name":"service","value_type":"string"}]}`+"\n")
+		testBody(t, r, `{"properties":[{"property_name":"name","value_type":"single_select","required":true,"default_value":null},{"property_name":"service","value_type":"string","default_value":null},{"property_name":"multi_select_property","value_type":"multi_select","default_value":["production","development"]},{"property_name":"multi_select_property_null","value_type":"multi_select","default_value":null}]}`+"\n")
 		fmt.Fprint(w, `[
 		{
           "property_name": "name",
@@ -112,6 +112,16 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
         {
           "property_name": "service",
           "value_type": "string"
+        },
+        {
+          "property_name": "multi_select_property",
+          "value_type": "multi_select",
+          "default_value": ["production", "development"]
+        },
+        {
+          "property_name": "multi_select_property_null",
+          "value_type": "multi_select",
+          "default_value": null
         }
         ]`)
 	})
@@ -127,6 +137,16 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 			PropertyName: Ptr("service"),
 			ValueType:    "string",
 		},
+		{
+			PropertyName: Ptr("multi_select_property"),
+			ValueType:    "multi_select",
+			DefaultValue: []any{"production", "development"},
+		},
+		{
+			PropertyName: Ptr("multi_select_property_null"),
+			ValueType:    "multi_select",
+			DefaultValue: nil,
+		},
 	})
 	if err != nil {
 		t.Errorf("Organizations.CreateOrUpdateCustomProperties returned error: %v", err)
@@ -141,6 +161,16 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 		{
 			PropertyName: Ptr("service"),
 			ValueType:    "string",
+		},
+		{
+			PropertyName: Ptr("multi_select_property"),
+			ValueType:    "multi_select",
+			DefaultValue: []any{"production", "development"},
+		},
+		{
+			PropertyName: Ptr("multi_select_property_null"),
+			ValueType:    "multi_select",
+			DefaultValue: nil,
 		},
 	}
 
