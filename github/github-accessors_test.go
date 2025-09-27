@@ -8802,17 +8802,6 @@ func TestCustomOrgRoles_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
-func TestCustomProperty_GetDefaultValue(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CustomProperty{DefaultValue: &zeroValue}
-	c.GetDefaultValue()
-	c = &CustomProperty{}
-	c.GetDefaultValue()
-	c = nil
-	c.GetDefaultValue()
-}
-
 func TestCustomProperty_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
