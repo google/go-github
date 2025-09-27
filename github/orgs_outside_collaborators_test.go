@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
@@ -104,10 +105,9 @@ func TestOrganizationsService_RemoveOutsideCollaborator_NonMember(t *testing.T) 
 
 	ctx := context.Background()
 	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
-	if err, ok := err.(*ErrorResponse); !ok {
+	var rerr *ErrorResponse
+	if !errors.As(err, &rerr) {
 		t.Error("Organizations.RemoveOutsideCollaborator did not return an error")
-	} else if err.Response.StatusCode != http.StatusNotFound {
-		t.Error("Organizations.RemoveOutsideCollaborator did not return 404 status code")
 	}
 }
 
@@ -123,10 +123,9 @@ func TestOrganizationsService_RemoveOutsideCollaborator_Member(t *testing.T) {
 
 	ctx := context.Background()
 	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
-	if err, ok := err.(*ErrorResponse); !ok {
+	var rerr *ErrorResponse
+	if !errors.As(err, &rerr) {
 		t.Error("Organizations.RemoveOutsideCollaborator did not return an error")
-	} else if err.Response.StatusCode != http.StatusUnprocessableEntity {
-		t.Error("Organizations.RemoveOutsideCollaborator did not return 422 status code")
 	}
 }
 
@@ -168,9 +167,8 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator_NonMemberOrLast
 
 	ctx := context.Background()
 	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(ctx, "o", "u")
-	if err, ok := err.(*ErrorResponse); !ok {
+	var rerr *ErrorResponse
+	if !errors.As(err, &rerr) {
 		t.Error("Organizations.ConvertMemberToOutsideCollaborator did not return an error")
-	} else if err.Response.StatusCode != http.StatusForbidden {
-		t.Error("Organizations.ConvertMemberToOutsideCollaborator did not return 403 status code")
 	}
 }

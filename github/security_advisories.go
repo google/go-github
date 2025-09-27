@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -143,7 +144,8 @@ func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo,
 
 	resp, err := s.client.Do(ctx, req, nil)
 	if err != nil {
-		if _, ok := err.(*AcceptedError); ok {
+		var aerr *AcceptedError
+		if errors.As(err, &aerr) {
 			return resp, nil
 		}
 
@@ -170,7 +172,8 @@ func (s *SecurityAdvisoriesService) CreateTemporaryPrivateFork(ctx context.Conte
 	fork := new(Repository)
 	resp, err := s.client.Do(ctx, req, fork)
 	if err != nil {
-		if aerr, ok := err.(*AcceptedError); ok {
+		var aerr *AcceptedError
+		if errors.As(err, &aerr) {
 			if err := json.Unmarshal(aerr.Raw, fork); err != nil {
 				return fork, resp, err
 			}
