@@ -92,7 +92,7 @@ func TestEnterpriseService_CreateOrUpdateCustomProperties(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/properties/schema", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"properties":[{"property_name":"name","value_type":"single_select","required":true},{"property_name":"service","value_type":"string"}]}`+"\n")
+		testBody(t, r, `{"properties":[{"property_name":"name","value_type":"single_select","required":true,"default_value":null},{"property_name":"service","value_type":"string","default_value":null}]}`+"\n")
 		fmt.Fprint(w, `[
 		{
           "property_name": "name",
