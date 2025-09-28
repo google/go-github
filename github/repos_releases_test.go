@@ -221,6 +221,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 		TarballURL:  Ptr("http://tarballurl/"),
 		Author:      &User{Name: Ptr("octocat")},
 		NodeID:      Ptr("nodeid"),
+		Immutable:   Ptr(false),
 	}
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
@@ -290,6 +291,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 		TarballURL:           Ptr("http://tarballurl/"),
 		Author:               &User{Name: Ptr("octocat")},
 		NodeID:               Ptr("nodeid"),
+		Immutable:            Ptr(false),
 	}
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
@@ -875,6 +877,7 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 		TarballURL:             Ptr("turl"),
 		Author:                 &User{ID: Ptr(int64(1))},
 		NodeID:                 Ptr("nid"),
+		Immutable:              Ptr(true),
 	}
 
 	want := `{
@@ -903,7 +906,8 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 		"author": {
 			"id": 1
 		},
-		"node_id": "nid"
+		"node_id": "nid",
+		"immutable": true
 	}`
 
 	testJSONMarshal(t, u, want)
