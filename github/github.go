@@ -925,8 +925,7 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 		//
 		// Issue #1022
 		var aerr *AcceptedError
-		ok := errors.As(err, &aerr)
-		if ok {
+		if errors.As(err, &aerr) {
 			b, readErr := io.ReadAll(resp.Body)
 			if readErr != nil {
 				return response, readErr
@@ -937,7 +936,8 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 		}
 
 		var rateLimitError *RateLimitError
-		if ok := errors.As(err, &rateLimitError); ok && req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+		if errors.As(err, &rateLimitError) &&
+			req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
 			if err := sleepUntilResetWithBuffer(req.Context(), rateLimitError.Rate.Reset.Time); err != nil {
 				return response, err
 			}

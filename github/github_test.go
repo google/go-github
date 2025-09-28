@@ -1165,7 +1165,7 @@ func TestDo_preservesResponseInHTTPError(t *testing.T) {
 
 	// Verify error type and access to status code
 	var errResp *ErrorResponse
-	if errors.As(err, &errResp) {
+	if !errors.As(err, &errResp) {
 		t.Fatalf("Expected *ErrorResponse error, got %T", err)
 	}
 
@@ -1459,7 +1459,7 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 	var rateLimitErr *RateLimitError
-	if errors.As(err, &rateLimitErr) {
+	if !errors.As(err, &rateLimitErr) {
 		t.Fatalf("Expected a *RateLimitError error; got %#v.", err)
 	}
 	if got, want := rateLimitErr.Rate.Limit, 60; got != want {
@@ -1697,7 +1697,7 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 	defer cancel()
 	_, err := client.Do(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
 	var rateLimitError *RateLimitError
-	if errors.As(err, &rateLimitError) {
+	if !errors.As(err, &rateLimitError) {
 		t.Fatalf("Expected a *rateLimitError error; got %#v.", err)
 	}
 	if got, wantSuffix := rateLimitError.Message, "Context cancelled while waiting for rate limit to reset until"; !strings.HasPrefix(got, wantSuffix) {
@@ -1733,7 +1733,7 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 	var abuseRateLimitErr *AbuseRateLimitError
-	if errors.As(err, &abuseRateLimitErr) {
+	if !errors.As(err, &abuseRateLimitErr) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if got, want := abuseRateLimitErr.RetryAfter, (*time.Duration)(nil); got != want {
@@ -1768,7 +1768,7 @@ func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 	var abuseRateLimitErr *AbuseRateLimitError
-	if errors.As(err, &abuseRateLimitErr) {
+	if !errors.As(err, &abuseRateLimitErr) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if got, want := abuseRateLimitErr.RetryAfter, (*time.Duration)(nil); got != want {
@@ -1799,7 +1799,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 	var abuseRateLimitErr *AbuseRateLimitError
-	if errors.As(err, &abuseRateLimitErr) {
+	if !errors.As(err, &abuseRateLimitErr) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
@@ -1813,7 +1813,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 	if _, err = client.Do(ctx, req, nil); err == nil {
 		t.Error("Expected error to be returned.")
 	}
-	if errors.As(err, &abuseRateLimitErr) {
+	if !errors.As(err, &abuseRateLimitErr) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
@@ -1855,7 +1855,7 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 	var abuseRateLimitErr *AbuseRateLimitError
-	if errors.As(err, &abuseRateLimitErr) {
+	if !errors.As(err, &abuseRateLimitErr) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
@@ -1870,7 +1870,7 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 	if _, err = client.Do(ctx, req, nil); err == nil {
 		t.Error("Expected error to be returned.")
 	}
-	if errors.As(err, &abuseRateLimitErr) {
+	if !errors.As(err, &abuseRateLimitErr) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
@@ -1914,7 +1914,7 @@ func TestDo_rateLimit_abuseRateLimitError_maxDuration(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 	var abuseRateLimitErr *AbuseRateLimitError
-	if errors.As(err, &abuseRateLimitErr) {
+	if !errors.As(err, &abuseRateLimitErr) {
 		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
