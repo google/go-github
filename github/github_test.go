@@ -283,13 +283,10 @@ func testErrorResponseForStatusCode(t *testing.T, code int) {
 	ctx := context.Background()
 	_, _, err := client.Repositories.ListHooks(ctx, "o", "r", nil)
 
-	var errResp *ErrorResponse
-	var rateLimitErr *RateLimitError
 	var abuseErr *AbuseRateLimitError
-
 	switch {
-	case errors.As(err, &errResp):
-	case errors.As(err, &rateLimitErr):
+	case errors.As(err, new(*ErrorResponse)):
+	case errors.As(err, new(*RateLimitError)):
 	case errors.As(err, &abuseErr):
 		if code != abuseErr.Response.StatusCode {
 			t.Error("Error response does not contain status code")
@@ -582,8 +579,7 @@ func TestNewRequest_invalidJSON(t *testing.T) {
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
-	var jerr *json.UnsupportedTypeError
-	if !errors.As(err, &jerr) {
+	if !errors.As(err, new(*json.UnsupportedTypeError)) {
 		t.Errorf("Expected a JSON error; got %#v.", err)
 	}
 }
@@ -1135,8 +1131,7 @@ func TestDo_redirectLoop(t *testing.T) {
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
-	var uerr *url.Error
-	if !errors.As(err, &uerr) {
+	if !errors.As(err, new(*url.Error)) {
 		t.Errorf("Expected a URL error; got %#v.", err)
 	}
 }
@@ -1343,8 +1338,7 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
-	var rerr *RateLimitError
-	if errors.As(err, &rerr) {
+	if errors.As(err, new(*RateLimitError)) {
 		t.Errorf("Did not expect a *RateLimitError error; got %#v.", err)
 	}
 	if got, want := resp.Rate.Limit, 60; got != want {
@@ -2032,8 +2026,7 @@ func TestBareDoUntilFound_redirectLoop(t *testing.T) {
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
-	var rerr *RedirectionError
-	if !errors.As(err, &rerr) {
+	if !errors.As(err, new(*RedirectionError)) {
 		t.Errorf("Expected a Redirection error; got %#v.", err)
 	}
 }
@@ -2053,8 +2046,7 @@ func TestBareDoUntilFound_UnexpectedRedirection(t *testing.T) {
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
-	var rerr *RedirectionError
-	if !errors.As(err, &rerr) {
+	if !errors.As(err, new(*RedirectionError)) {
 		t.Errorf("Expected a Redirection error; got %#v.", err)
 	}
 }

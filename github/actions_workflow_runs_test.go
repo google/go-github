@@ -483,8 +483,7 @@ func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
 
 	ctx := context.Background()
 	resp, err := client.Actions.CancelWorkflowRunByID(ctx, "o", "r", 3434)
-	var aerr *AcceptedError
-	if !errors.As(err, &aerr) {
+	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("Actions.CancelWorkflowRunByID returned error: %v (want AcceptedError)", err)
 	}
 	if resp.StatusCode != http.StatusAccepted {

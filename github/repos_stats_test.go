@@ -306,8 +306,7 @@ func TestRepositoriesService_AcceptedError(t *testing.T) {
 		t.Error("RepositoriesService.AcceptedError should have returned an error")
 	}
 
-	var aerr *AcceptedError
-	if !errors.As(err, &aerr) {
+	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("RepositoriesService.AcceptedError returned an AcceptedError: %v", err)
 	}
 

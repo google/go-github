@@ -144,8 +144,7 @@ func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo,
 
 	resp, err := s.client.Do(ctx, req, nil)
 	if err != nil {
-		var aerr *AcceptedError
-		if errors.As(err, &aerr) {
+		if errors.As(err, new(*AcceptedError)) {
 			return resp, nil
 		}
 

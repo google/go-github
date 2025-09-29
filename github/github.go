@@ -1183,7 +1183,8 @@ func (r *ErrorResponse) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (r *ErrorResponse) Is(target error) bool {
-	v, ok := target.(*ErrorResponse)
+	var v *ErrorResponse
+	ok := errors.As(target, &v)
 	if !ok {
 		return false
 	}
@@ -1248,7 +1249,8 @@ func (r *RateLimitError) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (r *RateLimitError) Is(target error) bool {
-	v, ok := target.(*RateLimitError)
+	var v *RateLimitError
+	ok := errors.As(target, &v)
 	if !ok {
 		return false
 	}
@@ -1275,7 +1277,8 @@ func (*AcceptedError) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (ae *AcceptedError) Is(target error) bool {
-	v, ok := target.(*AcceptedError)
+	var v *AcceptedError
+	ok := errors.As(target, &v)
 	if !ok {
 		return false
 	}
@@ -1302,7 +1305,8 @@ func (r *AbuseRateLimitError) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (r *AbuseRateLimitError) Is(target error) bool {
-	v, ok := target.(*AbuseRateLimitError)
+	var v *AbuseRateLimitError
+	ok := errors.As(target, &v)
 	if !ok {
 		return false
 	}
@@ -1336,7 +1340,8 @@ func (r *RedirectionError) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (r *RedirectionError) Is(target error) bool {
-	v, ok := target.(*RedirectionError)
+	var v *RedirectionError
+	ok := errors.As(target, &v)
 	if !ok {
 		return false
 	}

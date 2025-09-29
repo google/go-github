@@ -105,8 +105,7 @@ func TestOrganizationsService_RemoveOutsideCollaborator_NonMember(t *testing.T) 
 
 	ctx := context.Background()
 	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
-	var rerr *ErrorResponse
-	if !errors.As(err, &rerr) {
+	if !errors.As(err, new(*ErrorResponse)) {
 		t.Error("Organizations.RemoveOutsideCollaborator did not return an error")
 	}
 }
@@ -123,8 +122,7 @@ func TestOrganizationsService_RemoveOutsideCollaborator_Member(t *testing.T) {
 
 	ctx := context.Background()
 	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
-	var rerr *ErrorResponse
-	if !errors.As(err, &rerr) {
+	if !errors.As(err, new(*ErrorResponse)) {
 		t.Error("Organizations.RemoveOutsideCollaborator did not return an error")
 	}
 }
@@ -167,8 +165,7 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator_NonMemberOrLast
 
 	ctx := context.Background()
 	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(ctx, "o", "u")
-	var rerr *ErrorResponse
-	if !errors.As(err, &rerr) {
+	if !errors.As(err, new(*ErrorResponse)) {
 		t.Error("Organizations.ConvertMemberToOutsideCollaborator did not return an error")
 	}
 }

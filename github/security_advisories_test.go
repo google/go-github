@@ -404,8 +404,7 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testin
 
 	ctx := context.Background()
 	fork, _, err := client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "o", "r", "ghsa_id")
-	var aerr *AcceptedError
-	if !errors.As(err, &aerr) {
+	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("SecurityAdvisoriesService.CreateTemporaryPrivateFork returned error: %v (want AcceptedError)", err)
 	}
 

@@ -120,8 +120,7 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
 	ctx := context.Background()
 	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
-	var aerr *AcceptedError
-	if !errors.As(err, &aerr) {
+	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("Repositories.CreateFork returned error: %v (want AcceptedError)", err)
 	}
 

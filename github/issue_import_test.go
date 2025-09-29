@@ -111,8 +111,7 @@ func TestIssueImportService_Create_deferred(t *testing.T) {
 	ctx := context.Background()
 	got, _, err := client.IssueImport.Create(ctx, "o", "r", input)
 
-	var aerr *AcceptedError
-	if !errors.As(err, &aerr) {
+	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("Create returned error: %v (want AcceptedError)", err)
 	}
 
