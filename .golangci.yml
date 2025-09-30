@@ -8,6 +8,7 @@ linters:
     - copyloopvar
     - dogsled
     - dupl
+    - errorlint
     - forbidigo
     - gocritic
     - godot
@@ -25,6 +26,10 @@ linters:
     - unparam
     - whitespace
   settings:
+    errorlint:
+      errorf: false
+      asserts: true
+      comparison: true
     forbidigo:
       forbid:
         - pattern: ^reflect\.DeepEqual$
