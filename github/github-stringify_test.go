@@ -13,6 +13,23 @@ import (
 	"testing"
 )
 
+func TestAcceptedAssignment_String(t *testing.T) {
+	t.Parallel()
+	v := AcceptedAssignment{
+		ID:          Ptr(int64(0)),
+		Submitted:   Ptr(false),
+		Passing:     Ptr(false),
+		CommitCount: Ptr(0),
+		Grade:       Ptr(""),
+		Repository:  &Repository{},
+		Assignment:  &ClassroomAssignment{},
+	}
+	want := `github.AcceptedAssignment{ID:0, Submitted:false, Passing:false, CommitCount:0, Grade:"", Repository:github.Repository{}, Assignment:github.ClassroomAssignment{}}`
+	if got := v.String(); got != want {
+		t.Errorf("AcceptedAssignment.String = %v, want %v", got, want)
+	}
+}
+
 func TestActionsAllowed_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsAllowed{
@@ -105,6 +122,27 @@ func TestArtifactPeriod_String(t *testing.T) {
 	want := `github.ArtifactPeriod{Days:0, MaximumAllowedDays:0}`
 	if got := v.String(); got != want {
 		t.Errorf("ArtifactPeriod.String = %v, want %v", got, want)
+	}
+}
+
+func TestAssignmentGrade_String(t *testing.T) {
+	t.Parallel()
+	v := AssignmentGrade{
+		AssignmentName:        Ptr(""),
+		AssignmentURL:         Ptr(""),
+		StarterCodeURL:        Ptr(""),
+		GithubUsername:        Ptr(""),
+		RosterIdentifier:      Ptr(""),
+		StudentRepositoryName: Ptr(""),
+		StudentRepositoryURL:  Ptr(""),
+		SubmissionTimestamp:   &Timestamp{},
+		PointsAwarded:         Ptr(0),
+		PointsAvailable:       Ptr(0),
+		GroupName:             Ptr(""),
+	}
+	want := `github.AssignmentGrade{AssignmentName:"", AssignmentURL:"", StarterCodeURL:"", GithubUsername:"", RosterIdentifier:"", StudentRepositoryName:"", StudentRepositoryURL:"", SubmissionTimestamp:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PointsAwarded:0, PointsAvailable:0, GroupName:""}`
+	if got := v.String(); got != want {
+		t.Errorf("AssignmentGrade.String = %v, want %v", got, want)
 	}
 }
 
@@ -269,6 +307,20 @@ func TestClassroomAssignment_String(t *testing.T) {
 	want := `github.ClassroomAssignment{ID:0, PublicRepo:false, Title:"", Type:"", InviteLink:"", InvitationsEnabled:false, Slug:"", StudentsAreRepoAdmins:false, FeedbackPullRequestsEnabled:false, MaxTeams:0, MaxMembers:0, Editor:"", Accepted:0, Submitted:0, Passing:0, Language:"", Deadline:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, StarterCodeRepository:github.Repository{}, Classroom:github.Classroom{}}`
 	if got := v.String(); got != want {
 		t.Errorf("ClassroomAssignment.String = %v, want %v", got, want)
+	}
+}
+
+func TestClassroomUser_String(t *testing.T) {
+	t.Parallel()
+	v := ClassroomUser{
+		ID:        Ptr(int64(0)),
+		Login:     Ptr(""),
+		AvatarURL: Ptr(""),
+		HTMLURL:   Ptr(""),
+	}
+	want := `github.ClassroomUser{ID:0, Login:"", AvatarURL:"", HTMLURL:""}`
+	if got := v.String(); got != want {
+		t.Errorf("ClassroomUser.String = %v, want %v", got, want)
 	}
 }
 
@@ -2018,8 +2070,9 @@ func TestRepositoryRelease_String(t *testing.T) {
 		TarballURL:             Ptr(""),
 		Author:                 &User{},
 		NodeID:                 Ptr(""),
+		Immutable:              Ptr(false),
 	}
-	want := `github.RepositoryRelease{TagName:"", TargetCommitish:"", Name:"", Body:"", Draft:false, Prerelease:false, MakeLatest:"", DiscussionCategoryName:"", GenerateReleaseNotes:false, ID:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PublishedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", HTMLURL:"", AssetsURL:"", UploadURL:"", ZipballURL:"", TarballURL:"", Author:github.User{}, NodeID:""}`
+	want := `github.RepositoryRelease{TagName:"", TargetCommitish:"", Name:"", Body:"", Draft:false, Prerelease:false, MakeLatest:"", DiscussionCategoryName:"", GenerateReleaseNotes:false, ID:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PublishedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", HTMLURL:"", AssetsURL:"", UploadURL:"", ZipballURL:"", TarballURL:"", Author:github.User{}, NodeID:"", Immutable:false}`
 	if got := v.String(); got != want {
 		t.Errorf("RepositoryRelease.String = %v, want %v", got, want)
 	}

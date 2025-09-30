@@ -14,68 +14,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestBillingService_GetActionsBillingOrg(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/orgs/o/settings/billing/actions", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-				"total_minutes_used": 305.0,
-				"total_paid_minutes_used": 0.0,
-				"included_minutes": 3000.0,
-				"minutes_used_breakdown": {
-					"UBUNTU": 205,
-					"MACOS": 10,
-					"WINDOWS": 90
-				}
-			}`)
-	})
-
-	ctx := context.Background()
-	hook, _, err := client.Billing.GetActionsBillingOrg(ctx, "o")
-	if err != nil {
-		t.Errorf("Billing.GetActionsBillingOrg returned error: %v", err)
-	}
-
-	want := &ActionBilling{
-		TotalMinutesUsed:     305.0,
-		TotalPaidMinutesUsed: 0.0,
-		IncludedMinutes:      3000.0,
-		MinutesUsedBreakdown: MinutesUsedBreakdown{
-			"UBUNTU":  205,
-			"MACOS":   10,
-			"WINDOWS": 90,
-		},
-	}
-	if !cmp.Equal(hook, want) {
-		t.Errorf("Billing.GetActionsBillingOrg returned %+v, want %+v", hook, want)
-	}
-
-	const methodName = "GetActionsBillingOrg"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetActionsBillingOrg(ctx, "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetActionsBillingOrg(ctx, "o")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
-func TestBillingService_GetActionsBillingOrg_invalidOrg(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-
-	ctx := context.Background()
-	_, _, err := client.Billing.GetActionsBillingOrg(ctx, "%")
-	testURLParseError(t, err)
-}
-
 func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -177,68 +115,6 @@ func TestBillingService_GetStorageBillingOrg_invalidOrg(t *testing.T) {
 
 	ctx := context.Background()
 	_, _, err := client.Billing.GetStorageBillingOrg(ctx, "%")
-	testURLParseError(t, err)
-}
-
-func TestBillingService_GetActionsBillingUser(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/users/u/settings/billing/actions", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-				"total_minutes_used": 10,
-				"total_paid_minutes_used": 0,
-				"included_minutes": 3000,
-				"minutes_used_breakdown": {
-					"UBUNTU": 205,
-					"MACOS": 10,
-					"WINDOWS": 90
-				}
-			}`)
-	})
-
-	ctx := context.Background()
-	hook, _, err := client.Billing.GetActionsBillingUser(ctx, "u")
-	if err != nil {
-		t.Errorf("Billing.GetActionsBillingUser returned error: %v", err)
-	}
-
-	want := &ActionBilling{
-		TotalMinutesUsed:     10,
-		TotalPaidMinutesUsed: 0,
-		IncludedMinutes:      3000,
-		MinutesUsedBreakdown: MinutesUsedBreakdown{
-			"UBUNTU":  205,
-			"MACOS":   10,
-			"WINDOWS": 90,
-		},
-	}
-	if !cmp.Equal(hook, want) {
-		t.Errorf("Billing.GetActionsBillingUser returned %+v, want %+v", hook, want)
-	}
-
-	const methodName = "GetActionsBillingUser"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetActionsBillingOrg(ctx, "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetActionsBillingUser(ctx, "o")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
-func TestBillingService_GetActionsBillingUser_invalidUser(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-
-	ctx := context.Background()
-	_, _, err := client.Billing.GetActionsBillingUser(ctx, "%")
 	testURLParseError(t, err)
 }
 
@@ -360,35 +236,6 @@ func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
 		"UBUNTU": 1,
 		"MACOS": 1,
 		"WINDOWS": 1
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestActionBilling_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &MinutesUsedBreakdown{}, "{}")
-
-	u := &ActionBilling{
-		TotalMinutesUsed:     1,
-		TotalPaidMinutesUsed: 1,
-		IncludedMinutes:      1,
-		MinutesUsedBreakdown: MinutesUsedBreakdown{
-			"UBUNTU":  1,
-			"MACOS":   1,
-			"WINDOWS": 1,
-		},
-	}
-
-	want := `{
-		"total_minutes_used": 1,
-		"total_paid_minutes_used": 1,
-		"included_minutes": 1,
-		"minutes_used_breakdown": {
-			"UBUNTU": 1,
-			"MACOS": 1,
-			"WINDOWS": 1
-		}
 	}`
 
 	testJSONMarshal(t, u, want)
