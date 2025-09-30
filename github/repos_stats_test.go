@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
@@ -305,7 +306,7 @@ func TestRepositoriesService_AcceptedError(t *testing.T) {
 		t.Error("RepositoriesService.AcceptedError should have returned an error")
 	}
 
-	if _, ok := err.(*AcceptedError); !ok {
+	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("RepositoriesService.AcceptedError returned an AcceptedError: %v", err)
 	}
 

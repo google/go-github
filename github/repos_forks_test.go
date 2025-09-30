@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
@@ -119,7 +120,7 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
 	ctx := context.Background()
 	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
-	if _, ok := err.(*AcceptedError); !ok {
+	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("Repositories.CreateFork returned error: %v (want AcceptedError)", err)
 	}
 
