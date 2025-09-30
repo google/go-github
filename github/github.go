@@ -896,7 +896,8 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 		}
 
 		// If the error type is *url.Error, sanitize its URL before returning.
-		if e, ok := err.(*url.Error); ok {
+		var e *url.Error
+		if errors.As(err, &e) {
 			if url, err := url.Parse(e.URL); err == nil {
 				e.URL = sanitizeURL(url).String()
 				return response, e
@@ -923,8 +924,8 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 		// added to the AcceptedError and returned.
 		//
 		// Issue #1022
-		aerr, ok := err.(*AcceptedError)
-		if ok {
+		var aerr *AcceptedError
+		if errors.As(err, &aerr) {
 			b, readErr := io.ReadAll(resp.Body)
 			if readErr != nil {
 				return response, readErr
@@ -934,8 +935,9 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 			err = aerr
 		}
 
-		rateLimitError, ok := err.(*RateLimitError)
-		if ok && req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+		var rateLimitError *RateLimitError
+		if errors.As(err, &rateLimitError) &&
+			req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
 			if err := sleepUntilResetWithBuffer(req.Context(), rateLimitError.Rate.Reset.Time); err != nil {
 				return response, err
 			}
@@ -944,8 +946,8 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 		}
 
 		// Update the secondary rate limit if we hit it.
-		rerr, ok := err.(*AbuseRateLimitError)
-		if ok && rerr.RetryAfter != nil {
+		var rerr *AbuseRateLimitError
+		if errors.As(err, &rerr) && rerr.RetryAfter != nil {
 			// if a max duration is specified, make sure that we are waiting at most this duration
 			if c.MaxSecondaryRateLimitRetryAfterDuration > 0 && rerr.GetRetryAfter() > c.MaxSecondaryRateLimitRetryAfterDuration {
 				rerr.RetryAfter = &c.MaxSecondaryRateLimitRetryAfterDuration
@@ -992,8 +994,8 @@ var errInvalidLocation = errors.New("invalid or empty Location header in redirec
 func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRedirects int) (*url.URL, *Response, error) {
 	response, err := c.bareDoIgnoreRedirects(ctx, req)
 	if err != nil {
-		rerr, ok := err.(*RedirectionError)
-		if ok {
+		var rerr *RedirectionError
+		if errors.As(err, &rerr) {
 			// If we receive a 302, transform potential relative locations into absolute and return it.
 			if rerr.StatusCode == http.StatusFound {
 				if rerr.Location == nil {
@@ -1181,8 +1183,8 @@ func (r *ErrorResponse) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (r *ErrorResponse) Is(target error) bool {
-	v, ok := target.(*ErrorResponse)
-	if !ok {
+	var v *ErrorResponse
+	if !errors.As(target, &v) {
 		return false
 	}
 
@@ -1246,8 +1248,8 @@ func (r *RateLimitError) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (r *RateLimitError) Is(target error) bool {
-	v, ok := target.(*RateLimitError)
-	if !ok {
+	var v *RateLimitError
+	if !errors.As(target, &v) {
 		return false
 	}
 
@@ -1273,8 +1275,8 @@ func (*AcceptedError) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (ae *AcceptedError) Is(target error) bool {
-	v, ok := target.(*AcceptedError)
-	if !ok {
+	var v *AcceptedError
+	if !errors.As(target, &v) {
 		return false
 	}
 	return bytes.Equal(ae.Raw, v.Raw)
@@ -1300,8 +1302,8 @@ func (r *AbuseRateLimitError) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (r *AbuseRateLimitError) Is(target error) bool {
-	v, ok := target.(*AbuseRateLimitError)
-	if !ok {
+	var v *AbuseRateLimitError
+	if !errors.As(target, &v) {
 		return false
 	}
 
@@ -1334,8 +1336,8 @@ func (r *RedirectionError) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (r *RedirectionError) Is(target error) bool {
-	v, ok := target.(*RedirectionError)
-	if !ok {
+	var v *RedirectionError
+	if !errors.As(target, &v) {
 		return false
 	}
 
@@ -1486,7 +1488,8 @@ func parseBoolResponse(err error) (bool, error) {
 		return true, nil
 	}
 
-	if err, ok := err.(*ErrorResponse); ok && err.Response.StatusCode == http.StatusNotFound {
+	var rerr *ErrorResponse
+	if errors.As(err, &rerr) && rerr.Response.StatusCode == http.StatusNotFound {
 		// Simply false. In this one case, we do not pass the error through.
 		return false, nil
 	}
