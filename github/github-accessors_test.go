@@ -8566,23 +8566,23 @@ func TestCustomOrgRoles_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
-func TestCustomPatternScan_GetPatternScope(tt *testing.T) {
+func TestCustomPatternBackfillScan_GetPatternScope(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CustomPatternScan{PatternScope: &zeroValue}
+	c := &CustomPatternBackfillScan{PatternScope: &zeroValue}
 	c.GetPatternScope()
-	c = &CustomPatternScan{}
+	c = &CustomPatternBackfillScan{}
 	c.GetPatternScope()
 	c = nil
 	c.GetPatternScope()
 }
 
-func TestCustomPatternScan_GetPatternSlug(tt *testing.T) {
+func TestCustomPatternBackfillScan_GetPatternSlug(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CustomPatternScan{PatternSlug: &zeroValue}
+	c := &CustomPatternBackfillScan{PatternSlug: &zeroValue}
 	c.GetPatternSlug()
-	c = &CustomPatternScan{}
+	c = &CustomPatternBackfillScan{}
 	c.GetPatternSlug()
 	c = nil
 	c.GetPatternSlug()

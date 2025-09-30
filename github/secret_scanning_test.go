@@ -710,19 +710,19 @@ func TestSecretScanningService_GetScanHistory(t *testing.T) {
 		t.Errorf("SecretScanning.GetScanHistory returned error: %v", err)
 	}
 
-	startAt1 := Timestamp{time.Date(2025, time.July, 29, 9, 55, 0, 0, time.UTC)}
-	completeAt1 := Timestamp{time.Date(2025, time.July, 29, 10, 0, 0, 0, time.UTC)}
-	startAt2 := Timestamp{time.Date(2025, time.July, 29, 9, 0, 0, 0, time.UTC)}
+	incrementalScanStartAt := Timestamp{time.Date(2025, time.July, 29, 9, 55, 0, 0, time.UTC)}
+	incrementalScancompleteAt := Timestamp{time.Date(2025, time.July, 29, 10, 0, 0, 0, time.UTC)}
+	customPatternBackfillScanStartedAt := Timestamp{time.Date(2025, time.July, 29, 9, 0, 0, 0, time.UTC)}
 
-	want := &SecretScanningHistory{
+	want := &SecretScanningScanHistory{
 		IncrementalScans: []*SecretsScan{
-			{Type: "incremental", Status: "success", CompletedAt: &completeAt1, StartedAt: &startAt1},
+			{Type: "incremental", Status: "success", CompletedAt: &incrementalScancompleteAt, StartedAt: &incrementalScanStartAt},
 		},
 		BackfillScans:      []*SecretsScan{},
 		PatternUpdateScans: []*SecretsScan{},
-		CustomPatternBackfillScans: []*CustomPatternScan{
+		CustomPatternBackfillScans: []*CustomPatternBackfillScan{
 			{
-				SecretsScan:  SecretsScan{Type: "custom_backfill", Status: "in_progress", CompletedAt: nil, StartedAt: &startAt2},
+				SecretsScan:  SecretsScan{Type: "custom_backfill", Status: "in_progress", CompletedAt: nil, StartedAt: &customPatternBackfillScanStartedAt},
 				PatternSlug:  Ptr("my-custom-pattern"),
 				PatternScope: Ptr("organization"),
 			},

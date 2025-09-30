@@ -122,7 +122,8 @@ type SecretScanningAlertUpdateOptions struct {
 
 // PushProtectionBypassRequest represents the parameters for CreatePushProtectionBypass.
 type PushProtectionBypassRequest struct {
-	// Reason provides a justification for the push protection bypass.
+	// The reason for bypassing push protection.
+	// Can be one of: false_positive, used_in_tests, will_fix_later
 	Reason string `json:"reason"`
 	// PlaceholderID is an identifier used for the bypass request.
 	// GitHub Secret Scanning provides you with a unique PlaceholderID associated with that specific blocked push.
@@ -147,15 +148,15 @@ type SecretsScan struct {
 	StartedAt   *Timestamp `json:"started_at,omitempty"`
 }
 
-// CustomPatternScan represents a scan with an associated custom pattern.
-type CustomPatternScan struct {
+// CustomPatternBackfillScan represents a scan with an associated custom pattern.
+type CustomPatternBackfillScan struct {
 	SecretsScan
 	PatternSlug  *string `json:"pattern_slug,omitempty"`
 	PatternScope *string `json:"pattern_scope,omitempty"`
 }
 
-// SecretScanningHistory is the top-level struct for the secret scanning API response.
-type SecretScanningHistory struct {
+// SecretScanningScanHistory is the top-level struct for the secret scanning API response.
+type SecretScanningScanHistory struct {
 	// Information on incremental scan performed by secret scanning on the repository.
 	IncrementalScans []*SecretsScan `json:"incremental_scans,omitempty"`
 	// Information on backfill scan performed by secret scanning on the repository.
@@ -163,7 +164,7 @@ type SecretScanningHistory struct {
 	// Information on pattern update scan performed by secret scanning on the repository.
 	PatternUpdateScans []*SecretsScan `json:"pattern_update_scans,omitempty"`
 	// Information on custom pattern backfill scan performed by secret scanning on the repository.
-	CustomPatternBackfillScans []*CustomPatternScan `json:"custom_pattern_backfill_scans,omitempty"`
+	CustomPatternBackfillScans []*CustomPatternBackfillScan `json:"custom_pattern_backfill_scans,omitempty"`
 }
 
 // ListAlertsForEnterprise lists secret scanning alerts for eligible repositories in an enterprise, from newest to oldest.
@@ -347,12 +348,13 @@ func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, 
 	if err != nil {
 		return nil, nil, err
 	}
-	var responsePushProtectionBypass *PushProtectionBypass
-	resp, err := s.client.Do(ctx, req, &responsePushProtectionBypass)
+
+	var pushProtectionBypass *PushProtectionBypass
+	resp, err := s.client.Do(ctx, req, &pushProtectionBypass)
 	if err != nil {
 		return nil, resp, err
 	}
-	return responsePushProtectionBypass, resp, nil
+	return pushProtectionBypass, resp, nil
 }
 
 // GetScanHistory fetches the secret scanning history for a given repository.
@@ -363,7 +365,7 @@ func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#get-secret-scanning-scan-history-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/secret-scanning/scan-history
-func (s *SecretScanningService) GetScanHistory(ctx context.Context, owner, repo string) (*SecretScanningHistory, *Response, error) {
+func (s *SecretScanningService) GetScanHistory(ctx context.Context, owner, repo string) (*SecretScanningScanHistory, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/scan-history", owner, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -371,7 +373,7 @@ func (s *SecretScanningService) GetScanHistory(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	var secretScanningHistory *SecretScanningHistory
+	var secretScanningHistory *SecretScanningScanHistory
 	resp, err := s.client.Do(ctx, req, &secretScanningHistory)
 	if err != nil {
 		return nil, resp, err

@@ -6559,7 +6559,7 @@ func (c *CustomOrgRoles) GetUpdatedAt() Timestamp {
 }
 
 // GetPatternScope returns the PatternScope field if it's non-nil, zero value otherwise.
-func (c *CustomPatternScan) GetPatternScope() string {
+func (c *CustomPatternBackfillScan) GetPatternScope() string {
 	if c == nil || c.PatternScope == nil {
 		return ""
 	}
@@ -6567,7 +6567,7 @@ func (c *CustomPatternScan) GetPatternScope() string {
 }
 
 // GetPatternSlug returns the PatternSlug field if it's non-nil, zero value otherwise.
-func (c *CustomPatternScan) GetPatternSlug() string {
+func (c *CustomPatternBackfillScan) GetPatternSlug() string {
 	if c == nil || c.PatternSlug == nil {
 		return ""
 	}
