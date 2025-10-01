@@ -45,6 +45,7 @@ type RepositoryRelease struct {
 	TarballURL  *string         `json:"tarball_url,omitempty"`
 	Author      *User           `json:"author,omitempty"`
 	NodeID      *string         `json:"node_id,omitempty"`
+	Immutable   *bool           `json:"immutable,omitempty"`
 }
 
 func (r RepositoryRelease) String() string {
