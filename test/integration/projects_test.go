@@ -56,7 +56,7 @@ func TestProjectsV2_Org(t *testing.T) {
 	if project.Number == nil {
 		t.Skip("selected org project has nil Number field")
 	}
-	projectNumber := int64(*project.Number)
+	projectNumber := *project.Number
 
 	// Re-fetch via Get to exercise endpoint explicitly.
 	proj, _, err := client.Projects.GetProjectForOrg(ctx, org, projectNumber)
@@ -65,7 +65,7 @@ func TestProjectsV2_Org(t *testing.T) {
 		// we want correctness so treat as fatal here.
 		t.Fatalf("Projects.GetProjectForOrg returned error: %v", err)
 	}
-	if proj.Number == nil || int64(*proj.Number) != projectNumber {
+	if proj.Number == nil || *proj.Number != projectNumber {
 		t.Fatalf("GetProjectForOrg returned unexpected project number: got %+v want %d", proj.Number, projectNumber)
 	}
 
@@ -100,14 +100,13 @@ func TestProjectsV2_User(t *testing.T) {
 	if project.Number == nil {
 		t.Skip("selected user project has nil Number field")
 	}
-	projectNumber := int64(*project.Number)
 
-	proj, _, err := client.Projects.GetProjectForUser(ctx, user, projectNumber)
+	proj, _, err := client.Projects.GetProjectForUser(ctx, user, *project.Number)
 	if err != nil {
 		// can't fetch specific project; treat as fatal
 		t.Fatalf("Projects.GetProjectForUser returned error: %v", err)
 	}
-	if proj.Number == nil || int64(*proj.Number) != projectNumber {
-		t.Fatalf("GetProjectForUser returned unexpected project number: got %+v want %d", proj.Number, projectNumber)
+	if proj.Number == nil || *proj.Number != *project.Number {
+		t.Fatalf("GetProjectForUser returned unexpected project number: got %+v want %d", proj.Number, *project.Number)
 	}
 }

@@ -133,7 +133,7 @@ func (s *ProjectsService) ListProjectsForOrg(ctx context.Context, org string, op
 // GitHub API docs: https://docs.github.com/rest/projects/projects#get-project-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}
-func (s *ProjectsService) GetProjectForOrg(ctx context.Context, org string, projectNumber int64) (*ProjectV2, *Response, error) {
+func (s *ProjectsService) GetProjectForOrg(ctx context.Context, org string, projectNumber int) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v", org, projectNumber)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func (s *ProjectsService) ListProjectsForUser(ctx context.Context, username stri
 // GitHub API docs: https://docs.github.com/rest/projects/projects#get-project-for-user
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}
-func (s *ProjectsService) GetProjectForUser(ctx context.Context, username string, projectNumber int64) (*ProjectV2, *Response, error) {
+func (s *ProjectsService) GetProjectForUser(ctx context.Context, username string, projectNumber int) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v", username, projectNumber)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func (s *ProjectsService) GetProjectForUser(ctx context.Context, username string
 // GitHub API docs: https://docs.github.com/rest/projects/fields#list-project-fields-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/fields
-func (s *ProjectsService) ListProjectFieldsForOrg(ctx context.Context, org string, projectNumber int64, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
+func (s *ProjectsService) ListProjectFieldsForOrg(ctx context.Context, org string, projectNumber int, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/fields", org, projectNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
