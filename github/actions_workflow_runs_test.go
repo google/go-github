@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -482,7 +483,7 @@ func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
 
 	ctx := context.Background()
 	resp, err := client.Actions.CancelWorkflowRunByID(ctx, "o", "r", 3434)
-	if _, ok := err.(*AcceptedError); !ok {
+	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("Actions.CancelWorkflowRunByID returned error: %v (want AcceptedError)", err)
 	}
 	if resp.StatusCode != http.StatusAccepted {
