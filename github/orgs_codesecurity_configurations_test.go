@@ -167,7 +167,7 @@ func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T)
 			}
 		},
 		{
-			"default_for_new_repos": "private",
+			"default_for_new_repos": "private_and_internal",
 			"configuration": {
 				"id":2,
 				"name":"config2",
@@ -184,7 +184,7 @@ func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T)
 
 	want := []*CodeSecurityConfigurationWithDefaultForNewRepos{
 		{DefaultForNewRepos: Ptr("public"), Configuration: &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")}},
-		{DefaultForNewRepos: Ptr("private"), Configuration: &CodeSecurityConfiguration{ID: Ptr(int64(2)), Name: Ptr("config2"), PrivateVulnerabilityReporting: Ptr("enabled")}},
+		{DefaultForNewRepos: Ptr("private_and_internal"), Configuration: &CodeSecurityConfiguration{ID: Ptr(int64(2)), Name: Ptr("config2"), PrivateVulnerabilityReporting: Ptr("enabled")}},
 	}
 	if !cmp.Equal(configurations, want) {
 		t.Errorf("Organizations.GetDefaultCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
