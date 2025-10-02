@@ -106,7 +106,7 @@ func (s *OrganizationsService) CreateCodeSecurityConfiguration(ctx context.Conte
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-default-code-security-configurations
 //
 //meta:operation GET /orgs/{org}/code-security/configurations/defaults
-func (s *OrganizationsService) GetDefaultCodeSecurityConfigurations(ctx context.Context, org string) ([]*CodeSecurityConfiguration, *Response, error) {
+func (s *OrganizationsService) GetDefaultCodeSecurityConfigurations(ctx context.Context, org string) ([]*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/defaults", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -114,7 +114,7 @@ func (s *OrganizationsService) GetDefaultCodeSecurityConfigurations(ctx context.
 		return nil, nil, err
 	}
 
-	var configurations []*CodeSecurityConfiguration
+	var configurations []*CodeSecurityConfigurationWithDefaultForNewRepos
 	resp, err := s.client.Do(ctx, req, &configurations)
 	if err != nil {
 		return nil, resp, err

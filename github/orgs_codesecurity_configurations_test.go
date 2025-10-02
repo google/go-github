@@ -159,15 +159,22 @@ func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T)
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[
 		{
-			"id":1,
-			"name":"config1",
-			"code_scanning_default_setup": "enabled"
+			"default_for_new_repos": "public",
+			"configuration": {
+				"id":1,
+				"name":"config1",
+				"code_scanning_default_setup": "enabled"
+			}
 		},
 		{
-			"id":2,
-			"name":"config2",
-			"private_vulnerability_reporting": "enabled"
-		}]`)
+			"default_for_new_repos": "private_and_internal",
+			"configuration": {
+				"id":2,
+				"name":"config2",
+				"private_vulnerability_reporting": "enabled"
+			}
+		}
+	]`)
 	})
 
 	configurations, _, err := client.Organizations.GetDefaultCodeSecurityConfigurations(ctx, "o")
@@ -175,9 +182,9 @@ func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T)
 		t.Errorf("Organizations.GetDefaultCodeSecurityConfigurations returned error: %v", err)
 	}
 
-	want := []*CodeSecurityConfiguration{
-		{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")},
-		{ID: Ptr(int64(2)), Name: Ptr("config2"), PrivateVulnerabilityReporting: Ptr("enabled")},
+	want := []*CodeSecurityConfigurationWithDefaultForNewRepos{
+		{DefaultForNewRepos: Ptr("public"), Configuration: &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: Ptr("config1"), CodeScanningDefaultSetup: Ptr("enabled")}},
+		{DefaultForNewRepos: Ptr("private_and_internal"), Configuration: &CodeSecurityConfiguration{ID: Ptr(int64(2)), Name: Ptr("config2"), PrivateVulnerabilityReporting: Ptr("enabled")}},
 	}
 	if !cmp.Equal(configurations, want) {
 		t.Errorf("Organizations.GetDefaultCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
