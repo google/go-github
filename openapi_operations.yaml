@@ -27,7 +27,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 5efe9a47bbe583fdc512c811f92b779b0715b95c
+openapi_commit: 234cc58968e2c29eb8583e6be10186c3371b7c4e
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -1077,6 +1077,10 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#get-github-packages-billing-for-an-enterprise
     openapi_files:
       - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/settings/billing/premium_request/usage
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#get-billing-premium-request-usage-report-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/settings/billing/shared-storage
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/billing#get-shared-storage-billing-for-an-enterprise
     openapi_files:
@@ -1524,6 +1528,11 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: PUT /organizations/{org}/dependabot/repository-access/default-level
     documentation_url: https://docs.github.com/rest/dependabot/repository-access#set-the-default-repository-access-level-for-dependabot
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /organizations/{org}/settings/billing/premium_request/usage
+    documentation_url: https://docs.github.com/rest/billing/enhanced-billing#get-billing-premium-request-usage-report-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -7653,6 +7662,11 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: GET /users/{username}/settings/billing/packages
     documentation_url: https://docs.github.com/rest/billing/billing#get-github-packages-billing-for-a-user
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /users/{username}/settings/billing/premium_request/usage
+    documentation_url: https://docs.github.com/rest/billing/enhanced-billing#get-billing-premium-request-usage-report-for-a-user
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
