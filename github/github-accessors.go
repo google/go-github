@@ -6286,6 +6286,38 @@ func (c *CreateEvent) GetSender() *User {
 	return c.Sender
 }
 
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (c *CreateGistCommentRequest) GetBody() string {
+	if c == nil || c.Body == nil {
+		return ""
+	}
+	return *c.Body
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateGistRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetFiles returns the Files map if it's non-nil, an empty map otherwise.
+func (c *CreateGistRequest) GetFiles() map[GistFilename]GistFile {
+	if c == nil || c.Files == nil {
+		return map[GistFilename]GistFile{}
+	}
+	return c.Files
+}
+
+// GetPublic returns the Public field if it's non-nil, zero value otherwise.
+func (c *CreateGistRequest) GetPublic() bool {
+	if c == nil || c.Public == nil {
+		return false
+	}
+	return *c.Public
+}
+
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
 func (c *CreateOrgInvitationOptions) GetEmail() string {
 	if c == nil || c.Email == nil {
@@ -28548,6 +28580,30 @@ func (u *UpdateEnterpriseRunnerGroupRequest) GetVisibility() string {
 		return ""
 	}
 	return *u.Visibility
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (u *UpdateGistCommentRequest) GetBody() string {
+	if u == nil || u.Body == nil {
+		return ""
+	}
+	return *u.Body
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateGistRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetFiles returns the Files map if it's non-nil, an empty map otherwise.
+func (u *UpdateGistRequest) GetFiles() map[GistFilename]GistFile {
+	if u == nil || u.Files == nil {
+		return map[GistFilename]GistFile{}
+	}
+	return u.Files
 }
 
 // GetForce returns the Force field if it's non-nil, zero value otherwise.

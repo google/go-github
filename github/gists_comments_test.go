@@ -170,36 +170,37 @@ func TestGistsService_CreateComment(t *testing.T) {
 	input := &GistComment{ID: Ptr(int64(1)), Body: Ptr("b")}
 
 	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
-		v := new(GistComment)
+		v := new(CreateGistCommentRequest)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
+		want := &CreateGistCommentRequest{Body: Ptr("b")}
+		if !cmp.Equal(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	ctx := context.Background()
-	comment, _, err := client.Gists.CreateComment(ctx, "1", input)
+	comment, _, err := client.Gists.CreateCommentFromGistComment(ctx, "1", input)
 	if err != nil {
-		t.Errorf("Gists.CreateComment returned error: %v", err)
+		t.Errorf("Gists.CreateCommentFromGistComment returned error: %v", err)
 	}
 
 	want := &GistComment{ID: Ptr(int64(1))}
 	if !cmp.Equal(comment, want) {
-		t.Errorf("Gists.CreateComment returned %+v, want %+v", comment, want)
+		t.Errorf("Gists.CreateCommentFromGistComment returned %+v, want %+v", comment, want)
 	}
 
-	const methodName = "CreateComment"
+	const methodName = "CreateCommentFromGistComment"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Gists.CreateComment(ctx, "\n", input)
+		_, _, err = client.Gists.CreateCommentFromGistComment(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Gists.CreateComment(ctx, "1", input)
+		got, resp, err := client.Gists.CreateCommentFromGistComment(ctx, "1", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -212,8 +213,40 @@ func TestGistsService_CreateComment_invalidID(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
-	_, _, err := client.Gists.CreateComment(ctx, "%", nil)
+	_, _, err := client.Gists.CreateCommentFromGistComment(ctx, "%", nil)
 	testURLParseError(t, err)
+}
+
+func TestGistsService_CreateComment_ValueParameter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := CreateGistCommentRequest{
+		Body: Ptr("Test comment body"),
+	}
+
+	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		v := new(CreateGistCommentRequest)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		if !cmp.Equal(v, &input) {
+			t.Errorf("Request body = %+v, want %+v", v, &input)
+		}
+
+		fmt.Fprint(w, `{"id": 1}`)
+	})
+
+	ctx := context.Background()
+	comment, _, err := client.Gists.CreateComment(ctx, "1", input)
+	if err != nil {
+		t.Errorf("Gists.CreateComment returned error: %v", err)
+	}
+
+	want := &GistComment{ID: Ptr(int64(1))}
+	if !cmp.Equal(comment, want) {
+		t.Errorf("Gists.CreateComment returned %+v, want %+v", comment, want)
+	}
 }
 
 func TestGistsService_EditComment(t *testing.T) {
@@ -223,36 +256,37 @@ func TestGistsService_EditComment(t *testing.T) {
 	input := &GistComment{ID: Ptr(int64(1)), Body: Ptr("b")}
 
 	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
-		v := new(GistComment)
+		v := new(UpdateGistCommentRequest)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
+		want := &UpdateGistCommentRequest{Body: Ptr("b")}
+		if !cmp.Equal(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	ctx := context.Background()
-	comment, _, err := client.Gists.EditComment(ctx, "1", 2, input)
+	comment, _, err := client.Gists.EditCommentFromGistComment(ctx, "1", 2, input)
 	if err != nil {
-		t.Errorf("Gists.EditComment returned error: %v", err)
+		t.Errorf("Gists.EditCommentFromGistComment returned error: %v", err)
 	}
 
 	want := &GistComment{ID: Ptr(int64(1))}
 	if !cmp.Equal(comment, want) {
-		t.Errorf("Gists.EditComment returned %+v, want %+v", comment, want)
+		t.Errorf("Gists.EditCommentFromGistComment returned %+v, want %+v", comment, want)
 	}
 
-	const methodName = "EditComment"
+	const methodName = "EditCommentFromGistComment"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Gists.EditComment(ctx, "\n", -2, input)
+		_, _, err = client.Gists.EditCommentFromGistComment(ctx, "\n", -2, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Gists.EditComment(ctx, "1", 2, input)
+		got, resp, err := client.Gists.EditCommentFromGistComment(ctx, "1", 2, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -265,8 +299,40 @@ func TestGistsService_EditComment_invalidID(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := context.Background()
-	_, _, err := client.Gists.EditComment(ctx, "%", 1, nil)
+	_, _, err := client.Gists.EditCommentFromGistComment(ctx, "%", 1, nil)
 	testURLParseError(t, err)
+}
+
+func TestGistsService_EditComment_ValueParameter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := UpdateGistCommentRequest{
+		Body: Ptr("Updated comment body"),
+	}
+
+	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		v := new(UpdateGistCommentRequest)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		if !cmp.Equal(v, &input) {
+			t.Errorf("Request body = %+v, want %+v", v, &input)
+		}
+
+		fmt.Fprint(w, `{"id": 1}`)
+	})
+
+	ctx := context.Background()
+	comment, _, err := client.Gists.EditComment(ctx, "1", 2, input)
+	if err != nil {
+		t.Errorf("Gists.EditComment returned error: %v", err)
+	}
+
+	want := &GistComment{ID: Ptr(int64(1))}
+	if !cmp.Equal(comment, want) {
+		t.Errorf("Gists.EditComment returned %+v, want %+v", comment, want)
+	}
 }
 
 func TestGistsService_DeleteComment(t *testing.T) {
