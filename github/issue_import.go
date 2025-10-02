@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -86,8 +87,8 @@ func (s *IssueImportService) Create(ctx context.Context, owner, repo string, iss
 	i := new(IssueImportResponse)
 	resp, err := s.client.Do(ctx, req, i)
 	if err != nil {
-		aerr, ok := err.(*AcceptedError)
-		if ok {
+		var aerr *AcceptedError
+		if errors.As(err, &aerr) {
 			if err := json.Unmarshal(aerr.Raw, i); err != nil {
 				return i, resp, err
 			}
