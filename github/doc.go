@@ -111,10 +111,10 @@ To detect an API rate limit error, you can check if its type is *[RateLimitError
 For secondary rate limits, you can check if its type is *[AbuseRateLimitError]:
 
 	repos, _, err := client.Repositories.List(ctx, "", nil)
-	if _, ok := err.(*github.RateLimitError); ok {
+	if errors.As(err, new(*github.RateLimitError)) {
 		log.Println("hit rate limit")
 	}
-	if _, ok := err.(*github.AbuseRateLimitError); ok {
+	if errors.As(err, new(*github.AbuseRateLimitError)) {
 		log.Println("hit secondary rate limit")
 	}
 
@@ -132,7 +132,7 @@ To detect this condition of error, you can check if its type is
 *[AcceptedError]:
 
 	stats, _, err := client.Repositories.ListContributorsStats(ctx, org, repo)
-	if _, ok := err.(*github.AcceptedError); ok {
+	if errors.As(err, new(*github.AcceptedError)) {
 		log.Println("scheduled on GitHub side")
 	}
 
