@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -154,7 +153,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	user, _, err := client.Users.Get(ctx, "")
 	if err != nil {
 		t.Errorf("Users.Get returned error: %v", err)
@@ -189,7 +188,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	user, _, err := client.Users.Get(ctx, "u")
 	if err != nil {
 		t.Errorf("Users.Get returned error: %v", err)
@@ -205,7 +204,7 @@ func TestUsersService_Get_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Users.Get(ctx, "%")
 	testURLParseError(t, err)
 }
@@ -219,7 +218,7 @@ func TestUsersService_GetByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	user, _, err := client.Users.GetByID(ctx, 1)
 	if err != nil {
 		t.Fatalf("Users.GetByID returned error: %v", err)
@@ -263,7 +262,7 @@ func TestUsersService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	user, _, err := client.Users.Edit(ctx, input)
 	if err != nil {
 		t.Errorf("Users.Edit returned error: %v", err)
@@ -295,7 +294,7 @@ func TestUsersService_GetHovercard(t *testing.T) {
 	})
 
 	opt := &HovercardOptions{SubjectType: "repository", SubjectID: "20180408"}
-	ctx := context.Background()
+	ctx := t.Context()
 	hovercard, _, err := client.Users.GetHovercard(ctx, "u", opt)
 	if err != nil {
 		t.Errorf("Users.GetHovercard returned error: %v", err)
@@ -332,7 +331,7 @@ func TestUsersService_ListAll(t *testing.T) {
 	})
 
 	opt := &UserListOptions{1, ListOptions{Page: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	users, _, err := client.Users.ListAll(ctx, opt)
 	if err != nil {
 		t.Errorf("Users.Get returned error: %v", err)
@@ -362,7 +361,7 @@ func TestUsersService_ListInvitations(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Users.ListInvitations(ctx, nil)
 	if err != nil {
 		t.Errorf("Users.ListInvitations returned error: %v", err)
@@ -395,7 +394,7 @@ func TestUsersService_ListInvitations_withOptions(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Users.ListInvitations(ctx, &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Users.ListInvitations returned error: %v", err)
@@ -411,7 +410,7 @@ func TestUsersService_AcceptInvitation(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Users.AcceptInvitation(ctx, 1); err != nil {
 		t.Errorf("Users.AcceptInvitation returned error: %v", err)
 	}
@@ -436,7 +435,7 @@ func TestUsersService_DeclineInvitation(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Users.DeclineInvitation(ctx, 1); err != nil {
 		t.Errorf("Users.DeclineInvitation returned error: %v", err)
 	}

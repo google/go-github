@@ -8,12 +8,11 @@
 package integration
 
 import (
-	"context"
 	"testing"
 )
 
 func TestPullRequests_ListCommits(t *testing.T) {
-	commits, _, err := client.PullRequests.ListCommits(context.Background(), "google", "go-github", 2, nil)
+	commits, _, err := client.PullRequests.ListCommits(t.Context(), "google", "go-github", 2, nil)
 	if err != nil {
 		t.Fatalf("PullRequests.ListCommits() returned error: %v", err)
 	}

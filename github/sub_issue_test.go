@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -33,7 +32,7 @@ func TestSubIssuesService_Add(t *testing.T) {
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.SubIssue.Add(ctx, "o", "r", 1, *input)
 	if err != nil {
 		t.Errorf("SubIssues.Add returned error: %v", err)
@@ -64,7 +63,7 @@ func TestSubIssuesService_ListByIssue(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opt := &IssueListOptions{}
 	issues, _, err := client.SubIssue.ListByIssue(ctx, "o", "r", 1, opt)
 	if err != nil {
@@ -109,7 +108,7 @@ func TestSubIssuesService_Remove(t *testing.T) {
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.SubIssue.Remove(ctx, "o", "r", 1, *input)
 	if err != nil {
 		t.Errorf("SubIssues.Remove returned error: %v", err)
@@ -150,7 +149,7 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.SubIssue.Reprioritize(ctx, "o", "r", 1, *input)
 	if err != nil {
 		t.Errorf("SubIssues.Reprioritize returned error: %v", err)

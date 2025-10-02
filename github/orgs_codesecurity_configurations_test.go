@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -17,7 +16,7 @@ import (
 
 func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +63,7 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	ctx := context.Background()
+	ctx := t.Context()
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -103,7 +102,7 @@ func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
 func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	ctx := context.Background()
+	ctx := t.Context()
 
 	input := &CodeSecurityConfiguration{
 		Name:                     Ptr("config1"),
@@ -153,7 +152,7 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	ctx := context.Background()
+	ctx := t.Context()
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/defaults", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -208,7 +207,7 @@ func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T)
 func TestOrganizationsService_DetachCodeSecurityConfigurationsFromRepositories(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	ctx := context.Background()
+	ctx := t.Context()
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/detach", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -239,7 +238,7 @@ func TestOrganizationsService_DetachCodeSecurityConfigurationsFromRepositories(t
 
 func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	input := &CodeSecurityConfiguration{
@@ -289,7 +288,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 
 func TestOrganizationsService_DeleteCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -321,7 +320,7 @@ func TestOrganizationsService_DeleteCodeSecurityConfiguration(t *testing.T) {
 
 func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/attach", func(w http.ResponseWriter, r *http.Request) {
@@ -365,7 +364,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 
 func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/defaults", func(w http.ResponseWriter, r *http.Request) {
@@ -416,7 +415,7 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 
 func TestOrganizationsService_GetRepositoriesForCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -468,7 +467,7 @@ func TestOrganizationsService_GetRepositoriesForCodeSecurityConfiguration(t *tes
 
 func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo8/code-security-configuration", func(w http.ResponseWriter, r *http.Request) {

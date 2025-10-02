@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -31,7 +30,7 @@ func TestSecurityAdvisoriesService_RequestCVE(t *testing.T) {
 		w.WriteHeader(http.StatusAccepted)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.SecurityAdvisories.RequestCVE(ctx, "o", "r", "ghsa_id_ok")
 	if err != nil {
 		t.Errorf("SecurityAdvisoriesService.RequestCVE returned error: %v", err)
@@ -166,7 +165,7 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	fork, _, err := client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "o", "r", "ghsa_id")
 	if err != nil {
 		t.Errorf("SecurityAdvisoriesService.CreateTemporaryPrivateFork returned error: %v", err)
@@ -402,7 +401,7 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testin
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	fork, _, err := client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "o", "r", "ghsa_id")
 	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("SecurityAdvisoriesService.CreateTemporaryPrivateFork returned error: %v (want AcceptedError)", err)
@@ -518,7 +517,7 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_invalidOwner(t *te
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "%", "r", "ghsa_id")
 	testURLParseError(t, err)
 }
@@ -533,7 +532,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_BadReq
 		http.Error(w, "Bad Request", 400)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrg(ctx, "o", nil)
 	if err == nil {
 		t.Error("Expected HTTP 400 response")
@@ -561,7 +560,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_NotFou
 		http.NotFound(w, r)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrg(ctx, "o", &ListRepositorySecurityAdvisoriesOptions{
 		State: "draft",
 	})
@@ -587,7 +586,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_Unmars
 		assertWrite(t, w, []byte(`[{"ghsa_id": 12334354}]`))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrg(ctx, "o", nil)
 	if err == nil {
 		t.Error("Expected unmarshal error")
@@ -618,7 +617,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *tes
 		]`))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrg(ctx, "o", nil)
 	if err != nil {
 		t.Errorf("ListRepositorySecurityAdvisoriesForOrg returned error: %v, want nil", err)
@@ -664,7 +663,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_BadRequest(t
 		http.Error(w, "Bad Request", 400)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisories(ctx, "o", "r", nil)
 	if err == nil {
 		t.Error("Expected HTTP 400 response")
@@ -692,7 +691,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_NotFound(t *
 		http.NotFound(w, r)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisories(ctx, "o", "r", &ListRepositorySecurityAdvisoriesOptions{
 		State: "draft",
 	})
@@ -718,7 +717,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_UnmarshalErr
 		assertWrite(t, w, []byte(`[{"ghsa_id": 12334354}]`))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisories(ctx, "o", "r", nil)
 	if err == nil {
 		t.Error("Expected unmarshal error")
@@ -749,7 +748,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T
 		]`))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisories(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("ListRepositorySecurityAdvisories returned error: %v, want nil", err)
@@ -871,7 +870,7 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 		]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &ListGlobalSecurityAdvisoriesOptions{CVEID: Ptr("CVE-xoxo-1234")}
 
 	advisories, _, err := client.SecurityAdvisories.ListGlobalSecurityAdvisories(ctx, opts)
@@ -1055,7 +1054,7 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	advisory, _, err := client.SecurityAdvisories.GetGlobalSecurityAdvisories(ctx, "GHSA-xoxo-1234-xoxo")
 	if err != nil {
 		t.Errorf("SecurityAdvisories.GetGlobalSecurityAdvisories returned error: %v", err)

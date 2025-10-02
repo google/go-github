@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -26,7 +25,7 @@ func TestDependabotService_ListRepoAlerts(t *testing.T) {
 	})
 
 	opts := &ListAlertsOptions{State: Ptr("open")}
-	ctx := context.Background()
+	ctx := t.Context()
 	alerts, _, err := client.Dependabot.ListRepoAlerts(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Dependabot.ListRepoAlerts returned error: %v", err)
@@ -64,7 +63,7 @@ func TestDependabotService_GetRepoAlert(t *testing.T) {
 		fmt.Fprint(w, `{"number":42,"state":"fixed"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	alert, _, err := client.Dependabot.GetRepoAlert(ctx, "o", "r", 42)
 	if err != nil {
 		t.Errorf("Dependabot.GetRepoAlert returned error: %v", err)
@@ -104,7 +103,7 @@ func TestDependabotService_ListOrgAlerts(t *testing.T) {
 	})
 
 	opts := &ListAlertsOptions{State: Ptr("open")}
-	ctx := context.Background()
+	ctx := t.Context()
 	alerts, _, err := client.Dependabot.ListOrgAlerts(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Dependabot.ListOrgAlerts returned error: %v", err)
@@ -148,7 +147,7 @@ func TestDependabotService_UpdateAlert(t *testing.T) {
 		fmt.Fprint(w, `{"number":42,"state":"dismissed","dismissed_reason":"no_bandwidth","dismissed_comment":"no time to fix this"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	alert, _, err := client.Dependabot.UpdateAlert(ctx, "o", "r", 42, alertState)
 	if err != nil {
 		t.Errorf("Dependabot.UpdateAlert returned error: %v", err)

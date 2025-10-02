@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -46,7 +45,7 @@ func TestIssuesService_List_all(t *testing.T) {
 		ListCursorOptions{Before: "foo", After: "bar"},
 		ListOptions{Page: 1, PerPage: 2},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	issues, _, err := client.Issues.List(ctx, true, opt)
 	if err != nil {
 		t.Errorf("Issues.List returned error: %v", err)
@@ -77,7 +76,7 @@ func TestIssuesService_List_owned(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	issues, _, err := client.Issues.List(ctx, false, nil)
 	if err != nil {
 		t.Errorf("Issues.List returned error: %v", err)
@@ -99,7 +98,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	issues, _, err := client.Issues.ListByOrg(ctx, "o", nil)
 	if err != nil {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
@@ -129,7 +128,7 @@ func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.ListByOrg(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -138,7 +137,7 @@ func TestIssuesService_ListByOrg_badOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.ListByOrg(ctx, "\n", nil)
 	testURLParseError(t, err)
 }
@@ -175,7 +174,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 		ListCursorOptions{PerPage: 1, Before: "foo", After: "bar"},
 		ListOptions{0, 0},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	issues, _, err := client.Issues.ListByRepo(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
@@ -205,7 +204,7 @@ func TestIssuesService_ListByRepo_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.ListByRepo(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
@@ -220,7 +219,7 @@ func TestIssuesService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"number":1, "author_association": "MEMBER","labels": [{"url": "u", "name": "n", "color": "c"}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	issue, _, err := client.Issues.Get(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Issues.Get returned error: %v", err)
@@ -258,7 +257,7 @@ func TestIssuesService_Get_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.Get(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
@@ -286,7 +285,7 @@ func TestIssuesService_Create(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	issue, _, err := client.Issues.Create(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Issues.Create returned error: %v", err)
@@ -316,7 +315,7 @@ func TestIssuesService_Create_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.Create(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
@@ -339,7 +338,7 @@ func TestIssuesService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"number":1, "type": {"name": "bug"}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	issue, _, err := client.Issues.Edit(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Issues.Edit returned error: %v", err)
@@ -374,7 +373,7 @@ func TestIssuesService_RemoveMilestone(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	issue, _, err := client.Issues.RemoveMilestone(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Issues.RemoveMilestone returned error: %v", err)
@@ -404,7 +403,7 @@ func TestIssuesService_Edit_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.Edit(ctx, "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
@@ -419,7 +418,7 @@ func TestIssuesService_Lock(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Issues.Lock(ctx, "o", "r", 1, nil); err != nil {
 		t.Errorf("Issues.Lock returned error: %v", err)
 	}
@@ -446,7 +445,7 @@ func TestIssuesService_LockWithReason(t *testing.T) {
 
 	opt := &LockIssueOptions{LockReason: "off-topic"}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Issues.Lock(ctx, "o", "r", 1, opt); err != nil {
 		t.Errorf("Issues.Lock returned error: %v", err)
 	}
@@ -462,7 +461,7 @@ func TestIssuesService_Unlock(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Issues.Unlock(ctx, "o", "r", 1); err != nil {
 		t.Errorf("Issues.Unlock returned error: %v", err)
 	}

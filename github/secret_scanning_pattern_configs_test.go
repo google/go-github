@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -56,7 +55,7 @@ func TestSecretScanningService_ListPatternConfigsForEnterprise(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	patternConfigs, _, err := client.SecretScanning.ListPatternConfigsForEnterprise(ctx, "e")
 	if err != nil {
@@ -157,7 +156,7 @@ func TestSecretScanningService_ListPatternConfigsForOrg(t *testing.T) {
 			]
 		}`)
 
-		ctx := context.Background()
+		ctx := t.Context()
 
 		patternConfigs, _, err := client.SecretScanning.ListPatternConfigsForOrg(ctx, "o")
 		if err != nil {
@@ -229,7 +228,7 @@ func TestSecretScanningService_UpdatePatternConfigsForEnterprise(t *testing.T) {
 			"pattern_config_version": "0ujsswThIGTUYm2K8FjOOfXtY1K"
 		}`)
 
-		ctx := context.Background()
+		ctx := t.Context()
 
 		opts := &SecretScanningPatternConfigsUpdateOptions{
 			PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
@@ -286,7 +285,7 @@ func TestSecretScanningService_UpdatePatternConfigsForOrg(t *testing.T) {
 			"pattern_config_version": "0ujsswThIGTUYm2K8FjOOfXtY1K"
 		}`)
 
-		ctx := context.Background()
+		ctx := t.Context()
 
 		opts := &SecretScanningPatternConfigsUpdateOptions{
 			PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
