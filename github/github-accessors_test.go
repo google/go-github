@@ -23934,6 +23934,94 @@ func TestPlan_GetSpace(tt *testing.T) {
 	p.GetSpace()
 }
 
+func TestPremiumRequestUsageReport_GetModel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PremiumRequestUsageReport{Model: &zeroValue}
+	p.GetModel()
+	p = &PremiumRequestUsageReport{}
+	p.GetModel()
+	p = nil
+	p.GetModel()
+}
+
+func TestPremiumRequestUsageReport_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PremiumRequestUsageReport{Product: &zeroValue}
+	p.GetProduct()
+	p = &PremiumRequestUsageReport{}
+	p.GetProduct()
+	p = nil
+	p.GetProduct()
+}
+
+func TestPremiumRequestUsageReport_GetUser(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PremiumRequestUsageReport{User: &zeroValue}
+	p.GetUser()
+	p = &PremiumRequestUsageReport{}
+	p.GetUser()
+	p = nil
+	p.GetUser()
+}
+
+func TestPremiumRequestUsageReportOptions_GetModel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PremiumRequestUsageReportOptions{Model: &zeroValue}
+	p.GetModel()
+	p = &PremiumRequestUsageReportOptions{}
+	p.GetModel()
+	p = nil
+	p.GetModel()
+}
+
+func TestPremiumRequestUsageReportOptions_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PremiumRequestUsageReportOptions{Product: &zeroValue}
+	p.GetProduct()
+	p = &PremiumRequestUsageReportOptions{}
+	p.GetProduct()
+	p = nil
+	p.GetProduct()
+}
+
+func TestPremiumRequestUsageReportOptions_GetUser(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PremiumRequestUsageReportOptions{User: &zeroValue}
+	p.GetUser()
+	p = &PremiumRequestUsageReportOptions{}
+	p.GetUser()
+	p = nil
+	p.GetUser()
+}
+
+func TestPremiumRequestUsageTimePeriod_GetDay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &PremiumRequestUsageTimePeriod{Day: &zeroValue}
+	p.GetDay()
+	p = &PremiumRequestUsageTimePeriod{}
+	p.GetDay()
+	p = nil
+	p.GetDay()
+}
+
+func TestPremiumRequestUsageTimePeriod_GetMonth(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &PremiumRequestUsageTimePeriod{Month: &zeroValue}
+	p.GetMonth()
+	p = &PremiumRequestUsageTimePeriod{}
+	p.GetMonth()
+	p = nil
+	p.GetMonth()
+}
+
 func TestPreReceiveHook_GetConfigURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

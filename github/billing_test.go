@@ -571,7 +571,7 @@ func TestBillingService_GetPremiumRequestUsageReportOrg(t *testing.T) {
 		t.Errorf("Billing.GetPremiumRequestUsageReportOrg returned error: %v", err)
 	}
 	want := &PremiumRequestUsageReport{
-		TimePeriod: TimePeriod{
+		TimePeriod: PremiumRequestUsageTimePeriod{
 			Year:  2025,
 			Month: Ptr(10),
 		},
@@ -668,7 +668,7 @@ func TestBillingService_GetPremiumRequestUsageReportUser(t *testing.T) {
 		t.Errorf("Billing.GetPremiumRequestUsageReportUser returned error: %v", err)
 	}
 	want := &PremiumRequestUsageReport{
-		TimePeriod: TimePeriod{
+		TimePeriod: PremiumRequestUsageTimePeriod{
 			Year: 2025,
 			Day:  Ptr(15),
 		},

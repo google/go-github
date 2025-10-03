@@ -125,18 +125,21 @@ type PremiumRequestUsageItem struct {
 	NetAmount        float64 `json:"netAmount"`
 }
 
+// PremiumRequestUsageTimePeriod represents a time period for premium request usage reports.
+type PremiumRequestUsageTimePeriod struct {
+	Year  int  `json:"year"`
+	Month *int `json:"month,omitempty"`
+	Day   *int `json:"day,omitempty"`
+}
+
 // PremiumRequestUsageReport represents the premium request usage report response.
 type PremiumRequestUsageReport struct {
-	TimePeriod struct {
-		Year  int  `json:"year"`
-		Month *int `json:"month,omitempty"`
-		Day   *int `json:"day,omitempty"`
-	} `json:"timePeriod"`
-	Organization string                     `json:"organization"`
-	User         *string                    `json:"user,omitempty"`
-	Product      *string                    `json:"product,omitempty"`
-	Model        *string                    `json:"model,omitempty"`
-	UsageItems   []*PremiumRequestUsageItem `json:"usageItems"`
+	TimePeriod   PremiumRequestUsageTimePeriod `json:"timePeriod"`
+	Organization string                        `json:"organization"`
+	User         *string                       `json:"user,omitempty"`
+	Product      *string                       `json:"product,omitempty"`
+	Model        *string                       `json:"model,omitempty"`
+	UsageItems   []*PremiumRequestUsageItem    `json:"usageItems"`
 }
 
 // GetPackagesBillingOrg returns the free and paid storage used for GitHub Packages in gigabytes for an Org.
@@ -312,7 +315,7 @@ func (s *BillingService) GetUsageReportUser(ctx context.Context, user string, op
 //
 // Note: This endpoint is only available to organizations with access to the enhanced billing platform.
 //
-// GitHub API docs: https://docs.github.com/rest/billing/billing#get-premium-request-usage-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/billing/enhanced-billing#get-billing-premium-request-usage-report-for-an-organization
 //
 //meta:operation GET /organizations/{org}/settings/billing/premium_request/usage
 func (s *BillingService) GetPremiumRequestUsageReportOrg(ctx context.Context, org string, opts *PremiumRequestUsageReportOptions) (*PremiumRequestUsageReport, *Response, error) {
@@ -341,7 +344,7 @@ func (s *BillingService) GetPremiumRequestUsageReportOrg(ctx context.Context, or
 //
 // Note: This endpoint is only available to users with access to the enhanced billing platform.
 //
-// GitHub API docs: https://docs.github.com/rest/billing/billing#get-premium-request-usage-for-a-user
+// GitHub API docs: https://docs.github.com/rest/billing/enhanced-billing#get-billing-premium-request-usage-report-for-a-user
 //
 //meta:operation GET /users/{username}/settings/billing/premium_request/usage
 func (s *BillingService) GetPremiumRequestUsageReportUser(ctx context.Context, user string, opts *PremiumRequestUsageReportOptions) (*PremiumRequestUsageReport, *Response, error) {
