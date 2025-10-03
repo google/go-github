@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -45,7 +44,7 @@ func TestEnterpriseService_GetAllCustomProperties(t *testing.T) {
         ]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	properties, _, err := client.Enterprise.GetAllCustomProperties(ctx, "e")
 	if err != nil {
 		t.Errorf("Enterprise.GetAllCustomProperties returned error: %v", err)
@@ -106,7 +105,7 @@ func TestEnterpriseService_CreateOrUpdateCustomProperties(t *testing.T) {
         ]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	properties, _, err := client.Enterprise.CreateOrUpdateCustomProperties(ctx, "e", []*CustomProperty{
 		{
 			PropertyName: Ptr("name"),
@@ -169,7 +168,7 @@ func TestEnterpriseService_GetCustomProperty(t *testing.T) {
 	  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	property, _, err := client.Enterprise.GetCustomProperty(ctx, "e", "name")
 	if err != nil {
 		t.Errorf("Enterprise.GetCustomProperty returned error: %v", err)
@@ -219,7 +218,7 @@ func TestEnterpriseService_CreateOrUpdateCustomProperty(t *testing.T) {
 	  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	property, _, err := client.Enterprise.CreateOrUpdateCustomProperty(ctx, "e", "name", &CustomProperty{
 		ValueType:        "single_select",
 		Required:         Ptr(true),
@@ -264,7 +263,7 @@ func TestEnterpriseService_RemoveCustomProperty(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Enterprise.RemoveCustomProperty(ctx, "e", "name")
 	if err != nil {
 		t.Errorf("Enterprise.RemoveCustomProperty returned error: %v", err)

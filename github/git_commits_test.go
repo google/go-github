@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -137,7 +136,7 @@ func TestGitService_GetCommit(t *testing.T) {
 		fmt.Fprint(w, `{"sha":"s","message":"Commit Message.","author":{"name":"n"}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	commit, _, err := client.Git.GetCommit(ctx, "o", "r", "s")
 	if err != nil {
 		t.Errorf("Git.GetCommit returned error: %v", err)
@@ -167,7 +166,7 @@ func TestGitService_GetCommit_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Git.GetCommit(ctx, "%", "%", "%")
 	testURLParseError(t, err)
 }
@@ -199,7 +198,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 		fmt.Fprint(w, `{"sha":"s"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	commit, _, err := client.Git.CreateCommit(ctx, "o", "r", input, nil)
 	if err != nil {
 		t.Errorf("Git.CreateCommit returned error: %v", err)
@@ -258,7 +257,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 		fmt.Fprint(w, `{"sha":"commitSha"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	commit, _, err := client.Git.CreateCommit(ctx, "o", "r", input, nil)
 	if err != nil {
 		t.Errorf("Git.CreateCommit returned error: %v", err)
@@ -290,7 +289,7 @@ func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
 
 	input := Commit{}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := CreateCommitOptions{Signer: uncalledSigner(t)}
 	_, _, err := client.Git.CreateCommit(ctx, "o", "r", input, &opts)
 	if err == nil {
@@ -336,7 +335,7 @@ Commit Message.`
 		testMethod(t, r, "POST")
 		fmt.Fprintf(w, `{"sha":"%s"}`, sha)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	wantCommit := &Commit{SHA: Ptr(sha)}
 	opts := CreateCommitOptions{Signer: mockSigner(t, signature, nil, wantMessage)}
 	commit, _, err := client.Git.CreateCommit(ctx, "o", "r", input, &opts)
@@ -501,7 +500,7 @@ func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Git.CreateCommit(ctx, "%", "%", Commit{}, nil)
 	testURLParseError(t, err)
 }

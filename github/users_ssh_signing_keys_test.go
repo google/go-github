@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -26,7 +25,7 @@ func TestUsersService_ListSSHSigningKeys_authenticatedUser(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	keys, _, err := client.Users.ListSSHSigningKeys(ctx, "", opt)
 	if err != nil {
 		t.Errorf("Users.ListSSHSigningKeys returned error: %v", err)
@@ -61,7 +60,7 @@ func TestUsersService_ListSSHSigningKeys_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	keys, _, err := client.Users.ListSSHSigningKeys(ctx, "u", nil)
 	if err != nil {
 		t.Errorf("Users.ListSSHSigningKeys returned error: %v", err)
@@ -77,7 +76,7 @@ func TestUsersService_ListSSHSigningKeys_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Users.ListSSHSigningKeys(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -91,7 +90,7 @@ func TestUsersService_GetSSHSigningKey(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	key, _, err := client.Users.GetSSHSigningKey(ctx, 1)
 	if err != nil {
 		t.Errorf("Users.GetSSHSigningKey returned error: %v", err)
@@ -135,7 +134,7 @@ func TestUsersService_CreateSSHSigningKey(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	key, _, err := client.Users.CreateSSHSigningKey(ctx, input)
 	if err != nil {
 		t.Errorf("Users.CreateSSHSigningKey returned error: %v", err)
@@ -164,7 +163,7 @@ func TestUsersService_DeleteSSHSigningKey(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.DeleteSSHSigningKey(ctx, 1)
 	if err != nil {
 		t.Errorf("Users.DeleteSSHSigningKey returned error: %v", err)

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -59,7 +58,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	opts := &ListOptions{Page: 1, PerPage: 3}
 	configurations, _, err := client.Organizations.ListNetworkConfigurations(ctx, "o", opts)
@@ -137,7 +136,7 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	req := NetworkConfigurationRequest{
 		Name:           Ptr("network-configuration-two"),
@@ -258,7 +257,7 @@ func TestOrganizationsService_GetOrgsNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	configuration, _, err := client.Organizations.GetNetworkConfiguration(ctx, "o", "789ABDCEF123456")
 	if err != nil {
@@ -311,7 +310,7 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	req := NetworkConfigurationRequest{
 		Name:           Ptr("network-configuration-three-update"),
@@ -421,7 +420,7 @@ func TestOrganizationsService_DeleteOrgsNetworkConfiguration(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.DeleteNetworkConfigurations(ctx, "o", "789ABDCEF123456")
 	if err != nil {
 		t.Errorf("Organizations.DeleteNetworkConfigurations returned error %v", err)
@@ -454,7 +453,7 @@ func TestOrganizationsService_GetOrgsNetworkConfigurationResource(t *testing.T) 
 		`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	resource, _, err := client.Organizations.GetNetworkConfigurationResource(ctx, "o", "789ABDCEF123456")
 	if err != nil {

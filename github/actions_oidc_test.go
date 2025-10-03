@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -23,7 +22,7 @@ func TestActionsService_GetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 		fmt.Fprint(w, `{"include_claim_keys":["repo","context"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	template, _, err := client.Actions.GetOrgOIDCSubjectClaimCustomTemplate(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.GetOrgOIDCSubjectClaimCustomTemplate returned error: %v", err)
@@ -58,7 +57,7 @@ func TestActionsService_GetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 		fmt.Fprint(w, `{"use_default":false,"include_claim_keys":["repo","context"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	template, _, err := client.Actions.GetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Actions.GetRepoOIDCSubjectClaimCustomTemplate returned error: %v", err)
@@ -98,7 +97,7 @@ func TestActionsService_SetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	input := &OIDCSubjectClaimCustomTemplate{
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.SetOrgOIDCSubjectClaimCustomTemplate(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Actions.SetOrgOIDCSubjectClaimCustomTemplate returned error: %v", err)
@@ -131,7 +130,7 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 		UseDefault:       Ptr(false),
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Actions.SetRepoOIDCSubjectClaimCustomTemplate returned error: %v", err)
@@ -163,7 +162,7 @@ func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing
 	input := &OIDCSubjectClaimCustomTemplate{
 		UseDefault: Ptr(true),
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Actions.SetRepoOIDCSubjectClaimCustomTemplate returned error: %v", err)

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -23,7 +22,7 @@ func TestOrganizationsService_ListSecurityManagerTeams(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	teams, _, err := client.Organizations.ListSecurityManagerTeams(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.ListSecurityManagerTeams returned error: %v", err)
@@ -53,7 +52,7 @@ func TestOrganizationsService_ListSecurityManagerTeams_invalidOrg(t *testing.T) 
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Organizations.ListSecurityManagerTeams(ctx, "%")
 	testURLParseError(t, err)
 }
@@ -66,7 +65,7 @@ func TestOrganizationsService_AddSecurityManagerTeam(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.AddSecurityManagerTeam(ctx, "o", "t")
 	if err != nil {
 		t.Errorf("Organizations.AddSecurityManagerTeam returned error: %v", err)
@@ -87,7 +86,7 @@ func TestOrganizationsService_AddSecurityManagerTeam_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.AddSecurityManagerTeam(ctx, "%", "t")
 	testURLParseError(t, err)
 }
@@ -96,7 +95,7 @@ func TestOrganizationsService_AddSecurityManagerTeam_invalidTeam(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.AddSecurityManagerTeam(ctx, "%", "t")
 	testURLParseError(t, err)
 }
@@ -109,7 +108,7 @@ func TestOrganizationsService_RemoveSecurityManagerTeam(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.RemoveSecurityManagerTeam(ctx, "o", "t")
 	if err != nil {
 		t.Errorf("Organizations.RemoveSecurityManagerTeam returned error: %v", err)
@@ -130,7 +129,7 @@ func TestOrganizationsService_RemoveSecurityManagerTeam_invalidOrg(t *testing.T)
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.RemoveSecurityManagerTeam(ctx, "%", "t")
 	testURLParseError(t, err)
 }
@@ -139,7 +138,7 @@ func TestOrganizationsService_RemoveSecurityManagerTeam_invalidTeam(t *testing.T
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.RemoveSecurityManagerTeam(ctx, "%", "t")
 	testURLParseError(t, err)
 }

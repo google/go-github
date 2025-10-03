@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -76,7 +75,7 @@ func TestEnterpriseService_ListHostedRunners(t *testing.T) {
 		}`)
 	})
 	opts := &ListOptions{Page: 1, PerPage: 1}
-	ctx := context.Background()
+	ctx := t.Context()
 	hostedRunners, _, err := client.Enterprise.ListHostedRunners(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Enterprise.ListHostedRunners returned error: %v", err)
@@ -191,7 +190,7 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	req := &HostedRunnerRequest{
 		Name: "My Hosted runner",
 		Image: HostedRunnerImage{
@@ -357,7 +356,7 @@ func TestEnterpriseService_GetHostedRunnerGitHubOwnedImages(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hostedRunnerImages, _, err := client.Enterprise.GetHostedRunnerGitHubOwnedImages(ctx, "o")
 	if err != nil {
 		t.Errorf("Enterprise.GetHostedRunnerGitHubOwnedImages returned error: %v", err)
@@ -415,7 +414,7 @@ func TestEnterpriseService_GetHostedRunnerPartnerImages(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hostedRunnerImages, _, err := client.Enterprise.GetHostedRunnerPartnerImages(ctx, "o")
 	if err != nil {
 		t.Errorf("Enterprise.GetHostedRunnerPartnerImages returned error: %v", err)
@@ -466,7 +465,7 @@ func TestEnterpriseService_GetHostedRunnerLimits(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	publicIPLimits, _, err := client.Enterprise.GetHostedRunnerLimits(ctx, "o")
 	if err != nil {
 		t.Errorf("Enterprise.GetPartnerImages returned error: %v", err)
@@ -517,7 +516,7 @@ func TestEnterpriseService_GetHostedRunnerMachineSpecs(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	machineSpecs, _, err := client.Enterprise.GetHostedRunnerMachineSpecs(ctx, "o")
 	if err != nil {
 		t.Errorf("Enterprise.GetHostedRunnerMachineSpecs returned error: %v", err)
@@ -568,7 +567,7 @@ func TestEnterpriseService_GetHostedRunnerPlatforms(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	platforms, _, err := client.Enterprise.GetHostedRunnerPlatforms(ctx, "o")
 	if err != nil {
 		t.Errorf("Enterprise.GetHostedRunnerPlatforms returned error: %v", err)
@@ -635,7 +634,7 @@ func TestEnterpriseService_GetHostedRunner(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hostedRunner, _, err := client.Enterprise.GetHostedRunner(ctx, "o", 23)
 	if err != nil {
 		t.Errorf("Enterprise.GetHostedRunner returned error: %v", err)
@@ -725,7 +724,7 @@ func TestEnterpriseService_UpdateHostedRunner(t *testing.T) {
 	})
 
 	// Test for a valid update without `Size`
-	ctx := context.Background()
+	ctx := t.Context()
 	validReq := HostedRunnerRequest{
 		Name:           "My larger runner",
 		RunnerGroupID:  1,
@@ -862,7 +861,7 @@ func TestEnterpriseService_DeleteHostedRunner(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hostedRunner, _, err := client.Enterprise.DeleteHostedRunner(ctx, "o", 23)
 	if err != nil {
 		t.Errorf("Enterprise.GetHostedRunner returned error: %v", err)

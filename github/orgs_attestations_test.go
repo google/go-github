@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -33,7 +32,7 @@ func TestOrganizationsService_ListAttestations(t *testing.T) {
 			]
 		}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	attestations, _, err := client.Organizations.ListAttestations(ctx, "o", "digest", &ListOptions{})
 	if err != nil {
 		t.Errorf("Organizations.ListAttestations returned error: %v", err)

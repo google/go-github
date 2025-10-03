@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,7 +23,7 @@ func TestOrganizationsService_GetActionsPermissions(t *testing.T) {
 		fmt.Fprint(w, `{"enabled_repositories": "all", "allowed_actions": "all"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Organizations.GetActionsPermissions(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.GetActionsPermissions returned error: %v", err)
@@ -67,7 +66,7 @@ func TestOrganizationsService_UpdateActionsPermissions(t *testing.T) {
 		fmt.Fprint(w, `{"enabled_repositories": "all", "allowed_actions": "selected"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Organizations.UpdateActionsPermissions(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("Organizations.UpdateActionsPermissions returned error: %v", err)

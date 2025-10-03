@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -81,7 +80,7 @@ func TestAdminService_GetAdminStats(t *testing.T) {
 `)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	stats, _, err := client.Admin.GetAdminStats(ctx)
 	if err != nil {
 		t.Errorf("AdminService.GetAdminStats returned error: %v", err)

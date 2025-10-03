@@ -8,11 +8,11 @@
 package integration
 
 import (
-	"context"
 	"fmt"
 	"math/rand"
 	"net/http"
 	"os"
+	"testing"
 
 	"github.com/google/go-github/v75/github"
 )
@@ -43,14 +43,16 @@ func checkAuth(name string) bool {
 	return auth
 }
 
-func createRandomTestRepository(owner string, autoinit bool) (*github.Repository, error) {
+func createRandomTestRepository(t *testing.T, owner string, autoinit bool) *github.Repository {
+	t.Helper()
+
 	// determine the owner to use if one wasn't specified
 	if owner == "" {
 		owner = os.Getenv("GITHUB_OWNER")
 		if owner == "" {
-			me, _, err := client.Users.Get(context.Background(), "")
+			me, _, err := client.Users.Get(t.Context(), "")
 			if err != nil {
-				return nil, err
+				t.Fatalf("Users.Get returned error: %v", err)
 			}
 			owner = *me.Login
 		}
@@ -60,20 +62,20 @@ func createRandomTestRepository(owner string, autoinit bool) (*github.Repository
 	var repoName string
 	for {
 		repoName = fmt.Sprintf("test-%d", rand.Int())
-		_, resp, err := client.Repositories.Get(context.Background(), owner, repoName)
+		_, resp, err := client.Repositories.Get(t.Context(), owner, repoName)
 		if err != nil {
 			if resp.StatusCode == http.StatusNotFound {
 				// found a non-existent repo, perfect
 				break
 			}
 
-			return nil, err
+			t.Fatalf("Repositories.Get returned error: %v", err)
 		}
 	}
 
 	// create the repository
 	repo, _, err := client.Repositories.Create(
-		context.Background(),
+		t.Context(),
 		owner,
 		&github.Repository{
 			Name:     github.Ptr(repoName),
@@ -81,8 +83,8 @@ func createRandomTestRepository(owner string, autoinit bool) (*github.Repository
 		},
 	)
 	if err != nil {
-		return nil, err
+		t.Fatalf("Repositories.Create returned error: %v", err)
 	}
 
-	return repo, nil
+	return repo
 }

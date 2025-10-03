@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -36,7 +35,7 @@ func TestUsersService_Authenticated_ListPackages(t *testing.T) {
 		  }]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	packages, _, err := client.Users.ListPackages(ctx, "", &PackageListOptions{PackageType: Ptr("container"), Visibility: Ptr("private")})
 	if err != nil {
 		t.Errorf("Users.Authenticated_ListPackages returned error: %v", err)
@@ -92,7 +91,7 @@ func TestUsersService_specifiedUser_ListPackages(t *testing.T) {
 		  }]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	packages, _, err := client.Users.ListPackages(ctx, "u", &PackageListOptions{PackageType: Ptr("container"), Visibility: Ptr("public")})
 	if err != nil {
 		t.Errorf("Users.specifiedUser_ListPackages returned error: %v", err)
@@ -150,7 +149,7 @@ func TestUsersService_specifiedUser_GetPackage(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	packages, _, err := client.Users.GetPackage(ctx, "u", "container", "hello/hello_docker")
 	if err != nil {
 		t.Errorf("Users.GetPackage returned error: %v", err)
@@ -204,7 +203,7 @@ func TestUsersService_Authenticated_GetPackage(t *testing.T) {
 		  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	packages, _, err := client.Users.GetPackage(ctx, "", "container", "hello_docker")
 	if err != nil {
 		t.Errorf("Users.Authenticated_GetPackage returned error: %v", err)
@@ -248,7 +247,7 @@ func TestUsersService_Authenticated_DeletePackage(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.DeletePackage(ctx, "", "container", "hello_docker")
 	if err != nil {
 		t.Errorf("Users.Authenticated_DeletePackage returned error: %v", err)
@@ -273,7 +272,7 @@ func TestUsersService_specifiedUser_DeletePackage(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.DeletePackage(ctx, "u", "container", "hello_docker")
 	if err != nil {
 		t.Errorf("Users.specifiedUser_DeletePackage returned error: %v", err)
@@ -298,7 +297,7 @@ func TestUsersService_Authenticated_RestorePackage(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.RestorePackage(ctx, "", "container", "hello_docker")
 	if err != nil {
 		t.Errorf("Users.Authenticated_RestorePackage returned error: %v", err)
@@ -323,7 +322,7 @@ func TestUsersService_specifiedUser_RestorePackage(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.RestorePackage(ctx, "u", "container", "hello_docker")
 	if err != nil {
 		t.Errorf("Users.specifiedUser_RestorePackage returned error: %v", err)
@@ -368,7 +367,7 @@ func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
 			}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &PackageListOptions{
 		Ptr("internal"), Ptr("container"), Ptr("deleted"), ListOptions{Page: 1, PerPage: 2},
 	}
@@ -434,7 +433,7 @@ func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
 			}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &PackageListOptions{
 		Ptr("internal"), Ptr("container"), Ptr("deleted"), ListOptions{Page: 1, PerPage: 2},
 	}
@@ -500,7 +499,7 @@ func TestUsersService_Authenticated_PackageGetVersion(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	packages, _, err := client.Users.PackageGetVersion(ctx, "", "container", "hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Users.PackageGetVersion returned error: %v", err)
@@ -563,7 +562,7 @@ func TestUsersService_specifiedUser_PackageGetVersion(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	packages, _, err := client.Users.PackageGetVersion(ctx, "u", "container", "hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Users.specifiedUser_PackageGetVersion returned error: %v", err)
@@ -606,7 +605,7 @@ func TestUsersService_Authenticated_PackageDeleteVersion(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.PackageDeleteVersion(ctx, "", "container", "hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Users.Authenticated_PackageDeleteVersion returned error: %v", err)
@@ -631,7 +630,7 @@ func TestUsersService_specifiedUser_PackageDeleteVersion(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.PackageDeleteVersion(ctx, "u", "container", "hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Users.specifiedUser_PackageDeleteVersion returned error: %v", err)
@@ -656,7 +655,7 @@ func TestUsersService_Authenticated_PackageRestoreVersion(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.PackageRestoreVersion(ctx, "", "container", "hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Users.Authenticated_PackageRestoreVersion returned error: %v", err)
@@ -681,7 +680,7 @@ func TestUsersService_specifiedUser_PackageRestoreVersion(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.PackageRestoreVersion(ctx, "u", "container", "hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Users.specifiedUser_PackageRestoreVersion returned error: %v", err)

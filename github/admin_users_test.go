@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -33,7 +32,7 @@ func TestAdminUsers_Create(t *testing.T) {
 		fmt.Fprint(w, `{"login":"github","id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Admin.CreateUser(ctx, CreateUserRequest{
 		Login:     "github",
 		Email:     Ptr("email@domain.com"),
@@ -70,7 +69,7 @@ func TestAdminUsers_Delete(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Admin.DeleteUser(ctx, "github")
 	if err != nil {
 		t.Errorf("Admin.DeleteUser returned error: %v", err)
@@ -115,7 +114,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 	})
 
 	opt := &ImpersonateUserOptions{Scopes: []string{"repo"}}
-	ctx := context.Background()
+	ctx := t.Context()
 	auth, _, err := client.Admin.CreateUserImpersonation(ctx, "github", opt)
 	if err != nil {
 		t.Errorf("Admin.CreateUserImpersonation returned error: %v", err)
@@ -167,7 +166,7 @@ func TestUserImpersonation_Delete(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Admin.DeleteUserImpersonation(ctx, "github")
 	if err != nil {
 		t.Errorf("Admin.DeleteUserImpersonation returned error: %v", err)

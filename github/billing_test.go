@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -27,7 +26,7 @@ func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hook, _, err := client.Billing.GetPackagesBillingOrg(ctx, "o")
 	if err != nil {
 		t.Errorf("Billing.GetPackagesBillingOrg returned error: %v", err)
@@ -61,7 +60,7 @@ func TestBillingService_GetPackagesBillingOrg_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Billing.GetPackagesBillingOrg(ctx, "%")
 	testURLParseError(t, err)
 }
@@ -79,7 +78,7 @@ func TestBillingService_GetStorageBillingOrg(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hook, _, err := client.Billing.GetStorageBillingOrg(ctx, "o")
 	if err != nil {
 		t.Errorf("Billing.GetStorageBillingOrg returned error: %v", err)
@@ -113,7 +112,7 @@ func TestBillingService_GetStorageBillingOrg_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Billing.GetStorageBillingOrg(ctx, "%")
 	testURLParseError(t, err)
 }
@@ -131,7 +130,7 @@ func TestBillingService_GetPackagesBillingUser(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hook, _, err := client.Billing.GetPackagesBillingUser(ctx, "u")
 	if err != nil {
 		t.Errorf("Billing.GetPackagesBillingUser returned error: %v", err)
@@ -165,7 +164,7 @@ func TestBillingService_GetPackagesBillingUser_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Billing.GetPackagesBillingUser(ctx, "%")
 	testURLParseError(t, err)
 }
@@ -183,7 +182,7 @@ func TestBillingService_GetStorageBillingUser(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hook, _, err := client.Billing.GetStorageBillingUser(ctx, "u")
 	if err != nil {
 		t.Errorf("Billing.GetStorageBillingUser returned error: %v", err)
@@ -217,7 +216,7 @@ func TestBillingService_GetStorageBillingUser_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Billing.GetStorageBillingUser(ctx, "%")
 	testURLParseError(t, err)
 }
@@ -305,7 +304,7 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &ListOptions{Page: 2, PerPage: 50}
 	hook, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "o", opts)
 	if err != nil {
@@ -353,7 +352,7 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg_invalidOrg(t *tes
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -387,7 +386,7 @@ func TestBillingService_GetUsageReportOrg(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &UsageReportOptions{
 		Year:  Ptr(2023),
 		Month: Ptr(8),
@@ -437,7 +436,7 @@ func TestBillingService_GetUsageReportOrg_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Billing.GetUsageReportOrg(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -469,7 +468,7 @@ func TestBillingService_GetUsageReportUser(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &UsageReportOptions{
 		Day: Ptr(15),
 	}
@@ -517,7 +516,7 @@ func TestBillingService_GetUsageReportUser_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Billing.GetUsageReportUser(ctx, "%", nil)
 	testURLParseError(t, err)
 }

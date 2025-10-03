@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -34,7 +33,7 @@ func TestGetConfig(t *testing.T) {
 		fmt.Fprint(w, manifestJSON)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	cfg, _, err := client.Apps.CompleteAppManifest(ctx, "code")
 	if err != nil {
 		t.Errorf("AppManifest.GetConfig returned error: %v", err)
