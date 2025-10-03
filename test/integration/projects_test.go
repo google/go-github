@@ -32,7 +32,7 @@ import (
 //   GITHUB_TEST_REPO                   (repo name)
 
 func TestProjectsV2_Org(t *testing.T) {
-	if !checkAuth("TestProjectsV2_Org") { // ensures client is authed
+	if !checkAuth("TestProjectsV2_Org") {
 		return
 	}
 	org := os.Getenv("GITHUB_TEST_ORG")
