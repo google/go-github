@@ -75,7 +75,7 @@ type UsageReportOptions struct {
 }
 
 // PremiumRequestUsageReportOptions specifies optional parameters
-// for the enhanced billing platform premiun request usage report.
+// for the enhanced billing platform premium request usage report.
 type PremiumRequestUsageReportOptions struct {
 	UsageReportOptions
 
