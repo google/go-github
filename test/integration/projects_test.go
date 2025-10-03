@@ -71,8 +71,7 @@ func TestProjectsV2_Org(t *testing.T) {
 
 	_, _, err = client.Projects.ListProjectFieldsForOrg(ctx, org, projectNumber, nil)
 	if err != nil {
-		// Fields listing might require extra perms; treat as fatal to surface potential regression.
-		t.Fatalf("Projects.ListProjectFieldsForOrg returned error: %v", err)
+		t.Fatalf("Projects.ListProjectFieldsForOrg returned error: %v. Fields listing might require extra permissions", err)
 	}
 }
 
