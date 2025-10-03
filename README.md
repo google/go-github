@@ -267,7 +267,7 @@ To detect this condition of error, you can check if its type is
 
 ```go
 stats, _, err := client.Repositories.ListContributorsStats(ctx, org, repo)
-if _, ok := err.(*github.AcceptedError); ok {
+if errors.As(err, new(*github.AcceptedError)) {
 	log.Println("scheduled on GitHub side")
 }
 ```
