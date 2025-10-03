@@ -17,9 +17,7 @@ import (
 )
 
 func TestRepositories_CRUD(t *testing.T) {
-	if !checkAuth("TestRepositories_CRUD") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	repo := createRandomTestRepository(t, "", true)
 
@@ -75,9 +73,7 @@ func TestRepositories_BranchesTags(t *testing.T) {
 }
 
 func TestRepositories_EditBranches(t *testing.T) {
-	if !checkAuth("TestRepositories_EditBranches") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	repo := createRandomTestRepository(t, "", true)
 
@@ -148,9 +144,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 }
 
 func TestRepositories_ListByAuthenticatedUser(t *testing.T) {
-	if !checkAuth("TestRepositories_ListByAuthenticatedUser") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	_, _, err := client.Repositories.ListByAuthenticatedUser(t.Context(), nil)
 	if err != nil {
@@ -177,9 +171,7 @@ func TestRepositories_ListByUser(t *testing.T) {
 }
 
 func TestRepositories_DownloadReleaseAsset(t *testing.T) {
-	if !checkAuth("TestRepositories_DownloadReleaseAsset") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	rc, _, err := client.Repositories.DownloadReleaseAsset(t.Context(), "andersjanmyr", "goose", 484892, http.DefaultClient)
 	if err != nil {
@@ -193,9 +185,7 @@ func TestRepositories_DownloadReleaseAsset(t *testing.T) {
 }
 
 func TestRepositories_Autolinks(t *testing.T) {
-	if !checkAuth("TestRepositories_Autolinks") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	repo := createRandomTestRepository(t, "", true)
 
