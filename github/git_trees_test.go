@@ -7,7 +7,6 @@ package github
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -50,7 +49,7 @@ func TestGitService_GetTree(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	tree, _, err := client.Git.GetTree(ctx, "o", "r", "s", true)
 	if err != nil {
 		t.Errorf("Git.GetTree returned error: %v", err)
@@ -88,7 +87,7 @@ func TestGitService_GetTree_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Git.GetTree(ctx, "%", "%", "%", false)
 	testURLParseError(t, err)
 }
@@ -133,7 +132,7 @@ func TestGitService_CreateTree(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	tree, _, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Git.CreateTree returned error: %v", err)
@@ -213,7 +212,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	tree, _, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Git.CreateTree returned error: %v", err)
@@ -293,7 +292,7 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	tree, _, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Git.CreateTree returned error: %v", err)
@@ -337,7 +336,7 @@ func TestGitService_CreateTree_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Git.CreateTree(ctx, "%", "%", "", nil)
 	testURLParseError(t, err)
 }

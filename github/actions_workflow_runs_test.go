@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -30,7 +29,7 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 	})
 
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	runs, _, err := client.Actions.ListWorkflowRunsByID(ctx, "o", "r", 29679449, opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkFlowRunsByID returned error: %v", err)
@@ -73,7 +72,7 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 	})
 
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	runs, _, err := client.Actions.ListWorkflowRunsByFileName(ctx, "o", "r", "29679449", opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkFlowRunsByFileName returned error: %v", err)
@@ -114,7 +113,7 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":399444496,"run_number":296,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	runs, _, err := client.Actions.GetWorkflowRunByID(ctx, "o", "r", 29679449)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowRunByID returned error: %v", err)
@@ -157,7 +156,7 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 	})
 
 	opts := &WorkflowRunAttemptOptions{ExcludePullRequests: Ptr(true)}
-	ctx := context.Background()
+	ctx := t.Context()
 	runs, _, err := client.Actions.GetWorkflowRunAttempt(ctx, "o", "r", 29679449, 3, opts)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowRunAttempt returned error: %v", err)
@@ -217,7 +216,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
 				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
 
-			ctx := context.Background()
+			ctx := t.Context()
 			url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 1)
 			if err != nil {
 				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned error: %v", err)
@@ -266,7 +265,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_dontFol
 				http.Redirect(w, r, "https://github.com/a", http.StatusMovedPermanently)
 			})
 
-			ctx := context.Background()
+			ctx := t.Context()
 			_, resp, _ := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 0)
 			if resp.StatusCode != http.StatusMovedPermanently {
 				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
@@ -309,7 +308,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followR
 				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
 
-			ctx := context.Background()
+			ctx := t.Context()
 			url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 1)
 			if err != nil {
 				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned error: %v", err)
@@ -367,7 +366,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_unexpectedCode(t *testing.T) {
 				w.WriteHeader(http.StatusNoContent)
 			})
 
-			ctx := context.Background()
+			ctx := t.Context()
 			url, resp, err := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 1)
 			if err == nil {
 				t.Fatal("Actions.GetWorkflowRunAttemptLogs should return error on unexpected code")
@@ -394,7 +393,7 @@ func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Actions.RerunWorkflowByID(ctx, "o", "r", 3434)
 	if err != nil {
 		t.Errorf("Actions.RerunWorkflowByID returned error: %v", err)
@@ -423,7 +422,7 @@ func TestActionsService_RerunFailedJobsByID(t *testing.T) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Actions.RerunFailedJobsByID(ctx, "o", "r", 3434)
 	if err != nil {
 		t.Errorf("Actions.RerunFailedJobsByID returned error: %v", err)
@@ -452,7 +451,7 @@ func TestActionsService_RerunJobByID(t *testing.T) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Actions.RerunJobByID(ctx, "o", "r", 3434)
 	if err != nil {
 		t.Errorf("Actions.RerunJobByID returned error: %v", err)
@@ -481,7 +480,7 @@ func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
 		w.WriteHeader(http.StatusAccepted)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Actions.CancelWorkflowRunByID(ctx, "o", "r", 3434)
 	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("Actions.CancelWorkflowRunByID returned error: %v (want AcceptedError)", err)
@@ -528,7 +527,7 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
 
-			ctx := context.Background()
+			ctx := t.Context()
 			url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 1)
 			if err != nil {
 				t.Errorf("Actions.GetWorkflowRunLogs returned error: %v", err)
@@ -577,7 +576,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedi
 				http.Redirect(w, r, "https://github.com/a", http.StatusMovedPermanently)
 			})
 
-			ctx := context.Background()
+			ctx := t.Context()
 			_, resp, _ := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 0)
 			if resp.StatusCode != http.StatusMovedPermanently {
 				t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
@@ -620,7 +619,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
 
-			ctx := context.Background()
+			ctx := t.Context()
 			url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 1)
 			if err != nil {
 				t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
@@ -678,7 +677,7 @@ func TestActionsService_GetWorkflowRunLogs_unexpectedCode(t *testing.T) {
 				w.WriteHeader(http.StatusNoContent)
 			})
 
-			ctx := context.Background()
+			ctx := t.Context()
 			url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 1)
 			if err == nil {
 				t.Fatal("Actions.GetWorkflowRunLogs should return error on unexpected code")
@@ -710,7 +709,7 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 	})
 
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	runs, _, err := client.Actions.ListRepositoryWorkflowRuns(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Actions.ListRepositoryWorkflowRuns returned error: %v", err)
@@ -755,7 +754,7 @@ func TestActionService_DeleteWorkflowRun(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Actions.DeleteWorkflowRun(ctx, "o", "r", 399444496); err != nil {
 		t.Errorf("DeleteWorkflowRun returned error: %v", err)
 	}
@@ -781,7 +780,7 @@ func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Actions.DeleteWorkflowRunLogs(ctx, "o", "r", 399444496); err != nil {
 		t.Errorf("DeleteWorkflowRunLogs returned error: %v", err)
 	}
@@ -872,7 +871,7 @@ func TestActionsService_ReviewCustomDeploymentProtectionRule(t *testing.T) {
 		Comment:         "Approve deployment",
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, &request); err != nil {
 		t.Errorf("ReviewCustomDeploymentProtectionRule returned error: %v", err)
 	}
@@ -914,7 +913,7 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 		fmt.Fprint(w, `{"billable":{"UBUNTU":{"total_ms":180000,"jobs":1,"job_runs":[{"job_id":1,"duration_ms":60000}]},"MACOS":{"total_ms":240000,"jobs":2,"job_runs":[{"job_id":2,"duration_ms":30000},{"job_id":3,"duration_ms":10000}]},"WINDOWS":{"total_ms":300000,"jobs":2}},"run_duration_ms":500000}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	workflowRunUsage, _, err := client.Actions.GetWorkflowRunUsageByID(ctx, "o", "r", 29679449)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowRunUsageByID returned error: %v", err)
@@ -1612,7 +1611,7 @@ func TestActionService_PendingDeployments(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	deployments, _, err := client.Actions.PendingDeployments(ctx, "o", "r", 399444496, input)
 	if err != nil {
 		t.Errorf("Actions.PendingDeployments returned error: %v", err)
@@ -1688,7 +1687,7 @@ func TestActionService_GetPendingDeployments(t *testing.T) {
 		]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	deployments, _, err := client.Actions.GetPendingDeployments(ctx, "o", "r", 399444496)
 	if err != nil {
 		t.Errorf("Actions.GetPendingDeployments returned error: %v", err)

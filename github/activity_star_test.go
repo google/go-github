@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"strings"
@@ -30,7 +29,7 @@ func TestActivityService_ListStargazers(t *testing.T) {
 		fmt.Fprint(w, `[{"starred_at":"2002-02-10T15:30:00Z","user":{"id":1}}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	stargazers, _, err := client.Activity.ListStargazers(ctx, "o", "r", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Activity.ListStargazers returned error: %v", err)
@@ -66,7 +65,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"starred_at":"2002-02-10T15:30:00Z","repo":{"id":1}}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repos, _, err := client.Activity.ListStarred(ctx, "", nil)
 	if err != nil {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
@@ -108,7 +107,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 	})
 
 	opt := &ActivityListStarredOptions{"created", "asc", ListOptions{Page: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	repos, _, err := client.Activity.ListStarred(ctx, "u", opt)
 	if err != nil {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
@@ -138,7 +137,7 @@ func TestActivityService_ListStarred_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Activity.ListStarred(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -152,7 +151,7 @@ func TestActivityService_IsStarred_hasStar(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	star, _, err := client.Activity.IsStarred(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Activity.IsStarred returned error: %v", err)
@@ -185,7 +184,7 @@ func TestActivityService_IsStarred_noStar(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	star, _, err := client.Activity.IsStarred(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Activity.IsStarred returned error: %v", err)
@@ -213,7 +212,7 @@ func TestActivityService_IsStarred_invalidID(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Activity.IsStarred(ctx, "%", "%")
 	testURLParseError(t, err)
 }
@@ -226,7 +225,7 @@ func TestActivityService_Star(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Activity.Star(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Activity.Star returned error: %v", err)
@@ -247,7 +246,7 @@ func TestActivityService_Star_invalidID(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Activity.Star(ctx, "%", "%")
 	testURLParseError(t, err)
 }
@@ -260,7 +259,7 @@ func TestActivityService_Unstar(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Activity.Unstar(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Activity.Unstar returned error: %v", err)
@@ -281,7 +280,7 @@ func TestActivityService_Unstar_invalidID(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Activity.Unstar(ctx, "%", "%")
 	testURLParseError(t, err)
 }
