@@ -557,7 +557,7 @@ func TestBillingService_GetPremiumRequestUsageReportOrg(t *testing.T) {
 			]
 		}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &PremiumRequestUsageReportOptions{
 		UsageReportOptions: UsageReportOptions{
 			Year:  Ptr(2025),
@@ -617,7 +617,7 @@ func TestBillingService_GetPremiumRequestUsageReportOrg_invalidOrg(t *testing.T)
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Billing.GetPremiumRequestUsageReportOrg(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -655,7 +655,7 @@ func TestBillingService_GetPremiumRequestUsageReportUser(t *testing.T) {
 			]
 		}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &PremiumRequestUsageReportOptions{
 		UsageReportOptions: UsageReportOptions{
 			Year: Ptr(2025),
@@ -712,7 +712,7 @@ func TestBillingService_GetPremiumRequestUsageReportUser_invalidUser(t *testing.
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Billing.GetPremiumRequestUsageReportUser(ctx, "%", nil)
 	testURLParseError(t, err)
 }
