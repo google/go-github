@@ -69,7 +69,6 @@ func TestProjectsV2_Org(t *testing.T) {
 		t.Fatalf("GetProjectForOrg returned unexpected project number: got %+v want %d", proj.Number, projectNumber)
 	}
 
-	// List fields (may be empty)
 	_, _, err = client.Projects.ListProjectFieldsForOrg(ctx, org, projectNumber, nil)
 	if err != nil {
 		// Fields listing might require extra perms; treat as fatal to surface potential regression.
