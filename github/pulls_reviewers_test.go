@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -131,7 +130,7 @@ func TestRequestReviewers(t *testing.T) {
 	})
 
 	// This returns a PR, unmarshaling of which is tested elsewhere
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
 	if err != nil {
 		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
@@ -160,7 +159,7 @@ func TestRemoveReviewers(t *testing.T) {
 		testBody(t, r, `{"reviewers":["octocat","googlebot"],"team_reviewers":["justice-league"]}`+"\n")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league"}})
 	if err != nil {
 		t.Errorf("PullRequests.RemoveReviewers returned error: %v", err)
@@ -181,7 +180,7 @@ func TestRemoveReviewers_teamsOnly(t *testing.T) {
 		testBody(t, r, `{"reviewers":[],"team_reviewers":["justice-league"]}`+"\n")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{TeamReviewers: []string{"justice-league"}})
 	if err != nil {
 		t.Errorf("PullRequests.RemoveReviewers returned error: %v", err)
@@ -202,7 +201,7 @@ func TestListReviewers(t *testing.T) {
 		fmt.Fprint(w, `{"users":[{"login":"octocat","id":1}],"teams":[{"id":1,"name":"Justice League"}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewers returned error: %v", err)
@@ -248,7 +247,7 @@ func TestListReviewers_withOptions(t *testing.T) {
 		fmt.Fprint(w, `{}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewers returned error: %v", err)

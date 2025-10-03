@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -32,7 +31,7 @@ func TestEnterpriseService_GetCodeSecurityAndAnalysis(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	const methodName = "GetCodeSecurityAndAnalysis"
 
@@ -88,7 +87,7 @@ func TestEnterpriseService_UpdateCodeSecurityAndAnalysis(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	const methodName = "UpdateCodeSecurityAndAnalysis"
 
@@ -115,7 +114,7 @@ func TestEnterpriseService_EnableAdvancedSecurity(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	const methodName = "EnableDisableSecurityFeature"
 

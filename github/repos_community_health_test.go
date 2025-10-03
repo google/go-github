@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -66,7 +65,7 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Repositories.GetCommunityHealthMetrics(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetCommunityHealthMetrics returned error: %v", err)

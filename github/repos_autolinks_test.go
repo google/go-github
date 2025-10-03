@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -28,7 +27,7 @@ func TestRepositoriesService_ListAutolinks(t *testing.T) {
 	opt := &ListOptions{
 		Page: 2,
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	autolinks, _, err := client.Repositories.ListAutolinks(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListAutolinks returned error: %v", err)
@@ -83,7 +82,7 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 			}
 		`))
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	autolink, _, err := client.Repositories.AddAutolink(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.AddAutolink returned error: %v", err)
@@ -122,7 +121,7 @@ func TestRepositoriesService_GetAutolink(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "key_prefix": "TICKET-", "url_template": "https://example.com/TICKET?query=<num>"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	autolink, _, err := client.Repositories.GetAutolink(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetAutolink returned error: %v", err)
@@ -152,7 +151,7 @@ func TestRepositoriesService_DeleteAutolink(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.DeleteAutolink(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteAutolink returned error: %v", err)

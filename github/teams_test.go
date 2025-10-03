@@ -7,7 +7,6 @@ package github
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -28,7 +27,7 @@ func TestTeamsService_ListTeams(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	teams, _, err := client.Teams.ListTeams(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Teams.ListTeams returned error: %v", err)
@@ -58,7 +57,7 @@ func TestTeamsService_ListTeams_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Teams.ListTeams(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -72,7 +71,7 @@ func TestTeamsService_GetTeamByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "parent":null}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	team, _, err := client.Teams.GetTeamByID(ctx, 1, 1)
 	if err != nil {
 		t.Errorf("Teams.GetTeamByID returned error: %v", err)
@@ -107,7 +106,7 @@ func TestTeamsService_GetTeamByID_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	team, resp, err := client.Teams.GetTeamByID(ctx, 1, 2)
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
@@ -129,7 +128,7 @@ func TestTeamsService_GetTeamBySlug(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "parent":null}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	team, _, err := client.Teams.GetTeamBySlug(ctx, "o", "s")
 	if err != nil {
 		t.Errorf("Teams.GetTeamBySlug returned error: %v", err)
@@ -159,7 +158,7 @@ func TestTeamsService_GetTeamBySlug_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Teams.GetTeamBySlug(ctx, "%", "s")
 	testURLParseError(t, err)
 }
@@ -173,7 +172,7 @@ func TestTeamsService_GetTeamBySlug_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	team, resp, err := client.Teams.GetTeamBySlug(ctx, "o", "s")
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
@@ -204,7 +203,7 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	team, _, err := client.Teams.CreateTeam(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Teams.CreateTeam returned error: %v", err)
@@ -234,7 +233,7 @@ func TestTeamsService_CreateTeam_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Teams.CreateTeam(ctx, "%", NewTeam{})
 	testURLParseError(t, err)
 }
@@ -257,7 +256,7 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	team, _, err := client.Teams.EditTeamByID(ctx, 1, 1, input, false)
 	if err != nil {
 		t.Errorf("Teams.EditTeamByID returned error: %v", err)
@@ -307,7 +306,7 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	team, _, err := client.Teams.EditTeamByID(ctx, 1, 1, input, true)
 	if err != nil {
 		t.Errorf("Teams.EditTeamByID returned error: %v", err)
@@ -341,7 +340,7 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	team, _, err := client.Teams.EditTeamBySlug(ctx, "o", "s", input, false)
 	if err != nil {
 		t.Errorf("Teams.EditTeamBySlug returned error: %v", err)
@@ -391,7 +390,7 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	team, _, err := client.Teams.EditTeamBySlug(ctx, "o", "s", input, true)
 	if err != nil {
 		t.Errorf("Teams.EditTeam returned error: %v", err)
@@ -415,7 +414,7 @@ func TestTeamsService_DeleteTeamByID(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.DeleteTeamByID(ctx, 1, 1)
 	if err != nil {
 		t.Errorf("Teams.DeleteTeamByID returned error: %v", err)
@@ -440,7 +439,7 @@ func TestTeamsService_DeleteTeamBySlug(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.DeleteTeamBySlug(ctx, "o", "s")
 	if err != nil {
 		t.Errorf("Teams.DeleteTeamBySlug returned error: %v", err)
@@ -468,7 +467,7 @@ func TestTeamsService_ListChildTeamsByParentID(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	teams, _, err := client.Teams.ListChildTeamsByParentID(ctx, 1, 2, opt)
 	if err != nil {
 		t.Errorf("Teams.ListChildTeamsByParentID returned error: %v", err)
@@ -505,7 +504,7 @@ func TestTeamsService_ListChildTeamsByParentSlug(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	teams, _, err := client.Teams.ListChildTeamsByParentSlug(ctx, "o", "s", opt)
 	if err != nil {
 		t.Errorf("Teams.ListChildTeamsByParentSlug returned error: %v", err)
@@ -543,7 +542,7 @@ func TestTeamsService_ListTeamReposByID(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	members, _, err := client.Teams.ListTeamReposByID(ctx, 1, 1, opt)
 	if err != nil {
 		t.Errorf("Teams.ListTeamReposByID returned error: %v", err)
@@ -581,7 +580,7 @@ func TestTeamsService_ListTeamReposBySlug(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	members, _, err := client.Teams.ListTeamReposBySlug(ctx, "o", "s", opt)
 	if err != nil {
 		t.Errorf("Teams.ListTeamReposBySlug returned error: %v", err)
@@ -617,7 +616,7 @@ func TestTeamsService_IsTeamRepoByID_true(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repo, _, err := client.Teams.IsTeamRepoByID(ctx, 1, 1, "owner", "repo")
 	if err != nil {
 		t.Errorf("Teams.IsTeamRepoByID returned error: %v", err)
@@ -653,7 +652,7 @@ func TestTeamsService_IsTeamRepoBySlug_true(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repo, _, err := client.Teams.IsTeamRepoBySlug(ctx, "org", "slug", "owner", "repo")
 	if err != nil {
 		t.Errorf("Teams.IsTeamRepoBySlug returned error: %v", err)
@@ -688,7 +687,7 @@ func TestTeamsService_IsTeamRepoByID_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repo, resp, err := client.Teams.IsTeamRepoByID(ctx, 1, 1, "owner", "repo")
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
@@ -710,7 +709,7 @@ func TestTeamsService_IsTeamRepoBySlug_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repo, resp, err := client.Teams.IsTeamRepoBySlug(ctx, "org", "slug", "owner", "repo")
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
@@ -732,7 +731,7 @@ func TestTeamsService_IsTeamRepoByID_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repo, resp, err := client.Teams.IsTeamRepoByID(ctx, 1, 1, "owner", "repo")
 	if err == nil {
 		t.Error("Expected HTTP 400 response")
@@ -754,7 +753,7 @@ func TestTeamsService_IsTeamRepoBySlug_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repo, resp, err := client.Teams.IsTeamRepoBySlug(ctx, "org", "slug", "owner", "repo")
 	if err == nil {
 		t.Error("Expected HTTP 400 response")
@@ -771,7 +770,7 @@ func TestTeamsService_IsTeamRepoByID_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Teams.IsTeamRepoByID(ctx, 1, 1, "%", "r")
 	testURLParseError(t, err)
 }
@@ -780,7 +779,7 @@ func TestTeamsService_IsTeamRepoBySlug_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Teams.IsTeamRepoBySlug(ctx, "o", "s", "%", "r")
 	testURLParseError(t, err)
 }
@@ -803,7 +802,7 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.AddTeamRepoByID(ctx, 1, 1, "owner", "repo", opt)
 	if err != nil {
 		t.Errorf("Teams.AddTeamRepoByID returned error: %v", err)
@@ -838,7 +837,7 @@ func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.AddTeamRepoBySlug(ctx, "org", "slug", "owner", "repo", opt)
 	if err != nil {
 		t.Errorf("Teams.AddTeamRepoBySlug returned error: %v", err)
@@ -864,7 +863,7 @@ func TestTeamsService_AddTeamRepoByID_noAccess(t *testing.T) {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.AddTeamRepoByID(ctx, 1, 1, "owner", "repo", nil)
 	if err == nil {
 		t.Error("Expected error to be returned")
@@ -880,7 +879,7 @@ func TestTeamsService_AddTeamRepoBySlug_noAccess(t *testing.T) {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.AddTeamRepoBySlug(ctx, "org", "slug", "owner", "repo", nil)
 	if err == nil {
 		t.Error("Expected error to be returned")
@@ -891,7 +890,7 @@ func TestTeamsService_AddTeamRepoByID_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.AddTeamRepoByID(ctx, 1, 1, "%", "r", nil)
 	testURLParseError(t, err)
 }
@@ -900,7 +899,7 @@ func TestTeamsService_AddTeamRepoBySlug_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.AddTeamRepoBySlug(ctx, "o", "s", "%", "r", nil)
 	testURLParseError(t, err)
 }
@@ -914,7 +913,7 @@ func TestTeamsService_RemoveTeamRepoByID(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.RemoveTeamRepoByID(ctx, 1, 1, "owner", "repo")
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamRepoByID returned error: %v", err)
@@ -940,7 +939,7 @@ func TestTeamsService_RemoveTeamRepoBySlug(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.RemoveTeamRepoBySlug(ctx, "org", "slug", "owner", "repo")
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamRepoBySlug returned error: %v", err)
@@ -961,7 +960,7 @@ func TestTeamsService_RemoveTeamRepoByID_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.RemoveTeamRepoByID(ctx, 1, 1, "%", "r")
 	testURLParseError(t, err)
 }
@@ -970,7 +969,7 @@ func TestTeamsService_RemoveTeamRepoBySlug_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.RemoveTeamRepoBySlug(ctx, "o", "s", "%", "r")
 	testURLParseError(t, err)
 }
@@ -986,7 +985,7 @@ func TestTeamsService_ListUserTeams(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1}
-	ctx := context.Background()
+	ctx := t.Context()
 	teams, _, err := client.Teams.ListUserTeams(ctx, opt)
 	if err != nil {
 		t.Errorf("Teams.ListUserTeams returned error: %v", err)
@@ -1017,7 +1016,7 @@ func TestTeamsService_ListProjectsByID(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	projects, _, err := client.Teams.ListTeamProjectsByID(ctx, 1, 1)
 	if err != nil {
 		t.Errorf("Teams.ListTeamProjectsByID returned error: %v", err)
@@ -1053,7 +1052,7 @@ func TestTeamsService_ListProjectsBySlug(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	projects, _, err := client.Teams.ListTeamProjectsBySlug(ctx, "o", "s")
 	if err != nil {
 		t.Errorf("Teams.ListTeamProjectsBySlug returned error: %v", err)
@@ -1089,7 +1088,7 @@ func TestTeamsService_ReviewProjectsByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	project, _, err := client.Teams.ReviewTeamProjectsByID(ctx, 1, 1, 1)
 	if err != nil {
 		t.Errorf("Teams.ReviewTeamProjectsByID returned error: %v", err)
@@ -1125,7 +1124,7 @@ func TestTeamsService_ReviewProjectsBySlug(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	project, _, err := client.Teams.ReviewTeamProjectsBySlug(ctx, "o", "s", 1)
 	if err != nil {
 		t.Errorf("Teams.ReviewTeamProjectsBySlug returned error: %v", err)
@@ -1172,7 +1171,7 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.AddTeamProjectByID(ctx, 1, 1, 1, opt)
 	if err != nil {
 		t.Errorf("Teams.AddTeamProjectByID returned error: %v", err)
@@ -1210,7 +1209,7 @@ func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.AddTeamProjectBySlug(ctx, "o", "s", 1, opt)
 	if err != nil {
 		t.Errorf("Teams.AddTeamProjectBySlug returned error: %v", err)
@@ -1237,7 +1236,7 @@ func TestTeamsService_RemoveTeamProjectByID(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.RemoveTeamProjectByID(ctx, 1, 1, 1)
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamProjectByID returned error: %v", err)
@@ -1264,7 +1263,7 @@ func TestTeamsService_RemoveTeamProjectBySlug(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.RemoveTeamProjectBySlug(ctx, "o", "s", 1)
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamProjectBySlug returned error: %v", err)
@@ -1298,7 +1297,7 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 		Query:             "n",
 		ListCursorOptions: ListCursorOptions{Page: "url-encoded-next-page-token"},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	groups, _, err := client.Teams.ListIDPGroupsInOrganization(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Teams.ListIDPGroupsInOrganization returned error: %v", err)
@@ -1341,7 +1340,7 @@ func TestTeamsService_ListIDPGroupsForTeamByID(t *testing.T) {
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	groups, _, err := client.Teams.ListIDPGroupsForTeamByID(ctx, 1, 1)
 	if err != nil {
 		t.Errorf("Teams.ListIDPGroupsForTeamByID returned error: %v", err)
@@ -1384,7 +1383,7 @@ func TestTeamsService_ListIDPGroupsForTeamBySlug(t *testing.T) {
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	groups, _, err := client.Teams.ListIDPGroupsForTeamBySlug(ctx, "o", "slug")
 	if err != nil {
 		t.Errorf("Teams.ListIDPGroupsForTeamBySlug returned error: %v", err)
@@ -1437,7 +1436,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID(t *testing.T) {
 		},
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnectionsByID(ctx, 1, 1, input)
 	if err != nil {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsByID returned error: %v", err)
@@ -1490,7 +1489,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug(t *testing.T) {
 		},
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnectionsBySlug(ctx, "o", "slug", input)
 	if err != nil {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsBySlug returned error: %v", err)
@@ -1537,7 +1536,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID_empty(t *testing.T) 
 		Groups: []*IDPGroup{},
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnectionsByID(ctx, 1, 1, input)
 	if err != nil {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsByID returned error: %v", err)
@@ -1564,7 +1563,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug_empty(t *testing.T
 		Groups: []*IDPGroup{},
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnectionsBySlug(ctx, "o", "slug", input)
 	if err != nil {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsBySlug returned error: %v", err)
@@ -1781,7 +1780,7 @@ func TestTeamsService_GetExternalGroup(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	externalGroup, _, err := client.Teams.GetExternalGroup(ctx, "o", 123)
 	if err != nil {
 		t.Errorf("Teams.GetExternalGroup returned error: %v", err)
@@ -1844,7 +1843,7 @@ func TestTeamsService_GetExternalGroup_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	eg, resp, err := client.Teams.GetExternalGroup(ctx, "o", 123)
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
@@ -1874,7 +1873,7 @@ func TestTeamsService_ListExternalGroups(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &ListExternalGroupsOptions{
 		DisplayName: Ptr("Octocat"),
 	}
@@ -1920,7 +1919,7 @@ func TestTeamsService_ListExternalGroups_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	eg, resp, err := client.Teams.ListExternalGroups(ctx, "o", nil)
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
@@ -1950,7 +1949,7 @@ func TestTeamsService_ListExternalGroupsForTeamBySlug(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	list, _, err := client.Teams.ListExternalGroupsForTeamBySlug(ctx, "o", "t")
 	if err != nil {
 		t.Errorf("Teams.ListExternalGroupsForTeamBySlug returned error: %v", err)
@@ -1993,7 +1992,7 @@ func TestTeamsService_ListExternalGroupsForTeamBySlug_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	eg, resp, err := client.Teams.ListExternalGroupsForTeamBySlug(ctx, "o", "t")
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
@@ -2043,7 +2042,7 @@ func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	body := &ExternalGroup{
 		GroupID: Ptr(int64(123)),
 	}
@@ -2109,7 +2108,7 @@ func TestTeamsService_UpdateConnectedExternalGroup_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	body := &ExternalGroup{
 		GroupID: Ptr(int64(123)),
 	}
@@ -2134,7 +2133,7 @@ func TestTeamsService_RemoveConnectedExternalGroup(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.RemoveConnectedExternalGroup(ctx, "o", "t")
 	if err != nil {
 		t.Errorf("Teams.RemoveConnectedExternalGroup returned error: %v", err)
@@ -2160,7 +2159,7 @@ func TestTeamsService_RemoveConnectedExternalGroup_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Teams.RemoveConnectedExternalGroup(ctx, "o", "t")
 	if err == nil {
 		t.Error("Expected HTTP 404 response")

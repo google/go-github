@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -25,7 +24,7 @@ func TestRepositoriesService_ListTagProtection(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1, "pattern":"tag1"},{"id":2, "pattern":"tag2"}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	tagProtections, _, err := client.Repositories.ListTagProtection(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListTagProtection returned error: %v", err)
@@ -55,7 +54,7 @@ func TestRepositoriesService_ListTagProtection_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.ListTagProtection(ctx, "%", "r")
 	testURLParseError(t, err)
 }
@@ -79,7 +78,7 @@ func TestRepositoriesService_CreateTagProtection(t *testing.T) {
 		fmt.Fprint(w, `{"id":1,"pattern":"tag*"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Repositories.CreateTagProtection(ctx, "o", "r", pattern)
 	if err != nil {
 		t.Errorf("Repositories.CreateTagProtection returned error: %v", err)
@@ -114,7 +113,7 @@ func TestRepositoriesService_DeleteTagProtection(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.DeleteTagProtection(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteTagProtection returned error: %v", err)

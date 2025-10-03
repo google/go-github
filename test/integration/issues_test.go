@@ -8,12 +8,11 @@
 package integration
 
 import (
-	"context"
 	"testing"
 )
 
 func TestIssueEvents(t *testing.T) {
-	events, _, err := client.Issues.ListRepositoryEvents(context.Background(), "google", "go-github", nil)
+	events, _, err := client.Issues.ListRepositoryEvents(t.Context(), "google", "go-github", nil)
 	if err != nil {
 		t.Fatalf("Issues.ListRepositoryEvents returned error: %v", err)
 	}
@@ -22,7 +21,7 @@ func TestIssueEvents(t *testing.T) {
 		t.Error("ListRepositoryEvents returned no events")
 	}
 
-	events, _, err = client.Issues.ListIssueEvents(context.Background(), "google", "go-github", 1, nil)
+	events, _, err = client.Issues.ListIssueEvents(t.Context(), "google", "go-github", 1, nil)
 	if err != nil {
 		t.Fatalf("Issues.ListIssueEvents returned error: %v", err)
 	}
@@ -31,7 +30,7 @@ func TestIssueEvents(t *testing.T) {
 		t.Error("ListIssueEvents returned no events")
 	}
 
-	event, _, err := client.Issues.GetEvent(context.Background(), "google", "go-github", *events[0].ID)
+	event, _, err := client.Issues.GetEvent(t.Context(), "google", "go-github", *events[0].ID)
 	if err != nil {
 		t.Fatalf("Issues.GetEvent returned error: %v", err)
 	}

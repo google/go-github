@@ -7,7 +7,6 @@ package github
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -29,7 +28,7 @@ func TestGitService_GetBlob(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	blob, _, err := client.Git.GetBlob(ctx, "o", "r", "s")
 	if err != nil {
 		t.Errorf("Git.GetBlob returned error: %v", err)
@@ -63,7 +62,7 @@ func TestGitService_GetBlob_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Git.GetBlob(ctx, "%", "%", "%")
 	testURLParseError(t, err)
 }
@@ -79,7 +78,7 @@ func TestGitService_GetBlobRaw(t *testing.T) {
 		fmt.Fprint(w, `raw contents here`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	blob, _, err := client.Git.GetBlobRaw(ctx, "o", "r", "s")
 	if err != nil {
 		t.Errorf("Git.GetBlobRaw returned error: %v", err)
@@ -135,7 +134,7 @@ func TestGitService_CreateBlob(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	blob, _, err := client.Git.CreateBlob(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Git.CreateBlob returned error: %v", err)
@@ -166,7 +165,7 @@ func TestGitService_CreateBlob_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Git.CreateBlob(ctx, "%", "%", Blob{})
 	testURLParseError(t, err)
 }

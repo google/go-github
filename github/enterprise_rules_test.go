@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -174,7 +173,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoName(t *testing.T)
 		  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ruleset, _, err := client.Enterprise.CreateRepositoryRuleset(ctx, "e", RepositoryRuleset{
 		Name:        "ruleset",
 		Target:      Ptr(RulesetTargetBranch),
@@ -554,7 +553,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 		  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ruleset, _, err := client.Enterprise.CreateRepositoryRuleset(ctx, "e", RepositoryRuleset{
 		Name:        "ruleset",
 		Target:      Ptr(RulesetTargetBranch),
@@ -939,7 +938,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoName(t *testing.T) {
 		  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ruleset, _, err := client.Enterprise.CreateRepositoryRuleset(ctx, "e", RepositoryRuleset{
 		Name:        "ruleset",
 		Target:      Ptr(RulesetTargetBranch),
@@ -1311,7 +1310,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 		  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ruleset, _, err := client.Enterprise.CreateRepositoryRuleset(ctx, "e", RepositoryRuleset{
 		Name:        "ruleset",
 		Target:      Ptr(RulesetTargetBranch),
@@ -1598,7 +1597,7 @@ func TestEnterpriseService_GetRepositoryRuleset(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	rulesets, _, err := client.Enterprise.GetRepositoryRuleset(ctx, "e", 84)
 	if err != nil {
 		t.Errorf("Enterprise.GetRepositoryRuleset returned error: %v", err)
@@ -1705,7 +1704,7 @@ func TestEnterpriseService_UpdateRepositoryRuleset(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	rulesets, _, err := client.Enterprise.UpdateRepositoryRuleset(ctx, "e", 84, RepositoryRuleset{
 		Name:        "test ruleset",
 		Target:      Ptr(RulesetTargetBranch),
@@ -1822,7 +1821,7 @@ func TestEnterpriseService_UpdateRepositoryRulesetClearBypassActor(t *testing.T)
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	_, err := client.Enterprise.UpdateRepositoryRulesetClearBypassActor(ctx, "e", 84)
 	if err != nil {
@@ -1844,7 +1843,7 @@ func TestEnterpriseService_DeleteRepositoryRuleset(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Enterprise.DeleteRepositoryRuleset(ctx, "e", 84)
 	if err != nil {
 		t.Errorf("Enterprise.DeleteRepositoryRuleset returned error: %v", err)

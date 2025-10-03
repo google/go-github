@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -28,7 +27,7 @@ func TestActivityService_ListEvents(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Activity.ListEvents(ctx, opt)
 	if err != nil {
 		t.Errorf("Activities.ListEvents returned error: %v", err)
@@ -62,7 +61,7 @@ func TestActivityService_ListRepositoryEvents(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Activity.ListRepositoryEvents(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Activities.ListRepositoryEvents returned error: %v", err)
@@ -92,7 +91,7 @@ func TestActivityService_ListRepositoryEvents_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Activity.ListRepositoryEvents(ctx, "%", "%", nil)
 	testURLParseError(t, err)
 }
@@ -110,7 +109,7 @@ func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Activity.ListIssueEventsForRepository(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Activities.ListIssueEventsForRepository returned error: %v", err)
@@ -140,7 +139,7 @@ func TestActivityService_ListIssueEventsForRepository_invalidOwner(t *testing.T)
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Activity.ListIssueEventsForRepository(ctx, "%", "%", nil)
 	testURLParseError(t, err)
 }
@@ -158,7 +157,7 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsForRepoNetwork(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Activities.ListEventsForRepoNetwork returned error: %v", err)
@@ -188,7 +187,7 @@ func TestActivityService_ListEventsForRepoNetwork_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Activity.ListEventsForRepoNetwork(ctx, "%", "%", nil)
 	testURLParseError(t, err)
 }
@@ -206,7 +205,7 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsForOrganization(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Activities.ListEventsForOrganization returned error: %v", err)
@@ -236,7 +235,7 @@ func TestActivityService_ListEventsForOrganization_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Activity.ListEventsForOrganization(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -254,7 +253,7 @@ func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsPerformedByUser(ctx, "u", false, opt)
 	if err != nil {
 		t.Errorf("Events.ListPerformedByUser returned error: %v", err)
@@ -289,7 +288,7 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsPerformedByUser(ctx, "u", true, nil)
 	if err != nil {
 		t.Errorf("Events.ListPerformedByUser returned error: %v", err)
@@ -305,7 +304,7 @@ func TestActivityService_ListEventsPerformedByUser_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Activity.ListEventsPerformedByUser(ctx, "%", false, nil)
 	testURLParseError(t, err)
 }
@@ -323,7 +322,7 @@ func TestActivityService_ListEventsReceivedByUser_all(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsReceivedByUser(ctx, "u", false, opt)
 	if err != nil {
 		t.Errorf("Events.ListReceivedByUser returned error: %v", err)
@@ -358,7 +357,7 @@ func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
 		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsReceivedByUser(ctx, "u", true, nil)
 	if err != nil {
 		t.Errorf("Events.ListReceivedByUser returned error: %v", err)
@@ -374,7 +373,7 @@ func TestActivityService_ListEventsReceivedByUser_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Activity.ListEventsReceivedByUser(ctx, "%", false, nil)
 	testURLParseError(t, err)
 }
@@ -392,7 +391,7 @@ func TestActivityService_ListUserEventsForOrganization(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Activity.ListUserEventsForOrganization(ctx, "o", "u", opt)
 	if err != nil {
 		t.Errorf("Activities.ListUserEventsForOrganization returned error: %v", err)

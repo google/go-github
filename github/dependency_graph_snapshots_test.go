@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -25,7 +24,7 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 		fmt.Fprint(w, `{"id":12345,"created_at":"2022-06-14T20:25:01Z","message":"Dependency results for the repo have been successfully updated.","result":"SUCCESS"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	snapshot := &DependencyGraphSnapshot{
 		Version: 0,
 		Sha:     Ptr("ce587453ced02b1526dfb4cb910479d431683101"),

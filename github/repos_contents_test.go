@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -102,7 +101,7 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 		  "path": "README.md"
 		}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	readme, _, err := client.Repositories.GetReadme(ctx, "o", "r", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Errorf("Repositories.GetReadme returned error: %v", err)
@@ -141,7 +140,7 @@ func TestRepositoriesService_DownloadContents_SuccessForFile(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	r, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadContents returned error: %v", err)
@@ -200,7 +199,7 @@ func TestRepositoriesService_DownloadContents_SuccessForDirectory(t *testing.T) 
 		fmt.Fprint(w, "foo")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	r, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadContents returned error: %v", err)
@@ -260,7 +259,7 @@ func TestRepositoriesService_DownloadContents_FailedResponse(t *testing.T) {
 		fmt.Fprint(w, "foo error")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	r, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadContents returned error: %v", err)
@@ -302,7 +301,7 @@ func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	reader, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err == nil {
 		t.Error("Repositories.DownloadContents did not return expected error")
@@ -335,7 +334,7 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 		fmt.Fprint(w, `[]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	reader, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err == nil {
 		t.Error("Repositories.DownloadContents did not return expected error")
@@ -364,7 +363,7 @@ func TestRepositoriesService_DownloadContentsWithMeta_SuccessForFile(t *testing.
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	r, c, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadContentsWithMeta returned error: %v", err)
@@ -427,7 +426,7 @@ func TestRepositoriesService_DownloadContentsWithMeta_SuccessForDirectory(t *tes
 		fmt.Fprint(w, "foo")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	r, c, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadContentsWithMeta returned error: %v", err)
@@ -484,7 +483,7 @@ func TestRepositoriesService_DownloadContentsWithMeta_FailedResponse(t *testing.
 		  }]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	r, c, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadContentsWithMeta returned error: %v", err)
@@ -533,7 +532,7 @@ func TestRepositoriesService_DownloadContentsWithMeta_NoDownloadURL(t *testing.T
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	reader, contents, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
 	if err == nil {
 		t.Error("Repositories.DownloadContentsWithMeta did not return expected error")
@@ -561,7 +560,7 @@ func TestRepositoriesService_DownloadContentsWithMeta_NoFile(t *testing.T) {
 		fmt.Fprint(w, `[]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
 	if err == nil {
 		t.Error("Repositories.DownloadContentsWithMeta did not return expected error")
@@ -586,7 +585,7 @@ func TestRepositoriesService_GetContents_File(t *testing.T) {
 		  "path": "LICENSE"
 		}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	fileContents, _, _, err := client.Repositories.GetContents(ctx, "o", "r", "p", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Errorf("Repositories.GetContents returned error: %v", err)
@@ -619,7 +618,7 @@ func TestRepositoriesService_GetContents_FilenameNeedsEscape(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, _, err := client.Repositories.GetContents(ctx, "o", "r", "p#?%/中.go", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
@@ -634,7 +633,7 @@ func TestRepositoriesService_GetContents_DirectoryWithSpaces(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, _, err := client.Repositories.GetContents(ctx, "o", "r", "some directory/file.go", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
@@ -649,7 +648,7 @@ func TestRepositoriesService_GetContents_PathWithParent(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, _, err := client.Repositories.GetContents(ctx, "o", "r", "some/../directory/file.go", &RepositoryContentGetOptions{})
 	if err == nil {
 		t.Fatal("Repositories.GetContents expected error but got none")
@@ -664,7 +663,7 @@ func TestRepositoriesService_GetContents_DirectoryWithPlusChars(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, _, err := client.Repositories.GetContents(ctx, "o", "r", "some directory+name/file.go", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
@@ -689,7 +688,7 @@ func TestRepositoriesService_GetContents_Directory(t *testing.T) {
 		  "path": "LICENSE"
 		}]`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	_, directoryContents, _, err := client.Repositories.GetContents(ctx, "o", "r", "p", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Errorf("Repositories.GetContents returned error: %v", err)
@@ -726,7 +725,7 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 		Content:   content,
 		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	createResponse, _, err := client.Repositories.CreateFile(ctx, "o", "r", "p", repositoryContentsOptions)
 	if err != nil {
 		t.Errorf("Repositories.CreateFile returned error: %v", err)
@@ -782,7 +781,7 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 		SHA:       &sha,
 		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	updateResponse, _, err := client.Repositories.UpdateFile(ctx, "o", "r", "p", repositoryContentsOptions)
 	if err != nil {
 		t.Errorf("Repositories.UpdateFile returned error: %v", err)
@@ -834,7 +833,7 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 		SHA:       &sha,
 		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	deleteResponse, _, err := client.Repositories.DeleteFile(ctx, "o", "r", "p", repositoryContentsOptions)
 	if err != nil {
 		t.Errorf("Repositories.DeleteFile returned error: %v", err)
@@ -891,7 +890,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 				testMethod(t, r, "GET")
 				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
-			ctx := context.Background()
+			ctx := t.Context()
 			url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{Ref: "yo"}, 1)
 			if err != nil {
 				t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
@@ -948,7 +947,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRed
 				testMethod(t, r, "GET")
 				http.Redirect(w, r, "https://github.com/a", http.StatusMovedPermanently)
 			})
-			ctx := context.Background()
+			ctx := t.Context()
 			_, resp, _ := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 0)
 			if resp.StatusCode != http.StatusMovedPermanently {
 				t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
@@ -989,7 +988,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 				testMethod(t, r, "GET")
 				http.Redirect(w, r, "https://github.com/a", http.StatusFound)
 			})
-			ctx := context.Background()
+			ctx := t.Context()
 			url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 1)
 			if err != nil {
 				t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
@@ -1017,7 +1016,7 @@ func TestRepositoriesService_GetContents_NoTrailingSlashInDirectoryApiPath(t *te
 		}
 		fmt.Fprint(w, `{}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, _, err := client.Repositories.GetContents(ctx, "o", "r", ".github/", &RepositoryContentGetOptions{
 		Ref: "mybranch",
 	})

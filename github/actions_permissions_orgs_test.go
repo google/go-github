@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,7 +23,7 @@ func TestActionsService_GetActionsPermissions(t *testing.T) {
 		fmt.Fprint(w, `{"enabled_repositories": "all", "allowed_actions": "all"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Actions.GetActionsPermissions(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.GetActionsPermissions returned error: %v", err)
@@ -67,7 +66,7 @@ func TestActionsService_UpdateActionsPermissions(t *testing.T) {
 		fmt.Fprint(w, `{"enabled_repositories": "all", "allowed_actions": "selected"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Actions.UpdateActionsPermissions(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("Actions.UpdateActionsPermissions returned error: %v", err)
@@ -105,7 +104,7 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":2,"repositories":[{"id":2}, {"id": 3}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opt := &ListOptions{
 		Page: 1,
 	}
@@ -148,7 +147,7 @@ func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.SetEnabledReposInOrg(ctx, "o", []int64{123, 1234})
 	if err != nil {
 		t.Errorf("Actions.SetEnabledRepos returned error: %v", err)
@@ -175,7 +174,7 @@ func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
 	if err != nil {
 		t.Errorf("Actions.AddEnabledReposInOrg returned error: %v", err)
@@ -202,7 +201,7 @@ func TestActionsService_RemoveEnabledReposInOrg(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.RemoveEnabledReposInOrg(ctx, "o", 123)
 	if err != nil {
 		t.Errorf("Actions.RemoveEnabledReposInOrg returned error: %v", err)
@@ -229,7 +228,7 @@ func TestActionsService_GetActionsAllowed(t *testing.T) {
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Actions.GetActionsAllowed(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.GetActionsAllowed returned error: %v", err)
@@ -272,7 +271,7 @@ func TestActionsService_UpdateActionsAllowed(t *testing.T) {
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Actions.UpdateActionsAllowed(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("Actions.UpdateActionsAllowed returned error: %v", err)
@@ -347,7 +346,7 @@ func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T
 		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Actions.GetDefaultWorkflowPermissionsInOrganization(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.GetDefaultWorkflowPermissionsInOrganization returned error: %v", err)
@@ -390,7 +389,7 @@ func TestActionsService_UpdateDefaultWorkflowPermissionsInOrganization(t *testin
 		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Actions.UpdateDefaultWorkflowPermissionsInOrganization(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("Actions.UpdateDefaultWorkflowPermissionsInOrganization returned error: %v", err)
@@ -425,7 +424,7 @@ func TestActionsService_GetArtifactAndLogRetentionPeriodInOrganization(t *testin
 		fmt.Fprint(w, `{"days": 90, "maximum_allowed_days": 365}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	period, _, err := client.Actions.GetArtifactAndLogRetentionPeriodInOrganization(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.GetArtifactAndLogRetentionPeriodInOrganization returned error: %v", err)
@@ -471,7 +470,7 @@ func TestActionsService_UpdateArtifactAndLogRetentionPeriodInOrganization(t *tes
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Actions.UpdateArtifactAndLogRetentionPeriodInOrganization(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("Actions.UpdateArtifactAndLogRetentionPeriodInOrganization returned error: %v", err)
@@ -501,7 +500,7 @@ func TestActionsService_GetSelfHostedRunnersSettingsInOrganization(t *testing.T)
 		fmt.Fprint(w, `{"enabled_repositories": "all", "selected_repositories_url": "https://api.github.com/orgs/octo-org/actions/permissions/self-hosted-runners/repositories"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	settings, _, err := client.Actions.GetSelfHostedRunnersSettingsInOrganization(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.GetSelfHostedRunnersSettingsInOrganization returned error: %v", err)
@@ -546,7 +545,7 @@ func TestActionsService_UpdateSelfHostedRunnersSettingsInOrganization(t *testing
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Actions.UpdateSelfHostedRunnersSettingsInOrganization(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("Actions.UpdateSelfHostedRunnersSettingsInOrganization returned error: %v", err)
@@ -579,7 +578,7 @@ func TestActionsService_ListRepositoriesSelfHostedRunnersAllowedInOrganization(t
 		fmt.Fprint(w, `{"total_count":2,"repositories":[{"id":2}, {"id": 3}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opt := &ListOptions{
 		Page: 1,
 	}
@@ -622,7 +621,7 @@ func TestActionsService_SetRepositoriesSelfHostedRunnersAllowedInOrganization(t 
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.SetRepositoriesSelfHostedRunnersAllowedInOrganization(ctx, "o", []int64{123, 1234})
 	if err != nil {
 		t.Errorf("Actions.SetRepositoriesSelfHostedRunnersAllowedInOrganization returned error: %v", err)
@@ -649,7 +648,7 @@ func TestActionsService_AddRepositorySelfHostedRunnersAllowedInOrganization(t *t
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.AddRepositorySelfHostedRunnersAllowedInOrganization(ctx, "o", 123)
 	if err != nil {
 		t.Errorf("Actions.AddRepositorySelfHostedRunnersAllowedInOrganization returned error: %v", err)
@@ -676,7 +675,7 @@ func TestActionsService_RemoveRepositorySelfHostedRunnersAllowedInOrganization(t
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.RemoveRepositorySelfHostedRunnersAllowedInOrganization(ctx, "o", 123)
 	if err != nil {
 		t.Errorf("Actions.RemoveRepositorySelfHostedRunnersAllowedInOrganization returned error: %v", err)
@@ -703,7 +702,7 @@ func TestActionsService_GetPrivateRepoForkPRWorkflowSettingsInOrganization(t *te
 		fmt.Fprint(w, `{"run_workflows_from_fork_pull_requests": true, "send_write_tokens_to_workflows": false, "send_secrets_and_variables": true, "require_approval_for_fork_pr_workflows": false}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	permissions, _, err := client.Actions.GetPrivateRepoForkPRWorkflowSettingsInOrganization(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.GetPrivateRepoForkPRWorkflowSettingsInOrganization returned error: %v", err)
@@ -754,7 +753,7 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(t 
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Actions.UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Actions.UpdatePrivateRepoForkPRWorkflowSettingsInOrganization returned error: %v", err)

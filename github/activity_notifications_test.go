@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -38,7 +37,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 		Since:         time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC),
 		Before:        time.Date(2007, time.March, 4, 15, 4, 5, 0, time.UTC),
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	notifications, _, err := client.Activity.ListNotifications(ctx, opt)
 	if err != nil {
 		t.Errorf("Activity.ListNotifications returned error: %v", err)
@@ -68,7 +67,7 @@ func TestActivityService_ListRepositoryNotifications(t *testing.T) {
 		fmt.Fprint(w, `[{"id":"1"}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	notifications, _, err := client.Activity.ListRepositoryNotifications(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("Activity.ListRepositoryNotifications returned error: %v", err)
@@ -106,7 +105,7 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 		w.WriteHeader(http.StatusResetContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Activity.MarkNotificationsRead(ctx, Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)})
 	if err != nil {
 		t.Errorf("Activity.MarkNotificationsRead returned error: %v", err)
@@ -130,7 +129,7 @@ func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
 		w.WriteHeader(http.StatusResetContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)})
 	if err != nil {
 		t.Errorf("Activity.MarkRepositoryNotificationsRead returned error: %v", err)
@@ -156,7 +155,7 @@ func TestActivityService_GetThread(t *testing.T) {
 		fmt.Fprint(w, `{"id":"1"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	notification, _, err := client.Activity.GetThread(ctx, "1")
 	if err != nil {
 		t.Errorf("Activity.GetThread returned error: %v", err)
@@ -191,7 +190,7 @@ func TestActivityService_MarkThreadRead(t *testing.T) {
 		w.WriteHeader(http.StatusResetContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Activity.MarkThreadRead(ctx, "1")
 	if err != nil {
 		t.Errorf("Activity.MarkThreadRead returned error: %v", err)
@@ -217,7 +216,7 @@ func TestActivityService_MarkThreadDone(t *testing.T) {
 		w.WriteHeader(http.StatusResetContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Activity.MarkThreadDone(ctx, 1)
 	if err != nil {
 		t.Errorf("Activity.MarkThreadDone returned error: %v", err)
@@ -243,7 +242,7 @@ func TestActivityService_GetThreadSubscription(t *testing.T) {
 		fmt.Fprint(w, `{"subscribed":true}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	sub, _, err := client.Activity.GetThreadSubscription(ctx, "1")
 	if err != nil {
 		t.Errorf("Activity.GetThreadSubscription returned error: %v", err)
@@ -287,7 +286,7 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 		fmt.Fprint(w, `{"ignored":true}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	sub, _, err := client.Activity.SetThreadSubscription(ctx, "1", input)
 	if err != nil {
 		t.Errorf("Activity.SetThreadSubscription returned error: %v", err)
@@ -322,7 +321,7 @@ func TestActivityService_DeleteThreadSubscription(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Activity.DeleteThreadSubscription(ctx, "1")
 	if err != nil {
 		t.Errorf("Activity.DeleteThreadSubscription returned error: %v", err)

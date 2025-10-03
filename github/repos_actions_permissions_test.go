@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,7 +23,7 @@ func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
 		fmt.Fprint(w, `{"enabled": true, "allowed_actions": "all"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Repositories.GetActionsPermissions(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetActionsPermissions returned error: %v", err)
@@ -67,7 +66,7 @@ func TestRepositoriesService_UpdateActionsPermissions(t *testing.T) {
 		fmt.Fprint(w, `{"enabled": true, "allowed_actions": "selected"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Repositories.UpdateActionsPermissions(ctx, "o", "r", *input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateActionsPermissions returned error: %v", err)
@@ -121,7 +120,7 @@ func TestRepositoriesService_GetDefaultWorkflowPermissions(t *testing.T) {
 		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Repositories.GetDefaultWorkflowPermissions(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetDefaultWorkflowPermissions returned error: %v", err)
@@ -164,7 +163,7 @@ func TestRepositoriesService_UpdateDefaultWorkflowPermissions(t *testing.T) {
 		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Repositories.UpdateDefaultWorkflowPermissions(ctx, "o", "r", *input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateDefaultWorkflowPermissions returned error: %v", err)
@@ -199,7 +198,7 @@ func TestRepositoriesService_GetArtifactAndLogRetentionPeriod(t *testing.T) {
 		fmt.Fprint(w, `{"days": 90, "maximum_allowed_days": 365}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	period, _, err := client.Repositories.GetArtifactAndLogRetentionPeriod(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetArtifactAndLogRetentionPeriod returned error: %v", err)
@@ -245,7 +244,7 @@ func TestRepositoriesService_UpdateArtifactAndLogRetentionPeriod(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Repositories.UpdateArtifactAndLogRetentionPeriod(ctx, "o", "r", *input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateArtifactAndLogRetentionPeriod returned error: %v", err)
@@ -275,7 +274,7 @@ func TestRepositoriesService_GetPrivateRepoForkPRWorkflowSettings(t *testing.T) 
 		fmt.Fprint(w, `{"run_workflows_from_fork_pull_requests": true, "send_write_tokens_to_workflows": false, "send_secrets_and_variables": true, "require_approval_for_fork_pr_workflows": false}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	permissions, _, err := client.Repositories.GetPrivateRepoForkPRWorkflowSettings(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetPrivateRepoForkPRWorkflowSettings returned error: %v", err)
@@ -326,7 +325,7 @@ func TestRepositoriesService_UpdatePrivateRepoForkPRWorkflowSettings(t *testing.
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Repositories.UpdatePrivateRepoForkPRWorkflowSettings(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.UpdatePrivateRepoForkPRWorkflowSettings returned error: %v", err)

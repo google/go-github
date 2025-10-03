@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -25,7 +24,7 @@ func TestActionsService_ListOrganizationRunnerGroups(t *testing.T) {
 	})
 
 	opts := &ListOrgRunnerGroupOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	groups, _, err := client.Actions.ListOrganizationRunnerGroups(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Actions.ListOrganizationRunnerGroups returned error: %v", err)
@@ -69,7 +68,7 @@ func TestActionsService_ListOrganizationRunnerGroupsVisibleToRepo(t *testing.T) 
 	})
 
 	opts := &ListOrgRunnerGroupOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}, VisibleToRepository: "github"}
-	ctx := context.Background()
+	ctx := t.Context()
 	groups, _, err := client.Actions.ListOrganizationRunnerGroups(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Actions.ListOrganizationRunnerGroups returned error: %v", err)
@@ -111,7 +110,7 @@ func TestActionsService_GetOrganizationRunnerGroup(t *testing.T) {
 		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories","runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	group, _, err := client.Actions.GetOrganizationRunnerGroup(ctx, "o", 2)
 	if err != nil {
 		t.Errorf("Actions.ListOrganizationRunnerGroups returned error: %v", err)
@@ -157,7 +156,7 @@ func TestActionsService_DeleteOrganizationRunnerGroup(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.DeleteOrganizationRunnerGroup(ctx, "o", 2)
 	if err != nil {
 		t.Errorf("Actions.DeleteOrganizationRunnerGroup returned error: %v", err)
@@ -183,7 +182,7 @@ func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
 		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories","runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	req := CreateRunnerGroupRequest{
 		Name:                     Ptr("octo-runner-group"),
 		Visibility:               Ptr("selected"),
@@ -237,7 +236,7 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories","runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	req := UpdateRunnerGroupRequest{
 		Name:                     Ptr("octo-runner-group"),
 		Visibility:               Ptr("selected"),
@@ -292,7 +291,7 @@ func TestActionsService_ListRepositoryAccessRunnerGroup(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 1, "repositories": [{"id": 43, "node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5", "name": "Hello-World", "full_name": "octocat/Hello-World"}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 1}
 	groups, _, err := client.Actions.ListRepositoryAccessRunnerGroup(ctx, "o", 2, opts)
 	if err != nil {
@@ -339,7 +338,7 @@ func TestActionsService_SetRepositoryAccessRunnerGroup(t *testing.T) {
 		},
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.SetRepositoryAccessRunnerGroup(ctx, "o", 2, req)
 	if err != nil {
 		t.Errorf("Actions.SetRepositoryAccessRunnerGroup returned error: %v", err)
@@ -364,7 +363,7 @@ func TestActionsService_AddRepositoryAccessRunnerGroup(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.AddRepositoryAccessRunnerGroup(ctx, "o", 2, 42)
 	if err != nil {
 		t.Errorf("Actions.AddRepositoryAccessRunnerGroup returned error: %v", err)
@@ -389,7 +388,7 @@ func TestActionsService_RemoveRepositoryAccessRunnerGroup(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.RemoveRepositoryAccessRunnerGroup(ctx, "o", 2, 42)
 	if err != nil {
 		t.Errorf("Actions.RemoveRepositoryAccessRunnerGroup returned error: %v", err)
@@ -417,7 +416,7 @@ func TestActionsService_ListRunnerGroupRunners(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	runners, _, err := client.Actions.ListRunnerGroupRunners(ctx, "o", 2, opts)
 	if err != nil {
 		t.Errorf("Actions.ListRunnerGroupRunners returned error: %v", err)
@@ -464,7 +463,7 @@ func TestActionsService_SetRunnerGroupRunners(t *testing.T) {
 		},
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.SetRunnerGroupRunners(ctx, "o", 2, req)
 	if err != nil {
 		t.Errorf("Actions.SetRunnerGroupRunners returned error: %v", err)
@@ -489,7 +488,7 @@ func TestActionsService_AddRunnerGroupRunners(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.AddRunnerGroupRunners(ctx, "o", 2, 42)
 	if err != nil {
 		t.Errorf("Actions.AddRunnerGroupRunners returned error: %v", err)
@@ -514,7 +513,7 @@ func TestActionsService_RemoveRunnerGroupRunners(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.RemoveRunnerGroupRunners(ctx, "o", 2, 42)
 	if err != nil {
 		t.Errorf("Actions.RemoveRunnerGroupRunners returned error: %v", err)

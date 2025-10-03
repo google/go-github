@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -159,7 +158,7 @@ func TestEnterpriseService_Settings(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	configSettings, _, err := client.Enterprise.Settings(ctx)
 	if err != nil {
 		t.Errorf("Enterprise.Settings returned error: %v", err)
@@ -339,7 +338,7 @@ func TestEnterpriseService_NodeMetadata(t *testing.T) {
 	opt := &NodeQueryOptions{
 		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	configNodes, _, err := client.Enterprise.NodeMetadata(ctx, opt)
 	if err != nil {
 		t.Errorf("Enterprise.NodeMetadata returned error: %v", err)
@@ -380,7 +379,7 @@ func TestEnterpriseService_LicenseStatus(t *testing.T) {
 			}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	licenseCheck, _, err := client.Enterprise.LicenseStatus(ctx)
 	if err != nil {
 		t.Errorf("Enterprise.LicenseStatus returned error: %v", err)
@@ -431,7 +430,7 @@ func TestEnterpriseService_License(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	license, _, err := client.Enterprise.License(ctx)
 	if err != nil {
 		t.Errorf("Enterprise.License returned error: %v", err)
@@ -501,7 +500,7 @@ func TestEnterpriseService_ConfigApplyEvents(t *testing.T) {
 		LastRequestID: Ptr("387cd628c06d606700e79be368e5e574:0cde553750689"),
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	configEvents, _, err := client.Enterprise.ConfigApplyEvents(ctx, input)
 	if err != nil {
 		t.Errorf("Enterprise.ConfigApplyEvents returned error: %v", err)
@@ -557,7 +556,7 @@ func TestEnterpriseService_UpdateSettings(t *testing.T) {
 		PrivateMode: Ptr(false),
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Enterprise.UpdateSettings(ctx, input); err != nil {
 		t.Errorf("Enterprise.UpdateSettings returned error: %v", err)
 	}
@@ -583,7 +582,7 @@ func TestEnterpriseService_UploadLicense(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Enterprise.UploadLicense(ctx, "abc"); err != nil {
 		t.Errorf("Enterprise.UploadLicense returned error: %v", err)
 	}
@@ -613,7 +612,7 @@ func TestEnterpriseService_InitialConfig(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Enterprise.InitialConfig(ctx, "1234-1234", "password"); err != nil {
 		t.Errorf("Enterprise.InitialConfig returned error: %v", err)
 	}
@@ -646,7 +645,7 @@ func TestEnterpriseService_ConfigApply(t *testing.T) {
 		RunID: Ptr("1234"),
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	configApply, _, err := client.Enterprise.ConfigApply(ctx, input)
 	if err != nil {
 		t.Errorf("Enterprise.ConfigApply returned error: %v", err)
@@ -699,7 +698,7 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 	input := &ConfigApplyOptions{
 		RunID: Ptr("1234"),
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	configApplyStatus, _, err := client.Enterprise.ConfigApplyStatus(ctx, input)
 	if err != nil {
 		t.Errorf("Enterprise.ConfigApplyStatus returned error: %v", err)

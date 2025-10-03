@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -27,7 +26,7 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	comments, _, err := client.Repositories.ListComments(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListComments returned error: %v", err)
@@ -57,7 +56,7 @@ func TestRepositoriesService_ListComments_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.ListComments(ctx, "%", "%", nil)
 	testURLParseError(t, err)
 }
@@ -74,7 +73,7 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	comments, _, err := client.Repositories.ListCommitComments(ctx, "o", "r", "s", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListCommitComments returned error: %v", err)
@@ -104,7 +103,7 @@ func TestRepositoriesService_ListCommitComments_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.ListCommitComments(ctx, "%", "%", "%", nil)
 	testURLParseError(t, err)
 }
@@ -127,7 +126,7 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comment, _, err := client.Repositories.CreateComment(ctx, "o", "r", "s", input)
 	if err != nil {
 		t.Errorf("Repositories.CreateComment returned error: %v", err)
@@ -157,7 +156,7 @@ func TestRepositoriesService_CreateComment_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.CreateComment(ctx, "%", "%", "%", nil)
 	testURLParseError(t, err)
 }
@@ -172,7 +171,7 @@ func TestRepositoriesService_GetComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comment, _, err := client.Repositories.GetComment(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetComment returned error: %v", err)
@@ -202,7 +201,7 @@ func TestRepositoriesService_GetComment_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.GetComment(ctx, "%", "%", 1)
 	testURLParseError(t, err)
 }
@@ -225,7 +224,7 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comment, _, err := client.Repositories.UpdateComment(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateComment returned error: %v", err)
@@ -255,7 +254,7 @@ func TestRepositoriesService_UpdateComment_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.UpdateComment(ctx, "%", "%", 1, nil)
 	testURLParseError(t, err)
 }
@@ -268,7 +267,7 @@ func TestRepositoriesService_DeleteComment(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.DeleteComment(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteComment returned error: %v", err)
@@ -289,7 +288,7 @@ func TestRepositoriesService_DeleteComment_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.DeleteComment(ctx, "%", "%", 1)
 	testURLParseError(t, err)
 }

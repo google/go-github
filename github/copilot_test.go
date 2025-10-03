@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -307,7 +306,7 @@ func TestCopilotService_GetCopilotBilling(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Copilot.GetCopilotBilling(ctx, "o")
 	if err != nil {
 		t.Errorf("Copilot.GetCopilotBilling returned error: %v", err)
@@ -492,7 +491,7 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 	}
 	lastActivityAt2 := Timestamp{tmp}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 100}
 	got, _, err := client.Copilot.ListCopilotSeats(ctx, "o", opts)
 	if err != nil {
@@ -743,7 +742,7 @@ func TestCopilotService_ListCopilotEnterpriseSeats(t *testing.T) {
 	}
 	lastActivityAt2 := Timestamp{tmp}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 100}
 	got, _, err := client.Copilot.ListCopilotEnterpriseSeats(ctx, "e", opts)
 	if err != nil {
@@ -860,7 +859,7 @@ func TestCopilotService_AddCopilotTeams(t *testing.T) {
 		fmt.Fprint(w, `{"seats_created": 2}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Copilot.AddCopilotTeams(ctx, "o", []string{"team1", "team2"})
 	if err != nil {
 		t.Errorf("Copilot.AddCopilotTeams returned error: %v", err)
@@ -898,7 +897,7 @@ func TestCopilotService_RemoveCopilotTeams(t *testing.T) {
 		fmt.Fprint(w, `{"seats_cancelled": 2}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Copilot.RemoveCopilotTeams(ctx, "o", []string{"team1", "team2"})
 	if err != nil {
 		t.Errorf("Copilot.RemoveCopilotTeams returned error: %v", err)
@@ -936,7 +935,7 @@ func TestCopilotService_AddCopilotUsers(t *testing.T) {
 		fmt.Fprint(w, `{"seats_created": 2}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Copilot.AddCopilotUsers(ctx, "o", []string{"user1", "user2"})
 	if err != nil {
 		t.Errorf("Copilot.AddCopilotUsers returned error: %v", err)
@@ -974,7 +973,7 @@ func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
 		fmt.Fprint(w, `{"seats_cancelled": 2}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Copilot.RemoveCopilotUsers(ctx, "o", []string{"user1", "user2"})
 	if err != nil {
 		t.Errorf("Copilot.RemoveCopilotUsers returned error: %v", err)
@@ -1070,7 +1069,7 @@ func TestCopilotService_GetSeatDetails(t *testing.T) {
 	}
 	lastActivityAt := Timestamp{tmp}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Copilot.GetSeatDetails(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Copilot.GetSeatDetails returned error: %v", err)
@@ -1300,7 +1299,7 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 		]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Copilot.GetEnterpriseMetrics(ctx, "e", &CopilotMetricsListOptions{})
 	if err != nil {
 		t.Errorf("Copilot.GetEnterpriseMetrics returned error: %v", err)
@@ -1643,7 +1642,7 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 		]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Copilot.GetEnterpriseTeamMetrics(ctx, "e", "t", &CopilotMetricsListOptions{})
 	if err != nil {
 		t.Errorf("Copilot.GetEnterpriseTeamMetrics returned error: %v", err)
@@ -1986,7 +1985,7 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 		]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Copilot.GetOrganizationMetrics(ctx, "o", &CopilotMetricsListOptions{})
 	if err != nil {
 		t.Errorf("Copilot.GetOrganizationMetrics returned error: %v", err)
@@ -2329,7 +2328,7 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 		]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Copilot.GetOrganizationTeamMetrics(ctx, "o", "t", &CopilotMetricsListOptions{})
 	if err != nil {
 		t.Errorf("Copilot.GetOrganizationTeamMetrics returned error: %v", err)

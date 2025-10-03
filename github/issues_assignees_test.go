@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -26,7 +25,7 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	assignees, _, err := client.Issues.ListAssignees(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Issues.ListAssignees returned error: %v", err)
@@ -56,7 +55,7 @@ func TestIssuesService_ListAssignees_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.ListAssignees(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
@@ -69,7 +68,7 @@ func TestIssuesService_IsAssignee_true(t *testing.T) {
 		testMethod(t, r, "GET")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	assignee, _, err := client.Issues.IsAssignee(ctx, "o", "r", "u")
 	if err != nil {
 		t.Errorf("Issues.IsAssignee returned error: %v", err)
@@ -102,7 +101,7 @@ func TestIssuesService_IsAssignee_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	assignee, _, err := client.Issues.IsAssignee(ctx, "o", "r", "u")
 	if err != nil {
 		t.Errorf("Issues.IsAssignee returned error: %v", err)
@@ -135,7 +134,7 @@ func TestIssuesService_IsAssignee_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	assignee, _, err := client.Issues.IsAssignee(ctx, "o", "r", "u")
 	if err == nil {
 		t.Error("Expected HTTP 400 response")
@@ -163,7 +162,7 @@ func TestIssuesService_IsAssignee_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.IsAssignee(ctx, "%", "r", "u")
 	testURLParseError(t, err)
 }
@@ -186,7 +185,7 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 		fmt.Fprint(w, `{"number":1,"assignees":[{"login":"user1"},{"login":"user2"}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Issues.AddAssignees(ctx, "o", "r", 1, []string{"user1", "user2"})
 	if err != nil {
 		t.Errorf("Issues.AddAssignees returned error: %v", err)
@@ -230,7 +229,7 @@ func TestIssuesService_RemoveAssignees(t *testing.T) {
 		fmt.Fprint(w, `{"number":1,"assignees":[]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Issues.RemoveAssignees(ctx, "o", "r", 1, []string{"user1", "user2"})
 	if err != nil {
 		t.Errorf("Issues.RemoveAssignees returned error: %v", err)

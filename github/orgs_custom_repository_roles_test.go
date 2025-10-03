@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -46,7 +45,7 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	apps, _, err := client.Organizations.ListCustomRepoRoles(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.ListCustomRepoRoles returned error: %v", err)
@@ -124,7 +123,7 @@ func TestOrganizationsService_GetCustomRepoRole(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	role, _, err := client.Organizations.GetCustomRepoRole(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.GetCustomRepoRole returned error: %v", err)
@@ -183,7 +182,7 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 		fmt.Fprint(w, `{"id":8030,"name":"Labeler","description":"A role for issue and PR labelers","base_role":"read","permissions":["add_label"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	opts := &CreateOrUpdateCustomRepoRoleOptions{
 		Name:        Ptr("Labeler"),
@@ -226,7 +225,7 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 		fmt.Fprint(w, `{"id":8030,"name":"Updated Name","description":"Updated Description","base_role":"read","permissions":["add_label"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	opts := &CreateOrUpdateCustomRepoRoleOptions{
 		Name:        Ptr("Updated Name"),
@@ -267,7 +266,7 @@ func TestOrganizationsService_DeleteCustomRepoRole(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	resp, err := client.Organizations.DeleteCustomRepoRole(ctx, "o", 8030)
 	if err != nil {

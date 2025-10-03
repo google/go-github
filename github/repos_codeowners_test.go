@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -37,7 +36,7 @@ func TestRepositoriesService_GetCodeownersErrors_noRef(t *testing.T) {
 	`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	codeownersErrors, _, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.GetCodeownersErrors returned error: %v", err)
@@ -100,7 +99,7 @@ func TestRepositoriesService_GetCodeownersErrors_specificRef(t *testing.T) {
 	})
 
 	opts := &GetCodeownersErrorsOptions{Ref: "mybranch"}
-	ctx := context.Background()
+	ctx := t.Context()
 	codeownersErrors, _, err := client.Repositories.GetCodeownersErrors(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Repositories.GetCodeownersErrors returned error: %v", err)

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -39,7 +38,7 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 		Login:       "l",
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	creds, _, err := client.Organizations.ListCredentialAuthorizations(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Organizations.ListCredentialAuthorizations returned error: %v", err)
@@ -81,7 +80,7 @@ func TestOrganizationsService_RemoveCredentialAuthorization(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Organizations.RemoveCredentialAuthorization(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.RemoveCredentialAuthorization returned error: %v", err)

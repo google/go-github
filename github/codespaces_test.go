@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -29,7 +28,7 @@ func TestCodespacesService_ListInRepo(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	codespaces, _, err := client.Codespaces.ListInRepo(ctx, "owner", "repo", opt)
 	if err != nil {
 		t.Errorf("Codespaces.ListInRepo returned error: %v", err)
@@ -115,7 +114,7 @@ func TestCodespacesService_List(t *testing.T) {
 	})
 
 	opt := &ListCodespacesOptions{ListOptions: ListOptions{Page: 1, PerPage: 2}, RepositoryID: 1296269}
-	ctx := context.Background()
+	ctx := t.Context()
 	codespaces, _, err := client.Codespaces.List(ctx, opt)
 	if err != nil {
 		t.Errorf("Codespaces.List returned error: %v", err)
@@ -159,7 +158,7 @@ func TestCodespacesService_CreateInRepo(t *testing.T) {
 		Machine:            Ptr("standardLinux"),
 		IdleTimeoutMinutes: Ptr(60),
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	codespace, _, err := client.Codespaces.CreateInRepo(ctx, "owner", "repo", input)
 	if err != nil {
 		t.Errorf("Codespaces.CreateInRepo returned error: %v", err)
@@ -198,7 +197,7 @@ func TestCodespacesService_Start(t *testing.T) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{"id":1, "repository": {"id": 1296269}}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	codespace, _, err := client.Codespaces.Start(ctx, "codespace_1")
 	if err != nil {
 		t.Errorf("Codespaces.Start returned error: %v", err)
@@ -237,7 +236,7 @@ func TestCodespacesService_Stop(t *testing.T) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{"id":1, "repository": {"id": 1296269}}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	codespace, _, err := client.Codespaces.Stop(ctx, "codespace_1")
 	if err != nil {
 		t.Errorf("Codespaces.Stop returned error: %v", err)
@@ -276,7 +275,7 @@ func TestCodespacesService_Delete(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Codespaces.Delete(ctx, "codespace_1")
 	if err != nil {
 		t.Errorf("Codespaces.Delete return error: %v", err)

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -47,7 +46,7 @@ func TestEnterpriseService_GetAuditLog(t *testing.T) {
 		Phrase:  Ptr("action:workflows"),
 		Order:   Ptr("asc"),
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	auditEntries, _, err := client.Enterprise.GetAuditLog(ctx, "e", &getOpts)
 	if err != nil {
 		t.Errorf("Enterprise.GetAuditLog returned error: %v", err)

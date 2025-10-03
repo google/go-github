@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -26,7 +25,7 @@ func TestActionsService_ListRepoVariables(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	variables, _, err := client.Actions.ListRepoVariables(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Actions.ListRepoVariables returned error: %v", err)
@@ -69,7 +68,7 @@ func TestActionsService_ListRepoOrgVariables(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	variables, _, err := client.Actions.ListRepoOrgVariables(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Actions.ListRepoOrgVariables returned error: %v", err)
@@ -110,7 +109,7 @@ func TestActionsService_GetRepoVariable(t *testing.T) {
 		fmt.Fprint(w, `{"name":"NAME","value":"VALUE","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	variable, _, err := client.Actions.GetRepoVariable(ctx, "o", "r", "NAME")
 	if err != nil {
 		t.Errorf("Actions.GetRepoVariable returned error: %v", err)
@@ -156,7 +155,7 @@ func TestActionsService_CreateRepoVariable(t *testing.T) {
 		Name:  "NAME",
 		Value: "VALUE",
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.CreateRepoVariable(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Actions.CreateRepoVariable returned error: %v", err)
@@ -188,7 +187,7 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 		Name:  "NAME",
 		Value: "VALUE",
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.UpdateRepoVariable(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Actions.UpdateRepoVariable returned error: %v", err)
@@ -217,7 +216,7 @@ func TestActionsService_DeleteRepoVariable(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.DeleteRepoVariable(ctx, "o", "r", "NAME")
 	if err != nil {
 		t.Errorf("Actions.( returned error: %v", err)
@@ -245,7 +244,7 @@ func TestActionsService_ListOrgVariables(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	variables, _, err := client.Actions.ListOrgVariables(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Actions.ListOrgVariables returned error: %v", err)
@@ -287,7 +286,7 @@ func TestActionsService_GetOrgVariable(t *testing.T) {
 		fmt.Fprint(w, `{"name":"NAME","value":"VALUE","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z","visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	variable, _, err := client.Actions.GetOrgVariable(ctx, "o", "NAME")
 	if err != nil {
 		t.Errorf("Actions.GetOrgVariable returned error: %v", err)
@@ -337,7 +336,7 @@ func TestActionsService_CreateOrgVariable(t *testing.T) {
 		Visibility:            Ptr("selected"),
 		SelectedRepositoryIDs: &SelectedRepoIDs{1296269, 1269280},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.CreateOrgVariable(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Actions.CreateOrgVariable returned error: %v", err)
@@ -371,7 +370,7 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 		Visibility:            Ptr("selected"),
 		SelectedRepositoryIDs: &SelectedRepoIDs{1296269, 1269280},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.UpdateOrgVariable(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Actions.UpdateOrgVariable returned error: %v", err)
@@ -402,7 +401,7 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	repos, _, err := client.Actions.ListSelectedReposForOrgVariable(ctx, "o", "NAME", opts)
 	if err != nil {
 		t.Errorf("Actions.( returned error: %v", err)
@@ -443,7 +442,7 @@ func TestActionsService_SetSelectedReposForOrgSVariable(t *testing.T) {
 		testBody(t, r, `{"selected_repository_ids":[64780797]}`+"\n")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.SetSelectedReposForOrgVariable(ctx, "o", "NAME", SelectedRepoIDs{64780797})
 	if err != nil {
 		t.Errorf("Actions.( returned error: %v", err)
@@ -469,7 +468,7 @@ func TestActionsService_AddSelectedRepoToOrgVariable(t *testing.T) {
 	})
 
 	repo := &Repository{ID: Ptr(int64(1234))}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.AddSelectedRepoToOrgVariable(ctx, "o", "NAME", repo)
 	if err != nil {
 		t.Errorf("Actions.AddSelectedRepoToOrgVariable returned error: %v", err)
@@ -503,7 +502,7 @@ func TestActionsService_RemoveSelectedRepoFromOrgVariable(t *testing.T) {
 	})
 
 	repo := &Repository{ID: Ptr(int64(1234))}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.RemoveSelectedRepoFromOrgVariable(ctx, "o", "NAME", repo)
 	if err != nil {
 		t.Errorf("Actions.RemoveSelectedRepoFromOrgVariable returned error: %v", err)
@@ -536,7 +535,7 @@ func TestActionsService_DeleteOrgVariable(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.DeleteOrgVariable(ctx, "o", "NAME")
 	if err != nil {
 		t.Errorf("Actions.DeleteOrgVariable returned error: %v", err)
@@ -564,7 +563,7 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	variables, _, err := client.Actions.ListEnvVariables(ctx, "usr", "1", "e", opts)
 	if err != nil {
 		t.Errorf("Actions.ListEnvVariables returned error: %v", err)
@@ -605,7 +604,7 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 		fmt.Fprint(w, `{"name":"variable","value":"VAR","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	variable, _, err := client.Actions.GetEnvVariable(ctx, "usr", "1", "e", "variable")
 	if err != nil {
 		t.Errorf("Actions.GetEnvVariable returned error: %v", err)
@@ -651,7 +650,7 @@ func TestActionsService_CreateEnvVariable(t *testing.T) {
 		Name:  "variable",
 		Value: "VAR",
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.CreateEnvVariable(ctx, "usr", "1", "e", input)
 	if err != nil {
 		t.Errorf("Actions.CreateEnvVariable returned error: %v", err)
@@ -683,7 +682,7 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 		Name:  "variable",
 		Value: "VAR",
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.UpdateEnvVariable(ctx, "usr", "1", "e", input)
 	if err != nil {
 		t.Errorf("Actions.UpdateEnvVariable returned error: %v", err)
@@ -712,7 +711,7 @@ func TestActionsService_DeleteEnvVariable(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.DeleteEnvVariable(ctx, "usr", "1", "e", "variable")
 	if err != nil {
 		t.Errorf("Actions.DeleteEnvVariable returned error: %v", err)

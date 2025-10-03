@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -40,7 +39,7 @@ func TestRepositoriesService_GetAllCustomPropertyValues(t *testing.T) {
 		]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	customPropertyValues, _, err := client.Repositories.GetAllCustomPropertyValues(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetAllCustomPropertyValues returned error: %v", err)
@@ -89,7 +88,7 @@ func TestRepositoriesService_CreateOrUpdateCustomProperties(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repoCustomProperty := []*CustomPropertyValue{
 		{
 			PropertyName: "environment",

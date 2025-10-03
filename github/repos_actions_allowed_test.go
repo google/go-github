@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,7 +23,7 @@ func TestRepositoryService_GetActionsAllowed(t *testing.T) {
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Repositories.GetActionsAllowed(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetActionsAllowed returned error: %v", err)
@@ -67,7 +66,7 @@ func TestRepositoriesService_UpdateActionsAllowed(t *testing.T) {
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Repositories.EditActionsAllowed(ctx, "o", "r", *input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateActionsAllowed returned error: %v", err)

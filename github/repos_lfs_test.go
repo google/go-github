@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"net/http"
 	"testing"
 )
@@ -21,7 +20,7 @@ func TestRepositoriesService_EnableLFS(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Repositories.EnableLFS(ctx, "o", "r"); err != nil {
 		t.Errorf("Repositories.EnableLFS returned error: %v", err)
 	}
@@ -47,7 +46,7 @@ func TestRepositoriesService_DisableLFS(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Repositories.DisableLFS(ctx, "o", "r"); err != nil {
 		t.Errorf("Repositories.DisableLFS returned error: %v", err)
 	}

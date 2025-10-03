@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -30,7 +29,7 @@ func TestUsersService_ListEmails(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	emails, _, err := client.Users.ListEmails(ctx, opt)
 	if err != nil {
 		t.Errorf("Users.ListEmails returned error: %v", err)
@@ -69,7 +68,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 		fmt.Fprint(w, `[{"email":"old@example.com"}, {"email":"new@example.com"}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	emails, _, err := client.Users.AddEmails(ctx, input)
 	if err != nil {
 		t.Errorf("Users.AddEmails returned error: %v", err)
@@ -109,7 +108,7 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.DeleteEmails(ctx, input)
 	if err != nil {
 		t.Errorf("Users.DeleteEmails returned error: %v", err)
@@ -165,7 +164,7 @@ func TestUsersService_SetEmailVisibility(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	emails, _, err := client.Users.SetEmailVisibility(ctx, "private")
 	if err != nil {
 		t.Errorf("Users.SetEmailVisibility returned error: %v", err)

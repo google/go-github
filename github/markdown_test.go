@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -35,7 +34,7 @@ func TestMarkdownService_Markdown(t *testing.T) {
 		fmt.Fprint(w, `<h1>text</h1>`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	md, _, err := client.Markdown.Render(ctx, "# text #", &MarkdownOptions{
 		Mode:    "gfm",
 		Context: "google/go-github",

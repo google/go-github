@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -39,7 +38,7 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 		Since:       &since,
 		ListOptions: ListOptions{Page: 2},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	comments, _, err := client.Issues.ListComments(ctx, "o", "r", 0, opt)
 	if err != nil {
 		t.Errorf("Issues.ListComments returned error: %v", err)
@@ -75,7 +74,7 @@ func TestIssuesService_ListComments_specificIssue(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comments, _, err := client.Issues.ListComments(ctx, "o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("Issues.ListComments returned error: %v", err)
@@ -105,7 +104,7 @@ func TestIssuesService_ListComments_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.ListComments(ctx, "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
@@ -120,7 +119,7 @@ func TestIssuesService_GetComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comment, _, err := client.Issues.GetComment(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Issues.GetComment returned error: %v", err)
@@ -150,7 +149,7 @@ func TestIssuesService_GetComment_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.GetComment(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
@@ -173,7 +172,7 @@ func TestIssuesService_CreateComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comment, _, err := client.Issues.CreateComment(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Issues.CreateComment returned error: %v", err)
@@ -203,7 +202,7 @@ func TestIssuesService_CreateComment_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.CreateComment(ctx, "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
@@ -226,7 +225,7 @@ func TestIssuesService_EditComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comment, _, err := client.Issues.EditComment(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Issues.EditComment returned error: %v", err)
@@ -256,7 +255,7 @@ func TestIssuesService_EditComment_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.EditComment(ctx, "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
@@ -269,7 +268,7 @@ func TestIssuesService_DeleteComment(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Issues.DeleteComment(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Issues.DeleteComments returned error: %v", err)
@@ -290,7 +289,7 @@ func TestIssuesService_DeleteComment_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Issues.DeleteComment(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }

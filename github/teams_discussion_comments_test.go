@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -118,7 +117,7 @@ func TestTeamsService_ListComments(t *testing.T) {
 	e := tdcEndpointByID("1", "2", "3", "")
 	mux.HandleFunc(e, handleFunc)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	commentsByID, _, err := client.Teams.ListCommentsByID(ctx, 1, 2, 3,
 		&DiscussionCommentListOptions{Direction: "desc"})
 	if err != nil {
@@ -188,7 +187,7 @@ func TestTeamsService_GetComment(t *testing.T) {
 	e := tdcEndpointByID("1", "2", "3", "4")
 	mux.HandleFunc(e, handlerFunc)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	commentByID, _, err := client.Teams.GetCommentByID(ctx, 1, 2, 3, 4)
 	if err != nil {
 		t.Errorf("Teams.GetCommentByID returned error: %v", err)
@@ -261,7 +260,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 	e := tdcEndpointByID("1", "2", "3", "")
 	mux.HandleFunc(e, handlerFunc)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	commentByID, _, err := client.Teams.CreateCommentByID(ctx, 1, 2, 3, input)
 	if err != nil {
 		t.Errorf("Teams.CreateCommentByID returned error: %v", err)
@@ -333,7 +332,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 	e := tdcEndpointByID("1", "2", "3", "4")
 	mux.HandleFunc(e, handlerFunc)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	commentByID, _, err := client.Teams.EditCommentByID(ctx, 1, 2, 3, 4, input)
 	if err != nil {
 		t.Errorf("Teams.EditCommentByID returned error: %v", err)
@@ -395,7 +394,7 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 	e := tdcEndpointByID("1", "2", "3", "4")
 	mux.HandleFunc(e, handlerFunc)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.DeleteCommentByID(ctx, 1, 2, 3, 4)
 	if err != nil {
 		t.Errorf("Teams.DeleteCommentByID returned error: %v", err)

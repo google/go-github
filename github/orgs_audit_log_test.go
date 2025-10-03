@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"strings"
@@ -80,7 +79,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		"workflow_run_id": 628312345
 	}]`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	getOpts := GetAuditLogOptions{
 		Include: Ptr("all"),
 		Phrase:  Ptr("action:workflows"),

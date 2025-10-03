@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -58,7 +57,7 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	packages, _, err := client.Organizations.ListPackages(ctx, "o", &PackageListOptions{})
 	if err != nil {
 		t.Errorf("Organizations.ListPackages returned error: %v", err)
@@ -137,7 +136,7 @@ func TestOrganizationsService_GetPackage(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	packages, _, err := client.Organizations.GetPackage(ctx, "o", "container", "hello/hello_docker")
 	if err != nil {
 		t.Errorf("Organizations.GetPackage returned error: %v", err)
@@ -182,7 +181,7 @@ func TestOrganizationsService_DeletePackage(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.DeletePackage(ctx, "o", "container", "hello/hello_docker")
 	if err != nil {
 		t.Errorf("Organizations.DeletePackage returned error: %v", err)
@@ -212,7 +211,7 @@ func TestOrganizationsService_RestorePackage(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.RestorePackage(ctx, "o", "container", "hello/hello_docker")
 	if err != nil {
 		t.Errorf("Organizations.RestorePackage returned error: %v", err)
@@ -262,7 +261,7 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &PackageListOptions{
 		Ptr("internal"), Ptr("container"), Ptr("deleted"), ListOptions{Page: 1, PerPage: 2},
 	}
@@ -332,7 +331,7 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	packages, _, err := client.Organizations.PackageGetVersion(ctx, "o", "container", "hello/hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Organizations.PackageGetVersion returned error: %v", err)
@@ -376,7 +375,7 @@ func TestOrganizationsService_PackageDeleteVersion(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.PackageDeleteVersion(ctx, "o", "container", "hello/hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Organizations.PackageDeleteVersion returned error: %v", err)
@@ -402,7 +401,7 @@ func TestOrganizationsService_PackageRestoreVersion(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.PackageRestoreVersion(ctx, "o", "container", "hello/hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Organizations.PackageRestoreVersion returned error: %v", err)

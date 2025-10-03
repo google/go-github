@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -37,7 +36,7 @@ func TestDependencyGraphService_GetSBOM(t *testing.T) {
     }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	sbom, _, err := client.DependencyGraph.GetSBOM(ctx, "owner", "repo")
 	if err != nil {
 		t.Errorf("DependencyGraph.GetSBOM returned error: %v", err)

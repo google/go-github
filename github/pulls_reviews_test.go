@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -29,7 +28,7 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	reviews, _, err := client.PullRequests.ListReviews(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("PullRequests.ListReviews returned error: %v", err)
@@ -62,7 +61,7 @@ func TestPullRequestsService_ListReviews_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.ListReviews(ctx, "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
@@ -76,7 +75,7 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	review, _, err := client.PullRequests.GetReview(ctx, "o", "r", 1, 1)
 	if err != nil {
 		t.Errorf("PullRequests.GetReview returned error: %v", err)
@@ -106,7 +105,7 @@ func TestPullRequestsService_GetReview_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.GetReview(ctx, "%", "r", 1, 1)
 	testURLParseError(t, err)
 }
@@ -120,7 +119,7 @@ func TestPullRequestsService_DeletePendingReview(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	review, _, err := client.PullRequests.DeletePendingReview(ctx, "o", "r", 1, 1)
 	if err != nil {
 		t.Errorf("PullRequests.DeletePendingReview returned error: %v", err)
@@ -150,7 +149,7 @@ func TestPullRequestsService_DeletePendingReview_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.DeletePendingReview(ctx, "%", "r", 1, 1)
 	testURLParseError(t, err)
 }
@@ -164,7 +163,7 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comments, _, err := client.PullRequests.ListReviewComments(ctx, "o", "r", 1, 1, nil)
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewComments returned error: %v", err)
@@ -205,7 +204,7 @@ func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
 		fmt.Fprint(w, `[]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.ListReviewComments(ctx, "o", "r", 1, 1, &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewComments returned error: %v", err)
@@ -351,7 +350,7 @@ func TestPullRequestsService_ListReviewComments_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.ListReviewComments(ctx, "%", "r", 1, 1, nil)
 	testURLParseError(t, err)
 }
@@ -378,7 +377,7 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	review, _, err := client.PullRequests.CreateReview(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.CreateReview returned error: %v", err)
@@ -408,7 +407,7 @@ func TestPullRequestsService_CreateReview_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.CreateReview(ctx, "%", "r", 1, &PullRequestReviewRequest{})
 	testURLParseError(t, err)
 }
@@ -417,7 +416,7 @@ func TestPullRequestsService_CreateReview_badReview(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	path := "path/to/file.go"
 	body := "this is a comment body"
@@ -482,7 +481,7 @@ func TestPullRequestsService_CreateReview_addHeader(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	_, _, err := client.PullRequests.CreateReview(ctx, "o", "r", 1, input)
 	if err != nil {
@@ -499,7 +498,7 @@ func TestPullRequestsService_UpdateReview(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.PullRequests.UpdateReview(ctx, "o", "r", 1, 1, "updated_body")
 	if err != nil {
 		t.Errorf("PullRequests.UpdateReview returned error: %v", err)
@@ -546,7 +545,7 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	review, _, err := client.PullRequests.SubmitReview(ctx, "o", "r", 1, 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.SubmitReview returned error: %v", err)
@@ -576,7 +575,7 @@ func TestPullRequestsService_SubmitReview_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.SubmitReview(ctx, "%", "r", 1, 1, &PullRequestReviewRequest{})
 	testURLParseError(t, err)
 }
@@ -599,7 +598,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	review, _, err := client.PullRequests.DismissReview(ctx, "o", "r", 1, 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.DismissReview returned error: %v", err)
@@ -629,7 +628,7 @@ func TestPullRequestsService_DismissReview_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.DismissReview(ctx, "%", "r", 1, 1, &PullRequestReviewDismissalRequest{})
 	testURLParseError(t, err)
 }

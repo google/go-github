@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -24,7 +23,7 @@ func TestDependabotService_GetRepoPublicKey(t *testing.T) {
 		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	key, _, err := client.Dependabot.GetRepoPublicKey(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Dependabot.GetRepoPublicKey returned error: %v", err)
@@ -59,7 +58,7 @@ func TestDependabotService_GetRepoPublicKeyNumeric(t *testing.T) {
 		fmt.Fprint(w, `{"key_id":1234,"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	key, _, err := client.Dependabot.GetRepoPublicKey(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Dependabot.GetRepoPublicKey returned error: %v", err)
@@ -96,7 +95,7 @@ func TestDependabotService_ListRepoSecrets(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	secrets, _, err := client.Dependabot.ListRepoSecrets(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Dependabot.ListRepoSecrets returned error: %v", err)
@@ -137,7 +136,7 @@ func TestDependabotService_GetRepoSecret(t *testing.T) {
 		fmt.Fprint(w, `{"name":"NAME","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	secret, _, err := client.Dependabot.GetRepoSecret(ctx, "o", "r", "NAME")
 	if err != nil {
 		t.Errorf("Dependabot.GetRepoSecret returned error: %v", err)
@@ -183,7 +182,7 @@ func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
 		EncryptedValue: "QIv=",
 		KeyID:          "1234",
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Dependabot.CreateOrUpdateRepoSecret(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Dependabot.CreateOrUpdateRepoSecret returned error: %v", err)
@@ -212,7 +211,7 @@ func TestDependabotService_DeleteRepoSecret(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Dependabot.DeleteRepoSecret(ctx, "o", "r", "NAME")
 	if err != nil {
 		t.Errorf("Dependabot.DeleteRepoSecret returned error: %v", err)
@@ -238,7 +237,7 @@ func TestDependabotService_GetOrgPublicKey(t *testing.T) {
 		fmt.Fprint(w, `{"key_id":"012345678","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	key, _, err := client.Dependabot.GetOrgPublicKey(ctx, "o")
 	if err != nil {
 		t.Errorf("Dependabot.GetOrgPublicKey returned error: %v", err)
@@ -275,7 +274,7 @@ func TestDependabotService_ListOrgSecrets(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	secrets, _, err := client.Dependabot.ListOrgSecrets(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Dependabot.ListOrgSecrets returned error: %v", err)
@@ -317,7 +316,7 @@ func TestDependabotService_GetOrgSecret(t *testing.T) {
 		fmt.Fprint(w, `{"name":"NAME","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z","visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/dependabot/secrets/SUPER_SECRET/repositories"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	secret, _, err := client.Dependabot.GetOrgSecret(ctx, "o", "NAME")
 	if err != nil {
 		t.Errorf("Dependabot.GetOrgSecret returned error: %v", err)
@@ -367,7 +366,7 @@ func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
 		Visibility:            "selected",
 		SelectedRepositoryIDs: DependabotSecretsSelectedRepoIDs{1296269, 1269280},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Dependabot.CreateOrUpdateOrgSecret(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Dependabot.CreateOrUpdateOrgSecret returned error: %v", err)
@@ -398,7 +397,7 @@ func TestDependabotService_ListSelectedReposForOrgSecret(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	repos, _, err := client.Dependabot.ListSelectedReposForOrgSecret(ctx, "o", "NAME", opts)
 	if err != nil {
 		t.Errorf("Dependabot.ListSelectedReposForOrgSecret returned error: %v", err)
@@ -439,7 +438,7 @@ func TestDependabotService_SetSelectedReposForOrgSecret(t *testing.T) {
 		testBody(t, r, `{"selected_repository_ids":[64780797]}`+"\n")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Dependabot.SetSelectedReposForOrgSecret(ctx, "o", "NAME", DependabotSecretsSelectedRepoIDs{64780797})
 	if err != nil {
 		t.Errorf("Dependabot.SetSelectedReposForOrgSecret returned error: %v", err)
@@ -465,7 +464,7 @@ func TestDependabotService_AddSelectedRepoToOrgSecret(t *testing.T) {
 	})
 
 	repo := &Repository{ID: Ptr(int64(1234))}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repo)
 	if err != nil {
 		t.Errorf("Dependabot.AddSelectedRepoToOrgSecret returned error: %v", err)
@@ -499,7 +498,7 @@ func TestDependabotService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 	})
 
 	repo := &Repository{ID: Ptr(int64(1234))}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repo)
 	if err != nil {
 		t.Errorf("Dependabot.RemoveSelectedRepoFromOrgSecret returned error: %v", err)
@@ -532,7 +531,7 @@ func TestDependabotService_DeleteOrgSecret(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Dependabot.DeleteOrgSecret(ctx, "o", "NAME")
 	if err != nil {
 		t.Errorf("Dependabot.DeleteOrgSecret returned error: %v", err)

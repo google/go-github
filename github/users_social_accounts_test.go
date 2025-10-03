@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -30,7 +29,7 @@ func TestUsersService_ListSocialAccounts(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	accounts, _, err := client.Users.ListSocialAccounts(ctx, opt)
 	if err != nil {
 		t.Errorf("Users.ListSocialAccounts returned error: %v", err)
@@ -70,7 +69,7 @@ func TestUsersService_AddSocialAccounts(t *testing.T) {
 		fmt.Fprint(w, `[{"provider":"twitter","url":"https://twitter.com/github"},{"provider":"facebook","url":"https://facebook.com/github"}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	accounts, _, err := client.Users.AddSocialAccounts(ctx, input)
 	if err != nil {
 		t.Errorf("Users.AddSocialAccounts returned error: %v", err)
@@ -111,7 +110,7 @@ func TestUsersService_DeleteSocialAccounts(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.DeleteSocialAccounts(ctx, input)
 	if err != nil {
 		t.Errorf("Users.DeleteSocialAccounts returned error: %v", err)
@@ -138,7 +137,7 @@ func TestUsersService_ListUserSocialAccounts(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	accounts, _, err := client.Users.ListUserSocialAccounts(ctx, "u", opt)
 	if err != nil {
 		t.Errorf("Users.ListUserSocialAccounts returned error: %v", err)

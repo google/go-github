@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -49,7 +48,7 @@ func TestIssueImportService_Create(t *testing.T) {
 		assertWrite(t, w, issueImportResponseJSON)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.IssueImport.Create(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Create returned error: %v", err)
@@ -108,7 +107,7 @@ func TestIssueImportService_Create_deferred(t *testing.T) {
 		assertWrite(t, w, issueImportResponseJSON)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.IssueImport.Create(ctx, "o", "r", input)
 
 	if !errors.As(err, new(*AcceptedError)) {
@@ -154,7 +153,7 @@ func TestIssueImportService_Create_badResponse(t *testing.T) {
 		assertWrite(t, w, []byte("{[}"))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.IssueImport.Create(ctx, "o", "r", input)
 
 	if err == nil || err.Error() != "invalid character '[' looking for beginning of object key string" {
@@ -166,7 +165,7 @@ func TestIssueImportService_Create_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.IssueImport.Create(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
@@ -182,7 +181,7 @@ func TestIssueImportService_CheckStatus(t *testing.T) {
 		assertWrite(t, w, issueImportResponseJSON)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.IssueImport.CheckStatus(ctx, "o", "r", 3)
 	if err != nil {
 		t.Errorf("CheckStatus returned error: %v", err)
@@ -212,7 +211,7 @@ func TestIssueImportService_CheckStatus_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.IssueImport.CheckStatus(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
@@ -228,7 +227,7 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 		assertWrite(t, w, []byte(fmt.Sprintf("[%s]", issueImportResponseJSON)))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", Timestamp{time.Now()})
 	if err != nil {
 		t.Errorf("CheckStatusSince returned error: %v", err)
@@ -265,7 +264,7 @@ func TestIssueImportService_CheckStatusSince_badResponse(t *testing.T) {
 		assertWrite(t, w, []byte("{badly-formed JSON"))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", Timestamp{time.Now()}); err == nil {
 		t.Error("CheckStatusSince returned no error, want JSON err")
 	}
@@ -275,7 +274,7 @@ func TestIssueImportService_CheckStatusSince_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.IssueImport.CheckStatusSince(ctx, "%", "r", Timestamp{time.Now()})
 	testURLParseError(t, err)
 }

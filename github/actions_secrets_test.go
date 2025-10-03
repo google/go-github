@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -102,7 +101,7 @@ func TestActionsService_GetRepoPublicKey(t *testing.T) {
 		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	key, _, err := client.Actions.GetRepoPublicKey(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Actions.GetRepoPublicKey returned error: %v", err)
@@ -137,7 +136,7 @@ func TestActionsService_GetRepoPublicKeyNumeric(t *testing.T) {
 		fmt.Fprint(w, `{"key_id":1234,"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	key, _, err := client.Actions.GetRepoPublicKey(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Actions.GetRepoPublicKey returned error: %v", err)
@@ -174,7 +173,7 @@ func TestActionsService_ListRepoSecrets(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	secrets, _, err := client.Actions.ListRepoSecrets(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Actions.ListRepoSecrets returned error: %v", err)
@@ -217,7 +216,7 @@ func TestActionsService_ListRepoOrgSecrets(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	secrets, _, err := client.Actions.ListRepoOrgSecrets(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Actions.ListRepoOrgSecrets returned error: %v", err)
@@ -258,7 +257,7 @@ func TestActionsService_GetRepoSecret(t *testing.T) {
 		fmt.Fprint(w, `{"name":"NAME","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	secret, _, err := client.Actions.GetRepoSecret(ctx, "o", "r", "NAME")
 	if err != nil {
 		t.Errorf("Actions.GetRepoSecret returned error: %v", err)
@@ -304,7 +303,7 @@ func TestActionsService_CreateOrUpdateRepoSecret(t *testing.T) {
 		EncryptedValue: "QIv=",
 		KeyID:          "1234",
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.CreateOrUpdateRepoSecret(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Actions.CreateOrUpdateRepoSecret returned error: %v", err)
@@ -333,7 +332,7 @@ func TestActionsService_DeleteRepoSecret(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.DeleteRepoSecret(ctx, "o", "r", "NAME")
 	if err != nil {
 		t.Errorf("Actions.DeleteRepoSecret returned error: %v", err)
@@ -359,7 +358,7 @@ func TestActionsService_GetOrgPublicKey(t *testing.T) {
 		fmt.Fprint(w, `{"key_id":"012345678","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	key, _, err := client.Actions.GetOrgPublicKey(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.GetOrgPublicKey returned error: %v", err)
@@ -396,7 +395,7 @@ func TestActionsService_ListOrgSecrets(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	secrets, _, err := client.Actions.ListOrgSecrets(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Actions.ListOrgSecrets returned error: %v", err)
@@ -438,7 +437,7 @@ func TestActionsService_GetOrgSecret(t *testing.T) {
 		fmt.Fprint(w, `{"name":"NAME","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z","visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/secrets/SUPER_SECRET/repositories"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	secret, _, err := client.Actions.GetOrgSecret(ctx, "o", "NAME")
 	if err != nil {
 		t.Errorf("Actions.GetOrgSecret returned error: %v", err)
@@ -488,7 +487,7 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 		Visibility:            "selected",
 		SelectedRepositoryIDs: SelectedRepoIDs{1296269, 1269280},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.CreateOrUpdateOrgSecret(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Actions.CreateOrUpdateOrgSecret returned error: %v", err)
@@ -519,7 +518,7 @@ func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	repos, _, err := client.Actions.ListSelectedReposForOrgSecret(ctx, "o", "NAME", opts)
 	if err != nil {
 		t.Errorf("Actions.ListSelectedReposForOrgSecret returned error: %v", err)
@@ -560,7 +559,7 @@ func TestActionsService_SetSelectedReposForOrgSecret(t *testing.T) {
 		testBody(t, r, `{"selected_repository_ids":[64780797]}`+"\n")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{64780797})
 	if err != nil {
 		t.Errorf("Actions.SetSelectedReposForOrgSecret returned error: %v", err)
@@ -586,7 +585,7 @@ func TestActionsService_AddSelectedRepoToOrgSecret(t *testing.T) {
 	})
 
 	repo := &Repository{ID: Ptr(int64(1234))}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repo)
 	if err != nil {
 		t.Errorf("Actions.AddSelectedRepoToOrgSecret returned error: %v", err)
@@ -616,7 +615,7 @@ func TestActionsService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 	})
 
 	repo := &Repository{ID: Ptr(int64(1234))}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repo)
 	if err != nil {
 		t.Errorf("Actions.RemoveSelectedRepoFromOrgSecret returned error: %v", err)
@@ -645,7 +644,7 @@ func TestActionsService_DeleteOrgSecret(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.DeleteOrgSecret(ctx, "o", "NAME")
 	if err != nil {
 		t.Errorf("Actions.DeleteOrgSecret returned error: %v", err)
@@ -671,7 +670,7 @@ func TestActionsService_GetEnvPublicKey(t *testing.T) {
 		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	key, _, err := client.Actions.GetEnvPublicKey(ctx, 1, "e")
 	if err != nil {
 		t.Errorf("Actions.GetEnvPublicKey returned error: %v", err)
@@ -706,7 +705,7 @@ func TestActionsService_GetEnvPublicKeyNumeric(t *testing.T) {
 		fmt.Fprint(w, `{"key_id":1234,"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	key, _, err := client.Actions.GetEnvPublicKey(ctx, 1, "e")
 	if err != nil {
 		t.Errorf("Actions.GetEnvPublicKey returned error: %v", err)
@@ -743,7 +742,7 @@ func TestActionsService_ListEnvSecrets(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	secrets, _, err := client.Actions.ListEnvSecrets(ctx, 1, "e", opts)
 	if err != nil {
 		t.Errorf("Actions.ListEnvSecrets returned error: %v", err)
@@ -784,7 +783,7 @@ func TestActionsService_GetEnvSecret(t *testing.T) {
 		fmt.Fprint(w, `{"name":"secret","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	secret, _, err := client.Actions.GetEnvSecret(ctx, 1, "e", "secret")
 	if err != nil {
 		t.Errorf("Actions.GetEnvSecret returned error: %v", err)
@@ -830,7 +829,7 @@ func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
 		EncryptedValue: "QIv=",
 		KeyID:          "1234",
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.CreateOrUpdateEnvSecret(ctx, 1, "e", input)
 	if err != nil {
 		t.Errorf("Actions.CreateOrUpdateEnvSecret returned error: %v", err)
@@ -859,7 +858,7 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.DeleteEnvSecret(ctx, 1, "e", "secret")
 	if err != nil {
 		t.Errorf("Actions.DeleteEnvSecret returned error: %v", err)

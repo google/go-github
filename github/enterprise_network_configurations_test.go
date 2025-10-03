@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -49,7 +48,7 @@ func TestEnterpriseService_ListEnterpriseNetworkConfigurations(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	opts := &ListOptions{Page: 3, PerPage: 2}
 	configurations, _, err := client.Enterprise.ListEnterpriseNetworkConfigurations(ctx, "e", opts)
@@ -112,7 +111,7 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	req := NetworkConfigurationRequest{
 		Name:           Ptr("configuration-one"),
@@ -207,7 +206,7 @@ func TestEnterpriseService_GetEnterpriseNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	configuration, _, err := client.Enterprise.GetEnterpriseNetworkConfiguration(ctx, "e", "123456789ABCDEF")
 	if err != nil {
 		t.Errorf("Enterprise.GetEnterpriseNetworkConfiguration returned err: %v", err)
@@ -256,7 +255,7 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	req := NetworkConfigurationRequest{
 		Name: Ptr("updated-configuration-one"),
 		NetworkSettingsIDs: []string{
@@ -340,7 +339,7 @@ func TestEnterpriseService_DeleteEnterpriseNetworkConfiguration(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Enterprise.DeleteEnterpriseNetworkConfiguration(ctx, "e", "123456789ABCDEF")
 	if err != nil {
 		t.Errorf("Enterprise.DeleteEnterpriseNetworkConfiguration returned error %v", err)
@@ -372,7 +371,7 @@ func TestEnterpriseService_GetEnterpriseNetworkSettingsResource(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resource, _, err := client.Enterprise.GetEnterpriseNetworkSettingsResource(ctx, "e", "123456789ABCDEF")
 	if err != nil {
 		t.Errorf("Enterprise.GetEnterpriseNetworkSettingsResource returned error %v", err)

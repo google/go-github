@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -28,7 +27,7 @@ func TestAppsService_GetHookConfig(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	config, _, err := client.Apps.GetHookConfig(ctx)
 	if err != nil {
 		t.Errorf("Apps.GetHookConfig returned error: %v", err)
@@ -76,7 +75,7 @@ func TestAppsService_UpdateHookConfig(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	config, _, err := client.Apps.UpdateHookConfig(ctx, input)
 	if err != nil {
 		t.Errorf("Apps.UpdateHookConfig returned error: %v", err)

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -26,7 +25,7 @@ func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	keys, _, err := client.Users.ListGPGKeys(ctx, "", opt)
 	if err != nil {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
@@ -61,7 +60,7 @@ func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1,"primary_key_id":2}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	keys, _, err := client.Users.ListGPGKeys(ctx, "u", nil)
 	if err != nil {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
@@ -77,7 +76,7 @@ func TestUsersService_ListGPGKeys_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Users.ListGPGKeys(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -91,7 +90,7 @@ func TestUsersService_GetGPGKey(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	key, _, err := client.Users.GetGPGKey(ctx, 1)
 	if err != nil {
 		t.Errorf("Users.GetGPGKey returned error: %v", err)
@@ -144,7 +143,7 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	gpgKey, _, err := client.Users.CreateGPGKey(ctx, input)
 	if err != nil {
 		t.Errorf("Users.GetGPGKey returned error: %v", err)
@@ -173,7 +172,7 @@ func TestUsersService_DeleteGPGKey(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Users.DeleteGPGKey(ctx, 1)
 	if err != nil {
 		t.Errorf("Users.DeleteGPGKey returned error: %v", err)

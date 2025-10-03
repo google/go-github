@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -27,7 +26,7 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 			"uniques": 3
  		}]`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Repositories.ListTrafficReferrers(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListTrafficReferrers returned error: %+v", err)
@@ -70,7 +69,7 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 			"uniques": 2225
  		}]`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Repositories.ListTrafficPaths(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListTrafficPaths returned error: %+v", err)
@@ -116,7 +115,7 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 		}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Repositories.ListTrafficViews(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.ListTrafficViews returned error: %+v", err)
@@ -166,7 +165,7 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 		}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Repositories.ListTrafficClones(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.ListTrafficClones returned error: %+v", err)

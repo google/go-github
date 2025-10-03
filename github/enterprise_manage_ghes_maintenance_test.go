@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -48,7 +47,7 @@ func TestEnterpriseService_GetMaintenanceStatus(t *testing.T) {
 	opt := &NodeQueryOptions{
 		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	maintenanceStatus, _, err := client.Enterprise.GetMaintenanceStatus(ctx, opt)
 	if err != nil {
 		t.Errorf("Enterprise.GetMaintenanceStatus returned error: %v", err)
@@ -107,7 +106,7 @@ func TestEnterpriseService_CreateMaintenance(t *testing.T) {
 		fmt.Fprint(w, `[ { "hostname": "primary", "uuid": "1b6cf518-f97c-11ed-8544-061d81f7eedb", "message": "Scheduled maintenance for upgrading." } ]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	maintenanceStatus, _, err := client.Enterprise.CreateMaintenance(ctx, true, input)
 	if err != nil {
 		t.Errorf("Enterprise.CreateMaintenance returned error: %v", err)

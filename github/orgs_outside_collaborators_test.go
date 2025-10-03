@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -32,7 +31,7 @@ func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
 		Filter:      "2fa_disabled",
 		ListOptions: ListOptions{Page: 2},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	members, _, err := client.Organizations.ListOutsideCollaborators(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListOutsideCollaborators returned error: %v", err)
@@ -62,7 +61,7 @@ func TestOrganizationsService_ListOutsideCollaborators_invalidOrg(t *testing.T) 
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Organizations.ListOutsideCollaborators(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -76,7 +75,7 @@ func TestOrganizationsService_RemoveOutsideCollaborator(t *testing.T) {
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.RemoveOutsideCollaborator returned error: %v", err)
@@ -103,7 +102,7 @@ func TestOrganizationsService_RemoveOutsideCollaborator_NonMember(t *testing.T) 
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
 	var rerr *ErrorResponse
 	if !errors.As(err, &rerr) {
@@ -123,7 +122,7 @@ func TestOrganizationsService_RemoveOutsideCollaborator_Member(t *testing.T) {
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
 	var rerr *ErrorResponse
 	if !errors.As(err, &rerr) {
@@ -142,7 +141,7 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator(t *testing.T) {
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator returned error: %v", err)
@@ -169,7 +168,7 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator_NonMemberOrLast
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(ctx, "o", "u")
 	var rerr *ErrorResponse
 	if !errors.As(err, &rerr) {

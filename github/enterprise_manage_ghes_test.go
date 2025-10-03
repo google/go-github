@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -33,7 +32,7 @@ func TestEnterpriseService_CheckSystemRequirements(t *testing.T) {
 			]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	systemRequirements, _, err := client.Enterprise.CheckSystemRequirements(ctx)
 	if err != nil {
 		t.Errorf("Enterprise.CheckSystemRequirements returned error: %v", err)
@@ -80,7 +79,7 @@ func TestEnterpriseService_ClusterStatus(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	clusterStatus, _, err := client.Enterprise.ClusterStatus(ctx)
 	if err != nil {
 		t.Errorf("Enterprise.ClusterStatus returned error: %v", err)
@@ -131,7 +130,7 @@ func TestEnterpriseService_ReplicationStatus(t *testing.T) {
 	opt := &NodeQueryOptions{
 		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	replicationStatus, _, err := client.Enterprise.ReplicationStatus(ctx, opt)
 	if err != nil {
 		t.Errorf("Enterprise.ReplicationStatus returned error: %v", err)
@@ -183,7 +182,7 @@ func TestEnterpriseService_Versions(t *testing.T) {
 	opt := &NodeQueryOptions{
 		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	releaseVersions, _, err := client.Enterprise.GetNodeReleaseVersions(ctx, opt)
 	if err != nil {
 		t.Errorf("Enterprise.GetNodeReleaseVersions returned error: %v", err)
