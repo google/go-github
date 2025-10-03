@@ -74,6 +74,21 @@ type UsageReportOptions struct {
 	Hour *int `url:"hour,omitempty"`
 }
 
+// PremiumRequestUsageReportOptions specifies optional parameters
+// for the enhanced billing platform premiun request usage report.
+type PremiumRequestUsageReportOptions struct {
+	UsageReportOptions
+
+	// The user name to query usage for. The name is not case sensitive.
+	User *string `url:"user,omitempty"`
+
+	// The model name to query usage for. The name is not case sensitive.
+	Model *string `url:"model,omitempty"`
+
+	// The product name to query usage for. The name is not case sensitive.
+	Product *string `url:"product,omitempty"`
+}
+
 // UsageItem represents a single usage item in the enhanced billing platform report.
 type UsageItem struct {
 	Date           *string  `json:"date"`
@@ -93,6 +108,35 @@ type UsageItem struct {
 // UsageReport represents the enhanced billing platform usage report response.
 type UsageReport struct {
 	UsageItems []*UsageItem `json:"usageItems,omitempty"`
+}
+
+// PremiumRequestUsageItem represents a single usage line item in premium request usage reports.
+type PremiumRequestUsageItem struct {
+	Product          string  `json:"product"`
+	SKU              string  `json:"sku"`
+	Model            string  `json:"model"`
+	UnitType         string  `json:"unitType"`
+	PricePerUnit     float64 `json:"pricePerUnit"`
+	GrossQuantity    int     `json:"grossQuantity"`
+	GrossAmount      float64 `json:"grossAmount"`
+	DiscountQuantity int     `json:"discountQuantity"`
+	DiscountAmount   float64 `json:"discountAmount"`
+	NetQuantity      int     `json:"netQuantity"`
+	NetAmount        float64 `json:"netAmount"`
+}
+
+// PremiumRequestUsageReport represents the premium request usage report response.
+type PremiumRequestUsageReport struct {
+	TimePeriod struct {
+		Year  int  `json:"year"`
+		Month *int `json:"month,omitempty"`
+		Day   *int `json:"day,omitempty"`
+	} `json:"timePeriod"`
+	Organization string                     `json:"organization"`
+	User         *string                    `json:"user,omitempty"`
+	Product      *string                    `json:"product,omitempty"`
+	Model        *string                    `json:"model,omitempty"`
+	UsageItems   []*PremiumRequestUsageItem `json:"usageItems"`
 }
 
 // GetPackagesBillingOrg returns the free and paid storage used for GitHub Packages in gigabytes for an Org.
@@ -261,4 +305,62 @@ func (s *BillingService) GetUsageReportUser(ctx context.Context, user string, op
 	}
 
 	return usageReport, resp, nil
+}
+
+// GetPremiumRequestUsageReportOrg returns a report of the premium request
+// usage for an organization using the enhanced billing platform.
+//
+// Note: This endpoint is only available to organizations with access to the enhanced billing platform.
+//
+// GitHub API docs: https://docs.github.com/rest/billing/billing#get-premium-request-usage-for-an-organization
+//
+//meta:operation GET /organizations/{org}/settings/billing/premium_request/usage
+func (s *BillingService) GetPremiumRequestUsageReportOrg(ctx context.Context, org string, opts *PremiumRequestUsageReportOptions) (*PremiumRequestUsageReport, *Response, error) {
+	u := fmt.Sprintf("organizations/%v/settings/billing/premium_request/usage", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	premiumRequestUsageReport := new(PremiumRequestUsageReport)
+	resp, err := s.client.Do(ctx, req, premiumRequestUsageReport)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return premiumRequestUsageReport, resp, nil
+}
+
+// GetPremiumRequestUsageReportUser returns a report of the premium request
+// usage for a user using the enhanced billing platform.
+//
+// Note: This endpoint is only available to users with access to the enhanced billing platform.
+//
+// GitHub API docs: https://docs.github.com/rest/billing/billing#get-premium-request-usage-for-a-user
+//
+//meta:operation GET /users/{username}/settings/billing/premium_request/usage
+func (s *BillingService) GetPremiumRequestUsageReportUser(ctx context.Context, user string, opts *PremiumRequestUsageReportOptions) (*PremiumRequestUsageReport, *Response, error) {
+	u := fmt.Sprintf("users/%v/settings/billing/premium_request/usage", user)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	premiumRequestUsageReport := new(PremiumRequestUsageReport)
+	resp, err := s.client.Do(ctx, req, premiumRequestUsageReport)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return premiumRequestUsageReport, resp, nil
 }
