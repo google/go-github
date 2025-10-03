@@ -90,8 +90,7 @@ func TestProjectsV2_User(t *testing.T) {
 	opts := &github.ListProjectsOptions{}
 	projects, _, err := client.Projects.ListProjectsForUser(ctx, user, opts)
 	if err != nil {
-		// Can't list user projects: fatal (indicates API or permission issue).
-		t.Fatalf("Projects.ListProjectsForUser returned error: %v", err)
+		t.Fatalf("Projects.ListProjectsForUser returned error: %v. This indicates API or permission issue", err)
 	}
 	if len(projects) == 0 {
 		t.Skipf("no Projects V2 found for user %s", user)
