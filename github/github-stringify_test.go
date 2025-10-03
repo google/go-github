@@ -420,6 +420,17 @@ func TestCommitsComparison_String(t *testing.T) {
 	}
 }
 
+func TestContributorApprovalPermissions_String(t *testing.T) {
+	t.Parallel()
+	v := ContributorApprovalPermissions{
+		ApprovalPolicy: "",
+	}
+	want := `github.ContributorApprovalPermissions{ApprovalPolicy:""}`
+	if got := v.String(); got != want {
+		t.Errorf("ContributorApprovalPermissions.String = %v, want %v", got, want)
+	}
+}
+
 func TestContributorStats_String(t *testing.T) {
 	t.Parallel()
 	v := ContributorStats{
@@ -2381,17 +2392,6 @@ func TestWeeklyStats_String(t *testing.T) {
 	want := `github.WeeklyStats{Week:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Additions:0, Deletions:0, Commits:0}`
 	if got := v.String(); got != want {
 		t.Errorf("WeeklyStats.String = %v, want %v", got, want)
-	}
-}
-
-func TestWorkflowApprovalPolicy_String(t *testing.T) {
-	t.Parallel()
-	v := WorkflowApprovalPolicy{
-		ApprovalPolicy: "",
-	}
-	want := `github.WorkflowApprovalPolicy{ApprovalPolicy:""}`
-	if got := v.String(); got != want {
-		t.Errorf("WorkflowApprovalPolicy.String = %v, want %v", got, want)
 	}
 }
 

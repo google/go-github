@@ -361,7 +361,7 @@ func TestRepositoriesService_GetForkPRContributorApprovalPermissions(t *testing.
 	if err != nil {
 		t.Errorf("Repositories.GetForkPRContributorApprovalPermissions returned error: %v", err)
 	}
-	want := &WorkflowApprovalPolicy{ApprovalPolicy: "require_approval"}
+	want := &ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
 	if !cmp.Equal(policy, want) {
 		t.Errorf("Repositories.GetForkPRContributorApprovalPermissions returned %+v, want %+v", policy, want)
 	}
@@ -385,10 +385,10 @@ func TestRepositoriesService_UpdateForkPRContributorApprovalPermissions(t *testi
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := WorkflowApprovalPolicy{ApprovalPolicy: "require_approval"}
+	input := ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
-		v := new(WorkflowApprovalPolicy)
+		v := new(ContributorApprovalPermissions)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")

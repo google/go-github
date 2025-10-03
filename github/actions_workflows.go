@@ -76,12 +76,13 @@ type WorkflowsPermissionsOpt struct {
 	RequireApprovalForForkPRWorkflows *bool `json:"require_approval_for_fork_pr_workflows,omitempty"`
 }
 
-// WorkflowApprovalPolicy represents the approval policy for workflows in a repository.
-type WorkflowApprovalPolicy struct {
+// ContributorApprovalPermissions represents the policy that controls
+// when fork PR workflows require approval from a maintainer.
+type ContributorApprovalPermissions struct {
 	ApprovalPolicy string `json:"approval_policy"`
 }
 
-func (p WorkflowApprovalPolicy) String() string {
+func (p ContributorApprovalPermissions) String() string {
 	return Stringify(p)
 }
 

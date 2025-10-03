@@ -191,12 +191,12 @@ func (s *RepositoriesService) UpdatePrivateRepoForkPRWorkflowSettings(ctx contex
 	return s.client.Do(ctx, req, nil)
 }
 
-// GetForkPRContributorApprovalPermissions gets the settings for whether workflows from fork pull requests can run without approval from contributors in a repository.
+// GetForkPRContributorApprovalPermissions gets the fork PR contributor approval policy for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#get-fork-pr-contributor-approval-permissions-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/permissions/fork-pr-contributor-approval
-func (s *RepositoriesService) GetForkPRContributorApprovalPermissions(ctx context.Context, owner, repo string) (*WorkflowApprovalPolicy, *Response, error) {
+func (s *RepositoriesService) GetForkPRContributorApprovalPermissions(ctx context.Context, owner, repo string) (*ContributorApprovalPermissions, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/fork-pr-contributor-approval", owner, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -204,21 +204,21 @@ func (s *RepositoriesService) GetForkPRContributorApprovalPermissions(ctx contex
 		return nil, nil, err
 	}
 
-	settings := new(WorkflowApprovalPolicy)
-	resp, err := s.client.Do(ctx, req, settings)
+	policy := new(ContributorApprovalPermissions)
+	resp, err := s.client.Do(ctx, req, policy)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return settings, resp, nil
+	return policy, resp, nil
 }
 
-// UpdateForkPRContributorApprovalPermissions sets the settings for whether workflows from fork pull requests can run without approval from contributors in a repository.
+// UpdateForkPRContributorApprovalPermissions sets the fork PR contributor approval policy for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-fork-pr-contributor-approval-permissions-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-contributor-approval
-func (s *RepositoriesService) UpdateForkPRContributorApprovalPermissions(ctx context.Context, owner, repo string, policy WorkflowApprovalPolicy) (*Response, error) {
+func (s *RepositoriesService) UpdateForkPRContributorApprovalPermissions(ctx context.Context, owner, repo string, policy ContributorApprovalPermissions) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/fork-pr-contributor-approval", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, policy)
 	if err != nil {
