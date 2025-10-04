@@ -472,6 +472,17 @@ func TestCommitsComparison_String(t *testing.T) {
 	}
 }
 
+func TestContributorApprovalPermissions_String(t *testing.T) {
+	t.Parallel()
+	v := ContributorApprovalPermissions{
+		ApprovalPolicy: "",
+	}
+	want := `github.ContributorApprovalPermissions{ApprovalPolicy:""}`
+	if got := v.String(); got != want {
+		t.Errorf("ContributorApprovalPermissions.String = %v, want %v", got, want)
+	}
+}
+
 func TestContributorStats_String(t *testing.T) {
 	t.Parallel()
 	v := ContributorStats{

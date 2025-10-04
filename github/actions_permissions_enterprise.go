@@ -375,3 +375,40 @@ func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(ctx
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// GetForkPRContributorApprovalPermissionsInEnterprise gets the fork PR contributor approval policy for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#get-fork-pr-contributor-approval-permissions-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/permissions/fork-pr-contributor-approval
+func (s *ActionsService) GetForkPRContributorApprovalPermissionsInEnterprise(ctx context.Context, enterprise string) (*ContributorApprovalPermissions, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/fork-pr-contributor-approval", enterprise)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	policy := new(ContributorApprovalPermissions)
+	resp, err := s.client.Do(ctx, req, policy)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return policy, resp, nil
+}
+
+// UpdateForkPRContributorApprovalPermissionsInEnterprise sets the fork PR contributor approval policy for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/permissions#set-fork-pr-contributor-approval-permissions-for-an-enterprise
+//
+//meta:operation PUT /enterprises/{enterprise}/actions/permissions/fork-pr-contributor-approval
+func (s *ActionsService) UpdateForkPRContributorApprovalPermissionsInEnterprise(ctx context.Context, enterprise string, policy ContributorApprovalPermissions) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/fork-pr-contributor-approval", enterprise)
+	req, err := s.client.NewRequest("PUT", u, policy)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
