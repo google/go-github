@@ -119,7 +119,7 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 //
 //meta:operation GET /user/{account_id}
 func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response, error) {
-	u := fmt.Sprintf("user/%d", id)
+	u := fmt.Sprintf("user/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

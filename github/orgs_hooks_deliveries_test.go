@@ -33,7 +33,7 @@ func TestOrganizationsService_ListHookDeliveries(t *testing.T) {
 
 	want := []*HookDelivery{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if d := cmp.Diff(hooks, want); d != "" {
-		t.Errorf("Organizations.ListHooks want (-), got (+):\n%s", d)
+		t.Errorf("Organizations.ListHooks want (-), got (+):\n%v", d)
 	}
 
 	const methodName = "ListHookDeliveries"

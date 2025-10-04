@@ -24,6 +24,7 @@ linters:
     - tparallel
     - unconvert
     - unparam
+    - urlpercentv
     - usetesting
     - whitespace
   settings:
@@ -139,7 +140,11 @@ linters:
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
-        original-url: github.com/google/go-github/v68/tools/sliceofpointers
+        original-url: github.com/google/go-github/v75/tools/sliceofpointers
+      urlpercentv:
+        type: module
+        description: Reports usage of %d or %s in URL strings.
+        original-url: github.com/google/go-github/v75/tools/urlpercentv
   exclusions:
     rules:
       - linters:

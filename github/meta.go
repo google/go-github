@@ -133,7 +133,7 @@ func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
 func (s *MetaService) Octocat(ctx context.Context, message string) (string, *Response, error) {
 	u := "octocat"
 	if message != "" {
-		u = fmt.Sprintf("%s?s=%s", u, url.QueryEscape(message))
+		u = fmt.Sprintf("%v?s=%v", u, url.QueryEscape(message))
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

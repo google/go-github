@@ -215,7 +215,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 				t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 			}
 			if resp.StatusCode != http.StatusFound {
-				t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+				t.Errorf("Actions.GetWorkflowJobLogs returned status: %v, want %v", resp.StatusCode, http.StatusFound)
 			}
 			want := "https://github.com/a"
 			if url.String() != want {
@@ -272,7 +272,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedi
 			ctx := t.Context()
 			_, resp, _ := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 0)
 			if resp.StatusCode != http.StatusMovedPermanently {
-				t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+				t.Errorf("Actions.GetWorkflowJobLogs returned status: %v, want %v", resp.StatusCode, http.StatusMovedPermanently)
 			}
 		})
 	}
@@ -319,7 +319,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirect
 			}
 
 			if resp.StatusCode != http.StatusFound {
-				t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+				t.Errorf("Actions.GetWorkflowJobLogs returned status: %v, want %v", resp.StatusCode, http.StatusFound)
 			}
 
 			want := "https://github.com/a"
@@ -373,7 +373,7 @@ func TestActionsService_GetWorkflowJobLogs_unexpectedCode(t *testing.T) {
 				t.Error("Actions.GetWorkflowJobLogs should return unexpected status code")
 			}
 			if got, want := resp.Response.StatusCode, http.StatusNoContent; got != want {
-				t.Errorf("Actions.GetWorkflowJobLogs return status %d, want %d", got, want)
+				t.Errorf("Actions.GetWorkflowJobLogs return status %v, want %v", got, want)
 			}
 			if url != nil {
 				t.Errorf("Actions.GetWorkflowJobLogs return %+v, want nil", url)

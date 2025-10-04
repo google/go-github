@@ -42,7 +42,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Current ActionsPermissions %s\n", actionsPermissionsRepository.String())
+	fmt.Printf("Current ActionsPermissions %v\n", actionsPermissionsRepository.String())
 
 	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: github.Ptr(true), AllowedActions: github.Ptr("selected")}
 	_, _, err = client.Repositories.UpdateActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
@@ -50,14 +50,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Current ActionsPermissions %s\n", actionsPermissionsRepository.String())
+	fmt.Printf("Current ActionsPermissions %v\n", actionsPermissionsRepository.String())
 
 	actionsAllowed, _, err := client.Repositories.GetActionsAllowed(ctx, *owner, *name)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Current ActionsAllowed %s\n", actionsAllowed.String())
+	fmt.Printf("Current ActionsAllowed %v\n", actionsAllowed.String())
 
 	actionsAllowed = &github.ActionsAllowed{GithubOwnedAllowed: github.Ptr(true), VerifiedAllowed: github.Ptr(false), PatternsAllowed: []string{"a/b"}}
 	_, _, err = client.Repositories.EditActionsAllowed(ctx, *owner, *name, *actionsAllowed)
@@ -65,7 +65,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Current ActionsAllowed %s\n", actionsAllowed.String())
+	fmt.Printf("Current ActionsAllowed %v\n", actionsAllowed.String())
 
 	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: github.Ptr(true), AllowedActions: github.Ptr("all")}
 	_, _, err = client.Repositories.UpdateActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
@@ -73,5 +73,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Current ActionsPermissions %s\n", actionsPermissionsRepository.String())
+	fmt.Printf("Current ActionsPermissions %v\n", actionsPermissionsRepository.String())
 }
