@@ -18422,6 +18422,70 @@ func (p *Plan) GetSpace() int {
 	return *p.Space
 }
 
+// GetModel returns the Model field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageReport) GetModel() string {
+	if p == nil || p.Model == nil {
+		return ""
+	}
+	return *p.Model
+}
+
+// GetProduct returns the Product field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageReport) GetProduct() string {
+	if p == nil || p.Product == nil {
+		return ""
+	}
+	return *p.Product
+}
+
+// GetUser returns the User field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageReport) GetUser() string {
+	if p == nil || p.User == nil {
+		return ""
+	}
+	return *p.User
+}
+
+// GetModel returns the Model field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageReportOptions) GetModel() string {
+	if p == nil || p.Model == nil {
+		return ""
+	}
+	return *p.Model
+}
+
+// GetProduct returns the Product field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageReportOptions) GetProduct() string {
+	if p == nil || p.Product == nil {
+		return ""
+	}
+	return *p.Product
+}
+
+// GetUser returns the User field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageReportOptions) GetUser() string {
+	if p == nil || p.User == nil {
+		return ""
+	}
+	return *p.User
+}
+
+// GetDay returns the Day field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageTimePeriod) GetDay() int {
+	if p == nil || p.Day == nil {
+		return 0
+	}
+	return *p.Day
+}
+
+// GetMonth returns the Month field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageTimePeriod) GetMonth() int {
+	if p == nil || p.Month == nil {
+		return 0
+	}
+	return *p.Month
+}
+
 // GetConfigURL returns the ConfigURL field if it's non-nil, zero value otherwise.
 func (p *PreReceiveHook) GetConfigURL() string {
 	if p == nil || p.ConfigURL == nil {
