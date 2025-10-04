@@ -1,6 +1,6 @@
 version: v2.2.2
 plugins:
-  - module: "github.com/google/go-github/v68/tools/sliceofpointers"
+  - module: "github.com/google/go-github/v75/tools/sliceofpointers"
     path: ./tools/sliceofpointers
-  - module: "github.com/google/go-github/v68/tools/urlpercentv"
+  - module: "github.com/google/go-github/v75/tools/urlpercentv"
     path: ./tools/urlpercentv
