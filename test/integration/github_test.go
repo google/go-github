@@ -12,35 +12,27 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"sync"
 	"testing"
 
 	"github.com/google/go-github/v75/github"
 )
 
-var (
-	client *github.Client
-
-	// auth indicates whether tests are being run with an OAuth token.
-	// Tests can use this flag to skip certain tests when run without auth.
-	auth bool
-)
-
-func init() {
+// client is a github.Client with the default http.Client. It is authorized if auth is true.
+// auth indicates whether tests are being run with an OAuth token
+// that is defined in the GITHUB_AUTH_TOKEN environment variable.
+var client, auth = sync.OnceValues(func() (*github.Client, bool) {
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 	if token == "" {
-		fmt.Print("!!! No OAuth token. Some tests won't run. !!!\n\n")
-		client = github.NewClient(nil)
-	} else {
-		client = github.NewClient(nil).WithAuthToken(token)
-		auth = true
+		return github.NewClient(nil), false
 	}
-}
+	return github.NewClient(nil).WithAuthToken(token), true
+})()
 
-func checkAuth(name string) bool {
+func skipIfMissingAuth(t *testing.T) {
 	if !auth {
-		fmt.Printf("No auth - skipping portions of %v\n", name)
+		t.Skipf("No OAuth token - skipping portions of %v\n", t.Name())
 	}
-	return auth
 }
 
 func createRandomTestRepository(t *testing.T, owner string, autoinit bool) *github.Repository {
