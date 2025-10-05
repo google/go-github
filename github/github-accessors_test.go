@@ -11749,6 +11749,14 @@ func TestEnterprise_GetWebsiteURL(tt *testing.T) {
 	e.GetWebsiteURL()
 }
 
+func TestEnterpriseLicenseSyncStatus_GetProperties(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseLicenseSyncStatus{}
+	e.GetProperties()
+	e = nil
+	e.GetProperties()
+}
+
 func TestEnterpriseRunnerGroup_GetAllowsPublicRepositories(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -17390,6 +17398,25 @@ func TestLargeFile_GetSize(tt *testing.T) {
 	l.GetSize()
 	l = nil
 	l.GetSize()
+}
+
+func TestLastLicenseSync_GetProperties(tt *testing.T) {
+	tt.Parallel()
+	l := &LastLicenseSync{}
+	l.GetProperties()
+	l = nil
+	l.GetProperties()
+}
+
+func TestLastLicenseSyncProperties_GetDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	l := &LastLicenseSyncProperties{Date: &zeroValue}
+	l.GetDate()
+	l = &LastLicenseSyncProperties{}
+	l.GetDate()
+	l = nil
+	l.GetDate()
 }
 
 func TestLicense_GetBody(tt *testing.T) {
@@ -34157,6 +34184,38 @@ func TestSelfHostRunnerPermissionsEnterprise_GetDisableSelfHostedRunnersForAllOr
 	s.GetDisableSelfHostedRunnersForAllOrgs()
 	s = nil
 	s.GetDisableSelfHostedRunnersForAllOrgs()
+}
+
+func TestServerInstanceProperties_GetServerInstances(tt *testing.T) {
+	tt.Parallel()
+	s := &ServerInstanceProperties{}
+	s.GetServerInstances()
+	s = nil
+	s.GetServerInstances()
+}
+
+func TestServerInstances_GetItems(tt *testing.T) {
+	tt.Parallel()
+	s := &ServerInstances{}
+	s.GetItems()
+	s = nil
+	s.GetItems()
+}
+
+func TestServerItemProperties_GetLastSync(tt *testing.T) {
+	tt.Parallel()
+	s := &ServerItemProperties{}
+	s.GetLastSync()
+	s = nil
+	s.GetLastSync()
+}
+
+func TestServiceInstanceItems_GetProperties(tt *testing.T) {
+	tt.Parallel()
+	s := &ServiceInstanceItems{}
+	s.GetProperties()
+	s = nil
+	s.GetProperties()
 }
 
 func TestSignatureRequirementEnforcementLevelChanges_GetFrom(tt *testing.T) {

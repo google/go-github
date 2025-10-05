@@ -9078,6 +9078,14 @@ func (e *Enterprise) GetWebsiteURL() string {
 	return *e.WebsiteURL
 }
 
+// GetProperties returns the Properties field.
+func (e *EnterpriseLicenseSyncStatus) GetProperties() *ServerInstanceProperties {
+	if e == nil {
+		return nil
+	}
+	return e.Properties
+}
+
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
 func (e *EnterpriseRunnerGroup) GetAllowsPublicRepositories() bool {
 	if e == nil || e.AllowsPublicRepositories == nil {
@@ -13420,6 +13428,22 @@ func (l *LargeFile) GetSize() int {
 		return 0
 	}
 	return *l.Size
+}
+
+// GetProperties returns the Properties field.
+func (l *LastLicenseSync) GetProperties() *LastLicenseSyncProperties {
+	if l == nil {
+		return nil
+	}
+	return l.Properties
+}
+
+// GetDate returns the Date field if it's non-nil, zero value otherwise.
+func (l *LastLicenseSyncProperties) GetDate() Timestamp {
+	if l == nil || l.Date == nil {
+		return Timestamp{}
+	}
+	return *l.Date
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
@@ -26524,6 +26548,38 @@ func (s *SelfHostRunnerPermissionsEnterprise) GetDisableSelfHostedRunnersForAllO
 		return false
 	}
 	return *s.DisableSelfHostedRunnersForAllOrgs
+}
+
+// GetServerInstances returns the ServerInstances field.
+func (s *ServerInstanceProperties) GetServerInstances() *ServerInstances {
+	if s == nil {
+		return nil
+	}
+	return s.ServerInstances
+}
+
+// GetItems returns the Items field.
+func (s *ServerInstances) GetItems() *ServiceInstanceItems {
+	if s == nil {
+		return nil
+	}
+	return s.Items
+}
+
+// GetLastSync returns the LastSync field.
+func (s *ServerItemProperties) GetLastSync() *LastLicenseSync {
+	if s == nil {
+		return nil
+	}
+	return s.LastSync
+}
+
+// GetProperties returns the Properties field.
+func (s *ServiceInstanceItems) GetProperties() *ServerItemProperties {
+	if s == nil {
+		return nil
+	}
+	return s.Properties
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
