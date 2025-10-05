@@ -309,7 +309,7 @@ func TestActionsService_DownloadArtifact(t *testing.T) {
 
 			want := "https://github.com/artifact"
 			if url.String() != want {
-				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "DownloadArtifact"
@@ -468,7 +468,7 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 			}
 			want := "https://github.com/artifact"
 			if url.String() != want {
-				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url, want)
 			}
 		})
 	}

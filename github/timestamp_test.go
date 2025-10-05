@@ -182,7 +182,7 @@ func TestTimestamp_GetTime(t *testing.T) {
 	}
 	t1 = &Timestamp{referenceTime}
 	if !t1.GetTime().Equal(referenceTime) {
-		t.Errorf("want reference time, got: %v", t1.GetTime().String())
+		t.Errorf("want reference time, got: %v", t1.GetTime())
 	}
 }
 

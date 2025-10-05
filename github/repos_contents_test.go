@@ -900,7 +900,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 			}
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
+				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetArchiveLink"
@@ -998,7 +998,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 			}
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
+				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url, want)
 			}
 		})
 	}

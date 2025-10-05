@@ -226,7 +226,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
 			}
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetWorkflowRunAttemptLogs"
@@ -320,7 +320,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followR
 
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetWorkflowRunAttemptLogs"
@@ -537,7 +537,7 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 			}
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Actions.GetWorkflowRunLogs returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.GetWorkflowRunLogs returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetWorkflowRunLogs"
@@ -631,7 +631,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetWorkflowRunLogs"

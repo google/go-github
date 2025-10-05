@@ -219,7 +219,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 			}
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetWorkflowJobLogs"
@@ -324,7 +324,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirect
 
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url, want)
 			}
 		})
 	}

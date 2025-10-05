@@ -504,10 +504,10 @@ func TestWithEnterpriseURLs(t *testing.T) {
 					t.Fatalf("got unexpected error: %v", err)
 				}
 				if c.BaseURL.String() != test.wantBaseURL {
-					t.Errorf("BaseURL is %v, want %v", c.BaseURL.String(), test.wantBaseURL)
+					t.Errorf("BaseURL is %v, want %v", c.BaseURL, test.wantBaseURL)
 				}
 				if c.UploadURL.String() != test.wantUploadURL {
-					t.Errorf("UploadURL is %v, want %v", c.UploadURL.String(), test.wantUploadURL)
+					t.Errorf("UploadURL is %v, want %v", c.UploadURL, test.wantUploadURL)
 				}
 			}
 			validate(NewClient(nil).WithEnterpriseURLs(test.baseURL, test.uploadURL))
