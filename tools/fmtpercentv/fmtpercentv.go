@@ -3,10 +3,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package urlpercentv is a custom linter to be used by
+// Package fmtpercentv is a custom linter to be used by
 // golangci-lint to find instances of `%d` or `%s` in
-// URL strings when `%v` would be more consistent.
-package urlpercentv
+// format strings when `%v` would be more consistent.
+package fmtpercentv
 
 import (
 	"go/ast"
@@ -18,30 +18,30 @@ import (
 )
 
 func init() {
-	register.Plugin("urlpercentv", New)
+	register.Plugin("fmtpercentv", New)
 }
 
-// URLPercentVPlugin is a custom linter plugin for golangci-lint.
-type URLPercentVPlugin struct{}
+// FmtPercentVPlugin is a custom linter plugin for golangci-lint.
+type FmtPercentVPlugin struct{}
 
 // New returns an analysis.Analyzer to use with golangci-lint.
 func New(_ any) (register.LinterPlugin, error) {
-	return &URLPercentVPlugin{}, nil
+	return &FmtPercentVPlugin{}, nil
 }
 
-// BuildAnalyzers builds the analyzers for the URLPercentVPlugin.
-func (f *URLPercentVPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
+// BuildAnalyzers builds the analyzers for the FmtPercentVPlugin.
+func (f *FmtPercentVPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 	return []*analysis.Analyzer{
 		{
-			Name: "urlpercentv",
-			Doc:  "Reports usage of %d or %s in URL strings.",
+			Name: "fmtpercentv",
+			Doc:  "Reports usage of %d or %s in format strings.",
 			Run:  run,
 		},
 	}, nil
 }
 
-// GetLoadMode returns the load mode for the URLPercentVPlugin.
-func (f *URLPercentVPlugin) GetLoadMode() string {
+// GetLoadMode returns the load mode for the FmtPercentVPlugin.
+func (f *FmtPercentVPlugin) GetLoadMode() string {
 	return register.LoadModeSyntax
 }
 
@@ -53,8 +53,8 @@ func run(pass *analysis.Pass) (any, error) {
 			}
 
 			switch t := n.(type) {
-			case *ast.AssignStmt:
-				checkAssignStmt(t, t.Pos(), pass)
+			case *ast.CallExpr:
+				checkCallExpr(t, t.Pos(), pass)
 			}
 
 			return true
@@ -63,16 +63,8 @@ func run(pass *analysis.Pass) (any, error) {
 	return nil, nil
 }
 
-func checkAssignStmt(t *ast.AssignStmt, tokenPos token.Pos, pass *analysis.Pass) {
-	if len(t.Lhs) != 1 || len(t.Rhs) != 1 {
-		return
-	}
-	_, ok1 := t.Lhs[0].(*ast.Ident)
-	rhs, ok2 := t.Rhs[0].(*ast.CallExpr)
-	if !ok1 || !ok2 || len(rhs.Args) == 0 {
-		return
-	}
-	fun, ok := rhs.Fun.(*ast.SelectorExpr)
+func checkCallExpr(expr *ast.CallExpr, tokenPos token.Pos, pass *analysis.Pass) {
+	fun, ok := expr.Fun.(*ast.SelectorExpr)
 	if !ok {
 		return
 	}
@@ -86,7 +78,7 @@ func checkAssignStmt(t *ast.AssignStmt, tokenPos token.Pos, pass *analysis.Pass)
 	if fun.Sel.Name != "Sprintf" && fun.Sel.Name != "Printf" && fun.Sel.Name != "Fprintf" && fun.Sel.Name != "Errorf" {
 		return
 	}
-	fmtStrBasicLit, ok := rhs.Args[0].(*ast.BasicLit)
+	fmtStrBasicLit, ok := expr.Args[0].(*ast.BasicLit)
 	if !ok {
 		return
 	}

@@ -9,4 +9,6 @@ import "fmt"
 
 func main() {
 	_ = fmt.Sprintf("some/%v/url", 1) // Should not be flagged
+	fmt.Printf("some %v", 1)          // Should not be flagged
+	fmt.Printf("some %v", "thing")    // Should not be flagged
 }

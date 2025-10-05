@@ -9,6 +9,7 @@ linters:
     - dogsled
     - dupl
     - errorlint
+    - fmtpercentv
     - forbidigo
     - gocritic
     - godot
@@ -24,7 +25,6 @@ linters:
     - tparallel
     - unconvert
     - unparam
-    - urlpercentv
     - usetesting
     - whitespace
   settings:
@@ -137,14 +137,14 @@ linters:
       os-create-temp: true
       os-temp-dir: true
     custom:
+      fmtpercentv:
+        type: module
+        description: Reports usage of %d or %s in format strings.
+        original-url: github.com/google/go-github/v75/tools/fmtpercentv
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
         original-url: github.com/google/go-github/v75/tools/sliceofpointers
-      urlpercentv:
-        type: module
-        description: Reports usage of %d or %s in URL strings.
-        original-url: github.com/google/go-github/v75/tools/urlpercentv
   exclusions:
     rules:
       - linters:

@@ -1,4 +1,4 @@
-module tools/urlpercentv
+module tools/fmtpercentv
 
 go 1.24.0
 

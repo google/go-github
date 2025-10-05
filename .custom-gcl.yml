@@ -2,5 +2,5 @@ version: v2.2.2
 plugins:
   - module: "github.com/google/go-github/v75/tools/sliceofpointers"
     path: ./tools/sliceofpointers
-  - module: "github.com/google/go-github/v75/tools/urlpercentv"
-    path: ./tools/urlpercentv
+  - module: "github.com/google/go-github/v75/tools/fmtpercentv"
+    path: ./tools/fmtpercentv
