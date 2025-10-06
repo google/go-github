@@ -46,9 +46,7 @@ func TestUsers_Get(t *testing.T) {
 }
 
 func TestUsers_Update(t *testing.T) {
-	if !checkAuth("TestUsers_Get") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	u, _, err := client.Users.Get(t.Context(), "")
 	if err != nil {
@@ -93,9 +91,7 @@ func TestUsers_Update(t *testing.T) {
 }
 
 func TestUsers_Emails(t *testing.T) {
-	if !checkAuth("TestUsers_Emails") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	emails, _, err := client.Users.ListEmails(t.Context(), nil)
 	if err != nil {
@@ -169,9 +165,7 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	// the rest of the tests requires auth
-	if !checkAuth("TestUsers_Keys") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	// TODO: make this integration test work for any authenticated user.
 	keys, _, err = client.Users.ListKeys(t.Context(), "", nil)
