@@ -99,7 +99,7 @@ type UserAuthorization struct {
 //
 //meta:operation POST /admin/users/{username}/authorizations
 func (s *AdminService) CreateUserImpersonation(ctx context.Context, username string, opts *ImpersonateUserOptions) (*UserAuthorization, *Response, error) {
-	u := fmt.Sprintf("admin/users/%s/authorizations", username)
+	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
@@ -121,7 +121,7 @@ func (s *AdminService) CreateUserImpersonation(ctx context.Context, username str
 //
 //meta:operation DELETE /admin/users/{username}/authorizations
 func (s *AdminService) DeleteUserImpersonation(ctx context.Context, username string) (*Response, error) {
-	u := fmt.Sprintf("admin/users/%s/authorizations", username)
+	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

@@ -88,7 +88,7 @@ func TestActionsService_ListCaches_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.ListCaches return status %d, want %d", got, want)
+		t.Errorf("Actions.ListCaches return status %v, want %v", got, want)
 	}
 	if caches != nil {
 		t.Errorf("Actions.ListCaches return %+v, want nil", caches)
@@ -154,7 +154,7 @@ func TestActionsService_DeleteCachesByKey_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.DeleteCachesByKey return status %d, want %d", got, want)
+		t.Errorf("Actions.DeleteCachesByKey return status %v, want %v", got, want)
 	}
 }
 
@@ -216,7 +216,7 @@ func TestActionsService_DeleteCachesByID_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.DeleteCachesByID return status %d, want %d", got, want)
+		t.Errorf("Actions.DeleteCachesByID return status %v, want %v", got, want)
 	}
 }
 
@@ -294,7 +294,7 @@ func TestActionsService_GetCacheUsageForRepo_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.GetCacheUsageForRepo return status %d, want %d", got, want)
+		t.Errorf("Actions.GetCacheUsageForRepo return status %v, want %v", got, want)
 	}
 	if caches != nil {
 		t.Errorf("Actions.GetCacheUsageForRepo return %+v, want nil", caches)
@@ -367,7 +367,7 @@ func TestActionsService_ListCacheUsageByRepoForOrg_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.ListCacheUsageByRepoForOrg return status %d, want %d", got, want)
+		t.Errorf("Actions.ListCacheUsageByRepoForOrg return status %v, want %v", got, want)
 	}
 	if caches != nil {
 		t.Errorf("Actions.ListCacheUsageByRepoForOrg return %+v, want nil", caches)
@@ -438,7 +438,7 @@ func TestActionsService_GetCacheUsageForOrg_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.GetTotalCacheUsageForOrg return status %d, want %d", got, want)
+		t.Errorf("Actions.GetTotalCacheUsageForOrg return status %v, want %v", got, want)
 	}
 	if caches != nil {
 		t.Errorf("Actions.GetTotalCacheUsageForOrg return %+v, want nil", caches)
@@ -509,7 +509,7 @@ func TestActionsService_GetCacheUsageForEnterprise_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.GetTotalCacheUsageForEnterprise return status %d, want %d", got, want)
+		t.Errorf("Actions.GetTotalCacheUsageForEnterprise return status %v, want %v", got, want)
 	}
 	if caches != nil {
 		t.Errorf("Actions.GetTotalCacheUsageForEnterprise return %+v, want nil", caches)

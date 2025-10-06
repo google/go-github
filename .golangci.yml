@@ -9,6 +9,7 @@ linters:
     - dogsled
     - dupl
     - errorlint
+    - fmtpercentv
     - forbidigo
     - gocritic
     - godot
@@ -137,6 +138,10 @@ linters:
       os-create-temp: true
       os-temp-dir: true
     custom:
+      fmtpercentv:
+        type: module
+        description: Reports usage of %d or %s in format strings.
+        original-url: github.com/google/go-github/v75/tools/fmtpercentv
       jsonfieldname:
         type: module
         description: Reports mismatches between Go field and JSON tag names.

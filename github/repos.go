@@ -689,7 +689,7 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 //
 //meta:operation GET /repositories/{repository_id}
 func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repository, *Response, error) {
-	u := fmt.Sprintf("repositories/%d", id)
+	u := fmt.Sprintf("repositories/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1453,7 +1453,7 @@ func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 
 	b := new(Branch)

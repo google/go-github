@@ -29,7 +29,7 @@ type Stargazer struct {
 //
 //meta:operation GET /repos/{owner}/{repo}/stargazers
 func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Stargazer, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/stargazers", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/stargazers", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
