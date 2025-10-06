@@ -84,7 +84,7 @@ func (s *IssuesService) ListMilestones(ctx context.Context, owner, repo string, 
 //
 //meta:operation GET /repos/{owner}/{repo}/milestones/{milestone_number}
 func (s *IssuesService) GetMilestone(ctx context.Context, owner, repo string, number int) (*Milestone, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/milestones/%d", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/milestones/%v", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -126,7 +126,7 @@ func (s *IssuesService) CreateMilestone(ctx context.Context, owner, repo string,
 //
 //meta:operation PATCH /repos/{owner}/{repo}/milestones/{milestone_number}
 func (s *IssuesService) EditMilestone(ctx context.Context, owner, repo string, number int, milestone *Milestone) (*Milestone, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/milestones/%d", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/milestones/%v", owner, repo, number)
 	req, err := s.client.NewRequest("PATCH", u, milestone)
 	if err != nil {
 		return nil, nil, err
@@ -147,7 +147,7 @@ func (s *IssuesService) EditMilestone(ctx context.Context, owner, repo string, n
 //
 //meta:operation DELETE /repos/{owner}/{repo}/milestones/{milestone_number}
 func (s *IssuesService) DeleteMilestone(ctx context.Context, owner, repo string, number int) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/milestones/%d", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/milestones/%v", owner, repo, number)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

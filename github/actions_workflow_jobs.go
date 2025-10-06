@@ -74,7 +74,7 @@ type ListWorkflowJobsOptions struct {
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs
 func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo string, runID int64, opts *ListWorkflowJobsOptions) (*Jobs, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/runs/%v/jobs", owner, repo, runID)
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/jobs", owner, repo, runID)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -100,7 +100,7 @@ func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo strin
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs
 func (s *ActionsService) ListWorkflowJobsAttempt(ctx context.Context, owner, repo string, runID, attemptNumber int64, opts *ListOptions) (*Jobs, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/runs/%v/attempts/%v/jobs", owner, repo, runID, attemptNumber)
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/attempts/%v/jobs", owner, repo, runID, attemptNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err

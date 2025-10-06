@@ -108,7 +108,7 @@ func (r PullRequestReviewDismissalRequest) String() string {
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews
 func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -134,7 +134,7 @@ func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo strin
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}
 func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews/%v", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string,
 //
 //meta:operation DELETE /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}
 func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews/%v", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, re
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments
 func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, repo string, number int, reviewID int64, opts *ListOptions) ([]*PullRequestComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/comments", owner, repo, number, reviewID)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews/%v/comments", owner, repo, number, reviewID)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -238,7 +238,7 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews
 func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews", owner, repo, number)
 
 	req, err := s.client.NewRequest("POST", u, review)
 	if err != nil {
@@ -272,7 +272,7 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 	opts := &struct {
 		Body string `json:"body"`
 	}{Body: body}
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews/%v", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
@@ -294,7 +294,7 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events
 func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/events", owner, repo, number, reviewID)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews/%v/events", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("POST", u, review)
 	if err != nil {
@@ -316,7 +316,7 @@ func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo stri
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals
 func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/dismissals", owner, repo, number, reviewID)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews/%v/dismissals", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("PUT", u, review)
 	if err != nil {

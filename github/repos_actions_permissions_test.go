@@ -251,7 +251,7 @@ func TestRepositoriesService_UpdateArtifactAndLogRetentionPeriod(t *testing.T) {
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Repositories.UpdateArtifactAndLogRetentionPeriod = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Repositories.UpdateArtifactAndLogRetentionPeriod = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdateArtifactAndLogRetentionPeriod"
@@ -332,7 +332,7 @@ func TestRepositoriesService_UpdatePrivateRepoForkPRWorkflowSettings(t *testing.
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Repositories.UpdatePrivateRepoForkPRWorkflowSettings = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Repositories.UpdatePrivateRepoForkPRWorkflowSettings = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdatePrivateRepoForkPRWorkflowSettings"

@@ -64,7 +64,7 @@ func (s *IssuesService) ListComments(ctx context.Context, owner, repo string, nu
 	if number == 0 {
 		u = fmt.Sprintf("repos/%v/%v/issues/comments", owner, repo)
 	} else {
-		u = fmt.Sprintf("repos/%v/%v/issues/%d/comments", owner, repo, number)
+		u = fmt.Sprintf("repos/%v/%v/issues/%v/comments", owner, repo, number)
 	}
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -94,7 +94,7 @@ func (s *IssuesService) ListComments(ctx context.Context, owner, repo string, nu
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/comments/{comment_id}
 func (s *IssuesService) GetComment(ctx context.Context, owner, repo string, commentID int64) (*IssueComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/comments/%d", owner, repo, commentID)
+	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v", owner, repo, commentID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func (s *IssuesService) GetComment(ctx context.Context, owner, repo string, comm
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/comments
 func (s *IssuesService) CreateComment(ctx context.Context, owner, repo string, number int, comment *IssueComment) (*IssueComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/comments", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/comments", owner, repo, number)
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -140,7 +140,7 @@ func (s *IssuesService) CreateComment(ctx context.Context, owner, repo string, n
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}
 func (s *IssuesService) EditComment(ctx context.Context, owner, repo string, commentID int64, comment *IssueComment) (*IssueComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/comments/%d", owner, repo, commentID)
+	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v", owner, repo, commentID)
 	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -160,7 +160,7 @@ func (s *IssuesService) EditComment(ctx context.Context, owner, repo string, com
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}
 func (s *IssuesService) DeleteComment(ctx context.Context, owner, repo string, commentID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/comments/%d", owner, repo, commentID)
+	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v", owner, repo, commentID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

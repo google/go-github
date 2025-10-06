@@ -333,7 +333,7 @@ Commit Message.`
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(&gotBody))
 		testMethod(t, r, "POST")
-		fmt.Fprintf(w, `{"sha":"%s"}`, sha)
+		fmt.Fprintf(w, `{"sha":"%v"}`, sha)
 	})
 	ctx := t.Context()
 	wantCommit := &Commit{SHA: Ptr(sha)}
@@ -341,10 +341,10 @@ Commit Message.`
 	commit, _, err := client.Git.CreateCommit(ctx, "o", "r", input, &opts)
 	assertNilError(t, err)
 	if cmp.Diff(gotBody, wantBody) != "" {
-		t.Errorf("Request body = %+v, want %+v\n%s", gotBody, wantBody, cmp.Diff(gotBody, wantBody))
+		t.Errorf("Request body = %+v, want %+v\n%v", gotBody, wantBody, cmp.Diff(gotBody, wantBody))
 	}
 	if cmp.Diff(commit, wantCommit) != "" {
-		t.Errorf("Git.CreateCommit returned %+v, want %+v\n%s", commit, wantCommit, cmp.Diff(commit, wantCommit))
+		t.Errorf("Git.CreateCommit returned %+v, want %+v\n%v", commit, wantCommit, cmp.Diff(commit, wantCommit))
 	}
 }
 
@@ -464,7 +464,7 @@ committer go-github <go-github@github.com> 1493849023 +0200
 
 Commit Message.`
 	if msg != expected {
-		t.Errorf("Returned message incorrect. returned %s, want %s", msg, expected)
+		t.Errorf("Returned message incorrect. returned %v, want %v", msg, expected)
 	}
 }
 
@@ -492,7 +492,7 @@ committer foo <foo@bar.com> 1493849023 +0200
 
 Commit Message.`
 	if msg != expected {
-		t.Errorf("Returned message incorrect. returned %s, want %s", msg, expected)
+		t.Errorf("Returned message incorrect. returned %v, want %v", msg, expected)
 	}
 }
 

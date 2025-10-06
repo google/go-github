@@ -97,7 +97,7 @@ func TestCreateUpdateEnvironment_MarshalJSON(t *testing.T) {
 
 	want := `{"wait_timer":0,"reviewers":null,"can_admins_bypass":true,"deployment_branch_policy":null}`
 	if string(got) != want {
-		t.Errorf("MarshalJSON = %s, want %v", got, want)
+		t.Errorf("MarshalJSON = %v, want %v", got, want)
 	}
 }
 

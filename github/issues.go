@@ -286,7 +286,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner, repo string, opts
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}
 func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -331,7 +331,7 @@ func (s *IssuesService) Create(ctx context.Context, owner, repo string, issue *I
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}
 func (s *IssuesService) Edit(ctx context.Context, owner, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, number)
 	req, err := s.client.NewRequest("PATCH", u, issue)
 	if err != nil {
 		return nil, nil, err
@@ -386,7 +386,7 @@ type LockIssueOptions struct {
 //
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/lock
 func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int, opts *LockIssueOptions) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/lock", owner, repo, number)
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
@@ -401,7 +401,7 @@ func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock
 func (s *IssuesService) Unlock(ctx context.Context, owner, repo string, number int) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/lock", owner, repo, number)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

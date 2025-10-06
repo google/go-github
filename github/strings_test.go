@@ -76,7 +76,7 @@ func TestStringify(t *testing.T) {
 	for i, tt := range tests {
 		s := Stringify(tt.in)
 		if s != tt.out {
-			t.Errorf("%d. Stringify(%q) => %q, want %q", i, tt.in, s, tt.out)
+			t.Errorf("%v. Stringify(%q) => %q, want %q", i, tt.in, s, tt.out)
 		}
 	}
 }
@@ -139,7 +139,7 @@ func TestString(t *testing.T) {
 	for i, tt := range tests {
 		s := tt.in.(fmt.Stringer).String()
 		if s != tt.out {
-			t.Errorf("%d. String() => %q, want %q", i, tt.in, tt.out)
+			t.Errorf("%v. String() => %q, want %q", i, tt.in, tt.out)
 		}
 	}
 }

@@ -35,7 +35,7 @@ func stringifyValue(w *bytes.Buffer, val reflect.Value) {
 
 	switch v.Kind() {
 	case reflect.String:
-		fmt.Fprintf(w, `"%s"`, v)
+		fmt.Fprintf(w, `"%v"`, v)
 	case reflect.Slice:
 		w.WriteByte('[')
 		for i := 0; i < v.Len(); i++ {
@@ -55,7 +55,7 @@ func stringifyValue(w *bytes.Buffer, val reflect.Value) {
 
 		// special handling of Timestamp values
 		if v.Type() == timestampType {
-			fmt.Fprintf(w, "{%s}", v.Interface())
+			fmt.Fprintf(w, "{%v}", v.Interface())
 			return
 		}
 

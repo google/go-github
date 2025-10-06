@@ -82,7 +82,7 @@ type WorkflowsPermissionsOpt struct {
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/workflows
 func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, opts *ListOptions) (*Workflows, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/workflows", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/actions/workflows", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err

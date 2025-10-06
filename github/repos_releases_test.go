@@ -588,7 +588,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 		t.Error("Repositories.DownloadReleaseAsset returned stream, want nil")
 	}
 	if loc != "" {
-		t.Errorf(`Repositories.DownloadReleaseAsset returned "%s", want empty ""`, loc)
+		t.Errorf(`Repositories.DownloadReleaseAsset returned "%v", want empty ""`, loc)
 	}
 }
 
@@ -615,7 +615,7 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 	}
 
 	if loc != "" {
-		t.Errorf(`Repositories.DownloadReleaseAsset returned "%s", want empty ""`, loc)
+		t.Errorf(`Repositories.DownloadReleaseAsset returned "%v", want empty ""`, loc)
 	}
 }
 
@@ -746,7 +746,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	for key, test := range uploadTests {
-		releaseEndpoint := fmt.Sprintf("/repos/o/r/releases/%d/assets", key)
+		releaseEndpoint := fmt.Sprintf("/repos/o/r/releases/%v/assets", key)
 		mux.HandleFunc(releaseEndpoint, func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "POST")
 			testHeader(t, r, "Content-Type", test.expectedMediaType)

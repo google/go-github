@@ -158,7 +158,7 @@ func (c *unusedCmd) Run(root *rootCmd, k *kong.Context) error {
 		enc.SetIndent("", "  ")
 		return enc.Encode(unused)
 	}
-	fmt.Fprintf(k.Stdout, "Found %d unused operations\n", len(unused))
+	fmt.Fprintf(k.Stdout, "Found %v unused operations\n", len(unused))
 	if len(unused) == 0 {
 		return nil
 	}
@@ -166,7 +166,7 @@ func (c *unusedCmd) Run(root *rootCmd, k *kong.Context) error {
 	for _, op := range unused {
 		fmt.Fprintln(k.Stdout, op.Name)
 		if op.DocumentationURL != "" {
-			fmt.Fprintf(k.Stdout, "doc:     %s\n", op.DocumentationURL)
+			fmt.Fprintf(k.Stdout, "doc:     %v\n", op.DocumentationURL)
 		}
 		fmt.Fprintln(k.Stdout, "")
 	}

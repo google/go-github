@@ -214,7 +214,7 @@ func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, ow
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}
 func (s *PullRequestsService) Get(ctx context.Context, owner, repo string, number int) (*PullRequest, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -235,7 +235,7 @@ func (s *PullRequestsService) Get(ctx context.Context, owner, repo string, numbe
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}
 func (s *PullRequestsService) GetRaw(ctx context.Context, owner, repo string, number int, opts RawOptions) (string, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return "", nil, err
@@ -247,7 +247,7 @@ func (s *PullRequestsService) GetRaw(ctx context.Context, owner, repo string, nu
 	case Patch:
 		req.Header.Set("Accept", mediaTypeV3Patch)
 	default:
-		return "", nil, fmt.Errorf("unsupported raw type %d", opts.Type)
+		return "", nil, fmt.Errorf("unsupported raw type %v", opts.Type)
 	}
 
 	var buf bytes.Buffer
@@ -325,7 +325,7 @@ type PullRequestBranchUpdateResponse struct {
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/update-branch
 func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, opts *PullRequestBranchUpdateOptions) (*PullRequestBranchUpdateResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/update-branch", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/update-branch", owner, repo, number)
 
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
@@ -366,7 +366,7 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner, repo string, numb
 		return nil, nil, errors.New("pull must be provided")
 	}
 
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v", owner, repo, number)
 
 	update := &pullRequestUpdate{
 		Title:               pull.Title,
@@ -401,7 +401,7 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner, repo string, numb
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/commits
 func (s *PullRequestsService) ListCommits(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*RepositoryCommit, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/commits", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/commits", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -427,7 +427,7 @@ func (s *PullRequestsService) ListCommits(ctx context.Context, owner, repo strin
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/files
 func (s *PullRequestsService) ListFiles(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*CommitFile, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/files", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/files", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -453,7 +453,7 @@ func (s *PullRequestsService) ListFiles(ctx context.Context, owner, repo string,
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/merge
 func (s *PullRequestsService) IsMerged(ctx context.Context, owner, repo string, number int) (bool, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/merge", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return false, nil, err
@@ -497,7 +497,7 @@ type pullRequestMergeRequest struct {
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge
 func (s *PullRequestsService) Merge(ctx context.Context, owner, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/merge", owner, repo, number)
 
 	pullRequestBody := &pullRequestMergeRequest{}
 	if commitMessage != "" {

@@ -163,7 +163,7 @@ func TestPullRequestsService_GetRaw_diff(t *testing.T) {
 	}
 	want := rawStr
 	if got != want {
-		t.Errorf("PullRequests.GetRaw returned %s want %s", got, want)
+		t.Errorf("PullRequests.GetRaw returned %v want %v", got, want)
 	}
 
 	const methodName = "GetRaw"
@@ -200,7 +200,7 @@ func TestPullRequestsService_GetRaw_patch(t *testing.T) {
 	}
 	want := rawStr
 	if got != want {
-		t.Errorf("PullRequests.GetRaw returned %s want %s", got, want)
+		t.Errorf("PullRequests.GetRaw returned %v want %v", got, want)
 	}
 }
 
@@ -495,15 +495,15 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		ctx := t.Context()
 		pull, _, err := client.PullRequests.Edit(ctx, "o", "r", i, tt.input)
 		if err != nil {
-			t.Errorf("%d: PullRequests.Edit returned error: %v", i, err)
+			t.Errorf("%v: PullRequests.Edit returned error: %v", i, err)
 		}
 
 		if !cmp.Equal(pull, tt.want) {
-			t.Errorf("%d: PullRequests.Edit returned %+v, want %+v", i, pull, tt.want)
+			t.Errorf("%v: PullRequests.Edit returned %+v, want %+v", i, pull, tt.want)
 		}
 
 		if !madeRequest {
-			t.Errorf("%d: PullRequest.Edit did not make the expected request", i)
+			t.Errorf("%v: PullRequest.Edit did not make the expected request", i)
 		}
 
 		const methodName = "Edit"
@@ -795,7 +795,7 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 
 	for i, test := range tests {
 		madeRequest := false
-		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%d/merge", i), func(_ http.ResponseWriter, r *http.Request) {
+		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v/merge", i), func(_ http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PUT")
 			testBody(t, r, test.wantBody+"\n")
 			madeRequest = true
@@ -803,7 +803,7 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 		ctx := t.Context()
 		_, _, _ = client.PullRequests.Merge(ctx, "o", "r", i, "merging pull request", test.options)
 		if !madeRequest {
-			t.Errorf("%d: PullRequests.Merge(%#v): expected request was not made", i, test.options)
+			t.Errorf("%v: PullRequests.Merge(%#v): expected request was not made", i, test.options)
 		}
 	}
 }

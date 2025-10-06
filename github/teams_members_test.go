@@ -68,7 +68,7 @@ func TestTeamsService__ListTeamMembersByID_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.ListTeamMembersByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.ListTeamMembersByID returned status %v, want %v", got, want)
 	}
 	if members != nil {
 		t.Errorf("Teams.ListTeamMembersByID returned %+v, want nil", members)
@@ -143,7 +143,7 @@ func TestTeamsService__ListTeamMembersBySlug_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.ListTeamMembersBySlug returned status %d, want %d", got, want)
+		t.Errorf("Teams.ListTeamMembersBySlug returned status %v, want %v", got, want)
 	}
 	if members != nil {
 		t.Errorf("Teams.ListTeamMembersBySlug returned %+v, want nil", members)
@@ -223,7 +223,7 @@ func TestTeamsService__GetTeamMembershipByID_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.GetTeamMembershipByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.GetTeamMembershipByID returned status %v, want %v", got, want)
 	}
 	if membership != nil {
 		t.Errorf("Teams.GetTeamMembershipByID returned %+v, want nil", membership)
@@ -294,7 +294,7 @@ func TestTeamsService__GetTeamMembershipBySlug_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.GetTeamMembershipBySlug returned status %d, want %d", got, want)
+		t.Errorf("Teams.GetTeamMembershipBySlug returned status %v, want %v", got, want)
 	}
 	if membership != nil {
 		t.Errorf("Teams.GetTeamMembershipBySlug returned %+v, want nil", membership)
@@ -320,7 +320,7 @@ func TestTeamsService__GetTeamMembershipBySlug_invalidOrg(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Teams.GetTeamMembershipBySlug(ctx, "%s", "s", "u")
+	_, _, err := client.Teams.GetTeamMembershipBySlug(ctx, "%v", "s", "u")
 	testURLParseError(t, err)
 }
 
@@ -392,7 +392,7 @@ func TestTeamsService__AddTeamMembershipByID_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.AddTeamMembershipByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.AddTeamMembershipByID returned status %v, want %v", got, want)
 	}
 	if membership != nil {
 		t.Errorf("Teams.AddTeamMembershipByID returned %+v, want nil", membership)
@@ -481,7 +481,7 @@ func TestTeamsService__AddTeamMembershipBySlug_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.AddTeamMembershipBySlug returned status %d, want %d", got, want)
+		t.Errorf("Teams.AddTeamMembershipBySlug returned status %v, want %v", got, want)
 	}
 	if membership != nil {
 		t.Errorf("Teams.AddTeamMembershipBySlug returned %+v, want nil", membership)
@@ -552,7 +552,7 @@ func TestTeamsService__RemoveTeamMembershipByID_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.RemoveTeamMembershipByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.RemoveTeamMembershipByID returned status %v, want %v", got, want)
 	}
 
 	const methodName = "RemoveTeamMembershipByID"
@@ -607,7 +607,7 @@ func TestTeamsService__RemoveTeamMembershipBySlug_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.RemoveTeamMembershipBySlug returned status %d, want %d", got, want)
+		t.Errorf("Teams.RemoveTeamMembershipBySlug returned status %v, want %v", got, want)
 	}
 
 	const methodName = "RemoveTeamMembershipBySlug"
@@ -684,7 +684,7 @@ func TestTeamsService__ListPendingTeamInvitationsByID_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.RemoveTeamMembershipByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.RemoveTeamMembershipByID returned status %v, want %v", got, want)
 	}
 	if invitations != nil {
 		t.Errorf("Teams.RemoveTeamMembershipByID returned %+v, want nil", invitations)
@@ -759,7 +759,7 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.RemoveTeamMembershipByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.RemoveTeamMembershipByID returned status %v, want %v", got, want)
 	}
 	if invitations != nil {
 		t.Errorf("Teams.RemoveTeamMembershipByID returned %+v, want nil", invitations)

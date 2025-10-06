@@ -18,7 +18,7 @@ import (
 func (c *Client) OrgPaymentInformation(org string) (PaymentInformation, error) {
 	var info PaymentInformation
 
-	doc, err := c.get("/organizations/%s/settings/billing/payment_information", org)
+	doc, err := c.get("/organizations/%v/settings/billing/payment_information", org)
 	if err != nil {
 		return info, err
 	}

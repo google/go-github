@@ -46,5 +46,5 @@ func main() {
 	}
 
 	// The number of environments here should be equal to expectedPageSize
-	fmt.Printf("%d environments returned\n", len(envResponse.Environments))
+	fmt.Printf("%v environments returned\n", len(envResponse.Environments))
 }

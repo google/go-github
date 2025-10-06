@@ -339,6 +339,6 @@ func TestTimeline_ReviewRequests(t *testing.T) {
 	if !cmp.Equal(events, want) {
 		t.Errorf("Issues.ListIssueTimeline review request events = %+v, want %+v", events, want)
 		diff := cmp.Diff(events, want)
-		t.Errorf("Difference: %s", diff)
+		t.Errorf("Difference: %v", diff)
 	}
 }

@@ -33,11 +33,11 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 		for key, expectedValues := range expectedQuery {
 			actualValues := query[key]
 			if len(actualValues) != len(expectedValues) {
-				t.Errorf("Expected %d values for query param %s, got %d", len(expectedValues), key, len(actualValues))
+				t.Errorf("Expected %v values for query param %v, got %v", len(expectedValues), key, len(actualValues))
 			}
 			for i, expectedValue := range expectedValues {
 				if actualValues[i] != expectedValue {
-					t.Errorf("Expected query param %s to be %s, got %s", key, expectedValue, actualValues[i])
+					t.Errorf("Expected query param %v to be %v, got %v", key, expectedValue, actualValues[i])
 				}
 			}
 		}

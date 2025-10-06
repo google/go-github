@@ -470,7 +470,7 @@ func (s *AppsService) FindRepositoryInstallation(ctx context.Context, owner, rep
 //
 //meta:operation GET /repositories/{repository_id}/installation
 func (s *AppsService) FindRepositoryInstallationByID(ctx context.Context, id int64) (*Installation, *Response, error) {
-	return s.getInstallation(ctx, fmt.Sprintf("repositories/%d/installation", id))
+	return s.getInstallation(ctx, fmt.Sprintf("repositories/%v/installation", id))
 }
 
 // FindUserInstallation finds the user's installation information.

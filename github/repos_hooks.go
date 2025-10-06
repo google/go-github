@@ -143,7 +143,7 @@ func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string,
 //
 //meta:operation GET /repos/{owner}/{repo}/hooks/{hook_id}
 func (s *RepositoriesService) GetHook(ctx context.Context, owner, repo string, id int64) (*Hook, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
+	u := fmt.Sprintf("repos/%v/%v/hooks/%v", owner, repo, id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -163,7 +163,7 @@ func (s *RepositoriesService) GetHook(ctx context.Context, owner, repo string, i
 //
 //meta:operation PATCH /repos/{owner}/{repo}/hooks/{hook_id}
 func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, id int64, hook *Hook) (*Hook, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
+	u := fmt.Sprintf("repos/%v/%v/hooks/%v", owner, repo, id)
 	req, err := s.client.NewRequest("PATCH", u, hook)
 	if err != nil {
 		return nil, nil, err
@@ -183,7 +183,7 @@ func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, 
 //
 //meta:operation DELETE /repos/{owner}/{repo}/hooks/{hook_id}
 func (s *RepositoriesService) DeleteHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
+	u := fmt.Sprintf("repos/%v/%v/hooks/%v", owner, repo, id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -197,7 +197,7 @@ func (s *RepositoriesService) DeleteHook(ctx context.Context, owner, repo string
 //
 //meta:operation POST /repos/{owner}/{repo}/hooks/{hook_id}/pings
 func (s *RepositoriesService) PingHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d/pings", owner, repo, id)
+	u := fmt.Sprintf("repos/%v/%v/hooks/%v/pings", owner, repo, id)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -211,7 +211,7 @@ func (s *RepositoriesService) PingHook(ctx context.Context, owner, repo string, 
 //
 //meta:operation POST /repos/{owner}/{repo}/hooks/{hook_id}/tests
 func (s *RepositoriesService) TestHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d/tests", owner, repo, id)
+	u := fmt.Sprintf("repos/%v/%v/hooks/%v/tests", owner, repo, id)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -253,7 +253,7 @@ func (s *RepositoriesService) Unsubscribe(ctx context.Context, owner, repo, even
 // See: https://www.w3.org/TR/websub/#subscriber-sends-subscription-request
 func (s *RepositoriesService) createWebSubRequest(hubMode, owner, repo, event, callback string, secret []byte) (*http.Request, error) {
 	topic := fmt.Sprintf(
-		"https://github.com/%s/%s/events/%s",
+		"https://github.com/%v/%v/events/%v",
 		owner,
 		repo,
 		event,

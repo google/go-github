@@ -202,14 +202,14 @@ func createSignatureMessage(commit *createCommit) (string, error) {
 	var message []string
 
 	if commit.Tree != nil {
-		message = append(message, fmt.Sprintf("tree %s", *commit.Tree))
+		message = append(message, fmt.Sprintf("tree %v", *commit.Tree))
 	}
 
 	for _, parent := range commit.Parents {
-		message = append(message, fmt.Sprintf("parent %s", parent))
+		message = append(message, fmt.Sprintf("parent %v", parent))
 	}
 
-	message = append(message, fmt.Sprintf("author %s <%s> %d %s", commit.Author.GetName(), commit.Author.GetEmail(), commit.Author.GetDate().Unix(), commit.Author.GetDate().Format("-0700")))
+	message = append(message, fmt.Sprintf("author %v <%v> %v %v", commit.Author.GetName(), commit.Author.GetEmail(), commit.Author.GetDate().Unix(), commit.Author.GetDate().Format("-0700")))
 
 	committer := commit.Committer
 	if committer == nil {
@@ -217,7 +217,7 @@ func createSignatureMessage(commit *createCommit) (string, error) {
 	}
 
 	// There needs to be a double newline after committer
-	message = append(message, fmt.Sprintf("committer %s <%s> %d %s\n", committer.GetName(), committer.GetEmail(), committer.GetDate().Unix(), committer.GetDate().Format("-0700")))
+	message = append(message, fmt.Sprintf("committer %v <%v> %v %v\n", committer.GetName(), committer.GetEmail(), committer.GetDate().Unix(), committer.GetDate().Format("-0700")))
 	message = append(message, *commit.Message)
 
 	return strings.Join(message, "\n"), nil

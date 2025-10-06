@@ -613,7 +613,7 @@ type DefaultSetupConfiguration struct {
 //
 //meta:operation GET /repos/{owner}/{repo}/code-scanning/default-setup
 func (s *CodeScanningService) GetDefaultSetupConfiguration(ctx context.Context, owner, repo string) (*DefaultSetupConfiguration, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/code-scanning/default-setup", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/default-setup", owner, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -656,7 +656,7 @@ type UpdateDefaultSetupConfigurationResponse struct {
 //
 //meta:operation PATCH /repos/{owner}/{repo}/code-scanning/default-setup
 func (s *CodeScanningService) UpdateDefaultSetupConfiguration(ctx context.Context, owner, repo string, options *UpdateDefaultSetupConfigurationOptions) (*UpdateDefaultSetupConfigurationResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/code-scanning/default-setup", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/default-setup", owner, repo)
 
 	req, err := s.client.NewRequest("PATCH", u, options)
 	if err != nil {

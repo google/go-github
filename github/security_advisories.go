@@ -269,7 +269,7 @@ func (s *SecurityAdvisoriesService) ListGlobalSecurityAdvisories(ctx context.Con
 //
 //meta:operation GET /advisories/{ghsa_id}
 func (s *SecurityAdvisoriesService) GetGlobalSecurityAdvisories(ctx context.Context, ghsaID string) (*GlobalSecurityAdvisory, *Response, error) {
-	url := fmt.Sprintf("advisories/%s", ghsaID)
+	url := fmt.Sprintf("advisories/%v", ghsaID)
 	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, nil, err

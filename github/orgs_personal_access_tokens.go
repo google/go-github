@@ -162,7 +162,7 @@ func addListFineGrainedPATOptions(s string, opts *ListFineGrainedPATOptions) (st
 	if len(opts.Owner) > 0 {
 		ownerVals := make([]string, len(opts.Owner))
 		for i, owner := range opts.Owner {
-			ownerVals[i] = fmt.Sprintf("owner[]=%s", url.QueryEscape(owner))
+			ownerVals[i] = fmt.Sprintf("owner[]=%v", url.QueryEscape(owner))
 		}
 		ownerQuery := strings.Join(ownerVals, "&")
 

@@ -101,7 +101,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(want, configurations) {
-		t.Errorf("Organizations.ListNetworkConfigurations mismatch (-want +got):\n%s", cmp.Diff(want, configurations))
+		t.Errorf("Organizations.ListNetworkConfigurations mismatch (-want +got):\n%v", cmp.Diff(want, configurations))
 	}
 
 	const methodName = "ListNetworkConfigurations"
@@ -162,7 +162,7 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 	}
 
 	if !cmp.Equal(want, configuration) {
-		t.Errorf("Organizations.CreateNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
+		t.Errorf("Organizations.CreateNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))
 	}
 
 	validationTests := []struct {
@@ -274,7 +274,7 @@ func TestOrganizationsService_GetOrgsNetworkConfiguration(t *testing.T) {
 		CreatedOn: &Timestamp{time.Date(2024, 12, 10, 19, 30, 45, 0, time.UTC)},
 	}
 	if !cmp.Equal(want, configuration) {
-		t.Errorf("Organizations.GetNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
+		t.Errorf("Organizations.GetNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))
 	}
 
 	const methodName = "GetNetworkConfiguration"
@@ -335,7 +335,7 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 		CreatedOn: &Timestamp{time.Date(2024, 12, 10, 19, 30, 45, 0, time.UTC)},
 	}
 	if !cmp.Equal(want, configuration) {
-		t.Errorf("Organizations.UpdateNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
+		t.Errorf("Organizations.UpdateNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))
 	}
 
 	validationTests := []struct {
@@ -469,7 +469,7 @@ func TestOrganizationsService_GetOrgsNetworkConfigurationResource(t *testing.T) 
 	}
 
 	if !cmp.Equal(want, resource) {
-		t.Errorf("Organizations.GetNetworkConfigurationResource mismatch (-want +got):\n%s", cmp.Diff(want, resource))
+		t.Errorf("Organizations.GetNetworkConfigurationResource mismatch (-want +got):\n%v", cmp.Diff(want, resource))
 	}
 
 	const methodName = "GetNetworkConfiguration"
