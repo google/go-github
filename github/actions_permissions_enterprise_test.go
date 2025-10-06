@@ -437,7 +437,7 @@ func TestActionsService_UpdateArtifactAndLogRetentionPeriodInEnterprise(t *testi
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.UpdateArtifactAndLogRetentionPeriodInEnterprise = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdateArtifactAndLogRetentionPeriodInEnterprise = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdateArtifactAndLogRetentionPeriodInEnterprise"
@@ -509,7 +509,7 @@ func TestActionsService_UpdateSelfHostedRunnerPermissionsInEnterprise(t *testing
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.UpdateSelfHostedRunnerPermissionsInEnterprise = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdateSelfHostedRunnerPermissionsInEnterprise = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdateSelfHostedRunnerPermissionsInEnterprise"
@@ -590,7 +590,7 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(t *t
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise"

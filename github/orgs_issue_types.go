@@ -89,7 +89,7 @@ func (s *OrganizationsService) UpdateIssueType(ctx context.Context, org string, 
 //
 //meta:operation DELETE /orgs/{org}/issue-types/{issue_type_id}
 func (s *OrganizationsService) DeleteIssueType(ctx context.Context, org string, issueTypeID int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/issue-types/%d", org, issueTypeID)
+	u := fmt.Sprintf("orgs/%v/issue-types/%v", org, issueTypeID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

@@ -745,8 +745,8 @@ func TestActionVariable_Marshal(t *testing.T) {
 	want := fmt.Sprintf(`{
 		"name": "n",
 		"value": "v",
-		"created_at": %s,
-		"updated_at": %s,
+		"created_at": %v,
+		"updated_at": %v,
 		"visibility": "v",
 		"selected_repositories_url": "s",
 		"selected_repository_ids": [1,2,3]

@@ -61,7 +61,7 @@ func createRandomTestRepository(t *testing.T, owner string, autoinit bool) *gith
 	// create random repo name that does not currently exist
 	var repoName string
 	for {
-		repoName = fmt.Sprintf("test-%d", rand.Int())
+		repoName = fmt.Sprintf("test-%v", rand.Int())
 		_, resp, err := client.Repositories.Get(t.Context(), owner, repoName)
 		if err != nil {
 			if resp.StatusCode == http.StatusNotFound {

@@ -134,7 +134,7 @@ func (s *IssuesService) DeleteLabel(ctx context.Context, owner, repo, name strin
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/labels
 func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Label, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -160,7 +160,7 @@ func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner, repo strin
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/labels
 func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner, repo string, number int, labels []string) ([]*Label, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels", owner, repo, number)
 	req, err := s.client.NewRequest("POST", u, labels)
 	if err != nil {
 		return nil, nil, err
@@ -181,7 +181,7 @@ func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner, repo string
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}
 func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner, repo string, number int, label string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels/%v", owner, repo, number, label)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels/%v", owner, repo, number, label)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -196,7 +196,7 @@ func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner, repo str
 //
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/labels
 func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner, repo string, number int, labels []string) ([]*Label, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels", owner, repo, number)
 	req, err := s.client.NewRequest("PUT", u, labels)
 	if err != nil {
 		return nil, nil, err
@@ -217,7 +217,7 @@ func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner, repo s
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels
 func (s *IssuesService) RemoveLabelsForIssue(ctx context.Context, owner, repo string, number int) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels", owner, repo, number)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -232,7 +232,7 @@ func (s *IssuesService) RemoveLabelsForIssue(ctx context.Context, owner, repo st
 //
 //meta:operation GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels
 func (s *IssuesService) ListLabelsForMilestone(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Label, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/milestones/%d/labels", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/milestones/%v/labels", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err

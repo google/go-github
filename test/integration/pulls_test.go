@@ -18,7 +18,7 @@ func TestPullRequests_ListCommits(t *testing.T) {
 	}
 
 	if got, want := len(commits), 3; got != want {
-		t.Fatalf("PullRequests.ListCommits() returned %d commits, want %d", got, want)
+		t.Fatalf("PullRequests.ListCommits() returned %v commits, want %v", got, want)
 	}
 
 	if got, want := *commits[0].Author.Login, "sqs"; got != want {

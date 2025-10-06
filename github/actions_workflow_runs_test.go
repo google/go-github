@@ -222,11 +222,11 @@ func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
 				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned error: %v", err)
 			}
 			if resp.StatusCode != http.StatusFound {
-				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %v, want %v", resp.StatusCode, http.StatusFound)
 			}
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetWorkflowRunAttemptLogs"
@@ -268,7 +268,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_dontFol
 			ctx := t.Context()
 			_, resp, _ := client.Actions.GetWorkflowRunAttemptLogs(ctx, "o", "r", 399444496, 2, 0)
 			if resp.StatusCode != http.StatusMovedPermanently {
-				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %v, want %v", resp.StatusCode, http.StatusMovedPermanently)
 			}
 		})
 	}
@@ -315,12 +315,12 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followR
 			}
 
 			if resp.StatusCode != http.StatusFound {
-				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned status: %v, want %v", resp.StatusCode, http.StatusFound)
 			}
 
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.GetWorkflowRunAttemptLogs returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetWorkflowRunAttemptLogs"
@@ -375,7 +375,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_unexpectedCode(t *testing.T) {
 				t.Error("Actions.GetWorkflowRunAttemptLogs should return unexpected status code")
 			}
 			if got, want := resp.Response.StatusCode, http.StatusNoContent; got != want {
-				t.Errorf("Actions.GetWorkflowRunAttemptLogs return status %d, want %d", got, want)
+				t.Errorf("Actions.GetWorkflowRunAttemptLogs return status %v, want %v", got, want)
 			}
 			if url != nil {
 				t.Errorf("Actions.GetWorkflowRunAttemptLogs return %+v, want nil", url)
@@ -399,7 +399,7 @@ func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
 		t.Errorf("Actions.RerunWorkflowByID returned error: %v", err)
 	}
 	if resp.StatusCode != http.StatusCreated {
-		t.Errorf("Actions.RerunWorkflowRunByID returned status: %d, want %d", resp.StatusCode, http.StatusCreated)
+		t.Errorf("Actions.RerunWorkflowRunByID returned status: %v, want %v", resp.StatusCode, http.StatusCreated)
 	}
 
 	const methodName = "RerunWorkflowByID"
@@ -428,7 +428,7 @@ func TestActionsService_RerunFailedJobsByID(t *testing.T) {
 		t.Errorf("Actions.RerunFailedJobsByID returned error: %v", err)
 	}
 	if resp.StatusCode != http.StatusCreated {
-		t.Errorf("Actions.RerunFailedJobsByID returned status: %d, want %d", resp.StatusCode, http.StatusCreated)
+		t.Errorf("Actions.RerunFailedJobsByID returned status: %v, want %v", resp.StatusCode, http.StatusCreated)
 	}
 
 	const methodName = "RerunFailedJobsByID"
@@ -457,7 +457,7 @@ func TestActionsService_RerunJobByID(t *testing.T) {
 		t.Errorf("Actions.RerunJobByID returned error: %v", err)
 	}
 	if resp.StatusCode != http.StatusCreated {
-		t.Errorf("Actions.RerunJobByID returned status: %d, want %d", resp.StatusCode, http.StatusCreated)
+		t.Errorf("Actions.RerunJobByID returned status: %v, want %v", resp.StatusCode, http.StatusCreated)
 	}
 
 	const methodName = "RerunJobByID"
@@ -486,7 +486,7 @@ func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
 		t.Errorf("Actions.CancelWorkflowRunByID returned error: %v (want AcceptedError)", err)
 	}
 	if resp.StatusCode != http.StatusAccepted {
-		t.Errorf("Actions.CancelWorkflowRunByID returned status: %d, want %d", resp.StatusCode, http.StatusAccepted)
+		t.Errorf("Actions.CancelWorkflowRunByID returned status: %v, want %v", resp.StatusCode, http.StatusAccepted)
 	}
 
 	const methodName = "CancelWorkflowRunByID"
@@ -533,11 +533,11 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 				t.Errorf("Actions.GetWorkflowRunLogs returned error: %v", err)
 			}
 			if resp.StatusCode != http.StatusFound {
-				t.Errorf("Actions.GetWorkflowRunLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+				t.Errorf("Actions.GetWorkflowRunLogs returned status: %v, want %v", resp.StatusCode, http.StatusFound)
 			}
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Actions.GetWorkflowRunLogs returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.GetWorkflowRunLogs returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetWorkflowRunLogs"
@@ -579,7 +579,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedi
 			ctx := t.Context()
 			_, resp, _ := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 0)
 			if resp.StatusCode != http.StatusMovedPermanently {
-				t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+				t.Errorf("Actions.GetWorkflowJobLogs returned status: %v, want %v", resp.StatusCode, http.StatusMovedPermanently)
 			}
 		})
 	}
@@ -626,12 +626,12 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 			}
 
 			if resp.StatusCode != http.StatusFound {
-				t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+				t.Errorf("Actions.GetWorkflowJobLogs returned status: %v, want %v", resp.StatusCode, http.StatusFound)
 			}
 
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetWorkflowRunLogs"
@@ -686,7 +686,7 @@ func TestActionsService_GetWorkflowRunLogs_unexpectedCode(t *testing.T) {
 				t.Error("Actions.GetWorkflowRunLogs should return unexpected status code")
 			}
 			if got, want := resp.Response.StatusCode, http.StatusNoContent; got != want {
-				t.Errorf("Actions.GetWorkflowRunLogs return status %d, want %d", got, want)
+				t.Errorf("Actions.GetWorkflowRunLogs return status %v, want %v", got, want)
 			}
 			if url != nil {
 				t.Errorf("Actions.GetWorkflowRunLogs return %+v, want nil", url)
