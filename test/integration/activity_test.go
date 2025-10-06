@@ -29,9 +29,7 @@ func TestActivity_Starring(t *testing.T) {
 	}
 
 	// the rest of the tests requires auth
-	if !checkAuth("TestActivity_Starring") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	// first, check if already starred the target repository
 	star, _, err := client.Activity.IsStarred(t.Context(), owner, repo)
@@ -119,9 +117,7 @@ func TestActivity_Watching(t *testing.T) {
 	}
 
 	// the rest of the tests requires auth
-	if !checkAuth("TestActivity_Watching") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	// first, check if already watching the target repository
 	sub, _, err := client.Activity.GetRepositorySubscription(t.Context(), owner, repo)

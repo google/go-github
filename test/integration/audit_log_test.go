@@ -15,6 +15,8 @@ import (
 // Note: Org must be part of an enterprise.
 // Test requires auth - set env var GITHUB_AUTH_TOKEN.
 func TestOrganizationAuditLog(t *testing.T) {
+	skipIfMissingAuth(t)
+
 	org := "example_org"
 	entries, _, err := client.Organizations.GetAuditLog(t.Context(), org, nil)
 	if err != nil {
