@@ -193,7 +193,7 @@ func testAddURLOptions(t *testing.T, url string, v any, want string) {
 	t.Helper()
 
 	vt := reflect.Indirect(reflect.ValueOf(v)).Type()
-	for i := 0; i < vt.NumField(); i++ {
+	for i := range vt.NumField() {
 		field := vt.Field(i)
 		if alias, ok := field.Tag.Lookup("url"); ok {
 			if alias == "" {
