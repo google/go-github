@@ -15,6 +15,7 @@ linters:
     - godot
     - goheader
     - gosec
+    - intrange
     - misspell
     - nakedret
     - paralleltest
