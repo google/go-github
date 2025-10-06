@@ -221,7 +221,7 @@ func TestOrganizationsService_DetachCodeSecurityConfigurationsFromRepositories(t
 
 	want := http.StatusNoContent
 	if resp.StatusCode != want {
-		t.Errorf("Organizations.DetachCodeSecurityConfigurationsFromRepositories returned status %d, want %d", resp.StatusCode, want)
+		t.Errorf("Organizations.DetachCodeSecurityConfigurationsFromRepositories returned status %v, want %v", resp.StatusCode, want)
 	}
 
 	const methodName = "DetachCodeSecurityConfigurationsFromRepositories"
@@ -303,7 +303,7 @@ func TestOrganizationsService_DeleteCodeSecurityConfiguration(t *testing.T) {
 
 	want := http.StatusNoContent
 	if resp.StatusCode != want {
-		t.Errorf("Organizations.DeleteCodeSecurityConfiguration returned status %d, want %d", resp.StatusCode, want)
+		t.Errorf("Organizations.DeleteCodeSecurityConfiguration returned status %v, want %v", resp.StatusCode, want)
 	}
 
 	const methodName = "DeleteCodeSecurityConfiguration"
@@ -332,7 +332,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 		v := new(request)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		if v.Scope != "selected" {
-			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body scope = %s, want selected", v.Scope)
+			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body scope = %v, want selected", v.Scope)
 		}
 		if !cmp.Equal(v.SelectedRepositoryIDs, []int64{5, 20}) {
 			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body selected_repository_ids = %+v, want %+v", v.SelectedRepositoryIDs, []int64{5, 20})
@@ -347,7 +347,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 
 	want := http.StatusAccepted
 	if resp.StatusCode != want {
-		t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories returned status %d, want %d", resp.StatusCode, want)
+		t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories returned status %v, want %v", resp.StatusCode, want)
 	}
 
 	const methodName = "AttachCodeSecurityConfigurationsToRepositories"
@@ -386,7 +386,7 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 	}
 	wantStatus := http.StatusOK
 	if resp.StatusCode != wantStatus {
-		t.Errorf("Organizations.SetDefaultCodeSecurityConfiguration returned status %d, want %d", resp.StatusCode, wantStatus)
+		t.Errorf("Organizations.SetDefaultCodeSecurityConfiguration returned status %v, want %v", resp.StatusCode, wantStatus)
 	}
 	want := &CodeSecurityConfigurationWithDefaultForNewRepos{
 		DefaultForNewRepos: Ptr("all"),

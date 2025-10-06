@@ -215,7 +215,7 @@ To detect a primary API rate limit error, you can check if the error is a
 repos, _, err := client.Repositories.List(ctx, "", nil)
 var rateErr *github.RateLimitError
 if errors.As(err, &rateError) {
-	log.Printf("hit primary rate limit, used %d of %d\n", rateErr.Rate.Used, rateErr.rate.Limit)
+	log.Printf("hit primary rate limit, used %v of %v\n", rateErr.Rate.Used, rateErr.rate.Limit)
 }
 ```
 

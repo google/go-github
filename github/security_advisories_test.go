@@ -538,7 +538,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_BadReq
 		t.Error("Expected HTTP 400 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusBadRequest; got != want {
-		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return status %d, want %d", got, want)
+		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return status %v, want %v", got, want)
 	}
 	if advisories != nil {
 		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return %+v, want nil", advisories)
@@ -568,7 +568,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_NotFou
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return status %d, want %d", got, want)
+		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return status %v, want %v", got, want)
 	}
 	if advisories != nil {
 		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return %+v, want nil", advisories)
@@ -594,7 +594,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_Unmars
 		t.Errorf("ListRepositorySecurityAdvisoriesForOrg returned unexpected error: %v", err)
 	}
 	if got, want := resp.Response.StatusCode, http.StatusOK; got != want {
-		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return status %d, want %d", got, want)
+		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return status %v, want %v", got, want)
 	}
 	if advisories != nil {
 		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return %+v, want nil", advisories)
@@ -623,7 +623,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg(t *tes
 		t.Errorf("ListRepositorySecurityAdvisoriesForOrg returned error: %v, want nil", err)
 	}
 	if got, want := resp.Response.StatusCode, http.StatusOK; got != want {
-		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return status %d, want %d", got, want)
+		t.Errorf("ListRepositorySecurityAdvisoriesForOrg return status %v, want %v", got, want)
 	}
 
 	want := []*SecurityAdvisory{
@@ -669,7 +669,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_BadRequest(t
 		t.Error("Expected HTTP 400 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusBadRequest; got != want {
-		t.Errorf("ListRepositorySecurityAdvisories return status %d, want %d", got, want)
+		t.Errorf("ListRepositorySecurityAdvisories return status %v, want %v", got, want)
 	}
 	if advisories != nil {
 		t.Errorf("ListRepositorySecurityAdvisories return %+v, want nil", advisories)
@@ -699,7 +699,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_NotFound(t *
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("ListRepositorySecurityAdvisories return status %d, want %d", got, want)
+		t.Errorf("ListRepositorySecurityAdvisories return status %v, want %v", got, want)
 	}
 	if advisories != nil {
 		t.Errorf("ListRepositorySecurityAdvisories return %+v, want nil", advisories)
@@ -725,7 +725,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_UnmarshalErr
 		t.Errorf("ListRepositorySecurityAdvisories returned unexpected error: %v", err)
 	}
 	if got, want := resp.Response.StatusCode, http.StatusOK; got != want {
-		t.Errorf("ListRepositorySecurityAdvisories return status %d, want %d", got, want)
+		t.Errorf("ListRepositorySecurityAdvisories return status %v, want %v", got, want)
 	}
 	if advisories != nil {
 		t.Errorf("ListRepositorySecurityAdvisories return %+v, want nil", advisories)
@@ -754,7 +754,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories(t *testing.T
 		t.Errorf("ListRepositorySecurityAdvisories returned error: %v, want nil", err)
 	}
 	if got, want := resp.Response.StatusCode, http.StatusOK; got != want {
-		t.Errorf("ListRepositorySecurityAdvisories return status %d, want %d", got, want)
+		t.Errorf("ListRepositorySecurityAdvisories return status %v, want %v", got, want)
 	}
 
 	want := []*SecurityAdvisory{

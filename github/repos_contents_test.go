@@ -65,11 +65,11 @@ func TestRepositoryContent_GetContent(t *testing.T) {
 		r := RepositoryContent{Encoding: tt.encoding, Content: tt.content}
 		got, err := r.GetContent()
 		if err != nil && !tt.wantErr {
-			t.Errorf("RepositoryContent(%s, %s) returned unexpected error: %v",
+			t.Errorf("RepositoryContent(%v, %v) returned unexpected error: %v",
 				stringOrNil(tt.encoding), stringOrNil(tt.content), err)
 		}
 		if err == nil && tt.wantErr {
-			t.Errorf("RepositoryContent(%s, %s) did not return unexpected error",
+			t.Errorf("RepositoryContent(%v, %v) did not return unexpected error",
 				stringOrNil(tt.encoding), stringOrNil(tt.content))
 		}
 		if want := tt.want; got != want {
@@ -459,7 +459,7 @@ func TestRepositoriesService_DownloadContentsWithMeta_FailedResponse(t *testing.
 	t.Parallel()
 	client, mux, serverURL := setup(t)
 
-	downloadURL := fmt.Sprintf("%s%s/download/f", serverURL, baseURLPath)
+	downloadURL := fmt.Sprintf("%v%v/download/f", serverURL, baseURLPath)
 
 	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -896,11 +896,11 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 				t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 			}
 			if resp.StatusCode != http.StatusFound {
-				t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+				t.Errorf("Repositories.GetArchiveLink returned status: %v, want %v", resp.StatusCode, http.StatusFound)
 			}
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
+				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetArchiveLink"
@@ -950,7 +950,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRed
 			ctx := t.Context()
 			_, resp, _ := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, 0)
 			if resp.StatusCode != http.StatusMovedPermanently {
-				t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+				t.Errorf("Repositories.GetArchiveLink returned status: %v, want %v", resp.StatusCode, http.StatusMovedPermanently)
 			}
 		})
 	}
@@ -994,11 +994,11 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 				t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 			}
 			if resp.StatusCode != http.StatusFound {
-				t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+				t.Errorf("Repositories.GetArchiveLink returned status: %v, want %v", resp.StatusCode, http.StatusFound)
 			}
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
+				t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url, want)
 			}
 		})
 	}

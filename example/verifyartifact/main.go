@@ -49,13 +49,13 @@ var (
 
 func usage() {
 	fmt.Fprintln(os.Stderr, "This is an example of how to verify the provenance of an artifact using GitHub Attestations and the sigstore-go library.")
-	fmt.Fprintf(os.Stderr, "\nUsage: %s [flags]\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, "\nUsage: %v [flags]\n", os.Args[0])
 	fmt.Fprint(os.Stderr, "\nThe flags are:\n")
 	flag.PrintDefaults()
 	fmt.Fprintf(os.Stderr, `
 Example:
 Verifying a GitHub CLI artifact
-	%s -owner cli \
+	%v -owner cli \
 		-artifact-digest 2ce2e480e3c3f7ca0af83418d3ebaeedacee135dbac94bd946d7d84edabcdb64 \
 		-expected-san https://github.com/cli/cli/.github/workflows/deployment.yml@refs/heads/trunk
 
@@ -118,7 +118,7 @@ func main() {
 func getTrustedMaterial() (root.TrustedMaterialCollection, error) {
 	trustedRootJSON, err := os.ReadFile(*trustedRootJSONPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read %s: %w", *trustedRootJSONPath, err)
+		return nil, fmt.Errorf("failed to read %v: %w", *trustedRootJSONPath, err)
 	}
 
 	trustedRoot, err := root.NewTrustedRootFromJSON(trustedRootJSON)

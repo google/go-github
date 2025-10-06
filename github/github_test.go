@@ -157,7 +157,7 @@ func testBody(t *testing.T, r *http.Request, want string) {
 		t.Errorf("Error reading request body: %v", err)
 	}
 	if got := string(b); got != want {
-		t.Errorf("request Body is %s, want %s", got, want)
+		t.Errorf("request Body is %v, want %v", got, want)
 	}
 }
 
@@ -183,7 +183,7 @@ func testJSONMarshal(t *testing.T, v any, want string) {
 	}
 
 	if diff := cmp.Diff(string(w), string(got)); diff != "" {
-		t.Errorf("json.Marshal returned:\n%s\nwant:\n%s\ndiff:\n%v", got, w, diff)
+		t.Errorf("json.Marshal returned:\n%v\nwant:\n%v\ndiff:\n%v", got, w, diff)
 	}
 }
 
@@ -504,10 +504,10 @@ func TestWithEnterpriseURLs(t *testing.T) {
 					t.Fatalf("got unexpected error: %v", err)
 				}
 				if c.BaseURL.String() != test.wantBaseURL {
-					t.Errorf("BaseURL is %v, want %v", c.BaseURL.String(), test.wantBaseURL)
+					t.Errorf("BaseURL is %v, want %v", c.BaseURL, test.wantBaseURL)
 				}
 				if c.UploadURL.String() != test.wantUploadURL {
-					t.Errorf("UploadURL is %v, want %v", c.UploadURL.String(), test.wantUploadURL)
+					t.Errorf("UploadURL is %v, want %v", c.UploadURL, test.wantUploadURL)
 				}
 			}
 			validate(NewClient(nil).WithEnterpriseURLs(test.baseURL, test.uploadURL))
@@ -1109,7 +1109,7 @@ func TestDo_httpError(t *testing.T) {
 		t.Fatal("Expected HTTP 400 error, got no error.")
 	}
 	if resp.StatusCode != 400 {
-		t.Errorf("Expected HTTP 400 error, got %d status code.", resp.StatusCode)
+		t.Errorf("Expected HTTP 400 error, got %v status code.", resp.StatusCode)
 	}
 }
 
@@ -1169,10 +1169,10 @@ func TestDo_preservesResponseInHTTPError(t *testing.T) {
 		t.Fatal("Expected response to be returned even with error")
 	}
 	if got, want := resp.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Response status = %d, want %d", got, want)
+		t.Errorf("Response status = %v, want %v", got, want)
 	}
 	if got, want := errResp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Error response status = %d, want %d", got, want)
+		t.Errorf("Error response status = %v, want %v", got, want)
 	}
 
 	// Verify error contains proper message
@@ -1595,7 +1595,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 	if got, want := requestCount, 2; got != want {
-		t.Errorf("Expected 2 requests, got %d", got)
+		t.Errorf("Expected 2 requests, got %v", got)
 	}
 }
 
@@ -1628,7 +1628,7 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 		t.Errorf("Response status code = %v, want %v", got, want)
 	}
 	if got, want := requestCount, 1; got != want {
-		t.Errorf("Expected 1 request, got %d", got)
+		t.Errorf("Expected 1 request, got %v", got)
 	}
 }
 
@@ -1663,7 +1663,7 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 		t.Error("Expected context deadline exceeded error.")
 	}
 	if got, want := requestCount, 1; got != want {
-		t.Errorf("Expected 1 requests, got %d", got)
+		t.Errorf("Expected 1 requests, got %v", got)
 	}
 }
 
@@ -1698,7 +1698,7 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 		t.Errorf("Expected request to be prevented because context cancellation, got: %v.", got)
 	}
 	if got, want := requestCount, 0; got != want {
-		t.Errorf("Expected 1 requests, got %d", got)
+		t.Errorf("Expected 1 requests, got %v", got)
 	}
 }
 
@@ -1950,10 +1950,10 @@ func TestDo_rateLimit_disableRateLimitCheck(t *testing.T) {
 		t.Errorf("Response status code = %v, want %v", got, want)
 	}
 	if got, want := requestCount, 1; got != want {
-		t.Errorf("Expected 1 request, got %d", got)
+		t.Errorf("Expected 1 request, got %v", got)
 	}
 	if got, want := client.rateLimits[CoreCategory].Remaining, 0; got != want {
-		t.Errorf("Expected 0 requests remaining, got %d", got)
+		t.Errorf("Expected 0 requests remaining, got %v", got)
 	}
 }
 
@@ -1986,10 +1986,10 @@ func TestDo_rateLimit_bypassRateLimitCheck(t *testing.T) {
 		t.Errorf("Response status code = %v, want %v", got, want)
 	}
 	if got, want := requestCount, 1; got != want {
-		t.Errorf("Expected 1 request, got %d", got)
+		t.Errorf("Expected 1 request, got %v", got)
 	}
 	if got, want := client.rateLimits[CoreCategory].Remaining, 5000; got != want {
-		t.Errorf("Expected 5000 requests remaining, got %d", got)
+		t.Errorf("Expected 5000 requests remaining, got %v", got)
 	}
 }
 
@@ -2706,11 +2706,11 @@ func TestSetCredentialsAsHeaders(t *testing.T) {
 	}
 
 	if actualID != id {
-		t.Errorf("id is %s, want %s", actualID, id)
+		t.Errorf("id is %v, want %v", actualID, id)
 	}
 
 	if actualSecret != secret {
-		t.Errorf("secret is %s, want %s", actualSecret, secret)
+		t.Errorf("secret is %v, want %v", actualSecret, secret)
 	}
 }
 
@@ -3161,7 +3161,7 @@ func TestClientCopy_leak_transport(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		accessToken := r.Header.Get("Authorization")
-		_, _ = fmt.Fprintf(w, `{"login": "%s"}`, accessToken)
+		_, _ = fmt.Fprintf(w, `{"login": "%v"}`, accessToken)
 	}))
 	clientPreconfiguredWithURLs, err := NewClient(nil).WithEnterpriseURLs(srv.URL, srv.URL)
 	if err != nil {

@@ -177,7 +177,7 @@ func TestRepositoriesService_GetCommitRaw_diff(t *testing.T) {
 	}
 	want := rawStr
 	if got != want {
-		t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+		t.Errorf("Repositories.GetCommitRaw returned %v want %v", got, want)
 	}
 
 	const methodName = "GetCommitRaw"
@@ -214,7 +214,7 @@ func TestRepositoriesService_GetCommitRaw_patch(t *testing.T) {
 	}
 	want := rawStr
 	if got != want {
-		t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+		t.Errorf("Repositories.GetCommitRaw returned %v want %v", got, want)
 	}
 }
 
@@ -550,7 +550,7 @@ func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
 			}
 			want := rawStr
 			if got != want {
-				t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+				t.Errorf("Repositories.GetCommitRaw returned %v want %v", got, want)
 			}
 
 			const methodName = "CompareCommitsRaw"
@@ -608,7 +608,7 @@ func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
 			}
 			want := rawStr
 			if got != want {
-				t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+				t.Errorf("Repositories.GetCommitRaw returned %v want %v", got, want)
 			}
 		})
 	}

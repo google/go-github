@@ -742,8 +742,8 @@ func Test_CheckRunMarshal(t *testing.T) {
 		"details_url": "u",
 		"status": "s",
 		"conclusion": "c",
-		"started_at": "%s",
-		"completed_at": "%s",
+		"started_at": "%v",
+		"completed_at": "%v",
 		"output": {
 			"title": "t",
 			"summary": "s",
@@ -789,8 +789,8 @@ func Test_CheckRunMarshal(t *testing.T) {
 			"description": "d",
 			"external_url": "u",
 			"html_url": "h",
-			"created_at": "%s",
-			"updated_at": "%s"
+			"created_at": "%v",
+			"updated_at": "%v"
 		},
 		"pull_requests": [
 			{
@@ -920,8 +920,8 @@ func Test_CheckSuiteMarshal(t *testing.T) {
 				"description": "d",
 				"external_url": "u",
 				"html_url": "h",
-				"created_at": "%s",
-				"updated_at": "%s"
+				"created_at": "%v",
+				"updated_at": "%v"
 			},
 			"repository": {
 				"id": 1

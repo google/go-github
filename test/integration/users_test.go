@@ -66,7 +66,7 @@ func TestUsers_Update(t *testing.T) {
 	}
 
 	// update location to test value
-	testLoc := fmt.Sprintf("test-%d", rand.Int())
+	testLoc := fmt.Sprintf("test-%v", rand.Int())
 	u.Location = &testLoc
 
 	_, _, err = client.Users.Edit(t.Context(), u)
@@ -106,7 +106,7 @@ func TestUsers_Emails(t *testing.T) {
 	var email string
 EmailLoop:
 	for {
-		email = fmt.Sprintf("test-%d@example.com", rand.Int())
+		email = fmt.Sprintf("test-%v@example.com", rand.Int())
 		for _, e := range emails {
 			if e.Email != nil && *e.Email == email {
 				continue EmailLoop
@@ -226,7 +226,7 @@ func TestUsers_Keys(t *testing.T) {
 	// Remove test key
 	_, err = client.Users.DeleteKey(t.Context(), id)
 	if err != nil {
-		t.Fatalf("Users.DeleteKey(%d) returned error: %v", id, err)
+		t.Fatalf("Users.DeleteKey(%v) returned error: %v", id, err)
 	}
 
 	// List keys again and verify test key was removed

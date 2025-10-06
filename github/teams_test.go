@@ -112,7 +112,7 @@ func TestTeamsService_GetTeamByID_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.GetTeamByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.GetTeamByID returned status %v, want %v", got, want)
 	}
 	if team != nil {
 		t.Errorf("Teams.GetTeamByID returned %+v, want nil", team)
@@ -178,7 +178,7 @@ func TestTeamsService_GetTeamBySlug_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.GetTeamBySlug returned status %d, want %d", got, want)
+		t.Errorf("Teams.GetTeamBySlug returned status %v, want %v", got, want)
 	}
 	if team != nil {
 		t.Errorf("Teams.GetTeamBySlug returned %+v, want nil", team)
@@ -693,7 +693,7 @@ func TestTeamsService_IsTeamRepoByID_false(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.IsTeamRepoByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.IsTeamRepoByID returned status %v, want %v", got, want)
 	}
 	if repo != nil {
 		t.Errorf("Teams.IsTeamRepoByID returned %+v, want nil", repo)
@@ -715,7 +715,7 @@ func TestTeamsService_IsTeamRepoBySlug_false(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.IsTeamRepoByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.IsTeamRepoByID returned status %v, want %v", got, want)
 	}
 	if repo != nil {
 		t.Errorf("Teams.IsTeamRepoByID returned %+v, want nil", repo)
@@ -737,7 +737,7 @@ func TestTeamsService_IsTeamRepoByID_error(t *testing.T) {
 		t.Error("Expected HTTP 400 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusBadRequest; got != want {
-		t.Errorf("Teams.IsTeamRepoByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.IsTeamRepoByID returned status %v, want %v", got, want)
 	}
 	if repo != nil {
 		t.Errorf("Teams.IsTeamRepoByID returned %+v, want nil", repo)
@@ -759,7 +759,7 @@ func TestTeamsService_IsTeamRepoBySlug_error(t *testing.T) {
 		t.Error("Expected HTTP 400 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusBadRequest; got != want {
-		t.Errorf("Teams.IsTeamRepoBySlug returned status %d, want %d", got, want)
+		t.Errorf("Teams.IsTeamRepoBySlug returned status %v, want %v", got, want)
 	}
 	if repo != nil {
 		t.Errorf("Teams.IsTeamRepoBySlug returned %+v, want nil", repo)
@@ -1849,7 +1849,7 @@ func TestTeamsService_GetExternalGroup_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.GetExternalGroup returned status %d, want %d", got, want)
+		t.Errorf("Teams.GetExternalGroup returned status %v, want %v", got, want)
 	}
 	if eg != nil {
 		t.Errorf("Teams.GetExternalGroup returned %+v, want nil", eg)
@@ -1925,7 +1925,7 @@ func TestTeamsService_ListExternalGroups_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.ListExternalGroups returned status %d, want %d", got, want)
+		t.Errorf("Teams.ListExternalGroups returned status %v, want %v", got, want)
 	}
 	if eg != nil {
 		t.Errorf("Teams.ListExternalGroups returned %+v, want nil", eg)
@@ -1998,7 +1998,7 @@ func TestTeamsService_ListExternalGroupsForTeamBySlug_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.ListExternalGroupsForTeamBySlug returned status %d, want %d", got, want)
+		t.Errorf("Teams.ListExternalGroupsForTeamBySlug returned status %v, want %v", got, want)
 	}
 	if eg != nil {
 		t.Errorf("Teams.ListExternalGroupsForTeamBySlug returned %+v, want nil", eg)
@@ -2117,7 +2117,7 @@ func TestTeamsService_UpdateConnectedExternalGroup_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.UpdateConnectedExternalGroup returned status %d, want %d", got, want)
+		t.Errorf("Teams.UpdateConnectedExternalGroup returned status %v, want %v", got, want)
 	}
 	if eg != nil {
 		t.Errorf("Teams.UpdateConnectedExternalGroup returned %+v, want nil", eg)
@@ -2165,7 +2165,7 @@ func TestTeamsService_RemoveConnectedExternalGroup_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.GetExternalGroup returned status %d, want %d", got, want)
+		t.Errorf("Teams.GetExternalGroup returned status %v, want %v", got, want)
 	}
 }
 

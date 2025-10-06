@@ -111,7 +111,7 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 //
 //meta:operation GET /repos/{owner}/{repo}/environments
 func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo string, opts *EnvironmentListOptions) (*EnvResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/environments", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/environments", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -136,7 +136,7 @@ func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo 
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, name string) (*Environment, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, name)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -194,7 +194,7 @@ type createUpdateEnvironmentNoEnterprise struct {
 //
 //meta:operation PUT /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner, repo, name string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, name)
 
 	req, err := s.client.NewRequest("PUT", u, environment)
 	if err != nil {
@@ -242,7 +242,7 @@ func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u st
 //
 //meta:operation DELETE /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) DeleteEnvironment(ctx context.Context, owner, repo, name string) (*Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, name)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

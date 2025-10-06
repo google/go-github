@@ -192,7 +192,7 @@ func (t *templateData) processAST(f *ast.File) error {
 			}
 			st, ok := ts.Type.(*ast.StructType)
 			if !ok {
-				logf("Ignoring AST type %T, Name=%q", ts.Type, ts.Name.String())
+				logf("Ignoring AST type %T, Name=%q", ts.Type, ts.Name)
 				continue
 			}
 			for _, field := range st.Fields.List {
@@ -215,7 +215,7 @@ func (t *templateData) processAST(f *ast.File) error {
 
 				se, ok := field.Type.(*ast.StarExpr)
 				if !ok {
-					logf("Ignoring type %T for Name=%q, FieldName=%q", field.Type, ts.Name.String(), fieldName.String())
+					logf("Ignoring type %T for Name=%q, FieldName=%q", field.Type, ts.Name, fieldName)
 					continue
 				}
 
@@ -349,7 +349,7 @@ func (t *templateData) dump() error {
 	}
 	clean, err := format.Source(buf.Bytes())
 	if err != nil {
-		log.Printf("failed-to-format source:\n%v", buf.String())
+		log.Printf("failed-to-format source:\n%v", buf)
 		return err
 	}
 
