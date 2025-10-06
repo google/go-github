@@ -14,6 +14,7 @@ linters:
     - godot
     - goheader
     - gosec
+    - jsonfieldname
     - misspell
     - nakedret
     - paralleltest
@@ -136,10 +137,14 @@ linters:
       os-create-temp: true
       os-temp-dir: true
     custom:
+      jsonfieldname:
+        type: module
+        description: Reports mismatches between Go field and JSON tag names.
+        original-url: github.com/google/go-github/v75/tools/jsonfieldname
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
-        original-url: github.com/google/go-github/v68/tools/sliceofpointers
+        original-url: github.com/google/go-github/v75/tools/sliceofpointers
   exclusions:
     rules:
       - linters:
