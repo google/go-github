@@ -15,6 +15,7 @@ linters:
     - godot
     - goheader
     - gosec
+    - jsonfieldname
     - misspell
     - nakedret
     - paralleltest
@@ -141,6 +142,10 @@ linters:
         type: module
         description: Reports usage of %d or %s in format strings.
         original-url: github.com/google/go-github/v75/tools/fmtpercentv
+      jsonfieldname:
+        type: module
+        description: Reports mismatches between Go field and JSON tag names.
+        original-url: github.com/google/go-github/v75/tools/jsonfieldname
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
