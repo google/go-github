@@ -640,7 +640,7 @@ func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
 
 	bypass, _, err := client.SecretScanning.CreatePushProtectionBypass(ctx, owner, repo, opts)
@@ -702,7 +702,7 @@ func TestSecretScanningService_GetScanHistory(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	history, _, err := client.SecretScanning.GetScanHistory(ctx, owner, repo)
 	if err != nil {
