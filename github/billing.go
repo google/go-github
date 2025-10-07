@@ -160,12 +160,14 @@ type PremiumRequestUsageTimePeriod struct {
 
 // PremiumRequestUsageReport represents the premium request usage report response.
 type PremiumRequestUsageReport struct {
-	TimePeriod   PremiumRequestUsageTimePeriod `json:"timePeriod"`
-	Organization string                        `json:"organization"`
-	User         *string                       `json:"user,omitempty"`
-	Product      *string                       `json:"product,omitempty"`
-	Model        *string                       `json:"model,omitempty"`
-	UsageItems   []*PremiumRequestUsageItem    `json:"usageItems"`
+	TimePeriod PremiumRequestUsageTimePeriod `json:"timePeriod"`
+	// Organization is only set for organization-level reports.
+	Organization *string `json:"organization,omitempty"`
+	// User is only set for user-level reports.
+	User       *string                    `json:"user,omitempty"`
+	Product    *string                    `json:"product,omitempty"`
+	Model      *string                    `json:"model,omitempty"`
+	UsageItems []*PremiumRequestUsageItem `json:"usageItems"`
 }
 
 // GetOrganizationPackagesBilling returns the free and paid storage used for GitHub Packages in gigabytes for an Org.

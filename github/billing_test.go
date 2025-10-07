@@ -575,7 +575,7 @@ func TestBillingService_GetOrganizationPremiumRequestUsageReport(t *testing.T) {
 			Year:  2025,
 			Month: Ptr(10),
 		},
-		Organization: "GitHub",
+		Organization: Ptr("GitHub"),
 		User:         Ptr("testuser"),
 		Product:      Ptr("Copilot"),
 		Model:        Ptr("GPT-5"),
@@ -637,7 +637,7 @@ func TestBillingService_GetPremiumRequestUsageReport(t *testing.T) {
 				"year": 2025,
 				"day": 15
 			},
-			"organization": "UserOrg",
+			"user": "User",
 			"product": "Copilot",
 			"usageItems": [
 				{
@@ -670,8 +670,8 @@ func TestBillingService_GetPremiumRequestUsageReport(t *testing.T) {
 			Year: 2025,
 			Day:  Ptr(15),
 		},
-		Organization: "UserOrg",
-		Product:      Ptr("Copilot"),
+		User:    Ptr("User"),
+		Product: Ptr("Copilot"),
 		UsageItems: []*PremiumRequestUsageItem{
 			{
 				Product:          "Copilot",

@@ -18486,6 +18486,14 @@ func (p *PremiumRequestUsageReport) GetModel() string {
 	return *p.Model
 }
 
+// GetOrganization returns the Organization field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageReport) GetOrganization() string {
+	if p == nil || p.Organization == nil {
+		return ""
+	}
+	return *p.Organization
+}
+
 // GetProduct returns the Product field if it's non-nil, zero value otherwise.
 func (p *PremiumRequestUsageReport) GetProduct() string {
 	if p == nil || p.Product == nil {

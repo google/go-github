@@ -24022,6 +24022,17 @@ func TestPremiumRequestUsageReport_GetModel(tt *testing.T) {
 	p.GetModel()
 }
 
+func TestPremiumRequestUsageReport_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PremiumRequestUsageReport{Organization: &zeroValue}
+	p.GetOrganization()
+	p = &PremiumRequestUsageReport{}
+	p.GetOrganization()
+	p = nil
+	p.GetOrganization()
+}
+
 func TestPremiumRequestUsageReport_GetProduct(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
