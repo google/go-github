@@ -254,7 +254,7 @@ func TestRulesetRules(t *testing.T) {
 
 				if diff := cmp.Diff(test.json, string(got)); diff != "" {
 					t.Errorf(
-						"json.Marshal returned:\n%s\nwant:\n%s\ndiff:\n%v",
+						"json.Marshal returned:\n%v\nwant:\n%v\ndiff:\n%v",
 						got,
 						test.json,
 						diff,

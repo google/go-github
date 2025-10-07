@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -80,7 +79,7 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 	})
 
 	opt := &OrganizationsListOptions{Since: since}
-	ctx := context.Background()
+	ctx := t.Context()
 	orgs, _, err := client.Organizations.ListAll(ctx, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListAll returned error: %v", err)
@@ -110,7 +109,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	orgs, _, err := client.Organizations.List(ctx, "", nil)
 	if err != nil {
 		t.Errorf("Organizations.List returned error: %v", err)
@@ -147,7 +146,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	orgs, _, err := client.Organizations.List(ctx, "u", opt)
 	if err != nil {
 		t.Errorf("Organizations.List returned error: %v", err)
@@ -177,7 +176,7 @@ func TestOrganizationsService_List_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Organizations.List(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -192,7 +191,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Organizations.Get(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.Get returned error: %v", err)
@@ -222,7 +221,7 @@ func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Organizations.Get(ctx, "%")
 	testURLParseError(t, err)
 }
@@ -236,7 +235,7 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Organizations.GetByID(ctx, 1)
 	if err != nil {
 		t.Fatalf("Organizations.GetByID returned error: %v", err)
@@ -281,7 +280,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Organizations.Edit(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Organizations.Edit returned error: %v", err)
@@ -311,7 +310,7 @@ func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Organizations.Edit(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -324,7 +323,7 @@ func TestOrganizationsService_Delete(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.Delete(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.Delete returned error: %v", err)
@@ -350,7 +349,7 @@ func TestOrganizationsService_ListInstallations(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 1, "installations": [{ "id": 1, "app_id": 5}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	apps, _, err := client.Organizations.ListInstallations(ctx, "o", nil)
 	if err != nil {
 		t.Errorf("Organizations.ListInstallations returned error: %v", err)
@@ -380,7 +379,7 @@ func TestOrganizationsService_ListInstallations_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Organizations.ListInstallations(ctx, "%", nil)
 	testURLParseError(t, err)
 }
@@ -395,7 +394,7 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 2, "installations": [{ "id": 2, "app_id": 10}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	apps, _, err := client.Organizations.ListInstallations(ctx, "o", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Organizations.ListInstallations returned error: %v", err)

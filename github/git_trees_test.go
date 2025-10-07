@@ -7,7 +7,6 @@ package github
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -33,7 +32,7 @@ func TestMarshalJSON_withNilContentAndSHA(t *testing.T) {
 
 	want := `{"sha":null,"path":"path","mode":"mode","type":"type"}`
 	if string(got) != want {
-		t.Errorf("MarshalJSON = %s, want %v", got, want)
+		t.Errorf("MarshalJSON = %v, want %v", got, want)
 	}
 }
 
@@ -50,7 +49,7 @@ func TestGitService_GetTree(t *testing.T) {
 			}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	tree, _, err := client.Git.GetTree(ctx, "o", "r", "s", true)
 	if err != nil {
 		t.Errorf("Git.GetTree returned error: %v", err)
@@ -88,7 +87,7 @@ func TestGitService_GetTree_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Git.GetTree(ctx, "%", "%", "%", false)
 	testURLParseError(t, err)
 }
@@ -116,7 +115,7 @@ func TestGitService_CreateTree(t *testing.T) {
 
 		want := []byte(`{"base_tree":"b","tree":[{"sha":"7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b","path":"file.rb","mode":"100644","type":"blob"}]}` + "\n")
 		if !bytes.Equal(got, want) {
-			t.Errorf("Git.CreateTree request body: %s, want %s", got, want)
+			t.Errorf("Git.CreateTree request body: %v, want %v", got, want)
 		}
 
 		fmt.Fprint(w, `{
@@ -133,7 +132,7 @@ func TestGitService_CreateTree(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	tree, _, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Git.CreateTree returned error: %v", err)
@@ -194,7 +193,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 
 		want := []byte(`{"base_tree":"b","tree":[{"path":"content.md","mode":"100644","content":"file content"}]}` + "\n")
 		if !bytes.Equal(got, want) {
-			t.Errorf("Git.CreateTree request body: %s, want %s", got, want)
+			t.Errorf("Git.CreateTree request body: %v, want %v", got, want)
 		}
 
 		fmt.Fprint(w, `{
@@ -213,7 +212,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	tree, _, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Git.CreateTree returned error: %v", err)
@@ -274,7 +273,7 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 
 		want := []byte(`{"base_tree":"b","tree":[{"sha":null,"path":"content.md","mode":"100644"}]}` + "\n")
 		if !bytes.Equal(got, want) {
-			t.Errorf("Git.CreateTree request body: %s, want %s", got, want)
+			t.Errorf("Git.CreateTree request body: %v, want %v", got, want)
 		}
 
 		fmt.Fprint(w, `{
@@ -293,7 +292,7 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	tree, _, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Git.CreateTree returned error: %v", err)
@@ -337,7 +336,7 @@ func TestGitService_CreateTree_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Git.CreateTree(ctx, "%", "%", "", nil)
 	testURLParseError(t, err)
 }

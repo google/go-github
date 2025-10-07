@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"strings"
@@ -33,7 +32,7 @@ func TestMigrationService_StartMigration(t *testing.T) {
 		ExcludeReleases:    true,
 		Exclude:            []string{"repositories"},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Migrations.StartMigration(ctx, "o", []string{"r"}, opt)
 	if err != nil {
 		t.Errorf("StartMigration returned error: %v", err)
@@ -66,10 +65,11 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusOK)
+		//nolint:fmtpercentv
 		assertWrite(t, w, []byte(fmt.Sprintf("[%s]", migrationJSON)))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Migrations.ListMigrations(ctx, "o", &ListOptions{Page: 1, PerPage: 2})
 	if err != nil {
 		t.Errorf("ListMigrations returned error: %v", err)
@@ -105,7 +105,7 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 		assertWrite(t, w, migrationJSON)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Migrations.MigrationStatus(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("MigrationStatus returned error: %v", err)
@@ -146,7 +146,7 @@ func TestMigrationService_MigrationArchiveURL(t *testing.T) {
 		assertWrite(t, w, []byte("0123456789abcdef"))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, err := client.Migrations.MigrationArchiveURL(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("MigrationStatus returned error: %v", err)
@@ -173,7 +173,7 @@ func TestMigrationService_DeleteMigration(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Migrations.DeleteMigration(ctx, "o", 1); err != nil {
 		t.Errorf("DeleteMigration returned error: %v", err)
 	}
@@ -200,7 +200,7 @@ func TestMigrationService_UnlockRepo(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Migrations.UnlockRepo(ctx, "o", 1, "r"); err != nil {
 		t.Errorf("UnlockRepo returned error: %v", err)
 	}

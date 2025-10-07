@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -25,7 +24,7 @@ func TestEnterpriseService_ListRunnerGroups(t *testing.T) {
 	})
 
 	opts := &ListEnterpriseRunnerGroupOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	groups, _, err := client.Enterprise.ListRunnerGroups(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Enterprise.ListRunnerGroups returned error: %v", err)
@@ -69,7 +68,7 @@ func TestEnterpriseService_ListRunnerGroupsVisibleToOrganization(t *testing.T) {
 	})
 
 	opts := &ListEnterpriseRunnerGroupOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}, VisibleToOrganization: "github"}
-	ctx := context.Background()
+	ctx := t.Context()
 	groups, _, err := client.Enterprise.ListRunnerGroups(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Enterprise.ListRunnerGroups returned error: %v", err)
@@ -111,7 +110,7 @@ func TestEnterpriseService_GetRunnerGroup(t *testing.T) {
 		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_organizations_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations","runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	group, _, err := client.Enterprise.GetEnterpriseRunnerGroup(ctx, "o", 2)
 	if err != nil {
 		t.Errorf("Enterprise.GetRunnerGroup returned error: %v", err)
@@ -157,7 +156,7 @@ func TestEnterpriseService_DeleteRunnerGroup(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Enterprise.DeleteEnterpriseRunnerGroup(ctx, "o", 2)
 	if err != nil {
 		t.Errorf("Enterprise.DeleteRunnerGroup returned error: %v", err)
@@ -183,7 +182,7 @@ func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
 		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_organizations_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations","runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	req := CreateEnterpriseRunnerGroupRequest{
 		Name:                     Ptr("octo-runner-group"),
 		Visibility:               Ptr("selected"),
@@ -237,7 +236,7 @@ func TestEnterpriseService_UpdateRunnerGroup(t *testing.T) {
 		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_organizations_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/organizations","runners_url":"https://api.github.com/enterprises/octo-enterprise/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	req := UpdateEnterpriseRunnerGroupRequest{
 		Name:                     Ptr("octo-runner-group"),
 		Visibility:               Ptr("selected"),
@@ -292,7 +291,7 @@ func TestEnterpriseService_ListOrganizationAccessRunnerGroup(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 1, "organizations": [{"id": 43, "node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5", "name": "Hello-World", "login": "octocat"}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 1}
 	groups, _, err := client.Enterprise.ListOrganizationAccessRunnerGroup(ctx, "o", 2, opts)
 	if err != nil {
@@ -339,7 +338,7 @@ func TestEnterpriseService_SetOrganizationAccessRunnerGroup(t *testing.T) {
 		},
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Enterprise.SetOrganizationAccessRunnerGroup(ctx, "o", 2, req)
 	if err != nil {
 		t.Errorf("Enterprise.SetOrganizationAccessRunnerGroup returned error: %v", err)
@@ -364,7 +363,7 @@ func TestEnterpriseService_AddOrganizationAccessRunnerGroup(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Enterprise.AddOrganizationAccessRunnerGroup(ctx, "o", 2, 42)
 	if err != nil {
 		t.Errorf("Enterprise.AddOrganizationAccessRunnerGroup returned error: %v", err)
@@ -389,7 +388,7 @@ func TestEnterpriseService_RemoveOrganizationAccessRunnerGroup(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Enterprise.RemoveOrganizationAccessRunnerGroup(ctx, "o", 2, 42)
 	if err != nil {
 		t.Errorf("Enterprise.RemoveOrganizationAccessRunnerGroup returned error: %v", err)
@@ -417,7 +416,7 @@ func TestEnterpriseService_ListEnterpriseRunnerGroupRunners(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	runners, _, err := client.Enterprise.ListRunnerGroupRunners(ctx, "o", 2, opts)
 	if err != nil {
 		t.Errorf("Enterprise.ListEnterpriseRunnerGroupRunners returned error: %v", err)
@@ -464,7 +463,7 @@ func TestEnterpriseService_SetEnterpriseRunnerGroupRunners(t *testing.T) {
 		},
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Enterprise.SetRunnerGroupRunners(ctx, "o", 2, req)
 	if err != nil {
 		t.Errorf("Enterprise.SetEnterpriseRunnerGroupRunners returned error: %v", err)
@@ -489,7 +488,7 @@ func TestEnterpriseService_AddEnterpriseRunnerGroupRunners(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Enterprise.AddRunnerGroupRunners(ctx, "o", 2, 42)
 	if err != nil {
 		t.Errorf("Enterprise.AddEnterpriseRunnerGroupRunners returned error: %v", err)
@@ -514,7 +513,7 @@ func TestEnterpriseService_RemoveEnterpriseRunnerGroupRunners(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Enterprise.RemoveRunnerGroupRunners(ctx, "o", 2, 42)
 	if err != nil {
 		t.Errorf("Enterprise.RemoveEnterpriseRunnerGroupRunners returned error: %v", err)

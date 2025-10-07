@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -27,7 +26,7 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	workflows, _, err := client.Actions.ListWorkflows(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkflows returned error: %v", err)
@@ -68,7 +67,7 @@ func TestActionsService_GetWorkflowByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":72844,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	workflow, _, err := client.Actions.GetWorkflowByID(ctx, "o", "r", 72844)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowByID returned error: %v", err)
@@ -107,7 +106,7 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 		fmt.Fprint(w, `{"id":72844,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	workflow, _, err := client.Actions.GetWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowByFileName returned error: %v", err)
@@ -146,7 +145,7 @@ func TestActionsService_GetWorkflowUsageByID(t *testing.T) {
 		fmt.Fprint(w, `{"billable":{"UBUNTU":{"total_ms":180000},"MACOS":{"total_ms":240000},"WINDOWS":{"total_ms":300000}}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	workflowUsage, _, err := client.Actions.GetWorkflowUsageByID(ctx, "o", "r", 72844)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowUsageByID returned error: %v", err)
@@ -193,7 +192,7 @@ func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
 		fmt.Fprint(w, `{"billable":{"UBUNTU":{"total_ms":180000},"MACOS":{"total_ms":240000},"WINDOWS":{"total_ms":300000}}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	workflowUsage, _, err := client.Actions.GetWorkflowUsageByFileName(ctx, "o", "r", "main.yml")
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowUsageByFileName returned error: %v", err)
@@ -251,7 +250,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
 	if err != nil {
 		t.Errorf("Actions.CreateWorkflowDispatchEventByID returned error: %v", err)
@@ -295,7 +294,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
 	if err != nil {
 		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName returned error: %v", err)
@@ -330,7 +329,7 @@ func TestActionsService_EnableWorkflowByID(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.EnableWorkflowByID(ctx, "o", "r", 72844)
 	if err != nil {
 		t.Errorf("Actions.EnableWorkflowByID returned error: %v", err)
@@ -365,7 +364,7 @@ func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.EnableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err != nil {
 		t.Errorf("Actions.EnableWorkflowByFilename returned error: %v", err)
@@ -400,7 +399,7 @@ func TestActionsService_DisableWorkflowByID(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.DisableWorkflowByID(ctx, "o", "r", 72844)
 	if err != nil {
 		t.Errorf("Actions.DisableWorkflowByID returned error: %v", err)
@@ -435,7 +434,7 @@ func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.DisableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err != nil {
 		t.Errorf("Actions.DisableWorkflowByFileName returned error: %v", err)

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -44,7 +43,7 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForEnterprise(ctx, "e", opts)
@@ -114,7 +113,7 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForOrg(ctx, "o", opts)
@@ -179,7 +178,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	// Testing pagination by index
 	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", ListOptions: ListOptions{Page: 1, PerPage: 1}, Direction: "asc", Sort: "updated"}
@@ -246,7 +245,7 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForRepo(ctx, "o", "r", opts)
@@ -310,7 +309,7 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	alert, _, err := client.SecretScanning.GetAlert(ctx, "o", "r", 1)
 	if err != nil {
@@ -381,7 +380,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: Ptr("used_in_tests")}
 
 	alert, _, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
@@ -446,7 +445,7 @@ func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 100}
 
 	locations, _, err := client.SecretScanning.ListLocationsForAlert(ctx, "o", "r", 1, opts)

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -30,7 +29,7 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 			"started_at": "2018-05-04T01:14:52Z",
 			"completed_at": "2018-05-04T01:14:52Z"}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	checkRun, _, err := client.Checks.GetCheckRun(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Checks.GetCheckRun return error: %v", err)
@@ -81,7 +80,7 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
                         "after": "deadbeefa",
 			"status": "completed"}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	checkSuite, _, err := client.Checks.GetCheckSuite(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Checks.GetCheckSuite return error: %v", err)
@@ -144,7 +143,7 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 		},
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	checkRun, _, err := client.Checks.CreateCheckRun(ctx, "o", "r", checkRunOpt)
 	if err != nil {
 		t.Errorf("Checks.CreateCheckRun return error: %v", err)
@@ -204,7 +203,7 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	checkRunAnnotations, _, err := client.Checks.ListCheckRunAnnotations(ctx, "o", "r", 1, &ListOptions{Page: 1})
 	if err != nil {
 		t.Errorf("Checks.ListCheckRunAnnotations return error: %v", err)
@@ -269,7 +268,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 		},
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	checkRun, _, err := client.Checks.UpdateCheckRun(ctx, "o", "r", 1, updateCheckRunOpt)
 	if err != nil {
 		t.Errorf("Checks.UpdateCheckRun return error: %v", err)
@@ -341,7 +340,7 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 		AppID:       Ptr(int64(1)),
 		ListOptions: ListOptions{Page: 1},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	checkRuns, _, err := client.Checks.ListCheckRunsForRef(ctx, "o", "r", "master", opt)
 	if err != nil {
 		t.Errorf("Checks.ListCheckRunsForRef return error: %v", err)
@@ -409,7 +408,7 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 		Filter:      Ptr("all"),
 		ListOptions: ListOptions{Page: 1},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	checkRuns, _, err := client.Checks.ListCheckRunsCheckSuite(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("Checks.ListCheckRunsCheckSuite return error: %v", err)
@@ -475,7 +474,7 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 		AppID:       Ptr(int64(2)),
 		ListOptions: ListOptions{Page: 1},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	checkSuites, _, err := client.Checks.ListCheckSuitesForRef(ctx, "o", "r", "master", opt)
 	if err != nil {
 		t.Errorf("Checks.ListCheckSuitesForRef return error: %v", err)
@@ -527,7 +526,7 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 		Setting: Ptr(false),
 	}}
 	opt := CheckSuitePreferenceOptions{AutoTriggerChecks: a}
-	ctx := context.Background()
+	ctx := t.Context()
 	prefResults, _, err := client.Checks.SetCheckSuitePreferences(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Checks.SetCheckSuitePreferences return error: %v", err)
@@ -581,7 +580,7 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 		HeadBranch: Ptr("master"),
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	checkSuite, _, err := client.Checks.CreateCheckSuite(ctx, "o", "r", checkSuiteOpt)
 	if err != nil {
 		t.Errorf("Checks.CreateCheckSuite return error: %v", err)
@@ -624,7 +623,7 @@ func TestChecksService_ReRequestCheckSuite(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
 		w.WriteHeader(http.StatusCreated)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Checks.ReRequestCheckSuite(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Checks.ReRequestCheckSuite return error: %v", err)
@@ -743,8 +742,8 @@ func Test_CheckRunMarshal(t *testing.T) {
 		"details_url": "u",
 		"status": "s",
 		"conclusion": "c",
-		"started_at": "%s",
-		"completed_at": "%s",
+		"started_at": "%v",
+		"completed_at": "%v",
 		"output": {
 			"title": "t",
 			"summary": "s",
@@ -790,8 +789,8 @@ func Test_CheckRunMarshal(t *testing.T) {
 			"description": "d",
 			"external_url": "u",
 			"html_url": "h",
-			"created_at": "%s",
-			"updated_at": "%s"
+			"created_at": "%v",
+			"updated_at": "%v"
 		},
 		"pull_requests": [
 			{
@@ -921,8 +920,8 @@ func Test_CheckSuiteMarshal(t *testing.T) {
 				"description": "d",
 				"external_url": "u",
 				"html_url": "h",
-				"created_at": "%s",
-				"updated_at": "%s"
+				"created_at": "%v",
+				"updated_at": "%v"
 			},
 			"repository": {
 				"id": 1
@@ -1749,7 +1748,7 @@ func TestChecksService_ReRequestCheckRun(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
 		w.WriteHeader(http.StatusCreated)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Checks.ReRequestCheckRun(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Checks.ReRequestCheckRun return error: %v", err)

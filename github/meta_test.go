@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -80,7 +79,7 @@ func TestMetaService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"web":["w"],"api":["a"],"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "github_enterprise_importer": ["gei"], "actions":["a"], "actions_macos": ["192.0.2.1/32", "198.51.100.0/24"], "dependabot":["d"], "verifiable_password_authentication": true, "domains":{"website":["*.github.com","*.github.dev","*.github.io","*.githubassets.com","*.githubusercontent.com"],"artifact_attestations":{"trust_domain":"","services":["*.actions.githubusercontent.com","tuf-repo.github.com","fulcio.githubapp.com","timestamp.githubapp.com"]}}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	meta, _, err := client.Meta.Get(ctx)
 	if err != nil {
 		t.Errorf("Get returned error: %v", err)
@@ -146,7 +145,7 @@ func TestMetaService_Octocat(t *testing.T) {
 		fmt.Fprint(w, output)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Meta.Octocat(ctx, input)
 	if err != nil {
 		t.Errorf("Octocat returned error: %v", err)
@@ -178,7 +177,7 @@ func TestMetaService_Zen(t *testing.T) {
 		fmt.Fprint(w, output)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Meta.Zen(ctx)
 	if err != nil {
 		t.Errorf("Zen returned error: %v", err)

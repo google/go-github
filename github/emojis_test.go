@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -23,7 +22,7 @@ func TestEmojisService_List(t *testing.T) {
 		fmt.Fprint(w, `{"+1": "+1.png"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	emoji, _, err := client.ListEmojis(ctx)
 	if err != nil {
 		t.Errorf("List returned error: %v", err)

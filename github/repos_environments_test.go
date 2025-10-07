@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -98,7 +97,7 @@ func TestCreateUpdateEnvironment_MarshalJSON(t *testing.T) {
 
 	want := `{"wait_timer":0,"reviewers":null,"can_admins_bypass":true,"deployment_branch_policy":null}`
 	if string(got) != want {
-		t.Errorf("MarshalJSON = %s, want %v", got, want)
+		t.Errorf("MarshalJSON = %v, want %v", got, want)
 	}
 }
 
@@ -117,7 +116,7 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 			PerPage: 2,
 		},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	environments, _, err := client.Repositories.ListEnvironments(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListEnvironments returned error: %v", err)
@@ -151,7 +150,7 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 		fmt.Fprint(w, `{"id": 1,"name": "staging", "deployment_branch_policy": {"protected_branches": true,	"custom_branch_policies": false}, "can_admins_bypass": false}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	release, resp, err := client.Repositories.GetEnvironment(ctx, "o", "r", "e")
 	if err != nil {
 		t.Errorf("Repositories.GetEnvironment returned error: %v\n%v", err, resp.Body)
@@ -197,7 +196,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "type": "wait_timer", "wait_timer": 30}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	release, _, err := client.Repositories.CreateUpdateEnvironment(ctx, "o", "r", "e", input)
 	if err != nil {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned error: %v", err)
@@ -247,7 +246,7 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 		}
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	release, _, err := client.Repositories.CreateUpdateEnvironment(ctx, "o", "r", "e", input)
 	if err != nil {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned error: %v", err)
@@ -287,7 +286,7 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "node_id": "id", "type": "branch_policy"}], "deployment_branch_policy": {"protected_branches": true, "custom_branch_policies": false}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	release, _, err := client.Repositories.createNewEnvNoEnterprise(ctx, "repos/o/r/environments/e", input)
 	if err != nil {
 		t.Errorf("Repositories.createNewEnvNoEnterprise returned error: %v", err)
@@ -335,7 +334,7 @@ func TestRepositoriesService_DeleteEnvironment(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.DeleteEnvironment(ctx, "o", "r", "e")
 	if err != nil {
 		t.Errorf("Repositories.DeleteEnvironment returned error: %v", err)

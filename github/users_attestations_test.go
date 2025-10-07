@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -33,7 +32,7 @@ func TestUsersService_ListAttestations(t *testing.T) {
 			]
 		}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	attestations, _, err := client.Users.ListAttestations(ctx, "u", "digest", &ListOptions{})
 	if err != nil {
 		t.Errorf("Users.ListAttestations returned error: %v", err)

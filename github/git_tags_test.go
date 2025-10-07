@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,7 +23,7 @@ func TestGitService_GetTag(t *testing.T) {
 		fmt.Fprint(w, `{"tag": "t"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	tag, _, err := client.Git.GetTag(ctx, "o", "r", "s")
 	if err != nil {
 		t.Errorf("Git.GetTag returned error: %v", err)
@@ -73,7 +72,7 @@ func TestGitService_CreateTag(t *testing.T) {
 		fmt.Fprint(w, `{"tag": "t"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	tag, _, err := client.Git.CreateTag(ctx, "o", "r", inputTag)
 	if err != nil {
 		t.Errorf("Git.CreateTag returned error: %v", err)

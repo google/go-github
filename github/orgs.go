@@ -254,7 +254,7 @@ func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organizati
 //
 //meta:operation GET /organizations/{organization_id}
 func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organization, *Response, error) {
-	u := fmt.Sprintf("organizations/%d", id)
+	u := fmt.Sprintf("organizations/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

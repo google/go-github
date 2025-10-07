@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -34,11 +33,11 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 		for key, expectedValues := range expectedQuery {
 			actualValues := query[key]
 			if len(actualValues) != len(expectedValues) {
-				t.Errorf("Expected %d values for query param %s, got %d", len(expectedValues), key, len(actualValues))
+				t.Errorf("Expected %v values for query param %v, got %v", len(expectedValues), key, len(actualValues))
 			}
 			for i, expectedValue := range expectedValues {
 				if actualValues[i] != expectedValue {
-					t.Errorf("Expected query param %s to be %s, got %s", key, expectedValue, actualValues[i])
+					t.Errorf("Expected query param %v to be %v, got %v", key, expectedValue, actualValues[i])
 				}
 			}
 		}
@@ -91,7 +90,7 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 		Direction:   "desc",
 		Owner:       []string{"octocat", "octodog", "otherbot"},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	tokens, resp, err := client.Organizations.ListFineGrainedPersonalAccessTokens(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Organizations.ListFineGrainedPersonalAccessTokens returned error: %v", err)
@@ -180,7 +179,7 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	res, err := client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "o", 1, input)
 	if err != nil {
 		t.Errorf("Organizations.ReviewPersonalAccessTokenRequest returned error: %v", err)

@@ -9,11 +9,13 @@ linters:
     - dogsled
     - dupl
     - errorlint
+    - fmtpercentv
     - forbidigo
     - gocritic
     - godot
     - goheader
     - gosec
+    - intrange
     - misspell
     - nakedret
     - paralleltest
@@ -24,6 +26,7 @@ linters:
     - tparallel
     - unconvert
     - unparam
+    - usetesting
     - whitespace
   settings:
     errorlint:
@@ -126,11 +129,23 @@ linters:
       checks:
         - "all"
         - "-QF1008" # allow embedded field in selector
+    usetesting:
+      context-background: true
+      context-todo: true
+      os-chdir: true
+      os-mkdir-temp: true
+      os-setenv: true
+      os-create-temp: true
+      os-temp-dir: true
     custom:
+      fmtpercentv:
+        type: module
+        description: Reports usage of %d or %s in format strings.
+        original-url: github.com/google/go-github/v75/tools/fmtpercentv
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
-        original-url: github.com/google/go-github/v68/tools/sliceofpointers
+        original-url: github.com/google/go-github/v75/tools/sliceofpointers
   exclusions:
     rules:
       - linters:

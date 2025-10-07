@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -26,7 +25,7 @@ func TestOrganizationsService_ListHookDeliveries(t *testing.T) {
 
 	opt := &ListCursorOptions{Cursor: "v1_12077215967"}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hooks, _, err := client.Organizations.ListHookDeliveries(ctx, "o", 1, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListHookDeliveries returned error: %v", err)
@@ -34,7 +33,7 @@ func TestOrganizationsService_ListHookDeliveries(t *testing.T) {
 
 	want := []*HookDelivery{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if d := cmp.Diff(hooks, want); d != "" {
-		t.Errorf("Organizations.ListHooks want (-), got (+):\n%s", d)
+		t.Errorf("Organizations.ListHooks want (-), got (+):\n%v", d)
 	}
 
 	const methodName = "ListHookDeliveries"
@@ -56,7 +55,7 @@ func TestOrganizationsService_ListHookDeliveries_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Organizations.ListHookDeliveries(ctx, "%", 1, nil)
 	testURLParseError(t, err)
 }
@@ -70,7 +69,7 @@ func TestOrganizationsService_GetHookDelivery(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hook, _, err := client.Organizations.GetHookDelivery(ctx, "o", 1, 1)
 	if err != nil {
 		t.Errorf("Organizations.GetHookDelivery returned error: %v", err)
@@ -100,7 +99,7 @@ func TestOrganizationsService_GetHookDelivery_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Organizations.GetHookDelivery(ctx, "%", 1, 1)
 	testURLParseError(t, err)
 }
@@ -114,7 +113,7 @@ func TestOrganizationsService_RedeliverHookDelivery(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hook, _, err := client.Organizations.RedeliverHookDelivery(ctx, "o", 1, 1)
 	if err != nil {
 		t.Errorf("Organizations.RedeliverHookDelivery returned error: %v", err)
@@ -144,7 +143,7 @@ func TestOrganizationsService_RedeliverHookDelivery_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Organizations.RedeliverHookDelivery(ctx, "%", 1, 1)
 	testURLParseError(t, err)
 }

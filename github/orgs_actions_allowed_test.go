@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,7 +23,7 @@ func TestOrganizationsService_GetActionsAllowed(t *testing.T) {
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Organizations.GetActionsAllowed(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.GetActionsAllowed returned error: %v", err)
@@ -67,7 +66,7 @@ func TestOrganizationsService_UpdateActionsAllowed(t *testing.T) {
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Organizations.UpdateActionsAllowed(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("Organizations.UpdateActionsAllowed returned error: %v", err)
