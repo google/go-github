@@ -77,7 +77,20 @@ type UsageReportOptions struct {
 // PremiumRequestUsageReportOptions specifies optional parameters
 // for the enhanced billing platform premium request usage report.
 type PremiumRequestUsageReportOptions struct {
-	UsageReportOptions
+	// If specified, only return results for a single year.
+	// The value of year is an integer with four digits representing a year. For example, 2025.
+	// Default value is the current year.
+	Year *int `url:"year,omitempty"`
+
+	// If specified, only return results for a single month.
+	// The value of month is an integer between 1 and 12. Default value is the current month.
+	// If no year is specified the default year is used.
+	Month *int `url:"month,omitempty"`
+
+	// If specified, only return results for a single day.
+	// The value of day is an integer between 1 and 31.
+	// If no year or month is specified, the default year and month are used.
+	Day *int `url:"day,omitempty"`
 
 	// The user name to query usage for. The name is not case sensitive.
 	User *string `url:"user,omitempty"`
@@ -310,7 +323,7 @@ func (s *BillingService) GetUsageReportUser(ctx context.Context, user string, op
 	return usageReport, resp, nil
 }
 
-// GetPremiumRequestUsageReportOrg returns a report of the premium request
+// GetOrganizationPremiumRequestUsageReport returns a report of the premium request
 // usage for an organization using the enhanced billing platform.
 //
 // Note: This endpoint is only available to organizations with access to the enhanced billing platform.
@@ -318,7 +331,7 @@ func (s *BillingService) GetUsageReportUser(ctx context.Context, user string, op
 // GitHub API docs: https://docs.github.com/rest/billing/enhanced-billing#get-billing-premium-request-usage-report-for-an-organization
 //
 //meta:operation GET /organizations/{org}/settings/billing/premium_request/usage
-func (s *BillingService) GetPremiumRequestUsageReportOrg(ctx context.Context, org string, opts *PremiumRequestUsageReportOptions) (*PremiumRequestUsageReport, *Response, error) {
+func (s *BillingService) GetOrganizationPremiumRequestUsageReport(ctx context.Context, org string, opts *PremiumRequestUsageReportOptions) (*PremiumRequestUsageReport, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/settings/billing/premium_request/usage", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -339,7 +352,7 @@ func (s *BillingService) GetPremiumRequestUsageReportOrg(ctx context.Context, or
 	return premiumRequestUsageReport, resp, nil
 }
 
-// GetPremiumRequestUsageReportUser returns a report of the premium request
+// GetPremiumRequestUsageReport returns a report of the premium request
 // usage for a user using the enhanced billing platform.
 //
 // Note: This endpoint is only available to users with access to the enhanced billing platform.
@@ -347,7 +360,7 @@ func (s *BillingService) GetPremiumRequestUsageReportOrg(ctx context.Context, or
 // GitHub API docs: https://docs.github.com/rest/billing/enhanced-billing#get-billing-premium-request-usage-report-for-a-user
 //
 //meta:operation GET /users/{username}/settings/billing/premium_request/usage
-func (s *BillingService) GetPremiumRequestUsageReportUser(ctx context.Context, user string, opts *PremiumRequestUsageReportOptions) (*PremiumRequestUsageReport, *Response, error) {
+func (s *BillingService) GetPremiumRequestUsageReport(ctx context.Context, user string, opts *PremiumRequestUsageReportOptions) (*PremiumRequestUsageReport, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/premium_request/usage", user)
 	u, err := addOptions(u, opts)
 	if err != nil {

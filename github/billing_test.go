@@ -521,7 +521,7 @@ func TestBillingService_GetUsageReportUser_invalidUser(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestBillingService_GetPremiumRequestUsageReportOrg(t *testing.T) {
+func TestBillingService_GetOrganizationPremiumRequestUsageReport(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/organizations/o/settings/billing/premium_request/usage", func(w http.ResponseWriter, r *http.Request) {
@@ -559,15 +559,13 @@ func TestBillingService_GetPremiumRequestUsageReportOrg(t *testing.T) {
 	})
 	ctx := t.Context()
 	opts := &PremiumRequestUsageReportOptions{
-		UsageReportOptions: UsageReportOptions{
-			Year:  Ptr(2025),
-			Month: Ptr(10),
-		},
-		User: Ptr("testuser"),
+		Year:  Ptr(2025),
+		Month: Ptr(10),
+		User:  Ptr("testuser"),
 	}
-	report, _, err := client.Billing.GetPremiumRequestUsageReportOrg(ctx, "o", opts)
+	report, _, err := client.Billing.GetOrganizationPremiumRequestUsageReport(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Billing.GetPremiumRequestUsageReportOrg returned error: %v", err)
+		t.Errorf("Billing.GetOrganizationPremiumRequestUsageReport returned error: %v", err)
 	}
 	want := &PremiumRequestUsageReport{
 		TimePeriod: PremiumRequestUsageTimePeriod{
@@ -595,17 +593,17 @@ func TestBillingService_GetPremiumRequestUsageReportOrg(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(report, want) {
-		t.Errorf("Billing.GetPremiumRequestUsageReportOrg returned %+v, want %+v", report, want)
+		t.Errorf("Billing.GetOrganizationPremiumRequestUsageReport returned %+v, want %+v", report, want)
 	}
 
-	const methodName = "GetPremiumRequestUsageReportOrg"
+	const methodName = "GetOrganizationPremiumRequestUsageReport"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetPremiumRequestUsageReportOrg(ctx, "\n", opts)
+		_, _, err = client.Billing.GetOrganizationPremiumRequestUsageReport(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetPremiumRequestUsageReportOrg(ctx, "o", nil)
+		got, resp, err := client.Billing.GetOrganizationPremiumRequestUsageReport(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -613,16 +611,16 @@ func TestBillingService_GetPremiumRequestUsageReportOrg(t *testing.T) {
 	})
 }
 
-func TestBillingService_GetPremiumRequestUsageReportOrg_invalidOrg(t *testing.T) {
+func TestBillingService_GetOrganizationPremiumRequestUsageReport_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Billing.GetPremiumRequestUsageReportOrg(ctx, "%", nil)
+	_, _, err := client.Billing.GetOrganizationPremiumRequestUsageReport(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
-func TestBillingService_GetPremiumRequestUsageReportUser(t *testing.T) {
+func TestBillingService_GetPremiumRequestUsageReport(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/settings/billing/premium_request/usage", func(w http.ResponseWriter, r *http.Request) {
@@ -657,14 +655,12 @@ func TestBillingService_GetPremiumRequestUsageReportUser(t *testing.T) {
 	})
 	ctx := t.Context()
 	opts := &PremiumRequestUsageReportOptions{
-		UsageReportOptions: UsageReportOptions{
-			Year: Ptr(2025),
-			Day:  Ptr(15),
-		},
+		Year: Ptr(2025),
+		Day:  Ptr(15),
 	}
-	report, _, err := client.Billing.GetPremiumRequestUsageReportUser(ctx, "u", opts)
+	report, _, err := client.Billing.GetPremiumRequestUsageReport(ctx, "u", opts)
 	if err != nil {
-		t.Errorf("Billing.GetPremiumRequestUsageReportUser returned error: %v", err)
+		t.Errorf("Billing.GetPremiumRequestUsageReport returned error: %v", err)
 	}
 	want := &PremiumRequestUsageReport{
 		TimePeriod: PremiumRequestUsageTimePeriod{
@@ -690,17 +686,17 @@ func TestBillingService_GetPremiumRequestUsageReportUser(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(report, want) {
-		t.Errorf("Billing.GetPremiumRequestUsageReportUser returned %+v, want %+v", report, want)
+		t.Errorf("Billing.GetPremiumRequestUsageReport returned %+v, want %+v", report, want)
 	}
 
-	const methodName = "GetPremiumRequestUsageReportUser"
+	const methodName = "GetPremiumRequestUsageReport"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetPremiumRequestUsageReportUser(ctx, "\n", opts)
+		_, _, err = client.Billing.GetPremiumRequestUsageReport(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetPremiumRequestUsageReportUser(ctx, "u", nil)
+		got, resp, err := client.Billing.GetPremiumRequestUsageReport(ctx, "u", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -708,11 +704,11 @@ func TestBillingService_GetPremiumRequestUsageReportUser(t *testing.T) {
 	})
 }
 
-func TestBillingService_GetPremiumRequestUsageReportUser_invalidUser(t *testing.T) {
+func TestBillingService_GetPremiumRequestUsageReport_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Billing.GetPremiumRequestUsageReportUser(ctx, "%", nil)
+	_, _, err := client.Billing.GetPremiumRequestUsageReport(ctx, "%", nil)
 	testURLParseError(t, err)
 }
