@@ -347,7 +347,7 @@ func TestRepositoriesService_UpdatePrivateRepoForkPRWorkflowSettings(t *testing.
 	})
 }
 
-func TestRepositoriesService_GetForkPRContributorApprovalPermissions(t *testing.T) {
+func TestActionsService_GetForkPRContributorApprovalPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -357,23 +357,23 @@ func TestRepositoriesService_GetForkPRContributorApprovalPermissions(t *testing.
 	})
 
 	ctx := context.Background()
-	policy, _, err := client.Repositories.GetForkPRContributorApprovalPermissions(ctx, "o", "r")
+	policy, _, err := client.Actions.GetForkPRContributorApprovalPermissions(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("Repositories.GetForkPRContributorApprovalPermissions returned error: %v", err)
+		t.Errorf("Actions.GetForkPRContributorApprovalPermissions returned error: %v", err)
 	}
 	want := &ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
 	if !cmp.Equal(policy, want) {
-		t.Errorf("Repositories.GetForkPRContributorApprovalPermissions returned %+v, want %+v", policy, want)
+		t.Errorf("Actions.GetForkPRContributorApprovalPermissions returned %+v, want %+v", policy, want)
 	}
 
 	const methodName = "GetForkPRContributorApprovalPermissions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetForkPRContributorApprovalPermissions(ctx, "\n", "\n")
+		_, _, err = client.Actions.GetForkPRContributorApprovalPermissions(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetForkPRContributorApprovalPermissions(ctx, "o", "r")
+		got, resp, err := client.Actions.GetForkPRContributorApprovalPermissions(ctx, "o", "r")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -381,7 +381,7 @@ func TestRepositoriesService_GetForkPRContributorApprovalPermissions(t *testing.
 	})
 }
 
-func TestRepositoriesService_UpdateForkPRContributorApprovalPermissions(t *testing.T) {
+func TestActionsService_UpdateForkPRContributorApprovalPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -399,22 +399,22 @@ func TestRepositoriesService_UpdateForkPRContributorApprovalPermissions(t *testi
 	})
 
 	ctx := context.Background()
-	resp, err := client.Repositories.UpdateForkPRContributorApprovalPermissions(ctx, "o", "r", input)
+	resp, err := client.Actions.UpdateForkPRContributorApprovalPermissions(ctx, "o", "r", input)
 	if err != nil {
-		t.Errorf("Repositories.UpdateForkPRContributorApprovalPermissions returned error: %v", err)
+		t.Errorf("Actions.UpdateForkPRContributorApprovalPermissions returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Repositories.UpdateForkPRContributorApprovalPermissions = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdateForkPRContributorApprovalPermissions = %d, want %d", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdateForkPRContributorApprovalPermissions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Repositories.UpdateForkPRContributorApprovalPermissions(ctx, "\n", "\n", input)
+		_, err = client.Actions.UpdateForkPRContributorApprovalPermissions(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.UpdateForkPRContributorApprovalPermissions(ctx, "o", "r", input)
+		return client.Actions.UpdateForkPRContributorApprovalPermissions(ctx, "o", "r", input)
 	})
 }

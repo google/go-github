@@ -484,12 +484,12 @@ func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(c
 	return s.client.Do(ctx, req, nil)
 }
 
-// GetForkPRContributorApprovalPermissionsInOrganization gets the fork PR contributor approval policy for an organization.
+// GetOrganizationForkPRContributorApprovalPermissions gets the fork PR contributor approval policy for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#get-fork-pr-contributor-approval-permissions-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/permissions/fork-pr-contributor-approval
-func (s *ActionsService) GetForkPRContributorApprovalPermissionsInOrganization(ctx context.Context, org string) (*ContributorApprovalPermissions, *Response, error) {
+func (s *ActionsService) GetOrganizationForkPRContributorApprovalPermissions(ctx context.Context, org string) (*ContributorApprovalPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-contributor-approval", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -506,12 +506,12 @@ func (s *ActionsService) GetForkPRContributorApprovalPermissionsInOrganization(c
 	return policy, resp, nil
 }
 
-// UpdateForkPRContributorApprovalPermissionsInOrganization sets the fork PR contributor approval policy for an organization.
+// UpdateOrganizationForkPRContributorApprovalPermissions sets the fork PR contributor approval policy for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-fork-pr-contributor-approval-permissions-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/fork-pr-contributor-approval
-func (s *ActionsService) UpdateForkPRContributorApprovalPermissionsInOrganization(ctx context.Context, org string, policy ContributorApprovalPermissions) (*Response, error) {
+func (s *ActionsService) UpdateOrganizationForkPRContributorApprovalPermissions(ctx context.Context, org string, policy ContributorApprovalPermissions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-contributor-approval", org)
 	req, err := s.client.NewRequest("PUT", u, policy)
 	if err != nil {
