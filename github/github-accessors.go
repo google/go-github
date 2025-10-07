@@ -6734,6 +6734,22 @@ func (c *CustomOrgRoles) GetUpdatedAt() Timestamp {
 	return *c.UpdatedAt
 }
 
+// GetPatternScope returns the PatternScope field if it's non-nil, zero value otherwise.
+func (c *CustomPatternBackfillScan) GetPatternScope() string {
+	if c == nil || c.PatternScope == nil {
+		return ""
+	}
+	return *c.PatternScope
+}
+
+// GetPatternSlug returns the PatternSlug field if it's non-nil, zero value otherwise.
+func (c *CustomPatternBackfillScan) GetPatternSlug() string {
+	if c == nil || c.PatternSlug == nil {
+		return ""
+	}
+	return *c.PatternSlug
+}
+
 // GetDefaultValue returns the DefaultValue field if it's non-nil, zero value otherwise.
 func (c *CustomProperty) GetDefaultValue() string {
 	if c == nil || c.DefaultValue == nil {
@@ -21342,6 +21358,14 @@ func (p *PushEventRepository) GetWatchersCount() int {
 	return *p.WatchersCount
 }
 
+// GetExpireAt returns the ExpireAt field if it's non-nil, zero value otherwise.
+func (p *PushProtectionBypass) GetExpireAt() Timestamp {
+	if p == nil || p.ExpireAt == nil {
+		return Timestamp{}
+	}
+	return *p.ExpireAt
+}
+
 // GetActionsRunnerRegistration returns the ActionsRunnerRegistration field.
 func (r *RateLimits) GetActionsRunnerRegistration() *Rate {
 	if r == nil {
@@ -26260,6 +26284,22 @@ func (s *SecretScanningValidityChecks) GetStatus() string {
 		return ""
 	}
 	return *s.Status
+}
+
+// GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
+func (s *SecretsScan) GetCompletedAt() Timestamp {
+	if s == nil || s.CompletedAt == nil {
+		return Timestamp{}
+	}
+	return *s.CompletedAt
+}
+
+// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
+func (s *SecretsScan) GetStartedAt() Timestamp {
+	if s == nil || s.StartedAt == nil {
+		return Timestamp{}
+	}
+	return *s.StartedAt
 }
 
 // GetAuthor returns the Author field.
