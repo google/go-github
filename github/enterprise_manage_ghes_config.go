@@ -63,10 +63,10 @@ type ConfigApplyEventsNodeEvent struct {
 	SpanDepth    *int       `json:"span_depth,omitempty"`
 }
 
-// InitialConfigOptions is a struct to hold the options for the InitialConfig API.
+// InitialConfigOptions represents the payload for initializing instance configuration.
 type InitialConfigOptions struct {
-	License  string `url:"license"`
-	Password string `url:"password"`
+	License  string `json:"license"`
+	Password string `json:"password"`
 }
 
 // LicenseStatus is a struct to hold the response from the License API.
@@ -336,12 +336,12 @@ func (s *EnterpriseService) ConfigApplyEvents(ctx context.Context, opts *ConfigA
 func (s *EnterpriseService) InitialConfig(ctx context.Context, license, password string) (*Response, error) {
 	u := "manage/v1/config/init"
 
-	opts := &InitialConfigOptions{
+	payload := &InitialConfigOptions{
 		License:  license,
 		Password: password,
 	}
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest("POST", u, payload)
 	if err != nil {
 		return nil, err
 	}
