@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -45,7 +44,7 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
         ]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	properties, _, err := client.Organizations.GetAllCustomProperties(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.GetAllCustomProperties returned error: %v", err)
@@ -106,7 +105,7 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
         ]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	properties, _, err := client.Organizations.CreateOrUpdateCustomProperties(ctx, "o", []*CustomProperty{
 		{
 			PropertyName: Ptr("name"),
@@ -169,7 +168,7 @@ func TestOrganizationsService_GetCustomProperty(t *testing.T) {
 	  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	property, _, err := client.Organizations.GetCustomProperty(ctx, "o", "name")
 	if err != nil {
 		t.Errorf("Organizations.GetCustomProperty returned error: %v", err)
@@ -219,7 +218,7 @@ func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
 	  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	property, _, err := client.Organizations.CreateOrUpdateCustomProperty(ctx, "o", "name", &CustomProperty{
 		ValueType:        "single_select",
 		Required:         Ptr(true),
@@ -264,7 +263,7 @@ func TestOrganizationsService_RemoveCustomProperty(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.RemoveCustomProperty(ctx, "o", "name")
 	if err != nil {
 		t.Errorf("Organizations.RemoveCustomProperty returned error: %v", err)
@@ -313,7 +312,7 @@ func TestOrganizationsService_ListCustomPropertyValues(t *testing.T) {
         }]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repoPropertyValues, _, err := client.Organizations.ListCustomPropertyValues(ctx, "o", &ListCustomPropertyValuesOptions{
 		ListOptions: ListOptions{
 			Page:    1,
@@ -454,7 +453,7 @@ func TestOrganizationsService_CreateOrUpdateRepoCustomPropertyValues(t *testing.
 		testBody(t, r, `{"repository_names":["repo"],"properties":[{"property_name":"service","value":"string"}]}`+"\n")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.CreateOrUpdateRepoCustomPropertyValues(ctx, "o", []string{"repo"}, []*CustomPropertyValue{
 		{
 			PropertyName: "service",

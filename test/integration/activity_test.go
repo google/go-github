@@ -8,7 +8,6 @@
 package integration
 
 import (
-	"context"
 	"testing"
 
 	"github.com/google/go-github/v75/github"
@@ -20,7 +19,7 @@ const (
 )
 
 func TestActivity_Starring(t *testing.T) {
-	stargazers, _, err := client.Activity.ListStargazers(context.Background(), owner, repo, nil)
+	stargazers, _, err := client.Activity.ListStargazers(t.Context(), owner, repo, nil)
 	if err != nil {
 		t.Fatalf("Activity.ListStargazers returned error: %v", err)
 	}
@@ -30,12 +29,10 @@ func TestActivity_Starring(t *testing.T) {
 	}
 
 	// the rest of the tests requires auth
-	if !checkAuth("TestActivity_Starring") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	// first, check if already starred the target repository
-	star, _, err := client.Activity.IsStarred(context.Background(), owner, repo)
+	star, _, err := client.Activity.IsStarred(t.Context(), owner, repo)
 	if err != nil {
 		t.Fatalf("Activity.IsStarred returned error: %v", err)
 	}
@@ -44,13 +41,13 @@ func TestActivity_Starring(t *testing.T) {
 	}
 
 	// star the target repository
-	_, err = client.Activity.Star(context.Background(), owner, repo)
+	_, err = client.Activity.Star(t.Context(), owner, repo)
 	if err != nil {
 		t.Fatalf("Activity.Star returned error: %v", err)
 	}
 
 	// check again and verify starred
-	star, _, err = client.Activity.IsStarred(context.Background(), owner, repo)
+	star, _, err = client.Activity.IsStarred(t.Context(), owner, repo)
 	if err != nil {
 		t.Fatalf("Activity.IsStarred returned error: %v", err)
 	}
@@ -59,13 +56,13 @@ func TestActivity_Starring(t *testing.T) {
 	}
 
 	// unstar
-	_, err = client.Activity.Unstar(context.Background(), owner, repo)
+	_, err = client.Activity.Unstar(t.Context(), owner, repo)
 	if err != nil {
 		t.Fatalf("Activity.Unstar returned error: %v", err)
 	}
 
 	// check again and verify not watching
-	star, _, err = client.Activity.IsStarred(context.Background(), owner, repo)
+	star, _, err = client.Activity.IsStarred(t.Context(), owner, repo)
 	if err != nil {
 		t.Fatalf("Activity.IsStarred returned error: %v", err)
 	}
@@ -76,13 +73,13 @@ func TestActivity_Starring(t *testing.T) {
 
 func deleteSubscription(t *testing.T) {
 	// delete subscription
-	_, err := client.Activity.DeleteRepositorySubscription(context.Background(), owner, repo)
+	_, err := client.Activity.DeleteRepositorySubscription(t.Context(), owner, repo)
 	if err != nil {
 		t.Fatalf("Activity.DeleteRepositorySubscription returned error: %v", err)
 	}
 
 	// check again and verify not watching
-	sub, _, err := client.Activity.GetRepositorySubscription(context.Background(), owner, repo)
+	sub, _, err := client.Activity.GetRepositorySubscription(t.Context(), owner, repo)
 	if err != nil {
 		t.Fatalf("Activity.GetRepositorySubscription returned error: %v", err)
 	}
@@ -94,13 +91,13 @@ func deleteSubscription(t *testing.T) {
 func createSubscription(t *testing.T) {
 	// watch the target repository
 	sub := &github.Subscription{Subscribed: github.Ptr(true)}
-	_, _, err := client.Activity.SetRepositorySubscription(context.Background(), owner, repo, sub)
+	_, _, err := client.Activity.SetRepositorySubscription(t.Context(), owner, repo, sub)
 	if err != nil {
 		t.Fatalf("Activity.SetRepositorySubscription returned error: %v", err)
 	}
 
 	// check again and verify watching
-	sub, _, err = client.Activity.GetRepositorySubscription(context.Background(), owner, repo)
+	sub, _, err = client.Activity.GetRepositorySubscription(t.Context(), owner, repo)
 	if err != nil {
 		t.Fatalf("Activity.GetRepositorySubscription returned error: %v", err)
 	}
@@ -110,7 +107,7 @@ func createSubscription(t *testing.T) {
 }
 
 func TestActivity_Watching(t *testing.T) {
-	watchers, _, err := client.Activity.ListWatchers(context.Background(), owner, repo, nil)
+	watchers, _, err := client.Activity.ListWatchers(t.Context(), owner, repo, nil)
 	if err != nil {
 		t.Fatalf("Activity.ListWatchers returned error: %v", err)
 	}
@@ -120,12 +117,10 @@ func TestActivity_Watching(t *testing.T) {
 	}
 
 	// the rest of the tests requires auth
-	if !checkAuth("TestActivity_Watching") {
-		return
-	}
+	skipIfMissingAuth(t)
 
 	// first, check if already watching the target repository
-	sub, _, err := client.Activity.GetRepositorySubscription(context.Background(), owner, repo)
+	sub, _, err := client.Activity.GetRepositorySubscription(t.Context(), owner, repo)
 	if err != nil {
 		t.Fatalf("Activity.GetRepositorySubscription returned error: %v", err)
 	}

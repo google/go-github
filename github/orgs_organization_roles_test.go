@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -47,7 +46,7 @@ func TestOrganizationsService_ListRoles(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	apps, _, err := client.Organizations.ListRoles(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.ListRoles returned error: %v", err)
@@ -117,7 +116,7 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	gotBuiltInRole, _, err := client.Organizations.GetOrgRole(ctx, "o", 8132)
 	if err != nil {
@@ -206,7 +205,7 @@ func TestOrganizationsService_CreateCustomOrgRole(t *testing.T) {
 		fmt.Fprint(w, `{"id":8030,"name":"Reader","description":"A role for reading custom org roles","permissions":["read_organization_custom_org_role"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	opts := &CreateOrUpdateOrgRoleOptions{
 		Name:        Ptr("Reader"),
@@ -248,7 +247,7 @@ func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
 		fmt.Fprint(w, `{"id":8030,"name":"Updated Name","description":"Updated Description","permissions":["read_organization_custom_org_role"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	opts := &CreateOrUpdateOrgRoleOptions{
 		Name:        Ptr("Updated Name"),
@@ -289,7 +288,7 @@ func TestOrganizationsService_DeleteCustomOrgRole(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	resp, err := client.Organizations.DeleteCustomOrgRole(ctx, "o", 8030)
 	if err != nil {
@@ -320,7 +319,7 @@ func TestOrganizationsService_AssignOrgRoleToTeam(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Organizations.AssignOrgRoleToTeam(ctx, "o", "t", 8030)
 	if err != nil {
 		t.Errorf("Organization.AssignOrgRoleToTeam return error: %v", err)
@@ -349,7 +348,7 @@ func TestOrganizationsService_RemoveOrgRoleFromTeam(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Organizations.RemoveOrgRoleFromTeam(ctx, "o", "t", 8030)
 	if err != nil {
 		t.Errorf("Organization.RemoveOrgRoleFromTeam return error: %v", err)
@@ -378,7 +377,7 @@ func TestOrganizationsService_AssignOrgRoleToUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Organizations.AssignOrgRoleToUser(ctx, "o", "t", 8030)
 	if err != nil {
 		t.Errorf("Organization.AssignOrgRoleToUser return error: %v", err)
@@ -407,7 +406,7 @@ func TestOrganizationsService_RemoveOrgRoleFromUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Organizations.RemoveOrgRoleFromUser(ctx, "o", "t", 8030)
 	if err != nil {
 		t.Errorf("Organization.RemoveOrgRoleFromUser return error: %v", err)
@@ -436,7 +435,7 @@ func TestOrganizationsService_ListTeamsAssignedToOrgRole(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	apps, _, err := client.Organizations.ListTeamsAssignedToOrgRole(ctx, "o", 1729, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListTeamsAssignedToOrgRole returned error: %v", err)
@@ -471,7 +470,7 @@ func TestOrganizationsService_ListUsersAssignedToOrgRole(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	apps, _, err := client.Organizations.ListUsersAssignedToOrgRole(ctx, "o", 1729, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListUsersAssignedToOrgRole returned error: %v", err)

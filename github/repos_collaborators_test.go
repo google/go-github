@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -28,7 +27,7 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 	opt := &ListCollaboratorsOptions{
 		ListOptions: ListOptions{Page: 2},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	users, _, err := client.Repositories.ListCollaborators(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
@@ -68,7 +67,7 @@ func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
 		ListOptions: ListOptions{Page: 2},
 		Affiliation: "all",
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	users, _, err := client.Repositories.ListCollaborators(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
@@ -108,7 +107,7 @@ func TestRepositoriesService_ListCollaborators_withPermission(t *testing.T) {
 		ListOptions: ListOptions{Page: 2},
 		Permission:  "pull",
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	users, _, err := client.Repositories.ListCollaborators(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
@@ -138,7 +137,7 @@ func TestRepositoriesService_ListCollaborators_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.ListCollaborators(ctx, "%", "%", nil)
 	testURLParseError(t, err)
 }
@@ -152,7 +151,7 @@ func TestRepositoriesService_IsCollaborator_True(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	isCollab, _, err := client.Repositories.IsCollaborator(ctx, "o", "r", "u")
 	if err != nil {
 		t.Errorf("Repositories.IsCollaborator returned error: %v", err)
@@ -186,7 +185,7 @@ func TestRepositoriesService_IsCollaborator_False(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	isCollab, _, err := client.Repositories.IsCollaborator(ctx, "o", "r", "u")
 	if err != nil {
 		t.Errorf("Repositories.IsCollaborator returned error: %v", err)
@@ -215,7 +214,7 @@ func TestRepositoriesService_IsCollaborator_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.IsCollaborator(ctx, "%", "%", "%")
 	testURLParseError(t, err)
 }
@@ -229,7 +228,7 @@ func TestRepositoryService_GetPermissionLevel(t *testing.T) {
 		fmt.Fprint(w, `{"permission":"admin","user":{"login":"u"}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	rpl, _, err := client.Repositories.GetPermissionLevel(ctx, "o", "r", "u")
 	if err != nil {
 		t.Errorf("Repositories.GetPermissionLevel returned error: %v", err)
@@ -276,7 +275,7 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`{"permissions": "write","url": "https://api.github.com/user/repository_invitations/1296269","html_url": "https://github.com/octocat/Hello-World/invitations","id":1,"permissions":"write","repository":{"url":"s","name":"r","id":1},"invitee":{"login":"u"},"inviter":{"login":"o"}}`))
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	collaboratorInvitation, _, err := client.Repositories.AddCollaborator(ctx, "o", "r", "u", opt)
 	if err != nil {
 		t.Errorf("Repositories.AddCollaborator returned error: %v", err)
@@ -322,7 +321,7 @@ func TestRepositoriesService_AddCollaborator_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.AddCollaborator(ctx, "%", "%", "%", nil)
 	testURLParseError(t, err)
 }
@@ -336,7 +335,7 @@ func TestRepositoriesService_RemoveCollaborator(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.RemoveCollaborator(ctx, "o", "r", "u")
 	if err != nil {
 		t.Errorf("Repositories.RemoveCollaborator returned error: %v", err)
@@ -357,7 +356,7 @@ func TestRepositoriesService_RemoveCollaborator_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.RemoveCollaborator(ctx, "%", "%", "%")
 	testURLParseError(t, err)
 }

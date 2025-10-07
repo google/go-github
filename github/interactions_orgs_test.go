@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -25,7 +24,7 @@ func TestInteractionsService_GetRestrictionsForOrgs(t *testing.T) {
 		fmt.Fprint(w, `{"origin":"organization"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	organizationInteractions, _, err := client.Interactions.GetRestrictionsForOrg(ctx, "o")
 	if err != nil {
 		t.Errorf("Interactions.GetRestrictionsForOrg returned error: %v", err)
@@ -69,7 +68,7 @@ func TestInteractionsService_UpdateRestrictionsForOrg(t *testing.T) {
 		fmt.Fprint(w, `{"origin":"organization"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	organizationInteractions, _, err := client.Interactions.UpdateRestrictionsForOrg(ctx, "o", input.GetLimit())
 	if err != nil {
 		t.Errorf("Interactions.UpdateRestrictionsForOrg returned error: %v", err)
@@ -104,7 +103,7 @@ func TestInteractionsService_RemoveRestrictionsFromOrg(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Interactions.RemoveRestrictionsFromOrg(ctx, "o")
 	if err != nil {
 		t.Errorf("Interactions.RemoveRestrictionsFromOrg returned error: %v", err)

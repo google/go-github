@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -296,7 +295,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	assignment, _, err := client.Classroom.GetAssignment(ctx, 12)
 	if err != nil {
 		t.Errorf("Classroom.GetAssignment returned error: %v", err)
@@ -377,7 +376,7 @@ func TestClassroomService_GetClassroom(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	classroom, _, err := client.Classroom.GetClassroom(ctx, 1296269)
 	if err != nil {
 		t.Errorf("Classroom.GetClassroom returned error: %v", err)
@@ -441,7 +440,7 @@ func TestClassroomService_ListClassrooms(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	classrooms, _, err := client.Classroom.ListClassrooms(ctx, opt)
 	if err != nil {
 		t.Errorf("Classroom.ListClassrooms returned error: %v", err)
@@ -538,7 +537,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	assignments, _, err := client.Classroom.ListClassroomAssignments(ctx, 1296269, opt)
 	if err != nil {
 		t.Errorf("Classroom.ListClassroomAssignments returned error: %v", err)
@@ -723,7 +722,7 @@ func TestClassroomService_ListAcceptedAssignments(t *testing.T) {
 		]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opt := &ListOptions{Page: 2, PerPage: 2}
 	acceptedAssignments, _, err := client.Classroom.ListAcceptedAssignments(ctx, 12, opt)
 	if err != nil {
@@ -884,7 +883,7 @@ func TestClassroomService_GetAssignmentGrades(t *testing.T) {
 		]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	grades, _, err := client.Classroom.GetAssignmentGrades(ctx, 12)
 	if err != nil {
 		t.Errorf("Classroom.GetAssignmentGrades returned error: %v", err)

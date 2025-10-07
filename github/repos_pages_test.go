@@ -7,7 +7,6 @@ package github
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -44,7 +43,7 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","build_type": "legacy","source": {"branch":"master", "path":"/"}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	page, _, err := client.Repositories.EnablePages(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.EnablePages returned error: %v", err)
@@ -98,7 +97,7 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","build_type": "workflow"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	page, _, err := client.Repositories.EnablePages(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.EnablePages returned error: %v", err)
@@ -148,7 +147,7 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 		fmt.Fprint(w, `{"cname":"www.my-domain.com","build_type":"legacy","source":{"branch":"gh-pages"}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.UpdatePages(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.UpdatePages returned error: %v", err)
@@ -187,7 +186,7 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 		fmt.Fprint(w, `{"cname":"www.my-domain.com","build_type":"workflow"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.UpdatePages(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.UpdatePages returned error: %v", err)
@@ -225,7 +224,7 @@ func TestRepositoriesService_UpdatePagesGHES(t *testing.T) {
 		fmt.Fprint(w, `{"build_type":"workflow"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.UpdatePagesGHES(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.UpdatePagesGHES returned error: %v", err)
@@ -264,7 +263,7 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 		fmt.Fprint(w, `{"cname":null,"source":{"branch":"gh-pages"}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.UpdatePages(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.UpdatePages returned error: %v", err)
@@ -280,7 +279,7 @@ func TestRepositoriesService_DisablePages(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.DisablePages(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.DisablePages returned error: %v", err)
@@ -306,7 +305,7 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","public":true, "https_certificate": {"state":"approved","description": "Certificate is approved","domains": ["developer.github.com"],"expires_at": "2021-05-22"},"https_enforced": true}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	page, _, err := client.Repositories.GetPagesInfo(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetPagesInfo returned error: %v", err)
@@ -341,7 +340,7 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 		fmt.Fprint(w, `[{"url":"u","status":"s","commit":"c"}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	pages, _, err := client.Repositories.ListPagesBuilds(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
@@ -379,7 +378,7 @@ func TestRepositoriesService_ListPagesBuilds_withOptions(t *testing.T) {
 		fmt.Fprint(w, `[]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.ListPagesBuilds(ctx, "o", "r", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
@@ -395,7 +394,7 @@ func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","commit":"c"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	build, _, err := client.Repositories.GetLatestPagesBuild(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetLatestPagesBuild returned error: %v", err)
@@ -430,7 +429,7 @@ func TestRepositoriesService_GetPageBuild(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","commit":"c"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	build, _, err := client.Repositories.GetPageBuild(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetPageBuild returned error: %v", err)
@@ -465,7 +464,7 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	build, _, err := client.Repositories.RequestPageBuild(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.RequestPageBuild returned error: %v", err)
@@ -500,7 +499,7 @@ func TestRepositoriesService_GetPageHealthCheck(t *testing.T) {
 		fmt.Fprint(w, `{"domain":{"host":"example.com","uri":"http://example.com/","nameservers":"default","dns_resolves":true},"alt_domain":{"host":"www.example.com","uri":"http://www.example.com/","nameservers":"default","dns_resolves":true}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	healthCheckResponse, _, err := client.Repositories.GetPageHealthCheck(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetPageHealthCheck returned error: %v", err)

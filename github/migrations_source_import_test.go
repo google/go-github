@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -39,7 +38,7 @@ func TestMigrationService_StartImport(t *testing.T) {
 		fmt.Fprint(w, `{"status":"importing"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Migrations.StartImport(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("StartImport returned error: %v", err)
@@ -73,7 +72,7 @@ func TestMigrationService_ImportProgress(t *testing.T) {
 		fmt.Fprint(w, `{"status":"complete"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Migrations.ImportProgress(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("ImportProgress returned error: %v", err)
@@ -122,7 +121,7 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 		fmt.Fprint(w, `{"status":"importing"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Migrations.UpdateImport(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("UpdateImport returned error: %v", err)
@@ -156,7 +155,7 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1,"name":"a"},{"id":2,"name":"b"}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Migrations.CommitAuthors(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("CommitAuthors returned error: %v", err)
@@ -202,7 +201,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 		fmt.Fprint(w, `{"id": 1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Migrations.MapCommitAuthor(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("MapCommitAuthor returned error: %v", err)
@@ -246,7 +245,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 		fmt.Fprint(w, `{"status":"importing"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Migrations.SetLFSPreference(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("SetLFSPreference returned error: %v", err)
@@ -280,7 +279,7 @@ func TestMigrationService_LargeFiles(t *testing.T) {
 		fmt.Fprint(w, `[{"oid":"a"},{"oid":"b"}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Migrations.LargeFiles(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("LargeFiles returned error: %v", err)
@@ -317,7 +316,7 @@ func TestMigrationService_CancelImport(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Migrations.CancelImport(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("CancelImport returned error: %v", err)

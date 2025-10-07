@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -27,7 +26,7 @@ func TestEnterpriseService_GetSSHKey(t *testing.T) {
 			}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	accessSSH, _, err := client.Enterprise.GetSSHKey(ctx)
 	if err != nil {
 		t.Errorf("Enterprise.GetSSHKey returned error: %v", err)
@@ -71,7 +70,7 @@ func TestEnterpriseService_DeleteSSHKey(t *testing.T) {
 		fmt.Fprint(w, `[ { "hostname": "primary", "uuid": "1b6cf518-f97c-11ed-8544-061d81f7eedb", "message": "SSH key removed successfully" } ]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	sshStatus, _, err := client.Enterprise.DeleteSSHKey(ctx, "ssh-rsa 1234")
 	if err != nil {
 		t.Errorf("Enterprise.DeleteSSHKey returned error: %v", err)
@@ -112,7 +111,7 @@ func TestEnterpriseService_CreateSSHKey(t *testing.T) {
 		fmt.Fprint(w, `[ { "hostname": "primary", "uuid": "1b6cf518-f97c-11ed-8544-061d81f7eedb", "message": "SSH key added successfully", "modified": true } ]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	sshStatus, _, err := client.Enterprise.CreateSSHKey(ctx, "ssh-rsa 1234")
 	if err != nil {
 		t.Errorf("Enterprise.CreateSSHKey returned error: %v", err)

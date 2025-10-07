@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -42,7 +41,7 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 		Since:  time.Date(2013, time.August, 1, 0, 0, 0, 0, time.UTC),
 		Until:  time.Date(2013, time.September, 3, 0, 0, 0, 0, time.UTC),
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	commits, _, err := client.Repositories.ListCommits(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListCommits returned error: %v", err)
@@ -99,7 +98,7 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	commit, _, err := client.Repositories.GetCommit(ctx, "o", "r", "s", opts)
 	if err != nil {
 		t.Errorf("Repositories.GetCommit returned error: %v", err)
@@ -171,14 +170,14 @@ func TestRepositoriesService_GetCommitRaw_diff(t *testing.T) {
 		fmt.Fprint(w, rawStr)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Repositories.GetCommitRaw(ctx, "o", "r", "s", RawOptions{Type: Diff})
 	if err != nil {
 		t.Fatalf("Repositories.GetCommitRaw returned error: %v", err)
 	}
 	want := rawStr
 	if got != want {
-		t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+		t.Errorf("Repositories.GetCommitRaw returned %v want %v", got, want)
 	}
 
 	const methodName = "GetCommitRaw"
@@ -208,14 +207,14 @@ func TestRepositoriesService_GetCommitRaw_patch(t *testing.T) {
 		fmt.Fprint(w, rawStr)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Repositories.GetCommitRaw(ctx, "o", "r", "s", RawOptions{Type: Patch})
 	if err != nil {
 		t.Fatalf("Repositories.GetCommitRaw returned error: %v", err)
 	}
 	want := rawStr
 	if got != want {
-		t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+		t.Errorf("Repositories.GetCommitRaw returned %v want %v", got, want)
 	}
 }
 
@@ -223,7 +222,7 @@ func TestRepositoriesService_GetCommitRaw_invalid(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.GetCommitRaw(ctx, "o", "r", "s", RawOptions{100})
 	if err == nil {
 		t.Fatal("Repositories.GetCommitRaw should return error")
@@ -246,7 +245,7 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 		fmt.Fprint(w, sha1)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Repositories.GetCommitSHA1(ctx, "o", "r", "master", "")
 	if err != nil {
 		t.Errorf("Repositories.GetCommitSHA1 returned error: %v", err)
@@ -303,7 +302,7 @@ func TestRepositoriesService_NonAlphabetCharacter_GetCommitSHA1(t *testing.T) {
 		fmt.Fprint(w, sha1)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Repositories.GetCommitSHA1(ctx, "o", "r", "master%20hash", "")
 	if err != nil {
 		t.Errorf("Repositories.GetCommitSHA1 returned error: %v", err)
@@ -344,7 +343,7 @@ func TestRepositoriesService_TrailingPercent_GetCommitSHA1(t *testing.T) {
 		fmt.Fprint(w, sha1)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Repositories.GetCommitSHA1(ctx, "o", "r", "comm%", "")
 	if err != nil {
 		t.Errorf("Repositories.GetCommitSHA1 returned error: %v", err)
@@ -438,7 +437,7 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 			})
 
 			opts := &ListOptions{Page: 2, PerPage: 2}
-			ctx := context.Background()
+			ctx := t.Context()
 			got, _, err := client.Repositories.CompareCommits(ctx, "o", "r", base, head, opts)
 			if err != nil {
 				t.Errorf("Repositories.CompareCommits returned error: %v", err)
@@ -544,14 +543,14 @@ func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
 				fmt.Fprint(w, rawStr)
 			})
 
-			ctx := context.Background()
+			ctx := t.Context()
 			got, _, err := client.Repositories.CompareCommitsRaw(ctx, "o", "r", base, head, RawOptions{Type: Diff})
 			if err != nil {
 				t.Fatalf("Repositories.GetCommitRaw returned error: %v", err)
 			}
 			want := rawStr
 			if got != want {
-				t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+				t.Errorf("Repositories.GetCommitRaw returned %v want %v", got, want)
 			}
 
 			const methodName = "CompareCommitsRaw"
@@ -602,14 +601,14 @@ func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
 				fmt.Fprint(w, rawStr)
 			})
 
-			ctx := context.Background()
+			ctx := t.Context()
 			got, _, err := client.Repositories.CompareCommitsRaw(ctx, "o", "r", base, head, RawOptions{Type: Patch})
 			if err != nil {
 				t.Fatalf("Repositories.GetCommitRaw returned error: %v", err)
 			}
 			want := rawStr
 			if got != want {
-				t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+				t.Errorf("Repositories.GetCommitRaw returned %v want %v", got, want)
 			}
 		})
 	}
@@ -617,7 +616,7 @@ func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
 
 func TestRepositoriesService_CompareCommitsRaw_invalid(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 
 	testCases := []struct {
 		base string
@@ -652,7 +651,7 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 		fmt.Fprint(w, `[{"name": "b","commit":{"sha":"2e90302801c870f17b6152327d9b9a03c8eca0e2","url":"https://api.github.com/repos/google/go-github/commits/2e90302801c870f17b6152327d9b9a03c8eca0e2"},"protected":true}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	branches, _, err := client.Repositories.ListBranchesHeadCommit(ctx, "o", "r", "s")
 	if err != nil {
 		t.Errorf("Repositories.ListBranchesHeadCommit returned error: %v", err)

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"strings"
@@ -31,7 +30,7 @@ func TestIssuesService_ListIssueTimeline(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Issues.ListIssueTimeline(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("Issues.ListIssueTimeline returned error: %v", err)
@@ -296,7 +295,7 @@ func TestTimeline_ReviewRequests(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	events, _, err := client.Issues.ListIssueTimeline(ctx, "example-org", "example-repo", 3, nil)
 	if err != nil {
 		t.Errorf("Issues.ListIssueTimeline returned error: %v", err)
@@ -340,6 +339,6 @@ func TestTimeline_ReviewRequests(t *testing.T) {
 	if !cmp.Equal(events, want) {
 		t.Errorf("Issues.ListIssueTimeline review request events = %+v, want %+v", events, want)
 		diff := cmp.Diff(events, want)
-		t.Errorf("Difference: %s", diff)
+		t.Errorf("Difference: %v", diff)
 	}
 }

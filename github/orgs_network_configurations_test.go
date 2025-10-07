@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -59,7 +58,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	opts := &ListOptions{Page: 1, PerPage: 3}
 	configurations, _, err := client.Organizations.ListNetworkConfigurations(ctx, "o", opts)
@@ -102,7 +101,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(want, configurations) {
-		t.Errorf("Organizations.ListNetworkConfigurations mismatch (-want +got):\n%s", cmp.Diff(want, configurations))
+		t.Errorf("Organizations.ListNetworkConfigurations mismatch (-want +got):\n%v", cmp.Diff(want, configurations))
 	}
 
 	const methodName = "ListNetworkConfigurations"
@@ -137,7 +136,7 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	req := NetworkConfigurationRequest{
 		Name:           Ptr("network-configuration-two"),
@@ -163,7 +162,7 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 	}
 
 	if !cmp.Equal(want, configuration) {
-		t.Errorf("Organizations.CreateNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
+		t.Errorf("Organizations.CreateNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))
 	}
 
 	validationTests := []struct {
@@ -258,7 +257,7 @@ func TestOrganizationsService_GetOrgsNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	configuration, _, err := client.Organizations.GetNetworkConfiguration(ctx, "o", "789ABDCEF123456")
 	if err != nil {
@@ -275,7 +274,7 @@ func TestOrganizationsService_GetOrgsNetworkConfiguration(t *testing.T) {
 		CreatedOn: &Timestamp{time.Date(2024, 12, 10, 19, 30, 45, 0, time.UTC)},
 	}
 	if !cmp.Equal(want, configuration) {
-		t.Errorf("Organizations.GetNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
+		t.Errorf("Organizations.GetNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))
 	}
 
 	const methodName = "GetNetworkConfiguration"
@@ -311,7 +310,7 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	req := NetworkConfigurationRequest{
 		Name:           Ptr("network-configuration-three-update"),
@@ -336,7 +335,7 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 		CreatedOn: &Timestamp{time.Date(2024, 12, 10, 19, 30, 45, 0, time.UTC)},
 	}
 	if !cmp.Equal(want, configuration) {
-		t.Errorf("Organizations.UpdateNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
+		t.Errorf("Organizations.UpdateNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))
 	}
 
 	validationTests := []struct {
@@ -421,7 +420,7 @@ func TestOrganizationsService_DeleteOrgsNetworkConfiguration(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Organizations.DeleteNetworkConfigurations(ctx, "o", "789ABDCEF123456")
 	if err != nil {
 		t.Errorf("Organizations.DeleteNetworkConfigurations returned error %v", err)
@@ -454,7 +453,7 @@ func TestOrganizationsService_GetOrgsNetworkConfigurationResource(t *testing.T) 
 		`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	resource, _, err := client.Organizations.GetNetworkConfigurationResource(ctx, "o", "789ABDCEF123456")
 	if err != nil {
@@ -470,7 +469,7 @@ func TestOrganizationsService_GetOrgsNetworkConfigurationResource(t *testing.T) 
 	}
 
 	if !cmp.Equal(want, resource) {
-		t.Errorf("Organizations.GetNetworkConfigurationResource mismatch (-want +got):\n%s", cmp.Diff(want, resource))
+		t.Errorf("Organizations.GetNetworkConfigurationResource mismatch (-want +got):\n%v", cmp.Diff(want, resource))
 	}
 
 	const methodName = "GetNetworkConfiguration"

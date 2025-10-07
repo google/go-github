@@ -192,7 +192,7 @@ func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner, repo, sha
 	case Patch:
 		req.Header.Set("Accept", mediaTypeV3Patch)
 	default:
-		return "", nil, fmt.Errorf("unsupported raw type %d", opts.Type)
+		return "", nil, fmt.Errorf("unsupported raw type %v", opts.Type)
 	}
 
 	var buf bytes.Buffer
@@ -287,7 +287,7 @@ func (s *RepositoriesService) CompareCommitsRaw(ctx context.Context, owner, repo
 	case Patch:
 		req.Header.Set("Accept", mediaTypeV3Patch)
 	default:
-		return "", nil, fmt.Errorf("unsupported raw type %d", opts.Type)
+		return "", nil, fmt.Errorf("unsupported raw type %v", opts.Type)
 	}
 
 	var buf bytes.Buffer

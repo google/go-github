@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -17,7 +16,7 @@ import (
 
 func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +63,7 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	ctx := context.Background()
+	ctx := t.Context()
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -103,7 +102,7 @@ func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
 func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	ctx := context.Background()
+	ctx := t.Context()
 
 	input := &CodeSecurityConfiguration{
 		Name:                     Ptr("config1"),
@@ -153,7 +152,7 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	ctx := context.Background()
+	ctx := t.Context()
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/defaults", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -208,7 +207,7 @@ func TestOrganizationsService_GetDefaultCodeSecurityConfigurations(t *testing.T)
 func TestOrganizationsService_DetachCodeSecurityConfigurationsFromRepositories(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	ctx := context.Background()
+	ctx := t.Context()
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/detach", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -222,7 +221,7 @@ func TestOrganizationsService_DetachCodeSecurityConfigurationsFromRepositories(t
 
 	want := http.StatusNoContent
 	if resp.StatusCode != want {
-		t.Errorf("Organizations.DetachCodeSecurityConfigurationsFromRepositories returned status %d, want %d", resp.StatusCode, want)
+		t.Errorf("Organizations.DetachCodeSecurityConfigurationsFromRepositories returned status %v, want %v", resp.StatusCode, want)
 	}
 
 	const methodName = "DetachCodeSecurityConfigurationsFromRepositories"
@@ -239,7 +238,7 @@ func TestOrganizationsService_DetachCodeSecurityConfigurationsFromRepositories(t
 
 func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	input := &CodeSecurityConfiguration{
@@ -289,7 +288,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 
 func TestOrganizationsService_DeleteCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -304,7 +303,7 @@ func TestOrganizationsService_DeleteCodeSecurityConfiguration(t *testing.T) {
 
 	want := http.StatusNoContent
 	if resp.StatusCode != want {
-		t.Errorf("Organizations.DeleteCodeSecurityConfiguration returned status %d, want %d", resp.StatusCode, want)
+		t.Errorf("Organizations.DeleteCodeSecurityConfiguration returned status %v, want %v", resp.StatusCode, want)
 	}
 
 	const methodName = "DeleteCodeSecurityConfiguration"
@@ -321,7 +320,7 @@ func TestOrganizationsService_DeleteCodeSecurityConfiguration(t *testing.T) {
 
 func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/attach", func(w http.ResponseWriter, r *http.Request) {
@@ -333,7 +332,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 		v := new(request)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		if v.Scope != "selected" {
-			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body scope = %s, want selected", v.Scope)
+			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body scope = %v, want selected", v.Scope)
 		}
 		if !cmp.Equal(v.SelectedRepositoryIDs, []int64{5, 20}) {
 			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body selected_repository_ids = %+v, want %+v", v.SelectedRepositoryIDs, []int64{5, 20})
@@ -348,7 +347,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 
 	want := http.StatusAccepted
 	if resp.StatusCode != want {
-		t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories returned status %d, want %d", resp.StatusCode, want)
+		t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories returned status %v, want %v", resp.StatusCode, want)
 	}
 
 	const methodName = "AttachCodeSecurityConfigurationsToRepositories"
@@ -365,7 +364,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 
 func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/defaults", func(w http.ResponseWriter, r *http.Request) {
@@ -387,7 +386,7 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 	}
 	wantStatus := http.StatusOK
 	if resp.StatusCode != wantStatus {
-		t.Errorf("Organizations.SetDefaultCodeSecurityConfiguration returned status %d, want %d", resp.StatusCode, wantStatus)
+		t.Errorf("Organizations.SetDefaultCodeSecurityConfiguration returned status %v, want %v", resp.StatusCode, wantStatus)
 	}
 	want := &CodeSecurityConfigurationWithDefaultForNewRepos{
 		DefaultForNewRepos: Ptr("all"),
@@ -416,7 +415,7 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 
 func TestOrganizationsService_GetRepositoriesForCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -468,7 +467,7 @@ func TestOrganizationsService_GetRepositoriesForCodeSecurityConfiguration(t *tes
 
 func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
+	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/repo8/code-security-configuration", func(w http.ResponseWriter, r *http.Request) {

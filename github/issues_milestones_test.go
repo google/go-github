@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -31,7 +30,7 @@ func TestIssuesService_ListMilestones(t *testing.T) {
 	})
 
 	opt := &MilestoneListOptions{"closed", "due_date", "asc", ListOptions{Page: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	milestones, _, err := client.Issues.ListMilestones(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("IssuesService.ListMilestones returned error: %v", err)
@@ -61,7 +60,7 @@ func TestIssuesService_ListMilestones_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.ListMilestones(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
@@ -75,7 +74,7 @@ func TestIssuesService_GetMilestone(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	milestone, _, err := client.Issues.GetMilestone(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("IssuesService.GetMilestone returned error: %v", err)
@@ -105,7 +104,7 @@ func TestIssuesService_GetMilestone_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.GetMilestone(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
@@ -128,7 +127,7 @@ func TestIssuesService_CreateMilestone(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	milestone, _, err := client.Issues.CreateMilestone(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("IssuesService.CreateMilestone returned error: %v", err)
@@ -158,7 +157,7 @@ func TestIssuesService_CreateMilestone_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.CreateMilestone(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
@@ -181,7 +180,7 @@ func TestIssuesService_EditMilestone(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	milestone, _, err := client.Issues.EditMilestone(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("IssuesService.EditMilestone returned error: %v", err)
@@ -211,7 +210,7 @@ func TestIssuesService_EditMilestone_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Issues.EditMilestone(ctx, "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
@@ -224,7 +223,7 @@ func TestIssuesService_DeleteMilestone(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Issues.DeleteMilestone(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("IssuesService.DeleteMilestone returned error: %v", err)
@@ -245,7 +244,7 @@ func TestIssuesService_DeleteMilestone_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Issues.DeleteMilestone(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
