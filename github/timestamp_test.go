@@ -111,8 +111,8 @@ func TestTimestamp_MarshalReflexivity(t *testing.T) {
 }
 
 type WrappedTimestamp struct {
-	A    int
-	Time Timestamp
+	A    int       `json:"A"`
+	Time Timestamp `json:"Time"`
 }
 
 func TestWrappedTimestamp_Marshal(t *testing.T) {
