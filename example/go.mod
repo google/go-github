@@ -3,7 +3,7 @@ module github.com/google/go-github/v75/example
 go 1.24.0
 
 require (
-	github.com/ProtonMail/go-crypto v0.0.0-20230828082145-3c4c8a2d2371
+	github.com/ProtonMail/go-crypto v1.3.0
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.4
 	github.com/gofri/go-github-pagination v1.0.0
 	github.com/gofri/go-github-ratelimit/v2 v2.0.2
