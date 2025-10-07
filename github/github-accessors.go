@@ -18446,12 +18446,28 @@ func (p *PremiumRequestUsageReport) GetUser() string {
 	return *p.User
 }
 
+// GetDay returns the Day field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageReportOptions) GetDay() int {
+	if p == nil || p.Day == nil {
+		return 0
+	}
+	return *p.Day
+}
+
 // GetModel returns the Model field if it's non-nil, zero value otherwise.
 func (p *PremiumRequestUsageReportOptions) GetModel() string {
 	if p == nil || p.Model == nil {
 		return ""
 	}
 	return *p.Model
+}
+
+// GetMonth returns the Month field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageReportOptions) GetMonth() int {
+	if p == nil || p.Month == nil {
+		return 0
+	}
+	return *p.Month
 }
 
 // GetProduct returns the Product field if it's non-nil, zero value otherwise.
@@ -18468,6 +18484,14 @@ func (p *PremiumRequestUsageReportOptions) GetUser() string {
 		return ""
 	}
 	return *p.User
+}
+
+// GetYear returns the Year field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageReportOptions) GetYear() int {
+	if p == nil || p.Year == nil {
+		return 0
+	}
+	return *p.Year
 }
 
 // GetDay returns the Day field if it's non-nil, zero value otherwise.

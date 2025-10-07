@@ -23967,6 +23967,17 @@ func TestPremiumRequestUsageReport_GetUser(tt *testing.T) {
 	p.GetUser()
 }
 
+func TestPremiumRequestUsageReportOptions_GetDay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &PremiumRequestUsageReportOptions{Day: &zeroValue}
+	p.GetDay()
+	p = &PremiumRequestUsageReportOptions{}
+	p.GetDay()
+	p = nil
+	p.GetDay()
+}
+
 func TestPremiumRequestUsageReportOptions_GetModel(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -23976,6 +23987,17 @@ func TestPremiumRequestUsageReportOptions_GetModel(tt *testing.T) {
 	p.GetModel()
 	p = nil
 	p.GetModel()
+}
+
+func TestPremiumRequestUsageReportOptions_GetMonth(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &PremiumRequestUsageReportOptions{Month: &zeroValue}
+	p.GetMonth()
+	p = &PremiumRequestUsageReportOptions{}
+	p.GetMonth()
+	p = nil
+	p.GetMonth()
 }
 
 func TestPremiumRequestUsageReportOptions_GetProduct(tt *testing.T) {
@@ -23998,6 +24020,17 @@ func TestPremiumRequestUsageReportOptions_GetUser(tt *testing.T) {
 	p.GetUser()
 	p = nil
 	p.GetUser()
+}
+
+func TestPremiumRequestUsageReportOptions_GetYear(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &PremiumRequestUsageReportOptions{Year: &zeroValue}
+	p.GetYear()
+	p = &PremiumRequestUsageReportOptions{}
+	p.GetYear()
+	p = nil
+	p.GetYear()
 }
 
 func TestPremiumRequestUsageTimePeriod_GetDay(tt *testing.T) {
