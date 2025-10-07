@@ -391,6 +391,61 @@ func TestActionsVariable_GetVisibility(tt *testing.T) {
 	a.GetVisibility()
 }
 
+func TestActiveCommitters_GetMaximumAdvancedSecurityCommitters(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ActiveCommitters{MaximumAdvancedSecurityCommitters: &zeroValue}
+	a.GetMaximumAdvancedSecurityCommitters()
+	a = &ActiveCommitters{}
+	a.GetMaximumAdvancedSecurityCommitters()
+	a = nil
+	a.GetMaximumAdvancedSecurityCommitters()
+}
+
+func TestActiveCommitters_GetPurchasedAdvancedSecurityCommitters(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ActiveCommitters{PurchasedAdvancedSecurityCommitters: &zeroValue}
+	a.GetPurchasedAdvancedSecurityCommitters()
+	a = &ActiveCommitters{}
+	a.GetPurchasedAdvancedSecurityCommitters()
+	a = nil
+	a.GetPurchasedAdvancedSecurityCommitters()
+}
+
+func TestActiveCommitters_GetTotalAdvancedSecurityCommitters(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ActiveCommitters{TotalAdvancedSecurityCommitters: &zeroValue}
+	a.GetTotalAdvancedSecurityCommitters()
+	a = &ActiveCommitters{}
+	a.GetTotalAdvancedSecurityCommitters()
+	a = nil
+	a.GetTotalAdvancedSecurityCommitters()
+}
+
+func TestActiveCommitters_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ActiveCommitters{TotalCount: &zeroValue}
+	a.GetTotalCount()
+	a = &ActiveCommitters{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
+}
+
+func TestActiveCommittersListOptions_GetAdvancedSecurityProduct(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ActiveCommittersListOptions{AdvancedSecurityProduct: &zeroValue}
+	a.GetAdvancedSecurityProduct()
+	a = &ActiveCommittersListOptions{}
+	a.GetAdvancedSecurityProduct()
+	a = nil
+	a.GetAdvancedSecurityProduct()
+}
+
 func TestActorLocation_GetCountryCode(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -36941,41 +36996,6 @@ func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 }
 
-func TestUsageItem_GetDate(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UsageItem{Date: &zeroValue}
-	u.GetDate()
-	u = &UsageItem{}
-	u.GetDate()
-	u = nil
-	u.GetDate()
-}
-
-func TestUsageItem_GetDiscountAmount(tt *testing.T) {
-	tt.Parallel()
-	u := &UsageItem{}
-	u.GetDiscountAmount()
-	u = nil
-	u.GetDiscountAmount()
-}
-
-func TestUsageItem_GetGrossAmount(tt *testing.T) {
-	tt.Parallel()
-	u := &UsageItem{}
-	u.GetGrossAmount()
-	u = nil
-	u.GetGrossAmount()
-}
-
-func TestUsageItem_GetNetAmount(tt *testing.T) {
-	tt.Parallel()
-	u := &UsageItem{}
-	u.GetNetAmount()
-	u = nil
-	u.GetNetAmount()
-}
-
 func TestUsageItem_GetOrganizationName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -36987,33 +37007,6 @@ func TestUsageItem_GetOrganizationName(tt *testing.T) {
 	u.GetOrganizationName()
 }
 
-func TestUsageItem_GetPricePerUnit(tt *testing.T) {
-	tt.Parallel()
-	u := &UsageItem{}
-	u.GetPricePerUnit()
-	u = nil
-	u.GetPricePerUnit()
-}
-
-func TestUsageItem_GetProduct(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UsageItem{Product: &zeroValue}
-	u.GetProduct()
-	u = &UsageItem{}
-	u.GetProduct()
-	u = nil
-	u.GetProduct()
-}
-
-func TestUsageItem_GetQuantity(tt *testing.T) {
-	tt.Parallel()
-	u := &UsageItem{}
-	u.GetQuantity()
-	u = nil
-	u.GetQuantity()
-}
-
 func TestUsageItem_GetRepositoryName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -37023,28 +37016,6 @@ func TestUsageItem_GetRepositoryName(tt *testing.T) {
 	u.GetRepositoryName()
 	u = nil
 	u.GetRepositoryName()
-}
-
-func TestUsageItem_GetSKU(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UsageItem{SKU: &zeroValue}
-	u.GetSKU()
-	u = &UsageItem{}
-	u.GetSKU()
-	u = nil
-	u.GetSKU()
-}
-
-func TestUsageItem_GetUnitType(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UsageItem{UnitType: &zeroValue}
-	u.GetUnitType()
-	u = &UsageItem{}
-	u.GetUnitType()
-	u = nil
-	u.GetUnitType()
 }
 
 func TestUsageReportOptions_GetDay(tt *testing.T) {

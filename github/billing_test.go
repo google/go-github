@@ -13,7 +13,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
+func TestBillingService_GetOrganizationPackagesBilling(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -27,9 +27,9 @@ func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	hook, _, err := client.Billing.GetPackagesBillingOrg(ctx, "o")
+	hook, _, err := client.Billing.GetOrganizationPackagesBilling(ctx, "o")
 	if err != nil {
-		t.Errorf("Billing.GetPackagesBillingOrg returned error: %v", err)
+		t.Errorf("Billing.GetOrganizationPackagesBilling returned error: %v", err)
 	}
 
 	want := &PackageBilling{
@@ -38,17 +38,17 @@ func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
 		IncludedGigabytesBandwidth:      10,
 	}
 	if !cmp.Equal(hook, want) {
-		t.Errorf("Billing.GetPackagesBillingOrg returned %+v, want %+v", hook, want)
+		t.Errorf("Billing.GetOrganizationPackagesBilling returned %+v, want %+v", hook, want)
 	}
 
-	const methodName = "GetPackagesBillingOrg"
+	const methodName = "GetOrganizationPackagesBilling"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetPackagesBillingOrg(ctx, "\n")
+		_, _, err = client.Billing.GetOrganizationPackagesBilling(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetPackagesBillingOrg(ctx, "o")
+		got, resp, err := client.Billing.GetOrganizationPackagesBilling(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -56,16 +56,16 @@ func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
 	})
 }
 
-func TestBillingService_GetPackagesBillingOrg_invalidOrg(t *testing.T) {
+func TestBillingService_GetOrganizationPackagesBilling_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Billing.GetPackagesBillingOrg(ctx, "%")
+	_, _, err := client.Billing.GetOrganizationPackagesBilling(ctx, "%")
 	testURLParseError(t, err)
 }
 
-func TestBillingService_GetStorageBillingOrg(t *testing.T) {
+func TestBillingService_GetOrganizationStorageBilling(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -73,34 +73,34 @@ func TestBillingService_GetStorageBillingOrg(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 				"days_left_in_billing_cycle": 20,
-				"estimated_paid_storage_for_month": 15.25,
+				"estimated_paid_storage_for_month": 15,
 				"estimated_storage_for_month": 40
 			}`)
 	})
 
 	ctx := t.Context()
-	hook, _, err := client.Billing.GetStorageBillingOrg(ctx, "o")
+	hook, _, err := client.Billing.GetOrganizationStorageBilling(ctx, "o")
 	if err != nil {
-		t.Errorf("Billing.GetStorageBillingOrg returned error: %v", err)
+		t.Errorf("Billing.GetOrganizationStorageBilling returned error: %v", err)
 	}
 
 	want := &StorageBilling{
 		DaysLeftInBillingCycle:       20,
-		EstimatedPaidStorageForMonth: 15.25,
+		EstimatedPaidStorageForMonth: 15,
 		EstimatedStorageForMonth:     40,
 	}
 	if !cmp.Equal(hook, want) {
-		t.Errorf("Billing.GetStorageBillingOrg returned %+v, want %+v", hook, want)
+		t.Errorf("Billing.GetOrganizationStorageBilling returned %+v, want %+v", hook, want)
 	}
 
-	const methodName = "GetStorageBillingOrg"
+	const methodName = "GetOrganizationStorageBilling"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetStorageBillingOrg(ctx, "\n")
+		_, _, err = client.Billing.GetOrganizationStorageBilling(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetStorageBillingOrg(ctx, "o")
+		got, resp, err := client.Billing.GetOrganizationStorageBilling(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -108,16 +108,16 @@ func TestBillingService_GetStorageBillingOrg(t *testing.T) {
 	})
 }
 
-func TestBillingService_GetStorageBillingOrg_invalidOrg(t *testing.T) {
+func TestBillingService_GetOrganizationStorageBilling_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Billing.GetStorageBillingOrg(ctx, "%")
+	_, _, err := client.Billing.GetOrganizationStorageBilling(ctx, "%")
 	testURLParseError(t, err)
 }
 
-func TestBillingService_GetPackagesBillingUser(t *testing.T) {
+func TestBillingService_GetPackagesBilling(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -131,9 +131,9 @@ func TestBillingService_GetPackagesBillingUser(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	hook, _, err := client.Billing.GetPackagesBillingUser(ctx, "u")
+	hook, _, err := client.Billing.GetPackagesBilling(ctx, "u")
 	if err != nil {
-		t.Errorf("Billing.GetPackagesBillingUser returned error: %v", err)
+		t.Errorf("Billing.GetPackagesBilling returned error: %v", err)
 	}
 
 	want := &PackageBilling{
@@ -142,17 +142,17 @@ func TestBillingService_GetPackagesBillingUser(t *testing.T) {
 		IncludedGigabytesBandwidth:      10,
 	}
 	if !cmp.Equal(hook, want) {
-		t.Errorf("Billing.GetPackagesBillingUser returned %+v, want %+v", hook, want)
+		t.Errorf("Billing.GetPackagesBilling returned %+v, want %+v", hook, want)
 	}
 
-	const methodName = "GetPackagesBillingUser"
+	const methodName = "GetPackagesBilling"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetPackagesBillingUser(ctx, "\n")
+		_, _, err = client.Billing.GetPackagesBilling(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetPackagesBillingUser(ctx, "o")
+		got, resp, err := client.Billing.GetPackagesBilling(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -160,16 +160,16 @@ func TestBillingService_GetPackagesBillingUser(t *testing.T) {
 	})
 }
 
-func TestBillingService_GetPackagesBillingUser_invalidUser(t *testing.T) {
+func TestBillingService_GetPackagesBilling_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Billing.GetPackagesBillingUser(ctx, "%")
+	_, _, err := client.Billing.GetPackagesBilling(ctx, "%")
 	testURLParseError(t, err)
 }
 
-func TestBillingService_GetStorageBillingUser(t *testing.T) {
+func TestBillingService_GetStorageBilling(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -177,34 +177,34 @@ func TestBillingService_GetStorageBillingUser(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 				"days_left_in_billing_cycle": 20,
-				"estimated_paid_storage_for_month": 15.25,
+				"estimated_paid_storage_for_month": 15,
 				"estimated_storage_for_month": 40
 			}`)
 	})
 
 	ctx := t.Context()
-	hook, _, err := client.Billing.GetStorageBillingUser(ctx, "u")
+	hook, _, err := client.Billing.GetStorageBilling(ctx, "u")
 	if err != nil {
-		t.Errorf("Billing.GetStorageBillingUser returned error: %v", err)
+		t.Errorf("Billing.GetStorageBilling returned error: %v", err)
 	}
 
 	want := &StorageBilling{
 		DaysLeftInBillingCycle:       20,
-		EstimatedPaidStorageForMonth: 15.25,
+		EstimatedPaidStorageForMonth: 15,
 		EstimatedStorageForMonth:     40,
 	}
 	if !cmp.Equal(hook, want) {
-		t.Errorf("Billing.GetStorageBillingUser returned %+v, want %+v", hook, want)
+		t.Errorf("Billing.GetStorageBilling returned %+v, want %+v", hook, want)
 	}
 
-	const methodName = "GetStorageBillingUser"
+	const methodName = "GetStorageBilling"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetStorageBillingUser(ctx, "\n")
+		_, _, err = client.Billing.GetStorageBilling(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetStorageBillingUser(ctx, "o")
+		got, resp, err := client.Billing.GetStorageBilling(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -212,12 +212,12 @@ func TestBillingService_GetStorageBillingUser(t *testing.T) {
 	})
 }
 
-func TestBillingService_GetStorageBillingUser_invalidUser(t *testing.T) {
+func TestBillingService_GetStorageBilling_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Billing.GetStorageBillingUser(ctx, "%")
+	_, _, err := client.Billing.GetStorageBilling(ctx, "%")
 	testURLParseError(t, err)
 }
 
@@ -278,7 +278,7 @@ func TestStorageBilling_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
+func TestBillingService_GetOrganizationAdvancedSecurityActiveCommitters(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -305,17 +305,20 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &ListOptions{Page: 2, PerPage: 50}
-	hook, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "o", opts)
+	opts := &ActiveCommittersListOptions{
+		nil,
+		ListOptions{Page: 2, PerPage: 50},
+	}
+	hook, _, err := client.Billing.GetOrganizationAdvancedSecurityActiveCommitters(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Billing.GetAdvancedSecurityActiveCommittersOrg	 returned error: %v", err)
+		t.Errorf("Billing.GetOrganizationAdvancedSecurityActiveCommitters returned error: %v", err)
 	}
 
 	want := &ActiveCommitters{
-		TotalAdvancedSecurityCommitters:     2,
-		TotalCount:                          2,
-		MaximumAdvancedSecurityCommitters:   3,
-		PurchasedAdvancedSecurityCommitters: 4,
+		TotalAdvancedSecurityCommitters:     Ptr(2),
+		TotalCount:                          Ptr(2),
+		MaximumAdvancedSecurityCommitters:   Ptr(3),
+		PurchasedAdvancedSecurityCommitters: Ptr(4),
 		Repositories: []*RepositoryActiveCommitters{
 			{
 				Name:                       Ptr("octocat-org/Hello-World"),
@@ -330,17 +333,17 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(hook, want) {
-		t.Errorf("Billing.GetAdvancedSecurityActiveCommittersOrg returned %+v, want %+v", hook, want)
+		t.Errorf("Billing.GetOrganizationAdvancedSecurityActiveCommitters returned %+v, want %+v", hook, want)
 	}
 
-	const methodName = "GetAdvancedSecurityActiveCommittersOrg"
+	const methodName = "GetOrganizationAdvancedSecurityActiveCommitters"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "\n", nil)
+		_, _, err = client.Billing.GetOrganizationAdvancedSecurityActiveCommitters(ctx, "\n", nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "o", nil)
+		got, resp, err := client.Billing.GetOrganizationAdvancedSecurityActiveCommitters(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -348,16 +351,16 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 	})
 }
 
-func TestBillingService_GetAdvancedSecurityActiveCommittersOrg_invalidOrg(t *testing.T) {
+func TestBillingService_GetOrganizationAdvancedSecurityActiveCommitters_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "%", nil)
+	_, _, err := client.Billing.GetOrganizationAdvancedSecurityActiveCommitters(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
-func TestBillingService_GetUsageReportOrg(t *testing.T) {
+func TestBillingService_GetOrganizationUsageReport(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -391,40 +394,40 @@ func TestBillingService_GetUsageReportOrg(t *testing.T) {
 		Year:  Ptr(2023),
 		Month: Ptr(8),
 	}
-	report, _, err := client.Billing.GetUsageReportOrg(ctx, "o", opts)
+	report, _, err := client.Billing.GetOrganizationUsageReport(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Billing.GetUsageReportOrg returned error: %v", err)
+		t.Errorf("Billing.GetOrganizationUsageReport returned error: %v", err)
 	}
 
 	want := &UsageReport{
 		UsageItems: []*UsageItem{
 			{
-				Date:             Ptr("2023-08-01"),
-				Product:          Ptr("Actions"),
-				SKU:              Ptr("Actions Linux"),
-				Quantity:         Ptr(100.0),
-				UnitType:         Ptr("minutes"),
-				PricePerUnit:     Ptr(0.008),
-				GrossAmount:      Ptr(0.8),
-				DiscountAmount:   Ptr(0.0),
-				NetAmount:        Ptr(0.8),
+				Date:             "2023-08-01",
+				Product:          "Actions",
+				SKU:              "Actions Linux",
+				Quantity:         100,
+				UnitType:         "minutes",
+				PricePerUnit:     0.008,
+				GrossAmount:      0.8,
+				DiscountAmount:   0.0,
+				NetAmount:        0.8,
 				OrganizationName: Ptr("GitHub"),
 				RepositoryName:   Ptr("github/example"),
 			},
 		},
 	}
 	if !cmp.Equal(report, want) {
-		t.Errorf("Billing.GetUsageReportOrg returned %+v, want %+v", report, want)
+		t.Errorf("Billing.GetOrganizationUsageReport returned %+v, want %+v", report, want)
 	}
 
-	const methodName = "GetUsageReportOrg"
+	const methodName = "GetOrganizationUsageReport"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetUsageReportOrg(ctx, "\n", opts)
+		_, _, err = client.Billing.GetOrganizationUsageReport(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetUsageReportOrg(ctx, "o", nil)
+		got, resp, err := client.Billing.GetOrganizationUsageReport(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -432,16 +435,16 @@ func TestBillingService_GetUsageReportOrg(t *testing.T) {
 	})
 }
 
-func TestBillingService_GetUsageReportOrg_invalidOrg(t *testing.T) {
+func TestBillingService_GetOrganizationUsageReport_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Billing.GetUsageReportOrg(ctx, "%", nil)
+	_, _, err := client.Billing.GetOrganizationUsageReport(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
-func TestBillingService_GetUsageReportUser(t *testing.T) {
+func TestBillingService_GetUsageReport(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -472,39 +475,39 @@ func TestBillingService_GetUsageReportUser(t *testing.T) {
 	opts := &UsageReportOptions{
 		Day: Ptr(15),
 	}
-	report, _, err := client.Billing.GetUsageReportUser(ctx, "u", opts)
+	report, _, err := client.Billing.GetUsageReport(ctx, "u", opts)
 	if err != nil {
-		t.Errorf("Billing.GetUsageReportUser returned error: %v", err)
+		t.Errorf("Billing.GetUsageReport returned error: %v", err)
 	}
 
 	want := &UsageReport{
 		UsageItems: []*UsageItem{
 			{
-				Date:           Ptr("2023-08-15"),
-				Product:        Ptr("Codespaces"),
-				SKU:            Ptr("Codespaces Linux"),
-				Quantity:       Ptr(50.0),
-				UnitType:       Ptr("hours"),
-				PricePerUnit:   Ptr(0.18),
-				GrossAmount:    Ptr(9.0),
-				DiscountAmount: Ptr(1.0),
-				NetAmount:      Ptr(8.0),
+				Date:           "2023-08-15",
+				Product:        "Codespaces",
+				SKU:            "Codespaces Linux",
+				Quantity:       50,
+				UnitType:       "hours",
+				PricePerUnit:   0.18,
+				GrossAmount:    9.0,
+				DiscountAmount: 1.0,
+				NetAmount:      8.0,
 				RepositoryName: Ptr("user/example"),
 			},
 		},
 	}
 	if !cmp.Equal(report, want) {
-		t.Errorf("Billing.GetUsageReportUser returned %+v, want %+v", report, want)
+		t.Errorf("Billing.GetUsageReport returned %+v, want %+v", report, want)
 	}
 
-	const methodName = "GetUsageReportUser"
+	const methodName = "GetUsageReport"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetUsageReportUser(ctx, "\n", opts)
+		_, _, err = client.Billing.GetUsageReport(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetUsageReportUser(ctx, "u", nil)
+		got, resp, err := client.Billing.GetUsageReport(ctx, "u", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -512,12 +515,12 @@ func TestBillingService_GetUsageReportUser(t *testing.T) {
 	})
 }
 
-func TestBillingService_GetUsageReportUser_invalidUser(t *testing.T) {
+func TestBillingService_GetUsageReport_invalidUser(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Billing.GetUsageReportUser(ctx, "%", nil)
+	_, _, err := client.Billing.GetUsageReport(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
