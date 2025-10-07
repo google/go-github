@@ -613,7 +613,7 @@ func TestActionsService_GetEnterpriseForkPRContributorApprovalPermissions(t *tes
 		fmt.Fprint(w, `{"approval_policy": "require_approval"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	policy, _, err := client.Actions.GetEnterpriseForkPRContributorApprovalPermissions(ctx, "e")
 	if err != nil {
 		t.Errorf("Actions.GetEnterpriseForkPRContributorApprovalPermissions returned error: %v", err)
@@ -655,14 +655,14 @@ func TestActionsService_UpdateEnterpriseForkPRContributorApprovalPermissions(t *
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Actions.UpdateEnterpriseForkPRContributorApprovalPermissions(ctx, "e", input)
 	if err != nil {
 		t.Errorf("Actions.UpdateEnterpriseForkPRContributorApprovalPermissions returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.UpdateEnterpriseForkPRContributorApprovalPermissions = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdateEnterpriseForkPRContributorApprovalPermissions = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdateEnterpriseForkPRContributorApprovalPermissions"
