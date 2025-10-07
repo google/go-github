@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/ProtonMail/go-crypto v1.3.0
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.4
-	github.com/gofri/go-github-pagination v1.0.0
+	github.com/gofri/go-github-pagination v1.0.1
 	github.com/gofri/go-github-ratelimit/v2 v2.0.2
 	github.com/google/go-github/v75 v75.0.0
 	github.com/sigstore/sigstore-go v0.6.1
