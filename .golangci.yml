@@ -17,6 +17,7 @@ linters:
     - gosec
     - intrange
     - misspell
+    - musttag
     - nakedret
     - paralleltest
     - perfsprint
