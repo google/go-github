@@ -12,6 +12,10 @@ updates:
   directory: tools
   schedule:
     interval: weekly
+- package-ecosystem: gomod
+  directory: example
+  schedule:
+    interval: weekly
 - package-ecosystem: github-actions
   directory: /
   schedule:
