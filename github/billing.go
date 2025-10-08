@@ -19,8 +19,8 @@ type BillingService service
 // MinutesUsedBreakdown counts the actions minutes used by machine type (e.g. UBUNTU, WINDOWS, MACOS).
 type MinutesUsedBreakdown = map[string]int
 
-// PackageBilling represents a GitHub Package billing.
-type PackageBilling struct {
+// PackagesBilling represents billing of GitHub Packages .
+type PackagesBilling struct {
 	TotalGigabytesBandwidthUsed     int `json:"total_gigabytes_bandwidth_used"`
 	TotalPaidGigabytesBandwidthUsed int `json:"total_paid_gigabytes_bandwidth_used"`
 	IncludedGigabytesBandwidth      int `json:"included_gigabytes_bandwidth"`
@@ -57,15 +57,16 @@ type ActiveCommitters struct {
 
 // RepositoryActiveCommitters represents active committers on each repository.
 type RepositoryActiveCommitters struct {
-	Name                                *string                                `json:"name,omitempty"`
-	AdvancedSecurityCommitters          *int                                   `json:"advanced_security_committers,omitempty"`
-	AdvancedSecurityCommittersBreakdown []*AdvancedSecurityCommittersBreakdown `json:"advanced_security_committers_breakdown,omitempty"`
+	Name                                string                                 `json:"name"`
+	AdvancedSecurityCommitters          int                                    `json:"advanced_security_committers"`
+	AdvancedSecurityCommittersBreakdown []*AdvancedSecurityCommittersBreakdown `json:"advanced_security_committers_breakdown"`
 }
 
 // AdvancedSecurityCommittersBreakdown represents the user activity breakdown for ActiveCommitters.
 type AdvancedSecurityCommittersBreakdown struct {
-	UserLogin      *string `json:"user_login,omitempty"`
-	LastPushedDate *string `json:"last_pushed_date,omitempty"`
+	UserLogin       string `json:"user_login"`
+	LastPushedDate  string `json:"last_pushed_date"`
+	LastPushedEmail string `json:"last_pushed_email"`
 }
 
 // UsageReportOptions specifies optional parameters for the enhanced billing platform usage report.
@@ -175,14 +176,14 @@ type PremiumRequestUsageReport struct {
 // GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-packages-billing-for-an-organization
 //
 //meta:operation GET /orgs/{org}/settings/billing/packages
-func (s *BillingService) GetOrganizationPackagesBilling(ctx context.Context, org string) (*PackageBilling, *Response, error) {
+func (s *BillingService) GetOrganizationPackagesBilling(ctx context.Context, org string) (*PackagesBilling, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/packages", org)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	result := new(PackageBilling)
+	result := new(PackagesBilling)
 	resp, err := s.client.Do(ctx, req, result)
 	if err != nil {
 		return nil, resp, err
@@ -244,14 +245,14 @@ func (s *BillingService) GetOrganizationAdvancedSecurityActiveCommitters(ctx con
 // GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-packages-billing-for-a-user
 //
 //meta:operation GET /users/{username}/settings/billing/packages
-func (s *BillingService) GetPackagesBilling(ctx context.Context, user string) (*PackageBilling, *Response, error) {
+func (s *BillingService) GetPackagesBilling(ctx context.Context, user string) (*PackagesBilling, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/packages", user)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	packagesUserBilling := new(PackageBilling)
+	packagesUserBilling := new(PackagesBilling)
 	resp, err := s.client.Do(ctx, req, packagesUserBilling)
 	if err != nil {
 		return nil, resp, err

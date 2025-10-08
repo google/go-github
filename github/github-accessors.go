@@ -446,22 +446,6 @@ func (a *AdvancedSecurity) GetStatus() string {
 	return *a.Status
 }
 
-// GetLastPushedDate returns the LastPushedDate field if it's non-nil, zero value otherwise.
-func (a *AdvancedSecurityCommittersBreakdown) GetLastPushedDate() string {
-	if a == nil || a.LastPushedDate == nil {
-		return ""
-	}
-	return *a.LastPushedDate
-}
-
-// GetUserLogin returns the UserLogin field if it's non-nil, zero value otherwise.
-func (a *AdvancedSecurityCommittersBreakdown) GetUserLogin() string {
-	if a == nil || a.UserLogin == nil {
-		return ""
-	}
-	return *a.UserLogin
-}
-
 // GetScore returns the Score field.
 func (a *AdvisoryCVSS) GetScore() *float64 {
 	if a == nil {
@@ -22980,22 +22964,6 @@ func (r *RepositoryActionsAccessLevel) GetAccessLevel() string {
 		return ""
 	}
 	return *r.AccessLevel
-}
-
-// GetAdvancedSecurityCommitters returns the AdvancedSecurityCommitters field if it's non-nil, zero value otherwise.
-func (r *RepositoryActiveCommitters) GetAdvancedSecurityCommitters() int {
-	if r == nil || r.AdvancedSecurityCommitters == nil {
-		return 0
-	}
-	return *r.AdvancedSecurityCommitters
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (r *RepositoryActiveCommitters) GetName() string {
-	if r == nil || r.Name == nil {
-		return ""
-	}
-	return *r.Name
 }
 
 // GetActor returns the Actor field.

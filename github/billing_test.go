@@ -32,7 +32,7 @@ func TestBillingService_GetOrganizationPackagesBilling(t *testing.T) {
 		t.Errorf("Billing.GetOrganizationPackagesBilling returned error: %v", err)
 	}
 
-	want := &PackageBilling{
+	want := &PackagesBilling{
 		TotalGigabytesBandwidthUsed:     50,
 		TotalPaidGigabytesBandwidthUsed: 40,
 		IncludedGigabytesBandwidth:      10,
@@ -136,7 +136,7 @@ func TestBillingService_GetPackagesBilling(t *testing.T) {
 		t.Errorf("Billing.GetPackagesBilling returned error: %v", err)
 	}
 
-	want := &PackageBilling{
+	want := &PackagesBilling{
 		TotalGigabytesBandwidthUsed:     50,
 		TotalPaidGigabytesBandwidthUsed: 40,
 		IncludedGigabytesBandwidth:      10,
@@ -242,9 +242,9 @@ func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
 
 func TestPackageBilling_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &PackageBilling{}, "{}")
+	testJSONMarshal(t, &PackagesBilling{}, "{}")
 
-	u := &PackageBilling{
+	u := &PackagesBilling{
 		TotalGigabytesBandwidthUsed:     1,
 		TotalPaidGigabytesBandwidthUsed: 1,
 		IncludedGigabytesBandwidth:      1,
@@ -296,7 +296,8 @@ func TestBillingService_GetOrganizationAdvancedSecurityActiveCommitters(t *testi
       "advanced_security_committers_breakdown": [
         {
           "user_login": "octokitten",
-          "last_pushed_date": "2021-10-25"
+          "last_pushed_date": "2021-10-25",
+          "last_pushed_email": "octokitten@example.com"
         }
       ]
     }
@@ -321,12 +322,13 @@ func TestBillingService_GetOrganizationAdvancedSecurityActiveCommitters(t *testi
 		PurchasedAdvancedSecurityCommitters: Ptr(4),
 		Repositories: []*RepositoryActiveCommitters{
 			{
-				Name:                       Ptr("octocat-org/Hello-World"),
-				AdvancedSecurityCommitters: Ptr(2),
+				Name:                       "octocat-org/Hello-World",
+				AdvancedSecurityCommitters: 2,
 				AdvancedSecurityCommittersBreakdown: []*AdvancedSecurityCommittersBreakdown{
 					{
-						UserLogin:      Ptr("octokitten"),
-						LastPushedDate: Ptr("2021-10-25"),
+						UserLogin:       "octokitten",
+						LastPushedDate:  "2021-10-25",
+						LastPushedEmail: "octokitten@example.com",
 					},
 				},
 			},

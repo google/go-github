@@ -570,28 +570,6 @@ func TestAdvancedSecurity_GetStatus(tt *testing.T) {
 	a.GetStatus()
 }
 
-func TestAdvancedSecurityCommittersBreakdown_GetLastPushedDate(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &AdvancedSecurityCommittersBreakdown{LastPushedDate: &zeroValue}
-	a.GetLastPushedDate()
-	a = &AdvancedSecurityCommittersBreakdown{}
-	a.GetLastPushedDate()
-	a = nil
-	a.GetLastPushedDate()
-}
-
-func TestAdvancedSecurityCommittersBreakdown_GetUserLogin(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &AdvancedSecurityCommittersBreakdown{UserLogin: &zeroValue}
-	a.GetUserLogin()
-	a = &AdvancedSecurityCommittersBreakdown{}
-	a.GetUserLogin()
-	a = nil
-	a.GetUserLogin()
-}
-
 func TestAdvisoryCVSS_GetScore(tt *testing.T) {
 	tt.Parallel()
 	a := &AdvisoryCVSS{}
@@ -29710,28 +29688,6 @@ func TestRepositoryActionsAccessLevel_GetAccessLevel(tt *testing.T) {
 	r.GetAccessLevel()
 	r = nil
 	r.GetAccessLevel()
-}
-
-func TestRepositoryActiveCommitters_GetAdvancedSecurityCommitters(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	r := &RepositoryActiveCommitters{AdvancedSecurityCommitters: &zeroValue}
-	r.GetAdvancedSecurityCommitters()
-	r = &RepositoryActiveCommitters{}
-	r.GetAdvancedSecurityCommitters()
-	r = nil
-	r.GetAdvancedSecurityCommitters()
-}
-
-func TestRepositoryActiveCommitters_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryActiveCommitters{Name: &zeroValue}
-	r.GetName()
-	r = &RepositoryActiveCommitters{}
-	r.GetName()
-	r = nil
-	r.GetName()
 }
 
 func TestRepositoryActivity_GetActor(tt *testing.T) {
