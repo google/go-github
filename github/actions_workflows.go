@@ -76,6 +76,16 @@ type WorkflowsPermissionsOpt struct {
 	RequireApprovalForForkPRWorkflows *bool `json:"require_approval_for_fork_pr_workflows,omitempty"`
 }
 
+// ContributorApprovalPermissions represents the policy that controls
+// when fork PR workflows require approval from a maintainer.
+type ContributorApprovalPermissions struct {
+	ApprovalPolicy string `json:"approval_policy"`
+}
+
+func (p ContributorApprovalPermissions) String() string {
+	return Stringify(p)
+}
+
 // ListWorkflows lists all workflows in a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflows#list-repository-workflows

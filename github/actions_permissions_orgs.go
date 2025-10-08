@@ -483,3 +483,40 @@ func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(c
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// GetOrganizationForkPRContributorApprovalPermissions gets the fork PR contributor approval policy for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-fork-pr-contributor-approval-permissions-for-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/permissions/fork-pr-contributor-approval
+func (s *ActionsService) GetOrganizationForkPRContributorApprovalPermissions(ctx context.Context, org string) (*ContributorApprovalPermissions, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-contributor-approval", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	policy := new(ContributorApprovalPermissions)
+	resp, err := s.client.Do(ctx, req, policy)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return policy, resp, nil
+}
+
+// UpdateOrganizationForkPRContributorApprovalPermissions sets the fork PR contributor approval policy for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-fork-pr-contributor-approval-permissions-for-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/fork-pr-contributor-approval
+func (s *ActionsService) UpdateOrganizationForkPRContributorApprovalPermissions(ctx context.Context, org string, policy ContributorApprovalPermissions) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-contributor-approval", org)
+	req, err := s.client.NewRequest("PUT", u, policy)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
