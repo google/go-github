@@ -294,6 +294,46 @@ func (a *ActionsVariable) GetVisibility() string {
 	return *a.Visibility
 }
 
+// GetMaximumAdvancedSecurityCommitters returns the MaximumAdvancedSecurityCommitters field if it's non-nil, zero value otherwise.
+func (a *ActiveCommitters) GetMaximumAdvancedSecurityCommitters() int {
+	if a == nil || a.MaximumAdvancedSecurityCommitters == nil {
+		return 0
+	}
+	return *a.MaximumAdvancedSecurityCommitters
+}
+
+// GetPurchasedAdvancedSecurityCommitters returns the PurchasedAdvancedSecurityCommitters field if it's non-nil, zero value otherwise.
+func (a *ActiveCommitters) GetPurchasedAdvancedSecurityCommitters() int {
+	if a == nil || a.PurchasedAdvancedSecurityCommitters == nil {
+		return 0
+	}
+	return *a.PurchasedAdvancedSecurityCommitters
+}
+
+// GetTotalAdvancedSecurityCommitters returns the TotalAdvancedSecurityCommitters field if it's non-nil, zero value otherwise.
+func (a *ActiveCommitters) GetTotalAdvancedSecurityCommitters() int {
+	if a == nil || a.TotalAdvancedSecurityCommitters == nil {
+		return 0
+	}
+	return *a.TotalAdvancedSecurityCommitters
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (a *ActiveCommitters) GetTotalCount() int {
+	if a == nil || a.TotalCount == nil {
+		return 0
+	}
+	return *a.TotalCount
+}
+
+// GetAdvancedSecurityProduct returns the AdvancedSecurityProduct field if it's non-nil, zero value otherwise.
+func (a *ActiveCommittersListOptions) GetAdvancedSecurityProduct() string {
+	if a == nil || a.AdvancedSecurityProduct == nil {
+		return ""
+	}
+	return *a.AdvancedSecurityProduct
+}
+
 // GetCountryCode returns the CountryCode field if it's non-nil, zero value otherwise.
 func (a *ActorLocation) GetCountryCode() string {
 	if a == nil || a.CountryCode == nil {
@@ -404,22 +444,6 @@ func (a *AdvancedSecurity) GetStatus() string {
 		return ""
 	}
 	return *a.Status
-}
-
-// GetLastPushedDate returns the LastPushedDate field if it's non-nil, zero value otherwise.
-func (a *AdvancedSecurityCommittersBreakdown) GetLastPushedDate() string {
-	if a == nil || a.LastPushedDate == nil {
-		return ""
-	}
-	return *a.LastPushedDate
-}
-
-// GetUserLogin returns the UserLogin field if it's non-nil, zero value otherwise.
-func (a *AdvancedSecurityCommittersBreakdown) GetUserLogin() string {
-	if a == nil || a.UserLogin == nil {
-		return ""
-	}
-	return *a.UserLogin
 }
 
 // GetScore returns the Score field.
@@ -18446,6 +18470,14 @@ func (p *PremiumRequestUsageReport) GetModel() string {
 	return *p.Model
 }
 
+// GetOrganization returns the Organization field if it's non-nil, zero value otherwise.
+func (p *PremiumRequestUsageReport) GetOrganization() string {
+	if p == nil || p.Organization == nil {
+		return ""
+	}
+	return *p.Organization
+}
+
 // GetProduct returns the Product field if it's non-nil, zero value otherwise.
 func (p *PremiumRequestUsageReport) GetProduct() string {
 	if p == nil || p.Product == nil {
@@ -22932,22 +22964,6 @@ func (r *RepositoryActionsAccessLevel) GetAccessLevel() string {
 		return ""
 	}
 	return *r.AccessLevel
-}
-
-// GetAdvancedSecurityCommitters returns the AdvancedSecurityCommitters field if it's non-nil, zero value otherwise.
-func (r *RepositoryActiveCommitters) GetAdvancedSecurityCommitters() int {
-	if r == nil || r.AdvancedSecurityCommitters == nil {
-		return 0
-	}
-	return *r.AdvancedSecurityCommitters
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (r *RepositoryActiveCommitters) GetName() string {
-	if r == nil || r.Name == nil {
-		return ""
-	}
-	return *r.Name
 }
 
 // GetActor returns the Actor field.
@@ -28718,38 +28734,6 @@ func (u *UpdateRunnerGroupRequest) GetVisibility() string {
 	return *u.Visibility
 }
 
-// GetDate returns the Date field if it's non-nil, zero value otherwise.
-func (u *UsageItem) GetDate() string {
-	if u == nil || u.Date == nil {
-		return ""
-	}
-	return *u.Date
-}
-
-// GetDiscountAmount returns the DiscountAmount field.
-func (u *UsageItem) GetDiscountAmount() *float64 {
-	if u == nil {
-		return nil
-	}
-	return u.DiscountAmount
-}
-
-// GetGrossAmount returns the GrossAmount field.
-func (u *UsageItem) GetGrossAmount() *float64 {
-	if u == nil {
-		return nil
-	}
-	return u.GrossAmount
-}
-
-// GetNetAmount returns the NetAmount field.
-func (u *UsageItem) GetNetAmount() *float64 {
-	if u == nil {
-		return nil
-	}
-	return u.NetAmount
-}
-
 // GetOrganizationName returns the OrganizationName field if it's non-nil, zero value otherwise.
 func (u *UsageItem) GetOrganizationName() string {
 	if u == nil || u.OrganizationName == nil {
@@ -28758,52 +28742,12 @@ func (u *UsageItem) GetOrganizationName() string {
 	return *u.OrganizationName
 }
 
-// GetPricePerUnit returns the PricePerUnit field.
-func (u *UsageItem) GetPricePerUnit() *float64 {
-	if u == nil {
-		return nil
-	}
-	return u.PricePerUnit
-}
-
-// GetProduct returns the Product field if it's non-nil, zero value otherwise.
-func (u *UsageItem) GetProduct() string {
-	if u == nil || u.Product == nil {
-		return ""
-	}
-	return *u.Product
-}
-
-// GetQuantity returns the Quantity field.
-func (u *UsageItem) GetQuantity() *float64 {
-	if u == nil {
-		return nil
-	}
-	return u.Quantity
-}
-
 // GetRepositoryName returns the RepositoryName field if it's non-nil, zero value otherwise.
 func (u *UsageItem) GetRepositoryName() string {
 	if u == nil || u.RepositoryName == nil {
 		return ""
 	}
 	return *u.RepositoryName
-}
-
-// GetSKU returns the SKU field if it's non-nil, zero value otherwise.
-func (u *UsageItem) GetSKU() string {
-	if u == nil || u.SKU == nil {
-		return ""
-	}
-	return *u.SKU
-}
-
-// GetUnitType returns the UnitType field if it's non-nil, zero value otherwise.
-func (u *UsageItem) GetUnitType() string {
-	if u == nil || u.UnitType == nil {
-		return ""
-	}
-	return *u.UnitType
 }
 
 // GetDay returns the Day field if it's non-nil, zero value otherwise.
