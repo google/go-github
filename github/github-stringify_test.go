@@ -1540,6 +1540,39 @@ func TestPreReceiveHook_String(t *testing.T) {
 	}
 }
 
+func TestProjectV2_String(t *testing.T) {
+	t.Parallel()
+	v := ProjectV2{
+		ID:                     Ptr(int64(0)),
+		NodeID:                 Ptr(""),
+		Owner:                  &User{},
+		Creator:                &User{},
+		Title:                  Ptr(""),
+		Description:            Ptr(""),
+		Public:                 Ptr(false),
+		ClosedAt:               &Timestamp{},
+		CreatedAt:              &Timestamp{},
+		UpdatedAt:              &Timestamp{},
+		DeletedAt:              &Timestamp{},
+		Number:                 Ptr(0),
+		ShortDescription:       Ptr(""),
+		DeletedBy:              &User{},
+		URL:                    Ptr(""),
+		HTMLURL:                Ptr(""),
+		ColumnsURL:             Ptr(""),
+		OwnerURL:               Ptr(""),
+		Name:                   Ptr(""),
+		Body:                   Ptr(""),
+		State:                  Ptr(""),
+		OrganizationPermission: Ptr(""),
+		Private:                Ptr(false),
+	}
+	want := `github.ProjectV2{ID:0, NodeID:"", Owner:github.User{}, Creator:github.User{}, Title:"", Description:"", Public:false, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, DeletedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Number:0, ShortDescription:"", DeletedBy:github.User{}, URL:"", HTMLURL:"", ColumnsURL:"", OwnerURL:"", Name:"", Body:"", State:"", OrganizationPermission:"", Private:false}`
+	if got := v.String(); got != want {
+		t.Errorf("ProjectV2.String = %v, want %v", got, want)
+	}
+}
+
 func TestPullRequest_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequest{
