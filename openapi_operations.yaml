@@ -27,7 +27,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 234cc58968e2c29eb8583e6be10186c3371b7c4e
+openapi_commit: dee4dc2b1ab40c75c2ae562e4300503b632f4424
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -3218,6 +3218,36 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/settings/immutable-releases
+    documentation_url: https://docs.github.com/rest/orgs/orgs#get-immutable-releases-settings-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/settings/immutable-releases
+    documentation_url: https://docs.github.com/rest/orgs/orgs#set-immutable-releases-settings-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/settings/immutable-releases/repositories
+    documentation_url: https://docs.github.com/rest/orgs/orgs#list-selected-repositories-for-immutable-releases-enforcement
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/settings/immutable-releases/repositories
+    documentation_url: https://docs.github.com/rest/orgs/orgs#set-selected-repositories-for-immutable-releases-enforcement
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/settings/immutable-releases/repositories/{repository_id}
+    documentation_url: https://docs.github.com/rest/orgs/orgs#disable-a-selected-repository-for-immutable-releases-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/settings/immutable-releases/repositories/{repository_id}
+    documentation_url: https://docs.github.com/rest/orgs/orgs#enable-a-selected-repository-for-immutable-releases-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/settings/network-configurations
     documentation_url: https://docs.github.com/rest/orgs/network-configurations#list-hosted-compute-network-configurations-for-an-organization
     openapi_files:
@@ -5271,6 +5301,21 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.17/ghes-3.17.json
+  - name: DELETE /repos/{owner}/{repo}/immutable-releases
+    documentation_url: https://docs.github.com/rest/repos/repos#disable-immutable-releases
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/immutable-releases
+    documentation_url: https://docs.github.com/rest/repos/repos#check-if-immutable-releases-are-enabled-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /repos/{owner}/{repo}/immutable-releases
+    documentation_url: https://docs.github.com/rest/repos/repos#enable-immutable-releases
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: DELETE /repos/{owner}/{repo}/import
     documentation_url: https://docs.github.com/rest/migrations/source-imports#cancel-an-import
     openapi_files:
