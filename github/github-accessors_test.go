@@ -14121,6 +14121,17 @@ func TestIDPGroup_GetGroupName(tt *testing.T) {
 	i.GetGroupName()
 }
 
+func TestImmutableReleaseSettings_GetSelectedRepositoriesURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &ImmutableReleaseSettings{SelectedRepositoriesURL: &zeroValue}
+	i.GetSelectedRepositoriesURL()
+	i = &ImmutableReleaseSettings{}
+	i.GetSelectedRepositoriesURL()
+	i = nil
+	i.GetSelectedRepositoriesURL()
+}
+
 func TestImport_GetAuthorsCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int

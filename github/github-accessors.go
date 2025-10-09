@@ -10886,6 +10886,14 @@ func (i *IDPGroup) GetGroupName() string {
 	return *i.GroupName
 }
 
+// GetSelectedRepositoriesURL returns the SelectedRepositoriesURL field if it's non-nil, zero value otherwise.
+func (i *ImmutableReleaseSettings) GetSelectedRepositoriesURL() string {
+	if i == nil || i.SelectedRepositoriesURL == nil {
+		return ""
+	}
+	return *i.SelectedRepositoriesURL
+}
+
 // GetAuthorsCount returns the AuthorsCount field if it's non-nil, zero value otherwise.
 func (i *Import) GetAuthorsCount() int {
 	if i == nil || i.AuthorsCount == nil {
