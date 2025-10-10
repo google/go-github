@@ -14121,6 +14121,28 @@ func TestIDPGroup_GetGroupName(tt *testing.T) {
 	i.GetGroupName()
 }
 
+func TestImmutableReleaseRepository_GetEnforcedRepositories(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &ImmutableReleaseRepository{EnforcedRepositories: &zeroValue}
+	i.GetEnforcedRepositories()
+	i = &ImmutableReleaseRepository{}
+	i.GetEnforcedRepositories()
+	i = nil
+	i.GetEnforcedRepositories()
+}
+
+func TestImmutableReleaseSettings_GetEnforcedRepositories(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &ImmutableReleaseSettings{EnforcedRepositories: &zeroValue}
+	i.GetEnforcedRepositories()
+	i = &ImmutableReleaseSettings{}
+	i.GetEnforcedRepositories()
+	i = nil
+	i.GetEnforcedRepositories()
+}
+
 func TestImmutableReleaseSettings_GetSelectedRepositoriesURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

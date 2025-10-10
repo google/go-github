@@ -56,7 +56,7 @@ func (s *OrganizationsService) GetImmutableReleasesSettings(ctx context.Context,
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#set-immutable-releases-settings-for-an-organization
 //
-// meta:operation PUT /orgs/{org}/settings/immutable-releases
+//meta:operation PUT /orgs/{org}/settings/immutable-releases
 func (s *OrganizationsService) SetImmutableReleasesPolicy(ctx context.Context, org string, opts ImmutableReleaseRepository) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/immutable-releases", org)
 

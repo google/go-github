@@ -10886,6 +10886,22 @@ func (i *IDPGroup) GetGroupName() string {
 	return *i.GroupName
 }
 
+// GetEnforcedRepositories returns the EnforcedRepositories field if it's non-nil, zero value otherwise.
+func (i *ImmutableReleaseRepository) GetEnforcedRepositories() string {
+	if i == nil || i.EnforcedRepositories == nil {
+		return ""
+	}
+	return *i.EnforcedRepositories
+}
+
+// GetEnforcedRepositories returns the EnforcedRepositories field if it's non-nil, zero value otherwise.
+func (i *ImmutableReleaseSettings) GetEnforcedRepositories() string {
+	if i == nil || i.EnforcedRepositories == nil {
+		return ""
+	}
+	return *i.EnforcedRepositories
+}
+
 // GetSelectedRepositoriesURL returns the SelectedRepositoriesURL field if it's non-nil, zero value otherwise.
 func (i *ImmutableReleaseSettings) GetSelectedRepositoriesURL() string {
 	if i == nil || i.SelectedRepositoriesURL == nil {
