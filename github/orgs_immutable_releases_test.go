@@ -58,7 +58,7 @@ func TestOrganizationsService_GetImmutableReleasesSettings(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_SetImmutableReleasesPolicy(t *testing.T) {
+func TestOrganizationsService_UpdateImmutableReleasesSettings(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -69,13 +69,9 @@ func TestOrganizationsService_SetImmutableReleasesPolicy(t *testing.T) {
 	mux.HandleFunc("/orgs/o/settings/immutable-releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 
-		// Decode request body into map
 		var gotBody map[string]any
-		if err := json.NewDecoder(r.Body).Decode(&gotBody); err != nil {
-			t.Fatalf("Failed to decode request body: %v", err)
-		}
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&gotBody))
 
-		// Expected body
 		wantBody := map[string]any{
 			"enforced_repositories": "selected",
 		}
@@ -84,29 +80,29 @@ func TestOrganizationsService_SetImmutableReleasesPolicy(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", gotBody, wantBody)
 		}
 
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusNoContent)
 		fmt.Fprint(w, `{"enforced_repositories":"selected"}`)
 	})
 
 	ctx := t.Context()
-	resp, err := client.Organizations.SetImmutableReleasesPolicy(ctx, "o", input)
+	resp, err := client.Organizations.UpdateImmutableReleasesSettings(ctx, "o", input)
 	if err != nil {
-		t.Errorf("Organizations.SetImmutableReleasesPolicy returned error: %v", err)
+		t.Errorf("Organizations.UpdateImmutableReleasesSettings returned error: %v", err)
 	}
 
-	if resp.StatusCode != http.StatusOK {
-		t.Errorf("Expected status 200 OK, got %v", resp.StatusCode)
+	if resp.StatusCode != http.StatusNoContent {
+		t.Errorf("Expected status 204 No Content, got %v", resp.StatusCode)
 	}
 
-	const methodName = "SetImmutableReleasesPolicy"
+	const methodName = "UpdateImmutableReleasesSettings"
 
 	testBadOptions(t, methodName, func() error {
-		_, err := client.Organizations.SetImmutableReleasesPolicy(ctx, "\n", input)
+		_, err := client.Organizations.UpdateImmutableReleasesSettings(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		resp, err := client.Organizations.SetImmutableReleasesPolicy(ctx, "o", input)
+		resp, err := client.Organizations.UpdateImmutableReleasesSettings(ctx, "o", input)
 		return resp, err
 	})
 }
@@ -171,16 +167,16 @@ func TestOrganizationsService_SetImmutableReleaseRepositories(t *testing.T) {
 	mux.HandleFunc("/orgs/o/settings/immutable-releases/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 
-		var gotBody []int64
+		var gotBody setImmutableReleasesRepositoriesOptions
 		if err := json.NewDecoder(r.Body).Decode(&gotBody); err != nil {
 			t.Fatalf("Failed to decode request body: %v", err)
 		}
 
-		if !cmp.Equal(gotBody, input) {
-			t.Errorf("Request body = %+v, want %+v", gotBody, input)
+		if !cmp.Equal(gotBody.SelectedRepositoryIDs, input) {
+			t.Errorf("Request body = %+v, want %+v", gotBody.SelectedRepositoryIDs, input)
 		}
 
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
@@ -189,8 +185,8 @@ func TestOrganizationsService_SetImmutableReleaseRepositories(t *testing.T) {
 		t.Fatalf("SetImmutableReleaseRepositories returned error: %v", err)
 	}
 
-	if resp.StatusCode != http.StatusOK {
-		t.Errorf("Expected status 200 OK, got %v", resp.StatusCode)
+	if resp.StatusCode != http.StatusNoContent {
+		t.Errorf("Expected status 204 No Content, got %v", resp.StatusCode)
 	}
 
 	const methodName = "SetImmutableReleaseRepositories"
