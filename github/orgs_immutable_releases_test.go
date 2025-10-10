@@ -34,7 +34,7 @@ func TestOrganizationsService_GetImmutableReleasesSettings(t *testing.T) {
 
 	wantURL := "https://api.github.com/orgs/o/r"
 	want := &ImmutableReleaseSettings{
-		EnforcedRepositories:    "selected",
+		EnforcedRepositories:    Ptr("selected"),
 		SelectedRepositoriesURL: &wantURL,
 	}
 
@@ -62,8 +62,8 @@ func TestOrganizationsService_SetImmutableReleasesPolicy(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ImmutableReleaseRepository{
-		EnforcedRepositories: "selected",
+	input := ImmutableReleaseRepository{
+		EnforcedRepositories: Ptr("selected"),
 	}
 
 	mux.HandleFunc("/orgs/o/settings/immutable-releases", func(w http.ResponseWriter, r *http.Request) {
@@ -167,20 +167,17 @@ func TestOrganizationsService_SetImmutableReleaseRepositories(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SelectedRepositories{
-		SelectedRepositoryIDs: []int64{1, 2, 3},
-	}
-
+	input := []int64{1, 2, 3}
 	mux.HandleFunc("/orgs/o/settings/immutable-releases/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 
-		var gotBody SelectedRepositories
+		var gotBody []int64
 		if err := json.NewDecoder(r.Body).Decode(&gotBody); err != nil {
 			t.Fatalf("Failed to decode request body: %v", err)
 		}
 
-		if !cmp.Equal(gotBody, *input) {
-			t.Errorf("Request body = %+v, want %+v", gotBody, *input)
+		if !cmp.Equal(gotBody, input) {
+			t.Errorf("Request body = %+v, want %+v", gotBody, input)
 		}
 
 		w.WriteHeader(http.StatusOK)
@@ -189,7 +186,7 @@ func TestOrganizationsService_SetImmutableReleaseRepositories(t *testing.T) {
 	ctx := t.Context()
 	resp, err := client.Organizations.SetImmutableReleaseRepositories(ctx, "o", input)
 	if err != nil {
-		t.Errorf("Organizations.SetImmutableReleaseRepositories returned error: %v", err)
+		t.Fatalf("SetImmutableReleaseRepositories returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusOK {

@@ -12,9 +12,8 @@ import (
 
 // ImmutableReleaseSettings represents the response from the immutable releases settings endpoint.
 type ImmutableReleaseSettings struct {
-	// EnforcedRepositories specifies how immutable releases are enforced in the organization.
-	// Possible values include "all", "none", or "selected".
-	EnforcedRepositories string `json:"enforced_repositories,omitempty"`
+	// EnforcedRepositories specifies how immutable releases are enforced in the organization. Possible values include "all", "none", or "selected".
+	EnforcedRepositories *string `json:"enforced_repositories,omitempty"`
 	// SelectedRepositoriesURL provides the API URL for managing the repositories
 	// selected for immutable releases enforcement when EnforcedRepositories is set to "selected".
 	SelectedRepositoriesURL *string `json:"selected_repositories_url,omitempty"`
@@ -22,25 +21,16 @@ type ImmutableReleaseSettings struct {
 
 // ImmutableReleaseRepository for seting the immutable releases policy for repositories in an organization.
 type ImmutableReleaseRepository struct {
-	// EnforcedRepositories specifies how immutable releases are enforced in the organization.
-	// Possible values include "all", "none", or "selected".
-	EnforcedRepositories string `json:"enforced_repositories"`
+	// EnforcedRepositories specifies how immutable releases are enforced in the organization. Possible values include "all", "none", or "selected".
+	EnforcedRepositories *string `json:"enforced_repositories,omitempty"`
 	// An array of repository ids for which immutable releases enforcement should be applied.
 	// You can only provide a list of repository ids when the enforced_repositories is set to "selected"
-	SelectedRepositoriesIDs []int64 `json:"selected_repository_ids,omitempty"`
-}
-
-// SelectedRepositories represents the request body for setting repositories.
-type SelectedRepositories struct {
-	// An array of repository ids for which immutable releases enforcement should be applied.
-	// You can only provide a list of repository ids when the enforced_repositories is set to "selected"
-	SelectedRepositoryIDs []int64 `json:"selected_repository_ids"`
+	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
 }
 
 // GetImmutableReleasesSettings gets immutable releases settings for an organization.
 //
-// This endpoint returns the immutable releases configuration that applies to repositories
-// within the given organization.
+// This endpoint returns the immutable releases configuration that applies to repositories within the given organization.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#get-immutable-releases-settings-for-an-organization
 //
@@ -62,14 +52,12 @@ func (s *OrganizationsService) GetImmutableReleasesSettings(ctx context.Context,
 	return settings, resp, nil
 }
 
-// SetImmutableReleasesPolicy sets immutable releases settings for an organization/
-//
-// This endpoint sets the immutable releases policy for repositories in an organization.
+// SetImmutableReleasesPolicy sets immutable releases settings for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#set-immutable-releases-settings-for-an-organization
 //
-//meta:operation PUT /orgs/{org}/settings/immutable-releases
-func (s *OrganizationsService) SetImmutableReleasesPolicy(ctx context.Context, org string, opts *ImmutableReleaseRepository) (*Response, error) {
+// meta:operation PUT /orgs/{org}/settings/immutable-releases
+func (s *OrganizationsService) SetImmutableReleasesPolicy(ctx context.Context, org string, opts ImmutableReleaseRepository) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/immutable-releases", org)
 
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -116,16 +104,15 @@ func (s *OrganizationsService) ListImmutableReleaseRepositories(ctx context.Cont
 
 // SetImmutableReleaseRepositories sets selected repositories for immutable releases enforcement.
 //
-// This endpoint replaces all repositories that have been selected for immutable releases enforcement in an organization.
-// To use this endpoint, the organization immutable releases policy for enforced_repositories must be configured to selected.
+// Replaces all repositories selected for immutable releases enforcement in an organization. Requires the organization's immutable releases policy for enforced_repositories to be set to "selected".
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#set-selected-repositories-for-immutable-releases-enforcement
 //
 //meta:operation PUT /orgs/{org}/settings/immutable-releases/repositories
-func (s *OrganizationsService) SetImmutableReleaseRepositories(ctx context.Context, org string, opts *SelectedRepositories) (*Response, error) {
+func (s *OrganizationsService) SetImmutableReleaseRepositories(ctx context.Context, org string, repositoryIDs []int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/immutable-releases/repositories", org)
 
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest("PUT", u, repositoryIDs)
 	if err != nil {
 		return nil, err
 	}
@@ -138,10 +125,9 @@ func (s *OrganizationsService) SetImmutableReleaseRepositories(ctx context.Conte
 	return resp, nil
 }
 
-// EnableRepositoryForImmutableRelease enable a selected repository for immutable releases in an organization.
+// EnableRepositoryForImmutableRelease enables a selected repository for immutable releases in an organization.
 //
-// To add a repository to the list of selected repositories that are enforced for immutable releases in an organization.
-// To use this endpoint, the organization immutable releases policy for enforced_repositories must be configured to selected.
+// Adds a repository to the organization's selected list for immutable releases enforcement (requires enforced_repositories set to "selected").
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#enable-a-selected-repository-for-immutable-releases-in-an-organization
 //
@@ -162,10 +148,9 @@ func (s *OrganizationsService) EnableRepositoryForImmutableRelease(ctx context.C
 	return resp, nil
 }
 
-// DisableRepositoryForImmutableRelease disable a selected repository for immutable releases in an organization.
+// DisableRepositoryForImmutableRelease disables a selected repository for immutable releases in an organization.
 //
-// To remove a repository from the list of selected repositories that are enforced for immutable releases in an organization.
-// To use this endpoint, the organization immutable releases policy for enforced_repositories must be configured to selected.
+// Removes a repository from the organization's selected list for immutable releases enforcement (requires enforced_repositories set to "selected").
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#disable-a-selected-repository-for-immutable-releases-in-an-organization
 //
