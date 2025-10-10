@@ -28,6 +28,11 @@ type ImmutableReleaseRepository struct {
 	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
 }
 
+// setImmutableReleasesRepositoriesOptions represents the request body for setting repositories.
+type setImmutableReleasesRepositoriesOptions struct {
+	SelectedRepositoryIDs []int64 `json:"selected_repository_ids"`
+}
+
 // GetImmutableReleasesSettings gets immutable releases settings for an organization.
 //
 // This endpoint returns the immutable releases configuration that applies to repositories within the given organization.
@@ -112,7 +117,11 @@ func (s *OrganizationsService) ListImmutableReleaseRepositories(ctx context.Cont
 func (s *OrganizationsService) SetImmutableReleaseRepositories(ctx context.Context, org string, repositoryIDs []int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/immutable-releases/repositories", org)
 
-	req, err := s.client.NewRequest("PUT", u, repositoryIDs)
+	body := &setImmutableReleasesRepositoriesOptions{
+		SelectedRepositoryIDs: repositoryIDs,
+	}
+
+	req, err := s.client.NewRequest("PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
