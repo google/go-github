@@ -33,9 +33,7 @@ type setImmutableReleasesRepositoriesOptions struct {
 	SelectedRepositoryIDs []int64 `json:"selected_repository_ids"`
 }
 
-// GetImmutableReleasesSettings gets immutable releases settings for an organization.
-//
-// This endpoint returns the immutable releases configuration that applies to repositories within the given organization.
+// GetImmutableReleasesSettings returns the immutable releases configuration that applies to repositories within the given organization.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#get-immutable-releases-settings-for-an-organization
 //
@@ -78,9 +76,7 @@ func (s *OrganizationsService) UpdateImmutableReleasesSettings(ctx context.Conte
 	return resp, nil
 }
 
-// ListImmutableReleaseRepositories lists selected repositories for immutable releases enforcement.
-//
-// This endpoint gives a list of all the repositories that have been selected for immutable releases enforcement in an organization.
+// ListImmutableReleaseRepositories lists selected repositories for immutable releases enforcement in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#list-selected-repositories-for-immutable-releases-enforcement
 //
@@ -108,8 +104,7 @@ func (s *OrganizationsService) ListImmutableReleaseRepositories(ctx context.Cont
 }
 
 // SetImmutableReleaseRepositories sets selected repositories for immutable releases enforcement.
-//
-// Replaces all repositories selected for immutable releases enforcement in an organization. Requires the organization's immutable releases policy for enforced_repositories to be set to "selected".
+// It requires the organization's immutable releases policy for enforced_repositories to be set to "selected".
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#set-selected-repositories-for-immutable-releases-enforcement
 //
@@ -135,8 +130,7 @@ func (s *OrganizationsService) SetImmutableReleaseRepositories(ctx context.Conte
 }
 
 // EnableRepositoryForImmutableRelease enables a selected repository for immutable releases in an organization.
-//
-// Adds a repository to the organization's selected list for immutable releases enforcement (requires enforced_repositories set to "selected").
+// It requires enforced_repositories to be set to "selected".
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#enable-a-selected-repository-for-immutable-releases-in-an-organization
 //
@@ -157,9 +151,8 @@ func (s *OrganizationsService) EnableRepositoryForImmutableRelease(ctx context.C
 	return resp, nil
 }
 
-// DisableRepositoryForImmutableRelease disables a selected repository for immutable releases in an organization.
-//
-// Removes a repository from the organization's selected list for immutable releases enforcement (requires enforced_repositories set to "selected").
+// DisableRepositoryForImmutableRelease removes a repository from the organization's selected list for immutable releases enforcement.
+// It requires enforced_repositories to be set to "selected".
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#disable-a-selected-repository-for-immutable-releases-in-an-organization
 //
