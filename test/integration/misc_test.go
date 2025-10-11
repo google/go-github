@@ -41,8 +41,8 @@ func TestAPIMeta(t *testing.T) {
 		t.Error("Get returned no git addresses")
 	}
 
-	if !*meta.VerifiablePasswordAuthentication {
-		t.Error("APIMeta VerifiablePasswordAuthentication is false")
+	if *meta.VerifiablePasswordAuthentication {
+		t.Error("APIMeta VerifiablePasswordAuthentication is true")
 	}
 }
 

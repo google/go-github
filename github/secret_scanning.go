@@ -120,6 +120,53 @@ type SecretScanningAlertUpdateOptions struct {
 	ResolutionComment *string `json:"resolution_comment,omitempty"`
 }
 
+// PushProtectionBypassRequest represents the parameters for CreatePushProtectionBypass.
+type PushProtectionBypassRequest struct {
+	// The reason for bypassing push protection.
+	// Can be one of: false_positive, used_in_tests, will_fix_later
+	Reason string `json:"reason"`
+	// PlaceholderID is an identifier used for the bypass request.
+	// GitHub Secret Scanning provides you with a unique PlaceholderID associated with that specific blocked push.
+	PlaceholderID string `json:"placeholder_id"`
+}
+
+// PushProtectionBypass represents the response from CreatePushProtectionBypass.
+type PushProtectionBypass struct {
+	// The reason for bypassing push protection.
+	Reason string `json:"reason"`
+	// The time that the bypass will expire in ISO 8601 format.
+	ExpireAt *Timestamp `json:"expire_at"`
+	// The token type this bypass is for.
+	TokenType string `json:"token_type"`
+}
+
+// SecretsScan represents the common fields for a secret scanning scan.
+type SecretsScan struct {
+	Type        string     `json:"type"`
+	Status      string     `json:"status"`
+	CompletedAt *Timestamp `json:"completed_at,omitempty"`
+	StartedAt   *Timestamp `json:"started_at,omitempty"`
+}
+
+// CustomPatternBackfillScan represents a scan with an associated custom pattern.
+type CustomPatternBackfillScan struct {
+	SecretsScan
+	PatternSlug  *string `json:"pattern_slug,omitempty"`
+	PatternScope *string `json:"pattern_scope,omitempty"`
+}
+
+// SecretScanningScanHistory is the top-level struct for the secret scanning API response.
+type SecretScanningScanHistory struct {
+	// Information on incremental scan performed by secret scanning on the repository.
+	IncrementalScans []*SecretsScan `json:"incremental_scans,omitempty"`
+	// Information on backfill scan performed by secret scanning on the repository.
+	BackfillScans []*SecretsScan `json:"backfill_scans,omitempty"`
+	// Information on pattern update scan performed by secret scanning on the repository.
+	PatternUpdateScans []*SecretsScan `json:"pattern_update_scans,omitempty"`
+	// Information on custom pattern backfill scan performed by secret scanning on the repository.
+	CustomPatternBackfillScans []*CustomPatternBackfillScan `json:"custom_pattern_backfill_scans,omitempty"`
+}
+
 // ListAlertsForEnterprise lists secret scanning alerts for eligible repositories in an enterprise, from newest to oldest.
 //
 // To use this endpoint, you must be a member of the enterprise, and you must use an access token with the repo scope or
@@ -284,4 +331,53 @@ func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner
 	}
 
 	return locations, resp, nil
+}
+
+// CreatePushProtectionBypass creates a push protection bypass for a given repository.
+//
+// To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
+// the repo scope or security_events scope.
+//
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#create-a-push-protection-bypass
+//
+//meta:operation POST /repos/{owner}/{repo}/secret-scanning/push-protection-bypasses
+func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, owner, repo string, request PushProtectionBypassRequest) (*PushProtectionBypass, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, request)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var pushProtectionBypass *PushProtectionBypass
+	resp, err := s.client.Do(ctx, req, &pushProtectionBypass)
+	if err != nil {
+		return nil, resp, err
+	}
+	return pushProtectionBypass, resp, nil
+}
+
+// GetScanHistory fetches the secret scanning history for a given repository.
+//
+// To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
+// the repo scope or security_events scope and gitHub advanced security or secret scanning must be enabled.
+//
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#get-secret-scanning-scan-history-for-a-repository
+//
+//meta:operation GET /repos/{owner}/{repo}/secret-scanning/scan-history
+func (s *SecretScanningService) GetScanHistory(ctx context.Context, owner, repo string) (*SecretScanningScanHistory, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/secret-scanning/scan-history", owner, repo)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var secretScanningHistory *SecretScanningScanHistory
+	resp, err := s.client.Do(ctx, req, &secretScanningHistory)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return secretScanningHistory, resp, nil
 }

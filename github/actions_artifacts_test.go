@@ -94,7 +94,7 @@ func TestActionsService_ListArtifacts_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.ListArtifacts return status %d, want %d", got, want)
+		t.Errorf("Actions.ListArtifacts return status %v, want %v", got, want)
 	}
 	if artifacts != nil {
 		t.Errorf("Actions.ListArtifacts return %+v, want nil", artifacts)
@@ -176,7 +176,7 @@ func TestActionsService_ListWorkflowRunArtifacts_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.ListWorkflowRunArtifacts return status %d, want %d", got, want)
+		t.Errorf("Actions.ListWorkflowRunArtifacts return status %v, want %v", got, want)
 	}
 	if artifacts != nil {
 		t.Errorf("Actions.ListWorkflowRunArtifacts return %+v, want nil", artifacts)
@@ -263,7 +263,7 @@ func TestActionsService_GetArtifact_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.GetArtifact return status %d, want %d", got, want)
+		t.Errorf("Actions.GetArtifact return status %v, want %v", got, want)
 	}
 	if artifact != nil {
 		t.Errorf("Actions.GetArtifact return %+v, want nil", artifact)
@@ -304,12 +304,12 @@ func TestActionsService_DownloadArtifact(t *testing.T) {
 				t.Errorf("Actions.DownloadArtifact returned error: %v", err)
 			}
 			if resp.StatusCode != http.StatusFound {
-				t.Errorf("Actions.DownloadArtifact returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+				t.Errorf("Actions.DownloadArtifact returned status: %v, want %v", resp.StatusCode, http.StatusFound)
 			}
 
 			want := "https://github.com/artifact"
 			if url.String() != want {
-				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "DownloadArtifact"
@@ -420,7 +420,7 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_dontFollowRedire
 			ctx := t.Context()
 			_, resp, _ := client.Actions.DownloadArtifact(ctx, "o", "r", 1, 0)
 			if resp.StatusCode != http.StatusMovedPermanently {
-				t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+				t.Errorf("Actions.DownloadArtifact return status %v, want %v", resp.StatusCode, http.StatusMovedPermanently)
 			}
 		})
 	}
@@ -464,11 +464,11 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 				t.Errorf("Actions.DownloadArtifact return error: %v", err)
 			}
 			if resp.StatusCode != http.StatusFound {
-				t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusFound)
+				t.Errorf("Actions.DownloadArtifact return status %v, want %v", resp.StatusCode, http.StatusFound)
 			}
 			want := "https://github.com/artifact"
 			if url.String() != want {
-				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
+				t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url, want)
 			}
 		})
 	}
@@ -515,7 +515,7 @@ func TestActionsService_DownloadArtifact_unexpectedCode(t *testing.T) {
 				t.Error("Actions.DownloadArtifact should return unexpected status code")
 			}
 			if got, want := resp.Response.StatusCode, http.StatusNoContent; got != want {
-				t.Errorf("Actions.DownloadArtifact return status %d, want %d", got, want)
+				t.Errorf("Actions.DownloadArtifact return status %v, want %v", got, want)
 			}
 			if url != nil {
 				t.Errorf("Actions.DownloadArtifact return %+v, want nil", url)
@@ -582,7 +582,7 @@ func TestActionsService_DeleteArtifact_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.DeleteArtifact return status %d, want %d", got, want)
+		t.Errorf("Actions.DeleteArtifact return status %v, want %v", got, want)
 	}
 }
 

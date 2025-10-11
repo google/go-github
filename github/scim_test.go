@@ -568,7 +568,7 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 			StartIndex: Ptr(1),
 			Count:      Ptr(10),
 		},
-		fmt.Sprintf("%s?count=10&startIndex=1", url),
+		fmt.Sprintf("%v?count=10&startIndex=1", url),
 	)
 
 	testAddURLOptions(
@@ -579,7 +579,7 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 			Count:      Ptr(10),
 			Filter:     Ptr("test"),
 		},
-		fmt.Sprintf("%s?count=10&filter=test&startIndex=1", url),
+		fmt.Sprintf("%v?count=10&filter=test&startIndex=1", url),
 	)
 }
 

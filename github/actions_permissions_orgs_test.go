@@ -477,7 +477,7 @@ func TestActionsService_UpdateArtifactAndLogRetentionPeriodInOrganization(t *tes
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.UpdateArtifactAndLogRetentionPeriodInOrganization = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdateArtifactAndLogRetentionPeriodInOrganization = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdateArtifactAndLogRetentionPeriodInOrganization"
@@ -552,7 +552,7 @@ func TestActionsService_UpdateSelfHostedRunnersSettingsInOrganization(t *testing
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.UpdateSelfHostedRunnersSettingsInOrganization = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdateSelfHostedRunnersSettingsInOrganization = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdateSelfHostedRunnersSettingsInOrganization"
@@ -760,7 +760,7 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(t 
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.UpdatePrivateRepoForkPRWorkflowSettingsInOrganization = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdatePrivateRepoForkPRWorkflowSettingsInOrganization = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdatePrivateRepoForkPRWorkflowSettingsInOrganization"
@@ -771,5 +771,77 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(t 
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(ctx, "o", input)
+	})
+}
+
+func TestActionsService_GetOrganizationForkPRContributorApprovalPermissions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"approval_policy": "require_approval"}`)
+	})
+
+	ctx := t.Context()
+	policy, _, err := client.Actions.GetOrganizationForkPRContributorApprovalPermissions(ctx, "o")
+	if err != nil {
+		t.Errorf("Actions.GetOrganizationForkPRContributorApprovalPermissions returned error: %v", err)
+	}
+	want := &ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
+	if !cmp.Equal(policy, want) {
+		t.Errorf("Actions.GetOrganizationForkPRContributorApprovalPermissions returned %+v, want %+v", policy, want)
+	}
+
+	const methodName = "GetOrganizationForkPRContributorApprovalPermissions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetOrganizationForkPRContributorApprovalPermissions(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetOrganizationForkPRContributorApprovalPermissions(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_UpdateOrganizationForkPRContributorApprovalPermissions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
+
+	mux.HandleFunc("/orgs/o/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ContributorApprovalPermissions)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, &input) {
+			t.Errorf("Request body = %+v, want %+v", v, &input)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Actions.UpdateOrganizationForkPRContributorApprovalPermissions(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Actions.UpdateOrganizationForkPRContributorApprovalPermissions returned error: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusNoContent {
+		t.Errorf("Actions.UpdateOrganizationForkPRContributorApprovalPermissions = %v, want %v", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "UpdateOrganizationForkPRContributorApprovalPermissions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.UpdateOrganizationForkPRContributorApprovalPermissions(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.UpdateOrganizationForkPRContributorApprovalPermissions(ctx, "o", input)
 	})
 }

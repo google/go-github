@@ -76,13 +76,23 @@ type WorkflowsPermissionsOpt struct {
 	RequireApprovalForForkPRWorkflows *bool `json:"require_approval_for_fork_pr_workflows,omitempty"`
 }
 
+// ContributorApprovalPermissions represents the policy that controls
+// when fork PR workflows require approval from a maintainer.
+type ContributorApprovalPermissions struct {
+	ApprovalPolicy string `json:"approval_policy"`
+}
+
+func (p ContributorApprovalPermissions) String() string {
+	return Stringify(p)
+}
+
 // ListWorkflows lists all workflows in a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflows#list-repository-workflows
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/workflows
 func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, opts *ListOptions) (*Workflows, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/workflows", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/actions/workflows", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err

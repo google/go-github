@@ -155,7 +155,7 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 	for _, contents := range dirContents {
 		if contents.GetName() == filename {
 			if contents.GetDownloadURL() == "" {
-				return nil, resp, fmt.Errorf("no download link found for %s", filepath)
+				return nil, resp, fmt.Errorf("no download link found for %v", filepath)
 			}
 			dlReq, err := http.NewRequestWithContext(ctx, "GET", *contents.DownloadURL, nil)
 			if err != nil {
@@ -170,7 +170,7 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 		}
 	}
 
-	return nil, resp, fmt.Errorf("no file named %s found in %s", filename, dir)
+	return nil, resp, fmt.Errorf("no file named %v found in %v", filename, dir)
 }
 
 // DownloadContentsWithMeta is identical to DownloadContents but additionally
@@ -204,7 +204,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 	for _, contents := range dirContents {
 		if contents.GetName() == filename {
 			if contents.GetDownloadURL() == "" {
-				return nil, contents, resp, fmt.Errorf("no download link found for %s", filepath)
+				return nil, contents, resp, fmt.Errorf("no download link found for %v", filepath)
 			}
 			dlReq, err := http.NewRequestWithContext(ctx, "GET", *contents.DownloadURL, nil)
 			if err != nil {
@@ -219,7 +219,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 		}
 	}
 
-	return nil, nil, resp, fmt.Errorf("no file named %s found in %s", filename, dir)
+	return nil, nil, resp, fmt.Errorf("no file named %v found in %v", filename, dir)
 }
 
 // GetContents can return either the metadata and content of a single file
@@ -241,7 +241,7 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 	}
 
 	escapedPath := (&url.URL{Path: strings.TrimSuffix(path, "/")}).String()
-	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, escapedPath)
+	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, nil, err
@@ -268,7 +268,7 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 		return nil, directoryContent, resp, nil
 	}
 
-	return nil, nil, resp, fmt.Errorf("unmarshaling failed for both file and directory content: %s and %s", fileUnmarshalError, directoryUnmarshalError)
+	return nil, nil, resp, fmt.Errorf("unmarshaling failed for both file and directory content: %v and %v", fileUnmarshalError, directoryUnmarshalError)
 }
 
 // CreateFile creates a new file in a repository at the given path and returns
@@ -278,7 +278,7 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
+	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -300,7 +300,7 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
+	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -322,7 +322,7 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 //
 //meta:operation DELETE /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
+	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
 	req, err := s.client.NewRequest("DELETE", u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -358,9 +358,9 @@ const (
 //meta:operation GET /repos/{owner}/{repo}/tarball/{ref}
 //meta:operation GET /repos/{owner}/{repo}/zipball/{ref}
 func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat ArchiveFormat, opts *RepositoryContentGetOptions, maxRedirects int) (*url.URL, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
+	u := fmt.Sprintf("repos/%v/%v/%v", owner, repo, archiveformat)
 	if opts != nil && opts.Ref != "" {
-		u += fmt.Sprintf("/%s", opts.Ref)
+		u += fmt.Sprintf("/%v", opts.Ref)
 	}
 
 	if s.client.RateLimitRedirectionalEndpoints {

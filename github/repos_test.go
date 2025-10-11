@@ -1018,7 +1018,7 @@ func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t 
 		t.Errorf("Repositories.GetBranch returned error: %v", err)
 	}
 	if resp.StatusCode != http.StatusOK {
-		t.Errorf("Repositories.GetBranch returned status: %d, want %d", resp.StatusCode, http.StatusOK)
+		t.Errorf("Repositories.GetBranch returned status: %v, want %v", resp.StatusCode, http.StatusOK)
 	}
 
 	want := &Branch{
@@ -1066,7 +1066,7 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 				t.Error("Repositories.GetBranch returned error: nil")
 			}
 			if resp.StatusCode != http.StatusNotFound {
-				t.Errorf("Repositories.GetBranch returned status: %d, want %d", resp.StatusCode, http.StatusNotFound)
+				t.Errorf("Repositories.GetBranch returned status: %v, want %v", resp.StatusCode, http.StatusNotFound)
 			}
 
 			// Add custom round tripper
@@ -1193,7 +1193,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 							"required_approving_review_count":1
 							},
 							"enforce_admins":{
-								"url":"%s",
+								"url":"%v",
 								"enabled":true
 							},
 							"restrictions":{
@@ -1333,7 +1333,7 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 						"required_approving_review_count":1
 						},
 						"enforce_admins":{
-							"url":"%s",
+							"url":"%v",
 							"enabled":true
 						},
 						"restrictions":{

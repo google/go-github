@@ -186,7 +186,7 @@ func (m *operationsFile) updateFromGithub(ctx context.Context, client *github.Cl
 		return err
 	}
 	if resp.StatusCode != 200 {
-		return fmt.Errorf("unexpected status code: %s", resp.Status)
+		return fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 	ops, err := getOpsFromGithub(ctx, client, ref)
 	if err != nil {
@@ -281,7 +281,7 @@ func updateDocsVisitor(opsFile *operationsFile) nodeVisitor {
 			return err
 		}
 		if len(ops) == 0 {
-			return fmt.Errorf("no operations defined for %s", serviceMethod)
+			return fmt.Errorf("no operations defined for %v", serviceMethod)
 		}
 
 		for _, op := range ops {
@@ -343,12 +343,12 @@ func updateDocsVisitor(opsFile *operationsFile) nodeVisitor {
 		}
 		_, methodName, _ := strings.Cut(serviceMethod, ".")
 		for _, opName := range undocumentedOps {
-			line := fmt.Sprintf("// Note: %s uses the undocumented GitHub API endpoint %q.", methodName, opName)
+			line := fmt.Sprintf("// Note: %v uses the undocumented GitHub API endpoint %q.", methodName, opName)
 			group.List = append(group.List, &ast.Comment{Text: line})
 		}
 		for _, op := range ops {
 			group.List = append(group.List, &ast.Comment{
-				Text: fmt.Sprintf("//meta:operation %s", op.Name),
+				Text: fmt.Sprintf("//meta:operation %v", op.Name),
 			})
 		}
 		group.List[0].Slash = fn.Pos() - 1
@@ -466,7 +466,7 @@ func methodOps(opsFile *operationsFile, cmap ast.CommentMap, fn *ast.FuncDecl) (
 			case 1:
 				name := found[0].Name
 				if seen[name] {
-					err = errors.Join(err, fmt.Errorf("duplicate operation: %s", name))
+					err = errors.Join(err, fmt.Errorf("duplicate operation: %v", name))
 				}
 				seen[name] = true
 				ops = append(ops, found[0])

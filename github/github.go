@@ -353,7 +353,7 @@ func (c *Client) WithAuthToken(token string) *Client {
 	c2.client.Transport = roundTripperFunc(
 		func(req *http.Request) (*http.Response, error) {
 			req = req.Clone(req.Context())
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+			req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
 			return transport.RoundTrip(req)
 		},
 	)
@@ -1169,13 +1169,13 @@ type ErrorBlock struct {
 
 func (r *ErrorResponse) Error() string {
 	if r.Response != nil && r.Response.Request != nil {
-		return fmt.Sprintf("%v %v: %d %v %+v",
+		return fmt.Sprintf("%v %v: %v %v %+v",
 			r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 			r.Response.StatusCode, r.Message, r.Errors)
 	}
 
 	if r.Response != nil {
-		return fmt.Sprintf("%d %v %+v", r.Response.StatusCode, r.Message, r.Errors)
+		return fmt.Sprintf("%v %v %+v", r.Response.StatusCode, r.Message, r.Errors)
 	}
 
 	return fmt.Sprintf("%v %+v", r.Message, r.Errors)
@@ -1241,7 +1241,7 @@ type RateLimitError struct {
 }
 
 func (r *RateLimitError) Error() string {
-	return fmt.Sprintf("%v %v: %d %v %v",
+	return fmt.Sprintf("%v %v: %v %v %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message, formatRateReset(time.Until(r.Rate.Reset.Time)))
 }
@@ -1295,7 +1295,7 @@ type AbuseRateLimitError struct {
 }
 
 func (r *AbuseRateLimitError) Error() string {
-	return fmt.Sprintf("%v %v: %d %v",
+	return fmt.Sprintf("%v %v: %v %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message)
 }
@@ -1329,7 +1329,7 @@ type RedirectionError struct {
 }
 
 func (r *RedirectionError) Error() string {
-	return fmt.Sprintf("%v %v: %d location %v",
+	return fmt.Sprintf("%v %v: %v location %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 		r.StatusCode, sanitizeURL(r.Location))
 }
@@ -1699,9 +1699,9 @@ func formatRateReset(d time.Duration) string {
 
 	var timeString string
 	if minutes > 0 {
-		timeString = fmt.Sprintf("%dm%02ds", minutes, seconds)
+		timeString = fmt.Sprintf("%vm%02ds", minutes, seconds)
 	} else {
-		timeString = fmt.Sprintf("%ds", seconds)
+		timeString = fmt.Sprintf("%vs", seconds)
 	}
 
 	if isNegative {
