@@ -38,12 +38,11 @@ func TestEnterpriseService_GetConsumedLicenses(t *testing.T) {
 				"github_com_verified_domain_emails": ["user1@example.com"],
 				"github_com_saml_name_id": "saml123",
 				"github_com_orgs_with_pending_invites": [],
-				"github_com_two_factor_auth": ["enabled"],
+				"github_com_two_factor_auth": true,
 				"enterprise_server_emails": ["user1@enterprise.local"],
 				"visual_studio_license_status": "active",
 				"visual_studio_subscription_email": "user1@visualstudio.com",
-				"total_user_accounts": 1,
-				"github_com_enterprise_role": "owner"
+				"total_user_accounts": 1
 			}]
 		}`)
 	})
@@ -55,30 +54,37 @@ func TestEnterpriseService_GetConsumedLicenses(t *testing.T) {
 		t.Errorf("Enterprise.GetConsumedLicenses returned error: %v", err)
 	}
 
+	userName := "User One"
+	serverUser := false
+	profile := "https://github.com/user1"
+	samlNameID := "saml123"
+	twoFactorAuth := true
+	licenseStatus := "active"
+	vsEmail := "user1@visualstudio.com"
+
 	want := &EnterpriseConsumedLicenses{
 		TotalSeatsConsumed:  20,
 		TotalSeatsPurchased: 25,
 		Users: []*EnterpriseLicensedUsers{
 			{
 				GithubComLogin:                  "user1",
-				GithubComName:                   "User One",
+				GithubComName:                   &userName,
 				EnterpriseServerUserIDs:         []string{"123", "456"},
 				GithubComUser:                   true,
-				EnterpriseServerUser:            false,
+				EnterpriseServerUser:            &serverUser,
 				VisualStudioSubscriptionUser:    false,
 				LicenseType:                     "Enterprise",
-				GithubComProfile:                "https://github.com/user1",
+				GithubComProfile:                &profile,
 				GithubComMemberRoles:            []string{"member"},
 				GithubComEnterpriseRoles:        []string{"member"},
 				GithubComVerifiedDomainEmails:   []string{"user1@example.com"},
-				GithubComSamlNameID:             "saml123",
+				GithubComSamlNameID:             &samlNameID,
 				GithubComOrgsWithPendingInvites: []string{},
-				GithubComTwoFactorAuth:          []string{"enabled"},
+				GithubComTwoFactorAuth:          &twoFactorAuth,
 				EnterpriseServerEmails:          []string{"user1@enterprise.local"},
-				VisualStudioLicenseStatus:       "active",
-				VisualStudioSubscriptionEmail:   "user1@visualstudio.com",
+				VisualStudioLicenseStatus:       &licenseStatus,
+				VisualStudioSubscriptionEmail:   &vsEmail,
 				TotalUserAccounts:               1,
-				GithubComEnterpriseRole:         "owner",
 			},
 		},
 	}

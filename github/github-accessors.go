@@ -9078,6 +9078,62 @@ func (e *Enterprise) GetWebsiteURL() string {
 	return *e.WebsiteURL
 }
 
+// GetEnterpriseServerUser returns the EnterpriseServerUser field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetEnterpriseServerUser() bool {
+	if e == nil || e.EnterpriseServerUser == nil {
+		return false
+	}
+	return *e.EnterpriseServerUser
+}
+
+// GetGithubComName returns the GithubComName field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetGithubComName() string {
+	if e == nil || e.GithubComName == nil {
+		return ""
+	}
+	return *e.GithubComName
+}
+
+// GetGithubComProfile returns the GithubComProfile field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetGithubComProfile() string {
+	if e == nil || e.GithubComProfile == nil {
+		return ""
+	}
+	return *e.GithubComProfile
+}
+
+// GetGithubComSamlNameID returns the GithubComSamlNameID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetGithubComSamlNameID() string {
+	if e == nil || e.GithubComSamlNameID == nil {
+		return ""
+	}
+	return *e.GithubComSamlNameID
+}
+
+// GetGithubComTwoFactorAuth returns the GithubComTwoFactorAuth field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetGithubComTwoFactorAuth() bool {
+	if e == nil || e.GithubComTwoFactorAuth == nil {
+		return false
+	}
+	return *e.GithubComTwoFactorAuth
+}
+
+// GetVisualStudioLicenseStatus returns the VisualStudioLicenseStatus field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetVisualStudioLicenseStatus() string {
+	if e == nil || e.VisualStudioLicenseStatus == nil {
+		return ""
+	}
+	return *e.VisualStudioLicenseStatus
+}
+
+// GetVisualStudioSubscriptionEmail returns the VisualStudioSubscriptionEmail field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetVisualStudioSubscriptionEmail() string {
+	if e == nil || e.VisualStudioSubscriptionEmail == nil {
+		return ""
+	}
+	return *e.VisualStudioSubscriptionEmail
+}
+
 // GetProperties returns the Properties field.
 func (e *EnterpriseLicenseSyncStatus) GetProperties() *ServerInstanceProperties {
 	if e == nil {

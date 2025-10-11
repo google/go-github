@@ -11749,6 +11749,83 @@ func TestEnterprise_GetWebsiteURL(tt *testing.T) {
 	e.GetWebsiteURL()
 }
 
+func TestEnterpriseLicensedUsers_GetEnterpriseServerUser(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	e := &EnterpriseLicensedUsers{EnterpriseServerUser: &zeroValue}
+	e.GetEnterpriseServerUser()
+	e = &EnterpriseLicensedUsers{}
+	e.GetEnterpriseServerUser()
+	e = nil
+	e.GetEnterpriseServerUser()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseLicensedUsers{GithubComName: &zeroValue}
+	e.GetGithubComName()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComName()
+	e = nil
+	e.GetGithubComName()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComProfile(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseLicensedUsers{GithubComProfile: &zeroValue}
+	e.GetGithubComProfile()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComProfile()
+	e = nil
+	e.GetGithubComProfile()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComSamlNameID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseLicensedUsers{GithubComSamlNameID: &zeroValue}
+	e.GetGithubComSamlNameID()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComSamlNameID()
+	e = nil
+	e.GetGithubComSamlNameID()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComTwoFactorAuth(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	e := &EnterpriseLicensedUsers{GithubComTwoFactorAuth: &zeroValue}
+	e.GetGithubComTwoFactorAuth()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComTwoFactorAuth()
+	e = nil
+	e.GetGithubComTwoFactorAuth()
+}
+
+func TestEnterpriseLicensedUsers_GetVisualStudioLicenseStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseLicensedUsers{VisualStudioLicenseStatus: &zeroValue}
+	e.GetVisualStudioLicenseStatus()
+	e = &EnterpriseLicensedUsers{}
+	e.GetVisualStudioLicenseStatus()
+	e = nil
+	e.GetVisualStudioLicenseStatus()
+}
+
+func TestEnterpriseLicensedUsers_GetVisualStudioSubscriptionEmail(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseLicensedUsers{VisualStudioSubscriptionEmail: &zeroValue}
+	e.GetVisualStudioSubscriptionEmail()
+	e = &EnterpriseLicensedUsers{}
+	e.GetVisualStudioSubscriptionEmail()
+	e = nil
+	e.GetVisualStudioSubscriptionEmail()
+}
+
 func TestEnterpriseLicenseSyncStatus_GetProperties(tt *testing.T) {
 	tt.Parallel()
 	e := &EnterpriseLicenseSyncStatus{}

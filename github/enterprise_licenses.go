@@ -10,34 +10,33 @@ import (
 	"fmt"
 )
 
-// EnterpriseLicensedUsers represents users that hold an enterprise license.
-type EnterpriseLicensedUsers struct {
-	GithubComLogin                  string   `json:"github_com_login"`
-	GithubComName                   string   `json:"github_com_name"`
-	EnterpriseServerUserIDs         []string `json:"enterprise_server_user_ids"`
-	GithubComUser                   bool     `json:"github_com_user"`
-	EnterpriseServerUser            bool     `json:"enterprise_server_user"`
-	VisualStudioSubscriptionUser    bool     `json:"visual_studio_subscription_user"`
-	LicenseType                     string   `json:"license_type"`
-	GithubComProfile                string   `json:"github_com_profile"`
-	GithubComMemberRoles            []string `json:"github_com_member_roles"`
-	GithubComEnterpriseRoles        []string `json:"github_com_enterprise_roles"`
-	GithubComVerifiedDomainEmails   []string `json:"github_com_verified_domain_emails"`
-	GithubComSamlNameID             string   `json:"github_com_saml_name_id"`
-	GithubComOrgsWithPendingInvites []string `json:"github_com_orgs_with_pending_invites"`
-	GithubComTwoFactorAuth          []string `json:"github_com_two_factor_auth"`
-	EnterpriseServerEmails          []string `json:"enterprise_server_emails"`
-	VisualStudioLicenseStatus       string   `json:"visual_studio_license_status"`
-	VisualStudioSubscriptionEmail   string   `json:"visual_studio_subscription_email"`
-	TotalUserAccounts               int      `json:"total_user_accounts"`
-	GithubComEnterpriseRole         string   `json:"github_com_enterprise_role,omitempty"`
-}
-
 // EnterpriseConsumedLicenses represents information about users with consumed enterprise licenses.
 type EnterpriseConsumedLicenses struct {
 	TotalSeatsConsumed  int                        `json:"total_seats_consumed"`
 	TotalSeatsPurchased int                        `json:"total_seats_purchased"`
 	Users               []*EnterpriseLicensedUsers `json:"users,omitempty"`
+}
+
+// EnterpriseLicensedUsers represents a user with license information in an enterprise.
+type EnterpriseLicensedUsers struct {
+	GithubComLogin                  string   `json:"github_com_login"`
+	GithubComName                   *string  `json:"github_com_name"`
+	EnterpriseServerUserIDs         []string `json:"enterprise_server_user_ids,omitempty"`
+	GithubComUser                   bool     `json:"github_com_user"`
+	EnterpriseServerUser            *bool    `json:"enterprise_server_user"`
+	VisualStudioSubscriptionUser    bool     `json:"visual_studio_subscription_user"`
+	LicenseType                     string   `json:"license_type"`
+	GithubComProfile                *string  `json:"github_com_profile"`
+	GithubComMemberRoles            []string `json:"github_com_member_roles,omitempty"`
+	GithubComEnterpriseRoles        []string `json:"github_com_enterprise_roles,omitempty"`
+	GithubComVerifiedDomainEmails   []string `json:"github_com_verified_domain_emails,omitempty"`
+	GithubComSamlNameID             *string  `json:"github_com_saml_name_id"`
+	GithubComOrgsWithPendingInvites []string `json:"github_com_orgs_with_pending_invites,omitempty"`
+	GithubComTwoFactorAuth          *bool    `json:"github_com_two_factor_auth"`
+	EnterpriseServerEmails          []string `json:"enterprise_server_emails,omitempty"`
+	VisualStudioLicenseStatus       *string  `json:"visual_studio_license_status"`
+	VisualStudioSubscriptionEmail   *string  `json:"visual_studio_subscription_email"`
+	TotalUserAccounts               int      `json:"total_user_accounts"`
 }
 
 // EnterpriseLicenseSyncStatus represents the synchronization status of
