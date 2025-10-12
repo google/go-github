@@ -19,8 +19,8 @@ type ImmutableReleaseSettings struct {
 	SelectedRepositoriesURL *string `json:"selected_repositories_url,omitempty"`
 }
 
-// ImmutableReleaseRepository is for setting the immutable releases policy for repositories in an organization.
-type ImmutableReleaseRepository struct {
+// ImmutableReleasePolicy is for setting the immutable releases policy for repositories in an organization.
+type ImmutableReleasePolicy struct {
 	// EnforcedRepositories specifies how immutable releases are enforced in the organization. Possible values include "all", "none", or "selected".
 	EnforcedRepositories *string `json:"enforced_repositories,omitempty"`
 	// An array of repository ids for which immutable releases enforcement should be applied.
@@ -60,7 +60,7 @@ func (s *OrganizationsService) GetImmutableReleasesSettings(ctx context.Context,
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs#set-immutable-releases-settings-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/settings/immutable-releases
-func (s *OrganizationsService) UpdateImmutableReleasesSettings(ctx context.Context, org string, opts ImmutableReleaseRepository) (*Response, error) {
+func (s *OrganizationsService) UpdateImmutableReleasesSettings(ctx context.Context, org string, opts ImmutableReleasePolicy) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/immutable-releases", org)
 
 	req, err := s.client.NewRequest("PUT", u, opts)

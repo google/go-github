@@ -10887,7 +10887,7 @@ func (i *IDPGroup) GetGroupName() string {
 }
 
 // GetEnforcedRepositories returns the EnforcedRepositories field if it's non-nil, zero value otherwise.
-func (i *ImmutableReleaseRepository) GetEnforcedRepositories() string {
+func (i *ImmutableReleasePolicy) GetEnforcedRepositories() string {
 	if i == nil || i.EnforcedRepositories == nil {
 		return ""
 	}

@@ -62,7 +62,7 @@ func TestOrganizationsService_UpdateImmutableReleasesSettings(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := ImmutableReleaseRepository{
+	input := ImmutableReleasePolicy{
 		EnforcedRepositories: Ptr("selected"),
 	}
 

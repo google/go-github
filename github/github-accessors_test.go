@@ -14121,12 +14121,12 @@ func TestIDPGroup_GetGroupName(tt *testing.T) {
 	i.GetGroupName()
 }
 
-func TestImmutableReleaseRepository_GetEnforcedRepositories(tt *testing.T) {
+func TestImmutableReleasePolicy_GetEnforcedRepositories(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	i := &ImmutableReleaseRepository{EnforcedRepositories: &zeroValue}
+	i := &ImmutableReleasePolicy{EnforcedRepositories: &zeroValue}
 	i.GetEnforcedRepositories()
-	i = &ImmutableReleaseRepository{}
+	i = &ImmutableReleasePolicy{}
 	i.GetEnforcedRepositories()
 	i = nil
 	i.GetEnforcedRepositories()
