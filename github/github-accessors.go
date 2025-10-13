@@ -9118,6 +9118,70 @@ func (e *Enterprise) GetWebsiteURL() string {
 	return *e.WebsiteURL
 }
 
+// GetEnterpriseServerUser returns the EnterpriseServerUser field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetEnterpriseServerUser() bool {
+	if e == nil || e.EnterpriseServerUser == nil {
+		return false
+	}
+	return *e.EnterpriseServerUser
+}
+
+// GetGithubComName returns the GithubComName field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetGithubComName() string {
+	if e == nil || e.GithubComName == nil {
+		return ""
+	}
+	return *e.GithubComName
+}
+
+// GetGithubComProfile returns the GithubComProfile field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetGithubComProfile() string {
+	if e == nil || e.GithubComProfile == nil {
+		return ""
+	}
+	return *e.GithubComProfile
+}
+
+// GetGithubComSamlNameID returns the GithubComSamlNameID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetGithubComSamlNameID() string {
+	if e == nil || e.GithubComSamlNameID == nil {
+		return ""
+	}
+	return *e.GithubComSamlNameID
+}
+
+// GetGithubComTwoFactorAuth returns the GithubComTwoFactorAuth field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetGithubComTwoFactorAuth() bool {
+	if e == nil || e.GithubComTwoFactorAuth == nil {
+		return false
+	}
+	return *e.GithubComTwoFactorAuth
+}
+
+// GetVisualStudioLicenseStatus returns the VisualStudioLicenseStatus field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetVisualStudioLicenseStatus() string {
+	if e == nil || e.VisualStudioLicenseStatus == nil {
+		return ""
+	}
+	return *e.VisualStudioLicenseStatus
+}
+
+// GetVisualStudioSubscriptionEmail returns the VisualStudioSubscriptionEmail field if it's non-nil, zero value otherwise.
+func (e *EnterpriseLicensedUsers) GetVisualStudioSubscriptionEmail() string {
+	if e == nil || e.VisualStudioSubscriptionEmail == nil {
+		return ""
+	}
+	return *e.VisualStudioSubscriptionEmail
+}
+
+// GetProperties returns the Properties field.
+func (e *EnterpriseLicenseSyncStatus) GetProperties() *ServerInstanceProperties {
+	if e == nil {
+		return nil
+	}
+	return e.Properties
+}
+
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
 func (e *EnterpriseRunnerGroup) GetAllowsPublicRepositories() bool {
 	if e == nil || e.AllowsPublicRepositories == nil {
@@ -13484,6 +13548,22 @@ func (l *LargeFile) GetSize() int {
 		return 0
 	}
 	return *l.Size
+}
+
+// GetProperties returns the Properties field.
+func (l *LastLicenseSync) GetProperties() *LastLicenseSyncProperties {
+	if l == nil {
+		return nil
+	}
+	return l.Properties
+}
+
+// GetDate returns the Date field if it's non-nil, zero value otherwise.
+func (l *LastLicenseSyncProperties) GetDate() Timestamp {
+	if l == nil || l.Date == nil {
+		return Timestamp{}
+	}
+	return *l.Date
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
@@ -26692,6 +26772,38 @@ func (s *SelfHostRunnerPermissionsEnterprise) GetDisableSelfHostedRunnersForAllO
 		return false
 	}
 	return *s.DisableSelfHostedRunnersForAllOrgs
+}
+
+// GetServerInstances returns the ServerInstances field.
+func (s *ServerInstanceProperties) GetServerInstances() *ServerInstances {
+	if s == nil {
+		return nil
+	}
+	return s.ServerInstances
+}
+
+// GetItems returns the Items field.
+func (s *ServerInstances) GetItems() *ServiceInstanceItems {
+	if s == nil {
+		return nil
+	}
+	return s.Items
+}
+
+// GetLastSync returns the LastSync field.
+func (s *ServerItemProperties) GetLastSync() *LastLicenseSync {
+	if s == nil {
+		return nil
+	}
+	return s.LastSync
+}
+
+// GetProperties returns the Properties field.
+func (s *ServiceInstanceItems) GetProperties() *ServerItemProperties {
+	if s == nil {
+		return nil
+	}
+	return s.Properties
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
