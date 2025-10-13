@@ -11804,6 +11804,91 @@ func TestEnterprise_GetWebsiteURL(tt *testing.T) {
 	e.GetWebsiteURL()
 }
 
+func TestEnterpriseLicensedUsers_GetEnterpriseServerUser(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	e := &EnterpriseLicensedUsers{EnterpriseServerUser: &zeroValue}
+	e.GetEnterpriseServerUser()
+	e = &EnterpriseLicensedUsers{}
+	e.GetEnterpriseServerUser()
+	e = nil
+	e.GetEnterpriseServerUser()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseLicensedUsers{GithubComName: &zeroValue}
+	e.GetGithubComName()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComName()
+	e = nil
+	e.GetGithubComName()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComProfile(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseLicensedUsers{GithubComProfile: &zeroValue}
+	e.GetGithubComProfile()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComProfile()
+	e = nil
+	e.GetGithubComProfile()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComSamlNameID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseLicensedUsers{GithubComSamlNameID: &zeroValue}
+	e.GetGithubComSamlNameID()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComSamlNameID()
+	e = nil
+	e.GetGithubComSamlNameID()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComTwoFactorAuth(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	e := &EnterpriseLicensedUsers{GithubComTwoFactorAuth: &zeroValue}
+	e.GetGithubComTwoFactorAuth()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComTwoFactorAuth()
+	e = nil
+	e.GetGithubComTwoFactorAuth()
+}
+
+func TestEnterpriseLicensedUsers_GetVisualStudioLicenseStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseLicensedUsers{VisualStudioLicenseStatus: &zeroValue}
+	e.GetVisualStudioLicenseStatus()
+	e = &EnterpriseLicensedUsers{}
+	e.GetVisualStudioLicenseStatus()
+	e = nil
+	e.GetVisualStudioLicenseStatus()
+}
+
+func TestEnterpriseLicensedUsers_GetVisualStudioSubscriptionEmail(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseLicensedUsers{VisualStudioSubscriptionEmail: &zeroValue}
+	e.GetVisualStudioSubscriptionEmail()
+	e = &EnterpriseLicensedUsers{}
+	e.GetVisualStudioSubscriptionEmail()
+	e = nil
+	e.GetVisualStudioSubscriptionEmail()
+}
+
+func TestEnterpriseLicenseSyncStatus_GetProperties(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseLicenseSyncStatus{}
+	e.GetProperties()
+	e = nil
+	e.GetProperties()
+}
+
 func TestEnterpriseRunnerGroup_GetAllowsPublicRepositories(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -17478,6 +17563,25 @@ func TestLargeFile_GetSize(tt *testing.T) {
 	l.GetSize()
 	l = nil
 	l.GetSize()
+}
+
+func TestLastLicenseSync_GetProperties(tt *testing.T) {
+	tt.Parallel()
+	l := &LastLicenseSync{}
+	l.GetProperties()
+	l = nil
+	l.GetProperties()
+}
+
+func TestLastLicenseSyncProperties_GetDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	l := &LastLicenseSyncProperties{Date: &zeroValue}
+	l.GetDate()
+	l = &LastLicenseSyncProperties{}
+	l.GetDate()
+	l = nil
+	l.GetDate()
 }
 
 func TestLicense_GetBody(tt *testing.T) {
@@ -34388,6 +34492,38 @@ func TestSelfHostRunnerPermissionsEnterprise_GetDisableSelfHostedRunnersForAllOr
 	s.GetDisableSelfHostedRunnersForAllOrgs()
 	s = nil
 	s.GetDisableSelfHostedRunnersForAllOrgs()
+}
+
+func TestServerInstanceProperties_GetServerInstances(tt *testing.T) {
+	tt.Parallel()
+	s := &ServerInstanceProperties{}
+	s.GetServerInstances()
+	s = nil
+	s.GetServerInstances()
+}
+
+func TestServerInstances_GetItems(tt *testing.T) {
+	tt.Parallel()
+	s := &ServerInstances{}
+	s.GetItems()
+	s = nil
+	s.GetItems()
+}
+
+func TestServerItemProperties_GetLastSync(tt *testing.T) {
+	tt.Parallel()
+	s := &ServerItemProperties{}
+	s.GetLastSync()
+	s = nil
+	s.GetLastSync()
+}
+
+func TestServiceInstanceItems_GetProperties(tt *testing.T) {
+	tt.Parallel()
+	s := &ServiceInstanceItems{}
+	s.GetProperties()
+	s = nil
+	s.GetProperties()
 }
 
 func TestSignatureRequirementEnforcementLevelChanges_GetFrom(tt *testing.T) {
