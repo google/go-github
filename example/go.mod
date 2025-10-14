@@ -1,4 +1,4 @@
-module github.com/google/go-github/v75/example
+module github.com/google/go-github/v76/example
 
 go 1.24.0
 
@@ -7,7 +7,7 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.17.0
 	github.com/gofri/go-github-pagination v1.0.1
 	github.com/gofri/go-github-ratelimit/v2 v2.0.2
-	github.com/google/go-github/v75 v75.0.0
+	github.com/google/go-github/v76 v76.0.0
 	github.com/sigstore/sigstore-go v0.6.1
 	golang.org/x/crypto v0.43.0
 	golang.org/x/term v0.36.0
@@ -40,6 +40,7 @@ require (
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/certificate-transparency-go v1.2.1 // indirect
 	github.com/google/go-containerregistry v0.20.2 // indirect
+	github.com/google/go-github/v75 v75.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -99,4 +100,4 @@ require (
 )
 
 // Use version at HEAD, not the latest published.
-replace github.com/google/go-github/v75 => ../
+replace github.com/google/go-github/v76 => ../
