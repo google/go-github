@@ -202,7 +202,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoName(t *testing.T)
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -303,7 +303,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoName(t *testing.T)
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -592,7 +592,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -703,7 +703,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgNameRepoProperty(t *testin
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -966,7 +966,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoName(t *testing.T) {
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -1066,7 +1066,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoName(t *testing.T) {
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -1348,7 +1348,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -1458,7 +1458,7 @@ func TestEnterpriseService_CreateRepositoryRuleset_OrgIdRepoProperty(t *testing.
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},

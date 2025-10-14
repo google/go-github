@@ -510,7 +510,7 @@ type TeamAddTeamRepoOptions struct {
 	//     triage - team members can proactively manage issues and pull requests without write access.
 	//
 	// If not specified, the team's permission attribute will be used.
-	Permission string `json:"permission,omitempty"`
+	Permission *string `json:"permission,omitempty"`
 }
 
 // AddTeamRepoByID adds a repository to be managed by the specified team given the team ID.

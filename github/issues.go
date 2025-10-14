@@ -377,7 +377,7 @@ type LockIssueOptions struct {
 	// LockReason specifies the reason to lock this issue.
 	// Providing a lock reason can help make it clearer to contributors why an issue
 	// was locked. Possible values are: "off-topic", "too heated", "resolved", and "spam".
-	LockReason string `json:"lock_reason,omitempty"`
+	LockReason *string `json:"lock_reason,omitempty"`
 }
 
 // Lock an issue's conversation.

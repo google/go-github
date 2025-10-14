@@ -129,11 +129,11 @@ func (s *DependabotService) GetOrgSecret(ctx context.Context, org, name string) 
 // LibSodium (see documentation here: https://libsodium.gitbook.io/doc/bindings_for_other_languages)
 // using the public key retrieved using the GetPublicKey method.
 type DependabotEncryptedSecret struct {
-	Name                  string                           `json:"-"`
-	KeyID                 string                           `json:"key_id"`
-	EncryptedValue        string                           `json:"encrypted_value"`
-	Visibility            string                           `json:"visibility,omitempty"`
-	SelectedRepositoryIDs DependabotSecretsSelectedRepoIDs `json:"selected_repository_ids,omitempty"`
+	Name                  string                            `json:"-"`
+	KeyID                 string                            `json:"key_id"`
+	EncryptedValue        string                            `json:"encrypted_value"`
+	Visibility            *string                           `json:"visibility,omitempty"`
+	SelectedRepositoryIDs *DependabotSecretsSelectedRepoIDs `json:"selected_repository_ids,omitempty"`
 }
 
 func (s *DependabotService) putSecret(ctx context.Context, url string, eSecret *DependabotEncryptedSecret) (*Response, error) {
@@ -169,9 +169,12 @@ func (s *DependabotService) CreateOrUpdateOrgSecret(ctx context.Context, org str
 		return nil, errors.New("dependabot encrypted secret must be provided")
 	}
 
-	repoIDs := make([]string, len(eSecret.SelectedRepositoryIDs))
-	for i, secret := range eSecret.SelectedRepositoryIDs {
-		repoIDs[i] = fmt.Sprintf("%v", secret)
+	var repoIDs []string
+	if eSecret.SelectedRepositoryIDs != nil {
+		repoIDs = make([]string, len(*eSecret.SelectedRepositoryIDs))
+		for i, secret := range *eSecret.SelectedRepositoryIDs {
+			repoIDs[i] = fmt.Sprintf("%v", secret)
+		}
 	}
 	params := struct {
 		*DependabotEncryptedSecret

@@ -298,7 +298,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -400,7 +400,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoNames(t *testing.T) {
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -663,7 +663,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -766,7 +766,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoProperty(t *testing.T)
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -1014,7 +1014,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoIDs(t *testing.T) {
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},
@@ -1109,7 +1109,7 @@ func TestOrganizationsService_CreateRepositoryRuleset_RepoIDs(t *testing.T) {
 		Rules: &RepositoryRulesetRules{
 			Creation: &EmptyRuleParameters{},
 			Update: &UpdateRuleParameters{
-				UpdateAllowsFetchAndMerge: true,
+				UpdateAllowsFetchAndMerge: Ptr(true),
 			},
 			Deletion:              &EmptyRuleParameters{},
 			RequiredLinearHistory: &EmptyRuleParameters{},

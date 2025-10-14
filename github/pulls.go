@@ -485,9 +485,9 @@ type PullRequestOptions struct {
 
 type pullRequestMergeRequest struct {
 	CommitMessage *string `json:"commit_message,omitempty"`
-	CommitTitle   string  `json:"commit_title,omitempty"`
-	MergeMethod   string  `json:"merge_method,omitempty"`
-	SHA           string  `json:"sha,omitempty"`
+	CommitTitle   *string `json:"commit_title,omitempty"`
+	MergeMethod   *string `json:"merge_method,omitempty"`
+	SHA           *string `json:"sha,omitempty"`
 }
 
 // Merge a pull request.
@@ -504,9 +504,15 @@ func (s *PullRequestsService) Merge(ctx context.Context, owner, repo string, num
 		pullRequestBody.CommitMessage = &commitMessage
 	}
 	if options != nil {
-		pullRequestBody.CommitTitle = options.CommitTitle
-		pullRequestBody.MergeMethod = options.MergeMethod
-		pullRequestBody.SHA = options.SHA
+		if options.CommitTitle != "" {
+			pullRequestBody.CommitTitle = &options.CommitTitle
+		}
+		if options.MergeMethod != "" {
+			pullRequestBody.MergeMethod = &options.MergeMethod
+		}
+		if options.SHA != "" {
+			pullRequestBody.SHA = &options.SHA
+		}
 		if options.DontDefaultIfBlank && commitMessage == "" {
 			pullRequestBody.CommitMessage = &commitMessage
 		}

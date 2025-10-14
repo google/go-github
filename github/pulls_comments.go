@@ -163,11 +163,11 @@ func (s *PullRequestsService) CreateComment(ctx context.Context, owner, repo str
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/comments
 func (s *PullRequestsService) CreateCommentInReplyTo(ctx context.Context, owner, repo string, number int, body string, commentID int64) (*PullRequestComment, *Response, error) {
 	comment := &struct {
-		Body      string `json:"body,omitempty"`
-		InReplyTo int64  `json:"in_reply_to,omitempty"`
+		Body      *string `json:"body,omitempty"`
+		InReplyTo *int64  `json:"in_reply_to,omitempty"`
 	}{
-		Body:      body,
-		InReplyTo: commentID,
+		Body:      &body,
+		InReplyTo: &commentID,
 	}
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/comments", owner, repo, number)
 	req, err := s.client.NewRequest("POST", u, comment)

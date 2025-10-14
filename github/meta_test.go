@@ -40,7 +40,7 @@ func TestAPIMeta_Marshal(t *testing.T) {
 				"*.githubusercontent.com",
 			},
 			ArtifactAttestations: &APIMetaArtifactAttestations{
-				TrustDomain: "",
+				TrustDomain: Ptr(""),
 				Services: []string{
 					"*.actions.githubusercontent.com",
 					"tuf-repo.github.com",
@@ -105,7 +105,7 @@ func TestMetaService_Get(t *testing.T) {
 				"*.githubusercontent.com",
 			},
 			ArtifactAttestations: &APIMetaArtifactAttestations{
-				TrustDomain: "",
+				TrustDomain: Ptr(""),
 				Services: []string{
 					"*.actions.githubusercontent.com",
 					"tuf-repo.github.com",

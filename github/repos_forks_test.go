@@ -77,7 +77,7 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
+	opt := &RepositoryCreateForkOptions{Organization: Ptr("o"), Name: Ptr("n"), DefaultBranchOnly: Ptr(true)}
 	ctx := t.Context()
 	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
 	if err != nil {
@@ -116,7 +116,7 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
+	opt := &RepositoryCreateForkOptions{Organization: Ptr("o"), Name: Ptr("n"), DefaultBranchOnly: Ptr(true)}
 	ctx := t.Context()
 	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
 	if !errors.As(err, new(*AcceptedError)) {

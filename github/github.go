@@ -1156,14 +1156,14 @@ type ErrorResponse struct {
 	// Most errors will also include a documentation_url field pointing
 	// to some content that might help you resolve the error, see
 	// https://docs.github.com/rest/#client-errors
-	DocumentationURL string `json:"documentation_url,omitempty"`
+	DocumentationURL string `json:"documentation_url,omitempty"` //nolint:sliceofpointers
 }
 
 // ErrorBlock contains a further explanation for the reason of an error.
 // See https://developer.github.com/changes/2016-03-17-the-451-status-code-is-now-supported/
 // for more information.
 type ErrorBlock struct {
-	Reason    string     `json:"reason,omitempty"`
+	Reason    string     `json:"reason,omitempty"` //nolint:sliceofpointers
 	CreatedAt *Timestamp `json:"created_at,omitempty"`
 }
 

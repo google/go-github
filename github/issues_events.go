@@ -19,7 +19,7 @@ type IssueEvent struct {
 	Actor *User `json:"actor,omitempty"`
 
 	// The action corresponding to the event.
-	Action string `json:"action,omitempty"`
+	Action *string `json:"action,omitempty"`
 
 	// Event identifies the actual type of Event that occurred. Possible
 	// values are:

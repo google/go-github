@@ -24,10 +24,10 @@ type Tag struct {
 
 // CreateTag represents the payload for creating a tag.
 type CreateTag struct {
-	Tag     string        `json:"tag,omitempty"`
-	Message string        `json:"message,omitempty"`
-	Object  string        `json:"object,omitempty"`
-	Type    string        `json:"type,omitempty"`
+	Tag     *string       `json:"tag,omitempty"`
+	Message *string       `json:"message,omitempty"`
+	Object  *string       `json:"object,omitempty"`
+	Type    *string       `json:"type,omitempty"`
 	Tagger  *CommitAuthor `json:"tagger,omitempty"`
 }
 

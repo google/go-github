@@ -98,8 +98,8 @@ type Secret struct {
 	Name                    string    `json:"name"`
 	CreatedAt               Timestamp `json:"created_at"`
 	UpdatedAt               Timestamp `json:"updated_at"`
-	Visibility              string    `json:"visibility,omitempty"`
-	SelectedRepositoriesURL string    `json:"selected_repositories_url,omitempty"`
+	Visibility              *string   `json:"visibility,omitempty"`
+	SelectedRepositoriesURL *string   `json:"selected_repositories_url,omitempty"`
 }
 
 // Secrets represents one item from the ListSecrets response.
@@ -225,11 +225,11 @@ type SelectedRepoIDs []int64
 // LibSodium (see documentation here: https://libsodium.gitbook.io/doc/bindings_for_other_languages)
 // using the public key retrieved using the GetPublicKey method.
 type EncryptedSecret struct {
-	Name                  string          `json:"-"`
-	KeyID                 string          `json:"key_id"`
-	EncryptedValue        string          `json:"encrypted_value"`
-	Visibility            string          `json:"visibility,omitempty"`
-	SelectedRepositoryIDs SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
+	Name                  string           `json:"-"`
+	KeyID                 string           `json:"key_id"`
+	EncryptedValue        string           `json:"encrypted_value"`
+	Visibility            *string          `json:"visibility,omitempty"`
+	SelectedRepositoryIDs *SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
 }
 
 func (s *ActionsService) putSecret(ctx context.Context, url string, eSecret *EncryptedSecret) (*Response, error) {

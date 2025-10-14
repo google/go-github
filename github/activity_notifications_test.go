@@ -411,7 +411,7 @@ func TestMarkReadOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &markReadOptions{}, "{}")
 
 	u := &markReadOptions{
-		LastReadAt: Timestamp{referenceTime},
+		LastReadAt: &Timestamp{referenceTime},
 	}
 
 	want := `{

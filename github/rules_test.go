@@ -129,7 +129,7 @@ func TestRulesetRules(t *testing.T) {
 			"all_rules_with_all_params",
 			&RepositoryRulesetRules{
 				Creation:              &EmptyRuleParameters{},
-				Update:                &UpdateRuleParameters{UpdateAllowsFetchAndMerge: true},
+				Update:                &UpdateRuleParameters{UpdateAllowsFetchAndMerge: Ptr(true)},
 				Deletion:              &EmptyRuleParameters{},
 				RequiredLinearHistory: &EmptyRuleParameters{},
 				MergeQueue: &MergeQueueRuleParameters{
@@ -321,7 +321,7 @@ func TestBranchRules(t *testing.T) {
 							RulesetSource:     "test/test",
 							RulesetID:         1,
 						},
-						Parameters: UpdateRuleParameters{UpdateAllowsFetchAndMerge: true},
+						Parameters: UpdateRuleParameters{UpdateAllowsFetchAndMerge: Ptr(true)},
 					},
 				},
 			},
@@ -344,7 +344,7 @@ func TestBranchRules(t *testing.T) {
 							RulesetSource:     "test/test",
 							RulesetID:         1,
 						},
-						Parameters: UpdateRuleParameters{UpdateAllowsFetchAndMerge: true},
+						Parameters: UpdateRuleParameters{UpdateAllowsFetchAndMerge: Ptr(true)},
 					},
 				},
 				Deletion: []*BranchRuleMetadata{
@@ -672,7 +672,7 @@ func TestRepositoryRule(t *testing.T) {
 			"update_params_set",
 			&RepositoryRule{
 				Type:       RulesetRuleTypeUpdate,
-				Parameters: &UpdateRuleParameters{UpdateAllowsFetchAndMerge: true},
+				Parameters: &UpdateRuleParameters{UpdateAllowsFetchAndMerge: Ptr(true)},
 			},
 			`{"type":"update","parameters":{"update_allows_fetch_and_merge":true}}`,
 		},

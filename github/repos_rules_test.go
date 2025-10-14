@@ -46,7 +46,7 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 
 	want := &BranchRules{
 		Creation: []*BranchRuleMetadata{{RulesetSourceType: RulesetSourceTypeRepository, RulesetSource: "google/a", RulesetID: 42069}},
-		Update:   []*UpdateBranchRule{{BranchRuleMetadata: BranchRuleMetadata{RulesetSourceType: RulesetSourceTypeOrganization, RulesetSource: "google", RulesetID: 42069}, Parameters: UpdateRuleParameters{UpdateAllowsFetchAndMerge: true}}},
+		Update:   []*UpdateBranchRule{{BranchRuleMetadata: BranchRuleMetadata{RulesetSourceType: RulesetSourceTypeOrganization, RulesetSource: "google", RulesetID: 42069}, Parameters: UpdateRuleParameters{UpdateAllowsFetchAndMerge: Ptr(true)}}},
 	}
 
 	if !cmp.Equal(rules, want) {

@@ -192,16 +192,16 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 
 	ctx := t.Context()
 	req := &HostedRunnerRequest{
-		Name: "My Hosted runner",
-		Image: HostedRunnerImage{
+		Name: Ptr("My Hosted runner"),
+		Image: &HostedRunnerImage{
 			ID:      "ubuntu-latest",
 			Source:  "github",
 			Version: "latest",
 		},
-		RunnerGroupID:  1,
-		Size:           "4-core",
-		MaximumRunners: 50,
-		EnableStaticIP: false,
+		RunnerGroupID:  Ptr(int64(1)),
+		Size:           Ptr("4-core"),
+		MaximumRunners: Ptr(int64(50)),
+		EnableStaticIP: Ptr(false),
 	}
 	hostedRunner, _, err := client.Enterprise.CreateHostedRunner(ctx, "o", req)
 	if err != nil {
@@ -250,65 +250,65 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 		{
 			name: "Missing Size",
 			request: &HostedRunnerRequest{
-				Name: "My Hosted runner",
-				Image: HostedRunnerImage{
+				Name: Ptr("My Hosted runner"),
+				Image: &HostedRunnerImage{
 					ID:      "ubuntu-latest",
 					Source:  "github",
 					Version: "latest",
 				},
-				RunnerGroupID: 1,
+				RunnerGroupID: Ptr(int64(1)),
 			},
 			expectedError: "validation failed: size is required for creating a hosted runner",
 		},
 		{
 			name: "Missing Image",
 			request: &HostedRunnerRequest{
-				Name:          "My Hosted runner",
-				RunnerGroupID: 1,
-				Size:          "4-core",
+				Name:          Ptr("My Hosted runner"),
+				RunnerGroupID: Ptr(int64(1)),
+				Size:          Ptr("4-core"),
 			},
 			expectedError: "validation failed: image is required for creating a hosted runner",
 		},
 		{
 			name: "Missing Name",
 			request: &HostedRunnerRequest{
-				Image: HostedRunnerImage{
+				Image: &HostedRunnerImage{
 					ID:      "ubuntu-latest",
 					Source:  "github",
 					Version: "latest",
 				},
-				RunnerGroupID: 1,
-				Size:          "4-core",
+				RunnerGroupID: Ptr(int64(1)),
+				Size:          Ptr("4-core"),
 			},
 			expectedError: "validation failed: name is required for creating a hosted runner",
 		},
 		{
 			name: "Missing RunnerGroupID",
 			request: &HostedRunnerRequest{
-				Name: "My Hosted runner",
-				Image: HostedRunnerImage{
+				Name: Ptr("My Hosted runner"),
+				Image: &HostedRunnerImage{
 					ID:      "ubuntu-latest",
 					Source:  "github",
 					Version: "latest",
 				},
-				Size: "4-core",
+				Size: Ptr("4-core"),
 			},
 			expectedError: "validation failed: runner group ID is required for creating a hosted runner",
 		},
 		{
 			name: "ImageVersion Set Instead of Image Struct",
 			request: &HostedRunnerRequest{
-				Name: "My Hosted runner",
-				Image: HostedRunnerImage{
+				Name: Ptr("My Hosted runner"),
+				Image: &HostedRunnerImage{
 					ID:      "ubuntu-latest",
 					Source:  "github",
 					Version: "latest",
 				},
-				RunnerGroupID:  1,
-				Size:           "4-core",
-				ImageVersion:   "1.0.0",
-				MaximumRunners: 50,
-				EnableStaticIP: false,
+				RunnerGroupID:  Ptr(int64(1)),
+				Size:           Ptr("4-core"),
+				ImageVersion:   Ptr("1.0.0"),
+				MaximumRunners: Ptr(int64(50)),
+				EnableStaticIP: Ptr(false),
 			},
 			expectedError: "validation failed: imageVersion should not be set directly; use the Image struct to specify image details",
 		},
@@ -726,11 +726,11 @@ func TestEnterpriseService_UpdateHostedRunner(t *testing.T) {
 	// Test for a valid update without `Size`
 	ctx := t.Context()
 	validReq := HostedRunnerRequest{
-		Name:           "My larger runner",
-		RunnerGroupID:  1,
-		MaximumRunners: 50,
-		EnableStaticIP: false,
-		ImageVersion:   "1.0.0",
+		Name:           Ptr("My larger runner"),
+		RunnerGroupID:  Ptr(int64(1)),
+		MaximumRunners: Ptr(int64(50)),
+		EnableStaticIP: Ptr(false),
+		ImageVersion:   Ptr("1.0.0"),
 	}
 	hostedRunner, _, err := client.Enterprise.UpdateHostedRunner(ctx, "o", 23, validReq)
 	if err != nil {
@@ -778,24 +778,24 @@ func TestEnterpriseService_UpdateHostedRunner(t *testing.T) {
 		{
 			name: "Size Set in Update Request",
 			request: HostedRunnerRequest{
-				Name:           "My larger runner",
-				RunnerGroupID:  1,
-				MaximumRunners: 50,
-				EnableStaticIP: false,
-				ImageVersion:   "1.0.0",
-				Size:           "4-core", // Should cause validation error
+				Name:           Ptr("My larger runner"),
+				RunnerGroupID:  Ptr(int64(1)),
+				MaximumRunners: Ptr(int64(50)),
+				EnableStaticIP: Ptr(false),
+				ImageVersion:   Ptr("1.0.0"),
+				Size:           Ptr("4-core"), // Should cause validation error
 			},
 			expectedError: "validation failed: size cannot be updated, API does not support updating size",
 		},
 		{
 			name: "Image Set in Update Request",
 			request: HostedRunnerRequest{
-				Name:           "My larger runner",
-				RunnerGroupID:  1,
-				MaximumRunners: 50,
-				EnableStaticIP: false,
-				ImageVersion:   "1.0.0",
-				Image: HostedRunnerImage{ // Should cause validation error
+				Name:           Ptr("My larger runner"),
+				RunnerGroupID:  Ptr(int64(1)),
+				MaximumRunners: Ptr(int64(50)),
+				EnableStaticIP: Ptr(false),
+				ImageVersion:   Ptr("1.0.0"),
+				Image: &HostedRunnerImage{ // Should cause validation error
 					ID:      "ubuntu-latest",
 					Source:  "github",
 					Version: "latest",

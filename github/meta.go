@@ -91,7 +91,7 @@ type APIMetaDomains struct {
 
 // APIMetaArtifactAttestations represents the artifact attestation services domains.
 type APIMetaArtifactAttestations struct {
-	TrustDomain string   `json:"trust_domain,omitempty"`
+	TrustDomain *string  `json:"trust_domain,omitempty"`
 	Services    []string `json:"services,omitempty"`
 }
 

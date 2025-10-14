@@ -788,7 +788,7 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
+	opt := &TeamAddTeamRepoOptions{Permission: Ptr("admin")}
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamAddTeamRepoOptions)
@@ -823,7 +823,7 @@ func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
+	opt := &TeamAddTeamRepoOptions{Permission: Ptr("admin")}
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamAddTeamRepoOptions)
@@ -2325,7 +2325,7 @@ func TestTeamAddTeamRepoOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &TeamAddTeamRepoOptions{}, "{}")
 
 	u := &TeamAddTeamRepoOptions{
-		Permission: "a",
+		Permission: Ptr("a"),
 	}
 
 	want := `{

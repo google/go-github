@@ -766,6 +766,14 @@ func (a *APIMeta) GetVerifiablePasswordAuthentication() bool {
 	return *a.VerifiablePasswordAuthentication
 }
 
+// GetTrustDomain returns the TrustDomain field if it's non-nil, zero value otherwise.
+func (a *APIMetaArtifactAttestations) GetTrustDomain() string {
+	if a == nil || a.TrustDomain == nil {
+		return ""
+	}
+	return *a.TrustDomain
+}
+
 // GetArtifactAttestations returns the ArtifactAttestations field.
 func (a *APIMetaDomains) GetArtifactAttestations() *APIMetaArtifactAttestations {
 	if a == nil {
@@ -6446,12 +6454,44 @@ func (c *CreateRunnerGroupRequest) GetVisibility() string {
 	return *c.Visibility
 }
 
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (c *CreateTag) GetMessage() string {
+	if c == nil || c.Message == nil {
+		return ""
+	}
+	return *c.Message
+}
+
+// GetObject returns the Object field if it's non-nil, zero value otherwise.
+func (c *CreateTag) GetObject() string {
+	if c == nil || c.Object == nil {
+		return ""
+	}
+	return *c.Object
+}
+
+// GetTag returns the Tag field if it's non-nil, zero value otherwise.
+func (c *CreateTag) GetTag() string {
+	if c == nil || c.Tag == nil {
+		return ""
+	}
+	return *c.Tag
+}
+
 // GetTagger returns the Tagger field.
 func (c *CreateTag) GetTagger() *CommitAuthor {
 	if c == nil {
 		return nil
 	}
 	return c.Tagger
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (c *CreateTag) GetType() string {
+	if c == nil || c.Type == nil {
+		return ""
+	}
+	return *c.Type
 }
 
 // GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
@@ -7316,6 +7356,22 @@ func (d *DependabotAlertState) GetDismissedReason() string {
 		return ""
 	}
 	return *d.DismissedReason
+}
+
+// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs field.
+func (d *DependabotEncryptedSecret) GetSelectedRepositoryIDs() *DependabotSecretsSelectedRepoIDs {
+	if d == nil {
+		return nil
+	}
+	return d.SelectedRepositoryIDs
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (d *DependabotEncryptedSecret) GetVisibility() string {
+	if d == nil || d.Visibility == nil {
+		return ""
+	}
+	return *d.Visibility
 }
 
 // GetCVEID returns the CVEID field if it's non-nil, zero value otherwise.
@@ -9036,6 +9092,22 @@ func (e *EditTitle) GetFrom() string {
 		return ""
 	}
 	return *e.From
+}
+
+// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs field.
+func (e *EncryptedSecret) GetSelectedRepositoryIDs() *SelectedRepoIDs {
+	if e == nil {
+		return nil
+	}
+	return e.SelectedRepositoryIDs
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (e *EncryptedSecret) GetVisibility() string {
+	if e == nil || e.Visibility == nil {
+		return ""
+	}
+	return *e.Visibility
 }
 
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
@@ -10926,6 +10998,62 @@ func (h *HostedRunnerPublicIPLimits) GetPublicIPs() *PublicIPUsage {
 	return h.PublicIPs
 }
 
+// GetEnableStaticIP returns the EnableStaticIP field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerRequest) GetEnableStaticIP() bool {
+	if h == nil || h.EnableStaticIP == nil {
+		return false
+	}
+	return *h.EnableStaticIP
+}
+
+// GetImage returns the Image field.
+func (h *HostedRunnerRequest) GetImage() *HostedRunnerImage {
+	if h == nil {
+		return nil
+	}
+	return h.Image
+}
+
+// GetImageVersion returns the ImageVersion field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerRequest) GetImageVersion() string {
+	if h == nil || h.ImageVersion == nil {
+		return ""
+	}
+	return *h.ImageVersion
+}
+
+// GetMaximumRunners returns the MaximumRunners field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerRequest) GetMaximumRunners() int64 {
+	if h == nil || h.MaximumRunners == nil {
+		return 0
+	}
+	return *h.MaximumRunners
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerRequest) GetName() string {
+	if h == nil || h.Name == nil {
+		return ""
+	}
+	return *h.Name
+}
+
+// GetRunnerGroupID returns the RunnerGroupID field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerRequest) GetRunnerGroupID() int64 {
+	if h == nil || h.RunnerGroupID == nil {
+		return 0
+	}
+	return *h.RunnerGroupID
+}
+
+// GetSize returns the Size field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerRequest) GetSize() string {
+	if h == nil || h.Size == nil {
+		return ""
+	}
+	return *h.Size
+}
+
 // GetGroupDescription returns the GroupDescription field if it's non-nil, zero value otherwise.
 func (i *IDPGroup) GetGroupDescription() string {
 	if i == nil || i.GroupDescription == nil {
@@ -12654,6 +12782,14 @@ func (i *IssueCommentEvent) GetSender() *User {
 	return i.Sender
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (i *IssueEvent) GetAction() string {
+	if i == nil || i.Action == nil {
+		return ""
+	}
+	return *i.Action
+}
+
 // GetActor returns the Actor field.
 func (i *IssueEvent) GetActor() *User {
 	if i == nil {
@@ -14188,6 +14324,14 @@ func (l *LockBranch) GetEnabled() bool {
 		return false
 	}
 	return *l.Enabled
+}
+
+// GetLockReason returns the LockReason field if it's non-nil, zero value otherwise.
+func (l *LockIssueOptions) GetLockReason() string {
+	if l == nil || l.LockReason == nil {
+		return ""
+	}
+	return *l.LockReason
 }
 
 // GetHostname returns the Hostname field if it's non-nil, zero value otherwise.
@@ -23238,6 +23382,14 @@ func (r *RepositoryActor) GetUserViewType() string {
 	return *r.UserViewType
 }
 
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (r *RepositoryAddCollaboratorOptions) GetPermission() string {
+	if r == nil || r.Permission == nil {
+		return ""
+	}
+	return *r.Permission
+}
+
 // GetRepository returns the Repository field.
 func (r *RepositoryAttachment) GetRepository() *Repository {
 	if r == nil {
@@ -23574,12 +23726,44 @@ func (r *RepositoryContentFileOptions) GetSHA() string {
 	return *r.SHA
 }
 
+// GetCommit returns the Commit field.
+func (r *RepositoryContentResponse) GetCommit() *Commit {
+	if r == nil {
+		return nil
+	}
+	return r.Commit
+}
+
 // GetContent returns the Content field.
 func (r *RepositoryContentResponse) GetContent() *RepositoryContent {
 	if r == nil {
 		return nil
 	}
 	return r.Content
+}
+
+// GetDefaultBranchOnly returns the DefaultBranchOnly field if it's non-nil, zero value otherwise.
+func (r *RepositoryCreateForkOptions) GetDefaultBranchOnly() bool {
+	if r == nil || r.DefaultBranchOnly == nil {
+		return false
+	}
+	return *r.DefaultBranchOnly
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *RepositoryCreateForkOptions) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
+}
+
+// GetOrganization returns the Organization field if it's non-nil, zero value otherwise.
+func (r *RepositoryCreateForkOptions) GetOrganization() string {
+	if r == nil || r.Organization == nil {
+		return ""
+	}
+	return *r.Organization
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
@@ -25806,6 +25990,22 @@ func (s *SCIMUserRole) GetType() string {
 	return *s.Type
 }
 
+// GetSelectedRepositoriesURL returns the SelectedRepositoriesURL field if it's non-nil, zero value otherwise.
+func (s *Secret) GetSelectedRepositoriesURL() string {
+	if s == nil || s.SelectedRepositoriesURL == nil {
+		return ""
+	}
+	return *s.SelectedRepositoriesURL
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (s *Secret) GetVisibility() string {
+	if s == nil || s.Visibility == nil {
+		return ""
+	}
+	return *s.Visibility
+}
+
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
 func (s *SecretScanning) GetStatus() string {
 	if s == nil || s.Status == nil {
@@ -27750,6 +27950,22 @@ func (t *TeamAddEvent) GetTeam() *Team {
 	return t.Team
 }
 
+// GetRole returns the Role field if it's non-nil, zero value otherwise.
+func (t *TeamAddTeamMembershipOptions) GetRole() string {
+	if t == nil || t.Role == nil {
+		return ""
+	}
+	return *t.Role
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (t *TeamAddTeamRepoOptions) GetPermission() string {
+	if t == nil || t.Permission == nil {
+		return ""
+	}
+	return *t.Permission
+}
+
 // GetDescription returns the Description field.
 func (t *TeamChange) GetDescription() *TeamDescription {
 	if t == nil {
@@ -28836,6 +29052,14 @@ func (u *UpdateRef) GetForce() bool {
 		return false
 	}
 	return *u.Force
+}
+
+// GetUpdateAllowsFetchAndMerge returns the UpdateAllowsFetchAndMerge field if it's non-nil, zero value otherwise.
+func (u *UpdateRuleParameters) GetUpdateAllowsFetchAndMerge() bool {
+	if u == nil || u.UpdateAllowsFetchAndMerge == nil {
+		return false
+	}
+	return *u.UpdateAllowsFetchAndMerge
 }
 
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.

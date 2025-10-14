@@ -119,8 +119,8 @@ func (s *GitService) GetTree(ctx context.Context, owner, repo, sha string, recur
 
 // createTree represents the body of a CreateTree request.
 type createTree struct {
-	BaseTree string `json:"base_tree,omitempty"`
-	Entries  []any  `json:"tree"`
+	BaseTree *string `json:"base_tree,omitempty"`
+	Entries  []any   `json:"tree"`
 }
 
 // CreateTree creates a new tree in a repository. If both a tree and a nested
@@ -148,8 +148,12 @@ func (s *GitService) CreateTree(ctx context.Context, owner, repo, baseTree strin
 		newEntries = append(newEntries, entry)
 	}
 
+	var baseTreePtr *string
+	if baseTree != "" {
+		baseTreePtr = &baseTree
+	}
 	body := &createTree{
-		BaseTree: baseTree,
+		BaseTree: baseTreePtr,
 		Entries:  newEntries,
 	}
 	req, err := s.client.NewRequest("POST", u, body)

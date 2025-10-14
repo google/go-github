@@ -844,9 +844,9 @@ func TestPullRequestMergeRequest_Marshal(t *testing.T) {
 
 	u := &pullRequestMergeRequest{
 		CommitMessage: Ptr("cm"),
-		CommitTitle:   "ct",
-		MergeMethod:   "mm",
-		SHA:           "sha",
+		CommitTitle:   Ptr("ct"),
+		MergeMethod:   Ptr("mm"),
+		SHA:           Ptr("sha"),
 	}
 
 	want := `{

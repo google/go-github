@@ -404,9 +404,9 @@ func TestActionsService_ListOrgSecrets(t *testing.T) {
 	want := &Secrets{
 		TotalCount: 3,
 		Secrets: []*Secret{
-			{Name: "GIST_ID", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "private"},
-			{Name: "DEPLOY_TOKEN", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "all"},
-			{Name: "GH_TOKEN", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "selected", SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/actions/secrets/SUPER_SECRET/repositories"},
+			{Name: "GIST_ID", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: Ptr("private")},
+			{Name: "DEPLOY_TOKEN", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: Ptr("all")},
+			{Name: "GH_TOKEN", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: Ptr("selected"), SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/secrets/SUPER_SECRET/repositories")},
 		},
 	}
 	if !cmp.Equal(secrets, want) {
@@ -447,8 +447,8 @@ func TestActionsService_GetOrgSecret(t *testing.T) {
 		Name:                    "NAME",
 		CreatedAt:               Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
 		UpdatedAt:               Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
-		Visibility:              "selected",
-		SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/actions/secrets/SUPER_SECRET/repositories",
+		Visibility:              Ptr("selected"),
+		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/secrets/SUPER_SECRET/repositories"),
 	}
 	if !cmp.Equal(secret, want) {
 		t.Errorf("Actions.GetOrgSecret returned %+v, want %+v", secret, want)
@@ -484,8 +484,8 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 		Name:                  "NAME",
 		EncryptedValue:        "QIv=",
 		KeyID:                 "1234",
-		Visibility:            "selected",
-		SelectedRepositoryIDs: SelectedRepoIDs{1296269, 1269280},
+		Visibility:            Ptr("selected"),
+		SelectedRepositoryIDs: &SelectedRepoIDs{1296269, 1269280},
 	}
 	ctx := t.Context()
 	_, err := client.Actions.CreateOrUpdateOrgSecret(ctx, "o", input)
@@ -900,8 +900,8 @@ func TestSecret_Marshal(t *testing.T) {
 		Name:                    "n",
 		CreatedAt:               Timestamp{referenceTime},
 		UpdatedAt:               Timestamp{referenceTime},
-		Visibility:              "v",
-		SelectedRepositoriesURL: "s",
+		Visibility:              Ptr("v"),
+		SelectedRepositoriesURL: Ptr("s"),
 	}
 
 	want := `{
@@ -926,8 +926,8 @@ func TestSecrets_Marshal(t *testing.T) {
 				Name:                    "n",
 				CreatedAt:               Timestamp{referenceTime},
 				UpdatedAt:               Timestamp{referenceTime},
-				Visibility:              "v",
-				SelectedRepositoriesURL: "s",
+				Visibility:              Ptr("v"),
+				SelectedRepositoriesURL: Ptr("s"),
 			},
 		},
 	}
@@ -956,8 +956,8 @@ func TestEncryptedSecret_Marshal(t *testing.T) {
 		Name:                  "n",
 		KeyID:                 "kid",
 		EncryptedValue:        "e",
-		Visibility:            "v",
-		SelectedRepositoryIDs: []int64{1},
+		Visibility:            Ptr("v"),
+		SelectedRepositoryIDs: &SelectedRepoIDs{1},
 	}
 
 	want := `{

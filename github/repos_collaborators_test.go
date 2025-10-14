@@ -264,7 +264,7 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &RepositoryAddCollaboratorOptions{Permission: "admin"}
+	opt := &RepositoryAddCollaboratorOptions{Permission: Ptr("admin")}
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		v := new(RepositoryAddCollaboratorOptions)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
@@ -366,7 +366,7 @@ func TestRepositoryAddCollaboratorOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepositoryAddCollaboratorOptions{}, "{}")
 
 	r := &RepositoryAddCollaboratorOptions{
-		Permission: "permission",
+		Permission: Ptr("permission"),
 	}
 
 	want := `{

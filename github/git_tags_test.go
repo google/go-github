@@ -54,10 +54,10 @@ func TestGitService_CreateTag(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	inputTag := CreateTag{
-		Tag:     "t",
-		Object:  "s",
-		Type:    "commit",
-		Message: "test message",
+		Tag:     Ptr("t"),
+		Object:  Ptr("s"),
+		Type:    Ptr("commit"),
+		Message: Ptr("test message"),
 	}
 
 	mux.HandleFunc("/repos/o/r/git/tags", func(w http.ResponseWriter, r *http.Request) {
@@ -160,10 +160,10 @@ func TestCreateTag_Marshal(t *testing.T) {
 	testJSONMarshal(t, CreateTag{}, "{}")
 
 	u := CreateTag{
-		Tag:     "tag",
-		Message: "msg",
-		Object:  "obj",
-		Type:    "type",
+		Tag:     Ptr("tag"),
+		Message: Ptr("msg"),
+		Object:  Ptr("obj"),
+		Type:    Ptr("type"),
 		Tagger: &CommitAuthor{
 			Date:  &Timestamp{referenceTime},
 			Name:  Ptr("name"),

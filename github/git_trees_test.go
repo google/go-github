@@ -439,7 +439,7 @@ func TestCreateTree_Marshal(t *testing.T) {
 	testJSONMarshal(t, &createTree{}, "{}")
 
 	u := &createTree{
-		BaseTree: "bt",
+		BaseTree: Ptr("bt"),
 		Entries:  []any{"e"},
 	}
 

@@ -980,6 +980,17 @@ func TestAPIMeta_GetVerifiablePasswordAuthentication(tt *testing.T) {
 	a.GetVerifiablePasswordAuthentication()
 }
 
+func TestAPIMetaArtifactAttestations_GetTrustDomain(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &APIMetaArtifactAttestations{TrustDomain: &zeroValue}
+	a.GetTrustDomain()
+	a = &APIMetaArtifactAttestations{}
+	a.GetTrustDomain()
+	a = nil
+	a.GetTrustDomain()
+}
+
 func TestAPIMetaDomains_GetArtifactAttestations(tt *testing.T) {
 	tt.Parallel()
 	a := &APIMetaDomains{}
@@ -8421,12 +8432,56 @@ func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	c.GetVisibility()
 }
 
+func TestCreateTag_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTag{Message: &zeroValue}
+	c.GetMessage()
+	c = &CreateTag{}
+	c.GetMessage()
+	c = nil
+	c.GetMessage()
+}
+
+func TestCreateTag_GetObject(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTag{Object: &zeroValue}
+	c.GetObject()
+	c = &CreateTag{}
+	c.GetObject()
+	c = nil
+	c.GetObject()
+}
+
+func TestCreateTag_GetTag(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTag{Tag: &zeroValue}
+	c.GetTag()
+	c = &CreateTag{}
+	c.GetTag()
+	c = nil
+	c.GetTag()
+}
+
 func TestCreateTag_GetTagger(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateTag{}
 	c.GetTagger()
 	c = nil
 	c.GetTagger()
+}
+
+func TestCreateTag_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTag{Type: &zeroValue}
+	c.GetType()
+	c = &CreateTag{}
+	c.GetType()
+	c = nil
+	c.GetType()
 }
 
 func TestCreateUpdateEnvironment_GetCanAdminsBypass(tt *testing.T) {
@@ -9525,6 +9580,25 @@ func TestDependabotAlertState_GetDismissedReason(tt *testing.T) {
 	d.GetDismissedReason()
 	d = nil
 	d.GetDismissedReason()
+}
+
+func TestDependabotEncryptedSecret_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotEncryptedSecret{}
+	d.GetSelectedRepositoryIDs()
+	d = nil
+	d.GetSelectedRepositoryIDs()
+}
+
+func TestDependabotEncryptedSecret_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DependabotEncryptedSecret{Visibility: &zeroValue}
+	d.GetVisibility()
+	d = &DependabotEncryptedSecret{}
+	d.GetVisibility()
+	d = nil
+	d.GetVisibility()
 }
 
 func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
@@ -11692,6 +11766,25 @@ func TestEditTitle_GetFrom(tt *testing.T) {
 	e.GetFrom()
 	e = nil
 	e.GetFrom()
+}
+
+func TestEncryptedSecret_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	e := &EncryptedSecret{}
+	e.GetSelectedRepositoryIDs()
+	e = nil
+	e.GetSelectedRepositoryIDs()
+}
+
+func TestEncryptedSecret_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EncryptedSecret{Visibility: &zeroValue}
+	e.GetVisibility()
+	e = &EncryptedSecret{}
+	e.GetVisibility()
+	e = nil
+	e.GetVisibility()
 }
 
 func TestEnterprise_GetAvatarURL(tt *testing.T) {
@@ -14173,6 +14266,80 @@ func TestHostedRunnerPublicIPLimits_GetPublicIPs(tt *testing.T) {
 	h.GetPublicIPs()
 }
 
+func TestHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	h := &HostedRunnerRequest{EnableStaticIP: &zeroValue}
+	h.GetEnableStaticIP()
+	h = &HostedRunnerRequest{}
+	h.GetEnableStaticIP()
+	h = nil
+	h.GetEnableStaticIP()
+}
+
+func TestHostedRunnerRequest_GetImage(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerRequest{}
+	h.GetImage()
+	h = nil
+	h.GetImage()
+}
+
+func TestHostedRunnerRequest_GetImageVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerRequest{ImageVersion: &zeroValue}
+	h.GetImageVersion()
+	h = &HostedRunnerRequest{}
+	h.GetImageVersion()
+	h = nil
+	h.GetImageVersion()
+}
+
+func TestHostedRunnerRequest_GetMaximumRunners(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	h := &HostedRunnerRequest{MaximumRunners: &zeroValue}
+	h.GetMaximumRunners()
+	h = &HostedRunnerRequest{}
+	h.GetMaximumRunners()
+	h = nil
+	h.GetMaximumRunners()
+}
+
+func TestHostedRunnerRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerRequest{Name: &zeroValue}
+	h.GetName()
+	h = &HostedRunnerRequest{}
+	h.GetName()
+	h = nil
+	h.GetName()
+}
+
+func TestHostedRunnerRequest_GetRunnerGroupID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	h := &HostedRunnerRequest{RunnerGroupID: &zeroValue}
+	h.GetRunnerGroupID()
+	h = &HostedRunnerRequest{}
+	h.GetRunnerGroupID()
+	h = nil
+	h.GetRunnerGroupID()
+}
+
+func TestHostedRunnerRequest_GetSize(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerRequest{Size: &zeroValue}
+	h.GetSize()
+	h = &HostedRunnerRequest{}
+	h.GetSize()
+	h = nil
+	h.GetSize()
+}
+
 func TestIDPGroup_GetGroupDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -16423,6 +16590,17 @@ func TestIssueCommentEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 }
 
+func TestIssueEvent_GetAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueEvent{Action: &zeroValue}
+	i.GetAction()
+	i = &IssueEvent{}
+	i.GetAction()
+	i = nil
+	i.GetAction()
+}
+
 func TestIssueEvent_GetActor(tt *testing.T) {
 	tt.Parallel()
 	i := &IssueEvent{}
@@ -18440,6 +18618,17 @@ func TestLockBranch_GetEnabled(tt *testing.T) {
 	l.GetEnabled()
 	l = nil
 	l.GetEnabled()
+}
+
+func TestLockIssueOptions_GetLockReason(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &LockIssueOptions{LockReason: &zeroValue}
+	l.GetLockReason()
+	l = &LockIssueOptions{}
+	l.GetLockReason()
+	l = nil
+	l.GetLockReason()
 }
 
 func TestMaintenanceOperationStatus_GetHostname(tt *testing.T) {
@@ -30055,6 +30244,17 @@ func TestRepositoryActor_GetUserViewType(tt *testing.T) {
 	r.GetUserViewType()
 }
 
+func TestRepositoryAddCollaboratorOptions_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryAddCollaboratorOptions{Permission: &zeroValue}
+	r.GetPermission()
+	r = &RepositoryAddCollaboratorOptions{}
+	r.GetPermission()
+	r = nil
+	r.GetPermission()
+}
+
 func TestRepositoryAttachment_GetRepository(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryAttachment{}
@@ -30487,12 +30687,53 @@ func TestRepositoryContentFileOptions_GetSHA(tt *testing.T) {
 	r.GetSHA()
 }
 
+func TestRepositoryContentResponse_GetCommit(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryContentResponse{}
+	r.GetCommit()
+	r = nil
+	r.GetCommit()
+}
+
 func TestRepositoryContentResponse_GetContent(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryContentResponse{}
 	r.GetContent()
 	r = nil
 	r.GetContent()
+}
+
+func TestRepositoryCreateForkOptions_GetDefaultBranchOnly(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepositoryCreateForkOptions{DefaultBranchOnly: &zeroValue}
+	r.GetDefaultBranchOnly()
+	r = &RepositoryCreateForkOptions{}
+	r.GetDefaultBranchOnly()
+	r = nil
+	r.GetDefaultBranchOnly()
+}
+
+func TestRepositoryCreateForkOptions_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryCreateForkOptions{Name: &zeroValue}
+	r.GetName()
+	r = &RepositoryCreateForkOptions{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRepositoryCreateForkOptions_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryCreateForkOptions{Organization: &zeroValue}
+	r.GetOrganization()
+	r = &RepositoryCreateForkOptions{}
+	r.GetOrganization()
+	r = nil
+	r.GetOrganization()
 }
 
 func TestRepositoryDispatchEvent_GetAction(tt *testing.T) {
@@ -33289,6 +33530,28 @@ func TestSCIMUserRole_GetType(tt *testing.T) {
 	s.GetType()
 }
 
+func TestSecret_GetSelectedRepositoriesURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &Secret{SelectedRepositoriesURL: &zeroValue}
+	s.GetSelectedRepositoriesURL()
+	s = &Secret{}
+	s.GetSelectedRepositoriesURL()
+	s = nil
+	s.GetSelectedRepositoriesURL()
+}
+
+func TestSecret_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &Secret{Visibility: &zeroValue}
+	s.GetVisibility()
+	s = &Secret{}
+	s.GetVisibility()
+	s = nil
+	s.GetVisibility()
+}
+
 func TestSecretScanning_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -35737,6 +36000,28 @@ func TestTeamAddEvent_GetTeam(tt *testing.T) {
 	t.GetTeam()
 }
 
+func TestTeamAddTeamMembershipOptions_GetRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	t := &TeamAddTeamMembershipOptions{Role: &zeroValue}
+	t.GetRole()
+	t = &TeamAddTeamMembershipOptions{}
+	t.GetRole()
+	t = nil
+	t.GetRole()
+}
+
+func TestTeamAddTeamRepoOptions_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	t := &TeamAddTeamRepoOptions{Permission: &zeroValue}
+	t.GetPermission()
+	t = &TeamAddTeamRepoOptions{}
+	t.GetPermission()
+	t = nil
+	t.GetPermission()
+}
+
 func TestTeamChange_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	t := &TeamChange{}
@@ -37141,6 +37426,17 @@ func TestUpdateRef_GetForce(tt *testing.T) {
 	u.GetForce()
 	u = nil
 	u.GetForce()
+}
+
+func TestUpdateRuleParameters_GetUpdateAllowsFetchAndMerge(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateRuleParameters{UpdateAllowsFetchAndMerge: &zeroValue}
+	u.GetUpdateAllowsFetchAndMerge()
+	u = &UpdateRuleParameters{}
+	u.GetUpdateAllowsFetchAndMerge()
+	u = nil
+	u.GetUpdateAllowsFetchAndMerge()
 }
 
 func TestUpdateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {

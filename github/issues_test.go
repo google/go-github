@@ -443,7 +443,7 @@ func TestIssuesService_LockWithReason(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	opt := &LockIssueOptions{LockReason: "off-topic"}
+	opt := &LockIssueOptions{LockReason: Ptr("off-topic")}
 
 	ctx := t.Context()
 	if _, err := client.Issues.Lock(ctx, "o", "r", 1, opt); err != nil {
@@ -494,7 +494,7 @@ func TestLockIssueOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &LockIssueOptions{}, "{}")
 
 	u := &LockIssueOptions{
-		LockReason: "lr",
+		LockReason: Ptr("lr"),
 	}
 
 	want := `{

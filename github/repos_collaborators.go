@@ -136,7 +136,7 @@ type RepositoryAddCollaboratorOptions struct {
 	//     triage - team members can proactively manage issues and pull requests without write access.
 	//
 	// Default value is "push". This option is only valid for organization-owned repositories.
-	Permission string `json:"permission,omitempty"`
+	Permission *string `json:"permission,omitempty"`
 }
 
 // AddCollaborator sends an invitation to the specified GitHub user

@@ -395,7 +395,7 @@ type EmptyRuleParameters struct{}
 
 // UpdateRuleParameters represents the update rule parameters.
 type UpdateRuleParameters struct {
-	UpdateAllowsFetchAndMerge bool `json:"update_allows_fetch_and_merge,omitempty"`
+	UpdateAllowsFetchAndMerge *bool `json:"update_allows_fetch_and_merge,omitempty"`
 }
 
 // MergeQueueRuleParameters represents the merge_queue rule parameters.

@@ -732,7 +732,7 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 	}
 	want := &RepositoryContentResponse{
 		Content: &RepositoryContent{Name: Ptr("p")},
-		Commit: Commit{
+		Commit: &Commit{
 			Message: Ptr("m"),
 			SHA:     Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
@@ -788,7 +788,7 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 	}
 	want := &RepositoryContentResponse{
 		Content: &RepositoryContent{Name: Ptr("p")},
-		Commit: Commit{
+		Commit: &Commit{
 			Message: Ptr("m"),
 			SHA:     Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
@@ -840,7 +840,7 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 	}
 	want := &RepositoryContentResponse{
 		Content: nil,
-		Commit: Commit{
+		Commit: &Commit{
 			Message: Ptr("m"),
 			SHA:     Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
@@ -1084,7 +1084,7 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 			DownloadURL:     Ptr("durl"),
 			SubmoduleGitURL: Ptr("smgurl"),
 		},
-		Commit: Commit{
+		Commit: &Commit{
 			SHA: Ptr("s"),
 			Author: &CommitAuthor{
 				Date:  &Timestamp{referenceTime},

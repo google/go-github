@@ -92,13 +92,13 @@ type HostedRunnerImage struct {
 
 // HostedRunnerRequest specifies body parameters to Hosted Runner configuration.
 type HostedRunnerRequest struct {
-	Name           string            `json:"name,omitempty"`
-	Image          HostedRunnerImage `json:"image,omitempty"`
-	RunnerGroupID  int64             `json:"runner_group_id,omitempty"`
-	Size           string            `json:"size,omitempty"`
-	MaximumRunners int64             `json:"maximum_runners,omitempty"`
-	EnableStaticIP bool              `json:"enable_static_ip,omitempty"`
-	ImageVersion   string            `json:"image_version,omitempty"`
+	Name           *string            `json:"name,omitempty"`
+	Image          *HostedRunnerImage `json:"image,omitempty"`
+	RunnerGroupID  *int64             `json:"runner_group_id,omitempty"`
+	Size           *string            `json:"size,omitempty"`
+	MaximumRunners *int64             `json:"maximum_runners,omitempty"`
+	EnableStaticIP *bool              `json:"enable_static_ip,omitempty"`
+	ImageVersion   *string            `json:"image_version,omitempty"`
 }
 
 // validateCreateHostedRunnerRequest validates the provided HostedRunnerRequest to ensure
@@ -110,19 +110,19 @@ func validateCreateHostedRunnerRequest(request *HostedRunnerRequest) error {
 	if request == nil {
 		return errors.New("request is required for creating a hosted runner")
 	}
-	if request.Size == "" {
+	if request.Size == nil {
 		return errors.New("size is required for creating a hosted runner")
 	}
-	if request.Image == (HostedRunnerImage{}) {
+	if request.Image == nil {
 		return errors.New("image is required for creating a hosted runner")
 	}
-	if request.Name == "" {
+	if request.Name == nil {
 		return errors.New("name is required for creating a hosted runner")
 	}
-	if request.RunnerGroupID == 0 {
+	if request.RunnerGroupID == nil {
 		return errors.New("runner group ID is required for creating a hosted runner")
 	}
-	if request.ImageVersion != "" {
+	if request.ImageVersion != nil {
 		return errors.New("imageVersion should not be set directly; use the Image struct to specify image details")
 	}
 	return nil
@@ -323,10 +323,10 @@ func (s *ActionsService) GetHostedRunner(ctx context.Context, org string, runner
 // If any of these conditions are violated, an appropriate error message is returned.
 // Otherwise, nil is returned, indicating the request is valid for an update.
 func validateUpdateHostedRunnerRequest(request *HostedRunnerRequest) error {
-	if request.Size != "" {
+	if request.Size != nil {
 		return errors.New("size cannot be updated, API does not support updating size")
 	}
-	if request.Image != (HostedRunnerImage{}) {
+	if request.Image != nil {
 		return errors.New("image struct should not be set directly; use the ImageVersion to specify version details")
 	}
 	return nil
