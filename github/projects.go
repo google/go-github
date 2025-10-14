@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"time"
 )
 
 // ProjectsService handles communication with the project V2
@@ -79,13 +80,13 @@ type ListProjectsOptions struct {
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2FieldOption struct {
-	ID string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// The display name of the option.
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// The color associated with this option (e.g., "blue", "red").
-	Color string `json:"color,omitempty"`
+	Color string `json:"color"`
 	// An optional description for this option.
-	Description string `json:"description,omitempty"`
+	Description string `json:"description"`
 }
 
 // ProjectV2Field represents a field in a GitHub Projects V2 project.
@@ -93,14 +94,15 @@ type ProjectV2FieldOption struct {
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2Field struct {
-	ID        *int64     `json:"id,omitempty"`
-	NodeID    string     `json:"node_id,omitempty"`
-	Name      string     `json:"name,omitempty"`
-	DataType  string     `json:"dataType,omitempty"`
-	URL       string     `json:"url,omitempty"`
-	Options   []*any     `json:"options,omitempty"`
-	CreatedAt *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+	ID         int64                   `json:"id"`
+	NodeID     *string                 `json:"node_id,omitempty"`
+	Name       string                  `json:"name"`
+	DataType   string                  `json:"data_type"`
+	URL        *string                 `json:"url,omitempty"`
+	ProjectURL string                  `json:"project_url"`
+	Options    []*ProjectV2FieldOption `json:"options,omitempty"`
+	CreatedAt  time.Time               `json:"created_at"`
+	UpdatedAt  time.Time               `json:"updated_at"`
 }
 
 // ListProjectsForOrg lists Projects V2 for an organization.

@@ -19198,28 +19198,20 @@ func (p *ProjectV2Event) GetSender() *User {
 	return p.Sender
 }
 
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (p *ProjectV2Field) GetCreatedAt() Timestamp {
-	if p == nil || p.CreatedAt == nil {
-		return Timestamp{}
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
 	}
-	return *p.CreatedAt
+	return *p.NodeID
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *ProjectV2Field) GetID() int64 {
-	if p == nil || p.ID == nil {
-		return 0
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
 	}
-	return *p.ID
-}
-
-// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (p *ProjectV2Field) GetUpdatedAt() Timestamp {
-	if p == nil || p.UpdatedAt == nil {
-		return Timestamp{}
-	}
-	return *p.UpdatedAt
+	return *p.URL
 }
 
 // GetArchivedAt returns the ArchivedAt field if it's non-nil, zero value otherwise.
