@@ -1,13 +1,12 @@
-// Copyright 2025 The go-github AUTHORS. All rights reserved.
-//
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
+/*
+Package gogithub is a custom linter to be used by golangci-lint.
 
-// Package sliceofpointers is a custom linter to be used by
-// golangci-lint to find instances of `[]*string` and
-// slices of structs without pointers and report them.
-// See: https://github.com/google/go-github/issues/180
-package sliceofpointers
+It finds:
+
+ 1. instances of `[]*string` and slices of structs without pointers and report them. (See https://github.com/google/go-github/issues/180)
+ 2. struct fields with `json:"omitempty"` tags that are not pointers, slices, maps, or interfaces.
+*/
+package gogithub
 
 import (
 	"go/ast"
@@ -21,30 +20,30 @@ import (
 )
 
 func init() {
-	register.Plugin("sliceofpointers", New)
+	register.Plugin("gogithub", New)
 }
 
-// SliceOfPointersPlugin is a custom linter plugin for golangci-lint.
-type SliceOfPointersPlugin struct{}
+// GoGithubPlugin is a custom linter plugin for golangci-lint.
+type GoGithubPlugin struct{}
 
 // New returns an analysis.Analyzer to use with golangci-lint.
 func New(_ any) (register.LinterPlugin, error) {
-	return &SliceOfPointersPlugin{}, nil
+	return &GoGithubPlugin{}, nil
 }
 
-// BuildAnalyzers builds the analyzers for the SliceOfPointersPlugin.
-func (f *SliceOfPointersPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
+// BuildAnalyzers builds the analyzers for the GoGithubPlugin.
+func (f *GoGithubPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 	return []*analysis.Analyzer{
 		{
-			Name: "sliceofpointers",
+			Name: "gogithub",
 			Doc:  "Reports usage of []*string and slices of structs without pointers.",
 			Run:  run,
 		},
 	}, nil
 }
 
-// GetLoadMode returns the load mode for the SliceOfPointersPlugin.
-func (f *SliceOfPointersPlugin) GetLoadMode() string {
+// GetLoadMode returns the load mode for the GoGithubPlugin.
+func (f *GoGithubPlugin) GetLoadMode() string {
 	return register.LoadModeSyntax
 }
 

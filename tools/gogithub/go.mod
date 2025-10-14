@@ -1,4 +1,4 @@
-module tools/sliceofpointers
+module tools/gogithub
 
 go 1.24.0
 

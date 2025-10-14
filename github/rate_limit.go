@@ -27,7 +27,8 @@ type Rate struct {
 	// The rate limit resource that the request counted against.
 	// For more information about the different resources, see REST API endpoints for rate limits.
 	// GitHub API docs: https://docs.github.com/en/rest/rate-limit/rate-limit#get-rate-limit-status-for-the-authenticated-user
-	Resource string `json:"resource,omitempty"` //nolint:sliceofpointers
+	//nolint:gogithub
+	Resource string `json:"resource,omitempty"`
 }
 
 func (r Rate) String() string {

@@ -49,7 +49,7 @@ func TestStringify(t *testing.T) {
 		{Ptr(123), `123`},
 		{Ptr(false), `false`},
 		{
-			//nolint:sliceofpointers
+			//nolint:gogithub
 			[]*string{Ptr("a"), Ptr("b")},
 			`["a" "b"]`,
 		},

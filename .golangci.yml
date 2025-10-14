@@ -22,7 +22,7 @@ linters:
     - paralleltest
     - perfsprint
     - revive
-    - sliceofpointers
+    - gogithub
     - staticcheck
     - tparallel
     - unconvert
@@ -143,10 +143,10 @@ linters:
         type: module
         description: Reports usage of %d or %s in format strings.
         original-url: github.com/google/go-github/v75/tools/fmtpercentv
-      sliceofpointers:
+      gogithub:
         type: module
-        description: Reports usage of []*string and slices of structs without pointers.
-        original-url: github.com/google/go-github/v75/tools/sliceofpointers
+        description: Custom linter for this project.
+        original-url: github.com/google/go-github/v75/tools/gogithub
   exclusions:
     rules:
       - linters:

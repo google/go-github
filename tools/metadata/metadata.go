@@ -29,8 +29,10 @@ import (
 )
 
 type operation struct {
-	Name             string   `yaml:"name,omitempty" json:"name,omitempty"`                           //nolint:sliceofpointers
-	DocumentationURL string   `yaml:"documentation_url,omitempty" json:"documentation_url,omitempty"` //nolint:sliceofpointers
+	//nolint:gogithub
+	Name string `yaml:"name,omitempty" json:"name,omitempty"`
+	//nolint:gogithub
+	DocumentationURL string   `yaml:"documentation_url,omitempty" json:"documentation_url,omitempty"`
 	OpenAPIFiles     []string `yaml:"openapi_files,omitempty" json:"openapi_files,omitempty"`
 }
 
