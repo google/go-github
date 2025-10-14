@@ -1111,35 +1111,6 @@ type ProjectV2Event struct {
 	Sender       *User         `json:"sender,omitempty"`
 }
 
-// ProjectV2 represents a v2 project.
-type ProjectV2 struct {
-	ID               *int64     `json:"id,omitempty"`
-	NodeID           *string    `json:"node_id,omitempty"`
-	Owner            *User      `json:"owner,omitempty"`
-	Creator          *User      `json:"creator,omitempty"`
-	Title            *string    `json:"title,omitempty"`
-	Description      *string    `json:"description,omitempty"`
-	Public           *bool      `json:"public,omitempty"`
-	ClosedAt         *Timestamp `json:"closed_at,omitempty"`
-	CreatedAt        *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
-	DeletedAt        *Timestamp `json:"deleted_at,omitempty"`
-	Number           *int       `json:"number,omitempty"`
-	ShortDescription *string    `json:"short_description,omitempty"`
-	DeletedBy        *User      `json:"deleted_by,omitempty"`
-
-	// Fields migrated from the Project (classic) struct:
-	URL                    *string `json:"url,omitempty"`
-	HTMLURL                *string `json:"html_url,omitempty"`
-	ColumnsURL             *string `json:"columns_url,omitempty"`
-	OwnerURL               *string `json:"owner_url,omitempty"`
-	Name                   *string `json:"name,omitempty"`
-	Body                   *string `json:"body,omitempty"`
-	State                  *string `json:"state,omitempty"`
-	OrganizationPermission *string `json:"organization_permission,omitempty"`
-	Private                *bool   `json:"private,omitempty"`
-}
-
 // ProjectV2ItemEvent is triggered when there is activity relating to an item on an organization-level project.
 // The Webhook event name is "projects_v2_item".
 //
