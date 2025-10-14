@@ -8,7 +8,6 @@
 package integration
 
 import (
-	"context"
 	"os"
 	"testing"
 
@@ -32,15 +31,13 @@ import (
 //   GITHUB_TEST_REPO                   (repo name)
 
 func TestProjectsV2_Org(t *testing.T) {
-	if !checkAuth("TestProjectsV2_Org") {
-		return
-	}
+	skipIfMissingAuth(t)
 	org := os.Getenv("GITHUB_TEST_ORG")
 	if org == "" {
 		t.Skip("GITHUB_TEST_ORG not set")
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	opts := &github.ListProjectsOptions{}
 	// List projects for org; pick the first available project we can read.
@@ -76,15 +73,13 @@ func TestProjectsV2_Org(t *testing.T) {
 }
 
 func TestProjectsV2_User(t *testing.T) {
-	if !checkAuth("TestProjectsV2_User") {
-		return
-	}
+	skipIfMissingAuth(t)
 	user := os.Getenv("GITHUB_TEST_USER")
 	if user == "" {
 		t.Skip("GITHUB_TEST_USER not set")
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &github.ListProjectsOptions{}
 	projects, _, err := client.Projects.ListProjectsForUser(ctx, user, opts)
 	if err != nil {
