@@ -30,7 +30,7 @@ func TestProjectsService_ListProjectsForOrg(t *testing.T) {
 	})
 
 	opts := &ListProjectsOptions{Query: "alpha", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
-	ctx := context.Background()
+	ctx := t.Context()
 	projects, _, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
 	if err != nil {
 		t.Fatalf("Projects.ListProjectsForOrg returned error: %v", err)
@@ -54,7 +54,7 @@ func TestProjectsService_ListProjectsForOrg(t *testing.T) {
 	})
 
 	// still allow both set (no validation enforced) – ensure it does not error
-	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
+	ctxBypass := context.WithValue(t.Context(), BypassRateLimitCheck, true)
 	if _, _, err = client.Projects.ListProjectsForOrg(ctxBypass, "o", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
@@ -69,7 +69,7 @@ func TestProjectsService_GetProjectForOrg(t *testing.T) {
 		fmt.Fprint(w, `{"id":1,"title":"OrgProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	project, _, err := client.Projects.GetProjectForOrg(ctx, "o", 1)
 	if err != nil {
 		t.Fatalf("Projects.GetProjectForOrg returned error: %v", err)
@@ -105,7 +105,7 @@ func TestProjectsService_ListUserProjects(t *testing.T) {
 	})
 
 	opts := &ListProjectsOptions{Query: "beta", ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "1", After: "2", PerPage: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	var ctxBypass context.Context
 	projects, _, err := client.Projects.ListProjectsForUser(ctx, "u", opts)
 	if err != nil {
@@ -130,7 +130,7 @@ func TestProjectsService_ListUserProjects(t *testing.T) {
 	})
 
 	// still allow both set (no validation enforced) – ensure it does not error
-	ctxBypass = context.WithValue(context.Background(), BypassRateLimitCheck, true)
+	ctxBypass = context.WithValue(t.Context(), BypassRateLimitCheck, true)
 	if _, _, err = client.Projects.ListProjectsForUser(ctxBypass, "u", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
@@ -145,7 +145,7 @@ func TestProjectsService_GetProjectForUser(t *testing.T) {
 		fmt.Fprint(w, `{"id":2,"title":"UProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	project, _, err := client.Projects.GetProjectForUser(ctx, "u", 2)
 	if err != nil {
 		t.Fatalf("Projects.GetProjectForUser returned error: %v", err)
@@ -189,7 +189,7 @@ func TestProjectsService_ListProjectsForOrg_pagination(t *testing.T) {
 		http.Error(w, "unexpected query", http.StatusBadRequest)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	first, resp, err := client.Projects.ListProjectsForOrg(ctx, "o", nil)
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
@@ -236,7 +236,7 @@ func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 		http.Error(w, "unexpected query", http.StatusBadRequest)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	first, resp, err := client.Projects.ListProjectsForUser(ctx, "u", nil)
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
@@ -309,22 +309,22 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 	})
 
 	opts := &ListProjectsOptions{Query: "text", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
-	ctx := context.Background()
+	ctx := t.Context()
 	fields, _, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
 	if err != nil {
 		t.Fatalf("Projects.ListProjectFieldsForOrg returned error: %v", err)
 	}
 
 	if len(fields) != 2 {
-		t.Fatalf("Projects.ListProjectFieldsForOrg returned %d fields, want 2", len(fields))
+		t.Fatalf("Projects.ListProjectFieldsForOrg returned %v fields, want 2", len(fields))
 	}
 
 	field1 := fields[0]
 	if field1.ID == nil || *field1.ID != 1 || field1.Name != "Status" || field1.DataType != "single_select" {
-		t.Errorf("First field: got ID=%v, Name=%s, DataType=%s; want 1, Status, single_select", field1.ID, field1.Name, field1.DataType)
+		t.Errorf("First field: got ID=%v, Name=%v, DataType=%v; want 1, Status, single_select", field1.ID, field1.Name, field1.DataType)
 	}
 	if len(field1.Options) != 2 {
-		t.Errorf("First field options: got %d, want 2", len(field1.Options))
+		t.Errorf("First field options: got %v, want 2", len(field1.Options))
 	} else {
 		getName := func(o *any) string {
 			if o == nil || *o == nil {
@@ -349,10 +349,10 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 	// Validate second field (without options)
 	field2 := fields[1]
 	if field2.ID == nil || *field2.ID != 2 || field2.Name != "Priority" || field2.DataType != "text" {
-		t.Errorf("Second field: got ID=%v, Name=%s, DataType=%s; want 2, Priority, text", field2.ID, field2.Name, field2.DataType)
+		t.Errorf("Second field: got ID=%v, Name=%v, DataType=%v; want 2, Priority, text", field2.ID, field2.Name, field2.DataType)
 	}
 	if len(field2.Options) != 0 {
-		t.Errorf("Second field options: got %d, want 0", len(field2.Options))
+		t.Errorf("Second field options: got %v, want 0", len(field2.Options))
 	}
 
 	const methodName = "ListProjectFieldsForOrg"
@@ -370,7 +370,7 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 	})
 
 	// still allow both set (no validation enforced) – ensure it does not error
-	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
+	ctxBypass := context.WithValue(t.Context(), BypassRateLimitCheck, true)
 	if _, _, err = client.Projects.ListProjectFieldsForOrg(ctxBypass, "o", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
@@ -401,7 +401,7 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 		http.Error(w, "unexpected query", http.StatusBadRequest)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	first, resp, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, nil)
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
