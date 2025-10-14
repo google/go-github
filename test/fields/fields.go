@@ -25,7 +25,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/google/go-github/v75/github"
+	"github.com/google/go-github/v76/github"
 )
 
 var (
