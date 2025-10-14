@@ -12,6 +12,9 @@ package sliceofpointers
 import (
 	"go/ast"
 	"go/token"
+	"reflect"
+	"slices"
+	"strings"
 
 	"github.com/golangci/plugin-module-register/register"
 	"golang.org/x/tools/go/analysis"
@@ -55,6 +58,8 @@ func run(pass *analysis.Pass) (any, error) {
 			switch t := n.(type) {
 			case *ast.ArrayType:
 				checkArrayType(t, t.Pos(), pass)
+			case *ast.StructType:
+				checkStructType(t, pass)
 			}
 
 			return true
@@ -72,6 +77,52 @@ func checkArrayType(arrType *ast.ArrayType, tokenPos token.Pos, pass *analysis.P
 	} else if ident, ok := arrType.Elt.(*ast.Ident); ok && ident.Obj != nil {
 		if _, ok := ident.Obj.Decl.(*ast.TypeSpec).Type.(*ast.StructType); ok {
 			pass.Reportf(tokenPos, "use []*%v instead of []%[1]v", ident.Name)
+		}
+	}
+}
+
+// allowedQualifiedTypes is a allowlist of qualified types (package.Type) that are allowed
+// to use omitempty without pointers because they are reference types or have special semantics.
+var allowedQualifiedTypes = [][2]string{
+	{"json", "RawMessage"}, // json.RawMessage is []byte, can be nil
+}
+
+func checkStructType(structType *ast.StructType, pass *analysis.Pass) {
+	if structType.Fields == nil {
+		return
+	}
+
+	for _, field := range structType.Fields.List {
+		if field.Tag == nil {
+			continue
+		}
+
+		// Parse struct tag properly using reflect.StructTag
+		tag := reflect.StructTag(strings.Trim(field.Tag.Value, "`"))
+		if jsonTag := tag.Get("json"); !strings.Contains(jsonTag, "omitempty") {
+			continue
+		}
+
+		switch t := field.Type.(type) {
+		case *ast.Ident:
+			if t.Name == "any" {
+				break
+			}
+
+			pass.Reportf(field.Pos(), "using json:\"omitempty\" tag will cause zero values to be unexpectedly omitted")
+		case *ast.SelectorExpr:
+			if x, ok := t.X.(*ast.Ident); ok && slices.Contains(allowedQualifiedTypes, [2]string{x.Name, t.Sel.Name}) {
+				break
+			}
+
+			pass.Reportf(field.Pos(), "using json:\"omitempty\" tag will cause zero values to be unexpectedly omitted")
+		default:
+			// *ast.StarExpr: pointers (can be nil)
+			// *ast.ArrayType: slices/arrays (slices can be nil)
+			// *ast.MapType: maps (can be nil)
+			// *ast.InterfaceType: interfaces (can be nil)
+			// All other types: safe by default
+			break
 		}
 	}
 }
