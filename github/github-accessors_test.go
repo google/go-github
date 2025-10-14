@@ -24740,6 +24740,39 @@ func TestProjectV2Event_GetSender(tt *testing.T) {
 	p.GetSender()
 }
 
+func TestProjectV2Field_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &ProjectV2Field{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &ProjectV2Field{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestProjectV2Field_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &ProjectV2Field{ID: &zeroValue}
+	p.GetID()
+	p = &ProjectV2Field{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestProjectV2Field_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &ProjectV2Field{UpdatedAt: &zeroValue}
+	p.GetUpdatedAt()
+	p = &ProjectV2Field{}
+	p.GetUpdatedAt()
+	p = nil
+	p.GetUpdatedAt()
+}
+
 func TestProjectV2Item_GetArchivedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
