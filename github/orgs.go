@@ -100,7 +100,7 @@ type Organization struct {
 	// MembersCanDeleteRepositories toggles whether members with admin permissions can delete a repository.
 	MembersCanDeleteRepositories *bool `json:"members_can_delete_repositories,omitempty"`
 	// MembersCanChangeRepoVisibility toggles whether members with admin permissions can change the visibility for a repository.
-	MembersCanChangeRepoVisibility *bool `json:"members_can_change_repo_visiblilty,omitempty"`
+	MembersCanChangeRepoVisibility *bool `json:"members_can_change_repo_visibility,omitempty"`
 	// MembersCanInviteOutsideCollaborators toggles whether members with admin permissions can invite outside collaborators.
 	MembersCanInviteOutsideCollaborators *bool `json:"members_can_invite_outside_collaborators,omitempty"`
 	// MembersCanDeleteIssues toggles whether members with admin permissions can delete issues.
