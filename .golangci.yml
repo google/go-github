@@ -15,8 +15,10 @@ linters:
     - godot
     - goheader
     - gosec
+    - intrange
     - jsonfieldname
     - misspell
+    - musttag
     - nakedret
     - paralleltest
     - perfsprint
