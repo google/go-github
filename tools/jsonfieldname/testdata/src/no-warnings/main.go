@@ -10,6 +10,3 @@ type Example struct {
 	ID          string `json:"id,omitempty"`      // Should not be flagged
 	Strings     string `json:"strings,omitempty"` // Should not be flagged
 }
-
-func main() {
-}

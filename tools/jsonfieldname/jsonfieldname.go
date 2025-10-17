@@ -39,7 +39,7 @@ func (f *JSONFieldNamePlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 	return []*analysis.Analyzer{
 		{
 			Name: "jsonfieldname",
-			Doc:  "Reports mismatches between Go field and JSON tag names.",
+			Doc:  "Reports mismatches between Go field and JSON tag names. Note that the JSON tag name is the source-of-truth and the Go field name needs to match it.",
 			Run:  run,
 		},
 	}, nil

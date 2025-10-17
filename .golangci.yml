@@ -148,6 +148,68 @@ linters:
         type: module
         description: Reports mismatches between Go field and JSON tag names.
         original-url: github.com/google/go-github/v75/tools/jsonfieldname
+        allowed-exceptions:
+          ActionsCacheUsageList.RepoCacheUsage  # TODO: RepoCacheUsages ?
+          AuditEntry.ExternalIdentityNameID
+          AuditEntry.Timestamp
+          CheckSuite.AfterSHA
+          CheckSuite.BeforeSHA
+          CodeSearchResult.CodeResults
+          CodeSearchResult.Total
+          CommitAuthor.Login
+          CommitsSearchResult.Commits
+          CommitsSearchResult.Total
+          CreateOrgInvitationOptions.TeamID     # TODO: TeamIDs
+          DependencyGraphSnapshot.Sha           # TODO: SHA
+          Discussion.DiscussionCategory         # TODO: Category ?
+          EditOwner.OwnerInfo
+          Event.RawPayload
+          HookRequest.RawPayload
+          HookResponse.RawPayload
+          Issue.PullRequestLinks                # TODO: PullRequest
+          IssueImportRequest.IssueImport        # TODO: Issue
+          IssuesSearchResult.Issues             # TODO: Items
+          IssuesSearchResult.Total
+          LabelsSearchResult.Labels             # TODO: Items
+          LabelsSearchResult.Total
+          ListCheckRunsResults.Total
+          ListCheckSuiteResults.Total
+          ListCustomDeploymentRuleIntegrationsResponse.AvailableIntegrations
+          ListDeploymentProtectionRuleResponse.ProtectionRules
+          OrganizationCustomRepoRoles.CustomRepoRoles                              # TODO: CustomRoles
+          OrganizationCustomRoles.CustomRepoRoles                                  # TODO: Roles
+          PreReceiveHook.ConfigURL
+          ProjectV2ItemEvent.ProjectV2Item                                         # TODO: ProjectsV2Item
+          Protection.RequireLinearHistory                                          # TODO: RequiredLinearHistory
+          ProtectionRequest.RequireLinearHistory                                   # TODO: RequiredLinearHistory
+          PullRequestComment.InReplyTo                                             # TODO: InReplyToID
+          PullRequestReviewsEnforcementRequest.BypassPullRequestAllowancesRequest  # TODO: BypassPullRequestAllowances
+          PullRequestReviewsEnforcementRequest.DismissalRestrictionsRequest        # TODO: DismissalRestrictions
+          PullRequestReviewsEnforcementUpdate.BypassPullRequestAllowancesRequest   # TODO: BypassPullRequestAllowances
+          PullRequestReviewsEnforcementUpdate.DismissalRestrictionsRequest         # TODO: DismissalRestrictions
+          Reactions.MinusOne
+          Reactions.PlusOne
+          RepositoriesSearchResult.Repositories
+          RepositoriesSearchResult.Total
+          RepositoryVulnerabilityAlert.GitHubSecurityAdvisoryID
+          SCIMDisplayReference.Ref
+          SecretScanningAlertLocationDetails.Startline                             # TODO: StartLine
+          SecretScanningPatternOverride.Bypassrate                                 # TODO: BypassRate
+          StarredRepository.Repository                                             # TODO: Repo
+          Timeline.Requester                                                       # TODO: ReviewRequester
+          Timeline.Reviewer                                                        # TODO: RequestedReviewer
+          TopicsSearchResult.Topics                                                # TODO: Items
+          TopicsSearchResult.Total
+          TotalCacheUsage.TotalActiveCachesUsageSizeInBytes                        # TODO: TotalActiveCachesSizeInBytes
+          TransferRequest.TeamID                                                   # TODO: TeamIDs
+          Tree.Entries
+          User.LdapDn                                                              # TODO: LDAPDN
+          UsersSearchResult.Total
+          UsersSearchResult.Users
+          WeeklyStats.Additions
+          WeeklyStats.Commits
+          WeeklyStats.Deletions
+          WeeklyStats.Week
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
