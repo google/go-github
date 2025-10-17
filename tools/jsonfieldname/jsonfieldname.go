@@ -27,11 +27,35 @@ func init() {
 }
 
 // JSONFieldNamePlugin is a custom linter plugin for golangci-lint.
-type JSONFieldNamePlugin struct{}
+type JSONFieldNamePlugin struct {
+	allowedExceptions map[string]bool
+}
+
+// Settings is the configuration for the jsonfieldname linter.
+type Settings struct {
+	AllowedExceptions []string `json:"allowed-exceptions" yaml:"allowed-exceptions"`
+}
 
 // New returns an analysis.Analyzer to use with golangci-lint.
-func New(_ any) (register.LinterPlugin, error) {
-	return &JSONFieldNamePlugin{}, nil
+// It parses the "allowed-exceptions" section to determine which warnings to skip.
+func New(cfg any) (register.LinterPlugin, error) {
+	allowedExceptions := map[string]bool{}
+
+	if cfg != nil {
+		if settingsMap, ok := cfg.(map[string]any); ok {
+			if exceptionsRaw, ok := settingsMap["allowed-exceptions"]; ok {
+				if exceptionsList, ok := exceptionsRaw.([]any); ok {
+					for _, item := range exceptionsList {
+						if exception, ok := item.(string); ok {
+							allowedExceptions[exception] = true
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return &JSONFieldNamePlugin{allowedExceptions: allowedExceptions}, nil
 }
 
 // BuildAnalyzers builds the analyzers for the JSONFieldNamePlugin.
@@ -40,7 +64,9 @@ func (f *JSONFieldNamePlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 		{
 			Name: "jsonfieldname",
 			Doc:  "Reports mismatches between Go field and JSON tag names. Note that the JSON tag name is the source-of-truth and the Go field name needs to match it.",
-			Run:  run,
+			Run: func(pass *analysis.Pass) (any, error) {
+				return run(pass, f.allowedExceptions)
+			},
 		},
 	}, nil
 }
@@ -50,7 +76,7 @@ func (f *JSONFieldNamePlugin) GetLoadMode() string {
 	return register.LoadModeSyntax
 }
 
-func run(pass *analysis.Pass) (any, error) {
+func run(pass *analysis.Pass, allowedExceptions map[string]bool) (any, error) {
 	for _, file := range pass.Files {
 		ast.Inspect(file, func(n ast.Node) bool {
 			if n == nil {
@@ -84,7 +110,7 @@ func run(pass *analysis.Pass) (any, error) {
 					}
 					jsonTagName = strings.TrimSuffix(jsonTagName, ",omitempty")
 
-					checkGoFieldName(structName, goField.Name, jsonTagName, goField.Pos(), pass)
+					checkGoFieldName(structName, goField.Name, jsonTagName, goField.Pos(), pass, allowedExceptions)
 				}
 			}
 
@@ -94,7 +120,7 @@ func run(pass *analysis.Pass) (any, error) {
 	return nil, nil
 }
 
-func checkGoFieldName(structName, goFieldName, jsonTagName string, tokenPos token.Pos, pass *analysis.Pass) {
+func checkGoFieldName(structName, goFieldName, jsonTagName string, tokenPos token.Pos, pass *analysis.Pass, allowedExceptions map[string]bool) {
 	fullName := structName + "." + goFieldName
 	if allowedExceptions[fullName] {
 		return
@@ -155,70 +181,6 @@ func jsonTagToPascal(jsonTagName string) (want, alternate string) {
 		}
 	}
 	return strings.Join(parts, ""), strings.Join(alt, "")
-}
-
-var allowedExceptions = map[string]bool{
-	"ActionsCacheUsageList.RepoCacheUsage": true, // TODO: RepoCacheUsages ?
-	"AuditEntry.ExternalIdentityNameID":    true,
-	"AuditEntry.Timestamp":                 true,
-	"CheckSuite.AfterSHA":                  true,
-	"CheckSuite.BeforeSHA":                 true,
-	"CodeSearchResult.CodeResults":         true,
-	"CodeSearchResult.Total":               true,
-	"CommitAuthor.Login":                   true,
-	"CommitsSearchResult.Commits":          true,
-	"CommitsSearchResult.Total":            true,
-	"CreateOrgInvitationOptions.TeamID":    true, // TODO: TeamIDs
-	"DependencyGraphSnapshot.Sha":          true, // TODO: SHA
-	"Discussion.DiscussionCategory":        true, // TODO: Category ?
-	"EditOwner.OwnerInfo":                  true,
-	"Event.RawPayload":                     true,
-	"HookRequest.RawPayload":               true,
-	"HookResponse.RawPayload":              true,
-	"Issue.PullRequestLinks":               true, // TODO: PullRequest
-	"IssueImportRequest.IssueImport":       true, // TODO: Issue
-	"IssuesSearchResult.Issues":            true, // TODO: Items
-	"IssuesSearchResult.Total":             true,
-	"LabelsSearchResult.Labels":            true, // TODO: Items
-	"LabelsSearchResult.Total":             true,
-	"ListCheckRunsResults.Total":           true,
-	"ListCheckSuiteResults.Total":          true,
-	"ListCustomDeploymentRuleIntegrationsResponse.AvailableIntegrations":      true,
-	"ListDeploymentProtectionRuleResponse.ProtectionRules":                    true,
-	"OrganizationCustomRepoRoles.CustomRepoRoles":                             true, // TODO: CustomRoles
-	"OrganizationCustomRoles.CustomRepoRoles":                                 true, // TODO: Roles
-	"PreReceiveHook.ConfigURL":                                                true,
-	"ProjectV2ItemEvent.ProjectV2Item":                                        true, // TODO: ProjectsV2Item
-	"Protection.RequireLinearHistory":                                         true, // TODO: RequiredLinearHistory
-	"ProtectionRequest.RequireLinearHistory":                                  true, // TODO: RequiredLinearHistory
-	"PullRequestComment.InReplyTo":                                            true, // TODO: InReplyToID
-	"PullRequestReviewsEnforcementRequest.BypassPullRequestAllowancesRequest": true, // TODO: BypassPullRequestAllowances
-	"PullRequestReviewsEnforcementRequest.DismissalRestrictionsRequest":       true, // TODO: DismissalRestrictions
-	"PullRequestReviewsEnforcementUpdate.BypassPullRequestAllowancesRequest":  true, // TODO: BypassPullRequestAllowances
-	"PullRequestReviewsEnforcementUpdate.DismissalRestrictionsRequest":        true, // TODO: DismissalRestrictions
-	"Reactions.MinusOne":                                                      true,
-	"Reactions.PlusOne":                                                       true,
-	"RepositoriesSearchResult.Repositories":                                   true,
-	"RepositoriesSearchResult.Total":                                          true,
-	"RepositoryVulnerabilityAlert.GitHubSecurityAdvisoryID":                   true,
-	"SCIMDisplayReference.Ref":                                                true,
-	"SecretScanningAlertLocationDetails.Startline":                            true, // TODO: StartLine
-	"SecretScanningPatternOverride.Bypassrate":                                true, // TODO: BypassRate
-	"StarredRepository.Repository":                                            true, // TODO: Repo
-	"Timeline.Requester":                                                      true, // TODO: ReviewRequester
-	"Timeline.Reviewer":                                                       true, // TODO: RequestedReviewer
-	"TopicsSearchResult.Topics":                                               true, // TODO: Items
-	"TopicsSearchResult.Total":                                                true,
-	"TotalCacheUsage.TotalActiveCachesUsageSizeInBytes":                       true, // TODO: TotalActiveCachesSizeInBytes
-	"TransferRequest.TeamID":                                                  true, // TODO: TeamIDs
-	"Tree.Entries":                                                            true,
-	"User.LdapDn":                                                             true, // TODO: LDAPDN
-	"UsersSearchResult.Total":                                                 true,
-	"UsersSearchResult.Users":                                                 true,
-	"WeeklyStats.Additions":                                                   true,
-	"WeeklyStats.Commits":                                                     true,
-	"WeeklyStats.Deletions":                                                   true,
-	"WeeklyStats.Week":                                                        true,
 }
 
 // Common Go initialisms that should be all caps.
