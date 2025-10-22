@@ -48,24 +48,37 @@ const (
 
 // PrivateRegistry represents a private registry configuration.
 type PrivateRegistry struct {
-	Name         *string    `json:"name,omitempty"`
-	RegistryType *string    `json:"registry_type,omitempty"`
-	Username     *string    `json:"username,omitempty"`
-	CreatedAt    *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt    *Timestamp `json:"updated_at,omitempty"`
-	Visibility   *string    `json:"visibility,omitempty"`
+	// Name of the private registry.
+	Name *string `json:"name,omitempty"`
+	// RegistryType is the type of private registry. You can find the list of supported types in PrivateRegistryType.
+	RegistryType *string `json:"registry_type,omitempty"`
+	// Username to use when authenticating with the private registry.
+	// This field is omitted if the private registry does not require a username for authentication.
+	Username *string `json:"username,omitempty"`
+	// CreatedAt is the timestamp when the private registry was created.
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	// UpdatedAt is the timestamp when the private registry was last updated.
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+	// Visibility is the visibility of the private registry. Possible values are: "private", "all", and "selected".
+	Visibility *PrivateRegistryVisibility `json:"visibility,omitempty"`
 }
 
 // PrivateRegistries represents a list of private registries.
 type PrivateRegistries struct {
-	TotalCount     *int               `json:"total_count,omitempty"`
+	// TotalCount is the total number of private registries.
+	TotalCount *int `json:"total_count,omitempty"`
+	// Configurations is the list of private registry configurations.
 	Configurations []*PrivateRegistry `json:"configurations,omitempty"`
 }
 
 // CreateOrganizationPrivateRegistry represents the payload to create a private registry.
 type CreateOrganizationPrivateRegistry struct {
+	// RegistryType is the type of private registry.
+	// You can find the list of supported types in PrivateRegistryType.
 	RegistryType string `json:"registry_type"`
-	URL          string `json:"url"`
+
+	// URL is the URL of the private registry.
+	URL string `json:"url"`
 
 	// The username to use when authenticating with the private registry.
 	// This field should be omitted if the private registry does not require a username for authentication.
@@ -73,9 +86,12 @@ type CreateOrganizationPrivateRegistry struct {
 
 	// The value for your secret, encrypted with [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages)
 	// using the public key retrieved from the PrivateRegistriesService.GetOrganizationPrivateRegistriesPublicKey.
-	EncryptedValue string                    `json:"encrypted_value"`
-	KeyID          string                    `json:"key_id"`
-	Visibility     PrivateRegistryVisibility `json:"visibility"`
+	EncryptedValue string `json:"encrypted_value"`
+	// KeyID is the ID of the public key used to encrypt the secret.
+	KeyID string `json:"key_id"`
+	// Visibility is the visibility of the private registry.
+	// Possible values are: "private", "all", and "selected".
+	Visibility PrivateRegistryVisibility `json:"visibility"`
 
 	// An array of repository IDs that can access the organization private registry.
 	// You can only provide a list of repository IDs when CreateOrganizationPrivateRegistry.Visibility is set to PrivateRegistryVisibilitySelected.
@@ -85,8 +101,12 @@ type CreateOrganizationPrivateRegistry struct {
 
 // UpdateOrganizationPrivateRegistry represents the payload to update a private registry.
 type UpdateOrganizationPrivateRegistry struct {
+	// RegistryType is the type of private registry.
+	// You can find the list of supported types in PrivateRegistryType.
 	RegistryType *string `json:"registry_type,omitempty"`
-	URL          *string `json:"url,omitempty"`
+
+	// URL is the URL of the private registry.
+	URL *string `json:"url,omitempty"`
 
 	// The username to use when authenticating with the private registry.
 	// This field should be omitted if the private registry does not require a username for authentication.
@@ -94,9 +114,12 @@ type UpdateOrganizationPrivateRegistry struct {
 
 	// The value for your secret, encrypted with [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages)
 	// using the public key retrieved from the PrivateRegistriesService.GetOrganizationPrivateRegistriesPublicKey.
-	EncryptedValue *string                    `json:"encrypted_value,omitempty"`
-	KeyID          *string                    `json:"key_id,omitempty"`
-	Visibility     *PrivateRegistryVisibility `json:"visibility,omitempty"`
+	EncryptedValue *string `json:"encrypted_value,omitempty"`
+	// KeyID is the ID of the public key used to encrypt the secret.
+	KeyID *string `json:"key_id,omitempty"`
+	// Visibility is the visibility of the private registry.
+	// Possible values are: "private", "all", and "selected".
+	Visibility *PrivateRegistryVisibility `json:"visibility,omitempty"`
 
 	// An array of repository IDs that can access the organization private registry.
 	// You can only provide a list of repository IDs when CreateOrganizationPrivateRegistry.Visibility is set to PrivateRegistryVisibilitySelected.
@@ -129,7 +152,7 @@ func (s *PrivateRegistriesService) ListOrganizationPrivateRegistries(ctx context
 	return &privateRegistries, resp, nil
 }
 
-// CreateOrganizationPrivateRegistry creates a private registry for an organization.
+// CreateOrganizationPrivateRegistry creates a private registry configuration with an encrypted value for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#create-a-private-registry-for-an-organization
 //
@@ -172,13 +195,13 @@ func (s *PrivateRegistriesService) GetOrganizationPrivateRegistriesPublicKey(ctx
 }
 
 // GetOrganizationPrivateRegistry gets a specific private registry for an organization.
-// name parameter is the name of the private registry to delete, PrivateRegistry.Name
+// The `name` parameter is the name of the private registry to retrieve. It is the same as PrivateRegistry.Name.
 //
 // GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#get-a-private-registry-for-an-organization
 //
 //meta:operation GET /orgs/{org}/private-registries/{secret_name}
-func (s *PrivateRegistriesService) GetOrganizationPrivateRegistry(ctx context.Context, org, name string) (*PrivateRegistry, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, name)
+func (s *PrivateRegistriesService) GetOrganizationPrivateRegistry(ctx context.Context, org, secretName string) (*PrivateRegistry, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, secretName)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -195,13 +218,13 @@ func (s *PrivateRegistriesService) GetOrganizationPrivateRegistry(ctx context.Co
 }
 
 // UpdateOrganizationPrivateRegistry updates a specific private registry for an organization.
-// name parameter is the name of the private registry to delete, PrivateRegistry.Name
+// The `name` parameter is the name of the private registry to update. It is the same as PrivateRegistry.Name.
 //
 // GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#update-a-private-registry-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/private-registries/{secret_name}
-func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context.Context, org, name string, privateRegistry UpdateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, name)
+func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context.Context, org, secretName string, privateRegistry UpdateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, secretName)
 
 	req, err := s.client.NewRequest("PATCH", u, privateRegistry)
 	if err != nil {
@@ -218,13 +241,13 @@ func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context
 }
 
 // DeleteOrganizationPrivateRegistry deletes a specific private registry for an organization.
-// name parameter is the name of the private registry to delete, PrivateRegistry.Name
+// The `name` parameter is the name of the private registry to delete. It is the same as PrivateRegistry.Name.
 //
 // GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#delete-a-private-registry-for-an-organization
 //
 //meta:operation DELETE /orgs/{org}/private-registries/{secret_name}
-func (s *PrivateRegistriesService) DeleteOrganizationPrivateRegistry(ctx context.Context, org, name string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, name)
+func (s *PrivateRegistriesService) DeleteOrganizationPrivateRegistry(ctx context.Context, org, secretName string) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, secretName)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
