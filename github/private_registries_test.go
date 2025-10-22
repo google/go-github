@@ -56,7 +56,7 @@ func TestPrivateRegistriesService_ListOrganizationPrivateRegistries(t *testing.T
 				Username:     Ptr("monalisa"),
 				CreatedAt:    &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
 				UpdatedAt:    &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
-				Visibility:   Ptr("selected"),
+				Visibility:   Ptr(PrivateRegistryVisibilitySelected),
 			},
 		},
 	}
@@ -130,7 +130,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistries(t *testing
 		Username:     Ptr("monalisa"),
 		CreatedAt:    &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
 		UpdatedAt:    &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
-		Visibility:   Ptr("selected"),
+		Visibility:   Ptr(PrivateRegistryVisibilitySelected),
 	}
 	if diff := cmp.Diff(want, privateRegistry); diff != "" {
 		t.Errorf("PrivateRegistries.CreateOrganizationPrivateRegitries mismatch (-want +got):\\n%v", diff)
@@ -218,7 +218,7 @@ func TestPrivateRegistriesService_GetOrganizationPrivateRegistry(t *testing.T) {
 		Username:     Ptr("monalisa"),
 		CreatedAt:    &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
 		UpdatedAt:    &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
-		Visibility:   Ptr("selected"),
+		Visibility:   Ptr(PrivateRegistryVisibilitySelected),
 	}
 	if diff := cmp.Diff(want, privateRegistry); diff != "" {
 		t.Errorf("PrivateRegistries.GetOrganizationPrivateRegistry mismatch (-want +got):\\n%v", diff)
@@ -280,7 +280,7 @@ func TestPrivateRegistries_UpdateOrganizationPrivateRegistry(t *testing.T) {
 		Username:     Ptr("monalisa"),
 		CreatedAt:    &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
 		UpdatedAt:    &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
-		Visibility:   Ptr("selected"),
+		Visibility:   Ptr(PrivateRegistryVisibilitySelected),
 	}
 	if diff := cmp.Diff(want, privateRegistry); diff != "" {
 		t.Errorf("PrivateRegistries.UpdateOrganizationPrivateRegistry mismatch (-want +got):\\n%v", diff)

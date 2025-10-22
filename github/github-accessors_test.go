@@ -24381,10 +24381,7 @@ func TestPrivateRegistry_GetUsername(tt *testing.T) {
 
 func TestPrivateRegistry_GetVisibility(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &PrivateRegistry{Visibility: &zeroValue}
-	p.GetVisibility()
-	p = &PrivateRegistry{}
+	p := &PrivateRegistry{}
 	p.GetVisibility()
 	p = nil
 	p.GetVisibility()

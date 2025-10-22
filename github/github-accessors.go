@@ -18750,12 +18750,12 @@ func (p *PrivateRegistry) GetUsername() string {
 	return *p.Username
 }
 
-// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
-func (p *PrivateRegistry) GetVisibility() string {
-	if p == nil || p.Visibility == nil {
-		return ""
+// GetVisibility returns the Visibility field.
+func (p *PrivateRegistry) GetVisibility() *PrivateRegistryVisibility {
+	if p == nil {
+		return nil
 	}
-	return *p.Visibility
+	return p.Visibility
 }
 
 // GetHRef returns the HRef field if it's non-nil, zero value otherwise.
