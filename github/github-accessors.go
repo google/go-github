@@ -6310,6 +6310,22 @@ func (c *CreateEvent) GetSender() *User {
 	return c.Sender
 }
 
+// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetSelectedRepositoryIDs() []int64 {
+	if c == nil || c.SelectedRepositoryIDs == nil {
+		return nil
+	}
+	return *c.SelectedRepositoryIDs
+}
+
+// GetUsername returns the Username field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetUsername() string {
+	if c == nil || c.Username == nil {
+		return ""
+	}
+	return *c.Username
+}
+
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
 func (c *CreateOrgInvitationOptions) GetEmail() string {
 	if c == nil || c.Email == nil {
@@ -18694,6 +18710,62 @@ func (p *PreReceiveHook) GetName() string {
 	return *p.Name
 }
 
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (p *PrivateRegistries) GetTotalCount() int {
+	if p == nil || p.TotalCount == nil {
+		return 0
+	}
+	return *p.TotalCount
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *PrivateRegistry) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *PrivateRegistry) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
+// GetRegistryType returns the RegistryType field if it's non-nil, zero value otherwise.
+func (p *PrivateRegistry) GetRegistryType() string {
+	if p == nil || p.RegistryType == nil {
+		return ""
+	}
+	return *p.RegistryType
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (p *PrivateRegistry) GetUpdatedAt() Timestamp {
+	if p == nil || p.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.UpdatedAt
+}
+
+// GetUsername returns the Username field if it's non-nil, zero value otherwise.
+func (p *PrivateRegistry) GetUsername() string {
+	if p == nil || p.Username == nil {
+		return ""
+	}
+	return *p.Username
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (p *PrivateRegistry) GetVisibility() string {
+	if p == nil || p.Visibility == nil {
+		return ""
+	}
+	return *p.Visibility
+}
+
 // GetHRef returns the HRef field if it's non-nil, zero value otherwise.
 func (p *PRLink) GetHRef() string {
 	if p == nil || p.HRef == nil {
@@ -28852,6 +28924,62 @@ func (u *UpdateEnterpriseRunnerGroupRequest) GetVisibility() string {
 		return ""
 	}
 	return *u.Visibility
+}
+
+// GetEncryptedValue returns the EncryptedValue field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetEncryptedValue() string {
+	if u == nil || u.EncryptedValue == nil {
+		return ""
+	}
+	return *u.EncryptedValue
+}
+
+// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetKeyID() string {
+	if u == nil || u.KeyID == nil {
+		return ""
+	}
+	return *u.KeyID
+}
+
+// GetRegistryType returns the RegistryType field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetRegistryType() string {
+	if u == nil || u.RegistryType == nil {
+		return ""
+	}
+	return *u.RegistryType
+}
+
+// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetSelectedRepositoryIDs() []int64 {
+	if u == nil || u.SelectedRepositoryIDs == nil {
+		return nil
+	}
+	return *u.SelectedRepositoryIDs
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetURL() string {
+	if u == nil || u.URL == nil {
+		return ""
+	}
+	return *u.URL
+}
+
+// GetUsername returns the Username field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetUsername() string {
+	if u == nil || u.Username == nil {
+		return ""
+	}
+	return *u.Username
+}
+
+// GetVisibility returns the Visibility field.
+func (u *UpdateOrganizationPrivateRegistry) GetVisibility() *PrivateRegistryVisibility {
+	if u == nil {
+		return nil
+	}
+	return u.Visibility
 }
 
 // GetForce returns the Force field if it's non-nil, zero value otherwise.

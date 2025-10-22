@@ -8234,6 +8234,28 @@ func TestCreateEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 }
 
+func TestCreateOrganizationPrivateRegistry_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue []int64
+	c := &CreateOrganizationPrivateRegistry{SelectedRepositoryIDs: &zeroValue}
+	c.GetSelectedRepositoryIDs()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetSelectedRepositoryIDs()
+	c = nil
+	c.GetSelectedRepositoryIDs()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetUsername(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{Username: &zeroValue}
+	c.GetUsername()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetUsername()
+	c = nil
+	c.GetUsername()
+}
+
 func TestCreateOrgInvitationOptions_GetEmail(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -24302,6 +24324,83 @@ func TestPreReceiveHook_GetName(tt *testing.T) {
 	p.GetName()
 }
 
+func TestPrivateRegistries_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &PrivateRegistries{TotalCount: &zeroValue}
+	p.GetTotalCount()
+	p = &PrivateRegistries{}
+	p.GetTotalCount()
+	p = nil
+	p.GetTotalCount()
+}
+
+func TestPrivateRegistry_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PrivateRegistry{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &PrivateRegistry{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestPrivateRegistry_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PrivateRegistry{Name: &zeroValue}
+	p.GetName()
+	p = &PrivateRegistry{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
+func TestPrivateRegistry_GetRegistryType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PrivateRegistry{RegistryType: &zeroValue}
+	p.GetRegistryType()
+	p = &PrivateRegistry{}
+	p.GetRegistryType()
+	p = nil
+	p.GetRegistryType()
+}
+
+func TestPrivateRegistry_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PrivateRegistry{UpdatedAt: &zeroValue}
+	p.GetUpdatedAt()
+	p = &PrivateRegistry{}
+	p.GetUpdatedAt()
+	p = nil
+	p.GetUpdatedAt()
+}
+
+func TestPrivateRegistry_GetUsername(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PrivateRegistry{Username: &zeroValue}
+	p.GetUsername()
+	p = &PrivateRegistry{}
+	p.GetUsername()
+	p = nil
+	p.GetUsername()
+}
+
+func TestPrivateRegistry_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PrivateRegistry{Visibility: &zeroValue}
+	p.GetVisibility()
+	p = &PrivateRegistry{}
+	p.GetVisibility()
+	p = nil
+	p.GetVisibility()
+}
+
 func TestPRLink_GetHRef(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -37160,6 +37259,80 @@ func TestUpdateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u := &UpdateEnterpriseRunnerGroupRequest{Visibility: &zeroValue}
 	u.GetVisibility()
 	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetVisibility()
+	u = nil
+	u.GetVisibility()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetEncryptedValue(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{EncryptedValue: &zeroValue}
+	u.GetEncryptedValue()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetEncryptedValue()
+	u = nil
+	u.GetEncryptedValue()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{KeyID: &zeroValue}
+	u.GetKeyID()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetKeyID()
+	u = nil
+	u.GetKeyID()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetRegistryType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{RegistryType: &zeroValue}
+	u.GetRegistryType()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetRegistryType()
+	u = nil
+	u.GetRegistryType()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue []int64
+	u := &UpdateOrganizationPrivateRegistry{SelectedRepositoryIDs: &zeroValue}
+	u.GetSelectedRepositoryIDs()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetSelectedRepositoryIDs()
+	u = nil
+	u.GetSelectedRepositoryIDs()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{URL: &zeroValue}
+	u.GetURL()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetURL()
+	u = nil
+	u.GetURL()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetUsername(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{Username: &zeroValue}
+	u.GetUsername()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetUsername()
+	u = nil
+	u.GetUsername()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateOrganizationPrivateRegistry{}
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()
