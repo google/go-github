@@ -119,7 +119,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistries(t *testing
 	})
 
 	ctx := t.Context()
-	privateRegistry, _, err := client.PrivateRegistries.CreateOrganizationPrivateRegistries(ctx, "o", *input)
+	privateRegistry, _, err := client.PrivateRegistries.CreateOrganizationPrivateRegistry(ctx, "o", *input)
 	if err != nil {
 		t.Fatalf("PrivateRegistries.CreateOrganizationPrivateRegitries returned error: %v", err)
 	}
@@ -136,14 +136,14 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistries(t *testing
 		t.Errorf("PrivateRegistries.CreateOrganizationPrivateRegitries mismatch (-want +got):\\n%v", diff)
 	}
 
-	const methodName = "CreateOrganizationPrivateRegistries"
+	const methodName = "CreateOrganizationPrivateRegistry"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.PrivateRegistries.CreateOrganizationPrivateRegistries(ctx, "\n", *input)
+		_, _, err = client.PrivateRegistries.CreateOrganizationPrivateRegistry(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.PrivateRegistries.CreateOrganizationPrivateRegistries(ctx, "o", *input)
+		got, resp, err := client.PrivateRegistries.CreateOrganizationPrivateRegistry(ctx, "o", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

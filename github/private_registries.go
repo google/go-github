@@ -129,12 +129,12 @@ func (s *PrivateRegistriesService) ListOrganizationPrivateRegistries(ctx context
 	return &privateRegistries, resp, nil
 }
 
-// CreateOrganizationPrivateRegistries creates a private registry for an organization.
+// CreateOrganizationPrivateRegistry creates a private registry for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#create-a-private-registry-for-an-organization
 //
 //meta:operation POST /orgs/{org}/private-registries
-func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistries(ctx context.Context, org string, privateRegistry CreateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
+func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistry(ctx context.Context, org string, privateRegistry CreateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries", org)
 
 	req, err := s.client.NewRequest("POST", u, privateRegistry)
