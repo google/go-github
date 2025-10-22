@@ -85,7 +85,7 @@ func TestPrivateRegistriesService_ListOrganizationPrivateRegistries(t *testing.T
 	}
 }
 
-func TestPrivateRegistriesService_CreateOrganizationPrivateRegistries(t *testing.T) {
+func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
