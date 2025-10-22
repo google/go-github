@@ -80,7 +80,7 @@ func TestPrivateRegistriesService_ListOrganizationPrivateRegistries(t *testing.T
 
 	// still allow both set (no validation enforced) – ensure it does not error
 	ctxBypass := context.WithValue(t.Context(), BypassRateLimitCheck, true)
-	if _, _, err = client.PrivateRegistries.ListOrganizationPrivateRegistries(ctxBypass, "o", &ListOptions{}); err != nil {
+	if _, _, err = client.PrivateRegistries.ListOrganizationPrivateRegistries(ctxBypass, "o", opts); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
@@ -96,7 +96,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistries(t *testing
 		EncryptedValue:        "encrypted_value",
 		KeyID:                 "key_id",
 		Visibility:            PrivateRegistryVisibilitySelected,
-		SelectedRepositoryIDs: &[]int64{1, 2, 3},
+		SelectedRepositoryIDs: []int64{1, 2, 3},
 	}
 
 	mux.HandleFunc("/orgs/o/private-registries", func(w http.ResponseWriter, r *http.Request) {
@@ -119,7 +119,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistries(t *testing
 	})
 
 	ctx := t.Context()
-	privateRegistry, _, err := client.PrivateRegistries.CreateOrganizationPrivateRegistries(ctx, "o", *input, nil)
+	privateRegistry, _, err := client.PrivateRegistries.CreateOrganizationPrivateRegistries(ctx, "o", *input)
 	if err != nil {
 		t.Fatalf("PrivateRegistries.CreateOrganizationPrivateRegitries returned error: %v", err)
 	}
@@ -138,12 +138,12 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistries(t *testing
 
 	const methodName = "CreateOrganizationPrivateRegistries"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.PrivateRegistries.CreateOrganizationPrivateRegistries(ctx, "\n", *input, nil)
+		_, _, err = client.PrivateRegistries.CreateOrganizationPrivateRegistries(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.PrivateRegistries.CreateOrganizationPrivateRegistries(ctx, "o", *input, nil)
+		got, resp, err := client.PrivateRegistries.CreateOrganizationPrivateRegistries(ctx, "o", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

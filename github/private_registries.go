@@ -64,8 +64,8 @@ type PrivateRegistries struct {
 
 // CreateOrganizationPrivateRegistry represents the payload to create a private registry.
 type CreateOrganizationPrivateRegistry struct {
-	RegistryType string `json:"registry_type,omitempty"`
-	URL          string `json:"url,omitempty"`
+	RegistryType string `json:"registry_type"`
+	URL          string `json:"url"`
 
 	// The username to use when authenticating with the private registry.
 	// This field should be omitted if the private registry does not require a username for authentication.
@@ -73,14 +73,14 @@ type CreateOrganizationPrivateRegistry struct {
 
 	// The value for your secret, encrypted with [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages)
 	// using the public key retrieved from the PrivateRegistriesService.GetOrganizationPrivateRegistriesPublicKey.
-	EncryptedValue string                    `json:"encrypted_value,omitempty"`
-	KeyID          string                    `json:"key_id,omitempty"`
-	Visibility     PrivateRegistryVisibility `json:"visibility,omitempty"`
+	EncryptedValue string                    `json:"encrypted_value"`
+	KeyID          string                    `json:"key_id"`
+	Visibility     PrivateRegistryVisibility `json:"visibility"`
 
 	// An array of repository IDs that can access the organization private registry.
 	// You can only provide a list of repository IDs when CreateOrganizationPrivateRegistry.Visibility is set to PrivateRegistryVisibilitySelected.
 	// This field should be omitted if visibility is set to PrivateRegistryVisibilityAll or PrivateRegistryVisibilityPrivate.
-	SelectedRepositoryIDs *[]int64 `json:"selected_repository_ids,omitempty"`
+	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
 }
 
 // UpdateOrganizationPrivateRegistry represents the payload to update a private registry.
@@ -101,7 +101,7 @@ type UpdateOrganizationPrivateRegistry struct {
 	// An array of repository IDs that can access the organization private registry.
 	// You can only provide a list of repository IDs when CreateOrganizationPrivateRegistry.Visibility is set to PrivateRegistryVisibilitySelected.
 	// This field should be omitted if visibility is set to PrivateRegistryVisibilityAll or PrivateRegistryVisibilityPrivate.
-	SelectedRepositoryIDs *[]int64 `json:"selected_repository_ids,omitempty"`
+	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
 }
 
 // ListOrganizationPrivateRegistries lists private registries for an organization.
@@ -134,12 +134,8 @@ func (s *PrivateRegistriesService) ListOrganizationPrivateRegistries(ctx context
 // GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#create-a-private-registry-for-an-organization
 //
 //meta:operation POST /orgs/{org}/private-registries
-func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistries(ctx context.Context, org string, privateRegistry CreateOrganizationPrivateRegistry, opts *ListOptions) (*PrivateRegistry, *Response, error) {
+func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistries(ctx context.Context, org string, privateRegistry CreateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries", org)
-	u, err := addOptions(u, opts)
-	if err != nil {
-		return nil, nil, err
-	}
 
 	req, err := s.client.NewRequest("POST", u, privateRegistry)
 	if err != nil {

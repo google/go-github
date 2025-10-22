@@ -6310,14 +6310,6 @@ func (c *CreateEvent) GetSender() *User {
 	return c.Sender
 }
 
-// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs field if it's non-nil, zero value otherwise.
-func (c *CreateOrganizationPrivateRegistry) GetSelectedRepositoryIDs() []int64 {
-	if c == nil || c.SelectedRepositoryIDs == nil {
-		return nil
-	}
-	return *c.SelectedRepositoryIDs
-}
-
 // GetUsername returns the Username field if it's non-nil, zero value otherwise.
 func (c *CreateOrganizationPrivateRegistry) GetUsername() string {
 	if c == nil || c.Username == nil {
@@ -28948,14 +28940,6 @@ func (u *UpdateOrganizationPrivateRegistry) GetRegistryType() string {
 		return ""
 	}
 	return *u.RegistryType
-}
-
-// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs field if it's non-nil, zero value otherwise.
-func (u *UpdateOrganizationPrivateRegistry) GetSelectedRepositoryIDs() []int64 {
-	if u == nil || u.SelectedRepositoryIDs == nil {
-		return nil
-	}
-	return *u.SelectedRepositoryIDs
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.

@@ -8234,17 +8234,6 @@ func TestCreateEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 }
 
-func TestCreateOrganizationPrivateRegistry_GetSelectedRepositoryIDs(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue []int64
-	c := &CreateOrganizationPrivateRegistry{SelectedRepositoryIDs: &zeroValue}
-	c.GetSelectedRepositoryIDs()
-	c = &CreateOrganizationPrivateRegistry{}
-	c.GetSelectedRepositoryIDs()
-	c = nil
-	c.GetSelectedRepositoryIDs()
-}
-
 func TestCreateOrganizationPrivateRegistry_GetUsername(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -37295,17 +37284,6 @@ func TestUpdateOrganizationPrivateRegistry_GetRegistryType(tt *testing.T) {
 	u.GetRegistryType()
 	u = nil
 	u.GetRegistryType()
-}
-
-func TestUpdateOrganizationPrivateRegistry_GetSelectedRepositoryIDs(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue []int64
-	u := &UpdateOrganizationPrivateRegistry{SelectedRepositoryIDs: &zeroValue}
-	u.GetSelectedRepositoryIDs()
-	u = &UpdateOrganizationPrivateRegistry{}
-	u.GetSelectedRepositoryIDs()
-	u = nil
-	u.GetSelectedRepositoryIDs()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetURL(tt *testing.T) {
