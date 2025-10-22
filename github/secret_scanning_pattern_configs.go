@@ -18,7 +18,7 @@ type SecretScanningPatternConfigs struct {
 	CustomPatternOverrides   []*SecretScanningPatternOverride `json:"custom_pattern_overrides,omitempty"`
 }
 
-// SecretScanningPatternOverride respresents an override for provider partner or custom organization patterns.
+// SecretScanningPatternOverride represents an override for provider partner or custom organization patterns.
 type SecretScanningPatternOverride struct {
 	TokenType            *string `json:"token_type,omitempty"`
 	CustomPatternVersion *string `json:"custom_pattern_version,omitempty"`
