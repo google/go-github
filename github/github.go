@@ -354,7 +354,9 @@ func (c *Client) WithAuthToken(token string) *Client {
 	c2.client.Transport = roundTripperFunc(
 		func(req *http.Request) (*http.Response, error) {
 			req = req.Clone(req.Context())
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
+			if token != "" {
+				req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
+			}
 			return transport.RoundTrip(req)
 		},
 	)
