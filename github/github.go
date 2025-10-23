@@ -218,6 +218,7 @@ type Client struct {
 	Meta               *MetaService
 	Migrations         *MigrationService
 	Organizations      *OrganizationsService
+	PrivateRegistries  *PrivateRegistriesService
 	Projects           *ProjectsService
 	PullRequests       *PullRequestsService
 	RateLimit          *RateLimitService
@@ -457,6 +458,7 @@ func (c *Client) initialize() {
 	c.Meta = (*MetaService)(&c.common)
 	c.Migrations = (*MigrationService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
+	c.PrivateRegistries = (*PrivateRegistriesService)(&c.common)
 	c.Projects = (*ProjectsService)(&c.common)
 	c.PullRequests = (*PullRequestsService)(&c.common)
 	c.RateLimit = (*RateLimitService)(&c.common)
