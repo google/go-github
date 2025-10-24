@@ -395,6 +395,26 @@ func TestWithAuthToken(t *testing.T) {
 		t.Parallel()
 		validate(t, NewTokenClient(t.Context(), token).Client(), token)
 	})
+
+	t.Run("do not set Authorization when empty token", func(t *testing.T) {
+		t.Parallel()
+		c := new(Client).WithAuthToken("")
+
+		gotReq := false
+		ifAuthorizationSet := false
+		srv := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) {
+			gotReq = true
+			_, ifAuthorizationSet = r.Header["Authorization"]
+		}))
+		_, err := c.client.Get(srv.URL)
+		assertNilError(t, err)
+		if !gotReq {
+			t.Error("request not sent")
+		}
+		if ifAuthorizationSet {
+			t.Error("The header 'Authorization' must not be set")
+		}
+	})
 }
 
 func TestWithEnterpriseURLs(t *testing.T) {
