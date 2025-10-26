@@ -1845,7 +1845,7 @@ type WatchEvent struct {
 }
 
 // WorkflowDispatchEvent is triggered when someone triggers a workflow run on GitHub or
-// sends a POST request to the create a workflow dispatch event endpoint.
+// sends a POST request to the endpoint to create a workflow dispatch event.
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#workflow_dispatch
 type WorkflowDispatchEvent struct {
