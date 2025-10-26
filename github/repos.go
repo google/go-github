@@ -1206,7 +1206,7 @@ type ProtectionRequest struct {
 	AllowForkSyncing *bool `json:"allow_fork_syncing,omitempty"`
 }
 
-// RequiredStatusChecks represents the protection status of a individual branch.
+// RequiredStatusChecks represents the protection status of an individual branch.
 type RequiredStatusChecks struct {
 	// Require branches to be up to date before merging. (Required.)
 	Strict bool `json:"strict"`
