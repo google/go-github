@@ -859,7 +859,7 @@ type MergeGroup struct {
 	HeadRef *string `json:"head_ref,omitempty"`
 	// The SHA of the merge group's parent commit.
 	BaseSHA *string `json:"base_sha,omitempty"`
-	// The full ref of the branch the merge group will be merged into.
+	// The full ref of the branch into which the merge group will be merged.
 	BaseRef *string `json:"base_ref,omitempty"`
 	// An expanded representation of the head_sha commit.
 	HeadCommit *Commit `json:"head_commit,omitempty"`
