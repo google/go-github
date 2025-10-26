@@ -303,7 +303,7 @@ type RepositoryListByUserOptions struct {
 	Sort string `url:"sort,omitempty"`
 
 	// The order to sort by.
-	// Default: asc when using full_name, otherwise desc.
+	// Default: asc when using full_name; otherwise, desc.
 	// Can be one of: asc, desc
 	Direction string `url:"direction,omitempty"`
 
