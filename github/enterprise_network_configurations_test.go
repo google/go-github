@@ -385,7 +385,7 @@ func TestEnterpriseService_GetEnterpriseNetworkSettingsResource(t *testing.T) {
 		Region:                 Ptr("germanywestcentral"),
 	}
 	if !cmp.Equal(resource, want) {
-		t.Errorf("Enterprise.GetEnterpriseNetworkSettingsResource mistach (-want +got):\n%v", cmp.Diff(want, resource))
+		t.Errorf("Enterprise.GetEnterpriseNetworkSettingsResource mismatch (-want +got):\n%v", cmp.Diff(want, resource))
 	}
 
 	const methodName = "GetEnterpriseNetworkSettingsResource"

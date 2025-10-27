@@ -44,7 +44,7 @@ func TestPrivateRegistriesService_ListOrganizationPrivateRegistries(t *testing.T
 	ctx := t.Context()
 	privateRegistries, _, err := client.PrivateRegistries.ListOrganizationPrivateRegistries(ctx, "o", opts)
 	if err != nil {
-		t.Fatalf("PrivateRegistries.ListOrganizationPrivateRegitries returned error: %v", err)
+		t.Fatalf("PrivateRegistries.ListOrganizationPrivateRegistries returned error: %v", err)
 	}
 
 	want := &PrivateRegistries{
@@ -61,7 +61,7 @@ func TestPrivateRegistriesService_ListOrganizationPrivateRegistries(t *testing.T
 		},
 	}
 	if diff := cmp.Diff(want, privateRegistries); diff != "" {
-		t.Errorf("PrivateRegistries.ListOrganizationPrivateRegitries mismatch (-want +got):\\n%v", diff)
+		t.Errorf("PrivateRegistries.ListOrganizationPrivateRegistries mismatch (-want +got):\\n%v", diff)
 	}
 
 	const methodName = "ListOrganizationPrivateRegistries"
@@ -121,7 +121,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 	ctx := t.Context()
 	privateRegistry, _, err := client.PrivateRegistries.CreateOrganizationPrivateRegistry(ctx, "o", *input)
 	if err != nil {
-		t.Fatalf("PrivateRegistries.CreateOrganizationPrivateRegitries returned error: %v", err)
+		t.Fatalf("PrivateRegistries.CreateOrganizationPrivateRegistries returned error: %v", err)
 	}
 
 	want := &PrivateRegistry{
@@ -133,7 +133,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 		Visibility:   Ptr(PrivateRegistryVisibilitySelected),
 	}
 	if diff := cmp.Diff(want, privateRegistry); diff != "" {
-		t.Errorf("PrivateRegistries.CreateOrganizationPrivateRegitries mismatch (-want +got):\\n%v", diff)
+		t.Errorf("PrivateRegistries.CreateOrganizationPrivateRegistries mismatch (-want +got):\\n%v", diff)
 	}
 
 	const methodName = "CreateOrganizationPrivateRegistry"

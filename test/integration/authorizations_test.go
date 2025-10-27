@@ -44,7 +44,7 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 		t.Fatal("The returned auth/token does not match.")
 	}
 
-	// Let's verify that we get a 404 for a non-existent token
+	// Let's verify that we get a 404 for a nonexistent token
 	_, resp, err = appAuthenticatedClient.Authorizations.Check(t.Context(), clientID, InvalidTokenValue)
 	if err == nil {
 		t.Fatal("An error should have been returned because of the invalid token.")
@@ -56,7 +56,7 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
-	// Let's verify that we get a 404 for a non-existent token
+	// Let's verify that we get a 404 for a nonexistent token
 	_, resp, err = appAuthenticatedClient.Authorizations.Reset(t.Context(), clientID, InvalidTokenValue)
 	if err == nil {
 		t.Fatal("An error should have been returned because of the invalid token.")

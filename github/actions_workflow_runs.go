@@ -306,7 +306,7 @@ func (s *ActionsService) getWorkflowRunAttemptLogsWithRateLimit(ctx context.Cont
 }
 
 // RerunWorkflowByID re-runs a workflow by ID.
-// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID a the DeploymentProtectionRuleEvent.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID of a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-a-workflow
 //

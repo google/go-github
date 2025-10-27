@@ -75,7 +75,7 @@ func (s *EnterpriseService) CreateRegistrationToken(ctx context.Context, enterpr
 	return registrationToken, resp, nil
 }
 
-// ListRunners lists all the self-hosted runners for a enterprise.
+// ListRunners lists all the self-hosted runners for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-enterprise
 //

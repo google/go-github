@@ -15,7 +15,7 @@ import (
 	"testing"
 )
 
-// setup a test HTTP server along with a scrape.Client that is configured to
+// set up a test HTTP server along with a scrape.Client that is configured to
 // talk to that test server. Tests should register handlers on the mux which
 // provide mock responses for the GitHub pages being tested.
 func setup(t *testing.T) (client *Client, mux *http.ServeMux) {

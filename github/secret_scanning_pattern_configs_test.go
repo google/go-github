@@ -547,7 +547,7 @@ func TestSecretScanningProviderPatternSetting_Marshal(t *testing.T) {
 	testJSONMarshal(t, v, want)
 }
 
-func TestSecretScanninCustomPatternSetting_Marshal(t *testing.T) {
+func TestSecretScanningCustomPatternSetting_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &SecretScanningCustomPatternSetting{}, `{}`)
 

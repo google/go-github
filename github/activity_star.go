@@ -59,7 +59,7 @@ type ActivityListStarredOptions struct {
 	Sort string `url:"sort,omitempty"`
 
 	// Direction in which to sort repositories. Possible values are: asc, desc.
-	// Default is "asc" when sort is "full_name", otherwise default is "desc".
+	// Default is "asc" when sort is "full_name"; otherwise, default is "desc".
 	Direction string `url:"direction,omitempty"`
 
 	ListOptions

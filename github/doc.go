@@ -40,7 +40,7 @@ For more sample code snippets, head over to the https://github.com/google/go-git
 
 # Authentication
 
-Use [Client.WithAuthToken] to configure your client to authenticate using an Oauth token
+Use [Client.WithAuthToken] to configure your client to authenticate using an OAuth token
 (for example, a personal access token). This is what is needed for a majority of use cases
 aside from GitHub Apps.
 

@@ -42,7 +42,7 @@ func (s *UsersService) DemoteSiteAdmin(ctx context.Context, user string) (*Respo
 	return s.client.Do(ctx, req, nil)
 }
 
-// UserSuspendOptions represents the reason a user is being suspended.
+// UserSuspendOptions represents the reason to suspend a user.
 type UserSuspendOptions struct {
 	Reason *string `json:"reason,omitempty"`
 }

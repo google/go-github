@@ -265,7 +265,7 @@ type DeploymentProtectionRuleEvent struct {
 	Environment *string `json:"environment,omitempty"`
 	Event       *string `json:"event,omitempty"`
 
-	// The URL Github provides for a third-party to use in order to pass/fail a deployment gate
+	// The URL GitHub provides for a third-party to use in order to pass/fail a deployment gate
 	DeploymentCallbackURL *string        `json:"deployment_callback_url,omitempty"`
 	Deployment            *Deployment    `json:"deployment,omitempty"`
 	Repo                  *Repository    `json:"repository,omitempty"`
@@ -859,7 +859,7 @@ type MergeGroup struct {
 	HeadRef *string `json:"head_ref,omitempty"`
 	// The SHA of the merge group's parent commit.
 	BaseSHA *string `json:"base_sha,omitempty"`
-	// The full ref of the branch the merge group will be merged into.
+	// The full ref of the branch into which the merge group will be merged.
 	BaseRef *string `json:"base_ref,omitempty"`
 	// An expanded representation of the head_sha commit.
 	HeadCommit *Commit `json:"head_commit,omitempty"`
@@ -1845,7 +1845,7 @@ type WatchEvent struct {
 }
 
 // WorkflowDispatchEvent is triggered when someone triggers a workflow run on GitHub or
-// sends a POST request to the create a workflow dispatch event endpoint.
+// sends a POST request to the endpoint to create a workflow dispatch event.
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#workflow_dispatch
 type WorkflowDispatchEvent struct {

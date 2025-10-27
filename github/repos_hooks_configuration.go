@@ -16,7 +16,7 @@ type HookConfig struct {
 	// Possible values are `json` and `form`, the field is not specified the default is `form`
 	ContentType *string `json:"content_type,omitempty"`
 	// The possible values are 0 and 1.
-	// Setting it to 1 will allow skip certificate verification for the host,
+	// Setting it to 1 will allow skipping certificate verification for the host,
 	// potentially exposing to MitM attacks: https://en.wikipedia.org/wiki/Man-in-the-middle_attack
 	InsecureSSL *string `json:"insecure_ssl,omitempty"`
 	URL         *string `json:"url,omitempty"`
