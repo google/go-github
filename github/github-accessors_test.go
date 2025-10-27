@@ -20141,9 +20141,9 @@ func TestNetworkSettingsResource_GetSubnetID(tt *testing.T) {
 func TestNewProjectV2Field_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
-	n := &NewProjectV2Field{ID: &zeroValue}
+	n := &ProjectV2Field{ID: &zeroValue}
 	n.GetID()
-	n = &NewProjectV2Field{}
+	n = &ProjectV2Field{}
 	n.GetID()
 	n = nil
 	n.GetID()

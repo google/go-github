@@ -15526,14 +15526,6 @@ func (n *NetworkSettingsResource) GetSubnetID() string {
 	return *n.SubnetID
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (n *NewProjectV2Field) GetID() int64 {
-	if n == nil || n.ID == nil {
-		return 0
-	}
-	return *n.ID
-}
-
 // GetBase returns the Base field if it's non-nil, zero value otherwise.
 func (n *NewPullRequest) GetBase() string {
 	if n == nil || n.Base == nil {

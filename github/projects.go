@@ -79,13 +79,10 @@ type ListProjectsOptions struct {
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2FieldOption struct {
-	ID string `json:"id,omitempty"`
-	// The display name of the option.
-	Name string `json:"name,omitempty"`
-	// The color associated with this option (e.g., "blue", "red").
-	Color string `json:"color,omitempty"`
-	// An optional description for this option.
-	Description string `json:"description,omitempty"`
+	ID          *int64 `json:"id,omitempty"`          // The unique identifier for this option.
+	Name        string `json:"name,omitempty"`        // The display name of the option.
+	Color       string `json:"color,omitempty"`       // The color associated with this option (e.g., "blue", "red").
+	Description string `json:"description,omitempty"` // An optional description for this option.
 }
 
 // ProjectV2Field represents a field in a GitHub Projects V2 project.
@@ -93,14 +90,14 @@ type ProjectV2FieldOption struct {
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2Field struct {
-	ID        *int64     `json:"id,omitempty"`
-	NodeID    string     `json:"node_id,omitempty"`
-	Name      string     `json:"name,omitempty"`
-	DataType  string     `json:"dataType,omitempty"`
-	URL       string     `json:"url,omitempty"`
-	Options   []*any     `json:"options,omitempty"`
-	CreatedAt *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+	ID        *int64                  `json:"id,omitempty"`
+	NodeID    string                  `json:"node_id,omitempty"`
+	Name      string                  `json:"name,omitempty"`
+	DataType  string                  `json:"dataType,omitempty"`
+	URL       string                  `json:"url,omitempty"`
+	Options   []*ProjectV2FieldOption `json:"options,omitempty"`
+	CreatedAt *Timestamp              `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp              `json:"updated_at,omitempty"`
 }
 
 // ListProjectsForOrg lists Projects V2 for an organization.
@@ -248,7 +245,7 @@ type UpdateProjectItemOptions struct {
 	// Archived indicates whether the item should be archived (true) or unarchived (false).
 	Archived *bool `json:"archived,omitempty"`
 	// Fields allows updating field values for the item. Each entry supplies a field ID and a value.
-	Fields []*NewProjectV2Field `json:"fields,omitempty"`
+	Fields []*ProjectV2Field `json:"fields,omitempty"`
 }
 
 // ListProjectItemsForOrg lists items for an organization owned project.

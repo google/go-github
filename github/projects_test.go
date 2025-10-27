@@ -203,7 +203,7 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 		]`)
 	})
 
-	opts := &ListProjectsOptions{Query: "text", After: "2", Before: "1"}
+	opts := &ListProjectsOptions{Query: "text", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
 	ctx := context.Background()
 	fields, _, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
 	if err != nil {
@@ -229,7 +229,7 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 		return resp, err
 	})
 	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectFieldsForOrg(ctxBypass, "o", 1, &ListProjectsOptions{Before: "b", After: "a"}); err != nil {
+	if _, _, err = client.Projects.ListProjectFieldsForOrg(ctxBypass, "o", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
@@ -384,7 +384,7 @@ func TestProjectsService_ListProjectsForOrg_pagination(t *testing.T) {
 		t.Fatalf("expected resp.After=ocursor2 got %q", resp.After)
 	}
 
-	opts := &ListProjectsOptions{After: resp.After}
+	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: resp.After}}
 	second, resp2, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
 	if err != nil {
 		t.Fatalf("second page error: %v", err)
@@ -483,7 +483,7 @@ func TestProjectsService_ListProjectItemsForOrg(t *testing.T) {
 		fmt.Fprint(w, `[{"id":17,"node_id":"PVTI_node"}]`)
 	})
 
-	opts := &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{After: "2", Before: "1", PerPage: 50, Query: "status:open"}, Fields: []int64{10, 11}}
+	opts := &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1", PerPage: 50}, Query: "status:open"}, Fields: []int64{10, 11}}
 	ctx := context.Background()
 	items, _, err := client.Projects.ListProjectItemsForOrg(ctx, "o", 1, opts)
 	if err != nil {
@@ -508,7 +508,7 @@ func TestProjectsService_ListProjectItemsForOrg(t *testing.T) {
 	})
 
 	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectItemsForOrg(ctxBypass, "o", 1, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{Before: "b", After: "a"}}); err != nil {
+	if _, _, err = client.Projects.ListProjectItemsForOrg(ctxBypass, "o", 1, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
@@ -670,7 +670,7 @@ func TestProjectsService_ListProjectItemsForUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":7,"node_id":"PVTI_user"}]`)
 	})
 	ctx := context.Background()
-	items, _, err := client.Projects.ListProjectItemsForUser(ctx, "u", 2, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{PerPage: 20, Query: "type:issue"}})
+	items, _, err := client.Projects.ListProjectItemsForUser(ctx, "u", 2, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{PerPage: 20}, Query: "type:issue"}})
 	if err != nil {
 		t.Fatalf("ListProjectItemsForUser error: %v", err)
 	}
