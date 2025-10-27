@@ -14,7 +14,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v75/github"
+	"github.com/google/go-github/v76/github"
 )
 
 var (
@@ -42,22 +42,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Current ActionsPermissions %s\n", actionsPermissionsRepository.String())
+	fmt.Printf("Current ActionsPermissions %v\n", actionsPermissionsRepository)
 
 	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: github.Ptr(true), AllowedActions: github.Ptr("selected")}
-	_, _, err = client.Repositories.EditActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
+	_, _, err = client.Repositories.UpdateActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Current ActionsPermissions %s\n", actionsPermissionsRepository.String())
+	fmt.Printf("Current ActionsPermissions %v\n", actionsPermissionsRepository)
 
 	actionsAllowed, _, err := client.Repositories.GetActionsAllowed(ctx, *owner, *name)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Current ActionsAllowed %s\n", actionsAllowed.String())
+	fmt.Printf("Current ActionsAllowed %v\n", actionsAllowed)
 
 	actionsAllowed = &github.ActionsAllowed{GithubOwnedAllowed: github.Ptr(true), VerifiedAllowed: github.Ptr(false), PatternsAllowed: []string{"a/b"}}
 	_, _, err = client.Repositories.EditActionsAllowed(ctx, *owner, *name, *actionsAllowed)
@@ -65,13 +65,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Current ActionsAllowed %s\n", actionsAllowed.String())
+	fmt.Printf("Current ActionsAllowed %v\n", actionsAllowed)
 
 	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: github.Ptr(true), AllowedActions: github.Ptr("all")}
-	_, _, err = client.Repositories.EditActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
+	_, _, err = client.Repositories.UpdateActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Current ActionsPermissions %s\n", actionsPermissionsRepository.String())
+	fmt.Printf("Current ActionsPermissions %v\n", actionsPermissionsRepository)
 }

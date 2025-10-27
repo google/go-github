@@ -30,8 +30,8 @@ func TestProjectsService_ListProjectsForOrg(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1,"title":"T1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 	})
 
-	opts := &ListProjectsOptions{Query: "alpha", After: "2", Before: "1"}
-	ctx := context.Background()
+	opts := &ListProjectsOptions{Query: "alpha", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
+	ctx := t.Context()
 	projects, _, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
 	if err != nil {
 		t.Fatalf("Projects.ListProjectsForOrg returned error: %v", err)
@@ -55,8 +55,8 @@ func TestProjectsService_ListProjectsForOrg(t *testing.T) {
 	})
 
 	// still allow both set (no validation enforced) – ensure it does not error
-	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectsForOrg(ctxBypass, "o", &ListProjectsOptions{Before: "b", After: "a"}); err != nil {
+	ctxBypass := context.WithValue(t.Context(), BypassRateLimitCheck, true)
+	if _, _, err = client.Projects.ListProjectsForOrg(ctxBypass, "o", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
@@ -70,7 +70,7 @@ func TestProjectsService_GetProjectForOrg(t *testing.T) {
 		fmt.Fprint(w, `{"id":1,"title":"OrgProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	project, _, err := client.Projects.GetProjectForOrg(ctx, "o", 1)
 	if err != nil {
 		t.Fatalf("Projects.GetProjectForOrg returned error: %v", err)
@@ -87,6 +87,54 @@ func TestProjectsService_GetProjectForOrg(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestProjectsService_ListUserProjects(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	// Combined handler: supports initial test case and dual before/after scenario.
+	mux.HandleFunc("/users/u/projectsV2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		q := r.URL.Query()
+		if q.Get("before") == "b" && q.Get("after") == "a" {
+			fmt.Fprint(w, `[]`)
+			return
+		}
+		testFormValues(t, r, values{"q": "beta", "before": "1", "after": "2", "per_page": "2"})
+		fmt.Fprint(w, `[{"id":2,"title":"UProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+	})
+
+	opts := &ListProjectsOptions{Query: "beta", ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "1", After: "2", PerPage: 2}}
+	ctx := t.Context()
+	var ctxBypass context.Context
+	projects, _, err := client.Projects.ListProjectsForUser(ctx, "u", opts)
+	if err != nil {
+		t.Fatalf("Projects.ListProjectsForUser returned error: %v", err)
+	}
+	if len(projects) != 1 || projects[0].GetID() != 2 || projects[0].GetTitle() != "UProj" {
+		t.Fatalf("Projects.ListProjectsForUser returned %+v", projects)
+	}
+
+	const methodName = "ListProjectsForUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListProjectsForUser(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.ListProjectsForUser(ctx, "u", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+
+	// still allow both set (no validation enforced) – ensure it does not error
+	ctxBypass = context.WithValue(t.Context(), BypassRateLimitCheck, true)
+	if _, _, err = client.Projects.ListProjectsForUser(ctxBypass, "u", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
+		t.Fatalf("unexpected error when both before/after set: %v", err)
+	}
 }
 
 func TestProjectsService_GetProjectForUser(t *testing.T) {
@@ -216,7 +264,8 @@ func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 	if resp.After != "ucursor2" {
 		t.Fatalf("expected resp.After=ucursor2 got %q", resp.After)
 	}
-	opts := &ListProjectsOptions{After: resp.After}
+
+	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: resp.After}}
 	second, resp2, err := client.Projects.ListProjectsForUser(ctx, "u", opts)
 	if err != nil {
 		t.Fatalf("second page error: %v", err)
@@ -289,8 +338,7 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 		t.Fatalf("expected resp.After=cursor2 got %q", resp.After)
 	}
 
-	// Use resp.After as opts.After for next page
-	opts := &ListProjectsOptions{After: resp.After}
+	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: resp.After}}
 	second, resp2, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
 	if err != nil {
 		t.Fatalf("second page error: %v", err)

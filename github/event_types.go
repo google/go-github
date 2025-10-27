@@ -265,7 +265,7 @@ type DeploymentProtectionRuleEvent struct {
 	Environment *string `json:"environment,omitempty"`
 	Event       *string `json:"event,omitempty"`
 
-	// The URL Github provides for a third-party to use in order to pass/fail a deployment gate
+	// The URL GitHub provides for a third-party to use in order to pass/fail a deployment gate
 	DeploymentCallbackURL *string        `json:"deployment_callback_url,omitempty"`
 	Deployment            *Deployment    `json:"deployment,omitempty"`
 	Repo                  *Repository    `json:"repository,omitempty"`
@@ -859,7 +859,7 @@ type MergeGroup struct {
 	HeadRef *string `json:"head_ref,omitempty"`
 	// The SHA of the merge group's parent commit.
 	BaseSHA *string `json:"base_sha,omitempty"`
-	// The full ref of the branch the merge group will be merged into.
+	// The full ref of the branch into which the merge group will be merged.
 	BaseRef *string `json:"base_ref,omitempty"`
 	// An expanded representation of the head_sha commit.
 	HeadCommit *Commit `json:"head_commit,omitempty"`
@@ -1109,35 +1109,6 @@ type ProjectV2Event struct {
 	Installation *Installation `json:"installation,omitempty"`
 	Org          *Organization `json:"organization,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
-}
-
-// ProjectV2 represents a v2 project.
-type ProjectV2 struct {
-	ID               *int64     `json:"id,omitempty"`
-	NodeID           *string    `json:"node_id,omitempty"`
-	Owner            *User      `json:"owner,omitempty"`
-	Creator          *User      `json:"creator,omitempty"`
-	Title            *string    `json:"title,omitempty"`
-	Description      *string    `json:"description,omitempty"`
-	Public           *bool      `json:"public,omitempty"`
-	ClosedAt         *Timestamp `json:"closed_at,omitempty"`
-	CreatedAt        *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
-	DeletedAt        *Timestamp `json:"deleted_at,omitempty"`
-	Number           *int       `json:"number,omitempty"`
-	ShortDescription *string    `json:"short_description,omitempty"`
-	DeletedBy        *User      `json:"deleted_by,omitempty"`
-
-	// Fields migrated from the Project (classic) struct:
-	URL                    *string `json:"url,omitempty"`
-	HTMLURL                *string `json:"html_url,omitempty"`
-	ColumnsURL             *string `json:"columns_url,omitempty"`
-	OwnerURL               *string `json:"owner_url,omitempty"`
-	Name                   *string `json:"name,omitempty"`
-	Body                   *string `json:"body,omitempty"`
-	State                  *string `json:"state,omitempty"`
-	OrganizationPermission *string `json:"organization_permission,omitempty"`
-	Private                *bool   `json:"private,omitempty"`
 }
 
 // ProjectV2ItemEvent is triggered when there is activity relating to an item on an organization-level project.
@@ -1877,7 +1848,7 @@ type WatchEvent struct {
 }
 
 // WorkflowDispatchEvent is triggered when someone triggers a workflow run on GitHub or
-// sends a POST request to the create a workflow dispatch event endpoint.
+// sends a POST request to the endpoint to create a workflow dispatch event.
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#workflow_dispatch
 type WorkflowDispatchEvent struct {

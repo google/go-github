@@ -14,7 +14,7 @@ import (
 	"strconv"
 
 	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/google/go-github/v75/github"
+	"github.com/google/go-github/v76/github"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -66,7 +66,7 @@ func (o *openapiFile) loadDescription(ctx context.Context, client *github.Client
 		return err
 	}
 	if resp.StatusCode != 200 {
-		return fmt.Errorf("unexpected status code: %s", resp.Status)
+		return fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 	b, err := io.ReadAll(contents)
 	if err != nil {
@@ -119,7 +119,7 @@ func getDescriptions(ctx context.Context, client *github.Client, gitRef string) 
 		return nil, err
 	}
 	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("unexpected status code: %s", resp.Status)
+		return nil, fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 	files := make([]*openapiFile, 0, len(dir))
 	for _, d := range dir {
@@ -129,7 +129,7 @@ func getDescriptions(ctx context.Context, client *github.Client, gitRef string) 
 				continue
 			}
 			file := openapiFile{
-				filename: fmt.Sprintf("descriptions/%s/%s.json", d.GetName(), d.GetName()),
+				filename: fmt.Sprintf("descriptions/%v/%v.json", d.GetName(), d.GetName()),
 				plan:     m[pattern.SubexpIndex("plan")],
 				planIdx:  i,
 			}

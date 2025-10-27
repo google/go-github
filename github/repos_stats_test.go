@@ -6,7 +6,7 @@
 package github
 
 import (
-	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
@@ -43,7 +43,7 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 `)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	stats, _, err := client.Repositories.ListContributorsStats(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListContributorsStats returned error: %v", err)
@@ -104,7 +104,7 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 `)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	activity, _, err := client.Repositories.ListCommitActivity(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListCommitActivity returned error: %v", err)
@@ -147,7 +147,7 @@ func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
 		fmt.Fprint(w, `[[1302998400, 1124, -435]]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	code, _, err := client.Repositories.ListCodeFrequency(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListCodeFrequency returned error: %v", err)
@@ -203,7 +203,7 @@ func TestRepositoriesService_Participation(t *testing.T) {
 `)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	participation, _, err := client.Repositories.ListParticipation(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListParticipation returned error: %v", err)
@@ -257,7 +257,7 @@ func TestRepositoriesService_ListPunchCard(t *testing.T) {
 		]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	card, _, err := client.Repositories.ListPunchCard(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListPunchCard returned error: %v", err)
@@ -299,13 +299,13 @@ func TestRepositoriesService_AcceptedError(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	stats, _, err := client.Repositories.ListContributorsStats(ctx, "o", "r")
 	if err == nil {
 		t.Error("RepositoriesService.AcceptedError should have returned an error")
 	}
 
-	if _, ok := err.(*AcceptedError); !ok {
+	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("RepositoriesService.AcceptedError returned an AcceptedError: %v", err)
 	}
 

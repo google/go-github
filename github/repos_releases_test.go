@@ -7,7 +7,6 @@ package github
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -29,7 +28,7 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	releases, _, err := client.Repositories.ListReleases(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListReleases returned error: %v", err)
@@ -67,7 +66,7 @@ func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
 	opt := &GenerateNotesOptions{
 		TagName: "v1.0.0",
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	releases, _, err := client.Repositories.GenerateReleaseNotes(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.GenerateReleaseNotes returned error: %v", err)
@@ -104,7 +103,7 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 		fmt.Fprint(w, `{"id":1,"author":{"login":"l"}}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	release, resp, err := client.Repositories.GetRelease(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetRelease returned error: %v\n%v", err, resp.Body)
@@ -139,7 +138,7 @@ func TestRepositoriesService_GetLatestRelease(t *testing.T) {
 		fmt.Fprint(w, `{"id":3}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	release, resp, err := client.Repositories.GetLatestRelease(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetLatestRelease returned error: %v\n%v", err, resp.Body)
@@ -174,7 +173,7 @@ func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
 		fmt.Fprint(w, `{"id":13}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	release, resp, err := client.Repositories.GetReleaseByTag(ctx, "o", "r", "foo")
 	if err != nil {
 		t.Errorf("Repositories.GetReleaseByTag returned error: %v\n%v", err, resp.Body)
@@ -221,6 +220,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 		TarballURL:  Ptr("http://tarballurl/"),
 		Author:      &User{Name: Ptr("octocat")},
 		NodeID:      Ptr("nodeid"),
+		Immutable:   Ptr(false),
 	}
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
@@ -239,7 +239,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	release, _, err := client.Repositories.CreateRelease(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.CreateRelease returned error: %v", err)
@@ -290,6 +290,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 		TarballURL:           Ptr("http://tarballurl/"),
 		Author:               &User{Name: Ptr("octocat")},
 		NodeID:               Ptr("nodeid"),
+		Immutable:            Ptr(false),
 	}
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
@@ -307,7 +308,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	release, _, err := client.Repositories.EditRelease(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Repositories.EditRelease returned error: %v", err)
@@ -344,7 +345,7 @@ func TestRepositoriesService_DeleteRelease(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.DeleteRelease(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteRelease returned error: %v", err)
@@ -372,7 +373,7 @@ func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	assets, _, err := client.Repositories.ListReleaseAssets(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("Repositories.ListReleaseAssets returned error: %v", err)
@@ -406,7 +407,7 @@ func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	asset, _, err := client.Repositories.GetReleaseAsset(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetReleaseAsset returned error: %v", err)
@@ -443,7 +444,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 		fmt.Fprint(w, "Hello World")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	reader, _, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
@@ -474,7 +475,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
 		http.Redirect(w, r, "/yo", http.StatusFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, got, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
@@ -503,7 +504,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 		fmt.Fprint(w, "Hello World")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	reader, _, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, http.DefaultClient)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
@@ -545,7 +546,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowMultipleRedirects(t *tes
 		fmt.Fprint(w, "Hello World")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	reader, _, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, http.DefaultClient)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
@@ -577,7 +578,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, loc, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, http.DefaultClient)
 	if err == nil {
 		t.Error("Repositories.DownloadReleaseAsset did not return an error")
@@ -587,7 +588,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 		t.Error("Repositories.DownloadReleaseAsset returned stream, want nil")
 	}
 	if loc != "" {
-		t.Errorf(`Repositories.DownloadReleaseAsset returned "%s", want empty ""`, loc)
+		t.Errorf(`Repositories.DownloadReleaseAsset returned "%v", want empty ""`, loc)
 	}
 }
 
@@ -602,7 +603,7 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 		fmt.Fprint(w, `{"message":"Not Found","documentation_url":"https://developer.github.com/v3"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, loc, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, nil)
 	if err == nil {
 		t.Error("Repositories.DownloadReleaseAsset did not return an error")
@@ -614,7 +615,7 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 	}
 
 	if loc != "" {
-		t.Errorf(`Repositories.DownloadReleaseAsset returned "%s", want empty ""`, loc)
+		t.Errorf(`Repositories.DownloadReleaseAsset returned "%v", want empty ""`, loc)
 	}
 }
 
@@ -635,7 +636,7 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	asset, _, err := client.Repositories.EditReleaseAsset(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Repositories.EditReleaseAsset returned error: %v", err)
@@ -668,7 +669,7 @@ func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.DeleteReleaseAsset(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteReleaseAsset returned error: %v", err)
@@ -745,7 +746,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	for key, test := range uploadTests {
-		releaseEndpoint := fmt.Sprintf("/repos/o/r/releases/%d/assets", key)
+		releaseEndpoint := fmt.Sprintf("/repos/o/r/releases/%v/assets", key)
 		mux.HandleFunc(releaseEndpoint, func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "POST")
 			testHeader(t, r, "Content-Type", test.expectedMediaType)
@@ -758,7 +759,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 
 		file := openTestFile(t, test.fileName, "Upload me !\n")
 
-		ctx := context.Background()
+		ctx := t.Context()
 		asset, _, err := client.Repositories.UploadReleaseAsset(ctx, "o", "r", int64(key), test.uploadOpts, file)
 		if err != nil {
 			t.Errorf("Repositories.UploadReleaseAssert returned error: %v", err)
@@ -875,6 +876,7 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 		TarballURL:             Ptr("turl"),
 		Author:                 &User{ID: Ptr(int64(1))},
 		NodeID:                 Ptr("nid"),
+		Immutable:              Ptr(true),
 	}
 
 	want := `{
@@ -903,7 +905,8 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 		"author": {
 			"id": 1
 		},
-		"node_id": "nid"
+		"node_id": "nid",
+		"immutable": true
 	}`
 
 	testJSONMarshal(t, u, want)

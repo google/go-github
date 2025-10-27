@@ -23,7 +23,7 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v75/github"
+	"github.com/google/go-github/v76/github"
 )
 
 func TestUpdateGo(t *testing.T) {
@@ -216,7 +216,7 @@ func checkGoldenDir(t *testing.T, origDir, resultDir, goldenDir string) {
 			return err
 		}
 		golden = false
-		return fmt.Errorf("found unexpected file:\n%s", relPath)
+		return fmt.Errorf("found unexpected file:\n%v", relPath)
 	}))
 }
 
@@ -308,7 +308,7 @@ func (r testRun) assertErr(want string) {
 		return
 	}
 	if strings.TrimSpace(r.err.Error()) != strings.TrimSpace(want) {
-		r.t.Errorf("unexpected error:\nwant:\n%s\ngot:\n%s", want, r.err.Error())
+		r.t.Errorf("unexpected error:\nwant:\n%v\ngot:\n%v", want, r.err.Error())
 	}
 }
 
@@ -339,7 +339,7 @@ func newTestServer(t *testing.T, ref string, files map[string]any) *httptest.Ser
 			gotQuery := r.URL.Query()
 			queryDiff := cmp.Diff(wantQuery, gotQuery)
 			if queryDiff != "" {
-				t.Errorf("query mismatch for %s (-want +got):\n%s", r.URL.Path, queryDiff)
+				t.Errorf("query mismatch for %v (-want +got):\n%v", r.URL.Path, queryDiff)
 			}
 			w.WriteHeader(200)
 			err := json.NewEncoder(w).Encode(val)
@@ -407,7 +407,7 @@ func assertEqualFiles(t *testing.T, want, got string) bool {
 	gotBytes = bytes.ReplaceAll(gotBytes, []byte("\r\n"), []byte("\n"))
 	if !bytes.Equal(wantBytes, gotBytes) {
 		diff := cmp.Diff(string(wantBytes), string(gotBytes))
-		t.Errorf("files %q and %q differ: %s", want, got, diff)
+		t.Errorf("files %q and %q differ: %v", want, got, diff)
 		return false
 	}
 	return true

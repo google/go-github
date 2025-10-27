@@ -8,7 +8,7 @@ Package github provides a client for using the GitHub API.
 
 Usage:
 
-	import "github.com/google/go-github/v75/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+	import "github.com/google/go-github/v76/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 	import "github.com/google/go-github/github"     // with go modules disabled
 
 Construct a new GitHub client, then use the various services on the client to
@@ -40,7 +40,7 @@ For more sample code snippets, head over to the https://github.com/google/go-git
 
 # Authentication
 
-Use [Client.WithAuthToken] to configure your client to authenticate using an Oauth token
+Use [Client.WithAuthToken] to configure your client to authenticate using an OAuth token
 (for example, a personal access token). This is what is needed for a majority of use cases
 aside from GitHub Apps.
 
@@ -111,10 +111,10 @@ To detect an API rate limit error, you can check if its type is *[RateLimitError
 For secondary rate limits, you can check if its type is *[AbuseRateLimitError]:
 
 	repos, _, err := client.Repositories.List(ctx, "", nil)
-	if _, ok := err.(*github.RateLimitError); ok {
+	if errors.As(err, new(*github.RateLimitError)) {
 		log.Println("hit rate limit")
 	}
-	if _, ok := err.(*github.AbuseRateLimitError); ok {
+	if errors.As(err, new(*github.AbuseRateLimitError)) {
 		log.Println("hit secondary rate limit")
 	}
 
@@ -132,7 +132,7 @@ To detect this condition of error, you can check if its type is
 *[AcceptedError]:
 
 	stats, _, err := client.Repositories.ListContributorsStats(ctx, org, repo)
-	if _, ok := err.(*github.AcceptedError); ok {
+	if errors.As(err, new(*github.AcceptedError)) {
 		log.Println("scheduled on GitHub side")
 	}
 

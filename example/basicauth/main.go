@@ -17,11 +17,12 @@ package main
 import (
 	"bufio"
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
 
-	"github.com/google/go-github/v75/github"
+	"github.com/google/go-github/v76/github"
 	"golang.org/x/term"
 )
 
@@ -43,7 +44,7 @@ func main() {
 	user, _, err := client.Users.Get(ctx, "")
 
 	// Is this a two-factor auth error? If so, prompt for OTP and try again.
-	if _, ok := err.(*github.TwoFactorAuthError); ok {
+	if errors.As(err, new(*github.TwoFactorAuthError)) {
 		fmt.Print("\nGitHub OTP: ")
 		otp, _ := r.ReadString('\n')
 		tp.OTP = strings.TrimSpace(otp)

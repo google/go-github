@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -39,7 +38,7 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 		]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", nil)
 	if err != nil {
 		t.Errorf("Repositories.GetRulesForBranch returned error: %v", err)
@@ -83,7 +82,7 @@ func TestRepositoriesService_GetRulesForBranch_ListOptions(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 35}
-	ctx := context.Background()
+	ctx := t.Context()
 	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", opts)
 	if err != nil {
 		t.Errorf("Repositories.GetRulesForBranch returned error: %v", err)
@@ -140,7 +139,7 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 		]`, referenceTimeStr)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", nil)
 	if err != nil {
 		t.Errorf("Repositories.GetAllRulesets returned error: %v", err)
@@ -205,7 +204,7 @@ func TestRepositoriesService_GetAllRulesets_ListOptions(t *testing.T) {
 			PerPage: 35,
 		},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	ruleSet, _, err := client.Repositories.GetAllRulesets(ctx, "o", "repo", opts)
 	if err != nil {
 		t.Errorf("Repositories.GetAllRulesets returned error: %v", err)
@@ -250,7 +249,7 @@ func TestRepositoriesService_CreateRuleset(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ruleSet, _, err := client.Repositories.CreateRuleset(ctx, "o", "repo", RepositoryRuleset{
 		Name:        "ruleset",
 		Enforcement: RulesetEnforcementActive,
@@ -323,7 +322,7 @@ func TestRepositoriesService_CreateRulesetWithPushRules(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ruleSet, _, err := client.Repositories.CreateRuleset(ctx, "o", "repo", RepositoryRuleset{
 		Name:        "ruleset",
 		Enforcement: RulesetEnforcementActive,
@@ -378,7 +377,7 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ruleSet, _, err := client.Repositories.GetRuleset(ctx, "o", "repo", 42, true)
 	if err != nil {
 		t.Errorf("Repositories.GetRuleset returned error: %v", err)
@@ -423,7 +422,7 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ruleSet, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, RepositoryRuleset{
 		Name:        "ruleset",
 		Enforcement: RulesetEnforcementActive,
@@ -487,7 +486,7 @@ func TestRepositoriesService_UpdateRulesetClearBypassActor(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	_, err := client.Repositories.UpdateRulesetClearBypassActor(ctx, "o", "repo", 42)
 	if err != nil {
@@ -522,7 +521,7 @@ func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	ruleSet, _, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, rs)
 	if err != nil {
@@ -560,7 +559,7 @@ func TestRepositoriesService_DeleteRuleset(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Repositories.DeleteRuleset(ctx, "o", "repo", 42)
 	if err != nil {
 		t.Errorf("Repositories.DeleteRuleset returned error: %v", err)

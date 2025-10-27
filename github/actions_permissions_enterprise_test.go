@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,7 +23,7 @@ func TestActionsService_GetActionsPermissionsInEnterprise(t *testing.T) {
 		fmt.Fprint(w, `{"enabled_organizations": "all", "allowed_actions": "all"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ent, _, err := client.Actions.GetActionsPermissionsInEnterprise(ctx, "e")
 	if err != nil {
 		t.Errorf("Actions.GetActionsPermissionsInEnterprise returned error: %v", err)
@@ -49,7 +48,7 @@ func TestActionsService_GetActionsPermissionsInEnterprise(t *testing.T) {
 	})
 }
 
-func TestActionsService_EditActionsPermissionsInEnterprise(t *testing.T) {
+func TestActionsService_UpdateActionsPermissionsInEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -67,25 +66,25 @@ func TestActionsService_EditActionsPermissionsInEnterprise(t *testing.T) {
 		fmt.Fprint(w, `{"enabled_organizations": "all", "allowed_actions": "selected"}`)
 	})
 
-	ctx := context.Background()
-	ent, _, err := client.Actions.EditActionsPermissionsInEnterprise(ctx, "e", *input)
+	ctx := t.Context()
+	ent, _, err := client.Actions.UpdateActionsPermissionsInEnterprise(ctx, "e", *input)
 	if err != nil {
-		t.Errorf("Actions.EditActionsPermissionsInEnterprise returned error: %v", err)
+		t.Errorf("Actions.UpdateActionsPermissionsInEnterprise returned error: %v", err)
 	}
 
 	want := &ActionsPermissionsEnterprise{EnabledOrganizations: Ptr("all"), AllowedActions: Ptr("selected")}
 	if !cmp.Equal(ent, want) {
-		t.Errorf("Actions.EditActionsPermissionsInEnterprise returned %+v, want %+v", ent, want)
+		t.Errorf("Actions.UpdateActionsPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
 
-	const methodName = "EditActionsPermissionsInEnterprise"
+	const methodName = "UpdateActionsPermissionsInEnterprise"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.EditActionsPermissionsInEnterprise(ctx, "\n", *input)
+		_, _, err = client.Actions.UpdateActionsPermissionsInEnterprise(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.EditActionsPermissionsInEnterprise(ctx, "e", *input)
+		got, resp, err := client.Actions.UpdateActionsPermissionsInEnterprise(ctx, "e", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -105,7 +104,7 @@ func TestActionsService_ListEnabledOrgsInEnterprise(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":2,"organizations":[{"id":2}, {"id":3}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opt := &ListOptions{
 		Page: 1,
 	}
@@ -148,7 +147,7 @@ func TestActionsService_SetEnabledOrgsInEnterprise(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.SetEnabledOrgsInEnterprise(ctx, "e", []int64{123, 1234})
 	if err != nil {
 		t.Errorf("Actions.SetEnabledOrgsInEnterprise returned error: %v", err)
@@ -175,7 +174,7 @@ func TestActionsService_AddEnabledOrgInEnterprise(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.AddEnabledOrgInEnterprise(ctx, "e", 123)
 	if err != nil {
 		t.Errorf("Actions.AddEnabledOrgInEnterprise returned error: %v", err)
@@ -202,7 +201,7 @@ func TestActionsService_RemoveEnabledOrgInEnterprise(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Actions.RemoveEnabledOrgInEnterprise(ctx, "e", 123)
 	if err != nil {
 		t.Errorf("Actions.RemoveEnabledOrgInEnterprise returned error: %v", err)
@@ -229,7 +228,7 @@ func TestActionsService_GetActionsAllowedInEnterprise(t *testing.T) {
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ent, _, err := client.Actions.GetActionsAllowedInEnterprise(ctx, "e")
 	if err != nil {
 		t.Errorf("Actions.GetActionsAllowedInEnterprise returned error: %v", err)
@@ -254,7 +253,7 @@ func TestActionsService_GetActionsAllowedInEnterprise(t *testing.T) {
 	})
 }
 
-func TestActionsService_EditActionsAllowedInEnterprise(t *testing.T) {
+func TestActionsService_UpdateActionsAllowedInEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -272,25 +271,25 @@ func TestActionsService_EditActionsAllowedInEnterprise(t *testing.T) {
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
 
-	ctx := context.Background()
-	ent, _, err := client.Actions.EditActionsAllowedInEnterprise(ctx, "e", *input)
+	ctx := t.Context()
+	ent, _, err := client.Actions.UpdateActionsAllowedInEnterprise(ctx, "e", *input)
 	if err != nil {
-		t.Errorf("Actions.EditActionsAllowedInEnterprise returned error: %v", err)
+		t.Errorf("Actions.UpdateActionsAllowedInEnterprise returned error: %v", err)
 	}
 
 	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(ent, want) {
-		t.Errorf("Actions.EditActionsAllowedInEnterprise returned %+v, want %+v", ent, want)
+		t.Errorf("Actions.UpdateActionsAllowedInEnterprise returned %+v, want %+v", ent, want)
 	}
 
-	const methodName = "EditActionsAllowedInEnterprise"
+	const methodName = "UpdateActionsAllowedInEnterprise"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.EditActionsAllowedInEnterprise(ctx, "\n", *input)
+		_, _, err = client.Actions.UpdateActionsAllowedInEnterprise(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.EditActionsAllowedInEnterprise(ctx, "e", *input)
+		got, resp, err := client.Actions.UpdateActionsAllowedInEnterprise(ctx, "e", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -307,7 +306,7 @@ func TestActionsService_GetDefaultWorkflowPermissionsInEnterprise(t *testing.T) 
 		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ent, _, err := client.Actions.GetDefaultWorkflowPermissionsInEnterprise(ctx, "e")
 	if err != nil {
 		t.Errorf("Actions.GetDefaultWorkflowPermissionsInEnterprise returned error: %v", err)
@@ -332,7 +331,7 @@ func TestActionsService_GetDefaultWorkflowPermissionsInEnterprise(t *testing.T) 
 	})
 }
 
-func TestActionsService_EditDefaultWorkflowPermissionsInEnterprise(t *testing.T) {
+func TestActionsService_UpdateDefaultWorkflowPermissionsInEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -350,25 +349,25 @@ func TestActionsService_EditDefaultWorkflowPermissionsInEnterprise(t *testing.T)
 		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
 	})
 
-	ctx := context.Background()
-	ent, _, err := client.Actions.EditDefaultWorkflowPermissionsInEnterprise(ctx, "e", *input)
+	ctx := t.Context()
+	ent, _, err := client.Actions.UpdateDefaultWorkflowPermissionsInEnterprise(ctx, "e", *input)
 	if err != nil {
-		t.Errorf("Actions.EditDefaultWorkflowPermissionsInEnterprise returned error: %v", err)
+		t.Errorf("Actions.UpdateDefaultWorkflowPermissionsInEnterprise returned error: %v", err)
 	}
 
 	want := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 	if !cmp.Equal(ent, want) {
-		t.Errorf("Actions.EditDefaultWorkflowPermissionsInEnterprise returned %+v, want %+v", ent, want)
+		t.Errorf("Actions.UpdateDefaultWorkflowPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
 
-	const methodName = "EditDefaultWorkflowPermissionsInEnterprise"
+	const methodName = "UpdateDefaultWorkflowPermissionsInEnterprise"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.EditDefaultWorkflowPermissionsInEnterprise(ctx, "\n", *input)
+		_, _, err = client.Actions.UpdateDefaultWorkflowPermissionsInEnterprise(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.EditDefaultWorkflowPermissionsInEnterprise(ctx, "e", *input)
+		got, resp, err := client.Actions.UpdateDefaultWorkflowPermissionsInEnterprise(ctx, "e", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -385,7 +384,7 @@ func TestActionsService_GetArtifactAndLogRetentionPeriodInEnterprise(t *testing.
 		fmt.Fprint(w, `{"days": 90, "maximum_allowed_days": 365}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	period, _, err := client.Actions.GetArtifactAndLogRetentionPeriodInEnterprise(ctx, "e")
 	if err != nil {
 		t.Errorf("Actions.GetArtifactAndLogRetentionPeriodInEnterprise returned error: %v", err)
@@ -414,7 +413,7 @@ func TestActionsService_GetArtifactAndLogRetentionPeriodInEnterprise(t *testing.
 	})
 }
 
-func TestActionsService_EditArtifactAndLogRetentionPeriodInEnterprise(t *testing.T) {
+func TestActionsService_UpdateArtifactAndLogRetentionPeriodInEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -431,24 +430,24 @@ func TestActionsService_EditArtifactAndLogRetentionPeriodInEnterprise(t *testing
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
-	resp, err := client.Actions.EditArtifactAndLogRetentionPeriodInEnterprise(ctx, "e", *input)
+	ctx := t.Context()
+	resp, err := client.Actions.UpdateArtifactAndLogRetentionPeriodInEnterprise(ctx, "e", *input)
 	if err != nil {
-		t.Errorf("Actions.EditArtifactAndLogRetentionPeriodInEnterprise returned error: %v", err)
+		t.Errorf("Actions.UpdateArtifactAndLogRetentionPeriodInEnterprise returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.EditArtifactAndLogRetentionPeriodInEnterprise = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdateArtifactAndLogRetentionPeriodInEnterprise = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
-	const methodName = "EditArtifactAndLogRetentionPeriodInEnterprise"
+	const methodName = "UpdateArtifactAndLogRetentionPeriodInEnterprise"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.EditArtifactAndLogRetentionPeriodInEnterprise(ctx, "\n", *input)
+		_, err = client.Actions.UpdateArtifactAndLogRetentionPeriodInEnterprise(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.EditArtifactAndLogRetentionPeriodInEnterprise(ctx, "e", *input)
+		return client.Actions.UpdateArtifactAndLogRetentionPeriodInEnterprise(ctx, "e", *input)
 	})
 }
 
@@ -461,7 +460,7 @@ func TestActionsService_GetSelfHostedRunnerPermissionsInEnterprise(t *testing.T)
 		fmt.Fprint(w, `{"disable_self_hosted_runners_for_all_orgs": true}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	permissions, _, err := client.Actions.GetSelfHostedRunnerPermissionsInEnterprise(ctx, "e")
 	if err != nil {
 		t.Errorf("Actions.GetSelfHostedRunnerPermissionsInEnterprise returned error: %v", err)
@@ -486,7 +485,7 @@ func TestActionsService_GetSelfHostedRunnerPermissionsInEnterprise(t *testing.T)
 	})
 }
 
-func TestActionsService_EditSelfHostedRunnerPermissionsInEnterprise(t *testing.T) {
+func TestActionsService_UpdateSelfHostedRunnerPermissionsInEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -503,24 +502,24 @@ func TestActionsService_EditSelfHostedRunnerPermissionsInEnterprise(t *testing.T
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
-	resp, err := client.Actions.EditSelfHostedRunnerPermissionsInEnterprise(ctx, "e", *input)
+	ctx := t.Context()
+	resp, err := client.Actions.UpdateSelfHostedRunnerPermissionsInEnterprise(ctx, "e", *input)
 	if err != nil {
-		t.Errorf("Actions.EditSelfHostedRunnerPermissionsInEnterprise returned error: %v", err)
+		t.Errorf("Actions.UpdateSelfHostedRunnerPermissionsInEnterprise returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.EditSelfHostedRunnerPermissionsInEnterprise = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdateSelfHostedRunnerPermissionsInEnterprise = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
-	const methodName = "EditSelfHostedRunnerPermissionsInEnterprise"
+	const methodName = "UpdateSelfHostedRunnerPermissionsInEnterprise"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.EditSelfHostedRunnerPermissionsInEnterprise(ctx, "\n", *input)
+		_, err = client.Actions.UpdateSelfHostedRunnerPermissionsInEnterprise(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.EditSelfHostedRunnerPermissionsInEnterprise(ctx, "e", *input)
+		return client.Actions.UpdateSelfHostedRunnerPermissionsInEnterprise(ctx, "e", *input)
 	})
 }
 
@@ -533,7 +532,7 @@ func TestActionsService_GetPrivateRepoForkPRWorkflowSettingsInEnterprise(t *test
 		fmt.Fprint(w, `{"run_workflows_from_fork_pull_requests": true, "send_write_tokens_to_workflows": false, "send_secrets_and_variables": true, "require_approval_for_fork_pr_workflows": false}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	permissions, _, err := client.Actions.GetPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx, "e")
 	if err != nil {
 		t.Errorf("Actions.GetPrivateRepoForkPRWorkflowSettingsInEnterprise returned error: %v", err)
@@ -584,14 +583,14 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(t *t
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Actions.UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(ctx, "e", input)
 	if err != nil {
 		t.Errorf("Actions.UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Actions.UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Actions.UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise"
@@ -602,5 +601,77 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(t *t
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(ctx, "e", input)
+	})
+}
+
+func TestActionsService_GetEnterpriseForkPRContributorApprovalPermissions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"approval_policy": "require_approval"}`)
+	})
+
+	ctx := t.Context()
+	policy, _, err := client.Actions.GetEnterpriseForkPRContributorApprovalPermissions(ctx, "e")
+	if err != nil {
+		t.Errorf("Actions.GetEnterpriseForkPRContributorApprovalPermissions returned error: %v", err)
+	}
+	want := &ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
+	if !cmp.Equal(policy, want) {
+		t.Errorf("Actions.GetEnterpriseForkPRContributorApprovalPermissions returned %+v, want %+v", policy, want)
+	}
+
+	const methodName = "GetEnterpriseForkPRContributorApprovalPermissions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetEnterpriseForkPRContributorApprovalPermissions(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetEnterpriseForkPRContributorApprovalPermissions(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_UpdateEnterpriseForkPRContributorApprovalPermissions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
+
+	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ContributorApprovalPermissions)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, &input) {
+			t.Errorf("Request body = %+v, want %+v", v, &input)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Actions.UpdateEnterpriseForkPRContributorApprovalPermissions(ctx, "e", input)
+	if err != nil {
+		t.Errorf("Actions.UpdateEnterpriseForkPRContributorApprovalPermissions returned error: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusNoContent {
+		t.Errorf("Actions.UpdateEnterpriseForkPRContributorApprovalPermissions = %v, want %v", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "UpdateEnterpriseForkPRContributorApprovalPermissions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.UpdateEnterpriseForkPRContributorApprovalPermissions(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.UpdateEnterpriseForkPRContributorApprovalPermissions(ctx, "e", input)
 	})
 }

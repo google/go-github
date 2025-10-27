@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -44,7 +43,7 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForEnterprise(ctx, "e", opts)
@@ -114,7 +113,7 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForOrg(ctx, "o", opts)
@@ -179,7 +178,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	// Testing pagination by index
 	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", ListOptions: ListOptions{Page: 1, PerPage: 1}, Direction: "asc", Sort: "updated"}
@@ -246,7 +245,7 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", Direction: "asc", Sort: "updated"}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForRepo(ctx, "o", "r", opts)
@@ -310,7 +309,7 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	alert, _, err := client.SecretScanning.GetAlert(ctx, "o", "r", 1)
 	if err != nil {
@@ -381,7 +380,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: Ptr("used_in_tests")}
 
 	alert, _, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
@@ -446,7 +445,7 @@ func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
 		}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 100}
 
 	locations, _, err := client.SecretScanning.ListLocationsForAlert(ctx, "o", "r", 1, opts)
@@ -616,4 +615,129 @@ func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	owner := "o"
+	repo := "r"
+
+	mux.HandleFunc(fmt.Sprintf("/repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		var v *PushProtectionBypassRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
+		want := &PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
+		if !cmp.Equal(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{
+			"reason": "valid reason",
+			"expire_at": "2018-01-01T00:00:00Z",
+			"token_type": "github_token"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
+
+	bypass, _, err := client.SecretScanning.CreatePushProtectionBypass(ctx, owner, repo, opts)
+	if err != nil {
+		t.Errorf("SecretScanning.CreatePushProtectionBypass returned error: %v", err)
+	}
+
+	expireTime := Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
+	want := &PushProtectionBypass{
+		Reason:    "valid reason",
+		ExpireAt:  &expireTime,
+		TokenType: "github_token",
+	}
+
+	if !cmp.Equal(bypass, want) {
+		t.Errorf("SecretScanning.CreatePushProtectionBypass returned %+v, want %+v", bypass, want)
+	}
+	const methodName = "CreatePushProtectionBypass"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SecretScanning.CreatePushProtectionBypass(ctx, "\n", "\n", opts)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		_, resp, err := client.SecretScanning.CreatePushProtectionBypass(ctx, "o", "r", opts)
+		return resp, err
+	})
+}
+
+func TestSecretScanningService_GetScanHistory(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	owner := "o"
+	repo := "r"
+
+	mux.HandleFunc(fmt.Sprintf("/repos/%v/%v/secret-scanning/scan-history", owner, repo), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"incremental_scans": [
+				{
+					"type": "incremental",
+					"status": "success",
+					"completed_at": "2025-07-29T10:00:00Z",
+					"started_at": "2025-07-29T09:55:00Z"
+				}
+			],
+			"backfill_scans": [],
+			"pattern_update_scans": [],
+			"custom_pattern_backfill_scans": [
+				{
+					"type": "custom_backfill",
+					"status": "in_progress",
+					"completed_at": null,
+					"started_at": "2025-07-29T09:00:00Z",
+					"pattern_slug": "my-custom-pattern",
+					"pattern_scope": "organization"
+				}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+
+	history, _, err := client.SecretScanning.GetScanHistory(ctx, owner, repo)
+	if err != nil {
+		t.Errorf("SecretScanning.GetScanHistory returned error: %v", err)
+	}
+
+	incrementalScanStartAt := Timestamp{time.Date(2025, time.July, 29, 9, 55, 0, 0, time.UTC)}
+	incrementalScancompleteAt := Timestamp{time.Date(2025, time.July, 29, 10, 0, 0, 0, time.UTC)}
+	customPatternBackfillScanStartedAt := Timestamp{time.Date(2025, time.July, 29, 9, 0, 0, 0, time.UTC)}
+
+	want := &SecretScanningScanHistory{
+		IncrementalScans: []*SecretsScan{
+			{Type: "incremental", Status: "success", CompletedAt: &incrementalScancompleteAt, StartedAt: &incrementalScanStartAt},
+		},
+		BackfillScans:      []*SecretsScan{},
+		PatternUpdateScans: []*SecretsScan{},
+		CustomPatternBackfillScans: []*CustomPatternBackfillScan{
+			{
+				SecretsScan:  SecretsScan{Type: "custom_backfill", Status: "in_progress", CompletedAt: nil, StartedAt: &customPatternBackfillScanStartedAt},
+				PatternSlug:  Ptr("my-custom-pattern"),
+				PatternScope: Ptr("organization"),
+			},
+		},
+	}
+
+	if !cmp.Equal(history, want) {
+		t.Errorf("SecretScanning.GetScanHistory returned %+v, want %+v", history, want)
+	}
+	const methodName = "GetScanHistory"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SecretScanning.GetScanHistory(ctx, "\n", "\n")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		_, resp, err := client.SecretScanning.GetScanHistory(ctx, "o", "r")
+		return resp, err
+	})
 }

@@ -303,7 +303,7 @@ type RepositoryListByUserOptions struct {
 	Sort string `url:"sort,omitempty"`
 
 	// The order to sort by.
-	// Default: asc when using full_name, otherwise desc.
+	// Default: asc when using full_name; otherwise, desc.
 	// Can be one of: asc, desc
 	Direction string `url:"direction,omitempty"`
 
@@ -689,7 +689,7 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 //
 //meta:operation GET /repositories/{repository_id}
 func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repository, *Response, error) {
-	u := fmt.Sprintf("repositories/%d", id)
+	u := fmt.Sprintf("repositories/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -1206,7 +1206,7 @@ type ProtectionRequest struct {
 	AllowForkSyncing *bool `json:"allow_fork_syncing,omitempty"`
 }
 
-// RequiredStatusChecks represents the protection status of a individual branch.
+// RequiredStatusChecks represents the protection status of an individual branch.
 type RequiredStatusChecks struct {
 	// Require branches to be up to date before merging. (Required.)
 	Strict bool `json:"strict"`
@@ -1453,7 +1453,7 @@ func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 
 	b := new(Branch)
@@ -2367,8 +2367,8 @@ func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, 
 // isBranchNotProtected determines whether a branch is not protected
 // based on the error message returned by GitHub API.
 func isBranchNotProtected(err error) bool {
-	errorResponse, ok := err.(*ErrorResponse)
-	return ok && errorResponse.Message == githubBranchNotProtected
+	var errorResponse *ErrorResponse
+	return errors.As(err, &errorResponse) && errorResponse.Message == githubBranchNotProtected
 }
 
 // EnablePrivateReporting enables private reporting of vulnerabilities for a

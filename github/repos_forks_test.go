@@ -6,7 +6,7 @@
 package github
 
 import (
-	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
@@ -32,7 +32,7 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 		Sort:        "newest",
 		ListOptions: ListOptions{Page: 3},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	repos, _, err := client.Repositories.ListForks(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListForks returned error: %v", err)
@@ -62,7 +62,7 @@ func TestRepositoriesService_ListForks_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.ListForks(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
@@ -78,7 +78,7 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 	})
 
 	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
-	ctx := context.Background()
+	ctx := t.Context()
 	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.CreateFork returned error: %v", err)
@@ -117,9 +117,9 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 	})
 
 	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
-	ctx := context.Background()
+	ctx := t.Context()
 	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
-	if _, ok := err.(*AcceptedError); !ok {
+	if !errors.As(err, new(*AcceptedError)) {
 		t.Errorf("Repositories.CreateFork returned error: %v (want AcceptedError)", err)
 	}
 
@@ -133,7 +133,7 @@ func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Repositories.CreateFork(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,7 +23,7 @@ func TestOrganizationsService_GetActionsPermissions(t *testing.T) {
 		fmt.Fprint(w, `{"enabled_repositories": "all", "allowed_actions": "all"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Organizations.GetActionsPermissions(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.GetActionsPermissions returned error: %v", err)
@@ -49,7 +48,7 @@ func TestOrganizationsService_GetActionsPermissions(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_EditActionsPermissions(t *testing.T) {
+func TestOrganizationsService_UpdateActionsPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -67,25 +66,25 @@ func TestOrganizationsService_EditActionsPermissions(t *testing.T) {
 		fmt.Fprint(w, `{"enabled_repositories": "all", "allowed_actions": "selected"}`)
 	})
 
-	ctx := context.Background()
-	org, _, err := client.Organizations.EditActionsPermissions(ctx, "o", *input)
+	ctx := t.Context()
+	org, _, err := client.Organizations.UpdateActionsPermissions(ctx, "o", *input)
 	if err != nil {
-		t.Errorf("Organizations.EditActionsPermissions returned error: %v", err)
+		t.Errorf("Organizations.UpdateActionsPermissions returned error: %v", err)
 	}
 
 	want := &ActionsPermissions{EnabledRepositories: Ptr("all"), AllowedActions: Ptr("selected")}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Organizations.EditActionsPermissions returned %+v, want %+v", org, want)
+		t.Errorf("Organizations.UpdateActionsPermissions returned %+v, want %+v", org, want)
 	}
 
-	const methodName = "EditActionsPermissions"
+	const methodName = "UpdateActionsPermissions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.EditActionsPermissions(ctx, "\n", *input)
+		_, _, err = client.Organizations.UpdateActionsPermissions(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.EditActionsPermissions(ctx, "o", *input)
+		got, resp, err := client.Organizations.UpdateActionsPermissions(ctx, "o", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

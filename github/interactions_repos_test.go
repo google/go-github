@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -25,7 +24,7 @@ func TestInteractionsService_GetRestrictionsForRepo(t *testing.T) {
 		fmt.Fprint(w, `{"origin":"repository"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repoInteractions, _, err := client.Interactions.GetRestrictionsForRepo(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Interactions.GetRestrictionsForRepo returned error: %v", err)
@@ -69,7 +68,7 @@ func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
 		fmt.Fprint(w, `{"origin":"repository"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repoInteractions, _, err := client.Interactions.UpdateRestrictionsForRepo(ctx, "o", "r", input.GetLimit())
 	if err != nil {
 		t.Errorf("Interactions.UpdateRestrictionsForRepo returned error: %v", err)
@@ -104,7 +103,7 @@ func TestInteractionsService_RemoveRestrictionsFromRepo(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Interactions.RemoveRestrictionsFromRepo(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Interactions.RemoveRestrictionsFromRepo returned error: %v", err)

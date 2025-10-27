@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -26,7 +25,7 @@ func TestAppsService_ListHookDeliveries(t *testing.T) {
 
 	opts := &ListCursorOptions{Cursor: "v1_12077215967"}
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	deliveries, _, err := client.Apps.ListHookDeliveries(ctx, opts)
 	if err != nil {
@@ -35,7 +34,7 @@ func TestAppsService_ListHookDeliveries(t *testing.T) {
 
 	want := []*HookDelivery{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
 	if d := cmp.Diff(deliveries, want); d != "" {
-		t.Errorf("Apps.ListHooks want (-), got (+):\n%s", d)
+		t.Errorf("Apps.ListHooks want (-), got (+):\n%v", d)
 	}
 
 	const methodName = "ListHookDeliveries"
@@ -57,7 +56,7 @@ func TestAppsService_GetHookDelivery(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hook, _, err := client.Apps.GetHookDelivery(ctx, 1)
 	if err != nil {
 		t.Errorf("Apps.GetHookDelivery returned error: %v", err)
@@ -92,7 +91,7 @@ func TestAppsService_RedeliverHookDelivery(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	hook, _, err := client.Apps.RedeliverHookDelivery(ctx, 1)
 	if err != nil {
 		t.Errorf("Apps.RedeliverHookDelivery returned error: %v", err)

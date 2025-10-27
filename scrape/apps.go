@@ -18,13 +18,13 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/google/go-github/v75/github"
+	"github.com/google/go-github/v76/github"
 )
 
 // AppRestrictionsEnabled returns whether the specified organization has
 // restricted third-party application access.
 func (c *Client) AppRestrictionsEnabled(org string) (bool, error) {
-	doc, err := c.get("/organizations/%s/settings/oauth_application_policy", org)
+	doc, err := c.get("/organizations/%v/settings/oauth_application_policy", org)
 	if err != nil {
 		return false, err
 	}
@@ -47,7 +47,7 @@ func (c *Client) AppRestrictionsEnabled(org string) (bool, error) {
 // ListOAuthApps lists the reviewed OAuth Applications for the
 // specified organization (whether approved or denied).
 func (c *Client) ListOAuthApps(org string) ([]*OAuthApp, error) {
-	doc, err := c.get("/organizations/%s/settings/oauth_application_policy", org)
+	doc, err := c.get("/organizations/%v/settings/oauth_application_policy", org)
 	if err != nil {
 		return nil, err
 	}

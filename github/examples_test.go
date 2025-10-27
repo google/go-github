@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/go-github/v75/github"
+	"github.com/google/go-github/v76/github"
 )
 
 func ExampleMarkdownService_Render() {
@@ -135,7 +135,7 @@ func ExamplePullRequestsService_Create() {
 		return
 	}
 
-	fmt.Printf("PR created: %s\n", pr.GetHTMLURL())
+	fmt.Printf("PR created: %v\n", pr.GetHTMLURL())
 }
 
 func ExampleTeamsService_ListTeams() {
@@ -161,7 +161,7 @@ func ExampleTeamsService_ListTeams() {
 		}
 		for _, t := range teams {
 			if t.GetName() == teamName {
-				fmt.Printf("Team %q has ID %d\n", teamName, t.GetID())
+				fmt.Printf("Team %q has ID %v\n", teamName, t.GetID())
 				return
 			}
 		}

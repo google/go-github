@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -34,7 +33,7 @@ func TestGitService_GetRef_singleRef(t *testing.T) {
 		  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ref, _, err := client.Git.GetRef(ctx, "o", "r", "refs/heads/b")
 	if err != nil {
 		t.Fatalf("Git.GetRef returned error: %v", err)
@@ -82,13 +81,13 @@ func TestGitService_GetRef_noRefs(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ref, resp, err := client.Git.GetRef(ctx, "o", "r", "refs/heads/b")
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Git.GetRef returned status %d, want %d", got, want)
+		t.Errorf("Git.GetRef returned status %v, want %v", got, want)
 	}
 	if ref != nil {
 		t.Errorf("Git.GetRef return %+v, want nil", ref)
@@ -130,7 +129,7 @@ func TestGitService_ListMatchingRefs_singleRef(t *testing.T) {
 	})
 
 	opts := &ReferenceListOptions{Ref: "refs/heads/b"}
-	ctx := context.Background()
+	ctx := t.Context()
 	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
 	if err != nil {
 		t.Fatalf("Git.ListMatchingRefs returned error: %v", err)
@@ -202,7 +201,7 @@ func TestGitService_ListMatchingRefs_multipleRefs(t *testing.T) {
 	})
 
 	opts := &ReferenceListOptions{Ref: "refs/heads/b"}
-	ctx := context.Background()
+	ctx := t.Context()
 	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Git.ListMatchingRefs returned error: %v", err)
@@ -246,7 +245,7 @@ func TestGitService_ListMatchingRefs_noRefs(t *testing.T) {
 	})
 
 	opts := &ReferenceListOptions{Ref: "refs/heads/b"}
-	ctx := context.Background()
+	ctx := t.Context()
 	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Git.ListMatchingRefs returned error: %v", err)
@@ -300,7 +299,7 @@ func TestGitService_ListMatchingRefs_allRefs(t *testing.T) {
 		  ]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("Git.ListMatchingRefs returned error: %v", err)
@@ -356,7 +355,7 @@ func TestGitService_ListMatchingRefs_options(t *testing.T) {
 	})
 
 	opts := &ReferenceListOptions{Ref: "t", ListOptions: ListOptions{Page: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Git.ListMatchingRefs returned error: %v", err)
@@ -411,7 +410,7 @@ func TestGitService_CreateRef(t *testing.T) {
 		  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ref, _, err := client.Git.CreateRef(ctx, "o", "r", CreateRef{
 		Ref: "refs/heads/b",
 		SHA: "aa218f56b14c9653891f9e74264a383fa43fefbd",
@@ -496,7 +495,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 		  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", "refs/heads/b", UpdateRef{
 		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
 		Force: Ptr(true),
@@ -564,7 +563,7 @@ func TestGitService_DeleteRef(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Git.DeleteRef(ctx, "o", "r", "refs/heads/b")
 	if err != nil {
 		t.Errorf("Git.DeleteRef returned error: %v", err)
@@ -607,7 +606,7 @@ func TestGitService_GetRef_pathEscape(t *testing.T) {
 		  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Git.GetRef(ctx, "o", "r", "refs/heads/b")
 	if err != nil {
 		t.Fatalf("Git.GetRef returned error: %v", err)
@@ -657,7 +656,7 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 		  }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", "refs/heads/b#1", UpdateRef{
 		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
 		Force: Ptr(true),

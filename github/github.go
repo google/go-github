@@ -29,7 +29,7 @@ import (
 )
 
 const (
-	Version = "v75.0.0"
+	Version = "v76.0.0"
 
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
@@ -218,6 +218,7 @@ type Client struct {
 	Meta               *MetaService
 	Migrations         *MigrationService
 	Organizations      *OrganizationsService
+	PrivateRegistries  *PrivateRegistriesService
 	Projects           *ProjectsService
 	PullRequests       *PullRequestsService
 	RateLimit          *RateLimitService
@@ -354,7 +355,9 @@ func (c *Client) WithAuthToken(token string) *Client {
 	c2.client.Transport = roundTripperFunc(
 		func(req *http.Request) (*http.Response, error) {
 			req = req.Clone(req.Context())
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+			if token != "" {
+				req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
+			}
 			return transport.RoundTrip(req)
 		},
 	)
@@ -457,6 +460,7 @@ func (c *Client) initialize() {
 	c.Meta = (*MetaService)(&c.common)
 	c.Migrations = (*MigrationService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
+	c.PrivateRegistries = (*PrivateRegistriesService)(&c.common)
 	c.Projects = (*ProjectsService)(&c.common)
 	c.PullRequests = (*PullRequestsService)(&c.common)
 	c.RateLimit = (*RateLimitService)(&c.common)
@@ -846,7 +850,7 @@ const (
 
 // bareDo sends an API request using `caller` http.Client passed in the parameters
 // and lets you handle the api response. If an error or API Error occurs, the error
-// will contain more information. Otherwise you are supposed to read and close the
+// will contain more information. Otherwise, you are supposed to read and close the
 // response's Body. If rate limit is exceeded and reset time is in the future,
 // bareDo returns *RateLimitError immediately without making a network API call.
 //
@@ -898,7 +902,8 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 		}
 
 		// If the error type is *url.Error, sanitize its URL before returning.
-		if e, ok := err.(*url.Error); ok {
+		var e *url.Error
+		if errors.As(err, &e) {
 			if url, err := url.Parse(e.URL); err == nil {
 				e.URL = sanitizeURL(url).String()
 				return response, e
@@ -925,8 +930,8 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 		// added to the AcceptedError and returned.
 		//
 		// Issue #1022
-		aerr, ok := err.(*AcceptedError)
-		if ok {
+		var aerr *AcceptedError
+		if errors.As(err, &aerr) {
 			b, readErr := io.ReadAll(resp.Body)
 			if readErr != nil {
 				return response, readErr
@@ -936,8 +941,9 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 			err = aerr
 		}
 
-		rateLimitError, ok := err.(*RateLimitError)
-		if ok && req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+		var rateLimitError *RateLimitError
+		if errors.As(err, &rateLimitError) &&
+			req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
 			if err := sleepUntilResetWithBuffer(req.Context(), rateLimitError.Rate.Reset.Time); err != nil {
 				return response, err
 			}
@@ -946,8 +952,8 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 		}
 
 		// Update the secondary rate limit if we hit it.
-		rerr, ok := err.(*AbuseRateLimitError)
-		if ok && rerr.RetryAfter != nil {
+		var rerr *AbuseRateLimitError
+		if errors.As(err, &rerr) && rerr.RetryAfter != nil {
 			// if a max duration is specified, make sure that we are waiting at most this duration
 			if c.MaxSecondaryRateLimitRetryAfterDuration > 0 && rerr.GetRetryAfter() > c.MaxSecondaryRateLimitRetryAfterDuration {
 				rerr.RetryAfter = &c.MaxSecondaryRateLimitRetryAfterDuration
@@ -961,7 +967,7 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 }
 
 // BareDo sends an API request and lets you handle the api response. If an error
-// or API Error occurs, the error will contain more information. Otherwise you
+// or API Error occurs, the error will contain more information. Otherwise, you
 // are supposed to read and close the response's Body. If rate limit is exceeded
 // and reset time is in the future, BareDo returns *RateLimitError immediately
 // without making a network API call.
@@ -994,8 +1000,8 @@ var errInvalidLocation = errors.New("invalid or empty Location header in redirec
 func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRedirects int) (*url.URL, *Response, error) {
 	response, err := c.bareDoIgnoreRedirects(ctx, req)
 	if err != nil {
-		rerr, ok := err.(*RedirectionError)
-		if ok {
+		var rerr *RedirectionError
+		if errors.As(err, &rerr) {
 			// If we receive a 302, transform potential relative locations into absolute and return it.
 			if rerr.StatusCode == http.StatusFound {
 				if rerr.Location == nil {
@@ -1169,13 +1175,13 @@ type ErrorBlock struct {
 
 func (r *ErrorResponse) Error() string {
 	if r.Response != nil && r.Response.Request != nil {
-		return fmt.Sprintf("%v %v: %d %v %+v",
+		return fmt.Sprintf("%v %v: %v %v %+v",
 			r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 			r.Response.StatusCode, r.Message, r.Errors)
 	}
 
 	if r.Response != nil {
-		return fmt.Sprintf("%d %v %+v", r.Response.StatusCode, r.Message, r.Errors)
+		return fmt.Sprintf("%v %v %+v", r.Response.StatusCode, r.Message, r.Errors)
 	}
 
 	return fmt.Sprintf("%v %+v", r.Message, r.Errors)
@@ -1183,8 +1189,8 @@ func (r *ErrorResponse) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (r *ErrorResponse) Is(target error) bool {
-	v, ok := target.(*ErrorResponse)
-	if !ok {
+	var v *ErrorResponse
+	if !errors.As(target, &v) {
 		return false
 	}
 
@@ -1241,15 +1247,15 @@ type RateLimitError struct {
 }
 
 func (r *RateLimitError) Error() string {
-	return fmt.Sprintf("%v %v: %d %v %v",
+	return fmt.Sprintf("%v %v: %v %v %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message, formatRateReset(time.Until(r.Rate.Reset.Time)))
 }
 
 // Is returns whether the provided error equals this error.
 func (r *RateLimitError) Is(target error) bool {
-	v, ok := target.(*RateLimitError)
-	if !ok {
+	var v *RateLimitError
+	if !errors.As(target, &v) {
 		return false
 	}
 
@@ -1275,8 +1281,8 @@ func (*AcceptedError) Error() string {
 
 // Is returns whether the provided error equals this error.
 func (ae *AcceptedError) Is(target error) bool {
-	v, ok := target.(*AcceptedError)
-	if !ok {
+	var v *AcceptedError
+	if !errors.As(target, &v) {
 		return false
 	}
 	return bytes.Equal(ae.Raw, v.Raw)
@@ -1295,15 +1301,15 @@ type AbuseRateLimitError struct {
 }
 
 func (r *AbuseRateLimitError) Error() string {
-	return fmt.Sprintf("%v %v: %d %v",
+	return fmt.Sprintf("%v %v: %v %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message)
 }
 
 // Is returns whether the provided error equals this error.
 func (r *AbuseRateLimitError) Is(target error) bool {
-	v, ok := target.(*AbuseRateLimitError)
-	if !ok {
+	var v *AbuseRateLimitError
+	if !errors.As(target, &v) {
 		return false
 	}
 
@@ -1329,15 +1335,15 @@ type RedirectionError struct {
 }
 
 func (r *RedirectionError) Error() string {
-	return fmt.Sprintf("%v %v: %d location %v",
+	return fmt.Sprintf("%v %v: %v location %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 		r.StatusCode, sanitizeURL(r.Location))
 }
 
 // Is returns whether the provided error equals this error.
 func (r *RedirectionError) Is(target error) bool {
-	v, ok := target.(*RedirectionError)
-	if !ok {
+	var v *RedirectionError
+	if !errors.As(target, &v) {
 		return false
 	}
 
@@ -1488,7 +1494,8 @@ func parseBoolResponse(err error) (bool, error) {
 		return true, nil
 	}
 
-	if err, ok := err.(*ErrorResponse); ok && err.Response.StatusCode == http.StatusNotFound {
+	var rerr *ErrorResponse
+	if errors.As(err, &rerr) && rerr.Response.StatusCode == http.StatusNotFound {
 		// Simply false. In this one case, we do not pass the error through.
 		return false, nil
 	}
@@ -1698,9 +1705,9 @@ func formatRateReset(d time.Duration) string {
 
 	var timeString string
 	if minutes > 0 {
-		timeString = fmt.Sprintf("%dm%02ds", minutes, seconds)
+		timeString = fmt.Sprintf("%vm%02ds", minutes, seconds)
 	} else {
-		timeString = fmt.Sprintf("%ds", seconds)
+		timeString = fmt.Sprintf("%vs", seconds)
 	}
 
 	if isNegative {

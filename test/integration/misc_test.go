@@ -8,13 +8,12 @@
 package integration
 
 import (
-	"context"
 	"testing"
 	"time"
 )
 
 func TestEmojis(t *testing.T) {
-	emoji, _, err := client.Emojis.List(context.Background())
+	emoji, _, err := client.Emojis.List(t.Context())
 	if err != nil {
 		t.Fatalf("List returned error: %v", err)
 	}
@@ -29,7 +28,7 @@ func TestEmojis(t *testing.T) {
 }
 
 func TestAPIMeta(t *testing.T) {
-	meta, _, err := client.Meta.Get(context.Background())
+	meta, _, err := client.Meta.Get(t.Context())
 	if err != nil {
 		t.Fatalf("Get returned error: %v", err)
 	}
@@ -42,13 +41,13 @@ func TestAPIMeta(t *testing.T) {
 		t.Error("Get returned no git addresses")
 	}
 
-	if !*meta.VerifiablePasswordAuthentication {
-		t.Error("APIMeta VerifiablePasswordAuthentication is false")
+	if *meta.VerifiablePasswordAuthentication {
+		t.Error("APIMeta VerifiablePasswordAuthentication is true")
 	}
 }
 
 func TestRateLimits(t *testing.T) {
-	limits, _, err := client.RateLimit.Get(context.Background())
+	limits, _, err := client.RateLimit.Get(t.Context())
 	if err != nil {
 		t.Fatalf("RateLimits returned error: %v", err)
 	}

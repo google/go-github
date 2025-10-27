@@ -164,7 +164,7 @@ func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, 
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs
 func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo string, workflowID int64, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowID)
+	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/runs", owner, repo, workflowID)
 	return s.listWorkflowRuns(ctx, u, opts)
 }
 
@@ -174,7 +174,7 @@ func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo s
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs
 func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, repo, workflowFileName string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowFileName)
+	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/runs", owner, repo, workflowFileName)
 	return s.listWorkflowRuns(ctx, u, opts)
 }
 
@@ -184,7 +184,7 @@ func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, 
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runs
 func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/actions/runs", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/actions/runs", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -306,7 +306,7 @@ func (s *ActionsService) getWorkflowRunAttemptLogsWithRateLimit(ctx context.Cont
 }
 
 // RerunWorkflowByID re-runs a workflow by ID.
-// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID a the DeploymentProtectionRuleEvent.
+// You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID of a DeploymentProtectionRuleEvent.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-a-workflow
 //
@@ -398,7 +398,7 @@ func (s *ActionsService) getWorkflowRunLogsWithoutRateLimit(ctx context.Context,
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusFound {
-		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))

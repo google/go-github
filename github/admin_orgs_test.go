@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -36,7 +35,7 @@ func TestAdminOrgs_Create(t *testing.T) {
 		fmt.Fprint(w, `{"login":"github","id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Admin.CreateOrg(ctx, input, "ghAdmin")
 	if err != nil {
 		t.Errorf("Admin.CreateOrg returned error: %v", err)
@@ -78,7 +77,7 @@ func TestAdminOrgs_Rename(t *testing.T) {
 		fmt.Fprint(w, `{"message":"Job queued to rename organization. It may take a few minutes to complete.","url":"https://<hostname>/api/v3/organizations/1"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, _, err := client.Admin.RenameOrg(ctx, input, "the-new-octocats")
 	if err != nil {
 		t.Errorf("Admin.RenameOrg returned error: %v", err)
@@ -125,7 +124,7 @@ func TestAdminOrgs_RenameByName(t *testing.T) {
 		fmt.Fprint(w, `{"message":"Job queued to rename organization. It may take a few minutes to complete.","url":"https://<hostname>/api/v3/organizations/1"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, _, err := client.Admin.RenameOrgByName(ctx, "o", "the-new-octocats")
 	if err != nil {
 		t.Errorf("Admin.RenameOrg returned error: %v", err)

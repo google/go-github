@@ -16,9 +16,38 @@ import (
 // GitHub API docs: https://docs.github.com/rest/projects/projects
 type ProjectsService service
 
+// ProjectV2 represents a v2 project.
+type ProjectV2 struct {
+	ID               *int64     `json:"id,omitempty"`
+	NodeID           *string    `json:"node_id,omitempty"`
+	Owner            *User      `json:"owner,omitempty"`
+	Creator          *User      `json:"creator,omitempty"`
+	Title            *string    `json:"title,omitempty"`
+	Description      *string    `json:"description,omitempty"`
+	Public           *bool      `json:"public,omitempty"`
+	ClosedAt         *Timestamp `json:"closed_at,omitempty"`
+	CreatedAt        *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
+	DeletedAt        *Timestamp `json:"deleted_at,omitempty"`
+	Number           *int       `json:"number,omitempty"`
+	ShortDescription *string    `json:"short_description,omitempty"`
+	DeletedBy        *User      `json:"deleted_by,omitempty"`
+
+	// Fields migrated from the Project (classic) struct:
+	URL                    *string `json:"url,omitempty"`
+	HTMLURL                *string `json:"html_url,omitempty"`
+	ColumnsURL             *string `json:"columns_url,omitempty"`
+	OwnerURL               *string `json:"owner_url,omitempty"`
+	Name                   *string `json:"name,omitempty"`
+	Body                   *string `json:"body,omitempty"`
+	State                  *string `json:"state,omitempty"`
+	OrganizationPermission *string `json:"organization_permission,omitempty"`
+	Private                *bool   `json:"private,omitempty"`
+}
+
 func (p ProjectV2) String() string { return Stringify(p) }
 
-// ListProjectsOptions specifies optional parameters to list projects for user / organization.
+// ListProjectsPaginationOptions specifies optional parameters to list projects for user / organization.
 //
 // Note: Pagination is powered by before/after cursor-style pagination. After the initial call,
 // inspect the returned *Response. Use resp.After as the opts.After value to request
@@ -26,7 +55,7 @@ func (p ProjectV2) String() string { return Stringify(p) }
 // page. Set either Before or After for a request; if both are
 // supplied GitHub API will return an error. PerPage controls the number of items
 // per page (max 100 per GitHub API docs).
-type ListProjectsOptions struct {
+type ListProjectsPaginationOptions struct {
 	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
 	Before string `url:"before,omitempty"`
 
@@ -35,6 +64,11 @@ type ListProjectsOptions struct {
 
 	// For paginated result sets, the number of results to include per page.
 	PerPage int `url:"per_page,omitempty"`
+}
+
+// ListProjectsOptions specifies optional parameters to list projects for user / organization.
+type ListProjectsOptions struct {
+	ListProjectsPaginationOptions
 
 	// Q is an optional query string to limit results to projects of the specified type.
 	Query string `url:"q,omitempty"`
@@ -45,10 +79,13 @@ type ListProjectsOptions struct {
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2FieldOption struct {
-	ID          *int64 `json:"id,omitempty"`          // The unique identifier for this option.
-	Name        string `json:"name,omitempty"`        // The display name of the option.
-	Color       string `json:"color,omitempty"`       // The color associated with this option (e.g., "blue", "red").
-	Description string `json:"description,omitempty"` // An optional description for this option.
+	ID string `json:"id,omitempty"`
+	// The display name of the option.
+	Name string `json:"name,omitempty"`
+	// The color associated with this option (e.g., "blue", "red").
+	Color string `json:"color,omitempty"`
+	// An optional description for this option.
+	Description string `json:"description,omitempty"`
 }
 
 // ProjectV2Field represents a field in a GitHub Projects V2 project.
@@ -56,20 +93,14 @@ type ProjectV2FieldOption struct {
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2Field struct {
-	ID        *int64                  `json:"id,omitempty"`         // The unique identifier for this field.
-	NodeID    string                  `json:"node_id,omitempty"`    // The GraphQL node ID for this field.
-	Name      string                  `json:"name,omitempty"`       // The display name of the field.
-	DataType  string                  `json:"dataType,omitempty"`   // The data type of the field (e.g., "text", "number", "date", "single_select", "multi_select").
-	URL       string                  `json:"url,omitempty"`        // The API URL for this field.
-	Options   []*ProjectV2FieldOption `json:"options,omitempty"`    // Available options for single_select and multi_select fields.
-	CreatedAt *Timestamp              `json:"created_at,omitempty"` // The time when this field was created.
-	UpdatedAt *Timestamp              `json:"updated_at,omitempty"` // The time when this field was last updated.
-}
-
-// NewProjectV2Field represents a new field to be added to a GitHub Projects V2.
-type NewProjectV2Field struct {
-	ID    *int64 `json:"id,omitempty"`    // The unique identifier for this field.
-	Value any    `json:"value,omitempty"` // The value of the field.
+	ID        *int64     `json:"id,omitempty"`
+	NodeID    string     `json:"node_id,omitempty"`
+	Name      string     `json:"name,omitempty"`
+	DataType  string     `json:"dataType,omitempty"`
+	URL       string     `json:"url,omitempty"`
+	Options   []*any     `json:"options,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
 }
 
 // ListProjectsForOrg lists Projects V2 for an organization.
@@ -166,7 +197,7 @@ func (s *ProjectsService) GetProjectForUser(ctx context.Context, username string
 // GitHub API docs: https://docs.github.com/rest/projects/fields#list-project-fields-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/fields
-func (s *ProjectsService) ListProjectFieldsForOrg(ctx context.Context, org string, projectNumber int64, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
+func (s *ProjectsService) ListProjectFieldsForOrg(ctx context.Context, org string, projectNumber int, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/fields", org, projectNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {

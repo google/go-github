@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -143,7 +144,7 @@ func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo,
 
 	resp, err := s.client.Do(ctx, req, nil)
 	if err != nil {
-		if _, ok := err.(*AcceptedError); ok {
+		if errors.As(err, new(*AcceptedError)) {
 			return resp, nil
 		}
 
@@ -170,7 +171,8 @@ func (s *SecurityAdvisoriesService) CreateTemporaryPrivateFork(ctx context.Conte
 	fork := new(Repository)
 	resp, err := s.client.Do(ctx, req, fork)
 	if err != nil {
-		if aerr, ok := err.(*AcceptedError); ok {
+		var aerr *AcceptedError
+		if errors.As(err, &aerr) {
 			if err := json.Unmarshal(aerr.Raw, fork); err != nil {
 				return fork, resp, err
 			}
@@ -267,7 +269,7 @@ func (s *SecurityAdvisoriesService) ListGlobalSecurityAdvisories(ctx context.Con
 //
 //meta:operation GET /advisories/{ghsa_id}
 func (s *SecurityAdvisoriesService) GetGlobalSecurityAdvisories(ctx context.Context, ghsaID string) (*GlobalSecurityAdvisory, *Response, error) {
-	url := fmt.Sprintf("advisories/%s", ghsaID)
+	url := fmt.Sprintf("advisories/%v", ghsaID)
 	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, nil, err

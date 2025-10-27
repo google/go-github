@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -49,7 +48,7 @@ func TestEnterpriseService_ListEnterpriseNetworkConfigurations(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	opts := &ListOptions{Page: 3, PerPage: 2}
 	configurations, _, err := client.Enterprise.ListEnterpriseNetworkConfigurations(ctx, "e", opts)
@@ -77,7 +76,7 @@ func TestEnterpriseService_ListEnterpriseNetworkConfigurations(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(configurations, want) {
-		t.Errorf("Enterprise.ListEnterpriseNetworkConfigurations mismatch (-want +got):\n%s", cmp.Diff(want, configurations))
+		t.Errorf("Enterprise.ListEnterpriseNetworkConfigurations mismatch (-want +got):\n%v", cmp.Diff(want, configurations))
 	}
 
 	const methodName = "ListEnterpriseNetworkConfigurations"
@@ -112,7 +111,7 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	req := NetworkConfigurationRequest{
 		Name:           Ptr("configuration-one"),
@@ -134,7 +133,7 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 		CreatedOn:          &Timestamp{time.Date(2024, 4, 9, 17, 30, 15, 0, time.UTC)},
 	}
 	if !cmp.Equal(configuration, want) {
-		t.Errorf("Enterprise.CreateEnterpriseNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
+		t.Errorf("Enterprise.CreateEnterpriseNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))
 	}
 
 	validationTest := []struct {
@@ -207,7 +206,7 @@ func TestEnterpriseService_GetEnterpriseNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	configuration, _, err := client.Enterprise.GetEnterpriseNetworkConfiguration(ctx, "e", "123456789ABCDEF")
 	if err != nil {
 		t.Errorf("Enterprise.GetEnterpriseNetworkConfiguration returned err: %v", err)
@@ -221,7 +220,7 @@ func TestEnterpriseService_GetEnterpriseNetworkConfiguration(t *testing.T) {
 		CreatedOn:          &Timestamp{time.Date(2024, 12, 10, 19, 0, 15, 0, time.UTC)},
 	}
 	if !cmp.Equal(configuration, want) {
-		t.Errorf("Enterprise.GetEnterpriseNetworkConfiguration mismatch (-want +got):\n%s", cmp.Diff(want, configuration))
+		t.Errorf("Enterprise.GetEnterpriseNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))
 	}
 
 	const methodName = "GetEnterpriseNetworkConfiguration"
@@ -256,7 +255,7 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	req := NetworkConfigurationRequest{
 		Name: Ptr("updated-configuration-one"),
 		NetworkSettingsIDs: []string{
@@ -277,7 +276,7 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 		CreatedOn:          &Timestamp{time.Date(2024, 12, 10, 19, 0, 15, 0, time.UTC)},
 	}
 	if !cmp.Equal(configuration, want) {
-		t.Errorf("Enterprise.UpdateEnterpriseNetworkConfiguration mismatch (-want +get)\n%s", cmp.Diff(want, configuration))
+		t.Errorf("Enterprise.UpdateEnterpriseNetworkConfiguration mismatch (-want +get)\n%v", cmp.Diff(want, configuration))
 	}
 
 	validationTest := []struct {
@@ -340,7 +339,7 @@ func TestEnterpriseService_DeleteEnterpriseNetworkConfiguration(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Enterprise.DeleteEnterpriseNetworkConfiguration(ctx, "e", "123456789ABCDEF")
 	if err != nil {
 		t.Errorf("Enterprise.DeleteEnterpriseNetworkConfiguration returned error %v", err)
@@ -372,7 +371,7 @@ func TestEnterpriseService_GetEnterpriseNetworkSettingsResource(t *testing.T) {
 		}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resource, _, err := client.Enterprise.GetEnterpriseNetworkSettingsResource(ctx, "e", "123456789ABCDEF")
 	if err != nil {
 		t.Errorf("Enterprise.GetEnterpriseNetworkSettingsResource returned error %v", err)
@@ -386,7 +385,7 @@ func TestEnterpriseService_GetEnterpriseNetworkSettingsResource(t *testing.T) {
 		Region:                 Ptr("germanywestcentral"),
 	}
 	if !cmp.Equal(resource, want) {
-		t.Errorf("Enterprise.GetEnterpriseNetworkSettingsResource mistach (-want +got):\n%s", cmp.Diff(want, resource))
+		t.Errorf("Enterprise.GetEnterpriseNetworkSettingsResource mismatch (-want +got):\n%v", cmp.Diff(want, resource))
 	}
 
 	const methodName = "GetEnterpriseNetworkSettingsResource"

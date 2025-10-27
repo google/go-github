@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,7 +23,7 @@ func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
 		fmt.Fprint(w, `{"enabled": true, "allowed_actions": "all"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Repositories.GetActionsPermissions(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetActionsPermissions returned error: %v", err)
@@ -49,7 +48,7 @@ func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_EditActionsPermissions(t *testing.T) {
+func TestRepositoriesService_UpdateActionsPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -67,25 +66,25 @@ func TestRepositoriesService_EditActionsPermissions(t *testing.T) {
 		fmt.Fprint(w, `{"enabled": true, "allowed_actions": "selected"}`)
 	})
 
-	ctx := context.Background()
-	org, _, err := client.Repositories.EditActionsPermissions(ctx, "o", "r", *input)
+	ctx := t.Context()
+	org, _, err := client.Repositories.UpdateActionsPermissions(ctx, "o", "r", *input)
 	if err != nil {
-		t.Errorf("Repositories.EditActionsPermissions returned error: %v", err)
+		t.Errorf("Repositories.UpdateActionsPermissions returned error: %v", err)
 	}
 
 	want := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("selected")}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Repositories.EditActionsPermissions returned %+v, want %+v", org, want)
+		t.Errorf("Repositories.UpdateActionsPermissions returned %+v, want %+v", org, want)
 	}
 
-	const methodName = "EditActionsPermissions"
+	const methodName = "UpdateActionsPermissions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.EditActionsPermissions(ctx, "\n", "\n", *input)
+		_, _, err = client.Repositories.UpdateActionsPermissions(ctx, "\n", "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.EditActionsPermissions(ctx, "o", "r", *input)
+		got, resp, err := client.Repositories.UpdateActionsPermissions(ctx, "o", "r", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -121,7 +120,7 @@ func TestRepositoriesService_GetDefaultWorkflowPermissions(t *testing.T) {
 		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	org, _, err := client.Repositories.GetDefaultWorkflowPermissions(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetDefaultWorkflowPermissions returned error: %v", err)
@@ -146,7 +145,7 @@ func TestRepositoriesService_GetDefaultWorkflowPermissions(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_EditDefaultWorkflowPermissions(t *testing.T) {
+func TestRepositoriesService_UpdateDefaultWorkflowPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -164,25 +163,25 @@ func TestRepositoriesService_EditDefaultWorkflowPermissions(t *testing.T) {
 		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
 	})
 
-	ctx := context.Background()
-	org, _, err := client.Repositories.EditDefaultWorkflowPermissions(ctx, "o", "r", *input)
+	ctx := t.Context()
+	org, _, err := client.Repositories.UpdateDefaultWorkflowPermissions(ctx, "o", "r", *input)
 	if err != nil {
-		t.Errorf("Repositories.EditDefaultWorkflowPermissions returned error: %v", err)
+		t.Errorf("Repositories.UpdateDefaultWorkflowPermissions returned error: %v", err)
 	}
 
 	want := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Repositories.EditDefaultWorkflowPermissions returned %+v, want %+v", org, want)
+		t.Errorf("Repositories.UpdateDefaultWorkflowPermissions returned %+v, want %+v", org, want)
 	}
 
-	const methodName = "EditDefaultWorkflowPermissions"
+	const methodName = "UpdateDefaultWorkflowPermissions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.EditDefaultWorkflowPermissions(ctx, "\n", "\n", *input)
+		_, _, err = client.Repositories.UpdateDefaultWorkflowPermissions(ctx, "\n", "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.EditDefaultWorkflowPermissions(ctx, "o", "r", *input)
+		got, resp, err := client.Repositories.UpdateDefaultWorkflowPermissions(ctx, "o", "r", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -199,7 +198,7 @@ func TestRepositoriesService_GetArtifactAndLogRetentionPeriod(t *testing.T) {
 		fmt.Fprint(w, `{"days": 90, "maximum_allowed_days": 365}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	period, _, err := client.Repositories.GetArtifactAndLogRetentionPeriod(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetArtifactAndLogRetentionPeriod returned error: %v", err)
@@ -228,7 +227,7 @@ func TestRepositoriesService_GetArtifactAndLogRetentionPeriod(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_EditArtifactAndLogRetentionPeriod(t *testing.T) {
+func TestRepositoriesService_UpdateArtifactAndLogRetentionPeriod(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -245,24 +244,24 @@ func TestRepositoriesService_EditArtifactAndLogRetentionPeriod(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
-	resp, err := client.Repositories.EditArtifactAndLogRetentionPeriod(ctx, "o", "r", *input)
+	ctx := t.Context()
+	resp, err := client.Repositories.UpdateArtifactAndLogRetentionPeriod(ctx, "o", "r", *input)
 	if err != nil {
-		t.Errorf("Repositories.EditArtifactAndLogRetentionPeriod returned error: %v", err)
+		t.Errorf("Repositories.UpdateArtifactAndLogRetentionPeriod returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Repositories.EditArtifactAndLogRetentionPeriod = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Repositories.UpdateArtifactAndLogRetentionPeriod = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
-	const methodName = "EditArtifactAndLogRetentionPeriod"
+	const methodName = "UpdateArtifactAndLogRetentionPeriod"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Repositories.EditArtifactAndLogRetentionPeriod(ctx, "\n", "\n", *input)
+		_, err = client.Repositories.UpdateArtifactAndLogRetentionPeriod(ctx, "\n", "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.EditArtifactAndLogRetentionPeriod(ctx, "o", "r", *input)
+		return client.Repositories.UpdateArtifactAndLogRetentionPeriod(ctx, "o", "r", *input)
 	})
 }
 
@@ -275,7 +274,7 @@ func TestRepositoriesService_GetPrivateRepoForkPRWorkflowSettings(t *testing.T) 
 		fmt.Fprint(w, `{"run_workflows_from_fork_pull_requests": true, "send_write_tokens_to_workflows": false, "send_secrets_and_variables": true, "require_approval_for_fork_pr_workflows": false}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	permissions, _, err := client.Repositories.GetPrivateRepoForkPRWorkflowSettings(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetPrivateRepoForkPRWorkflowSettings returned error: %v", err)
@@ -326,14 +325,14 @@ func TestRepositoriesService_UpdatePrivateRepoForkPRWorkflowSettings(t *testing.
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Repositories.UpdatePrivateRepoForkPRWorkflowSettings(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.UpdatePrivateRepoForkPRWorkflowSettings returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("Repositories.UpdatePrivateRepoForkPRWorkflowSettings = %d, want %d", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("Repositories.UpdatePrivateRepoForkPRWorkflowSettings = %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
 	const methodName = "UpdatePrivateRepoForkPRWorkflowSettings"
@@ -344,5 +343,77 @@ func TestRepositoriesService_UpdatePrivateRepoForkPRWorkflowSettings(t *testing.
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Repositories.UpdatePrivateRepoForkPRWorkflowSettings(ctx, "o", "r", input)
+	})
+}
+
+func TestActionsService_GetForkPRContributorApprovalPermissions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"approval_policy": "require_approval"}`)
+	})
+
+	ctx := t.Context()
+	policy, _, err := client.Actions.GetForkPRContributorApprovalPermissions(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("Actions.GetForkPRContributorApprovalPermissions returned error: %v", err)
+	}
+	want := &ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
+	if !cmp.Equal(policy, want) {
+		t.Errorf("Actions.GetForkPRContributorApprovalPermissions returned %+v, want %+v", policy, want)
+	}
+
+	const methodName = "GetForkPRContributorApprovalPermissions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetForkPRContributorApprovalPermissions(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetForkPRContributorApprovalPermissions(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_UpdateForkPRContributorApprovalPermissions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
+
+	mux.HandleFunc("/repos/o/r/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ContributorApprovalPermissions)
+		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, &input) {
+			t.Errorf("Request body = %+v, want %+v", v, &input)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Actions.UpdateForkPRContributorApprovalPermissions(ctx, "o", "r", input)
+	if err != nil {
+		t.Errorf("Actions.UpdateForkPRContributorApprovalPermissions returned error: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusNoContent {
+		t.Errorf("Actions.UpdateForkPRContributorApprovalPermissions = %v, want %v", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "UpdateForkPRContributorApprovalPermissions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.UpdateForkPRContributorApprovalPermissions(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.UpdateForkPRContributorApprovalPermissions(ctx, "o", "r", input)
 	})
 }

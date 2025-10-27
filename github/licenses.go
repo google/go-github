@@ -84,7 +84,7 @@ func (s *LicensesService) List(ctx context.Context) ([]*License, *Response, erro
 //
 //meta:operation GET /licenses/{license}
 func (s *LicensesService) Get(ctx context.Context, licenseName string) (*License, *Response, error) {
-	u := fmt.Sprintf("licenses/%s", licenseName)
+	u := fmt.Sprintf("licenses/%v", licenseName)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

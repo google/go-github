@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -26,7 +25,7 @@ func TestTeamsService__ListTeamMembersByID(t *testing.T) {
 	})
 
 	opt := &TeamListTeamMembersOptions{Role: "member", ListOptions: ListOptions{Page: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	members, _, err := client.Teams.ListTeamMembersByID(ctx, 1, 2, opt)
 	if err != nil {
 		t.Errorf("Teams.ListTeamMembersByID returned error: %v", err)
@@ -63,13 +62,13 @@ func TestTeamsService__ListTeamMembersByID_notFound(t *testing.T) {
 	})
 
 	opt := &TeamListTeamMembersOptions{Role: "member", ListOptions: ListOptions{Page: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	members, resp, err := client.Teams.ListTeamMembersByID(ctx, 1, 2, opt)
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.ListTeamMembersByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.ListTeamMembersByID returned status %v, want %v", got, want)
 	}
 	if members != nil {
 		t.Errorf("Teams.ListTeamMembersByID returned %+v, want nil", members)
@@ -101,7 +100,7 @@ func TestTeamsService__ListTeamMembersBySlug(t *testing.T) {
 	})
 
 	opt := &TeamListTeamMembersOptions{Role: "member", ListOptions: ListOptions{Page: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	members, _, err := client.Teams.ListTeamMembersBySlug(ctx, "o", "s", opt)
 	if err != nil {
 		t.Errorf("Teams.ListTeamMembersBySlug returned error: %v", err)
@@ -138,13 +137,13 @@ func TestTeamsService__ListTeamMembersBySlug_notFound(t *testing.T) {
 	})
 
 	opt := &TeamListTeamMembersOptions{Role: "member", ListOptions: ListOptions{Page: 2}}
-	ctx := context.Background()
+	ctx := t.Context()
 	members, resp, err := client.Teams.ListTeamMembersBySlug(ctx, "o", "s", opt)
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.ListTeamMembersBySlug returned status %d, want %d", got, want)
+		t.Errorf("Teams.ListTeamMembersBySlug returned status %v, want %v", got, want)
 	}
 	if members != nil {
 		t.Errorf("Teams.ListTeamMembersBySlug returned %+v, want nil", members)
@@ -169,7 +168,7 @@ func TestTeamsService__ListTeamMembersBySlug_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Teams.ListTeamMembersBySlug(ctx, "%", "s", nil)
 	testURLParseError(t, err)
 }
@@ -183,7 +182,7 @@ func TestTeamsService__GetTeamMembershipByID(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u", "state":"active"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	membership, _, err := client.Teams.GetTeamMembershipByID(ctx, 1, 2, "u")
 	if err != nil {
 		t.Errorf("Teams.GetTeamMembershipByID returned error: %v", err)
@@ -218,13 +217,13 @@ func TestTeamsService__GetTeamMembershipByID_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	membership, resp, err := client.Teams.GetTeamMembershipByID(ctx, 1, 2, "u")
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.GetTeamMembershipByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.GetTeamMembershipByID returned status %v, want %v", got, want)
 	}
 	if membership != nil {
 		t.Errorf("Teams.GetTeamMembershipByID returned %+v, want nil", membership)
@@ -254,7 +253,7 @@ func TestTeamsService__GetTeamMembershipBySlug(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u", "state":"active"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	membership, _, err := client.Teams.GetTeamMembershipBySlug(ctx, "o", "s", "u")
 	if err != nil {
 		t.Errorf("Teams.GetTeamMembershipBySlug returned error: %v", err)
@@ -289,13 +288,13 @@ func TestTeamsService__GetTeamMembershipBySlug_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	membership, resp, err := client.Teams.GetTeamMembershipBySlug(ctx, "o", "s", "u")
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.GetTeamMembershipBySlug returned status %d, want %d", got, want)
+		t.Errorf("Teams.GetTeamMembershipBySlug returned status %v, want %v", got, want)
 	}
 	if membership != nil {
 		t.Errorf("Teams.GetTeamMembershipBySlug returned %+v, want nil", membership)
@@ -320,8 +319,8 @@ func TestTeamsService__GetTeamMembershipBySlug_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
-	_, _, err := client.Teams.GetTeamMembershipBySlug(ctx, "%s", "s", "u")
+	ctx := t.Context()
+	_, _, err := client.Teams.GetTeamMembershipBySlug(ctx, "%v", "s", "u")
 	testURLParseError(t, err)
 }
 
@@ -343,7 +342,7 @@ func TestTeamsService__AddTeamMembershipByID(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	membership, _, err := client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", opt)
 	if err != nil {
 		t.Errorf("Teams.AddTeamMembershipByID returned error: %v", err)
@@ -387,13 +386,13 @@ func TestTeamsService__AddTeamMembershipByID_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	membership, resp, err := client.Teams.AddTeamMembershipByID(ctx, 1, 2, "u", opt)
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.AddTeamMembershipByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.AddTeamMembershipByID returned status %v, want %v", got, want)
 	}
 	if membership != nil {
 		t.Errorf("Teams.AddTeamMembershipByID returned %+v, want nil", membership)
@@ -432,7 +431,7 @@ func TestTeamsService__AddTeamMembershipBySlug(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	membership, _, err := client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", opt)
 	if err != nil {
 		t.Errorf("Teams.AddTeamMembershipBySlug returned error: %v", err)
@@ -476,13 +475,13 @@ func TestTeamsService__AddTeamMembershipBySlug_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	membership, resp, err := client.Teams.AddTeamMembershipBySlug(ctx, "o", "s", "u", opt)
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.AddTeamMembershipBySlug returned status %d, want %d", got, want)
+		t.Errorf("Teams.AddTeamMembershipBySlug returned status %v, want %v", got, want)
 	}
 	if membership != nil {
 		t.Errorf("Teams.AddTeamMembershipBySlug returned %+v, want nil", membership)
@@ -507,7 +506,7 @@ func TestTeamsService__AddTeamMembershipBySlug_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Teams.AddTeamMembershipBySlug(ctx, "%", "s", "u", nil)
 	testURLParseError(t, err)
 }
@@ -521,7 +520,7 @@ func TestTeamsService__RemoveTeamMembershipByID(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.RemoveTeamMembershipByID(ctx, 1, 2, "u")
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamMembershipByID returned error: %v", err)
@@ -547,13 +546,13 @@ func TestTeamsService__RemoveTeamMembershipByID_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Teams.RemoveTeamMembershipByID(ctx, 1, 2, "u")
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.RemoveTeamMembershipByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.RemoveTeamMembershipByID returned status %v, want %v", got, want)
 	}
 
 	const methodName = "RemoveTeamMembershipByID"
@@ -576,7 +575,7 @@ func TestTeamsService__RemoveTeamMembershipBySlug(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.RemoveTeamMembershipBySlug(ctx, "o", "s", "u")
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamMembershipBySlug returned error: %v", err)
@@ -602,13 +601,13 @@ func TestTeamsService__RemoveTeamMembershipBySlug_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	resp, err := client.Teams.RemoveTeamMembershipBySlug(ctx, "o", "s", "u")
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.RemoveTeamMembershipBySlug returned status %d, want %d", got, want)
+		t.Errorf("Teams.RemoveTeamMembershipBySlug returned status %v, want %v", got, want)
 	}
 
 	const methodName = "RemoveTeamMembershipBySlug"
@@ -626,7 +625,7 @@ func TestTeamsService__RemoveTeamMembershipBySlug_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Teams.RemoveTeamMembershipBySlug(ctx, "%", "s", "u")
 	testURLParseError(t, err)
 }
@@ -642,7 +641,7 @@ func TestTeamsService__ListPendingTeamInvitationsByID(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	invitations, _, err := client.Teams.ListPendingTeamInvitationsByID(ctx, 1, 2, opt)
 	if err != nil {
 		t.Errorf("Teams.ListPendingTeamInvitationsByID returned error: %v", err)
@@ -679,13 +678,13 @@ func TestTeamsService__ListPendingTeamInvitationsByID_notFound(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	invitations, resp, err := client.Teams.ListPendingTeamInvitationsByID(ctx, 1, 2, opt)
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.RemoveTeamMembershipByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.RemoveTeamMembershipByID returned status %v, want %v", got, want)
 	}
 	if invitations != nil {
 		t.Errorf("Teams.RemoveTeamMembershipByID returned %+v, want nil", invitations)
@@ -717,7 +716,7 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	invitations, _, err := client.Teams.ListPendingTeamInvitationsBySlug(ctx, "o", "s", opt)
 	if err != nil {
 		t.Errorf("Teams.ListPendingTeamInvitationsByID returned error: %v", err)
@@ -754,13 +753,13 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug_notFound(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	ctx := context.Background()
+	ctx := t.Context()
 	invitations, resp, err := client.Teams.ListPendingTeamInvitationsBySlug(ctx, "o", "s", opt)
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.RemoveTeamMembershipByID returned status %d, want %d", got, want)
+		t.Errorf("Teams.RemoveTeamMembershipByID returned status %v, want %v", got, want)
 	}
 	if invitations != nil {
 		t.Errorf("Teams.RemoveTeamMembershipByID returned %+v, want nil", invitations)
@@ -785,7 +784,7 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug_invalidOrg(t *testing.T)
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.Teams.ListPendingTeamInvitationsBySlug(ctx, "%", "s", nil)
 	testURLParseError(t, err)
 }

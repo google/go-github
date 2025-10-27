@@ -8,42 +8,35 @@
 package integration
 
 import (
-	"context"
 	"io"
 	"net/http"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v75/github"
+	"github.com/google/go-github/v76/github"
 )
 
 func TestRepositories_CRUD(t *testing.T) {
-	if !checkAuth("TestRepositories_CRUD") {
-		return
-	}
+	skipIfMissingAuth(t)
 
-	// create a random repository
-	repo, err := createRandomTestRepository("", true)
-	if err != nil {
-		t.Fatalf("createRandomTestRepository returned error: %v", err)
-	}
+	repo := createRandomTestRepository(t, "", true)
 
 	// update the repository description
 	repo.Description = github.Ptr("description")
 	repo.DefaultBranch = nil // FIXME: this shouldn't be necessary
-	_, _, err = client.Repositories.Edit(context.Background(), *repo.Owner.Login, *repo.Name, repo)
+	_, _, err := client.Repositories.Edit(t.Context(), *repo.Owner.Login, *repo.Name, repo)
 	if err != nil {
 		t.Fatalf("Repositories.Edit() returned error: %v", err)
 	}
 
 	// delete the repository
-	_, err = client.Repositories.Delete(context.Background(), *repo.Owner.Login, *repo.Name)
+	_, err = client.Repositories.Delete(t.Context(), *repo.Owner.Login, *repo.Name)
 	if err != nil {
 		t.Fatalf("Repositories.Delete() returned error: %v", err)
 	}
 
 	// verify that the repository was deleted
-	_, resp, err := client.Repositories.Get(context.Background(), *repo.Owner.Login, *repo.Name)
+	_, resp, err := client.Repositories.Get(t.Context(), *repo.Owner.Login, *repo.Name)
 	if err == nil {
 		t.Fatal("Test repository still exists after deleting it.")
 	}
@@ -54,7 +47,7 @@ func TestRepositories_CRUD(t *testing.T) {
 
 func TestRepositories_BranchesTags(t *testing.T) {
 	// branches
-	branches, _, err := client.Repositories.ListBranches(context.Background(), "git", "git", nil)
+	branches, _, err := client.Repositories.ListBranches(t.Context(), "git", "git", nil)
 	if err != nil {
 		t.Fatalf("Repositories.ListBranches() returned error: %v", err)
 	}
@@ -63,13 +56,13 @@ func TestRepositories_BranchesTags(t *testing.T) {
 		t.Fatal("Repositories.ListBranches('git', 'git') returned no branches")
 	}
 
-	_, _, err = client.Repositories.GetBranch(context.Background(), "git", "git", *branches[0].Name, 0)
+	_, _, err = client.Repositories.GetBranch(t.Context(), "git", "git", *branches[0].Name, 0)
 	if err != nil {
 		t.Fatalf("Repositories.GetBranch() returned error: %v", err)
 	}
 
 	// tags
-	tags, _, err := client.Repositories.ListTags(context.Background(), "git", "git", nil)
+	tags, _, err := client.Repositories.ListTags(t.Context(), "git", "git", nil)
 	if err != nil {
 		t.Fatalf("Repositories.ListTags() returned error: %v", err)
 	}
@@ -80,17 +73,11 @@ func TestRepositories_BranchesTags(t *testing.T) {
 }
 
 func TestRepositories_EditBranches(t *testing.T) {
-	if !checkAuth("TestRepositories_EditBranches") {
-		return
-	}
+	skipIfMissingAuth(t)
 
-	// create a random repository
-	repo, err := createRandomTestRepository("", true)
-	if err != nil {
-		t.Fatalf("createRandomTestRepository returned error: %v", err)
-	}
+	repo := createRandomTestRepository(t, "", true)
 
-	branch, _, err := client.Repositories.GetBranch(context.Background(), *repo.Owner.Login, *repo.Name, "master", 0)
+	branch, _, err := client.Repositories.GetBranch(t.Context(), *repo.Owner.Login, *repo.Name, "master", 0)
 	if err != nil {
 		t.Fatalf("Repositories.GetBranch() returned error: %v", err)
 	}
@@ -117,7 +104,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 		AllowForkSyncing: github.Ptr(false),
 	}
 
-	protection, _, err := client.Repositories.UpdateBranchProtection(context.Background(), *repo.Owner.Login, *repo.Name, "master", protectionRequest)
+	protection, _, err := client.Repositories.UpdateBranchProtection(t.Context(), *repo.Owner.Login, *repo.Name, "master", protectionRequest)
 	if err != nil {
 		t.Fatalf("Repositories.UpdateBranchProtection() returned error: %v", err)
 	}
@@ -150,31 +137,29 @@ func TestRepositories_EditBranches(t *testing.T) {
 		t.Errorf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want)
 	}
 
-	_, err = client.Repositories.Delete(context.Background(), *repo.Owner.Login, *repo.Name)
+	_, err = client.Repositories.Delete(t.Context(), *repo.Owner.Login, *repo.Name)
 	if err != nil {
 		t.Fatalf("Repositories.Delete() returned error: %v", err)
 	}
 }
 
 func TestRepositories_ListByAuthenticatedUser(t *testing.T) {
-	if !checkAuth("TestRepositories_ListByAuthenticatedUser") {
-		return
-	}
+	skipIfMissingAuth(t)
 
-	_, _, err := client.Repositories.ListByAuthenticatedUser(context.Background(), nil)
+	_, _, err := client.Repositories.ListByAuthenticatedUser(t.Context(), nil)
 	if err != nil {
 		t.Fatalf("Repositories.ListByAuthenticatedUser() returned error: %v", err)
 	}
 }
 
 func TestRepositories_ListByUser(t *testing.T) {
-	_, _, err := client.Repositories.ListByUser(context.Background(), "google", nil)
+	_, _, err := client.Repositories.ListByUser(t.Context(), "google", nil)
 	if err != nil {
 		t.Fatalf("Repositories.ListByUser('google') returned error: %v", err)
 	}
 
 	opt := github.RepositoryListByUserOptions{Sort: "created"}
-	repos, _, err := client.Repositories.ListByUser(context.Background(), "google", &opt)
+	repos, _, err := client.Repositories.ListByUser(t.Context(), "google", &opt)
 	if err != nil {
 		t.Fatalf("Repositories.List('google') with Sort opt returned error: %v", err)
 	}
@@ -186,11 +171,9 @@ func TestRepositories_ListByUser(t *testing.T) {
 }
 
 func TestRepositories_DownloadReleaseAsset(t *testing.T) {
-	if !checkAuth("TestRepositories_DownloadReleaseAsset") {
-		return
-	}
+	skipIfMissingAuth(t)
 
-	rc, _, err := client.Repositories.DownloadReleaseAsset(context.Background(), "andersjanmyr", "goose", 484892, http.DefaultClient)
+	rc, _, err := client.Repositories.DownloadReleaseAsset(t.Context(), "andersjanmyr", "goose", 484892, http.DefaultClient)
 	if err != nil {
 		t.Fatalf("Repositories.DownloadReleaseAsset(andersjanmyr, goose, 484892, true) returned error: %v", err)
 	}
@@ -202,15 +185,9 @@ func TestRepositories_DownloadReleaseAsset(t *testing.T) {
 }
 
 func TestRepositories_Autolinks(t *testing.T) {
-	if !checkAuth("TestRepositories_Autolinks") {
-		return
-	}
+	skipIfMissingAuth(t)
 
-	// create a random repository
-	repo, err := createRandomTestRepository("", true)
-	if err != nil {
-		t.Fatalf("createRandomTestRepository returned error: %v", err)
-	}
+	repo := createRandomTestRepository(t, "", true)
 
 	opts := &github.AutolinkOptions{
 		KeyPrefix:      github.Ptr("TICKET-"),
@@ -218,7 +195,7 @@ func TestRepositories_Autolinks(t *testing.T) {
 		IsAlphanumeric: github.Ptr(false),
 	}
 
-	actionlink, _, err := client.Repositories.AddAutolink(context.Background(), *repo.Owner.Login, *repo.Name, opts)
+	actionlink, _, err := client.Repositories.AddAutolink(t.Context(), *repo.Owner.Login, *repo.Name, opts)
 	if err != nil {
 		t.Fatalf("Repositories.AddAutolink() returned error: %v", err)
 	}
@@ -229,7 +206,7 @@ func TestRepositories_Autolinks(t *testing.T) {
 		t.Errorf("Repositories.AddAutolink() returned %+v, want %+v", actionlink, opts)
 	}
 
-	_, err = client.Repositories.Delete(context.Background(), *repo.Owner.Login, *repo.Name)
+	_, err = client.Repositories.Delete(t.Context(), *repo.Owner.Login, *repo.Name)
 	if err != nil {
 		t.Fatalf("Repositories.Delete() returned error: %v", err)
 	}

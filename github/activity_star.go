@@ -29,7 +29,7 @@ type Stargazer struct {
 //
 //meta:operation GET /repos/{owner}/{repo}/stargazers
 func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Stargazer, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/stargazers", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/stargazers", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -59,7 +59,7 @@ type ActivityListStarredOptions struct {
 	Sort string `url:"sort,omitempty"`
 
 	// Direction in which to sort repositories. Possible values are: asc, desc.
-	// Default is "asc" when sort is "full_name", otherwise default is "desc".
+	// Default is "asc" when sort is "full_name"; otherwise, default is "desc".
 	Direction string `url:"direction,omitempty"`
 
 	ListOptions

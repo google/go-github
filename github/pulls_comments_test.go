@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -157,7 +156,7 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 		Since:       time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 		ListOptions: ListOptions{Page: 2},
 	}
-	ctx := context.Background()
+	ctx := t.Context()
 	pulls, _, err := client.PullRequests.ListComments(ctx, "o", "r", 0, opt)
 	if err != nil {
 		t.Errorf("PullRequests.ListComments returned error: %v", err)
@@ -194,7 +193,7 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1, "pull_request_review_id":42}]`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	pulls, _, err := client.PullRequests.ListComments(ctx, "o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("PullRequests.ListComments returned error: %v", err)
@@ -210,7 +209,7 @@ func TestPullRequestsService_ListComments_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.ListComments(ctx, "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
@@ -226,7 +225,7 @@ func TestPullRequestsService_GetComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comment, _, err := client.PullRequests.GetComment(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("PullRequests.GetComment returned error: %v", err)
@@ -256,7 +255,7 @@ func TestPullRequestsService_GetComment_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.GetComment(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
@@ -282,7 +281,7 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comment, _, err := client.PullRequests.CreateComment(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.CreateComment returned error: %v", err)
@@ -312,7 +311,7 @@ func TestPullRequestsService_CreateComment_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.CreateComment(ctx, "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
@@ -335,7 +334,7 @@ func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comment, _, err := client.PullRequests.CreateCommentInReplyTo(ctx, "o", "r", 1, "b", 2)
 	if err != nil {
 		t.Errorf("PullRequests.CreateCommentInReplyTo returned error: %v", err)
@@ -379,7 +378,7 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	comment, _, err := client.PullRequests.EditComment(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.EditComment returned error: %v", err)
@@ -409,7 +408,7 @@ func TestPullRequestsService_EditComment_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, _, err := client.PullRequests.EditComment(ctx, "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
@@ -422,7 +421,7 @@ func TestPullRequestsService_DeleteComment(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.PullRequests.DeleteComment(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("PullRequests.DeleteComment returned error: %v", err)
@@ -443,7 +442,7 @@ func TestPullRequestsService_DeleteComment_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.PullRequests.DeleteComment(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }

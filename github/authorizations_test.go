@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -25,7 +24,7 @@ func TestAuthorizationsService_Check(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Authorizations.Check(ctx, "id", "a")
 	if err != nil {
 		t.Errorf("Authorizations.Check returned error: %v", err)
@@ -62,7 +61,7 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 		fmt.Fprint(w, `{"ID":1}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Authorizations.Reset(ctx, "id", "a")
 	if err != nil {
 		t.Errorf("Authorizations.Reset returned error: %v", err)
@@ -99,7 +98,7 @@ func TestAuthorizationsService_Revoke(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Authorizations.Revoke(ctx, "id", "a")
 	if err != nil {
 		t.Errorf("Authorizations.Revoke returned error: %v", err)
@@ -126,7 +125,7 @@ func TestDeleteGrant(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeOAuthAppPreview)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Authorizations.DeleteGrant(ctx, "id", "a")
 	if err != nil {
 		t.Errorf("OAuthAuthorizations.DeleteGrant returned error: %v", err)
@@ -153,7 +152,7 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 	})
 
 	req := &AuthorizationRequest{Scopes: []Scope{ScopePublicRepo}}
-	ctx := context.Background()
+	ctx := t.Context()
 	got, _, err := client.Authorizations.CreateImpersonation(ctx, "u", req)
 	if err != nil {
 		t.Errorf("Authorizations.CreateImpersonation returned error: %+v", err)
@@ -187,7 +186,7 @@ func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.Authorizations.DeleteImpersonation(ctx, "u")
 	if err != nil {
 		t.Errorf("Authorizations.DeleteImpersonation returned error: %+v", err)

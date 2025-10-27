@@ -150,7 +150,7 @@ func (s *RepositoriesService) ListCodeFrequency(ctx context.Context, owner, repo
 
 // RepositoryParticipation is the number of commits by everyone
 // who has contributed to the repository (including the owner)
-// as well as the number of commits by the owner themself.
+// as well as the number of commits by the owner themselves.
 type RepositoryParticipation struct {
 	All   []int `json:"all,omitempty"`
 	Owner []int `json:"owner,omitempty"`

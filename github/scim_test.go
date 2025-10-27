@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -61,7 +60,7 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 		  }`))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &ListSCIMProvisionedIdentitiesOptions{}
 	identities, _, err := client.SCIM.ListSCIMProvisionedIdentities(ctx, "o", opts)
 	if err != nil {
@@ -167,7 +166,7 @@ func TestSCIMService_ListSCIMProvisionedGroups(t *testing.T) {
 		  }`))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &ListSCIMProvisionedGroupsForEnterpriseOptions{
 		StartIndex:         Ptr(1),
 		ExcludedAttributes: Ptr("members,meta"),
@@ -236,7 +235,7 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 		fmt.Fprint(w, `{"id":"1234567890","userName":"userName"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &SCIMUserAttributes{
 		UserName: "userName",
 		Name: SCIMUserName{
@@ -316,7 +315,7 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 		  }`))
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	user, _, err := client.SCIM.GetSCIMProvisioningInfoForUser(ctx, "o", "123")
 	if err != nil {
 		t.Errorf("SCIM.GetSCIMProvisioningInfoForUser returned error: %v", err)
@@ -379,7 +378,7 @@ func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &SCIMUserAttributes{
 		UserName: "userName",
 		Name: SCIMUserName{
@@ -417,7 +416,7 @@ func TestSCIMService_UpdateAttributeForSCIMUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &UpdateAttributeForSCIMUserOptions{}
 	_, err := client.SCIM.UpdateAttributeForSCIMUser(ctx, "o", "123", opts)
 	if err != nil {
@@ -444,7 +443,7 @@ func TestSCIMService_DeleteSCIMUserFromOrg(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	_, err := client.SCIM.DeleteSCIMUserFromOrg(ctx, "o", "123")
 	if err != nil {
 		t.Errorf("SCIM.DeleteSCIMUserFromOrg returned error: %v", err)
@@ -569,7 +568,7 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 			StartIndex: Ptr(1),
 			Count:      Ptr(10),
 		},
-		fmt.Sprintf("%s?count=10&startIndex=1", url),
+		fmt.Sprintf("%v?count=10&startIndex=1", url),
 	)
 
 	testAddURLOptions(
@@ -580,7 +579,7 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 			Count:      Ptr(10),
 			Filter:     Ptr("test"),
 		},
-		fmt.Sprintf("%s?count=10&filter=test&startIndex=1", url),
+		fmt.Sprintf("%v?count=10&filter=test&startIndex=1", url),
 	)
 }
 
@@ -619,6 +618,24 @@ func TestSCIMMeta_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestSCIMUserRole_Marshal(t *testing.T) {
+	t.Parallel()
+
+	testJSONMarshal(t, &SCIMUserRole{
+		Value:   "enterprise_owner",
+		Primary: Bool(true),
+	}, `{
+		"value": "enterprise_owner",
+		"primary": true
+	}`)
+
+	r := &SCIMUserRole{
+		Value: "billing_manager",
+	}
+	want := `{"value": "billing_manager"}`
+	testJSONMarshal(t, r, want)
 }
 
 func TestSCIMProvisionedIdentities_Marshal(t *testing.T) {

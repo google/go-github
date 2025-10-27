@@ -87,12 +87,12 @@ func (s *ActionsService) GetActionsPermissions(ctx context.Context, org string) 
 	return permissions, resp, nil
 }
 
-// EditActionsPermissions sets the permissions policy for repositories and allowed actions in an organization.
+// UpdateActionsPermissions sets the permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-github-actions-permissions-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions
-func (s *ActionsService) EditActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
+func (s *ActionsService) UpdateActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
 	req, err := s.client.NewRequest("PUT", u, actionsPermissions)
 	if err != nil {
@@ -221,12 +221,12 @@ func (s *ActionsService) GetActionsAllowed(ctx context.Context, org string) (*Ac
 	return actionsAllowed, resp, nil
 }
 
-// EditActionsAllowed sets the actions that are allowed in an organization.
+// UpdateActionsAllowed sets the actions that are allowed in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/selected-actions
-func (s *ActionsService) EditActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
+func (s *ActionsService) UpdateActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
 	req, err := s.client.NewRequest("PUT", u, actionsAllowed)
 	if err != nil {
@@ -264,12 +264,12 @@ func (s *ActionsService) GetDefaultWorkflowPermissionsInOrganization(ctx context
 	return permissions, resp, nil
 }
 
-// EditDefaultWorkflowPermissionsInOrganization sets the GitHub Actions default workflow permissions for an organization.
+// UpdateDefaultWorkflowPermissionsInOrganization sets the GitHub Actions default workflow permissions for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-default-workflow-permissions-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/workflow
-func (s *ActionsService) EditDefaultWorkflowPermissionsInOrganization(ctx context.Context, org string, permissions DefaultWorkflowPermissionOrganization) (*DefaultWorkflowPermissionOrganization, *Response, error) {
+func (s *ActionsService) UpdateDefaultWorkflowPermissionsInOrganization(ctx context.Context, org string, permissions DefaultWorkflowPermissionOrganization) (*DefaultWorkflowPermissionOrganization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/workflow", org)
 	req, err := s.client.NewRequest("PUT", u, permissions)
 	if err != nil {
@@ -307,12 +307,12 @@ func (s *ActionsService) GetArtifactAndLogRetentionPeriodInOrganization(ctx cont
 	return arp, resp, nil
 }
 
-// EditArtifactAndLogRetentionPeriodInOrganization sets the artifact and log retention period for an organization.
+// UpdateArtifactAndLogRetentionPeriodInOrganization sets the artifact and log retention period for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-artifact-and-log-retention-settings-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/artifact-and-log-retention
-func (s *ActionsService) EditArtifactAndLogRetentionPeriodInOrganization(ctx context.Context, org string, period ArtifactPeriodOpt) (*Response, error) {
+func (s *ActionsService) UpdateArtifactAndLogRetentionPeriodInOrganization(ctx context.Context, org string, period ArtifactPeriodOpt) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/artifact-and-log-retention", org)
 	req, err := s.client.NewRequest("PUT", u, period)
 	if err != nil {
@@ -344,12 +344,12 @@ func (s *ActionsService) GetSelfHostedRunnersSettingsInOrganization(ctx context.
 	return settings, resp, nil
 }
 
-// EditSelfHostedRunnersSettingsInOrganization sets the self-hosted runners permissions settings for repositories in an organization.
+// UpdateSelfHostedRunnersSettingsInOrganization sets the self-hosted runners permissions settings for repositories in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/permissions#set-self-hosted-runners-settings-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/self-hosted-runners
-func (s *ActionsService) EditSelfHostedRunnersSettingsInOrganization(ctx context.Context, org string, opt SelfHostedRunnersSettingsOrganizationOpt) (*Response, error) {
+func (s *ActionsService) UpdateSelfHostedRunnersSettingsInOrganization(ctx context.Context, org string, opt SelfHostedRunnersSettingsOrganizationOpt) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners", org)
 
 	req, err := s.client.NewRequest("PUT", u, opt)
@@ -477,6 +477,43 @@ func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInOrganization(ctx 
 func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(ctx context.Context, org string, permissions *WorkflowsPermissionsOpt) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-workflows-private-repos", org)
 	req, err := s.client.NewRequest("PUT", u, permissions)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// GetOrganizationForkPRContributorApprovalPermissions gets the fork PR contributor approval policy for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-fork-pr-contributor-approval-permissions-for-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/permissions/fork-pr-contributor-approval
+func (s *ActionsService) GetOrganizationForkPRContributorApprovalPermissions(ctx context.Context, org string) (*ContributorApprovalPermissions, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-contributor-approval", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	policy := new(ContributorApprovalPermissions)
+	resp, err := s.client.Do(ctx, req, policy)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return policy, resp, nil
+}
+
+// UpdateOrganizationForkPRContributorApprovalPermissions sets the fork PR contributor approval policy for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-fork-pr-contributor-approval-permissions-for-an-organization
+//
+//meta:operation PUT /orgs/{org}/actions/permissions/fork-pr-contributor-approval
+func (s *ActionsService) UpdateOrganizationForkPRContributorApprovalPermissions(ctx context.Context, org string, policy ContributorApprovalPermissions) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-contributor-approval", org)
+	req, err := s.client.NewRequest("PUT", u, policy)
 	if err != nil {
 		return nil, err
 	}
