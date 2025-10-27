@@ -214,6 +214,31 @@ func (s *ProjectsService) ListProjectFieldsForOrg(ctx context.Context, org strin
 	return fields, resp, nil
 }
 
+// ListProjectFieldsForUser lists Projects V2 for a user.
+//
+// GitHub API docs: https://docs.github.com/rest/projects/fields#list-project-fields-for-user
+//
+//meta:operation GET /users/{user}/projectsV2/{project_number}/fields
+func (s *ProjectsService) ListProjectFieldsForUser(ctx context.Context, user string, projectNumber int, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
+	u := fmt.Sprintf("users/%v/projectsV2/%v/fields", user, projectNumber)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var fields []*ProjectV2Field
+	resp, err := s.client.Do(ctx, req, &fields)
+	if err != nil {
+		return nil, resp, err
+	}
+	return fields, resp, nil
+}
+
 // ListProjectItemsOptions specifies optional parameters when listing project items.
 // Note: Pagination uses before/after cursor-style pagination similar to ListProjectsOptions.
 // "Fields" can be used to restrict which field values are returned (by their numeric IDs).

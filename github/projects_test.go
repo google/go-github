@@ -234,6 +234,75 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 	}
 }
 
+func TestProjectsService_ListProjectFieldsForUser(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/users/u/projectsV2/1/fields", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		q := r.URL.Query()
+		if q.Get("before") == "b" && q.Get("after") == "a" { // bypass scenario
+			fmt.Fprint(w, `[]`)
+			return
+		}
+		testFormValues(t, r, values{"after": "2", "before": "1", "q": "text"})
+		fmt.Fprint(w, `[
+		{
+			"id": 1,
+			"node_id": "node_1",
+			"name": "Status",
+			"dataType": "single_select",
+			"url": "https://api.github.com/projects/1/fields/field1",
+			"options": [
+				{"id": 1, "name": "Todo", "color": "blue", "description": "Tasks to be done"},
+				{"id": 2, "name": "In Progress", "color": "yellow"}
+			],
+			"created_at": "2011-01-02T15:04:05Z",
+			"updated_at": "2012-01-02T15:04:05Z"
+		},
+		{
+			"id": 2,
+			"node_id": "node_2",
+			"name": "Priority",
+			"dataType": "text",
+			"url": "https://api.github.com/projects/1/fields/field2",
+			"created_at": "2011-01-02T15:04:05Z",
+			"updated_at": "2012-01-02T15:04:05Z"
+		}
+		]`)
+	})
+
+	opts := &ListProjectsOptions{Query: "text", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
+	ctx := context.Background()
+	fields, _, err := client.Projects.ListProjectFieldsForUser(ctx, "u", 1, opts)
+	if err != nil {
+		t.Fatalf("Projects.ListProjectFieldsForUser returned error: %v", err)
+	}
+	if len(fields) != 2 {
+		t.Fatalf("Projects.ListProjectFieldsForUser returned %d fields, want 2", len(fields))
+	}
+	if fields[0].ID == nil || *fields[0].ID != 1 || fields[1].ID == nil || *fields[1].ID != 2 {
+		t.Fatalf("unexpected field IDs: %+v", fields)
+	}
+
+	const methodName = "ListProjectFieldsForUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListProjectFieldsForUser(ctx, "\n", 1, opts)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.ListProjectFieldsForUser(ctx, "u", 1, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
+	if _, _, err = client.Projects.ListProjectFieldsForUser(ctxBypass, "u", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
+		t.Fatalf("unexpected error when both before/after set: %v", err)
+	}
+}
+
 func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
