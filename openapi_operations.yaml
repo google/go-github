@@ -27,11 +27,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-<<<<<<< HEAD
-openapi_commit: 44dd20c107ca46d1dbcaf4aa522d9039e96e631c
-=======
 openapi_commit: dee4dc2b1ab40c75c2ae562e4300503b632f4424
->>>>>>> upstream/master
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
