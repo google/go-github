@@ -264,7 +264,7 @@ func (mt PackageEventContainerMetadataTag) String() string {
 
 // PackageNugetMetadata represents nuget metadata for a GitHub package.
 type PackageNugetMetadata struct {
-	ID    json.RawMessage `json:"id,omitempty"` // Can either be a int64 or string
+	ID    json.RawMessage `json:"id,omitempty"` // Can either be an int64 or string
 	Name  *string         `json:"name,omitempty"`
 	Value json.RawMessage `json:"value,omitempty"` // Can either be a bool, string, integer or object
 }

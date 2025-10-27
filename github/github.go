@@ -850,7 +850,7 @@ const (
 
 // bareDo sends an API request using `caller` http.Client passed in the parameters
 // and lets you handle the api response. If an error or API Error occurs, the error
-// will contain more information. Otherwise you are supposed to read and close the
+// will contain more information. Otherwise, you are supposed to read and close the
 // response's Body. If rate limit is exceeded and reset time is in the future,
 // bareDo returns *RateLimitError immediately without making a network API call.
 //
@@ -967,7 +967,7 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 }
 
 // BareDo sends an API request and lets you handle the api response. If an error
-// or API Error occurs, the error will contain more information. Otherwise you
+// or API Error occurs, the error will contain more information. Otherwise, you
 // are supposed to read and close the response's Body. If rate limit is exceeded
 // and reset time is in the future, BareDo returns *RateLimitError immediately
 // without making a network API call.

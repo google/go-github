@@ -303,7 +303,7 @@ type RepositoryListByUserOptions struct {
 	Sort string `url:"sort,omitempty"`
 
 	// The order to sort by.
-	// Default: asc when using full_name, otherwise desc.
+	// Default: asc when using full_name; otherwise, desc.
 	// Can be one of: asc, desc
 	Direction string `url:"direction,omitempty"`
 
@@ -1206,7 +1206,7 @@ type ProtectionRequest struct {
 	AllowForkSyncing *bool `json:"allow_fork_syncing,omitempty"`
 }
 
-// RequiredStatusChecks represents the protection status of a individual branch.
+// RequiredStatusChecks represents the protection status of an individual branch.
 type RequiredStatusChecks struct {
 	// Require branches to be up to date before merging. (Required.)
 	Strict bool `json:"strict"`
