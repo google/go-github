@@ -146,7 +146,7 @@ func TestProjectsService_GetProjectForUser(t *testing.T) {
 		fmt.Fprint(w, `{"id":3,"title":"UserProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	project, _, err := client.Projects.GetProjectForUser(ctx, "u", 3)
 	if err != nil {
 		t.Fatalf("Projects.GetProjectForUser returned error: %v", err)
@@ -204,7 +204,7 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 	})
 
 	opts := &ListProjectsOptions{Query: "text", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
-	ctx := context.Background()
+	ctx := t.Context()
 	fields, _, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
 	if err != nil {
 		t.Fatalf("Projects.ListProjectFieldsForOrg returned error: %v", err)
@@ -228,7 +228,7 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 		}
 		return resp, err
 	})
-	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
+	ctxBypass := context.WithValue(ctx, BypassRateLimitCheck, true)
 	if _, _, err = client.Projects.ListProjectFieldsForOrg(ctxBypass, "o", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
@@ -273,7 +273,7 @@ func TestProjectsService_ListProjectFieldsForUser(t *testing.T) {
 	})
 
 	opts := &ListProjectsOptions{Query: "text", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
-	ctx := context.Background()
+	ctx := t.Context()
 	fields, _, err := client.Projects.ListProjectFieldsForUser(ctx, "u", 1, opts)
 	if err != nil {
 		t.Fatalf("Projects.ListProjectFieldsForUser returned error: %v", err)
@@ -297,7 +297,7 @@ func TestProjectsService_ListProjectFieldsForUser(t *testing.T) {
 		}
 		return resp, err
 	})
-	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
+	ctxBypass := context.WithValue(ctx, BypassRateLimitCheck, true)
 	if _, _, err = client.Projects.ListProjectFieldsForUser(ctxBypass, "u", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
@@ -322,7 +322,7 @@ func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 		}
 		http.Error(w, "unexpected query", http.StatusBadRequest)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	first, resp, err := client.Projects.ListProjectsForUser(ctx, "u", nil)
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
@@ -354,7 +354,7 @@ func TestProjectsService_ListProjectsForUser_error(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[]`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	const methodName = "ListProjectsForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.ListProjectsForUser(ctx, "u", nil)
@@ -395,7 +395,7 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 		http.Error(w, "unexpected query", http.StatusBadRequest)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	first, resp, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, nil)
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
@@ -441,7 +441,7 @@ func TestProjectsService_ListProjectsForOrg_pagination(t *testing.T) {
 		http.Error(w, "unexpected query", http.StatusBadRequest)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	first, resp, err := client.Projects.ListProjectsForOrg(ctx, "o", nil)
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
@@ -553,7 +553,7 @@ func TestProjectsService_ListProjectItemsForOrg(t *testing.T) {
 	})
 
 	opts := &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1", PerPage: 50}, Query: "status:open"}, Fields: []int64{10, 11}}
-	ctx := context.Background()
+	ctx := t.Context()
 	items, _, err := client.Projects.ListProjectItemsForOrg(ctx, "o", 1, opts)
 	if err != nil {
 		t.Fatalf("Projects.ListProjectItemsForOrg returned error: %v", err)
@@ -576,7 +576,7 @@ func TestProjectsService_ListProjectItemsForOrg(t *testing.T) {
 		return resp, err
 	})
 
-	ctxBypass := context.WithValue(context.Background(), BypassRateLimitCheck, true)
+	ctxBypass := context.WithValue(ctx, BypassRateLimitCheck, true)
 	if _, _, err = client.Projects.ListProjectItemsForOrg(ctxBypass, "o", 1, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
@@ -596,7 +596,7 @@ func TestProjectsService_AddProjectItemForOrg(t *testing.T) {
 		fmt.Fprint(w, `{"id":99,"node_id":"PVTI_new"}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	item, _, err := client.Projects.AddProjectItemForOrg(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 99})
 	if err != nil {
 		t.Fatalf("Projects.AddProjectItemForOrg returned error: %v", err)
@@ -614,7 +614,7 @@ func TestProjectsService_AddProjectItemForOrg_error(t *testing.T) {
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"id":1}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	const methodName = "AddProjectItemForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.AddProjectItemForOrg(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 1})
@@ -632,7 +632,7 @@ func TestProjectsService_GetProjectItemForOrg(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":17,"node_id":"PVTI_node"}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &GetProjectItemOptions{}
 	item, _, err := client.Projects.GetProjectItemForOrg(ctx, "o", 1, 17, opts)
 	if err != nil {
@@ -650,7 +650,7 @@ func TestProjectsService_GetProjectItemForOrg_error(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":17}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	const methodName = "GetProjectItemForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetProjectItemForOrg(ctx, "o", 1, 17, &GetProjectItemOptions{})
@@ -674,7 +674,7 @@ func TestProjectsService_UpdateProjectItemForOrg(t *testing.T) {
 		fmt.Fprint(w, `{"id":17}`)
 	})
 	archived := true
-	ctx := context.Background()
+	ctx := t.Context()
 	item, _, err := client.Projects.UpdateProjectItemForOrg(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
 	if err != nil {
 		t.Fatalf("UpdateProjectItemForOrg error: %v", err)
@@ -692,7 +692,7 @@ func TestProjectsService_UpdateProjectItemForOrg_error(t *testing.T) {
 		fmt.Fprint(w, `{"id":17}`)
 	})
 	archived := true
-	ctx := context.Background()
+	ctx := t.Context()
 	const methodName = "UpdateProjectItemForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.UpdateProjectItemForOrg(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
@@ -710,7 +710,7 @@ func TestProjectsService_DeleteProjectItemForOrg(t *testing.T) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Projects.DeleteProjectItemForOrg(ctx, "o", 1, 17); err != nil {
 		t.Fatalf("DeleteProjectItemForOrg error: %v", err)
 	}
@@ -723,7 +723,7 @@ func TestProjectsService_DeleteProjectItemForOrg_error(t *testing.T) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	const methodName = "DeleteProjectItemForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Projects.DeleteProjectItemForOrg(ctx, "o", 1, 17)
@@ -738,7 +738,7 @@ func TestProjectsService_ListProjectItemsForUser(t *testing.T) {
 		testFormValues(t, r, values{"per_page": "20", "q": "type:issue"})
 		fmt.Fprint(w, `[{"id":7,"node_id":"PVTI_user"}]`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	items, _, err := client.Projects.ListProjectItemsForUser(ctx, "u", 2, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{PerPage: 20}, Query: "type:issue"}})
 	if err != nil {
 		t.Fatalf("ListProjectItemsForUser error: %v", err)
@@ -755,7 +755,7 @@ func TestProjectsService_ListProjectItemsForUser_error(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[]`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	const methodName = "ListProjectItemsForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.ListProjectItemsForUser(ctx, "u", 2, nil)
@@ -782,7 +782,7 @@ func TestProjectsService_AddProjectItemForUser(t *testing.T) {
 		}
 		fmt.Fprint(w, `{"id":123,"node_id":"PVTI_new_user"}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	item, _, err := client.Projects.AddProjectItemForUser(ctx, "u", 2, &AddProjectItemOptions{Type: "PullRequest", ID: 123})
 	if err != nil {
 		t.Fatalf("AddProjectItemForUser error: %v", err)
@@ -799,7 +799,7 @@ func TestProjectsService_AddProjectItemForUser_error(t *testing.T) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{"id":5}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	const methodName = "AddProjectItemForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.AddProjectItemForUser(ctx, "u", 2, &AddProjectItemOptions{Type: "Issue", ID: 5})
@@ -817,7 +817,7 @@ func TestProjectsService_GetProjectItemForUser(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":55,"node_id":"PVTI_user_item"}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	opts := &GetProjectItemOptions{}
 	item, _, err := client.Projects.GetProjectItemForUser(ctx, "u", 2, 55, opts)
 	if err != nil {
@@ -835,7 +835,7 @@ func TestProjectsService_GetProjectItemForUser_error(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":55}`)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	const methodName = "GetProjectItemForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetProjectItemForUser(ctx, "u", 2, 55, &GetProjectItemOptions{})
@@ -859,7 +859,7 @@ func TestProjectsService_UpdateProjectItemForUser(t *testing.T) {
 		fmt.Fprint(w, `{"id":55}`)
 	})
 	archived := false
-	ctx := context.Background()
+	ctx := t.Context()
 	item, _, err := client.Projects.UpdateProjectItemForUser(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
 	if err != nil {
 		t.Fatalf("UpdateProjectItemForUser error: %v", err)
@@ -877,7 +877,7 @@ func TestProjectsService_UpdateProjectItemForUser_error(t *testing.T) {
 		fmt.Fprint(w, `{"id":55}`)
 	})
 	archived := false
-	ctx := context.Background()
+	ctx := t.Context()
 	const methodName = "UpdateProjectItemForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.UpdateProjectItemForUser(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
@@ -895,7 +895,7 @@ func TestProjectsService_DeleteProjectItemForUser(t *testing.T) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	if _, err := client.Projects.DeleteProjectItemForUser(ctx, "u", 2, 55); err != nil {
 		t.Fatalf("DeleteProjectItemForUser error: %v", err)
 	}
@@ -908,7 +908,7 @@ func TestProjectsService_DeleteProjectItemForUser_error(t *testing.T) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	const methodName = "DeleteProjectItemForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Projects.DeleteProjectItemForUser(ctx, "u", 2, 55)
