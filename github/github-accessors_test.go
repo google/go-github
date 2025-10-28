@@ -20138,17 +20138,6 @@ func TestNetworkSettingsResource_GetSubnetID(tt *testing.T) {
 	n.GetSubnetID()
 }
 
-func TestNewProjectV2Field_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	n := &ProjectV2Field{ID: &zeroValue}
-	n.GetID()
-	n = &ProjectV2Field{}
-	n.GetID()
-	n = nil
-	n.GetID()
-}
-
 func TestNewPullRequest_GetBase(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -37289,6 +37278,69 @@ func TestUpdateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u := &UpdateEnterpriseRunnerGroupRequest{Visibility: &zeroValue}
 	u.GetVisibility()
 	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetVisibility()
+	u = nil
+	u.GetVisibility()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetEncryptedValue(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{EncryptedValue: &zeroValue}
+	u.GetEncryptedValue()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetEncryptedValue()
+	u = nil
+	u.GetEncryptedValue()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{KeyID: &zeroValue}
+	u.GetKeyID()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetKeyID()
+	u = nil
+	u.GetKeyID()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetRegistryType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{RegistryType: &zeroValue}
+	u.GetRegistryType()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetRegistryType()
+	u = nil
+	u.GetRegistryType()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{URL: &zeroValue}
+	u.GetURL()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetURL()
+	u = nil
+	u.GetURL()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetUsername(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{Username: &zeroValue}
+	u.GetUsername()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetUsername()
+	u = nil
+	u.GetUsername()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateOrganizationPrivateRegistry{}
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()

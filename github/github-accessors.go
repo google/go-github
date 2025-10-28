@@ -28942,6 +28942,54 @@ func (u *UpdateEnterpriseRunnerGroupRequest) GetVisibility() string {
 	return *u.Visibility
 }
 
+// GetEncryptedValue returns the EncryptedValue field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetEncryptedValue() string {
+	if u == nil || u.EncryptedValue == nil {
+		return ""
+	}
+	return *u.EncryptedValue
+}
+
+// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetKeyID() string {
+	if u == nil || u.KeyID == nil {
+		return ""
+	}
+	return *u.KeyID
+}
+
+// GetRegistryType returns the RegistryType field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetRegistryType() string {
+	if u == nil || u.RegistryType == nil {
+		return ""
+	}
+	return *u.RegistryType
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetURL() string {
+	if u == nil || u.URL == nil {
+		return ""
+	}
+	return *u.URL
+}
+
+// GetUsername returns the Username field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetUsername() string {
+	if u == nil || u.Username == nil {
+		return ""
+	}
+	return *u.Username
+}
+
+// GetVisibility returns the Visibility field.
+func (u *UpdateOrganizationPrivateRegistry) GetVisibility() *PrivateRegistryVisibility {
+	if u == nil {
+		return nil
+	}
+	return u.Visibility
+}
+
 // GetArchived returns the Archived field if it's non-nil, zero value otherwise.
 func (u *UpdateProjectItemOptions) GetArchived() bool {
 	if u == nil || u.Archived == nil {

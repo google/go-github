@@ -218,7 +218,7 @@ func (s *ProjectsService) ListProjectFieldsForOrg(ctx context.Context, org strin
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields#list-project-fields-for-user
 //
-//meta:operation GET /users/{user}/projectsV2/{project_number}/fields
+//meta:operation GET /users/{username}/projectsV2/{project_number}/fields
 func (s *ProjectsService) ListProjectFieldsForUser(ctx context.Context, user string, projectNumber int64, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/fields", user, projectNumber)
 	u, err := addOptions(u, opts)
