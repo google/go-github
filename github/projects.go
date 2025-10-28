@@ -241,7 +241,7 @@ func (s *ProjectsService) ListProjectFieldsForUser(ctx context.Context, user str
 
 // GetProjectFieldForOrg gets a single project field from an organization owned project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/fields?apiVersion=2022-11-28#get-project-field-for-organization
+// GitHub API docs: https://docs.github.com/rest/projects/fields#get-project-field-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/fields/{field_id}
 func (s *ProjectsService) GetProjectFieldForOrg(ctx context.Context, org string, projectNumber, fieldID int64) (*ProjectV2Field, *Response, error) {
@@ -261,7 +261,7 @@ func (s *ProjectsService) GetProjectFieldForOrg(ctx context.Context, org string,
 
 // GetProjectFieldForUser gets a single project field from a user owned project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/projects/fields?apiVersion=2022-11-28#get-project-field-for-user
+// GitHub API docs: https://docs.github.com/rest/projects/fields#get-project-field-for-user
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}/fields/{field_id}
 func (s *ProjectsService) GetProjectFieldForUser(ctx context.Context, user string, projectNumber, fieldID int64) (*ProjectV2Field, *Response, error) {
