@@ -75,9 +75,9 @@ func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref
 // GitHub API docs: https://docs.github.com/rest/commits/statuses#create-a-commit-status
 //
 //meta:operation POST /repos/{owner}/{repo}/statuses/{sha}
-func (s *RepositoriesService) CreateStatus(ctx context.Context, owner, repo, ref string, status *RepoStatus) (*RepoStatus, *Response, error) {
+func (s *RepositoriesService) CreateStatus(ctx context.Context, owner, repo, ref string, status RepoStatus) (*RepoStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, refURLEscape(ref))
-	req, err := s.client.NewRequest("POST", u, status)
+	req, err := s.client.NewRequest("POST", u, &status)
 	if err != nil {
 		return nil, nil, err
 	}
