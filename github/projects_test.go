@@ -303,6 +303,88 @@ func TestProjectsService_ListProjectFieldsForUser(t *testing.T) {
 	}
 }
 
+func TestProjectsService_GetProjectFieldForOrg(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/projectsV2/1/fields/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `
+		{
+			"id": 1,
+			"node_id": "node_1",
+			"name": "Status",
+			"dataType": "single_select",
+			"url": "https://api.github.com/projects/1/fields/field1",
+			"options": [
+				{"id": 1, "name": "Todo", "color": "blue", "description": "Tasks to be done"},
+				{"id": 2, "name": "In Progress", "color": "yellow"}
+			],
+			"created_at": "2011-01-02T15:04:05Z",
+			"updated_at": "2012-01-02T15:04:05Z"
+		}`)
+	})
+
+	ctx := t.Context()
+	field, _, err := client.Projects.GetProjectFieldForOrg(ctx, "o", 1, 1)
+	if err != nil {
+		t.Fatalf("Projects.GetProjectFieldForOrg returned error: %v", err)
+	}
+	if field == nil || field.ID == nil || *field.ID != 1 {
+		t.Fatalf("unexpected field: %+v", field)
+	}
+
+	const methodName = "GetProjectFieldForOrg"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.GetProjectFieldForOrg(ctx, "o", 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_GetProjectFieldForUser(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/users/u/projectsV2/1/fields/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `
+		{
+			"id": 3,
+			"node_id": "node_3",
+			"name": "Status",
+			"dataType": "single_select",
+			"url": "https://api.github.com/projects/1/fields/field3",
+			"options": [
+				{"id": 1, "name": "Done", "color": "red", "description": "Done task"},
+				{"id": 2, "name": "In Progress", "color": "yellow"}
+			],
+			"created_at": "2011-01-02T15:04:05Z",
+			"updated_at": "2012-01-02T15:04:05Z"
+		}`)
+	})
+
+	ctx := t.Context()
+	field, _, err := client.Projects.GetProjectFieldForUser(ctx, "u", 1, 3)
+	if err != nil {
+		t.Fatalf("Projects.GetProjectFieldForUser returned error: %v", err)
+	}
+	if field == nil || field.ID == nil || *field.ID != 3 {
+		t.Fatalf("unexpected field: %+v", field)
+	}
+
+	const methodName = "GetProjectFieldForUser"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.GetProjectFieldForUser(ctx, "u", 1, 3)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
