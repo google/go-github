@@ -239,6 +239,46 @@ func (s *ProjectsService) ListProjectFieldsForUser(ctx context.Context, user str
 	return fields, resp, nil
 }
 
+// GetProjectFieldForOrg gets a single project field from an organization owned project.
+//
+// GitHub API docs: https://docs.github.com/en/rest/projects/fields?apiVersion=2022-11-28#get-project-field-for-organization
+//
+//meta:operation GET /orgs/{org}/projectsV2/{project_number}/fields/{field_id}
+func (s *ProjectsService) GetProjectFieldForOrg(ctx context.Context, org string, projectNumber, fieldID int64) (*ProjectV2Field, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/projectsV2/%v/fields/%v", org, projectNumber, fieldID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	field := new(ProjectV2Field)
+	resp, err := s.client.Do(ctx, req, field)
+	if err != nil {
+		return nil, resp, err
+	}
+	return field, resp, nil
+}
+
+// GetProjectFieldForUser gets a single project field from a user owned project.
+//
+// GitHub API docs: https://docs.github.com/en/rest/projects/fields?apiVersion=2022-11-28#get-project-field-for-user
+//
+//meta:operation GET /users/{username}/projectsV2/{project_number}/fields/{field_id}
+func (s *ProjectsService) GetProjectFieldForUser(ctx context.Context, user string, projectNumber, fieldID int64) (*ProjectV2Field, *Response, error) {
+	u := fmt.Sprintf("users/%v/projectsV2/%v/fields/%v", user, projectNumber, fieldID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	field := new(ProjectV2Field)
+	resp, err := s.client.Do(ctx, req, field)
+	if err != nil {
+		return nil, resp, err
+	}
+	return field, resp, nil
+}
+
 // ListProjectItemsOptions specifies optional parameters when listing project items.
 // Note: Pagination uses before/after cursor-style pagination similar to ListProjectsOptions.
 // "Fields" can be used to restrict which field values are returned (by their numeric IDs).
