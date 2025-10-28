@@ -18991,7 +18991,7 @@ func (p *ProjectV2) GetNodeID() string {
 }
 
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
-func (p *ProjectV2) GetNumber() int {
+func (p *ProjectV2) GetNumber() int64 {
 	if p == nil || p.Number == nil {
 		return 0
 	}
