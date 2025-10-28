@@ -106,13 +106,13 @@ type PremiumRequestUsageReportOptions struct {
 	// If no year or month is specified, the default year and month are used.
 	Day *int `url:"day,omitempty"`
 
-	// The user name to query usage for. The name is not case sensitive.
+	// The user name to query usage for. The name is not case-sensitive.
 	User *string `url:"user,omitempty"`
 
-	// The model name to query usage for. The name is not case sensitive.
+	// The model name to query usage for. The name is not case-sensitive.
 	Model *string `url:"model,omitempty"`
 
-	// The product name to query usage for. The name is not case sensitive.
+	// The product name to query usage for. The name is not case-sensitive.
 	Product *string `url:"product,omitempty"`
 }
 

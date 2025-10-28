@@ -69,7 +69,7 @@ type ListMembersOptions struct {
 
 // ListMembers lists the members for an organization. If the authenticated
 // user is an owner of the organization, this will return both concealed and
-// public members, otherwise it will only return public members.
+// public members; otherwise, it will only return public members.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/members#list-organization-members
 // GitHub API docs: https://docs.github.com/rest/orgs/members#list-public-organization-members

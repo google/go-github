@@ -130,7 +130,7 @@ type RepositoryAddCollaboratorOptions struct {
 	// Permission specifies the permission to grant the user on this repository.
 	// Possible values are:
 	//     pull - team members can pull, but not push to or administer this repository
-	//     push - team members can pull and push, but not administer this repository
+	//     push - team members can push and pull, but not administer this repository
 	//     admin - team members can pull, push and administer this repository
 	//     maintain - team members can manage the repository without access to sensitive or destructive actions.
 	//     triage - team members can proactively manage issues and pull requests without write access.

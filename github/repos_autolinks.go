@@ -17,7 +17,7 @@ type AutolinkOptions struct {
 	IsAlphanumeric *bool   `json:"is_alphanumeric,omitempty"`
 }
 
-// Autolink represents autolinks to external resources like JIRA issues and Zendesk tickets.
+// Autolink represents autolinks to external resources like Jira issues and Zendesk tickets.
 type Autolink struct {
 	ID             *int64  `json:"id,omitempty"`
 	KeyPrefix      *string `json:"key_prefix,omitempty"`
