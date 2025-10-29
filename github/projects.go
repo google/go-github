@@ -57,13 +57,13 @@ func (p ProjectV2) String() string { return Stringify(p) }
 // per page (max 100 per GitHub API docs).
 type ListProjectsPaginationOptions struct {
 	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
-	Before string `url:"before,omitempty"`
+	Before *string `url:"before,omitempty"`
 
 	// A cursor, as given in the Link header. If specified, the query only searches for events after this cursor.
-	After string `url:"after,omitempty"`
+	After *string `url:"after,omitempty"`
 
 	// For paginated result sets, the number of results to include per page.
-	PerPage int `url:"per_page,omitempty"`
+	PerPage *int `url:"per_page,omitempty"`
 }
 
 // ListProjectsOptions specifies optional parameters to list projects for user / organization.
@@ -71,7 +71,7 @@ type ListProjectsOptions struct {
 	ListProjectsPaginationOptions
 
 	// Q is an optional query string to limit results to projects of the specified type.
-	Query string `url:"q,omitempty"`
+	Query *string `url:"q,omitempty"`
 }
 
 // ProjectV2FieldOption represents an option for a project field of type single_select or multi_select.
@@ -91,10 +91,10 @@ type ProjectV2FieldOption struct {
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2Field struct {
 	ID        *int64                  `json:"id,omitempty"`
-	NodeID    string                  `json:"node_id,omitempty"`
-	Name      string                  `json:"name,omitempty"`
-	DataType  string                  `json:"dataType,omitempty"`
-	URL       string                  `json:"url,omitempty"`
+	NodeID    *string                 `json:"node_id,omitempty"`
+	Name      *string                 `json:"name,omitempty"`
+	DataType  *string                 `json:"dataType,omitempty"`
+	URL       *string                 `json:"url,omitempty"`
 	Options   []*ProjectV2FieldOption `json:"options,omitempty"`
 	CreatedAt *Timestamp              `json:"created_at,omitempty"`
 	UpdatedAt *Timestamp              `json:"updated_at,omitempty"`
