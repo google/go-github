@@ -18288,6 +18288,50 @@ func TestListOrganizations_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 }
 
+func TestListProjectsOptions_GetQuery(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListProjectsOptions{Query: &zeroValue}
+	l.GetQuery()
+	l = &ListProjectsOptions{}
+	l.GetQuery()
+	l = nil
+	l.GetQuery()
+}
+
+func TestListProjectsPaginationOptions_GetAfter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListProjectsPaginationOptions{After: &zeroValue}
+	l.GetAfter()
+	l = &ListProjectsPaginationOptions{}
+	l.GetAfter()
+	l = nil
+	l.GetAfter()
+}
+
+func TestListProjectsPaginationOptions_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListProjectsPaginationOptions{Before: &zeroValue}
+	l.GetBefore()
+	l = &ListProjectsPaginationOptions{}
+	l.GetBefore()
+	l = nil
+	l.GetBefore()
+}
+
+func TestListProjectsPaginationOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	l := &ListProjectsPaginationOptions{PerPage: &zeroValue}
+	l.GetPerPage()
+	l = &ListProjectsPaginationOptions{}
+	l.GetPerPage()
+	l = nil
+	l.GetPerPage()
+}
+
 func TestListRepositories_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -24836,6 +24880,17 @@ func TestProjectV2Field_GetCreatedAt(tt *testing.T) {
 	p.GetCreatedAt()
 }
 
+func TestProjectV2Field_GetDataType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2Field{DataType: &zeroValue}
+	p.GetDataType()
+	p = &ProjectV2Field{}
+	p.GetDataType()
+	p = nil
+	p.GetDataType()
+}
+
 func TestProjectV2Field_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -24847,6 +24902,28 @@ func TestProjectV2Field_GetID(tt *testing.T) {
 	p.GetID()
 }
 
+func TestProjectV2Field_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2Field{Name: &zeroValue}
+	p.GetName()
+	p = &ProjectV2Field{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
+func TestProjectV2Field_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2Field{NodeID: &zeroValue}
+	p.GetNodeID()
+	p = &ProjectV2Field{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
 func TestProjectV2Field_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -24856,6 +24933,17 @@ func TestProjectV2Field_GetUpdatedAt(tt *testing.T) {
 	p.GetUpdatedAt()
 	p = nil
 	p.GetUpdatedAt()
+}
+
+func TestProjectV2Field_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2Field{URL: &zeroValue}
+	p.GetURL()
+	p = &ProjectV2Field{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
 }
 
 func TestProjectV2FieldOption_GetColor(tt *testing.T) {

@@ -14078,6 +14078,38 @@ func (l *ListOrganizations) GetTotalCount() int {
 	return *l.TotalCount
 }
 
+// GetQuery returns the Query field if it's non-nil, zero value otherwise.
+func (l *ListProjectsOptions) GetQuery() string {
+	if l == nil || l.Query == nil {
+		return ""
+	}
+	return *l.Query
+}
+
+// GetAfter returns the After field if it's non-nil, zero value otherwise.
+func (l *ListProjectsPaginationOptions) GetAfter() string {
+	if l == nil || l.After == nil {
+		return ""
+	}
+	return *l.After
+}
+
+// GetBefore returns the Before field if it's non-nil, zero value otherwise.
+func (l *ListProjectsPaginationOptions) GetBefore() string {
+	if l == nil || l.Before == nil {
+		return ""
+	}
+	return *l.Before
+}
+
+// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
+func (l *ListProjectsPaginationOptions) GetPerPage() int {
+	if l == nil || l.PerPage == nil {
+		return 0
+	}
+	return *l.PerPage
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (l *ListRepositories) GetTotalCount() int {
 	if l == nil || l.TotalCount == nil {
@@ -19126,6 +19158,14 @@ func (p *ProjectV2Field) GetCreatedAt() Timestamp {
 	return *p.CreatedAt
 }
 
+// GetDataType returns the DataType field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetDataType() string {
+	if p == nil || p.DataType == nil {
+		return ""
+	}
+	return *p.DataType
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (p *ProjectV2Field) GetID() int64 {
 	if p == nil || p.ID == nil {
@@ -19134,12 +19174,36 @@ func (p *ProjectV2Field) GetID() int64 {
 	return *p.ID
 }
 
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (p *ProjectV2Field) GetUpdatedAt() Timestamp {
 	if p == nil || p.UpdatedAt == nil {
 		return Timestamp{}
 	}
 	return *p.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
 }
 
 // GetColor returns the Color field if it's non-nil, zero value otherwise.

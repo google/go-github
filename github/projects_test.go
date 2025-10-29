@@ -56,7 +56,7 @@ func TestProjectsService_ListProjectsForOrg(t *testing.T) {
 
 	// still allow both set (no validation enforced) – ensure it does not error
 	ctxBypass := context.WithValue(t.Context(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectsForOrg(ctxBypass, "o", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: String("b"), After: String("a")}}); err != nil {
+	if _, _, err = client.Projects.ListProjectsForOrg(ctxBypass, "o", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
