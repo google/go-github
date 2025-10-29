@@ -24666,7 +24666,7 @@ func TestProjectV2_GetNodeID(tt *testing.T) {
 
 func TestProjectV2_GetNumber(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue int
 	p := &ProjectV2{Number: &zeroValue}
 	p.GetNumber()
 	p = &ProjectV2{}

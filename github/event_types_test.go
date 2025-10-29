@@ -15673,7 +15673,7 @@ func TestProjectV2Event_Marshal(t *testing.T) {
 			CreatedAt:        &Timestamp{referenceTime},
 			UpdatedAt:        &Timestamp{referenceTime},
 			DeletedAt:        &Timestamp{referenceTime},
-			Number:           Ptr(int64(1)),
+			Number:           Ptr(1),
 			ShortDescription: Ptr("sd"),
 			DeletedBy: &User{
 				Login:     Ptr("l"),

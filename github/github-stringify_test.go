@@ -1554,7 +1554,7 @@ func TestProjectV2_String(t *testing.T) {
 		CreatedAt:              &Timestamp{},
 		UpdatedAt:              &Timestamp{},
 		DeletedAt:              &Timestamp{},
-		Number:                 Ptr(int64(0)),
+		Number:                 Ptr(0),
 		ShortDescription:       Ptr(""),
 		DeletedBy:              &User{},
 		URL:                    Ptr(""),
