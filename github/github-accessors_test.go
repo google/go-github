@@ -24858,15 +24858,48 @@ func TestProjectV2Field_GetUpdatedAt(tt *testing.T) {
 	p.GetUpdatedAt()
 }
 
+func TestProjectV2FieldOption_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2FieldOption{Color: &zeroValue}
+	p.GetColor()
+	p = &ProjectV2FieldOption{}
+	p.GetColor()
+	p = nil
+	p.GetColor()
+}
+
+func TestProjectV2FieldOption_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2FieldOption{Description: &zeroValue}
+	p.GetDescription()
+	p = &ProjectV2FieldOption{}
+	p.GetDescription()
+	p = nil
+	p.GetDescription()
+}
+
 func TestProjectV2FieldOption_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue string
 	p := &ProjectV2FieldOption{ID: &zeroValue}
 	p.GetID()
 	p = &ProjectV2FieldOption{}
 	p.GetID()
 	p = nil
 	p.GetID()
+}
+
+func TestProjectV2FieldOption_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2FieldOption{Name: &zeroValue}
+	p.GetName()
+	p = &ProjectV2FieldOption{}
+	p.GetName()
+	p = nil
+	p.GetName()
 }
 
 func TestProjectV2Item_GetArchivedAt(tt *testing.T) {

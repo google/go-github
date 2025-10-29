@@ -19142,12 +19142,36 @@ func (p *ProjectV2Field) GetUpdatedAt() Timestamp {
 	return *p.UpdatedAt
 }
 
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldOption) GetColor() string {
+	if p == nil || p.Color == nil {
+		return ""
+	}
+	return *p.Color
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldOption) GetDescription() string {
+	if p == nil || p.Description == nil {
+		return ""
+	}
+	return *p.Description
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *ProjectV2FieldOption) GetID() int64 {
+func (p *ProjectV2FieldOption) GetID() string {
 	if p == nil || p.ID == nil {
-		return 0
+		return ""
 	}
 	return *p.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldOption) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
 }
 
 // GetArchivedAt returns the ArchivedAt field if it's non-nil, zero value otherwise.

@@ -185,8 +185,8 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 			"dataType": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field1",
 			"options": [
-				{"id": 1, "name": "Todo", "color": "blue", "description": "Tasks to be done"},
-				{"id": 2, "name": "In Progress", "color": "yellow"}
+				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
+				{"id": "2", "name": "In Progress", "color": "yellow"}
 			],
 			"created_at": "2011-01-02T15:04:05Z",
 			"updated_at": "2012-01-02T15:04:05Z"
@@ -254,8 +254,8 @@ func TestProjectsService_ListProjectFieldsForUser(t *testing.T) {
 			"dataType": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field1",
 			"options": [
-				{"id": 1, "name": "Todo", "color": "blue", "description": "Tasks to be done"},
-				{"id": 2, "name": "In Progress", "color": "yellow"}
+				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
+				{"id": "2", "name": "In Progress", "color": "yellow"}
 			],
 			"created_at": "2011-01-02T15:04:05Z",
 			"updated_at": "2012-01-02T15:04:05Z"
@@ -317,8 +317,8 @@ func TestProjectsService_GetProjectFieldForOrg(t *testing.T) {
 			"dataType": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field1",
 			"options": [
-				{"id": 1, "name": "Todo", "color": "blue", "description": "Tasks to be done"},
-				{"id": 2, "name": "In Progress", "color": "yellow"}
+				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
+				{"id": "2", "name": "In Progress", "color": "yellow"}
 			],
 			"created_at": "2011-01-02T15:04:05Z",
 			"updated_at": "2012-01-02T15:04:05Z"
@@ -358,8 +358,8 @@ func TestProjectsService_GetProjectFieldForUser(t *testing.T) {
 			"dataType": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field3",
 			"options": [
-				{"id": 1, "name": "Done", "color": "red", "description": "Done task"},
-				{"id": 2, "name": "In Progress", "color": "yellow"}
+				{"id": "1", "name": "Done", "color": "red", "description": "Done task"},
+				{"id": "2", "name": "In Progress", "color": "yellow"}
 			],
 			"created_at": "2011-01-02T15:04:05Z",
 			"updated_at": "2012-01-02T15:04:05Z"
@@ -588,10 +588,10 @@ func TestProjectV2Field_Marshal(t *testing.T) {
 		URL:      "https://api.github.com/projects/1/fields/field1",
 		Options: []*ProjectV2FieldOption{
 			{
-				ID:          Ptr(int64(1)),
-				Name:        "Todo",
-				Color:       "blue",
-				Description: "Tasks to be done",
+				ID:          Ptr("1"),
+				Name:        Ptr("Todo"),
+				Color:       Ptr("blue"),
+				Description: Ptr("Tasks to be done"),
 			},
 		},
 		CreatedAt: &Timestamp{referenceTime},
@@ -606,7 +606,7 @@ func TestProjectV2Field_Marshal(t *testing.T) {
         "url": "https://api.github.com/projects/1/fields/field1",
         "options": [
             {
-                "id": 1,
+                "id": "1",
                 "name": "Todo",
                 "color": "blue",
                 "description": "Tasks to be done"

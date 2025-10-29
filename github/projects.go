@@ -79,10 +79,10 @@ type ListProjectsOptions struct {
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2FieldOption struct {
-	ID          *int64 `json:"id,omitempty"`          // The unique identifier for this option.
-	Name        string `json:"name,omitempty"`        // The display name of the option.
-	Color       string `json:"color,omitempty"`       // The color associated with this option (e.g., "blue", "red").
-	Description string `json:"description,omitempty"` // An optional description for this option.
+	ID          *string `json:"id,omitempty"`          // The unique identifier for this option.
+	Name        *string `json:"name,omitempty"`        // The display name of the option.
+	Color       *string `json:"color,omitempty"`       // The color associated with this option (e.g., "blue", "red").
+	Description *string `json:"description,omitempty"` // An optional description for this option.
 }
 
 // ProjectV2Field represents a field in a GitHub Projects V2 project.
